@@ -16,6 +16,19 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class TextFixture implements TileFixture, HasImage {
 	/**
+	 * The text.
+	 */
+	private String text;
+	/**
+	 * The turn it's associated with.
+	 */
+	private final int turn;
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
+	/**
 	 * Constructor.
 	 *
 	 * @param theText the text
@@ -33,7 +46,7 @@ public class TextFixture implements TileFixture, HasImage {
 	@Override
 	public String toString() {
 		if (turn == -1) {
-			return text;
+			return text; // NOPMD
 		} else {
 			return text + "(turn " + turn + ')';
 		}
@@ -45,15 +58,6 @@ public class TextFixture implements TileFixture, HasImage {
 	public void setText(final String newText) {
 		text = newText;
 	}
-
-	/**
-	 * The text.
-	 */
-	private String text;
-	/**
-	 * The turn it's associated with.
-	 */
-	private final int turn;
 
 	/**
 	 * @return the turn this is associated with
@@ -91,8 +95,8 @@ public class TextFixture implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof TextFixture && equalsImpl((TextFixture) obj));
+		return this == obj || obj instanceof TextFixture
+				&& equalsImpl((TextFixture) obj);
 	}
 	/**
 	 * @param obj a text-fixture
@@ -138,11 +142,6 @@ public class TextFixture implements TileFixture, HasImage {
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return equals(fix);
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

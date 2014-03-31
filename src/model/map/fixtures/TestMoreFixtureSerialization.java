@@ -292,6 +292,24 @@ public final class TestMoreFixtureSerialization extends
 		assertImageSerialization("Village image property is preserved", three,
 				Village.class);
 	}
+	/**
+	 * Test that a Unit should have an ownerr and kind.
+	 * @throws SPFormatException always
+	 * @throws XMLStreamException never
+	 */
+	@Test
+	public void testUnitHasRequiredProperties() throws XMLStreamException,
+			SPFormatException {
+		assertMissingProperty("<unit name=\"name\" />", Unit.class,
+				OWNER_PROPERTY, true);
+		assertMissingProperty("<unit owner=\"\" name=\"name\" />", Unit.class,
+				OWNER_PROPERTY, true);
+		assertMissingProperty("<unit owner=\"1\" name=\"name\" id=\"0\" />",
+				Unit.class, KIND_PROPERTY, true);
+		assertMissingProperty(
+				"<unit owner=\"1\" kind=\"\" name=\"name\" id=\"0\" />",
+				Unit.class, KIND_PROPERTY, true);
+	}
 
 	/**
 	 * Test that a Unit should have an owner, and other errors and warnings.
@@ -303,15 +321,6 @@ public final class TestMoreFixtureSerialization extends
 	@Test
 	public void testUnitWarnings() throws XMLStreamException,
 			SPFormatException, IOException { // NOPMD
-		assertMissingProperty("<unit name=\"name\" />", Unit.class,
-				OWNER_PROPERTY, true);
-		assertMissingProperty("<unit owner=\"\" name=\"name\" />", Unit.class,
-				OWNER_PROPERTY, true);
-		assertMissingProperty("<unit owner=\"1\" name=\"name\" id=\"0\" />",
-				Unit.class, KIND_PROPERTY, true);
-		assertMissingProperty(
-				"<unit owner=\"1\" kind=\"\" name=\"name\" id=\"0\" />",
-				Unit.class, KIND_PROPERTY, true);
 		assertUnwantedChild("<unit><unit /></unit>", Unit.class, false);
 		final Unit one = new Unit(new Player(1, ""), "unitType", "unitName", 1);
 		final String oldKindProperty = "type"; // NOPMD

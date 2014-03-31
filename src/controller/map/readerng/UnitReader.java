@@ -1,6 +1,5 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.assertNonNullList;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
@@ -15,6 +14,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.IPlayerCollection;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -62,18 +62,19 @@ public class UnitReader implements INodeHandler<Unit> {
 		final StringBuilder orders = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final StartElement selem = event.asStartElement();
-				assert selem != null;
+				final StartElement selem =
+						NullCleaner.assertNotNull(event.asStartElement());
 				final Object result = ReaderAdapter.ADAPTER.parse(selem,
 						stream, players, warner, idFactory);
 				if (result instanceof UnitMember) {
 					fix.addMember((UnitMember) result);
 				} else {
-					final String olocal = element.getName().getLocalPart();
-					final String slocal = selem.getName().getLocalPart();
-					assert olocal != null && slocal != null;
-					throw new UnwantedChildException(olocal, slocal, event
-							.getLocation().getLineNumber());
+					throw new UnwantedChildException(
+							NullCleaner.assertNotNull(element.getName()
+									.getLocalPart()),
+							NullCleaner.assertNotNull(selem.getName()
+									.getLocalPart()), event.getLocation()
+									.getLineNumber());
 				}
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());
@@ -82,9 +83,7 @@ public class UnitReader implements INodeHandler<Unit> {
 				break;
 			}
 		}
-		final String ordersText = orders.toString().trim();
-		assert ordersText != null;
-		fix.setOrders(ordersText);
+		fix.setOrders(NullCleaner.assertNotNull(orders.toString().trim()));
 		return fix;
 	}
 
@@ -99,22 +98,19 @@ public class UnitReader implements INodeHandler<Unit> {
 	 */
 	private static String parseKind(final StartElement element,
 			final Warning warner) throws SPFormatException {
-		String retval = "";
 		try {
-			retval = getAttributeWithDeprecatedForm(element, // NOPMD
+			String retval = getAttributeWithDeprecatedForm(element, // NOPMD
 					KIND_PROPERTY, "type", warner);
+			if (retval.isEmpty()) {
+				warner.warn(new MissingPropertyException(NullCleaner
+						.assertNotNull(element.getName().getLocalPart()),
+						KIND_PROPERTY, element.getLocation().getLineNumber()));
+			}
+			return retval; // NOPMD
 		} catch (final MissingPropertyException except) {
 			warner.warn(except);
 			return ""; // NOPMD
 		}
-		if (retval.isEmpty()) {
-			final String local = element.getName()
-					.getLocalPart();
-			assert local != null;
-			warner.warn(new MissingPropertyException(local, KIND_PROPERTY,
-					element.getLocation().getLineNumber()));
-		}
-		return retval;
 	}
 
 	/**
@@ -123,7 +119,7 @@ public class UnitReader implements INodeHandler<Unit> {
 	 */
 	private static String ensureNumeric(final String string) {
 		if (string.isEmpty()) {
-			return "-1";
+			return "-1"; // NOPMD
 		} else {
 			return string;
 		}
@@ -134,7 +130,7 @@ public class UnitReader implements INodeHandler<Unit> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Collections.singletonList("unit"));
+		return NullCleaner.assertNotNull(Collections.singletonList("unit"));
 	}
 
 	/**
@@ -149,9 +145,8 @@ public class UnitReader implements INodeHandler<Unit> {
 	public <S extends Unit> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"unit");
-		final String owner = Integer.toString(obj.getOwner().getPlayerId());
-		assert owner != null;
-		retval.addAttribute("owner", owner);
+		retval.addAttribute("owner", NullCleaner.assertNotNull(Integer
+				.toString(obj.getOwner().getPlayerId())));
 		if (!obj.getKind().isEmpty()) {
 			retval.addAttribute("kind", obj.getKind());
 		}

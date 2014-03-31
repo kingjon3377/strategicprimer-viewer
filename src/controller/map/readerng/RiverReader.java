@@ -1,7 +1,6 @@
 package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.assertNonNullList;
-import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
@@ -13,6 +12,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IPlayerCollection;
 import model.map.River;
+import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -43,14 +43,12 @@ public class RiverReader implements INodeHandler<River> {
 			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(assertNonNullQName(element.getName()), stream);
-		final River fix;
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		if ("lake".equalsIgnoreCase(element.getName().getLocalPart())) {
-			fix = River.Lake;
+			return River.Lake; // NOPMD
 		} else {
-			fix = River.getRiver(getAttribute(element, "direction"));
+			return River.getRiver(getAttribute(element, "direction"));
 		}
-		return fix;
 	}
 
 	/**
@@ -78,7 +76,7 @@ public class RiverReader implements INodeHandler<River> {
 	@Override
 	public SPIntermediateRepresentation write(final River obj) {
 		if (River.Lake.equals(obj)) {
-			return new SPIntermediateRepresentation("lake");
+			return new SPIntermediateRepresentation("lake"); // NOPMD
 		} else {
 			return new SPIntermediateRepresentation("river", Pair.of(
 					"direction", obj.getDescription()));

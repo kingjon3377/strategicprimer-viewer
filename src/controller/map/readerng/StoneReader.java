@@ -14,6 +14,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.IPlayerCollection;
 import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.resources.StoneKind;
+import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -79,11 +80,10 @@ public class StoneReader implements INodeHandler<StoneDeposit> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final StoneDeposit obj) {
-		final String dc = Integer.toString(obj.getDC()); // NOPMD
-		assert dc != null;
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				"stone", Pair.of("kind", obj.stone().toString()), Pair.of("dc",
-						dc));
+		final SPIntermediateRepresentation retval =
+				new SPIntermediateRepresentation("stone", Pair.of("kind", obj
+						.stone().toString()), Pair.of("dc", NullCleaner
+						.assertNotNull(Integer.toString(obj.getDC()))));
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

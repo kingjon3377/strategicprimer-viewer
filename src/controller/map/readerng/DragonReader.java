@@ -1,7 +1,5 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.assertNonNullList;
-import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
@@ -14,6 +12,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IPlayerCollection;
 import model.map.fixtures.mobile.Dragon;
+import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -44,7 +43,7 @@ public class DragonReader implements INodeHandler<Dragon> {
 			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(assertNonNullQName(element.getName()), stream);
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Dragon fix = new Dragon(getAttribute(element, "kind"),
 				getOrGenerateID(element, warner, idFactory));
 		XMLHelper.addImage(element, fix);
@@ -56,7 +55,7 @@ public class DragonReader implements INodeHandler<Dragon> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Collections.singletonList("dragon"));
+		return NullCleaner.assertNotNull(Collections.singletonList("dragon"));
 	}
 
 	/** @return the class we know how to write */

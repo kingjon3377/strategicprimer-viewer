@@ -65,10 +65,10 @@ public class WorkerReader implements INodeHandler<Worker> {
 		XMLHelper.addImage(element, retval);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final StartElement selem = event.asStartElement();
-				assert selem != null;
-				final Object result = ReaderAdapter.ADAPTER.parse(selem,
-						stream, players, warner, idFactory);
+				final Object result =
+						ReaderAdapter.ADAPTER.parse(NullCleaner
+								.assertNotNull(event.asStartElement()), stream,
+								players, warner, idFactory);
 				if (result instanceof Job) {
 					retval.addJob((Job) result);
 				} else if (result instanceof WorkerStats) {
@@ -76,8 +76,10 @@ public class WorkerReader implements INodeHandler<Worker> {
 				} else {
 					final String outerName = NullCleaner.valueOrDefault(element
 							.getName().getLocalPart(), "a null tag");
-					final String innerName = NullCleaner.valueOrDefault(selem
-							.getName().getLocalPart(), "a null tag");
+					final String innerName =
+							NullCleaner.valueOrDefault(NullCleaner
+									.assertNotNull(event.asStartElement())
+									.getName().getLocalPart(), "a null tag");
 					throw new UnwantedChildException(outerName, innerName,
 							event.getLocation().getLineNumber());
 				}

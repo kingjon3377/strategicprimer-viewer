@@ -13,6 +13,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IPlayerCollection;
 import model.map.fixtures.resources.Cave;
+import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -72,10 +73,10 @@ public class CaveReader implements INodeHandler<Cave> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final Cave obj) {
-		final String dc = Integer.toString(obj.getDC()); // NOPMD
-		assert dc != null;
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				"cave", Pair.of("dc", dc));
+		final SPIntermediateRepresentation retval =
+				new SPIntermediateRepresentation("cave",
+						Pair.of("dc", NullCleaner.assertNotNull(Integer
+								.toString(obj.getDC()))));
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

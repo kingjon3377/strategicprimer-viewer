@@ -10,6 +10,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.IPlayerCollection;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
@@ -27,6 +28,11 @@ import controller.map.misc.IDFactory;
 @Deprecated
 public class ReaderAdapter implements INodeHandler<Object> {
 	/**
+	 * A singleton. Provided for performance; this is, after all, stateless.
+	 */
+	public static final ReaderAdapter ADAPTER = new ReaderAdapter();
+
+	/**
 	 * Parse an element.
 	 *
 	 * @param element the element to parse
@@ -43,9 +49,8 @@ public class ReaderAdapter implements INodeHandler<Object> {
 			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		final String iLocal = element.getName()
-						.getLocalPart();
-		assert iLocal != null;
+		final String iLocal =
+				NullCleaner.assertNotNull(element.getName().getLocalPart());
 		if (READ_CACHE.containsKey(iLocal)) {
 			return READ_CACHE.get(iLocal).parse(element, stream, players,
 					warner, idFactory);
@@ -71,7 +76,7 @@ public class ReaderAdapter implements INodeHandler<Object> {
 	 *
 	 * @param reader the reader to add
 	 */
-	static void factory(final INodeHandler<?> reader) {
+	static void factory(final INodeHandler<?> reader) { // NOPMD
 		for (final String tag : reader.understands()) {
 			READ_CACHE.put(tag, reader);
 		}
@@ -179,11 +184,6 @@ public class ReaderAdapter implements INodeHandler<Object> {
 	public Class<Object> writes() {
 		throw new IllegalStateException("This should never be called.");
 	}
-
-	/**
-	 * A singleton. Provided for performance; this is, after all, stateless.
-	 */
-	public static final ReaderAdapter ADAPTER = new ReaderAdapter();
 
 	/**
 	 * @return a String representation of the object

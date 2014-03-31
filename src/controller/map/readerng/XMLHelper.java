@@ -13,6 +13,7 @@ import model.map.Player;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
@@ -49,14 +50,12 @@ public final class XMLHelper {
 		final Attribute attr = startElement.getAttributeByName(new QName(
 				attribute));
 		if (attr == null || attr.getValue() == null) {
-			final String local = startElement.getName().getLocalPart();
-			assert local != null;
-			throw new MissingPropertyException(local, attribute, startElement
-					.getLocation().getLineNumber());
+			throw new MissingPropertyException(
+					NullCleaner.assertNotNull(startElement.getName()
+							.getLocalPart()), attribute, startElement
+							.getLocation().getLineNumber());
 		}
-		final String retval = attr.getValue();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(attr.getValue());
 	}
 
 	/**
@@ -76,9 +75,7 @@ public final class XMLHelper {
 		if (value == null) {
 			return defaultValue; // NOPMD
 		} else {
-			final String retval = value.getValue();
-			assert retval != null;
-			return retval;
+			return NullCleaner.assertNotNull(value.getValue());
 		}
 	}
 
@@ -102,21 +99,18 @@ public final class XMLHelper {
 				preferred));
 		final Attribute deprAttr = element.getAttributeByName(new QName(
 				deprecated));
-		final String local = element.getName().getLocalPart();
-		assert local != null;
 		if (prefAttr == null && deprAttr == null) {
-			throw new MissingPropertyException(local, preferred, element
-					.getLocation().getLineNumber());
+			throw new MissingPropertyException(
+					NullCleaner.assertNotNull(element.getName().getLocalPart()),
+					preferred, element.getLocation().getLineNumber());
 		} else if (prefAttr == null) {
-			warner.warn(new DeprecatedPropertyException(local, deprecated,
-					preferred, element.getLocation().getLineNumber()));
-			final String value = deprAttr.getValue();
-			assert value != null;
-			return value; // NOPMD
+			warner.warn(new DeprecatedPropertyException(NullCleaner
+					.assertNotNull(element.getName().getLocalPart()),
+					deprecated, preferred, element.getLocation()
+							.getLineNumber()));
+			return NullCleaner.assertNotNull(deprAttr.getValue()); // NOPMD
 		} else {
-			final String value = prefAttr.getValue();
-			assert value != null;
-			return value;
+			return NullCleaner.assertNotNull(prefAttr.getValue());
 		}
 	}
 
@@ -127,7 +121,7 @@ public final class XMLHelper {
 	 */
 	public static boolean hasAttribute(final StartElement elem,
 			final String attr) {
-		return !(elem.getAttributeByName(new QName(attr)) == null);
+		return elem.getAttributeByName(new QName(attr)) != null;
 	}
 
 	/**
@@ -142,12 +136,10 @@ public final class XMLHelper {
 			final Iterable<XMLEvent> reader) throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement()) {
-				final String iLocal = event.asStartElement().getName()
-						.getLocalPart();
-				final String oLocal = tag.getLocalPart();
-				assert iLocal != null && oLocal != null;
-				throw new UnwantedChildException(oLocal, iLocal,
-						event.getLocation().getLineNumber());
+				throw new UnwantedChildException(NullCleaner.assertNotNull(tag
+						.getLocalPart()), NullCleaner.assertNotNull(event
+						.asStartElement().getName().getLocalPart()), event
+						.getLocation().getLineNumber());
 			} else if (event.isEndElement()
 					&& tag.equals(event.asEndElement().getName())) {
 				break;
@@ -169,10 +161,11 @@ public final class XMLHelper {
 			final String parameter, final boolean mandatory,
 			final Warning warner) throws SPFormatException {
 		if (getAttribute(element, parameter, "").isEmpty()) {
-			final String local = element.getName().getLocalPart();
-			assert local != null;
-			final SPFormatException except = new MissingPropertyException(
-					local, parameter, element.getLocation().getLineNumber());
+			final SPFormatException except =
+					new MissingPropertyException(
+							NullCleaner.assertNotNull(element.getName()
+									.getLocalPart()), parameter, element
+									.getLocation().getLineNumber());
 			if (mandatory) {
 				throw except;
 			} else {
@@ -201,10 +194,9 @@ public final class XMLHelper {
 			retval = players.getPlayer(Integer.parseInt(getAttribute(element,
 					"owner")));
 		} else {
-			final String local = element.getName().getLocalPart();
-			assert local != null;
-			warner.warn(new MissingPropertyException(local, "owner", element
-					.getLocation().getLineNumber()));
+			warner.warn(new MissingPropertyException(NullCleaner
+					.assertNotNull(element.getName().getLocalPart()), "owner",
+					element.getLocation().getLineNumber()));
 			retval = players.getIndependent();
 		}
 		return retval;
@@ -231,10 +223,9 @@ public final class XMLHelper {
 			retval = idFactory.register(Integer.parseInt(getAttribute(element,
 					"id")));
 		} else {
-			final String local = element.getName().getLocalPart();
-			assert local != null;
-			warner.warn(new MissingPropertyException(local, "id", element
-					.getLocation().getLineNumber()));
+			warner.warn(new MissingPropertyException(NullCleaner
+					.assertNotNull(element.getName().getLocalPart()), "id",
+					element.getLocation().getLineNumber()));
 			retval = idFactory.createID();
 		}
 		return retval;
@@ -247,7 +238,7 @@ public final class XMLHelper {
 	 */
 	public static String getFile(final Iterable<XMLEvent> stream) {
 		if (stream.iterator() instanceof IncludingIterator) {
-			return ((IncludingIterator) stream.iterator()).getFile();
+			return ((IncludingIterator) stream.iterator()).getFile(); // NOPMD
 		} else {
 			return "";
 		}

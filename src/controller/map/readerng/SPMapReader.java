@@ -3,6 +3,7 @@ package controller.map.readerng;
 import static controller.map.readerng.XMLHelper.assertNonNullList;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static java.lang.Integer.parseInt;
+import static util.NullCleaner.assertNotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +36,15 @@ import controller.map.misc.IDFactory;
 @Deprecated
 public class SPMapReader implements INodeHandler<SPMap> {
 	/**
+	 * The reader to use to parse players.
+	 */
+	private static final PlayerReader PLAYER_READER = new PlayerReader();
+	/**
+	 * The reader to use to parse tiles.
+	 */
+	private static final TileReader TILE_READER = new TileReader();
+
+	/**
 	 * The tag we read.
 	 */
 	private static final String TAG = "map";
@@ -62,9 +72,8 @@ public class SPMapReader implements INodeHandler<SPMap> {
 				Integer.parseInt(getAttribute(element, "version", "1"))));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final StartElement elem = event.asStartElement();
-				assert elem != null;
-				parseChild(stream, warner, map, elem, idFactory);
+				parseChild(stream, warner, map,
+						assertNotNull(event.asStartElement()), idFactory);
 			} else if (event.isEndElement()
 					&& TAG.equalsIgnoreCase(event.asEndElement().getName()
 							.getLocalPart())) {
@@ -148,20 +157,17 @@ public class SPMapReader implements INodeHandler<SPMap> {
 	public <S extends SPMap> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"map");
-		final String version = Integer.toString(obj.getDimensions().version);
-		assert version != null;
-		retval.addAttribute("version", version);
-		final String rows = Integer.toString(obj.getDimensions().rows);
-		assert rows != null;
-		retval.addAttribute("rows", rows);
-		final String cols = Integer.toString(obj.getDimensions().cols);
-		assert cols != null;
-		retval.addAttribute("columns", cols);
+		retval.addAttribute("version",
+				assertNotNull(Integer.toString(obj.getDimensions().version)));
+		retval.addAttribute("rows",
+				assertNotNull(Integer.toString(obj.getDimensions().rows)));
+		retval.addAttribute("columns",
+				assertNotNull(Integer.toString(obj.getDimensions().cols)));
 		if (!obj.getPlayers().getCurrentPlayer().getName().isEmpty()) {
-			final String currPlayer = Integer.toString(obj.getPlayers()
-					.getCurrentPlayer().getPlayerId());
-			assert currPlayer != null;
-			retval.addAttribute("current_player", currPlayer);
+			retval.addAttribute(
+					"current_player",
+					assertNotNull(Integer.toString(obj.getPlayers()
+							.getCurrentPlayer().getPlayerId())));
 		}
 		for (final Player player : obj.getPlayers()) {
 			if (player != null) {
@@ -170,11 +176,10 @@ public class SPMapReader implements INodeHandler<SPMap> {
 		}
 		final MapDimensions dim = obj.getDimensions();
 		for (int i = 0; i < dim.rows; i++) {
-			final String idx = Integer.toString(i);
-			assert idx != null;
 			final SPIntermediateRepresentation row =
 					new SPIntermediateRepresentation(// NOPMD
-							"row", Pair.of("index", idx));
+							"row", Pair.of("index",
+									assertNotNull(Integer.toString(i))));
 			for (int j = 0; j < dim.cols; j++) {
 				final Point point = PointFactory.point(i, j);
 				final ITile tile = obj.getTile(point);
@@ -186,15 +191,6 @@ public class SPMapReader implements INodeHandler<SPMap> {
 		}
 		return retval;
 	}
-
-	/**
-	 * The reader to use to parse players.
-	 */
-	private static final PlayerReader PLAYER_READER = new PlayerReader();
-	/**
-	 * The reader to use to parse tiles.
-	 */
-	private static final TileReader TILE_READER = new TileReader();
 
 	/**
 	 * @return a String representation of the object

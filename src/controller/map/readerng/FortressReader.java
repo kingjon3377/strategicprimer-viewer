@@ -1,6 +1,5 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.assertNonNullList;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
@@ -15,6 +14,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.IPlayerCollection;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
@@ -56,19 +56,17 @@ public class FortressReader implements INodeHandler<Fortress> {
 			if (event.isStartElement()
 					&& "unit".equalsIgnoreCase(event.asStartElement().getName()
 							.getLocalPart())) {
-				final StartElement selem = event.asStartElement();
-				assert selem != null;
-				fort.addUnit(UNIT_READER.parse(selem, stream, players, warner,
-						idFactory));
+				fort.addUnit(UNIT_READER.parse(
+						NullCleaner.assertNotNull(event.asStartElement()),
+						stream, players, warner, idFactory));
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {
 				break;
 			} else if (event.isStartElement()) {
-				final String local = event.asStartElement().getName()
-						.getLocalPart();
-				assert local != null;
-				throw new UnwantedChildException("fortress", local, event
-						.getLocation().getLineNumber());
+				throw new UnwantedChildException("fortress",
+						NullCleaner.assertNotNull(event.asStartElement()
+								.getName().getLocalPart()), event.getLocation()
+								.getLineNumber());
 			}
 		}
 		return fort;
@@ -79,7 +77,7 @@ public class FortressReader implements INodeHandler<Fortress> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Collections.singletonList("fortress"));
+		return NullCleaner.assertNotNull(Collections.singletonList("fortress"));
 	}
 
 	/**
@@ -102,9 +100,8 @@ public class FortressReader implements INodeHandler<Fortress> {
 	public <S extends Fortress> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"fortress");
-		final String owner = Integer.toString(obj.getOwner().getPlayerId());
-		assert owner != null;
-		retval.addAttribute("owner", owner);
+		retval.addAttribute("owner", NullCleaner.assertNotNull(Integer
+				.toString(obj.getOwner().getPlayerId())));
 		if (!obj.getName().isEmpty()) {
 			retval.addAttribute("name", obj.getName());
 		}

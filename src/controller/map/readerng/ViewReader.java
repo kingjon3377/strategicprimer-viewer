@@ -12,6 +12,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IPlayerCollection;
 import model.map.MapView;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.SPFormatException;
@@ -30,6 +31,11 @@ public class ViewReader implements INodeHandler<MapView> {
 	 * The (main) tag we deal with.
 	 */
 	private static final String TAG = "view";
+
+	/**
+	 * A map reader to use.
+	 */
+	private static final SPMapReader MAP_READER = new SPMapReader();
 
 	/**
 	 * @return the class we know how to write
@@ -64,14 +70,14 @@ public class ViewReader implements INodeHandler<MapView> {
 			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		MapView view = null;
 		final StartElement event = getFirstStartElement(stream, element
 				.getLocation().getLineNumber());
 		requireMapTag(event, element);
-		view = new MapView(MAP_READER.parse(event, stream, players, warner,
-				idFactory), Integer.parseInt(getAttribute(element,
-				"current_player")), Integer.parseInt(getAttribute(element,
-				"current_turn")));
+		final MapView view =
+				new MapView(MAP_READER.parse(event, stream, players, warner,
+						idFactory), Integer.parseInt(getAttribute(element,
+						"current_player")), Integer.parseInt(getAttribute(
+						element, "current_turn")));
 		XMLHelper.spinUntilEnd(assertNonNullQName(element.getName()), stream);
 		return view;
 	}
@@ -87,9 +93,7 @@ public class ViewReader implements INodeHandler<MapView> {
 			throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final StartElement selem = event.asStartElement();
-				assert selem != null;
-				return selem;
+				return NullCleaner.assertNotNull(event.asStartElement());
 			}
 		}
 		throw new MissingChildException("map", line);
@@ -107,21 +111,15 @@ public class ViewReader implements INodeHandler<MapView> {
 	public <S extends MapView> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				TAG);
-		final String player = Integer.toString(obj.getPlayers().getCurrentPlayer()
-				.getPlayerId());
-		assert player != null;
-		retval.addAttribute("current_player", player);
-		final String turn = Integer.toString(obj.getCurrentTurn());
-		assert turn != null;
-		retval.addAttribute("current_turn", turn);
+		retval.addAttribute(
+				"current_player",
+				NullCleaner.assertNotNull(Integer.toString(obj.getPlayers()
+						.getCurrentPlayer().getPlayerId())));
+		retval.addAttribute("current_turn", NullCleaner.assertNotNull(Integer
+				.toString(obj.getCurrentTurn())));
 		retval.addChild(ReaderAdapter.ADAPTER.write(obj.getMap()));
 		return retval;
 	}
-
-	/**
-	 * A map reader to use.
-	 */
-	private static final SPMapReader MAP_READER = new SPMapReader();
 
 	/**
 	 * Assert that the specified tag is a "map" tag.
@@ -133,11 +131,11 @@ public class ViewReader implements INodeHandler<MapView> {
 	private static void requireMapTag(final StartElement element,
 			final StartElement context) throws SPFormatException {
 		if (!"map".equalsIgnoreCase(element.getName().getLocalPart())) {
-			final String oLocal = context.getName().getLocalPart();
-			final String iLocal = element.asStartElement().getName().getLocalPart();
-			assert oLocal != null && iLocal != null;
-			throw new UnwantedChildException(oLocal, iLocal, element
-					.getLocation().getLineNumber());
+			throw new UnwantedChildException(NullCleaner.assertNotNull(context
+					.getName().getLocalPart()),
+					NullCleaner.assertNotNull(element.asStartElement()
+							.getName().getLocalPart()), element.getLocation()
+							.getLineNumber());
 		}
 	}
 

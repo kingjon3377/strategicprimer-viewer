@@ -1,10 +1,9 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.assertNonNullList;
-import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
+import static util.NullCleaner.assertNotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -44,7 +43,7 @@ public class CacheReader implements INodeHandler<CacheFixture> {
 			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(assertNonNullQName(element.getName()), stream);
+		spinUntilEnd(assertNotNull(element.getName()), stream);
 		final CacheFixture fix = new CacheFixture(
 				getAttribute(element, "kind"),
 				getAttribute(element, "contents"), getOrGenerateID(element,
@@ -58,7 +57,7 @@ public class CacheReader implements INodeHandler<CacheFixture> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Collections.singletonList("cache"));
+		return assertNotNull(Collections.singletonList("cache"));
 	}
 
 	/** @return the class we now ow to write */

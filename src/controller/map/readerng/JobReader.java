@@ -2,7 +2,6 @@ package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.assertNonNullList;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,6 +11,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.IPlayerCollection;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnsupportedPropertyException;
@@ -26,6 +26,10 @@ import controller.map.misc.IDFactory;
  */
 @Deprecated
 public class JobReader implements INodeHandler<Job> {
+	/**
+	 * Reader to write skills.
+	 */
+	private static final SkillReader SKILL_READER = new SkillReader();
 	static {
 		ReaderAdapter.factory(new JobReader());
 	}
@@ -65,32 +69,33 @@ public class JobReader implements INodeHandler<Job> {
 			warner.warn(new UnsupportedPropertyException("job", "hours",
 					element.getLocation().getLineNumber()));
 		}
-		final List<Skill> skills = new ArrayList<>();
+		final Job retval =
+				new Job(XMLHelper.getAttribute(element, "name"),
+						Integer.parseInt(XMLHelper.getAttribute(element,
+								"level")));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final StartElement selem = event.asStartElement();
-				assert selem != null;
-				final Object result = ReaderAdapter.ADAPTER.parse(selem,
-						stream, players, warner, idFactory);
+				final Object result =
+						ReaderAdapter.ADAPTER.parse(NullCleaner
+								.assertNotNull(event.asStartElement()), stream,
+								players, warner, idFactory);
 				if (result instanceof Skill) {
-					skills.add((Skill) result);
+					retval.addSkill((Skill) result);
 				} else {
-					final String oLocal = element.getName().getLocalPart();
-					final String iLocal = selem.getName().getLocalPart();
-					assert iLocal != null && oLocal != null;
-					throw new UnwantedChildException(oLocal, iLocal, event
-							.getLocation().getLineNumber());
+					throw new UnwantedChildException(
+							NullCleaner.assertNotNull(element.getName()
+									.getLocalPart()),
+							NullCleaner.assertNotNull(NullCleaner
+									.assertNotNull(event.asStartElement())
+									.getName().getLocalPart()), event
+									.getLocation().getLineNumber());
 				}
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
-		final Skill[] skillArray = skills.toArray(new Skill[skills.size()]);
-		assert skillArray != null;
-		return new Job(XMLHelper.getAttribute(element, "name"),
-				Integer.parseInt(XMLHelper.getAttribute(element, "level")),
-				skillArray);
+		return retval;
 	}
 
 	/**
@@ -104,9 +109,8 @@ public class JobReader implements INodeHandler<Job> {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"job");
 		retval.addAttribute("name", obj.getName());
-		final String level = Integer.toString(obj.getLevel());
-		assert level != null;
-		retval.addAttribute("level", level);
+		retval.addAttribute("level",
+				NullCleaner.assertNotNull(Integer.toString(obj.getLevel())));
 		for (final Skill skill : obj) {
 			if (skill != null) {
 				retval.addChild(SKILL_READER.write(skill));
@@ -114,10 +118,6 @@ public class JobReader implements INodeHandler<Job> {
 		}
 		return retval;
 	}
-	/**
-	 * Reader to write skills.
-	 */
-	private static final SkillReader SKILL_READER = new SkillReader();
 	/**
 	 * @return a String representation of the object
 	 */

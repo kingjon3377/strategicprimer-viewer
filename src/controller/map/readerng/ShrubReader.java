@@ -1,7 +1,5 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.assertNonNullList;
-import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
@@ -14,6 +12,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IPlayerCollection;
 import model.map.fixtures.resources.Shrub;
+import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -44,7 +43,7 @@ public class ShrubReader implements INodeHandler<Shrub> {
 			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(assertNonNullQName(element.getName()), stream);
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Shrub fix = new Shrub(getAttributeWithDeprecatedForm(element,
 				"kind", "shrub", warner), getOrGenerateID(element, warner,
 				idFactory));
@@ -57,7 +56,7 @@ public class ShrubReader implements INodeHandler<Shrub> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Collections.singletonList("shrub"));
+		return NullCleaner.assertNotNull(Collections.singletonList("shrub"));
 	}
 
 	/**

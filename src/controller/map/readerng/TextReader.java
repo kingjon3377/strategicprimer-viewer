@@ -11,6 +11,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IPlayerCollection;
 import model.map.fixtures.TextFixture;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
@@ -48,11 +49,10 @@ public class TextReader implements INodeHandler<TextFixture> {
 		final StringBuilder sbuild = new StringBuilder(2048); // NOPMD
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final String local = event.asStartElement().getName()
-						.getLocalPart();
-				assert local != null;
-				throw new UnwantedChildException("text", local, event
-						.getLocation().getLineNumber());
+				throw new UnwantedChildException("text",
+						NullCleaner.assertNotNull(event.asStartElement()
+								.getName().getLocalPart()), event.getLocation()
+								.getLineNumber());
 			} else if (event.isCharacters()) {
 				sbuild.append(event.asCharacters().getData());
 			} else if (event.isEndElement()
@@ -60,10 +60,10 @@ public class TextReader implements INodeHandler<TextFixture> {
 				break;
 			}
 		}
-		final String text = sbuild.toString().trim();
-		assert text != null;
-		final TextFixture fix = new TextFixture(text,
-				Integer.parseInt(getAttribute(element, "turn", "-1")));
+		final TextFixture fix =
+				new TextFixture(NullCleaner.assertNotNull(sbuild.toString()
+						.trim()), Integer.parseInt(getAttribute(element,
+						"turn", "-1")));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}
@@ -98,13 +98,11 @@ public class TextReader implements INodeHandler<TextFixture> {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"text");
 		if (obj.getTurn() != -1) {
-			final String turn = Integer.toString(obj.getTurn());
-			assert turn != null;
-			retval.addAttribute("turn", turn);
+			retval.addAttribute("turn",
+					NullCleaner.assertNotNull(Integer.toString(obj.getTurn())));
 		}
-		final String text = obj.getText().trim();
-		assert text != null;
-		retval.addAttribute("text-contents", text);
+		retval.addAttribute("text-contents",
+				NullCleaner.assertNotNull(obj.getText().trim()));
 		retval.addImageAttribute(obj);
 		return retval;
 	}

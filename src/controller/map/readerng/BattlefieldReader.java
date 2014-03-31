@@ -1,8 +1,6 @@
 package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getAttribute;
-import static controller.map.readerng.XMLHelper.assertNonNullList;
-import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
@@ -14,6 +12,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IPlayerCollection;
 import model.map.fixtures.resources.Battlefield;
+import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -44,7 +43,7 @@ public class BattlefieldReader implements INodeHandler<Battlefield> {
 			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(assertNonNullQName(element.getName()), stream);
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Battlefield fix = new Battlefield(Integer.parseInt(getAttribute(
 				element, "dc")), getOrGenerateID(element, warner, idFactory));
 		XMLHelper.addImage(element, fix);
@@ -56,7 +55,7 @@ public class BattlefieldReader implements INodeHandler<Battlefield> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Collections.singletonList("battlefield"));
+		return NullCleaner.assertNotNull(Collections.singletonList("battlefield"));
 	}
 
 	/** @return the class we know how to write */
@@ -73,10 +72,10 @@ public class BattlefieldReader implements INodeHandler<Battlefield> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final Battlefield obj) {
-		final String dc = Integer.toString(obj.getDC()); // NOPMD
-		assert dc != null;
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				"battlefield", Pair.of("dc", dc));
+		final SPIntermediateRepresentation retval =
+				new SPIntermediateRepresentation("battlefield",
+						Pair.of("dc", NullCleaner.assertNotNull(Integer
+								.toString(obj.getDC()))));
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

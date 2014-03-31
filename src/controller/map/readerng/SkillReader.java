@@ -11,6 +11,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IPlayerCollection;
 import model.map.fixtures.mobile.worker.Skill;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -82,12 +83,10 @@ public class SkillReader implements INodeHandler<Skill> {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"skill");
 		retval.addAttribute("name", obj.getName());
-		final String level = Integer.toString(obj.getLevel());
-		assert level != null;
-		retval.addAttribute("level", level);
-		final String hours = Integer.toString(obj.getHours());
-		assert hours != null;
-		retval.addAttribute("hours", hours);
+		retval.addAttribute("level",
+				NullCleaner.assertNotNull(Integer.toString(obj.getLevel())));
+		retval.addAttribute("hours",
+				NullCleaner.assertNotNull(Integer.toString(obj.getHours())));
 		return retval;
 	}
 

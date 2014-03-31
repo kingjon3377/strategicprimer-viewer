@@ -1,7 +1,5 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.assertNonNullList;
-import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.hasAttribute;
@@ -53,19 +51,22 @@ public class MeadowReader implements INodeHandler<Meadow> {
 			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(assertNonNullQName(element.getName()), stream);
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final int id = getOrGenerateID(element, warner, idFactory); // NOPMD
-		final String local = element.getName().getLocalPart();
-		assert local != null;
 		if (!hasAttribute(element, STATUS_ATTR)) {
-			warner.warn(new MissingPropertyException(local, STATUS_ATTR,
-					element.getLocation().getLineNumber()));
+			warner.warn(new MissingPropertyException(NullCleaner
+					.assertNotNull(element.getName().getLocalPart()),
+					STATUS_ATTR, element.getLocation().getLineNumber()));
 		}
-		final Meadow fix = new Meadow(getAttribute(element, "kind"),
-				"field".equalsIgnoreCase(local),
-				Boolean.parseBoolean(getAttribute(element, "cultivated")), id,
-				FieldStatus.parse(getAttribute(element, STATUS_ATTR,
-						FieldStatus.random(id).toString())));
+		final Meadow fix =
+				new Meadow(
+						getAttribute(element, "kind"),
+						"field".equalsIgnoreCase(NullCleaner
+								.assertNotNull(element.getName().getLocalPart())),
+						Boolean.parseBoolean(getAttribute(element, "cultivated")),
+						id, FieldStatus
+								.parse(getAttribute(element, STATUS_ATTR,
+										FieldStatus.random(id).toString())));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}
@@ -75,7 +76,7 @@ public class MeadowReader implements INodeHandler<Meadow> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Arrays.asList("meadow", "field"));
+		return NullCleaner.assertNotNull(Arrays.asList("meadow", "field"));
 	}
 
 	/**

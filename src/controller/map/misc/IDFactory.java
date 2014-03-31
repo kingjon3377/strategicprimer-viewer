@@ -14,43 +14,43 @@ import util.Warning;
  */
 public final class IDFactory {
 	/**
-	 * An exception to warn about duplicate IDs.
-	 */
-	public static class DuplicateIDException extends Exception {
-		/**
-		 * @param id the duplicate ID.
-		 */
-		public DuplicateIDException(final int id) {
-			super("Duplicate ID #" + id);
-		}
-	}
-	/**
-	 * This should probably only be called from the IDFactoryFiller.
-	 * @param id an ID number.
-	 * @return whether it's used.
-	 */
-	public boolean used(final int id) {
-		return id < 0 || usedIDs.get(id);
-	}
-	/**
 	 * The set of IDs used already.
 	 */
 	private final BitSet usedIDs = new BitSet();
 
 	/**
+	 * An exception to warn about duplicate IDs.
+	 */
+	public static class DuplicateIDException extends Exception {
+		/**
+		 * @param idNum the duplicate ID.
+		 */
+		public DuplicateIDException(final int idNum) {
+			super("Duplicate ID #" + idNum);
+		}
+	}
+	/**
+	 * This should probably only be called from the IDFactoryFiller.
+	 * @param idNum an ID number.
+	 * @return whether it's used.
+	 */
+	public boolean used(final int idNum) {
+		return idNum < 0 || usedIDs.get(idNum);
+	}
+	/**
 	 * Register an ID.
 	 *
-	 * @param id the ID to register.
+	 * @param idNum the ID to register.
 	 * @return the id, so this can be used functionally.
 	 */
-	public int register(final int id) { // NOPMD
-		if (id >= 0) {
-			if (usedIDs.get(id)) {
-				Warning.INSTANCE.warn(new DuplicateIDException(id));
+	public int register(final int idNum) {
+		if (idNum >= 0) {
+			if (usedIDs.get(idNum)) {
+				Warning.INSTANCE.warn(new DuplicateIDException(idNum));
 			}
-			usedIDs.set(id);
+			usedIDs.set(idNum);
 		}
-		return id;
+		return idNum;
 	}
 
 	/**

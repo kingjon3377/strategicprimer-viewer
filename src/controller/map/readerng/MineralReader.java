@@ -1,7 +1,5 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.assertNonNullList;
-import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
@@ -15,6 +13,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IPlayerCollection;
 import model.map.fixtures.resources.MineralVein;
+import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -45,7 +44,7 @@ public class MineralReader implements INodeHandler<MineralVein> {
 			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(assertNonNullQName(element.getName()), stream);
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final MineralVein fix = new MineralVein(
 				getAttributeWithDeprecatedForm(element, "kind", "mineral",
 						warner),
@@ -61,7 +60,7 @@ public class MineralReader implements INodeHandler<MineralVein> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Collections.singletonList("mineral"));
+		return NullCleaner.assertNotNull(Collections.singletonList("mineral"));
 	}
 
 	/**
@@ -80,12 +79,12 @@ public class MineralReader implements INodeHandler<MineralVein> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final MineralVein obj) {
-		final String exp = Boolean.toString(obj.isExposed());
-		final String dc = Integer.toString(obj.getDC()); // NOPMD
-		assert exp != null && dc != null;
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				"mineral", Pair.of("kind", obj.getKind()), Pair.of("exposed",
-						exp), Pair.of("dc", dc));
+		final SPIntermediateRepresentation retval =
+				new SPIntermediateRepresentation("mineral", Pair.of("kind",
+						obj.getKind()), Pair.of("exposed", NullCleaner
+						.assertNotNull(Boolean.toString(obj.isExposed()))),
+						Pair.of("dc", NullCleaner.assertNotNull(Integer
+								.toString(obj.getDC()))));
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

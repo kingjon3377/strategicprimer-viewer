@@ -1,7 +1,5 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.assertNonNullList;
-import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.getPlayerOrIndependent;
@@ -18,6 +16,7 @@ import model.map.IPlayerCollection;
 import model.map.fixtures.towns.City;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -48,7 +47,7 @@ public class CityReader implements INodeHandler<City> {
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
-		spinUntilEnd(assertNonNullQName(element.getName()), stream);
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final City fix = new City(TownStatus.parseTownStatus(getAttribute(
 				element, "status")), TownSize.parseTownSize(XMLHelper
 				.getAttribute(element, "size")), Integer.parseInt(getAttribute(
@@ -64,7 +63,7 @@ public class CityReader implements INodeHandler<City> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Collections.singletonList("city"));
+		return NullCleaner.assertNotNull(Collections.singletonList("city"));
 	}
 
 	/**
@@ -87,16 +86,14 @@ public class CityReader implements INodeHandler<City> {
 				"city");
 		retval.addAttribute("status", obj.status().toString());
 		retval.addAttribute("size", obj.size().toString());
-		final String dc = Integer.toString(obj.getDC()); // NOPMD
-		assert dc != null;
-		retval.addAttribute("dc", dc);
+		retval.addAttribute("dc",
+				NullCleaner.assertNotNull(Integer.toString(obj.getDC())));
 		if (!obj.getName().isEmpty()) {
 			retval.addAttribute("name", obj.getName());
 		}
 		retval.addIdAttribute(obj.getID());
-		final String player = Integer.toString(obj.getOwner().getPlayerId());
-		assert player != null;
-		retval.addAttribute("owner", player);
+		retval.addAttribute("owner", NullCleaner.assertNotNull(Integer
+				.toString(obj.getOwner().getPlayerId())));
 		retval.addImageAttribute(obj);
 		return retval;
 	}

@@ -1,7 +1,5 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.assertNonNullList;
-import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
@@ -16,6 +14,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.IPlayerCollection;
 import model.map.fixtures.resources.Mine;
 import model.map.fixtures.towns.TownStatus;
+import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -46,7 +45,7 @@ public class MineReader implements INodeHandler<Mine> {
 			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(assertNonNullQName(element.getName()), stream);
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Mine fix = new Mine(getAttributeWithDeprecatedForm(element,
 				"kind", "product", warner),
 				TownStatus.parseTownStatus(getAttribute(element, "status")),
@@ -60,7 +59,7 @@ public class MineReader implements INodeHandler<Mine> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Collections.singletonList("mine"));
+		return NullCleaner.assertNotNull(Collections.singletonList("mine"));
 	}
 
 	/**

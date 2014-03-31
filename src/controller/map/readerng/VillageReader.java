@@ -1,7 +1,5 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.assertNonNullList;
-import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.getPlayerOrIndependent;
@@ -19,6 +17,7 @@ import model.map.IPlayerCollection;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
 import model.workermgmt.RaceFactory;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -49,7 +48,7 @@ public class VillageReader implements INodeHandler<Village> {
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
-		spinUntilEnd(assertNonNullQName(element.getName()), stream);
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final int idNum = getOrGenerateID(element, warner, idFactory);
 		final Village fix = new Village(
 				TownStatus.parseTownStatus(getAttribute(element, "status")),
@@ -66,7 +65,7 @@ public class VillageReader implements INodeHandler<Village> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Collections.singletonList("village"));
+		return NullCleaner.assertNotNull(Collections.singletonList("village"));
 	}
 
 	/**
@@ -86,9 +85,8 @@ public class VillageReader implements INodeHandler<Village> {
 			retval.addAttribute("name", obj.getName());
 		}
 		retval.addIdAttribute(obj.getID());
-		final String owner = Integer.toString(obj.getOwner().getPlayerId());
-		assert owner != null;
-		retval.addAttribute("owner", owner);
+		retval.addAttribute("owner", NullCleaner.assertNotNull(Integer
+				.toString(obj.getOwner().getPlayerId())));
 		retval.addAttribute("race", obj.getRace());
 		retval.addImageAttribute(obj);
 		return retval;

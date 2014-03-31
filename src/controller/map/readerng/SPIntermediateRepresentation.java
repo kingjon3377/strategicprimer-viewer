@@ -26,13 +26,33 @@ import util.Pair;
 @Deprecated
 public final class SPIntermediateRepresentation {
 	/**
+	 * The set of child tags.
+	 */
+	private final Set<SPIntermediateRepresentation> children = new LinkedHashSet<>();
+	// private final List<SPIntermediateRepresentation> children = new
+	// LinkedList<SPIntermediateRepresentation>();
+
+	/**
+	 * The tag this represents.
+	 */
+	private final String tag;
+	/**
+	 * The list of attributes.
+	 */
+	// private final Map<String, String> attrs = new LinkedHashMap<>();
+	// private final List<Pair<String, String>> attrs = new ArrayList<>();
+	private final List<String> attrs = new ArrayList<>();
+	/**
+	 * The list of attribute values.
+	 */
+	private final List<String> vals = new ArrayList<>();
+	/**
 	 * Constructor.
 	 *
 	 * @param name the tag this represents.
 	 */
 	public SPIntermediateRepresentation(final String name) {
 		tag = name;
-		children = new LinkedHashSet<>();
 	}
 
 	/**
@@ -51,20 +71,6 @@ public final class SPIntermediateRepresentation {
 		}
 	}
 
-	/**
-	 * The tag this represents.
-	 */
-	private final String tag;
-	/**
-	 * The list of attributes.
-	 */
-	// private final Map<String, String> attrs = new LinkedHashMap<>();
-	// private final List<Pair<String, String>> attrs = new ArrayList<>();
-	private final List<String> attrs = new ArrayList<>();
-	/**
-	 * The list of attribute values.
-	 */
-	private final List<String> vals = new ArrayList<>();
 
 	/**
 	 * Add an attribute.
@@ -84,20 +90,13 @@ public final class SPIntermediateRepresentation {
 	}
 
 	/**
-	 * The set of child tags.
-	 */
-	private final Set<SPIntermediateRepresentation> children;
-
-	// private final List<SPIntermediateRepresentation> children = new
-	// LinkedList<SPIntermediateRepresentation>();
-	/**
 	 * Add a child tag. If the child's tag is the empty string, we do nothing
 	 * instead---this is so we can handle empty tiles more easily.
 	 *
 	 * @param child the child to add.
 	 */
 	public void addChild(final SPIntermediateRepresentation child) {
-		if (!"".equals(child.tag)) {
+		if (!child.tag.isEmpty()) {
 			children.add(child);
 		}
 	}
@@ -112,7 +111,7 @@ public final class SPIntermediateRepresentation {
 		if (attrs.contains(name)) {
 			final int index = attrs.indexOf(name);
 			attrs.remove(index);
-			return NullCleaner.valueOrDefault(vals.remove(index), "");
+			return NullCleaner.valueOrDefault(vals.remove(index), ""); // NOPMD
 		} else {
 			return "";
 		}
@@ -252,11 +251,9 @@ public final class SPIntermediateRepresentation {
 	/**
 	 * Add an ID attribute. This is so we only have to assert that
 	 * Integer.toString doesn't return null in one place.
-	 * @param id the ID to add
+	 * @param idNum the ID to add
 	 */
-	public void addIdAttribute(final int id) {
-		final String str = Integer.toString(id);
-		assert str != null;
-		addAttribute("id", str);
+	public void addIdAttribute(final int idNum) {
+		addAttribute("id", NullCleaner.assertNotNull(Integer.toString(idNum)));
 	}
 }

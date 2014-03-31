@@ -12,6 +12,8 @@ import model.map.TileFixture;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * A Fixture to encapsulate the rivers on a tile, so we can show a chit for
  * rivers.
@@ -21,6 +23,19 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public final class RiverFixture implements TileFixture, Iterable<River>,
 		Subsettable<RiverFixture> {
+	/**
+	 * The maximum size of a river's equivalent string, plus a space.
+	 */
+	private static final int MAX_RIVER_SIZE = 6;
+	/**
+	 * The base string we use in toString before listing the rivers.
+	 */
+	private static final String BASE_STRING = "RiverFixture with rivers: ";
+	/**
+	 * The Set we're using to hold the Rivers.
+	 */
+	private final Set<River> rivers;
+
 	/**
 	 * Constructor.
 	 *
@@ -35,11 +50,6 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 			rivers.add(river);
 		}
 	}
-
-	/**
-	 * The Set we're using to hold the Rivers.
-	 */
-	private final Set<River> rivers;
 
 	/**
 	 * Add a river.
@@ -63,9 +73,7 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 	 * @return the river directions
 	 */
 	public Set<River> getRivers() {
-		final Set<River> copy = EnumSet.copyOf(rivers);
-		assert copy != null;
-		return copy;
+		return NullCleaner.assertNotNull(EnumSet.copyOf(rivers));
 	}
 
 	/**
@@ -73,9 +81,7 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 	 */
 	@Override
 	public Iterator<River> iterator() {
-		final Iterator<River> retval = rivers.iterator();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(rivers.iterator());
 	}
 
 	/**
@@ -84,9 +90,8 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof RiverFixture && ((RiverFixture) obj).rivers
-						.equals(rivers));
+		return this == obj || obj instanceof RiverFixture
+				&& ((RiverFixture) obj).rivers.equals(rivers);
 	}
 
 	/**
@@ -106,14 +111,6 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 		return 30;
 	}
 	/**
-	 * The maximum size of a river's equivalent string, plus a space.
-	 */
-	private static final int MAX_RIVER_SIZE = 6;
-	/**
-	 * The base string we use in toString before listing the rivers.
-	 */
-	private static final String BASE_STRING = "RiverFixture with rivers: ";
-	/**
 	 * @return a String representation of the object
 	 */
 	@Override
@@ -124,9 +121,7 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 			sbuild.append(river.toString());
 			sbuild.append(' ');
 		}
-		final String retval = sbuild.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(sbuild.toString());
 	}
 
 	/**
@@ -143,10 +138,10 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 	 * @param obj another RiverFixture
 	 * @return whether it's a strict subset of this one, containing no rivers
 	 *         that this doesn't
-	 * @param out ignored (no output)
+	 * @param ostream ignored (no output)
 	 */
 	@Override
-	public boolean isSubset(final RiverFixture obj, final PrintWriter out) {
+	public boolean isSubset(final RiverFixture obj, final PrintWriter ostream) {
 		final Set<River> temp = EnumSet.copyOf(obj.rivers);
 		temp.removeAll(rivers);
 		return temp.isEmpty();

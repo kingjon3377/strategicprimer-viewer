@@ -20,6 +20,7 @@ import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
@@ -33,6 +34,11 @@ import controller.map.misc.IDFactory;
  */
 @Deprecated
 public class TileReader implements INodeHandler<ITile> {
+	/**
+	 * A reader to use to parse and write Rivers.
+	 */
+	private static final RiverReader READER = new RiverReader();
+
 	/**
 	 * @param element the element to start with
 	 * @param stream the stream to get more elements from
@@ -54,21 +60,19 @@ public class TileReader implements INodeHandler<ITile> {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final StartElement selem = event.asStartElement();
-				final String slocal = selem.getName().getLocalPart();
-				assert slocal != null;
-				if (isRiver(slocal)) {
+				if (isRiver(NullCleaner.assertNotNull(selem.getName()
+						.getLocalPart()))) {
 					tile.addFixture(parseRiver(stream, players, warner,
 							idFactory, selem));
 				} else {
-					final String olocal = element.getName().getLocalPart();
-					assert olocal != null;
 					perhapsAddFixture(stream, players, warner, tile, selem,
-							olocal, idFactory);
+							NullCleaner.assertNotNull(element.getName()
+									.getLocalPart()), idFactory);
 				}
 			} else if (event.isCharacters()) {
-				final String data = event.asCharacters().getData()
-						.trim();
-				assert data != null;
+				final String data =
+						NullCleaner.assertNotNull(event.asCharacters()
+								.getData().trim());
 				tile.addFixture(new TextFixture(data, -1)); // NOPMD
 			} else if (event.isEndElement()
 					&& "tile".equalsIgnoreCase(event.asEndElement().getName()
@@ -132,10 +136,14 @@ public class TileReader implements INodeHandler<ITile> {
 			}
 		} catch (final IllegalStateException except) {
 			if (except.getMessage().matches("^Wanted [^ ]*, was [^ ]*$")) {
-				final String local = event.asStartElement().getName().getLocalPart();
-				assert local != null;
-				throw new UnwantedChildException(tag, local, event// NOPMD
-						.getLocation().getLineNumber());
+				final UnwantedChildException nexcept =
+						new UnwantedChildException(tag,
+								NullCleaner.assertNotNull(event
+										.asStartElement().getName()
+										.getLocalPart()), event// NOPMD
+										.getLocation().getLineNumber());
+				nexcept.initCause(except);
+				throw nexcept;
 			} else {
 				throw except;
 			}
@@ -181,15 +189,13 @@ public class TileReader implements INodeHandler<ITile> {
 			final ITile obj) {
 		if (obj.isEmpty()) {
 			return new SPIntermediateRepresentation(""); // NOPMD
-		} 
+		}
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"tile");
-		final String row = Integer.toString(point.row);
-		assert row != null;
-		retval.addAttribute("row", row);
-		final String col = Integer.toString(point.col);
-		assert col != null;
-		retval.addAttribute("column", col);
+		retval.addAttribute("row",
+				NullCleaner.assertNotNull(Integer.toString(point.row)));
+		retval.addAttribute("column",
+				NullCleaner.assertNotNull(Integer.toString(point.col)));
 		if (!(TileType.NotVisible.equals(obj.getTerrain()))) {
 			retval.addAttribute("kind", obj.getTerrain().toXML());
 		}
@@ -230,11 +236,6 @@ public class TileReader implements INodeHandler<ITile> {
 	public Class<ITile> writes() {
 		return ITile.class;
 	}
-
-	/**
-	 * A reader to use to parse and write Rivers.
-	 */
-	private static final RiverReader READER = new RiverReader();
 
 	/**
 	 * @return a String representation of the object

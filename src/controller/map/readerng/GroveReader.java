@@ -1,7 +1,5 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.assertNonNullList;
-import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
@@ -14,6 +12,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IPlayerCollection;
 import model.map.fixtures.resources.Grove;
+import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.DeprecatedPropertyException;
@@ -51,7 +50,7 @@ public class GroveReader implements INodeHandler<Grove> {
 			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(assertNonNullQName(element.getName()), stream);
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final boolean cultivated = isCultivated(element, warner);
 		final Grove fix = new Grove(
 				"orchard".equalsIgnoreCase(element.getName().getLocalPart()),
@@ -77,8 +76,8 @@ public class GroveReader implements INodeHandler<Grove> {
 			return Boolean.parseBoolean(XMLHelper.getAttribute(element, // NOPMD
 					CULTIVATED_ATTR));
 		} else {
-			final String local = element.getName().getLocalPart();
-			assert local != null;
+			final String local =
+					NullCleaner.assertNotNull(element.getName().getLocalPart());
 			if (XMLHelper.hasAttribute(element, "wild")) {
 				warner.warn(new DeprecatedPropertyException(local, "wild",
 						CULTIVATED_ATTR, element.getLocation().getLineNumber()));
@@ -96,7 +95,7 @@ public class GroveReader implements INodeHandler<Grove> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Arrays.asList("grove", "orchard"));
+		return NullCleaner.assertNotNull(Arrays.asList("grove", "orchard"));
 	}
 
 	/**
@@ -117,16 +116,16 @@ public class GroveReader implements INodeHandler<Grove> {
 	 */
 	@Override
 	public <S extends Grove> SPIntermediateRepresentation write(final S obj) {
-		final String cult = Boolean.toString(obj.isCultivated());
-		assert cult != null;
 		final String tag;
 		if (obj.isOrchard()) {
 			tag = "orchard";
 		} else {
 			tag = "grove";
 		}
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				tag, Pair.of(CULTIVATED_ATTR, cult), Pair.of("kind",
+		final SPIntermediateRepresentation retval =
+				new SPIntermediateRepresentation(tag, Pair.of(CULTIVATED_ATTR,
+						NullCleaner.assertNotNull(Boolean.toString(obj
+								.isCultivated()))), Pair.of("kind",
 						obj.getKind()));
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);

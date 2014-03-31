@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.io.Reader;
 
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.MapView;
 import model.map.PlayerCollection;
 import model.map.SPMap;
 import util.IteratorWrapper;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
@@ -85,16 +85,15 @@ public class MapReaderNG implements IMapReader, ISPReader {
 				istream);
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<>(
 				new IncludingIterator(file, reader));
+		final IDFactory idfac = new IDFactory();
+		final PlayerCollection players = new PlayerCollection();
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
-				final StartElement selem = event.asStartElement();
-				assert selem != null;
-				final Object retval = ReaderAdapter.ADAPTER.parse(selem,
-						eventReader, new PlayerCollection(), warner, // NOPMD
-						new IDFactory()); // NOPMD
 				// This is a hack to make it compile under the new two-parameter
 				// system ...
-				return checkType(retval, type);
+				return checkType(ReaderAdapter.ADAPTER.parse(
+						NullCleaner.assertNotNull(event.asStartElement()),
+						eventReader, players, warner, idfac), type);
 			}
 		}
 		throw new XMLStreamException(

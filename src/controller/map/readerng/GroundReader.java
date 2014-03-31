@@ -1,7 +1,5 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.assertNonNullList;
-import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
@@ -14,6 +12,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IPlayerCollection;
 import model.map.fixtures.Ground;
+import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -44,7 +43,7 @@ public class GroundReader implements INodeHandler<Ground> {
 			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(assertNonNullQName(element.getName()), stream);
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Ground fix = new Ground(getAttributeWithDeprecatedForm(element,
 				"kind", "ground", warner), Boolean.parseBoolean(getAttribute(
 				element, "exposed")));
@@ -57,7 +56,7 @@ public class GroundReader implements INodeHandler<Ground> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Collections.singletonList("ground"));
+		return NullCleaner.assertNotNull(Collections.singletonList("ground"));
 	}
 
 	/**
@@ -78,11 +77,10 @@ public class GroundReader implements INodeHandler<Ground> {
 	 */
 	@Override
 	public <S extends Ground> SPIntermediateRepresentation write(final S obj) {
-		final String exp = Boolean.toString(obj.isExposed());
-		assert exp != null;
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				"ground", Pair.of("kind", obj.getKind()), Pair.of("exposed",
-						exp));
+		final SPIntermediateRepresentation retval =
+				new SPIntermediateRepresentation("ground", Pair.of("kind",
+						obj.getKind()), Pair.of("exposed", NullCleaner
+						.assertNotNull(Boolean.toString(obj.isExposed()))));
 		retval.addImageAttribute(obj);
 		return retval;
 	}
