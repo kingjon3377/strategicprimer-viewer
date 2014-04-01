@@ -138,16 +138,12 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				if (size == null) {
 					continue;
 				}
-				assertSerialization(
-						"First Fortification serialization test, status "
-								+ status + ", size " + size, new Fortification(
-								status, size, 10, "one", 1, owner),
-						Fortification.class);
-				assertSerialization(
-						"Second Fortification serialization test, status "
-								+ status + " and size " + size,
-						new Fortification(status, size, 40, "two", 2, owner), //NOPMD
-						Fortification.class);
+				assertSerialization("Fortification serialization test, status "
+						+ status + ", size " + size, new Fortification(// NOPMD
+						status, size, 10, "one", 1, owner), Fortification.class);
+				assertSerialization("Fortification serialization test, status "
+						+ status + " and size " + size, new Fortification(// NOPMD
+						status, size, 40, "two", 2, owner), Fortification.class);
 			}
 		}
 		final Fortification three = new Fortification(TownStatus.Active,
@@ -189,12 +185,11 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertSerialization("Second MineralEvent serialization test", two,
 				MineralVein.class);
 		final String oldKindProperty = "mineral"; // NOPMD
-		final String testDataOne = createSerializedForm(two, true).replace(
-				KIND_PROPERTY, oldKindProperty);
-		assert testDataOne != null;
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated Mineral idiom", two,
-				testDataOne, MineralVein.class, oldKindProperty);
+				NullCleaner.assertNotNull(createSerializedForm(two, true)
+						.replace(KIND_PROPERTY, oldKindProperty)),
+				MineralVein.class, oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated Mineral idiom", two,
 				NullCleaner.assertNotNull(createSerializedForm(two, false)
@@ -237,18 +232,16 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		}
 		final StoneDeposit three = new StoneDeposit(StoneKind.Marble, 10, 3);
 		final String oldKindProperty = "stone"; // NOPMD
-		final String testDataOne = createSerializedForm(three, true).replace(
-				KIND_PROPERTY, oldKindProperty);
-		assert testDataOne != null;
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated stone idiom", three,
-				testDataOne, StoneDeposit.class, oldKindProperty);
-		final String testDataTwo = createSerializedForm(three, false).replace(
-				KIND_PROPERTY, oldKindProperty);
-		assert testDataTwo != null;
+				NullCleaner.assertNotNull(createSerializedForm(three, true)
+						.replace(KIND_PROPERTY, oldKindProperty)),
+				StoneDeposit.class, oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated stone idiom", three,
-				testDataTwo, StoneDeposit.class, oldKindProperty);
+				NullCleaner.assertNotNull(createSerializedForm(three, false)
+						.replace(KIND_PROPERTY, oldKindProperty)),
+				StoneDeposit.class, oldKindProperty);
 		assertUnwantedChild(
 				"<stone kind=\"marble\" dc=\"10\"><troll /></stone>",
 				StoneDeposit.class, false);

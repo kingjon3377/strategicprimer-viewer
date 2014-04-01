@@ -13,6 +13,7 @@ import java.util.Iterator;
 import javax.xml.stream.XMLStreamException;
 
 import util.FatalWarningException;
+import util.NullCleaner;
 import util.Warning;
 import util.Warning.Action;
 import controller.map.cxml.CompactXMLWriter;
@@ -113,12 +114,9 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 				final Throwable cause = except.getCause();
 				assertTrue("Unsupported tag",
 						cause instanceof UnsupportedTagException);
-				if (cause instanceof UnsupportedTagException) {
-					assertEquals("The tag we expected", tag,
-							((UnsupportedTagException) cause).getTag());
-				} else {
-					throw new IllegalStateException("Can't get here");
-				}
+				assert cause instanceof UnsupportedTagException;
+				assertEquals("The tag we expected", tag,
+						((UnsupportedTagException) cause).getTag());
 			}
 		} else {
 			try {
@@ -216,14 +214,10 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 				final Throwable cause = except.getCause();
 				assertTrue("Missing property",
 						cause instanceof MissingPropertyException);
-				if (cause instanceof MissingPropertyException) {
-					assertEquals(
-							"The missing property should be the one we're expecting",
-							property,
-							((MissingPropertyException) cause).getParam());
-				} else {
-					throw new IllegalStateException("Can't get here");
-				}
+				assert cause instanceof MissingPropertyException;
+				assertEquals(
+						"The missing property should be the one we're expecting",
+						property, ((MissingPropertyException) cause).getParam());
 			}
 		} else {
 			try {
@@ -288,14 +282,11 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 				final Throwable cause = except.getCause();
 				assertTrue("Missing property",
 						cause instanceof DeprecatedPropertyException);
-				if (cause instanceof DeprecatedPropertyException) {
-					assertEquals(
-							"The missing property should be the one we're expecting",
-							deprecated,
-							((DeprecatedPropertyException) cause).getOld());
-				} else {
-					throw new IllegalStateException("Can't get here");
-				}
+				assert cause instanceof DeprecatedPropertyException;
+				assertEquals(
+						"The missing property should be the one we're expecting",
+						deprecated,
+						((DeprecatedPropertyException) cause).getOld());
 			}
 		} else {
 			try {
@@ -526,9 +517,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		} else {
 			CompactXMLWriter.writeObject(writer, obj);
 		}
-		final String retval = writer.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(writer.toString());
 	}
 
 	/**

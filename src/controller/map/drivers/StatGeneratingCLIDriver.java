@@ -32,6 +32,7 @@ import model.workermgmt.RaceFactory;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
 import util.Pair;
 import util.SingletonRandom;
 import util.Warning;
@@ -165,8 +166,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	private static ExplorationModel readMaps(final String[] filenames)
 			throws IOException, XMLStreamException, SPFormatException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		final String firstFile = filenames[0];
-		assert firstFile != null;
+		final String firstFile = NullCleaner.assertNotNull(filenames[0]);
 		final MapView master = reader.readMap(firstFile, Warning.INSTANCE);
 		final ExplorationModel model = new ExplorationModel(master,
 				firstFile);
@@ -200,9 +200,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			if (playerNum < 0 || playerNum >= players.size()) {
 				break;
 			} else {
-				final Player player = players.get(playerNum);
-				assert player != null;
-				enterStats(model, player);
+				enterStats(model, NullCleaner.assertNotNull(players.get(playerNum)));
 			}
 		}
 	}
@@ -407,9 +405,8 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			if (playerNum < 0 || playerNum >= players.size()) {
 				break;
 			} else {
-				final Player player = players.get(playerNum);
-				assert player != null;
-				createWorkers(model, idf, player);
+				createWorkers(model, idf,
+						NullCleaner.assertNotNull(players.get(playerNum)));
 			}
 		}
 	}

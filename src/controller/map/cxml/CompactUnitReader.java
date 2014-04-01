@@ -148,21 +148,19 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	 */
 	private static String parseKind(final StartElement element,
 			final Warning warner) throws SPFormatException {
-		String retval = "";
 		try {
-			retval = getParamWithDeprecatedForm(element, "kind", "type", warner);
+			final String retval =
+					getParamWithDeprecatedForm(element, "kind", "type", warner);
+			if (retval.isEmpty()) {
+				warner.warn(new MissingPropertyException(NullCleaner
+						.assertNotNull(element.getName().getLocalPart()),
+						"kind", element.getLocation().getLineNumber()));
+			}
+			return retval; // NOPMD
 		} catch (final MissingPropertyException except) {
 			warner.warn(except);
 			return ""; // NOPMD
 		}
-		if (retval.isEmpty()) {
-			final String local = element.getName()
-					.getLocalPart();
-			assert local != null;
-			warner.warn(new MissingPropertyException(local, "kind", element
-					.getLocation().getLineNumber()));
-		}
-		return retval;
 	}
 
 	/**

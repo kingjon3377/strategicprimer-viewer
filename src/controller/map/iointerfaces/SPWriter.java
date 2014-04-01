@@ -25,10 +25,10 @@ public interface SPWriter {
 	/**
 	 * Write a map.
 	 *
-	 * @param out the writer to write to
+	 * @param ostream the writer to write to
 	 * @param map the map to write
 	 * @throws IOException on error in writing
 	 */
-	void write(final Writer out, final IMap map) throws IOException;
+	void write(final Writer ostream, final IMap map) throws IOException;
 
 }

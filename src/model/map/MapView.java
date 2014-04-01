@@ -4,6 +4,8 @@ import java.io.PrintWriter;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * A view of a map. This is in effect an extension of SPMap that adds the
  * current turn, the current player, and eventually changesets.
@@ -12,6 +14,15 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 public class MapView implements IMutableMap {
+	/**
+	 * The map we wrap.
+	 */
+	private final IMap map;
+	/**
+	 * The current turn.
+	 */
+	private int turn;
+
 	/**
 	 * Constructor. We get the current-player *object* from the wrapped map.
 	 *
@@ -27,15 +38,6 @@ public class MapView implements IMutableMap {
 	}
 
 	/**
-	 * The map we wrap.
-	 */
-	private final IMap map;
-	/**
-	 * The current turn.
-	 */
-	private int turn;
-
-	/**
 	 * Test whether another map or map view is a subset of this one.
 	 *
 	 * TODO: Check changesets.
@@ -44,11 +46,11 @@ public class MapView implements IMutableMap {
 	 *
 	 * @param obj the map to check
 	 * @return whether it's a strict subset of this one
-	 * @param out the stream to write details to
+	 * @param ostream the stream to write details to
 	 */
 	@Override
-	public boolean isSubset(final IMap obj, final PrintWriter out) {
-		return map.isSubset(obj, out);
+	public boolean isSubset(final IMap obj, final PrintWriter ostream) {
+		return map.isSubset(obj, ostream);
 	}
 
 	/**
@@ -132,8 +134,8 @@ public class MapView implements IMutableMap {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof MapView && equalsImpl((MapView) obj));
+		return this == obj || obj instanceof MapView
+				&& equalsImpl((MapView) obj);
 	}
 	/**
 	 * @param obj another map-view
@@ -181,9 +183,7 @@ public class MapView implements IMutableMap {
 		builder.append(map.getPlayers().getCurrentPlayer());
 		builder.append("\nMap:\n");
 		builder.append(map);
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**

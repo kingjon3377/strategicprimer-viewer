@@ -17,6 +17,7 @@ import model.map.IMap;
 import model.map.ITile;
 import model.map.Point;
 import model.map.PointFactory;
+import util.NullCleaner;
 import util.SingletonRandom;
 import util.TypesafeLogger;
 import util.Warning;
@@ -33,6 +34,21 @@ import controller.map.misc.MapReaderAdapter;
  */
 public final class GenerateTileContents {
 	/**
+	 * The singleton runner we'll be using.
+	 */
+	private final ExplorationRunner runner = new ExplorationRunner();
+
+	/**
+	 * The singleton map we'll be consulting.
+	 */
+	private final IMap map;
+
+	/**
+	 * The map reader to use.
+	 */
+	private static final MapReaderAdapter READER = new MapReaderAdapter();
+
+	/**
 	 * A mapping from filenames containing maps to instances handling those
 	 * maps.
 	 */
@@ -43,11 +59,6 @@ public final class GenerateTileContents {
 		assert temp != null;
 		INSTANCES = temp;
 	}
-	/**
-	 * The map reader to use.
-	 */
-	private static final MapReaderAdapter READER = new MapReaderAdapter();
-
 	/**
 	 * @param filename
 	 *            the name of a map
@@ -68,15 +79,8 @@ public final class GenerateTileContents {
 					new GenerateTileContents(READER.readMap(filename,
 							Warning.INSTANCE)));
 		}
-		final GenerateTileContents retval = INSTANCES.get(filename);
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(INSTANCES.get(filename));
 	}
-
-	/**
-	 * The singleton map we'll be consulting.
-	 */
-	private final IMap map;
 
 	/**
 	 * Constructor.
@@ -87,11 +91,6 @@ public final class GenerateTileContents {
 		map = theMap;
 		TableLoader.loadAllTables("tables", runner);
 	}
-
-	/**
-	 * The singleton runner we'll be using.
-	 */
-	private final ExplorationRunner runner = new ExplorationRunner();
 
 	/**
 	 * Generate the contents of a tile.
@@ -129,11 +128,10 @@ public final class GenerateTileContents {
 			logger.severe("Usage: GenerateTileContents mapname.xml row col");
 		} else {
 			try {
-				final String filename = args[0];
-				assert filename != null;
-				getInstance(filename).generateTileContents(
-						PointFactory.point(Integer.parseInt(args[1]),
-								Integer.parseInt(args[2])));
+				getInstance(NullCleaner.assertNotNull(args[0]))
+						.generateTileContents(
+								PointFactory.point(Integer.parseInt(args[1]),
+										Integer.parseInt(args[2])));
 			} catch (final NumberFormatException e) {
 				logger.log(Level.SEVERE, "Non-numeric row or column", e);
 				System.exit(1);

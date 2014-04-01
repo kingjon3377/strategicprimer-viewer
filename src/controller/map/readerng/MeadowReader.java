@@ -99,7 +99,7 @@ public class MeadowReader implements INodeHandler<Meadow> {
 	public <S extends Meadow> SPIntermediateRepresentation write(final S obj) {
 		final String cult = NullCleaner.assertNotNull(Boolean.toString(obj
 				.isCultivated()));
-		final String tag;
+		final String tag; // NOPMD
 		if (obj.isField()) {
 			tag = "field";
 		} else {

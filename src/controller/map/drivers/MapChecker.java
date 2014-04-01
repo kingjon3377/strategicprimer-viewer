@@ -61,8 +61,6 @@ public final class MapChecker implements ISPDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length < 1) {
-			// SYS_OUT
-			// .println("Usage: MapChecker filename [filename ...]");
 			throw new DriverFailedException("Need at least one argument",
 					new IllegalArgumentException("Need at least one argument"));
 		}

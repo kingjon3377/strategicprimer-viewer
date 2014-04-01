@@ -184,10 +184,9 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			retval = players.getPlayer(Integer.parseInt(getParameter(element,
 					OWNER_PARAM)));
 		} else {
-			final String local = element.getName().getLocalPart();
-			assert local != null;
-			warner.warn(new MissingPropertyException(local, OWNER_PARAM,
-					element.getLocation().getLineNumber()));
+			warner.warn(new MissingPropertyException(NullCleaner
+					.assertNotNull(element.getName().getLocalPart()),
+					OWNER_PARAM, element.getLocation().getLineNumber()));
 			retval = players.getIndependent();
 		}
 		return retval;
@@ -224,13 +223,12 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 					&& element.getName().equals(event.asEndElement().getName())) {
 				break;
 			} else if (event.isStartElement()) {
-				final String olocal = element.getName()
-						.getLocalPart();
-				final String ilocal = event.asStartElement().getName()
-						.getLocalPart();
-				assert olocal != null && ilocal != null;
-				throw new UnwantedChildException(olocal, ilocal, event
-						.getLocation().getLineNumber());
+				throw new UnwantedChildException(
+						NullCleaner.assertNotNull(element.getName()
+								.getLocalPart()),
+						NullCleaner.assertNotNull(event.asStartElement()
+								.getName().getLocalPart()), event.getLocation()
+								.getLineNumber());
 			}
 		}
 		retval.setImage(getParameter(element, "image", ""));

@@ -14,7 +14,7 @@ public interface Subsettable<T> {
 	 * @param obj an object
 	 * @return whether it is a strict subset of this object---with no members
 	 *         that aren't also in this.
-	 * @param out the stream to write details to
+	 * @param ostream the stream to write details to
 	 */
-	boolean isSubset(T obj, PrintWriter out);
+	boolean isSubset(T obj, PrintWriter ostream);
 }

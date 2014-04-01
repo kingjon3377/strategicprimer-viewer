@@ -74,7 +74,7 @@ public class ExplorableReportGenerator extends
 		}
 		builder.append(CLOSE_LIST);
 		if (anyCaves || anyBattles) {
-			return NullCleaner.assertNotNull(builder.toString());
+			return NullCleaner.assertNotNull(builder.toString()); // NOPMD
 		} else {
 			return "";
 		}
@@ -123,7 +123,7 @@ public class ExplorableReportGenerator extends
 					COLON_COMMA, ": ")));
 		}
 		if (anyCaves || anyBattles) {
-			return retval;
+			return retval; // NOPMD
 		} else {
 			return EmptyReportNode.NULL_NODE;
 		}

@@ -12,6 +12,7 @@ import model.map.fixtures.TextFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.IteratorWrapper;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
@@ -66,11 +67,10 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 		final StringBuilder sbuild = new StringBuilder(2048); // NOPMD
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final String local = event.asStartElement().getName()
-						.getLocalPart();
-				assert local != null;
-				throw new UnwantedChildException("text", local, event
-						.getLocation().getLineNumber());
+				throw new UnwantedChildException("text",
+						NullCleaner.assertNotNull(event.asStartElement()
+								.getName().getLocalPart()), event.getLocation()
+								.getLineNumber());
 			} else if (event.isCharacters()) {
 				sbuild.append(event.asCharacters().getData());
 			} else if (event.isEndElement()
@@ -78,10 +78,10 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 				break;
 			}
 		}
-		final String text = sbuild.toString().trim();
-		assert text != null;
-		final TextFixture fix = new TextFixture(text,
-				Integer.parseInt(getParameter(element, "turn", "-1")));
+		final TextFixture fix =
+				new TextFixture(NullCleaner.assertNotNull(sbuild.toString()
+						.trim()), Integer.parseInt(getParameter(element,
+						"turn", "-1")));
 		fix.setImage(getParameter(element, "image", ""));
 		return fix;
 	}

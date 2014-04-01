@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
+import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -77,11 +78,20 @@ public final class SubsetDriver implements ISPDriver {
 			return;
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		IMap mainMap;
-		final String mainFile = args[0];
-		assert mainFile != null;
+		final String mainFile = NullCleaner.assertNotNull(args[0]);
 		try {
-			mainMap = reader.readMap(mainFile, new Warning(Action.Ignore));
+			final IMap mainMap =
+					reader.readMap(mainFile, new Warning(Action.Ignore));
+			SYS_OUT.print("OK if strict subset, WARN if needs manual checking,");
+			SYS_OUT.println("FAIL if error in reading");
+			for (final String arg : args) {
+				if (arg.equals(mainFile)) {
+					continue;
+				}
+				SYS_OUT.print(arg);
+				SYS_OUT.print("\t...\t\t");
+				printReturn(doSubsetTest(arg, reader, mainMap));
+			}
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error loading main map "
 					+ mainFile, except);
@@ -91,16 +101,6 @@ public final class SubsetDriver implements ISPDriver {
 		} catch (final SPFormatException except) {
 			throw new DriverFailedException("Invalid SP XML in main map "
 					+ mainFile, except);
-		}
-		SYS_OUT.print("OK if strict subset, WARN if needs manual checking,");
-		SYS_OUT.println("FAIL if error in reading");
-		for (final String arg : args) {
-			if (arg.equals(mainFile)) {
-				continue;
-			}
-			SYS_OUT.print(arg);
-			SYS_OUT.print("\t...\t\t");
-			printReturn(doSubsetTest(arg, reader, mainMap));
 		}
 	}
 
@@ -133,9 +133,23 @@ public final class SubsetDriver implements ISPDriver {
 	 */
 	private static Returns doSubsetTest(final String filename,
 			final MapReaderAdapter reader, final IMap mainMap) {
-		final IMap map; // NOPMD
 		try {
-			map = reader.readMap(filename, new Warning(Action.Ignore));
+			final IMap map = reader.readMap(filename, new Warning(Action.Ignore));
+			try (final OutputStreamWriter osw = new OutputStreamWriter(SYS_OUT);
+					@SuppressWarnings("resource")
+					// "Resource 'out' should be managed by try-with-resource", when
+					// it *is*!
+					final PrintWriter out = new PrintWriter(osw)) {
+				if (mainMap.isSubset(map, out)) {
+					return Returns.OK; // NOPMD
+				} else {
+					out.flush();
+					return Returns.Warn; // NOPMD
+				}
+			} catch (IOException except) {
+				Warning.INSTANCE.warn(except);
+				return Returns.Fail; // NOPMD
+			}
 		} catch (final IOException except) {
 			Warning.INSTANCE.warn(except);
 			return Returns.Fail; // NOPMD
@@ -145,21 +159,6 @@ public final class SubsetDriver implements ISPDriver {
 		} catch (final SPFormatException except) {
 			Warning.INSTANCE.warn(except);
 			return Returns.Fail; // NOPMD
-		}
-		try (final OutputStreamWriter osw = new OutputStreamWriter(SYS_OUT);
-				@SuppressWarnings("resource")
-				// "Resource 'out' should be managed by try-with-resource", when
-				// it *is*!
-				final PrintWriter out = new PrintWriter(osw)) {
-			if (mainMap.isSubset(map, out)) {
-				return Returns.OK; // NOPMD
-			} else {
-				out.flush();
-				return Returns.Warn;
-			}
-		} catch (IOException except) {
-			Warning.INSTANCE.warn(except);
-			return Returns.Fail;
 		}
 	}
 

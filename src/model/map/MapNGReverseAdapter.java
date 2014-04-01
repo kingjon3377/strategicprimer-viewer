@@ -177,13 +177,14 @@ public class MapNGReverseAdapter implements IMap {
 		/**
 		 * TODO: Write extra players to the stream.
 		 * @param obj another collection
-		 * @param out a stream to write to---ignored for now
+		 * @param ostream a stream to write to---ignored for now
 		 * @return whether the collection is a subset of this.
 		 *
 		 * @see model.map.Subsettable#isSubset(java.lang.Object, java.io.PrintWriter)
 		 */
 		@Override
-		public boolean isSubset(final IPlayerCollection obj, final PrintWriter out) {
+		public boolean isSubset(final IPlayerCollection obj,
+				final PrintWriter ostream) {
 			for (final Player player : obj) {
 				if (player != null && !contains(player)) {
 					return false; // NOPMD
@@ -269,11 +270,11 @@ public class MapNGReverseAdapter implements IMap {
 		}
 		/**
 		 * @param obj another tile
-		 * @param out a stream to write comments to
+		 * @param ostream a stream to write comments to
 		 * @return whether it's a strict subset of this tile or not
 		 */
 		@Override
-		public boolean isSubset(final ITile obj, final PrintWriter out) {
+		public boolean isSubset(final ITile obj, final PrintWriter ostream) {
 			throw new IllegalStateException("Not yet implemented");
 		}
 
@@ -301,9 +302,7 @@ public class MapNGReverseAdapter implements IMap {
 				}
 				list.add(rivers);
 			}
-			final Iterator<TileFixture> retval = list.iterator();
-			assert retval != null;
-			return retval;
+			return NullCleaner.assertNotNull(list.iterator());
 		}
 		/**
 		 * Does nothing if fix is null, which is the point.

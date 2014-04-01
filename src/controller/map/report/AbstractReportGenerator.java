@@ -8,6 +8,8 @@ import model.map.Point;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 // ESCA-JAVA0011: Abstract methods are now moved to interface.
 /**
  * An interface for classes that generate reports for particular kinds of SP
@@ -17,6 +19,25 @@ import org.eclipse.jdt.annotation.Nullable;
  * @param <T> the type of thing the class knows how to generate a report on
  */
 public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> {
+	/**
+	 * The HTML tag for the end of a bulleted list. Plus a newline.
+	 */
+	protected static final String CLOSE_LIST = "</ul>\n";
+	/**
+	 * The HTML tag for the start of a bulleted list. Plus a newline, to keep
+	 * the HTML human-readable.
+	 */
+	protected static final String OPEN_LIST = "<ul>\n";
+	/**
+	 * The HTML tag for the end of a list item ... plus a newline, to keep the
+	 * HTML mostly human-readable.
+	 */
+	protected static final String CLOSE_LIST_ITEM = "</li>\n";
+	/**
+	 * The HTML tag for the start of a list item.
+	 */
+	protected static final String OPEN_LIST_ITEM = "<li>";
+
 	/**
 	 * A list that prints a header in its toString().
 	 */
@@ -76,29 +97,10 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 							.append(CLOSE_LIST_ITEM);
 				}
 				final String retval = builder.append(CLOSE_LIST).toString();
-				return valueOrDefault(retval, "");
+				return NullCleaner.valueOrDefault(retval, "");
 			}
 		}
 	}
-
-	/**
-	 * The HTML tag for the end of a bulleted list. Plus a newline.
-	 */
-	protected static final String CLOSE_LIST = "</ul>\n";
-	/**
-	 * The HTML tag for the start of a bulleted list. Plus a newline, to keep
-	 * the HTML human-readable.
-	 */
-	protected static final String OPEN_LIST = "<ul>\n";
-	/**
-	 * The HTML tag for the end of a list item ... plus a newline, to keep the
-	 * HTML mostly human-readable.
-	 */
-	protected static final String CLOSE_LIST_ITEM = "</li>\n";
-	/**
-	 * The HTML tag for the start of a list item.
-	 */
-	protected static final String OPEN_LIST_ITEM = "<li>";
 
 	/**
 	 * @param point a point
@@ -130,7 +132,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 				builder.append(points.get(i));
 			}
 			final String retval = builder.toString();
-			return valueOrDefault(retval, "");
+			return NullCleaner.valueOrDefault(retval, "");
 		}
 	}
 
@@ -140,7 +142,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 */
 	protected static String playerNameOrYou(final Player player) {
 		if (player.isCurrent()) {
-			return "you";
+			return "you"; // NOPMD
 		} else {
 			return player.toString();
 		}
@@ -160,19 +162,6 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 			buf.append(string);
 		}
 		final String retval = buf.toString();
-		return valueOrDefault(retval, "");
-	}
-	/**
-	 * @param <T> the type of thing we're talking about here
-	 * @param value a value
-	 * @param def a default value
-	 * @return value if it isn't null, or default if it is
-	 */
-	protected static <T> T valueOrDefault(@Nullable final T value, final T def) {
-		if (value == null) {
-			return def;
-		} else {
-			return value;
-		}
+		return NullCleaner.valueOrDefault(retval, "");
 	}
 }

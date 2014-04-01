@@ -12,6 +12,7 @@ import model.map.IMap;
 import model.map.MapView;
 import model.map.Player;
 import model.map.fixtures.mobile.Unit;
+import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 import view.exploration.ExplorationCLI;
@@ -63,8 +64,7 @@ public class ExplorationCLIDriver implements ISPDriver {
 	private static ExplorationModel readMaps(final String[] filenames)
 			throws IOException, XMLStreamException, SPFormatException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		final String firstFile = filenames[0];
-		assert firstFile != null;
+		final String firstFile = NullCleaner.assertNotNull(filenames[0]);
 		final MapView master = reader.readMap(firstFile, Warning.INSTANCE);
 		final ExplorationModel model = new ExplorationModel(master,
 				firstFile);

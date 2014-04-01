@@ -202,7 +202,7 @@ public class HarvestableReportGenerator extends // NOPMD
 		}
 		if (maybeAdd(retval, caches, groves, meadows, mines, minerals, stone,
 				shrubsNode)) {
-			return retval; // NOPMMD
+			return retval; // NOPMD
 		} else {
 			return EmptyReportNode.NULL_NODE;
 		}
@@ -219,7 +219,7 @@ public class HarvestableReportGenerator extends // NOPMD
 		for (final MutableTreeNode child : children) {
 			if (child.getChildCount() != 0) {
 				parent.add(child);
-				retval = true;
+				retval = true; // NOPMD
 			}
 		}
 		return retval;
@@ -247,7 +247,7 @@ public class HarvestableReportGenerator extends // NOPMD
 					((CacheFixture) item).getContents());
 		} else if (item instanceof Grove) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat(
+			return concat(//NOPMD
 					atPoint(loc),
 					"A ",
 					ternary(((Grove) item).isCultivated(), "cultivated ",
@@ -331,7 +331,8 @@ public class HarvestableReportGenerator extends // NOPMD
 					((MineralVein) item).getKind());
 		} else if (item instanceof Shrub) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc), ((Shrub) item).getKind());
+			final String kind = ((Shrub) item).getKind();
+			return new SimpleReportNode(atPoint(loc), kind); // NOPMD
 		} else if (item instanceof StoneDeposit) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(atPoint(loc), "An exposed ", // NOPMD

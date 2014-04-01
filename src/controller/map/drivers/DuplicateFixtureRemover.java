@@ -60,18 +60,18 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	 * TileFixture#equalsIgnoringID(TileFixture)) from every tile in a map.
 	 *
 	 * @param map the map to filter
-	 * @param out the stream to report IDs of removed fixtures on.
+	 * @param ostream the stream to report IDs of removed fixtures on.
 	 */
-	public static void filter(final IMap map, final PrintStream out) {
+	public static void filter(final IMap map, final PrintStream ostream) {
 		for (final Point point : map.getTiles()) {
 			if (point != null) {
 				final ITile tile = map.getTile(point);
 				if (tile instanceof IMutableTile) {
-					filter((IMutableTile) tile, out);
+					filter((IMutableTile) tile, ostream);
 				} else {
-					out.print("Tile at ");
-					out.print(point);
-					out.println(" was not mutable, and so not filtered.");
+					ostream.print("Tile at ");
+					ostream.print(point);
+					ostream.println(" was not mutable, and so not filtered.");
 				}
 			}
 		}
@@ -83,9 +83,9 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	 * TileFixture#equalsIgnoringID(TileFixture)) from a tile.
 	 *
 	 * @param tile the tile to filter
-	 * @param out the stream to report IDs of removed fixtures on.
+	 * @param ostream the stream to report IDs of removed fixtures on.
 	 */
-	public static void filter(final IMutableTile tile, final PrintStream out) {
+	public static void filter(final IMutableTile tile, final PrintStream ostream) {
 		final List<TileFixture> fixtures = new ArrayList<>();
 		final List<TileFixture> toRemove = new ArrayList<>();
 		for (final TileFixture fix : tile) {
@@ -94,8 +94,8 @@ public class DuplicateFixtureRemover implements ISPDriver {
 			}
 			boolean already = false;
 			for (final TileFixture keptFixture : fixtures) {
-				if ((fix instanceof Unit && ((Unit) fix).getKind().contains(
-						"TODO"))
+				if (fix instanceof Unit
+						&& ((Unit) fix).getKind().contains("TODO")
 						|| fix instanceof CacheFixture) {
 					break;
 				} else if (keptFixture.equalsIgnoringID(fix)) {
@@ -104,9 +104,9 @@ public class DuplicateFixtureRemover implements ISPDriver {
 				}
 			}
 			if (already) {
-				out.print(fix.getClass().getName());
-				out.print(' ');
-				out.println(fix.getID());
+				ostream.print(fix.getClass().getName());
+				ostream.print(' ');
+				ostream.println(fix.getID());
 				toRemove.add(fix);
 			} else {
 				fixtures.add(fix);

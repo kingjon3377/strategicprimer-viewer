@@ -39,6 +39,25 @@ import util.Pair;
 public class ExplorationModel extends AbstractMultiMapModel implements
 		IExplorationModel {
 	/**
+	 * The currently selected unit.
+	 */
+	@Nullable
+	private Unit selUnit = null;
+	/**
+	 * Its location.
+	 */
+	private Point selUnitLoc = PointFactory.point(-1, -1);
+	/**
+	 * The list of movement-cost listeners.
+	 */
+	private final List<MovementCostListener> mcListeners = new ArrayList<>();
+
+	/**
+	 * The list of selection-change-listeners to notify when the unit moves.
+	 */
+	private final List<SelectionChangeListener> scListeners = new ArrayList<>();
+
+	/**
 	 * Constructor.
 	 *
 	 * @param map the starting main map
@@ -134,7 +153,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		final ITile destTile = getMap().getTile(dest);
 		if (sourceTile instanceof IMutableTile && destTile instanceof IMutableTile
 				&& SimpleMovement.isLandMovementPossible(destTile)) {
-			final int retval;
+			final int retval; // NOPMD
 			if (dest.equals(point)) {
 				retval = 1;
 			} else {
@@ -184,7 +203,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		for (final TileFixture fix : sourceTile) {
 			if (unit.equals(fix)) {
 				sourceTile.removeFixture(unit);
-				return;
+				return; // NOPMD
 			} else if (fix instanceof Fortress) {
 				for (final Unit item : (Fortress) fix) {
 					if (unit.equals(item)) {
@@ -303,7 +322,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 */
 	public static int increment(final int num, final int max) {
 		if (num >= max - 1) {
-			return 0;
+			return 0; // NOPMD
 		} else {
 			return num + 1;
 		}
@@ -319,7 +338,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 */
 	public static int decrement(final int num, final int max) {
 		if (num == 0) {
-			return max;
+			return max; // NOPMD
 		} else {
 			return num - 1;
 		}
@@ -353,15 +372,6 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		return PointFactory.point(-1, -1);
 	}
 
-	/**
-	 * The currently selected unit.
-	 */
-	@Nullable
-	private Unit selUnit = null;
-	/**
-	 * Its location.
-	 */
-	private Point selUnitLoc = PointFactory.point(-1, -1);
 
 	/**
 	 * @return the currently selected unit
@@ -391,11 +401,6 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	}
 
 	/**
-	 * The list of selection-change-listeners to notify when the unit moves.
-	 */
-	private final List<SelectionChangeListener> scListeners = new ArrayList<>();
-
-	/**
 	 * @param list a listener to add
 	 */
 	@Override
@@ -412,11 +417,6 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			final SelectionChangeListener list) {
 		scListeners.remove(list);
 	}
-
-	/**
-	 * The list of movement-cost listeners.
-	 */
-	private final List<MovementCostListener> mcListeners = new ArrayList<>();
 
 	/**
 	 * @param listener the listener to add

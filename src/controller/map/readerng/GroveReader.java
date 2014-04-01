@@ -116,7 +116,7 @@ public class GroveReader implements INodeHandler<Grove> {
 	 */
 	@Override
 	public <S extends Grove> SPIntermediateRepresentation write(final S obj) {
-		final String tag;
+		final String tag; // NOPMD
 		if (obj.isOrchard()) {
 			tag = "orchard";
 		} else {

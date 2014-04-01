@@ -20,6 +20,7 @@ import model.map.PointFactory;
 import model.map.TileFixture;
 import model.map.fixtures.Ground;
 import model.map.fixtures.terrain.Forest;
+import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -254,8 +255,7 @@ public final class QueryCLI implements ISPDriver {
 			throw new DriverFailedException("Need one argument",
 					new IllegalArgumentException("Need one argument"));
 		}
-		final String filename = args[0];
-		assert filename != null;
+		final String filename = NullCleaner.assertNotNull(args[0]);
 		try {
 			repl(new MapReaderAdapter().readMap(filename, new Warning(
 					Action.Warn)), SYS_OUT);

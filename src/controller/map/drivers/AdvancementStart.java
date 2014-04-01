@@ -45,23 +45,6 @@ public final class AdvancementStart implements ISPDriver {
 			AdvancementStart.class);
 
 	/**
-	 * Run the app.
-	 *
-	 * @param args Command-line arguments. args[0] is the map filename, others
-	 *        are ignored. TODO: add option handling.
-	 */
-	public static void main(final String[] args) {
-		try {
-			new AdvancementStart().startDriver(args);
-		} catch (final DriverFailedException except) {
-			final String msg = except.getMessage();
-			final String message = NullCleaner.valueOrDefault(msg, "");
-			LOGGER.log(Level.SEVERE, message, except.getCause());
-			ErrorShower.showErrorDialog(null, message);
-		}
-	}
-
-	/**
 	 * An error message refactored from at least four uses.
 	 */
 	private static final String XML_ERROR_STRING = "Error reading XML file";
@@ -79,6 +62,23 @@ public final class AdvancementStart implements ISPDriver {
 	private static final String INV_DATA_ERROR = "Map contained invalid data";
 
 	/**
+	 * Run the app.
+	 *
+	 * @param args Command-line arguments. args[0] is the map filename, others
+	 *        are ignored. TODO: add option handling.
+	 */
+	public static void main(final String[] args) {
+		try {
+			new AdvancementStart().startDriver(args);
+		} catch (final DriverFailedException except) {
+			final String msg = except.getMessage();
+			final String message = NullCleaner.valueOrDefault(msg, "");
+			LOGGER.log(Level.SEVERE, message, except.getCause());
+			ErrorShower.showErrorDialog(null, message);
+		}
+	}
+
+	/**
 	 * Run the driver.
 	 *
 	 * @param args Command-line arguments.
@@ -88,40 +88,39 @@ public final class AdvancementStart implements ISPDriver {
 	 */
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
-		// ESCA-JAVA0177:
-		final String filename; // NOPMD
 		try {
-			final String firstArg;
+			final String filename; // NOPMD
 			if (args.length == 0) {
-				firstArg = "";
+				filename = new FileChooser("").getFilename();
 			} else {
-				firstArg = NullCleaner.valueOrDefault(args[0], "");
+				filename =
+						new FileChooser(NullCleaner.valueOrDefault(args[0], ""))
+								.getFilename();
 			}
-			filename = new FileChooser(firstArg).getFilename();
+			try {
+				final IWorkerModel model = new WorkerModel(
+						new MapReaderAdapter().readMap(filename, new Warning(
+								Action.Warn)), filename);
+				SwingUtilities.invokeLater(new WindowThread(new AdvancementFrame(
+						model, new IOHandler(model, new FilteredFileChooser(".",
+								new MapFileFilter())))));
+			} catch (final XMLStreamException e) {
+				throw new DriverFailedException(XML_ERROR_STRING + ' ' + filename,
+						e);
+			} catch (final FileNotFoundException e) {
+				throw new DriverFailedException("File " + filename
+						+ NOT_FOUND_ERROR, e);
+			} catch (final IOException e) {
+				throw new DriverFailedException("I/O error reading " + filename, e);
+			} catch (final SPFormatException e) {
+				throw new DriverFailedException(INV_DATA_ERROR, e);
+			}
 		} catch (final ChoiceInterruptedException except) {
 			LOGGER.log(
 					Level.INFO,
 					"Choice was interrupted or user declined to choose; aborting.",
 					except);
 			return;
-		}
-		try {
-			final IWorkerModel model = new WorkerModel(
-					new MapReaderAdapter().readMap(filename, new Warning(
-							Action.Warn)), filename);
-			SwingUtilities.invokeLater(new WindowThread(new AdvancementFrame(
-					model, new IOHandler(model, new FilteredFileChooser(".",
-							new MapFileFilter())))));
-		} catch (final XMLStreamException e) {
-			throw new DriverFailedException(XML_ERROR_STRING + ' ' + filename,
-					e);
-		} catch (final FileNotFoundException e) {
-			throw new DriverFailedException("File " + filename
-					+ NOT_FOUND_ERROR, e);
-		} catch (final IOException e) {
-			throw new DriverFailedException("I/O error reading " + filename, e);
-		} catch (final SPFormatException e) {
-			throw new DriverFailedException(INV_DATA_ERROR, e);
 		}
 	}
 

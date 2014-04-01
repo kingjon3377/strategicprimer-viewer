@@ -21,6 +21,7 @@ import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
 import model.map.fixtures.resources.Shrub;
+import util.NullCleaner;
 
 /**
  * A class to facilitate a better hunting/fishing driver.
@@ -42,7 +43,7 @@ public class HuntingModel {
 	/**
 	 * The aquatic animals in the map.
 	 */
-	private final Map<Point, List<String>> fish = new HashMap<>();
+	private final Map<Point, List<String>> waterAnimals = new HashMap<>();
 	/**
 	 * The plants in the map.
 	 */
@@ -80,23 +81,22 @@ public class HuntingModel {
 				if (fix instanceof Animal && !((Animal) fix).isTalking()
 						&& !((Animal) fix).isTraces()) {
 					if (fishKinds.contains(((Animal) fix).getKind())) {
-						addToMap(fish, point, ((Animal) fix).getKind());
+						addToMap(waterAnimals, point, ((Animal) fix).getKind());
 					} else {
 						addToMap(animals, point, ((Animal) fix).getKind());
 					}
 				} else if (fix instanceof Grove || fix instanceof Meadow
 						|| fix instanceof Shrub) {
-					final String str = fix.toString();
-					assert str != null;
-					addToMap(plants, point, str);
+					addToMap(plants, point,
+							NullCleaner.assertNotNull(fix.toString()));
 				}
 			}
 			addToMap(plants, point, NOTHING);
-			final List<String> plantList = plants.get(point);
-			assert plantList != null;
+			final List<String> plantList =
+					NullCleaner.assertNotNull(plants.get(point));
 			final int len = plantList.size() - 1;
 			// ESCA-JAVA0177:
-			final int nothings;
+			final int nothings; // NOPMD: TODO: extract method?
 			switch (tile.getTerrain()) {
 			case Desert:
 			case Tundra:
@@ -122,12 +122,11 @@ public class HuntingModel {
 	private static void addToMap(final Map<Point, List<String>> map,
 			final Point point, final String string) {
 		// ESCA-JAVA0177:
-		final List<String> list;
+		final List<String> list; // NOPMD
 		if (map.containsKey(point)) {
-			list = map.get(point);
-			assert list != null;
+			list = NullCleaner.assertNotNull(map.get(point));
 		} else {
-			list =  new ArrayList<>();
+			list = new ArrayList<>();
 			map.put(point, list);
 		}
 		list.add(string);
@@ -154,7 +153,7 @@ public class HuntingModel {
 	 *         will be "nothing"
 	 */
 	public List<String> fish(final Point point, final int items) {
-		return chooseFromMap(point, items, fish);
+		return chooseFromMap(point, items, waterAnimals);
 	}
 
 	/**
@@ -263,9 +262,7 @@ public class HuntingModel {
 		 */
 		@Override
 		public Iterator<Point> iterator() {
-			final Iterator<Point> iter = points.iterator();
-			assert iter != null;
-			return iter;
+			return NullCleaner.assertNotNull(points.iterator());
 		}
 		/**
 		 * Round a column number to fit within the map.

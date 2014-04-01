@@ -86,7 +86,7 @@ public class WorkerReportDriver implements ISPDriver {
 				throw new DriverFailedException(filename
 						+ " didn't contain a valid SP map", except);
 			}
-			try (final FileWriter writer = new FileWriter(filename
+			try (final FileWriter writer = new FileWriter(filename // NOPMD
 					+ ".report.html")) {
 				writer.write(report);
 			} catch (final IOException except) {

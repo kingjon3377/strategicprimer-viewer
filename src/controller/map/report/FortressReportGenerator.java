@@ -38,6 +38,12 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	private final UnitReportGenerator urg = new UnitReportGenerator();
 
 	/**
+	 * The longest a river report could be.
+	 */
+	private static final int RIVER_RPT_LEN = ("There is a river on the tile, "
+			+ "flowing through the following borders: "
+			+ "north, south, east, west").length();  
+	/**
 	 * All fixtures referred to in this report are removed from the collection.
 	 *
 	 * @param fixtures the set of fixtures
@@ -63,7 +69,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			}
 		}
 		if (anyforts) {
-			return NullCleaner.assertNotNull(builder.toString());
+			return NullCleaner.assertNotNull(builder.toString()); // NOPMD
 		} else {
 			return "";
 		}
@@ -90,7 +96,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			}
 		}
 		if (retval.getChildCount() == 0) {
-			return EmptyReportNode.NULL_NODE;
+			return EmptyReportNode.NULL_NODE; // NOPMD
 		} else {
 			return retval;
 		}
@@ -127,9 +133,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 				fixtures.remove(Integer.valueOf(fix.getID()));
 			}
 		}
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
@@ -137,14 +141,14 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	 * @return an equivalent string.
 	 */
 	private static String riversToString(final Set<River> rivers) {
-		final StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder(64);
 		if (rivers.contains(River.Lake)) {
 			builder.append("<li>There is a nearby lake.</li>\n");
 			rivers.remove(River.Lake);
 		}
 		if (!rivers.isEmpty()) {
 			builder.append(OPEN_LIST_ITEM);
-			builder.append("There is a river on the tile, ");
+			builder.append("There is a river on the tile, "); // NOPMD
 			builder.append("flowing through the following borders: ");
 			boolean first = true;
 			for (final River river : rivers) {
@@ -161,12 +165,6 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		assert retval != null;
 		return retval;
 	}
-	/**
-	 * The longest a river report could be.
-	 */
-	private static final int RIVER_RPT_LEN = ("There is a river on the tile, "
-			+ "flowing through the following borders: "
-			+ "north, south, east, west").length();  
 	/**
 	 * @param parent the node to add nodes describing rivers to
 	 * @param rivers the collection of rivers
@@ -219,9 +217,8 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		final ITile tile = tiles.getTile(loc);
 		builder.append(getTerrain(tile, fixtures)).append(CLOSE_LIST_ITEM);
 		if (tile.hasRiver()) {
-			final Set<River> copy = EnumSet
-					.noneOf(River.class);
-			assert copy != null;
+			final Set<River> copy = NullCleaner.assertNotNull(EnumSet
+					.noneOf(River.class));
 			for (final River river : tile.getRivers()) {
 				copy.add(river);
 			}
@@ -241,9 +238,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		}
 		builder.append(CLOSE_LIST);
 		fixtures.remove(Integer.valueOf(item.getID()));
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
@@ -268,9 +263,8 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		final ITile tile = tiles.getTile(loc);
 		retval.add(new SimpleReportNode(getTerrain(tile, fixtures)));
 		if (tile.hasRiver()) {
-			final Set<River> copy = EnumSet
-					.noneOf(River.class);
-			assert copy != null;
+			final Set<River> copy = NullCleaner.assertNotNull(EnumSet
+					.noneOf(River.class));
 			for (final River river : tile.getRivers()) {
 				copy.add(river);
 			}

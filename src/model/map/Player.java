@@ -19,6 +19,11 @@ public class Player implements Comparable<Player>, HasName {
 	private String playerName;
 
 	/**
+	 * Whether this is the current player or not.
+	 */
+	private boolean current;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param idNum the player's number
@@ -55,10 +60,9 @@ public class Player implements Comparable<Player>, HasName {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Player
-						&& playerID == ((Player) obj).getPlayerId() && playerName
-							.equals(((Player) obj).getName()));
+		return this == obj || obj instanceof Player
+				&& playerID == ((Player) obj).getPlayerId()
+				&& playerName.equals(((Player) obj).getName());
 	}
 
 	/**
@@ -88,16 +92,11 @@ public class Player implements Comparable<Player>, HasName {
 	@Override
 	public String toString() {
 		if (playerName.isEmpty()) {
-			return "player #" + playerID;
+			return "player #" + playerID; // NOPMD
 		} else {
 			return playerName;
 		}
 	}
-
-	/**
-	 * Whether this is the current player or not.
-	 */
-	private boolean current;
 
 	/**
 	 * @param curr whether this is the current player or not

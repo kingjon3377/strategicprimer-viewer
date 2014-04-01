@@ -20,6 +20,7 @@ import model.viewer.TileTypeFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.ArraySet;
+import util.NullCleaner;
 
 /**
  * A tile in a map.
@@ -28,6 +29,16 @@ import util.ArraySet;
  *
  */
 public final class Tile implements IMutableTile {
+	/**
+	 * The tile type.
+	 */
+	private TileType type;
+
+	/**
+	 * The units, fortresses, and events on the tile.
+	 */
+	private final Set<TileFixture> contents;
+
 	/**
 	 * Constructor.
 	 *
@@ -45,17 +56,12 @@ public final class Tile implements IMutableTile {
 	}
 
 	/**
-	 * The units, fortresses, and events on the tile.
-	 */
-	private final Set<TileFixture> contents;
-
-	/**
 	 * @param fix something new on the tile
 	 * @return true iff it was not already in the set.
 	 */
 	@Override
 	public boolean addFixture(final TileFixture fix) {
-		if ((fix instanceof TextFixture)
+		if (fix instanceof TextFixture
 				&& ((TextFixture) fix).getText().isEmpty()) {
 			return false; // NOPMD
 		} else if (fix instanceof TileTypeFixture) {
@@ -95,9 +101,7 @@ public final class Tile implements IMutableTile {
 	 */
 	@Override
 	public Iterator<TileFixture> iterator() {
-		final Iterator<TileFixture> iter = contents.iterator();
-		assert iter != null;
-		return iter;
+		return NullCleaner.assertNotNull(contents.iterator());
 	}
 
 	/**
@@ -108,15 +112,15 @@ public final class Tile implements IMutableTile {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		if (this == obj) {
-			return true;
-		} else if ((obj instanceof ITile)
+			return true; // NOPMD
+		} else if (obj instanceof ITile
 				&& getTerrain().equals(((ITile) obj).getTerrain())) {
 			final Set<TileFixture> ours = new HashSet<>(contents);
 			final Iterator<TileFixture> iter = ((ITile) obj).iterator();
 			while (iter.hasNext()) {
 				ours.remove(iter.next());
 			}
-			return ours.isEmpty() && !iter.hasNext();
+			return ours.isEmpty() && !iter.hasNext(); // NOPMD
 		} else {
 			return false;
 		}
@@ -140,16 +144,14 @@ public final class Tile implements IMutableTile {
 		// This can get big; fortunately it's rarely called. Assume each item on
 		// the tile is half a K.
 		final String terrain = getTerrain().toString();
-		final int len = terrain.length() + 12 + (contents.size() * 512);
+		final int len = terrain.length() + 12 + contents.size() * 512;
 		final StringBuilder sbuilder = new StringBuilder(len).append(terrain);
 		sbuilder.append(". Contents:");
 		for (final TileFixture fix : contents) {
 			sbuilder.append("\n\t\t");
 			sbuilder.append(fix);
 		}
-		final String retval = sbuilder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(sbuilder.toString());
 	}
 
 	/**
@@ -222,14 +224,14 @@ public final class Tile implements IMutableTile {
 	 * @param obj another Tile
 	 * @return whether it's a strict subset of this one, having no members this
 	 *         one doesn't
-	 * @param out the stream to write details of the differences to
+	 * @param ostream the stream to write details of the differences to
 	 */
 	@Override
-	public boolean isSubset(final ITile obj, final PrintWriter out) {
+	public boolean isSubset(final ITile obj, final PrintWriter ostream) {
 		if (getTerrain().equals(obj.getTerrain())) {
-			return isSubsetImpl(obj, out); // NOPMD
+			return isSubsetImpl(obj, ostream); // NOPMD
 		} else {
-			out.println("Tile type wrong");
+			ostream.println("Tile type wrong");
 			return false;
 		}
 	}
@@ -240,9 +242,9 @@ public final class Tile implements IMutableTile {
 	 * @param obj another Tile
 	 * @return whether it's a strict subset of this one, having no members this
 	 *         one doesn't
-	 * @param out the stream to write details of the differences to
+	 * @param ostream the stream to write details of the differences to
 	 */
-	protected boolean isSubsetImpl(final ITile obj, final PrintWriter out) {
+	protected boolean isSubsetImpl(final ITile obj, final PrintWriter ostream) {
 		final List<TileFixture> temp = new ArrayList<>();
 		final Map<Integer, Subsettable<?>> mySubsettables = getSubsettableContents();
 		for (final TileFixture fix : obj) {
@@ -259,7 +261,7 @@ public final class Tile implements IMutableTile {
 				final Subsettable<?> mine = mySubsettables.get(Integer
 						.valueOf(fix.getID()));
 				if (mine instanceof Fortress && fix instanceof Fortress) {
-					if (!((Fortress) mine).isSubset((Fortress) fix, out)) {
+					if (!((Fortress) mine).isSubset((Fortress) fix, ostream)) {
 						retval = false;
 					}
 				} else {
@@ -268,8 +270,8 @@ public final class Tile implements IMutableTile {
 				}
 			} else {
 				retval = false;
-				out.print("Extra fixture:\t");
-				out.println(fix.toString());
+				ostream.print("Extra fixture:\t");
+				ostream.println(fix.toString());
 			}
 		}
 		return retval; // NOPMD
@@ -296,13 +298,8 @@ public final class Tile implements IMutableTile {
 	 */
 	public static boolean shouldSkip(final TileFixture fix) {
 		return fix instanceof CacheFixture || fix instanceof TextFixture
-				|| (fix instanceof Animal && ((Animal) fix).isTraces());
+				|| fix instanceof Animal && ((Animal) fix).isTraces();
 	}
-
-	/**
-	 * The tile type.
-	 */
-	private TileType type;
 
 	/**
 	 * @return the kind of tile this is

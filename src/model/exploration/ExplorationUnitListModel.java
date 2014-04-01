@@ -19,6 +19,10 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ExplorationUnitListModel extends DefaultListModel<Unit> implements
 		PlayerChangeListener {
 	/**
+	 * The exploration model to work from.
+	 */
+	private final IExplorationModel model;
+	/**
 	 * Constructor.
 	 *
 	 * @param emodel the exploration model, so we can select the unit the user
@@ -42,8 +46,4 @@ public class ExplorationUnitListModel extends DefaultListModel<Unit> implements
 			addElement(unit);
 		}
 	}
-	/**
-	 * The exploration model to work from.
-	 */
-	private final IExplorationModel model;
 }

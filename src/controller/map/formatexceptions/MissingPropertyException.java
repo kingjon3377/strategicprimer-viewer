@@ -10,6 +10,15 @@ package controller.map.formatexceptions;
 public class MissingPropertyException extends SPFormatException {
 
 	/**
+	 * The current tag.
+	 */
+	private final String context;
+	/**
+	 * The missing parameter.
+	 */
+	private final String param;
+
+	/**
 	 * @param tag the current tag
 	 * @param parameter the missing parameter
 	 * @param errorLine the line where this occurred
@@ -20,15 +29,6 @@ public class MissingPropertyException extends SPFormatException {
 		context = tag;
 		param = parameter;
 	}
-
-	/**
-	 * The current tag.
-	 */
-	private final String context;
-	/**
-	 * The missing parameter.
-	 */
-	private final String param;
 
 	/**
 	 * @return the current tag

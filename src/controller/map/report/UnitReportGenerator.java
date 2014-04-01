@@ -103,7 +103,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer,
 			final Unit unit, final Point loc) {
-		final String simple;
+		final String simple; // NOPMD
 		if (unit.getOwner().isIndependent()) {
 			simple = concat("Unit of type ", unit.getKind(), ", named ",
 					unit.getName(), ", independent");
@@ -112,9 +112,9 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 					unit.getName(),
 					", owned by " + playerNameOrYou(unit.getOwner()));
 		}
-		final AbstractReportNode retval;
+		fixtures.remove(Integer.valueOf(unit.getID()));
 		if (unit.iterator().hasNext()) {
-			retval = new ListReportNode(
+			final AbstractReportNode retval = new ListReportNode(
 					concat(simple, ". Members of the unit:"));
 			for (final UnitMember member : unit) {
 				if (member instanceof Worker) {
@@ -126,11 +126,10 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 				}
 				fixtures.remove(Integer.valueOf(member.getID()));
 			}
+			return retval; // NOPMD
 		} else {
-			retval = new SimpleReportNode(simple);
+			return new SimpleReportNode(simple);
 		}
-		fixtures.remove(Integer.valueOf(unit.getID()));
-		return retval;
 	}
 
 	/**
@@ -291,7 +290,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		}
 		builder.append(CLOSE_LIST);
 		if (anyUnits) {
-			return NullCleaner.assertNotNull(builder.toString());
+			return NullCleaner.assertNotNull(builder.toString()); // NOPMD
 		} else {
 			return "";
 		}
@@ -321,7 +320,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			}
 		}
 		if (retval.getChildCount() == 0) {
-			return EmptyReportNode.NULL_NODE;
+			return EmptyReportNode.NULL_NODE; // NOPMD
 		} else {
 			return retval;
 		}

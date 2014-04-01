@@ -55,6 +55,36 @@ public class TrapModelDriver implements ISPDriver {
 			.getLogger(TrapModelDriver.class);
 
 	/**
+	 * The number of minutes in an hour.
+	 */
+	private static final int MINS_PER_HOUR = 60;
+
+	/**
+	 * Helper to get numbers from the user, etc.
+	 */
+	private final CLIHelper helper = new CLIHelper();
+
+	/**
+	 * How many minutes a fruitless check of a fishing trap takes.
+	 */
+	private static final int FRUITLESS_FISH_TRAP = 5;
+	/**
+	 * How many minutes a fruitless check of a trap takes.
+	 */
+	private static final int FRUITLESS_TRAP = 10;
+	
+	/**
+	 * List of commands.
+	 */
+	private static final List<TrapperCommand> COMMANDS;
+	static {
+		final List<TrapperCommand> temp = Collections
+				.unmodifiableList(Arrays.asList(TrapperCommand.values()));
+		assert temp != null;
+		COMMANDS = temp;
+	}
+
+	/**
 	 * The possible commands.
 	 */
 	private static enum TrapperCommand implements HasName {
@@ -110,17 +140,6 @@ public class TrapModelDriver implements ISPDriver {
 	}
 
 	/**
-	 * List of commands.
-	 */
-	private static final List<TrapperCommand> COMMANDS;
-	static {
-		final List<TrapperCommand> temp = Collections
-				.unmodifiableList(Arrays.asList(TrapperCommand.values()));
-		assert temp != null;
-		COMMANDS = temp;
-	}
-
-	/**
 	 * @return what to call the driver in a CLI list.
 	 */
 	@Override
@@ -137,11 +156,6 @@ public class TrapModelDriver implements ISPDriver {
 	}
 
 	/**
-	 * Helper to get numbers from the user, etc.
-	 */
-	private final CLIHelper helper = new CLIHelper();
-
-	/**
 	 * @param map the map to explore
 	 * @param ostream the stream to write output to
 	 */
@@ -149,7 +163,7 @@ public class TrapModelDriver implements ISPDriver {
 		try {
 			final HuntingModel hmodel = new HuntingModel(map);
 			final boolean fishing = helper.inputBoolean(FISH_OR_TRAP);
-			final String name;
+			final String name; // NOPMD
 			if (fishing) {
 				name = "fisherman";
 			} else {
@@ -162,7 +176,7 @@ public class TrapModelDriver implements ISPDriver {
 					+ name + " is working: ");
 			final int col = helper.inputNumber("Column of that tile: ");
 			final Point point = point(row, col);
-			final List<String> fixtures;
+			final List<String> fixtures; // NOPMD
 			if (fishing) {
 				fixtures = hmodel.fish(point, minutes);
 			} else {
@@ -171,8 +185,9 @@ public class TrapModelDriver implements ISPDriver {
 			int input = -1;
 			while (minutes > 0 && input < TrapperCommand.values().length) {
 				if (input >= 0) {
-					final TrapperCommand command = TrapperCommand.values()[input];
-					assert command != null;
+					final TrapperCommand command =
+							NullCleaner
+									.assertNotNull(TrapperCommand.values()[input]);
 					minutes -= handleCommand(fixtures, ostream,
 							command, fishing);
 					ostream.print(inHours(minutes));
@@ -191,32 +206,18 @@ public class TrapModelDriver implements ISPDriver {
 	}
 
 	/**
-	 * The number of minutes in an hour.
-	 */
-	private static final int MINS_PER_HOUR = 60;
-
-	/**
 	 * @param minutes a number of minutes
 	 * @return a String representation, including the number of hours
 	 */
 	private static String inHours(final int minutes) {
 		if (minutes < MINS_PER_HOUR) {
-			return Integer.toString(minutes) + " minutes";
+			return Integer.toString(minutes) + " minutes"; // NOPMD
 		} else {
 			return Integer.toString(minutes / MINS_PER_HOUR) + " hours, "
 					+ Integer.toString(minutes % MINS_PER_HOUR)
 					+ " minutes";
 		}
 	}
-	/**
-	 * How many minutes a fruitless check of a fishing trap takes.
-	 */
-	private static final int FRUITLESS_FISH_TRAP = 5;
-	/**
-	 * How many minutes a fruitless check of a trap takes.
-	 */
-	private static final int FRUITLESS_TRAP = 10;
-	
 	/**
 	 * Handle a command.
 	 * 
@@ -237,7 +238,7 @@ public class TrapModelDriver implements ISPDriver {
 			final PrintStream ostream, final TrapperCommand command,
 			final boolean fishing) throws IOException {
 		switch (command) {
-		case Check:
+		case Check: // TODO: extract method?
 			// ESCA-JAVA0177:
 			final String top = fixtures.remove(0);
 			if (HuntingModel.NOTHING.equals(top)) {
@@ -251,14 +252,14 @@ public class TrapModelDriver implements ISPDriver {
 				ostream.print("Found either ");
 				ostream.print(top);
 				ostream.println(" or evidence of it escaping.");
-				return helper
+				return helper//NOPMD
 						.inputNumber("How long to check and deal with animal? ");
 			}
 		case EasyReset:
 			if (fishing) {
-				return 20;
+				return 20; // NOPMD
 			} else {
-				return 5;
+				return 5; // NOPMD
 			}
 		case Move:
 			return 2; // NOPMD
@@ -266,7 +267,7 @@ public class TrapModelDriver implements ISPDriver {
 			return 0; // NOPMD
 		case Set:
 			if (fishing) {
-				return 30;
+				return 30; // NOPMD
 			} else {
 				return 45;
 			}
@@ -287,8 +288,7 @@ public class TrapModelDriver implements ISPDriver {
 			throw new DriverFailedException("Need one argument",
 					new IllegalArgumentException("Need one argument"));
 		}
-		final String filename = args[0];
-		assert filename != null;
+		final String filename = NullCleaner.assertNotNull(args[0]);
 		try {
 			repl(new MapReaderAdapter().readMap(filename, new Warning(
 					Action.Warn)), SYS_OUT);

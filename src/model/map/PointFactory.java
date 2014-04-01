@@ -1,5 +1,7 @@
 package model.map;
 
+import static util.NullCleaner.assertNotNull;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -16,6 +18,18 @@ public final class PointFactory {
 	 * Whether to use the cache.
 	 */
 	private static boolean useCache = true;
+
+	/**
+	 * The point cache.
+	 */
+	private static final Map<Integer, Map<Integer, Point>> POINT_CACHE =
+			new ConcurrentHashMap<>();
+
+	/**
+	 * Coordinate cache.
+	 */
+	private static final Map<Integer, Map<Integer, Coordinate>> C_CACHE =
+			new ConcurrentHashMap<>();
 
 	/**
 	 * Clear the cache.
@@ -36,12 +50,6 @@ public final class PointFactory {
 	 */
 	private PointFactory() {
 	}
-
-	/**
-	 * The point cache.
-	 */
-	private static final Map<Integer, Map<Integer, Point>> POINT_CACHE =
-			new ConcurrentHashMap<>();
 
 	/**
 	 * Factory method. I considered replacing the cache with simply a
@@ -67,19 +75,11 @@ public final class PointFactory {
 			if (!POINT_CACHE.get(boxedRow).containsKey(boxedCol)) {
 				POINT_CACHE.get(boxedRow).put(boxedCol, new Point(row, col));
 			}
-			final Point retval = POINT_CACHE.get(boxedRow).get(boxedCol);
-			assert retval != null;
-			return retval; // NOPMD
+			return assertNotNull(POINT_CACHE.get(boxedRow).get(boxedCol)); // NOPMD
 		} else {
 			return new Point(row, col);
 		}
 	}
-
-	/**
-	 * Coordinate cache.
-	 */
-	private static final Map<Integer, Map<Integer, Coordinate>> C_CACHE =
-			new ConcurrentHashMap<>();
 
 	/**
 	 * @param xCoord an X coordinate or extent

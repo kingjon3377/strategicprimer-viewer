@@ -14,6 +14,16 @@ public class DeprecatedPropertyException extends SPFormatException {
 	private final String context;
 
 	/**
+	 * The old property.
+	 */
+	private final String old;
+
+	/**
+	 * The preferred form.
+	 */
+	private final String preferred;
+
+	/**
 	 * @return the current tag.
 	 */
 	public final String getTag() {
@@ -21,21 +31,11 @@ public class DeprecatedPropertyException extends SPFormatException {
 	}
 
 	/**
-	 * The old property.
-	 */
-	private final String old;
-
-	/**
 	 * @return the old name for the property.
 	 */
 	public final String getOld() {
 		return old;
 	}
-
-	/**
-	 * The preferred form.
-	 */
-	private final String preferred;
 
 	/**
 	 * @return the preferred orm.

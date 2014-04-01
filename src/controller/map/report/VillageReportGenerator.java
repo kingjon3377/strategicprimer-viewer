@@ -7,6 +7,7 @@ import model.map.Point;
 import model.map.fixtures.towns.Village;
 import model.report.AbstractReportNode;
 import model.report.EmptyReportNode;
+import model.report.IReportNode;
 import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
@@ -40,15 +41,14 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Village) {
 				final Village village = (Village) pair.second();
-				// ESCA-JAVA0177:
-				final HeadedList<String> appropriateList;
+				final String product =
+						produce(fixtures, tiles, currentPlayer, village,
+								pair.first());
 				if (village.getOwner().isCurrent()) {
-					appropriateList = own;
+					own.add(product);
 				} else {
-					appropriateList = others;
+					others.add(product);
 				}
-				appropriateList.add(produce(fixtures, tiles, currentPlayer,
-						(Village) pair.second(), pair.first()));
 			}
 		}
 		// HtmlLists will return the empty string if they are empty.
@@ -75,14 +75,15 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 				"Villages pledged to your service:");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Village) {
-				final AbstractReportNode node;
-				if (((Village) pair.second()).getOwner().isCurrent()) {
-					node = own;
+				final Village village = (Village) pair.second();
+				final IReportNode product =
+						produceRIR(fixtures, tiles, currentPlayer, village,
+								pair.first());
+				if (village.getOwner().isCurrent()) {
+					own.add(product);
 				} else {
-					node = others;
+					others.add(product);
 				}
-				node.add(produceRIR(fixtures, tiles, currentPlayer,
-						(Village) pair.second(), pair.first()));
 			}
 		}
 		if (own.getChildCount() != 0) {
@@ -92,7 +93,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 			retval.add(others);
 		}
 		if (retval.getChildCount() == 0) {
-			return EmptyReportNode.NULL_NODE;
+			return EmptyReportNode.NULL_NODE; // NOPMD
 		} else {
 			return retval;
 		}
@@ -117,7 +118,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 			final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		if (item.getOwner().isIndependent()) {
-			return concat(atPoint(loc), item.getName(), ", a(n) ",
+			return concat(atPoint(loc), item.getName(), ", a(n) ", // NOPMD
 					item.getRace(), " village", ", independent");
 		} else {
 			return concat(atPoint(loc), item.getName(), ", a(n) ",
@@ -144,7 +145,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 			final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		if (item.getOwner().isIndependent()) {
-			return new SimpleReportNode(atPoint(loc), item.getName(),
+			return new SimpleReportNode(atPoint(loc), item.getName(), // NOPMD
 					", a(n) ", item.getRace(), " village", ", independent");
 		} else {
 			return new SimpleReportNode(atPoint(loc), item.getName(),

@@ -10,6 +10,7 @@ import javax.xml.stream.XMLStreamException;
 import model.exploration.ExplorationModel;
 import model.map.IMap;
 import model.map.MapView;
+import util.NullCleaner;
 import util.Warning;
 import view.exploration.ExplorationFrame;
 import view.map.main.MapFileFilter;
@@ -62,8 +63,7 @@ public class ExplorationGUI implements ISPDriver {
 	private static ExplorationModel readMaps(final String[] filenames)
 			throws IOException, XMLStreamException, SPFormatException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		final String firstFile = filenames[0];
-		assert firstFile != null;
+		final String firstFile = NullCleaner.assertNotNull(filenames[0]);
 		final MapView master = reader.readMap(firstFile, Warning.INSTANCE);
 		final ExplorationModel model = new ExplorationModel(master,
 				firstFile);

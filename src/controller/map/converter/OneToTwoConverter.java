@@ -61,13 +61,6 @@ import controller.map.misc.MapReaderAdapter;
  */
 public class OneToTwoConverter { // NOPMD
 	/**
-	 * Constructor.
-	 */
-	public OneToTwoConverter() {
-		TableLoader.loadAllTables("tables", runner);
-	}
-
-	/**
 	 * Sixty percent. Our probability for a couple of perturbations.
 	 */
 	private static final double SIXTY_PERCENT = .6;
@@ -89,6 +82,26 @@ public class OneToTwoConverter { // NOPMD
 	 * The maximum number of iterations per tile.
 	 */
 	private static final int MAX_ITERATIONS = 100;
+
+	/**
+	 * An exploration runner, to get forest and ground types from.
+	 */
+	private final ExplorationRunner runner = new ExplorationRunner();
+
+	/**
+	 * The probability of turning a watered desert to plains.
+	 */
+	private static final double DESERT_TO_PLAINS = .4;
+	/**
+	 * The probability of adding a forest to a tile.
+	 */
+	private static final double ADD_FOREST_PROB = .1;
+	/**
+	 * Constructor.
+	 */
+	public OneToTwoConverter() {
+		TableLoader.loadAllTables("tables", runner);
+	}
 
 	/**
 	 * @param old a version-1 map
@@ -167,11 +180,11 @@ public class OneToTwoConverter { // NOPMD
 		final List<Pair<Point, IMutableTile>> initial = createInitialSubtiles(point,
 				tile, main);
 		if (!tile.isEmpty()) {
-			final int id = idFactory.createID();
+			final int idNum = idFactory.createID();
 			if (tile instanceof IMutableTile) {
 				((IMutableTile) tile).addFixture(new Village(TownStatus.Active,
-						"", id, independentPlayer, RaceFactory
-								.getRace(new Random(id))));
+						"", idNum, independentPlayer, RaceFactory
+								.getRace(new Random(idNum))));
 			}
 			final List<TileFixture> fixtures = new LinkedList<>();
 			for (final TileFixture fixture : tile) {
@@ -200,8 +213,7 @@ public class OneToTwoConverter { // NOPMD
 					final TileFixture fix = fixtures.remove(0);
 					assert fix != null;
 					subtile.addFixture(fix);
-					subtile.addFixture(new TextFixture(
-							// NOPMD
+					subtile.addFixture(new TextFixture(//NOPMD
 							"FIXME: A fixture here was force-added after MAX_ITER",
 							NEXT_TURN));
 					initial.add(initial.remove(0));
@@ -232,11 +244,6 @@ public class OneToTwoConverter { // NOPMD
 			fixtures.remove(rivers);
 		}
 	}
-
-	/**
-	 * An exploration runner, to get forest and ground types from.
-	 */
-	private final ExplorationRunner runner = new ExplorationRunner();
 
 	/**
 	 * Convert a tile. That is, change it from a forest or mountain type to the
@@ -327,10 +334,6 @@ public class OneToTwoConverter { // NOPMD
 		}
 	}
 	/**
-	 * The probability of adding a forest to a tile.
-	 */
-	private static final double ADD_FOREST_PROB = .1;
-	/**
 	 * Possibly make a random change to a tile.
 	 *
 	 * @param tile the tile under consideration
@@ -357,10 +360,6 @@ public class OneToTwoConverter { // NOPMD
 			}
 		}
 	}
-	/**
-	 * The probability of turning a watered desert to plains.
-	 */
-	private static final double DESERT_TO_PLAINS = .4;
 	/**
 	 * Make changes to a desert tile based on water.
 	 *

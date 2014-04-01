@@ -52,8 +52,8 @@ public class Djinn implements MobileFixture, HasImage, UnitMember {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Djinn && ((TileFixture) obj).getID() == id);
+		return this == obj || obj instanceof Djinn
+				&& ((TileFixture) obj).getID() == id;
 	}
 
 	/**

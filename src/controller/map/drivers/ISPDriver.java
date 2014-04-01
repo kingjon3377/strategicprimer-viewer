@@ -60,6 +60,35 @@ public interface ISPDriver extends HasName {
 	 */
 	class DriverUsage { // $codepro.audit.disable
 		/**
+		 * Whether the driver is graphical or not.
+		 */
+		private final boolean graphical;
+		/**
+		 * The short option to give to AppStarter to get this driver.
+		 */
+		private final String shortOption;
+		/**
+		 * The long option to give to AppStarter to get this driver.
+		 */
+		private final String longOption;
+		/**
+		 * How many parameters this driver wants.
+		 */
+		private final ParamCount paramsWanted;
+		/**
+		 * A short description of the driver.
+		 */
+		private final String shortDescription;
+		/**
+		 * A longer description of the driver.
+		 */
+		private final String longDescription;
+		/**
+		 * The type of the driver this describes.
+		 */
+		private final Class<? extends ISPDriver> driverClass;
+
+		/**
 		 * Possible numbers of (non-option?) parameters a driver might want.
 		 */
 		public static enum ParamCount {
@@ -104,35 +133,6 @@ public interface ISPDriver extends HasName {
 			longDescription = longDesc;
 			driverClass = driver;
 		}
-
-		/**
-		 * Whether the driver is graphical or not.
-		 */
-		private final boolean graphical;
-		/**
-		 * The short option to give to AppStarter to get this driver.
-		 */
-		private final String shortOption;
-		/**
-		 * The long option to give to AppStarter to get this driver.
-		 */
-		private final String longOption;
-		/**
-		 * How many parameters this driver wants.
-		 */
-		private final ParamCount paramsWanted;
-		/**
-		 * A short description of the driver.
-		 */
-		private final String shortDescription;
-		/**
-		 * A longer description of the driver.
-		 */
-		private final String longDescription;
-		/**
-		 * The type of the driver this describes.
-		 */
-		private final Class<? extends ISPDriver> driverClass;
 
 		/**
 		 * @return whether the driver is graphical or not.

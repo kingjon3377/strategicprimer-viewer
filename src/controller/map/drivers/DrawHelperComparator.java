@@ -45,6 +45,29 @@ import controller.map.misc.MapReaderAdapter;
  */
 public class DrawHelperComparator implements ISPDriver { // NOPMD
 	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(DrawHelperComparator.class);
+
+	/**
+	 * The minimum row for the iteration-vs-filtering test.
+	 */
+	private static final int TEST_MIN_ROW = 20;
+	/**
+	 * The maximum row for the interation-vs-filtering test.
+	 */
+	private static final int TEST_MAX_ROW = 40;
+	/**
+	 * The minimum col for the iteration-vs-filtering test.
+	 */
+	private static final int TEST_MIN_COL = 55;
+	/**
+	 * The maximum col for the iteration-vs-filtering test.
+	 */
+	private static final int TEST_MAX_COL = 82;
+
+	/**
 	 * An object indicating how to use and invoke this driver. We say that this
 	 * is graphical, even though it's not, so we can share an option with the
 	 * ReaderComparator.
@@ -257,23 +280,6 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	}
 
 	/**
-	 * The minimum row for the iteration-vs-filtering test.
-	 */
-	private static final int TEST_MIN_ROW = 20;
-	/**
-	 * The maximum row for the interation-vs-filtering test.
-	 */
-	private static final int TEST_MAX_ROW = 40;
-	/**
-	 * The minimum col for the iteration-vs-filtering test.
-	 */
-	private static final int TEST_MIN_COL = 55;
-	/**
-	 * The maximum col for the iteration-vs-filtering test.
-	 */
-	private static final int TEST_MAX_COL = 82;
-
-	/**
 	 * Fifth test, part one: iterating.
 	 *
 	 * @param helper the helper to test
@@ -367,12 +373,6 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 			}
 		}
 	}
-
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(DrawHelperComparator.class);
 
 	/**
 	 * A driver method to compare the two helpers, and the two map-GUI

@@ -9,6 +9,7 @@ import java.util.Set;
 import model.map.ITile;
 import model.map.Point;
 import model.map.TileType;
+import util.NullCleaner;
 
 /**
  * A class to create exploration results. The initial implementation is a bit
@@ -28,19 +29,17 @@ public class ExplorationRunner { // NOPMD
 	@SuppressWarnings("deprecation")
 	public String defaultResults(final Point point, final ITile tile)
 			throws MissingTableException {
-		final StringBuilder sb = new StringBuilder(80)
+		final StringBuilder sbuild = new StringBuilder(80)
 				.append("The primary rock type here is ");
-		sb.append(getPrimaryRock(point, tile));
-		sb.append(".\n");
+		sbuild.append(getPrimaryRock(point, tile));
+		sbuild.append(".\n");
 		if (TileType.BorealForest.equals(tile.getTerrain())
 				|| TileType.TemperateForest.equals(tile.getTerrain())) {
-			sb.append("The main kind of tree is ");
-			sb.append(getPrimaryTree(point, tile));
-			sb.append(".\n");
+			sbuild.append("The main kind of tree is ");
+			sbuild.append(getPrimaryTree(point, tile));
+			sbuild.append(".\n");
 		}
-		final String retval = sb.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(sbuild.toString());
 	}
 
 	/**
@@ -145,21 +144,18 @@ public class ExplorationRunner { // NOPMD
 	 */
 	public String recursiveConsultTable(final String table, final Point point,
 			final ITile tile) throws MissingTableException {
-		String result = consultTable(table, point, tile);
+		final String result = consultTable(table, point, tile);
 		if (result.contains("#")) {
-			// TODO: Use a string builder here rather than concatenation
 			final String[] split = result.split("#", 3);
-			final String before = split[0];
-			final String middle = split[1];
-			assert before != null && middle != null;
-			if (split.length < 3) {
-				result = before
-						+ recursiveConsultTable(middle, point, tile);
-			} else {
-				result = before
-						+ recursiveConsultTable(middle, point, tile)
-						+ split[2];
+			final String before = NullCleaner.assertNotNull(split[0]);
+			final String middle = NullCleaner.assertNotNull(split[1]);
+			final StringBuilder builder = new StringBuilder(100);
+			builder.append(before);
+			builder.append(recursiveConsultTable(middle, point, tile));
+			if (split.length > 2) {
+				builder.append(split[2]);
 			}
+			return NullCleaner.assertNotNull(builder.toString()); // NOPMD
 		}
 		return result;
 	}

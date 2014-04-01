@@ -21,6 +21,7 @@ import javax.xml.stream.events.XMLEvent;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.IteratorWrapper;
+import util.NullCleaner;
 import util.TypesafeLogger;
 
 /**
@@ -43,15 +44,21 @@ public class ZeroToOneConverter {
 			.getLogger(ZeroToOneConverter.class);
 
 	/**
+	 * A mapping from numeric events to XML representations of their version-1
+	 * equivalents.
+	 */
+	private static final Map<Integer, String> EQUIVS = new HashMap<>();
+
+	/**
 	 * @param stream a stream representing a SP map, format version 0
 	 * @return the XML representing an equivalent map, format version 1.
 	 */
 	public static String convert(final Iterable<XMLEvent> stream) {
-		final StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder(64);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final StartElement selement = event.asStartElement();
-				assert selement != null;
+				final StartElement selement =
+						NullCleaner.assertNotNull(event.asStartElement());
 				if ("tile".equalsIgnoreCase(selement.getName()
 						.getLocalPart())) {
 					builder.append(convertTile(selement,
@@ -67,9 +74,8 @@ public class ZeroToOneConverter {
 			} else if (event.isCharacters()) {
 				builder.append(event.asCharacters().getData().trim());
 			} else if (event.isEndElement()) {
-				final EndElement end = event.asEndElement();
-				assert end != null;
-				builder.append(printEndElement(end));
+				builder.append(printEndElement(NullCleaner.assertNotNull(event
+						.asEndElement())));
 			} else if (event.isStartDocument()) {
 				builder.append("<?xml version=\"1.0\"?>\n");
 			} else if (event.isEndDocument()) {
@@ -78,9 +84,7 @@ public class ZeroToOneConverter {
 				LOGGER.warning("Unhandled element type " + event.getEventType());
 			}
 		}
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
@@ -103,9 +107,7 @@ public class ZeroToOneConverter {
 			}
 		}
 		builder.append('>');
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
@@ -129,13 +131,9 @@ public class ZeroToOneConverter {
 		builder.append('>');
 		while (!events.isEmpty()) {
 			builder.append('\n');
-			final Integer event = events.pop();
-			assert event != null;
-			builder.append(getEventXML(event));
+			builder.append(getEventXML(NullCleaner.assertNotNull(events.pop())));
 		}
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
@@ -153,9 +151,7 @@ public class ZeroToOneConverter {
 	 */
 	private static String getEventXML(final Integer num) {
 		if (EQUIVS.containsKey(num)) {
-			final String retval = EQUIVS.get(num);
-			assert retval != null;
-			return retval;
+			return NullCleaner.assertNotNull(EQUIVS.get(num)); // NOPMD
 		} else {
 			return "";
 		}
@@ -168,9 +164,8 @@ public class ZeroToOneConverter {
 	 * @return its XML representation.
 	 */
 	private static String printEndElement(final EndElement element) {
-		final String local = element.getName().getLocalPart();
-		assert local != null;
-		return printEndElementImpl(local);
+		return printEndElementImpl(NullCleaner.assertNotNull(element.getName()
+				.getLocalPart()));
 	}
 
 	/**
@@ -180,10 +175,9 @@ public class ZeroToOneConverter {
 	 * @return its XML representation.
 	 */
 	private static String printEndElementImpl(final String elemStr) {
-		final String retval = new StringBuilder(elemStr.length() + 5).append("</")
-				.append(elemStr).append('>').toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner
+				.assertNotNull(new StringBuilder(elemStr.length() + 5)
+						.append("</").append(elemStr).append('>').toString());
 	}
 
 	/**
@@ -203,12 +197,7 @@ public class ZeroToOneConverter {
 			}
 		}
 		builder.append('>');
-		final String retval = builder.toString();
-		if (retval == null) {
-			throw new IllegalStateException(
-					"Somehow StringBuilder produced null rather than a string");
-		}
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
@@ -216,18 +205,10 @@ public class ZeroToOneConverter {
 	 * @return its XML representation
 	 */
 	private static String printAttribute(final Attribute attr) {
-		final String retval = new StringBuilder().append(' ')
+		return NullCleaner.assertNotNull(new StringBuilder().append(' ')
 				.append(attr.getName().getLocalPart()).append("=\"")
-				.append(attr.getValue()).append('"').toString();
-		assert retval != null;
-		return retval;
+				.append(attr.getValue()).append('"').toString());
 	}
-
-	/**
-	 * A mapping from numeric events to XML representations of their version-1
-	 * equivalents.
-	 */
-	private static final Map<Integer, String> EQUIVS = new HashMap<>();
 
 	/**
 	 * Add XML for the specified numbers.
@@ -284,8 +265,8 @@ public class ZeroToOneConverter {
 	 */
 	public static void main(final String[] args) {
 		for (final String arg : args) {
-			try (final Reader reader = new FileReader(arg)) {
-				System.out.println(convert(new IteratorWrapper<XMLEvent>(
+			try (final Reader reader = new FileReader(arg)) { // NOPMD
+				System.out.println(convert(new IteratorWrapper<XMLEvent>(//NOPMD
 						XMLInputFactory.newInstance().createXMLEventReader(
 								reader))));
 			} catch (final FileNotFoundException except) {

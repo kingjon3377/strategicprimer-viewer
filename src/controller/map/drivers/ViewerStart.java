@@ -12,6 +12,7 @@ import javax.xml.stream.XMLStreamException;
 import model.map.MapView;
 import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
+import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -72,8 +73,7 @@ public final class ViewerStart implements ISPDriver {
 		try {
 			new ViewerStart().startDriver(args);
 		} catch (final DriverFailedException except) {
-			final String message = except.getMessage();
-			assert message != null;
+			final String message = NullCleaner.assertNotNull(except.getMessage());
 			LOGGER.log(Level.SEVERE, message, except.getCause());
 			ErrorShower.showErrorDialog(null, message);
 		}
@@ -94,8 +94,7 @@ public final class ViewerStart implements ISPDriver {
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 0) {
 			try {
-				final String filename = new FileChooser("").getFilename();
-				startDriver(filename);
+				startDriver(new FileChooser("").getFilename());
 			} catch (final ChoiceInterruptedException except) {
 				LOGGER.log(
 						Level.INFO,

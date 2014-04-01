@@ -2,6 +2,8 @@ package model.map;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * An encapsulation of a map's dimensions (and its map version as well).
  *
@@ -9,6 +11,21 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 public class MapDimensions {
+	/**
+	 * The map version.
+	 */
+	public final int version;
+
+	/**
+	 * The number of columns in the map.
+	 */
+	public final int cols;
+
+	/**
+	 * The number of rows in the map.
+	 */
+	public final int rows;
+
 	/**
 	 * Constructor.
 	 *
@@ -23,11 +40,6 @@ public class MapDimensions {
 	}
 
 	/**
-	 * The number of rows in the map.
-	 */
-	public final int rows;
-
-	/**
 	 * @return The number of rows in the map.
 	 */
 	public final int getRows() {
@@ -35,21 +47,11 @@ public class MapDimensions {
 	}
 
 	/**
-	 * The number of columns in the map.
-	 */
-	public final int cols;
-
-	/**
 	 * @return The number of columns in the map.
 	 */
 	public final int getColumns() {
 		return cols;
 	}
-
-	/**
-	 * The map version.
-	 */
-	public final int version;
 
 	/**
 	 * @return The map version.
@@ -64,8 +66,8 @@ public class MapDimensions {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return obj == this
-				|| (obj instanceof MapDimensions && equalsImpl((MapDimensions) obj));
+		return obj == this || obj instanceof MapDimensions
+				&& equalsImpl((MapDimensions) obj);
 	}
 	/**
 	 * @param obj a map-dimensions object
@@ -93,8 +95,6 @@ public class MapDimensions {
 		builder.append(cols);
 		builder.append(" cols; map version ");
 		builder.append(version);
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 }

@@ -197,16 +197,16 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 			final String attribute) throws SPFormatException {
 		final Attribute attr = startElement.getAttributeByName(new QName(
 				attribute));
-		final String local = NullCleaner.valueOrDefault(startElement.getName()
-				.getLocalPart(), "a null tag");
 		if (attr == null) {
-			throw new MissingPropertyException(local, attribute, startElement
-					.getLocation().getLineNumber());
+			throw new MissingPropertyException(NullCleaner.valueOrDefault(
+					startElement.getName().getLocalPart(), "a null tag"),
+					attribute, startElement.getLocation().getLineNumber());
 		}
 		final String value = attr.getValue();
 		if (value == null) {
-			throw new MissingPropertyException(local, attribute, startElement
-					.getLocation().getLineNumber());
+			throw new MissingPropertyException(NullCleaner.valueOrDefault(
+					startElement.getName().getLocalPart(), "a null tag"),
+					attribute, startElement.getLocation().getLineNumber());
 		} else {
 			return value;
 		}

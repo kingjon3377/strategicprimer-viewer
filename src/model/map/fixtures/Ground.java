@@ -15,6 +15,20 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Ground implements TileFixture, HasImage, HasKind {
 	/**
+	 * The kind of ground.
+	 */
+	private String kind;
+	/**
+	 * Whether the ground is exposed.
+	 */
+	private final boolean exposed;
+
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
+	/**
 	 * Constructor.
 	 *
 	 * @param desc a description of the ground (the type of rock)
@@ -26,15 +40,6 @@ public class Ground implements TileFixture, HasImage, HasKind {
 		kind = desc;
 		exposed = exp;
 	}
-
-	/**
-	 * The kind of ground.
-	 */
-	private String kind;
-	/**
-	 * Whether the ground is exposed.
-	 */
-	private final boolean exposed;
 
 	/**
 	 * @return whether the ground is exposed
@@ -57,7 +62,7 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	@Override
 	public String getDefaultImage() {
 		if (exposed) {
-			return "expground.png";
+			return "expground.png"; // NOPMD
 		} else {
 			return "blank.png";
 		}
@@ -79,24 +84,17 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Ground && equalsImpl((Ground) obj));
+		return this == obj || obj instanceof Ground
+				&& kind.equals(((Ground) obj).kind)
+				&& exposed == ((Ground) obj).exposed;
 	}
-	/**
-	 * @param obj another Ground
-	 * @return whether it's equal to this one
-	 */
-	private boolean equalsImpl(final Ground obj) {
-		return kind.equals(obj.kind) && exposed == obj.exposed;
-	}
-
 	/**
 	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
 		if (exposed) {
-			return kind.hashCode() << 1;
+			return kind.hashCode() << 1; // NOPMD
 		} else {
 			return kind.hashCode();
 		}
@@ -118,7 +116,7 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	@Override
 	public String toString() {
 		if (exposed) {
-			return "Exposed ground of kind " + kind;
+			return "Exposed ground of kind " + kind; // NOPMD
 		} else {
 			return "Unexposed ground of kind " + kind;
 		}
@@ -150,11 +148,6 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	public final void setKind(final String nKind) {
 		kind = nKind;
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

@@ -9,6 +9,16 @@ package controller.map.formatexceptions;
 public class UnwantedChildException extends SPFormatException {
 
 	/**
+	 * The current tag.
+	 */
+	private final String tag;
+
+	/**
+	 * The unwanted child.
+	 */
+	private final String chld;
+
+	/**
 	 * @param parent the current tag
 	 * @param child the unwanted child
 	 * @param errorLine the line where this happened
@@ -21,21 +31,11 @@ public class UnwantedChildException extends SPFormatException {
 	}
 
 	/**
-	 * The current tag.
-	 */
-	private final String tag;
-
-	/**
 	 * @return the current tag.
 	 */
 	public final String getTag() {
 		return tag;
 	}
-
-	/**
-	 * The unwanted child.
-	 */
-	private final String chld;
 
 	/**
 	 * @return the unwanted child.

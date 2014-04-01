@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
+import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -106,33 +107,31 @@ public class ReaderComparator implements ISPDriver {
 	 */
 	public void compareReaders(final String arg) throws XMLStreamException,
 			SPFormatException {
-		final Warning warner = new Warning(Action.Ignore);
 		SYS_OUT.print(arg);
 		SYS_OUT.println(':');
-		// ESCA-JAVA0177:
-		final String contents; // NOPMD
 		try {
-			contents = readIntoBuffer(arg);
+			final String contents = readIntoBuffer(arg);
+			final Warning warner = new Warning(Action.Ignore);
+			final long startOne = System.nanoTime();
+			final IMap map1 = one.readMap(arg, new StringReader(contents), warner);
+			final long endOne = System.nanoTime();
+			printElapsed("Old", endOne - startOne);
+			final long startTwo = System.nanoTime();
+			final IMap map2 = two.readMap(arg, new StringReader(contents), warner);
+			final long endTwo = System.nanoTime();
+			printElapsed("New", endTwo - startTwo);
+			if (map1.equals(map2)) {
+				SYS_OUT.println("Readers produce identical results.");
+			} else {
+				SYS_OUT.print("Readers differ on ");
+				SYS_OUT.println(arg);
+			}
 		} catch (final FileNotFoundException except) {
 			LOGGER.log(Level.SEVERE, "File " + arg + " not found", except);
 			return; // NOPMD
 		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error reading file " + arg, except);
 			return;
-		}
-		final long startOne = System.nanoTime();
-		final IMap map1 = one.readMap(arg, new StringReader(contents), warner);
-		final long endOne = System.nanoTime();
-		printElapsed("Old", endOne - startOne);
-		final long startTwo = System.nanoTime();
-		final IMap map2 = two.readMap(arg, new StringReader(contents), warner);
-		final long endTwo = System.nanoTime();
-		printElapsed("New", endTwo - startTwo);
-		if (map1.equals(map2)) {
-			SYS_OUT.println("Readers produce identical results.");
-		} else {
-			SYS_OUT.print("Readers differ on ");
-			SYS_OUT.println(arg);
 		}
 	}
 
@@ -163,9 +162,7 @@ public class ReaderComparator implements ISPDriver {
 			final CharBuffer buffer = CharBuffer.allocate((int) file.length());
 			reader.read(buffer);
 			buffer.position(0);
-			final String retval = buffer.toString();
-			assert retval != null;
-			return retval;
+			return NullCleaner.assertNotNull(buffer.toString());
 		}
 	}
 

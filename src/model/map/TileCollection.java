@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
 import util.PrefixingPrintWriter;
 
 /**
@@ -51,9 +52,7 @@ public final class TileCollection implements IMutableTileCollection {
 		if (!tiles.containsKey(point)) {
 			tiles.put(point, new Tile(TileType.NotVisible));
 		}
-		final IMutableTile retval = tiles.get(point);
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(tiles.get(point));
 	}
 
 	/**
@@ -61,9 +60,7 @@ public final class TileCollection implements IMutableTileCollection {
 	 */
 	@Override
 	public Iterator<Point> iterator() {
-		final Iterator<Point> iter = tiles.keySet().iterator();
-		assert iter != null;
-		return iter;
+		return NullCleaner.assertNotNull(tiles.keySet().iterator());
 	}
 
 	/**
@@ -74,9 +71,9 @@ public final class TileCollection implements IMutableTileCollection {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return obj == this
-				|| (obj instanceof TileCollection && withoutEmptyTiles(
-						((TileCollection) obj).tiles).equals(
-						withoutEmptyTiles(tiles)));
+				|| obj instanceof TileCollection
+				&& withoutEmptyTiles(((TileCollection) obj).tiles).equals(
+						withoutEmptyTiles(tiles));
 	}
 
 	/**
@@ -120,10 +117,10 @@ public final class TileCollection implements IMutableTileCollection {
 	 *
 	 * @param obj another TileCollection
 	 * @return whether it's a strict subset of this one
-	 * @param out the stream to write details of differences to
+	 * @param ostream the stream to write details of differences to
 	 */
 	@Override
-	public boolean isSubset(final ITileCollection obj, final PrintWriter out) {
+	public boolean isSubset(final ITileCollection obj, final PrintWriter ostream) {
 		boolean retval = true; // NOPMD
 		for (final Point point : obj) {
 			if (point == null) {
@@ -133,13 +130,13 @@ public final class TileCollection implements IMutableTileCollection {
 				try (final PrefixingPrintWriter writer = new PrefixingPrintWriter(
 						str, point.toString() + ":\t")) {
 					if (!tiles.get(point).isSubset(obj.getTile(point), writer)) {
-						out.print(str.toString());
+						ostream.print(str.toString());
 						retval = false; // NOPMD
 					}
 				}
 			} else {
-				out.print("Extra tile at ");
-				out.println(point.toString());
+				ostream.print("Extra tile at ");
+				ostream.println(point.toString());
 				retval = false; // NOPMD
 			}
 		}

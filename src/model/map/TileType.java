@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import util.NullCleaner;
+
 /**
  * Possible tile types.
  *
@@ -103,9 +105,8 @@ public enum TileType {
 				VALS_BY_VER.put(boxedVer, set);
 			}
 		}
-		final Set<TileType> retval = unmodifiableSet(VALS_BY_VER.get(boxedVer));
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(unmodifiableSet(VALS_BY_VER
+				.get(boxedVer)));
 	}
 
 	/**
@@ -154,9 +155,7 @@ public enum TileType {
 	 */
 	public static TileType getTileType(final String string) {
 		if (CACHE.containsKey(string)) {
-			final TileType retval = CACHE.get(string);
-			assert retval != null;
-			return retval;
+			return NullCleaner.assertNotNull(CACHE.get(string));
 		} // else
 		throw new IllegalArgumentException("Unrecognized terrain type string "
 				+ string);

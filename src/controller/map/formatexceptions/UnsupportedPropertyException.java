@@ -7,6 +7,16 @@ package controller.map.formatexceptions;
  *
  */
 public class UnsupportedPropertyException extends SPFormatException {
+
+	/**
+	 * The current tag.
+	 */
+	private final String context;
+	/**
+	 * The unsupported parameter.
+	 */
+	private final String param;
+
 	/**
 	 * @param tag the current tag
 	 * @param parameter the unsupported parameter
@@ -18,16 +28,6 @@ public class UnsupportedPropertyException extends SPFormatException {
 		context = tag;
 		param = parameter;
 	}
-
-	/**
-	 * The current tag.
-	 */
-	private final String context;
-	/**
-	 * The unsupported parameter.
-	 */
-	private final String param;
-
 	/**
 	 * @return the current tag
 	 */

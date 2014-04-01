@@ -42,6 +42,23 @@ public class WorkerStart implements ISPDriver {
 			"Organize the members of a player's units.", WorkerStart.class);
 
 	/**
+	 * An error message refactored from at least four uses.
+	 */
+	private static final String XML_ERROR_STRING = "Error reading XML file";
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(ViewerFrame.class);
+	/**
+	 * Error message fragment when file not found.
+	 */
+	private static final String NOT_FOUND_ERROR = " not found";
+	/**
+	 * Error message when the map contains invalid data.
+	 */
+	private static final String INV_DATA_ERROR = "Map contained invalid data";
+	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
@@ -78,13 +95,13 @@ public class WorkerStart implements ISPDriver {
 		// ESCA-JAVA0177:
 		final String filename; // NOPMD
 		try {
-			final String file;
 			if (args.length == 0) {
-				file = "";
+				filename = new FileChooser("").getFilename();
 			} else {
-				file = NullCleaner.assertNotNull(args[0]);
+				filename =
+						new FileChooser(NullCleaner.assertNotNull(args[0]))
+								.getFilename();
 			}
-			filename = new FileChooser(file).getFilename();
 		} catch (final ChoiceInterruptedException except) {
 			LOGGER.log(
 					Level.INFO,
@@ -122,30 +139,12 @@ public class WorkerStart implements ISPDriver {
 		try {
 			new WorkerStart().startDriver(args);
 		} catch (final DriverFailedException except) {
-			final String message = except.getMessage();
-			assert message != null;
+			final String message = NullCleaner.assertNotNull(except.getMessage());
 			LOGGER.log(Level.SEVERE, message, except.getCause());
 			ErrorShower.showErrorDialog(null, message);
 		}
 	}
 
-	/**
-	 * An error message refactored from at least four uses.
-	 */
-	private static final String XML_ERROR_STRING = "Error reading XML file";
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(ViewerFrame.class);
-	/**
-	 * Error message fragment when file not found.
-	 */
-	private static final String NOT_FOUND_ERROR = " not found";
-	/**
-	 * Error message when the map contains invalid data.
-	 */
-	private static final String INV_DATA_ERROR = "Map contained invalid data";
 	/**
 	 * @return a String representation of the object
 	 */

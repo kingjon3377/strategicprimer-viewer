@@ -21,6 +21,11 @@ public class Centaur implements MobileFixture, HasImage, HasKind, UnitMember {
 	private String kind;
 
 	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
+	/**
 	 * Constructor.
 	 *
 	 * @param centKind the kind of centaur
@@ -70,17 +75,10 @@ public class Centaur implements MobileFixture, HasImage, HasKind, UnitMember {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Centaur && equalsImpl((Centaur) obj));
+		return this == obj || obj instanceof Centaur
+				&& ((Centaur) obj).kind.equals(kind)
+				&& ((Centaur) obj).getID() == id;
 	}
-	/**
-	 * @param obj a Centaur
-	 * @return whether it equals this one
-	 */
-	private boolean equalsImpl(final Centaur obj) {
-		return obj.kind.equals(kind) && obj.getID() == id;
-	}
-
 	/**
 	 * @return a hash value for the object
 	 */
@@ -127,11 +125,6 @@ public class Centaur implements MobileFixture, HasImage, HasKind, UnitMember {
 	public final void setKind(final String nKind) {
 		kind = nKind;
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

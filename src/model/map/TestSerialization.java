@@ -8,6 +8,7 @@ import static model.map.TileType.NotVisible;
 import static model.map.TileType.Plains;
 import static model.map.TileType.Steppe;
 import static org.junit.Assert.assertEquals;
+import static util.NullCleaner.assertNotNull;
 
 import java.io.IOException;
 import java.util.EnumSet;
@@ -102,9 +103,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		builder.append("<tile row=\"1\" column=\"1\" kind=\"plains\">");
 		builder.append(str);
 		builder.append("</tile>");
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return assertNotNull(builder.toString());
 	}
 	/**
 	 * Test River serialization.
@@ -226,18 +225,16 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				encapsulateTile(point(3, 3), four), SPMap.class);
 		final SPMap five = encapsulateTile(point(4, 4), new Tile(Plains));
 		final String oldKindProperty = "type"; // NOPMD
-		final String testDataOne = createSerializedForm(five, true).replace("kind",
-				oldKindProperty);
-		assert testDataOne != null;
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated tile-type idiom", five,
-				testDataOne, SPMap.class, oldKindProperty);
-		final String testDataTwo = createSerializedForm(five, false).replace("kind",
+				assertNotNull(createSerializedForm(five, true)
+						.replace("kind", oldKindProperty)), SPMap.class,
 				oldKindProperty);
-		assert testDataTwo != null;
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated tile-type idiom", five,
-				testDataTwo, SPMap.class, oldKindProperty);
+				assertNotNull(createSerializedForm(five, false)
+						.replace("kind", oldKindProperty)), SPMap.class,
+				oldKindProperty);
 		assertMissingProperty("<tile column=\"0\" kind=\"plains\" />",
 				Tile.class, "row", false);
 		assertMissingProperty("<tile row=\"0\" kind=\"plains\" />", Tile.class,
@@ -355,26 +352,24 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				MapView.class, "current_turn", false);
 		assertMissingChild("<view current_player=\"1\" current_turn=\"0\" />",
 				MapView.class, false);
-		final String viewOne = new StringBuilder(150)
+		assertUnwantedChild(assertNotNull(new StringBuilder(150)
 				.append("<view current_player=\"0\" current_turn=\"0\">")
 				.append("<map version=\"2\" rows=\"1\" columns=\"1\" />")
 				.append("<map version=\"2\" rows=\"1\" columns=\"1\" />")
-				.append("</view>").toString();
-		assert viewOne != null;
-		assertUnwantedChild(viewOne, MapView.class, false);
+				.append("</view>").toString()), MapView.class, false);
 		assertUnwantedChild(
 				"<view current_player=\"0\" current_turn=\"0\"><hill /></view>",
 				MapView.class, false);
-		final String viewTwo = new StringBuilder(200)
-				.append("<map version=\"2\" rows=\"1\" ")
-				.append("columns=\"1\" current_player=\"1\">")
-				.append("<player number=\"1\" code_name=\"playerOne\" />")
-				.append("<row index=\"0\">")
-				.append("<tile row=\"0\" column=\"0\" kind=\"steppe\"></tile>")
-				.append("</row>").append("</map>").toString();
-		assert viewTwo != null;
-		assertMapDeserialization("Proper deserialization of map into view",
-				one, viewTwo);
+		assertMapDeserialization(
+				"Proper deserialization of map into view",
+				one,
+				assertNotNull(new StringBuilder(200)
+						.append("<map version=\"2\" rows=\"1\" ")
+						.append("columns=\"1\" current_player=\"1\">")
+						.append("<player number=\"1\" code_name=\"playerOne\" />")
+						.append("<row index=\"0\">")
+						.append("<tile row=\"0\" column=\"0\" kind=\"steppe\" />")
+						.append("</row>").append("</map>").toString()));
 	}
 
 	/**

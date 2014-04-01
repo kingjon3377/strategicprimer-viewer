@@ -70,7 +70,7 @@ public class Point implements Comparable<Point> {
 	 */
 	@Override
 	public int compareTo(final Point point) {
-		return ((point.getRow() - getRow()) << 7) + (point.getCol() - getCol());
+		return (point.getRow() - getRow() << 7) + point.getCol() - getCol();
 	}
 
 	/**

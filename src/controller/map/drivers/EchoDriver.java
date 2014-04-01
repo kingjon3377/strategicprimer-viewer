@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
+import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -68,10 +69,7 @@ public final class EchoDriver implements ISPDriver {
 		}
 		// ESCA-JAVA0177:
 		final IMap map; // NOPMD
-		final String infile = args[0];
-		final String outfile = args[1];
-		assert infile != null;
-		assert outfile != null;
+		final String infile = NullCleaner.assertNotNull(args[0]);
 		try {
 			map = new MapReaderAdapter().readMap(infile, new Warning(// NOPMD
 					Action.Ignore));
@@ -85,6 +83,7 @@ public final class EchoDriver implements ISPDriver {
 		} catch (final SPFormatException except) {
 			throw new DriverFailedException("SP map format error", except);
 		}
+		final String outfile = NullCleaner.assertNotNull(args[1]);
 		try {
 			new MapReaderAdapter().write(outfile, map);
 		} catch (final IOException except) {

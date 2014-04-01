@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 
 import util.EqualsAny;
+import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
 import view.util.AppChooserFrame;
@@ -111,6 +112,9 @@ public class AppStarter implements ISPDriver {
 		}
 		// FIXME: We assume no driver uses options.
 		boolean gui = true;
+		// FIXME: To reduce calculated complexity and fix the null-object
+		// pattern here, make a driver class for CLI driver choosing, and make a
+		// Pair of it and the AppChooserFrame be the default.
 		Pair<ISPDriver, ISPDriver> drivers = null;
 		for (final String option : options) {
 			if (option == null) {
@@ -152,11 +156,11 @@ public class AppStarter implements ISPDriver {
 				}
 			}
 			try {
-				final ISPDriver driver = drivers.get(new CLIHelper().chooseFromList(
-						drivers, "CLI apps available:",
-						"No applications available", "App to start: ", true));
-				assert driver != null;
-				startChosenDriver(driver, others);
+				startChosenDriver(NullCleaner.assertNotNull(drivers
+						.get(new CLIHelper().chooseFromList(drivers,
+								"CLI apps available:",
+								"No applications available", "App to start: ",
+								true))), others);
 			} catch (final IOException except) {
 				LOGGER.log(Level.SEVERE,
 						"I/O error prompting user for app to start", except);

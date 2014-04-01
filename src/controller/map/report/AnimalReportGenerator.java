@@ -16,6 +16,7 @@ import model.report.EmptyReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import util.DelayedRemovalMap;
+import util.NullCleaner;
 import util.Pair;
 
 /**
@@ -74,9 +75,8 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 						.append(": at ").append(pointCSL(entry.getValue()))
 						.append(CLOSE_LIST_ITEM);
 			}
-			final String retval = builder.append(CLOSE_LIST).toString();
-			assert retval != null;
-			return retval; // NOPMD
+			return NullCleaner.assertNotNull(builder.append(CLOSE_LIST)
+					.toString()); // NOPMD
 		}
 	}
 
@@ -123,7 +123,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 			final AbstractReportNode retval = new SectionListReportNode(4,
 					"Animal sightings or encounters");
 			for (final Entry<String, List<Point>> entry : items.entrySet()) {
-				retval.add(new SimpleReportNode(entry.getKey(), ": at ",
+				retval.add(new SimpleReportNode(entry.getKey(), ": at ", // NOPMD
 						pointCSL(entry.getValue())));
 			}
 			return retval; // NOPMD
@@ -143,7 +143,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer,
 			final Animal item, final Point loc) {
-		final String tracesOrTalking;
+		final String tracesOrTalking; // NOPMD
 		if (item.isTraces()) {
 			tracesOrTalking = "tracks or traces of ";
 		} else if (item.isTalking()) {
@@ -167,7 +167,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer,
 			final Animal item, final Point loc) {
-		final String tracesOrTalking;
+		final String tracesOrTalking; // NOPMD
 		if (item.isTraces()) {
 			tracesOrTalking = "tracks or traces of ";
 		} else if (item.isTalking()) {

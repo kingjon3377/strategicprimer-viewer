@@ -9,6 +9,7 @@ import java.util.Set;
 import model.map.ITile;
 import model.map.Point;
 import model.map.TileType;
+import util.NullCleaner;
 import util.Pair;
 
 /**
@@ -44,9 +45,7 @@ public class TerrainTable implements EncounterTable {
 	public String generateEvent(final Point point, final ITile tile) {
 		final TileType type = tile.getTerrain();
 		if (mapping.containsKey(type)) {
-			final String retval = mapping.get(type);
-			assert retval != null;
-			return retval;
+			return NullCleaner.assertNotNull(mapping.get(type));
 		} else {
 			throw new IllegalArgumentException(
 					"Table does not account for that terrain type");

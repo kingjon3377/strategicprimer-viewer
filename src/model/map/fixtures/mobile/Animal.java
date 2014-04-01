@@ -25,12 +25,9 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	private final int id; // NOPMD
 
 	/**
-	 * @return a UID for the fixture.
+	 * The name of an image to use for this particular fixture.
 	 */
-	@Override
-	public int getID() {
-		return id;
-	}
+	private String image = "";
 
 	/**
 	 * Whether this is really the animal, or only traces.
@@ -50,6 +47,14 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	 * TODO: Should this be an enumerated type?
 	 */
 	private final String status;
+
+	/**
+	 * @return a UID for the fixture.
+	 */
+	@Override
+	public int getID() {
+		return id;
+	}
 
 	/**
 	 * Constructor.
@@ -187,11 +192,6 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	public final void setKind(final String nKind) {
 		kind = nKind;
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

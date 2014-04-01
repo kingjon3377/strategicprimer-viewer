@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 
+import util.NullCleaner;
 import util.TypesafeLogger;
 import view.map.misc.SubsetFrame;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
@@ -59,8 +60,7 @@ public class SubsetGUIDriver implements ISPDriver {
 		}
 		final SubsetFrame frame = new SubsetFrame();
 		SwingUtilities.invokeLater(new WindowThread(frame));
-		final String first = args[0];
-		assert first != null;
+		final String first = NullCleaner.assertNotNull(args[0]);
 		try {
 			frame.loadMain(first);
 		} catch (final IOException except) {

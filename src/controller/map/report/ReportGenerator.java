@@ -17,6 +17,7 @@ import model.report.AbstractReportNode;
 import model.report.RootReportNode;
 import util.DelayedRemovalMap;
 import util.IntMap;
+import util.NullCleaner;
 import util.Pair;
 
 /**
@@ -76,9 +77,7 @@ public final class ReportGenerator {
 				player));
 		fixtures.coalesce();
 		builder.append("</body>\n</html>\n");
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
@@ -133,9 +132,7 @@ public final class ReportGenerator {
 				player));
 		fixtures.coalesce();
 		builder.append("</body>\n</html>\n");
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
@@ -239,9 +236,8 @@ public final class ReportGenerator {
 				final ITile tile = map.getTile(point);
 				for (final IFixture fix : getFixtures(tile)) {
 					if (fix.getID() >= 0) {
-						final Integer num = Integer.valueOf(fix.getID());
-						assert num != null;
-						retval.put(num, Pair.of(point, fix));
+						retval.put(NullCleaner.assertNotNull(Integer
+								.valueOf(fix.getID())), Pair.of(point, fix));
 					}
 				}
 			}

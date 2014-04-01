@@ -62,16 +62,15 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 				.append("you know about:</h4>\n").append(OPEN_LIST);
 		for (final AbstractTown town : sorted) {
 			if (town != null) {
-				final Point loc = townLocs.get(town);
-				assert loc != null;
 				builder.append(OPEN_LIST_ITEM)
 						.append(produce(fixtures, tiles, currentPlayer, town,
-								loc)).append(CLOSE_LIST_ITEM);
+								NullCleaner.assertNotNull(townLocs.get(town))))
+						.append(CLOSE_LIST_ITEM);
 			}
 		}
 		builder.append(CLOSE_LIST);
 		if (sorted.isEmpty()) {
-			return NullCleaner.assertNotNull(builder.toString());
+			return NullCleaner.assertNotNull(builder.toString()); // NOPMD
 		} else {
 			return "";
 		}
@@ -107,14 +106,12 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 		Collections.sort(sorted, new TownComparator());
 		for (final AbstractTown town : sorted) {
 			if (town != null) {
-				final Point loc = townLocs.get(town);
-				assert loc != null;
 				retval.add(produceRIR(fixtures, tiles, currentPlayer, town,
-						loc));
+						NullCleaner.assertNotNull(townLocs.get(town))));
 			}
 		}
 		if (sorted.isEmpty()) {
-			return EmptyReportNode.NULL_NODE;
+			return EmptyReportNode.NULL_NODE; // NOPMD
 		} else {
 			return retval;
 		}
@@ -138,22 +135,22 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 			final ITileCollection tiles, final Player currentPlayer,
 			final ITownFixture item, final Point loc) {
 		if (item instanceof Village) {
-			return new VillageReportGenerator().produce(fixtures, tiles,
-					currentPlayer, (Village) item, loc); // NOPMD
+			return new VillageReportGenerator().produce(fixtures, tiles, // NOPMD
+					currentPlayer, (Village) item, loc);
 		} else if (item instanceof Fortress) {
-			return new FortressReportGenerator().produce(fixtures, tiles,
-					currentPlayer, (Fortress) item, loc); // NOPMD
+			return new FortressReportGenerator().produce(fixtures, tiles, // NOPMD
+					currentPlayer, (Fortress) item, loc);
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			if (item.getOwner().isIndependent()) {
-				return concat(atPoint(loc), item.getName(),
+				return concat(atPoint(loc), item.getName(), //NOPMD
 						", an independent ", item.size().toString(), " ", item
 								.status().toString(), " ",
 						((AbstractTown) item).kind());
 			} else {
-				return concat(atPoint(loc), item.getName(), ", a ", item.size()
-						.toString(), " ", item.status().toString(), " ",
-						((AbstractTown) item).kind().toString(),
+				return concat(atPoint(loc), item.getName(), ", a ", //NOPMD
+						item.size().toString(), " ", item.status().toString(),
+						" ", ((AbstractTown) item).kind().toString(),
 						" allied with ", playerNameOrYou(item.getOwner()));
 			}
 		} else {
@@ -179,15 +176,15 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 			final ITileCollection tiles, final Player currentPlayer,
 			final ITownFixture item, final Point loc) {
 		if (item instanceof Village) {
-			return new VillageReportGenerator().produceRIR(fixtures, tiles,
-					currentPlayer, (Village) item, loc); // NOPMD
+			return new VillageReportGenerator().produceRIR(fixtures, // NOPMD
+					tiles, currentPlayer, (Village) item, loc);
 		} else if (item instanceof Fortress) {
-			return new FortressReportGenerator().produceRIR(fixtures, tiles,
-					currentPlayer, (Fortress) item, loc); // NOPMD
+			return new FortressReportGenerator().produceRIR(fixtures, // NOPMD
+					tiles, currentPlayer, (Fortress) item, loc);
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			if (item.getOwner().isIndependent()) {
-				return new SimpleReportNode(atPoint(loc), item.getName(),
+				return new SimpleReportNode(atPoint(loc), item.getName(), // NOPMD
 						", an independent ", item.size().toString(), " ", item
 								.status().toString(), " ",
 						((AbstractTown) item).kind());

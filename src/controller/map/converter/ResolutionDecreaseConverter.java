@@ -21,6 +21,7 @@ import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.RiverFixture;
 import util.EnumCounter;
+import util.NullCleaner;
 
 /**
  * A class to convert a map to an equivalent half-resolution one.
@@ -126,8 +127,8 @@ public class ResolutionDecreaseConverter {
 	 * @return its RiverFixture, or an empty one if it doesn't have one
 	 */
 	private static Set<River> getRivers(final ITile tile) {
-		final Set<River> retval = EnumSet.noneOf(River.class);
-		assert retval != null;
+		final Set<River> retval =
+				NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
 		if (tile.hasRiver()) {
 			for (final River river : tile.getRivers()) {
 				retval.add(river);
@@ -194,17 +195,13 @@ public class ResolutionDecreaseConverter {
 				return type; // NOPMD
 			}
 		}
-		// ESCA-JAVA0177:
-		final TileType retval;
 		if (twos.size() == 1) {
-			retval = twos.iterator().next(); // NOPMD
+			return NullCleaner.assertNotNull(twos.iterator().next()); // NOPMD
 		} else {
 			final List<TileType> list = Arrays.asList(one, two, three, four);
 			Collections.shuffle(list);
-			retval = list.get(0);
+			return NullCleaner.assertNotNull(list.get(0));
 		}
-		assert retval != null;
-		return retval;
 	}
 
 	/**

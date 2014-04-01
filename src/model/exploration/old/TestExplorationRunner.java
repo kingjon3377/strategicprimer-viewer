@@ -100,11 +100,11 @@ public final class TestExplorationRunner {
 		}
 		/**
 		 * @param obj ignored
-		 * @param out ignored
+		 * @param ostream ignored
 		 * @return nothing; always throws
 		 */
 		@Override
-		public boolean isSubset(final ITile obj, final PrintWriter out) {
+		public boolean isSubset(final ITile obj, final PrintWriter ostream) {
 			throw new IllegalStateException(
 					"Unexpected method called on mock object");
 		}

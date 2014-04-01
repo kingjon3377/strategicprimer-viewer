@@ -15,6 +15,7 @@ import model.map.fixtures.mobile.worker.WorkerStats;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.IteratorWrapper;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -61,22 +62,24 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 		retval.setImage(getParameter(element, "image", ""));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final String iLocal = event.asStartElement().getName()
-						.getLocalPart();
-				assert iLocal != null;
-				if ("job".equalsIgnoreCase(iLocal)) {
+				if ("job".equalsIgnoreCase(NullCleaner.assertNotNull(event
+						.asStartElement().getName().getLocalPart()))) {
 					retval.addJob(parseJob(
 							assertNotNullStartElement(event.asStartElement()),
 							stream, warner));
-				} else if ("stats".equalsIgnoreCase(iLocal)) {
+				} else if ("stats".equalsIgnoreCase(NullCleaner
+						.assertNotNull(event.asStartElement().getName()
+								.getLocalPart()))) {
 					retval.setStats(parseStats(
 							assertNotNullStartElement(event.asStartElement()),
 							stream));
 				} else {
-					final String oLocal = element.getName().getLocalPart();
-					assert oLocal != null;
-					throw new UnwantedChildException(oLocal, iLocal, event
-							.getLocation().getLineNumber());
+					throw new UnwantedChildException(
+							NullCleaner.assertNotNull(element.getName()
+									.getLocalPart()),
+							NullCleaner.assertNotNull(event.asStartElement()
+									.getName().getLocalPart()), event
+									.getLocation().getLineNumber());
 				}
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {
@@ -131,21 +134,20 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 		}
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final String iLocal = event.asStartElement().getName()
-						.getLocalPart();
-				assert iLocal != null;
-				if ("skill".equalsIgnoreCase(iLocal)) {
+				if ("skill".equalsIgnoreCase(NullCleaner.assertNotNull(event
+						.asStartElement().getName().getLocalPart()))) {
 					retval.addSkill(parseSkill(
 							assertNotNullStartElement(event.asStartElement()),
 							warner));
 					spinUntilEnd(assertNotNullQName(event.asStartElement()
 							.getName()), stream);
 				} else {
-					final String oLocal = element.getName()
-							.getLocalPart();
-					assert oLocal != null;
-					throw new UnwantedChildException(oLocal, iLocal, event
-							.getLocation().getLineNumber());
+					throw new UnwantedChildException(
+							NullCleaner.assertNotNull(element.getName()
+									.getLocalPart()),
+							NullCleaner.assertNotNull(event.asStartElement()
+									.getName().getLocalPart()), event
+									.getLocation().getLineNumber());
 				}
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {

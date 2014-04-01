@@ -4,6 +4,8 @@ import java.io.PrintWriter;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * A map, consisting of tiles, units, and fortresses. Each fortress is on a
  * tile; each unit is either in a fortress or on a tile directly.
@@ -21,6 +23,16 @@ public class SPMap implements IMutableMap {
 	 */
 	private final MapDimensions dimensions;
 
+	/**
+	 * What to shift the hash-code of the players collection by in calculating
+	 * ours.
+	 */
+	private static final int PLAYERS_HASH_SHFT = 4;
+	/**
+	 * What to shift the hash-code of the tiles collection by in calculating
+	 * ours.
+	 */
+	private static final int TILES_HASH_SHIFT = 10;
 	/**
 	 * Constructor taking the size and version as an encapsulated object.
 	 *
@@ -91,30 +103,19 @@ public class SPMap implements IMutableMap {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof IMap
-						&& getDimensions().equals(((IMap) obj).getDimensions())
-						&& players.equals(((IMap) obj).getPlayers()) && tiles
-							.equals(((IMap) obj).getTiles()));
+		return this == obj || obj instanceof IMap
+				&& getDimensions().equals(((IMap) obj).getDimensions())
+				&& players.equals(((IMap) obj).getPlayers())
+				&& tiles.equals(((IMap) obj).getTiles());
 	}
 	
-	/**
-	 * What to shift the hash-code of the players collection by in calculating
-	 * ours.
-	 */
-	private static final int PLAYERS_HASH_SHIFT = 4;
-	/**
-	 * What to shift the hash-code of the tiles collection by in calculating
-	 * ours.
-	 */
-	private static final int TILES_HASH_SHIFT = 10;
 	/**
 	 *
 	 * @return a hash value for the map
 	 */
 	@Override
 	public int hashCode() {
-		return getDimensions().hashCode() + players.hashCode() << PLAYERS_HASH_SHIFT
+		return getDimensions().hashCode() + players.hashCode() << PLAYERS_HASH_SHFT
 				+ tiles.hashCode() << TILES_HASH_SHIFT;
 	}
 
@@ -145,9 +146,7 @@ public class SPMap implements IMutableMap {
 			sbuild.append("): ");
 			sbuild.append(tiles.getTile(point));
 		}
-		final String retval = sbuild.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(sbuild.toString());
 	}
 
 	/**
@@ -155,15 +154,15 @@ public class SPMap implements IMutableMap {
 	 *
 	 * @param obj another map
 	 * @return whether it's a strict subset of this one
-	 * @param out the stream to write details of the difference to
+	 * @param ostream the stream to write details of the difference to
 	 */
 	@Override
-	public boolean isSubset(final IMap obj, final PrintWriter out) {
+	public boolean isSubset(final IMap obj, final PrintWriter ostream) {
 		if (getDimensions().equals(obj.getDimensions())) {
-			return players.isSubset(obj.getPlayers(), out) // NOPMD
-					&& tiles.isSubset(obj.getTiles(), out);
+			return players.isSubset(obj.getPlayers(), ostream) // NOPMD
+					&& tiles.isSubset(obj.getTiles(), ostream);
 		} else {
-			out.println("Sizes differ");
+			ostream.println("Sizes differ");
 			return false;
 		}
 	}
@@ -177,7 +176,7 @@ public class SPMap implements IMutableMap {
 	@Override
 	public int compareTo(final IMap other) {
 		if (equals(other)) {
-			return 0;
+			return 0; // NOPMD
 		} else {
 			return hashCode() - other.hashCode();
 		}

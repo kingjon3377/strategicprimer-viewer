@@ -20,6 +20,11 @@ import util.SingletonRandom;
  */
 public class RandomTable implements EncounterTable {
 	/**
+	 * A list of items.
+	 */
+	private final List<ComparablePair<Integer, String>> table;
+
+	/**
 	 * @param tile ignored
 	 * @param point ignored
 	 *
@@ -45,11 +50,6 @@ public class RandomTable implements EncounterTable {
 		}
 		return table.get(table.size() - 1).second();
 	}
-
-	/**
-	 * A list of items.
-	 */
-	private final List<ComparablePair<Integer, String>> table;
 
 	/**
 	 * Constructor.

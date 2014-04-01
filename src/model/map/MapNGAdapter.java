@@ -41,68 +41,68 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 
 	/**
 	 * @param obj another map
-	 * @param out the stream to write to
+	 * @param ostream the stream to write to
 	 * @return whether it is a strict subset of this map.
 	 */
 	@Override
-	public boolean isSubset(final IMapNG obj, final PrintWriter out) {
+	public boolean isSubset(final IMapNG obj, final PrintWriter ostream) {
 		if (dimensions().equals(obj.dimensions())) {
 			boolean retval = true;
 			for (final Player player : obj.players()) {
 				if (player != null && !state.getPlayers().contains(player)) {
 					// return false;
 					retval = false;
-					out.print("Extra player ");
-					out.println(player);
+					ostream.print("Extra player ");
+					ostream.println(player);
 				}
 			}
 			for (final Point point : obj.locations()) {
-				if (point != null && !isTileSubset(obj, out, point)) {
+				if (point != null && !isTileSubset(obj, ostream, point)) {
 					retval = false;
 				}
 			}
 			return retval; // NOPMD
 		} else {
-			out.println("Sizes differ");
+			ostream.println("Sizes differ");
 			return false;
 		}
 	}
 
 	/**
 	 * @param obj the map that might be a subset of us
-	 * @param out the stream to write detailed results to
+	 * @param ostream the stream to write detailed results to
 	 * @param loc the current location
 	 * @return whether that location fits the "subset" hypothesis.
 	 */
-	private boolean isTileSubset(final IMapNG obj, final PrintWriter out,
+	private boolean isTileSubset(final IMapNG obj, final PrintWriter ostream,
 			final Point loc) {
 		boolean retval = true;
 		if (!getBaseTerrain(loc).equals(obj.getBaseTerrain(loc))) { // NOPMD
 			// return false;
 			retval = false;
-			out.print("Tile types differ at ");
-			out.println(loc);
+			ostream.print("Tile types differ at ");
+			ostream.println(loc);
 		} else if (isMountainous(loc) != obj.isMountainous(loc)) { // NOPMD
 			// return false;
 			retval = false;
-			out.print("Reports of mountains differ at ");
-			out.println(loc);
+			ostream.print("Reports of mountains differ at ");
+			ostream.println(loc);
 		} else if (!areRiversSubset(getRivers(loc), obj.getRivers(loc))) { //NOPMD
 			retval = false;
-			out.print("Extra rivers at ");
-			out.println(loc);
-		} else if (!safeEquals(getForest(loc), obj.getForest(loc))) { // NOPMD
+			ostream.print("Extra rivers at ");
+			ostream.println(loc);
+		} else if (!Objects.equals(getForest(loc), obj.getForest(loc))) { // NOPMD
 			// return false;
 			retval = false;
-			out.print("Primary forests differ at ");
-			out.print(loc);
-			out.println(", may be representation error");
-		} else if (!safeEquals(getGround(loc), obj.getGround(loc))) { // NOPMD
+			ostream.print("Primary forests differ at ");
+			ostream.print(loc);
+			ostream.println(", may be representation error");
+		} else if (!Objects.equals(getGround(loc), obj.getGround(loc))) { // NOPMD
 			// return false;
 			retval = false;
-			out.print("Primary Ground differs at ");
-			out.print(loc);
-			out.println(", may be representation error");
+			ostream.print("Primary Ground differs at ");
+			ostream.print(loc);
+			ostream.println(", may be representation error");
 		} else {
 			// TODO: Use Guava collection-from-iterable to improve/simplify this
 			final List<TileFixture> fixtures = new ArrayList<>();
@@ -114,33 +114,14 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 						&& !Tile.shouldSkip(fix)) {
 					// return false;
 					retval = false;
-					out.print("Extra fixture ");
-					out.print(fix);
-					out.print(" at ");
-					out.println(loc);
+					ostream.print("Extra fixture ");
+					ostream.print(fix);
+					ostream.print(" at ");
+					ostream.println(loc);
 				}
 			}
 		}
 		return retval;
-	}
-
-	/**
-	 * Since getForest and getGround can both return null, we can't just use
-	 * equals() for them.
-	 *
-	 * @param one one object
-	 * @param two another
-	 * @param <T> the type of the two objects
-	 * @return true if both are null or if they are equal according to one's
-	 *         equals(), false otherwise.
-	 */
-	private static <T> boolean safeEquals(@Nullable final T one,
-			@Nullable final T two) {
-		if (one == null) {
-			return two == null;
-		} else {
-			return one.equals(two);
-		}
 	}
 
 	/**
@@ -170,7 +151,7 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 	@Override
 	public int compareTo(final IMapNG other) {
 		if (equals(other)) {
-			return 0;
+			return 0; // NOPMD
 		} else {
 			return hashCode() - other.hashCode();
 		}
@@ -317,20 +298,17 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof IMapNG && equalsImpl((IMapNG) obj));
+		return this == obj || obj instanceof IMapNG && equalsImpl((IMapNG) obj);
 	}
 	/**
 	 * @param obj another map
 	 * @return whether it equals this one
 	 */
 	private boolean equalsImpl(final IMapNG obj) {
-		if (!dimensions().equals(obj.dimensions())
-				|| !iterablesEqual(players(), obj.players())
-				|| getCurrentTurn() != obj.getCurrentTurn()
-				|| !getCurrentPlayer().equals(obj.getCurrentPlayer())) {
-			return false; // NOPMD
-		} else {
+		if (dimensions().equals(obj.dimensions())
+				&& iterablesEqual(players(), obj.players())
+				&& getCurrentTurn() == obj.getCurrentTurn()
+				&& getCurrentPlayer().equals(obj.getCurrentPlayer())) {
 			for (final Point point : locations()) {
 				if (point == null) {
 					continue;
@@ -344,12 +322,15 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 								obj.getGround(point))
 						|| !iterablesEqual(getOtherFixtures(point),
 								obj.getOtherFixtures(point))) {
-					return false;
+					return false; // NOPMD
 				}
 			}
-			return true;
+			return true; // NOPMD
+		} else {
+			return false; // NOPMD
 		}
 	}
+
 	/**
 	 * FIXME: This is probably very slow ...
 	 * @param one one iterable
@@ -375,7 +356,7 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 			second = (Collection<T>) two;
 		} else {
 			second = new ArrayList<>();
-			for (final T item : second) {
+			for (final T item : two) {
 				second.add(item);
 			}
 		}
