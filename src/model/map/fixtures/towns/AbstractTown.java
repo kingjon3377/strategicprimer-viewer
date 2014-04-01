@@ -119,7 +119,7 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 		return this == obj
 				|| (obj instanceof AbstractTown
 						&& getID() == ((TileFixture) obj).getID()
-						&& equalsContents(((AbstractTown) obj)));
+						&& equalsContents((AbstractTown) obj));
 	}
 
 	/**
