@@ -42,13 +42,7 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	/**
 	 * List of readers we'll try subtags on.
 	 */
-	private final List<CompactReader<? extends TileFixture>> readers =
-			assertNotNull(unmodifiableList(new ArrayList<CompactReader<? extends TileFixture>>(
-					Arrays.asList(CompactMobileReader.READER,
-							CompactResourceReader.READER,
-							CompactTerrainReader.READER,
-							CompactTextReader.READER, CompactTownReader.READER,
-							CompactGroundReader.READER))));
+	private final List<CompactReader<? extends TileFixture>> readers;
 
 	/**
 	 * Singleton object.
@@ -59,7 +53,15 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	 * Singleton.
 	 */
 	private CompactTileReader() {
-		// Do nothing.
+		final List<CompactReader<? extends TileFixture>> list =
+				new ArrayList<CompactReader<? extends TileFixture>>(
+						Arrays.asList(CompactMobileReader.READER,
+								CompactResourceReader.READER,
+								CompactTerrainReader.READER,
+								CompactTextReader.READER,
+								CompactTownReader.READER,
+								CompactGroundReader.READER));
+		readers = assertNotNull(unmodifiableList(list));
 	}
 
 	/**

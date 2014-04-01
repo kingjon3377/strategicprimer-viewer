@@ -64,11 +64,7 @@ public class ArrowKeyListener {
 	 * A listener to move the cursor in a direction.
 	 * @author Jonathan Lovelace
 	 */
-	private abstract static class AbstractDirListener extends AbstractAction { // $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.preferInterfacesToAbstractClasses
-		/**
-		 * The listener that handles the motion.
-		 */
-		protected final DirectionSelectionChanger dsc;
+	private abstract static class AbstractDirListener extends AbstractAction {
 		/**
 		 * How many times to repeat the motion on each user action.
 		 */
@@ -78,12 +74,9 @@ public class ArrowKeyListener {
 		 */
 		protected abstract void move();
 		/**
-		 * @param selListener the listener that handles the motion
 		 * @param countNum how many times to move on each user action
 		 */
-		protected AbstractDirListener(final DirectionSelectionChanger selListener,
-				final int countNum) {
-			dsc = selListener;
+		protected AbstractDirListener(final int countNum) {
 			count = countNum;
 		}
 
@@ -114,12 +107,17 @@ public class ArrowKeyListener {
 	// ESCA-JAVA0237:
 	private static class UpListener extends AbstractDirListener {
 		/**
+		 * The listener that handles the motion.
+		 */
+		private final DirectionSelectionChanger dsc;
+		/**
 		 * @param selListener the listener that handles the motion
 		 * @param countNum how many times to move on each user action
 		 */
 		protected UpListener(final DirectionSelectionChanger selListener,
 				final int countNum) {
-			super(selListener, countNum);
+			super(countNum);
+			dsc = selListener;
 		}
 
 		/**
@@ -138,12 +136,17 @@ public class ArrowKeyListener {
 	// ESCA-JAVA0237:
 	private static class DownListener extends AbstractDirListener {
 		/**
+		 * The listener that handles the motion.
+		 */
+		private final DirectionSelectionChanger dsc;
+		/**
 		 * @param selListener the listener that handles the motion
 		 * @param countNum how many times to move on each user action
 		 */
 		protected DownListener(final DirectionSelectionChanger selListener,
 				final int countNum) {
-			super(selListener, countNum);
+			super(countNum);
+			dsc = selListener;
 		}
 
 		/**
@@ -162,12 +165,17 @@ public class ArrowKeyListener {
 	// ESCA-JAVA0237:
 	private static class LeftListener extends AbstractDirListener {
 		/**
+		 * The listener that handles the motion.
+		 */
+		private final DirectionSelectionChanger dsc;
+		/**
 		 * @param selListener the listener that handles the motion
 		 * @param countNum how many times to move on each user action
 		 */
 		protected LeftListener(final DirectionSelectionChanger selListener,
 				final int countNum) {
-			super(selListener, countNum);
+			super(countNum);
+			dsc = selListener;
 		}
 
 		/**
@@ -186,12 +194,17 @@ public class ArrowKeyListener {
 	// ESCA-JAVA0237:
 	private static class RightListener extends AbstractDirListener {
 		/**
+		 * The listener that handles the motion.
+		 */
+		private final DirectionSelectionChanger dsc;
+		/**
 		 * @param selListener the listener that handles the motion
 		 * @param countNum how many times to move on each user action
 		 */
 		protected RightListener(final DirectionSelectionChanger selListener,
 				final int countNum) {
-			super(selListener, countNum);
+			super(countNum);
+			dsc = selListener;
 		}
 
 		/**

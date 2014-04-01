@@ -38,7 +38,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public class WorkerConstructionFrame extends JFrame implements ActionListener, // $codepro.audit.disable largeNumberOfFields
+public class WorkerConstructionFrame extends JFrame implements ActionListener,
 		NewWorkerSource {
 	/**
 	 * The ID factory to use to generate IDs.

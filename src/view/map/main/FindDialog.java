@@ -61,7 +61,7 @@ public class FindDialog extends JDialog implements ActionListener {
 	 * A label to display error messages.
 	 */
 	private final JLabel errorLabel = new JLabel(
-			"This text should vanish from the error-message label before the constructor ends.");
+			"This text should vanish from this label before the constructor ends.");
 	/**
 	 * The checkbox for searching backwards.
 	 */
@@ -212,14 +212,28 @@ public class FindDialog extends JDialog implements ActionListener {
 	private static boolean matchesOwner(final String pattern, final int idNum,
 			final IFixture fix) {
 		return fix instanceof HasOwner
-				&& (((HasOwner) fix).getOwner().getName().contains(pattern)
-						|| "me".equalsIgnoreCase(pattern.trim())
-						&& ((HasOwner) fix).getOwner().isCurrent()
-						|| "none".equalsIgnoreCase(pattern.trim())
-						&& ((HasOwner) fix).getOwner().isIndependent() || ((HasOwner) fix)
-						.getOwner().getPlayerId() == idNum);
+				&& (((HasOwner) fix).getOwner().getPlayerId() == idNum
+						|| ((HasOwner) fix).getOwner().getName()
+								.contains(pattern) || matchesOwnerSpecials(
+							pattern, (HasOwner) fix));
 	}
-
+	
+	/**
+	 * @param fix
+	 *            a fixture
+	 * @param pattern
+	 *            a pattern
+	 * @return whether the pattern is "me" and the fixture is owned by the
+	 *         current player, or if the pattern is "none" and the fixture is
+	 *         independent.
+	 */
+	private static boolean matchesOwnerSpecials(final String pattern,
+			final HasOwner fix) {
+		return "me".equalsIgnoreCase(pattern.trim())
+				&& fix.getOwner().isCurrent()
+				|| "none".equalsIgnoreCase(pattern.trim())
+				&& fix.getOwner().isIndependent();
+	}
 	/**
 	 * @param pattern a pattern
 	 * @param fix a fixture

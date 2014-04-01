@@ -1,4 +1,3 @@
-// $codepro.audit.disable com.instantiations.assist.eclipse.analysis.avoidPackageScopeAuditRule
 package controller.exploration;
 
 import java.io.BufferedReader;

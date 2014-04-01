@@ -141,7 +141,7 @@ public class ImmortalsReportGenerator extends
 	 * @return the part of the report listing "immortals"
 	 */
 	@Override
-	public AbstractReportNode produceRIR(// $codepro.audit.disable cyclomaticComplexity
+	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionListReportNode(4,
@@ -244,7 +244,7 @@ public class ImmortalsReportGenerator extends
 	 *         handle here.
 	 */
 	@Override
-	public AbstractReportNode produceRIR(//$codepro.audit.disable cyclomaticComplexity
+	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer,
 			final MobileFixture item, final Point loc) {

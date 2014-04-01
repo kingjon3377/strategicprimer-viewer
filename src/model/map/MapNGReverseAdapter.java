@@ -126,7 +126,8 @@ public class MapNGReverseAdapter implements IMap {
 		 * @return whether the other collection is a subset of this one
 		 */
 		@Override
-		public boolean isSubset(final ITileCollection obj, final PrintWriter ostream) {
+		public boolean isSubset(final ITileCollection obj,
+				final PrintWriter ostream) {
 			throw new IllegalStateException("FIXME: Not implemented yet");
 		}
 		/**

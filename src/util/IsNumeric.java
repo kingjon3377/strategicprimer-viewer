@@ -22,7 +22,7 @@ public final class IsNumeric {
 		try {
 			Integer.parseInt(string);
 			return true; // NOPMD
-		} catch (final NumberFormatException except) { // $codepro.audit.disable logExceptions
+		} catch (final NumberFormatException except) {
 			return false;
 		}
 	}

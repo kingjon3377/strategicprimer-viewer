@@ -10,16 +10,16 @@ import java.io.PrintStream;
  */
 public final class SystemOut extends PrintStream {
 	/**
+	 * The singleton object.
+	 */
+	public static final SystemOut SYS_OUT = new SystemOut();
+
+	/**
 	 * Constructor.
 	 */
 	private SystemOut() {
 		super(System.out);
 	}
-
-	/**
-	 * The singleton object.
-	 */
-	public static final SystemOut SYS_OUT = new SystemOut(); // $codepro.audit.disable closeWhereCreated
 
 	/**
 	 *

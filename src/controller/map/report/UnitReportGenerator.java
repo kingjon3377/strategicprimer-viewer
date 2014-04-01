@@ -244,12 +244,21 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		if (worker.iterator().hasNext() && details) {
 			final AbstractReportNode jobs = new ListReportNode(HAS_TRAINING);
 			for (final Job job : worker) {
-				jobs.add(new SimpleReportNode(Integer.toString(job.getLevel()), //NOPMD
-						" levels in ", job.getName(), getSkills(job)));
+				if (job != null) {
+					jobs.add(produceJobRIR(job));
+				}
 			}
 			retval.add(jobs);
 		}
 		return retval;
+	}
+	/**
+	 * @param job a Job
+	 * @return a sub-report on that Job.
+	 */
+	private static AbstractReportNode produceJobRIR(final Job job) {
+		return new SimpleReportNode(Integer.toString(job.getLevel()),
+				" levels in ", job.getName(), getSkills(job));
 	}
 
 	/**

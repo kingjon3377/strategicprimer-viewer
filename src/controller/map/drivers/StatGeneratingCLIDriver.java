@@ -51,6 +51,12 @@ import controller.map.misc.MapReaderAdapter;
  */
 public class StatGeneratingCLIDriver implements ISPDriver {
 	/**
+	 * The prompt to use to ask the user if he or she wants to enter
+	 * pregenerated stats for workers that already exist.
+	 */
+	private static final String PREGEN_PROMPT =
+			"Enter pregenerated stats for existing workers? ";
+	/**
 	 * The basis on which stat modifiers are calculated. Every two points above
 	 * this gives +1, and every two points below this gives -1.
 	 */
@@ -116,8 +122,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 					except);
 		}
 		try {
-			if (helper
-					.inputBoolean("Enter pregenerated stats for existing workers? ")) {
+			if (helper.inputBoolean(PREGEN_PROMPT)) {
 				enterStats(model);
 			} else {
 				createWorkers(model, IDFactoryFiller.createFactory(model));

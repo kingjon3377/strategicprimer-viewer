@@ -96,8 +96,9 @@ public final class CompactReaderAdapter {
 		} else if (Player.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactPlayerReader.READER;
 		} else if (TileFixture.class.isAssignableFrom(type)) {
-			reader =
-					(CompactReader<T>) getFixtureReader((Class<? extends TileFixture>) type);
+			final Class<? extends TileFixture> fixType =
+					(Class<? extends TileFixture>) type;
+			reader = (CompactReader<T>) getFixtureReader(fixType);
 		} else if (Worker.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactWorkerReader.READER;
 		} else {

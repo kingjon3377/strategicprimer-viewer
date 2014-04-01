@@ -205,7 +205,7 @@ public class ExplorationRunner { // NOPMD
 							}
 						}
 					}
-				} catch (final MissingTableException e) { // $codepro.audit.disable logExceptions
+				} catch (final MissingTableException e) {
 					return true; // NOPMD
 				}
 				return false; // NOPMD

@@ -141,7 +141,7 @@ public class HarvestableReportGenerator extends // NOPMD
 	 * @return the part of the report listing things that can be harvested.
 	 */
 	@Override
-	public AbstractReportNode produceRIR(//$codepro.audit.disable cyclomaticComplexity
+	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player player) {
 		//  TODO: Use Guava Multimaps to reduce cyclomatic complexity

@@ -47,8 +47,6 @@ public class Mountain implements TerrainFixture, HasImage {
 	 * @return whether it's equal to this one
 	 */
 	@Override
-	// $codepro.audit.disable
-	// com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.obeyEqualsContract.obeyGeneralContractOfEquals
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof Mountain;
 	}
