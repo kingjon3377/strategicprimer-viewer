@@ -1,5 +1,7 @@
 package view.worker;
 
+import static view.util.ErrorShower.showErrorDialog;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Logger;
@@ -17,7 +19,6 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import util.NullCleaner;
 import util.TypesafeLogger;
-import view.util.ErrorShower;
 import controller.map.misc.IDFactory;
 
 /**
@@ -131,9 +132,8 @@ public final class WorkerCreationListener implements ActionListener,
 	public void addNewWorker(final Worker worker) {
 		if (NULL_UNIT.equals(selUnit)) {
 			LOGGER.warning("New worker created when no unit selected");
-			ErrorShower
-					.showErrorDialog(null,
-							"As no unit was selected, the new worker was not added to a unit.");
+			showErrorDialog(null,
+					"As no unit was selected, the new worker wasn't added to a unit.");
 		} else {
 			tmodel.addUnitMember(selUnit, worker);
 		}

@@ -10,6 +10,8 @@ import java.util.List;
 import model.map.fixtures.RiverFixture;
 
 import org.eclipse.jdt.annotation.Nullable;
+
+import util.NullCleaner;
 /**
  * An IMap implementation that uses an IMapNG for its backend.
  * @author Jonathan Lovelace
@@ -29,11 +31,11 @@ public class MapNGReverseAdapter implements IMap {
 	/**
 	 *
 	 * @param obj another map
-	 * @param out a stream to write comments to
+	 * @param ostream a stream to write comments to
 	 * @return whether it's a subset of this one
 	 */
 	@Override
-	public boolean isSubset(@Nullable final IMap obj, final PrintWriter out) {
+	public boolean isSubset(@Nullable final IMap obj, final PrintWriter ostream) {
 		throw new IllegalStateException("Not yet implemented");
 	}
 	/**
@@ -43,7 +45,7 @@ public class MapNGReverseAdapter implements IMap {
 	@Override
 	public int compareTo(final IMap obj) {
 		if (equals(obj)) {
-			return 0;
+			return 0; // NOPMD
 		} else {
 			return hashCode() - obj.hashCode();
 		}
@@ -54,11 +56,10 @@ public class MapNGReverseAdapter implements IMap {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof IMap
-						&& getDimensions().equals(((IMap) obj).getDimensions())
-						&& getPlayers().equals(((IMap) obj).getPlayers()) && getTiles()
-						.equals(((IMap) obj).getTiles()));
+		return this == obj || obj instanceof IMap
+				&& getDimensions().equals(((IMap) obj).getDimensions())
+				&& getPlayers().equals(((IMap) obj).getPlayers())
+				&& getTiles().equals(((IMap) obj).getTiles());
 	}
 	/**
 	 * @return a hash value for the object
@@ -117,17 +118,15 @@ public class MapNGReverseAdapter implements IMap {
 		 */
 		@Override
 		public Iterator<Point> iterator() {
-			final Iterator<Point> retval = outer.locations().iterator();
-			assert retval != null;
-			return retval;
+			return NullCleaner.assertNotNull(outer.locations().iterator());
 		}
 		/**
 		 * @param obj another collection of tiles
-		 * @param out a stream to (TODO) write results on
+		 * @param ostream a stream to (TODO) write results on
 		 * @return whether the other collection is a subset of this one
 		 */
 		@Override
-		public boolean isSubset(final ITileCollection obj, final PrintWriter out) {
+		public boolean isSubset(final ITileCollection obj, final PrintWriter ostream) {
 			throw new IllegalStateException("FIXME: Not implemented yet");
 		}
 		/**
@@ -186,7 +185,7 @@ public class MapNGReverseAdapter implements IMap {
 		public boolean isSubset(final IPlayerCollection obj, final PrintWriter out) {
 			for (final Player player : obj) {
 				if (player != null && !contains(player)) {
-					return false;
+					return false; // NOPMD
 				}
 			}
 			return true;
@@ -196,9 +195,7 @@ public class MapNGReverseAdapter implements IMap {
 		 */
 		@Override
 		public Iterator<Player> iterator() {
-			final Iterator<Player> retval = outer.players().iterator();
-			assert retval != null;
-			return retval;
+			return NullCleaner.assertNotNull(outer.players().iterator());
 		}
 		/**
 		 * @param player a player number
@@ -208,7 +205,7 @@ public class MapNGReverseAdapter implements IMap {
 		public Player getPlayer(final int player) {
 			for (final Player test : outer.players()) {
 				if (test.getPlayerId() == player) {
-					return test;
+					return test; // NOPMD
 				}
 			}
 			return new Player(-1, "");
@@ -235,7 +232,7 @@ public class MapNGReverseAdapter implements IMap {
 		public boolean contains(final Player obj) {
 			for (final Player player : this) {
 				if (obj.equals(player)) {
-					return true;
+					return true; // NOPMD
 				}
 			}
 			return false;
@@ -257,6 +254,10 @@ public class MapNGReverseAdapter implements IMap {
 		 */
 		protected final Point loc;
 		/**
+		 * The map to refer to.
+		 */
+		protected final IMapNG map;
+		/**
 		 * Constructor.
 		 * @param outer the map to refer to
 		 * @param location where this tile is
@@ -265,10 +266,6 @@ public class MapNGReverseAdapter implements IMap {
 			map = outer;
 			loc = location;
 		}
-		/**
-		 * The map to refer to.
-		 */
-		protected final IMapNG map;
 		/**
 		 * @param obj another tile
 		 * @param out a stream to write comments to

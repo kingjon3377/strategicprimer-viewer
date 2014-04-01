@@ -125,13 +125,12 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Unit
-						&& ((Unit) obj).owner.getPlayerId() == owner
-								.getPlayerId()
-						&& (((Unit) obj).kind.equals(kind))
-						&& (((Unit) obj).name.equals(name))
-						&& (((Unit) obj).members.equals(members)) && ((Unit) obj).id == id);
+		return this == obj || obj instanceof Unit
+				&& ((Unit) obj).owner.getPlayerId() == owner.getPlayerId()
+				&& ((Unit) obj).kind.equals(kind)
+				&& ((Unit) obj).name.equals(name)
+				&& ((Unit) obj).members.equals(members)
+				&& ((Unit) obj).id == id;
 	}
 
 	/**

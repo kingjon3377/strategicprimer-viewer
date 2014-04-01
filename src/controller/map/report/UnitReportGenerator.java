@@ -50,7 +50,10 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer,
 			final Unit unit, final Point loc) {
-		final StringBuilder builder = new StringBuilder();
+		final StringBuilder builder =
+				new StringBuilder(52 + unit.getKind().length()
+						+ unit.getName().length()
+						+ unit.getOwner().getName().length());
 		builder.append("Unit of type ");
 		builder.append(unit.getKind());
 		builder.append(", named ");
@@ -81,9 +84,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			builder.append(CLOSE_LIST);
 		}
 		fixtures.remove(Integer.valueOf(unit.getID()));
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
@@ -184,9 +185,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			}
 			builder.append(CLOSE_LIST);
 		}
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
@@ -210,9 +209,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			}
 			builder.append(')');
 		}
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**

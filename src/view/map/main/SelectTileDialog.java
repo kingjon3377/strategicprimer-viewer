@@ -38,7 +38,7 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 	 * A label to display error messages.
 	 */
 	private final JLabel errorLabel = new JLabel(
-			"This text should vanish from the error-message label before the constructor ends.");
+			"This text should vanish from this label before it appears.");
 	/**
 	 * The map model to change the selection in.
 	 */

@@ -70,8 +70,8 @@ public class Fairy implements MobileFixture, HasImage, HasKind, UnitMember {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Fairy && kind.equals(((Fairy) obj).kind) && id == ((Fairy) obj).id);
+		return this == obj || obj instanceof Fairy
+				&& kind.equals(((Fairy) obj).kind) && id == ((Fairy) obj).id;
 	}
 
 	/**

@@ -66,11 +66,6 @@ public class ArrowKeyListener {
 	 */
 	private abstract static class AbstractDirListener extends AbstractAction { // $codepro.audit.disable com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.preferInterfacesToAbstractClasses
 		/**
-		 * Do the actual motion.
-		 */
-		protected abstract void move();
-
-		/**
 		 * The listener that handles the motion.
 		 */
 		protected final DirectionSelectionChanger dsc;
@@ -78,7 +73,10 @@ public class ArrowKeyListener {
 		 * How many times to repeat the motion on each user action.
 		 */
 		private final int count;
-
+		/**
+		 * Do the actual motion.
+		 */
+		protected abstract void move();
 		/**
 		 * @param selListener the listener that handles the motion
 		 * @param countNum how many times to move on each user action

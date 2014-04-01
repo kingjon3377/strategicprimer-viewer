@@ -102,13 +102,12 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Fortress
-						&& (name.equals(((Fortress) obj).name))
-						&& ((Fortress) obj).owner.getPlayerId() == owner
-								.getPlayerId()
-						&& ((Fortress) obj).units.containsAll(units)
-						&& units.containsAll(((Fortress) obj).units) && ((Fortress) obj).id == id);
+		return this == obj || obj instanceof Fortress
+				&& name.equals(((Fortress) obj).name)
+				&& ((Fortress) obj).owner.getPlayerId() == owner.getPlayerId()
+				&& ((Fortress) obj).units.containsAll(units)
+				&& units.containsAll(((Fortress) obj).units)
+				&& ((Fortress) obj).id == id;
 	}
 
 	/**

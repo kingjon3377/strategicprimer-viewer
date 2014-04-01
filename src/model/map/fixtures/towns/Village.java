@@ -96,10 +96,10 @@ public class Village implements ITownFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Village
-						&& status.equals(((Village) obj).status)
-						&& name.equals(((Village) obj).name) && id == ((Village) obj).id)
+		return this == obj || obj instanceof Village
+				&& status.equals(((Village) obj).status)
+				&& name.equals(((Village) obj).name)
+				&& id == ((Village) obj).id
 				&& owner.equals(((Village) obj).owner)
 				&& race.equals(((Village) obj).race);
 	}

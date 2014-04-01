@@ -143,7 +143,7 @@ public class ExplorationCLI {
 		int cost; // NOPMD
 		try {
 			cost = model.move(direction);
-		} catch (final TraversalImpossibleException except) { // $codepro.audit.disable logExceptions
+		} catch (final TraversalImpossibleException except) {
 			SYS_OUT.printC("That direction is impassable; we've made sure ")
 					.println("all maps show that at a cost of 1 MP");
 			return 1; // NOPMD

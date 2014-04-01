@@ -115,7 +115,7 @@ public class ImmortalsReportGenerator extends
 		optionallyPrintList(griffins, "Griffin(s) at ", builder);
 		builder.append(CLOSE_LIST);
 		if (totalSize == 0) {
-			return "";
+			return ""; // NOPMD
 		} else {
 			return NullCleaner.assertNotNull(builder.toString());
 		}
@@ -200,7 +200,7 @@ public class ImmortalsReportGenerator extends
 		optionallyAdd(simurghs, "Simurgh(s) at ", retval);
 		optionallyAdd(griffins, "Griffin(s) at ", retval);
 		if (retval.getChildCount() == 0) {
-			return EmptyReportNode.NULL_NODE;
+			return EmptyReportNode.NULL_NODE; // NOPMD
 		} else {
 			return retval;
 		}

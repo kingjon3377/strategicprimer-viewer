@@ -17,6 +17,7 @@ import model.map.fixtures.towns.TownStatus;
 
 import org.junit.Test;
 
+import util.NullCleaner;
 import util.Warning;
 import util.Warning.Action;
 import controller.map.formatexceptions.SPFormatException;
@@ -87,22 +88,19 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				}
 				// ESCA-JAVA0076:
 				assertSerialization(
-						"First CityEvent serialization test, reflection, status "
-								+ status + ", size " + size, new City(// NOPMD
-								status, size, 10, "oneCity", 0, owner),
-						City.class);
+						"First CityEvent serialization test, status " + status
+								+ ", size " + size, new City(status, size, // NOPMD
+								10, "oneCity", 0, owner), City.class);
 				// ESCA-JAVA0076:
 				assertSerialization(
-						"Second CityEvent serialization test, reflection, status "
-								+ status + ", size " + size, new City(// NOPMD
-								status, size, 40, "twoCity", 1, owner),
-						City.class);
+						"Second CityEvent serialization test, status " + status
+								+ ", size " + size, new City(status, size, // NOPMD
+								40, "twoCity", 1, owner), City.class);
 			}
 		}
 		final City three = new City(TownStatus.Active, TownSize.Small, 30, "",
 				3, owner);
-		assertSerialization(
-				"Serialization of CityEvent without a name, reflection", three,
+		assertSerialization("Serialization of CityEvent without a name", three,
 				City.class, new Warning(Action.Ignore));
 		assertMissingProperty(createSerializedForm(three, true), City.class,
 				NAME_PROPERTY, true);
@@ -141,12 +139,12 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 					continue;
 				}
 				assertSerialization(
-						"First FortificationEvent serialization test, status "
+						"First Fortification serialization test, status "
 								+ status + ", size " + size, new Fortification(
 								status, size, 10, "one", 1, owner),
 						Fortification.class);
 				assertSerialization(
-						"Second FortificationEvent serialization test, status "
+						"Second Fortification serialization test, status "
 								+ status + " and size " + size,
 						new Fortification(status, size, 40, "two", 2, owner), //NOPMD
 						Fortification.class);
@@ -176,7 +174,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	}
 
 	/**
-	 * Test serialization of MineralEvents.
+	 * Test serialization of MineralVeins.
 	 *
 	 * @throws SPFormatException on SP format problems
 	 * @throws XMLStreamException on XML reading problems
@@ -185,12 +183,10 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testMineralSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
-		assertSerialization(
-				"First MineralEvent serialization test, reflection",
+		assertSerialization("First MineralEvent serialization test",
 				new MineralVein("one", true, 10, 1), MineralVein.class);
 		final MineralVein two = new MineralVein("two", false, 35, 2);
-		assertSerialization(
-				"Second MineralEvent serialization test, reflection", two,
+		assertSerialization("Second MineralEvent serialization test", two,
 				MineralVein.class);
 		final String oldKindProperty = "mineral"; // NOPMD
 		final String testDataOne = createSerializedForm(two, true).replace(
@@ -199,12 +195,11 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated Mineral idiom", two,
 				testDataOne, MineralVein.class, oldKindProperty);
-		final String testDataTwo = createSerializedForm(two, false).replace(
-				KIND_PROPERTY, oldKindProperty);
-		assert testDataTwo != null;
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated Mineral idiom", two,
-				testDataTwo, MineralVein.class, oldKindProperty);
+				NullCleaner.assertNotNull(createSerializedForm(two, false)
+						.replace(KIND_PROPERTY, oldKindProperty)),
+				MineralVein.class, oldKindProperty);
 		assertUnwantedChild(
 				"<mineral kind=\"gold\" exposed=\"false\" dc=\"0\">"
 						+ "<troll /></mineral>", MineralVein.class, false);
@@ -222,7 +217,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	}
 
 	/**
-	 * Test serialization of StoneEvents.
+	 * Test serialization of StoneDeposits.
 	 *
 	 * @throws SPFormatException on SP format problems
 	 * @throws XMLStreamException on XML reading problems
@@ -235,9 +230,9 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			if (kind == null) {
 				continue;
 			}
-			assertSerialization("First StoneEvent test, kind: " + kind,
+			assertSerialization("First StoneDeposit test, kind: " + kind,
 					new StoneDeposit(kind, 8, 1), StoneDeposit.class); // NOPMD
-			assertSerialization("Second StoneEvent test, kind: " + kind,
+			assertSerialization("Second StoneDeposit test, kind: " + kind,
 					new StoneDeposit(kind, 15, 2), StoneDeposit.class); // NOPMD
 		}
 		final StoneDeposit three = new StoneDeposit(StoneKind.Marble, 10, 3);

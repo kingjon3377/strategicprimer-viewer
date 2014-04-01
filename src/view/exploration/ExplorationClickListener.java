@@ -100,7 +100,7 @@ public final class ExplorationClickListener implements ActionListener,
 					}
 				}
 			}
-		} catch (final TraversalImpossibleException except) { // $codepro.audit.disable logExceptions
+		} catch (final TraversalImpossibleException except) {
 			final Point sel = model.getSelectedUnitLocation();
 			for (final SelectionChangeListener listener : scListeners) {
 				listener.selectedPointChanged(null, sel);

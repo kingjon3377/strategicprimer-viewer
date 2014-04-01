@@ -109,16 +109,15 @@ public class HarvestableReportGenerator extends // NOPMD
 					pointCSL(entry.getValue())));
 		}
 		sortAll(caches, groves, meadows, mines, minerals, stone, shrubsText);
-		final String retval = concat("<h4>Resource Sources</h4>\n",
-				caches.toString(), groves.toString(), meadows.toString(),
-				mines.toString(), minerals.toString(), stone.toString(),
-				shrubsText.toString());
 		if (caches.isEmpty() && groves.isEmpty() && meadows.isEmpty()
 				&& mines.isEmpty() && minerals.isEmpty() && stone.isEmpty()
 				&& shrubs.isEmpty()) {
-			return "";
+			return ""; // NOPMD
 		} else {
-			return retval;
+			return concat("<h4>Resource Sources</h4>\n", caches.toString(),
+					groves.toString(), meadows.toString(), mines.toString(),
+					minerals.toString(), stone.toString(),
+					shrubsText.toString());
 		}
 	}
 	/**
@@ -198,12 +197,12 @@ public class HarvestableReportGenerator extends // NOPMD
 		final AbstractReportNode shrubsNode = new SortedSectionListReportNode(
 				5, "Shrubs, small trees, and such");
 		for (final Entry<String, List<Point>> entry : shrubs.entrySet()) {
-			shrubsNode.add(new SimpleReportNode(entry.getKey(), ": at ",
+			shrubsNode.add(new SimpleReportNode(entry.getKey(), ": at ", // NOPMD
 					pointCSL(entry.getValue())));
 		}
 		if (maybeAdd(retval, caches, groves, meadows, mines, minerals, stone,
 				shrubsNode)) {
-			return retval;
+			return retval; // NOPMMD
 		} else {
 			return EmptyReportNode.NULL_NODE;
 		}
@@ -243,8 +242,7 @@ public class HarvestableReportGenerator extends // NOPMD
 			final HarvestableFixture item, final Point loc) {
 		if (item instanceof CacheFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat(atPoint(loc),
-					"A cache of ", // NOPMD
+			return concat(atPoint(loc), "A cache of ", // NOPMD
 					((CacheFixture) item).getKind(), ", containing ",
 					((CacheFixture) item).getContents());
 		} else if (item instanceof Grove) {
@@ -257,7 +255,7 @@ public class HarvestableReportGenerator extends // NOPMD
 					ternary(((Grove) item).isOrchard(), " orchard", " grove"));
 		} else if (item instanceof Meadow) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat(
+			return concat(// NOPMD
 					atPoint(loc),
 					"A ",
 					((Meadow) item).getStatus().toString(),
@@ -266,10 +264,10 @@ public class HarvestableReportGenerator extends // NOPMD
 					ternary(((Meadow) item).isField(), " field", " meadow"));
 		} else if (item instanceof Mine) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat(atPoint(loc), item.toString());
+			return concat(atPoint(loc), item.toString()); // NOPMD
 		} else if (item instanceof MineralVein) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat(
+			return concat(// NOPMD
 					atPoint(loc),
 					"An ",
 					ternary(((MineralVein) item).isExposed(), "exposed ",
@@ -277,10 +275,10 @@ public class HarvestableReportGenerator extends // NOPMD
 					((MineralVein) item).getKind());
 		} else if (item instanceof Shrub) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat(atPoint(loc), ((Shrub) item).getKind());
+			return concat(atPoint(loc), ((Shrub) item).getKind()); // NOPMD
 		} else if (item instanceof StoneDeposit) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat(atPoint(loc), "An exposed ",
+			return concat(atPoint(loc), "An exposed ", // NOPMD
 					((StoneDeposit) item).getKind(), " deposit");
 		} else {
 			// It's a battlefield or cave.
@@ -306,28 +304,28 @@ public class HarvestableReportGenerator extends // NOPMD
 			final HarvestableFixture item, final Point loc) {
 		if (item instanceof CacheFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc), "A cache of ",
+			return new SimpleReportNode(atPoint(loc), "A cache of ", // NOPMD
 					((CacheFixture) item).getKind(), ", containing ",
 					((CacheFixture) item).getContents());
 		} else if (item instanceof Grove) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc), "A ", ternary(
+			return new SimpleReportNode(atPoint(loc), "A ", ternary(//NOPMD
 					((Grove) item).isCultivated(), "cultivated ", "wild "),
 					((Grove) item).getKind(), ternary(
 							((Grove) item).isOrchard(), " orchard", " grove"));
 		} else if (item instanceof Meadow) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc), "A ", ((Meadow) item)
+			return new SimpleReportNode(atPoint(loc), "A ", ((Meadow) item)//NOPMD
 					.getStatus().toString(), ternary(
 					((Meadow) item).isCultivated(), " cultivated ",
 					" wild or abandoned "), ((Meadow) item).getKind(), ternary(
 					((Meadow) item).isField(), " field", " meadow"));
 		} else if (item instanceof Mine) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc), item.toString());
+			return new SimpleReportNode(atPoint(loc), item.toString()); //NOPMD
 		} else if (item instanceof MineralVein) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc), "An ",
+			return new SimpleReportNode(atPoint(loc), "An ", // NOPMD
 					ternary(((MineralVein) item).isExposed(), "exposed ",
 							"unexposed "), "vein of ",
 					((MineralVein) item).getKind());
@@ -336,7 +334,7 @@ public class HarvestableReportGenerator extends // NOPMD
 			return new SimpleReportNode(atPoint(loc), ((Shrub) item).getKind());
 		} else if (item instanceof StoneDeposit) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc), "An exposed ",
+			return new SimpleReportNode(atPoint(loc), "An exposed ", // NOPMD
 					((StoneDeposit) item).getKind(), " deposit");
 		} else {
 			// It's a battlefield or cave.
@@ -356,7 +354,7 @@ public class HarvestableReportGenerator extends // NOPMD
 	private static String ternary(final boolean bool, final String first,
 			final String second) {
 		if (bool) {
-			return first;
+			return first; // NOPMD
 		} else {
 			return second;
 		}

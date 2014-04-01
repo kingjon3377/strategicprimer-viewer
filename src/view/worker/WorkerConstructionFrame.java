@@ -24,7 +24,7 @@ import model.workermgmt.RaceFactory;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import util.IsNumeric;
+import util.NullCleaner;
 import util.Pair;
 import util.SingletonRandom;
 import view.util.BorderedPanel;
@@ -40,6 +40,55 @@ import controller.map.misc.IDFactory;
  */
 public class WorkerConstructionFrame extends JFrame implements ActionListener, // $codepro.audit.disable largeNumberOfFields
 		NewWorkerSource {
+	/**
+	 * The ID factory to use to generate IDs.
+	 */
+	private final IDFactory idf;
+
+	/**
+	 * The 'name' field.
+	 */
+	private final JTextField name = new JTextField();
+	/**
+	 * The 'race' field.
+	 */
+	private final JTextField race = new JTextField();
+	/**
+	 * The text box representing the worker's HP.
+	 */
+	private final JTextField hpBox = new JTextField();
+	/**
+	 * The text box representing the worker's max HP.
+	 */
+	private final JTextField maxHP = new JTextField();
+	/**
+	 * The text box representing the worker's strength.
+	 */
+	private final JTextField str = new JTextField();
+	/**
+	 * The text box representing the worker's dexterity.
+	 */
+	private final JTextField dex = new JTextField();
+	/**
+	 * The text box representing the worker's constitution.
+	 */
+	private final JTextField con = new JTextField();
+	/**
+	 * The text box representing the worker's intelligence.
+	 */
+	private final JTextField intel = new JTextField();
+	/**
+	 * The text box representing the worker's wisdom.
+	 */
+	private final JTextField wis = new JTextField();
+	/**
+	 * The text box representing the worker's charisma.
+	 */
+	private final JTextField cha = new JTextField();
+	/**
+	 * The list of listeners to notify on worker creation.
+	 */
+	private final List<NewWorkerListener> nwListeners = new ArrayList<>();
 	/**
 	 * Constructor.
 	 *
@@ -80,7 +129,7 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener, /
 	 */
 	@SuppressWarnings("null") // TODO: fix properly
 	private String getErrorExpl() {
-		final StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder(50);
 		if (name.getText().trim().isEmpty()) {
 			builder.append("Worker needs a name.\n");
 		}
@@ -106,17 +155,15 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener, /
 	 */
 	@SafeVarargs
 	private static String numericExpl(final Pair<String, String>... numbers) {
-		final StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder(40);
 		for (final Pair<String, String> number : numbers) {
-			final String num = number.first().trim();
-			if (num == null || !IsNumeric.isNumeric(num)) {
+			final String num = NullCleaner.assertNotNull(number.first().trim());
+			if (!isNumeric(num)) {
 				builder.append(number.second());
 				builder.append(" must be a number.\n");
 			}
 		}
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
@@ -182,11 +229,6 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener, /
 	}
 
 	/**
-	 * The ID factory to use to generate IDs.
-	 */
-	private final IDFactory idf;
-
-	/**
 	 * Add a label and a field to a panel.
 	 *
 	 * @param panel the panel to hold them
@@ -225,51 +267,6 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener, /
 				+ rng.nextInt(6) + 3;
 		stat.setText(Integer.toString(threeDeeSix));
 	}
-
-	/**
-	 * The 'name' field.
-	 */
-	private final JTextField name = new JTextField();
-	/**
-	 * The 'race' field.
-	 */
-	private final JTextField race = new JTextField();
-	/**
-	 * The text box representing the worker's HP.
-	 */
-	private final JTextField hpBox = new JTextField();
-	/**
-	 * The text box representing the worker's max HP.
-	 */
-	private final JTextField maxHP = new JTextField();
-	/**
-	 * The text box representing the worker's strength.
-	 */
-	private final JTextField str = new JTextField();
-	/**
-	 * The text box representing the worker's dexterity.
-	 */
-	private final JTextField dex = new JTextField();
-	/**
-	 * The text box representing the worker's constitution.
-	 */
-	private final JTextField con = new JTextField();
-	/**
-	 * The text box representing the worker's intelligence.
-	 */
-	private final JTextField intel = new JTextField();
-	/**
-	 * The text box representing the worker's wisdom.
-	 */
-	private final JTextField wis = new JTextField();
-	/**
-	 * The text box representing the worker's charisma.
-	 */
-	private final JTextField cha = new JTextField();
-	/**
-	 * The list of listeners to notify on worker creation.
-	 */
-	private final List<NewWorkerListener> nwListeners = new ArrayList<>();
 
 	/**
 	 * @param list a listener to add

@@ -84,8 +84,8 @@ public final class TableLoader { // NOPMD
 	 * @return the table constructed from the file
 	 * @throws IOException on I/O error or badly formed table.
 	 */
-	static EncounterTable loadTableFromStream(final BufferedReader reader)
-			throws IOException { // NOPMD
+	static EncounterTable loadTableFromStream(final BufferedReader reader) // NOPMD
+			throws IOException {
 		final String line = reader.readLine();
 		if (line == null) {
 			throw new IOException(
@@ -153,10 +153,9 @@ public final class TableLoader { // NOPMD
 			if (array.length < SPLIT_ONCE) {
 				LOGGER.severe("Line with no blanks, continuing ...");
 			} else {
-				final String value = array[1];
-				final Integer lineNum = Integer.valueOf(array[0]);
-				assert lineNum != null && value != null;
-				list.add(ComparablePair.of(lineNum, value));
+				list.add(ComparablePair.of(
+						NullCleaner.assertNotNull(Integer.valueOf(array[0])),
+						NullCleaner.assertNotNull(array[1])));
 			}
 			line = reader.readLine();
 		}
@@ -179,10 +178,9 @@ public final class TableLoader { // NOPMD
 			if (array.length < SPLIT_ONCE) {
 				LOGGER.severe("Line with no blanks, continuing ...");
 			} else {
-				final String first = array[0];
-				final String second = array[1];
-				assert first != null && second != null;
-				list.add(Pair.of(TileType.getTileType(first), second));
+				list.add(Pair.of(TileType.getTileType(NullCleaner
+						.assertNotNull(array[0])), NullCleaner
+						.assertNotNull(array[1])));
 			}
 			line = reader.readLine();
 		}

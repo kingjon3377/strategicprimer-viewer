@@ -16,6 +16,7 @@ import model.map.fixtures.mobile.Unit;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.IteratorWrapper;
+import util.NullCleaner;
 
 /**
  * An alternative implementation of the worker tree model.
@@ -25,6 +26,11 @@ import util.IteratorWrapper;
  */
 public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		IWorkerTreeModel {
+	/**
+	 * The driver model.
+	 */
+	protected final IWorkerModel model;
+
 	/**
 	 * Constructor.
 	 *
@@ -36,11 +42,6 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		super(new PlayerNode(player, wmodel), true);
 		model = wmodel;
 	}
-
-	/**
-	 * The driver model.
-	 */
-	protected final IWorkerModel model;
 
 	/**
 	 * Move a member between units.
@@ -148,6 +149,11 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 */
 	public static final class EnumerationWrapper<T> implements Iterator<T> {
 		/**
+		 * The object we're wrapping.
+		 */
+		private final Enumeration<T> wrapped;
+
+		/**
 		 * @param enumer the object we're wrapping.
 		 */
 		public EnumerationWrapper(@Nullable final Enumeration<T> enumer) {
@@ -161,18 +167,13 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 					@Override
 					public T nextElement() {
 						throw new NoSuchElementException(
-								"No elements in empty enumeration (replacing a null argument)");
+								"No elements in empty enumeration (replacing null)");
 					}
 				};
 			} else {
 				wrapped = enumer;
 			}
 		}
-
-		/**
-		 * The object we're wrapping.
-		 */
-		private final Enumeration<T> wrapped;
 
 		/**
 		 * @return whether there are more elements
@@ -265,9 +266,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	@Override
 	public final Object getModelObject(final Object obj) {
 		if (obj instanceof DefaultMutableTreeNode) {
-			Object retval = ((DefaultMutableTreeNode) obj).getUserObject();
-			assert retval != null;
-			return retval;
+			return NullCleaner.assertNotNull(((DefaultMutableTreeNode) obj) // NOPMD
+					.getUserObject());
 		} else {
 			return obj;
 		}

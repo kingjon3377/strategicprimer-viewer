@@ -1,6 +1,7 @@
 package controller.map.cxml;
 
 import static java.util.Collections.unmodifiableList;
+import static util.NullCleaner.assertNotNull;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -26,7 +27,6 @@ import model.map.fixtures.TextFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.IteratorWrapper;
-import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
@@ -42,7 +42,13 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	/**
 	 * List of readers we'll try subtags on.
 	 */
-	private final List<CompactReader<? extends TileFixture>> readers;
+	private final List<CompactReader<? extends TileFixture>> readers =
+			assertNotNull(unmodifiableList(new ArrayList<CompactReader<? extends TileFixture>>(
+					Arrays.asList(CompactMobileReader.READER,
+							CompactResourceReader.READER,
+							CompactTerrainReader.READER,
+							CompactTextReader.READER, CompactTownReader.READER,
+							CompactGroundReader.READER))));
 
 	/**
 	 * Singleton object.
@@ -53,15 +59,7 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	 * Singleton.
 	 */
 	private CompactTileReader() {
-		readers =
-				NullCleaner
-						.assertNotNull(unmodifiableList(new ArrayList<CompactReader<? extends TileFixture>>(
-								Arrays.asList(CompactMobileReader.READER,
-										CompactResourceReader.READER,
-										CompactTerrainReader.READER,
-										CompactTextReader.READER,
-										CompactTownReader.READER,
-										CompactGroundReader.READER))));
+		// Do nothing.
 	}
 
 	/**
@@ -127,7 +125,7 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 			final IPlayerCollection players, final IDFactory idFactory,
 			final Warning warner) throws SPFormatException {
 		final String name =
-				NullCleaner.assertNotNull(element.getName().getLocalPart());
+				assertNotNull(element.getName().getLocalPart());
 		for (final CompactReader<? extends TileFixture> item : readers) {
 			if (item.isSupportedTag(name)) {
 				return item.read(element, stream, players, warner, idFactory);

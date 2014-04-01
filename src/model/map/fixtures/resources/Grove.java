@@ -114,10 +114,11 @@ public class Grove implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Grove && kind.equals(((Grove) obj).kind)
-						&& orchard == ((Grove) obj).orchard
-						&& cultivated == ((Grove) obj).cultivated && id == ((Grove) obj).id);
+		return this == obj || obj instanceof Grove
+				&& kind.equals(((Grove) obj).kind)
+				&& orchard == ((Grove) obj).orchard
+				&& cultivated == ((Grove) obj).cultivated
+				&& id == ((Grove) obj).id;
 	}
 
 	/**

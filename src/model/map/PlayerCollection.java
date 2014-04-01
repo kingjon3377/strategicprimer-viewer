@@ -9,6 +9,8 @@ import java.util.Map;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * A collection of players. Using a simple List doesn't work when -1 is the
  * default index if one isn't given in the XML.
@@ -32,9 +34,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	public Player getPlayer(final int player) {
 		final Integer pValue = Integer.valueOf(player);
 		if (players.containsKey(pValue)) {
-			final Player retval = players.get(pValue);
-			assert retval != null;
-			return retval;
+			return NullCleaner.assertNotNull(players.get(pValue)); // NOPMD
 		} else {
 			return new Player(player, "");
 		}
@@ -45,9 +45,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 */
 	@Override
 	public Iterator<Player> iterator() {
-		final Iterator<Player> iter = players.values().iterator();
-		assert iter != null;
-		return iter;
+		return NullCleaner.assertNotNull(players.values().iterator());
 	}
 
 	/**
@@ -57,10 +55,9 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof IPlayerCollection && (isSubset(
-						(IPlayerCollection) obj, DEV_NULL) && ((IPlayerCollection) obj)
-						.isSubset(this, DEV_NULL)));
+		return this == obj || obj instanceof IPlayerCollection
+				&& isSubset((IPlayerCollection) obj, DEV_NULL)
+				&& ((IPlayerCollection) obj).isSubset(this, DEV_NULL);
 	}
 
 	/**
@@ -181,8 +178,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 * @return an array of the players
 	 */
 	public Player[] asArray() {
-		final Player[] array = players.values().toArray(new Player[players.size()]);
-		assert array != null;
-		return array;
+		return NullCleaner.assertNotNull(players.values().toArray(
+				new Player[players.size()]));
 	}
 }

@@ -112,8 +112,8 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind,
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Worker && ((Worker) obj).id == id && equalsIgIDImpl((Worker) obj));
+		return this == obj || obj instanceof Worker && ((Worker) obj).id == id
+				&& equalsIgIDImpl((Worker) obj);
 	}
 	/**
 	 * @return a hash code for the object

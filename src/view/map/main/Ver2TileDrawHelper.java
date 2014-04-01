@@ -284,7 +284,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			assert filename != null;
 			return getImage(filename); // NOPMD
 		} else {
-			LOGGER.warning("Using the fallback image for an unanticipated kind of Fixture.");
+			LOGGER.warning("Using the fallback image for an unexpected kind of Fixture.");
 			return fallbackImage;
 		}
 	}
