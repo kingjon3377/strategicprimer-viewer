@@ -46,9 +46,7 @@ public class IntPair {
 		builder.append(", ");
 		builder.append(second);
 		builder.append(')');
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 }

@@ -26,6 +26,11 @@ public final class SkillListModel extends DefaultListModel<Skill> implements
 		CompletionSource, AddRemoveListener, JobSelectionListener,
 		LevelGainListener {
 	/**
+	 * The list of completion listeners listening to us.
+	 */
+	private final List<CompletionListener> cListeners = new ArrayList<>();
+
+	/**
 	 * A non-null "null" Job. Adjusted here to prevent modification.
 	 */
 	private static final Job NULL_JOB = new Job("null", -1) {
@@ -95,11 +100,6 @@ public final class SkillListModel extends DefaultListModel<Skill> implements
 			}
 		}
 	}
-
-	/**
-	 * The list of completion listeners listening to us.
-	 */
-	private final List<CompletionListener> cListeners = new ArrayList<>();
 
 	/**
 	 * @param list a listener to add

@@ -2,6 +2,8 @@ package model.report;
 
 import javax.swing.tree.TreeNode;
 
+import util.NullCleaner;
+
 /**
  * A node for a section consisting only of a list. This is a common case, and
  * we'd otherwise end up with a section node containing only a list.
@@ -10,6 +12,28 @@ import javax.swing.tree.TreeNode;
  *
  */
 public class SectionListReportNode extends AbstractReportNode {
+	/**
+	 * The header level.
+	 */
+	private int level;
+
+	/**
+	 * An optional sub-header. Since this only comes up once at present, we only
+	 * expose it in the constructor.
+	 */
+	private final String subheader;
+
+	/**
+	 * The size of the boilerplate text we have even before we add the size of
+	 * the children and the header.
+	 */
+	private static final int MIN_BOILERPLATE = "<h1></h1>\n<p></p>\n<ul>\n</ul>\n"
+			.length();
+	/**
+	 * The size of the boilerplate text we have to add for each child.
+	 */
+	private static final int PER_CHILD_BPLATE = "<li></li>\n".length();
+
 	/**
 	 * Constructor.
 	 *
@@ -35,32 +59,14 @@ public class SectionListReportNode extends AbstractReportNode {
 	}
 
 	/**
-	 * An optional sub-header. Since this only comes up once at present, we only
-	 * expose it in the constructor.
-	 */
-	private final String subheader;
-
-	/**
 	 * @return the HTML representation of the node
 	 */
 	@Override
 	public String produce() {
-		final String retval = produce(new StringBuilder(size())).toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(produce(new StringBuilder(size()))
+				.toString());
 	}
 	
-	/**
-	 * The size of the boilerplate text we have even before we add the size of
-	 * the children and the header.
-	 */
-	private static final int MIN_BOILERPLATE = "<h1></h1>\n<p></p>\n<ul>\n</ul>\n"
-			.length();
-	/**
-	 * The size of the boilerplate text we have to add for each child.
-	 */
-	private static final int PER_CHILD_BPLATE = "<li></li>\n".length();
-
 	/**
 	 * @param builder a StringBuilder
 	 * @return it, with this node's HTML representation appended.
@@ -103,11 +109,6 @@ public class SectionListReportNode extends AbstractReportNode {
 		}
 		return retval;
 	}
-
-	/**
-	 * The header level.
-	 */
-	private int level;
 
 	/**
 	 * @param lvl the new header level

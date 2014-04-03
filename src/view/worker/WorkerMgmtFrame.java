@@ -296,6 +296,11 @@ public class WorkerMgmtFrame extends JFrame {
 	 */
 	public static class StrategyExporter {
 		/**
+		 * The worker model.
+		 */
+		private final IWorkerModel model;
+
+		/**
 		 * Constructor.
 		 *
 		 * @param wmodel the driver model to draw from
@@ -305,15 +310,11 @@ public class WorkerMgmtFrame extends JFrame {
 		}
 
 		/**
-		 * The worker model.
-		 */
-		private final IWorkerModel model;
-
-		/**
 		 * @return the proto-strategy as a String
 		 */
 		public String createStrategy() {
-			final StringBuilder builder = new StringBuilder();
+			// FIXME: Calculate proper size
+			final StringBuilder builder = new StringBuilder(1024);
 			builder.append('[');
 			builder.append(model.getMap().getPlayers().getCurrentPlayer()
 					.getName());
@@ -357,9 +358,7 @@ public class WorkerMgmtFrame extends JFrame {
 					builder.append("\n\n");
 				}
 			}
-			final String retval = builder.toString();
-			assert retval != null;
-			return retval;
+			return NullCleaner.assertNotNull(builder.toString());
 		}
 
 		/**
@@ -384,9 +383,7 @@ public class WorkerMgmtFrame extends JFrame {
 					builder.append(memberString(member));
 				}
 				builder.append(']');
-				final String retval = builder.toString();
-				assert retval != null;
-				return retval; // NOPMD
+				return NullCleaner.assertNotNull(builder.toString()); // NOPMD
 			} else {
 				return "";
 			}
@@ -417,13 +414,9 @@ public class WorkerMgmtFrame extends JFrame {
 					}
 					builder.append(')');
 				}
-				final String retval = builder.toString();
-				assert retval != null;
-				return retval; // NOPMD
+				return NullCleaner.assertNotNull(builder.toString()); // NOPMD
 			} else {
-				final String retval = member.toString();
-				assert retval != null;
-				return retval;
+				return NullCleaner.assertNotNull(member.toString());
 			}
 		}
 		/**

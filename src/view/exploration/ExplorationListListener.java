@@ -14,6 +14,7 @@ import model.map.fixtures.mobile.Unit;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
 import view.map.details.FixtureList;
 
 /**
@@ -83,6 +84,14 @@ public final class ExplorationListListener implements ListDataListener {
 	 */
 	private static class IntPair<T> {
 		/**
+		 * The number in the pair.
+		 */
+		private final int number;
+		/**
+		 * The object in the pair.
+		 */
+		private final T object;
+		/**
 		 * Factory method.
 		 * @param number the number in the pair
 		 * @param object the object in the pair
@@ -101,14 +110,6 @@ public final class ExplorationListListener implements ListDataListener {
 			number = num;
 			object = obj;
 		}
-		/**
-		 * The number in the pair.
-		 */
-		private final int number;
-		/**
-		 * The object in the pair.
-		 */
-		private final T object;
 		/**
 		 * @return the number in the pair
 		 */
@@ -134,9 +135,7 @@ public final class ExplorationListListener implements ListDataListener {
 			builder.append(", ");
 			builder.append(objStr);
 			builder.append(')');
-			final String retval = builder.toString();
-			assert retval != null;
-			return retval;
+			return NullCleaner.assertNotNull(builder.toString());
 		}
 	}
 	/**

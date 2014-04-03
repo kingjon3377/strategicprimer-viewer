@@ -21,6 +21,7 @@ import model.map.fixtures.mobile.worker.Skill;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
 import util.TypesafeLogger;
 
 /**
@@ -32,13 +33,9 @@ import util.TypesafeLogger;
 public final class JobTreeModel implements TreeModel, UnitMemberListener,
 		AddRemoveListener {
 	/**
-	 * Constructor.
-	 *
-	 * @param selModel the tree's selection model.
+	 * The listeners registered to listen for model changes.
 	 */
-	public JobTreeModel(final TreeSelectionModel selModel) {
-		tsm = selModel;
-	}
+	private final List<TreeModelListener> listeners = new ArrayList<>();
 
 	/**
 	 * The worker who the Jobs and Skills describe.
@@ -50,6 +47,21 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 * The tree's selection model.
 	 */
 	private final TreeSelectionModel tsm;
+
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(WorkerTreeModel.class);
+
+	/**
+	 * Constructor.
+	 *
+	 * @param selModel the tree's selection model.
+	 */
+	public JobTreeModel(final TreeSelectionModel selModel) {
+		tsm = selModel;
+	}
 
 	/**
 	 * @return the root of the tree, the worker.
@@ -70,9 +82,9 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 		final Worker currRoot = root;
 		if (index >= 0 && currRoot != null && parent instanceof Worker
 				&& parent.equals(currRoot)) {
-			return getFromIter(currRoot, index);
+			return getFromIter(currRoot, index); // NOPMD
 		} else if (index >= 0 && parent instanceof Job) {
-			return getFromIter((Job) parent, index);
+			return getFromIter((Job) parent, index); // NOPMD
 		} else {
 			throw new ArrayIndexOutOfBoundsException(
 					"Parent does not have that child.");
@@ -142,12 +154,6 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	}
 
 	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(WorkerTreeModel.class);
-
-	/**
 	 *
 	 * @param path a path indicating a node
 	 * @param newValue the new value for that place
@@ -177,11 +183,11 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 			assert parent != null;
 			for (final Object item : (Iterable<?>) parent) {
 				if (item.equals(child)) {
-					return index;
+					return index; // NOPMD
 				}
 				index++;
 			}
-			return -1;
+			return -1; // NOPMD
 		} else {
 			return -1;
 		}
@@ -203,11 +209,6 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	public void removeTreeModelListener(@Nullable final TreeModelListener list) {
 		listeners.remove(list);
 	}
-
-	/**
-	 * The listeners registered to listen for model changes.
-	 */
-	private final List<TreeModelListener> listeners = new ArrayList<>();
 
 	/**
 	 * @param category what kind of thing is being added; if not a Job we ignore
@@ -307,8 +308,6 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 		final StringBuilder builder = new StringBuilder(30 + workerString.length());
 		builder.append("JobTreeModel showing worker ");
 		builder.append(workerString);
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 }

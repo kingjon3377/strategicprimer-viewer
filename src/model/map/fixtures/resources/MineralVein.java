@@ -7,6 +7,8 @@ import model.map.TileFixture;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * A vein of a mineral.
  *
@@ -15,6 +17,23 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public final class MineralVein implements IEvent, HarvestableFixture,
 		HasKind {
+	/**
+	 * Whether the vein is exposed.
+	 *
+	 * TODO: Perhaps this should be mutable and protected by accessor methods?
+	 */
+	private final boolean exposed;
+
+	/**
+	 * What kind of mineral this is.
+	 */
+	private String mineral;
+
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
 	/**
 	 * Constructor.
 	 *
@@ -33,24 +52,12 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	}
 
 	/**
-	 * What kind of mineral this is.
-	 */
-	private String mineral;
-
-	/**
 	 *
 	 * @return what kind of mineral this is
 	 */
 	public String mineral() {
 		return mineral;
 	}
-
-	/**
-	 * Whether the vein is exposed.
-	 *
-	 * TODO: Perhaps this should be mutable and protected by accessor methods?
-	 */
-	private final boolean exposed;
 
 	/**
 	 *
@@ -93,9 +100,7 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 		} else {
 			build.append(", but it's not exposed.");
 		}
-		final String retval = build.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(build.toString());
 	}
 
 	/**
@@ -127,7 +132,7 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	@Override
 	public String toString() {
 		if (exposed) {
-			return "A " + mineral + " deposit, exposed, DC " + dc;
+			return "A " + mineral + " deposit, exposed, DC " + dc; // NOPMD
 		} else {
 			return "A " + mineral + " deposit, not exposed, DC " + dc;
 		}
@@ -186,8 +191,8 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return this == fix
-				|| (fix instanceof MineralVein && equalsContents((MineralVein) fix));
+		return this == fix || fix instanceof MineralVein
+				&& equalsContents((MineralVein) fix);
 	}
 
 	/**
@@ -205,11 +210,6 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	public void setKind(final String kind) {
 		mineral = kind;
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

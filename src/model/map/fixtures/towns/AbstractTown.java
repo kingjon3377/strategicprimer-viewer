@@ -18,6 +18,27 @@ import util.NullCleaner;
 // ESCA-JAVA0011:
 public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	/**
+	 * The size of the town, fortress, or city.
+	 */
+	private final TownSize size;
+	/**
+	 * The status of the town, fortress, or city.
+	 */
+	private final TownStatus status;
+	/**
+	 * The owner of this town, fortress, or city.
+	 */
+	private Player owner;
+	/**
+	 * The name of this town, fortress, or city.
+	 */
+	private String name;
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
+	/**
 	 * Constructor.
 	 *
 	 * @param tSize the size of the town, fortress, or city
@@ -35,26 +56,12 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	}
 
 	/**
-	 * The owner of this town, fortress, or city.
-	 */
-	private Player owner;
-	/**
-	 * The name of this town, fortress, or city.
-	 */
-	private String name;
-
-	/**
 	 * @return the name of the town, fortress, or city.
 	 */
 	@Override
 	public String getName() {
 		return name;
 	}
-
-	/**
-	 * The status of the town, fortress, or city.
-	 */
-	private final TownStatus status;
 
 	/**
 	 *
@@ -65,10 +72,6 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 		return status;
 	}
 
-	/**
-	 * The size of the town, fortress, or city.
-	 */
-	private final TownSize size;
 	/**
 	 *
 	 * @return the size of the town, fortress, or city
@@ -104,9 +107,7 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 			builder.append(',');
 		}
 		builder.append(" here.");
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
@@ -116,10 +117,9 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof AbstractTown
-						&& getID() == ((TileFixture) obj).getID()
-						&& equalsContents((AbstractTown) obj));
+		return this == obj || obj instanceof AbstractTown
+				&& getID() == ((TileFixture) obj).getID()
+				&& equalsContents((AbstractTown) obj);
 	}
 
 	/**
@@ -247,11 +247,6 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	public final void setName(final String nomen) {
 		name = nomen;
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

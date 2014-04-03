@@ -23,6 +23,11 @@ import view.map.main.TileDrawHelperFactory;
  */
 public class DualTileButton extends JButton {
 	/**
+	 * How much margin to give.
+	 */
+	private static final int MARGIN = 2;
+
+	/**
 	 * The main-map tile to paint.
 	 */
 	private ITile one = new Tile(TileType.NotVisible);
@@ -32,6 +37,11 @@ public class DualTileButton extends JButton {
 	private ITile two = new Tile(TileType.NotVisible);
 
 	/**
+	 * The ZOrderFilter instance to pass to the factory rather than null.
+	 */
+	private static final ZOrderFilter NULL_ZOF = new NullZOrderFilter();
+
+	/**
 	 * @param first the main-map tile to draw
 	 * @param second the secondary-map tile to draw
 	 */
@@ -39,11 +49,6 @@ public class DualTileButton extends JButton {
 		one = first;
 		two = second;
 	}
-
-	/**
-	 * How much margin to give.
-	 */
-	private static final int MARGIN = 2;
 
 	/**
 	 * A ZOrderFilter implementation that does nothing, to avoid passing null to
@@ -74,11 +79,6 @@ public class DualTileButton extends JButton {
 			return true;
 		}
 	}
-
-	/**
-	 * The ZOrderFilter instance to pass to the factory rather than null.
-	 */
-	private static final ZOrderFilter NULL_ZOF = new NullZOrderFilter();
 
 	/**
 	 * Paint the component.

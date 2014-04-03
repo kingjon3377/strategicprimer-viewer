@@ -13,6 +13,11 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class ApplyButtonHandler implements ActionListener {
 	/**
+	 * The Applyable that does the heavy lifting.
+	 */
+	private final Applyable obj;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param app the Applyable that does the heavy lifting.
@@ -20,11 +25,6 @@ public class ApplyButtonHandler implements ActionListener {
 	public ApplyButtonHandler(final Applyable app) {
 		obj = app;
 	}
-
-	/**
-	 * The Applyable that does the heavy lifting.
-	 */
-	private final Applyable obj;
 
 	/**
 	 * Handle button presses.

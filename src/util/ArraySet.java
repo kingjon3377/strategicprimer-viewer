@@ -14,8 +14,11 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  * @param <T> the type of thing stored in the set
+ * 
+ * TODO: Narrow the type of return values where we can.
  */
-public final class ArraySet<T> implements Set<T> { /**
+public final class ArraySet<T> implements Set<T> {
+	/**
 	 * The backing array.
 	 */
 	private final List<T> impl = new ArrayList<>();
@@ -53,9 +56,7 @@ public final class ArraySet<T> implements Set<T> { /**
 	 */
 	@Override
 	public Iterator<T> iterator() {
-		final Iterator<T> retval = impl.iterator();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(impl.iterator());
 	}
 
 	/**
@@ -63,9 +64,7 @@ public final class ArraySet<T> implements Set<T> { /**
 	 */
 	@Override
 	public Object[] toArray() {
-		final Object[] retval = impl.toArray();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(impl.toArray());
 	}
 
 	/**
@@ -205,8 +204,8 @@ public final class ArraySet<T> implements Set<T> { /**
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Set && equalSets(this, (Set<?>) obj));
+		return this == obj || obj instanceof Set
+				&& equalSets(this, (Set<?>) obj);
 	}
 	/**
 	 * @param one one set

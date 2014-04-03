@@ -3,6 +3,8 @@ package model.map.fixtures.resources;
 import java.util.HashMap;
 import java.util.Map;
 
+import util.NullCleaner;
+
 /**
  * Kinds of minerals whose events the program knows about.
  *
@@ -51,8 +53,8 @@ public enum MineralKind {
 	}
 
 	static {
-		for (final MineralKind mk : values()) {
-			M_MAP.put(mk.str, mk);
+		for (final MineralKind kind : values()) {
+			M_MAP.put(kind.str, kind);
 		}
 	}
 
@@ -63,9 +65,7 @@ public enum MineralKind {
 	 */
 	public static MineralKind parseMineralKind(final String string) {
 		if (M_MAP.containsKey(string)) {
-			final MineralKind retval = M_MAP.get(string);
-			assert retval != null;
-			return retval;
+			return NullCleaner.assertNotNull(M_MAP.get(string));
 		} else {
 			throw new IllegalArgumentException("Not a kind of mineral we recognize");
 		}

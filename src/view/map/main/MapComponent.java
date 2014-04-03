@@ -101,7 +101,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	@Nullable
 	public String getToolTipText(@Nullable final MouseEvent event) {
 		if (event == null) {
-			return null;
+			return null; // NOPMD
 		} else {
 			return cml.getToolTipText(event);
 		}

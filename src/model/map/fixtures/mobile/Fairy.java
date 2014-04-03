@@ -21,6 +21,11 @@ public class Fairy implements MobileFixture, HasImage, HasKind, UnitMember {
 	private String kind;
 
 	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
+	/**
 	 * Constructor.
 	 *
 	 * @param fKind the kind of fairy
@@ -120,11 +125,6 @@ public class Fairy implements MobileFixture, HasImage, HasKind, UnitMember {
 	public final void setKind(final String nKind) {
 		kind = nKind;
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

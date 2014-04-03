@@ -6,6 +6,8 @@ import model.map.TileFixture;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * A field or meadow. If in forest, should increase a unit's vision slightly
  * when the unit is on it.
@@ -14,6 +16,11 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 public class Meadow implements HarvestableFixture, HasKind {
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
 	/**
 	 * Which season the field is in.
 	 */
@@ -87,7 +94,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 	@Override
 	public String getDefaultImage() {
 		if (field) {
-			return "field.png";
+			return "field.png"; // NOPMD
 		} else {
 			return "meadow.png";
 		}
@@ -109,9 +116,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 			builder.append(kind);
 			builder.append(" meadow");
 		}
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
@@ -130,8 +135,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Meadow && equalsImpl((Meadow) obj));
+		return this == obj || obj instanceof Meadow && equalsImpl((Meadow) obj);
 	}
 	/**
 	 * @param obj a Meadow
@@ -191,11 +195,6 @@ public class Meadow implements HarvestableFixture, HasKind {
 	public final void setKind(final String nKind) {
 		kind = nKind;
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

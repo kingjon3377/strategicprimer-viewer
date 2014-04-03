@@ -2,6 +2,8 @@ package model.report;
 
 import javax.swing.tree.TreeNode;
 
+import util.NullCleaner;
+
 /**
  * A node representing a list.
  *
@@ -48,9 +50,7 @@ public class ListReportNode extends AbstractReportNode {
 			}
 		}
 		builder.append("</ul>\n");
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**

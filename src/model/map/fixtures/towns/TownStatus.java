@@ -3,6 +3,8 @@ package model.map.fixtures.towns;
 import java.util.HashMap;
 import java.util.Map;
 
+import util.NullCleaner;
+
 /**
  * Possible status of towns, fortifications, and cities.
  *
@@ -44,8 +46,8 @@ public enum TownStatus {
 	}
 
 	static {
-		for (final TownStatus ts : values()) {
-			TST_MAP.put(ts.str, ts);
+		for (final TownStatus status : values()) {
+			TST_MAP.put(status.str, status);
 		}
 	}
 
@@ -56,9 +58,7 @@ public enum TownStatus {
 	 */
 	public static TownStatus parseTownStatus(final String string) {
 		if (TST_MAP.containsKey(string)) {
-			final TownStatus status = TST_MAP.get(string);
-			assert status != null;
-			return status;
+			return NullCleaner.assertNotNull(TST_MAP.get(string));
 		} else {
 			throw new IllegalArgumentException("No such town status");
 		}

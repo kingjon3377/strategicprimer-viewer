@@ -17,6 +17,8 @@ import model.map.fixtures.mobile.Unit;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * A fortress on the map. A player can only have one fortress per tile, but
  * multiple players may have fortresses on the same tile.
@@ -28,6 +30,11 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 		FixtureIterable<Unit> {
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
 	/**
 	 * The player that owns the fortress.
 	 */
@@ -63,9 +70,7 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 	 */
 	@Override
 	public final Iterator<Unit> iterator() {
-		final Iterator<Unit> iter = units.iterator();
-		assert iter != null;
-		return iter;
+		return NullCleaner.assertNotNull(units.iterator());
 	}
 
 	/**
@@ -142,9 +147,7 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 				sbuild.append(';');
 			}
 		}
-		final String retval = sbuild.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(sbuild.toString());
 	}
 
 	/**
@@ -177,20 +180,20 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 	/**
 	 * @param obj another Fortress
 	 * @return whether it's a strict subset of this one
-	 * @param out a stream to write details to
+	 * @param ostream a stream to write details to
 	 */
 	@Override
-	public boolean isSubset(final Fortress obj, final PrintWriter out) {
+	public boolean isSubset(final Fortress obj, final PrintWriter ostream) {
 		if (name.equals(obj.name)
 				&& obj.owner.getPlayerId() == owner.getPlayerId()) {
 			final Set<Unit> temp = new HashSet<>(obj.units);
 			// TODO: Differences between _versions_ of a unit
 			temp.removeAll(units);
 			for (final Unit unit : temp) {
-				out.print("Extra unit in fortress ");
-				out.print(getName());
-				out.print(":\t");
-				out.println(unit.toString());
+				ostream.print("Extra unit in fortress ");
+				ostream.print(getName());
+				ostream.print(":\t");
+				ostream.println(unit.toString());
 			}
 			return temp.isEmpty(); // NOPMD
 		} else {
@@ -217,13 +220,11 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return this == fix
-				|| (fix instanceof Fortress
-						&& (name.equals(((Fortress) fix).name))
-						&& ((Fortress) fix).owner.getPlayerId() == owner
-								.getPlayerId()
-						&& ((Fortress) fix).units.containsAll(units) && units
-							.containsAll(((Fortress) fix).units));
+		return this == fix || fix instanceof Fortress
+				&& name.equals(((Fortress) fix).name)
+				&& ((Fortress) fix).owner.getPlayerId() == owner.getPlayerId()
+				&& ((Fortress) fix).units.containsAll(units)
+				&& units.containsAll(((Fortress) fix).units);
 	}
 
 	/**
@@ -272,11 +273,6 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 	}
 
 	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
-
-	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -305,7 +301,7 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 	@Override
 	public String shortDesc() {
 		if (owner.isCurrent()) {
-			return "a fortress, " + getName() + ", owned by you";
+			return "a fortress, " + getName() + ", owned by you"; // NOPMD
 		} else {
 			return "a fortress, " + getName() + ", owned by " + owner.getName();
 		}

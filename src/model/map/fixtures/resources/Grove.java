@@ -16,6 +16,11 @@ import util.NullCleaner;
  */
 public class Grove implements HarvestableFixture, HasKind {
 	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
+	/**
 	 * Whether this is a fruit orchard.
 	 */
 	private final boolean orchard;
@@ -74,7 +79,7 @@ public class Grove implements HarvestableFixture, HasKind {
 	@Override
 	public String getDefaultImage() {
 		if (orchard) {
-			return "orchard.png";
+			return "orchard.png"; // NOPMD
 		} else {
 			return "tree.png";
 		}
@@ -170,11 +175,6 @@ public class Grove implements HarvestableFixture, HasKind {
 	public final void setKind(final String nKind) {
 		kind = nKind;
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

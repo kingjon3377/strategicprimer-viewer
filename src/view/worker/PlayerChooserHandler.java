@@ -18,6 +18,8 @@ import model.misc.IDriverModel;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * Listens for the 'Change current player' menu item and lets the player choose
  * a new player to look at, updating listeners with the new player.
@@ -27,6 +29,15 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public final class PlayerChooserHandler implements ActionListener,
 		PlayerChangeSource {
+	/**
+	 * The menu item we listen for.
+	 */
+	public static final String MENU_ITEM = "Change current player";
+	/**
+	 * The list of listeners.
+	 */
+	private final List<PlayerChangeListener> listeners = new ArrayList<>();
+
 	/**
 	 * The frame to attach the dialog to.
 	 */
@@ -51,15 +62,6 @@ public final class PlayerChooserHandler implements ActionListener,
 		model = dmodel;
 		player = dmodel.getMap().getPlayers().getCurrentPlayer();
 	}
-
-	/**
-	 * The menu item we listen for.
-	 */
-	public static final String MENU_ITEM = "Change current player";
-	/**
-	 * The list of listeners.
-	 */
-	private final List<PlayerChangeListener> listeners = new ArrayList<>();
 
 	/**
 	 * @param list a listener to add
@@ -103,15 +105,14 @@ public final class PlayerChooserHandler implements ActionListener,
 	 */
 	private static Player[] playersAsArray(final IPlayerCollection players) {
 		if (players instanceof IMutablePlayerCollection) {
-			return ((PlayerCollection) players).asArray();
+			return ((PlayerCollection) players).asArray(); // NOPMD
 		} else {
 			final List<Player> list = new ArrayList<>();
 			for (final Player player : players) {
 				list.add(player);
 			}
-			final Player[] retval = list.toArray(new Player[list.size()]);
-			assert retval != null;
-			return retval;
+			return NullCleaner.assertNotNull(list.toArray(new Player[list
+					.size()]));
 		}
 	}
 	/**

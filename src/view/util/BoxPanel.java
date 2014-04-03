@@ -14,6 +14,12 @@ import javax.swing.JPanel;
  */
 public class BoxPanel extends JPanel {
 	/**
+	 * If true, the panel is laid out on the line axis; if false, on the page
+	 * axis.
+	 */
+	private final boolean horizontal;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param horiz If true, the panel is laid out on the line axis; if false,
@@ -28,12 +34,6 @@ public class BoxPanel extends JPanel {
 			setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		}
 	}
-
-	/**
-	 * If true, the panel is laid out on the line axis; if false, on the page
-	 * axis.
-	 */
-	private final boolean horizontal;
 
 	/**
 	 * Add "glue" between components.

@@ -13,6 +13,11 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public final class Battlefield implements IEvent, HarvestableFixture {
 	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
+	/**
 	 * A (U)ID.
 	 */
 	private final int id; // NOPMD
@@ -60,8 +65,8 @@ public final class Battlefield implements IEvent, HarvestableFixture {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Battlefield && ((TileFixture) obj).getID() == id);
+		return this == obj || obj instanceof Battlefield
+				&& ((TileFixture) obj).getID() == id;
 	}
 
 	/**
@@ -124,11 +129,6 @@ public final class Battlefield implements IEvent, HarvestableFixture {
 	public String getDefaultImage() {
 		return "battlefield.png";
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

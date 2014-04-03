@@ -13,6 +13,7 @@ import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
+import util.NullCleaner;
 
 /**
  * A class enapsulating the mapping from tile-types to colors.
@@ -21,6 +22,19 @@ import model.map.fixtures.terrain.Sandbar;
  *
  */
 public class TileUIHelper {
+	/**
+	 * Descriptions of the types.
+	 */
+	private final Map<TileType, String> descriptions = new EnumMap<>(
+			TileType.class);
+
+	/**
+	 * A map from classes of features to the colors they can make the tile be.
+	 * Used to show that a tile is mountainous or forested even when those are
+	 * represented by icons and there's a higher icon on the tile.
+	 */
+	private final Map<Class<? extends TileFixture>, Color> featureColors;
+
 	/**
 	 * The map we wrap.
 	 */
@@ -92,9 +106,7 @@ public class TileUIHelper {
 		if (colors.containsKey(ver)) {
 			final Map<TileType, Color> colorMap = colors.get(ver);
 			if (colorMap.containsKey(type)) {
-				final Color retval = colorMap.get(type);
-				assert retval != null;
-				return retval;
+				return NullCleaner.assertNotNull(colorMap.get(type));
 			} else {
 				throw new IllegalArgumentException(type
 						+ "is not a terrain type version " + version
@@ -115,12 +127,6 @@ public class TileUIHelper {
 	}
 
 	/**
-	 * Descriptions of the types.
-	 */
-	private final Map<TileType, String> descriptions = new EnumMap<>(
-			TileType.class);
-
-	/**
 	 * @param type a terrain type
 	 *
 	 * @return a String representation of that terrain type
@@ -136,22 +142,13 @@ public class TileUIHelper {
 	}
 
 	/**
-	 * A map from classes of features to the colors they can make the tile be.
-	 * Used to show that a tile is mountainous or forested even when those are
-	 * represented by icons and there's a higher icon on the tile.
-	 */
-	private final Map<Class<? extends TileFixture>, Color> featureColors;
-
-	/**
 	 * @param fix a fixture
 	 * @return the color it should turn the tile
 	 */
 	public Color getFeatureColor(final TileFixture fix) {
 		final Class<? extends TileFixture> cls = fix.getClass();
 		if (featureColors.containsKey(cls)) {
-			final Color retval = featureColors.get(cls);
-			assert retval != null;
-			return retval;
+			return NullCleaner.assertNotNull(featureColors.get(cls));
 		} else {
 			throw new IllegalArgumentException(
 					"Not a kind of fixture we can handle");

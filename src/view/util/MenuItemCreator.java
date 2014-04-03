@@ -9,6 +9,8 @@ import javax.swing.KeyStroke;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * A utility class to create menu items in a more functional style.
  *
@@ -44,11 +46,8 @@ public class MenuItemCreator {
 	 * @return the hotkey
 	 */
 	public static KeyStroke createHotkey(final int key) {
-		final KeyStroke retval = KeyStroke.getKeyStroke(key, Toolkit
-				.getDefaultToolkit()
-				.getMenuShortcutKeyMask());
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(KeyStroke.getKeyStroke(key, Toolkit
+				.getDefaultToolkit().getMenuShortcutKeyMask()));
 	}
 
 	/**
@@ -58,11 +57,9 @@ public class MenuItemCreator {
 	 * @return the hotkey
 	 */
 	public static KeyStroke createShiftHotkey(final int key) {
-		final KeyStroke retval = KeyStroke.getKeyStroke(key, Toolkit
+		return NullCleaner.assertNotNull(KeyStroke.getKeyStroke(key, Toolkit
 				.getDefaultToolkit().getMenuShortcutKeyMask()
-				| InputEvent.SHIFT_DOWN_MASK);
-		assert retval != null;
-		return retval;
+				| InputEvent.SHIFT_DOWN_MASK));
 	}
 
 	/**

@@ -14,6 +14,11 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public final class ZoomListener implements ActionListener {
 	/**
+	 * The map model.
+	 */
+	private final IViewerModel model;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param vmodel the viewer model, which now handles the zoom level
@@ -21,11 +26,6 @@ public final class ZoomListener implements ActionListener {
 	public ZoomListener(final IViewerModel vmodel) {
 		model = vmodel;
 	}
-
-	/**
-	 * The map model.
-	 */
-	private final IViewerModel model;
 
 	/**
 	 * @param evt the event to handle

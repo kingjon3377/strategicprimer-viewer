@@ -28,6 +28,29 @@ import controller.map.misc.MapReaderAdapter;
  */
 public class MapCheckerFrame extends JFrame {
 	/**
+	 * The color to use for errors.
+	 */
+	private static final String ERROR_COLOR = "red";
+	/**
+	 * The warning instance to use to print warnings to the frame.
+	 */
+	private final Warning warner = new Warning() {
+		@Override
+		public void warn(final Exception warning) {
+			// super.warn(warning);
+			if (warning instanceof SPFormatException) {
+				printParagraph(
+						"SP format warning: "
+								+ warning.getLocalizedMessage(),
+						"yellow");
+			} else {
+				printParagraph(
+						"Warning: " + warning.getLocalizedMessage(),
+						"yellow");
+			}
+		}
+	};
+	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
@@ -79,29 +102,6 @@ public class MapCheckerFrame extends JFrame {
 		label.repaint();
 	}
 
-	/**
-	 * The color to use for errors.
-	 */
-	private static final String ERROR_COLOR = "red";
-	/**
-	 * The warning instance to use to print warnings to the frame.
-	 */
-	private final Warning warner = new Warning() {
-		@Override
-		public void warn(final Exception warning) {
-			// super.warn(warning);
-			if (warning instanceof SPFormatException) {
-				printParagraph(
-						"SP format warning: "
-								+ warning.getLocalizedMessage(),
-						"yellow");
-			} else {
-				printParagraph(
-						"Warning: " + warning.getLocalizedMessage(),
-						"yellow");
-			}
-		}
-	};
 	/**
 	 * Check a map.
 	 *

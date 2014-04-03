@@ -31,6 +31,15 @@ import view.util.ListenedButton;
 public class SkillAdvancementPanel extends BoxPanel implements ActionListener,
 		SkillSelectionListener, LevelGainSource {
 	/**
+	 * The list of listeners.
+	 */
+	private final List<LevelGainListener> listeners = new ArrayList<>();
+
+	/**
+	 * The "die" we "roll" to see whether skill advancement happens.
+	 */
+	private static final int SKILL_DIE = 100;
+	/**
 	 * The maximum height of the panel.
 	 */
 	private static final int MAX_PANEL_HEIGHT = 60;
@@ -78,39 +87,31 @@ public class SkillAdvancementPanel extends BoxPanel implements ActionListener,
 		setMaximumSize(new Dimension(240, MAX_PANEL_HEIGHT));
 	}
 	/**
-	 * The "die" we "roll" to see whether skill advancement happens.
-	 */
-	private static final int SKILL_DIE = 100;
-	/**
 	 * Handle a button press.
 	 *
 	 * @param evt the event to handle
 	 */
 	@Override
 	public final void actionPerformed(@Nullable final ActionEvent evt) {
-		if (evt != null) {
-			if ("OK".equalsIgnoreCase(evt.getActionCommand()) && skill != null) {
-				final Skill skl = skill;
-				final int level = skl.getLevel();
-				skl.addHours(Integer.parseInt(hours.getText()),
-						SingletonRandom.RANDOM.nextInt(SKILL_DIE));
-				final int newLevel = skl.getLevel();
-				if (newLevel != level) {
-					for (final LevelGainListener list : listeners) {
-						list.level();
-					}
+		if (evt == null) {
+			return;
+		}
+		if ("OK".equalsIgnoreCase(evt.getActionCommand()) && skill != null) {
+			final Skill skl = skill;
+			final int level = skl.getLevel();
+			skl.addHours(Integer.parseInt(hours.getText()),
+					SingletonRandom.RANDOM.nextInt(SKILL_DIE));
+			final int newLevel = skl.getLevel();
+			if (newLevel != level) {
+				for (final LevelGainListener list : listeners) {
+					list.level();
 				}
 			}
-			// Clear if OK and no skill selected, on Cancel, and after
-			// successfully adding skill
-			hours.setText("");
 		}
+		// Clear if OK and no skill selected, on Cancel, and after
+		// successfully adding skill
+		hours.setText("");
 	}
-
-	/**
-	 * The list of listeners.
-	 */
-	private final List<LevelGainListener> listeners = new ArrayList<>();
 
 	/**
 	 * @param list the listener to add

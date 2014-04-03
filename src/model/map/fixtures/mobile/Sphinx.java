@@ -17,6 +17,11 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Sphinx implements MobileFixture, HasImage, UnitMember {
 	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
+	/**
 	 * @param idNum the ID number.
 	 */
 	public Sphinx(final int idNum) {
@@ -54,8 +59,8 @@ public class Sphinx implements MobileFixture, HasImage, UnitMember {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Sphinx && ((TileFixture) obj).getID() == id);
+		return this == obj || obj instanceof Sphinx
+				&& ((TileFixture) obj).getID() == id;
 	}
 
 	/**
@@ -96,11 +101,6 @@ public class Sphinx implements MobileFixture, HasImage, UnitMember {
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Sphinx;
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

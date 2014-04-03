@@ -22,6 +22,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import util.ArraySet;
 import util.IteratorWrapper;
+import util.NullCleaner;
 
 /**
  * A mouse listener for the MapComponent, to show the terrain-changing menu as
@@ -32,6 +33,16 @@ import util.IteratorWrapper;
  */
 public final class ComponentMouseListener extends MouseAdapter implements
 		SelectionChangeSource {
+	/**
+	 * Comparator to find which fixture is on top of a tile.
+	 */
+	private final FixtureComparator fixComp = new FixtureComparator();
+
+	/**
+	 * The terrain-changing menu.
+	 */
+	private final TerrainChangingMenu menu;
+
 	/**
 	 * The map model we refer to.
 	 */
@@ -65,7 +76,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 				+ dimensions.getMinimumCol());
 		if (point.row < mapDim.getRows() && point.col < mapDim.getColumns()) {
 			final ITile tile = model.getTile(point);
-			return concat("<html><body>", point.toString(), ": ", tile
+			return concat("<html><body>", point.toString(), ": ", tile//NOPMD
 					.getTerrain().toString(), "<br />",
 					getTerrainFixturesAndTop(tile), "</body></html>");
 		} else {
@@ -86,15 +97,8 @@ public final class ComponentMouseListener extends MouseAdapter implements
 		for (final String string : strings) {
 			build.append(string);
 		}
-		final String retval = build.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(build.toString());
 	}
-
-	/**
-	 * Comparator to find which fixture is on top of a tile.
-	 */
-	private final FixtureComparator fixComp = new FixtureComparator();
 
 	/**
 	 * @param tile a tile
@@ -120,15 +124,8 @@ public final class ComponentMouseListener extends MouseAdapter implements
 			sbuild.append(fix.toString());
 			sbuild.append("<br />");
 		}
-		final String retval = sbuild.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(sbuild.toString());
 	}
-
-	/**
-	 * The terrain-changing menu.
-	 */
-	private final TerrainChangingMenu menu;
 
 	/**
 	 * Handle mouse clicks.

@@ -1,12 +1,12 @@
 package view.map.main;
 
+import static util.NullCleaner.assertNotNull;
+
 import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
 import org.eclipse.jdt.annotation.Nullable;
-
-import util.NullCleaner;
 
 /**
  * Filter out extraneous files when we're opening a map.
@@ -47,8 +47,7 @@ public final class MapFileFilter extends FileFilter {
 		final int dotPos = name.lastIndexOf('.');
 
 		if (dotPos > 0 && dotPos < name.length() - 1) {
-			return NullCleaner.assertNotNull(name.substring(dotPos + 1)
-					.toLowerCase());
+			return assertNotNull(name.substring(dotPos + 1).toLowerCase()); // NOPMD
 		} else {
 			return "";
 		}

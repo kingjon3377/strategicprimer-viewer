@@ -36,6 +36,27 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ScrollListener implements AdjustmentListener, MapChangeListener,
 		SelectionChangeListener, GraphicalParamsListener {
 	/**
+	 * The map model we're working with.
+	 */
+	private final IViewerModel model;
+	/**
+	 * The dimensions of the map.
+	 */
+	private MapDimensions mapDimensions;
+	/**
+	 * The current visible dimensions of the map.
+	 */
+	private VisibleDimensions dimensions;
+	/**
+	 * The horizontal scroll-bar we deal with.
+	 */
+	private final JScrollBar hbar;
+	/**
+	 * The vertical scroll-bar we deal with.
+	 */
+	private final JScrollBar vbar;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param map the map model to work with
@@ -89,27 +110,6 @@ public class ScrollListener implements AdjustmentListener, MapChangeListener,
 		component.add(hbar, BorderLayout.SOUTH);
 		component.add(vbar, BorderLayout.EAST);
 	}
-
-	/**
-	 * The map model we're working with.
-	 */
-	private final IViewerModel model;
-	/**
-	 * The dimensions of the map.
-	 */
-	private MapDimensions mapDimensions;
-	/**
-	 * The current visible dimensions of the map.
-	 */
-	private VisibleDimensions dimensions;
-	/**
-	 * The horizontal scroll-bar we deal with.
-	 */
-	private final JScrollBar hbar;
-	/**
-	 * The vertical scroll-bar we deal with.
-	 */
-	private final JScrollBar vbar;
 
 	/**
 	 * @param oldDim the old visible dimensions

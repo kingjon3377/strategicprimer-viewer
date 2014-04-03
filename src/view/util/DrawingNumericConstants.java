@@ -8,13 +8,6 @@ package view.util;
  */
 public final class DrawingNumericConstants {
 	/**
-	 * Do not instantiate.
-	 */
-	private DrawingNumericConstants() {
-		// Do not use.
-	}
-
-	/**
 	 * Eight as a double. Used to make rivers take up 1/8 of the tile in their
 	 * short dimension.
 	 */
@@ -43,4 +36,11 @@ public final class DrawingNumericConstants {
 	 * Three as a double.
 	 */
 	public static final double THREE = 3.0;
+	/**
+	 * Do not instantiate.
+	 */
+	private DrawingNumericConstants() {
+		// Do not use.
+	}
+
 }

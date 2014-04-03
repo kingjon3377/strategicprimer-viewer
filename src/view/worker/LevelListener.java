@@ -72,10 +72,9 @@ public final class LevelListener implements LevelGainListener,
 	 */
 	@Override
 	public void level() {
-		if (!NULL_UM.equals(worker) && !NULL_SKILL.equals(skill)) {
-			final UnitMember wkr = worker;
-			final Skill skl = skill;
-			assert skl != null;
+		final UnitMember wkr = worker;
+		final Skill skl = skill;
+		if (!NULL_UM.equals(wkr) && !NULL_SKILL.equals(skl)) {
 			final StringBuilder builder = new StringBuilder();
 			builder.append(getName(wkr));
 			builder.append(" gained a level in ");

@@ -15,6 +15,20 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Mine implements HarvestableFixture, HasKind {
 	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
+	/**
+	 * What the mine produces.
+	 */
+	private String kind;
+	/**
+	 * The status of the mine.
+	 */
+	private final TownStatus status;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param mineral what mineral this produces
@@ -27,15 +41,6 @@ public class Mine implements HarvestableFixture, HasKind {
 		status = stat;
 		id = idNum;
 	}
-
-	/**
-	 * What the mine produces.
-	 */
-	private String kind;
-	/**
-	 * The status of the mine.
-	 */
-	private final TownStatus status;
 
 	/**
 	 * @return what the mine produces
@@ -135,11 +140,6 @@ public class Mine implements HarvestableFixture, HasKind {
 	public final void setKind(final String nKind) {
 		kind = nKind;
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

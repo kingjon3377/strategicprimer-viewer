@@ -35,6 +35,16 @@ import util.TypesafeLogger;
  */
 public class UnitMemberCellRenderer implements TreeCellRenderer {
 	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(UnitMemberCellRenderer.class);
+	/**
+	 * the default fixture icon.
+	 */
+	private final Icon defaultFixtIcon = createDefaultFixtureIcon();
+
+	/**
 	 * Default renderer, for cases we don't know how to handle.
 	 */
 	private static final DefaultTreeCellRenderer DFLT =
@@ -77,9 +87,9 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 			final boolean expanded, final boolean leaf, final int row,
 			final boolean hasFocus) {
 		assert tree != null && value != null;
-		final Component component = DFLT.getTreeCellRendererComponent(tree,
-				value, selected, expanded, leaf, row, hasFocus);
-		assert component != null;
+		final Component component =
+				NullCleaner.assertNotNull(DFLT.getTreeCellRendererComponent(
+						tree, value, selected, expanded, leaf, row, hasFocus));
 		((DefaultTreeCellRenderer) component)
 				.setBackgroundSelectionColor(DEF_BKGD_SELECTED);
 		((DefaultTreeCellRenderer) component)
@@ -132,7 +142,7 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 	 */
 	@Nullable private static Object getNodeValue(final Object value) {
 		if (value instanceof DefaultMutableTreeNode) {
-			return ((DefaultMutableTreeNode) value).getUserObject();
+			return ((DefaultMutableTreeNode) value).getUserObject(); // NOPMD
 		} else {
 			return value;
 		}
@@ -157,9 +167,7 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 				builder.append(job.getName()).append(' ').append(job.getLevel());
 			}
 			builder.append(')');
-			final String retval = builder.toString();
-			assert retval != null;
-			return retval;
+			return NullCleaner.assertNotNull(builder.toString()); // NOPMD
 		} else {
 			return "";
 		}
@@ -169,8 +177,6 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 	 * @return an icon representing it
 	 */
 	private Icon getIcon(final HasImage obj) {
-		// ESCA-JAVA0177:
-		Icon retval;
 		String image = obj.getImage();
 		if (image.isEmpty()) {
 			image = obj.getDefaultImage();
@@ -178,28 +184,17 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 		// FIXME: If getImage() references a file that's not there, try the
 		// default image for that kind of fixture.
 		try {
-			retval = ImageLoader.getLoader().loadIcon(image);
+			return ImageLoader.getLoader().loadIcon(image); // NOPMD
 		} catch (final FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE, "image file images/" + image
 					+ " not found");
 			LOGGER.log(Level.FINEST, "with stack trace", e);
-			retval = defaultFixtIcon;
+			return defaultFixtIcon; // NOPMD
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error reading image", e);
-			retval = defaultFixtIcon;
+			return defaultFixtIcon;
 		}
-		return retval;
 	}
-
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(UnitMemberCellRenderer.class);
-	/**
-	 * the default fixture icon.
-	 */
-	private final Icon defaultFixtIcon = createDefaultFixtureIcon();
 
 	/**
 	 * @return the default icon for fixtures.

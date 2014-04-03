@@ -24,6 +24,16 @@ import util.NullCleaner;
  */
 public class AddRemovePanel extends JPanel implements ActionListener {
 	/**
+	 * The maximum height of the widget.
+	 */
+	private static final int MAX_HEIGHT = 50;
+
+	/**
+	 * A list of listeners to notify of addition or removal.
+	 */
+	private final List<AddRemoveListener> arListeners = new ArrayList<>();
+
+	/**
 	 * The layout.
 	 */
 	private final CardLayout layout;
@@ -67,11 +77,6 @@ public class AddRemovePanel extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * The maximum height of the widget.
-	 */
-	private static final int MAX_HEIGHT = 50;
-
-	/**
 	 * Set the sizes we want on a panel.
 	 *
 	 * @param panel the panel in question
@@ -108,11 +113,6 @@ public class AddRemovePanel extends JPanel implements ActionListener {
 			field.setText("");
 		}
 	}
-
-	/**
-	 * A list of listeners to notify of addition or removal.
-	 */
-	private final List<AddRemoveListener> arListeners = new ArrayList<>();
 
 	/**
 	 * @param list a listener to add

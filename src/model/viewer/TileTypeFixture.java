@@ -16,6 +16,19 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class TileTypeFixture implements TileFixture, HasImage {
 	/**
+	 * The name of an image to use for this particular fixture.
+	 *
+	 * FIXME: Maybe don't allow this? It doesn't really make sense for a
+	 * TileTypeFixture.
+	 */
+	private String image = "";
+
+	/**
+	 * The TileType this wraps.
+	 */
+	private final TileType ttype;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param terrain The TileType this wraps.
@@ -23,11 +36,6 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	public TileTypeFixture(final TileType terrain) {
 		ttype = terrain;
 	}
-
-	/**
-	 * The TileType this wraps.
-	 */
-	private final TileType ttype;
 
 	/**
 	 * @param obj another TileFixture
@@ -115,14 +123,6 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	public String getDefaultImage() {
 		return ttype.toXML() + ".png";
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 *
-	 * FIXME: Maybe don't allow this? It doesn't really make sense for a
-	 * TileTypeFixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

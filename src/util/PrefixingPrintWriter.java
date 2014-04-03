@@ -14,6 +14,11 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class PrefixingPrintWriter extends PrintWriter {
 	/**
+	 * What the caller wanted each printLine prefixed with.
+	 */
+	private final String pref;
+
+	/**
 	 * @param outs the stream we wrap. Probably a StringWriter
 	 * @param prefix what we want each line prefixed with.
 	 */
@@ -21,11 +26,6 @@ public class PrefixingPrintWriter extends PrintWriter {
 		super(outs);
 		pref = prefix;
 	}
-
-	/**
-	 * What the caller wanted each printLine prefixed with.
-	 */
-	private final String pref;
 
 	/**
 	 * Write a line, prefixed with the specified prefix.
@@ -42,12 +42,10 @@ public class PrefixingPrintWriter extends PrintWriter {
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder(40);
+		final StringBuilder builder = new StringBuilder(36 + pref.length());
 		builder.append("PrefixingPrintWriter with prefix '");
 		builder.append(pref);
 		builder.append('\'');
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 }

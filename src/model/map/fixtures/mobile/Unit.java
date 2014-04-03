@@ -16,6 +16,7 @@ import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.ArraySet;
+import util.NullCleaner;
 
 /**
  * A unit on the map.
@@ -25,6 +26,17 @@ import util.ArraySet;
  */
 public class Unit implements MobileFixture, HasImage, HasKind,
 		FixtureIterable<UnitMember>, HasName, HasOwner {
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
+	/**
+	 * The unit's orders. This is serialized to and from XML, but does not
+	 * affect equality or hashing, and is not printed in toString.
+	 */
+	private String orders;
+
 	/**
 	 * The player that owns the unit.
 	 */
@@ -113,9 +125,7 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	 */
 	@Override
 	public final Iterator<UnitMember> iterator() {
-		final Iterator<UnitMember> iter = members.iterator();
-		assert iter != null;
-		return iter;
+		return NullCleaner.assertNotNull(members.iterator());
 	}
 
 	/**
@@ -150,7 +160,7 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	@Override
 	public String toString() {
 		if (owner.isIndependent()) {
-			return "Independent unit of type " + kind + ", named " + name;
+			return "Independent unit of type " + kind + ", named " + name; // NOPMD
 		} else {
 			return "Unit of type " + kind + ", belonging to " + owner
 					+ ", named " + name;
@@ -168,9 +178,9 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	 */
 	public String toStringInner(final Player player) {
 		if (owner.equals(player)) {
-			return name + " (" + kind + ')';
+			return name + " (" + kind + ')'; // NOPMD
 		} else if (owner.isIndependent()) {
-			return name + ", an independent " + kind;
+			return name + ", an independent " + kind; // NOPMD
 		} else {
 			return name + " (" + kind + "), belonging to " + owner;
 		}
@@ -189,9 +199,7 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 			builder.append('\n');
 			builder.append(member.toString());
 		}
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
@@ -247,12 +255,10 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return this == fix
-				|| (fix instanceof Unit
-						&& ((Unit) fix).owner.getPlayerId() == owner
-								.getPlayerId()
-						&& (((Unit) fix).kind.equals(kind)) && (((Unit) fix).name
-							.equals(name)));
+		return this == fix || fix instanceof Unit
+				&& ((Unit) fix).owner.getPlayerId() == owner.getPlayerId()
+				&& ((Unit) fix).kind.equals(kind)
+				&& ((Unit) fix).name.equals(name);
 	}
 
 	/**
@@ -280,12 +286,6 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	}
 
 	/**
-	 * The unit's orders. This is serialized to and from XML, but does not
-	 * affect equality or hashing, and is not printed in toString.
-	 */
-	private String orders;
-
-	/**
 	 * @param newOrders the unit's new orders
 	 */
 	public final void setOrders(final String newOrders) {
@@ -298,11 +298,6 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	public String getOrders() {
 		return orders;
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture
@@ -333,7 +328,7 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	@Override
 	public String shortDesc() {
 		if (owner.isCurrent()) {
-			return "a(n) " + getKind() + " unit belonging to you";
+			return "a(n) " + getKind() + " unit belonging to you"; // NOPMD
 		} else {
 			return "a(n) " + getKind() + " unit belonging to "
 					+ owner.getName();

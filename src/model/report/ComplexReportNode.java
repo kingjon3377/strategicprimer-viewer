@@ -2,6 +2,8 @@ package model.report;
 
 import javax.swing.tree.TreeNode;
 
+import util.NullCleaner;
+
 /**
  * A node for cases slightly more complex than a {@link SimpleReportNode}
  * covers: the text here isn't really a header, and no wrapping children as a
@@ -24,9 +26,8 @@ public class ComplexReportNode extends AbstractReportNode {
 	 */
 	@Override
 	public String produce() {
-		final String retval = produce(new StringBuilder(size())).toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(produce(new StringBuilder(size()))
+				.toString());
 	}
 
 	/**

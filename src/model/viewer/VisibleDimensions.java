@@ -1,5 +1,7 @@
 package model.viewer;
 
+import util.NullCleaner;
+
 
 /**
  * The minimum and maximum rows and columns drawn.
@@ -81,12 +83,10 @@ public class VisibleDimensions {
 	 */
 	@Override
 	public String toString() {
-		final String retval = new StringBuilder(256).append("VisibleDimensions: (")
-				.append(minRow).append(", ").append(minCol)
-				.append(") to (").append(maxRow).append(", ")
-				.append(maxCol).append(')').toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(new StringBuilder(256)
+				.append("VisibleDimensions: (").append(minRow).append(", ")
+				.append(minCol).append(") to (").append(maxRow).append(", ")
+				.append(maxCol).append(')').toString());
 	}
 
 	/**

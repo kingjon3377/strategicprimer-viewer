@@ -36,6 +36,16 @@ import view.util.ErrorShower;
 public final class ExplorationClickListener implements ActionListener,
 		MovementCostSource, SelectionChangeSource {
 	/**
+	 * The list of movement-cost listeners.
+	 */
+	private final List<MovementCostListener> mcListeners = new ArrayList<>();
+
+	/**
+	 * The list of selection-change listeners.
+	 */
+	private final List<SelectionChangeListener> scListeners = new ArrayList<>();
+
+	/**
 	 * The exploration model.
 	 */
 	private final IExplorationModel model;
@@ -134,11 +144,6 @@ public final class ExplorationClickListener implements ActionListener,
 	}
 
 	/**
-	 * The list of selection-change listeners.
-	 */
-	private final List<SelectionChangeListener> scListeners = new ArrayList<>();
-
-	/**
 	 * @param listener the listener to add
 	 */
 	@Override
@@ -155,11 +160,6 @@ public final class ExplorationClickListener implements ActionListener,
 			final SelectionChangeListener listener) {
 		scListeners.remove(listener);
 	}
-
-	/**
-	 * The list of movement-cost listeners.
-	 */
-	private final List<MovementCostListener> mcListeners = new ArrayList<>();
 
 	/**
 	 * @param listener the listener to add

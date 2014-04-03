@@ -33,6 +33,27 @@ import controller.map.misc.IDFactory;
 public class NewUnitDialog extends JFrame implements ActionListener,
 		NewUnitSource, PlayerChangeListener {
 	/**
+	 * The list of new-unit listeners listening to us.
+	 */
+	private final List<NewUnitListener> nuListeners = new ArrayList<>();
+
+	/**
+	 * The player to own created units.
+	 */
+	private Player owner;
+	/**
+	 * The factory to use to generate ID numbers.
+	 */
+	private final IDFactory idf;
+	/**
+	 * The field to let the user give the name of the unit.
+	 */
+	private final JTextField nameField = new JTextField(10);
+	/**
+	 * The field to let the user give the kind of unit.
+	 */
+	private final JTextField kindField = new JTextField(10);
+	/**
 	 * Maximum and preferred height for the dialog.
 	 */
 	private static final int PREF_HEIGHT = 90;
@@ -78,23 +99,6 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 	}
 
 	/**
-	 * The player to own created units.
-	 */
-	private Player owner;
-	/**
-	 * The factory to use to generate ID numbers.
-	 */
-	private final IDFactory idf;
-	/**
-	 * The field to let the user give the name of the unit.
-	 */
-	private final JTextField nameField = new JTextField(10);
-	/**
-	 * The field to let the user give the kind of unit.
-	 */
-	private final JTextField kindField = new JTextField(10);
-
-	/**
 	 * @param evt the event to handle
 	 */
 	@Override
@@ -136,11 +140,6 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 			final Player newPlayer) {
 		owner = newPlayer;
 	}
-
-	/**
-	 * The list of new-unit listeners listening to us.
-	 */
-	private final List<NewUnitListener> nuListeners = new ArrayList<>();
 
 	/**
 	 * @param list a listener to add

@@ -62,22 +62,23 @@ public final class FixtureListModel extends DefaultListModel<TileFixture>
 	 * @param fix the fixture to add.
 	 */
 	public void addFixture(final TileFixture fix) {
-		if (!(tile instanceof IMutableTile)) {
-			ErrorShower
-					.showErrorDialog(null,
-							"Cannot add a fixture: selected tile is not mutable");
-		} else if (fix instanceof TileTypeFixture) {
-			if (!tile.getTerrain()
-					.equals(((TileTypeFixture) fix).getTileType())) {
-				((IMutableTile) tile).setTerrain(((TileTypeFixture) fix)
-						.getTileType());
+		if (tile instanceof IMutableTile) {
+			if (fix instanceof TileTypeFixture) {
+				if (!tile.getTerrain().equals(
+						((TileTypeFixture) fix).getTileType())) {
+					((IMutableTile) tile).setTerrain(((TileTypeFixture) fix)
+							.getTileType());
+				}
+				addElement(fix);
+			} else if (((IMutableTile) tile).addFixture(fix)) {
+				// addFixture returns false if it wasn't actually added---e.g. it
+				// was already in the set---so we only want to add it to the display
+				// if it returns true.
+				addElement(fix);
 			}
-			addElement(fix);
-		} else if (((IMutableTile) tile).addFixture(fix)) {
-			// addFixture returns false if it wasn't actually added---e.g. it
-			// was already in the set---so we only want to add it to the display
-			// if it returns true.
-			addElement(fix);
+		} else {
+			ErrorShower.showErrorDialog(null,
+					"Cannot add a fixture: selected tile is not mutable");
 		}
 	}
 
@@ -87,20 +88,22 @@ public final class FixtureListModel extends DefaultListModel<TileFixture>
 	 * @param list the list of items to remove. If null, none are removed.
 	 */
 	public void remove(@Nullable final Iterable<TileFixture> list) {
-		if (!(tile instanceof IMutableTile)) {
-			ErrorShower.showErrorDialog(null, "Cannot remove item from list: "
-					+ "selected tile is not mutable");
-		} else if (list != null) {
-			for (final TileFixture fix : list) {
-				if (fix == null) {
-					continue;
-				} else if (fix instanceof TileTypeFixture) {
-					((IMutableTile) tile).setTerrain(TileType.NotVisible);
-					removeElement(fix);
-				} else if (((IMutableTile) tile).removeFixture(fix)) {
-					removeElement(fix);
+		if (tile instanceof IMutableTile) {
+			if (list != null) {
+				for (final TileFixture fix : list) {
+					if (fix == null) {
+						continue;
+					} else if (fix instanceof TileTypeFixture) {
+						((IMutableTile) tile).setTerrain(TileType.NotVisible);
+						removeElement(fix);
+					} else if (((IMutableTile) tile).removeFixture(fix)) {
+						removeElement(fix);
+					}
 				}
 			}
+		} else {
+			ErrorShower.showErrorDialog(null, "Cannot remove item from list: "
+					+ "selected tile is not mutable");
 		}
 	}
 

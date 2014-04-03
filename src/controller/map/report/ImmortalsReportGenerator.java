@@ -291,7 +291,7 @@ public class ImmortalsReportGenerator extends
 	private static void optionallyAddRIR(final Map<String, List<Point>> mapping,
 			final String infix, final AbstractReportNode parent) {
 		for (final Entry<String, List<Point>> entry : mapping.entrySet()) {
-			parent.add(new SimpleReportNode(entry.getKey(), infix,//NOPMD
+			parent.add(new SimpleReportNode(entry.getKey(), infix, //NOPMD
 					pointCSL(entry.getValue())));
 		}
 	}

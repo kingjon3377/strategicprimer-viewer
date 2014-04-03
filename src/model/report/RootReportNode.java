@@ -2,6 +2,8 @@ package model.report;
 
 import javax.swing.tree.TreeNode;
 
+import util.NullCleaner;
+
 /**
  * The root of a node hierarchy.
  *
@@ -23,9 +25,8 @@ public class RootReportNode extends AbstractReportNode {
 	 */
 	@Override
 	public String produce() {
-		final String retval = produce(new StringBuilder(size())).toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(produce(new StringBuilder(size()))
+				.toString());
 	}
 
 	/**
@@ -34,10 +35,8 @@ public class RootReportNode extends AbstractReportNode {
 	 */
 	@Override
 	public StringBuilder produce(final StringBuilder builder) {
-		builder.append("<html>\n");
-		builder.append("<head><title>").append(getText())
-				.append("</title></head>\n");
-		builder.append("<body>");
+		builder.append("<html>\n<head><title>").append(getText())
+				.append("</title></head>\n<body>");
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
 			if (child instanceof AbstractReportNode) {

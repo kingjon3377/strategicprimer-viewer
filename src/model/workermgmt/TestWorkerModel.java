@@ -25,6 +25,7 @@ import model.viewer.PointIterator;
 import org.junit.Test;
 
 import util.IteratorWrapper;
+import util.NullCleaner;
 
 /**
  * A class to test MapHelper methods (starting with ones that don't involve
@@ -68,9 +69,9 @@ public class TestWorkerModel {
 		final Iterable<Point> iter = new IteratorWrapper<>(new PointIterator(
 				map.getDimensions(), null, true, true));
 		for (final Point point : iter) {
-			final TileFixture fix = fixtures.remove(0);
-			assert point != null && fix != null;
-			((IMutableTile) map.getTile(point)).addFixture(fix);
+			assert point != null;
+			((IMutableTile) map.getTile(point)).addFixture(NullCleaner
+					.assertNotNull(fixtures.remove(0)));
 		}
 		final IWorkerModel model = new WorkerModel(new MapView(map, 0, 0),
 				"string");

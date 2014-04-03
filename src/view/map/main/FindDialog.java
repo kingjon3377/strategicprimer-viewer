@@ -74,7 +74,7 @@ public class FindDialog extends JDialog implements ActionListener {
 	/**
 	 * The filter, to let the user filter which fixtures are displayed.
 	 */
-	private FixtureFilterList ffl;
+	private final FixtureFilterList ffl;
 
 	/**
 	 * Constructor.
@@ -260,6 +260,15 @@ public class FindDialog extends JDialog implements ActionListener {
 	 */
 	private static final class FilterPopulator implements Runnable {
 		/**
+		 * The filter to populate.
+		 */
+		private final ZOrderFilter filter;
+		/**
+		 * The map to populate it from.
+		 */
+		private final IMap map;
+
+		/**
 		 * Constructor.
 		 *
 		 * @param ffm the filter to populate
@@ -269,15 +278,6 @@ public class FindDialog extends JDialog implements ActionListener {
 			filter = ffm;
 			map = model.getMap();
 		}
-
-		/**
-		 * The filter to populate.
-		 */
-		private final ZOrderFilter filter;
-		/**
-		 * The map to populate it from.
-		 */
-		private final IMap map;
 
 		/**
 		 * Run.

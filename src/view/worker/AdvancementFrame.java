@@ -66,9 +66,8 @@ public class AdvancementFrame extends JFrame {
 		pch.addPlayerChangeListener(plabel);
 		final WorkerTree tree = new WorkerTree(player, source, false);
 		pch.addPlayerChangeListener(tree);
-		@Nullable
-		final IWorkerTreeModel wtmodel = (IWorkerTreeModel) tree.getModel();
-		assert wtmodel != null;
+		final IWorkerTreeModel wtmodel =
+				(IWorkerTreeModel) NullCleaner.assertNotNull(tree.getModel());
 		final WorkerCreationListener nwl = new WorkerCreationListener(wtmodel,
 				IDFactoryFiller.createFactory(source.getMap()));
 		tree.addUnitSelectionListener(nwl);
@@ -88,10 +87,9 @@ public class AdvancementFrame extends JFrame {
 			public void treeNodesInserted(@Nullable final TreeModelEvent evt) {
 				final TreePath path = tree.getSelectionPath();
 				if (path != null) {
-					final Object obj = path.getLastPathComponent();
-					assert obj != null;
-					wtmodel.valueForPathChanged(path,
-							wtmodel.getModelObject(obj));
+					wtmodel.valueForPathChanged(path, wtmodel
+							.getModelObject(NullCleaner.assertNotNull(path
+									.getLastPathComponent())));
 				}
 			}
 			@Override
@@ -155,7 +153,7 @@ public class AdvancementFrame extends JFrame {
 				.getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey);
 		final Dimension defDim = component.getPreferredSize();
 		if (view == null) {
-			return NullCleaner.valueOrDefault(defDim, new Dimension(width,
+			return NullCleaner.valueOrDefault(defDim, new Dimension(width, // NOPMD
 					width));
 		} else {
 			view.setSize(width, 0);

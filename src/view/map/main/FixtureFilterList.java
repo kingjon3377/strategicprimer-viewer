@@ -23,6 +23,11 @@ import model.viewer.ZOrderFilter;
 public class FixtureFilterList extends JList<Class<? extends TileFixture>>
 		implements ZOrderFilter, ListCellRenderer<Class<? extends TileFixture>> {
 	/**
+	 * The renderer that does most of the work.
+	 */
+	private final ListCellRenderer<Object> lcr = new DefaultListCellRenderer();
+
+	/**
 	 * A mapping from classes of fixtures to their plurals.
 	 */
 	private final Map<Class<? extends TileFixture>, String> plurals;
@@ -58,9 +63,9 @@ public class FixtureFilterList extends JList<Class<? extends TileFixture>>
 	public boolean shouldDisplay(final TileFixture fix) {
 		final Class<? extends TileFixture> cls = fix.getClass();
 		if (cls == null) {
-			return false;
+			return false; // NOPMD
 		} else if (plurals.containsKey(cls)) {
-			return lsm.isSelectedIndex(model.indexOf(cls));
+			return lsm.isSelectedIndex(model.indexOf(cls)); // NOPMD
 		} else {
 			model.add(cls);
 			plurals.put(cls, fix.plural());
@@ -69,11 +74,6 @@ public class FixtureFilterList extends JList<Class<? extends TileFixture>>
 			return true;
 		}
 	}
-
-	/**
-	 * The renderer that does most of the work.
-	 */
-	private final ListCellRenderer<Object> lcr = new DefaultListCellRenderer();
 
 	/**
 	 *

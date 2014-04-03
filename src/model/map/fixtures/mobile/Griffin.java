@@ -15,6 +15,11 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Griffin implements MobileFixture, HasImage, UnitMember {
 	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
+	/**
 	 * @param idNum the ID number.
 	 */
 	public Griffin(final int idNum) {
@@ -52,8 +57,8 @@ public class Griffin implements MobileFixture, HasImage, UnitMember {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Griffin && id == ((TileFixture) obj).getID());
+		return this == obj || obj instanceof Griffin
+				&& id == ((TileFixture) obj).getID();
 	}
 
 	/**
@@ -94,11 +99,6 @@ public class Griffin implements MobileFixture, HasImage, UnitMember {
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Griffin;
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

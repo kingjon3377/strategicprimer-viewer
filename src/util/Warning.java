@@ -19,6 +19,11 @@ public class Warning {
 	public static final Warning INSTANCE = new Warning();
 
 	/**
+	 * How we should deal with warnings.
+	 */
+	private final Action state;
+
+	/**
 	 * An enumeration of possible states.
 	 */
 	public static enum Action {
@@ -35,11 +40,6 @@ public class Warning {
 		 */
 		Die;
 	}
-
-	/**
-	 * How we should deal with warnings.
-	 */
-	private final Action state;
 
 	/**
 	 * Constructor.

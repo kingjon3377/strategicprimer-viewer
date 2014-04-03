@@ -19,6 +19,11 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class FixtureFilterMenu extends JMenu implements ZOrderFilter {
 	/**
+	 * Map from fixture classes to menu-items representing them.
+	 */
+	private final Map<Class<? extends TileFixture>, JCheckBoxMenuItem> mapping =
+			new HashMap<>();
+	/**
 	 * Constructor.
 	 */
 	public FixtureFilterMenu() {
@@ -26,17 +31,17 @@ public class FixtureFilterMenu extends JMenu implements ZOrderFilter {
 	}
 
 	/**
-	 * @param fix a kind of fixture We mark it Nullable because nulls got passed
+	 * @param fix a kind of fixture. We mark it Nullable because nulls got passed
 	 *        in anyway.
 	 * @return whether the view should display that kind of fixture
 	 */
 	@Override
 	public boolean shouldDisplay(@Nullable final TileFixture fix) {
 		// ESCA-JAVA0177:
-		final JCheckBoxMenuItem item;
 		if (fix == null) {
-			return false;
+			return false; // NOPMD
 		}
+		final JCheckBoxMenuItem item; // NOPMD
 		if (mapping.containsKey(fix.getClass())) {
 			item = mapping.get(fix.getClass());
 		} else {
@@ -46,10 +51,4 @@ public class FixtureFilterMenu extends JMenu implements ZOrderFilter {
 		}
 		return item.isSelected();
 	}
-
-	/**
-	 * Map from fixture classes to menu-items representing them.
-	 */
-	private final Map<Class<? extends TileFixture>, JCheckBoxMenuItem> mapping =
-			new HashMap<>();
 }

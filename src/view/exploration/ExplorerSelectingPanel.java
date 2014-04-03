@@ -25,6 +25,7 @@ import model.map.fixtures.mobile.Unit;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
@@ -38,6 +39,39 @@ import view.util.SplitWithWeights;
 public final class ExplorerSelectingPanel extends BorderedPanel implements
 		ListSelectionListener, PlayerChangeSource, ActionListener,
 		CompletionSource {
+	/**
+	 * The list of players.
+	 */
+	private final JList<Player> playerList;
+
+	/**
+	 * The list of completion listeners listening to us.
+	 */
+	private final List<CompletionListener> cListeners = new ArrayList<>();
+
+	/**
+	 * The minimum length of the HTML wrapper.
+	 */
+	private static final int MIN_HTML_LEN = "<html><body></body></html>"
+			.length();
+	/**
+	 * The length of the additional HTML tags for each paragraph.
+	 */
+	private static final int HTML_PAR_LEN = "<p></p>".length();
+	/**
+	 * The list of units.
+	 */
+	private final JList<Unit> unitList;
+	/**
+	 * The list of player-change listeners.
+	 */
+	private final List<PlayerChangeListener> listeners = new ArrayList<>();
+
+	/**
+	 * The text-field containing the running MP total.
+	 */
+	private final JTextField mpField = new JTextField(5);
+
 	/**
 	 * The proportion between the two sides.
 	 */
@@ -85,15 +119,6 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 		return new JLabel(string);
 	}
 	/**
-	 * The minimum length of the HTML wrapper.
-	 */
-	private static final int MIN_HTML_LEN = "<html><body></body></html>"
-			.length();
-	/**
-	 * The length of the additional HTML tags for each paragraph.
-	 */
-	private static final int HTML_PAR_LEN = "<p></p>".length();
-	/**
 	 * @param paras Strings, each of which should be put in its own paragraph.
 	 * @return them wrapped in HTML.
 	 */
@@ -107,29 +132,16 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 		for (final String para : paras) {
 			builder.append("<p>").append(para).append("</p>");
 		}
-		final String retval = builder.append("</body></html>").toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.append("</body></html>")
+				.toString());
 	}
-
-	/**
-	 * The text-field containing the running MP total.
-	 */
-	private final JTextField mpField = new JTextField(5);
 
 	/**
 	 * @return the model underlying the field containing the running MP total.
 	 */
 	public Document getMPDocument() {
-		final Document retval = mpField.getDocument();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(mpField.getDocument());
 	}
-
-	/**
-	 * The list of players.
-	 */
-	private final JList<Player> playerList;
 
 	/**
 	 * Handle the user selecting a different player.
@@ -165,15 +177,6 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	}
 
 	/**
-	 * The list of units.
-	 */
-	private final JList<Unit> unitList;
-	/**
-	 * The list of player-change listeners.
-	 */
-	private final List<PlayerChangeListener> listeners = new ArrayList<>();
-
-	/**
 	 * @param list the listener to add
 	 */
 	@Override
@@ -188,11 +191,6 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	public void removePlayerChangeListener(final PlayerChangeListener list) {
 		listeners.remove(list);
 	}
-
-	/**
-	 * The list of completion listeners listening to us.
-	 */
-	private final List<CompletionListener> cListeners = new ArrayList<>();
 
 	/**
 	 * @param list a listener to add

@@ -9,8 +9,7 @@ import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
-
-import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
 
 /**
  * An abstract superclass containing helper methods for TileDrawHelpers.
@@ -20,21 +19,27 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	/**
-	 * Because the JDK is not annotated with Eclipse's nullness annotations,
-	 * Eclipse thinks that static constants in the JDK might be null, leading to
-	 * several warnings in this class.
-	 * @param color a color
-	 * @return it without Eclipse having the idea anymore that it might be null
+	 * Brown, the color of a fortress.
 	 */
-	protected static Color assertNonNull(@Nullable final Color color) {
-		assert color != null;
-		return color;
-	}
+	protected static final Color FORT_COLOR = new Color(160, 82, 45);
+	/**
+	 * Purple, the color of a unit.
+	 */
+	protected static final Color UNIT_COLOR = new Color(148, 0, 211);
+	/**
+	 * Mapping from tile types to colors.
+	 */
+	protected static final TileUIHelper COLORS = new TileUIHelper();
+	/**
+	 * The number of sides on the symbol for a miscellaneous event.
+	 */
+	protected static final int MISC_EVENT_SIDES = 3;
+
 	/**
 	 * The color of the icon used to show that a tile has an event or associated
 	 * text.
 	 */
-	protected static final Color EVENT_COLOR = assertNonNull(Color.pink);
+	protected static final Color EVENT_COLOR = NullCleaner.assertNotNull(Color.pink);
 	/**
 	 * The color of the icon used to show that a tile has a forest.
 	 */
@@ -95,23 +100,6 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 		}
 		return false; // NOPMD
 	}
-
-	/**
-	 * Brown, the color of a fortress.
-	 */
-	protected static final Color FORT_COLOR = new Color(160, 82, 45);
-	/**
-	 * Purple, the color of a unit.
-	 */
-	protected static final Color UNIT_COLOR = new Color(148, 0, 211);
-	/**
-	 * Mapping from tile types to colors.
-	 */
-	protected static final TileUIHelper COLORS = new TileUIHelper();
-	/**
-	 * The number of sides on the symbol for a miscellaneous event.
-	 */
-	protected static final int MISC_EVENT_SIDES = 3;
 
 	/**
 	 * Draw a tile. At present, the graphics context needs to be translated so

@@ -14,6 +14,11 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Shrub implements HarvestableFixture, HasKind {
 	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
+	/**
 	 * A description of what kind of shrub this is.
 	 */
 	private String description;
@@ -68,7 +73,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || (obj instanceof Shrub && equalsImpl((Shrub) obj));
+		return this == obj || obj instanceof Shrub && equalsImpl((Shrub) obj);
 	}
 	/**
 	 * @param obj a shrub
@@ -125,11 +130,6 @@ public class Shrub implements HarvestableFixture, HasKind {
 	public final void setKind(final String kind) {
 		description = kind;
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

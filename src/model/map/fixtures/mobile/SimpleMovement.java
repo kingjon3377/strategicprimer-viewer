@@ -122,7 +122,7 @@ public final class SimpleMovement {
 	 */
 	public static boolean mightNotice(final Unit unit,
 			@Nullable final TileFixture fix) {
-		return (fix instanceof Ground && ((Ground) fix).isExposed())
+		return fix instanceof Ground && ((Ground) fix).isExposed()
 				|| !(fix instanceof Ground || unit.equals(fix));
 	}
 
@@ -136,11 +136,9 @@ public final class SimpleMovement {
 	 */
 	public static boolean shouldAlwaysNotice(final Unit unit,
 			@Nullable final TileFixture fix) {
-		return fix instanceof Mountain
-				|| fix instanceof RiverFixture
-				|| fix instanceof Hill
-				|| fix instanceof Forest
-				|| (fix instanceof Fortress && ((Fortress) fix).getOwner()
-						.equals(unit.getOwner()));
+		return fix instanceof Mountain || fix instanceof RiverFixture
+				|| fix instanceof Hill || fix instanceof Forest
+				|| fix instanceof Fortress
+				&& ((Fortress) fix).getOwner().equals(unit.getOwner());
 	}
 }

@@ -1,5 +1,7 @@
 package model.report;
 
+import util.NullCleaner;
+
 /**
  * A simple node representing plain text. Any children are ignored!
  *
@@ -28,9 +30,7 @@ public class SimpleReportNode extends AbstractReportNode {
 		for (final String string : strings) {
 			builder.append(string);
 		}
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
@@ -47,9 +47,7 @@ public class SimpleReportNode extends AbstractReportNode {
 	 */
 	@Override
 	public StringBuilder produce(final StringBuilder builder) {
-		final StringBuilder retval = builder.append(getText());
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.append(getText()));
 	}
 
 	/**

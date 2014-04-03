@@ -2,7 +2,6 @@ package util;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  * A class to convert a map's Entry set to an iterable of Pairs.
@@ -14,6 +13,11 @@ import java.util.Map.Entry;
  */
 public class SetPairConverter<I, K> implements Iterable<Pair<I, K>> {
 	/**
+	 * The map.
+	 */
+	private final Map<I, K> theMap;
+
+	/**
 	 * @param map the set we're wrapping.
 	 */
 	public SetPairConverter(final Map<I, K> map) {
@@ -21,19 +25,13 @@ public class SetPairConverter<I, K> implements Iterable<Pair<I, K>> {
 	}
 
 	/**
-	 * The map.
-	 */
-	private final Map<I, K> theMap;
-
-	/**
 	 * @return the iterator
 	 */
 
 	@Override
 	public Iterator<Pair<I, K>> iterator() {
-		final Iterator<Entry<I, K>> iter = theMap.entrySet().iterator();
-		assert iter != null;
-		return new IteratorImpl<>(iter);
+		return new IteratorImpl<>(NullCleaner.assertNotNull(theMap.entrySet()
+				.iterator()));
 	}
 
 	/**
@@ -43,6 +41,11 @@ public class SetPairConverter<I, K> implements Iterable<Pair<I, K>> {
 	 * @author Jonathan Lovelace
 	 */
 	private static class IteratorImpl<I, K> implements Iterator<Pair<I, K>> {
+		/**
+		 * The object we're a wrapper around.
+		 */
+		private final Iterator<Map.Entry<I, K>> wrapped;
+
 		/**
 		 * @return a String representation of the object
 		 */
@@ -60,11 +63,6 @@ public class SetPairConverter<I, K> implements Iterable<Pair<I, K>> {
 		}
 
 		/**
-		 * The object we're a wrapper around.
-		 */
-		private final Iterator<Map.Entry<I, K>> wrapped;
-
-		/**
 		 * @return whether there's more in the iterator
 		 */
 		@Override
@@ -79,10 +77,8 @@ public class SetPairConverter<I, K> implements Iterable<Pair<I, K>> {
 		@Override
 		public Pair<I, K> next() {
 			final Map.Entry<I, K> entry = wrapped.next();
-			final I key = entry.getKey();
-			final K value = entry.getValue();
-			assert key != null && value != null;
-			return Pair.of(key, value);
+			return Pair.of(NullCleaner.assertNotNull(entry.getKey()),
+					NullCleaner.assertNotNull(entry.getValue()));
 		}
 
 		/**

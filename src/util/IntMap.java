@@ -132,9 +132,7 @@ public class IntMap<V> implements DelayedRemovalMap<Integer, V> { // NOPMD
 	 */
 	@Override
 	public Set<Integer> keySet() {
-		final Set<Integer> retval = backing.keySet();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(backing.keySet());
 	}
 
 	/**
@@ -142,27 +140,21 @@ public class IntMap<V> implements DelayedRemovalMap<Integer, V> { // NOPMD
 	 */
 	@Override
 	public Collection<V> values() {
-		final Collection<V> retval = backing.values();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(backing.values());
 	}
 
 	/**
 	 * @return the set of entries in the map
 	 */
 	@Override
-	public Set<java.util.Map.Entry<Integer, V>> entrySet() {
-		final Set<Map.Entry<Integer, V>> retval = backing.entrySet();
-		assert retval != null;
-		return retval;
+	public Set<Map.Entry<Integer, V>> entrySet() {
+		return NullCleaner.assertNotNull(backing.entrySet());
 	}
 	/**
 	 * @return a String representation of the object
 	 */
 	@Override
 	public String toString() {
-		final String retval = backing.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(backing.toString());
 	}
 }

@@ -14,6 +14,11 @@ import org.eclipse.jdt.annotation.Nullable;
 public abstract class AbstractReportNode extends DefaultMutableTreeNode
 		implements IReportNode {
 	/**
+	 * The (usually header) text. May be empty, but not null.
+	 */
+	private String text;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param txt the (header) text.
@@ -43,11 +48,6 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public abstract int size();
-
-	/**
-	 * The (usually header) text. May be empty, but not null.
-	 */
-	private String text;
 
 	/**
 	 * @return the text of the node, usually the header.
@@ -81,8 +81,8 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof IReportNode && equalsImpl((IReportNode) obj));
+		return this == obj || obj instanceof IReportNode
+				&& equalsImpl((IReportNode) obj);
 	}
 
 	/**

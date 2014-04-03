@@ -30,6 +30,15 @@ public class SkillList extends JList<Skill> implements ListSelectionListener,
 		SkillSelectionSource, LevelGainListener, JobSelectionListener,
 		CompletionListener {
 	/**
+	 * The list of completion listeners listening to us.
+	 */
+	private final List<SkillSelectionListener> ssListeners = new ArrayList<>();
+	/**
+	 * The list model.
+	 */
+	private final SkillListModel lmodel;
+
+	/**
 	 * Constructor.
 	 */
 	public SkillList() {
@@ -51,15 +60,6 @@ public class SkillList extends JList<Skill> implements ListSelectionListener,
 			list.selectSkill(temp);
 		}
 	}
-
-	/**
-	 * The list of completion listeners listening to us.
-	 */
-	private final List<SkillSelectionListener> ssListeners = new ArrayList<>();
-	/**
-	 * The list model.
-	 */
-	private final SkillListModel lmodel;
 
 	/**
 	 * @param list a listener to add

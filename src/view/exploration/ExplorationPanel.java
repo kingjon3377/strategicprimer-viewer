@@ -47,6 +47,38 @@ import view.util.ListenedButton;
 public class ExplorationPanel extends BorderedPanel implements ActionListener,
 		SelectionChangeListener, CompletionSource, MovementCostListener {
 	/**
+	 * The label showing the current location of the explorer.
+	 */
+	private final JLabel locLabel = new JLabel(
+			"<html><body>Currently exploring (-1, -1); click a tile to explore it. "
+					+ "Selected fixtures in its left-hand list will be 'discovered'."
+					+ "</body></html>");
+	/**
+	 * The list of completion listeners listening to us.
+	 */
+	private final List<CompletionListener> cListeners = new ArrayList<>();
+
+	/**
+	 * The text-field containing the running MP total.
+	 */
+	private final JTextField mpField;
+	/**
+	 * The collection of proxies for main-map tile-fixture-lists.
+	 */
+	private final Map<Direction, SelectionChangeSupport> mains = new EnumMap<>(
+			Direction.class);
+	/**
+	 * The collection of proxies for secondary-map tile-fixture lists.
+	 */
+	private final Map<Direction, SelectionChangeSupport> seconds = new EnumMap<>(
+			Direction.class);
+	/**
+	 * The collection of dual-tile-buttons.
+	 */
+	private final Map<Direction, DualTileButton> buttons = new EnumMap<>(
+			Direction.class);
+
+	/**
 	 * The exploration model.
 	 */
 	private final IExplorationModel model;
@@ -119,33 +151,6 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 			}
 		}
 	}
-
-	/**
-	 * The label showing the current location of the explorer.
-	 */
-	private final JLabel locLabel = new JLabel(
-			"<html><body>Currently exploring (-1, -1); click a tile to explore it. "
-					+ "Selected fixtures in its left-hand list will be 'discovered'."
-					+ "</body></html>");
-	/**
-	 * The text-field containing the running MP total.
-	 */
-	private final JTextField mpField;
-	/**
-	 * The collection of proxies for main-map tile-fixture-lists.
-	 */
-	private final Map<Direction, SelectionChangeSupport> mains = new EnumMap<>(
-			Direction.class);
-	/**
-	 * The collection of proxies for secondary-map tile-fixture lists.
-	 */
-	private final Map<Direction, SelectionChangeSupport> seconds = new EnumMap<>(
-			Direction.class);
-	/**
-	 * The collection of dual-tile-buttons.
-	 */
-	private final Map<Direction, DualTileButton> buttons = new EnumMap<>(
-			Direction.class);
 
 	/**
 	 * Set up the GUI representation of a tile---a list of its contents in the
@@ -248,11 +253,6 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 	public void selectedTileChanged(@Nullable final ITile old, final ITile newTile) {
 		// Everything is handled in selectedPointChanged().
 	}
-
-	/**
-	 * The list of completion listeners listening to us.
-	 */
-	private final List<CompletionListener> cListeners = new ArrayList<>();
 
 	/**
 	 * @param list a listener to add

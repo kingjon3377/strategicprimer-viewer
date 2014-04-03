@@ -14,33 +14,33 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author adapted by Jonathan Lovelace to pass muster with static analysis,
  *         etc.
  *
- * @param <FIRST> The first type in the pair.
- * @param <SECOND> The second type in the pair.
+ * @param <L> The first type in the pair.
+ * @param <R> The second type in the pair.
  */
-public class Pair<FIRST, SECOND> {
+public class Pair<L, R> {
 	/**
 	 * The first item in the pair.
 	 */
-	private final FIRST first;
+	private final L first;
+
+	/**
+	 * The second item in the pair.
+	 */
+	private final R second;
 
 	/**
 	 *
 	 * @return the first item in the pair
 	 */
-	public FIRST first() {
+	public L first() {
 		return first;
 	}
-
-	/**
-	 * The second item in the pair.
-	 */
-	private final SECOND second;
 
 	/**
 	 *
 	 * @return the second item in the pair
 	 */
-	public SECOND second() {
+	public R second() {
 		return second;
 	}
 
@@ -51,7 +51,7 @@ public class Pair<FIRST, SECOND> {
 	 * @param firstItem The first item in the pair.
 	 * @param secondItem The second item in the pair.
 	 */
-	protected Pair(final FIRST firstItem, final SECOND secondItem) {
+	protected Pair(final L firstItem, final R secondItem) {
 		first = firstItem;
 		second = secondItem;
 	}
@@ -87,10 +87,9 @@ public class Pair<FIRST, SECOND> {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj)
-				|| ((obj instanceof Pair)
-						&& Objects.equals(first, ((Pair) obj).first) && Objects
-							.equals(second, ((Pair) obj).second));
+		return this == obj || obj instanceof Pair
+				&& Objects.equals(first, ((Pair) obj).first)
+				&& Objects.equals(second, ((Pair) obj).second);
 	}
 
 	/**

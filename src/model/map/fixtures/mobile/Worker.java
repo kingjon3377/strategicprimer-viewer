@@ -15,6 +15,7 @@ import model.map.fixtures.mobile.worker.WorkerStats;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.ArraySet;
+import util.NullCleaner;
 
 /**
  * A worker (or soldier) in a unit. This is deliberately not a TileFixture:
@@ -27,6 +28,31 @@ import util.ArraySet;
  */
 public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind,
 		HasImage {
+	/**
+	 * The worker's name.
+	 */
+	private String name;
+
+	/**
+	 * The worker's race (elf, dwarf, human, etc.).
+	 */
+	private String race;
+	/**
+	 * The set of jobs the worker is trained or experienced in.
+	 */
+	private final Set<Job> jobSet = new ArraySet<>();
+
+	/**
+	 * The worker's stats.
+	 */
+	@Nullable
+	private WorkerStats stats;
+
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
 	/**
 	 * Constructor.
 	 *
@@ -45,15 +71,6 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind,
 	}
 
 	/**
-	 * The worker's race (elf, dwarf, human, etc.).
-	 */
-	private String race;
-	/**
-	 * The set of jobs the worker is trained or experienced in.
-	 */
-	private final Set<Job> jobSet = new ArraySet<>();
-
-	/**
 	 * Add a job.
 	 *
 	 * @param job the job to add.
@@ -68,9 +85,7 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind,
 	 */
 	@Override
 	public final Iterator<Job> iterator() {
-		final Iterator<Job> iter = jobSet.iterator();
-		assert iter != null;
-		return iter;
+		return NullCleaner.assertNotNull(jobSet.iterator());
 	}
 
 	/**
@@ -92,11 +107,6 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind,
 	public String getRace() {
 		return race;
 	}
-
-	/**
-	 * The worker's name.
-	 */
-	private String name;
 
 	/**
 	 * @return the worker's name
@@ -137,8 +147,8 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind,
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return this == fix
-				|| (fix instanceof Worker && equalsIgIDImpl((Worker) fix));
+		return this == fix || fix instanceof Worker
+				&& equalsIgIDImpl((Worker) fix);
 	}
 	/**
 	 * @param fix a worker
@@ -147,7 +157,7 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind,
 	private boolean equalsIgIDImpl(final Worker fix) {
 		final WorkerStats locStats = stats;
 		if (locStats == null) {
-			return fix.name.equals(name) && fix.jobSet.equals(jobSet)
+			return fix.name.equals(name) && fix.jobSet.equals(jobSet) // NOPMD
 					&& fix.race.equals(race) && fix.stats == null;
 		} else {
 			return fix.name.equals(name) && fix.jobSet.equals(jobSet)
@@ -180,12 +190,6 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind,
 	}
 
 	/**
-	 * The worker's stats.
-	 */
-	@Nullable
-	private WorkerStats stats;
-
-	/**
 	 * @return the worker's stats
 	 */
 	@Nullable
@@ -210,11 +214,6 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind,
 	public String getDefaultImage() {
 		return "worker.png";
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

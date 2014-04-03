@@ -33,6 +33,11 @@ import controller.map.drivers.WorkerStart;
  */
 public class AppChooserFrame extends JFrame {
 	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(AppChooserFrame.class);
+	/**
 	 * Create a button for a target.
 	 *
 	 * @param desc the descriptive string
@@ -136,11 +141,6 @@ public class AppChooserFrame extends JFrame {
 			outer.dispose();
 		}
 
-		/**
-		 * Logger.
-		 */
-		private static final Logger LOGGER = TypesafeLogger
-				.getLogger(AppChooserFrame.class);
 		/**
 		 * @return a String representation of the object
 		 */

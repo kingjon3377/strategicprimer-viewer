@@ -16,6 +16,7 @@ import model.viewer.IViewerModel;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.IsNumeric;
+import util.NullCleaner;
 import view.util.BoxPanel;
 import view.util.ListenedButton;
 
@@ -97,10 +98,8 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 	public final void actionPerformed(@Nullable final ActionEvent event) {
 		if (event != null) {
 			if ("OK".equals(event.getActionCommand())) {
-				final String colText = column.getText();
-				final String rowText = row.getText();
-				assert rowText != null && colText != null;
-				handleOK(rowText, colText);
+				handleOK(NullCleaner.assertNotNull(row.getText()),
+						NullCleaner.assertNotNull(column.getText()));
 			} else if ("Cancel".equals(event.getActionCommand())) {
 				setVisible(false);
 				row.setText("-1");
@@ -183,14 +182,14 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 		errorLabel.setText("");
 		final MapDimensions dim = map.getMapDimensions();
 		final State colState = checkNumber(colText, dim.cols - 1);
-		if (!(colState == State.Valid)) {
+		if (colState != State.Valid) {
 			errorLabel.setText(errorLabel.getText() + "Column "
 					+ getErrorMessage(colState, dim.cols));
 			column.setText("-1");
 			column.selectAll();
 		}
 		final State rowState = checkNumber(rowText, dim.rows - 1);
-		if (!(rowState == State.Valid)) {
+		if (rowState != State.Valid) {
 			errorLabel.setText(errorLabel.getText() + "Row "
 					+ getErrorMessage(rowState, dim.rows));
 			row.setText("-1");

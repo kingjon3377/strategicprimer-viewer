@@ -2,6 +2,8 @@ package model.report;
 
 import javax.swing.tree.TreeNode;
 
+import util.NullCleaner;
+
 /**
  * A node representing a section, with a header.
  *
@@ -9,6 +11,11 @@ import javax.swing.tree.TreeNode;
  *
  */
 public class SectionReportNode extends AbstractReportNode {
+	/**
+	 * The header level.
+	 */
+	private int level;
+
 	/**
 	 * Constructor.
 	 *
@@ -25,9 +32,8 @@ public class SectionReportNode extends AbstractReportNode {
 	 */
 	@Override
 	public String produce() {
-		final String retval = produce(new StringBuilder(size())).toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(produce(new StringBuilder(size()))
+				.toString());
 	}
 
 	/**
@@ -62,11 +68,6 @@ public class SectionReportNode extends AbstractReportNode {
 		}
 		return retval;
 	}
-
-	/**
-	 * The header level.
-	 */
-	private int level;
 
 	/**
 	 * @param lvl the new header level

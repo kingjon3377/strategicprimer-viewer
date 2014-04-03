@@ -15,6 +15,11 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Djinn implements MobileFixture, HasImage, UnitMember {
 	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
+	/**
 	 * @param idNum the ID number.
 	 */
 	public Djinn(final int idNum) {
@@ -94,11 +99,6 @@ public class Djinn implements MobileFixture, HasImage, UnitMember {
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Djinn;
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

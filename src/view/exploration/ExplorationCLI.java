@@ -1,5 +1,6 @@
 package view.exploration;
 
+import static util.NullCleaner.assertNotNull;
 import static view.util.SystemOut.SYS_OUT;
 
 import java.io.IOException;
@@ -70,11 +71,9 @@ public class ExplorationCLI {
 				"No players shared by all the maps.",
 				"Please make a selection: ", true);
 		if (playerNum < 0 || playerNum >= players.size()) {
-			return new Player(-1, "abort");
+			return new Player(-1, "abort"); // NOPMD
 		} else {
-			final Player player = players.get(playerNum);
-			assert player != null;
-			return player;
+			return assertNotNull(players.get(playerNum));
 		}
 	}
 
@@ -92,11 +91,9 @@ public class ExplorationCLI {
 				"That player has no units in the master map.",
 				"Please make a selection: ", true);
 		if (unitNum < 0 || unitNum >= units.size()) {
-			return new Unit(new Player(-1, "abort"), "", "", -1);
+			return new Unit(new Player(-1, "abort"), "", "", -1); // NOPMD
 		} else {
-			final Unit unit = units.get(unitNum);
-			assert unit != null;
-			return unit;
+			return assertNotNull(units.get(unitNum));
 		}
 	}
 
@@ -130,15 +127,12 @@ public class ExplorationCLI {
 	 * @throws IOException on I/O error
 	 */
 	public int move(final Unit mover) throws IOException {
-		final List<TileFixture> allFixtures = new ArrayList<>();
-		final List<TileFixture> constants = new ArrayList<>();
 		final int directionNum = helper.inputNumber("Direction to move: ");
 		if (directionNum > 8) {
 			return Integer.MAX_VALUE; // NOPMD
 		}
-		final Direction direction = Direction.values()[directionNum];
-		assert direction != null;
-		final Point point = model.getSelectedUnitLocation();
+		final Direction direction =
+				assertNotNull(Direction.values()[directionNum]);
 		// ESCA-JAVA0177:
 		int cost; // NOPMD
 		try {
@@ -148,7 +142,10 @@ public class ExplorationCLI {
 					.println("all maps show that at a cost of 1 MP");
 			return 1; // NOPMD
 		}
+		final Point point = model.getSelectedUnitLocation();
 		final Point dPoint = model.getDestination(point, direction);
+		final List<TileFixture> allFixtures = new ArrayList<>();
+		final List<TileFixture> constants = new ArrayList<>();
 		for (final TileFixture fix : model.getMap().getTile(dPoint)) {
 			if (SimpleMovement.shouldAlwaysNotice(mover, fix)) {
 				constants.add(fix);
@@ -218,10 +215,12 @@ public class ExplorationCLI {
 			SYS_OUT.println(selUnit.verbose());
 			final int totalMP = helper.inputNumber("MP the unit has: ");
 			int movement = totalMP;
-			final String prompt = new StringBuilder(90)
-					.append("0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ")
-					.append("6 = W, 7 = NW, 8 = Stay Here, 9 = Quit.")
-					.toString();
+			// FIXME: Should be a class-level constant.
+			final String prompt =
+					assertNotNull(new StringBuilder(90)
+							.append("0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ")
+							.append("6 = W, 7 = NW, 8 = Stay Here, 9 = Quit.")
+							.toString());
 			while (movement > 0) {
 				SYS_OUT.printC(movement).printC(" MP of ")
 						.printC(totalMP).println(" remaining.");

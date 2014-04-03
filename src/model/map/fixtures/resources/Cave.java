@@ -14,6 +14,11 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public final class Cave implements IEvent, HarvestableFixture {
 	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
+	/**
 	 * Constructor.
 	 *
 	 * @param discdc the DC to discover the caves
@@ -55,8 +60,8 @@ public final class Cave implements IEvent, HarvestableFixture {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Cave && ((TileFixture) obj).getID() == id);
+		return this == obj || obj instanceof Cave
+				&& ((TileFixture) obj).getID() == id;
 	}
 
 	/**
@@ -128,11 +133,6 @@ public final class Cave implements IEvent, HarvestableFixture {
 	public String getDefaultImage() {
 		return "cave.png";
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

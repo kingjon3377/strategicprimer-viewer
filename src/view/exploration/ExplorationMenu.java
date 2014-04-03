@@ -114,6 +114,19 @@ public class ExplorationMenu extends JMenuBar {
 	 */
 	private static class ViewerOpener implements Runnable {
 		/**
+		 * The map view to open.
+		 */
+		private final MapView view;
+		/**
+		 * The file name the map was loaded from.
+		 */
+		private final String filename;
+		/**
+		 * The I/O handler to let the menu handle 'open', etc.
+		 */
+		private final IOHandler ioHelper;
+
+		/**
 		 * Constructor.
 		 *
 		 * @param map the map (view) to open
@@ -133,19 +146,6 @@ public class ExplorationMenu extends JMenuBar {
 			filename = file;
 			ioHelper = ioHandler;
 		}
-
-		/**
-		 * The map view to open.
-		 */
-		private final MapView view;
-		/**
-		 * The file name the map was loaded from.
-		 */
-		private final String filename;
-		/**
-		 * The I/O handler to let the menu handle 'open', etc.
-		 */
-		private final IOHandler ioHelper;
 
 		/**
 		 * Run the thread.

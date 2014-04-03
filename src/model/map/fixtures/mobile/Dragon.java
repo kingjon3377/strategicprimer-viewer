@@ -16,6 +16,11 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Dragon implements MobileFixture, HasImage, HasKind, UnitMember {
 	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
+	/**
 	 * What kind of dragon. (Usually blank, at least at first.)
 	 */
 	private String kind;
@@ -46,7 +51,7 @@ public class Dragon implements MobileFixture, HasImage, HasKind, UnitMember {
 	@Override
 	public String toString() {
 		if (kind.isEmpty()) {
-			return "dragon";
+			return "dragon"; // NOPMD
 		} else {
 			return kind + " dragon";
 		}
@@ -124,11 +129,6 @@ public class Dragon implements MobileFixture, HasImage, HasKind, UnitMember {
 	public final void setKind(final String nKind) {
 		kind = nKind;
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

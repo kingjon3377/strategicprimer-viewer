@@ -32,6 +32,12 @@ import util.TypesafeLogger;
  */
 public class FixtureListDropListener implements DropTargetListener {
 	/**
+	 * A parent component. If it's an ancestor of the drop, it's an
+	 * intra-component drop.
+	 */
+	private final JComponent parentComponent;
+
+	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
@@ -52,12 +58,6 @@ public class FixtureListDropListener implements DropTargetListener {
 		model = listModel;
 		parentComponent = parent;
 	}
-
-	/**
-	 * A parent component. If it's an ancestor of the drop, it's an
-	 * intra-component drop.
-	 */
-	private final JComponent parentComponent;
 
 	/**
 	 * A possible drag entering the component?

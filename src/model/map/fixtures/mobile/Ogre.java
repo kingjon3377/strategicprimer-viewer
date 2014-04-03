@@ -13,7 +13,12 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class Ogre implements MobileFixture, HasImage, UnitMember {
+public class Ogre implements MobileFixture, HasImage, UnitMember { // NOPMD
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
 	/**
 	 * @param idNum the ID number.
 	 */
@@ -52,8 +57,8 @@ public class Ogre implements MobileFixture, HasImage, UnitMember {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Ogre && id == ((TileFixture) obj).getID());
+		return this == obj || obj instanceof Ogre
+				&& id == ((TileFixture) obj).getID();
 	}
 
 	/**
@@ -94,11 +99,6 @@ public class Ogre implements MobileFixture, HasImage, UnitMember {
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Ogre;
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

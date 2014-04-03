@@ -24,6 +24,39 @@ import model.misc.AbstractDriverModel;
 public final class ViewerModel extends AbstractDriverModel implements
 		IViewerModel {
 	/**
+	 * The current zoom level.
+	 */
+	private int zoomLevel = DEF_ZOOM_LEVEL;
+	/**
+	 * The starting zoom level.
+	 */
+	public static final int DEF_ZOOM_LEVEL = 8;
+	/**
+	 * The maximum zoom level, to make sure that the tile size never overflows.
+	 */
+	private static final int MAX_ZOOM_LEVEL = Integer.MAX_VALUE / 4;
+
+	/**
+	 * The list of graphical-parameter listeners.
+	 */
+	private final List<GraphicalParamsListener> gpListeners = new ArrayList<>();
+
+	/**
+	 * The currently selected point in the main map.
+	 */
+	private Point selPoint;
+
+	/**
+	 * The visible dimensions of the map.
+	 */
+	private VisibleDimensions dimensions;
+
+	/**
+	 * The object to handle notifying selection-change listeners.
+	 */
+	private final SelectionChangeSupport scs = new SelectionChangeSupport();
+
+	/**
 	 * Constructor.
 	 *
 	 * @param firstMap the initial map
@@ -36,11 +69,6 @@ public final class ViewerModel extends AbstractDriverModel implements
 		selPoint = PointFactory.point(-1, -1);
 		setMap(firstMap, filename);
 	}
-
-	/**
-	 * The currently selected point in the main map.
-	 */
-	private Point selPoint;
 
 	/**
 	 * @param newMap the new map
@@ -89,11 +117,6 @@ public final class ViewerModel extends AbstractDriverModel implements
 	}
 
 	/**
-	 * The visible dimensions of the map.
-	 */
-	private VisibleDimensions dimensions;
-
-	/**
 	 * @param dim the new visible dimensions of the map
 	 */
 	@Override
@@ -121,19 +144,6 @@ public final class ViewerModel extends AbstractDriverModel implements
 	public String toString() {
 		return "MapModel";
 	}
-
-	/**
-	 * The current zoom level.
-	 */
-	private int zoomLevel = DEF_ZOOM_LEVEL;
-	/**
-	 * The starting zoom level.
-	 */
-	public static final int DEF_ZOOM_LEVEL = 8;
-	/**
-	 * The maximum zoom level, to make sure that the tile size never overflows.
-	 */
-	private static final int MAX_ZOOM_LEVEL = Integer.MAX_VALUE / 4;
 
 	/**
 	 * @return the current zoom level.
@@ -190,11 +200,6 @@ public final class ViewerModel extends AbstractDriverModel implements
 	}
 
 	/**
-	 * The object to handle notifying selection-change listeners.
-	 */
-	private final SelectionChangeSupport scs = new SelectionChangeSupport();
-
-	/**
 	 * @param list a selection-change listener to add
 	 */
 	@Override
@@ -209,12 +214,6 @@ public final class ViewerModel extends AbstractDriverModel implements
 	public void removeSelectionChangeListener(final SelectionChangeListener list) {
 		scs.removeSelectionChangeListener(list);
 	}
-
-	/**
-	 * The list of graphical-parameter listeners.
-	 */
-	private final List<GraphicalParamsListener> gpListeners = new ArrayList<>();
-
 	/**
 	 * @param list a listener to add
 	 */

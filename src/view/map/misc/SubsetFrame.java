@@ -37,6 +37,30 @@ import controller.map.misc.MapReaderAdapter;
  */
 public class SubsetFrame extends JFrame {
 	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(MapCheckerFrame.class);
+	/**
+	 * The map reader we'll use.
+	 */
+	private final MapReaderAdapter reader = new MapReaderAdapter();
+	/**
+	 * The label that's the bulk of the GUI.
+	 */
+	private final StreamingLabel label = new StreamingLabel();
+
+	/**
+	 * The color to use for errors.
+	 */
+	private static final String ERROR_COLOR = "red";
+	/**
+	 * The main map.
+	 */
+	private IMap mainMap = new MapView(new SPMap(new MapDimensions(0, 0, 2)),
+			0, 0);
+
+	/**
 	 * A writer to put each line into an HTML paragraph, coloring them
 	 * appropriately.
 	 *
@@ -100,20 +124,6 @@ public class SubsetFrame extends JFrame {
 	}
 
 	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(MapCheckerFrame.class);
-	/**
-	 * The map reader we'll use.
-	 */
-	private final MapReaderAdapter reader = new MapReaderAdapter();
-	/**
-	 * The label that's the bulk of the GUI.
-	 */
-	private final StreamingLabel label = new StreamingLabel();
-
-	/**
 	 * Constructor.
 	 */
 	public SubsetFrame() {
@@ -151,16 +161,6 @@ public class SubsetFrame extends JFrame {
 	}
 
 	/**
-	 * The color to use for errors.
-	 */
-	private static final String ERROR_COLOR = "red";
-	/**
-	 * The main map.
-	 */
-	private IMap mainMap = new MapView(new SPMap(new MapDimensions(0, 0, 2)),
-			0, 0);
-
-	/**
 	 * Load a new map as the main map, which the others should be subsets of.
 	 *
 	 * @param arg the filename to load it from
@@ -182,9 +182,9 @@ public class SubsetFrame extends JFrame {
 		} catch (final XMLStreamException except) {
 			printParagraph("ERROR: Malformed XML in file " + arg
 					+ "; see following error message for details", ERROR_COLOR);
-			final String message = except.getLocalizedMessage();
-			assert message != null;
-			printParagraph(message, ERROR_COLOR);
+			printParagraph(
+					NullCleaner.assertNotNull(except.getLocalizedMessage()),
+					ERROR_COLOR);
 			throw except;
 		} catch (final SPFormatException except) {
 			printParagraph(
@@ -192,9 +192,9 @@ public class SubsetFrame extends JFrame {
 							+ " in file " + arg
 							+ "; see following error message for details",
 					ERROR_COLOR);
-			final String message = except.getLocalizedMessage();
-			assert message != null;
-			printParagraph(message, ERROR_COLOR);
+			printParagraph(
+					NullCleaner.assertNotNull(except.getLocalizedMessage()),
+					ERROR_COLOR);
 			throw except;
 		} catch (final IOException except) {
 			printParagraph("ERROR: I/O error reading file " + arg, ERROR_COLOR);
@@ -218,9 +218,15 @@ public class SubsetFrame extends JFrame {
 	public void test(final String arg) { // NOPMD: this isn't a JUnit test ...
 		printParagraph("Testing " + arg + " ...", "");
 		// ESCA-JAVA0177:
-		final IMap map; // NOPMD
 		try {
-			map = reader.readMap(arg, new Warning(Action.Ignore));
+			final IMap map = reader.readMap(arg, new Warning(Action.Ignore));
+			try (final PrintWriter out = new HTMLWriter(label.getWriter())) {
+				if (mainMap.isSubset(map, out)) {
+					printParagraph("OK", "green");
+				} else {
+					printParagraph("WARN", "yellow");
+				}
+			}
 		} catch (final MapVersionException except) {
 			LOGGER.log(Level.SEVERE, "Map version in " + arg
 					+ " not acceptable to reader", except);
@@ -254,13 +260,6 @@ public class SubsetFrame extends JFrame {
 			assert message != null;
 			printParagraph(message, ERROR_COLOR);
 			return;
-		}
-		try (final PrintWriter out = new HTMLWriter(label.getWriter())) {
-			if (mainMap.isSubset(map, out)) {
-				printParagraph("OK", "green");
-			} else {
-				printParagraph("WARN", "yellow");
-			}
 		}
 	}
 }

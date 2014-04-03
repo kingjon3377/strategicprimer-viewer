@@ -3,6 +3,8 @@ package model.map.fixtures.resources;
 import java.util.HashMap;
 import java.util.Map;
 
+import util.NullCleaner;
+
 /**
  * The kinds of stone we know about (for purposes of this event).
  *
@@ -33,17 +35,15 @@ public enum StoneKind {
 	 */
 	public static StoneKind parseStoneKind(final String string) {
 		if (SK_MAP.containsKey(string)) {
-			final StoneKind retval = SK_MAP.get(string);
-			assert retval != null;
-			return retval;
+			return NullCleaner.assertNotNull(SK_MAP.get(string));
 		} else {
 			throw new IllegalArgumentException("Unrecognized kind of stone");
 		}
 	}
 
 	static {
-		for (final StoneKind sk : values()) {
-			SK_MAP.put(sk.str, sk);
+		for (final StoneKind kind : values()) {
+			SK_MAP.put(kind.str, kind);
 		}
 	}
 

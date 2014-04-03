@@ -16,6 +16,11 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Hill implements TerrainFixture, HasImage {
 	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
+	/**
 	 * @param idNum the ID number.
 	 */
 	public Hill(final int idNum) {
@@ -53,8 +58,8 @@ public class Hill implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Hill && id == ((TileFixture) obj).getID());
+		return this == obj || obj instanceof Hill
+				&& id == ((TileFixture) obj).getID();
 	}
 
 	/**
@@ -96,11 +101,6 @@ public class Hill implements TerrainFixture, HasImage {
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Hill;
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

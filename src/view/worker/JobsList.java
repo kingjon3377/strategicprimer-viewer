@@ -30,6 +30,15 @@ public final class JobsList extends JList<Job> implements
 		ListSelectionListener, JobSelectionSource, AddRemoveListener,
 		UnitMemberListener, CompletionListener {
 	/**
+	 * The list of completion listeners listening to us.
+	 */
+	private final List<JobSelectionListener> jsListeners = new ArrayList<>();
+	/**
+	 * The list model.
+	 */
+	private final JobsListModel lmodel;
+
+	/**
 	 * Constructor.
 	 */
 	public JobsList() {
@@ -51,15 +60,6 @@ public final class JobsList extends JList<Job> implements
 			list.selectJob(temp);
 		}
 	}
-
-	/**
-	 * The list of completion listeners listening to us.
-	 */
-	private final List<JobSelectionListener> jsListeners = new ArrayList<>();
-	/**
-	 * The list model.
-	 */
-	private final JobsListModel lmodel;
 
 	/**
 	 * @param list a listener to add

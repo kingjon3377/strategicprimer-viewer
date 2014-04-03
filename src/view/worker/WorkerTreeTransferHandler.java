@@ -34,6 +34,15 @@ import util.TypesafeLogger;
  */
 public class WorkerTreeTransferHandler extends TransferHandler {
 	/**
+	 * The tree's selection model.
+	 */
+	private final TreeSelectionModel smodel;
+	/**
+	 * The tree's data model.
+	 */
+	private final IWorkerTreeModel model;
+
+	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
@@ -50,15 +59,6 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 		smodel = selmodel;
 		model = tmodel;
 	}
-
-	/**
-	 * The tree's selection model.
-	 */
-	private final TreeSelectionModel smodel;
-	/**
-	 * The tree's data model.
-	 */
-	private final IWorkerTreeModel model;
 
 	/**
 	 * @param component ignored
@@ -128,7 +128,6 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 	@Override
 	public boolean importData(@Nullable final TransferSupport support) {
 		if (support != null && canImport(support)) {
-			final Transferable trans = support.getTransferable();
 			final DropLocation dloc = support.getDropLocation();
 			if (!(dloc instanceof JTree.DropLocation)) {
 				return false; // NOPMD
@@ -141,6 +140,7 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 			final Object tempTarget = model.getModelObject(pathLast);
 			if (tempTarget instanceof Unit) {
 				try {
+					final Transferable trans = support.getTransferable();
 					final UnitMemberTransferable.UnitMemberPair pair =
 							(UnitMemberPair) trans
 									.getTransferData(UnitMemberTransferable.FLAVOR);

@@ -15,6 +15,11 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Oasis implements TerrainFixture, HasImage {
 	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
+	/**
 	 * @param idNum the ID number.
 	 */
 	public Oasis(final int idNum) {
@@ -52,8 +57,8 @@ public class Oasis implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Oasis && id == ((TileFixture) obj).getID());
+		return this == obj || obj instanceof Oasis
+				&& id == ((TileFixture) obj).getID();
 	}
 
 	/**
@@ -95,11 +100,6 @@ public class Oasis implements TerrainFixture, HasImage {
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Oasis;
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

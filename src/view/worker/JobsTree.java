@@ -27,6 +27,15 @@ import org.eclipse.jdt.annotation.Nullable;
 public final class JobsTree extends JTree implements TreeSelectionListener,
 		SkillSelectionSource, AddRemoveListener, UnitMemberListener {
 	/**
+	 * The list of completion listeners listening to us.
+	 */
+	private final List<SkillSelectionListener> ssListeners = new ArrayList<>();
+	/**
+	 * The tree model.
+	 */
+	private final JobTreeModel model;
+
+	/**
 	 * Constructor.
 	 */
 	public JobsTree() {
@@ -52,33 +61,22 @@ public final class JobsTree extends JTree implements TreeSelectionListener,
 	public void valueChanged(@Nullable final TreeSelectionEvent evt) {
 		if (evt != null) {
 			final TreePath selPath = evt.getNewLeadSelectionPath();
-			// ESCA-JAVA0177:
-			final Object component; // NOPMD
-			if (selPath == null) {
-				component = null;
-			} else {
-				component = selPath.getLastPathComponent();
-			}
 			final Skill retval;
-			if (component instanceof Skill) {
-				retval = (Skill) component;
-			} else {
+			if (selPath == null) {
 				retval = null;
+			} else {
+				final Object component = selPath.getLastPathComponent();
+				if (component instanceof Skill) {
+					retval = (Skill) component;
+				} else {
+					retval = null;
+				}
 			}
 			for (final SkillSelectionListener list : ssListeners) {
 				list.selectSkill(retval);
 			}
 		}
 	}
-
-	/**
-	 * The list of completion listeners listening to us.
-	 */
-	private final List<SkillSelectionListener> ssListeners = new ArrayList<>();
-	/**
-	 * The tree model.
-	 */
-	private final JobTreeModel model;
 
 	/**
 	 * @param list a listener to add

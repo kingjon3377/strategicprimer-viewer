@@ -32,6 +32,16 @@ import util.TypesafeLogger;
  */
 public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(FixtureCellRenderer.class);
+	/**
+	 * the default fixture icon.
+	 */
+	private final Icon defaultFixtIcon = createDefaultFixtureIcon();
+
+	/**
 	 * Default list renderer, for cases we don't know how to handle.
 	 */
 	private static final DefaultListCellRenderer LIST_DEFAULT =
@@ -91,16 +101,6 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 		}
 		return retval;
 	}
-
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(FixtureCellRenderer.class);
-	/**
-	 * the default fixture icon.
-	 */
-	private final Icon defaultFixtIcon = createDefaultFixtureIcon();
 
 	/**
 	 * @return the default icon for fixtures.

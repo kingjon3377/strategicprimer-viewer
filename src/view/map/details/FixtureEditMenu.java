@@ -24,6 +24,8 @@ import model.map.PlayerCollection;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * A pop-up menu to let the user edit a fixture.
  *
@@ -63,10 +65,10 @@ public class FixtureEditMenu extends JPopupMenu {
 		 */
 		@Override
 		public void actionPerformed(@Nullable final ActionEvent event) {
-			final String result = (String) JOptionPane.showInputDialog(outer,
-					"Fixture's new name:", "Rename Fixture",
-					JOptionPane.PLAIN_MESSAGE, null, null,
-					((HasName) fixture).getName());
+			final String result =
+					(String) showInputDialog(outer, "Fixture's new name:",
+							"Rename Fixture", JOptionPane.PLAIN_MESSAGE, null,
+							null, ((HasName) fixture).getName());
 			if (result != null) {
 				((HasName) fixture).setName(result);
 			}
@@ -119,8 +121,8 @@ public class FixtureEditMenu extends JPopupMenu {
 						@Override
 						public void actionPerformed(
 								@Nullable final ActionEvent event) {
-							final Player result = (Player) JOptionPane
-									.showInputDialog(outer,
+							final Player result =
+									(Player) showInputDialog(outer,
 											"Fixture's new owner:",
 											"Change Fixture Owner",
 											JOptionPane.PLAIN_MESSAGE, null,
@@ -143,15 +145,13 @@ public class FixtureEditMenu extends JPopupMenu {
 	 */
 	protected static Player[] playersAsArray(final IPlayerCollection players) {
 		if (players instanceof IMutablePlayerCollection) {
-			return ((PlayerCollection) players).asArray();
+			return ((PlayerCollection) players).asArray(); // NOPMD
 		} else {
 			final List<Player> list = new ArrayList<>();
 			for (final Player player : players) {
 				list.add(player);
 			}
-			final Player[] retval = list.toArray(new Player[list.size()]);
-			assert retval != null;
-			return retval;
+			return NullCleaner.assertNotNull(list.toArray(new Player[list.size()]));
 		}
 	}
 	/**

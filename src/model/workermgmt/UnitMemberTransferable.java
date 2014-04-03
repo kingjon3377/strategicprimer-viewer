@@ -10,6 +10,8 @@ import model.map.fixtures.mobile.Unit;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * A class to transfer a UnitMember.
  *
@@ -17,10 +19,28 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class UnitMemberTransferable implements Transferable {
 	/**
+	 * The object we're transfering.
+	 */
+	private final UnitMemberPair data;
+	/**
+	 * a DataFlavor representing its class.
+	 */
+	public static final DataFlavor FLAVOR = new DataFlavor(
+			UnitMemberPair.class, "Worker");
+
+	/**
 	 * A pair of a unit member and its containing unit.
 	 * @author Jonathan Lovelace
 	 */
 	public static class UnitMemberPair {
+		/**
+		 * The unit member.
+		 */
+		public final UnitMember member;
+		/**
+		 * The unit containing it.
+		 */
+		public final Unit unit;
 		/**
 		 * Constructor.
 		 *
@@ -32,14 +52,6 @@ public class UnitMemberTransferable implements Transferable {
 			unit = theUnit;
 		}
 
-		/**
-		 * The unit member.
-		 */
-		public final UnitMember member;
-		/**
-		 * The unit containing it.
-		 */
-		public final Unit unit;
 		/**
 		 * @return a String representation of the object
 		 */
@@ -54,9 +66,7 @@ public class UnitMemberTransferable implements Transferable {
 			builder.append(", ");
 			builder.append(unitStr);
 			builder.append(')');
-			final String retval = builder.toString();
-			assert retval != null;
-			return retval;
+			return NullCleaner.assertNotNull(builder.toString());
 		}
 
 	}
@@ -70,16 +80,6 @@ public class UnitMemberTransferable implements Transferable {
 	public UnitMemberTransferable(final UnitMember theData, final Unit theParent) {
 		data = new UnitMemberPair(theData, theParent);
 	}
-
-	/**
-	 * The object we're transfering.
-	 */
-	private final UnitMemberPair data;
-	/**
-	 * a DataFlavor representing its class.
-	 */
-	public static final DataFlavor FLAVOR = new DataFlavor(
-			UnitMemberPair.class, "Worker");
 
 	/**
 	 *

@@ -12,6 +12,7 @@ import model.map.fixtures.mobile.Unit;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
 import view.util.ApplyButtonHandler;
 import view.util.Applyable;
 import view.util.BorderedPanel;
@@ -25,6 +26,12 @@ import view.util.ListenedButton;
  */
 public class OrdersPanel extends BorderedPanel implements Applyable,
 		TreeSelectionListener {
+	/**
+	 * The current selection.
+	 */
+	@Nullable
+	private Object sel;
+
 	/**
 	 * The text area in which the user writes the orders.
 	 */
@@ -46,21 +53,14 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 	}
 
 	/**
-	 * The current selection.
-	 */
-	@Nullable
-	private Object sel;
-
-	/**
 	 * If a unit is selected, change its orders to what the user wrote.
 	 */
 	@Override
 	public void apply() {
 		if (sel instanceof Unit) {
 			final Unit selection = (Unit) sel;
-			final String text = area.getText().trim();
-			assert text != null;
-			selection.setOrders(text);
+			selection.setOrders(NullCleaner
+					.assertNotNull(area.getText().trim()));
 			getParent().getParent().repaint();
 		}
 	}

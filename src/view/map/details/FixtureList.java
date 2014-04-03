@@ -104,9 +104,8 @@ public class FixtureList extends JList<TileFixture> implements
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof JList && getModel().equals(
-						((JList) obj).getModel()));
+		return this == obj || obj instanceof JList
+				&& getModel().equals(((JList) obj).getModel());
 	}
 
 	/**

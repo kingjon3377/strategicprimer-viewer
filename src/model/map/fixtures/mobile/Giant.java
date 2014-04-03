@@ -16,6 +16,11 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Giant implements MobileFixture, HasImage, HasKind, UnitMember {
 	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
+	/**
 	 * What kind of giant. (Usually blank, at least at first.)
 	 */
 	private String kind;
@@ -46,7 +51,7 @@ public class Giant implements MobileFixture, HasImage, HasKind, UnitMember {
 	@Override
 	public String toString() {
 		if (kind.isEmpty()) {
-			return "giant";
+			return "giant"; // NOPMD
 		} else {
 			return kind + " giant";
 		}
@@ -74,15 +79,9 @@ public class Giant implements MobileFixture, HasImage, HasKind, UnitMember {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Giant && equalsImpl((Giant) obj));
-	}
-	/**
-	 * @param obj a Giant
-	 * @return whether it equals this one
-	 */
-	private boolean equalsImpl(final Giant obj) {
-		return obj.kind.equals(kind) && id == obj.getID();
+		return this == obj || obj instanceof Giant
+				&& ((Giant) obj).kind.equals(kind)
+				&& id == ((Giant) obj).getID();
 	}
 	/**
 	 * @return a hash value for the object
@@ -130,11 +129,6 @@ public class Giant implements MobileFixture, HasImage, HasKind, UnitMember {
 	public final void setKind(final String nKind) {
 		kind = nKind;
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

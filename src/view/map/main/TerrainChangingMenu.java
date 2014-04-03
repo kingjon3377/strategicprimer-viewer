@@ -25,6 +25,16 @@ import org.eclipse.jdt.annotation.Nullable;
 public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 		VersionChangeListener, SelectionChangeSource, SelectionChangeListener {
 	/**
+	 * The tile whose terrain we might change.
+	 */
+	private ITile tile;
+
+	/**
+	 * The helper to handle selection-change listeners for us.
+	 */
+	private final SelectionChangeSupport scs = new SelectionChangeSupport();
+
+	/**
 	 * Constructor.
 	 *
 	 * @param version the map version
@@ -48,11 +58,6 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 			item.addActionListener(this);
 		}
 	}
-
-	/**
-	 * The tile whose terrain we might change.
-	 */
-	private ITile tile;
 
 	/**
 	 * @param newTile the tile whose terrain we might change
@@ -103,11 +108,6 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 			final SelectionChangeListener list) {
 		scs.removeSelectionChangeListener(list);
 	}
-
-	/**
-	 * The helper to handle selection-change listeners for us.
-	 */
-	private final SelectionChangeSupport scs = new SelectionChangeSupport();
 
 	/**
 	 * @param old ignored

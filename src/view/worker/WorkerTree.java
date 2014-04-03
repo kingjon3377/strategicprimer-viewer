@@ -1,5 +1,6 @@
 package view.worker;
 
+import static java.lang.String.format;
 import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
 
 import java.awt.event.MouseAdapter;
@@ -43,6 +44,20 @@ import view.map.details.FixtureEditMenu;
  */
 public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		UnitSelectionSource, NewUnitListener, PlayerChangeListener {
+	/**
+	 * The format string for creating the stats tooltip.
+	 */
+	private static final String STATS_FMT_STR =
+			"<html><p>Str %s, Dex %s, Con %s, Int %s, Wis %s, Cha %s</p></html>";
+	/**
+	 * The tree model.
+	 */
+	private final WorkerTreeModelAlt tmodel;
+	/**
+	 * The listener to tell other listeners when a new worker has been selected.
+	 */
+	private final WorkerTreeSelectionListener tsl;
+
 	/**
 	 * @param player the player whose units we want to see
 	 * @param model the driver model to build on
@@ -180,23 +195,15 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		if (localNode instanceof Worker) {
 			final WorkerStats stats = ((Worker) localNode).getStats();
 			if (stats == null) {
-				return null;
+				return null; // NOPMD
 			} else {
-				return new StringBuilder(92)
-						// NOPMD
-						.append("<html><p>Str ")
-						.append(getModifierString(stats.getStrength()))
-						.append(", Dex ")
-						.append(getModifierString(stats.getDexterity()))
-						.append(", Con ")
-						.append(getModifierString(stats.getConstitution()))
-						.append(", Int ")
-						.append(getModifierString(stats.getIntelligence()))
-						.append(", Wis ")
-						.append(getModifierString(stats.getWisdom()))
-						.append(", Cha ")
-						.append(getModifierString(stats.getCharisma()))
-						.append("</p></html>").toString();
+				return format(STATS_FMT_STR, // NOPMD
+						getModifierString(stats.getStrength()),
+						getModifierString(stats.getDexterity()),
+						getModifierString(stats.getConstitution()),
+						getModifierString(stats.getIntelligence()),
+						getModifierString(stats.getWisdom()),
+						getModifierString(stats.getCharisma()));
 			}
 		} else {
 			return null;
@@ -211,9 +218,18 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 			TreeSelectionListener, UnitMemberSelectionSource,
 			UnitSelectionSource {
 		/**
+		 * The list of unit-selection listeners listening to us.
+		 */
+		private final List<UnitSelectionListener> usListeners = new ArrayList<>();
+		/**
+		 * The list of listeners to notify of newly selected unit member.
+		 */
+		private final List<UnitMemberListener> umListeners = new ArrayList<>();
+
+		/**
 		 * The tree model to refer to.
 		 */
-		final IWorkerTreeModel model;
+		protected final IWorkerTreeModel model;
 		/**
 		 * Constructor.
 		 * @param tmodel the tree model to refer to
@@ -273,15 +289,6 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 			usListeners.remove(list);
 		}
 		/**
-		 * The list of unit-selection listeners listening to us.
-		 */
-		private final List<UnitSelectionListener> usListeners = new ArrayList<>();
-		/**
-		 * The list of listeners to notify of newly selected unit member.
-		 */
-		private final List<UnitMemberListener> umListeners = new ArrayList<>();
-
-		/**
 		 * @param list a listener to add
 		 */
 		@Override
@@ -305,15 +312,6 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 			return "WorkerTreeSelectionListener";
 		}
 	}
-
-	/**
-	 * The tree model.
-	 */
-	private final WorkerTreeModelAlt tmodel;
-	/**
-	 * The listener to tell other listeners when a new worker has been selected.
-	 */
-	private final WorkerTreeSelectionListener tsl;
 
 	/**
 	 * @param unit passed to the tree model

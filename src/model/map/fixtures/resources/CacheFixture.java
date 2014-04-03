@@ -6,6 +6,8 @@ import model.map.TileFixture;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * A cache (of vegetables, or a hidden treasure, or ...) on a tile.
  *
@@ -13,6 +15,11 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 public class CacheFixture implements HarvestableFixture, HasKind {
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
 	/**
 	 * What kind of things this is a cache of.
 	 *
@@ -70,11 +77,9 @@ public class CacheFixture implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public String toString() {
-		final String retval = new StringBuilder(24 + kind.length()
+		return NullCleaner.assertNotNull(new StringBuilder(24 + kind.length()
 				+ contents.length()).append("a cache of ").append(kind)
-				.append(" containing ").append(contents).toString();
-		assert retval != null;
-		return retval;
+				.append(" containing ").append(contents).toString());
 	}
 
 	/**
@@ -91,8 +96,8 @@ public class CacheFixture implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof CacheFixture && equalsImpl((CacheFixture) obj));
+		return this == obj || obj instanceof CacheFixture
+				&& equalsImpl((CacheFixture) obj);
 	}
 	/**
 	 * @param obj a cache-fixture
@@ -151,11 +156,6 @@ public class CacheFixture implements HarvestableFixture, HasKind {
 	public final void setKind(final String nKind) {
 		kind = nKind;
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

@@ -9,6 +9,8 @@ import model.map.PointFactory;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * An view of locations on the map in order, starting at a given point.
  *
@@ -82,9 +84,7 @@ public class PointIterator implements Iterator<Point> {
 		builder.append(", ");
 		builder.append(maxCol);
 		builder.append(").");
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
@@ -116,15 +116,17 @@ public class PointIterator implements Iterator<Point> {
 		forwards = searchForwards;
 		maxRow = dims.getRows() - 1;
 		maxCol = dims.getColumns() - 1;
-		if (sel != null) {
+		if (sel == null) {
+			if (forwards) {
+				startRow = maxRow;
+				startCol = maxCol;
+			} else {
+				startRow = 0;
+				startCol = 0;
+			}
+		} else {
 			startRow = wrap(sel.row, maxRow);
 			startCol = wrap(sel.col, maxCol);
-		} else if (forwards) {
-			startRow = maxRow;
-			startCol = maxCol;
-		} else {
-			startRow = 0;
-			startCol = 0;
 		}
 		row = startRow;
 		col = startCol;

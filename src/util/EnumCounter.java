@@ -12,6 +12,11 @@ import java.util.Map;
  */
 public class EnumCounter<T extends Enum<T>> {
 	/**
+	 * The map we use as a backend.
+	 */
+	private final Map<T, Integer> map;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param type the enumerated type we're dealing with
@@ -19,11 +24,6 @@ public class EnumCounter<T extends Enum<T>> {
 	public EnumCounter(final Class<T> type) {
 		map = new EnumMap<>(type);
 	}
-
-	/**
-	 * The map we use as a backend.
-	 */
-	private final Map<T, Integer> map;
 
 	/**
 	 * @param value a value to increase the counter for

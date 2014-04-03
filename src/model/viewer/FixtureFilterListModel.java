@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 
 import model.map.TileFixture;
+import util.NullCleaner;
 
 /**
  * The data model for a FixtureFilterList.
@@ -34,9 +35,7 @@ public final class FixtureFilterListModel extends
 	 */
 	@Override
 	public Class<? extends TileFixture> getElementAt(final int index) {
-		final Class<? extends TileFixture> retval = backing.get(index);
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(backing.get(index));
 	}
 
 	/**
@@ -63,8 +62,6 @@ public final class FixtureFilterListModel extends
 		final StringBuilder builder = new StringBuilder(25 + listString.length());
 		builder.append("FixtureFilterListModel: ");
 		builder.append(listString);
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 }

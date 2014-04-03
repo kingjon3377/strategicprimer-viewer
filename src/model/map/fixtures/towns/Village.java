@@ -17,6 +17,21 @@ import util.NullCleaner;
  */
 public class Village implements ITownFixture, HasImage {
 	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
+	/**
+	 * The dominant race of the village.
+	 */
+	private String race;
+
+	/**
+	 * The "owner" of the village---the player it's pledged to serve.
+	 */
+	private Player owner;
+
+	/**
 	 * The status of the village.
 	 */
 	private final TownStatus status;
@@ -43,11 +58,6 @@ public class Village implements ITownFixture, HasImage {
 		owner = player;
 		race = vRace;
 	}
-
-	/**
-	 * The "owner" of the village---the player it's pledged to serve.
-	 */
-	private Player owner;
 
 	/**
 	 * @return a String representation of the village
@@ -200,11 +210,6 @@ public class Village implements ITownFixture, HasImage {
 	}
 
 	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
-
-	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -219,11 +224,6 @@ public class Village implements ITownFixture, HasImage {
 	public String getImage() {
 		return image;
 	}
-
-	/**
-	 * The dominant race of the village.
-	 */
-	private String race;
 
 	/**
 	 * @return the dominant race of the village.

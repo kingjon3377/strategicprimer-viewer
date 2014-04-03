@@ -32,6 +32,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import util.ImageLoader;
 import util.IteratorWrapper;
+import util.NullCleaner;
 import util.TypesafeLogger;
 import view.util.Coordinate;
 
@@ -43,9 +44,28 @@ import view.util.Coordinate;
  */
 public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	/**
+	 * Image cache.
+	 */
+	private final ImageLoader loader = ImageLoader.getLoader();
+
+	/**
+	 * The images we've already determined aren't there.
+	 */
+	private final Set<String> missingFiles = new HashSet<>();
+	/**
+	 * A mapping from river-sets to filenames.
+	 */
+	private final Map<Set<River>, String> riverFiles = new HashMap<>();
+
+	/**
 	 * The filename of the fallback image.
 	 */
 	private static final String FALLBACK_FILE = "event_fallback.png";
+
+	/**
+	 * Comparator to find which fixture to draw.
+	 */
+	private final FixtureComparator fixComp = new FixtureComparator();
 
 	/**
 	 * @return a hash value forthe object
@@ -63,9 +83,8 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Ver2TileDrawHelper && fixComp
-						.equals(((Ver2TileDrawHelper) obj).fixComp));
+		return this == obj || obj instanceof Ver2TileDrawHelper
+				&& fixComp.equals(((Ver2TileDrawHelper) obj).fixComp);
 	}
 
 	/**
@@ -128,13 +147,12 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	private static void logLoadingError(final IOException except,
 			final String filename, final boolean fallback) {
 		if (except instanceof FileNotFoundException) {
-			final Level level;
+			final String msg = "Image " + filename + " not found";
 			if (fallback) {
-				level = Level.SEVERE;
+				LOGGER.log(Level.SEVERE, msg, except);
 			} else {
-				level = Level.INFO;
+				LOGGER.log(Level.INFO, msg, except);
 			}
-			LOGGER.log(level, "Image " + filename + " not found", except);
 		} else {
 			LOGGER.log(Level.SEVERE,
 					"I/O eror while loading image " + filename, except);
@@ -192,11 +210,6 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
-	 * Comparator to find which fixture to draw.
-	 */
-	private final FixtureComparator fixComp = new FixtureComparator();
-
-	/**
 	 * @param tile a tile
 	 * @return the top fixture on that tile.
 	 */
@@ -232,8 +245,10 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return whether it has a TerrainFixture.
 	 */
 	private boolean hasTerrainFixture(final ITile tile) {
-		for (final TileFixture fix : new IteratorWrapper<>(
-				new FilteredIterator(tile.iterator(), zof))) {
+		final Iterable<TileFixture> iter =
+				new IteratorWrapper<>(
+						new FilteredIterator(tile.iterator(), zof));
+		for (final TileFixture fix : iter) {
 			if (fix instanceof TerrainFixture) {
 				return true; // NOPMD
 			}
@@ -246,8 +261,10 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return a color to represent its not-on-top terrain feature.
 	 */
 	private Color getFixtureColor(final ITile tile) {
-		for (final TileFixture fix : new IteratorWrapper<>(
-				new FilteredIterator(tile.iterator(), zof))) {
+		final Iterable<TileFixture> iter =
+				new IteratorWrapper<>(
+						new FilteredIterator(tile.iterator(), zof));
+		for (final TileFixture fix : iter) {
 			if (fix instanceof TerrainFixture) {
 				return getHelper().getFeatureColor(fix); // NOPMD
 			}
@@ -256,33 +273,23 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
-	 * Image cache.
-	 */
-	private final ImageLoader loader = ImageLoader.getLoader();
-
-	/**
 	 * @param fix a TileFixture
 	 * @return an Image to draw to represent it.
 	 */
 	private Image getImageForFixture(final TileFixture fix) {
 		if (fix instanceof HasImage) {
-			// FIXME: Simplify this case.
 			String image = ((HasImage) fix).getImage();
-			boolean isDefault = false;
 			if (image.isEmpty()) {
 				image = ((HasImage) fix).getDefaultImage();
-				isDefault = true;
-			}
-			final Image retval = getImage(image);
-			if (missingFiles.contains(image) && !isDefault) {
-				return getImage(((HasImage) fix).getDefaultImage());
+				return getImage(image); // NOPMD
+			} else if (missingFiles.contains(image)) {
+				return getImage(((HasImage) fix).getDefaultImage()); // NOPMD
 			} else {
-				return retval;
+				return getImage(image); // NOPMD
 			}
 		} else if (fix instanceof RiverFixture) {
-			final String filename = riverFiles.get(((RiverFixture) fix).getRivers());
-			assert filename != null;
-			return getImage(filename); // NOPMD
+			return getImage(NullCleaner.assertNotNull(riverFiles//NOPMD
+					.get(((RiverFixture) fix).getRivers())));
 		} else {
 			LOGGER.warning("Using fallback image for unexpected kind of Fixture.");
 			return fallbackImage;
@@ -311,15 +318,6 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			return fallbackImage;
 		}
 	}
-
-	/**
-	 * The images we've already determined aren't there.
-	 */
-	private final Set<String> missingFiles = new HashSet<>();
-	/**
-	 * A mapping from river-sets to filenames.
-	 */
-	private final Map<Set<River>, String> riverFiles = new HashMap<>();
 
 	/**
 	 * Create the mapping from river-sets to filenames.
@@ -384,8 +382,8 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return a set containing them
 	 */
 	private static Set<River> createRiverSet(final River... rivers) {
-		final Set<River> set = EnumSet.noneOf(River.class);
-		assert set != null;
+		final Set<River> set =
+				NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
 		for (final River river : rivers) {
 			set.add(river);
 		}
@@ -405,6 +403,23 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @author Jonathan Lovelace
 	 */
 	private static class FilteredIterator implements Iterator<TileFixture> {
+		/**
+		 * The wrapped iterator.
+		 */
+		private final Iterator<TileFixture> wrapped;
+		/**
+		 * The filter to use.
+		 */
+		private final ZOrderFilter zof;
+		/**
+		 * The next item.
+		 */
+		private TileFixture cached;
+		/**
+		 * Whether we have a cached next item.
+		 */
+		private boolean hasCached;
+
 		/**
 		 * @return a hash value for the object
 		 */
@@ -437,7 +452,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 				return this == obj;
 			}
 			@Override
-			public int compareTo(final TileFixture o) {
+			public int compareTo(final TileFixture obj) {
 				throw new IllegalStateException(
 						"Leak of an all-but-null object");
 			}
@@ -489,29 +504,12 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		}
 
 		/**
-		 * The wrapped iterator.
-		 */
-		private final Iterator<TileFixture> wrapped;
-		/**
-		 * The filter to use.
-		 */
-		private final ZOrderFilter zof;
-		/**
-		 * The next item.
-		 */
-		private TileFixture cached;
-		/**
-		 * Whether we have a cached next item.
-		 */
-		private boolean hasCached;
-
-		/**
 		 * @return whether there is a next item in the iterator
 		 */
 		@Override
 		public final boolean hasNext() {
 			if (hasCached) {
-				return true;
+				return true; // NOPMD
 			} else {
 				while (wrapped.hasNext()) {
 					final TileFixture tempCached = wrapped.next();
@@ -519,7 +517,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 							&& zof.shouldDisplay(cached)) {
 						cached = tempCached;
 						hasCached = true;
-						return true;
+						return true; // NOPMD
 					}
 				}
 				return false;

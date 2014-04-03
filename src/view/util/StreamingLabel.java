@@ -16,6 +16,16 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class StreamingLabel extends JLabel {
 	/**
+	 * The source for the string.
+	 */
+	private final StringWriter string = new StringWriter();
+	
+	/**
+	 * The writer that can be printed to.
+	 */
+	private final PrintWriter writer = new StreamingLabelWriter(string, this);
+
+	/**
 	 * Constructor, to set the background color to black.
 	 */
 	public StreamingLabel() {
@@ -23,11 +33,6 @@ public class StreamingLabel extends JLabel {
 		setOpaque(true);
 	}
 
-	/**
-	 * The source for the string.
-	 */
-	private final StringWriter string = new StringWriter();
-	
 	/**
 	 * A PrintWriter that wraps a StringWriter and updates a JLabel with the
 	 * writer's text.
@@ -86,11 +91,6 @@ public class StreamingLabel extends JLabel {
 			control.setText("<html>" + swriter.toString() + "</html>");
 		}
 	}
-	/**
-	 * The writer that can be printed to.
-	 */
-	private final PrintWriter writer = new StreamingLabelWriter(string, this);
-
 	/**
 	 * @return the writer to "print" to.
 	 */

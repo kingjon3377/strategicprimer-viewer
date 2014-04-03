@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import util.NullCleaner;
+
 /**
  * Possible status of fields (and meadows, and orchards ...) Fields should
  * rotate between these, at a rate determined by the kind of field.
@@ -47,8 +49,8 @@ public enum FieldStatus {
 	}
 
 	static {
-		for (final FieldStatus fs : values()) {
-			FST_MAP.put(fs.str, fs);
+		for (final FieldStatus status : values()) {
+			FST_MAP.put(status.str, status);
 		}
 	}
 
@@ -58,9 +60,7 @@ public enum FieldStatus {
 	 */
 	public static FieldStatus parse(final String string) {
 		if (FST_MAP.containsKey(string)) {
-			final FieldStatus fst = FST_MAP.get(string);
-			assert fst != null;
-			return fst;
+			return NullCleaner.assertNotNull(FST_MAP.get(string));
 		} else {
 			throw new IllegalArgumentException("Not a FieldStatus we recognize");
 		}
@@ -79,9 +79,7 @@ public enum FieldStatus {
 	 * @return a random status
 	 */
 	public static FieldStatus random(final int seed) {
-		final FieldStatus retval = values()[new Random(seed)
-				.nextInt(values().length)];
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(values()[new Random(seed)
+				.nextInt(values().length)]);
 	}
 }

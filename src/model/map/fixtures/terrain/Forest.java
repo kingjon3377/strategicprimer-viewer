@@ -16,6 +16,16 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class Forest implements TerrainFixture, HasImage, HasKind {
 	/**
+	 * What kind of trees dominate the forest.
+	 */
+	private String trees;
+
+	/**
+	 * The name of an image to use for this particular fixture.
+	 */
+	private String image = "";
+
+	/**
 	 * @return what kind of trees
 	 */
 	@Override
@@ -41,17 +51,12 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	}
 
 	/**
-	 * What kind of trees dominate the forest.
-	 */
-	private String trees;
-
-	/**
 	 * @return a String representation of the forest.
 	 */
 	@Override
 	public String toString() {
 		if (rows) {
-			return "Rows of " + trees + " trees.";
+			return "Rows of " + trees + " trees."; // NOPMD
 		} else {
 			return "A " + trees + " forest.";
 		}
@@ -88,8 +93,7 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				|| (obj instanceof Forest && equalsImpl((Forest) obj));
+		return this == obj || obj instanceof Forest && equalsImpl((Forest) obj);
 	}
 	/**
 	 * @param obj a forest
@@ -104,7 +108,7 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	@Override
 	public int hashCode() {
 		if (rows) {
-			return trees.hashCode() << 1;
+			return trees.hashCode() << 1; // NOPMD
 		} else {
 			return trees.hashCode();
 		}
@@ -146,11 +150,6 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	public final void setKind(final String kind) {
 		trees = kind;
 	}
-
-	/**
-	 * The name of an image to use for this particular fixture.
-	 */
-	private String image = "";
 
 	/**
 	 * @param img the name of an image to use for this particular fixture

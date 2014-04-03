@@ -52,7 +52,6 @@ public abstract class AbstractMultiMapModel extends AbstractDriverModel
 	/**
 	 * @return an iterator over both the main map and the subordinate maps
 	 */
-	// @SuppressWarnings("unchecked")
 	@Override
 	public final Iterable<Pair<IMap, String>> getAllMaps() {
 		final List<Pair<IMap, String>> retval = new ArrayList<>();
@@ -61,10 +60,6 @@ public abstract class AbstractMultiMapModel extends AbstractDriverModel
 			retval.add(pair);
 		}
 		return retval;
-		// return new IteratorWrapper<>(
-		// new IteratorStack<>(
-		// Collections.singletonList(Pair.of((IMap) getMap(),
-		// getMapFilename())), getSubordinateMaps()));
 	}
 
 }

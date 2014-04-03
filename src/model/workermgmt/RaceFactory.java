@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import util.NullCleaner;
 import util.SingletonRandom;
 
 /**
@@ -13,13 +14,6 @@ import util.SingletonRandom;
  *
  */
 public final class RaceFactory {
-	/**
-	 * Do not instantiate.
-	 */
-	private RaceFactory() {
-		// Static class.
-	}
-
 	/**
 	 * A list of races.
 	 */
@@ -37,13 +31,19 @@ public final class RaceFactory {
 	}
 
 	/**
+	 * Do not instantiate.
+	 */
+	private RaceFactory() {
+		// Static class.
+	}
+
+	/**
 	 * @param random a Random instance to use
 	 * @return a race selected using that instance.
 	 */
 	public static String getRace(final Random random) {
-		final String retval = RACES.get(random.nextInt(RACES.size()));
-		assert retval != null;
-		return retval;
+		return NullCleaner
+				.assertNotNull(RACES.get(random.nextInt(RACES.size())));
 	}
 
 	/**

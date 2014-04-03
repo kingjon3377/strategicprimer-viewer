@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import model.viewer.ZOrderFilter;
+import util.NullCleaner;
 
 /**
  * A factory for TileDrawHelpers.
@@ -13,13 +14,6 @@ import model.viewer.ZOrderFilter;
  *
  */
 public final class TileDrawHelperFactory {
-	/**
-	 * Constructor. Needed because some initializers make lines too long.
-	 */
-	private TileDrawHelperFactory() {
-		verTwoHelpers = new HashMap<>();
-	}
-
 	/**
 	 * An instance of this class, for callers who don't want to create their
 	 * own.
@@ -32,7 +26,14 @@ public final class TileDrawHelperFactory {
 	/**
 	 * A mapping from ImageObservers to version-2 helpers.
 	 */
-	private final Map<ImageObserver, TileDrawHelper> verTwoHelpers;
+	private final Map<ImageObserver, TileDrawHelper> verTwoHelpers = new HashMap<>();
+
+	/**
+	 * Constructor.
+	 */
+	private TileDrawHelperFactory() {
+		// Do nothing.
+	}
 
 	/**
 	 * @param version the version of the map that'll be drawn
@@ -42,16 +43,15 @@ public final class TileDrawHelperFactory {
 	 */
 	public TileDrawHelper factory(final int version, final ImageObserver iobs,
 			final ZOrderFilter zof) {
-		if (version == 1) {
+		switch (version) {
+		case 1:
 			return verOneHelper; // NOPMD
-		} else if (version == 2) {
+		case 2:
 			if (!verTwoHelpers.containsKey(iobs)) {
 				verTwoHelpers.put(iobs, new Ver2TileDrawHelper(iobs, zof));
 			}
-			final TileDrawHelper tdh = verTwoHelpers.get(iobs);
-			assert tdh != null;
-			return tdh;
-		} else {
+			return NullCleaner.assertNotNull(verTwoHelpers.get(iobs));
+		default:
 			throw new IllegalArgumentException("Unsupported map version");
 		}
 	}

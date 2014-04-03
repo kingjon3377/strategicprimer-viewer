@@ -34,18 +34,9 @@ import view.util.Coordinate;
  */
 public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	/**
-	 * Constructor.
+	 * Approximately zero. @see{floatEquals}.
 	 */
-	public CachingTileDrawHelper() {
-		super();
-		// Just to forestall the null-analysis checker's objection that they may
-		// not have been initialized, we initialize the shapes to, essentially,
-		// a dummy value.
-		event = new Line2D.Double();
-		fort = event;
-		unit = event;
-		checkCache(1, 1);
-	}
+	private static final double APPROX_ZERO = 0.000001;
 
 	/**
 	 * A cached copy of our background.
@@ -69,6 +60,20 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * Shape representing an event, or relevant text, associated with the tile.
 	 */
 	private Shape event;
+
+	/**
+	 * Constructor.
+	 */
+	public CachingTileDrawHelper() {
+		super();
+		// Just to forestall the null-analysis checker's objection that they may
+		// not have been initialized, we initialize the shapes to, essentially,
+		// a dummy value.
+		event = new Line2D.Double();
+		fort = event;
+		unit = event;
+		checkCache(1, 1);
+	}
 
 	/**
 	 * Check, and possibly regenerate, the cache.
@@ -149,11 +154,6 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 			}
 		}
 	}
-
-	/**
-	 * Approximately zero. @see{floatEquals}.
-	 */
-	private static final double APPROX_ZERO = 0.000001;
 
 	/**
 	 * Compare two floating-point values.

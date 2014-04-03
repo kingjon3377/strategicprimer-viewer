@@ -16,6 +16,7 @@ import model.map.fixtures.mobile.Unit;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
 import util.TypesafeLogger;
 
 /**
@@ -25,6 +26,20 @@ import util.TypesafeLogger;
  *
  */
 public final class WorkerTreeModel implements IWorkerTreeModel {
+	/**
+	 * The player to whom the units and workers belong, the root of the tree.
+	 */
+	private Player root;
+	/**
+	 * The driver model.
+	 */
+	private final IWorkerModel model;
+
+	/**
+	 * The listeners registered to listen for model changes.
+	 */
+	private final List<TreeModelListener> listeners = new ArrayList<>();
+
 	/**
 	 * Logger.
 	 */
@@ -42,15 +57,6 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 		root = player;
 		model = wmodel;
 	}
-
-	/**
-	 * The player to whom the units and workers belong, the root of the tree.
-	 */
-	private Player root;
-	/**
-	 * The driver model.
-	 */
-	private final IWorkerModel model;
 
 	/**
 	 * @return the root of the tree, the player.
@@ -71,9 +77,8 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			throw new ArrayIndexOutOfBoundsException(index);
 		} else if (parent instanceof Player && parent.equals(root)
 				&& index < model.getUnits(root).size()) {
-			final Unit unit = model.getUnits(root).get(index);
-			assert unit != null;
-			return unit; // NOPMD
+			return NullCleaner.assertNotNull(model.getUnits(root).// NOPMD
+					get(index));
 		} else if (parent instanceof Unit) {
 			final Iterator<UnitMember> iter = ((Unit) parent).iterator();
 			for (int i = 0; i < index; i++) {
@@ -85,9 +90,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 				}
 			}
 			if (iter.hasNext()) {
-				final UnitMember next = iter.next();
-				assert next != null;
-				return next; // NOPMD
+				return NullCleaner.assertNotNull(iter.next()); // NOPMD
 			} else {
 				throw new ArrayIndexOutOfBoundsException(index);
 			}
@@ -158,7 +161,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 				return model.getUnits(root)// NOPMD
 						.indexOf(child);
 			} else {
-				return -1;
+				return -1; // NOPMD
 			}
 		} else if (parent instanceof Unit) {
 			int index = 0;
@@ -192,11 +195,6 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	}
 
 	/**
-	 * The listeners registered to listen for model changes.
-	 */
-	private final List<TreeModelListener> listeners = new ArrayList<>();
-
-	/**
 	 * Move a member between units.
 	 *
 	 * @param member a unit member
@@ -219,12 +217,9 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			listener.treeStructureChanged(removedChEvent);
 		}
 		newOwner.addMember(member);
-		// final int newIndex = getIndexOfChild(member, newOwner);
-		// final TreeModelEvent insertedEvent = new TreeModelEvent(this,
-		// new TreePath(new Object[] { root, newOwner }),
-		// new int[] { newIndex }, new Object[] { member });
-		final TreeModelEvent insertedChEvent = new TreeModelEvent(this,
-				new TreePath(new Object[] { root, newOwner }));
+		final TreeModelEvent insertedChEvent =
+				new TreeModelEvent(this, new TreePath(new Object[] { root,
+						newOwner }));
 		for (final TreeModelListener listener : listeners) {
 			// listener.treeNodesInserted(insertedEvent);
 			listener.treeStructureChanged(insertedChEvent);
@@ -239,10 +234,12 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	@Override
 	public void addUnit(final Unit unit) {
 		model.addUnit(unit);
+		final TreePath path = new TreePath(root);
+		final int[] indices = singletonInt(model.getUnits(root).size());
+		final Object[] children = singletonObj(unit);
 		for (final TreeModelListener listener : listeners) {
-			listener.treeNodesInserted(new TreeModelEvent(this, new TreePath(// NOPMD
-					root), singletonInt(model.getUnits(root).size()),
-					singletonObj(unit)));
+			listener.treeNodesInserted(new TreeModelEvent(this, path, // NOPMD
+					indices, children));
 		}
 	}
 
@@ -282,9 +279,9 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	@Override
 	public void mapChanged() {
 		root = model.getMap().getPlayers().getCurrentPlayer();
+		final TreePath path = new TreePath(root);
 		for (final TreeModelListener listener : listeners) {
-			listener.treeNodesChanged(new TreeModelEvent(this, new TreePath(
-					root)));
+			listener.treeNodesChanged(new TreeModelEvent(this, path)); // NOPMD
 		}
 	}
 
@@ -295,9 +292,9 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	@Override
 	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		root = newPlayer;
+		final TreePath path = new TreePath(root);
 		for (final TreeModelListener listener : listeners) {
-			listener.treeNodesChanged(new TreeModelEvent(this, new TreePath(
-					root)));
+			listener.treeNodesChanged(new TreeModelEvent(this, path)); // NOPMD
 		}
 	}
 
@@ -319,10 +316,12 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	@Override
 	public void addUnitMember(final Unit unit, final UnitMember member) {
 		unit.addMember(member);
+		final TreePath path = new TreePath(new Object[] { root, unit });
+		final int[] indices = new int[] { getIndexOfChild(unit, member) };
+		final Object[] children = new Object[] { member };
 		for (final TreeModelListener listener : listeners) {
-			listener.treeNodesInserted(new TreeModelEvent(this, new TreePath(
-					new Object[] { root, unit }), new int[] { getIndexOfChild(
-					unit, member) }, new Object[] { member }));
+			listener.treeNodesInserted(new TreeModelEvent(this, path, // NOPMD
+					indices, children));
 		}
 	}
 	/**
