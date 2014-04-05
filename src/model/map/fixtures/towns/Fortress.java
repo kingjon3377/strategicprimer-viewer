@@ -142,7 +142,20 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 		int count = 0;
 		for (final Unit unit : units) {
 			sbuild.append("\n\t\t\t");
-			sbuild.append(unit.toStringInner(owner));
+			sbuild.append(unit.getName());
+			if (unit.getOwner().equals(owner)) {
+				sbuild.append(" (");
+				sbuild.append(unit.getKind());
+				sbuild.append(')');
+			} else if (unit.getOwner().isIndependent()) {
+				sbuild.append(", an independent ");
+				sbuild.append(unit.getKind());
+			} else {
+				sbuild.append(" (");
+				sbuild.append(unit.getKind());
+				sbuild.append("), belonging to ");
+				sbuild.append(unit.getOwner());
+			}
 			if (++count < units.size() - 1) {
 				sbuild.append(';');
 			}

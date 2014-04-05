@@ -168,25 +168,6 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	}
 
 	/**
-	 * TODO: Use a StringBuilder, specifying the size.
-	 * 
-	 * FIXME: Should almost certainly be private
-	 *
-	 * @param player the container's player
-	 * @return a briefer String representation of the Unit, only naming the
-	 *         owner if different
-	 */
-	public String toStringInner(final Player player) {
-		if (owner.equals(player)) {
-			return name + " (" + kind + ')'; // NOPMD
-		} else if (owner.isIndependent()) {
-			return name + ", an independent " + kind; // NOPMD
-		} else {
-			return name + " (" + kind + "), belonging to " + owner;
-		}
-	}
-
-	/**
 	 * @return a verbose description of the Unit.
 	 */
 	public String verbose() {
