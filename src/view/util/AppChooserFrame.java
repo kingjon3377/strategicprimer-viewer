@@ -33,11 +33,6 @@ import controller.map.drivers.WorkerStart;
  */
 public class AppChooserFrame extends JFrame {
 	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(AppChooserFrame.class);
-	/**
 	 * Create a button for a target.
 	 *
 	 * @param desc the descriptive string
@@ -79,6 +74,11 @@ public class AppChooserFrame extends JFrame {
 	 * @author Jonathan Lovelace
 	 */
 	private static class AppChoiceListener implements ActionListener, Runnable {
+		/**
+		 * Logger for the inner class.
+		 */
+		private static final Logger LOGGER = TypesafeLogger
+				.getLogger(AppChoiceListener.class);
 		/**
 		 * The app to start.
 		 */
