@@ -13,6 +13,7 @@ import javax.swing.ListSelectionModel;
 import model.map.TileFixture;
 import model.viewer.FixtureFilterListModel;
 import model.viewer.ZOrderFilter;
+import util.NullCleaner;
 
 /**
  * A list to let the user select which fixtures ought to be searched.
@@ -48,9 +49,7 @@ public class FixtureFilterList extends JList<Class<? extends TileFixture>>
 		plurals = new HashMap<>();
 		model = new FixtureFilterListModel();
 		setModel(model);
-		final ListSelectionModel temp = getSelectionModel();
-		assert temp != null;
-		lsm = temp;
+		lsm = NullCleaner.assertNotNull(getSelectionModel());
 		lsm.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		setCellRenderer(this);
 	}

@@ -58,9 +58,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 		temp.add(CompactTextReader.READER);
 		temp.add(CompactTownReader.READER);
 		temp.add(CompactWorkerReader.READER);
-		final List<CompactReader<? extends IFixture>> unmod = unmodifiableList(temp);
-		assert unmod != null;
-		readers = unmod;
+		readers = NullCleaner.assertNotNull(unmodifiableList(temp));
 	}
 
 	/**

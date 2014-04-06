@@ -7,6 +7,8 @@ import model.map.TileFixture;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * A deposit (always exposed for now) of stone.
  *
@@ -66,9 +68,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 				.append("There is an exposed ");
 		build.append(stoneStr);
 		build.append(" deposit here.");
-		final String retval = build.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(build.toString());
 	}
 
 	/**

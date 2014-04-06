@@ -54,9 +54,9 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	public final void moveMember(final UnitMember member, final Unit old,
 			final Unit newOwner) {
 		final PlayerNode pnode = (PlayerNode) root;
-		final Player player = (Player) pnode.getUserObject();
-		assert player != null;
-		final List<Unit> units = model.getUnits(player);
+		final List<Unit> units =
+				model.getUnits(NullCleaner.assertNotNull((Player) pnode
+						.getUserObject()));
 		final UnitNode oldNode = (UnitNode) pnode
 				.getChildAt(units.indexOf(old));
 		final UnitNode newNode = (UnitNode) pnode.getChildAt(units

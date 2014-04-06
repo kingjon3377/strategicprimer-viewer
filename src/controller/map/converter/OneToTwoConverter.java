@@ -41,6 +41,7 @@ import model.map.fixtures.towns.ITownFixture;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
 import model.workermgmt.RaceFactory;
+import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
 import util.Warning;
@@ -197,8 +198,8 @@ public class OneToTwoConverter { // NOPMD
 			int iterations = 0;
 			while (iterations < MAX_ITERATIONS && !fixtures.isEmpty()) {
 				if (isSubtileSuitable(initial.get(0).second())) {
-					final TileFixture fix = fixtures.remove(0);
-					assert fix != null;
+					final TileFixture fix =
+							NullCleaner.assertNotNull(fixtures.remove(0));
 					changeFor(initial.get(0).second(), fix);
 					initial.get(0).second().addFixture(fix);
 				}
@@ -210,9 +211,8 @@ public class OneToTwoConverter { // NOPMD
 						+ point.row + ", " + point.col + "); forcing ...");
 				while (!fixtures.isEmpty()) {
 					final IMutableTile subtile = initial.get(0).second();
-					final TileFixture fix = fixtures.remove(0);
-					assert fix != null;
-					subtile.addFixture(fix);
+					subtile.addFixture(NullCleaner.assertNotNull(fixtures
+							.remove(0)));
 					subtile.addFixture(new TextFixture(//NOPMD
 							"FIXME: A fixture here was force-added after MAX_ITER",
 							NEXT_TURN));
@@ -454,7 +454,7 @@ public class OneToTwoConverter { // NOPMD
 	private static Iterable<Point> getNeighbors(final Point point) {
 		final int row = point.row;
 		final int col = point.col;
-		final Iterable<Point> retval = Arrays.asList(
+		return NullCleaner.assertNotNull(Arrays.asList(
 				PointFactory.point(row - 1, col - 1),
 				PointFactory.point(row - 1, col),
 				PointFactory.point(row - 1, col + 1),
@@ -462,9 +462,7 @@ public class OneToTwoConverter { // NOPMD
 				PointFactory.point(row, col + 1),
 				PointFactory.point(row + 1, col - 1),
 				PointFactory.point(row + 1, col),
-				PointFactory.point(row + 1, col + 1));
-		assert retval != null;
-		return retval;
+				PointFactory.point(row + 1, col + 1)));
 	}
 
 	/**

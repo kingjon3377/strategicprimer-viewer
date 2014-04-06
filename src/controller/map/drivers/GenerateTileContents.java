@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import static util.NullCleaner.assertNotNull;
 import static view.util.SystemOut.SYS_OUT;
 
 import java.io.IOException;
@@ -52,13 +53,10 @@ public final class GenerateTileContents {
 	 * A mapping from filenames containing maps to instances handling those
 	 * maps.
 	 */
-	private static final Map<String, GenerateTileContents> INSTANCES;
-	static {
-		final Map<String, GenerateTileContents> temp = Collections
-			.synchronizedMap(new HashMap<String, GenerateTileContents>());
-		assert temp != null;
-		INSTANCES = temp;
-	}
+	private static final Map<String, GenerateTileContents> INSTANCES =
+			assertNotNull(Collections
+					.synchronizedMap(new HashMap<String, GenerateTileContents>()));
+
 	/**
 	 * @param filename
 	 *            the name of a map

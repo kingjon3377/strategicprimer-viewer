@@ -1,7 +1,5 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.assertNonNullList;
-import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
@@ -44,7 +42,7 @@ public class CaveReader implements INodeHandler<Cave> {
 			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(assertNonNullQName(element.getName()), stream);
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Cave fix = new Cave(Integer.parseInt(XMLHelper.getAttribute(
 				element, "dc")), getOrGenerateID(element, warner, idFactory));
 		XMLHelper.addImage(element, fix);
@@ -56,7 +54,7 @@ public class CaveReader implements INodeHandler<Cave> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Collections.singletonList("cave"));
+		return NullCleaner.assertNotNull(Collections.singletonList("cave"));
 	}
 
 	/** @return the class we know how to write */

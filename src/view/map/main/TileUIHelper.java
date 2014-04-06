@@ -133,9 +133,7 @@ public class TileUIHelper {
 	 */
 	public String getDescription(final TileType type) { // NOPMD
 		if (descriptions.containsKey(type)) {
-			final String retval = descriptions.get(type);
-			assert retval != null;
-			return retval;
+			return NullCleaner.assertNotNull(descriptions.get(type));
 		} else {
 			throw new IllegalArgumentException("Not a type we know how to handle");
 		}

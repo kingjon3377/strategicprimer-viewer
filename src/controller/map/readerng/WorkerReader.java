@@ -1,7 +1,5 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.assertNonNullList;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -39,7 +37,7 @@ public class WorkerReader implements INodeHandler<Worker> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Collections.singletonList("worker"));
+		return NullCleaner.assertNotNull(Collections.singletonList("worker"));
 	}
 
 	/**

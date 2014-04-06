@@ -12,6 +12,7 @@ import javax.swing.WindowConstants;
 
 import model.exploration.ExplorationModel;
 import model.listeners.CompletionListener;
+import util.NullCleaner;
 import controller.map.misc.MultiIOHandler;
 
 /**
@@ -96,8 +97,6 @@ public class ExplorationFrame extends JFrame {
 		model = emodel;
 		setMinimumSize(new Dimension(768, 480));
 		setPreferredSize(new Dimension(1024, 640));
-		final Container outer = getContentPane();
-		assert outer != null;
 		final CardLayout layout = new CardLayout();
 		setLayout(layout);
 		final ExplorerSelectingPanel esp = new ExplorerSelectingPanel(emodel);
@@ -105,8 +104,10 @@ public class ExplorationFrame extends JFrame {
 				esp.getMPDocument());
 		emodel.addMovementCostListener(explorationPanel);
 		emodel.addSelectionChangeListener(explorationPanel);
-		final SwapCompletionListener swapper = new SwapCompletionListener(
-				layout, outer, explorationPanel, esp);
+		final SwapCompletionListener swapper =
+				new SwapCompletionListener(layout,
+						NullCleaner.assertNotNull(getContentPane()),
+						explorationPanel, esp);
 		esp.addCompletionListener(swapper);
 		explorationPanel.addCompletionListener(swapper);
 		add(esp);

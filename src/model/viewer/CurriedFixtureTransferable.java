@@ -12,6 +12,8 @@ import model.map.TileFixture;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * A class to transfer a list of TileFixtures.
  *
@@ -41,9 +43,9 @@ public class CurriedFixtureTransferable implements Transferable {
 				payloadTemp.add(new FixtureTransferable(fix)); // NOPMD
 			}
 		}
-		final List<Transferable> temp = Collections.unmodifiableList(payloadTemp);
-		assert temp != null;
-		payload = temp;
+		payload =
+				NullCleaner.assertNotNull(Collections
+						.unmodifiableList(payloadTemp));
 	}
 
 	/**

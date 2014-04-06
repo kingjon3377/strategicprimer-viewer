@@ -23,6 +23,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import util.ArraySet;
 import util.IteratorWrapper;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -108,9 +109,9 @@ public final class CompactTerrainReader extends
 			MAP.put(type.getTag(), type);
 			suppTagsTemp.add(type.getTag());
 		}
-		final Set<String> temp = Collections.unmodifiableSet(suppTagsTemp);
-		assert temp != null;
-		SUPP_TAGS = temp;
+		SUPP_TAGS =
+				NullCleaner.assertNotNull(Collections
+						.unmodifiableSet(suppTagsTemp));
 	}
 
 	/**

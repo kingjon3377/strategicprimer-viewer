@@ -69,9 +69,8 @@ public class TestWorkerModel {
 		final Iterable<Point> iter = new IteratorWrapper<>(new PointIterator(
 				map.getDimensions(), null, true, true));
 		for (final Point point : iter) {
-			assert point != null;
-			((IMutableTile) map.getTile(point)).addFixture(NullCleaner
-					.assertNotNull(fixtures.remove(0)));
+			((IMutableTile) map.getTile(NullCleaner.assertNotNull(point)))
+					.addFixture(NullCleaner.assertNotNull(fixtures.remove(0)));
 		}
 		final IWorkerModel model = new WorkerModel(new MapView(map, 0, 0),
 				"string");

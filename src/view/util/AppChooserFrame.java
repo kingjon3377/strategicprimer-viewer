@@ -55,8 +55,8 @@ public class AppChooserFrame extends JFrame {
 		super("SP App Chooser");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-		final List<String> parameters = Collections.unmodifiableList(params);
-		assert parameters != null;
+		final List<String> parameters =
+				NullCleaner.assertNotNull(Collections.unmodifiableList(params));
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
 		buttonPanel.add(button("Map Viewer", parameters, ViewerStart.class));
 		buttonPanel.add(button("Worker Skill Advancement", parameters,
