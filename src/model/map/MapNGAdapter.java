@@ -14,6 +14,8 @@ import model.map.fixtures.terrain.Mountain;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
+
 /**
  * An implementation of IMapNG that is, under the hood, just a MapView.
  *
@@ -210,9 +212,7 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 		if (state.getTile(location).hasRiver()) {
 			return state.getTile(location).getRivers(); // NOPMD
 		} else {
-			final Set<River> none = EnumSet.noneOf(River.class);
-			assert none != null;
-			return none;
+			return NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
 		}
 	}
 

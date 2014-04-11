@@ -245,9 +245,9 @@ public class SubsetFrame extends JFrame {
 			LOGGER.log(Level.SEVERE, "Malformed XML in file " + arg, except);
 			printParagraph("FAIL: Malformed XML in the file; "
 					+ "see following error message for details", ERROR_COLOR);
-			final String message = except.getLocalizedMessage();
-			assert message != null;
-			printParagraph(message, ERROR_COLOR);
+			printParagraph(
+					NullCleaner.assertNotNull(except.getLocalizedMessage()),
+					ERROR_COLOR);
 			return; // NOPMD
 		} catch (final SPFormatException except) {
 			LOGGER.log(Level.SEVERE, "SP map format eror reading " + arg,
@@ -256,9 +256,9 @@ public class SubsetFrame extends JFrame {
 					"FAIL: SP map format error at line " + except.getLine()
 							+ "; see following error message for details",
 					ERROR_COLOR);
-			final String message = except.getLocalizedMessage();
-			assert message != null;
-			printParagraph(message, ERROR_COLOR);
+			printParagraph(
+					NullCleaner.assertNotNull(except.getLocalizedMessage()),
+					ERROR_COLOR);
 			return;
 		}
 	}

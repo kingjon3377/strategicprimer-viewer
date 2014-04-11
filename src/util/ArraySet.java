@@ -74,9 +74,7 @@ public final class ArraySet<T> implements Set<T> {
 	 */
 	@Override
 	public <TYPE> TYPE[] toArray(final TYPE[] array) {
-		final TYPE[] retval = impl.toArray(array);
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(impl.toArray(array));
 	}
 
 	/**
@@ -113,7 +111,7 @@ public final class ArraySet<T> implements Set<T> {
 	 */
 	@Override
 	public boolean containsAll(@Nullable final Collection<?> coll) {
-		return impl.containsAll(coll);
+		return impl.containsAll(NullCleaner.assertNotNull(coll));
 	}
 
 	/**

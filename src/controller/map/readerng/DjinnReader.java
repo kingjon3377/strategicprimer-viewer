@@ -1,7 +1,5 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.assertNonNullList;
-import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
@@ -13,6 +11,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IPlayerCollection;
 import model.map.fixtures.mobile.Djinn;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -42,7 +41,7 @@ public class DjinnReader implements INodeHandler<Djinn> {
 			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFac)
 			throws SPFormatException {
-		spinUntilEnd(assertNonNullQName(element.getName()), stream);
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Djinn fix = new Djinn(getOrGenerateID(element, warner, idFac));
 		XMLHelper.addImage(element, fix);
 		return fix;
@@ -53,7 +52,7 @@ public class DjinnReader implements INodeHandler<Djinn> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Collections.singletonList("djinn"));
+		return NullCleaner.assertNotNull(Collections.singletonList("djinn"));
 	}
 
 	/** @return te class we know how to write */

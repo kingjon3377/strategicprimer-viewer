@@ -1,7 +1,6 @@
 package controller.map.readerng;
 
 import static controller.map.readerng.ReaderAdapter.checkedCast;
-import static controller.map.readerng.XMLHelper.assertNonNullList;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
 
 import java.util.Collections;
@@ -163,7 +162,7 @@ public class TileReader implements INodeHandler<ITile> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Collections.singletonList("tile"));
+		return NullCleaner.assertNotNull(Collections.singletonList("tile"));
 	}
 
 	/**

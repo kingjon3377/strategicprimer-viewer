@@ -1,6 +1,5 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.assertNonNullList;
 import static controller.map.readerng.XMLHelper.getAttribute;
 
 import java.util.Collections;
@@ -73,7 +72,7 @@ public class TextReader implements INodeHandler<TextFixture> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Collections.singletonList("text"));
+		return NullCleaner.assertNotNull(Collections.singletonList("text"));
 	}
 
 	/**

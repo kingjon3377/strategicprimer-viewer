@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 import model.exploration.old.EncounterTable;
 import model.exploration.old.ExplorationRunner;
 import model.exploration.old.MissingTableException;
+import util.NullCleaner;
 import util.TypesafeLogger;
 
 import com.sun.istack.internal.NotNull;
@@ -41,9 +42,8 @@ public class TableDebugger {
 		final ExplorationRunner runner = new ExplorationRunner();
 		TableLoader.loadAllTables("tables", runner);
 		try {
-			final PrintStream out = System.out;
-			assert out != null;
-			new TableDebugger(runner).debugTables(out);
+			new TableDebugger(runner).debugTables(NullCleaner
+					.assertNotNull(System.out));
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.SEVERE, "Missing table", e);
 			System.exit(1);
@@ -110,8 +110,7 @@ public class TableDebugger {
 		for (final String value : table.allEvents()) {
 			if (value.contains("#")) {
 				final String[] parsed = value.split("#", 3);
-				final String callee = parsed[1];
-				assert callee != null;
+				final String callee = NullCleaner.assertNotNull(parsed[1]);
 				debugTable(before + parsed[0], parsed[2] + after,
 						runner.getTable(callee), callee, ostream, set);
 			} else {

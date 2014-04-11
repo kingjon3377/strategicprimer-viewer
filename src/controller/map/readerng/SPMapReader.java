@@ -1,6 +1,5 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.assertNonNullList;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static java.lang.Integer.parseInt;
 import static util.NullCleaner.assertNotNull;
@@ -19,6 +18,7 @@ import model.map.Point;
 import model.map.PointFactory;
 import model.map.SPMap;
 import util.EqualsAny;
+import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -134,7 +134,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Collections.singletonList("map"));
+		return NullCleaner.assertNotNull(Collections.singletonList("map"));
 	}
 
 	/**

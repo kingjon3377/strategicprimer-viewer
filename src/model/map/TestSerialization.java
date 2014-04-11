@@ -27,6 +27,7 @@ import model.map.fixtures.towns.Fortress;
 
 import org.junit.Test;
 
+import util.NullCleaner;
 import util.Warning.Action;
 import controller.map.formatexceptions.SPFormatException;
 
@@ -116,8 +117,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	public void testRiverSerializationOne() throws XMLStreamException,
 			SPFormatException, IOException {
 		for (final River river : River.values()) {
-			assert river != null;
-			assertSerialization("River alone", river, River.class);
+			assertSerialization("River alone",
+					NullCleaner.assertNotNull(river), River.class);
 		}
 		assertUnwantedChild(encapsulateTileString("<lake><troll /></lake>"),
 				Tile.class, false);

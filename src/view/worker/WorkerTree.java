@@ -13,7 +13,6 @@ import javax.swing.ToolTipManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
 
 import model.listeners.NewUnitListener;
 import model.listeners.PlayerChangeListener;
@@ -34,6 +33,7 @@ import model.workermgmt.WorkerTreeModelAlt;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
 import view.map.details.FixtureEditMenu;
 
 /**
@@ -71,10 +71,8 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		setRootVisible(false);
 		setDragEnabled(true);
 		setShowsRootHandles(true);
-		final TreeSelectionModel smodel = getSelectionModel();
-		assert smodel != null;
-		setTransferHandler(new WorkerTreeTransferHandler(smodel,
-				tmodel));
+		setTransferHandler(new WorkerTreeTransferHandler(
+				NullCleaner.assertNotNull(getSelectionModel()), tmodel));
 		setCellRenderer(new UnitMemberCellRenderer(orderCheck));
 		addMouseListener(new TreeMouseListener(model.getMap().getPlayers(),
 				tmodel, this));

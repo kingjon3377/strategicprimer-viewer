@@ -263,9 +263,7 @@ public class SPMapNG implements IMapNG {
 	@Override
 	public Iterable<TileFixture> getOtherFixtures(final Point location) {
 		if (fixtures.containsKey(location)) {
-			final Iterable<TileFixture> retval = fixtures.get(location);
-			assert retval != null;
-			return retval; // NOPMD
+			return NullCleaner.assertNotNull(fixtures.get(location)); // NOPMD
 		} else {
 			return new IteratorWrapper<>(new EmptyIterator<TileFixture>());
 		}

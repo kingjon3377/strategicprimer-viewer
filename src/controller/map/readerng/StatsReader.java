@@ -1,8 +1,5 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.assertNonNullList;
-import static controller.map.readerng.XMLHelper.assertNonNullQName;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -11,6 +8,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IPlayerCollection;
 import model.map.fixtures.mobile.worker.WorkerStats;
+import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -37,7 +35,7 @@ public class StatsReader implements INodeHandler<WorkerStats> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Collections.singletonList("stats"));
+		return NullCleaner.assertNotNull(Collections.singletonList("stats"));
 	}
 
 	/**
@@ -65,7 +63,7 @@ public class StatsReader implements INodeHandler<WorkerStats> {
 				.getAttribute(element, "int")), Integer.parseInt(XMLHelper
 				.getAttribute(element, "wis")), Integer.parseInt(XMLHelper
 				.getAttribute(element, "cha")));
-		XMLHelper.spinUntilEnd(assertNonNullQName(element.getName()), stream);
+		XMLHelper.spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		return retval;
 	}
 

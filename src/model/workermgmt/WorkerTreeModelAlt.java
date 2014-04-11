@@ -54,9 +54,9 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	public final void moveMember(final UnitMember member, final Unit old,
 			final Unit newOwner) {
 		final PlayerNode pnode = (PlayerNode) root;
-		final Player player = (Player) pnode.getUserObject();
-		assert player != null;
-		final List<Unit> units = model.getUnits(player);
+		final List<Unit> units =
+				model.getUnits(NullCleaner.assertNotNull((Player) pnode
+						.getUserObject()));
 		final UnitNode oldNode = (UnitNode) pnode
 				.getChildAt(units.indexOf(old));
 		final UnitNode newNode = (UnitNode) pnode.getChildAt(units
@@ -94,8 +94,31 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 */
 		public PlayerNode(final Player player, final IWorkerModel model) {
 			super(player, true);
+			final List<String> kinds = model.getUnitKinds(player);
 			int index = 0;
-			for (final Unit unit : model.getUnits(player)) {
+			for (final String kind : kinds) {
+				if (kind != null) {
+					insert(new KindNode(kind, model.getUnits(player, kind)), // NOPMD
+							index);
+					index++;
+				}
+			}
+		}
+	}
+	/**
+	 * A node representing a kind of unit.
+	 * @author Jonathan Lovelace
+	 */
+	public static class KindNode extends DefaultMutableTreeNode {
+		/**
+		 * Constructor.
+		 * @param kind what kind of unit
+		 * @param units the units of this kind
+		 */
+		public KindNode(final String kind, final List<Unit> units) {
+			super(kind, true);
+			int index = 0;
+			for (final Unit unit : units) {
 				if (unit != null) {
 					insert(new UnitNode(unit), index); // NOPMD
 					index++;
@@ -103,7 +126,6 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 			}
 		}
 	}
-
 	/**
 	 * A node representing a unit.
 	 * @author Jonathan Lovelace

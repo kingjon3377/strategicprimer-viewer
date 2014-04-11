@@ -1,7 +1,10 @@
 package model.workermgmt;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import model.map.ITile;
 import model.map.ITileCollection;
@@ -12,6 +15,7 @@ import model.map.TileFixture;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 import model.misc.AbstractDriverModel;
+import util.NullCleaner;
 import view.util.SystemOut;
 
 /**
@@ -68,6 +72,37 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 		return retval;
 	}
 
+	/**
+	 * @param player a player in the map
+	 * @return the "kinds" of unit that player has.
+	 */
+	@Override
+	public List<String> getUnitKinds(final Player player) {
+		final Set<String> retval = new HashSet<>();
+		final List<Unit> units = getUnits(player);
+		for (final Unit unit : units) {
+			retval.add(unit.getKind());
+		}
+		return NullCleaner.assertNotNull(Collections
+				.unmodifiableList(new ArrayList<>(retval)));
+	}
+
+	/**
+	 * @param player a player in the map
+	 * @param kind a "kind" of unit.
+	 * @return a list of the units of that kind in the map belonging to that player
+	 */
+	@Override
+	public List<Unit> getUnits(final Player player, final String kind) {
+		final List<Unit> units = getUnits(player);
+		final List<Unit> retval = new ArrayList<>();
+		for (final Unit unit : units) {
+			if (kind.equals(unit.getKind())) {
+				retval.add(unit);
+			}
+		}
+		return retval;
+	}
 	/**
 	 * @param unit the unit to add
 	 */

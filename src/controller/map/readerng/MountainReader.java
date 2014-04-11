@@ -1,7 +1,5 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.assertNonNullList;
-import static controller.map.readerng.XMLHelper.assertNonNullQName;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
 import java.util.Collections;
@@ -12,6 +10,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IPlayerCollection;
 import model.map.fixtures.terrain.Mountain;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -41,7 +40,7 @@ public class MountainReader implements INodeHandler<Mountain> {
 			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(assertNonNullQName(element.getName()), stream);
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Mountain fix = new Mountain();
 		XMLHelper.addImage(element, fix);
 		return fix;
@@ -52,7 +51,7 @@ public class MountainReader implements INodeHandler<Mountain> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Collections.singletonList("mountain"));
+		return NullCleaner.assertNotNull(Collections.singletonList("mountain"));
 	}
 
 	/**

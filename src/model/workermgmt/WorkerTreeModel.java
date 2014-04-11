@@ -9,7 +9,6 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 
-import model.map.IFixture;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
@@ -72,13 +71,19 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 * @return the specified child
 	 */
 	@Override
-	public IFixture getChild(@Nullable final Object parent, final int index) {
+	public Object getChild(@Nullable final Object parent, final int index) {
 		if (index < 0) {
 			throw new ArrayIndexOutOfBoundsException(index);
 		} else if (parent instanceof Player && parent.equals(root)
-				&& index < model.getUnits(root).size()) {
-			return NullCleaner.assertNotNull(model.getUnits(root).// NOPMD
+				&& index < model.getUnitKinds(root).size()) {
+			return NullCleaner.assertNotNull(model.getUnitKinds(root).// NOPMD
 					get(index));
+		} else if (parent instanceof String
+				&& model.getUnitKinds(root).contains(parent)
+				&& index < model.getUnits(root, (String) parent).size()) {
+			// A String here is a unit's kind.
+			return NullCleaner.assertNotNull(model.getUnits(root, // NOPMD
+					(String) parent).get(index));
 		} else if (parent instanceof Unit) {
 			final Iterator<UnitMember> iter = ((Unit) parent).iterator();
 			for (int i = 0; i < index; i++) {

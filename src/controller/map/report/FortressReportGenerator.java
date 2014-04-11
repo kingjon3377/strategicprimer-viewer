@@ -161,9 +161,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			}
 			builder.append(CLOSE_LIST_ITEM);
 		}
-		final String retval = builder.toString();
-		assert retval != null;
-		return retval;
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 	/**
 	 * @param parent the node to add nodes describing rivers to

@@ -76,13 +76,9 @@ public class TrapModelDriver implements ISPDriver {
 	/**
 	 * List of commands.
 	 */
-	private static final List<TrapperCommand> COMMANDS;
-	static {
-		final List<TrapperCommand> temp = Collections
-				.unmodifiableList(Arrays.asList(TrapperCommand.values()));
-		assert temp != null;
-		COMMANDS = temp;
-	}
+	private static final List<TrapperCommand> COMMANDS = NullCleaner
+			.assertNotNull(Collections.unmodifiableList(Arrays
+					.asList(TrapperCommand.values())));	
 
 	/**
 	 * The possible commands.

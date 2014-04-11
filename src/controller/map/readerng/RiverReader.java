@@ -1,6 +1,5 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.assertNonNullList;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
@@ -56,7 +55,7 @@ public class RiverReader implements INodeHandler<River> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNonNullList(Arrays.asList("river", "lake"));
+		return NullCleaner.assertNotNull(Arrays.asList("river", "lake"));
 	}
 
 	/**

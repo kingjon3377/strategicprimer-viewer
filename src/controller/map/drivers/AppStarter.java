@@ -180,9 +180,8 @@ public class AppStarter implements ISPDriver {
 	 */
 	private static void startChosenDriver(final ISPDriver driver, // NOPMD
 			final List<String> params) throws DriverFailedException {
-		final String[] array = params.toArray(new String[params.size()]);
-		assert array != null;
-		driver.startDriver(array);
+		driver.startDriver(NullCleaner.assertNotNull(params
+				.toArray(new String[params.size()])));
 	}
 
 	/**

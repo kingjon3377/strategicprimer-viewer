@@ -43,9 +43,7 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 	 */
 	public RiverFixture(final River... initial) {
 		super();
-		final Set<River> none = EnumSet.noneOf(River.class);
-		assert none != null;
-		rivers = none;
+		rivers = NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
 		for (final River river : initial) {
 			rivers.add(river);
 		}
