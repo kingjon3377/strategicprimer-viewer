@@ -49,8 +49,7 @@ public class ExplorationGUI implements ISPDriver {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException | UnsupportedLookAndFeelException except) {
-			LOGGER.log(Level.SEVERE,
-					"Failed to switch to system look-and-feel", except);
+			System.err.println("Failed to switch to system look-and-feel");
 		}
 		try {
 			new ExplorationGUI().startDriver(args);
