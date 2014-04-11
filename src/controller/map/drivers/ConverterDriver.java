@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
@@ -51,6 +53,13 @@ public final class ConverterDriver implements ISPDriver {
 	 *        be written back to its original name plus ".new"
 	 */
 	public static void main(final String[] args) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | UnsupportedLookAndFeelException except) {
+			LOGGER.log(Level.SEVERE,
+					"Failed to switch to system look-and-feel", except);
+		}
 		try {
 			new ConverterDriver().startDriver(args);
 		} catch (final DriverFailedException except) {

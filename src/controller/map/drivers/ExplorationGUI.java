@@ -3,8 +3,11 @@ package controller.map.drivers;
 import static view.util.SystemOut.SYS_OUT;
 
 import java.io.IOException;
+import java.util.logging.Level;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.stream.XMLStreamException;
 
 import model.exploration.ExplorationModel;
@@ -42,6 +45,13 @@ public class ExplorationGUI implements ISPDriver {
 	 * @param args the command-line arguments
 	 */
 	public static void main(final String[] args) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | UnsupportedLookAndFeelException except) {
+			LOGGER.log(Level.SEVERE,
+					"Failed to switch to system look-and-feel", except);
+		}
 		try {
 			new ExplorationGUI().startDriver(args);
 		} catch (final DriverFailedException except) {

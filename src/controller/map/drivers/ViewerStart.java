@@ -7,6 +7,8 @@ import java.util.logging.Logger;
 
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.MapView;
@@ -70,6 +72,13 @@ public final class ViewerStart implements ISPDriver {
 	 *
 	 */
 	public static void main(final String[] args) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | UnsupportedLookAndFeelException except) {
+			LOGGER.log(Level.SEVERE,
+					"Failed to switch to system look-and-feel", except);
+		}
 		try {
 			new ViewerStart().startDriver(args);
 		} catch (final DriverFailedException except) {

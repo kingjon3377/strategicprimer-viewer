@@ -2,8 +2,11 @@ package controller.map.drivers;
 
 import java.io.IOException;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.stream.XMLStreamException;
 
 import util.NullCleaner;
@@ -25,6 +28,11 @@ import controller.map.misc.WindowThread;
  */
 public class SubsetGUIDriver implements ISPDriver {
 	/**
+	 * A logger.
+	 */
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(SubsetDriver.class);
+	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-s",
@@ -39,10 +47,16 @@ public class SubsetGUIDriver implements ISPDriver {
 	// ESCA-JAVA0177:
 	public static void main(final String[] args) {
 		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | UnsupportedLookAndFeelException except) {
+			LOGGER.log(Level.SEVERE,
+					"Failed to switch to system look-and-feel", except);
+		}
+		try {
 			new SubsetGUIDriver().startDriver(args);
 		} catch (final DriverFailedException except) {
-			TypesafeLogger.getLogger(SubsetDriver.class).log(Level.SEVERE,
-					except.getMessage(), except.getCause());
+			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
 		}
 	}
 

@@ -10,6 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import util.EqualsAny;
 import util.NullCleaner;
@@ -195,6 +197,13 @@ public class AppStarter implements ISPDriver {
 	 * @param args command-line arguments
 	 */
 	public static void main(final String[] args) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException
+				| IllegalAccessException | UnsupportedLookAndFeelException except) {
+			LOGGER.log(Level.SEVERE,
+					"Failed to switch to system look-and-feel", except);
+		}
 		try {
 			new AppStarter().startDriver(args);
 		} catch (final DriverFailedException except) {
