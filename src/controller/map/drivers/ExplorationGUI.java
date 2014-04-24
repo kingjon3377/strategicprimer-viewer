@@ -3,7 +3,6 @@ package controller.map.drivers;
 import static view.util.SystemOut.SYS_OUT;
 
 import java.io.IOException;
-import java.util.logging.Level;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
