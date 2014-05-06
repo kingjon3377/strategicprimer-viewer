@@ -1,5 +1,8 @@
 package model.workermgmt;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -7,8 +10,11 @@ import java.util.NoSuchElementException;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 
+import model.map.HasKind;
+import model.map.HasName;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
@@ -214,7 +220,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		@Nullable
 		@Override
 		public T next() throws NoSuchElementException { // NOPMD: throws clause
-														// required by 
+														// required by
 														// superclass
 			return wrapped.nextElement();
 		}
@@ -330,5 +336,116 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	@Override
 	public final String toString() {
 		return "WorkerTreeModelAlt";
+	}
+	/**
+	 * @param obj a model object
+	 * @return the node representing it, or null if it isn't in the tree
+	 */
+	@Nullable
+	public MutableTreeNode getNode(final Object obj) {
+		return getNode(root, obj);
+	}
+
+	/**
+	 * @param node
+	 *            a node
+	 * @param obj
+	 *            an object
+	 * @return the node in the subtree under the node representing the object,
+	 *         or null if it isn't in this subtree
+	 */
+	@Nullable
+	private static MutableTreeNode getNode(final TreeNode node, final Object obj) {
+		if (node instanceof MutableTreeNode && objectEquals(node, obj)) {
+			return (MutableTreeNode) node;
+		} else if (node.getAllowsChildren()) {
+			for (final TreeNode child : new IteratorWrapper<>(
+					new EnumerationWrapper<TreeNode>(node.children()))) {
+				@Nullable final MutableTreeNode result = getNode(child, obj);
+				if (result != null) {
+					return result;
+				}
+			}
+			return null;
+		} else {
+			return null;
+		}
+	}
+	/**
+	 * @param node a node
+	 * @param obj an object
+	 * @return whether the object is or equals the node's user-object
+	 */
+	private static boolean objectEquals(final TreeNode node, final Object obj) {
+		return node instanceof DefaultMutableTreeNode
+				&& (obj == ((DefaultMutableTreeNode) node).getUserObject() || obj
+						.equals(((DefaultMutableTreeNode) node).getUserObject()));
+	}
+	/**
+	 * @param item the newly renamed item
+	 */
+	@Override
+	public void renameItem(final HasName item) {
+		final TreeNode node = getNode(item);
+		if (node == null) {
+			return;
+		}
+		TreeNode[] path = getPathToRoot(node);
+		int index = getIndexOfChild(path[path.length - 1], node);
+		fireTreeNodesChanged(this, path, new int[] { index }, new Object[] { node });
+	}
+
+	@Override
+	public void moveItem(final HasKind item) {
+		if (item instanceof UnitMember) {
+			final TreeNode node = getNode(item);
+			if (node == null) {
+				return;
+			}
+			TreeNode[] path = getPathToRoot(node);
+			int index = getIndexOfChild(path[path.length - 1], node);
+			fireTreeNodesChanged(this, path, new int[] { index },
+					new Object[] { node });
+		} else if (item instanceof Unit) {
+			final TreeNode node = getNode(item);
+			if (node == null) {
+				return;
+			}
+			TreeNode[] pathOne = getPathToRoot(node);
+			int indexOne = getIndexOfChild(pathOne[pathOne.length - 2], node);
+			TreeNode nodeTwo = null;
+			for (final TreeNode child : new IteratorWrapper<>(
+					new EnumerationWrapper<TreeNode>(root.children()))) {
+				if (child instanceof KindNode
+						&& item.getKind().equals(
+								((KindNode) child).getUserObject())) {
+					nodeTwo = child;
+					break;
+				}
+			}
+			((MutableTreeNode) (pathOne[pathOne.length - 2]))
+					.remove((MutableTreeNode) node);
+			final Object[] pathSubset = Arrays.copyOf(pathOne, pathOne.length - 1);
+			fireTreeNodesRemoved(this, pathSubset, new int[] { indexOne },
+					new Object[] { node });
+			if (nodeTwo == null) {
+				nodeTwo =
+						new KindNode(item.getKind(), new ArrayList<>(
+								Collections.singletonList((Unit) item)));
+				((PlayerNode) root).add((MutableTreeNode) nodeTwo);
+				fireTreeNodesInserted(this, new TreeNode[] { root },
+						new int[] { getIndexOfChild(root, nodeTwo) },
+						new Object[] { nodeTwo });
+			} else {
+				int indexTwo = nodeTwo.getChildCount();
+				((MutableTreeNode) nodeTwo).insert((MutableTreeNode) node,
+						indexTwo);
+				fireTreeNodesInserted(this, new Object[] { root, nodeTwo },
+						new int[] { indexTwo }, new Object[] { node });
+			}
+
+		}
+		// TODO Auto-generated method stub
+
 	}
 }

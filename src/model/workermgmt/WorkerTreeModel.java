@@ -9,6 +9,8 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 
+import model.map.HasKind;
+import model.map.HasName;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
@@ -336,5 +338,81 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	@Override
 	public String toString() {
 		return "WorkerTreeModel";
+	}
+	/**
+	 * @param item the item that has changed
+	 */
+	@Override
+	public void renameItem(final HasName item) {
+		final TreePath path;
+		final int[] indices;
+		final Object[] children;
+		if (item instanceof Unit) {
+			path = new TreePath(singletonObj(root));
+			indices = singletonInt(getIndexOfChild(root, item));
+			children = singletonObj(item);
+		} else if (item instanceof UnitMember) {
+			Unit parent = null;
+			for (final Unit unit : model.getUnits(root)) {
+				for (final UnitMember member : unit) {
+					if (member == item || item.equals(member)) {
+						parent = unit;
+					}
+				}
+				if (parent != null) {
+					break;
+				}
+			}
+			if (parent == null) {
+				return;
+			}
+			path = new TreePath(new Object[] { root, parent });
+			indices = singletonInt(getIndexOfChild(parent, item));
+			children = singletonObj(item);
+		} else {
+			// Probably the player. In any case, ignore.
+			return;
+		}
+		for (final TreeModelListener listener : listeners) {
+			listener.treeNodesChanged(new TreeModelEvent(this, path, // NOPMD
+					indices, children));
+		}
+	}
+
+	@Override
+	public void moveItem(final HasKind item) {
+		final TreePath path;
+		final int[] indices;
+		final Object[] children;
+		if (item instanceof Unit) {
+			path = new TreePath(singletonObj(root));
+			indices = singletonInt(getIndexOfChild(root, item));
+			children = singletonObj(item);
+		} else if (item instanceof UnitMember) {
+			Unit parent = null;
+			for (final Unit unit : model.getUnits(root)) {
+				for (final UnitMember member : unit) {
+					if (member == item || item.equals(member)) {
+						parent = unit;
+					}
+				}
+				if (parent != null) {
+					break;
+				}
+			}
+			if (parent == null) {
+				return;
+			}
+			path = new TreePath(new Object[] { root, parent });
+			indices = singletonInt(getIndexOfChild(parent, item));
+			children = singletonObj(item);
+		} else {
+			// Impossible at present, so ignore
+			return;
+		}
+		for (final TreeModelListener listener : listeners) {
+			listener.treeNodesChanged(new TreeModelEvent(this, path, // NOPMD
+					indices, children));
+		}
 	}
 }

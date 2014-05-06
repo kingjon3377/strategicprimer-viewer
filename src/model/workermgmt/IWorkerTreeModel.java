@@ -5,6 +5,8 @@ import javax.swing.tree.TreeModel;
 import model.listeners.MapChangeListener;
 import model.listeners.NewUnitListener;
 import model.listeners.PlayerChangeListener;
+import model.map.HasKind;
+import model.map.HasName;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 
@@ -47,4 +49,15 @@ public interface IWorkerTreeModel extends TreeModel, NewUnitListener,
 	 * @param member the member to add
 	 */
 	void addUnitMember(final Unit unit, final UnitMember member);
+	/**
+	 * Rename a worker or unit.
+	 * @param item the item that has changed
+	 */
+	void renameItem(HasName item);
+	/**
+	 * Change a unit's (or other member's) kind. If a unit, this means it has
+	 * moved in the tree.
+	 * @param item the item that has changed
+	 */
+	void moveItem(HasKind item);
 }

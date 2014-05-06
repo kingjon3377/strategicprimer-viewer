@@ -21,6 +21,7 @@ import model.map.IMutablePlayerCollection;
 import model.map.IPlayerCollection;
 import model.map.Player;
 import model.map.PlayerCollection;
+import model.workermgmt.IWorkerTreeModel;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -34,11 +35,15 @@ import util.NullCleaner;
  */
 public class FixtureEditMenu extends JPopupMenu {
 	/**
+	 * Listeners to notify about name and kind changes.
+	 */
+	protected List<IWorkerTreeModel> listeners = new ArrayList<>();
+	/**
 	 * The listener for the name-changing menu item.
 	 *
 	 * @author Jonathan Lovelace
 	 */
-	private static final class NameChangeListener implements ActionListener {
+	private final class NameChangeListener implements ActionListener {
 		/**
 		 * The parent component.
 		 */
@@ -65,12 +70,16 @@ public class FixtureEditMenu extends JPopupMenu {
 		 */
 		@Override
 		public void actionPerformed(@Nullable final ActionEvent event) {
+			final String old = ((HasName) fixture).getName();
 			final String result =
 					(String) showInputDialog(outer, "Fixture's new name:",
 							"Rename Fixture", JOptionPane.PLAIN_MESSAGE, null,
 							null, ((HasName) fixture).getName());
-			if (result != null) {
+			if (result != null && !result.equals(old)) {
 				((HasName) fixture).setName(result);
+				for (final IWorkerTreeModel listener : listeners) {
+					listener.renameItem((HasName) fixture);
+				}
 			}
 		}
 		/**
@@ -89,7 +98,11 @@ public class FixtureEditMenu extends JPopupMenu {
 	 * @param players the players in the map
 	 */
 	public FixtureEditMenu(final IFixture fixture,
-			final IPlayerCollection players) {
+			final IPlayerCollection players,
+			final IWorkerTreeModel... changeListeners) {
+		for (final IWorkerTreeModel listener : changeListeners) {
+			listeners.add(listener);
+		}
 		boolean mutable = false;
 		final FixtureEditMenu outer = this;
 		if (fixture instanceof HasName) {
@@ -103,13 +116,17 @@ public class FixtureEditMenu extends JPopupMenu {
 						@Override
 						public void actionPerformed(
 								@Nullable final ActionEvent event) {
+							final String old = ((HasKind) fixture).getKind();
 							final String result = (String) showInputDialog(
 									outer, "Fixture's new kind:",
 									"Change Fixture Kind",
 									JOptionPane.PLAIN_MESSAGE, null, null,
 									((HasKind) fixture).getKind());
-							if (result != null) {
+							if (result != null && !old.equals(result)) {
 								((HasKind) fixture).setKind(result);
+								for (final IWorkerTreeModel listener : listeners) {
+									listener.moveItem((HasKind) fixture);
+								}
 							}
 						}
 					});

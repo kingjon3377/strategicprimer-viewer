@@ -150,7 +150,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 				}
 				final Object obj = model.getModelObject(path);
 				if (obj instanceof IFixture) {
-					new FixtureEditMenu((IFixture) obj, players).show(
+					new FixtureEditMenu((IFixture) obj, players, model).show(
 							event.getComponent(), event.getX(), event.getY());
 				}
 			}
