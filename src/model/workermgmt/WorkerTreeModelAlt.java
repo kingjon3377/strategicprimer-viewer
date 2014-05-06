@@ -251,10 +251,18 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	public final void addUnit(final Unit unit) {
 		model.addUnit(unit);
 		final UnitNode node = new UnitNode(unit);
-		((DefaultMutableTreeNode) getRoot()).add(node);
-		fireTreeNodesInserted(this, new Object[] { root },
-				new int[] { ((DefaultMutableTreeNode) getRoot())
-						.getChildCount() - 1 }, new Object[] { node });
+		final String kind = unit.getKind();
+		for (final TreeNode child : new IteratorWrapper<>(
+				new EnumerationWrapper<TreeNode>(root.children()))) {
+			if (child instanceof KindNode
+					&& kind.equals(((KindNode) child).getUserObject())) {
+				((KindNode) child).add(node);
+				fireTreeNodesInserted(this, getPathToRoot(child),
+						new int[] { child.getChildCount() - 1 },
+						new Object[] { node });
+				break;
+			}
+		}
 	}
 
 	/**
