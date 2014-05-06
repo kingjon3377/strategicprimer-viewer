@@ -16,6 +16,8 @@ import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import view.util.StreamingLabel;
+import view.window.WindowMenuModel;
+import view.window.WindowMenuModel.WindowState;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
@@ -73,6 +75,7 @@ public class MapCheckerFrame extends JFrame {
 		setContentPane(new JScrollPane(label));
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		getContentPane().setBackground(Color.black);
+		WindowMenuModel.MODEL.addWindow(this, WindowState.NotVisible);
 	}
 
 	/**

@@ -20,6 +20,8 @@ import model.map.fixtures.mobile.Unit;
 import org.eclipse.jdt.annotation.Nullable;
 
 import view.util.ListenedButton;
+import view.window.WindowMenuModel;
+import view.window.WindowMenuModel.WindowState;
 import controller.map.misc.IDFactory;
 
 /**
@@ -84,6 +86,7 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 		setPreferredSize(new Dimension(200, PREF_HEIGHT));
 		setMaximumSize(new Dimension(300, PREF_HEIGHT));
 		pack();
+		WindowMenuModel.MODEL.addWindow(this, WindowState.NotVisible);
 	}
 
 	/**

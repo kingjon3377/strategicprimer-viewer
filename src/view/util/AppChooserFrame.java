@@ -19,6 +19,8 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import util.NullCleaner;
 import util.TypesafeLogger;
+import view.window.WindowMenuModel;
+import view.window.WindowMenuModel.WindowState;
 import controller.map.drivers.AdvancementStart;
 import controller.map.drivers.ISPDriver;
 import controller.map.drivers.ISPDriver.DriverFailedException;
@@ -67,6 +69,7 @@ public class AppChooserFrame extends JFrame {
 				new JLabel("Please choose one of the applications below:"),
 				null, null, null));
 		pack();
+		WindowMenuModel.MODEL.addWindow(this, WindowState.NotVisible);
 	}
 
 	/**

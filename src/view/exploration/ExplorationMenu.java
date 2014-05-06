@@ -23,6 +23,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.Pair;
 import view.map.main.ViewerFrame;
 import view.util.DriverQuit;
+import view.window.WindowMenu;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MultiIOHandler;
 
@@ -106,6 +107,7 @@ public class ExplorationMenu extends JMenuBar {
 					}
 				}));
 		add(fileMenu);
+		add(new WindowMenu());
 	}
 
 	/**

@@ -41,6 +41,8 @@ import util.TypesafeLogger;
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
+import view.window.WindowMenuModel;
+import view.window.WindowMenuModel.WindowState;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
 import controller.map.report.ReportGenerator;
@@ -122,6 +124,7 @@ public class WorkerMgmtFrame extends JFrame {
 		setJMenuBar(new WorkerMenu(ioHandler, this, pch));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
+		WindowMenuModel.MODEL.addWindow(this, WindowState.NotVisible);
 	}
 
 	/**

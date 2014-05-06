@@ -12,6 +12,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import view.util.DriverQuit;
 import view.util.MenuItemCreator;
+import view.window.WindowMenu;
 import controller.map.misc.IOHandler;
 
 /**
@@ -86,5 +87,6 @@ public class WorkerMenu extends JMenuBar {
 				MenuItemCreator.createHotkey(KeyEvent.VK_P),
 				"Look at a different player's units and workers", pch));
 		add(editMenu);
+		add(new WindowMenu());
 	}
 }

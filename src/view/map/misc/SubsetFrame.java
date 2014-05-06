@@ -25,6 +25,8 @@ import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
 import view.util.StreamingLabel;
+import view.window.WindowMenuModel;
+import view.window.WindowMenuModel.WindowState;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
@@ -131,6 +133,7 @@ public class SubsetFrame extends JFrame {
 		setMinimumSize(new Dimension(640, 320));
 		setContentPane(new JScrollPane(label));
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		WindowMenuModel.MODEL.addWindow(this, WindowState.NotVisible);
 	}
 
 	/**

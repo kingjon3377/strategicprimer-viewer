@@ -13,6 +13,8 @@ import javax.swing.WindowConstants;
 import model.exploration.ExplorationModel;
 import model.listeners.CompletionListener;
 import util.NullCleaner;
+import view.window.WindowMenuModel;
+import view.window.WindowMenuModel.WindowState;
 import controller.map.misc.MultiIOHandler;
 
 /**
@@ -116,5 +118,6 @@ public class ExplorationFrame extends JFrame {
 		setJMenuBar(new ExplorationMenu(ioHandler, emodel, this));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
+		WindowMenuModel.MODEL.addWindow(this, WindowState.NotVisible);
 	}
 }
