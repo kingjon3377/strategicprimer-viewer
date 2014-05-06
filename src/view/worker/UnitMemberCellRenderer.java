@@ -16,11 +16,14 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeNode;
 
 import model.map.HasImage;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
+import model.workermgmt.WorkerTreeModelAlt.KindNode;
+import model.workermgmt.WorkerTreeModelAlt.UnitNode;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -131,6 +134,35 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 				((DefaultTreeCellRenderer) component)
 						.setBackgroundNonSelectionColor(Color.YELLOW);
 			}
+		} else if (warn && value instanceof KindNode) {
+			boolean shouldWarn = false;
+			boolean shouldErr = false;
+			for (final TreeNode node : (KindNode) value) {
+				if (node instanceof UnitNode) {
+					final String orders =
+							((Unit) NullCleaner
+									.assertNotNull(getNodeValue(node)))
+									.getOrders().toLowerCase();
+					if (orders.contains("fixme") && node.getChildCount() != 0) {
+						shouldErr = true;
+						break;
+					} else if (orders.contains("todo")) {
+						shouldWarn = true;
+					}
+				}
+				if (shouldErr) {
+					((DefaultTreeCellRenderer) component)
+							.setBackgroundSelectionColor(Color.PINK);
+					((DefaultTreeCellRenderer) component)
+							.setBackgroundNonSelectionColor(Color.PINK);
+				} else if (shouldWarn) {
+					((DefaultTreeCellRenderer) component)
+							.setBackgroundSelectionColor(Color.YELLOW);
+					((DefaultTreeCellRenderer) component)
+							.setBackgroundNonSelectionColor(Color.YELLOW);
+				}
+			}
+
 		}
 		return component;
 	}
