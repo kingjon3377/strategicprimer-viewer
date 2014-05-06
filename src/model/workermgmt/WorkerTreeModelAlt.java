@@ -343,7 +343,12 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 */
 	@Nullable
 	public MutableTreeNode getNode(final Object obj) {
-		return getNode(root, obj);
+		final TreeNode localRoot = root;
+		if (localRoot != null) {
+			return getNode(localRoot, obj);
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -361,6 +366,9 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		} else if (node.getAllowsChildren()) {
 			for (final TreeNode child : new IteratorWrapper<>(
 					new EnumerationWrapper<TreeNode>(node.children()))) {
+				if (child == null) {
+					continue;
+				}
 				@Nullable final MutableTreeNode result = getNode(child, obj);
 				if (result != null) {
 					return result;

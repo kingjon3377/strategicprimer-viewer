@@ -94,8 +94,13 @@ public class FixtureEditMenu extends JPopupMenu {
 	/**
 	 * Constructor.
 	 *
-	 * @param fixture the fixture the user clicked on
-	 * @param players the players in the map
+	 * @param fixture
+	 *            the fixture the user clicked on
+	 * @param players
+	 *            the players in the map
+	 * @param changeListeners
+	 *            any tree-model objects that want to know when something's name
+	 *            or kind has changed.
 	 */
 	public FixtureEditMenu(final IFixture fixture,
 			final IPlayerCollection players,
