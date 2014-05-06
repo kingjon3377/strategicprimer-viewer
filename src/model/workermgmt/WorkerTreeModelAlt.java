@@ -21,7 +21,6 @@ import model.map.fixtures.mobile.Unit;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import util.IteratorWrapper;
 import util.NullCleaner;
 
 /**
@@ -67,10 +66,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 				.getChildAt(units.indexOf(old));
 		final UnitNode newNode = (UnitNode) pnode.getChildAt(units
 				.indexOf(newOwner));
-		final Iterable<TreeNode> iter = new IteratorWrapper<>(
-				new EnumerationWrapper<TreeNode>(oldNode.children()));
 		int index = -1;
-		for (final TreeNode node : iter) {
+		for (final TreeNode node : oldNode) {
 			if (node instanceof UnitMemberNode
 					&& ((UnitMemberNode) node).getUserObject().equals(member)) {
 				index = oldNode.getIndex(node);
@@ -86,12 +83,39 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 				new int[] { newNode.getIndex(node) }, new Object[] { node });
 		newOwner.addMember(member);
 	}
-
+	/**
+	 * A base class for our nodes.
+	 */
+	public static class WorkerTreeNode extends
+			DefaultMutableTreeNode implements Iterable<TreeNode> {
+		/**
+		 * @param userObject the user object the node wraps
+		 * @param allowsChildren whether to allow children
+		 */
+		protected WorkerTreeNode(final Object userObject,
+				final boolean allowsChildren) {
+			super(userObject, allowsChildren);
+		}
+		/**
+		 * Allows children without having to pass that to us.
+		 * @param userObject the user object the node wraps.
+		 */
+		protected WorkerTreeNode(final Object userObject) {
+			super(userObject, true);
+		}
+		/**
+		 * @return an iterator over the immediate children of this node
+		 */
+		@Override
+		public Iterator<TreeNode> iterator() {
+			return new EnumerationWrapper<>(children());
+		}
+	}
 	/**
 	 * A node representing the player.
 	 * @author Jonathan Lovelace
 	 */
-	public static class PlayerNode extends DefaultMutableTreeNode {
+	public static class PlayerNode extends WorkerTreeNode {
 		/**
 		 * Constructor.
 		 *
@@ -99,7 +123,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * @param model the worker model we're drawing from
 		 */
 		public PlayerNode(final Player player, final IWorkerModel model) {
-			super(player, true);
+			super(player);
 			final List<String> kinds = model.getUnitKinds(player);
 			int index = 0;
 			for (final String kind : kinds) {
@@ -115,14 +139,14 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * A node representing a kind of unit.
 	 * @author Jonathan Lovelace
 	 */
-	public static class KindNode extends DefaultMutableTreeNode {
+	public static class KindNode extends WorkerTreeNode {
 		/**
 		 * Constructor.
 		 * @param kind what kind of unit
 		 * @param units the units of this kind
 		 */
 		public KindNode(final String kind, final List<Unit> units) {
-			super(kind, true);
+			super(kind);
 			int index = 0;
 			for (final Unit unit : units) {
 				if (unit != null) {
@@ -136,14 +160,14 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * A node representing a unit.
 	 * @author Jonathan Lovelace
 	 */
-	public static class UnitNode extends DefaultMutableTreeNode {
+	public static class UnitNode extends WorkerTreeNode {
 		/**
 		 * Constructor.
 		 *
 		 * @param unit the unit we represent.
 		 */
 		public UnitNode(final Unit unit) {
-			super(unit, true);
+			super(unit);
 			int index = 0;
 			for (final UnitMember member : unit) {
 				if (member != null) {
@@ -158,7 +182,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * A node representing a unit member.
 	 * @author Jonathan Lovelace
 	 */
-	public static class UnitMemberNode extends DefaultMutableTreeNode {
+	public static class UnitMemberNode extends WorkerTreeNode {
 		/**
 		 * Constructor.
 		 *
@@ -252,8 +276,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		model.addUnit(unit);
 		final UnitNode node = new UnitNode(unit);
 		final String kind = unit.getKind();
-		for (final TreeNode child : new IteratorWrapper<>(
-				new EnumerationWrapper<TreeNode>(root.children()))) {
+		for (final TreeNode child : (PlayerNode) root) {
 			if (child instanceof KindNode
 					&& kind.equals(((KindNode) child).getUserObject())) {
 				((KindNode) child).add(node);
@@ -318,12 +341,11 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	@Override
 	public final void addUnitMember(final Unit unit, final UnitMember member) {
 		final PlayerNode pnode = (PlayerNode) root;
-		final IteratorWrapper<UnitNode> units = new IteratorWrapper<>(
-				new EnumerationWrapper<UnitNode>(pnode.children()));
 		UnitNode unode = null;
-		for (final UnitNode item : units) {
-			if (item.getUserObject().equals(unit)) {
-				unode = item;
+		for (final TreeNode item : pnode) {
+			if (item instanceof UnitNode
+					&& ((UnitNode) item).getUserObject().equals(unit)) {
+				unode = (UnitNode) item;
 				break;
 			}
 		}
@@ -371,9 +393,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	private static MutableTreeNode getNode(final TreeNode node, final Object obj) {
 		if (node instanceof MutableTreeNode && objectEquals(node, obj)) {
 			return (MutableTreeNode) node;
-		} else if (node.getAllowsChildren()) {
-			for (final TreeNode child : new IteratorWrapper<>(
-					new EnumerationWrapper<TreeNode>(node.children()))) {
+		} else if (node instanceof WorkerTreeNode && node.getAllowsChildren()) {
+			for (final TreeNode child : (WorkerTreeNode) node) {
 				if (child == null) {
 					continue;
 				}
@@ -430,8 +451,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 			TreeNode[] pathOne = getPathToRoot(node);
 			int indexOne = getIndexOfChild(pathOne[pathOne.length - 2], node);
 			TreeNode nodeTwo = null;
-			for (final TreeNode child : new IteratorWrapper<>(
-					new EnumerationWrapper<TreeNode>(root.children()))) {
+			for (final TreeNode child : (PlayerNode) root) {
 				if (child instanceof KindNode
 						&& item.getKind().equals(
 								((KindNode) child).getUserObject())) {
