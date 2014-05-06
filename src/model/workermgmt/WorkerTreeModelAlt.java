@@ -431,11 +431,23 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 					break;
 				}
 			}
-			((MutableTreeNode) (pathOne[pathOne.length - 2]))
-					.remove((MutableTreeNode) node);
-			final Object[] pathSubset = Arrays.copyOf(pathOne, pathOne.length - 1);
-			fireTreeNodesRemoved(this, pathSubset, new int[] { indexOne },
+			((MutableTreeNode) pathOne[pathOne.length - 1]).removeFromParent();
+			final Object[] pathSubset;
+			if (pathOne[pathOne.length - 2].getChildCount() == 0) {
+				final int parentIndex =
+						pathOne[pathOne.length - 3]
+								.getIndex(pathOne[pathOne.length - 2]);
+				pathSubset = Arrays.copyOf(pathOne, pathOne.length - 2);
+				((MutableTreeNode) pathOne[pathOne.length - 2])
+						.removeFromParent();
+				fireTreeNodesRemoved(this, pathSubset,
+						new int[] { parentIndex },
+						new Object[] { pathOne[pathOne.length - 2] });
+			} else {
+				pathSubset = Arrays.copyOf(pathOne, pathOne.length - 1);
+				fireTreeNodesRemoved(this, pathSubset, new int[] { indexOne },
 					new Object[] { node });
+			}
 			if (nodeTwo == null) {
 				nodeTwo =
 						new KindNode(item.getKind(), new ArrayList<>(
@@ -453,7 +465,5 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 			}
 
 		}
-		// TODO Auto-generated method stub
-
 	}
 }
