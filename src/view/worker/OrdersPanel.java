@@ -50,6 +50,8 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 								new ListenedButton("Apply", handler))
 								.setLineEnd(
 										new ListenedButton("Revert", handler)));
+		area.setLineWrap(true);
+		area.setWrapStyleWord(true);
 	}
 
 	/**
