@@ -24,6 +24,11 @@ public class WindowMenu extends JMenu implements ListDataListener {
 		super("Window");
 		setMnemonic(KeyEvent.VK_W);
 		WindowMenuModel.MODEL.addListDataListener(this);
+		for (final Frame window : WindowMenuModel.MODEL) {
+			if (window != null) {
+				add(new WindowMenuItem(window));
+			}
+		}
 	}
 	/**
 	 * @param evt a notification of a window being added.

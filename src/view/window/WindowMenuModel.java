@@ -5,6 +5,7 @@ import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  */
 public final class WindowMenuModel extends WindowAdapter implements
-		ListModel<Frame> {
+		ListModel<Frame>, Iterable<Frame> {
 	/**
 	 * If a window's 'state' bitmask matches any of these fields, it's
 	 * "maximized" for our purposes.
@@ -209,5 +210,12 @@ public final class WindowMenuModel extends WindowAdapter implements
 		if (listener != null) {
 			listeners.remove(listener);
 		}
+	}
+	/**
+	 * @return the windows we know about
+	 */
+	@Override
+	public Iterator<Frame> iterator() {
+		return NullCleaner.assertNotNull(windows.iterator());
 	}
 }
