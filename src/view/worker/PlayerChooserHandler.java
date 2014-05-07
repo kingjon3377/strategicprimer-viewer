@@ -100,6 +100,14 @@ public final class PlayerChooserHandler implements ActionListener,
 		}
 	}
 	/**
+	 * Make listeners reload.
+	 */
+	public void reload() {
+		for (final PlayerChangeListener listener : listeners) {
+			listener.playerChanged(player, player);
+		}
+	}
+	/**
 	 * @param players a collection of players
 	 * @return the players as an array
 	 */

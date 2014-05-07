@@ -86,6 +86,15 @@ public class WorkerMenu extends JMenuBar {
 				PlayerChooserHandler.MENU_ITEM, KeyEvent.VK_P,
 				MenuItemCreator.createHotkey(KeyEvent.VK_P),
 				"Look at a different player's units and workers", pch));
+		editMenu.add(MenuItemCreator.createMenuItem("Reload tree",
+				KeyEvent.VK_R, MenuItemCreator.createHotkey(KeyEvent.VK_R),
+				"Refresh the view of the workers", new ActionListener() {
+
+			@Override
+			public void actionPerformed(@Nullable final ActionEvent e) {
+				pch.reload();
+			}
+		}));
 		add(editMenu);
 		add(new WindowMenu());
 	}
