@@ -70,7 +70,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		oldNode.remove(node);
 		old.removeMember(member);
 		newNode.add(node);
-		fireTreeNodesInserted(this, new Object[] { pnode, newNode },
+		fireTreeNodesInserted(this,
+				new Object[] { pnode, getNode(newOwner.getKind()), newNode },
 				new int[] { newNode.getIndex(node) }, new Object[] { node });
 		newOwner.addMember(member);
 	}
