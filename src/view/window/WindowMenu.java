@@ -71,8 +71,8 @@ public class WindowMenu extends JMenu implements ListDataListener {
 		for (final Component item : getComponents()) {
 			if (item instanceof WindowMenuItem
 					&& ((WindowMenuItem) item).getWindow() == window) {
-				// TODO: Handle state changes with font or icon changes
-				((JMenuItem) item).setText(window.getTitle());
+				((WindowMenuItem) item).updateForStatus(WindowMenuModel.MODEL
+						.getState(window));
 			}
 		}
 	}
