@@ -13,6 +13,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import view.util.DriverQuit;
 import view.util.MenuItemCreator;
 import view.window.WindowMenu;
+import view.window.WindowMenuModel;
 import controller.map.misc.IOHandler;
 
 /**
@@ -97,5 +98,8 @@ public class WorkerMenu extends JMenuBar {
 		}));
 		add(editMenu);
 		add(new WindowMenu());
+		parent.addWindowListener(WindowMenuModel.MODEL);
+		parent.addWindowStateListener(WindowMenuModel.MODEL);
+		parent.addWindowFocusListener(WindowMenuModel.MODEL);
 	}
 }

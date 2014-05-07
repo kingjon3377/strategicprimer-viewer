@@ -24,6 +24,7 @@ import util.Pair;
 import view.map.main.ViewerFrame;
 import view.util.DriverQuit;
 import view.window.WindowMenu;
+import view.window.WindowMenuModel;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MultiIOHandler;
 
@@ -108,6 +109,9 @@ public class ExplorationMenu extends JMenuBar {
 				}));
 		add(fileMenu);
 		add(new WindowMenu());
+		parent.addWindowListener(WindowMenuModel.MODEL);
+		parent.addWindowStateListener(WindowMenuModel.MODEL);
+		parent.addWindowFocusListener(WindowMenuModel.MODEL);
 	}
 
 	/**
