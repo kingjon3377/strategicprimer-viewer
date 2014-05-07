@@ -2,8 +2,12 @@ package view.window;
 
 import java.awt.Frame;
 import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 import view.window.WindowMenuModel.WindowState;
 /**
@@ -30,6 +34,13 @@ public class WindowMenuItem extends JMenuItem {
 	public WindowMenuItem(final Frame win) {
 		super(win.getTitle());
 		window = win;
+		addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(@Nullable final ActionEvent e) {
+				win.setState(Frame.NORMAL);
+				win.setVisible(true);
+			}
+		});
 	}
 	/**
 	 * @return the window we wrap
@@ -49,14 +60,14 @@ public class WindowMenuItem extends JMenuItem {
 	 */
 	private void update() {
 		if (curr) {
-			setText("\u2713 " + window.getTitle());
+			setText("<html>&check;&nbsp;" + window.getTitle() + "</html>");
 		} else {
 			switch (state) {
 			case Minimized:
-				setText("\u2666 " + window.getTitle());
+				setText("<html>&diams;&nbsp;" + window.getTitle() + "</html>");
 				break;
 			default:
-				setText("  " + window.getTitle());
+				setText("<html>&nbsp;&nbsp;" + window.getTitle() + "</html>");
 				break;
 			}
 		}
