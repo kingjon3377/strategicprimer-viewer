@@ -139,14 +139,14 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 			boolean shouldErr = false;
 			for (final TreeNode node : (KindNode) value) {
 				if (node instanceof UnitNode) {
-					final String orders =
-							((Unit) NullCleaner
-									.assertNotNull(getNodeValue(node)))
-									.getOrders().toLowerCase();
-					if (orders.contains("fixme") && node.getChildCount() != 0) {
+					final Unit unit = (Unit) NullCleaner
+							.assertNotNull(getNodeValue(node));
+					final String orders = unit.getOrders().toLowerCase();
+					if (orders.contains("fixme") && unit.iterator().hasNext()) {
 						shouldErr = true;
 						break;
-					} else if (orders.contains("todo")) {
+					} else if (orders.contains("todo")
+							&& unit.iterator().hasNext()) {
 						shouldWarn = true;
 					}
 				}
