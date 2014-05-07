@@ -58,25 +58,16 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	@Override
 	public final void moveMember(final UnitMember member, final Unit old,
 			final Unit newOwner) {
-		final PlayerNode pnode = (PlayerNode) root;
-		final List<Unit> units =
-				model.getUnits(NullCleaner.assertNotNull((Player) pnode
-						.getUserObject()));
-		final UnitNode oldNode = (UnitNode) pnode
-				.getChildAt(units.indexOf(old));
-		final UnitNode newNode = (UnitNode) pnode.getChildAt(units
-				.indexOf(newOwner));
-		int index = -1;
-		for (final TreeNode node : oldNode) {
-			if (node instanceof UnitMemberNode
-					&& ((UnitMemberNode) node).getUserObject().equals(member)) {
-				index = oldNode.getIndex(node);
-			}
-		}
-		final UnitMemberNode node = (UnitMemberNode) oldNode.getChildAt(index);
+		final PlayerNode pnode = NullCleaner.assertNotNull((PlayerNode) root);
+		final UnitNode oldNode =
+				NullCleaner.assertNotNull((UnitNode) getNode(pnode, old));
+		final UnitNode newNode =
+				NullCleaner.assertNotNull((UnitNode) getNode(pnode, newOwner));
+		final UnitMemberNode node = (UnitMemberNode) getNode(pnode, member);
+		fireTreeNodesRemoved(this, new Object[] { pnode,
+				getNode(old.getKind()), oldNode },
+				new int[] { oldNode.getIndex(node) }, new Object[] { node });
 		oldNode.remove(node);
-		fireTreeNodesRemoved(this, new Object[] { pnode, oldNode },
-				new int[] { index }, new Object[] { node });
 		old.removeMember(member);
 		newNode.add(node);
 		fireTreeNodesInserted(this, new Object[] { pnode, newNode },
