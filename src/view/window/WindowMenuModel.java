@@ -178,11 +178,42 @@ public final class WindowMenuModel extends WindowAdapter implements
 	 */
 	@Override
 	public void windowIconified(@Nullable final WindowEvent evt) {
-		windowStateChanged(evt);
+		if (evt == null) {
+			return;
+		}
+		final Window source = evt.getWindow();
+		if (source != null && states.containsKey(source)) {
+			states.put(source, WindowState.Minimized);
+			final int index = windows.indexOf(source);
+			final ListDataEvent event =
+					new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED,
+							index, index);
+			for (final ListDataListener listener : listeners) {
+				listener.contentsChanged(event);
+			}
+		}
 	}
 	@Override
 	public void windowDeiconified(@Nullable final WindowEvent evt) {
-		windowStateChanged(evt);
+		if (evt == null) {
+			return;
+		}
+		final Window source = evt.getWindow();
+		if (source != null && states.containsKey(source)) {
+			int state = evt.getNewState();
+			if ((state & MAXIMIZED_ANY) != 0) {
+				states.put(source, WindowState.Maximized);
+			} else {
+				states.put(source, WindowState.Visible);
+			}
+			final int index = windows.indexOf(source);
+			final ListDataEvent event =
+					new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED,
+							index, index);
+			for (final ListDataListener listener : listeners) {
+				listener.contentsChanged(event);
+			}
+		}
 	}
 	/**
 	 * @return the number of windows
