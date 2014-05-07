@@ -150,19 +150,19 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 						shouldWarn = true;
 					}
 				}
-				if (shouldErr) {
-					((DefaultTreeCellRenderer) component)
-							.setBackgroundSelectionColor(Color.PINK);
-					((DefaultTreeCellRenderer) component)
-							.setBackgroundNonSelectionColor(Color.PINK);
-				} else if (shouldWarn) {
-					((DefaultTreeCellRenderer) component)
-							.setBackgroundSelectionColor(Color.YELLOW);
-					((DefaultTreeCellRenderer) component)
-							.setBackgroundNonSelectionColor(Color.YELLOW);
-				}
 			}
 
+			if (shouldErr) {
+				((DefaultTreeCellRenderer) component)
+						.setBackgroundSelectionColor(Color.PINK);
+				((DefaultTreeCellRenderer) component)
+						.setBackgroundNonSelectionColor(Color.PINK);
+			} else if (shouldWarn) {
+				((DefaultTreeCellRenderer) component)
+						.setBackgroundSelectionColor(Color.YELLOW);
+				((DefaultTreeCellRenderer) component)
+						.setBackgroundNonSelectionColor(Color.YELLOW);
+			}
 		}
 		return component;
 	}
