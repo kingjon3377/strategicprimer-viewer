@@ -41,6 +41,7 @@ public class WindowMenuItem extends JMenuItem {
 				win.setVisible(true);
 			}
 		});
+		update();
 	}
 	/**
 	 * @return the window we wrap
