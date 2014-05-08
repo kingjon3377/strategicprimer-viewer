@@ -129,7 +129,7 @@ public class SubsetFrame extends JFrame {
 	 * Constructor.
 	 */
 	public SubsetFrame() {
-		super("Strategic Primer Subset Tester");
+		super("Subset Tester");
 		setMinimumSize(new Dimension(640, 320));
 		setContentPane(new JScrollPane(label));
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);

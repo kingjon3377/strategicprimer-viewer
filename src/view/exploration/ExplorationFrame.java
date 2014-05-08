@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,7 +96,12 @@ public class ExplorationFrame extends JFrame {
 	 */
 	public ExplorationFrame(final ExplorationModel emodel,
 			final MultiIOHandler ioHandler) {
-		super("Strategic Primer Exploration");
+		super("Exploration");
+		if (!emodel.getMapFilename().isEmpty()) {
+			setTitle(emodel.getMapFilename() + " | Exploration");
+			getRootPane().putClientProperty("Window.documentFile",
+					new File(emodel.getMapFilename()));
+		}
 		model = emodel;
 		setMinimumSize(new Dimension(768, 480));
 		setPreferredSize(new Dimension(1024, 640));

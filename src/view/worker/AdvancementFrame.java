@@ -4,6 +4,7 @@ import static javax.swing.JSplitPane.HORIZONTAL_SPLIT;
 import static javax.swing.JSplitPane.VERTICAL_SPLIT;
 
 import java.awt.Dimension;
+import java.io.File;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -58,7 +59,12 @@ public class AdvancementFrame extends JFrame {
 	 * @param ioHandler the I/O handler so the menu 'open' item, etc., will work
 	 */
 	public AdvancementFrame(final IWorkerModel source, final IOHandler ioHandler) {
-		super("Strategic Primer worker advancement");
+		super("Worker Advancement");
+		if (!source.getMapFilename().isEmpty()) {
+			setTitle(source.getMapFilename() + " | Worker Advancement");
+			getRootPane().putClientProperty("Window.documentFile",
+					new File(source.getMapFilename()));
+		}
 		setMinimumSize(new Dimension(640, 480));
 
 		final PlayerChooserHandler pch = new PlayerChooserHandler(this, source);

@@ -2,6 +2,7 @@ package view.map.main;
 
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
+import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
@@ -55,7 +56,12 @@ public final class ViewerFrame extends JFrame {
 	 *        items.
 	 */
 	public ViewerFrame(final IViewerModel map, final IOHandler ioHandler) {
-		super("Strategic Primer Map Viewer");
+		super("Map Viewer");
+		if (!map.getMapFilename().isEmpty()) {
+			setTitle(map.getMapFilename() + " | Map Viewer");
+			getRootPane().putClientProperty("Window.documentFile",
+					new File(map.getMapFilename()));
+		}
 		final FixtureFilterMenu ffmenu = new FixtureFilterMenu();
 		final MapComponent mapPanel = new MapComponent(map, ffmenu);
 		map.addGraphicalParamsListener(mapPanel);

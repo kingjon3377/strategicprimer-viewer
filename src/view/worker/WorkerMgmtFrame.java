@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -79,7 +80,12 @@ public class WorkerMgmtFrame extends JFrame {
 	 *        items.
 	 */
 	public WorkerMgmtFrame(final IWorkerModel model, final IOHandler ioHandler) {
-		super("Strategic Primer worker management");
+		super("Worker Management");
+		if (!model.getMapFilename().isEmpty()) {
+			setTitle(model.getMapFilename() + " | Worker Management");
+			getRootPane().putClientProperty("Window.documentFile",
+					new File(model.getMapFilename()));
+		}
 		setMinimumSize(new Dimension(640, 480));
 		final NewUnitDialog newUnitFrame = new NewUnitDialog(model.getMap()
 				.getPlayers().getCurrentPlayer(),
