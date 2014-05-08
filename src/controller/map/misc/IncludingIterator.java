@@ -34,10 +34,15 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 	 * The stack of iterators we're working with.
 	 */
 	private final Deque<Pair<String, ComparableIterator<XMLEvent>>> stack;
+
 	/**
-	 * FIXME: We should use Files "all the way down" if we can.
-	 * @param file the name of the file we're reading
-	 * @param iter the iterator we'll start with.
+	 * FIXME: We should use Files "all the way down" if we can. But we can't yet
+	 * because we rely on the magic string: file.
+	 *
+	 * @param file
+	 *            the name of the file we're reading
+	 * @param iter
+	 *            the iterator we'll start with.
 	 */
 	public IncludingIterator(final File file, final Iterator<XMLEvent> iter) {
 		this(NullCleaner.assertNotNull(file.getPath()), iter);
