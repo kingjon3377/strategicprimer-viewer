@@ -36,6 +36,13 @@ import controller.map.misc.CLIHelper;
  */
 public class ExplorationCLI {
 	/**
+	 * The direction prompt.
+	 */
+	private static final String PROMPT = assertNotNull(new StringBuilder(90)
+			.append("0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ")
+			.append("6 = W, 7 = NW, 8 = Stay Here, 9 = Quit.")
+			.toString());
+	/**
 	 * The prompt to use when the user tells the unit to go nowhere.
 	 */
 	private static final String FEALTY_PROMPT =
@@ -216,16 +223,10 @@ public class ExplorationCLI {
 			SYS_OUT.println(selUnit.verbose());
 			final int totalMP = helper.inputNumber("MP the unit has: ");
 			int movement = totalMP;
-			// FIXME: Should be a class-level constant.
-			final String prompt =
-					assertNotNull(new StringBuilder(90)
-							.append("0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, ")
-							.append("6 = W, 7 = NW, 8 = Stay Here, 9 = Quit.")
-							.toString());
 			while (movement > 0) {
 				SYS_OUT.printC(movement).printC(" MP of ")
 						.printC(totalMP).println(" remaining.");
-				SYS_OUT.println(prompt);
+				SYS_OUT.println(PROMPT);
 				movement -= move(selUnit);
 			}
 		}
