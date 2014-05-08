@@ -321,17 +321,14 @@ public class WorkerMgmtFrame extends JFrame {
 		 * @return the proto-strategy as a String
 		 */
 		public String createStrategy() {
-			// FIXME: Calculate proper size
-			final StringBuilder builder = new StringBuilder(1024);
-			builder.append('[');
-			builder.append(model.getMap().getPlayers().getCurrentPlayer()
-					.getName());
-			builder.append("\nTurn ");
-			builder.append(model.getMap().getCurrentTurn());
-			builder.append("]\n\nInventions: TODO: any?\n\n");
+			final Player currentPlayer =
+					model.getMap().getPlayers().getCurrentPlayer();
+			final String playerName = currentPlayer.getName();
+			final String turn = Integer.toString(model.getMap().getCurrentTurn());
+			final List<Unit> units = model.getUnits(currentPlayer);
+
 			final Map<String, List<Unit>> unitsByKind = new HashMap<>();
-			for (final Unit unit : model.getUnits(model.getMap().getPlayers()
-					.getCurrentPlayer())) {
+			for (final Unit unit : units) {
 				if (!unit.iterator().hasNext()) {
 					// FIXME: This should be exposed as a user option. Sometimes
 					// users *want* empty units printed.
@@ -347,6 +344,25 @@ public class WorkerMgmtFrame extends JFrame {
 				}
 				list.add(unit);
 			}
+
+			int size = 34 + playerName.length() + turn.length();
+			for (final Entry<String, List<Unit>> entry : unitsByKind.entrySet()) {
+				size += 4;
+				size += entry.getKey().length();
+				for (final Unit unit : entry.getValue()) {
+					size += 10;
+					size += unit.getName().length();
+					size += unitMemberSize(unit);
+					size += unit.getOrders().length();
+				}
+			}
+
+			final StringBuilder builder = new StringBuilder(size);
+			builder.append('[');
+			builder.append(playerName);
+			builder.append("\nTurn ");
+			builder.append(turn);
+			builder.append("]\n\nInventions: TODO: any?\n\n");
 			builder.append("Workers:\n");
 			for (final Entry<String, List<Unit>> entry : unitsByKind.entrySet()) {
 				builder.append("* ");
@@ -368,7 +384,22 @@ public class WorkerMgmtFrame extends JFrame {
 			}
 			return NullCleaner.assertNotNull(builder.toString());
 		}
-
+		/**
+		 * @param unit a unit
+		 * @return the size of string needed to represent its members
+		 */
+		private static int unitMemberSize(final Unit unit) {
+			if (unit.iterator().hasNext()) {
+				int size = 3;
+				for (final UnitMember member : unit) {
+					size += 2;
+					size += memberStringSize(NullCleaner.assertNotNull(member));
+				}
+				return size;
+			} else {
+				return 0;
+			}
+		}
 		/**
 		 * @param unit a unit
 		 * @return a String representing its members
@@ -396,7 +427,24 @@ public class WorkerMgmtFrame extends JFrame {
 				return "";
 			}
 		}
-
+		/**
+		 * @param member a unit member
+		 * @return the size of a string for it
+		 */
+		private static int memberStringSize(final UnitMember member) {
+			if (member instanceof Worker) {
+				int size = ((Worker) member).getName().length();
+				size += 2;
+				for (final Job job : (Worker) member) {
+					size += 3;
+					size += job.getName().length();
+					size += Integer.toString(job.getLevel()).length();
+				}
+				return size;
+			} else {
+				return member.toString().length();
+			}
+		}
 		/**
 		 * @param member a unit member
 		 * @return a suitable string for it
