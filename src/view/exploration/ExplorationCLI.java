@@ -3,6 +3,7 @@ package view.exploration;
 import static util.NullCleaner.assertNotNull;
 import static view.util.SystemOut.SYS_OUT;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -106,7 +107,7 @@ public class ExplorationCLI {
 	private void swearVillages(final Point point) {
 		final Unit visitor = model.getSelectedUnit();
 		if (visitor != null) {
-			for (final Pair<IMap, String> mapPair : model.getAllMaps()) {
+			for (final Pair<IMap, File> mapPair : model.getAllMaps()) {
 				final IMap map = mapPair.first();
 				for (final TileFixture fix : map.getTile(point)) {
 					if (fix instanceof Village) {
@@ -186,14 +187,14 @@ public class ExplorationCLI {
 			@Nullable final TileFixture fix) {
 		if (fix != null) {
 			SYS_OUT.println(fix);
-			for (final Pair<IMap, String> pair : model.getSubordinateMaps()) {
+			for (final Pair<IMap, File> pair : model.getSubordinateMaps()) {
 				final IMap map = pair.first();
 				final ITile tile = map.getTile(dPoint);
 				if (tile instanceof IMutableTile) {
 					((IMutableTile) tile).addFixture(fix);
 				} else {
 					SYS_OUT.print("Failed to copy fixture to ");
-					SYS_OUT.print(pair.second());
+					SYS_OUT.print(pair.second().getPath());
 					SYS_OUT.println(" because the tile there was not mutable.");
 				}
 			}

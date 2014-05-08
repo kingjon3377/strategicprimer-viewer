@@ -1,5 +1,6 @@
 package model.workermgmt;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -28,14 +29,15 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 	/**
 	 * Constructor.
 	 *
-	 * @param map the map we're wrapping.
-	 * @param filename the name of the file the map was loaded from or should be
-	 *        saved to
+	 * @param map
+	 *            the map we're wrapping.
+	 * @param file
+	 *            the file the map was loaded from or should be
+	 *            saved to
 	 */
-	public WorkerModel(final MapView map, final String filename) {
-		setMap(map, filename);
+	public WorkerModel(final MapView map, final File file) {
+		setMap(map, file);
 	}
-
 	/**
 	 * @param player a player in the map
 	 * @return a list of that player's units

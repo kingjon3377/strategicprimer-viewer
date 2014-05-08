@@ -2,6 +2,7 @@ package controller.map.drivers;
 
 import static view.util.SystemOut.SYS_OUT;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.SwingUtilities;
@@ -12,7 +13,6 @@ import javax.xml.stream.XMLStreamException;
 import model.exploration.ExplorationModel;
 import model.map.IMap;
 import model.map.MapView;
-import util.NullCleaner;
 import util.Warning;
 import view.exploration.ExplorationFrame;
 import view.map.main.MapFileFilter;
@@ -67,24 +67,26 @@ public class ExplorationGUI implements ISPDriver {
 	 * @throws SPFormatException on SP format problems
 	 * @throws XMLStreamException on malformed XML
 	 * @throws IOException on basic file I/O error
+	 * TODO: Should probably take Files rather than names.
 	 */
 	private static ExplorationModel readMaps(final String[] filenames)
 			throws IOException, XMLStreamException, SPFormatException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		final String firstFile = NullCleaner.assertNotNull(filenames[0]);
+		final File firstFile = new File(filenames[0]);
 		final MapView master = reader.readMap(firstFile, Warning.INSTANCE);
 		final ExplorationModel model = new ExplorationModel(master,
 				firstFile);
 		for (final String filename : filenames) {
-			if (filename == null || filename.equals(firstFile)) {
+			if (filename == null || filename.equals(filenames[0])) {
 				continue;
 			}
-			final IMap map = reader.readMap(filename, Warning.INSTANCE);
+			final File file = new File(filename);
+			final IMap map = reader.readMap(file, Warning.INSTANCE);
 			if (!map.getDimensions().equals(master.getDimensions())) {
 				throw new IllegalArgumentException("Size mismatch between "
 						+ firstFile + " and " + filename);
 			}
-			model.addSubordinateMap(map, filename);
+			model.addSubordinateMap(map, file);
 		}
 		return model;
 	}

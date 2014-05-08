@@ -2,6 +2,7 @@ package controller.map.drivers;
 
 import static view.util.SystemOut.SYS_OUT;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -10,7 +11,6 @@ import java.util.logging.Level;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
-import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -78,29 +78,29 @@ public final class SubsetDriver implements ISPDriver {
 			return;
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		final String mainFile = NullCleaner.assertNotNull(args[0]);
+		final File mainFile = new File(args[0]);
 		try {
 			final IMap mainMap =
 					reader.readMap(mainFile, new Warning(Action.Ignore));
 			SYS_OUT.print("OK if strict subset, WARN if needs manual checking,");
 			SYS_OUT.println("FAIL if error in reading");
 			for (final String arg : args) {
-				if (arg.equals(mainFile)) {
+				if (arg.equals(args[0])) {
 					continue;
 				}
 				SYS_OUT.print(arg);
 				SYS_OUT.print("\t...\t\t");
-				printReturn(doSubsetTest(arg, reader, mainMap));
+				printReturn(doSubsetTest(new File(arg), reader, mainMap));
 			}
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error loading main map "
-					+ mainFile, except);
+					+ mainFile.getPath(), except);
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("XML error reading main map "
-					+ mainFile, except);
+					+ mainFile.getPath(), except);
 		} catch (final SPFormatException except) {
 			throw new DriverFailedException("Invalid SP XML in main map "
-					+ mainFile, except);
+					+ mainFile.getPath(), except);
 		}
 	}
 
@@ -126,15 +126,15 @@ public final class SubsetDriver implements ISPDriver {
 	}
 
 	/**
-	 * @param filename a filename
+	 * @param file a file
 	 * @param reader the map reader to use
 	 * @param mainMap the main map
 	 * @return the result of doing a subset test on the named map
 	 */
-	private static Returns doSubsetTest(final String filename,
+	private static Returns doSubsetTest(final File file,
 			final MapReaderAdapter reader, final IMap mainMap) {
 		try {
-			final IMap map = reader.readMap(filename, new Warning(Action.Ignore));
+			final IMap map = reader.readMap(file, new Warning(Action.Ignore));
 			try (final OutputStreamWriter osw = new OutputStreamWriter(SYS_OUT);
 					@SuppressWarnings("resource")
 					// "Resource 'out' should be managed by try-with-resource", when

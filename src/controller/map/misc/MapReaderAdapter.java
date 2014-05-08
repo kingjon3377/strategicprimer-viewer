@@ -1,5 +1,6 @@
 package controller.map.misc;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.xml.stream.XMLStreamException;
@@ -39,7 +40,7 @@ public class MapReaderAdapter {
 	}
 
 	/**
-	 * @param filename
+	 * @param file
 	 *            the file to open
 	 * @param warner
 	 *            the Warning instance to use for warnings.
@@ -52,22 +53,20 @@ public class MapReaderAdapter {
 	 *             if the reader can't handle this map version or there are map
 	 *             format errors
 	 */
-	public MapView readMap(final String filename, final Warning warner)
+	public MapView readMap(final File file, final Warning warner)
 			throws IOException, XMLStreamException, SPFormatException {
-		return reader.readMap(filename, warner);
+		return reader.readMap(file, warner);
 	}
 
 	/**
 	 * Write a map.
-	 *
-	 * @param filename the file to write to
-	 * @param map the map to write.
+	 * @param file the file to write to
+	 * @param map the map to write
 	 * @throws IOException on error opening the file
 	 */
-	public void write(final String filename, final IMap map) throws IOException {
-		writer.write(filename, map);
+	public void write(final File file, final IMap map) throws IOException {
+		writer.write(file, map);
 	}
-
 	/**
 	 * @return a String representation of the object
 	 */

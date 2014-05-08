@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -7,7 +8,6 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
-import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -69,7 +69,7 @@ public final class EchoDriver implements ISPDriver {
 		}
 		// ESCA-JAVA0177:
 		final IMap map; // NOPMD
-		final String infile = NullCleaner.assertNotNull(args[0]);
+		final File infile = new File(args[0]);
 		try {
 			map = new MapReaderAdapter().readMap(infile, new Warning(// NOPMD
 					Action.Ignore));
@@ -77,13 +77,13 @@ public final class EchoDriver implements ISPDriver {
 			throw new DriverFailedException("Unsupported map version", except);
 		} catch (final IOException except) {
 			throw new DriverFailedException(
-					"I/O error reading file " + infile, except);
+					"I/O error reading file " + infile.getPath(), except);
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("Malformed XML", except);
 		} catch (final SPFormatException except) {
 			throw new DriverFailedException("SP map format error", except);
 		}
-		final String outfile = NullCleaner.assertNotNull(args[1]);
+		final File outfile = new File(args[1]);
 		try {
 			new MapReaderAdapter().write(outfile, map);
 		} catch (final IOException except) {

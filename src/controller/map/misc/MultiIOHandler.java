@@ -2,6 +2,7 @@ package controller.map.misc;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -90,7 +91,7 @@ public class MultiIOHandler extends IOHandler {
 	 */
 	private void saveAll(@Nullable final Component source) {
 		final MapReaderAdapter adapter = new MapReaderAdapter();
-		for (final Pair<IMap, String> pair : model.getAllMaps()) {
+		for (final Pair<IMap, File> pair : model.getAllMaps()) {
 			try {
 				adapter.write(pair.second(), pair.first());
 			} catch (final IOException e) {
@@ -108,18 +109,21 @@ public class MultiIOHandler extends IOHandler {
 	 */
 	private void handleSecondaryLoadMenu(@Nullable final Component source) {
 		if (chooser.showOpenDialog(source) == JFileChooser.APPROVE_OPTION) {
-			final String filename =
-					NullCleaner.assertNotNull(chooser.getSelectedFile()
-							.getPath());
+			final File file = chooser.getSelectedFile();
+			if (file == null) {
+				return;
+			}
 			try {
-				model.addSubordinateMap(readMap(filename, Warning.INSTANCE),
-						filename);
+				model.addSubordinateMap(readMap(file, Warning.INSTANCE), file);
 			} catch (final IOException e) {
-				handleError(e, filename, source);
+				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
+						"a null path"), source);
 			} catch (final SPFormatException e) {
-				handleError(e, filename, source);
+				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
+						"a null path"), source);
 			} catch (final XMLStreamException e) {
-				handleError(e, filename, source);
+				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
+						"a null path"), source);
 			}
 		}
 	}

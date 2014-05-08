@@ -2,6 +2,7 @@ package controller.map.drivers;
 
 import static view.util.SystemOut.SYS_OUT;
 
+import java.io.File;
 import java.io.IOException;
 
 import javax.xml.stream.XMLStreamException;
@@ -12,7 +13,6 @@ import model.map.IMap;
 import model.map.MapView;
 import model.map.Player;
 import model.map.fixtures.mobile.Unit;
-import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 import view.exploration.ExplorationCLI;
@@ -64,7 +64,7 @@ public class ExplorationCLIDriver implements ISPDriver {
 	private static ExplorationModel readMaps(final String[] filenames)
 			throws IOException, XMLStreamException, SPFormatException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		final String firstFile = NullCleaner.assertNotNull(filenames[0]);
+		final File firstFile = new File(filenames[0]);
 		final MapView master = reader.readMap(firstFile, Warning.INSTANCE);
 		final ExplorationModel model = new ExplorationModel(master,
 				firstFile);
@@ -72,12 +72,13 @@ public class ExplorationCLIDriver implements ISPDriver {
 			if (filename == null || filename.equals(filenames[0])) {
 				continue;
 			}
-			final IMap map = reader.readMap(filename, Warning.INSTANCE);
+			final File file = new File(filename);
+			final IMap map = reader.readMap(file, Warning.INSTANCE);
 			if (!map.getDimensions().equals(master.getDimensions())) {
 				throw new IllegalArgumentException("Size mismatch between "
 						+ filenames[0] + " and " + filename);
 			}
-			model.addSubordinateMap(map, filename);
+			model.addSubordinateMap(map, file);
 		}
 		return model;
 	}
@@ -140,7 +141,7 @@ public class ExplorationCLIDriver implements ISPDriver {
 	private static void writeMaps(final IExplorationModel model)
 			throws IOException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		for (final Pair<IMap, String> pair : model.getAllMaps()) {
+		for (final Pair<IMap, File> pair : model.getAllMaps()) {
 			reader.write(pair.second(), pair.first());
 		}
 	}

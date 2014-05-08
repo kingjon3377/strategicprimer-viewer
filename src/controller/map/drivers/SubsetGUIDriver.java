@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -9,7 +10,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.stream.XMLStreamException;
 
-import util.NullCleaner;
 import util.TypesafeLogger;
 import view.map.misc.SubsetFrame;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
@@ -74,24 +74,24 @@ public class SubsetGUIDriver implements ISPDriver {
 		}
 		final SubsetFrame frame = new SubsetFrame();
 		SwingUtilities.invokeLater(new WindowThread(frame));
-		final String first = NullCleaner.assertNotNull(args[0]);
+		final File first = new File(args[0]);
 		try {
 			frame.loadMain(first);
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error loading main map "
-					+ first, except);
+					+ first.getPath(), except);
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("XML error reading main map "
-					+ first, except);
+					+ first.getPath(), except);
 		} catch (final SPFormatException except) {
 			throw new DriverFailedException("Invalid SP XML in main map "
-					+ first, except);
+					+ first.getPath(), except);
 		}
 		for (final String arg : args) {
-			if (arg.equals(first)) {
+			if (arg.equals(args[0])) {
 				continue;
 			}
-			frame.test(arg);
+			frame.test(new File(arg));
 		}
 	}
 

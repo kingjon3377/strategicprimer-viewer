@@ -1,5 +1,7 @@
 package model.misc;
 
+import java.io.File;
+
 import model.listeners.MapChangeSource;
 import model.listeners.VersionChangeSource;
 import model.map.MapDimensions;
@@ -15,10 +17,9 @@ import model.map.MapView;
 public interface IDriverModel extends MapChangeSource, VersionChangeSource {
 	/**
 	 * @param newMap the new map
-	 * @param name the filename from which it was loaded
+	 * @param origin the file from which it was loaded
 	 */
-	void setMap(final MapView newMap, String name);
-
+	void setMap(final MapView newMap, File origin);
 	/**
 	 *
 	 * @return the map
@@ -29,9 +30,8 @@ public interface IDriverModel extends MapChangeSource, VersionChangeSource {
 	 * @return the dimensions and version of the map
 	 */
 	MapDimensions getMapDimensions();
-
 	/**
-	 * @return the filename from which the map was loaded
+	 * @return the file from which the map was loaded
 	 */
-	String getMapFilename();
+	File getMapFile();
 }

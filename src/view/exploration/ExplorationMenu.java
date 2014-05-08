@@ -8,6 +8,7 @@ import static view.util.MenuItemCreator.createShiftHotkey;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -69,7 +70,7 @@ public class ExplorationMenu extends JMenuBar {
 					@Override
 					public void actionPerformed(@Nullable final ActionEvent evt) {
 						invokeLater(new ViewerOpener(model.getMap(), model
-								.getMapFilename(), -1, -1, ioh));
+								.getMapFile(), -1, -1, ioh));
 					}
 				}));
 		fileMenu.add(createMenuItem(
@@ -80,7 +81,7 @@ public class ExplorationMenu extends JMenuBar {
 				new ActionListener() {
 					@Override
 					public void actionPerformed(@Nullable final ActionEvent evt) {
-						final Pair<IMap, String> mapPair = model
+						final Pair<IMap, File> mapPair = model
 								.getSubordinateMaps().iterator().next();
 						invokeLater(new ViewerOpener(mapPair.first(), mapPair
 								.second(), model.getMap().getPlayers()
@@ -126,7 +127,7 @@ public class ExplorationMenu extends JMenuBar {
 		/**
 		 * The file name the map was loaded from.
 		 */
-		private final String filename;
+		private final File file;
 		/**
 		 * The I/O handler to let the menu handle 'open', etc.
 		 */
@@ -136,20 +137,20 @@ public class ExplorationMenu extends JMenuBar {
 		 * Constructor.
 		 *
 		 * @param map the map (view) to open
-		 * @param file the filename it was loaded from
+		 * @param source the filename it was loaded from
 		 * @param player the current player's number---ignored if map is a
 		 *        MapView.
 		 * @param turn the current turn---ignored if map is a MapView.
 		 * @param ioHandler the I/O handler to let the menu handle 'open', etc.
 		 */
-		protected ViewerOpener(final IMap map, final String file, final int player,
+		protected ViewerOpener(final IMap map, final File source, final int player,
 				final int turn, final IOHandler ioHandler) {
 			if (map instanceof MapView) {
 				view = (MapView) map;
 			} else {
 				view = new MapView(map, player, turn);
 			}
-			filename = file;
+			file = source;
 			ioHelper = ioHandler;
 		}
 
@@ -158,7 +159,7 @@ public class ExplorationMenu extends JMenuBar {
 		 */
 		@Override
 		public void run() {
-			new ViewerFrame(new ViewerModel(view, filename), ioHelper)
+			new ViewerFrame(new ViewerModel(view, file), ioHelper)
 					.setVisible(true);
 		}
 		/**

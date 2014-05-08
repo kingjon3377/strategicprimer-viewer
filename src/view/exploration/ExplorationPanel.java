@@ -3,6 +3,7 @@ package view.exploration;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Iterator;
@@ -178,7 +179,7 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 		mainList.getModel().addListDataListener(
 				new ExplorationListListener(model, mainList));
 		final SelectionChangeSupport secPCS = new SelectionChangeSupport();
-		final Iterator<Pair<IMap, String>> subMaps = model.getSubordinateMaps()
+		final Iterator<Pair<IMap, File>> subMaps = model.getSubordinateMaps()
 				.iterator();
 		// ESCA-JAVA0177:
 		final IPlayerCollection players;
@@ -224,7 +225,7 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 			}
 			final Point point = model.getDestination(selPoint, dir);
 			final ITile tileOne = model.getMap().getTile(point);
-			final Iterator<Pair<IMap, String>> subs = model
+			final Iterator<Pair<IMap, File>> subs = model
 					.getSubordinateMaps().iterator();
 			// ESCA-JAVA0177:
 			final ITile tileTwo; // NOPMD

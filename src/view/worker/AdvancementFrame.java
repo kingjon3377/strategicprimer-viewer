@@ -4,7 +4,6 @@ import static javax.swing.JSplitPane.HORIZONTAL_SPLIT;
 import static javax.swing.JSplitPane.VERTICAL_SPLIT;
 
 import java.awt.Dimension;
-import java.io.File;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -60,10 +59,10 @@ public class AdvancementFrame extends JFrame {
 	 */
 	public AdvancementFrame(final IWorkerModel source, final IOHandler ioHandler) {
 		super("Worker Advancement");
-		if (!source.getMapFilename().isEmpty()) {
-			setTitle(source.getMapFilename() + " | Worker Advancement");
+		if (!source.getMapFile().exists()) {
+			setTitle(source.getMapFile().getName() + " | Worker Advancement");
 			getRootPane().putClientProperty("Window.documentFile",
-					new File(source.getMapFilename()));
+					source.getMapFile());
 		}
 		setMinimumSize(new Dimension(640, 480));
 

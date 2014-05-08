@@ -1,5 +1,6 @@
 package controller.map.cxml;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -17,15 +18,14 @@ public class CompactXMLWriter implements SPWriter {
 	/**
 	 * Write a map to file.
 	 *
-	 * @param filename The file to write to
+	 * @param file The file to write to
 	 * @param map the map to write
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final String filename, final IMap map) throws IOException {
-		writeObject(filename, map);
+	public void write(final File file, final IMap map) throws IOException {
+		writeObject(file, map);
 	}
-
 	/**
 	 * Write a map to a stream.
 	 *
@@ -48,11 +48,23 @@ public class CompactXMLWriter implements SPWriter {
 	// ESCA-JAVA0173: The filename parameter is *too* used.
 	public static void writeObject(final String filename, final Object obj)
 			throws IOException {
-		try (final Writer writer = new FileWriter(filename)) {
+		writeObject(new File(filename), obj);
+	}
+
+	/**
+	 * Write an object to file.
+	 *
+	 * @param file the file to write to
+	 * @param obj the object to write
+	 * @throws IOException on I/O error
+	 */
+	// ESCA-JAVA0173: The filename parameter is *too* used.
+	public static void writeObject(final File file, final Object obj)
+			throws IOException {
+		try (final Writer writer = new FileWriter(file)) {
 			writeObject(writer, obj);
 		}
 	}
-
 	/**
 	 * Write an object to a stream.
 	 *

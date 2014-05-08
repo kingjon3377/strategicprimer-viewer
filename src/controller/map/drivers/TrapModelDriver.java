@@ -3,6 +3,7 @@ package controller.map.drivers;
 import static model.map.PointFactory.point;
 import static view.util.SystemOut.SYS_OUT;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -72,13 +73,13 @@ public class TrapModelDriver implements ISPDriver {
 	 * How many minutes a fruitless check of a trap takes.
 	 */
 	private static final int FRUITLESS_TRAP = 10;
-	
+
 	/**
 	 * List of commands.
 	 */
 	private static final List<TrapperCommand> COMMANDS = NullCleaner
 			.assertNotNull(Collections.unmodifiableList(Arrays
-					.asList(TrapperCommand.values())));	
+					.asList(TrapperCommand.values())));
 
 	/**
 	 * The possible commands.
@@ -216,7 +217,7 @@ public class TrapModelDriver implements ISPDriver {
 	}
 	/**
 	 * Handle a command.
-	 * 
+	 *
 	 * @param fixtures
 	 *            the animals generated from the tile and surrounding tiles.
 	 * @param ostream
@@ -284,19 +285,21 @@ public class TrapModelDriver implements ISPDriver {
 			throw new DriverFailedException("Need one argument",
 					new IllegalArgumentException("Need one argument"));
 		}
-		final String filename = NullCleaner.assertNotNull(args[0]);
+		final File file = new File(args[0]);
 		try {
-			repl(new MapReaderAdapter().readMap(filename, new Warning(
+			repl(new MapReaderAdapter().readMap(file, new Warning(
 					Action.Warn)), SYS_OUT);
 		} catch (final XMLStreamException e) {
-			throw new DriverFailedException("XML parsing error in " + filename,
-					e);
+			throw new DriverFailedException("XML parsing error in "
+					+ file.getPath(), e);
 		} catch (final FileNotFoundException e) {
-			throw new DriverFailedException("File " + filename + " not found", e);
+			throw new DriverFailedException("File " + file.getPath()
+					+ " not found", e);
 		} catch (final IOException e) {
-			throw new DriverFailedException("I/O error reading " + filename, e);
+			throw new DriverFailedException("I/O error reading "
+					+ file.getPath(), e);
 		} catch (final SPFormatException e) {
-			throw new DriverFailedException("Map " + filename
+			throw new DriverFailedException("Map " + file.getPath()
 					+ " contains invalid data", e);
 		}
 	}

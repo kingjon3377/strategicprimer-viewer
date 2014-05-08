@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -39,7 +40,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	/**
 	 * The "filename" to pass to the readers.
 	 */
-	protected static final String FAKE_FILENAME = "string";
+	protected static final File FAKE_FILENAME = new File("");
 	/**
 	 * An instance of the previous-generation reader to test against.
 	 */
@@ -579,7 +580,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	/**
 	 * Assert that a map is properly deserialized (by the main
 	 * map-deserialization methods) into a view.
-	 * 
+	 *
 	 * @param message
 	 *            the message to use in JUnit calls
 	 * @param expected

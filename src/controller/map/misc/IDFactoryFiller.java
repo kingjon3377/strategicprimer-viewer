@@ -1,5 +1,7 @@
 package controller.map.misc;
 
+import java.io.File;
+
 import model.map.FixtureIterable;
 import model.map.IFixture;
 import model.map.IMap;
@@ -44,7 +46,7 @@ public final class IDFactoryFiller {
 	 */
 	public static IDFactory createFactory(final IMultiMapModel model) {
 		final IDFactory retval = new IDFactory();
-		for (final Pair<IMap, String> pair : model.getAllMaps()) {
+		for (final Pair<IMap, File> pair : model.getAllMaps()) {
 			final ITileCollection tiles = pair.first().getTiles();
 			for (final Point point : tiles) {
 				if (point != null) {

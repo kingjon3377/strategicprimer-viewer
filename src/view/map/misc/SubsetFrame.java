@@ -1,6 +1,7 @@
 package view.map.misc;
 
 import java.awt.Dimension;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -162,7 +163,6 @@ public class SubsetFrame extends JFrame {
 		// label.updateText();
 		label.repaint();
 	}
-
 	/**
 	 * Load a new map as the main map, which the others should be subsets of.
 	 *
@@ -171,7 +171,7 @@ public class SubsetFrame extends JFrame {
 	 * @throws XMLStreamException on malformed XML
 	 * @throws IOException on other I/O error
 	 */
-	public void loadMain(final String arg) throws SPFormatException,
+	public void loadMain(final File arg) throws SPFormatException,
 			XMLStreamException, IOException {
 		try {
 			mainMap = reader.readMap(arg, new Warning(Action.Ignore));
@@ -179,11 +179,11 @@ public class SubsetFrame extends JFrame {
 			printParagraph("File " + arg + " not found", ERROR_COLOR);
 			throw except;
 		} catch (final MapVersionException except) {
-			printParagraph("ERROR: Map version of main map " + arg
+			printParagraph("ERROR: Map version of main map " + arg.getPath()
 					+ " not acceptable to reader", ERROR_COLOR);
 			throw except;
 		} catch (final XMLStreamException except) {
-			printParagraph("ERROR: Malformed XML in file " + arg
+			printParagraph("ERROR: Malformed XML in file " + arg.getPath()
 					+ "; see following error message for details", ERROR_COLOR);
 			printParagraph(
 					NullCleaner.assertNotNull(except.getLocalizedMessage()),
@@ -192,7 +192,7 @@ public class SubsetFrame extends JFrame {
 		} catch (final SPFormatException except) {
 			printParagraph(
 					"ERROR: SP map format error at line " + except.getLine()
-							+ " in file " + arg
+							+ " in file " + arg.getPath()
 							+ "; see following error message for details",
 					ERROR_COLOR);
 			printParagraph(
@@ -200,7 +200,8 @@ public class SubsetFrame extends JFrame {
 					ERROR_COLOR);
 			throw except;
 		} catch (final IOException except) {
-			printParagraph("ERROR: I/O error reading file " + arg, ERROR_COLOR);
+			printParagraph("ERROR: I/O error reading file " + arg.getPath(),
+					ERROR_COLOR);
 			throw except;
 		}
 		printParagraph(
@@ -210,7 +211,6 @@ public class SubsetFrame extends JFrame {
 						+ "<span style=\"color:red\">FAIL</span> if "
 						+ "error in reading", "");
 	}
-
 	/**
 	 * Test a map against the main map, to see if it's a strict subset of it.
 	 * This method "eats" (but logs) all (anticipated) errors in reading the
@@ -218,7 +218,7 @@ public class SubsetFrame extends JFrame {
 	 *
 	 * @param arg the file from which to load the possible subset.
 	 */
-	public void test(final String arg) { // NOPMD: this isn't a JUnit test ...
+	public void test(final File arg) { // NOPMD: this isn't a JUnit test ...
 		printParagraph("Testing " + arg + " ...", "");
 		// ESCA-JAVA0177:
 		try {
@@ -231,21 +231,22 @@ public class SubsetFrame extends JFrame {
 				}
 			}
 		} catch (final MapVersionException except) {
-			LOGGER.log(Level.SEVERE, "Map version in " + arg
+			LOGGER.log(Level.SEVERE, "Map version in " + arg.getPath()
 					+ " not acceptable to reader", except);
 			printParagraph("ERROR: Map version not acceptable to reader",
 					ERROR_COLOR);
 			return; // NOPMD
 		} catch (final FileNotFoundException except) {
 			printParagraph("FAIL: File not found", ERROR_COLOR);
-			LOGGER.log(Level.SEVERE, arg + " not found", except);
+			LOGGER.log(Level.SEVERE, arg.getPath() + " not found", except);
 			return; // NOPMD
 		} catch (final IOException except) {
-			LOGGER.log(Level.SEVERE, "I/O error reading " + arg, except);
+			LOGGER.log(Level.SEVERE, "I/O error reading " + arg.getPath(), except);
 			printParagraph("FAIL: I/O error reading file", ERROR_COLOR);
 			return; // NOPMD
 		} catch (final XMLStreamException except) {
-			LOGGER.log(Level.SEVERE, "Malformed XML in file " + arg, except);
+			LOGGER.log(Level.SEVERE, "Malformed XML in file " + arg.getPath(),
+					except);
 			printParagraph("FAIL: Malformed XML in the file; "
 					+ "see following error message for details", ERROR_COLOR);
 			printParagraph(
@@ -253,8 +254,8 @@ public class SubsetFrame extends JFrame {
 					ERROR_COLOR);
 			return; // NOPMD
 		} catch (final SPFormatException except) {
-			LOGGER.log(Level.SEVERE, "SP map format eror reading " + arg,
-					except);
+			LOGGER.log(Level.SEVERE,
+					"SP map format eror reading " + arg.getPath(), except);
 			printParagraph(
 					"FAIL: SP map format error at line " + except.getLine()
 							+ "; see following error message for details",

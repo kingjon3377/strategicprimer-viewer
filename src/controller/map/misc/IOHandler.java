@@ -3,6 +3,7 @@ package controller.map.misc;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -70,14 +71,16 @@ public class IOHandler implements ActionListener {
 	 */
 	private void handleLoadMenu(@Nullable final Component source) {
 		if (chooser.showOpenDialog(source) == JFileChooser.APPROVE_OPTION) {
-			final String filename =
-					NullCleaner.assertNotNull(chooser.getSelectedFile()
-							.getPath());
+			final File file = chooser.getSelectedFile();
+			if (file == null) {
+				return;
+			}
 			// ESCA-JAVA0166:
 			try {
-				model.setMap(readMap(filename, Warning.INSTANCE), filename);
+				model.setMap(readMap(file, Warning.INSTANCE), file);
 			} catch (IOException | SPFormatException | XMLStreamException e) {
-				handleError(e, filename, source);
+				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
+						"a null path"), source);
 			}
 		}
 	}
@@ -123,7 +126,7 @@ public class IOHandler implements ActionListener {
 		SwingUtilities.invokeLater(new WindowThread(new ViewerFrame(
 				new ViewerModel(new MapView(
 						new SPMap(model.getMapDimensions()), 0, model.getMap()
-								.getCurrentTurn()), ""), this)));
+								.getCurrentTurn()), new File("")), this)));
 	}
 
 	/**
@@ -173,10 +176,10 @@ public class IOHandler implements ActionListener {
 	private void saveMap(@Nullable final Component source) {
 		try {
 			new MapReaderAdapter()
-					.write(model.getMapFilename(), model.getMap());
+					.write(model.getMapFile(), model.getMap());
 		} catch (final IOException e) {
 			ErrorShower.showErrorDialog(source, "I/O error writing to file "
-					+ model.getMapFilename());
+					+ model.getMapFile().getPath());
 			LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 		}
 	}
@@ -190,31 +193,32 @@ public class IOHandler implements ActionListener {
 	 */
 	private void saveMapAs(final IMap map, @Nullable final Component source) {
 		if (chooser.showSaveDialog(source) == JFileChooser.APPROVE_OPTION) {
-			final String filename =
-					NullCleaner.assertNotNull(chooser.getSelectedFile()
-							.getPath());
+			final File file = chooser.getSelectedFile();
+			if (file == null) {
+				return;
+			}
 			try {
-				new MapReaderAdapter().write(filename, map);
+				new MapReaderAdapter().write(file, map);
 			} catch (final IOException e) {
 				ErrorShower.showErrorDialog(source,
 						"I/O error writing to file "
-								+ filename);
+								+ file.getPath());
 				LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 			}
 		}
 	}
 
 	/**
-	 * @param filename a file to load a map from
+	 * @param file a file to load a map from
 	 * @param warner the Warning instance to use for warnings.
 	 * @return the map in that file
 	 * @throws IOException on other I/O error
 	 * @throws XMLStreamException if the XML isn't well-formed
 	 * @throws SPFormatException if the file contains invalid data
 	 */
-	protected static MapView readMap(final String filename, final Warning warner)
+	protected static MapView readMap(final File file, final Warning warner)
 			throws IOException, XMLStreamException, SPFormatException {
-		return new MapReaderAdapter().readMap(filename, warner);
+		return new MapReaderAdapter().readMap(file, warner);
 	}
 
 	/**

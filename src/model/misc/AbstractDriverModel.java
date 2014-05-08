@@ -1,5 +1,6 @@
 package model.misc;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,20 +33,19 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	/**
 	 * The name from which the map was loaded.
 	 */
-	private String filename = "";
-
+	private File file = new File("");
 	/**
 	 * @param newMap the new map
-	 * @param name the filename from which the map was loaded
+	 * @param origin the file from which the map was loaded
 	 */
 	@Override
-	public void setMap(final MapView newMap, final String name) {
+	public void setMap(final MapView newMap, final File origin) {
 		for (final VersionChangeListener list : vcListeners) {
 			list.changeVersion(mapDim.version, newMap.getDimensions().version);
 		}
 		map = newMap;
 		mapDim = newMap.getDimensions();
-		filename = name;
+		file = origin;
 		for (final MapChangeListener list : mcListeners) {
 			list.mapChanged();
 		}
@@ -67,16 +67,13 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	public final MapDimensions getMapDimensions() {
 		return mapDim;
 	}
-
 	/**
-	 * @return the filename from which the map was loaded or to which it should
-	 *         be saved
+	 * @return the file from which the map was loaded
 	 */
 	@Override
-	public final String getMapFilename() {
-		return filename;
+	public final File getMapFile() {
+		return file;
 	}
-
 	/**
 	 * Add a MapChangeListener.
 	 *

@@ -3,6 +3,7 @@ package controller.map.drivers;
 import static util.SingletonRandom.RANDOM;
 import static view.util.SystemOut.SYS_OUT;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -149,7 +150,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	private static void writeMaps(final IExplorationModel model)
 			throws IOException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		for (final Pair<IMap, String> pair : model.getAllMaps()) {
+		for (final Pair<IMap, File> pair : model.getAllMaps()) {
 			reader.write(pair.second(), pair.first());
 		}
 	}
@@ -166,20 +167,21 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	private static ExplorationModel readMaps(final String[] filenames)
 			throws IOException, XMLStreamException, SPFormatException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		final String firstFile = NullCleaner.assertNotNull(filenames[0]);
+		final File firstFile = new File(filenames[0]);
 		final MapView master = reader.readMap(firstFile, Warning.INSTANCE);
 		final ExplorationModel model = new ExplorationModel(master,
 				firstFile);
 		for (final String filename : filenames) {
-			if (filename == null || filename.equals(firstFile)) {
+			if (filename == null || filename.equals(filenames[0])) {
 				continue;
 			}
-			final IMap map = reader.readMap(filename, Warning.INSTANCE);
+			final File file = new File(filename);
+			final IMap map = reader.readMap(file, Warning.INSTANCE);
 			if (!map.getDimensions().equals(master.getDimensions())) {
 				throw new IllegalArgumentException("Size mismatch between "
 						+ firstFile + " and " + filename);
 			}
-			model.addSubordinateMap(map, filename);
+			model.addSubordinateMap(map, file);
 		}
 		return model;
 	}
@@ -320,7 +322,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	private void enterStats(final IExplorationModel model, final int idNum)
 			throws IOException {
 		final WorkerStats stats = enterStats();
-		for (final Pair<IMap, String> pair : model.getAllMaps()) {
+		for (final Pair<IMap, File> pair : model.getAllMaps()) {
 			final IMap map = pair.first();
 			final IFixture fix = find(map, idNum);
 			if (fix instanceof Worker && ((Worker) fix).getStats() == null) {
@@ -443,16 +445,16 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 				final Unit unit = new Unit(player, // NOPMD
 						helper.inputString("Kind of unit: "),
 						helper.inputString("Unit name: "), idf.createID());
-				for (final Pair<IMap, String> pair : model.getAllMaps()) {
+				for (final Pair<IMap, File> pair : model.getAllMaps()) {
 					final ITileCollection tiles = pair.first().getTiles();
 					final ITile tile = tiles.getTile(point);
 					if (!(tile instanceof IMutableTile)) {
 						SYS_OUT.print("Couldn't add to ");
-						SYS_OUT.print(pair.second());
+						SYS_OUT.print(pair.second().getPath());
 						SYS_OUT.println(" because tile wasn't mutable");
 					} else if (!(tiles instanceof IMutableTileCollection)) {
 						SYS_OUT.print("Couldn't add to ");
-						SYS_OUT.print(pair.second());
+						SYS_OUT.print(pair.second().getPath());
 						SYS_OUT.println(" because the map's tiles aren't mutable");
 					} else {
 						final IMutableTile mtile = (IMutableTile) tile;
@@ -481,7 +483,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		final int count = helper.inputNumber("How many workers to generate? ");
 		for (int i = 0; i < count; i++) {
 			final Worker worker = createWorker(idf);
-			for (final Pair<IMap, String> pair : model.getAllMaps()) {
+			for (final Pair<IMap, File> pair : model.getAllMaps()) {
 				final IFixture fix = find(pair.first(), unit.getID());
 				if (fix instanceof Unit) {
 					((Unit) fix).addMember(worker);

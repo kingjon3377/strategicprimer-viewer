@@ -3,6 +3,7 @@ package controller.map.drivers;
 import static util.NullCleaner.assertNotNull;
 import static view.util.SystemOut.SYS_OUT;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
@@ -74,7 +75,7 @@ public final class GenerateTileContents {
 		if (!INSTANCES.containsKey(filename)) {
 			INSTANCES.put(
 					filename,
-					new GenerateTileContents(READER.readMap(filename,
+					new GenerateTileContents(READER.readMap(new File(filename),
 							Warning.INSTANCE)));
 		}
 		return NullCleaner.assertNotNull(INSTANCES.get(filename));

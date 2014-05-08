@@ -2,6 +2,7 @@ package controller.map.drivers;
 
 import static view.util.SystemOut.SYS_OUT;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -66,7 +67,7 @@ public final class MapChecker implements ISPDriver {
 		}
 		for (final String filename : args) {
 			if (filename != null) {
-				check(filename);
+				check(new File(filename));
 			}
 		}
 	}
@@ -74,35 +75,36 @@ public final class MapChecker implements ISPDriver {
 	/**
 	 * Check a map.
 	 *
-	 * @param filename the name of the file to check
+	 * @param file the file to check
 	 */
-	private void check(final String filename) {
+	private void check(final File file) {
 		SYS_OUT.print("Starting ");
-		SYS_OUT.println(filename);
+		SYS_OUT.println(file.getPath());
 		boolean retval = true;
 		try {
-			reader.readMap(filename, Warning.INSTANCE);
+			reader.readMap(file, Warning.INSTANCE);
 		} catch (final MapVersionException e) {
-			LOGGER.log(Level.SEVERE, "Map version in " + filename
+			LOGGER.log(Level.SEVERE, "Map version in " + file.getPath()
 					+ " not acceptable to reader", e);
 			retval = false;
 		} catch (final FileNotFoundException e) {
-			LOGGER.log(Level.SEVERE, filename + " not found", e);
+			LOGGER.log(Level.SEVERE, file.getPath() + " not found", e);
 			retval = false;
 		} catch (final IOException e) {
-			LOGGER.log(Level.SEVERE, "I/O error reading " + filename, e);
+			LOGGER.log(Level.SEVERE, "I/O error reading " + file.getPath(), e);
 			retval = false;
 		} catch (final XMLStreamException e) {
-			LOGGER.log(Level.SEVERE, "XML stream error reading " + filename, e);
+			LOGGER.log(Level.SEVERE,
+					"XML stream error reading " + file.getPath(), e);
 			retval = false;
 		} catch (final SPFormatException e) {
-			LOGGER.log(Level.SEVERE, "SP map format error reading " + filename,
-					e);
+			LOGGER.log(Level.SEVERE,
+					"SP map format error reading " + file.getPath(), e);
 			retval = false;
 		}
 		if (retval) {
 			SYS_OUT.print("No errors in ");
-			SYS_OUT.println(filename);
+			SYS_OUT.println(file.getPath());
 		}
 	}
 

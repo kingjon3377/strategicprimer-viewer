@@ -2,6 +2,7 @@ package model.workermgmt;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -73,7 +74,7 @@ public class TestWorkerModel {
 					.addFixture(NullCleaner.assertNotNull(fixtures.remove(0)));
 		}
 		final IWorkerModel model = new WorkerModel(new MapView(map, 0, 0),
-				"string");
+				new File(""));
 		final List<Unit> listOneA = model.getUnits(playerOne);
 		assertTrue("Got all units for player 1", listOneA.containsAll(listOne));
 		assertTrue("And didn't miss any for player 1",

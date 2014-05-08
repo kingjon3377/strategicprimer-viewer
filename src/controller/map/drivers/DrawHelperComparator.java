@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
+import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 import java.util.logging.Level;
@@ -499,10 +500,11 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 			if (filename == null) {
 				continue;
 			}
+			final File file = new File(filename);
 			// ESCA-JAVA0177:
 			final IMap map; // NOPMD
 			try {
-				map = adapter.readMap(filename, warner);
+				map = adapter.readMap(file, warner);
 			} catch (final IOException e) {
 				LOGGER.log(Level.SEVERE, "I/O error reading map", e);
 				continue; // NOPMD

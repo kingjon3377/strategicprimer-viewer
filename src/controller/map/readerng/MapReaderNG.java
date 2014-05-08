@@ -1,5 +1,7 @@
 package controller.map.readerng;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 
@@ -15,7 +17,6 @@ import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.ISPReader;
-import controller.map.misc.FileOpener;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
 import controller.map.misc.TypesafeXMLEventReader;
@@ -32,7 +33,7 @@ import controller.map.misc.TypesafeXMLEventReader;
 public class MapReaderNG implements IMapReader, ISPReader {
 	/**
 	 * @param file
-	 *            the name of a file
+	 *            a file
 	 * @param warner
 	 *            the Warning instance to use for warnings.
 	 * @return the map contained in that file
@@ -44,9 +45,9 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	 *             if the format isn't one we support or if the data is invalid
 	 */
 	@Override
-	public MapView readMap(final String file, final Warning warner)
+	public MapView readMap(final File file, final Warning warner)
 			throws IOException, XMLStreamException, SPFormatException {
-		try (final Reader istream = FileOpener.createReader(file)) {
+		try (final Reader istream = new FileReader(file)) {
 			return readMap(file, istream, warner);
 		}
 	}
@@ -62,14 +63,13 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	 *         version isn't one we support
 	 */
 	@Override
-	public MapView readMap(final String file, final Reader istream,
+	public MapView readMap(final File file, final Reader istream,
 			final Warning warner) throws XMLStreamException, SPFormatException {
 		return readXML(file, istream, MapView.class, warner);
 	}
-
 	/**
 	 * @param <T> A supertype of the object the XML represents
-	 * @param file the name of the file from which we're reading
+	 * @param file the file from which we're reading
 	 * @param istream a reader from which to read the XML
 	 * @param type The type of the object the XML represents
 	 * @param warner a Warning instance to use for warnings
@@ -78,7 +78,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	 * @throws SPFormatException if the data is invalid.
 	 */
 	@Override
-	public <T> T readXML(final String file, final Reader istream,
+	public <T> T readXML(final File file, final Reader istream,
 			final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		final TypesafeXMLEventReader reader = new TypesafeXMLEventReader(
@@ -99,7 +99,6 @@ public class MapReaderNG implements IMapReader, ISPReader {
 		throw new XMLStreamException(
 				"XML stream didn't contain a start element");
 	}
-
 	/**
 	 * Helper method: check that an XMLWritable is in fact assignable to the
 	 * specified type. Return it if so; if not throw IllegalArgumentException.

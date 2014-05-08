@@ -2,6 +2,7 @@ package controller.map.drivers;
 
 import static view.util.SystemOut.SYS_OUT;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -20,7 +21,6 @@ import model.map.PointFactory;
 import model.map.TileFixture;
 import model.map.fixtures.Ground;
 import model.map.fixtures.terrain.Forest;
-import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -255,19 +255,21 @@ public final class QueryCLI implements ISPDriver {
 			throw new DriverFailedException("Need one argument",
 					new IllegalArgumentException("Need one argument"));
 		}
-		final String filename = NullCleaner.assertNotNull(args[0]);
+		final File file = new File(args[0]);
 		try {
-			repl(new MapReaderAdapter().readMap(filename, new Warning(
+			repl(new MapReaderAdapter().readMap(file, new Warning(
 					Action.Warn)), SYS_OUT);
 		} catch (final XMLStreamException e) {
-			throw new DriverFailedException("XML parsing error in " + filename,
-					e);
+			throw new DriverFailedException("XML parsing error in "
+					+ file.getPath(), e);
 		} catch (final FileNotFoundException e) {
-			throw new DriverFailedException("File " + filename + " not found", e);
+			throw new DriverFailedException("File " + file.getPath()
+					+ " not found", e);
 		} catch (final IOException e) {
-			throw new DriverFailedException("I/O error reading " + filename, e);
+			throw new DriverFailedException("I/O error reading "
+					+ file.getPath(), e);
 		} catch (final SPFormatException e) {
-			throw new DriverFailedException("Map " + filename
+			throw new DriverFailedException("Map " + file.getPath()
 					+ " contains invalid data", e);
 		}
 	}

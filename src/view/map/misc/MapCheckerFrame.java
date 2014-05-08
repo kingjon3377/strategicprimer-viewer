@@ -2,6 +2,7 @@ package view.map.misc;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -113,7 +114,7 @@ public class MapCheckerFrame extends JFrame {
 	public void check(final String filename) {
 		printParagraph("Starting " + filename, "");
 		try {
-			reader.readMap(filename, warner);
+			reader.readMap(new File(filename), warner);
 		} catch (IOException | XMLStreamException | SPFormatException except) {
 			printError(except, filename);
 			return;

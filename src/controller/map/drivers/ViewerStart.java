@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -91,19 +92,19 @@ public final class ViewerStart implements ISPDriver {
 	/**
 	 * Run the driver. TODO: Somehow unify similar code between this and other
 	 * similar drivers.
-	 * 
+	 *
 	 * @param args
 	 *            Command-line arguments.
 	 * @throws DriverFailedException
 	 *             if the driver failed to run.
-	 * 
+	 *
 	 * @see controller.map.drivers.ISPDriver#startDriver(java.lang.String[])
 	 */
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 0) {
 			try {
-				startDriver(new FileChooser("").getFilename());
+				startDriver(new FileChooser(new File("")).getFile().getPath());
 			} catch (final ChoiceInterruptedException except) {
 				LOGGER.log(
 						Level.INFO,
@@ -120,8 +121,9 @@ public final class ViewerStart implements ISPDriver {
 				if (filename == null) {
 					continue;
 				}
+				final File file = new File(filename);
 				try {
-					startFrame(reader.readMap(filename, warner), filename,
+					startFrame(reader.readMap(file, warner), file,
 							chooser);
 				} catch (final XMLStreamException e) {
 					throw new DriverFailedException(XML_ERROR_STRING + ' '
@@ -143,12 +145,12 @@ public final class ViewerStart implements ISPDriver {
 	 * Start a viewer frame based on the given map.
 	 *
 	 * @param map the map object
-	 * @param filename the file it was loaded from
+	 * @param file the file it was loaded from
 	 * @param chooser the file-chooser to pass to the frame
 	 */
-	private static void startFrame(final MapView map, final String filename,
+	private static void startFrame(final MapView map, final File file,
 			final JFileChooser chooser) {
-		final IViewerModel model = new ViewerModel(map, filename);
+		final IViewerModel model = new ViewerModel(map, file);
 		SwingUtilities.invokeLater(new WindowThread(new ViewerFrame(model,
 				new IOHandler(model, chooser))));
 	}

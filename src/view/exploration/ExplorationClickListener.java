@@ -2,6 +2,7 @@ package view.exploration;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -95,12 +96,12 @@ public final class ExplorationClickListener implements ActionListener,
 		try {
 			final List<TileFixture> fixtures = getSelectedValuesList(list);
 			model.move(direction);
-			for (final Pair<IMap, String> pair : model.getSubordinateMaps()) {
+			for (final Pair<IMap, File> pair : model.getSubordinateMaps()) {
 				final IMap map = pair.first();
 				final ITile tile = map.getTile(model.getSelectedUnitLocation());
 				if (!(tile instanceof IMutableTile)) {
 					ErrorShower.showErrorDialog(null, "Adding fixtures to "
-							+ pair.second()
+							+ pair.second().getPath()
 							+ " failed because the tile was not mutable.");
 					return;
 				}

@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -94,15 +95,12 @@ public class WorkerStart implements ISPDriver {
 	 */
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
-		// ESCA-JAVA0177:
-		final String filename; // NOPMD
+		final File file; // NOPMD
 		try {
 			if (args.length == 0) {
-				filename = new FileChooser("").getFilename();
+				file = new FileChooser(new File("")).getFile();
 			} else {
-				filename =
-						new FileChooser(NullCleaner.assertNotNull(args[0]))
-								.getFilename();
+				file = new FileChooser(new File(args[0])).getFile();
 			}
 		} catch (final ChoiceInterruptedException except) {
 			LOGGER.log(
@@ -113,19 +111,20 @@ public class WorkerStart implements ISPDriver {
 		}
 		try {
 			final IWorkerModel model = new WorkerModel(
-					new MapReaderAdapter().readMap(filename, new Warning(
-							Action.Warn)), filename);
+					new MapReaderAdapter().readMap(file, new Warning(
+							Action.Warn)), file);
 			SwingUtilities.invokeLater(new WindowThread(new WorkerMgmtFrame(
 					model, new IOHandler(model, new FilteredFileChooser(".",
 							new MapFileFilter())))));
 		} catch (final XMLStreamException e) {
-			throw new DriverFailedException(XML_ERROR_STRING + ' ' + filename,
-					e);
+			throw new DriverFailedException(XML_ERROR_STRING + ' '
+					+ file.getPath(), e);
 		} catch (final FileNotFoundException e) {
-			throw new DriverFailedException("File " + filename
+			throw new DriverFailedException("File " + file.getPath()
 					+ NOT_FOUND_ERROR, e);
 		} catch (final IOException e) {
-			throw new DriverFailedException("I/O error reading " + filename, e);
+			throw new DriverFailedException("I/O error reading "
+					+ file.getPath(), e);
 		} catch (final SPFormatException e) {
 			throw new DriverFailedException(INV_DATA_ERROR, e);
 		}

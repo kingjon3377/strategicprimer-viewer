@@ -2,6 +2,7 @@ package controller.map.misc;
 
 import static controller.map.misc.FileOpener.createReader;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Deque;
 import java.util.Iterator;
@@ -33,7 +34,14 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 	 * The stack of iterators we're working with.
 	 */
 	private final Deque<Pair<String, ComparableIterator<XMLEvent>>> stack;
-
+	/**
+	 * FIXME: We should use Files "all the way down" if we can.
+	 * @param file the name of the file we're reading
+	 * @param iter the iterator we'll start with.
+	 */
+	public IncludingIterator(final File file, final Iterator<XMLEvent> iter) {
+		this(NullCleaner.assertNotNull(file.getPath()), iter);
+	}
 	/**
 	 * Constructor.
 	 *

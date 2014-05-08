@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -67,8 +68,9 @@ public class WorkerReportDriver implements ISPDriver {
 			// ESCA-JAVA0177:
 			final String report; // NOPMD
 			try {
-				report = ReportGenerator.createReport(reader.readMap(filename,
-						warner));
+				report =
+						ReportGenerator.createReport(reader.readMap(new File(
+								filename), warner));
 				// report =
 				// ReportGenerator.createReportIR(reader.readMap(filename,
 				// warner)).produce();

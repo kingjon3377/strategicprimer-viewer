@@ -1,5 +1,6 @@
 package model.exploration;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,12 +62,11 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * Constructor.
 	 *
 	 * @param map the starting main map
-	 * @param filename the name it was loaded from
+	 * @param file the name it was loaded from
 	 */
-	public ExplorationModel(final MapView map, final String filename) {
-		setMap(map, filename);
+	public ExplorationModel(final MapView map, final File file) {
+		setMap(map, file);
 	}
-
 	/**
 	 * @return all the players shared by all the maps
 	 */
@@ -77,7 +77,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			retval.add(player);
 		}
 		final List<Player> temp = new ArrayList<>();
-		for (final Pair<IMap, String> pair : getSubordinateMaps()) {
+		for (final Pair<IMap, File> pair : getSubordinateMaps()) {
 			final IMap map = pair.first();
 			temp.clear();
 			for (final Player player : map.getPlayers()) {
@@ -161,7 +161,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			}
 			removeImpl((IMutableTile) sourceTile, unit);
 			((IMutableTile) destTile).addFixture(unit);
-			for (final Pair<IMap, String> pair : getSubordinateMaps()) {
+			for (final Pair<IMap, File> pair : getSubordinateMaps()) {
 				final ITileCollection mapTiles = pair.first().getTiles();
 				if (!(mapTiles instanceof IMutableTileCollection)) {
 					throw new IllegalStateException("Immutable tile collection");
@@ -183,7 +183,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			fireMovementCost(retval);
 			return retval;
 		} else {
-			for (final Pair<IMap, String> pair : getSubordinateMaps()) {
+			for (final Pair<IMap, File> pair : getSubordinateMaps()) {
 				final ITileCollection tiles = pair.first().getTiles();
 				if (!(tiles instanceof IMutableTileCollection)) {
 					throw new IllegalStateException("Immutable collection of tiles");

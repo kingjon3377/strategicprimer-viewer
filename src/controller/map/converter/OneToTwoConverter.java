@@ -1,5 +1,6 @@
 package controller.map.converter; // NOPMD
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -297,7 +298,7 @@ public class OneToTwoConverter { // NOPMD
 		}
 		return true;
 	}
-	
+
 	/**
 	 * @param fix
 	 *            a fixture
@@ -601,10 +602,11 @@ public class OneToTwoConverter { // NOPMD
 				if (arg == null) {
 					continue;
 				}
+				final File file = new File(arg);
 				// ESCA-JAVA0177:
 				IMap old;
 				try {
-					old = reader.readMap(arg, Warning.INSTANCE);
+					old = reader.readMap(file, Warning.INSTANCE);
 				} catch (IOException | XMLStreamException
 						| SPFormatException except) {
 					printReadError(except, arg);
@@ -617,7 +619,7 @@ public class OneToTwoConverter { // NOPMD
 				}
 				final IMap newMap = converter.convert(old, first);
 				try {
-					reader.write(arg + ".converted.xml", newMap);
+					reader.write(new File(arg + ".converted.xml"), newMap);
 				} catch (IOException except) {
 					System.err.print("I/O error writing to ");
 					System.err.print(arg);

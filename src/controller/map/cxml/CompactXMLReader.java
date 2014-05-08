@@ -1,5 +1,7 @@
 package controller.map.cxml;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 
@@ -17,7 +19,6 @@ import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.ISPReader;
-import controller.map.misc.FileOpener;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
 import controller.map.misc.TypesafeXMLEventReader;
@@ -40,7 +41,7 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException on SP XML format error
 	 */
 	@Override
-	public <T> T readXML(final String file, final Reader istream,
+	public <T> T readXML(final File file, final Reader istream,
 			final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		final TypesafeXMLEventReader reader = new TypesafeXMLEventReader(
@@ -59,7 +60,6 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 		throw new XMLStreamException(
 				"XML stream didn't contain a start element");
 	}
-
 	/**
 	 * @param file the file to read from
 	 * @param warner a Warning instance to use for warnings
@@ -69,13 +69,12 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
-	public MapView readMap(final String file, final Warning warner)
+	public MapView readMap(final File file, final Warning warner)
 			throws IOException, XMLStreamException, SPFormatException {
-		try (final Reader istream = FileOpener.createReader(file)) {
+		try (final Reader istream = new FileReader(file)) {
 			return readMap(file, istream, warner);
 		}
 	}
-
 	/**
 	 * @param file the file we're reading from
 	 * @param istream the stream to read from
@@ -85,7 +84,7 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
-	public MapView readMap(final String file, final Reader istream,
+	public MapView readMap(final File file, final Reader istream,
 			final Warning warner) throws XMLStreamException, SPFormatException {
 		final IMap retval = readXML(file, istream, MapView.class, warner);
 		if (retval instanceof SPMap) {

@@ -1,5 +1,6 @@
 package model.misc;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,15 +23,14 @@ public abstract class AbstractMultiMapModel extends AbstractDriverModel
 	/**
 	 * The collection of subordinate maps.
 	 */
-	private final Map<IMap, String> subordinateMaps = new HashMap<>();
-
+	private final Map<IMap, File> subordinateMaps = new HashMap<>();
 	/**
 	 * @param map the subordinate map to add
-	 * @param filename the name of the file it was loaded from
+	 * @param file the name of the file it was loaded from
 	 */
 	@Override
-	public final void addSubordinateMap(final IMap map, final String filename) {
-		subordinateMaps.put(map, filename);
+	public final void addSubordinateMap(final IMap map, final File file) {
+		subordinateMaps.put(map, file);
 	}
 
 	/**
@@ -45,7 +45,7 @@ public abstract class AbstractMultiMapModel extends AbstractDriverModel
 	 * @return an iterator over the subordinate maps
 	 */
 	@Override
-	public final Iterable<Pair<IMap, String>> getSubordinateMaps() {
+	public final Iterable<Pair<IMap, File>> getSubordinateMaps() {
 		return new SetPairConverter<>(subordinateMaps);
 	}
 
@@ -53,10 +53,10 @@ public abstract class AbstractMultiMapModel extends AbstractDriverModel
 	 * @return an iterator over both the main map and the subordinate maps
 	 */
 	@Override
-	public final Iterable<Pair<IMap, String>> getAllMaps() {
-		final List<Pair<IMap, String>> retval = new ArrayList<>();
-		retval.add(Pair.of((IMap) getMap(), getMapFilename()));
-		for (final Pair<IMap, String> pair : getSubordinateMaps()) {
+	public final Iterable<Pair<IMap, File>> getAllMaps() {
+		final List<Pair<IMap, File>> retval = new ArrayList<>();
+		retval.add(Pair.of((IMap) getMap(), getMapFile()));
+		for (final Pair<IMap, File> pair : getSubordinateMaps()) {
 			retval.add(pair);
 		}
 		return retval;

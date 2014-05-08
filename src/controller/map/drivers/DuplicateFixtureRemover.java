@@ -2,6 +2,7 @@ package controller.map.drivers;
 
 import static view.util.SystemOut.SYS_OUT;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -137,10 +138,11 @@ public class DuplicateFixtureRemover implements ISPDriver {
 			if (filename == null) {
 				continue;
 			}
+			final File file = new File(filename);
 			try {
-				final IMap map = reader.readMap(filename, Warning.INSTANCE);
+				final IMap map = reader.readMap(file, Warning.INSTANCE);
 				filter(map, SYS_OUT);
-				reader.write(filename, map);
+				reader.write(file, map);
 			} catch (final IOException except) {
 				System.err.print("I/O error reading from or writing to ");
 				System.err.println(filename);

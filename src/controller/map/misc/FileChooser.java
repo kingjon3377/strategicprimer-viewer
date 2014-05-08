@@ -3,10 +3,12 @@ package controller.map.misc;
 import static javax.swing.JFileChooser.APPROVE_OPTION;
 import static util.NullCleaner.assertNotNull;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
 
+import util.NullCleaner;
 import view.map.main.MapFileFilter;
 import view.util.FilteredFileChooser;
 
@@ -18,9 +20,9 @@ import view.util.FilteredFileChooser;
  */
 public class FileChooser {
 	/**
-	 * The filename we'll return, or null.
+	 * The file we'll return, if valid.
 	 */
-	private String filename;
+	private File file;
 	/**
 	 * Whether we should return the filename (if not, we'll show the dialog,
 	 * then throw an exception if that fails).
@@ -31,16 +33,16 @@ public class FileChooser {
 	 */
 	private final FilteredFileChooser chooser = new FilteredFileChooser(".",
 			new MapFileFilter());
-
 	/**
 	 * Constructor. When the filename is asked for, if the given value is valid,
 	 * we'll return it instead of showing a dialog.
 	 *
-	 * @param file the filename to return.
+	 * @param loc
+	 *            the file to return.
 	 */
-	public FileChooser(final String file) {
-		filename = "";
-		setFilename(file);
+	public FileChooser(final File loc) {
+		file = new File("");
+		setFile(loc);
 	}
 
 	/**
@@ -48,7 +50,7 @@ public class FileChooser {
 	 * is asked for.
 	 */
 	public FileChooser() {
-		this("");
+		this(new File(""));
 	}
 
 	/**
@@ -56,15 +58,15 @@ public class FileChooser {
 	 * one; return the filename passed in or the filename the user selected.
 	 *
 	 * @return the file the caller or the user chose
-	 * @throws ChoiceInterruptedException when the choice is interrupted or the
-	 *         user declines to choose a file.
+	 * @throws ChoiceInterruptedException
+	 *             when the choice is interrupted or the user declines to choose
+	 *             a file.
 	 */
-	public String getFilename() throws ChoiceInterruptedException {
+	public File getFile() throws ChoiceInterruptedException {
 		if (!shouldReturn) {
 			if (SwingUtilities.isEventDispatchThread()) {
 				if (chooser.showOpenDialog(null) == APPROVE_OPTION) {
-					setFilename(assertNotNull(chooser.getSelectedFile()
-							.getPath()));
+					setFile(assertNotNull(chooser.getSelectedFile()));
 				}
 			} else {
 				final FilteredFileChooser fileChooser = chooser;
@@ -72,18 +74,20 @@ public class FileChooser {
 					@Override
 					public void run() {
 						if (fileChooser.showOpenDialog(null) == APPROVE_OPTION) {
-							setFilename(assertNotNull(fileChooser
-									.getSelectedFile().getPath()));
+							setFile(NullCleaner
+									.valueOrDefault(
+											fileChooser.getSelectedFile(),
+											new File("")));
 						}
 					}
 
 				});
 			}
 		}
-		if (filename.isEmpty()) {
-			throw new ChoiceInterruptedException();
+		if (file.exists()) {
+			return file;
 		} else {
-			return filename;
+			throw new ChoiceInterruptedException();
 		}
 	}
 
@@ -91,8 +95,10 @@ public class FileChooser {
 	 * invokeAndWait(), and throw a ChoiceInterruptedException if interrupted or
 	 * otherwise failing.
 	 *
-	 * @param runnable the runnable to run.
-	 * @throws ChoiceInterruptedException on error
+	 * @param runnable
+	 *            the runnable to run.
+	 * @throws ChoiceInterruptedException
+	 *             on error
 	 */
 	private static void invoke(final Runnable runnable)
 			throws ChoiceInterruptedException {
@@ -109,30 +115,32 @@ public class FileChooser {
 			throw new ChoiceInterruptedException(except);
 		}
 	}
-
 	/**
-	 * (Re-)set the filename to return.
+	 * (Re-)set the file to return.
 	 *
-	 * @param file the filename to return
+	 * @param loc
+	 *            the file to return
 	 */
-	public final void setFilename(final String file) {
-		if (file.isEmpty()) {
-			filename = "";
-			shouldReturn = false;
-		} else {
-			filename = file;
+	public final void setFile(final File loc) {
+		if (loc.exists()) {
+			file = loc;
 			shouldReturn = true;
+		} else {
+			file = new File("");
+			shouldReturn = false;
 		}
 	}
 
 	/**
 	 * An exception to throw when no selection was made or selection was
 	 * interrupted by an exception.
+	 *
 	 * @author Jonathan Lovelace
 	 */
 	public static class ChoiceInterruptedException extends Exception {
 		/**
-		 * @param cause an exception that we caught that interrupted the choice
+		 * @param cause
+		 *            an exception that we caught that interrupted the choice
 		 */
 		public ChoiceInterruptedException(final Throwable cause) {
 			super("Choice of a file was interrupted by an exception:", cause);
@@ -145,6 +153,7 @@ public class FileChooser {
 			super("No file was selected");
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

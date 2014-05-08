@@ -2,6 +2,7 @@ package controller.map.drivers;
 
 import static view.util.SystemOut.SYS_OUT;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -87,14 +88,16 @@ public final class ConverterDriver implements ISPDriver {
 			SYS_OUT.print("Reading ");
 			SYS_OUT.print(filename);
 			SYS_OUT.print(" ... ");
+			final File file = new File(filename);
 			try {
-				final IMap old = READER.readMap(filename, Warning.INSTANCE);
+				final IMap old = READER.readMap(file, Warning.INSTANCE);
 				SYS_OUT.println(" ... Converting ... ");
 				final String newFilename = filename + ".new";
+				final File newFile = new File(newFilename);
 				final MapView map = ResolutionDecreaseConverter.convert(old);
 				SYS_OUT.print("About to write ");
 				SYS_OUT.println(newFilename);
-				new MapReaderAdapter().write(newFilename, map); // NOPMD
+				new MapReaderAdapter().write(newFile, map); // NOPMD
 			} catch (final MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename
 						+ " not acceptable to reader", e);

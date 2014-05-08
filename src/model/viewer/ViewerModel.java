@@ -1,5 +1,6 @@
 package model.viewer;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,34 +56,34 @@ public final class ViewerModel extends AbstractDriverModel implements
 	 * The object to handle notifying selection-change listeners.
 	 */
 	private final SelectionChangeSupport scs = new SelectionChangeSupport();
-
 	/**
 	 * Constructor.
 	 *
-	 * @param firstMap the initial map
-	 * @param filename the name the map was loaded from or should be saved to
+	 * @param firstMap
+	 *            the initial map
+	 * @param file
+	 *            the name the map was loaded from or should be saved to
 	 */
-	public ViewerModel(final MapView firstMap, final String filename) {
+	public ViewerModel(final MapView firstMap, final File file) {
 		dimensions = new VisibleDimensions(0,
 				firstMap.getDimensions().rows - 1, 0,
 				firstMap.getDimensions().cols - 1);
 		selPoint = PointFactory.point(-1, -1);
-		setMap(firstMap, filename);
+		setMap(firstMap, file);
 	}
 
 	/**
 	 * @param newMap the new map
-	 * @param name the filename the map was loaded from or should be saved to
+	 * @param file the file the map was loaded from or should be saved to
 	 */
 	@Override
-	public void setMap(final MapView newMap, final String name) {
-		super.setMap(newMap, name);
+	public void setMap(final MapView newMap, final File file) {
+		super.setMap(newMap, file);
 		clearSelection();
 		setDimensions(new VisibleDimensions(0, newMap.getDimensions().rows - 1,
 				0, newMap.getDimensions().cols - 1));
 		resetZoom();
 	}
-
 	/**
 	 * Set the new selected tiles, given coordinates.
 	 *

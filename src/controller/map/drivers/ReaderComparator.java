@@ -79,7 +79,7 @@ public class ReaderComparator implements ISPDriver {
 				continue;
 			}
 			try {
-				compareReaders(arg);
+				compareReaders(new File(arg));
 			} catch (final XMLStreamException e) {
 				LOGGER.log(Level.SEVERE,
 						"XMLStreamException (probably badly formed input) in "
@@ -101,11 +101,11 @@ public class ReaderComparator implements ISPDriver {
 	/**
 	 * Compare the two readers on a file.
 	 *
-	 * @param arg the name of the file to have each read.
+	 * @param arg the file to have each read.
 	 * @throws XMLStreamException if either reader claims badly formed input
 	 * @throws SPFormatException if either reader claims invalid data
 	 */
-	public void compareReaders(final String arg) throws XMLStreamException,
+	public void compareReaders(final File arg) throws XMLStreamException,
 			SPFormatException {
 		SYS_OUT.print(arg);
 		SYS_OUT.println(':');
@@ -149,15 +149,14 @@ public class ReaderComparator implements ISPDriver {
 	}
 
 	/**
-	 * @param filename the name of a file
+	 * @param file a file
 	 * @return a string containing its contents, so reading from it won't be
 	 *         confounded by disk I/O.
 	 * @throws IOException if file not found, or on other I/O error reading from
 	 *         file
 	 */
-	private static String readIntoBuffer(final String filename)
+	private static String readIntoBuffer(final File file)
 			throws IOException {
-		final File file = new File(filename);
 		try (final FileReader reader = new FileReader(file)) {
 			final CharBuffer buffer = CharBuffer.allocate((int) file.length());
 			reader.read(buffer);
