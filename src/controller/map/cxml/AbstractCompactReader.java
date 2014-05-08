@@ -23,7 +23,7 @@ import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
 
-// ESCA-JAVA0011: Doesn't contain an abstract method 
+// ESCA-JAVA0011: Doesn't contain an abstract method
 // because we moved it up to the interface.
 /**
  * A superclass to provide helper methods.
@@ -43,14 +43,14 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	 * aiming to err on the side of overestimation, to avoid resizing the
 	 * buffer.
 	 */
-	private static final int MAX_TAG_LEN = 10; 
+	private static final int MAX_TAG_LEN = 10;
 	/**
 	 * Do not instantiate directly.
 	 */
 	protected AbstractCompactReader() {
 		// Nothing to do
 	}
-	
+
 	/**
 	 * Require that an element be one of the specified tags.
 	 *
@@ -60,9 +60,21 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	protected static void requireTag(final StartElement element,
 			final String... tags) {
 		final String localName = element.getName().getLocalPart();
-		// FIXME: This gives a pass to null tags. Not that one should be
-		// possible ...
-		if (localName != null && !(EqualsAny.equalsAny(localName, tags))) {
+		if (localName == null) {
+			final int line = element.getLocation().getLineNumber();
+			final String base =
+					format("Null tag on line %d, expected one of the following: ",
+							Integer.valueOf(line));
+			final int len = base.length() + tags.length
+					* MAX_TAG_LEN; // Overestimate just in case
+			final StringBuilder sbuild = new StringBuilder(len)
+					.append(base);
+			for (final String tag : tags) {
+				sbuild.append(tag);
+				sbuild.append(", ");
+			}
+			throw new IllegalArgumentException(sbuild.toString());
+		} else if (!(EqualsAny.equalsAny(localName, tags))) {
 			final int line = element.getLocation().getLineNumber();
 			final String base = format(
 					"Unexpected tag %s on line %d, expected one of the following: ",
@@ -311,7 +323,7 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	protected static QName assertNotNullQName(@Nullable final QName qname) {
 		return NullCleaner.assertNotNull(qname);
 	}
-	
+
 	/**
 	 * @param element
 	 *            a StartElement, known from the guarantees of the documentation
@@ -325,7 +337,7 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	}
 	/**
 	 * @param tag the name of a tag, which may be null
-	 * @return "a null tag" if null, or the tag name if not 
+	 * @return "a null tag" if null, or the tag name if not
 	 */
 	private static String tagOrNull(@Nullable final String tag) {
 		return valueOrDefault(tag, NULL_TAG);
