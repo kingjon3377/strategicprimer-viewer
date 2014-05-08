@@ -126,11 +126,17 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener,
 		pack();
 		WindowMenuModel.MODEL.addWindow(this, WindowState.NotVisible);
 	}
-
+	/**
+	 * @param box a text box
+	 * @return its contents, asserted to not be null
+	 */
+	private static String getBoxText(final JTextField box) {
+		final String string = box.getText();
+		return NullCleaner.assertNotNull(string);
+	}
 	/**
 	 * @return an explanation of what's wrong with the user's input.
 	 */
-	@SuppressWarnings("null") // TODO: fix properly
 	private String getErrorExpl() {
 		final StringBuilder builder = new StringBuilder(50);
 		if (name.getText().trim().isEmpty()) {
@@ -139,15 +145,15 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener,
 		if (race.getText().trim().isEmpty()) {
 			builder.append("Worker needs a race.\n");
 		}
-		builder.append(numericExpl(Pair.of(hpBox.getText(), "HP"),
-				Pair.of(maxHP.getText(), "Max HP"),
-				Pair.of(str.getText(), "Strength"),
-				Pair.of(dex.getText(), "Dexterity"),
-				Pair.of(con.getText(), "Constitution"),
-				Pair.of(intel.getText(), "Intelligence"),
-				Pair.of(wis.getText(), "Wisdom"),
-				Pair.of(cha.getText(), "Charisma")));
-		return builder.toString();
+		builder.append(numericExpl(Pair.of(getBoxText(hpBox), "HP"),
+				Pair.of(getBoxText(maxHP), "Max HP"),
+				Pair.of(getBoxText(str), "Strength"),
+				Pair.of(getBoxText(dex), "Dexterity"),
+				Pair.of(getBoxText(con), "Constitution"),
+				Pair.of(getBoxText(intel), "Intelligence"),
+				Pair.of(getBoxText(wis), "Wisdom"),
+				Pair.of(getBoxText(cha), "Charisma")));
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
