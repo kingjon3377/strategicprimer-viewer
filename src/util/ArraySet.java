@@ -14,8 +14,6 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  * @param <T> the type of thing stored in the set
- * 
- * TODO: Narrow the type of return values where we can.
  */
 public final class ArraySet<T> implements Set<T> {
 	/**
