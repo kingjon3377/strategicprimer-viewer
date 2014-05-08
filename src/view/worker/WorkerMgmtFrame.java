@@ -80,7 +80,7 @@ public class WorkerMgmtFrame extends JFrame {
 	 */
 	public WorkerMgmtFrame(final IWorkerModel model, final IOHandler ioHandler) {
 		super("Worker Management");
-		if (!model.getMapFile().exists()) {
+		if (model.getMapFile().exists()) {
 			setTitle(model.getMapFile().getName() + " | Worker Management");
 			getRootPane().putClientProperty("Window.documentFile",
 					model.getMapFile());

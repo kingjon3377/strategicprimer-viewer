@@ -56,7 +56,7 @@ public final class ViewerFrame extends JFrame {
 	 */
 	public ViewerFrame(final IViewerModel map, final IOHandler ioHandler) {
 		super("Map Viewer");
-		if (!map.getMapFile().exists()) {
+		if (map.getMapFile().exists()) {
 			setTitle(map.getMapFile().getName() + " | Map Viewer");
 			getRootPane().putClientProperty("Window.documentFile",
 					map.getMapFile());

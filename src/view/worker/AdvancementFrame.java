@@ -59,7 +59,7 @@ public class AdvancementFrame extends JFrame {
 	 */
 	public AdvancementFrame(final IWorkerModel source, final IOHandler ioHandler) {
 		super("Worker Advancement");
-		if (!source.getMapFile().exists()) {
+		if (source.getMapFile().exists()) {
 			setTitle(source.getMapFile().getName() + " | Worker Advancement");
 			getRootPane().putClientProperty("Window.documentFile",
 					source.getMapFile());
