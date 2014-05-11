@@ -108,12 +108,59 @@ public final class QueryCLI implements ISPDriver {
 			gather(hmodel, selectPoint(), ostream, HUNTER_HOURS
 					* HOURLY_ENCOUNTERS);
 			break;
+		case 'e':
+			herd(ostream);
+			break;
 		default:
 			ostream.println("Unknown command.");
 			break;
 		}
 	}
 
+	/**
+	 * Run herding. TODO: Move the logic here into the HuntingModel or a similar
+	 * class.
+	 *
+	 * @param ostream
+	 *            the stream to write to
+	 * @throws IOException on I/O error dealing with user input
+	 */
+	private void herd(final PrintStream ostream) throws IOException {
+		final double rate; // The amount of milk per animal
+		final int time; // How long it takes to milk one animal, in minutes.
+		if (helper.inputBoolean("Are these small animals, like sheep?\t")) {
+			rate = 1.5;
+			time = 15;
+		} else if (helper.inputBoolean("Are these dairy cattle?\t")) {
+			rate = 4;
+			time = 20;
+		} else {
+			rate = 3;
+			time = 20;
+		}
+		final int count = helper.inputNumber("How many animals?\t");
+		if (count == 0) {
+			ostream.println("With no animals, no cost and no gain.");
+			return; // NOPMD
+		} else if (count < 0) {
+			ostream.println("Can't have a negative number of animals.");
+			return; // NOPMD
+		}
+		final int herders = helper.inputNumber("How many herders?\t");
+		if (herders <= 0) {
+			ostream.println("Can't herd with no herders.");
+			return; // NOPMD
+		}
+		final int animalsPerHerder = (count + herders - 1) / herders;
+		ostream.print("Tending the animals in each milking takes ");
+		ostream.print(animalsPerHerder * time);
+		ostream.print(" minutes, or ");
+		ostream.print(animalsPerHerder * (time - 5));
+		ostream.println(" min. with expert herders, plus 30 min. to gather them.");
+		ostream.println(String.format(
+				"This produces %,.1f gallons, %,.1f lbs, of milk per day.", rate
+						* count, rate * 8.6 * count));
+	}
 	/**
 	 * Run hunting, fishing, or trapping.
 	 *
@@ -240,6 +287,8 @@ public final class QueryCLI implements ISPDriver {
 		ostream.print(encounters);
 		ostream.print(" encounters with fields, meadows, groves, ");
 		ostream.println("orchards, or shrubs.");
+		ostream.print("hErd: Determine the output from and time required for ");
+		ostream.println("maintaining a herd.");
 		ostream.println("Quit: Exit the program.");
 	}
 
