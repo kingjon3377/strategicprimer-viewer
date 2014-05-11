@@ -115,12 +115,7 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 			((JLabel) component).setText(builder.toString());
 		} else if (internal instanceof Unit) {
 			final Unit unit = (Unit) internal;
-			final String kind = unit.getKind();
-			final String name = unit.getName();
-			((JLabel) component).setText(new StringBuilder(48 + kind.length()
-					+ name.length()).append("<html><p>")
-					.append("Unit of type ").append(kind).append(", named ")
-					.append(name).append("</p></html>").toString());
+			((JLabel) component).setText(unit.getName());
 			final String orders = unit.getOrders().toLowerCase();
 			if (warn && orders.contains("fixme") && unit.iterator().hasNext()) {
 				((DefaultTreeCellRenderer) component)
