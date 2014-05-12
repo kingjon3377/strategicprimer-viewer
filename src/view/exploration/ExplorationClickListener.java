@@ -105,6 +105,8 @@ public final class ExplorationClickListener implements ActionListener,
 							+ " failed because the tile was not mutable.");
 					return;
 				}
+				((IMutableTile) tile).setTerrain(model.getMap()
+						.getTile(model.getSelectedUnitLocation()).getTerrain());
 				for (final TileFixture fix : fixtures) {
 					if (fix != null) {
 						((IMutableTile) tile).addFixture(fix);
