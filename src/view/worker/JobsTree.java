@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JTree;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
@@ -46,7 +48,42 @@ public final class JobsTree extends JTree implements TreeSelectionListener,
 		}
 		model = new JobTreeModel(tsm);
 		setModel(model);
+		final JTree tree = this;
+		model.addTreeModelListener(new TreeModelListener() {
+			@Override
+			public void treeStructureChanged(@Nullable final TreeModelEvent e) {
+				if (e == null) {
+					return;
+				}
+				tree.expandPath(e.getTreePath().getParentPath());
+				for (int i = 0; i < getRowCount(); i++) {
+					expandRow(i);
+				}
+			}
+			@Override
+			public void treeNodesRemoved(@Nullable final TreeModelEvent e) {
+				// Ignored
+			}
+			@Override
+			public void treeNodesInserted(@Nullable final TreeModelEvent e) {
+				if (e == null) {
+					return;
+				}
+				tree.expandPath(e.getTreePath());
+				tree.expandPath(e.getTreePath().getParentPath());
+			}
+			@Override
+			public void treeNodesChanged(@Nullable final TreeModelEvent e) {
+				if (e == null) {
+					return;
+				}
+				tree.expandPath(e.getTreePath().getParentPath());
+			}
+		});
 		setRootVisible(false);
+		for (int i = 0; i < getRowCount(); i++) {
+			expandRow(i);
+		}
 		setShowsRootHandles(true);
 		getSelectionModel().addTreeSelectionListener(this);
 	}
