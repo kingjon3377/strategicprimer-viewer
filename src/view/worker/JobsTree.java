@@ -9,17 +9,15 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
 
-import model.listeners.AddRemoveListener;
 import model.listeners.SkillSelectionListener;
 import model.listeners.SkillSelectionSource;
-import model.listeners.UnitMemberListener;
-import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.Skill;
 import model.workermgmt.JobTreeModel;
 
 import org.eclipse.jdt.annotation.Nullable;
+
+import util.NullCleaner;
 
 /**
  * A tree representing a worker's Jobs and Skills.
@@ -27,29 +25,21 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  */
 public final class JobsTree extends JTree implements TreeSelectionListener,
-		SkillSelectionSource, AddRemoveListener, UnitMemberListener {
+		SkillSelectionSource {
 	/**
 	 * The list of completion listeners listening to us.
 	 */
 	private final List<SkillSelectionListener> ssListeners = new ArrayList<>();
 	/**
-	 * The tree model.
-	 */
-	private final JobTreeModel model;
-
-	/**
 	 * Constructor.
+	 * @param jtmodel the tree model underlying this tree
 	 */
-	public JobsTree() {
+	public JobsTree(final JobTreeModel jtmodel) {
 		super();
-		final TreeSelectionModel tsm = getSelectionModel();
-		if (tsm == null) {
-			throw new IllegalStateException("Selection model is null somehow");
-		}
-		model = new JobTreeModel(tsm);
-		setModel(model);
+		jtmodel.setSelectionModel(NullCleaner.assertNotNull(getSelectionModel()));
+		setModel(jtmodel);
 		final JTree tree = this;
-		model.addTreeModelListener(new TreeModelListener() {
+		jtmodel.addTreeModelListener(new TreeModelListener() {
 			@Override
 			public void treeStructureChanged(@Nullable final TreeModelEvent e) {
 				if (e == null) {
@@ -129,29 +119,5 @@ public final class JobsTree extends JTree implements TreeSelectionListener,
 	@Override
 	public void removeSkillSelectionListener(final SkillSelectionListener list) {
 		ssListeners.remove(list);
-	}
-	/**
-	 * @param category passed to tree model
-	 * @param addendum passed to tree model
-	 */
-	@Override
-	public void add(final String category, final String addendum) {
-		model.add(category, addendum);
-	}
-	/**
-	 * @param category passed to tree model
-	 */
-	@Override
-	public void remove(final String category) {
-		model.remove(category);
-	}
-	/**
-	 * @param old passed to tree model
-	 * @param selected passed to tree model
-	 */
-	@Override
-	public void memberSelected(@Nullable final UnitMember old,
-			@Nullable final UnitMember selected) {
-		model.memberSelected(old, selected);
 	}
 }

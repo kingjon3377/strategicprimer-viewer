@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
+import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
@@ -46,23 +47,20 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	/**
 	 * The tree's selection model.
 	 */
-	private final TreeSelectionModel tsm;
+	private TreeSelectionModel tsm = new DefaultTreeSelectionModel();
 
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
 			.getLogger(WorkerTreeModel.class);
-
 	/**
-	 * Constructor.
-	 *
-	 * @param selModel the tree's selection model.
+	 * Set the selection model for the tree we're the model for.
+	 * @param smodel the selection model
 	 */
-	public JobTreeModel(final TreeSelectionModel selModel) {
-		tsm = selModel;
+	public void setSelectionModel(final TreeSelectionModel smodel) {
+		tsm = smodel;
 	}
-
 	/**
 	 * @return the root of the tree, the worker.
 	 */
