@@ -10,18 +10,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
 import javax.swing.text.View;
-import javax.swing.tree.TreePath;
 
 import model.map.Player;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
 import model.workermgmt.WorkerTreeModelAlt;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 import view.util.AddRemovePanel;
 import view.util.BorderedPanel;
@@ -82,29 +76,6 @@ public class AdvancementFrame extends JFrame {
 		final AddRemovePanel jarp = new AddRemovePanel(false, "job");
 		final AddRemovePanel sarp = new AddRemovePanel(false, "skill");
 		final JobsTree jobsTree = new JobsTree();
-		jobsTree.getModel().addTreeModelListener(new TreeModelListener() {
-			@Override
-			public void treeStructureChanged(@Nullable final TreeModelEvent evt) {
-				// Do nothing.
-			}
-			@Override
-			public void treeNodesRemoved(@Nullable final TreeModelEvent evt) {
-				// Do nothing.
-			}
-			@Override
-			public void treeNodesInserted(@Nullable final TreeModelEvent evt) {
-				final TreePath path = tree.getSelectionPath();
-				if (path != null) {
-					wtmodel.valueForPathChanged(path, wtmodel
-							.getModelObject(NullCleaner.assertNotNull(path
-									.getLastPathComponent())));
-				}
-			}
-			@Override
-			public void treeNodesChanged(@Nullable final TreeModelEvent evt) {
-				// Do nothing.
-			}
-		});
 		tree.addUnitMemberListener(jobsTree);
 		jarp.addAddRemoveListener(jobsTree);
 		sarp.addAddRemoveListener(jobsTree);
