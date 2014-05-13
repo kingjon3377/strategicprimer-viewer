@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.swing.JTree;
 import javax.swing.ToolTipManager;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
@@ -68,6 +70,38 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 			final boolean orderCheck) {
 		tmodel = new WorkerTreeModelAlt(player, model);
 		setModel(tmodel);
+		final JTree tree = this;
+		tmodel.addTreeModelListener(new TreeModelListener() {
+			@Override
+			public void treeStructureChanged(@Nullable final TreeModelEvent e) {
+				if (e == null) {
+					return;
+				}
+				tree.expandPath(e.getTreePath().getParentPath());
+				for (int i = 0; i < getRowCount(); i++) {
+					expandRow(i);
+				}
+			}
+			@Override
+			public void treeNodesRemoved(@Nullable final TreeModelEvent e) {
+				// Ignored
+			}
+			@Override
+			public void treeNodesInserted(@Nullable final TreeModelEvent e) {
+				if (e == null) {
+					return;
+				}
+				tree.expandPath(e.getTreePath());
+				tree.expandPath(e.getTreePath().getParentPath());
+			}
+			@Override
+			public void treeNodesChanged(@Nullable final TreeModelEvent e) {
+				if (e == null) {
+					return;
+				}
+				tree.expandPath(e.getTreePath().getParentPath());
+			}
+		});
 		setRootVisible(false);
 		setDragEnabled(true);
 		setShowsRootHandles(true);
@@ -79,6 +113,9 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		ToolTipManager.sharedInstance().registerComponent(this);
 		tsl = new WorkerTreeSelectionListener(tmodel);
 		addTreeSelectionListener(tsl);
+		for (int i = 0; i < getRowCount(); i++) {
+			expandRow(i);
+		}
 	}
 
 	/**
