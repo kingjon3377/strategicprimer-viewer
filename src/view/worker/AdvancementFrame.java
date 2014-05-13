@@ -18,6 +18,7 @@ import javax.swing.tree.TreePath;
 import model.map.Player;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
+import model.workermgmt.WorkerTreeModelAlt;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -71,10 +72,10 @@ public class AdvancementFrame extends JFrame {
 		final Player player = source.getMap().getPlayers().getCurrentPlayer();
 		final PlayerLabel plabel = new PlayerLabel("", player, "'s Units:");
 		pch.addPlayerChangeListener(plabel);
-		final WorkerTree tree = new WorkerTree(player, source, false);
-		pch.addPlayerChangeListener(tree);
-		final IWorkerTreeModel wtmodel =
-				(IWorkerTreeModel) NullCleaner.assertNotNull(tree.getModel());
+		final IWorkerTreeModel wtmodel = new WorkerTreeModelAlt(player, source);
+		final WorkerTree tree =
+				new WorkerTree(wtmodel, source.getMap().getPlayers(), false);
+		pch.addPlayerChangeListener(wtmodel);
 		final WorkerCreationListener nwl = new WorkerCreationListener(wtmodel,
 				IDFactoryFiller.createFactory(source.getMap()));
 		tree.addUnitSelectionListener(nwl);

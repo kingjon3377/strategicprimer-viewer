@@ -33,6 +33,8 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.workermgmt.IWorkerModel;
+import model.workermgmt.IWorkerTreeModel;
+import model.workermgmt.WorkerTreeModelAlt;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -90,10 +92,13 @@ public class WorkerMgmtFrame extends JFrame {
 				.getPlayers().getCurrentPlayer(),
 				IDFactoryFiller.createFactory(model.getMap()));
 		final PlayerChooserHandler pch = new PlayerChooserHandler(this, model);
-		final WorkerTree tree = new WorkerTree(model.getMap().getPlayers()
-				.getCurrentPlayer(), model, true);
-		pch.addPlayerChangeListener(tree);
-		newUnitFrame.addNewUnitListener(tree);
+		final IWorkerTreeModel wtmodel =
+				new WorkerTreeModelAlt(model.getMap().getPlayers()
+						.getCurrentPlayer(), model);
+		final WorkerTree tree =
+				new WorkerTree(wtmodel, model.getMap().getPlayers(), true);
+		pch.addPlayerChangeListener(wtmodel);
+		newUnitFrame.addNewUnitListener(wtmodel);
 		final PlayerLabel plabel = new PlayerLabel("Units belonging to", model
 				.getMap().getPlayers().getCurrentPlayer(), ":");
 		pch.addPlayerChangeListener(plabel);

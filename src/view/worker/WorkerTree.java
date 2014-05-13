@@ -16,22 +16,17 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 
-import model.listeners.NewUnitListener;
-import model.listeners.PlayerChangeListener;
 import model.listeners.UnitMemberListener;
 import model.listeners.UnitMemberSelectionSource;
 import model.listeners.UnitSelectionListener;
 import model.listeners.UnitSelectionSource;
 import model.map.IFixture;
 import model.map.IPlayerCollection;
-import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.WorkerStats;
-import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
-import model.workermgmt.WorkerTreeModelAlt;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -45,33 +40,28 @@ import view.map.details.FixtureEditMenu;
  *
  */
 public class WorkerTree extends JTree implements UnitMemberSelectionSource,
-		UnitSelectionSource, NewUnitListener, PlayerChangeListener {
+		UnitSelectionSource {
 	/**
 	 * The format string for creating the stats tooltip.
 	 */
 	private static final String STATS_FMT_STR =
 			"<html><p>Str %s, Dex %s, Con %s, Int %s, Wis %s, Cha %s</p></html>";
 	/**
-	 * The tree model.
-	 */
-	private final WorkerTreeModelAlt tmodel;
-	/**
 	 * The listener to tell other listeners when a new worker has been selected.
 	 */
 	private final WorkerTreeSelectionListener tsl;
 
 	/**
-	 * @param player the player whose units we want to see
-	 * @param model the driver model to build on
+	 * @param wtModel the tree model
+	 * @param players the players in the map
 	 * @param orderCheck whether we should visually warn if orders contain
 	 *        "todo" or "fixme" or if a unit named "unassigned" is nonempty
 	 */
-	public WorkerTree(final Player player, final IWorkerModel model,
-			final boolean orderCheck) {
-		tmodel = new WorkerTreeModelAlt(player, model);
-		setModel(tmodel);
+	public WorkerTree(final IWorkerTreeModel wtModel,
+			final IPlayerCollection players, final boolean orderCheck) {
+		setModel(wtModel);
 		final JTree tree = this;
-		tmodel.addTreeModelListener(new TreeModelListener() {
+		wtModel.addTreeModelListener(new TreeModelListener() {
 			@Override
 			public void treeStructureChanged(@Nullable final TreeModelEvent e) {
 				if (e == null) {
@@ -106,12 +96,11 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		setDragEnabled(true);
 		setShowsRootHandles(true);
 		setTransferHandler(new WorkerTreeTransferHandler(
-				NullCleaner.assertNotNull(getSelectionModel()), tmodel));
+				NullCleaner.assertNotNull(getSelectionModel()), wtModel));
 		setCellRenderer(new UnitMemberCellRenderer(orderCheck));
-		addMouseListener(new TreeMouseListener(model.getMap().getPlayers(),
-				tmodel, this));
+		addMouseListener(new TreeMouseListener(players, wtModel, this));
 		ToolTipManager.sharedInstance().registerComponent(this);
-		tsl = new WorkerTreeSelectionListener(tmodel);
+		tsl = new WorkerTreeSelectionListener(wtModel);
 		addTreeSelectionListener(tsl);
 		for (int i = 0; i < getRowCount(); i++) {
 			expandRow(i);
@@ -346,23 +335,6 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		public String toString() {
 			return "WorkerTreeSelectionListener";
 		}
-	}
-
-	/**
-	 * @param unit passed to the tree model
-	 */
-	@Override
-	public final void addNewUnit(final Unit unit) {
-		tmodel.addNewUnit(unit);
-	}
-	/**
-	 * @param old passed to tree model
-	 * @param newPlayer passed to tree model
-	 */
-	@Override
-	public final void playerChanged(@Nullable final Player old,
-			final Player newPlayer) {
-		tmodel.playerChanged(old, newPlayer);
 	}
 	/**
 	 * @param list the listener to add
