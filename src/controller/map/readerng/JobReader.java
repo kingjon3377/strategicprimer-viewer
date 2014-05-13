@@ -7,6 +7,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.IPlayerCollection;
+import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import util.NullCleaner;
@@ -109,9 +110,9 @@ public class JobReader implements INodeHandler<Job> {
 		retval.addAttribute("name", obj.getName());
 		retval.addAttribute("level",
 				NullCleaner.assertNotNull(Integer.toString(obj.getLevel())));
-		for (final Skill skill : obj) {
-			if (skill != null) {
-				retval.addChild(SKILL_READER.write(skill));
+		for (final ISkill skill : obj) {
+			if (skill instanceof Skill) {
+				retval.addChild(SKILL_READER.write((Skill) skill));
 			}
 		}
 		return retval;

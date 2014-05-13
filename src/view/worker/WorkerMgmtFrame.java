@@ -29,8 +29,10 @@ import model.listeners.MapChangeListener;
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
+import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
@@ -443,7 +445,7 @@ public class WorkerMgmtFrame extends JFrame {
 			if (member instanceof Worker) {
 				int size = ((Worker) member).getName().length();
 				size += 2;
-				for (final Job job : (Worker) member) {
+				for (final IJob job : (IWorker) member) {
 					size += 3;
 					size += job.getName().length();
 					size += Integer.toString(job.getLevel()).length();
@@ -466,7 +468,10 @@ public class WorkerMgmtFrame extends JFrame {
 				if (worker.iterator().hasNext()) {
 					builder.append(" (");
 					boolean first = true;
-					for (final Job job : worker) {
+					for (final IJob job : worker) {
+						if (!(job instanceof Job)) {
+							continue;
+						}
 						if (first) {
 							first = false;
 						} else {

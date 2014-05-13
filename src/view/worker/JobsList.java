@@ -14,7 +14,7 @@ import model.listeners.JobSelectionListener;
 import model.listeners.JobSelectionSource;
 import model.listeners.UnitMemberListener;
 import model.map.fixtures.UnitMember;
-import model.map.fixtures.mobile.worker.Job;
+import model.map.fixtures.mobile.worker.IJob;
 import model.workermgmt.JobsListModel;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -26,7 +26,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public final class JobsList extends JList<Job> implements
+public final class JobsList extends JList<IJob> implements
 		ListSelectionListener, JobSelectionSource, AddRemoveListener,
 		UnitMemberListener, CompletionListener {
 	/**
@@ -55,7 +55,7 @@ public final class JobsList extends JList<Job> implements
 	@Override
 	public void valueChanged(@Nullable final ListSelectionEvent evt) {
 		@Nullable
-		final Job temp = getSelectedValue();
+		final IJob temp = getSelectedValue();
 		for (final JobSelectionListener list : jsListeners) {
 			list.selectJob(temp);
 		}

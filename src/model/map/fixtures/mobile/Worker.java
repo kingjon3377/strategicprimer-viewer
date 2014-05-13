@@ -8,7 +8,7 @@ import model.map.HasImage;
 import model.map.HasKind;
 import model.map.HasName;
 import model.map.IFixture;
-import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
 
@@ -26,8 +26,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind,
-		HasImage {
+public class Worker implements HasName, HasKind, HasImage, IWorker {
 	/**
 	 * The worker's name.
 	 */
@@ -40,7 +39,7 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind,
 	/**
 	 * The set of jobs the worker is trained or experienced in.
 	 */
-	private final Set<Job> jobSet = new ArraySet<>();
+	private final Set<IJob> jobSet = new ArraySet<>();
 
 	/**
 	 * The worker's stats.
@@ -76,7 +75,8 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind,
 	 * @param job the job to add.
 	 * @return the result of the operation
 	 */
-	public boolean addJob(final Job job) {
+	@Override
+	public boolean addJob(final IJob job) {
 		return jobSet.add(job);
 	}
 
@@ -84,7 +84,7 @@ public class Worker implements UnitMember, Iterable<Job>, HasName, HasKind,
 	 * @return An iterator over the worker's jobs.
 	 */
 	@Override
-	public final Iterator<Job> iterator() {
+	public final Iterator<IJob> iterator() {
 		return NullCleaner.assertNotNull(jobSet.iterator());
 	}
 

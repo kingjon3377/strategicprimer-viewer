@@ -21,7 +21,7 @@ import javax.swing.tree.TreeNode;
 import model.map.HasImage;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
-import model.map.fixtures.mobile.worker.Job;
+import model.map.fixtures.mobile.worker.IJob;
 import model.workermgmt.WorkerTreeModelAlt.KindNode;
 import model.workermgmt.WorkerTreeModelAlt.UnitNode;
 
@@ -180,12 +180,12 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 	 * @return a comma-separated list of them, in parentheses, prepended by a
 	 *         space, if there are any.
 	 */
-	private static String jobCSL(final Iterable<Job> iter) {
+	private static String jobCSL(final Iterable<IJob> iter) {
 		if (iter.iterator().hasNext()) {
 			final StringBuilder builder = new StringBuilder(100);
 			builder.append(" (");
 			boolean first = true;
-			for (final Job job : iter) {
+			for (final IJob job : iter) {
 				if (first) {
 					first = false;
 				} else {

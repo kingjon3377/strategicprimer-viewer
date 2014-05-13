@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 
-import model.map.HasName;
-
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.ArraySet;
@@ -16,7 +14,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public class Job implements Iterable<Skill>, HasName { // NOPMD
+public class Job implements IJob { // NOPMD
 	/**
 	 * The name of the job.
 	 */
@@ -28,7 +26,7 @@ public class Job implements Iterable<Skill>, HasName { // NOPMD
 	/**
 	 * The worker's level in various skills associated with the job.
 	 */
-	private final Set<Skill> skillSet = new ArraySet<>();
+	private final Set<ISkill> skillSet = new ArraySet<>();
 
 	/**
 	 * Constructor.
@@ -38,7 +36,7 @@ public class Job implements Iterable<Skill>, HasName { // NOPMD
 	 * @param skills the worker's level in the various skills associated with
 	 *        the job.
 	 */
-	public Job(final String jobName, final int levels, final Skill... skills) {
+	public Job(final String jobName, final int levels, final ISkill... skills) {
 		super();
 		name = jobName;
 		level = levels;
@@ -51,7 +49,8 @@ public class Job implements Iterable<Skill>, HasName { // NOPMD
 	 * @param skill the skill to add
 	 * @return the result of the operation
 	 */
-	public boolean addSkill(final Skill skill) {
+	@Override
+	public boolean addSkill(final ISkill skill) {
 		return skillSet.add(skill);
 	}
 
@@ -66,6 +65,7 @@ public class Job implements Iterable<Skill>, HasName { // NOPMD
 	/**
 	 * @return the worker's level in the job
 	 */
+	@Override
 	public int getLevel() {
 		return level;
 	}
@@ -75,7 +75,7 @@ public class Job implements Iterable<Skill>, HasName { // NOPMD
 	 *         associated with the job
 	 */
 	@Override
-	public final Iterator<Skill> iterator() {
+	public final Iterator<ISkill> iterator() {
 		return NullCleaner.assertNotNull(skillSet.iterator());
 	}
 

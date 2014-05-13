@@ -25,6 +25,7 @@ import model.map.IPlayerCollection;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
+import model.map.fixtures.mobile.worker.ProxyWorker;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import model.workermgmt.IWorkerTreeModel;
 
@@ -291,7 +292,14 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 					list.memberSelected(null, (UnitMember) sel);
 				}
 			}
-			if (sel instanceof Unit || sel == null) {
+			if (sel instanceof Unit) {
+				for (final UnitSelectionListener list : usListeners) {
+					list.selectUnit((Unit) sel);
+				}
+				for (final UnitMemberListener list : umListeners) {
+					list.memberSelected(null, new ProxyWorker((Unit) sel));
+				}
+			} else if (sel == null) {
 				for (final UnitSelectionListener list : usListeners) {
 					list.selectUnit((Unit) sel);
 				}

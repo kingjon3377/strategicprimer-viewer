@@ -8,6 +8,8 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IPlayerCollection;
 import model.map.fixtures.mobile.Worker;
+import model.map.fixtures.mobile.worker.IJob;
+import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.mobile.worker.WorkerStats;
@@ -204,9 +206,9 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 		if (obj.iterator().hasNext() || obj.getStats() != null) {
 			ostream.append(">\n");
 			writeStats(ostream, obj.getStats(), indent + 1);
-			for (final Job job : obj) {
-				if (job != null) {
-					writeJob(ostream, job, indent + 1);
+			for (final IJob job : obj) {
+				if (job instanceof Job) {
+					writeJob(ostream, (Job) job, indent + 1);
 				}
 			}
 			ostream.append(indent(indent));
@@ -267,9 +269,9 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 		ostream.append('"');
 		if (obj.iterator().hasNext()) {
 			ostream.append(">\n");
-			for (final Skill skill : obj) {
-				if (skill != null) {
-					writeSkill(ostream, skill, indent + 1);
+			for (final ISkill skill : obj) {
+				if (skill instanceof Skill) {
+					writeSkill(ostream, (Skill) skill, indent + 1);
 				}
 			}
 			ostream.append(indent(indent));

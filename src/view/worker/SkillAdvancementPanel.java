@@ -14,7 +14,7 @@ import javax.swing.JTextField;
 import model.listeners.LevelGainListener;
 import model.listeners.LevelGainSource;
 import model.listeners.SkillSelectionListener;
-import model.map.fixtures.mobile.worker.Skill;
+import model.map.fixtures.mobile.worker.ISkill;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -47,13 +47,13 @@ public class SkillAdvancementPanel extends BoxPanel implements ActionListener,
 	 * The skill we're dealing with. May be null if no skill is selected.
 	 */
 	@Nullable
-	private Skill skill = null;
+	private ISkill skill = null;
 
 	/**
 	 * @param nSkill the newly selected skill.
 	 */
 	@Override
-	public void selectSkill(@Nullable final Skill nSkill) {
+	public void selectSkill(@Nullable final ISkill nSkill) {
 		skill = nSkill;
 		if (skill != null) {
 			hours.requestFocusInWindow();
@@ -97,7 +97,7 @@ public class SkillAdvancementPanel extends BoxPanel implements ActionListener,
 			return;
 		}
 		if ("OK".equalsIgnoreCase(evt.getActionCommand()) && skill != null) {
-			final Skill skl = skill;
+			final ISkill skl = skill;
 			final int level = skl.getLevel();
 			skl.addHours(Integer.parseInt(hours.getText()),
 					SingletonRandom.RANDOM.nextInt(SKILL_DIE));

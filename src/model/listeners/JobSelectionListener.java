@@ -1,6 +1,6 @@
 package model.listeners;
 
-import model.map.fixtures.mobile.worker.Job;
+import model.map.fixtures.mobile.worker.IJob;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -15,5 +15,5 @@ public interface JobSelectionListener {
 	/**
 	 * @param job the newly selected Job. May be null if no selection.
 	 */
-	void selectJob(@Nullable final Job job);
+	void selectJob(@Nullable final IJob job);
 }

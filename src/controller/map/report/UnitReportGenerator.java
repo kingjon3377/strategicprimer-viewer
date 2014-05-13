@@ -8,8 +8,9 @@ import model.map.Point;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
+import model.map.fixtures.mobile.worker.IJob;
+import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Job;
-import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import model.report.AbstractReportNode;
 import model.report.ComplexReportNode;
@@ -174,13 +175,15 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		}
 		if (worker.iterator().hasNext() && details) {
 			builder.append(HAS_TRAINING).append('\n').append(OPEN_LIST);
-			for (final Job job : worker) {
-				builder.append(OPEN_LIST_ITEM);
-				builder.append(job.getLevel());
-				builder.append(" levels in ");
-				builder.append(job.getName());
-				builder.append(getSkills(job));
-				builder.append(CLOSE_LIST_ITEM);
+			for (final IJob job : worker) {
+				if (job instanceof Job) {
+					builder.append(OPEN_LIST_ITEM);
+					builder.append(job.getLevel());
+					builder.append(" levels in ");
+					builder.append(job.getName());
+					builder.append(getSkills((Job) job));
+					builder.append(CLOSE_LIST_ITEM);
+				}
 			}
 			builder.append(CLOSE_LIST);
 		}
@@ -195,7 +198,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		final StringBuilder builder = new StringBuilder();
 		if (job.iterator().hasNext()) {
 			boolean first = true;
-			for (final Skill skill : job) {
+			for (final ISkill skill : job) {
 				if (first) {
 					builder.append(" (");
 					first = false;
@@ -242,9 +245,9 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		}
 		if (worker.iterator().hasNext() && details) {
 			final AbstractReportNode jobs = new ListReportNode(HAS_TRAINING);
-			for (final Job job : worker) {
-				if (job != null) {
-					jobs.add(produceJobRIR(job));
+			for (final IJob job : worker) {
+				if (job instanceof Job) {
+					jobs.add(produceJobRIR((Job) job));
 				}
 			}
 			retval.add(jobs);

@@ -11,6 +11,7 @@ import model.listeners.CompletionSource;
 import model.listeners.UnitMemberListener;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Worker;
+import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -20,14 +21,14 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public final class JobsListModel extends DefaultListModel<Job> implements
+public final class JobsListModel extends DefaultListModel<IJob> implements
 		UnitMemberListener, CompletionSource, AddRemoveListener {
 	/**
 	 * A non-null "null" worker. Adjusted to prevent modification.
 	 */
 	private static final Worker NULL_WORKER = new Worker("null", "null", -1) {
 		@Override
-		public boolean addJob(final Job job) {
+		public boolean addJob(final IJob job) {
 			return false;
 		}
 	};
@@ -64,7 +65,7 @@ public final class JobsListModel extends DefaultListModel<Job> implements
 			clear();
 			if (selected instanceof Worker) {
 				worker = (Worker) selected;
-				for (final Job job : worker) {
+				for (final IJob job : worker) {
 					addElement(job);
 				}
 				for (final CompletionListener list : cListeners) {

@@ -12,7 +12,7 @@ import javax.swing.tree.TreePath;
 
 import model.listeners.SkillSelectionListener;
 import model.listeners.SkillSelectionSource;
-import model.map.fixtures.mobile.worker.Skill;
+import model.map.fixtures.mobile.worker.ISkill;
 import model.workermgmt.JobTreeModel;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -88,13 +88,13 @@ public final class JobsTree extends JTree implements TreeSelectionListener,
 	public void valueChanged(@Nullable final TreeSelectionEvent evt) {
 		if (evt != null) {
 			final TreePath selPath = evt.getNewLeadSelectionPath();
-			final Skill retval;
+			final ISkill retval;
 			if (selPath == null) {
 				retval = null;
 			} else {
 				final Object component = selPath.getLastPathComponent();
-				if (component instanceof Skill) {
-					retval = (Skill) component;
+				if (component instanceof ISkill) {
+					retval = (ISkill) component;
 				} else {
 					retval = null;
 				}

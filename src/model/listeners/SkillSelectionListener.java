@@ -1,6 +1,6 @@
 package model.listeners;
 
-import model.map.fixtures.mobile.worker.Skill;
+import model.map.fixtures.mobile.worker.ISkill;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -15,5 +15,5 @@ public interface SkillSelectionListener {
 	/**
 	 * @param skill the newly selected Skill. May be null if no selection.
 	 */
-	void selectSkill(@Nullable final Skill skill);
+	void selectSkill(@Nullable final ISkill skill);
 }

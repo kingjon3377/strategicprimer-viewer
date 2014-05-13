@@ -8,6 +8,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IPlayerCollection;
 import model.map.fixtures.mobile.Worker;
+import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import util.NullCleaner;
@@ -107,9 +108,9 @@ public class WorkerReader implements INodeHandler<Worker> {
 			retval.addChild(STATS_READER.write(stats));
 		}
 		retval.addImageAttribute(obj);
-		for (final Job job : obj) {
-			if (job != null) {
-				retval.addChild(JOB_READER.write(job));
+		for (final IJob job : obj) {
+			if (job instanceof Job) {
+				retval.addChild(JOB_READER.write((Job) job));
 			}
 		}
 		return retval;

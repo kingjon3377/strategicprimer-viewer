@@ -1,7 +1,5 @@
 package model.map.fixtures.mobile.worker;
 
-import model.map.HasName;
-
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -10,7 +8,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class Skill implements HasName {
+public class Skill implements ISkill {
 	/**
 	 * The name of the skill.
 	 */
@@ -50,6 +48,7 @@ public class Skill implements HasName {
 	/**
 	 * @return how many levels the worker has in the skill
 	 */
+	@Override
 	public int getLevel() {
 		return level;
 	}
@@ -57,6 +56,7 @@ public class Skill implements HasName {
 	/**
 	 * @return how many hours the worker has accumulated since leveling up last
 	 */
+	@Override
 	public int getHours() {
 		return hours;
 	}
@@ -87,6 +87,7 @@ public class Skill implements HasName {
 	 * @param condition If less than or equal to the number of hours after the
 	 *        addition, level up and zero the hours instead.
 	 */
+	@Override
 	public void addHours(final int hrs, final int condition) {
 		hours += hrs;
 		if (condition <= hours) {

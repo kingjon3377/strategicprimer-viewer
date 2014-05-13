@@ -13,8 +13,8 @@ import model.listeners.JobSelectionListener;
 import model.listeners.LevelGainListener;
 import model.listeners.SkillSelectionListener;
 import model.listeners.SkillSelectionSource;
-import model.map.fixtures.mobile.worker.Job;
-import model.map.fixtures.mobile.worker.Skill;
+import model.map.fixtures.mobile.worker.IJob;
+import model.map.fixtures.mobile.worker.ISkill;
 import model.workermgmt.SkillListModel;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -26,7 +26,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class SkillList extends JList<Skill> implements ListSelectionListener,
+public class SkillList extends JList<ISkill> implements ListSelectionListener,
 		SkillSelectionSource, LevelGainListener, JobSelectionListener,
 		CompletionListener {
 	/**
@@ -55,7 +55,7 @@ public class SkillList extends JList<Skill> implements ListSelectionListener,
 	@Override
 	public void valueChanged(@Nullable final ListSelectionEvent evt) {
 		@Nullable
-		final Skill temp = getSelectedValue();
+		final ISkill temp = getSelectedValue();
 		for (final SkillSelectionListener list : ssListeners) {
 			list.selectSkill(temp);
 		}
@@ -90,7 +90,7 @@ public class SkillList extends JList<Skill> implements ListSelectionListener,
 	 * @param job passed on to list model
 	 */
 	@Override
-	public void selectJob(@Nullable final Job job) {
+	public void selectJob(@Nullable final IJob job) {
 		lmodel.selectJob(job);
 	}
 	/**

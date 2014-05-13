@@ -16,7 +16,9 @@ import model.listeners.AddRemoveListener;
 import model.listeners.UnitMemberListener;
 import model.map.HasName;
 import model.map.fixtures.UnitMember;
-import model.map.fixtures.mobile.Worker;
+import model.map.fixtures.mobile.IWorker;
+import model.map.fixtures.mobile.worker.IJob;
+import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 
@@ -42,7 +44,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 * The worker who the Jobs and Skills describe.
 	 */
 	@Nullable
-	private Worker root; // NOPMD: Claims only initialized in constructor, which
+	private IWorker root; // NOPMD: Claims only initialized in constructor, which
 							// is Not True.
 	/**
 	 * The tree's selection model.
@@ -66,7 +68,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 */
 	@Override
 	@Nullable
-	public Worker getRoot() {
+	public IWorker getRoot() {
 		return root;
 	}
 
@@ -77,12 +79,12 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 */
 	@Override
 	public HasName getChild(@Nullable final Object parent, final int index) {
-		final Worker currRoot = root;
-		if (index >= 0 && currRoot != null && parent instanceof Worker
+		final IWorker currRoot = root;
+		if (index >= 0 && currRoot != null && parent instanceof IWorker
 				&& parent.equals(currRoot)) {
 			return getFromIter(currRoot, index); // NOPMD
-		} else if (index >= 0 && parent instanceof Job) {
-			return getFromIter((Job) parent, index); // NOPMD
+		} else if (index >= 0 && parent instanceof IJob) {
+			return getFromIter((IJob) parent, index); // NOPMD
 		} else {
 			throw new ArrayIndexOutOfBoundsException(
 					"Parent does not have that child.");
@@ -124,7 +126,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 */
 	@Override
 	public int getChildCount(@Nullable final Object parent) {
-		if (parent instanceof Worker || parent instanceof Job) {
+		if (parent instanceof IWorker || parent instanceof IJob) {
 			assert parent != null;
 			final Iterator<?> iter = ((Iterable<?>) parent).iterator();
 			int count = 0;
@@ -134,7 +136,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 				iter.next();
 			}
 			return count; // NOPMD
-		} else if (parent instanceof Skill) {
+		} else if (parent instanceof ISkill) {
 			return 0; // NOPMD
 		} else {
 			throw new IllegalArgumentException(
@@ -148,7 +150,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 */
 	@Override
 	public boolean isLeaf(@Nullable final Object node) {
-		return !(node instanceof Worker) && !(node instanceof Job);
+		return !(node instanceof IWorker) && !(node instanceof IJob);
 	}
 
 	/**
@@ -176,7 +178,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	@Override
 	public int getIndexOfChild(@Nullable final Object parent,
 			@Nullable final Object child) {
-		if (parent instanceof Worker || parent instanceof Job) {
+		if (parent instanceof IWorker || parent instanceof IJob) {
 			int index = 0;
 			assert parent != null;
 			for (final Object item : (Iterable<?>) parent) {
@@ -215,9 +217,9 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 */
 	@Override
 	public void add(final String category, final String addendum) {
-		final Worker currRoot = root;
+		final IWorker currRoot = root;
 		if ("job".equals(category) && currRoot != null) {
-			final Job job = new Job(addendum, 0);
+			final IJob job = new Job(addendum, 0);
 			final int childCount = getChildCount(currRoot);
 			currRoot.addJob(job);
 			fireTreeNodesInserted(new TreeModelEvent(this, new TreePath(
@@ -225,9 +227,9 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 		} else if ("skill".equals(category)) {
 			final TreePath selPath = tsm.getSelectionPath();
 			if (selPath != null
-					&& selPath.getLastPathComponent() instanceof Job) {
-				final Job job = (Job) selPath.getLastPathComponent();
-				final Skill skill = new Skill(addendum, 0, 0);
+					&& selPath.getLastPathComponent() instanceof IJob) {
+				final IJob job = (IJob) selPath.getLastPathComponent();
+				final ISkill skill = new Skill(addendum, 0, 0);
 				final int childCount = getChildCount(job);
 				job.addSkill(skill);
 				fireTreeNodesInserted(new TreeModelEvent(this, new TreePath(
@@ -244,8 +246,8 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	@Override
 	public void memberSelected(@Nullable final UnitMember old,
 			@Nullable final UnitMember selected) {
-		if (selected instanceof Worker) {
-			root = (Worker) selected;
+		if (selected instanceof IWorker) {
+			root = (IWorker) selected;
 		} else {
 			root = null;
 		}

@@ -7,6 +7,7 @@ import model.listeners.UnitMemberListener;
 import model.map.HasName;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Skill;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -23,7 +24,7 @@ public final class LevelListener implements LevelGainListener,
 	/**
 	 * A type-safe null Skill.
 	 */
-	private static final Skill NULL_SKILL = new Skill("null", -1, -1) {
+	private static final ISkill NULL_SKILL = new Skill("null", -1, -1) {
 		@Override
 		public boolean equals(@Nullable final Object obj) {
 			return this == obj;
@@ -58,13 +59,13 @@ public final class LevelListener implements LevelGainListener,
 	/**
 	 * The current skill.
 	 */
-	private Skill skill = NULL_SKILL;
+	private ISkill skill = NULL_SKILL;
 	/**
 	 *
 	 * @param nSkill the newly selected skill
 	 */
 	@Override
-	public void selectSkill(@Nullable final Skill nSkill) {
+	public void selectSkill(@Nullable final ISkill nSkill) {
 		skill = NullCleaner.valueOrDefault(nSkill, NULL_SKILL);
 	}
 	/**
@@ -73,7 +74,7 @@ public final class LevelListener implements LevelGainListener,
 	@Override
 	public void level() {
 		final UnitMember wkr = worker;
-		final Skill skl = skill;
+		final ISkill skl = skill;
 		if (!NULL_UM.equals(wkr) && !NULL_SKILL.equals(skl)) {
 			final StringBuilder builder = new StringBuilder();
 			builder.append(getName(wkr));

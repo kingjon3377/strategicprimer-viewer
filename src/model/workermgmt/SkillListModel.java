@@ -10,6 +10,8 @@ import model.listeners.CompletionListener;
 import model.listeners.CompletionSource;
 import model.listeners.JobSelectionListener;
 import model.listeners.LevelGainListener;
+import model.map.fixtures.mobile.worker.IJob;
+import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 
@@ -22,7 +24,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public final class SkillListModel extends DefaultListModel<Skill> implements
+public final class SkillListModel extends DefaultListModel<ISkill> implements
 		CompletionSource, AddRemoveListener, JobSelectionListener,
 		LevelGainListener {
 	/**
@@ -32,17 +34,18 @@ public final class SkillListModel extends DefaultListModel<Skill> implements
 
 	/**
 	 * A non-null "null" Job. Adjusted here to prevent modification.
+	 * TODO: Make an anonymous object of type IJob, not Job.
 	 */
 	private static final Job NULL_JOB = new Job("null", -1) {
 		@Override
-		public boolean addSkill(final Skill skill) {
+		public boolean addSkill(final ISkill skill) {
 			return false;
 		}
 	};
 	/**
 	 * The current Job.
 	 */
-	private Job job = NULL_JOB;
+	private IJob job = NULL_JOB;
 
 	/**
 	 * Handle level-up notification.
@@ -55,7 +58,7 @@ public final class SkillListModel extends DefaultListModel<Skill> implements
 	 * @param nJob the newly selected Job.
 	 */
 	@Override
-	public void selectJob(@Nullable final Job nJob) {
+	public void selectJob(@Nullable final IJob nJob) {
 		handleNewJob(nJob);
 	}
 	/**
@@ -88,11 +91,11 @@ public final class SkillListModel extends DefaultListModel<Skill> implements
 	 *
 	 * @param newValue the new value
 	 */
-	private void handleNewJob(@Nullable final Job newValue) {
+	private void handleNewJob(@Nullable final IJob newValue) {
 		if (!job.equals(newValue)) {
 			clear();
 			job = NullCleaner.valueOrDefault(newValue, NULL_JOB);
-			for (final Skill skill : job) {
+			for (final ISkill skill : job) {
 				addElement(skill);
 			}
 			for (final CompletionListener list : cListeners) {
