@@ -133,6 +133,9 @@ public class WorkerMgmtFrame extends JFrame {
 
 		setJMenuBar(new WorkerMenu(ioHandler, this, pch));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		for (int i = 0; i < tree.getRowCount(); i++) {
+			tree.expandRow(i);
+		}
 		pack();
 		WindowMenuModel.MODEL.addWindow(this, WindowState.NotVisible);
 	}
