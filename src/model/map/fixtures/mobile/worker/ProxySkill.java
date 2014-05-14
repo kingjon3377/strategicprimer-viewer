@@ -93,7 +93,7 @@ public class ProxySkill implements ISkill {
 			for (final ISkill skill : job) {
 				if (skill instanceof ProxySkill) {
 					continue;
-				} else {
+				} else if (skill != null && skill.getName().equals(name)) {
 					skill.addHours(hrs, random.nextInt(100));
 					touched = true;
 				}
