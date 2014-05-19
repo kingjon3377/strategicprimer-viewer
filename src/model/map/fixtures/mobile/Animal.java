@@ -1,5 +1,7 @@
 package model.map.fixtures.mobile;
 
+import java.io.PrintWriter;
+
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
@@ -155,6 +157,50 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 				&& ((Animal) obj).id == id;
 	}
 
+	/**
+	 * @param obj another UnitMember
+	 * @param ostream a stream to report an explanation on
+	 * @return whether that member is a subset of this one
+	 */
+	@Override
+	public boolean isSubset(final UnitMember obj, final PrintWriter ostream) {
+		if (obj.getID() == id) {
+			if (obj instanceof Animal) {
+				if (!kind.equals(((Animal) obj).getKind())) {
+					ostream.print("Different kinds of animal for ID #");
+					ostream.println(id);
+					return false;
+				} else if (!talking && ((Animal) obj).talking) {
+					ostream.print("In animal ID #");
+					ostream.print(id);
+					ostream.println(", submap is talking and master doesn't");
+					return false;
+				} else if (traces && !((Animal) obj).traces) {
+					ostream.print("In animal ID #");
+					ostream.print(id);
+					ostream.println(", submap has animal and master only tracks");
+					return false;
+				} else if (!status.equals(((Animal) obj).status)) {
+					ostream.print("Domestication status of animal differs at ID #");
+					ostream.println(id);
+					return false;
+				} else {
+					return true;
+				}
+			} else {
+				ostream.print("For ID #");
+				ostream.print(id);
+				ostream.print(", different kinds of members");
+				return false;
+			}
+		} else {
+			ostream.print("Called with different IDs, #");
+			ostream.print(id);
+			ostream.print(" and #");
+			ostream.println(obj.getID());
+			return false;
+		}
+	}
 	/**
 	 * @return a hash value for the object
 	 */

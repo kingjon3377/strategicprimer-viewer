@@ -1,13 +1,17 @@
 package model.map.fixtures.mobile.worker;
 
+import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.ArraySet;
 import util.NullCleaner;
+import util.Pair;
 
 /**
  * A Job a worker can work at.
@@ -90,6 +94,77 @@ public class Job implements IJob { // NOPMD
 				&& skillSet.equals(((Job) obj).skillSet);
 	}
 
+	/**
+	 * If this returns false, the caller should append an indication of context,
+	 * since Jobs don't have ID #s.
+	 *
+	 * @param obj
+	 *            a Job
+	 * @param ostream
+	 *            a stream to explain our results on
+	 * @return whether the Job is a "subset" of this---same name, equal or lower
+	 *         level, with no extra or higher-level or extra-experienced Skills.
+	 */
+	@Override
+	public boolean isSubset(final IJob obj, final PrintWriter ostream) {
+		if (!name.equals(obj.getName())) {
+			ostream.print("Passed Jobs with different names");
+			return false;
+		} else if (level < obj.getLevel()) {
+			ostream.print("Submap has higher level for Job ");
+			ostream.print(name);
+			return false;
+		} else {
+			boolean retval = true;
+			final Map<String, Pair<Integer, Integer>> ours = new HashMap<>();
+			for (final ISkill skill : this) {
+				if (ours.containsKey(skill.getName())) {
+					ostream.print("Master map contains duplicate Skill ");
+					ostream.print(skill.getName());
+					ostream.print(" in Job ");
+					ostream.print(name);
+					ostream.print(" ... ");
+					retval = false;
+				} else {
+					ours.put(skill.getName(), Pair.of(NullCleaner
+							.assertNotNull(Integer.valueOf(skill.getLevel())),
+							NullCleaner.assertNotNull(Integer.valueOf(skill
+									.getHours()))));
+				}
+			}
+			for (final ISkill skill : obj) {
+				if (!ours.containsKey(skill.getName())) {
+					ostream.print("Extra skill ");
+					ostream.print(skill.getName());
+					ostream.print(" in Job ");
+					ostream.print(name);
+					ostream.print(" ... ");
+					retval = false;
+				} else {
+					// TODO: Move this logic into Skill?
+					final Pair<Integer, Integer> pair = ours.get(skill.getName());
+					final int lvl = pair.first().intValue();
+					final int hours = pair.second().intValue();
+					if (skill.getLevel() > lvl) {
+						ostream.print("In Job ");
+						ostream.print(name);
+						ostream.print(", extra level(s) in ");
+						ostream.print(skill.getName());
+						ostream.print(" ... ");
+						retval = false;
+					} else if (skill.getLevel() == lvl && skill.getHours() > hours) {
+						ostream.print("In Job ");
+						ostream.print(name);
+						ostream.print(", extra hours in ");
+						ostream.print(skill.getName());
+						ostream.print(" ... ");
+						retval = false;
+					}
+				}
+			}
+			return retval;
+		}
+	}
 	/**
 	 * @return a hash value for the Job.
 	 */

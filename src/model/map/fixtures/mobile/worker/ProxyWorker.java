@@ -1,5 +1,6 @@
 package model.map.fixtures.mobile.worker;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -99,6 +100,16 @@ public class ProxyWorker implements IWorker {
 			proxyJobs.add(proxy);
 			return true;
 		}
+	}
+	/**
+	 * @param obj ignored
+	 * @param ostream a stream to report the call on
+	 * @return false
+	 */
+	@Override
+	public boolean isSubset(final UnitMember obj, final PrintWriter ostream) {
+		ostream.println("isSubset called on ProxyWorker");
+		return false;
 	}
 
 }

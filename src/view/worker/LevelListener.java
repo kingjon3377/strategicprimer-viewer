@@ -1,6 +1,9 @@
 package view.worker;
 
 import static view.util.SystemOut.SYS_OUT;
+
+import java.io.PrintWriter;
+
 import model.listeners.LevelGainListener;
 import model.listeners.SkillSelectionListener;
 import model.listeners.UnitMemberListener;
@@ -50,6 +53,15 @@ public final class LevelListener implements LevelGainListener,
 		@Override
 		public boolean equalsIgnoringID(final IFixture fix) {
 			return this == fix;
+		}
+		/**
+		 * @param obj another UnitMember
+		 * @param ostream a stream to report an explanation on
+		 * @return false
+		 */
+		@Override
+		public boolean isSubset(final UnitMember obj, final PrintWriter ostream) {
+			return false;
 		}
 	};
 	/**

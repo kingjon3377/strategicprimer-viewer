@@ -1,12 +1,13 @@
 package model.map.fixtures.mobile.worker;
 
 import model.map.HasName;
+import model.map.Subsettable;
 /**
  * An interface for Jobs.
  * @author Jonathan Lovelace
  *
  */
-public interface IJob extends HasName, Iterable<ISkill> {
+public interface IJob extends HasName, Iterable<ISkill>, Subsettable<IJob> {
 
 	/**
 	 * Add a skill.

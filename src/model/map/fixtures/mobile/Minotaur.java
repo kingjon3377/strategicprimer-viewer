@@ -1,5 +1,7 @@
 package model.map.fixtures.mobile;
 
+import java.io.PrintWriter;
+
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TileFixture;
@@ -129,5 +131,29 @@ public class Minotaur implements MobileFixture, HasImage, UnitMember {
 	@Override
 	public String shortDesc() {
 		return "a minotaur";
+	}
+	/**
+	 * @param obj another UnitMember
+	 * @param ostream a stream to report an explanation on
+	 * @return whether that member equals this one
+	 */
+	@Override
+	public boolean isSubset(final UnitMember obj, final PrintWriter ostream) {
+		if (obj.getID() == id) {
+			if (obj instanceof Minotaur) {
+				return true;
+			} else {
+				ostream.print("For ID #");
+				ostream.print(id);
+				ostream.print(", different kinds of members");
+				return false;
+			}
+		} else {
+			ostream.print("Called with different IDs, #");
+			ostream.print(id);
+			ostream.print(" and #");
+			ostream.println(obj.getID());
+			return false;
+		}
 	}
 }

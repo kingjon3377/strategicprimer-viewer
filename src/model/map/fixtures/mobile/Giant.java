@@ -1,5 +1,7 @@
 package model.map.fixtures.mobile;
 
+import java.io.PrintWriter;
+
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
@@ -122,6 +124,36 @@ public class Giant implements MobileFixture, HasImage, HasKind, UnitMember {
 		return fix instanceof Giant && ((Giant) fix).kind.equals(kind);
 	}
 
+	/**
+	 * @param obj another UnitMember
+	 * @param ostream a stream to report an explanation on
+	 * @return whether that member equals this one
+	 */
+	@Override
+	public boolean isSubset(final UnitMember obj, final PrintWriter ostream) {
+		if (obj.getID() == id) {
+			if (obj instanceof Giant) {
+				if (kind.equals(((Giant) obj).getKind())) {
+					return true;
+				} else {
+					ostream.print("Different kinds of giant for ID #");
+					ostream.println(id);
+					return false;
+				}
+			} else {
+				ostream.print("For ID #");
+				ostream.print(id);
+				ostream.print(", different kinds of members");
+				return false;
+			}
+		} else {
+			ostream.print("Called with different IDs, #");
+			ostream.print(id);
+			ostream.print(" and #");
+			ostream.println(obj.getID());
+			return false;
+		}
+	}
 	/**
 	 * @param nKind the new kind
 	 */

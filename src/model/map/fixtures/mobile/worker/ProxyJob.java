@@ -1,5 +1,6 @@
 package model.map.fixtures.mobile.worker;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -107,5 +108,15 @@ public class ProxyJob implements IJob {
 	@Override
 	public String toString() {
 		return getName();
+	}
+	/**
+	 * @param obj ignored
+	 * @param ostream a stream to report this call on
+	 * @return false
+	 */
+	@Override
+	public boolean isSubset(final IJob obj, final PrintWriter ostream) {
+		ostream.println("isSubset called on ProxyJob");
+		return false;
 	}
 }

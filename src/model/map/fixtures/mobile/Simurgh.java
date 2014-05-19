@@ -1,5 +1,7 @@
 package model.map.fixtures.mobile;
 
+import java.io.PrintWriter;
+
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TileFixture;
@@ -100,6 +102,30 @@ public class Simurgh implements MobileFixture, HasImage, UnitMember {
 		return fix instanceof Simurgh;
 	}
 
+	/**
+	 * @param obj another UnitMember
+	 * @param ostream a stream to report an explanation on
+	 * @return whether that member equals this one
+	 */
+	@Override
+	public boolean isSubset(final UnitMember obj, final PrintWriter ostream) {
+		if (obj.getID() == id) {
+			if (obj instanceof Simurgh) {
+				return true;
+			} else {
+				ostream.print("For ID #");
+				ostream.print(id);
+				ostream.print(", different kinds of members");
+				return false;
+			}
+		} else {
+			ostream.print("Called with different IDs, #");
+			ostream.print(id);
+			ostream.print(" and #");
+			ostream.println(obj.getID());
+			return false;
+		}
+	}
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */

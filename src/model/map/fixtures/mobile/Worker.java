@@ -1,13 +1,18 @@
 package model.map.fixtures.mobile;
 
+import java.io.PrintWriter;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.HasName;
 import model.map.IFixture;
+import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
@@ -165,6 +170,76 @@ public class Worker implements HasName, HasKind, HasImage, IWorker {
 		}
 	}
 
+	/**
+	 * @param obj another UnitMember
+	 * @param ostream a stream to report an explanation on
+	 * @return whether that member equals this one
+	 */
+	@Override
+	public boolean isSubset(final UnitMember obj, final PrintWriter ostream) {
+		if (obj.getID() == id) {
+			if (obj instanceof Worker) {
+				if (!name.equals(((Worker) obj).name)) {
+					ostream.print("For worker with ID #");
+					ostream.print(id);
+					ostream.println(", names differ");
+					return false;
+				} else if (!race.equals(((Worker) obj).race)) {
+					ostream.print("For worker ");
+					ostream.print(name);
+					ostream.print(", ID #");
+					ostream.print(id);
+					ostream.println(", races differ");
+					return false;
+				} else if (!Objects.equals(stats, ((Worker) obj).stats)) {
+					ostream.print("For worker ");
+					ostream.print(name);
+					ostream.print(", ID #");
+					ostream.print(id);
+					ostream.println(", stats differ");
+					return false;
+				} else {
+					boolean retval = true;
+					final Map<String, IJob> ours = new HashMap<>();
+					for (final IJob job : jobSet) {
+						ours.put(job.getName(), job);
+					}
+					for (final IJob job : ((Worker) obj).jobSet) {
+						if (job == null) {
+							continue;
+						} else if (!ours.containsKey(job.getName())) {
+							ostream.print("In worker ");
+							ostream.print(name);
+							ostream.print(" (#");
+							ostream.print(id);
+							ostream.print("): Extra Job: ");
+							ostream.println(job.getName());
+							retval = false;
+						} else if (!ours.get(job.getName()).isSubset(job, ostream)) {
+							ostream.print(" (in worker ");
+							ostream.print(name);
+							ostream.print(", ID #");
+							ostream.print(id);
+							ostream.println(')');
+							retval = false;
+						}
+					}
+					return retval;
+				}
+			} else {
+				ostream.print("For ID #");
+				ostream.print(id);
+				ostream.print(", different kinds of members");
+				return false;
+			}
+		} else {
+			ostream.print("Called with different IDs, #");
+			ostream.print(id);
+			ostream.print(" and #");
+			ostream.println(obj.getID());
+			return false;
+		}
+	}
 	/**
 	 * @return the worker's "kind" (i.e. race, i.e elf, dwarf, human, etc.)
 	 */

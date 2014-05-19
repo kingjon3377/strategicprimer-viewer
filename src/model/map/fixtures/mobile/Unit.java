@@ -1,8 +1,9 @@
 package model.map.fixtures.mobile;
 
 import java.io.PrintWriter;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import model.map.FixtureIterable;
@@ -344,21 +345,32 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 			ostream.println(":\tKinds differ");
 			return false; // NOPMD
 		} else {
-			final Set<UnitMember> theirs = new HashSet<>(obj.members);
-			theirs.removeAll(members);
-			for (final UnitMember member : theirs) {
-				ostream.print("In unit of ID #");
-				ostream.print(id);
-				ostream.print(" of kind ");
-				ostream.print(kind);
-				ostream.print(" named ");
-				ostream.print(name);
-				ostream.print(": Extra member:\t");
-				ostream.print(member.toString());
-				ostream.print(", ID #");
-				ostream.println(member.getID());
+			boolean retval = true;
+			final Map<Integer, UnitMember> ours = new HashMap<>();
+			for (final UnitMember member : this) {
+				ours.put(Integer.valueOf(member.getID()), member);
 			}
-			return theirs.isEmpty();
+			for (final UnitMember member : obj) {
+				if (member == null) {
+					continue;
+				} else if (!ours.containsKey(Integer.valueOf(member.getID()))) {
+					ostream.print("In unit of ID #");
+					ostream.print(id);
+					ostream.print(" of kind ");
+					ostream.print(kind);
+					ostream.print(" named ");
+					ostream.print(name);
+					ostream.print(": Extra member:\t");
+					ostream.print(member.toString());
+					ostream.print(", ID #");
+					ostream.println(member.getID());
+					retval = false;
+				} else if (!ours.get(Integer.valueOf(member.getID())).isSubset(
+						member, ostream)) {
+					retval = false;
+				}
+			}
+			return retval;
 		}
 	}
 }
