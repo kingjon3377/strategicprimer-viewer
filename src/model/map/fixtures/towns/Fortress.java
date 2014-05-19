@@ -213,7 +213,7 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 					ostream.print(":\t");
 					ostream.print(unit.toString());
 					ostream.print(", ID #");
-					ostream.print(unit.getID());
+					ostream.println(unit.getID());
 					retval = false;
 				} else if (!ours.get(Integer.valueOf(unit.getID())).isSubset(
 						unit, ostream)) {
