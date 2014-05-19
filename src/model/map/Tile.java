@@ -271,7 +271,9 @@ public final class Tile implements IMutableTile {
 			} else {
 				retval = false;
 				ostream.print("Extra fixture:\t");
-				ostream.println(fix.toString());
+				ostream.print(fix.toString());
+				ostream.print(", ID #");
+				ostream.println(fix.getID());
 			}
 		}
 		return retval; // NOPMD

@@ -206,7 +206,9 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 				ostream.print("Extra unit in fortress ");
 				ostream.print(getName());
 				ostream.print(":\t");
-				ostream.println(unit.toString());
+				ostream.print(unit.toString());
+				ostream.print(", ID #");
+				ostream.println(unit.getID());
 			}
 			return temp.isEmpty(); // NOPMD
 		} else {
