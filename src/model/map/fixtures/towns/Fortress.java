@@ -2,10 +2,10 @@ package model.map.fixtures.towns;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import model.map.FixtureIterable;
 import model.map.HasImage;
@@ -199,18 +199,28 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 	public boolean isSubset(final Fortress obj, final PrintWriter ostream) {
 		if (name.equals(obj.name)
 				&& obj.owner.getPlayerId() == owner.getPlayerId()) {
-			final Set<Unit> temp = new HashSet<>(obj.units);
-			// TODO: Differences between _versions_ of a unit
-			temp.removeAll(units);
-			for (final Unit unit : temp) {
-				ostream.print("Extra unit in fortress ");
-				ostream.print(getName());
-				ostream.print(":\t");
-				ostream.print(unit.toString());
-				ostream.print(", ID #");
-				ostream.println(unit.getID());
+			boolean retval = true;
+			final Map<Integer, Unit> ours = new HashMap<>();
+			for (final Unit unit : this) {
+				ours.put(Integer.valueOf(unit.getID()), unit);
 			}
-			return temp.isEmpty(); // NOPMD
+			for (final Unit unit : obj) {
+				if (unit == null) {
+					continue;
+				} else if (!ours.containsKey(Integer.valueOf(unit.getID()))) {
+					ostream.print("Extra unit in fortress ");
+					ostream.print(getName());
+					ostream.print(":\t");
+					ostream.print(unit.toString());
+					ostream.print(", ID #");
+					ostream.print(unit.getID());
+					retval = false;
+				} else if (!ours.get(Integer.valueOf(unit.getID())).isSubset(
+						unit, ostream)) {
+					retval = false;
+				}
+			}
+			return retval;
 		} else {
 			return false;
 		}

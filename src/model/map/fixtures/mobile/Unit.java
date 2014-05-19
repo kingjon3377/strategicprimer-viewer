@@ -1,5 +1,7 @@
 package model.map.fixtures.mobile;
 
+import java.io.PrintWriter;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -10,6 +12,7 @@ import model.map.HasName;
 import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.Player;
+import model.map.Subsettable;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 
@@ -25,7 +28,7 @@ import util.NullCleaner;
  *
  */
 public class Unit implements MobileFixture, HasImage, HasKind,
-		FixtureIterable<UnitMember>, HasName, HasOwner {
+		FixtureIterable<UnitMember>, HasName, HasOwner, Subsettable<Unit> {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -313,6 +316,49 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 		} else {
 			return "a(n) " + getKind() + " unit belonging to "
 					+ owner.getName();
+		}
+	}
+	/**
+	 * @param obj another unit
+	 * @param ostream the stream to report results on
+	 * @return whether the unit is a strict subset of this one.
+	 */
+	@Override
+	public boolean isSubset(final Unit obj, final PrintWriter ostream) {
+		if (obj.getID() != id) {
+			ostream.println("Units have different IDs");
+			return false; // NOPMD
+		} else if (obj.owner.getPlayerId() != owner.getPlayerId()) {
+			ostream.print("Unit of ID #");
+			ostream.print(id);
+			ostream.println(":\tOwners differ");
+			return false; // NOPMD
+		} else if (!name.equals(obj.getName())) {
+			ostream.print("Unit of ID #");
+			ostream.print(id);
+			ostream.println(":\tNames differ");
+			return false; // NOPMD
+		} else if (!kind.equals(obj.getKind())) {
+			ostream.print("Unit of ID #");
+			ostream.print(id);
+			ostream.println(":\tKinds differ");
+			return false; // NOPMD
+		} else {
+			final Set<UnitMember> theirs = new HashSet<>(obj.members);
+			theirs.removeAll(members);
+			for (final UnitMember member : theirs) {
+				ostream.print("In unit of ID #");
+				ostream.print(id);
+				ostream.print(" of kind ");
+				ostream.print(kind);
+				ostream.print(" named ");
+				ostream.print(name);
+				ostream.print(": Extra member:\t");
+				ostream.print(member.toString());
+				ostream.print(", ID #");
+				ostream.println(member.getID());
+			}
+			return theirs.isEmpty();
 		}
 	}
 }
