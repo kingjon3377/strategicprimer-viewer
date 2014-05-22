@@ -19,7 +19,7 @@ import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeNode;
 
 import model.map.HasImage;
-import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.workermgmt.WorkerTreeModelAlt.KindNode;
@@ -113,8 +113,8 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 			builder.append(jobCSL(worker));
 			builder.append("</p></html>");
 			((JLabel) component).setText(builder.toString());
-		} else if (internal instanceof Unit) {
-			final Unit unit = (Unit) internal;
+		} else if (internal instanceof IUnit) {
+			final IUnit unit = (IUnit) internal;
 			((JLabel) component).setText(unit.getName());
 			final String orders = unit.getOrders().toLowerCase();
 			if (warn && orders.contains("fixme") && unit.iterator().hasNext()) {
@@ -134,7 +134,7 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 			boolean shouldErr = false;
 			for (final TreeNode node : (KindNode) value) {
 				if (node instanceof UnitNode) {
-					final Unit unit = (Unit) NullCleaner
+					final IUnit unit = (IUnit) NullCleaner
 							.assertNotNull(getNodeValue(node));
 					final String orders = unit.getOrders().toLowerCase();
 					if (orders.contains("fixme") && unit.iterator().hasNext()) {

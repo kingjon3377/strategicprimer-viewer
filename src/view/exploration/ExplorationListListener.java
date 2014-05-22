@@ -9,8 +9,8 @@ import javax.swing.event.ListDataListener;
 
 import model.exploration.IExplorationModel;
 import model.map.TileFixture;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
-import model.map.fixtures.mobile.Unit;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -143,7 +143,7 @@ public final class ExplorationListListener implements ListDataListener {
 	 * there is no selected unit.
 	 */
 	private void randomizeSelection() {
-		final Unit selUnit = model.getSelectedUnit();
+		final IUnit selUnit = model.getSelectedUnit();
 		if (selUnit != null) {
 			list.clearSelection();
 			final List<IntPair<TileFixture>> constants = new ArrayList<>();

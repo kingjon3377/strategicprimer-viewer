@@ -7,7 +7,7 @@ import model.map.IEvent;
 import model.map.ITile;
 import model.map.TileFixture;
 import model.map.TileType;
-import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.towns.Fortress;
 import util.NullCleaner;
 
@@ -80,7 +80,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 */
 	protected static boolean hasAnyUnits(final ITile tile) {
 		for (final TileFixture fix : tile) {
-			if (fix instanceof Unit) {
+			if (fix instanceof IUnit) {
 				return true; // NOPMD
 			}
 		}

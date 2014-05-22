@@ -1,5 +1,9 @@
 package view.worker;
 
+import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.List;
+
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -8,10 +12,17 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import model.map.fixtures.mobile.Unit;
+import model.listeners.PlayerChangeListener;
+import model.map.IFixture;
+import model.map.Player;
+import model.map.TileFixture;
+import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.IUnit;
+import model.workermgmt.IWorkerModel;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.EmptyIterator;
 import util.NullCleaner;
 import view.util.ApplyButtonHandler;
 import view.util.Applyable;
@@ -25,7 +36,19 @@ import view.util.ListenedButton;
  *
  */
 public class OrdersPanel extends BorderedPanel implements Applyable,
-		TreeSelectionListener {
+		TreeSelectionListener, PlayerChangeListener {
+	/**
+	 * The worker model to get units from if the user selected a kind.
+	 */
+	private final IWorkerModel model;
+	/**
+	 * The "null" player.
+	 */
+	private static final Player NULL_PLAYER = new Player(-1, "none");
+	/**
+	 * The current player.
+	 */
+	private Player player = NULL_PLAYER;
 	/**
 	 * The current selection.
 	 */
@@ -39,8 +62,9 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 
 	/**
 	 * Constructor.
+	 * @param wmodel the worker model
 	 */
-	public OrdersPanel() {
+	public OrdersPanel(final IWorkerModel wmodel) {
 		final ApplyButtonHandler handler = new ApplyButtonHandler(this);
 		// Can't use the multi-arg constructor, because of the references to
 		// 'this' below.
@@ -52,6 +76,7 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 										new ListenedButton("Revert", handler)));
 		area.setLineWrap(true);
 		area.setWrapStyleWord(true);
+		model = wmodel;
 	}
 
 	/**
@@ -59,8 +84,8 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 	 */
 	@Override
 	public void apply() {
-		if (sel instanceof Unit) {
-			final Unit selection = (Unit) sel;
+		if (sel instanceof IUnit) {
+			final IUnit selection = (IUnit) sel;
 			selection.setOrders(NullCleaner
 					.assertNotNull(area.getText().trim()));
 			getParent().getParent().repaint();
@@ -73,8 +98,8 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 	 */
 	@Override
 	public void revert() {
-		if (sel instanceof Unit) {
-			area.setText(((Unit) sel).getOrders().trim());
+		if (sel instanceof IUnit) {
+			area.setText(((IUnit) sel).getOrders().trim());
 		} else {
 			area.setText("");
 		}
@@ -94,8 +119,157 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 			if (sel instanceof DefaultMutableTreeNode) {
 				sel = ((DefaultMutableTreeNode) sel).getUserObject();
 			}
+			if (sel instanceof String) {
+				sel =
+						new ProxyUnit(NullCleaner.assertNotNull((String) sel),
+								model.getUnits(player), player);
+			}
 			revert();
 		}
 	}
+	/**
+	 * @param old the previously selected player
+	 * @param newPlayer the newly selected player
+	 */
+	@Override
+	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
+		player = newPlayer;
+	}
 
+	/**
+	 * A "unit" that serves as the proxy, for orders purposes, for all units of
+	 * a kind.
+	 */
+	private static class ProxyUnit implements IUnit {
+		/**
+		 * The kind we're interested in.
+		 */
+		private final String kind;
+		/**
+		 * The units we might be proxying.
+		 */
+		private final List<IUnit> units;
+		/**
+		 * The owner of the units.
+		 */
+		private final Player owner;
+		/**
+		 * @param unitKind the kind of unit to proxy for
+		 * @param unitsList the units among which to proxy
+		 * @param playr the current player
+		 */
+		protected ProxyUnit(final String unitKind, final List<IUnit> unitsList,
+				final Player playr) {
+			kind = unitKind;
+			units = unitsList;
+			owner = playr;
+		}
+		@Override
+		public int getZValue() {
+			return 0;
+		}
+		@Override
+		public String plural() {
+			return "proxies";
+		}
+		@Override
+		public String shortDesc() {
+			return "proxy";
+		}
+		@Override
+		public int getID() {
+			return -1;
+		}
+		@Override
+		public boolean equalsIgnoringID(final IFixture fix) {
+			return this == fix;
+		}
+		@Override
+		public int compareTo(final TileFixture o) {
+			return hashCode() - o.hashCode();
+		}
+		@Override
+		public String getDefaultImage() {
+			return "proxy.png";
+		}
+		@Override
+		public void setImage(final String image) {
+			throw new IllegalStateException("setImage called on ProxyImage");
+		}
+		@Override
+		public String getImage() {
+			return "proxy.png";
+		}
+		@Override
+		public String getKind() {
+			return kind;
+		}
+		@Override
+		public void setKind(final String nKind) {
+			throw new IllegalStateException("setKind called on ProxyImage");
+		}
+		@Override
+		public Iterator<UnitMember> iterator() {
+			return new EmptyIterator<>();
+		}
+		@Override
+		public String getName() {
+			return "proxy";
+		}
+		@Override
+		public void setName(final String nomen) {
+			throw new IllegalStateException("setName called on ProxyUnit");
+		}
+		@Override
+		public Player getOwner() {
+			return owner;
+		}
+		@Override
+		public void setOwner(final Player player) {
+			throw new IllegalStateException("setOwner called on ProxyUnit");
+		}
+		@Override
+		public boolean isSubset(final IUnit obj, final PrintWriter ostream) {
+			ostream.println("isSubset called on ProxyUnit");
+			return false;
+		}
+		@Override
+		public String getOrders() {
+			String retval = null;
+			for (final IUnit unit : units) {
+				if (!kind.equals(unit.getKind())) {
+					continue;
+				} else if (retval == null) {
+					retval = unit.getOrders();
+				} else if (!retval.equals(unit.getOrders())) {
+					return "";
+				}
+			}
+			if (retval == null) {
+				return "";
+			} else {
+				return retval;
+			}
+		}
+		@Override
+		public void setOrders(final String newOrders) {
+			for (final IUnit unit : units) {
+				if (kind.equals(unit.getKind())) {
+					unit.setOrders(newOrders);
+				}
+			}
+		}
+		@Override
+		public String verbose() {
+			return "proxy";
+		}
+		@Override
+		public void addMember(final UnitMember member) {
+			// Do nothing
+		}
+		@Override
+		public void removeMember(final UnitMember member) {
+			// Do nothing
+		}
+	}
 }

@@ -12,7 +12,7 @@ import model.exploration.IExplorationModel;
 import model.map.IMap;
 import model.map.MapView;
 import model.map.Player;
-import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.IUnit;
 import util.Pair;
 import util.Warning;
 import view.exploration.ExplorationCLI;
@@ -114,7 +114,7 @@ public class ExplorationCLIDriver implements ISPDriver {
 			if (player.getPlayerId() < 0) {
 				return; // NOPMD
 			}
-			final Unit unit = cli.chooseUnit(player);
+			final IUnit unit = cli.chooseUnit(player);
 			if (unit.getID() < 0) {
 				return; // NOPMD
 			}

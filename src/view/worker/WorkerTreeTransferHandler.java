@@ -13,7 +13,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import model.map.fixtures.UnitMember;
-import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.IUnit;
 import model.workermgmt.IWorkerTreeModel;
 import model.workermgmt.UnitMemberTransferable;
 import model.workermgmt.UnitMemberTransferable.UnitMemberPair;
@@ -88,9 +88,9 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 		}
 		final Object selection = model.getModelObject(last);
 		final Object parent = model.getModelObject(parentPath);
-		if (selection instanceof UnitMember && parent instanceof Unit) {
+		if (selection instanceof UnitMember && parent instanceof IUnit) {
 			return new UnitMemberTransferable((UnitMember) selection, // NOPMD
-					(Unit) parent);
+					(IUnit) parent);
 		} else {
 			return null;
 		}
@@ -114,7 +114,7 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 			} else {
 				final Object pathLast = path.getLastPathComponent();
 				return pathLast != null // NOPMD
-						&& model.getModelObject(pathLast) instanceof Unit;
+						&& model.getModelObject(pathLast) instanceof IUnit;
 			}
 		} else {
 			return false;
@@ -138,13 +138,13 @@ public class WorkerTreeTransferHandler extends TransferHandler {
 				return false; // NOPMD
 			}
 			final Object tempTarget = model.getModelObject(pathLast);
-			if (tempTarget instanceof Unit) {
+			if (tempTarget instanceof IUnit) {
 				try {
 					final Transferable trans = support.getTransferable();
 					final UnitMemberTransferable.UnitMemberPair pair =
 							(UnitMemberPair) trans
 									.getTransferData(UnitMemberTransferable.FLAVOR);
-					model.moveMember(pair.member, pair.unit, (Unit) tempTarget);
+					model.moveMember(pair.member, pair.unit, (IUnit) tempTarget);
 					return true; // NOPMD
 				} catch (final UnsupportedFlavorException except) {
 					LOGGER.log(Level.SEVERE,

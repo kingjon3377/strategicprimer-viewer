@@ -3,7 +3,7 @@ package model.workermgmt;
 import java.util.List;
 
 import model.map.Player;
-import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.IUnit;
 import model.misc.IDriverModel;
 
 /**
@@ -17,7 +17,7 @@ public interface IWorkerModel extends IDriverModel {
 	 * @param player a player in the map
 	 * @return a list of the units in the map belonging to the player
 	 */
-	List<Unit> getUnits(final Player player);
+	List<IUnit> getUnits(final Player player);
 	/**
 	 * @param player a player in the map
 	 * @return the "kinds" of unit that player has.
@@ -28,11 +28,11 @@ public interface IWorkerModel extends IDriverModel {
 	 * @param kind a "kind" of unit.
 	 * @return a list of the units of that kind in the map belonging to that player
 	 */
-	List<Unit> getUnits(final Player player, final String kind);
+	List<IUnit> getUnits(final Player player, final String kind);
 	/**
 	 * Add a unit in its owner's HQ.
 	 *
 	 * @param unit the unit to add.
 	 */
-	void addUnit(final Unit unit);
+	void addUnit(final IUnit unit);
 }

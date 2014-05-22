@@ -25,6 +25,7 @@ import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
@@ -217,7 +218,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 */
 	private void enterStats(final IExplorationModel model, final Player player)
 			throws IOException {
-		final List<Unit> units = removeStattedUnits(model.getUnits(player));
+		final List<IUnit> units = removeStattedUnits(model.getUnits(player));
 		while (true) {
 			final int unitNum = helper
 					.chooseFromList(
@@ -228,7 +229,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			if (unitNum < 0 || unitNum >= units.size() || units.isEmpty()) {
 				break;
 			} else {
-				final Unit unit = units.get(unitNum);
+				final IUnit unit = units.get(unitNum);
 				if (unit == null) {
 					continue;
 				}
@@ -249,14 +250,14 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	private static boolean hasUnstattedWorker(final IExplorationModel model,
 			final int idNum) {
 		final IFixture fix = find(model.getMap(), idNum);
-		return fix instanceof Unit && hasUnstattedWorker((Unit) fix);
+		return fix instanceof IUnit && hasUnstattedWorker((IUnit) fix);
 	}
 
 	/**
 	 * @param unit a unit
 	 * @return whether it contains any workers without stats
 	 */
-	private static boolean hasUnstattedWorker(final Unit unit) {
+	private static boolean hasUnstattedWorker(final IUnit unit) {
 		for (final UnitMember member : unit) {
 			if (member instanceof Worker
 					&& ((Worker) member).getStats() == null) {
@@ -270,9 +271,9 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 * @param units a list of units
 	 * @return a list of the units in the list that have workers without stats
 	 */
-	private static List<Unit> removeStattedUnits(final List<Unit> units) {
-		final List<Unit> retval = new ArrayList<>();
-		for (final Unit unit : units) {
+	private static List<IUnit> removeStattedUnits(final List<IUnit> units) {
+		final List<IUnit> retval = new ArrayList<>();
+		for (final IUnit unit : units) {
 			if (unit != null && hasUnstattedWorker(unit)) {
 				retval.add(unit);
 			}
@@ -288,7 +289,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 * @param unit the unit containing the worker
 	 * @throws IOException on I/O error interacting with user
 	 */
-	private void enterStats(final IExplorationModel model, final Unit unit)
+	private void enterStats(final IExplorationModel model, final IUnit unit)
 			throws IOException {
 		final List<Worker> workers = new ArrayList<>();
 		for (final UnitMember member : unit) {
@@ -427,13 +428,13 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		boolean again = true;
 		while (again) {
 			if (helper.inputBoolean("Add worker(s) to an existing unit? ")) {
-				final List<Unit> units = model.getUnits(player);
+				final List<IUnit> units = model.getUnits(player);
 				final int unitNum = helper.chooseFromList(units,
 						"Which unit contains the worker in question?",
 						"There are no units owned by that player",
 						"Unit selection: ", false);
 				if (unitNum >= 0 && unitNum < units.size()) {
-					final Unit unit = units.get(unitNum);
+					final IUnit unit = units.get(unitNum);
 					if (unit != null) {
 						createWorkers(model, idf, unit);
 					}
@@ -442,7 +443,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 				final Point point = PointFactory.point(
 						helper.inputNumber("Row to put new unit: "),
 						helper.inputNumber("Column to put new unit: "));
-				final Unit unit = new Unit(player, // NOPMD
+				final IUnit unit = new Unit(player, // NOPMD
 						helper.inputString("Kind of unit: "),
 						helper.inputString("Unit name: "), idf.createID());
 				for (final Pair<IMap, File> pair : model.getAllMaps()) {
@@ -479,14 +480,14 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 * @throws IOException on I/O error interacting with the user
 	 */
 	private void createWorkers(final IExplorationModel model,
-			final IDFactory idf, final Unit unit) throws IOException {
+			final IDFactory idf, final IUnit unit) throws IOException {
 		final int count = helper.inputNumber("How many workers to generate? ");
 		for (int i = 0; i < count; i++) {
 			final Worker worker = createWorker(idf);
 			for (final Pair<IMap, File> pair : model.getAllMaps()) {
 				final IFixture fix = find(pair.first(), unit.getID());
-				if (fix instanceof Unit) {
-					((Unit) fix).addMember(worker);
+				if (fix instanceof IUnit) {
+					((IUnit) fix).addMember(worker);
 				}
 			}
 		}

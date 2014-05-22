@@ -9,8 +9,8 @@ import java.util.Set;
 
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
-import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import util.NullCleaner;
 
@@ -25,7 +25,7 @@ public class ProxyWorker implements IWorker {
 	/**
 	 * The unit we're proxying for.
 	 */
-	private final Unit proxied;
+	private final IUnit proxied;
 	/**
 	 * The proxy Jobs.
 	 */
@@ -41,7 +41,7 @@ public class ProxyWorker implements IWorker {
 	/**
 	 * @param unit the unit to proxy for
 	 */
-	public ProxyWorker(final Unit unit) {
+	public ProxyWorker(final IUnit unit) {
 		proxied = unit;
 		workers = new ArrayList<>();
 		jobNames = new HashSet<>();

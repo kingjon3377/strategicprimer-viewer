@@ -29,8 +29,8 @@ import model.listeners.MapChangeListener;
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
-import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
@@ -105,7 +105,10 @@ public class WorkerMgmtFrame extends JFrame {
 				.getMap().getPlayers().getCurrentPlayer(), ":");
 		pch.addPlayerChangeListener(plabel);
 		pch.addPlayerChangeListener(newUnitFrame);
-		final OrdersPanel ordersPanel = new OrdersPanel();
+		final OrdersPanel ordersPanel = new OrdersPanel(model);
+		pch.addPlayerChangeListener(ordersPanel);
+		ordersPanel.playerChanged(null, model.getMap().getPlayers()
+				.getCurrentPlayer());
 		tree.addTreeSelectionListener(ordersPanel);
 		final Component outer = this;
 		final IWorkerModel smodel = model;
@@ -335,17 +338,17 @@ public class WorkerMgmtFrame extends JFrame {
 					model.getMap().getPlayers().getCurrentPlayer();
 			final String playerName = currentPlayer.getName();
 			final String turn = Integer.toString(model.getMap().getCurrentTurn());
-			final List<Unit> units = model.getUnits(currentPlayer);
+			final List<IUnit> units = model.getUnits(currentPlayer);
 
-			final Map<String, List<Unit>> unitsByKind = new HashMap<>();
-			for (final Unit unit : units) {
+			final Map<String, List<IUnit>> unitsByKind = new HashMap<>();
+			for (final IUnit unit : units) {
 				if (!unit.iterator().hasNext()) {
 					// FIXME: This should be exposed as a user option. Sometimes
 					// users *want* empty units printed.
 					continue;
 				}
 				// ESCA-JAVA0177:
-				final List<Unit> list; // NOPMD
+				final List<IUnit> list; // NOPMD
 				if (unitsByKind.containsKey(unit.getKind())) {
 					list = unitsByKind.get(unit.getKind());
 				} else {
@@ -356,10 +359,10 @@ public class WorkerMgmtFrame extends JFrame {
 			}
 
 			int size = 34 + playerName.length() + turn.length();
-			for (final Entry<String, List<Unit>> entry : unitsByKind.entrySet()) {
+			for (final Entry<String, List<IUnit>> entry : unitsByKind.entrySet()) {
 				size += 4;
 				size += entry.getKey().length();
-				for (final Unit unit : entry.getValue()) {
+				for (final IUnit unit : entry.getValue()) {
 					size += 10;
 					size += unit.getName().length();
 					size += unitMemberSize(unit);
@@ -374,11 +377,11 @@ public class WorkerMgmtFrame extends JFrame {
 			builder.append(turn);
 			builder.append("]\n\nInventions: TODO: any?\n\n");
 			builder.append("Workers:\n");
-			for (final Entry<String, List<Unit>> entry : unitsByKind.entrySet()) {
+			for (final Entry<String, List<IUnit>> entry : unitsByKind.entrySet()) {
 				builder.append("* ");
 				builder.append(entry.getKey());
 				builder.append(":\n");
-				for (final Unit unit : entry.getValue()) {
+				for (final IUnit unit : entry.getValue()) {
 					builder.append("  - ");
 					builder.append(unit.getName());
 					builder.append(unitMembers(unit));
@@ -398,7 +401,7 @@ public class WorkerMgmtFrame extends JFrame {
 		 * @param unit a unit
 		 * @return the size of string needed to represent its members
 		 */
-		private static int unitMemberSize(final Unit unit) {
+		private static int unitMemberSize(final IUnit unit) {
 			if (unit.iterator().hasNext()) {
 				int size = 3;
 				for (final UnitMember member : unit) {
@@ -414,7 +417,7 @@ public class WorkerMgmtFrame extends JFrame {
 		 * @param unit a unit
 		 * @return a String representing its members
 		 */
-		private static String unitMembers(final Unit unit) {
+		private static String unitMembers(final IUnit unit) {
 			if (unit.iterator().hasNext()) {
 				// Assume at least two K.
 				final StringBuilder builder = new StringBuilder(2048)

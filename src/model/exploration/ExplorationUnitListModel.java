@@ -6,7 +6,7 @@ import javax.swing.DefaultListModel;
 
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
-import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.IUnit;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -16,7 +16,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class ExplorationUnitListModel extends DefaultListModel<Unit> implements
+public class ExplorationUnitListModel extends DefaultListModel<IUnit> implements
 		PlayerChangeListener {
 	/**
 	 * The exploration model to work from.
@@ -41,8 +41,8 @@ public class ExplorationUnitListModel extends DefaultListModel<Unit> implements
 	@Override
 	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		clear();
-		final List<Unit> units = model.getUnits(newPlayer);
-		for (final Unit unit : units) {
+		final List<IUnit> units = model.getUnits(newPlayer);
+		for (final IUnit unit : units) {
 			addElement(unit);
 		}
 	}

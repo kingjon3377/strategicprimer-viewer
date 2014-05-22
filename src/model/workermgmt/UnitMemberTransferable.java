@@ -6,7 +6,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
 import model.map.fixtures.UnitMember;
-import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.IUnit;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -40,14 +40,14 @@ public class UnitMemberTransferable implements Transferable {
 		/**
 		 * The unit containing it.
 		 */
-		public final Unit unit;
+		public final IUnit unit;
 		/**
 		 * Constructor.
 		 *
 		 * @param theMember the first element
 		 * @param theUnit the second element
 		 */
-		public UnitMemberPair(final UnitMember theMember, final Unit theUnit) {
+		public UnitMemberPair(final UnitMember theMember, final IUnit theUnit) {
 			member = theMember;
 			unit = theUnit;
 		}
@@ -77,7 +77,7 @@ public class UnitMemberTransferable implements Transferable {
 	 * @param theData the object
 	 * @param theParent its containing object
 	 */
-	public UnitMemberTransferable(final UnitMember theData, final Unit theParent) {
+	public UnitMemberTransferable(final UnitMember theData, final IUnit theParent) {
 		data = new UnitMemberPair(theData, theParent);
 	}
 

@@ -11,6 +11,7 @@ import model.map.SPMap;
 import model.map.Tile;
 import model.map.TileType;
 import model.map.fixtures.mobile.Animal;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.towns.Fortress;
@@ -46,7 +47,7 @@ public class TestConverter {
 		start.addTile(pointTwo, tileTwo);
 		final Point pointThree = PointFactory.point(1, 0);
 		final IMutableTile tileThree = new Tile(TileType.Plains);
-		final Unit fixtureThree = new Unit(new Player(0, "A. Player"),
+		final IUnit fixtureThree = new Unit(new Player(0, "A. Player"),
 				"legion", "eagles", 3);
 		tileThree.addFixture(fixtureThree);
 		start.addTile(pointThree, tileThree);

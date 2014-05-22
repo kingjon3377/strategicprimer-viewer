@@ -13,6 +13,7 @@ import model.map.MapView;
 import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 import model.misc.AbstractDriverModel;
@@ -43,8 +44,8 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 	 * @return a list of that player's units
 	 */
 	@Override
-	public final List<Unit> getUnits(final Player player) {
-		final List<Unit> retval = new ArrayList<>();
+	public final List<IUnit> getUnits(final Player player) {
+		final List<IUnit> retval = new ArrayList<>();
 		final ITileCollection tiles = getMap().getTiles();
 		for (final Point point : tiles) {
 			if (point != null) {
@@ -61,12 +62,12 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 	 * @return a list of the members of the sequence that are units owned by the
 	 *         player
 	 */
-	private static List<Unit> getUnits(final Iterable<? super Unit> iter,
+	private static List<IUnit> getUnits(final Iterable<? super Unit> iter,
 			final Player player) {
-		final List<Unit> retval = new ArrayList<>();
+		final List<IUnit> retval = new ArrayList<>();
 		for (final Object obj : iter) {
-			if (obj instanceof Unit && ((Unit) obj).getOwner().equals(player)) {
-				retval.add((Unit) obj);
+			if (obj instanceof IUnit && ((IUnit) obj).getOwner().equals(player)) {
+				retval.add((IUnit) obj);
 			} else if (obj instanceof Fortress) {
 				retval.addAll(getUnits((Fortress) obj, player));
 			}
@@ -81,8 +82,8 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 	@Override
 	public List<String> getUnitKinds(final Player player) {
 		final Set<String> retval = new HashSet<>();
-		final List<Unit> units = getUnits(player);
-		for (final Unit unit : units) {
+		final List<IUnit> units = getUnits(player);
+		for (final IUnit unit : units) {
 			retval.add(unit.getKind());
 		}
 		return NullCleaner.assertNotNull(Collections
@@ -95,10 +96,10 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 	 * @return a list of the units of that kind in the map belonging to that player
 	 */
 	@Override
-	public List<Unit> getUnits(final Player player, final String kind) {
-		final List<Unit> units = getUnits(player);
-		final List<Unit> retval = new ArrayList<>();
-		for (final Unit unit : units) {
+	public List<IUnit> getUnits(final Player player, final String kind) {
+		final List<IUnit> units = getUnits(player);
+		final List<IUnit> retval = new ArrayList<>();
+		for (final IUnit unit : units) {
 			if (kind.equals(unit.getKind())) {
 				retval.add(unit);
 			}
@@ -109,7 +110,7 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 	 * @param unit the unit to add
 	 */
 	@Override
-	public final void addUnit(final Unit unit) {
+	public final void addUnit(final IUnit unit) {
 		final ITileCollection tiles = getMap().getTiles();
 		for (final Point point : tiles) {
 			if (point == null) {

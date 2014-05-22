@@ -21,6 +21,7 @@ import model.map.PointFactory;
 import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
@@ -43,7 +44,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * The currently selected unit.
 	 */
 	@Nullable
-	private Unit selUnit = null;
+	private IUnit selUnit = null;
 	/**
 	 * Its location.
 	 */
@@ -93,8 +94,8 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * @return all that player's units in the main map
 	 */
 	@Override
-	public List<Unit> getUnits(final Player player) {
-		final List<Unit> retval = new ArrayList<>();
+	public List<IUnit> getUnits(final Player player) {
+		final List<IUnit> retval = new ArrayList<>();
 		final ITileCollection tiles = getMap().getTiles();
 		for (final Point point : tiles) {
 			if (point != null) {
@@ -111,12 +112,12 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * @return a list of the members of the sequence that are units owned by the
 	 *         player
 	 */
-	private static List<Unit> getUnits(final Iterable<? super Unit> iter,
+	private static List<IUnit> getUnits(final Iterable<? super Unit> iter,
 			final Player player) {
-		final List<Unit> retval = new ArrayList<>();
+		final List<IUnit> retval = new ArrayList<>();
 		for (final Object obj : iter) {
-			if (obj instanceof Unit && ((Unit) obj).getOwner().equals(player)) {
-				retval.add((Unit) obj);
+			if (obj instanceof IUnit && ((IUnit) obj).getOwner().equals(player)) {
+				retval.add((IUnit) obj);
 			} else if (obj instanceof Fortress) {
 				retval.addAll(getUnits((Fortress) obj, player));
 			}
@@ -141,7 +142,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	@Override
 	public int move(final Direction direction)
 			throws TraversalImpossibleException {
-		final Unit unit = selUnit;
+		final IUnit unit = selUnit;
 		if (unit == null) {
 			throw new IllegalStateException(
 					"move() called when no unit selected");
@@ -199,13 +200,13 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * @param sourceTile a tile
 	 * @param unit a unit to remove from that tile, even if it's in a fortress
 	 */
-	private static void removeImpl(final IMutableTile sourceTile, final Unit unit) {
+	private static void removeImpl(final IMutableTile sourceTile, final IUnit unit) {
 		for (final TileFixture fix : sourceTile) {
 			if (unit.equals(fix)) {
 				sourceTile.removeFixture(unit);
 				return; // NOPMD
 			} else if (fix instanceof Fortress) {
-				for (final Unit item : (Fortress) fix) {
+				for (final IUnit item : (Fortress) fix) {
 					if (unit.equals(item)) {
 						((Fortress) fix).removeUnit(unit);
 						return;
@@ -378,14 +379,14 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 */
 	@Override
 	@Nullable
-	public Unit getSelectedUnit() {
+	public IUnit getSelectedUnit() {
 		return selUnit;
 	}
 
 	/**
 	 * @param unit the new selected unit
 	 */
-	public void selectUnit(final Unit unit) {
+	public void selectUnit(final IUnit unit) {
 		final Point oldLoc = selUnitLoc;
 		selUnit = unit;
 		selUnitLoc = find(unit);

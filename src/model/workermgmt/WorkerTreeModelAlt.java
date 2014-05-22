@@ -17,7 +17,7 @@ import model.map.HasKind;
 import model.map.HasName;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
-import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.IUnit;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -56,8 +56,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @param newOwner the new owner
 	 */
 	@Override
-	public final void moveMember(final UnitMember member, final Unit old,
-			final Unit newOwner) {
+	public final void moveMember(final UnitMember member, final IUnit old,
+			final IUnit newOwner) {
 		final PlayerNode pnode = NullCleaner.assertNotNull((PlayerNode) root);
 		final UnitNode oldNode =
 				NullCleaner.assertNotNull((UnitNode) getNode(pnode, old));
@@ -137,10 +137,10 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * @param kind what kind of unit
 		 * @param units the units of this kind
 		 */
-		public KindNode(final String kind, final List<Unit> units) {
+		public KindNode(final String kind, final List<IUnit> units) {
 			super(kind);
 			int index = 0;
-			for (final Unit unit : units) {
+			for (final IUnit unit : units) {
 				if (unit != null) {
 					insert(new UnitNode(unit), index); // NOPMD
 					index++;
@@ -158,7 +158,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 *
 		 * @param unit the unit we represent.
 		 */
-		public UnitNode(final Unit unit) {
+		public UnitNode(final IUnit unit) {
 			super(unit);
 			int index = 0;
 			for (final UnitMember member : unit) {
@@ -264,7 +264,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @param unit the unit to add
 	 */
 	@Override
-	public final void addUnit(final Unit unit) {
+	public final void addUnit(final IUnit unit) {
 		model.addUnit(unit);
 		final UnitNode node = new UnitNode(unit);
 		final String kind = unit.getKind();
@@ -286,7 +286,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @param unit the unit to add
 	 */
 	@Override
-	public final void addNewUnit(final Unit unit) {
+	public final void addNewUnit(final IUnit unit) {
 		addUnit(unit);
 	}
 
@@ -331,7 +331,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @param member the member to add to it
 	 */
 	@Override
-	public final void addUnitMember(final Unit unit, final UnitMember member) {
+	public final void addUnitMember(final IUnit unit, final UnitMember member) {
 		final PlayerNode pnode = (PlayerNode) root;
 		UnitNode unode = null;
 		for (final TreeNode item : pnode) {
@@ -435,7 +435,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 			int index = getIndexOfChild(path[path.length - 1], node);
 			fireTreeNodesChanged(this, path, new int[] { index },
 					new Object[] { node });
-		} else if (item instanceof Unit) {
+		} else if (item instanceof IUnit) {
 			final TreeNode node = getNode(item);
 			if (node == null) {
 				return;
@@ -471,7 +471,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 			if (nodeTwo == null) {
 				nodeTwo =
 						new KindNode(item.getKind(), new ArrayList<>(
-								Collections.singletonList((Unit) item)));
+								Collections.singletonList((IUnit) item)));
 				((PlayerNode) root).add((MutableTreeNode) nodeTwo);
 				fireTreeNodesInserted(this, new TreeNode[] { root },
 						new int[] { getIndexOfChild(root, nodeTwo) },

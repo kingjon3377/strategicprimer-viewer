@@ -10,6 +10,7 @@ import model.map.Player;
 import model.map.Point;
 import model.map.River;
 import model.map.TileFixture;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
@@ -42,7 +43,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	 */
 	private static final int RIVER_RPT_LEN = ("There is a river on the tile, "
 			+ "flowing through the following borders: "
-			+ "north, south, east, west").length();  
+			+ "north, south, east, west").length();
 	/**
 	 * All fixtures referred to in this report are removed from the collection.
 	 *
@@ -225,11 +226,11 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		if (item.iterator().hasNext()) {
 			builder.append(OPEN_LIST_ITEM).append("Units on the tile:\n")
 					.append(OPEN_LIST);
-			for (final Unit unit : item) {
-				if (unit != null) {
+			for (final IUnit unit : item) {
+				if (unit instanceof Unit) {
 					builder.append(OPEN_LIST_ITEM)
 							.append(urg.produce(fixtures, tiles, currentPlayer,
-									unit, loc)).append(CLOSE_LIST_ITEM);
+									(Unit) unit, loc)).append(CLOSE_LIST_ITEM);
 				}
 			}
 			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
@@ -271,10 +272,10 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		if (item.iterator().hasNext()) {
 			final AbstractReportNode units = new ListReportNode(
 					"Units on the tile:");
-			for (final Unit unit : item) {
-				if (unit != null) {
+			for (final IUnit unit : item) {
+				if (unit instanceof Unit) {
 					units.add(urg.produceRIR(fixtures, tiles, currentPlayer,
-							unit, loc));
+							(Unit) unit, loc));
 				}
 			}
 			retval.add(units);

@@ -1,6 +1,6 @@
 package model.listeners;
 
-import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.IUnit;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -15,5 +15,5 @@ public interface UnitSelectionListener {
 	/**
 	 * @param unit the newly selected Unit. May be null if no selection.
 	 */
-	void selectUnit(@Nullable final Unit unit);
+	void selectUnit(@Nullable final IUnit unit);
 }

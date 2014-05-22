@@ -6,14 +6,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import model.map.FixtureIterable;
-import model.map.HasImage;
-import model.map.HasKind;
-import model.map.HasName;
-import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.Player;
-import model.map.Subsettable;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 
@@ -28,8 +22,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class Unit implements MobileFixture, HasImage, HasKind,
-		FixtureIterable<UnitMember>, HasName, HasOwner, Subsettable<Unit> {
+public class Unit implements IUnit {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -111,6 +104,7 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	 *
 	 * @param member the member to add
 	 */
+	@Override
 	public void addMember(final UnitMember member) {
 		members.add(member);
 	}
@@ -120,6 +114,7 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	 *
 	 * @param member the member to remove
 	 */
+	@Override
 	public final void removeMember(final UnitMember member) {
 		members.remove(member);
 	}
@@ -139,14 +134,24 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Unit
-				&& ((Unit) obj).owner.getPlayerId() == owner.getPlayerId()
-				&& ((Unit) obj).kind.equals(kind)
-				&& ((Unit) obj).name.equals(name)
-				&& ((Unit) obj).members.equals(members)
-				&& ((Unit) obj).id == id;
+		return this == obj || obj instanceof IUnit
+				&& ((IUnit) obj).getOwner().getPlayerId() == owner.getPlayerId()
+				&& ((IUnit) obj).getKind().equals(kind)
+				&& ((IUnit) obj).getName().equals(name)
+				&& equalMembers((IUnit) obj)
+				&& ((IUnit) obj).getID() == id;
 	}
-
+	/**
+	 * @param obj another unit
+	 * @return whether its "members" are the same as ours
+	 */
+	private boolean equalMembers(final IUnit obj) {
+		final Set<UnitMember> theirs = new ArraySet<>();
+		for (final UnitMember member : obj) {
+			theirs.add(member);
+		}
+		return members.containsAll(theirs) && theirs.containsAll(members);
+	}
 	/**
 	 *
 	 * @return a hash-code for the object
@@ -174,6 +179,7 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	/**
 	 * @return a verbose description of the Unit.
 	 */
+	@Override
 	public String verbose() {
 		// Assume each member is half a K.
 		final String orig = toString();
@@ -234,16 +240,16 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	}
 
 	/**
-	 *
+	 * FIXME: Should this look at unit members?
 	 * @param fix a fixture
 	 * @return whether it's an identical-except-ID unit.
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return this == fix || fix instanceof Unit
-				&& ((Unit) fix).owner.getPlayerId() == owner.getPlayerId()
-				&& ((Unit) fix).kind.equals(kind)
-				&& ((Unit) fix).name.equals(name);
+		return this == fix || fix instanceof IUnit
+				&& ((IUnit) fix).getOwner().getPlayerId() == owner.getPlayerId()
+				&& ((IUnit) fix).getKind().equals(kind)
+				&& ((IUnit) fix).getName().equals(name);
 	}
 
 	/**
@@ -273,6 +279,7 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	/**
 	 * @param newOrders the unit's new orders
 	 */
+	@Override
 	public final void setOrders(final String newOrders) {
 		orders = newOrders;
 	}
@@ -280,6 +287,7 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	/**
 	 * @return the unit's orders
 	 */
+	@Override
 	public String getOrders() {
 		return orders;
 	}
@@ -325,11 +333,11 @@ public class Unit implements MobileFixture, HasImage, HasKind,
 	 * @return whether the unit is a strict subset of this one.
 	 */
 	@Override
-	public boolean isSubset(final Unit obj, final PrintWriter ostream) {
+	public boolean isSubset(final IUnit obj, final PrintWriter ostream) {
 		if (obj.getID() != id) {
 			ostream.println("Units have different IDs");
 			return false; // NOPMD
-		} else if (obj.owner.getPlayerId() != owner.getPlayerId()) {
+		} else if (obj.getOwner().getPlayerId() != owner.getPlayerId()) {
 			ostream.print("Unit of ID #");
 			ostream.print(id);
 			ostream.println(":\tOwners differ");

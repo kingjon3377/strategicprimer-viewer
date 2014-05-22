@@ -12,6 +12,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.IPlayerCollection;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 import util.NullCleaner;
@@ -106,9 +107,9 @@ public class FortressReader implements INodeHandler<Fortress> {
 			retval.addAttribute("name", obj.getName());
 		}
 		retval.addIdAttribute(obj.getID());
-		for (final Unit unit : obj) {
-			if (unit != null) {
-				retval.addChild(UNIT_READER.write(unit));
+		for (final IUnit unit : obj) {
+			if (unit instanceof Unit) {
+				retval.addChild(UNIT_READER.write((Unit) unit));
 			}
 		}
 		retval.addImageAttribute(obj);

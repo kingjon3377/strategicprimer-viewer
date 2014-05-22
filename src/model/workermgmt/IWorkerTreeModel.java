@@ -8,7 +8,7 @@ import model.listeners.PlayerChangeListener;
 import model.map.HasKind;
 import model.map.HasName;
 import model.map.fixtures.UnitMember;
-import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.IUnit;
 
 /**
  * An interface to add the moveMember method to the TreeModel interface.
@@ -26,14 +26,14 @@ public interface IWorkerTreeModel extends TreeModel, NewUnitListener,
 	 * @param old the prior owner
 	 * @param newOwner the new owner
 	 */
-	void moveMember(final UnitMember member, final Unit old, final Unit newOwner);
+	void moveMember(final UnitMember member, final IUnit old, final IUnit newOwner);
 
 	/**
 	 * Add a new unit. Also handles adding it to the map (via the driver model).
 	 *
 	 * @param unit the unit to add.
 	 */
-	void addUnit(final Unit unit);
+	void addUnit(final IUnit unit);
 
 	/**
 	 * @param obj an object, possibly a node in the tree
@@ -48,7 +48,7 @@ public interface IWorkerTreeModel extends TreeModel, NewUnitListener,
 	 * @param unit the unit that should own it
 	 * @param member the member to add
 	 */
-	void addUnitMember(final Unit unit, final UnitMember member);
+	void addUnitMember(final IUnit unit, final UnitMember member);
 	/**
 	 * Rename a worker or unit.
 	 * @param item the item that has changed

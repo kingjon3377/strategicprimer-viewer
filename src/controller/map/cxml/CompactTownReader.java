@@ -10,6 +10,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.IEvent;
 import model.map.IPlayerCollection;
 import model.map.Player;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.City;
@@ -275,9 +276,10 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			ostream.append('"').append(imageXML((Fortress) obj)).append('>');
 			if (((Fortress) obj).iterator().hasNext()) {
 				ostream.append('\n');
-				for (final Unit unit : (Fortress) obj) {
-					if (unit != null) {
-						CompactUnitReader.READER.write(ostream, unit, indent + 1);
+				for (final IUnit unit : (Fortress) obj) {
+					if (unit instanceof Unit) {
+						CompactUnitReader.READER.write(ostream, (Unit) unit,
+								indent + 1);
 					}
 				}
 				ostream.append(indent(indent));

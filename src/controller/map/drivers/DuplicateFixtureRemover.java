@@ -16,7 +16,7 @@ import model.map.IMutableTile;
 import model.map.ITile;
 import model.map.Point;
 import model.map.TileFixture;
-import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.resources.CacheFixture;
 import util.TypesafeLogger;
 import util.Warning;
@@ -95,8 +95,8 @@ public class DuplicateFixtureRemover implements ISPDriver {
 			}
 			boolean already = false;
 			for (final TileFixture keptFixture : fixtures) {
-				if (fix instanceof Unit
-						&& ((Unit) fix).getKind().contains("TODO")
+				if (fix instanceof IUnit
+						&& ((IUnit) fix).getKind().contains("TODO")
 						|| fix instanceof CacheFixture) {
 					break;
 				} else if (keptFixture.equalsIgnoringID(fix)) {

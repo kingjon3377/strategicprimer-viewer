@@ -13,7 +13,7 @@ import model.map.HasKind;
 import model.map.HasName;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
-import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.IUnit;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -86,8 +86,8 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			// A String here is a unit's kind.
 			return NullCleaner.assertNotNull(model.getUnits(root, // NOPMD
 					(String) parent).get(index));
-		} else if (parent instanceof Unit) {
-			final Iterator<UnitMember> iter = ((Unit) parent).iterator();
+		} else if (parent instanceof IUnit) {
+			final Iterator<UnitMember> iter = ((IUnit) parent).iterator();
 			for (int i = 0; i < index; i++) {
 				if (iter.hasNext()) {
 					// ESCA-JAVA0282:
@@ -114,8 +114,8 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	public int getChildCount(@Nullable final Object parent) {
 		if (parent instanceof Player) {
 			return model.getUnits((Player) parent).size(); // NOPMD
-		} else if (parent instanceof Unit) {
-			final Iterator<UnitMember> iter = ((Unit) parent).iterator();
+		} else if (parent instanceof IUnit) {
+			final Iterator<UnitMember> iter = ((IUnit) parent).iterator();
 			int count = 0;
 			// ESCA-JAVA0254:
 			while (iter.hasNext()) {
@@ -135,7 +135,8 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 */
 	@Override
 	public boolean isLeaf(@Nullable final Object node) {
-		return !(node instanceof Player) && !(node instanceof Unit);
+		return !(node instanceof Player) && !(node instanceof IUnit)
+				&& !(node instanceof String);
 	}
 
 	/**
@@ -170,9 +171,9 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			} else {
 				return -1; // NOPMD
 			}
-		} else if (parent instanceof Unit) {
+		} else if (parent instanceof IUnit) {
 			int index = 0;
-			for (final UnitMember member : (Unit) parent) {
+			for (final UnitMember member : (IUnit) parent) {
 				if (member.equals(child)) {
 					return index; // NOPMD
 				}
@@ -209,8 +210,8 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 * @param newOwner the new owner
 	 */
 	@Override
-	public void moveMember(final UnitMember member, final Unit old,
-			final Unit newOwner) {
+	public void moveMember(final UnitMember member, final IUnit old,
+			final IUnit newOwner) {
 		final int oldIndex = getIndexOfChild(old, member);
 		old.removeMember(member);
 		final TreeModelEvent removedEvent = new TreeModelEvent(this,
@@ -239,7 +240,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 * @param unit the unit to add
 	 */
 	@Override
-	public void addUnit(final Unit unit) {
+	public void addUnit(final IUnit unit) {
 		model.addUnit(unit);
 		final TreePath path = new TreePath(root);
 		final int[] indices = singletonInt(model.getUnits(root).size());
@@ -276,7 +277,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 * @param unit the unit to add.
 	 */
 	@Override
-	public void addNewUnit(final Unit unit) {
+	public void addNewUnit(final IUnit unit) {
 		addUnit(unit);
 	}
 
@@ -321,7 +322,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 * @param member the member to add to it
 	 */
 	@Override
-	public void addUnitMember(final Unit unit, final UnitMember member) {
+	public void addUnitMember(final IUnit unit, final UnitMember member) {
 		unit.addMember(member);
 		final TreePath path = new TreePath(new Object[] { root, unit });
 		final int[] indices = new int[] { getIndexOfChild(unit, member) };
@@ -347,13 +348,13 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 		final TreePath path;
 		final int[] indices;
 		final Object[] children;
-		if (item instanceof Unit) {
+		if (item instanceof IUnit) {
 			path = new TreePath(singletonObj(root));
 			indices = singletonInt(getIndexOfChild(root, item));
 			children = singletonObj(item);
 		} else if (item instanceof UnitMember) {
-			Unit parent = null;
-			for (final Unit unit : model.getUnits(root)) {
+			IUnit parent = null;
+			for (final IUnit unit : model.getUnits(root)) {
 				for (final UnitMember member : unit) {
 					if (member == item || item.equals(member)) {
 						parent = unit;
@@ -384,13 +385,13 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 		final TreePath path;
 		final int[] indices;
 		final Object[] children;
-		if (item instanceof Unit) {
+		if (item instanceof IUnit) {
 			path = new TreePath(singletonObj(root));
 			indices = singletonInt(getIndexOfChild(root, item));
 			children = singletonObj(item);
 		} else if (item instanceof UnitMember) {
-			Unit parent = null;
-			for (final Unit unit : model.getUnits(root)) {
+			IUnit parent = null;
+			for (final IUnit unit : model.getUnits(root)) {
 				for (final UnitMember member : unit) {
 					if (member == item || item.equals(member)) {
 						parent = unit;

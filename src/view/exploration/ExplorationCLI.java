@@ -17,6 +17,7 @@ import model.map.ITile;
 import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
@@ -93,12 +94,13 @@ public class ExplorationCLI {
 	 *         selected.
 	 * @throws IOException on I/O error
 	 */
-	public Unit chooseUnit(final Player player) throws IOException {
-		final List<Unit> units = model.getUnits(player);
+	public IUnit chooseUnit(final Player player) throws IOException {
+		final List<IUnit> units = model.getUnits(player);
 		final int unitNum = helper.chooseFromList(units, "Player's units:",
 				"That player has no units in the master map.",
 				"Please make a selection: ", true);
 		if (unitNum < 0 || unitNum >= units.size()) {
+			// FIXME: Should be a null-object
 			return new Unit(new Player(-1, "abort"), "", "", -1); // NOPMD
 		} else {
 			return assertNotNull(units.get(unitNum));
@@ -112,7 +114,7 @@ public class ExplorationCLI {
 	 * @param point the location of the tile in question
 	 */
 	private void swearVillages(final Point point) {
-		final Unit visitor = model.getSelectedUnit();
+		final IUnit visitor = model.getSelectedUnit();
 		if (visitor != null) {
 			for (final Pair<IMap, File> mapPair : model.getAllMaps()) {
 				final IMap map = mapPair.first();
@@ -134,7 +136,7 @@ public class ExplorationCLI {
 	 *         fixtures), or MAX_INT if "exit".
 	 * @throws IOException on I/O error
 	 */
-	public int move(final Unit mover) throws IOException {
+	public int move(final IUnit mover) throws IOException {
 		final int directionNum = helper.inputNumber("Direction to move: ");
 		if (directionNum > 8) {
 			return Integer.MAX_VALUE; // NOPMD
@@ -215,7 +217,7 @@ public class ExplorationCLI {
 	 * @throws IOException on I/O error.
 	 */
 	public void moveUntilDone() throws IOException {
-		final Unit selUnit = model.getSelectedUnit();
+		final IUnit selUnit = model.getSelectedUnit();
 		if (selUnit == null) {
 			SYS_OUT.println("No unit is selected");
 		} else {

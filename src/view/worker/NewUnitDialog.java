@@ -15,6 +15,7 @@ import model.listeners.NewUnitListener;
 import model.listeners.NewUnitSource;
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -116,7 +117,7 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 			} else if (kind.isEmpty()) {
 				kindField.requestFocusInWindow();
 			} else {
-				final Unit unit = new Unit(owner, kind,
+				final IUnit unit = new Unit(owner, kind,
 						name, idf.createID());
 				for (final NewUnitListener list : nuListeners) {
 					list.addNewUnit(unit);

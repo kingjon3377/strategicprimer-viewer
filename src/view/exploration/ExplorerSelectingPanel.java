@@ -21,7 +21,7 @@ import model.listeners.CompletionSource;
 import model.listeners.PlayerChangeListener;
 import model.listeners.PlayerChangeSource;
 import model.map.Player;
-import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.IUnit;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -61,7 +61,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	/**
 	 * The list of units.
 	 */
-	private final JList<Unit> unitList;
+	private final JList<IUnit> unitList;
 	/**
 	 * The list of player-change listeners.
 	 */
@@ -165,7 +165,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	 */
 	@Override
 	public void actionPerformed(@Nullable final ActionEvent event) {
-		final Unit selectedValue = unitList.getSelectedValue();
+		final IUnit selectedValue = unitList.getSelectedValue();
 		if (event != null
 				&& BUTTON_TEXT.equalsIgnoreCase(event.getActionCommand())
 				&& !unitList.isSelectionEmpty() && selectedValue != null) {

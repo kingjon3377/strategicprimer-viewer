@@ -13,7 +13,7 @@ import model.map.IFixture;
 import model.map.Player;
 import model.map.Subsettable;
 import model.map.TileFixture;
-import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.IUnit;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -29,7 +29,7 @@ import util.NullCleaner;
  *
  */
 public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
-		FixtureIterable<Unit> {
+		FixtureIterable<IUnit> {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -46,7 +46,7 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 	/**
 	 * The units in the fortress.
 	 */
-	private final List<Unit> units; // Should this be a Set?
+	private final List<IUnit> units; // Should this be a Set?
 
 	/**
 	 * Constructor.
@@ -69,7 +69,7 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 	 * @return the units in the fortress.
 	 */
 	@Override
-	public final Iterator<Unit> iterator() {
+	public final Iterator<IUnit> iterator() {
 		return NullCleaner.assertNotNull(units.iterator());
 	}
 
@@ -78,7 +78,7 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 	 *
 	 * @param unit the unit to add
 	 */
-	public final void addUnit(final Unit unit) {
+	public final void addUnit(final IUnit unit) {
 		units.add(unit);
 	}
 
@@ -87,7 +87,7 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 	 *
 	 * @param unit the unit to remove
 	 */
-	public final void removeUnit(final Unit unit) {
+	public final void removeUnit(final IUnit unit) {
 		units.remove(unit);
 	}
 
@@ -140,7 +140,7 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 		sbuild.append(ownerStr);
 		sbuild.append(". Units:");
 		int count = 0;
-		for (final Unit unit : units) {
+		for (final IUnit unit : units) {
 			sbuild.append("\n\t\t\t");
 			sbuild.append(unit.getName());
 			if (unit.getOwner().equals(owner)) {
@@ -200,11 +200,11 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 		if (name.equals(obj.name)
 				&& obj.owner.getPlayerId() == owner.getPlayerId()) {
 			boolean retval = true;
-			final Map<Integer, Unit> ours = new HashMap<>();
-			for (final Unit unit : this) {
+			final Map<Integer, IUnit> ours = new HashMap<>();
+			for (final IUnit unit : this) {
 				ours.put(Integer.valueOf(unit.getID()), unit);
 			}
-			for (final Unit unit : obj) {
+			for (final IUnit unit : obj) {
 				if (unit == null) {
 					continue;
 				} else if (!ours.containsKey(Integer.valueOf(unit.getID()))) {

@@ -7,8 +7,8 @@ import model.listeners.SelectionChangeSource;
 import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
-import model.map.fixtures.mobile.Unit;
 import model.misc.IMultiMapModel;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -72,7 +72,7 @@ public interface IExplorationModel extends IMultiMapModel,
 	 * @param player a player
 	 * @return all that player's units in the master map
 	 */
-	List<Unit> getUnits(final Player player);
+	List<IUnit> getUnits(final Player player);
 
 	/**
 	 * Move the currently selected unit from its current tile one tile in the
@@ -109,7 +109,7 @@ public interface IExplorationModel extends IMultiMapModel,
 	 * @return the currently selected unit---may be null!
 	 */
 	@Nullable
-	Unit getSelectedUnit();
+	IUnit getSelectedUnit();
 
 	/**
 	 * @return its location. This will *not* be null.
