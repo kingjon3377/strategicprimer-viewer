@@ -1,6 +1,8 @@
 package model.workermgmt;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -12,11 +14,11 @@ import model.listeners.JobSelectionListener;
 import model.listeners.LevelGainListener;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
-import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.EmptyIterator;
 import util.NullCleaner;
 
 /**
@@ -33,13 +35,38 @@ public final class SkillListModel extends DefaultListModel<ISkill> implements
 	private final List<CompletionListener> cListeners = new ArrayList<>();
 
 	/**
-	 * A non-null "null" Job. Adjusted here to prevent modification.
-	 * TODO: Make an anonymous object of type IJob, not Job.
+	 * A non-null "null" Job.
 	 */
-	private static final Job NULL_JOB = new Job("null", -1) {
+	private static final IJob NULL_JOB = new IJob() {
 		@Override
 		public boolean addSkill(final ISkill skill) {
 			return false;
+		}
+
+		@Override
+		public String getName() {
+			return "null";
+		}
+
+		@Override
+		public void setName(final String nomen) {
+			throw new IllegalStateException("setName called on null job");
+		}
+
+		@Override
+		public Iterator<ISkill> iterator() {
+			return new EmptyIterator<>();
+		}
+
+		@Override
+		public boolean isSubset(final IJob obj, final PrintWriter ostream) {
+			ostream.println("isSubset called on null job");
+			return false;
+		}
+
+		@Override
+		public int getLevel() {
+			return -1;
 		}
 	};
 	/**

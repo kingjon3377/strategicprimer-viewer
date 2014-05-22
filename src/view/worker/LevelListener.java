@@ -11,7 +11,6 @@ import model.map.HasName;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.ISkill;
-import model.map.fixtures.mobile.worker.Skill;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -27,7 +26,7 @@ public final class LevelListener implements LevelGainListener,
 	/**
 	 * A type-safe null Skill.
 	 */
-	private static final ISkill NULL_SKILL = new Skill("null", -1, -1) {
+	private static final ISkill NULL_SKILL = new ISkill() {
 		@Override
 		public boolean equals(@Nullable final Object obj) {
 			return this == obj;
@@ -40,6 +39,22 @@ public final class LevelListener implements LevelGainListener,
 		@Override
 		public void addHours(final int hrs, final int condition) {
 			// Do nothing
+		}
+		@Override
+		public String getName() {
+			return "null";
+		}
+		@Override
+		public void setName(final String nomen) {
+			throw new IllegalStateException("setName called on null Skill");
+		}
+		@Override
+		public int getLevel() {
+			return -1;
+		}
+		@Override
+		public int getHours() {
+			return -1;
 		}
 	};
 	/**
