@@ -128,15 +128,24 @@ public final class QueryCLI implements ISPDriver {
 	private void herd(final PrintStream ostream) throws IOException {
 		final double rate; // The amount of milk per animal
 		final int time; // How long it takes to milk one animal, in minutes.
+		final boolean poultry;
 		if (helper.inputBoolean("Are these small animals, like sheep?\t")) {
 			rate = 1.5;
 			time = 15;
+			poultry = false;
 		} else if (helper.inputBoolean("Are these dairy cattle?\t")) {
 			rate = 4;
 			time = 20;
+			poultry = false;
+		} else if (helper.inputBoolean("Are these chickens?\t")) {
+			// TODO: Support other poultry
+			rate = .75;
+			time = 12;
+			poultry = true;
 		} else {
 			rate = 3;
 			time = 20;
+			poultry = false;
 		}
 		final int count = helper.inputNumber("How many animals?\t");
 		if (count == 0) {
@@ -152,14 +161,21 @@ public final class QueryCLI implements ISPDriver {
 			return; // NOPMD
 		}
 		final int animalsPerHerder = (count + herders - 1) / herders;
-		ostream.print("Tending the animals in each milking takes ");
+		ostream.print("Tending the animals takes ");
 		ostream.print(animalsPerHerder * time);
 		ostream.print(" minutes, or ");
 		ostream.print(animalsPerHerder * (time - 5));
-		ostream.println(" min. with expert herders, plus 30 min. to gather them.");
-		ostream.println(String.format(
-				"This produces %,.1f gallons, %,.1f lbs, of milk per day.", rate
-						* count, rate * 8.6 * count));
+		ostream.println(" minutes with expert herders, twice daily.");
+		if (poultry) {
+			ostream.println(String.format(
+					"This produces %.0f eggs, totaling %.1f oz.", rate * count,
+					rate * 2.0 * count));
+		} else {
+			ostream.println("Gathering them for each milking takes 30 min more.");
+			ostream.println(String.format(
+					"This produces %,.1f gallons, %,.1f lbs, of milk per day.",
+					rate * count, rate * 8.6 * count));
+		}
 	}
 	/**
 	 * Run hunting, fishing, or trapping.
