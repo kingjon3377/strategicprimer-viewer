@@ -2,23 +2,26 @@ package view.util;
 
 import java.io.PrintStream;
 
+import util.NullCleaner;
+
 /**
- * A class to get around FindBugs' insistence that System.out is always null.
+ * A class to get around Eclipse's insistence that System.out might be null.
  *
  * @author Jonathan Lovelace
  *
  */
-public final class SystemOut extends PrintStream {
+public final class SystemOut {
 	/**
 	 * The singleton object.
 	 */
-	public static final SystemOut SYS_OUT = new SystemOut();
+	public static final PrintStream SYS_OUT = NullCleaner
+			.assertNotNull(System.out);
 
 	/**
 	 * Constructor.
 	 */
 	private SystemOut() {
-		super(System.out);
+		// Do not instantiate.
 	}
 
 	/**
@@ -28,35 +31,5 @@ public final class SystemOut extends PrintStream {
 	@Override
 	public String toString() {
 		return "SystemOut";
-	}
-
-	/**
-	 * Chainable print().
-	 *
-	 * @param string the string to print
-	 * @return this
-	 */
-	public SystemOut printC(final String string) {
-		print(string);
-		return this;
-	}
-
-	/**
-	 * Chainable print().
-	 *
-	 * @param integer the number to print
-	 * @return this
-	 */
-	public SystemOut printC(final int integer) {
-		print(integer);
-		return this;
-	}
-	/**
-	 * Do  nothing.
-	 */
-	// ESCA-JAVA0025:
-	@Override
-	public void close() {
-		// Do nothing.
 	}
 }

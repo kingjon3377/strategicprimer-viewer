@@ -148,8 +148,8 @@ public class ExplorationCLI {
 		try {
 			cost = model.move(direction);
 		} catch (final TraversalImpossibleException except) {
-			SYS_OUT.printC("That direction is impassable; we've made sure ")
-					.println("all maps show that at a cost of 1 MP");
+			System.out.print("That direction is impassable; we've made sure ");
+			System.out.println("all maps show that at a cost of 1 MP");
 			return 1; // NOPMD
 		}
 		final Point point = model.getSelectedUnitLocation();
@@ -168,14 +168,15 @@ public class ExplorationCLI {
 			swearVillages(dPoint);
 			cost += 5;
 		}
-		SYS_OUT.printC("The explorer comes to ").printC(dPoint.toString())
-				.printC(", a tile with terrain ")
-				.println(model.getMap().getTile(dPoint).getTerrain());
+		System.out.print("The explorer comes to ");
+		System.out.print(dPoint.toString());
+		System.out.print(", a tile with terrain ");
+		System.out.println(model.getMap().getTile(dPoint).getTerrain());
 		if (allFixtures.isEmpty()) {
 			SYS_OUT.println("The following fixtures were automatically noticed:");
 		} else {
-			SYS_OUT.printC("The following fixtures were noticed, all but the ")
-					.println("last automtically:");
+			System.out.print("The following fixtures were noticed, all but the ");
+			System.out.println("last automtically:");
 			Collections.shuffle(allFixtures);
 			constants.add(allFixtures.get(0));
 		}
@@ -226,8 +227,10 @@ public class ExplorationCLI {
 			final int totalMP = helper.inputNumber("MP the unit has: ");
 			int movement = totalMP;
 			while (movement > 0) {
-				SYS_OUT.printC(movement).printC(" MP of ")
-						.printC(totalMP).println(" remaining.");
+				System.out.print(movement);
+				System.out.print(" MP of ");
+				System.out.print(totalMP);
+				System.out.println(" remaining.");
 				SYS_OUT.println(PROMPT);
 				movement -= move(selUnit);
 			}

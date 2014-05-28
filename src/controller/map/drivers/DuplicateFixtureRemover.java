@@ -88,7 +88,9 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	 * @param ostream the stream to report IDs of removed fixtures on.
 	 * @throws IOException on I/O error writing to stream
 	 */
-	public static void filter(final IMutableTile tile, final Appendable ostream) throws IOException {
+	public static void
+			filter(final IMutableTile tile, final Appendable ostream)
+					throws IOException {
 		final List<TileFixture> fixtures = new ArrayList<>();
 		final List<TileFixture> toRemove = new ArrayList<>();
 		for (final TileFixture fix : tile) {
