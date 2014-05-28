@@ -303,7 +303,13 @@ public class TrapModelDriver implements ISPDriver {
 					+ " contains invalid data", e);
 		}
 	}
-
+	/**
+	 * Start this driver from another driver.
+	 * @param map the map to operate on
+	 */
+	public void startDriver(final IMap map) {
+		repl(map, SYS_OUT);
+	}
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */

@@ -111,6 +111,9 @@ public final class QueryCLI implements ISPDriver {
 		case 'e':
 			herd(ostream);
 			break;
+		case 't':
+			new TrapModelDriver().startDriver(map);
+			break;
 		default:
 			ostream.println("Unknown command.");
 			break;
@@ -307,6 +310,8 @@ public final class QueryCLI implements ISPDriver {
 		ostream.println("orchards, or shrubs.");
 		ostream.print("hErd: Determine the output from and time required for ");
 		ostream.println("maintaining a herd.");
+		ostream.print("Trap: Switch to the trap-modeling program ");
+		ostream.println("to run trapping or fish-trapping.");
 		ostream.println("Quit: Exit the program.");
 	}
 
