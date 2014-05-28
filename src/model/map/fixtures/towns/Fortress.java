@@ -1,6 +1,6 @@
 package model.map.fixtures.towns;
 
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -194,9 +194,11 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 	 * @param obj another Fortress
 	 * @return whether it's a strict subset of this one
 	 * @param ostream a stream to write details to
+	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final Fortress obj, final PrintWriter ostream) {
+	public boolean isSubset(final Fortress obj, final Appendable ostream)
+			throws IOException {
 		if (name.equals(obj.name)
 				&& obj.owner.getPlayerId() == owner.getPlayerId()) {
 			boolean retval = true;
@@ -208,12 +210,13 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 				if (unit == null) {
 					continue;
 				} else if (!ours.containsKey(Integer.valueOf(unit.getID()))) {
-					ostream.print("Extra unit in fortress ");
-					ostream.print(getName());
-					ostream.print(":\t");
-					ostream.print(unit.toString());
-					ostream.print(", ID #");
-					ostream.println(unit.getID());
+					ostream.append("Extra unit in fortress ");
+					ostream.append(getName());
+					ostream.append(":\t");
+					ostream.append(unit.toString());
+					ostream.append(", ID #");
+					ostream.append(Integer.toString(unit.getID()));
+					ostream.append('\n');
 					retval = false;
 				} else if (!ours.get(Integer.valueOf(unit.getID())).isSubset(
 						unit, ostream)) {

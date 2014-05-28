@@ -31,7 +31,9 @@ import util.TypesafeLogger;
  *
  * We ignore namespaces, as I'm not sure quite how to handle them.
  *
- * TODO: Write tests.
+ * TODO: Write tests. FIXME: This class instantiates too many StringBuilders.
+ * Methods should probably take Appendable and be passed *one* StringBuilder per
+ * run.
  *
  * @author Jonathan Lovelace
  *

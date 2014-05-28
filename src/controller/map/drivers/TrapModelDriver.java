@@ -6,7 +6,6 @@ import static view.util.SystemOut.SYS_OUT;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -45,10 +44,8 @@ public class TrapModelDriver implements ISPDriver {
 	/**
 	 * A somewhat lengthy prompt.
 	 */
-	private static final String FISH_OR_TRAP = NullCleaner
-			.assertNotNull(new StringBuilder(
-					"Is this a fisherman trapping fish").append(
-					" rather than a trapper?").toString());
+	private static final String FISH_OR_TRAP =
+			"Is this a fisherman trapping fish rather than a trapper?";
 	/**
 	 * Logger.
 	 */
@@ -156,7 +153,7 @@ public class TrapModelDriver implements ISPDriver {
 	 * @param map the map to explore
 	 * @param ostream the stream to write output to
 	 */
-	private void repl(final IMap map, final PrintStream ostream) {
+	private void repl(final IMap map, final Appendable ostream) {
 		try {
 			final HuntingModel hmodel = new HuntingModel(map);
 			final boolean fishing = helper.inputBoolean(FISH_OR_TRAP);
@@ -187,8 +184,8 @@ public class TrapModelDriver implements ISPDriver {
 									.assertNotNull(TrapperCommand.values()[input]);
 					minutes -= handleCommand(fixtures, ostream,
 							command, fishing);
-					ostream.print(inHours(minutes));
-					ostream.println(" remaining");
+					ostream.append(inHours(minutes));
+					ostream.append(" remaining\n");
 					if (command == TrapperCommand.Quit) {
 						break;
 					}
@@ -232,23 +229,23 @@ public class TrapModelDriver implements ISPDriver {
 	 *             on I/O error interacting with user
 	 */
 	private int handleCommand(final List<String> fixtures,
-			final PrintStream ostream, final TrapperCommand command,
+			final Appendable ostream, final TrapperCommand command,
 			final boolean fishing) throws IOException {
 		switch (command) {
 		case Check: // TODO: extract method?
 			// ESCA-JAVA0177:
 			final String top = fixtures.remove(0);
 			if (HuntingModel.NOTHING.equals(top)) {
-				ostream.println("Nothing in the trap");
+				ostream.append("Nothing in the trap\n");
 				if (fishing) {
 					return FRUITLESS_FISH_TRAP; // NOPMD
 				} else {
 					return FRUITLESS_TRAP; // NOPMD
 				}
 			} else {
-				ostream.print("Found either ");
-				ostream.print(top);
-				ostream.println(" or evidence of it escaping.");
+				ostream.append("Found either ");
+				ostream.append(top);
+				ostream.append(" or evidence of it escaping.\n");
 				return helper//NOPMD
 						.inputNumber("How long to check and deal with animal? ");
 			}

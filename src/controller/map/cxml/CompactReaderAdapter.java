@@ -1,7 +1,6 @@
 package controller.map.cxml;
 
 import java.io.IOException;
-import java.io.Writer;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -147,7 +146,7 @@ public final class CompactReaderAdapter {
 	 * @throws IOException on I/O problems
 	 */
 	@SuppressWarnings("unchecked")
-	public static void write(final Writer ostream, final Object obj,
+	public static void write(final Appendable ostream, final Object obj,
 			final int indent) throws IOException {
 		@SuppressWarnings("rawtypes") // NOPMD
 		final CompactReader reader; // NOPMD

@@ -3,7 +3,6 @@ package controller.map.cxml;
 import static java.lang.Boolean.parseBoolean;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -323,7 +322,7 @@ public final class CompactResourceReader extends
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer ostream, final HarvestableFixture obj,
+	public void write(final Appendable ostream, final HarvestableFixture obj,
 			final int indent) throws IOException {
 		ostream.append(indent(indent));
 		if (obj instanceof CacheFixture) {
@@ -408,8 +407,8 @@ public final class CompactResourceReader extends
 	 * @param event a simple (DC- and ID-only) IEvent
 	 * @throws IOException on I/O error
 	 */
-	private static void writeSimpleEvent(final Writer ostream, final IEvent event)
-			throws IOException {
+	private static void writeSimpleEvent(final Appendable ostream,
+			final IEvent event) throws IOException {
 		if (event instanceof Battlefield) {
 			ostream.append("<battlefield ");
 		} else if (event instanceof Cave) {

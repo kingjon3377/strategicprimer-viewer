@@ -1,7 +1,6 @@
 package controller.map.cxml;
 
 import java.io.IOException;
-import java.io.Writer;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -190,8 +189,8 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer ostream, final Worker obj, final int indent)
-			throws IOException {
+	public void write(final Appendable ostream, final Worker obj,
+			final int indent) throws IOException {
 		ostream.append(indent(indent));
 		ostream.append("<worker name=\"");
 		ostream.append(obj.getName());
@@ -226,7 +225,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * @param indent the current indentation level
 	 * @throws IOException on I/O error
 	 */
-	private static void writeStats(final Writer ostream,
+	private static void writeStats(final Appendable ostream,
 			@Nullable final WorkerStats stats, final int indent)
 			throws IOException {
 		if (stats != null) {
@@ -259,7 +258,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
-	public static void writeJob(final Writer ostream, final Job obj,
+	public static void writeJob(final Appendable ostream, final Job obj,
 			final int indent) throws IOException {
 		ostream.append(indent(indent));
 		ostream.append("<job name=\"");
@@ -289,7 +288,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
-	public static void writeSkill(final Writer ostream, final Skill obj,
+	public static void writeSkill(final Appendable ostream, final Skill obj,
 			final int indent) throws IOException {
 		ostream.append(indent(indent));
 		ostream.append("<skill name=\"");

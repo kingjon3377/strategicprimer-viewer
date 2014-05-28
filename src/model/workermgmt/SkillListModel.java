@@ -1,6 +1,6 @@
 package model.workermgmt;
 
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -59,8 +59,9 @@ public final class SkillListModel extends DefaultListModel<ISkill> implements
 		}
 
 		@Override
-		public boolean isSubset(final IJob obj, final PrintWriter ostream) {
-			ostream.println("isSubset called on null job");
+		public boolean isSubset(final IJob obj, final Appendable ostream)
+				throws IOException {
+			ostream.append("isSubset called on null job\n");
 			return false;
 		}
 

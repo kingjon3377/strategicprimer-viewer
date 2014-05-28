@@ -4,7 +4,6 @@ import static java.util.Collections.unmodifiableList;
 import static util.NullCleaner.assertNotNull;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -184,7 +183,7 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer ostream, final ITile obj, final int indent)
+	public void write(final Appendable ostream, final ITile obj, final int indent)
 			throws IOException {
 		throw new IllegalStateException(
 				"Don't call this; call writeTile() instead");
@@ -199,7 +198,7 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	 * @param indent the current indentation level
 	 * @throws IOException on I/O error
 	 */
-	public static void writeTile(final Writer ostream, final Point point,
+	public static void writeTile(final Appendable ostream, final Point point,
 			final ITile obj, final int indent) throws IOException {
 		if (!obj.isEmpty()) {
 			ostream.append(indent(indent));
@@ -233,7 +232,7 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	 * @param indent the indentation level
 	 * @throws IOException on I/O error
 	 */
-	public static void writeRiver(final Writer ostream, final River obj,
+	public static void writeRiver(final Appendable ostream, final River obj,
 			final int indent) throws IOException {
 		for (int i = 0; i < indent; i++) {
 			ostream.append('\t');
@@ -256,7 +255,7 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	 * @param indent the indentation level
 	 * @throws IOException on I/O error
 	 */
-	public static void writeRivers(final Writer ostream,
+	public static void writeRivers(final Appendable ostream,
 			final Iterable<River> iter, final int indent) throws IOException {
 		for (final River river : iter) {
 			if (river != null) {

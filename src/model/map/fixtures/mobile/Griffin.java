@@ -1,6 +1,6 @@
 package model.map.fixtures.mobile;
 
-import java.io.PrintWriter;
+import java.io.IOException;
 
 import model.map.HasImage;
 import model.map.IFixture;
@@ -106,23 +106,26 @@ public class Griffin implements MobileFixture, HasImage, UnitMember {
 	 * @param obj another UnitMember
 	 * @param ostream a stream to report an explanation on
 	 * @return whether that member equals this one
+	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final UnitMember obj, final PrintWriter ostream) {
+	public boolean isSubset(final UnitMember obj, final Appendable ostream)
+			throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Griffin) {
 				return true;
 			} else {
-				ostream.print("For ID #");
-				ostream.print(id);
-				ostream.print(", different kinds of members");
+				ostream.append("For ID #");
+				ostream.append(Integer.toString(id));
+				ostream.append(", different kinds of members");
 				return false;
 			}
 		} else {
-			ostream.print("Called with different IDs, #");
-			ostream.print(id);
-			ostream.print(" and #");
-			ostream.println(obj.getID());
+			ostream.append("Called with different IDs, #");
+			ostream.append(Integer.toString(id));
+			ostream.append(" and #");
+			ostream.append(Integer.toString(obj.getID()));
+			ostream.append('\n');
 			return false;
 		}
 	}

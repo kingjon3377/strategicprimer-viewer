@@ -1,6 +1,6 @@
 package model.map.fixtures.mobile.worker;
 
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -104,26 +104,28 @@ public class Job implements IJob { // NOPMD
 	 *            a stream to explain our results on
 	 * @return whether the Job is a "subset" of this---same name, equal or lower
 	 *         level, with no extra or higher-level or extra-experienced Skills.
+	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IJob obj, final PrintWriter ostream) {
+	public boolean isSubset(final IJob obj, final Appendable ostream)
+			throws IOException {
 		if (!name.equals(obj.getName())) {
-			ostream.print("Passed Jobs with different names");
+			ostream.append("Passed Jobs with different names");
 			return false;
 		} else if (level < obj.getLevel()) {
-			ostream.print("Submap has higher level for Job ");
-			ostream.print(name);
+			ostream.append("Submap has higher level for Job ");
+			ostream.append(name);
 			return false;
 		} else {
 			boolean retval = true;
 			final Map<String, Pair<Integer, Integer>> ours = new HashMap<>();
 			for (final ISkill skill : this) {
 				if (ours.containsKey(skill.getName())) {
-					ostream.print("Master map contains duplicate Skill ");
-					ostream.print(skill.getName());
-					ostream.print(" in Job ");
-					ostream.print(name);
-					ostream.print(" ... ");
+					ostream.append("Master map contains duplicate Skill ");
+					ostream.append(skill.getName());
+					ostream.append(" in Job ");
+					ostream.append(name);
+					ostream.append(" ... ");
 					retval = false;
 				} else {
 					ours.put(skill.getName(), Pair.of(NullCleaner
@@ -134,11 +136,11 @@ public class Job implements IJob { // NOPMD
 			}
 			for (final ISkill skill : obj) {
 				if (!ours.containsKey(skill.getName())) {
-					ostream.print("Extra skill ");
-					ostream.print(skill.getName());
-					ostream.print(" in Job ");
-					ostream.print(name);
-					ostream.print(" ... ");
+					ostream.append("Extra skill ");
+					ostream.append(skill.getName());
+					ostream.append(" in Job ");
+					ostream.append(name);
+					ostream.append(" ... ");
 					retval = false;
 				} else {
 					// TODO: Move this logic into Skill?
@@ -146,18 +148,18 @@ public class Job implements IJob { // NOPMD
 					final int lvl = pair.first().intValue();
 					final int hours = pair.second().intValue();
 					if (skill.getLevel() > lvl) {
-						ostream.print("In Job ");
-						ostream.print(name);
-						ostream.print(", extra level(s) in ");
-						ostream.print(skill.getName());
-						ostream.print(" ... ");
+						ostream.append("In Job ");
+						ostream.append(name);
+						ostream.append(", extra level(s) in ");
+						ostream.append(skill.getName());
+						ostream.append(" ... ");
 						retval = false;
 					} else if (skill.getLevel() == lvl && skill.getHours() > hours) {
-						ostream.print("In Job ");
-						ostream.print(name);
-						ostream.print(", extra hours in ");
-						ostream.print(skill.getName());
-						ostream.print(" ... ");
+						ostream.append("In Job ");
+						ostream.append(name);
+						ostream.append(", extra hours in ");
+						ostream.append(skill.getName());
+						ostream.append(" ... ");
 						retval = false;
 					}
 				}

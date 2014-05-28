@@ -1,6 +1,6 @@
 package view.worker;
 
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -229,8 +229,9 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 			throw new IllegalStateException("setOwner called on ProxyUnit");
 		}
 		@Override
-		public boolean isSubset(final IUnit obj, final PrintWriter ostream) {
-			ostream.println("isSubset called on ProxyUnit");
+		public boolean isSubset(final IUnit obj, final Appendable ostream)
+				throws IOException {
+			ostream.append("isSubset called on ProxyUnit\n");
 			return false;
 		}
 		@Override

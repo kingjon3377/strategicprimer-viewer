@@ -1,6 +1,6 @@
 package model.map.fixtures.mobile;
 
-import java.io.PrintWriter;
+import java.io.IOException;
 
 import model.map.HasImage;
 import model.map.HasKind;
@@ -161,43 +161,47 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	 * @param obj another UnitMember
 	 * @param ostream a stream to report an explanation on
 	 * @return whether that member is a subset of this one
+	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final UnitMember obj, final PrintWriter ostream) {
+	public boolean isSubset(final UnitMember obj, final Appendable ostream)
+			throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Animal) {
 				if (!kind.equals(((Animal) obj).getKind())) {
-					ostream.print("Different kinds of animal for ID #");
-					ostream.println(id);
+					ostream.append("Different kinds of animal for ID #");
+					ostream.append(Integer.toString(id));
 					return false;
 				} else if (!talking && ((Animal) obj).talking) {
-					ostream.print("In animal ID #");
-					ostream.print(id);
-					ostream.println(", submap is talking and master doesn't");
+					ostream.append("In animal ID #");
+					ostream.append(Integer.toString(id));
+					ostream.append(", submap is talking and master doesn't\n");
 					return false;
 				} else if (traces && !((Animal) obj).traces) {
-					ostream.print("In animal ID #");
-					ostream.print(id);
-					ostream.println(", submap has animal and master only tracks");
+					ostream.append("In animal ID #");
+					ostream.append(Integer.toString(id));
+					ostream.append(", submap has animal and master only tracks\n");
 					return false;
 				} else if (!status.equals(((Animal) obj).status)) {
-					ostream.print("Domestication status of animal differs at ID #");
-					ostream.println(id);
+					ostream.append("Domestication status of animal differs at ID #");
+					ostream.append(Integer.toString(id));
+					ostream.append('\n');
 					return false;
 				} else {
 					return true;
 				}
 			} else {
-				ostream.print("For ID #");
-				ostream.print(id);
-				ostream.print(", different kinds of members");
+				ostream.append("For ID #");
+				ostream.append(Integer.toString(id));
+				ostream.append(", different kinds of members");
 				return false;
 			}
 		} else {
-			ostream.print("Called with different IDs, #");
-			ostream.print(id);
-			ostream.print(" and #");
-			ostream.println(obj.getID());
+			ostream.append("Called with different IDs, #");
+			ostream.append(Integer.toString(id));
+			ostream.append(" and #");
+			ostream.append(Integer.toString(obj.getID()));
+			ostream.append('\n');
 			return false;
 		}
 	}

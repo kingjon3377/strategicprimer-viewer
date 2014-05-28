@@ -1,7 +1,6 @@
 package controller.map.cxml;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -281,7 +280,7 @@ public final class CompactMobileReader extends
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer ostream, final MobileFixture obj,
+	public void write(final Appendable ostream, final MobileFixture obj,
 			final int indent) throws IOException {
 		if (obj instanceof Unit) {
 			CompactUnitReader.READER.write(ostream, (Unit) obj, indent);

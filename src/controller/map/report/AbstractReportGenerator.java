@@ -111,7 +111,11 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	}
 
 	/**
-	 * @param points a list of points
+	 * TODO: This should probably take Appendable (StringBuilder) instead of
+	 * returning the String.
+	 *
+	 * @param points
+	 *            a list of points
 	 * @return a comma-separated string representing them.
 	 */
 	protected static String pointCSL(@Nullable final List<Point> points) {
@@ -149,7 +153,11 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	}
 
 	/**
-	 * @param strings a series of strings
+	 * FIXME: This should probably take Appendable (the StringBuilder) to avoid
+	 * a new StringBuilder instantiation.
+	 *
+	 * @param strings
+	 *            a series of strings
 	 * @return them concatenated
 	 */
 	protected static String concat(final String... strings) {

@@ -65,7 +65,7 @@ public class BattlefieldReader implements INodeHandler<Battlefield> {
 	}
 
 	/**
-	 * Create an intermediate representation to write to a Writer.
+	 * Create an intermediate representation to convert to XML.
 	 *
 	 * @param obj the object to write
 	 * @return an intermediate representation

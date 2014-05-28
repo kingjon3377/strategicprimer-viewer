@@ -2,7 +2,7 @@ package model.map;
 
 import static model.map.TileType.NotVisible;
 
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -33,9 +33,11 @@ public class MapNGReverseAdapter implements IMap {
 	 * @param obj another map
 	 * @param ostream a stream to write comments to
 	 * @return whether it's a subset of this one
+	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(@Nullable final IMap obj, final PrintWriter ostream) {
+	public boolean isSubset(@Nullable final IMap obj, final Appendable ostream)
+			throws IOException {
 		throw new IllegalStateException("Not yet implemented");
 	}
 	/**
@@ -120,14 +122,19 @@ public class MapNGReverseAdapter implements IMap {
 		public Iterator<Point> iterator() {
 			return NullCleaner.assertNotNull(outer.locations().iterator());
 		}
+
 		/**
-		 * @param obj another collection of tiles
-		 * @param ostream a stream to (TODO) write results on
+		 * @param obj
+		 *            another collection of tiles
+		 * @param ostream
+		 *            a stream to (TODO) write results on
 		 * @return whether the other collection is a subset of this one
+		 * @throws IOException
+		 *             on I/O error writing output to the stream
 		 */
 		@Override
 		public boolean isSubset(final ITileCollection obj,
-				final PrintWriter ostream) {
+				final Appendable ostream) throws IOException {
 			throw new IllegalStateException("FIXME: Not implemented yet");
 		}
 		/**
@@ -174,17 +181,23 @@ public class MapNGReverseAdapter implements IMap {
 		protected PlayerCollectionAdapter(final IMapNG map) {
 			outer = map;
 		}
+
 		/**
 		 * TODO: Write extra players to the stream.
-		 * @param obj another collection
-		 * @param ostream a stream to write to---ignored for now
-		 * @return whether the collection is a subset of this.
 		 *
-		 * @see model.map.Subsettable#isSubset(java.lang.Object, java.io.PrintWriter)
+		 * @param obj
+		 *            another collection
+		 * @param ostream
+		 *            a stream to write to---ignored for now
+		 * @return whether the collection is a subset of this.
+		 * @throws IOException
+		 *             on I/O error writing output to the stream
+		 *
+		 * @see model.map.Subsettable#isSubset(java.lang.Object, Appendable)
 		 */
 		@Override
 		public boolean isSubset(final IPlayerCollection obj,
-				final PrintWriter ostream) {
+				final Appendable ostream) throws IOException {
 			for (final Player player : obj) {
 				if (player != null && !contains(player)) {
 					return false; // NOPMD
@@ -268,13 +281,19 @@ public class MapNGReverseAdapter implements IMap {
 			map = outer;
 			loc = location;
 		}
+
 		/**
-		 * @param obj another tile
-		 * @param ostream a stream to write comments to
+		 * @param obj
+		 *            another tile
+		 * @param ostream
+		 *            a stream to write comments to
 		 * @return whether it's a strict subset of this tile or not
+		 * @throws IOException
+		 *             on I/O error writing output to the stream
 		 */
 		@Override
-		public boolean isSubset(final ITile obj, final PrintWriter ostream) {
+		public boolean isSubset(final ITile obj, final Appendable ostream)
+				throws IOException {
 			throw new IllegalStateException("Not yet implemented");
 		}
 

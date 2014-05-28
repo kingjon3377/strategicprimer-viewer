@@ -4,7 +4,7 @@ import static view.util.ErrorShower.showErrorDialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
@@ -133,7 +133,8 @@ public final class WorkerCreationListener implements ActionListener,
 			throw new IllegalStateException("setOwner called on null unit");
 		}
 		@Override
-		public boolean isSubset(final IUnit obj, final PrintWriter ostream) {
+		public boolean isSubset(final IUnit obj, final Appendable ostream)
+				throws IOException {
 			// TODO Auto-generated method stub
 			return false;
 		}

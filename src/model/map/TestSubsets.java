@@ -3,6 +3,9 @@ package model.map;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static util.NullStream.DEV_NULL;
+
+import java.io.IOException;
+
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
@@ -31,10 +34,11 @@ public class TestSubsets {
 
 	/**
 	 * A test of PlayerCollection's subset feature.
+	 * @throws IOException on I/O error writing to the null stream
 	 */
 	@SuppressWarnings(ST_MET)
 	@Test
-	public void testPlayerCollectionSubset() {
+	public void testPlayerCollectionSubset() throws IOException {
 		final PlayerCollection zero = new PlayerCollection();
 		final PlayerCollection one = new PlayerCollection();
 		final PlayerCollection two = new PlayerCollection();
@@ -56,10 +60,11 @@ public class TestSubsets {
 
 	/**
 	 * A test of RiverFixture's subset feature.
+	 * @throws IOException on I/O error writing to the null stream
 	 */
 	@SuppressWarnings(ST_MET)
 	@Test
-	public void testRiverSubset() {
+	public void testRiverSubset() throws IOException {
 		final RiverFixture zero = new RiverFixture();
 		final RiverFixture one = new RiverFixture(River.Lake, River.South,
 				River.East);
@@ -96,10 +101,11 @@ public class TestSubsets {
 
 	/**
 	 * A test of Fortress's subset feature.
+	 * @throws IOException on I/O error writing to the null stream
 	 */
 	@SuppressWarnings(ST_MET)
 	@Test
-	public void testFortressSubset() {
+	public void testFortressSubset() throws IOException {
 		final Fortress one = new Fortress(new Player(1, ONE_STR), "fOne", 1);
 		final Fortress two = new Fortress(new Player(2, "two"), "fOne", 1);
 		assertFalse("Subset requires same owner, first test",
@@ -125,10 +131,11 @@ public class TestSubsets {
 
 	/**
 	 * A test of Tile's subset feature.
+	 * @throws IOException on I/O error writing to the null stream
 	 */
 	@SuppressWarnings(ST_MET)
 	@Test
-	public void testTileSubset() {
+	public void testTileSubset() throws IOException {
 		final Tile one = new Tile(TileType.Steppe);
 		final Tile three = new Tile(TileType.Desert);
 		assertFalse("Subset tile must match in type",
@@ -165,10 +172,11 @@ public class TestSubsets {
 
 	/**
 	 * Test the TileCollection subset feature.
+	 * @throws IOException on I/O error writing to the null stream
 	 */
 	@SuppressWarnings(ST_MET)
 	@Test
-	public void testTileCollectionSubset() {
+	public void testTileCollectionSubset() throws IOException {
 		final TileCollection zero = new TileCollection();
 		final TileCollection one = new TileCollection();
 		final Point pointOne = PointFactory.point(0, 0);

@@ -1,6 +1,6 @@
 package model.map;
 
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -79,50 +79,58 @@ public class SPMapNG implements IMapNG {
 	 * @param obj another map
 	 * @param ostream the stream to write verbose results to
 	 * @return whether the other map is a subset of this one
+	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IMapNG obj, final PrintWriter ostream) {
+	public boolean isSubset(final IMapNG obj, final Appendable ostream)
+			throws IOException {
 		if (dimensions().equals(obj.dimensions())) {
 			boolean retval = true;
 			for (final Player player : obj.players()) {
 				if (player != null && !playerCollection.contains(player)) {
-					ostream.print("Extra player ");
-					ostream.println(player);
+					ostream.append("Extra player ");
+					ostream.append(player.toString());
+					ostream.append('\n');
 					retval = false;
 					// return false;
 				}
 			}
 			for (final Point point : locations()) {
+				final String pointStr = Objects.toString(point);
 				if (point == null) {
 					continue;
 				} else if (!getBaseTerrain(point).equals(
 						obj.getBaseTerrain(point))) {
-					ostream.print("Base terrain differs at ");
-					ostream.println(point);
+					ostream.append("Base terrain differs at ");
+					ostream.append(pointStr);
+					ostream.append('\n');
 					retval = false;
 					continue;
 //					return false;
 				}
 				if (obj.isMountainous(point) && !isMountainous(point)) {
-					ostream.print("Has mountains we don't at ");
-					ostream.println(point);
+					ostream.append("Has mountains we don't at ");
+					ostream.append(pointStr);
+					ostream.append('\n');
 					retval = false;
 					// return false;
 				}
 				if (!Objects.equals(getForest(point), obj.getForest(point))
 						&& obj.getForest(point) != null) {
 					// TODO: Shouldn't do getForest call twice
-					ostream.print("Has forest we don't, or ");
-					ostream.print("different primary forest, at ");
-					ostream.println(point);
+					ostream.append("Has forest we don't, or ");
+					ostream.append("different primary forest, at ");
+					ostream.append(pointStr);
+					ostream.append('\n');
 					retval = false;
 					// return false;
 				}
 				if (!Objects.equals(getGround(point), obj.getGround(point))
 						&& obj.getGround(point) != null) {
-					ostream.print("Has different primary ground, ");
-					ostream.print("or ground we don't, at ");
-					ostream.println(point);
+					ostream.append("Has different primary ground, ");
+					ostream.append("or ground we don't, at ");
+					ostream.append(pointStr);
+					ostream.append('\n');
 					retval = false;
 					// return false;
 				}
@@ -132,10 +140,11 @@ public class SPMapNG implements IMapNG {
 						.getOtherFixtures(point);
 				for (final TileFixture fix : theirFixtures) {
 					if (!ourFixtures.contains(fix)) {
-						ostream.print("Extra fixture at ");
-						ostream.print(point);
-						ostream.print(": ");
-						ostream.println(fix);
+						ostream.append("Extra fixture at ");
+						ostream.append(pointStr);
+						ostream.append(":\t");
+						ostream.append(fix.toString());
+						ostream.append('\n');
 						retval = false;
 						break;
 						// return false;
@@ -145,8 +154,9 @@ public class SPMapNG implements IMapNG {
 				final Iterable<River> theirRivers = obj.getRivers(point);
 				for (final River river : theirRivers) {
 					if (river != null && !ourRivers.contains(river)) {
-						ostream.print("Extra river at ");
-						ostream.println(point);
+						ostream.append("Extra river at ");
+						ostream.append(pointStr);
+						ostream.append('\n');
 						retval = false;
 						break;
 						// return false;
@@ -155,7 +165,7 @@ public class SPMapNG implements IMapNG {
 			}
 			return retval; // NOPMD
 		} else {
-			ostream.println("Dimension mismatch");
+			ostream.append("Dimension mismatch\n");
 			return false; // NOPMD
 		}
 	}

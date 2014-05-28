@@ -1,6 +1,6 @@
 package model.map;
 
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -45,17 +45,20 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 	 * @param obj another map
 	 * @param ostream the stream to write to
 	 * @return whether it is a strict subset of this map.
+	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IMapNG obj, final PrintWriter ostream) {
+	public boolean isSubset(final IMapNG obj, final Appendable ostream)
+			throws IOException {
 		if (dimensions().equals(obj.dimensions())) {
 			boolean retval = true;
 			for (final Player player : obj.players()) {
 				if (player != null && !state.getPlayers().contains(player)) {
 					// return false;
 					retval = false;
-					ostream.print("Extra player ");
-					ostream.println(player);
+					ostream.append("Extra player ");
+					ostream.append(player.toString());
+					ostream.append('\n');
 				}
 			}
 			for (final Point point : obj.locations()) {
@@ -65,7 +68,7 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 			}
 			return retval; // NOPMD
 		} else {
-			ostream.println("Sizes differ");
+			ostream.append("Sizes differ\n");
 			return false;
 		}
 	}
@@ -75,51 +78,56 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 	 * @param ostream the stream to write detailed results to
 	 * @param loc the current location
 	 * @return whether that location fits the "subset" hypothesis.
+	 * @throws IOException on I/O error writing output to the stream
 	 */
-	private boolean isTileSubset(final IMapNG obj, final PrintWriter ostream,
-			final Point loc) {
+	private boolean isTileSubset(final IMapNG obj, final Appendable ostream,
+			final Point loc) throws IOException {
 		boolean retval = true;
 		if (!getBaseTerrain(loc).equals(obj.getBaseTerrain(loc))) { // NOPMD
 			// return false;
 			retval = false;
-			ostream.print("Tile types differ at ");
-			ostream.println(loc);
+			ostream.append("Tile types differ at ");
+			ostream.append(loc.toString());
+			ostream.append('\n');
 		} else if (isMountainous(loc) != obj.isMountainous(loc)) { // NOPMD
 			// return false;
 			retval = false;
-			ostream.print("Reports of mountains differ at ");
-			ostream.println(loc);
+			ostream.append("Reports of mountains differ at ");
+			ostream.append(loc.toString());
+			ostream.append('\n');
 		} else if (!areRiversSubset(getRivers(loc), obj.getRivers(loc))) { //NOPMD
 			retval = false;
-			ostream.print("Extra rivers at ");
-			ostream.println(loc);
+			ostream.append("Extra rivers at ");
+			ostream.append(loc.toString());
+			ostream.append('\n');
 		} else if (!Objects.equals(getForest(loc), obj.getForest(loc))) { // NOPMD
 			// return false;
 			retval = false;
-			ostream.print("Primary forests differ at ");
-			ostream.print(loc);
-			ostream.println(", may be representation error");
+			ostream.append("Primary forests differ at ");
+			ostream.append(loc.toString());
+			ostream.append(", may be representation error\n");
 		} else if (!Objects.equals(getGround(loc), obj.getGround(loc))) { // NOPMD
 			// return false;
 			retval = false;
-			ostream.print("Primary Ground differs at ");
-			ostream.print(loc);
-			ostream.println(", may be representation error");
+			ostream.append("Primary Ground differs at ");
+			ostream.append(loc.toString());
+			ostream.append(", may be representation error\n");
 		} else {
 			// TODO: Use Guava collection-from-iterable to improve/simplify this
 			final List<TileFixture> fixtures = new ArrayList<>();
 			for (final TileFixture fix : state.getTile(loc)) {
 				fixtures.add(fix);
 			}
+			final String locStr = loc.toString() + '\n';
 			for (final TileFixture fix : obj.getOtherFixtures(loc)) {
 				if (fix != null && !fixtures.contains(fix)
 						&& !Tile.shouldSkip(fix)) {
 					// return false;
 					retval = false;
-					ostream.print("Extra fixture ");
-					ostream.print(fix);
-					ostream.print(" at ");
-					ostream.println(loc);
+					ostream.append("Extra fixture ");
+					ostream.append(fix.toString());
+					ostream.append(" at ");
+					ostream.append(locStr);
 				}
 			}
 		}

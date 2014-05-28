@@ -1,7 +1,6 @@
 package controller.map.cxml;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.util.Random;
 
 import javax.xml.stream.events.StartElement;
@@ -245,8 +244,8 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer ostream, final ITownFixture obj, final int indent)
-			throws IOException {
+	public void write(final Appendable ostream, final ITownFixture obj,
+			final int indent) throws IOException {
 		ostream.append(indent(indent));
 		if (obj instanceof AbstractTown) {
 			writeAbstractTown(ostream, (AbstractTown) obj);
@@ -295,7 +294,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	 * @param obj the AbstractTownEvent to write
 	 * @throws IOException on I/O error
 	 */
-	private static void writeAbstractTown(final Writer ostream,
+	private static void writeAbstractTown(final Appendable ostream,
 			final AbstractTown obj) throws IOException {
 		if (obj instanceof Fortification) {
 			ostream.append("<fortification ");

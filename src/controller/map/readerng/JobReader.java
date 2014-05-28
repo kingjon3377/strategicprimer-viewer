@@ -98,7 +98,7 @@ public class JobReader implements INodeHandler<Job> {
 	}
 
 	/**
-	 * Create an intermediate representation to write to a Writer.
+	 * Create an intermediate representation to convert to XML.
 	 *
 	 * @param obj the object to write
 	 * @return the intermediate representation

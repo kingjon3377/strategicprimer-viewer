@@ -1,6 +1,6 @@
 package controller.exploration;
 
-import java.io.PrintStream;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
@@ -47,6 +47,9 @@ public class TableDebugger {
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.SEVERE, "Missing table", e);
 			System.exit(1);
+		} catch (IOException e) {
+			LOGGER.log(Level.SEVERE, "I/O error writing to stdout");
+			System.exit(2);
 		}
 	}
 
@@ -65,9 +68,10 @@ public class TableDebugger {
 	 *
 	 * @param ostream the stream to print to.
 	 * @throws MissingTableException if a referenced table isn't there
+	 * @throws IOException on error writing to the stream
 	 */
-	public void debugTables(@NotNull final PrintStream ostream)
-			throws MissingTableException {
+	public void debugTables(@NotNull final Appendable ostream)
+			throws MissingTableException, IOException {
 		runner.verboseRecursiveCheck(ostream);
 		final EncounterTable mainTable = runner.getTable("main");
 		debugTable("", "", mainTable, "main", ostream,
@@ -87,22 +91,24 @@ public class TableDebugger {
 	 * @param set the set of tables already on the stack, to prevent infinite
 	 *        recursion
 	 * @throws MissingTableException if a table is missing
+	 * @throws IOException on I/O error writing to the stream
 	 */
 	private void debugTable(@NotNull final String before,
 			@NotNull final String after, @NotNull final EncounterTable table,
-			@NotNull final String tableName, @NotNull final PrintStream ostream,
+			@NotNull final String tableName, @NotNull final Appendable ostream,
 			@NotNull final Set<EncounterTable> set)
-			throws MissingTableException {
+			throws MissingTableException, IOException {
 		if (set.contains(table)) {
-			ostream.print("table ");
-			ostream.print(tableName);
-			ostream.println(" is already on the stack, skipping ...");
-			ostream.print("The cause was: ");
-			ostream.print(before);
-			ostream.print('#');
-			ostream.print(tableName);
-			ostream.print('#');
-			ostream.println(after);
+			ostream.append("table ");
+			ostream.append(tableName);
+			ostream.append(" is already on the stack, skipping ...\n");
+			ostream.append("The cause was: ");
+			ostream.append(before);
+			ostream.append('#');
+			ostream.append(tableName);
+			ostream.append('#');
+			ostream.append(after);
+			ostream.append('\n');
 			return;
 		} else {
 			set.add(table);
@@ -114,9 +120,9 @@ public class TableDebugger {
 				debugTable(before + parsed[0], parsed[2] + after,
 						runner.getTable(callee), callee, ostream, set);
 			} else {
-				ostream.print(before);
-				ostream.print(value);
-				ostream.println(after);
+				ostream.append(before);
+				ostream.append(value);
+				ostream.append(after);
 			}
 		}
 		set.remove(table);

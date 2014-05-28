@@ -1,6 +1,6 @@
 package model.map.fixtures.mobile;
 
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -174,29 +174,31 @@ public class Worker implements HasName, HasKind, HasImage, IWorker {
 	 * @param obj another UnitMember
 	 * @param ostream a stream to report an explanation on
 	 * @return whether that member equals this one
+	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final UnitMember obj, final PrintWriter ostream) {
+	public boolean isSubset(final UnitMember obj, final Appendable ostream)
+			throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Worker) {
 				if (!name.equals(((Worker) obj).name)) {
-					ostream.print("For worker with ID #");
-					ostream.print(id);
-					ostream.println(", names differ");
+					ostream.append("For worker with ID #");
+					ostream.append(Integer.toString(id));
+					ostream.append(", names differ\n");
 					return false;
 				} else if (!race.equals(((Worker) obj).race)) {
-					ostream.print("For worker ");
-					ostream.print(name);
-					ostream.print(", ID #");
-					ostream.print(id);
-					ostream.println(", races differ");
+					ostream.append("For worker ");
+					ostream.append(name);
+					ostream.append(", ID #");
+					ostream.append(Integer.toString(id));
+					ostream.append(", races differ\n");
 					return false;
 				} else if (!Objects.equals(stats, ((Worker) obj).stats)) {
-					ostream.print("For worker ");
-					ostream.print(name);
-					ostream.print(", ID #");
-					ostream.print(id);
-					ostream.println(", stats differ");
+					ostream.append("For worker ");
+					ostream.append(name);
+					ostream.append(", ID #");
+					ostream.append(Integer.toString(id));
+					ostream.append(", stats differ\n");
 					return false;
 				} else {
 					boolean retval = true;
@@ -208,35 +210,37 @@ public class Worker implements HasName, HasKind, HasImage, IWorker {
 						if (job == null) {
 							continue;
 						} else if (!ours.containsKey(job.getName())) {
-							ostream.print("In worker ");
-							ostream.print(name);
-							ostream.print(" (#");
-							ostream.print(id);
-							ostream.print("): Extra Job: ");
-							ostream.println(job.getName());
+							ostream.append("In worker ");
+							ostream.append(name);
+							ostream.append(" (#");
+							ostream.append(Integer.toString(id));
+							ostream.append("): Extra Job: ");
+							ostream.append(job.getName());
+							ostream.append('\n');
 							retval = false;
 						} else if (!ours.get(job.getName()).isSubset(job, ostream)) {
-							ostream.print(" (in worker ");
-							ostream.print(name);
-							ostream.print(", ID #");
-							ostream.print(id);
-							ostream.println(')');
+							ostream.append(" (in worker ");
+							ostream.append(name);
+							ostream.append(", ID #");
+							ostream.append(Integer.toString(id));
+							ostream.append(")\n");
 							retval = false;
 						}
 					}
 					return retval;
 				}
 			} else {
-				ostream.print("For ID #");
-				ostream.print(id);
-				ostream.print(", different kinds of members");
+				ostream.append("For ID #");
+				ostream.append(Integer.toString(id));
+				ostream.append(", different kinds of members");
 				return false;
 			}
 		} else {
-			ostream.print("Called with different IDs, #");
-			ostream.print(id);
-			ostream.print(" and #");
-			ostream.println(obj.getID());
+			ostream.append("Called with different IDs, #");
+			ostream.append(Integer.toString(id));
+			ostream.append(" and #");
+			ostream.append(Integer.toString(obj.getID()));
+			ostream.append('\n');
 			return false;
 		}
 	}

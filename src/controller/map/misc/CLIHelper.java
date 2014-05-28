@@ -6,7 +6,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -52,13 +51,15 @@ public class CLIHelper implements ICLIHelper {
 	 *
 	 * @param ostream the stream to write to
 	 * @param list the list to print.
+	 * @throws IOException on I/O error writing to stream
 	 */
-	private static void printList(final PrintStream ostream,
-			final List<? extends HasName> list) {
+	private static void printList(final Appendable ostream,
+			final List<? extends HasName> list) throws IOException {
 		for (int i = 0; i < list.size(); i++) {
-			ostream.print(i);
-			ostream.print(": ");
-			ostream.println(list.get(i).getName());
+			ostream.append(Integer.toString(i));
+			ostream.append(": ");
+			ostream.append(list.get(i).getName());
+			ostream.append('\n');
 		}
 	}
 

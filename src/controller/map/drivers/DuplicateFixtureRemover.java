@@ -4,7 +4,6 @@ import static view.util.SystemOut.SYS_OUT;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -62,17 +61,19 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	 *
 	 * @param map the map to filter
 	 * @param ostream the stream to report IDs of removed fixtures on.
+	 * @throws IOException on I/O error writing to stream
 	 */
-	public static void filter(final IMap map, final PrintStream ostream) {
+	public static void filter(final IMap map, final Appendable ostream)
+			throws IOException {
 		for (final Point point : map.getTiles()) {
 			if (point != null) {
 				final ITile tile = map.getTile(point);
 				if (tile instanceof IMutableTile) {
 					filter((IMutableTile) tile, ostream);
 				} else {
-					ostream.print("Tile at ");
-					ostream.print(point);
-					ostream.println(" was not mutable, and so not filtered.");
+					ostream.append("Tile at ");
+					ostream.append(point.toString());
+					ostream.append(" was not mutable, and so not filtered.\n");
 				}
 			}
 		}
@@ -85,8 +86,9 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	 *
 	 * @param tile the tile to filter
 	 * @param ostream the stream to report IDs of removed fixtures on.
+	 * @throws IOException on I/O error writing to stream
 	 */
-	public static void filter(final IMutableTile tile, final PrintStream ostream) {
+	public static void filter(final IMutableTile tile, final Appendable ostream) throws IOException {
 		final List<TileFixture> fixtures = new ArrayList<>();
 		final List<TileFixture> toRemove = new ArrayList<>();
 		for (final TileFixture fix : tile) {
@@ -105,9 +107,10 @@ public class DuplicateFixtureRemover implements ISPDriver {
 				}
 			}
 			if (already) {
-				ostream.print(fix.getClass().getName());
-				ostream.print(' ');
-				ostream.println(fix.getID());
+				ostream.append(fix.getClass().getName());
+				ostream.append(' ');
+				ostream.append(Integer.toString(fix.getID()));
+				ostream.append('\n');
 				toRemove.add(fix);
 			} else {
 				fixtures.add(fix);

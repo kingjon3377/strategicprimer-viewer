@@ -35,7 +35,7 @@ public class MapWriterNG implements SPWriter {
 	 * @throws IOException on I/O error in writing
 	 */
 	@Override
-	public void write(final Writer ostream, final IMap map) throws IOException {
+	public void write(final Appendable ostream, final IMap map) throws IOException {
 		writeObject(ostream, map);
 	}
 	/**
@@ -59,7 +59,7 @@ public class MapWriterNG implements SPWriter {
 	 * @param obj the object to write.
 	 * @throws IOException on I/O error in writing
 	 */
-	public static void writeObject(final Writer ostream, final Object obj)
+	public static void writeObject(final Appendable ostream, final Object obj)
 			throws IOException {
 		ReaderAdapter.ADAPTER.write(obj).write(ostream, 0);
 	}

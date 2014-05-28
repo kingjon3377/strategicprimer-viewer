@@ -1,7 +1,6 @@
 package controller.map.cxml;
 
 import java.io.IOException;
-import java.io.Writer;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -79,7 +78,7 @@ public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer ostream, final Ground obj, final int indent)
+	public void write(final Appendable ostream, final Ground obj, final int indent)
 			throws IOException {
 		for (int i = 0; i < indent; i++) {
 			ostream.append('\t');

@@ -158,7 +158,7 @@ public class ReaderAdapter implements INodeHandler<Object> {
 	}
 
 	/**
-	 * Create an intermediate representation to write to a Writer.
+	 * Create an intermediate representation to convert to XML.
 	 *
 	 * @param <S> the actual type of the object
 	 * @param obj the object to write

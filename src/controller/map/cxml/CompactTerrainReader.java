@@ -1,7 +1,6 @@
 package controller.map.cxml;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -177,7 +176,7 @@ public final class CompactTerrainReader extends
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer ostream, final TerrainFixture obj,
+	public void write(final Appendable ostream, final TerrainFixture obj,
 			final int indent) throws IOException {
 		ostream.append(indent(indent));
 		if (obj instanceof Mountain) {

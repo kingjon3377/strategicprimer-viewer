@@ -3,7 +3,6 @@ package controller.map.cxml;
 import static java.util.Collections.unmodifiableList;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -191,8 +190,9 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer ostream, final Unit obj, final int indent)
-			throws IOException {
+	public void
+			write(final Appendable ostream, final Unit obj, final int indent)
+					throws IOException {
 		ostream.append(indent(indent));
 		ostream.append("<unit owner=\"");
 		ostream.append(Integer.toString(obj.getOwner().getPlayerId()));

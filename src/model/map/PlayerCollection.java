@@ -2,7 +2,7 @@ package model.map;
 
 import static util.NullStream.DEV_NULL;
 
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -55,9 +55,13 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof IPlayerCollection
-				&& isSubset((IPlayerCollection) obj, DEV_NULL)
-				&& ((IPlayerCollection) obj).isSubset(this, DEV_NULL);
+		try {
+			return this == obj || obj instanceof IPlayerCollection
+					&& isSubset((IPlayerCollection) obj, DEV_NULL)
+					&& ((IPlayerCollection) obj).isSubset(this, DEV_NULL);
+		} catch (IOException e) {
+			return false;
+		}
 	}
 
 	/**
@@ -100,15 +104,16 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 * @param obj another PlayerCollection
 	 * @return whether it's a strict subset of this one
 	 * @param ostream the stream to write details of the differences to
+	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
 	public boolean isSubset(final IPlayerCollection obj,
-			final PrintWriter ostream) {
+			final Appendable ostream) throws IOException {
 		for (final Player player : obj) {
 			if (!players.containsValue(player)) {
-				ostream.print("Extra player ");
-				ostream.print(player.getName());
-				ostream.print(' ');
+				ostream.append("Extra player ");
+				ostream.append(player.getName());
+				ostream.append(' ');
 				return false; // NOPMD
 			}
 		}

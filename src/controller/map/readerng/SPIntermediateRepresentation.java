@@ -1,7 +1,6 @@
 package controller.map.readerng;
 
 import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -135,7 +134,7 @@ public final class SPIntermediateRepresentation {
 	 *        where we reset it to 0 again)
 	 * @throws IOException on I/O error while writing
 	 */
-	public void write(final Writer writer, final int indentationLevel)
+	public void write(final Appendable writer, final int indentationLevel)
 			throws IOException {
 		for (int i = 0; i < indentationLevel; i++) {
 			writeIfTagNotEmpty(writer, "\t");
@@ -194,7 +193,7 @@ public final class SPIntermediateRepresentation {
 	 * @param indentationLevel how many tabs to indent if inclusion is disabled
 	 * @throws IOException on I/O error while writing
 	 */
-	private void writeInclude(final Writer writer, final int indentationLevel)
+	private void writeInclude(final Appendable writer, final int indentationLevel)
 			throws IOException {
 		for (final SPIntermediateRepresentation child : children) {
 			child.write(writer, indentationLevel);
@@ -212,7 +211,7 @@ public final class SPIntermediateRepresentation {
 
 	/**
 	 * Write only if the tag isn't the empty string.
-	 * 
+	 *
 	 * @param writer
 	 *            the Writer to write to
 	 * @param string
@@ -221,10 +220,10 @@ public final class SPIntermediateRepresentation {
 	 * @throws IOException
 	 *             if I/O error in writing
 	 */
-	private void writeIfTagNotEmpty(final Writer writer,
+	private void writeIfTagNotEmpty(final Appendable writer,
 			@Nullable final String string) throws IOException {
 		if (!tag.isEmpty() && string != null) {
-			writer.write(string);
+			writer.append(string);
 		}
 	}
 

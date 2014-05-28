@@ -5,7 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -98,13 +98,19 @@ public final class TestExplorationRunner {
 		protected MockTile(final TileType type) {
 			terrain = type;
 		}
+
 		/**
-		 * @param obj ignored
-		 * @param ostream ignored
+		 * @param obj
+		 *            ignored
+		 * @param ostream
+		 *            ignored
 		 * @return nothing; always throws
+		 * @throws IOException
+		 *             never
 		 */
 		@Override
-		public boolean isSubset(final ITile obj, final PrintWriter ostream) {
+		public boolean isSubset(final ITile obj, final Appendable ostream)
+				throws IOException {
 			throw new IllegalStateException(
 					"Unexpected method called on mock object");
 		}

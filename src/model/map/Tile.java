@@ -1,7 +1,7 @@
 // $codepro.audit.disable booleanMethodNamingConvention
 package model.map;
 
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -225,13 +225,15 @@ public final class Tile implements IMutableTile {
 	 * @return whether it's a strict subset of this one, having no members this
 	 *         one doesn't
 	 * @param ostream the stream to write details of the differences to
+	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final ITile obj, final PrintWriter ostream) {
+	public boolean isSubset(final ITile obj, final Appendable ostream)
+			throws IOException {
 		if (getTerrain().equals(obj.getTerrain())) {
 			return isSubsetImpl(obj, ostream); // NOPMD
 		} else {
-			ostream.println("Tile type wrong");
+			ostream.append("Tile type wrong\n");
 			return false;
 		}
 	}
@@ -243,8 +245,10 @@ public final class Tile implements IMutableTile {
 	 * @return whether it's a strict subset of this one, having no members this
 	 *         one doesn't
 	 * @param ostream the stream to write details of the differences to
+	 * @throws IOException on I/O error writing output to the stream
 	 */
-	protected boolean isSubsetImpl(final ITile obj, final PrintWriter ostream) {
+	protected boolean isSubsetImpl(final ITile obj, final Appendable ostream)
+			throws IOException {
 		final List<TileFixture> temp = new ArrayList<>();
 		final Map<Integer, Subsettable<?>> mySubsettables = getSubsettableContents();
 		for (final TileFixture fix : obj) {
@@ -270,10 +274,10 @@ public final class Tile implements IMutableTile {
 				}
 			} else {
 				retval = false;
-				ostream.print("Extra fixture:\t");
-				ostream.print(fix.toString());
-				ostream.print(", ID #");
-				ostream.println(fix.getID());
+				ostream.append("Extra fixture:\t");
+				ostream.append(fix.toString());
+				ostream.append(", ID #");
+				ostream.append(Integer.toString(fix.getID()));
 			}
 		}
 		return retval; // NOPMD

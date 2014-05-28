@@ -2,7 +2,6 @@ package controller.map.iointerfaces;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Writer;
 
 import model.map.IMap;
 
@@ -29,6 +28,6 @@ public interface SPWriter {
 	 * @param map the map to write
 	 * @throws IOException on error in writing
 	 */
-	void write(final Writer ostream, final IMap map) throws IOException;
+	void write(final Appendable ostream, final IMap map) throws IOException;
 
 }

@@ -2,7 +2,7 @@ package view.worker;
 
 import static view.util.SystemOut.SYS_OUT;
 
-import java.io.PrintWriter;
+import java.io.IOException;
 
 import model.listeners.LevelGainListener;
 import model.listeners.SkillSelectionListener;
@@ -75,7 +75,8 @@ public final class LevelListener implements LevelGainListener,
 		 * @return false
 		 */
 		@Override
-		public boolean isSubset(final UnitMember obj, final PrintWriter ostream) {
+		public boolean isSubset(final UnitMember obj, final Appendable ostream)
+				throws IOException {
 			return false;
 		}
 	};

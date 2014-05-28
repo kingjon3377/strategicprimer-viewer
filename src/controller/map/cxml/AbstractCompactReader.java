@@ -290,6 +290,7 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	/**
 	 * @param tabs a nonnegative integer
 	 * @return that many tabs
+	 * TODO: This should probably take Appendable and write the tabs directly.
 	 */
 	protected static String indent(final int tabs) {
 		final StringBuilder buf = new StringBuilder();

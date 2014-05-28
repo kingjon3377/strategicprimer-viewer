@@ -68,7 +68,7 @@ public class ShrubReader implements INodeHandler<Shrub> {
 	}
 
 	/**
-	 * Create an intermediate representation to write to a Writer.
+	 * Create an intermediate representation to convert to XML.
 	 *
 	 * @param <S> the type of the object---it can be a subclass, to make the
 	 *        adapter work.

@@ -1,6 +1,6 @@
 package model.map;
 
-import java.io.PrintWriter;
+import java.io.IOException;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -47,9 +47,11 @@ public class MapView implements IMutableMap {
 	 * @param obj the map to check
 	 * @return whether it's a strict subset of this one
 	 * @param ostream the stream to write details to
+	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IMap obj, final PrintWriter ostream) {
+	public boolean isSubset(final IMap obj, final Appendable ostream)
+			throws IOException {
 		return map.isSubset(obj, ostream);
 	}
 

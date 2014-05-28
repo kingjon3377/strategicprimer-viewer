@@ -1,6 +1,6 @@
 package model.exploration.old;
 
-import java.io.PrintStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -233,8 +233,9 @@ public class ExplorationRunner { // NOPMD
 	 * Print the names of any tables that are called but don't exist yet.
 	 *
 	 * @param ostream The stream to print results on.
+	 * @throws IOException on I/O error writing to stream
 	 */
-	public void verboseRecursiveCheck(final PrintStream ostream) {
+	public void verboseRecursiveCheck(final Appendable ostream) throws IOException {
 		final Set<String> state = new HashSet<>(); // NOPMD
 		for (final String table : tables.keySet()) {
 			if (table != null) {
@@ -249,10 +250,11 @@ public class ExplorationRunner { // NOPMD
 	 * @param table the table to recursively check
 	 * @param ostream the stream to print results on
 	 * @param state to prevent infinite recursion.
+	 * @throws IOException on I/O error writing to the stream
 	 */
 	// ESCA-JAVA0049:
 	private void verboseRecursiveCheck(final String table,
-			final PrintStream ostream, final Set<String> state) {
+			final Appendable ostream, final Set<String> state) throws IOException {
 		if (!state.contains(table)) {
 			state.add(table);
 			if (tables.keySet().contains(table)) {
@@ -267,10 +269,10 @@ public class ExplorationRunner { // NOPMD
 						}
 					}
 				} catch (final MissingTableException e) {
-					ostream.println(e.getTable());
+					ostream.append(e.getTable());
 				}
 			} else {
-				ostream.println(table);
+				ostream.append(table);
 			}
 		}
 	}

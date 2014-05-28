@@ -34,7 +34,7 @@ public class CompactXMLWriter implements SPWriter {
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer ostream, final IMap map) throws IOException {
+	public void write(final Appendable ostream, final IMap map) throws IOException {
 		writeObject(ostream, map);
 	}
 
@@ -72,7 +72,7 @@ public class CompactXMLWriter implements SPWriter {
 	 * @param obj the object to write
 	 * @throws IOException on I/O error
 	 */
-	public static void writeObject(final Writer ostream, final Object obj)
+	public static void writeObject(final Appendable ostream, final Object obj)
 			throws IOException {
 		CompactReaderAdapter.write(ostream, obj, 0);
 	}

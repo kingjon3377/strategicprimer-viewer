@@ -1,7 +1,6 @@
 package controller.map.cxml;
 
 import java.io.IOException;
-import java.io.Writer;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -44,7 +43,7 @@ public interface CompactReader<T> {
 	 * @param indent the current indentation level.
 	 * @throws IOException on I/O problems.
 	 */
-	void write(Writer ostream, T obj, int indent) throws IOException;
+	void write(Appendable ostream, T obj, int indent) throws IOException;
 
 	/**
 	 * @param tag a tag. May be null, to simplify callers.

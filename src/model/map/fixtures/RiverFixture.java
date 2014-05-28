@@ -1,6 +1,6 @@
 package model.map.fixtures;
 
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -137,9 +137,11 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 	 * @return whether it's a strict subset of this one, containing no rivers
 	 *         that this doesn't
 	 * @param ostream ignored (no output)
+	 * @throws IOException never
 	 */
 	@Override
-	public boolean isSubset(final RiverFixture obj, final PrintWriter ostream) {
+	public boolean isSubset(final RiverFixture obj, final Appendable ostream)
+			throws IOException {
 		final Set<River> temp = EnumSet.copyOf(obj.rivers);
 		temp.removeAll(rivers);
 		return temp.isEmpty();

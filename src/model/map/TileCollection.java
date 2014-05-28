@@ -1,6 +1,6 @@
 package model.map;
 
-import java.io.PrintWriter;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -112,15 +112,18 @@ public final class TileCollection implements IMutableTileCollection {
 
 	/**
 	 * We don't replace the "retval = false" with "return false" because
-	 * {@link Tile#isSubset(ITile, PrintWriter)} has the side effect of printing
+	 * {@link Tile#isSubset(ITile, Appendable)} has the side effect of printing
 	 * what makes it *not* a subset; we want that done for *all* relevant tiles.
 	 *
 	 * @param obj another TileCollection
 	 * @return whether it's a strict subset of this one
 	 * @param ostream the stream to write details of differences to
+	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final ITileCollection obj, final PrintWriter ostream) {
+	public boolean
+			isSubset(final ITileCollection obj, final Appendable ostream)
+					throws IOException {
 		boolean retval = true; // NOPMD
 		for (final Point point : obj) {
 			if (point == null) {
@@ -130,13 +133,14 @@ public final class TileCollection implements IMutableTileCollection {
 				try (final PrefixingPrintWriter writer = new PrefixingPrintWriter(
 						str, point.toString() + ":\t")) {
 					if (!tiles.get(point).isSubset(obj.getTile(point), writer)) {
-						ostream.print(str.toString());
+						ostream.append(str.toString());
 						retval = false; // NOPMD
 					}
 				}
 			} else {
-				ostream.print("Extra tile at ");
-				ostream.println(point.toString());
+				ostream.append("Extra tile at ");
+				ostream.append(point.toString());
+				ostream.append('\n');
 				retval = false; // NOPMD
 			}
 		}

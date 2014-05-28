@@ -1,6 +1,6 @@
 package model.map;
 
-import java.io.PrintWriter;
+import java.io.IOException;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -108,7 +108,7 @@ public class SPMap implements IMutableMap {
 				&& players.equals(((IMap) obj).getPlayers())
 				&& tiles.equals(((IMap) obj).getTiles());
 	}
-	
+
 	/**
 	 *
 	 * @return a hash value for the map
@@ -155,14 +155,16 @@ public class SPMap implements IMutableMap {
 	 * @param obj another map
 	 * @return whether it's a strict subset of this one
 	 * @param ostream the stream to write details of the difference to
+	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IMap obj, final PrintWriter ostream) {
+	public boolean isSubset(final IMap obj, final Appendable ostream)
+			throws IOException {
 		if (getDimensions().equals(obj.getDimensions())) {
 			return players.isSubset(obj.getPlayers(), ostream) // NOPMD
 					&& tiles.isSubset(obj.getTiles(), ostream);
 		} else {
-			ostream.println("Sizes differ");
+			ostream.append("Sizes differ\n");
 			return false;
 		}
 	}

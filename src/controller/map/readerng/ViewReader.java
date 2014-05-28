@@ -98,7 +98,7 @@ public class ViewReader implements INodeHandler<MapView> {
 	}
 
 	/**
-	 * Create an intermediate representation of the view to write to a Writer.
+	 * Create an intermediate representation of the view to convert to XML.
 	 * TODO: changesets
 	 *
 	 * @param <S> the type of the object

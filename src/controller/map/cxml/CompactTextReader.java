@@ -1,7 +1,6 @@
 package controller.map.cxml;
 
 import java.io.IOException;
-import java.io.Writer;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -95,8 +94,8 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer ostream, final TextFixture obj, final int indent)
-			throws IOException {
+	public void write(final Appendable ostream, final TextFixture obj,
+			final int indent) throws IOException {
 		ostream.append(indent(indent));
 		if (obj.getTurn() == -1) {
 			ostream.append("<text");

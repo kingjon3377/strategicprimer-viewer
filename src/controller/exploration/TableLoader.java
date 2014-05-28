@@ -39,10 +39,8 @@ public final class TableLoader { // NOPMD
 	/**
 	 * An error-message string. Pulled out because it's so long.
 	 */
-	private static final String IO_ERR_STRING = NullCleaner
-			.assertNotNull(new StringBuilder(
-					"I/O error while reading table from file, ").append(
-					"continuing with what we've got so far ...").toString());
+	private static final String IO_ERR_STRING =
+			"I/O error while reading table, continuing with what we have so far ...";
 	/**
 	 * Extracted constant for clarity: If we split() a string "once", we tell
 	 * split() to give us at most two pieces, and then test whether it gave us

@@ -3,7 +3,6 @@ package controller.map.cxml;
 import static util.NullCleaner.assertNotNull;
 
 import java.io.IOException;
-import java.io.Writer;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -185,7 +184,7 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Writer ostream, final IMap obj, final int indent)
+	public void write(final Appendable ostream, final IMap obj, final int indent)
 			throws IOException {
 		ostream.append(indent(indent));
 		if (obj instanceof MapView) {
@@ -209,7 +208,7 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 	 * @param indent the current indentation level
 	 * @throws IOException on I/O error
 	 */
-	private static void writeMap(final Writer ostream, final SPMap obj,
+	private static void writeMap(final Appendable ostream, final SPMap obj,
 			final int indent) throws IOException {
 		final MapDimensions dim = obj.getDimensions();
 		ostream.append("<map version=\"");

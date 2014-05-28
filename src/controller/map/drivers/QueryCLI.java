@@ -5,7 +5,6 @@ import static view.util.SystemOut.SYS_OUT;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -66,7 +65,7 @@ public final class QueryCLI implements ISPDriver {
 	 * @param map the map to explore
 	 * @param ostream the stream to write output to
 	 */
-	private void repl(final IMap map, final PrintStream ostream) {
+	private void repl(final IMap map, final Appendable ostream) {
 		final HuntingModel hmodel = new HuntingModel(map);
 		try {
 			String input = helper.inputString("Command: ");
@@ -88,7 +87,7 @@ public final class QueryCLI implements ISPDriver {
 	 * @throws IOException on I/O error
 	 */
 	public void handleCommand(final IMap map, final HuntingModel hmodel,
-			final PrintStream ostream, final char input) throws IOException {
+			final Appendable ostream, final char input) throws IOException {
 		switch (input) {
 		case '?':
 			usage(ostream);
@@ -115,7 +114,7 @@ public final class QueryCLI implements ISPDriver {
 			new TrapModelDriver().startDriver(map);
 			break;
 		default:
-			ostream.println("Unknown command.");
+			ostream.append("Unknown command.\n");
 			break;
 		}
 	}
@@ -128,7 +127,7 @@ public final class QueryCLI implements ISPDriver {
 	 *            the stream to write to
 	 * @throws IOException on I/O error dealing with user input
 	 */
-	private void herd(final PrintStream ostream) throws IOException {
+	private void herd(final Appendable ostream) throws IOException {
 		final double rate; // The amount of milk per animal
 		final int time; // How long it takes to milk one animal, in minutes.
 		final boolean poultry;
@@ -152,32 +151,32 @@ public final class QueryCLI implements ISPDriver {
 		}
 		final int count = helper.inputNumber("How many animals?\t");
 		if (count == 0) {
-			ostream.println("With no animals, no cost and no gain.");
+			ostream.append("With no animals, no cost and no gain.\n");
 			return; // NOPMD
 		} else if (count < 0) {
-			ostream.println("Can't have a negative number of animals.");
+			ostream.append("Can't have a negative number of animals.\n");
 			return; // NOPMD
 		}
 		final int herders = helper.inputNumber("How many herders?\t");
 		if (herders <= 0) {
-			ostream.println("Can't herd with no herders.");
+			ostream.append("Can't herd with no herders.\n");
 			return; // NOPMD
 		}
 		final int animalsPerHerder = (count + herders - 1) / herders;
-		ostream.print("Tending the animals takes ");
-		ostream.print(animalsPerHerder * time);
-		ostream.print(" minutes, or ");
-		ostream.print(animalsPerHerder * (time - 5));
-		ostream.println(" minutes with expert herders, twice daily.");
+		ostream.append("Tending the animals takes ");
+		ostream.append(Integer.toString(animalsPerHerder * time));
+		ostream.append(" minutes, or ");
+		ostream.append(Integer.toString(animalsPerHerder * (time - 5)));
+		ostream.append(" minutes with expert herders, twice daily.\n");
 		if (poultry) {
-			ostream.println(String.format(
-					"This produces %.0f eggs, totaling %.1f oz.",
+			ostream.append(String.format(
+					"This produces %.0f eggs, totaling %.1f oz.\n",
 					Double.valueOf(rate * count),
 					Double.valueOf(rate * 2.0 * count)));
 		} else {
-			ostream.println("Gathering them for each milking takes 30 min more.");
-			ostream.println(String.format(
-					"This produces %,.1f gallons, %,.1f lbs, of milk per day.",
+			ostream.append("Gathering them for each milking takes 30 min more.\n");
+			ostream.append(String.format(
+					"This produces %,.1f gallons, %,.1f lbs, of milk per day.\n",
 					Double.valueOf(rate * count),
 					Double.valueOf(rate * 8.6 * count)));
 		}
@@ -190,16 +189,20 @@ public final class QueryCLI implements ISPDriver {
 	 * @param land true if this is hunting, false if fishing
 	 * @param ostream the stream to write to
 	 * @param encounters how many encounters to show
+	 * @throws IOException on I/O error writing to stream
 	 */
 	private static void hunt(final HuntingModel hmodel, final Point point,
-			final boolean land, final PrintStream ostream, final int encounters) {
+			final boolean land, final Appendable ostream, final int encounters)
+			throws IOException {
 		if (land) {
 			for (final String item : hmodel.hunt(point, encounters)) {
-				ostream.println(item);
+				ostream.append(item);
+				ostream.append('\n');
 			}
 		} else {
 			for (final String item : hmodel.fish(point, encounters)) {
-				ostream.println(item);
+				ostream.append(item);
+				ostream.append('\n');
 			}
 		}
 	}
@@ -211,11 +214,13 @@ public final class QueryCLI implements ISPDriver {
 	 * @param point around where to gather
 	 * @param ostream the stream to write to
 	 * @param encounters how many encounters to show
+	 * @throws IOException on I/O error writing to stream
 	 */
 	private static void gather(final HuntingModel hmodel, final Point point,
-			final PrintStream ostream, final int encounters) {
+			final Appendable ostream, final int encounters) throws IOException {
 		for (final String item : hmodel.gather(point, encounters)) {
-			ostream.println(item);
+			ostream.append(item);
+			ostream.append('\n');
 		}
 	}
 
@@ -225,10 +230,14 @@ public final class QueryCLI implements ISPDriver {
 	 *
 	 * @param tile the selected tile
 	 * @param ostream the stream to print results to
+	 * @throws IOException on I/O error writing to stream
 	 */
-	private static void fortressInfo(final ITile tile, final PrintStream ostream) {
-		ostream.print("Terrain is ");
-		ostream.println(tile.getTerrain());
+	private static void
+			fortressInfo(final ITile tile, final Appendable ostream)
+					throws IOException {
+		ostream.append("Terrain is ");
+		ostream.append(tile.getTerrain().toString());
+		ostream.append('\n');
 		final List<TileFixture> fixtures = CLIHelper.toList(tile);
 		final List<Ground> ground = new ArrayList<>();
 		final List<Forest> forests = new ArrayList<>();
@@ -240,15 +249,17 @@ public final class QueryCLI implements ISPDriver {
 			}
 		}
 		if (!ground.isEmpty()) {
-			ostream.println("Kind(s) of ground (rock) on the tile:");
+			ostream.append("Kind(s) of ground (rock) on the tile:\n");
 			for (final Ground fix : ground) {
-				ostream.println(fix);
+				ostream.append(fix.toString());
+				ostream.append('\n');
 			}
 		}
 		if (!forests.isEmpty()) {
-			ostream.println("Kind(s) of forests on the tile:");
+			ostream.append("Kind(s) of forests on the tile:\n");
 			for (final Forest fix : forests) {
-				ostream.println(fix);
+				ostream.append(fix.toString());
+				ostream.append('\n');
 			}
 		}
 	}
@@ -295,24 +306,26 @@ public final class QueryCLI implements ISPDriver {
 	 * Prints a usage message.
 	 *
 	 * @param ostream the stream to write it to.
+	 * @throws IOException on I/O error writing to stream
 	 */
-	public static void usage(final PrintStream ostream) {
-		ostream.println("The following commands are supported:");
-		ostream.print("Fortress: Print what a player automatically knows ");
-		ostream.println("about his fortress's tile.");
-		final int encounters = HUNTER_HOURS * HOURLY_ENCOUNTERS;
-		ostream.print("Hunt/fIsh: Generates up to ");
-		ostream.print(encounters);
-		ostream.println(" encounters with animals.");
-		ostream.print("Gather: Generates up to ");
-		ostream.print(encounters);
-		ostream.print(" encounters with fields, meadows, groves, ");
-		ostream.println("orchards, or shrubs.");
-		ostream.print("hErd: Determine the output from and time required for ");
-		ostream.println("maintaining a herd.");
-		ostream.print("Trap: Switch to the trap-modeling program ");
-		ostream.println("to run trapping or fish-trapping.");
-		ostream.println("Quit: Exit the program.");
+	public static void usage(final Appendable ostream) throws IOException {
+		ostream.append("The following commands are supported:\n");
+		ostream.append("Fortress: Print what a player automatically knows ");
+		ostream.append("about his fortress's tile.\n");
+		final String encounters =
+				Integer.toString(HUNTER_HOURS * HOURLY_ENCOUNTERS);
+		ostream.append("Hunt/fIsh: Generates up to ");
+		ostream.append(encounters);
+		ostream.append(" encounters with animals.\n");
+		ostream.append("Gather: Generates up to ");
+		ostream.append(encounters);
+		ostream.append(" encounters with fields, meadows, groves, ");
+		ostream.append("orchards, or shrubs.\n");
+		ostream.append("hErd: Determine the output from and time required for ");
+		ostream.append("maintaining a herd.\n");
+		ostream.append("Trap: Switch to the trap-modeling program ");
+		ostream.append("to run trapping or fish-trapping.\n");
+		ostream.append("Quit: Exit the program.\n");
 	}
 
 	/**
