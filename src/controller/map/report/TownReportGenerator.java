@@ -70,9 +70,9 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 		}
 		builder.append(CLOSE_LIST);
 		if (sorted.isEmpty()) {
-			return NullCleaner.assertNotNull(builder.toString()); // NOPMD
-		} else {
 			return "";
+		} else {
+			return NullCleaner.assertNotNull(builder.toString()); // NOPMD
 		}
 	}
 
