@@ -290,7 +290,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 					point.col);
 		case Northeast:
 			return PointFactory.point(decrement(point.row, dims.rows - 1), // NOPMD
-					increment(point.col, dims.rows - 1));
+					increment(point.col, dims.cols - 1));
 		case Northwest:
 			return PointFactory.point(decrement(point.row, dims.rows - 1), // NOPMD
 					decrement(point.col, dims.cols - 1));
