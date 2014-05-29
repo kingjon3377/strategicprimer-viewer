@@ -170,11 +170,11 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 				final IMutableTileCollection mapTiles =
 						(IMutableTileCollection) mapTilesPre;
 				final IMutableTile stile = mapTiles.getTile(point);
-				final IMutableTile dtile = mapTiles.getTile(dest);
 				if (!tileHasFixture(stile, unit)) {
 					continue;
 				}
 				ensureTerrain(mapTiles, dest, destTile.getTerrain());
+				final IMutableTile dtile = mapTiles.getTile(dest);
 				removeImpl(stile, unit);
 				dtile.addFixture(unit);
 			}
