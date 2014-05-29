@@ -163,19 +163,18 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			removeImpl((IMutableTile) sourceTile, unit);
 			((IMutableTile) destTile).addFixture(unit);
 			for (final Pair<IMap, File> pair : getSubordinateMaps()) {
-				final ITileCollection mapTiles = pair.first().getTiles();
-				if (!(mapTiles instanceof IMutableTileCollection)) {
+				final ITileCollection mapTilesPre = pair.first().getTiles();
+				if (!(mapTilesPre instanceof IMutableTileCollection)) {
 					throw new IllegalStateException("Immutable tile collection");
 				}
-				final IMutableTile stile = ((IMutableTileCollection) mapTiles)
-						.getTile(point);
-				final IMutableTile dtile = ((IMutableTileCollection) mapTiles)
-						.getTile(dest);
+				final IMutableTileCollection mapTiles =
+						(IMutableTileCollection) mapTilesPre;
+				final IMutableTile stile = mapTiles.getTile(point);
+				final IMutableTile dtile = mapTiles.getTile(dest);
 				if (!tileHasFixture(stile, unit)) {
 					continue;
 				}
-				ensureTerrain((IMutableTileCollection) mapTiles, dest,
-						destTile.getTerrain());
+				ensureTerrain(mapTiles, dest, destTile.getTerrain());
 				removeImpl(stile, unit);
 				dtile.addFixture(unit);
 			}
