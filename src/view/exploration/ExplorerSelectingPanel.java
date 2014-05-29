@@ -1,10 +1,12 @@
 package view.exploration;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JSplitPane;
@@ -100,6 +102,24 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 				emodel);
 		addPlayerChangeListener(unitListModel);
 		unitList = new JList<>(unitListModel);
+		unitList.setCellRenderer(new DefaultListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(
+					@Nullable final JList<?> list,
+					@Nullable final Object value, final int index,
+					final boolean isSelected, final boolean cellHasFocus) {
+				final Component retval =
+						super.getListCellRendererComponent(list, value, index,
+								isSelected,						cellHasFocus);
+				if (value instanceof IUnit && retval instanceof JLabel) {
+					((JLabel) retval).setText(String.format(
+							"Unit of type %s, named %s",
+							((IUnit) value).getKind(),
+							((IUnit) value).getName()));
+				}
+				return NullCleaner.assertNotNull(retval);
+			}
+		});
 		setCenter(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT, PROPORTION,
 				PROPORTION, new BorderedPanel(playerList,
 						label("Players in all maps:"), null, null, null),
