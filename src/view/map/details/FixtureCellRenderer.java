@@ -7,6 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -76,7 +78,10 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 		setComponentPreferredSize((JComponent) component, list.getWidth());
 		return component;
 	}
-
+	/**
+	 * A cache of icon filenames that aren't available.
+	 */
+	private final Set<String> missing = new HashSet<>();
 	/**
 	 * @param obj a HasImage object
 	 * @return an icon representing it
@@ -85,8 +90,11 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 		// ESCA-JAVA0177:
 		Icon retval;
 		String image = obj.getImage();
-		if (image.isEmpty()) {
+		if (image.isEmpty() || missing.contains(image)) {
 			image = obj.getDefaultImage();
+		}
+		if (missing.contains(image)) {
+			return defaultFixtIcon;
 		}
 		try {
 			retval = ImageLoader.getLoader().loadIcon(image);
@@ -94,6 +102,7 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 			LOGGER.log(Level.SEVERE, "image file images/" + image
 					+ " not found");
 			LOGGER.log(Level.FINEST, "With stack trace", e);
+			missing.add(image);
 			retval = defaultFixtIcon;
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error reading image", e);
