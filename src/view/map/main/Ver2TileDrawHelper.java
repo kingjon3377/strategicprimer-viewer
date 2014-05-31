@@ -514,7 +514,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 				while (wrapped.hasNext()) {
 					final TileFixture tempCached = wrapped.next();
 					if (tempCached != null && tempCached != NULL_FIXT
-							&& zof.shouldDisplay(cached)) {
+							&& zof.shouldDisplay(tempCached)) {
 						cached = tempCached;
 						hasCached = true;
 						return true; // NOPMD
