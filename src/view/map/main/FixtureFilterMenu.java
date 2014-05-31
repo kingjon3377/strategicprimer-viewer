@@ -1,5 +1,6 @@
 package view.map.main;
 
+import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ public class FixtureFilterMenu extends JMenu implements ZOrderFilter {
 	 */
 	public FixtureFilterMenu() {
 		super("Display ...");
+		setMnemonic(KeyEvent.VK_D);
 	}
 
 	/**
