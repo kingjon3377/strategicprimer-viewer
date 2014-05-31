@@ -143,6 +143,8 @@ public class ExplorationCLI {
 		}
 		final Direction direction =
 				assertNotNull(Direction.values()[directionNum]);
+		final Point point = model.getSelectedUnitLocation();
+		final Point dPoint = model.getDestination(point, direction);
 		// ESCA-JAVA0177:
 		int cost; // NOPMD
 		try {
@@ -152,8 +154,6 @@ public class ExplorationCLI {
 			System.out.println("all maps show that at a cost of 1 MP");
 			return 1; // NOPMD
 		}
-		final Point point = model.getSelectedUnitLocation();
-		final Point dPoint = model.getDestination(point, direction);
 		final List<TileFixture> allFixtures = new ArrayList<>();
 		final List<TileFixture> constants = new ArrayList<>();
 		for (final TileFixture fix : model.getMap().getTile(dPoint)) {
