@@ -64,17 +64,41 @@ public final class SimpleMovement {
 			return Integer.MAX_VALUE; // NOPMD
 		} else if (isForest(tile) || isHill(tile)
 				|| TileType.Desert.equals(tile.getTerrain())) {
-			return 3; // NOPMD
+			if (isRiver(tile)) {
+				return 2; // NOPMD
+			} else {
+				return 3; // NOPMD
+			}
 		} else if (TileType.Jungle.equals(tile.getTerrain())) {
-			return 6; // NOPMD
+			if (isRiver(tile)) {
+				return 4;
+			} else {
+				return 6; // NOPMD
+			}
 		} else if (EqualsAny.equalsAny(tile.getTerrain(), TileType.Steppe,
 				TileType.Plains, TileType.Tundra)) {
-			return 2;
+			if (isRiver(tile)) {
+				return 1;
+			} else {
+				return 2;
+			}
 		} else {
 			throw new IllegalArgumentException("Unknown tile type");
 		}
 	}
-
+	/**
+	 * @param tile a tile
+	 * @return whether it contains a river
+	 */
+	private static boolean isRiver(final ITile tile) {
+		for (final TileFixture fix : tile) {
+			if (fix instanceof RiverFixture
+					&& ((RiverFixture) fix).iterator().hasNext()) {
+				return true;
+			}
+		}
+		return false;
+	}
 	/**
 	 * @param tile a tile
 	 * @return whether it is or contains a forest
