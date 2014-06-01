@@ -3,6 +3,7 @@ package view.map.misc;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FilterWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
@@ -70,7 +71,7 @@ public class SubsetFrame extends JFrame {
 	 * @author Jonathan Lovelace
 	 *
 	 */
-	private static final class HTMLWriter extends PrintWriter {
+	private static final class HTMLWriter extends FilterWriter {
 		/**
 		 * Whether we're in the middle of a line.
 		 */
@@ -89,34 +90,23 @@ public class SubsetFrame extends JFrame {
 		 * Start or continue a line.
 		 *
 		 * @param str the string to print
+		 * @throws IOException on I/O error
+		 * @return this
 		 */
 		@Override
-		public void print(@Nullable final String str) {
+		public Writer append(@Nullable final CharSequence str) throws IOException {
 			@NonNull
-			final String local = NullCleaner.valueOrDefault(str, "null");
+			final String local =
+					NullCleaner.assertNotNull(NullCleaner.valueOrDefault(str,
+							"null").toString());
 			if (!middle) {
-				super.print("<p style=\"color:white\">");
+				super.append("<p style=\"color:white\">");
 			}
-			super.print(local.replaceAll("\n", "</p><p style=\"color:white\">"));
+			super.append(local.replaceAll("\n", "</p><p style=\"color:white\">"));
 			middle = true;
+			return this;
 		}
 
-		/**
-		 * Finish a line.
-		 *
-		 * @param line the end of the line
-		 */
-		@Override
-		public void println(@Nullable final String line) {
-			@NonNull
-			final String local = NullCleaner.valueOrDefault(line, "null");
-			if (!middle) {
-				super.print("<p style=\"color:white\">");
-			}
-			super.print(local.replaceAll("\n", "</p><p style=\"color:white\">"));
-			super.println("</p>");
-			middle = false;
-		}
 		/**
 		 * @return a String representation of the object
 		 */
@@ -223,7 +213,7 @@ public class SubsetFrame extends JFrame {
 		// ESCA-JAVA0177:
 		try {
 			final IMap map = reader.readMap(arg, new Warning(Action.Ignore));
-			try (final PrintWriter out = new HTMLWriter(label.getWriter())) {
+			try (final Writer out = new HTMLWriter(label.getWriter())) {
 				if (mainMap.isSubset(map, out)) {
 					printParagraph("OK", "green");
 				} else {
