@@ -79,7 +79,7 @@ public class TextFixture implements TileFixture, HasImage {
 	 */
 	@Override
 	public int getZValue() {
-		return 0;
+		return 25;
 	}
 
 	/**
