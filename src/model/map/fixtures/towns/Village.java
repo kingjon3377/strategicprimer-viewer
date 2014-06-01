@@ -1,8 +1,11 @@
 package model.map.fixtures.towns;
 
+import java.io.IOException;
+
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.Player;
+import model.map.SubsettableFixture;
 import model.map.TileFixture;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -15,7 +18,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class Village implements ITownFixture, HasImage {
+public class Village implements ITownFixture, HasImage, SubsettableFixture {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -252,5 +255,46 @@ public class Village implements ITownFixture, HasImage {
 	@Override
 	public String shortDesc() {
 		return toString();
+	}
+
+	/**
+	 * A village is a "subset" of another if they are identical, or if the only
+	 * difference is that the "subset" is independent and the "superset" owes
+	 * allegiance to some player.
+	 *
+	 * @param obj
+	 *            a fixture
+	 * @param ostream
+	 *            a stream to write explanation to
+	 * @return whether the fixture is a "subset" of this
+	 */
+	@Override
+	public boolean isSubset(final IFixture obj, final Appendable ostream)
+			throws IOException {
+		if (obj instanceof Village) {
+			final Village village = (Village) obj;
+			if (village.id != id) {
+				ostream.append("IDs differ\n");
+				return false;
+			} else if (!status.equals(village.status)) {
+				ostream.append("Village status differs\n");
+				return false;
+			} else if (!name.equals(village.name)) {
+				ostream.append("Village names differ\n");
+				return false;
+			} else if (!race.equals(village.race)) {
+				ostream.append("Dominant race differs\n");
+				return false;
+			} else if (owner.getPlayerId() == village.owner.getPlayerId()) {
+				return true;
+			} else if (village.owner.isIndependent()) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			ostream.append("Incompatible types\n");
+			return false;
+		}
 	}
 }
