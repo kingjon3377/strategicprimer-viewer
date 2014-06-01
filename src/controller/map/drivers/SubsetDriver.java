@@ -4,13 +4,12 @@ import static view.util.SystemOut.SYS_OUT;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.util.logging.Level;
 
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
+import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -135,15 +134,12 @@ public final class SubsetDriver implements ISPDriver {
 			final MapReaderAdapter reader, final IMap mainMap) {
 		try {
 			final IMap map = reader.readMap(file, new Warning(Action.Ignore));
-			try (final OutputStreamWriter osw = new OutputStreamWriter(SYS_OUT);
-					@SuppressWarnings("resource")
-					// "Resource 'out' should be managed by try-with-resource", when
-					// it *is*!
-					final PrintWriter out = new PrintWriter(osw)) {
-				if (mainMap.isSubset(map, out)) {
+			try  {
+				if (mainMap
+						.isSubset(map, NullCleaner.assertNotNull(System.out))) {
 					return Returns.OK; // NOPMD
 				} else {
-					out.flush();
+					System.out.flush();
 					return Returns.Warn; // NOPMD
 				}
 			} catch (IOException except) {
