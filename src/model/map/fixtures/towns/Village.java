@@ -287,10 +287,8 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 				return false;
 			} else if (owner.getPlayerId() == village.owner.getPlayerId()) {
 				return true;
-			} else if (village.owner.isIndependent()) {
-				return true;
 			} else {
-				return false;
+				return village.owner.isIndependent();
 			}
 		} else {
 			ostream.append("Incompatible types\n");
