@@ -282,6 +282,7 @@ public final class Tile implements IMutableTile {
 				ostream.append(fix.toString());
 				ostream.append(", ID #");
 				ostream.append(Integer.toString(fix.getID()));
+				ostream.append('\t');
 			}
 		}
 		return retval; // NOPMD
