@@ -134,17 +134,11 @@ public final class SubsetDriver implements ISPDriver {
 			final MapReaderAdapter reader, final IMap mainMap) {
 		try {
 			final IMap map = reader.readMap(file, new Warning(Action.Ignore));
-			try  {
-				if (mainMap
-						.isSubset(map, NullCleaner.assertNotNull(System.out))) {
-					return Returns.OK; // NOPMD
-				} else {
-					System.out.flush();
-					return Returns.Warn; // NOPMD
-				}
-			} catch (IOException except) {
-				Warning.INSTANCE.warn(except);
-				return Returns.Fail; // NOPMD
+			if (mainMap.isSubset(map, NullCleaner.assertNotNull(System.out))) {
+				return Returns.OK; // NOPMD
+			} else {
+				System.out.flush();
+				return Returns.Warn; // NOPMD
 			}
 		} catch (final IOException except) {
 			Warning.INSTANCE.warn(except);
