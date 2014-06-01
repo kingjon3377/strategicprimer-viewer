@@ -12,7 +12,6 @@ import model.map.HasImage;
 import model.map.HasKind;
 import model.map.HasName;
 import model.map.IFixture;
-import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
@@ -177,7 +176,7 @@ public class Worker implements HasName, HasKind, HasImage, IWorker {
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final UnitMember obj, final Appendable ostream)
+	public boolean isSubset(final IFixture obj, final Appendable ostream)
 			throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Worker) {

@@ -1,7 +1,6 @@
 package model.map.fixtures;
 
-import model.map.IFixture;
-import model.map.Subsettable;
+import model.map.SubsettableFixture;
 
 /**
  * A (marker) interface for things that can be part of a unit.
@@ -13,6 +12,6 @@ import model.map.Subsettable;
  * @author Jonathan Lovelace
  *
  */
-public interface UnitMember extends IFixture, Subsettable<UnitMember> {
+public interface UnitMember extends SubsettableFixture {
 	// Just a marker interface for now. TODO: members?
 }

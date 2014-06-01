@@ -11,7 +11,7 @@ import model.map.FixtureIterable;
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.Player;
-import model.map.Subsettable;
+import model.map.SubsettableFixture;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.IUnit;
 
@@ -28,8 +28,8 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
-		FixtureIterable<IUnit> {
+public class Fortress implements HasImage, ITownFixture,
+		FixtureIterable<IUnit>, SubsettableFixture {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -197,16 +197,21 @@ public class Fortress implements HasImage, Subsettable<Fortress>, ITownFixture,
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final Fortress obj, final Appendable ostream)
+	public boolean isSubset(final IFixture obj, final Appendable ostream)
 			throws IOException {
-		if (name.equals(obj.name)
-				&& obj.owner.getPlayerId() == owner.getPlayerId()) {
+		if (!(obj instanceof Fortress)) {
+			ostream.append("Incompatible types");
+			return false;
+		}
+		Fortress fort = (Fortress) obj;
+		if (name.equals(fort.name)
+				&& fort.owner.getPlayerId() == owner.getPlayerId()) {
 			boolean retval = true;
 			final Map<Integer, IUnit> ours = new HashMap<>();
 			for (final IUnit unit : this) {
 				ours.put(Integer.valueOf(unit.getID()), unit);
 			}
-			for (final IUnit unit : obj) {
+			for (final IUnit unit : fort) {
 				if (unit == null) {
 					continue;
 				} else if (!ours.containsKey(Integer.valueOf(unit.getID()))) {

@@ -164,7 +164,7 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final UnitMember obj, final Appendable ostream)
+	public boolean isSubset(final IFixture obj, final Appendable ostream)
 			throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Animal) {

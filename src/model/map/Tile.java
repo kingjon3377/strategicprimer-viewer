@@ -13,8 +13,8 @@ import java.util.Set;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.resources.CacheFixture;
-import model.map.fixtures.towns.Fortress;
 import model.viewer.TileTypeFixture;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -264,8 +264,12 @@ public final class Tile implements IMutableTile {
 					&& mySubsettables.containsKey(Integer.valueOf(fix.getID()))) {
 				final Subsettable<?> mine = mySubsettables.get(Integer
 						.valueOf(fix.getID()));
-				if (mine instanceof Fortress && fix instanceof Fortress) {
-					if (!((Fortress) mine).isSubset((Fortress) fix, ostream)) {
+				if (mine instanceof IUnit && fix instanceof IUnit) {
+					if (!((IUnit) mine).isSubset((IUnit) fix, ostream)) {
+						retval = false;
+					}
+				} else if (mine instanceof SubsettableFixture) {
+					if (!((SubsettableFixture) mine).isSubset(fix, ostream)) {
 						retval = false;
 					}
 				} else {

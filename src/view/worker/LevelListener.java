@@ -75,7 +75,7 @@ public final class LevelListener implements LevelGainListener,
 		 * @return false
 		 */
 		@Override
-		public boolean isSubset(final UnitMember obj, final Appendable ostream)
+		public boolean isSubset(final IFixture obj, final Appendable ostream)
 				throws IOException {
 			return false;
 		}

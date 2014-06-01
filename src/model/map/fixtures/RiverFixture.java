@@ -7,7 +7,7 @@ import java.util.Set;
 
 import model.map.IFixture;
 import model.map.River;
-import model.map.Subsettable;
+import model.map.SubsettableFixture;
 import model.map.TileFixture;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -22,7 +22,7 @@ import util.NullCleaner;
  *
  */
 public final class RiverFixture implements TileFixture, Iterable<River>,
-		Subsettable<RiverFixture> {
+		SubsettableFixture {
 	/**
 	 * The maximum size of a river's equivalent string, plus a space.
 	 */
@@ -140,11 +140,16 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 	 * @throws IOException never
 	 */
 	@Override
-	public boolean isSubset(final RiverFixture obj, final Appendable ostream)
+	public boolean isSubset(final IFixture obj, final Appendable ostream)
 			throws IOException {
-		final Set<River> temp = EnumSet.copyOf(obj.rivers);
-		temp.removeAll(rivers);
-		return temp.isEmpty();
+		if (obj instanceof RiverFixture) {
+			final Set<River> temp = EnumSet.copyOf(((RiverFixture) obj).rivers);
+			temp.removeAll(rivers);
+			return temp.isEmpty();
+		} else {
+			ostream.append("Incompatible types\n");
+			return false;
+		}
 	}
 
 	/**
