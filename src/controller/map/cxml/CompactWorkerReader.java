@@ -260,6 +260,9 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 */
 	public static void writeJob(final Appendable ostream, final Job obj,
 			final int indent) throws IOException {
+		if (obj.getLevel() <= 0 && !obj.iterator().hasNext()) {
+			return;
+		}
 		ostream.append(indent(indent));
 		ostream.append("<job name=\"");
 		ostream.append(obj.getName());
