@@ -71,28 +71,40 @@ public class ImmortalsReportGenerator extends
 			final IFixture immortal = pair.second();
 			if (immortal instanceof Dragon) {
 				separateByKind(dragons, (Dragon) immortal, point);
+				fixtures.remove(Integer.valueOf(immortal.getID()));
 			} else if (immortal instanceof Fairy) {
 				separateByKind(fairies, (Fairy) immortal, point);
+				fixtures.remove(Integer.valueOf(immortal.getID()));
 			} else if (immortal instanceof Troll) {
 				trolls.add(point);
+				fixtures.remove(Integer.valueOf(immortal.getID()));
 			} else if (immortal instanceof Djinn) {
 				djinni.add(point);
+				fixtures.remove(Integer.valueOf(immortal.getID()));
 			} else if (immortal instanceof Sphinx) {
 				sphinxes.add(point);
+				fixtures.remove(Integer.valueOf(immortal.getID()));
 			} else if (immortal instanceof Giant) {
 				separateByKind(giants, (Giant) immortal, point);
+				fixtures.remove(Integer.valueOf(immortal.getID()));
 			} else if (immortal instanceof Minotaur) {
 				minotaurs.add(point);
+				fixtures.remove(Integer.valueOf(immortal.getID()));
 			} else if (immortal instanceof Ogre) {
 				ogres.add(point);
+				fixtures.remove(Integer.valueOf(immortal.getID()));
 			} else if (immortal instanceof Centaur) {
 				separateByKind(centaurs, (Centaur) immortal, point);
+				fixtures.remove(Integer.valueOf(immortal.getID()));
 			} else if (immortal instanceof Phoenix) {
 				phoenixes.add(point);
+				fixtures.remove(Integer.valueOf(immortal.getID()));
 			} else if (immortal instanceof Simurgh) {
 				simurghs.add(point);
+				fixtures.remove(Integer.valueOf(immortal.getID()));
 			} else if (immortal instanceof Griffin) {
 				griffins.add(point);
+				fixtures.remove(Integer.valueOf(immortal.getID()));
 			}
 		}
 		final int totalSize = collSize(dragons.keySet(), griffins,
@@ -161,30 +173,43 @@ public class ImmortalsReportGenerator extends
 
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			final Point point = pair.first();
-			if (pair.second() instanceof Dragon) {
-				separateByKind(dragons, (Dragon) pair.second(), point);
-			} else if (pair.second() instanceof Fairy) {
-				separateByKind(fairies, (Fairy) pair.second(), point);
-			} else if (pair.second() instanceof Troll) {
+			final IFixture immortal = pair.second();
+			if (immortal instanceof Dragon) {
+				separateByKind(dragons, (Dragon) immortal, point);
+				fixtures.remove(Integer.valueOf(immortal.getID()));
+			} else if (immortal instanceof Fairy) {
+				separateByKind(fairies, (Fairy) immortal, point);
+				fixtures.remove(Integer.valueOf(immortal.getID()));
+			} else if (immortal instanceof Troll) {
 				trolls.add(point);
-			} else if (pair.second() instanceof Djinn) {
+				fixtures.remove(Integer.valueOf(immortal.getID()));
+			} else if (immortal instanceof Djinn) {
 				djinni.add(point);
-			} else if (pair.second() instanceof Sphinx) {
+				fixtures.remove(Integer.valueOf(immortal.getID()));
+			} else if (immortal instanceof Sphinx) {
 				sphinxes.add(point);
-			} else if (pair.second() instanceof Giant) {
-				separateByKind(giants, (Giant) pair.second(), point);
-			} else if (pair.second() instanceof Minotaur) {
+				fixtures.remove(Integer.valueOf(immortal.getID()));
+			} else if (immortal instanceof Giant) {
+				separateByKind(giants, (Giant) immortal, point);
+				fixtures.remove(Integer.valueOf(immortal.getID()));
+			} else if (immortal instanceof Minotaur) {
 				minotaurs.add(point);
-			} else if (pair.second() instanceof Ogre) {
+				fixtures.remove(Integer.valueOf(immortal.getID()));
+			} else if (immortal instanceof Ogre) {
 				ogres.add(point);
-			} else if (pair.second() instanceof Centaur) {
-				separateByKind(centaurs, (Centaur) pair.second(), point);
-			} else if (pair.second() instanceof Phoenix) {
+				fixtures.remove(Integer.valueOf(immortal.getID()));
+			} else if (immortal instanceof Centaur) {
+				separateByKind(centaurs, (Centaur) immortal, point);
+				fixtures.remove(Integer.valueOf(immortal.getID()));
+			} else if (immortal instanceof Phoenix) {
+				fixtures.remove(Integer.valueOf(immortal.getID()));
 				phoenixes.add(point);
-			} else if (pair.second() instanceof Simurgh) {
+			} else if (immortal instanceof Simurgh) {
+				fixtures.remove(Integer.valueOf(immortal.getID()));
 				simurghs.add(point);
-			} else if (pair.second() instanceof Griffin) {
+			} else if (immortal instanceof Griffin) {
 				griffins.add(point);
+				fixtures.remove(Integer.valueOf(immortal.getID()));
 			}
 		}
 		optionallyAddRIR(dragons, "(s) at ", retval);
