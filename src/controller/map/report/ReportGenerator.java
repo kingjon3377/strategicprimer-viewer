@@ -85,6 +85,8 @@ public final class ReportGenerator {
 				fixtures.remove(Integer.valueOf(fix.getID()));
 				continue;
 			}
+			System.out.print("Unhandled fixture:\t");
+			System.out.println(fix);
 		}
 		return NullCleaner.assertNotNull(builder.toString());
 	}
