@@ -11,6 +11,7 @@ import model.map.ITile;
 import model.map.ITileCollection;
 import model.map.Player;
 import model.map.Point;
+import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Sandbar;
@@ -21,6 +22,8 @@ import util.DelayedRemovalMap;
 import util.IntMap;
 import util.NullCleaner;
 import util.Pair;
+import controller.map.misc.IDFactory;
+import controller.map.misc.IDFactoryFiller;
 
 /**
  * A class to produce a report based on a map for a player.
@@ -58,6 +61,9 @@ public final class ReportGenerator {
 				player));
 		fixtures.coalesce();
 		builder.append(new UnitReportGenerator().produce(fixtures, tiles,
+				player));
+		fixtures.coalesce();
+		builder.append(new TextReportGenerator().produce(fixtures, tiles,
 				player));
 		fixtures.coalesce();
 		builder.append(new TownReportGenerator().produce(fixtures, tiles,
@@ -124,6 +130,9 @@ public final class ReportGenerator {
 		builder.append(new UnitReportGenerator().produce(fixtures, tiles,
 				player));
 		fixtures.coalesce();
+		builder.append(new TextReportGenerator().produce(fixtures, tiles,
+				player));
+		fixtures.coalesce();
 		builder.append(new TownReportGenerator().produce(fixtures, tiles,
 				player));
 		fixtures.coalesce();
@@ -161,6 +170,9 @@ public final class ReportGenerator {
 				player));
 		fixtures.coalesce();
 		retval.add(new UnitReportGenerator()
+				.produceRIR(fixtures, tiles, player));
+		fixtures.coalesce();
+		retval.add(new TextReportGenerator()
 				.produceRIR(fixtures, tiles, player));
 		fixtures.coalesce();
 		retval.add(new TownReportGenerator()
@@ -212,6 +224,9 @@ public final class ReportGenerator {
 		retval.add(new UnitReportGenerator()
 				.produceRIR(fixtures, tiles, player));
 		fixtures.coalesce();
+		retval.add(new TextReportGenerator()
+				.produceRIR(fixtures, tiles, player));
+		fixtures.coalesce();
 		retval.add(new TownReportGenerator()
 				.produceRIR(fixtures, tiles, player));
 		fixtures.coalesce();
@@ -242,6 +257,7 @@ public final class ReportGenerator {
 			final IMap map) {
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> retval =
 				new IntMap<>();
+		final IDFactory idf = IDFactoryFiller.createFactory(map);
 		for (final Point point : map.getTiles()) {
 			if (point != null) {
 				final ITile tile = map.getTile(point);
@@ -249,6 +265,9 @@ public final class ReportGenerator {
 					if (fix.getID() >= 0) {
 						retval.put(NullCleaner.assertNotNull(Integer
 								.valueOf(fix.getID())), Pair.of(point, fix));
+					} else if (fix instanceof TextFixture) {
+						retval.put(Integer.valueOf(idf.createID()),
+								Pair.of(point, fix));
 					}
 				}
 			}
