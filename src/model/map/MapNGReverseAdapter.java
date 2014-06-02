@@ -32,12 +32,15 @@ public class MapNGReverseAdapter implements IMap {
 	 *
 	 * @param obj another map
 	 * @param ostream a stream to write comments to
+	 * @param context
+	 *            a string to print before every line of output, describing the
+	 *            context
 	 * @return whether it's a subset of this one
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(@Nullable final IMap obj, final Appendable ostream)
-			throws IOException {
+	public boolean isSubset(@Nullable final IMap obj, final Appendable ostream,
+			final String context) throws IOException {
 		throw new IllegalStateException("Not yet implemented");
 	}
 	/**
@@ -128,13 +131,17 @@ public class MapNGReverseAdapter implements IMap {
 		 *            another collection of tiles
 		 * @param ostream
 		 *            a stream to (TODO) write results on
+		 * @param context
+		 *            a string to print before every line of output, describing
+		 *            the context
 		 * @return whether the other collection is a subset of this one
 		 * @throws IOException
 		 *             on I/O error writing output to the stream
 		 */
 		@Override
 		public boolean isSubset(final ITileCollection obj,
-				final Appendable ostream) throws IOException {
+				final Appendable ostream, final String context)
+				throws IOException {
 			throw new IllegalStateException("FIXME: Not implemented yet");
 		}
 		/**
@@ -189,6 +196,9 @@ public class MapNGReverseAdapter implements IMap {
 		 *            another collection
 		 * @param ostream
 		 *            a stream to write to---ignored for now
+		 * @param context
+		 *            a string to print before every line of output, describing
+		 *            the context
 		 * @return whether the collection is a subset of this.
 		 * @throws IOException
 		 *             on I/O error writing output to the stream
@@ -197,7 +207,8 @@ public class MapNGReverseAdapter implements IMap {
 		 */
 		@Override
 		public boolean isSubset(final IPlayerCollection obj,
-				final Appendable ostream) throws IOException {
+				final Appendable ostream, final String context)
+				throws IOException {
 			for (final Player player : obj) {
 				if (player != null && !contains(player)) {
 					return false; // NOPMD
@@ -287,13 +298,16 @@ public class MapNGReverseAdapter implements IMap {
 		 *            another tile
 		 * @param ostream
 		 *            a stream to write comments to
+		 * @param context
+		 *            a string to print before every line of output, describing
+		 *            the context
 		 * @return whether it's a strict subset of this tile or not
 		 * @throws IOException
 		 *             on I/O error writing output to the stream
 		 */
 		@Override
-		public boolean isSubset(final ITile obj, final Appendable ostream)
-				throws IOException {
+		public boolean isSubset(final ITile obj, final Appendable ostream,
+				final String context) throws IOException {
 			throw new IllegalStateException("Not yet implemented");
 		}
 

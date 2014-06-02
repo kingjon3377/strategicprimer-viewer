@@ -155,16 +155,20 @@ public class SPMap implements IMutableMap {
 	 * @param obj another map
 	 * @return whether it's a strict subset of this one
 	 * @param ostream the stream to write details of the difference to
+	 * @param context
+	 *            a string to print before every line of output, describing the
+	 *            context
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IMap obj, final Appendable ostream)
-			throws IOException {
+	public boolean isSubset(final IMap obj, final Appendable ostream,
+			final String context) throws IOException {
 		if (getDimensions().equals(obj.getDimensions())) {
-			return players.isSubset(obj.getPlayers(), ostream) // NOPMD
-					&& tiles.isSubset(obj.getTiles(), ostream);
+			return players.isSubset(obj.getPlayers(), ostream, context) // NOPMD
+					&& tiles.isSubset(obj.getTiles(), ostream, context);
 		} else {
-			ostream.append("Sizes differ\n");
+			ostream.append(context);
+			ostream.append("\tSizes differ\n");
 			return false;
 		}
 	}

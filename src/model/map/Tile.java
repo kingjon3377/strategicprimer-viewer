@@ -225,15 +225,19 @@ public final class Tile implements IMutableTile {
 	 * @return whether it's a strict subset of this one, having no members this
 	 *         one doesn't
 	 * @param ostream the stream to write details of the differences to
+	 * @param context
+	 *            a string to print before every line of output, describing the
+	 *            context
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final ITile obj, final Appendable ostream)
-			throws IOException {
+	public boolean isSubset(final ITile obj, final Appendable ostream,
+			final String context) throws IOException {
 		if (getTerrain().equals(obj.getTerrain())) {
-			return isSubsetImpl(obj, ostream); // NOPMD
+			return isSubsetImpl(obj, ostream, context); // NOPMD
 		} else {
-			ostream.append("Tile type wrong\n");
+			ostream.append(context);
+			ostream.append("\tTile type wrong\n");
 			return false;
 		}
 	}
@@ -241,14 +245,20 @@ public final class Tile implements IMutableTile {
 	/**
 	 * Implementation of isSubset() assuming that the terrain types match.
 	 *
-	 * @param obj another Tile
+	 * @param obj
+	 *            another Tile
 	 * @return whether it's a strict subset of this one, having no members this
 	 *         one doesn't
-	 * @param ostream the stream to write details of the differences to
-	 * @throws IOException on I/O error writing output to the stream
+	 * @param ostream
+	 *            the stream to write details of the differences to
+	 * @param context
+	 *            a string to print before every line of output, describing the
+	 *            context
+	 * @throws IOException
+	 *             on I/O error writing output to the stream
 	 */
-	protected boolean isSubsetImpl(final ITile obj, final Appendable ostream)
-			throws IOException {
+	protected boolean isSubsetImpl(final ITile obj, final Appendable ostream,
+			final String context) throws IOException {
 		final List<TileFixture> temp = new ArrayList<>();
 		final Map<Integer, Subsettable<?>> mySubsettables = getSubsettableContents();
 		for (final TileFixture fix : obj) {
@@ -265,11 +275,11 @@ public final class Tile implements IMutableTile {
 				final Subsettable<?> mine = mySubsettables.get(Integer
 						.valueOf(fix.getID()));
 				if (mine instanceof IUnit && fix instanceof IUnit) {
-					if (!((IUnit) mine).isSubset((IUnit) fix, ostream)) {
+					if (!((IUnit) mine).isSubset((IUnit) fix, ostream, context)) {
 						retval = false;
 					}
 				} else if (mine instanceof SubsettableFixture) {
-					if (!((SubsettableFixture) mine).isSubset(fix, ostream)) {
+					if (!((SubsettableFixture) mine).isSubset(fix, ostream, context)) {
 						retval = false;
 					}
 				} else {
@@ -278,11 +288,12 @@ public final class Tile implements IMutableTile {
 				}
 			} else {
 				retval = false;
-				ostream.append("Extra fixture:\t");
+				ostream.append(context);
+				ostream.append(" Extra fixture:\t");
 				ostream.append(fix.toString());
 				ostream.append(", ID #");
 				ostream.append(Integer.toString(fix.getID()));
-				ostream.append('\t');
+				ostream.append('\n');
 			}
 		}
 		return retval; // NOPMD

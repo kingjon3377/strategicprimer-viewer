@@ -133,8 +133,8 @@ public final class WorkerCreationListener implements ActionListener,
 			throw new IllegalStateException("setOwner called on null unit");
 		}
 		@Override
-		public boolean isSubset(final IUnit obj, final Appendable ostream)
-				throws IOException {
+		public boolean isSubset(final IUnit obj, final Appendable ostream,
+				final String context) throws IOException {
 			// TODO Auto-generated method stub
 			return false;
 		}

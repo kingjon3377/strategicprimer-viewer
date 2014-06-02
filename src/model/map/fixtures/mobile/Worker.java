@@ -170,34 +170,38 @@ public class Worker implements HasName, HasKind, HasImage, IWorker {
 	}
 
 	/**
-	 * @param obj another UnitMember
-	 * @param ostream a stream to report an explanation on
+	 * @param obj
+	 *            another UnitMember
+	 * @param ostream
+	 *            a stream to report an explanation on
+	 * @param context
+	 *            a string to print before every line of output, describing the
+	 *            context
 	 * @return whether that member equals this one
-	 * @throws IOException on I/O error writing output to the stream
+	 * @throws IOException
+	 *             on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream)
+	public boolean isSubset(final IFixture obj, final Appendable ostream, final String context)
 			throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Worker) {
+				String ctxt =
+						context + " In worker " + ((Worker) obj).name
+								+ " (ID #" + Integer.toString(id) + "):";
 				if (!name.equals(((Worker) obj).name)) {
-					ostream.append("For worker with ID #");
+					ostream.append(context);
+					ostream.append(" In worker with ID #");
 					ostream.append(Integer.toString(id));
-					ostream.append(", names differ\n");
+					ostream.append(":\tnames differ\n");
 					return false;
 				} else if (!race.equals(((Worker) obj).race)) {
-					ostream.append("For worker ");
-					ostream.append(name);
-					ostream.append(", ID #");
-					ostream.append(Integer.toString(id));
-					ostream.append(", races differ\n");
+					ostream.append(ctxt);
+					ostream.append(":\traces differ\n");
 					return false;
 				} else if (!Objects.equals(stats, ((Worker) obj).stats)) {
-					ostream.append("For worker ");
-					ostream.append(name);
-					ostream.append(", ID #");
-					ostream.append(Integer.toString(id));
-					ostream.append(", stats differ\n");
+					ostream.append(ctxt);
+					ostream.append(":\tstats differ\n");
 					return false;
 				} else {
 					boolean retval = true;
@@ -209,20 +213,13 @@ public class Worker implements HasName, HasKind, HasImage, IWorker {
 						if (job == null) {
 							continue;
 						} else if (!ours.containsKey(job.getName())) {
-							ostream.append("In worker ");
-							ostream.append(name);
-							ostream.append(" (#");
-							ostream.append(Integer.toString(id));
-							ostream.append("): Extra Job: ");
+							ostream.append(ctxt);
+							ostream.append("\tExtra Job: ");
 							ostream.append(job.getName());
 							ostream.append('\n');
 							retval = false;
-						} else if (!ours.get(job.getName()).isSubset(job, ostream)) {
-							ostream.append(" (in worker ");
-							ostream.append(name);
-							ostream.append(", ID #");
-							ostream.append(Integer.toString(id));
-							ostream.append(")\n");
+						} else if (!ours.get(job.getName()).isSubset(job,
+								ostream, ctxt)) {
 							retval = false;
 						}
 					}

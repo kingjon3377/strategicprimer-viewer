@@ -104,13 +104,17 @@ public class ProxyWorker implements IWorker {
 	/**
 	 * @param obj ignored
 	 * @param ostream a stream to report the call on
+	 * @param context
+	 *            a string to print before every line of output, describing the
+	 *            context
 	 * @return false
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream)
-			throws IOException {
-		ostream.append("isSubset called on ProxyWorker\n");
+	public boolean isSubset(final IFixture obj, final Appendable ostream,
+			final String context) throws IOException {
+		ostream.append(context);
+		ostream.append("\tisSubset called on ProxyWorker\n");
 		return false;
 	}
 

@@ -136,17 +136,31 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 	 * @param obj another RiverFixture
 	 * @return whether it's a strict subset of this one, containing no rivers
 	 *         that this doesn't
-	 * @param ostream ignored (no output)
-	 * @throws IOException never
+	 * @param context
+	 *            a string to print before every line of output, describing the
+	 *            context
+	 * @param ostream a stream to print any error messages on, or which rivers are extra
+	 * @throws IOException on I/O error writing error messages
 	 */
 	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream)
-			throws IOException {
+	public boolean isSubset(final IFixture obj, final Appendable ostream,
+			final String context) throws IOException {
 		if (obj instanceof RiverFixture) {
 			final Set<River> temp = EnumSet.copyOf(((RiverFixture) obj).rivers);
 			temp.removeAll(rivers);
-			return temp.isEmpty();
+			if (temp.isEmpty()) {
+				return true; // NOPMD
+			} else {
+				ostream.append(context);
+				ostream.append(" Extra rivers:\t");
+				for (River river : temp) {
+					ostream.append(river.toString().toLowerCase());
+				}
+				ostream.append('\n');
+				return false; // NOPMD
+			}
 		} else {
+			ostream.append(context);
 			ostream.append("Incompatible types\n");
 			return false;
 		}

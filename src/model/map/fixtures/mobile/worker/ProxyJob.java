@@ -112,13 +112,17 @@ public class ProxyJob implements IJob {
 	/**
 	 * @param obj ignored
 	 * @param ostream a stream to report this call on
+	 * @param context
+	 *            a string to print before every line of output, describing the
+	 *            context
 	 * @return false
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IJob obj, final Appendable ostream)
-			throws IOException {
-		ostream.append("isSubset called on ProxyJob\n");
+	public boolean isSubset(final IJob obj, final Appendable ostream,
+			final String context) throws IOException {
+		ostream.append(context);
+		ostream.append("\tisSubset called on ProxyJob\n");
 		return false;
 	}
 }

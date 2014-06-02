@@ -1,7 +1,6 @@
 package model.map;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -10,7 +9,6 @@ import java.util.Map.Entry;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.NullCleaner;
-import util.PrefixingPrintWriter;
 
 /**
  * A collection of tiles. This is a wrapper around the Map that had been used by
@@ -118,27 +116,27 @@ public final class TileCollection implements IMutableTileCollection {
 	 * @param obj another TileCollection
 	 * @return whether it's a strict subset of this one
 	 * @param ostream the stream to write details of differences to
+	 * @param context
+	 *            a string to print before every line of output, describing the
+	 *            context
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean
-			isSubset(final ITileCollection obj, final Appendable ostream)
-					throws IOException {
+	public boolean isSubset(final ITileCollection obj,
+			final Appendable ostream, final String context) throws IOException {
 		boolean retval = true; // NOPMD
 		for (final Point point : obj) {
 			if (point == null) {
 				continue;
 			} else if (tiles.containsKey(point) || obj.getTile(point).isEmpty()) {
-				final StringWriter str = new StringWriter(); // NOPMD
-				try (final PrefixingPrintWriter writer = new PrefixingPrintWriter(
-						str, point.toString() + ":\t")) {
-					if (!tiles.get(point).isSubset(obj.getTile(point), writer)) {
-						ostream.append(str.toString());
-						retval = false; // NOPMD
-					}
+				final String ctxt = context + " At " + point.toString() + ':';
+				if (!tiles.get(point).isSubset(obj.getTile(point), ostream,
+						ctxt)) {
+					retval = false; // NOPMD
 				}
 			} else {
-				ostream.append("Extra tile at ");
+				ostream.append(context);
+				ostream.append("\tExtra tile at ");
 				ostream.append(point.toString());
 				ostream.append('\n');
 				retval = false; // NOPMD

@@ -57,8 +57,8 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	public boolean equals(@Nullable final Object obj) {
 		try {
 			return this == obj || obj instanceof IPlayerCollection
-					&& isSubset((IPlayerCollection) obj, DEV_NULL)
-					&& ((IPlayerCollection) obj).isSubset(this, DEV_NULL);
+					&& isSubset((IPlayerCollection) obj, DEV_NULL, "")
+					&& ((IPlayerCollection) obj).isSubset(this, DEV_NULL, "");
 		} catch (IOException e) {
 			return false;
 		}
@@ -104,16 +104,20 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 * @param obj another PlayerCollection
 	 * @return whether it's a strict subset of this one
 	 * @param ostream the stream to write details of the differences to
+	 * @param context
+	 *            a string to print before every line of output, describing the
+	 *            context
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
 	public boolean isSubset(final IPlayerCollection obj,
-			final Appendable ostream) throws IOException {
+			final Appendable ostream, final String context) throws IOException {
 		for (final Player player : obj) {
 			if (!players.containsValue(player)) {
-				ostream.append("Extra player ");
+				ostream.append(context);
+				ostream.append("\tExtra player ");
 				ostream.append(player.getName());
-				ostream.append(' ');
+				ostream.append('\n');
 				return false; // NOPMD
 			}
 		}

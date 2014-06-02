@@ -106,22 +106,27 @@ public class Ogre implements MobileFixture, HasImage, UnitMember { // NOPMD
 	 * @param obj another UnitMember
 	 * @param ostream a stream to report an explanation on
 	 * @return whether that member equals this one
+	 * @param context
+	 *            a string to print before every line of output, describing the
+	 *            context
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream)
-			throws IOException {
+	public boolean isSubset(final IFixture obj, final Appendable ostream,
+			final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Ogre) {
 				return true;
 			} else {
-				ostream.append("For ID #");
+				ostream.append(context);
+				ostream.append("\tFor ID #");
 				ostream.append(Integer.toString(id));
 				ostream.append(", different kinds of members");
 				return false;
 			}
 		} else {
-			ostream.append("Called with different IDs, #");
+			ostream.append(context);
+			ostream.append("\tCalled with different IDs, #");
 			ostream.append(Integer.toString(id));
 			ostream.append(" and #");
 			ostream.append(Integer.toString(obj.getID()));

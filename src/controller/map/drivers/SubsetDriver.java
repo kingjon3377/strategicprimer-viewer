@@ -134,7 +134,8 @@ public final class SubsetDriver implements ISPDriver {
 			final MapReaderAdapter reader, final IMap mainMap) {
 		try {
 			final IMap map = reader.readMap(file, new Warning(Action.Ignore));
-			if (mainMap.isSubset(map, NullCleaner.assertNotNull(System.out))) {
+			if (mainMap.isSubset(map, NullCleaner.assertNotNull(System.out),
+					"In " + file.getName() + ':')) {
 				return Returns.OK; // NOPMD
 			} else {
 				System.out.flush();

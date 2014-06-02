@@ -44,25 +44,29 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 	/**
 	 * @param obj another map
 	 * @param ostream the stream to write to
+	 * @param context
+	 *            a string to print before every line of output, describing the
+	 *            context
 	 * @return whether it is a strict subset of this map.
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IMapNG obj, final Appendable ostream)
-			throws IOException {
+	public boolean isSubset(final IMapNG obj, final Appendable ostream,
+			final String context) throws IOException {
 		if (dimensions().equals(obj.dimensions())) {
 			boolean retval = true;
 			for (final Player player : obj.players()) {
 				if (player != null && !state.getPlayers().contains(player)) {
 					// return false;
 					retval = false;
-					ostream.append("Extra player ");
+					ostream.append(context);
+					ostream.append("\tExtra player ");
 					ostream.append(player.toString());
 					ostream.append('\n');
 				}
 			}
 			for (final Point point : obj.locations()) {
-				if (point != null && !isTileSubset(obj, ostream, point)) {
+				if (point != null && !isTileSubset(obj, ostream, point, context)) {
 					retval = false;
 				}
 			}
@@ -77,57 +81,55 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 	 * @param obj the map that might be a subset of us
 	 * @param ostream the stream to write detailed results to
 	 * @param loc the current location
+	 * @param context
+	 *            a string to print before every line of output, describing the
+	 *            context
 	 * @return whether that location fits the "subset" hypothesis.
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	private boolean isTileSubset(final IMapNG obj, final Appendable ostream,
-			final Point loc) throws IOException {
+			final Point loc, final String context) throws IOException {
 		boolean retval = true;
+		final String ctxt = context + " At " + loc.toString() + ':';
 		if (!getBaseTerrain(loc).equals(obj.getBaseTerrain(loc))) { // NOPMD
 			// return false;
 			retval = false;
-			ostream.append("Tile types differ at ");
-			ostream.append(loc.toString());
-			ostream.append('\n');
+			ostream.append(ctxt);
+			ostream.append("\tTile types differ\n");
 		} else if (isMountainous(loc) != obj.isMountainous(loc)) { // NOPMD
 			// return false;
 			retval = false;
-			ostream.append("Reports of mountains differ at ");
-			ostream.append(loc.toString());
-			ostream.append('\n');
+			ostream.append(ctxt);
+			ostream.append("\tReports of mountains differ\n");
 		} else if (!areRiversSubset(getRivers(loc), obj.getRivers(loc))) { //NOPMD
 			retval = false;
-			ostream.append("Extra rivers at ");
-			ostream.append(loc.toString());
-			ostream.append('\n');
+			ostream.append(ctxt);
+			ostream.append("\tExtra rivers\n");
 		} else if (!Objects.equals(getForest(loc), obj.getForest(loc))) { // NOPMD
 			// return false;
 			retval = false;
-			ostream.append("Primary forests differ at ");
-			ostream.append(loc.toString());
-			ostream.append(", may be representation error\n");
+			ostream.append(ctxt);
+			ostream.append("\tPrimary forests differ, may be representation error\n");
 		} else if (!Objects.equals(getGround(loc), obj.getGround(loc))) { // NOPMD
 			// return false;
 			retval = false;
-			ostream.append("Primary Ground differs at ");
-			ostream.append(loc.toString());
-			ostream.append(", may be representation error\n");
+			ostream.append(ctxt);
+			ostream.append("\tPrimary Ground differs, may be representation error\n");
 		} else {
 			// TODO: Use Guava collection-from-iterable to improve/simplify this
 			final List<TileFixture> fixtures = new ArrayList<>();
 			for (final TileFixture fix : state.getTile(loc)) {
 				fixtures.add(fix);
 			}
-			final String locStr = loc.toString() + '\n';
 			for (final TileFixture fix : obj.getOtherFixtures(loc)) {
 				if (fix != null && !fixtures.contains(fix)
 						&& !Tile.shouldSkip(fix)) {
 					// return false;
 					retval = false;
-					ostream.append("Extra fixture ");
+					ostream.append(ctxt);
+					ostream.append(" Extra fixture:\t");
 					ostream.append(fix.toString());
-					ostream.append(" at ");
-					ostream.append(locStr);
+					ostream.append('\n');
 				}
 			}
 		}

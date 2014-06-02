@@ -194,11 +194,14 @@ public class Fortress implements HasImage, ITownFixture,
 	 * @param obj another Fortress
 	 * @return whether it's a strict subset of this one
 	 * @param ostream a stream to write details to
+	 * @param context
+	 *            a string to print before every line of output, describing the
+	 *            context
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream)
-			throws IOException {
+	public boolean isSubset(final IFixture obj, final Appendable ostream,
+			final String context) throws IOException {
 		if (!(obj instanceof Fortress)) {
 			ostream.append("Incompatible types");
 			return false;
@@ -211,20 +214,21 @@ public class Fortress implements HasImage, ITownFixture,
 			for (final IUnit unit : this) {
 				ours.put(Integer.valueOf(unit.getID()), unit);
 			}
+			final String ctxt =
+					context + " In fortress " + name + " (ID #" + id + "):";
 			for (final IUnit unit : fort) {
 				if (unit == null) {
 					continue;
 				} else if (!ours.containsKey(Integer.valueOf(unit.getID()))) {
-					ostream.append("Extra unit in fortress ");
-					ostream.append(getName());
-					ostream.append(":\t");
+					ostream.append(ctxt);
+					ostream.append(" Extra unit:\t");
 					ostream.append(unit.toString());
 					ostream.append(", ID #");
 					ostream.append(Integer.toString(unit.getID()));
 					ostream.append('\n');
 					retval = false;
 				} else if (!ours.get(Integer.valueOf(unit.getID())).isSubset(
-						unit, ostream)) {
+						unit, ostream, ctxt)) {
 					retval = false;
 				}
 			}

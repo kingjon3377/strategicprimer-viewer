@@ -229,9 +229,10 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 			throw new IllegalStateException("setOwner called on ProxyUnit");
 		}
 		@Override
-		public boolean isSubset(final IUnit obj, final Appendable ostream)
-				throws IOException {
-			ostream.append("isSubset called on ProxyUnit\n");
+		public boolean isSubset(final IUnit obj, final Appendable ostream,
+				final String context) throws IOException {
+			ostream.append(context);
+			ostream.append("\tisSubset called on ProxyUnit\n");
 			return false;
 		}
 		@Override

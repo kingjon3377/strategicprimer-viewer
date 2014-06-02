@@ -331,26 +331,33 @@ public class Unit implements IUnit {
 	 * @param obj another unit
 	 * @param ostream the stream to report results on
 	 * @return whether the unit is a strict subset of this one.
+	 * @param context
+	 *            a string to print before every line of output, describing the
+	 *            context
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IUnit obj, final Appendable ostream)
-			throws IOException {
+	public boolean isSubset(final IUnit obj, final Appendable ostream,
+			final String context) throws IOException {
 		if (obj.getID() != id) {
-			ostream.append("Units have different IDs\n");
+			ostream.append(context);
+			ostream.append("\tUnits have different IDs\n");
 			return false; // NOPMD
 		} else if (obj.getOwner().getPlayerId() != owner.getPlayerId()) {
-			ostream.append("Unit of ID #");
+			ostream.append(context);
+			ostream.append(" Unit of ID #");
 			ostream.append(Integer.toString(id));
 			ostream.append(":\tOwners differ\n");
 			return false; // NOPMD
 		} else if (!name.equals(obj.getName())) {
-			ostream.append("Unit of ID #");
+			ostream.append(context);
+			ostream.append(" Unit of ID #");
 			ostream.append(Integer.toString(id));
 			ostream.append(":\tNames differ\n");
 			return false; // NOPMD
 		} else if (!kind.equals(obj.getKind())) {
-			ostream.append("Unit of ID #");
+			ostream.append(context);
+			ostream.append(" Unit of ID #");
 			ostream.append(Integer.toString(id));
 			ostream.append(":\tKinds differ\n");
 			return false; // NOPMD
@@ -360,24 +367,23 @@ public class Unit implements IUnit {
 			for (final UnitMember member : this) {
 				ours.put(Integer.valueOf(member.getID()), member);
 			}
+			final String ctxt =
+					NullCleaner.assertNotNull(String.format(
+							"%s In unit of kind %s named %s (ID #%d):",
+							context, kind, name, Integer.valueOf(id)));
 			for (final UnitMember member : obj) {
 				if (member == null) {
 					continue;
 				} else if (!ours.containsKey(Integer.valueOf(member.getID()))) {
-					ostream.append("In unit of ID #");
-					ostream.append(Integer.toString(id));
-					ostream.append(" of kind ");
-					ostream.append(kind);
-					ostream.append(" named ");
-					ostream.append(name);
-					ostream.append(": Extra member:\t");
+					ostream.append(ctxt);
+					ostream.append(" Extra member:\t");
 					ostream.append(member.toString());
 					ostream.append(", ID #");
 					ostream.append(Integer.toString(member.getID()));
 					ostream.append('\n');
 					retval = false;
 				} else if (!ours.get(Integer.valueOf(member.getID())).isSubset(
-						member, ostream)) {
+						member, ostream, ctxt)) {
 					retval = false;
 				}
 			}

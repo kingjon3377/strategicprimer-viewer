@@ -127,30 +127,36 @@ public class Dragon implements MobileFixture, HasImage, HasKind, UnitMember {
 	/**
 	 * @param obj another UnitMember
 	 * @param ostream a stream to report an explanation on
+	 * @param context
+	 *            a string to print before every line of output, describing the
+	 *            context
 	 * @return whether that member equals this one
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream)
-			throws IOException {
+	public boolean isSubset(final IFixture obj, final Appendable ostream,
+			final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Dragon) {
 				if (kind.equals(((Dragon) obj).getKind())) {
 					return true;
 				} else {
-					ostream.append("Different kinds of dragon for ID #");
+					ostream.append(context);
+					ostream.append("\tDifferent kinds of dragon for ID #");
 					ostream.append(Integer.toString(id));
 					ostream.append('\n');
 					return false;
 				}
 			} else {
-				ostream.append("For ID #");
+				ostream.append(context);
+				ostream.append("\tFor ID #");
 				ostream.append(Integer.toString(id));
-				ostream.append(", different kinds of members");
+				ostream.append(", different kinds of members\n");
 				return false;
 			}
 		} else {
-			ostream.append("Called with different IDs, #");
+			ostream.append(context);
+			ostream.append("\tCalled with different IDs, #");
 			ostream.append(Integer.toString(id));
 			ostream.append(" and #");
 			ostream.append(Integer.toString(obj.getID()));

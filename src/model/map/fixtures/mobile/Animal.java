@@ -160,29 +160,38 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	/**
 	 * @param obj another UnitMember
 	 * @param ostream a stream to report an explanation on
+	 * @param context
+	 *            a string to print before every line of output, describing the
+	 *            context
 	 * @return whether that member is a subset of this one
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream)
-			throws IOException {
+	public boolean isSubset(final IFixture obj, final Appendable ostream,
+			final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Animal) {
 				if (!kind.equals(((Animal) obj).getKind())) {
-					ostream.append("Different kinds of animal for ID #");
+					ostream.append(context);
+					ostream.append("\tDifferent kinds of animal for ID #");
 					ostream.append(Integer.toString(id));
+					ostream.append('\n');
 					return false;
 				} else if (!talking && ((Animal) obj).talking) {
-					ostream.append("In animal ID #");
+					ostream.append(context);
+					ostream.append(" In animal ID #");
 					ostream.append(Integer.toString(id));
-					ostream.append(", submap is talking and master doesn't\n");
+					ostream.append(":\tSubmap's is talking and master's isn't\n");
 					return false;
 				} else if (traces && !((Animal) obj).traces) {
-					ostream.append("In animal ID #");
+					ostream.append(context);
+					ostream.append(" In animal ID #");
 					ostream.append(Integer.toString(id));
-					ostream.append(", submap has animal and master only tracks\n");
+					ostream.append(":\tSubmap has animal and master only tracks\n");
 					return false;
 				} else if (!status.equals(((Animal) obj).status)) {
+					ostream.append(context);
+					ostream.append('\t');
 					ostream.append("Domestication status of animal differs at ID #");
 					ostream.append(Integer.toString(id));
 					ostream.append('\n');
@@ -191,9 +200,10 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 					return true;
 				}
 			} else {
-				ostream.append("For ID #");
+				ostream.append(context);
+				ostream.append("\tFor ID #");
 				ostream.append(Integer.toString(id));
-				ostream.append(", different kinds of members");
+				ostream.append(", different kinds of members\n");
 				return false;
 			}
 		} else {

@@ -104,13 +104,15 @@ public final class TestExplorationRunner {
 		 *            ignored
 		 * @param ostream
 		 *            ignored
+		 * @param context
+		 *            ignored
 		 * @return nothing; always throws
 		 * @throws IOException
 		 *             never
 		 */
 		@Override
-		public boolean isSubset(final ITile obj, final Appendable ostream)
-				throws IOException {
+		public boolean isSubset(final ITile obj, final Appendable ostream,
+				final String context) throws IOException {
 			throw new IllegalStateException(
 					"Unexpected method called on mock object");
 		}

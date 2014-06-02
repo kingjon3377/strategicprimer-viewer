@@ -59,9 +59,10 @@ public final class SkillListModel extends DefaultListModel<ISkill> implements
 		}
 
 		@Override
-		public boolean isSubset(final IJob obj, final Appendable ostream)
-				throws IOException {
-			ostream.append("isSubset called on null job\n");
+		public boolean isSubset(final IJob obj, final Appendable ostream,
+				final String context) throws IOException {
+			ostream.append(context);
+			ostream.append("\tisSubset called on null job\n");
 			return false;
 		}
 

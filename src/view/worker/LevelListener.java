@@ -69,14 +69,20 @@ public final class LevelListener implements LevelGainListener,
 		public boolean equalsIgnoringID(final IFixture fix) {
 			return this == fix;
 		}
+
 		/**
-		 * @param obj another UnitMember
-		 * @param ostream a stream to report an explanation on
+		 * @param obj
+		 *            another UnitMember
+		 * @param ostream
+		 *            a stream to report an explanation on
+		 * @param context
+		 *            a string to print before every line of output, describing
+		 *            the context
 		 * @return false
 		 */
 		@Override
-		public boolean isSubset(final IFixture obj, final Appendable ostream)
-				throws IOException {
+		public boolean isSubset(final IFixture obj, final Appendable ostream,
+				final String context) throws IOException {
 			return false;
 		}
 	};

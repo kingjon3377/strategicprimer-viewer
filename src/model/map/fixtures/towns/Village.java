@@ -266,29 +266,52 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 	 *            a fixture
 	 * @param ostream
 	 *            a stream to write explanation to
+	 * @param context
+	 *            a string to print before every line of output, describing the
+	 *            context
 	 * @return whether the fixture is a "subset" of this
 	 */
 	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream)
-			throws IOException {
+	public boolean isSubset(final IFixture obj, final Appendable ostream,
+			final String context) throws IOException {
 		if (obj instanceof Village) {
 			final Village village = (Village) obj;
 			if (village.id != id) {
-				ostream.append("IDs differ\n");
+				ostream.append(context);
+				ostream.append("\tIDs differ\n");
 				return false;
 			} else if (!status.equals(village.status)) {
-				ostream.append("Village status differs\n");
+				ostream.append(context);
+				ostream.append(" In village (ID #");
+				ostream.append(Integer.toString(id));
+				ostream.append("):\tVillage status differs\n");
 				return false;
 			} else if (!name.equals(village.name)) {
-				ostream.append("Village names differ\n");
+				ostream.append(context);
+				ostream.append("In village (ID #");
+				ostream.append(Integer.toString(id));
+				ostream.append("):\tVillage names differ\n");
 				return false;
 			} else if (!race.equals(village.race)) {
-				ostream.append("Dominant race differs\n");
+				ostream.append(context);
+				ostream.append("In village ");
+				ostream.append(name);
+				ostream.append(" (ID #");
+				ostream.append(Integer.toString(id));
+				ostream.append("):\tDominant race differs\n");
 				return false;
 			} else if (owner.getPlayerId() == village.owner.getPlayerId()) {
 				return true;
+			} else if (village.owner.isIndependent()) {
+				return true;
 			} else {
-				return village.owner.isIndependent();
+				ostream.append(context);
+				ostream.append("In village ");
+				ostream.append(name);
+				ostream.append(" (ID #");
+				ostream.append(Integer.toString(id));
+				ostream.append("):\tOwners differ\n");
+				return false;
 			}
 		} else {
 			ostream.append("Incompatible types\n");

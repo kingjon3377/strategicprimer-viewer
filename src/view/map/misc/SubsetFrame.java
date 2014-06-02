@@ -214,7 +214,7 @@ public class SubsetFrame extends JFrame {
 		try {
 			final IMap map = reader.readMap(arg, new Warning(Action.Ignore));
 			try (final Writer out = new HTMLWriter(label.getWriter())) {
-				if (mainMap.isSubset(map, out)) {
+				if (mainMap.isSubset(map, out, arg.getName() + ':')) {
 					printParagraph("OK", "green");
 				} else {
 					printParagraph("WARN", "yellow");

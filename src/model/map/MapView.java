@@ -47,12 +47,15 @@ public class MapView implements IMutableMap {
 	 * @param obj the map to check
 	 * @return whether it's a strict subset of this one
 	 * @param ostream the stream to write details to
+	 * @param context
+	 *            a string to print before every line of output, describing the
+	 *            context
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IMap obj, final Appendable ostream)
-			throws IOException {
-		return map.isSubset(obj, ostream);
+	public boolean isSubset(final IMap obj, final Appendable ostream,
+			final String context) throws IOException {
+		return map.isSubset(obj, ostream, context);
 	}
 
 	/**
