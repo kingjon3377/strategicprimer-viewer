@@ -521,7 +521,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 				Files.readAllLines(FileSystems.getDefault().getPath(filename),
 						Charset.defaultCharset());
 		for (int i = 0; i < count; i++) {
-			final Worker worker = createWorker(names.get(i), idf);
+			final Worker worker = createWorker(names.get(i).trim(), idf);
 			for (final Pair<IMap, File> pair : model.getAllMaps()) {
 				final IFixture fix = find(pair.first(), unit.getID());
 				if (fix instanceof IUnit) {
