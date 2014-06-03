@@ -553,7 +553,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			// ESCA-JAVA0076:
 			if (SingletonRandom.RANDOM.nextInt(20) == 0) {
 				retval.addJob(new Job(// NOPMD
-						helper.inputString("Which Job does worker has a level in? "),
+						helper.inputString("Which Job does worker have a level in? "),
 						1));
 				levels++;
 			}
@@ -601,7 +601,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			// ESCA-JAVA0076:
 			if (SingletonRandom.RANDOM.nextInt(20) == 0) {
 				retval.addJob(new Job(// NOPMD
-						helper.inputString("Which Job does worker has a level in? "),
+						helper.inputString("Which Job does worker have a level in? "),
 						1));
 				levels++;
 			}
