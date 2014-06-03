@@ -5,6 +5,9 @@ import static view.util.SystemOut.SYS_OUT;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -464,7 +467,11 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 								(IMutableTile) tile);
 					}
 				}
-				createWorkers(model, idf, unit);
+				if (helper.inputBoolean("Load names from file and use randomly generated stats?")) {
+					createWorkersFromFile(model, idf, unit);
+				} else {
+					createWorkers(model, idf, unit);
+				}
 			}
 			again = helper
 					.inputBoolean("Add more workers to another unit? ");
@@ -493,6 +500,36 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		}
 	}
 
+	/**
+	 * Let the user create randomly-generated workers, with names read from
+	 * file, in a unit.
+	 *
+	 * @param model
+	 *            the driver model
+	 * @param idf
+	 *            the ID factory.
+	 * @param unit
+	 *            the unit to contain them.
+	 * @throws IOException
+	 *             on I/O error interacting with the user
+	 */
+	private void createWorkersFromFile(final IExplorationModel model,
+			final IDFactory idf, final IUnit unit) throws IOException {
+		final int count = helper.inputNumber("How many workers to generate? ");
+		final String filename = helper.inputString("Filename to load names from: ");
+		final List<String> names =
+				Files.readAllLines(FileSystems.getDefault().getPath(filename),
+						Charset.defaultCharset());
+		for (int i = 0; i < count; i++) {
+			final Worker worker = createWorker(names.get(i), idf);
+			for (final Pair<IMap, File> pair : model.getAllMaps()) {
+				final IFixture fix = find(pair.first(), unit.getID());
+				if (fix instanceof IUnit) {
+					((IUnit) fix).addMember(worker);
+				}
+			}
+		}
+	}
 	/**
 	 * Let the user create a randomly-generated worker.
 	 *
@@ -532,6 +569,49 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			retval.setStats(new WorkerStats(hitp, hitp, threeDeeSix(), threeDeeSix(),
 					constitution, threeDeeSix(), threeDeeSix(), threeDeeSix()));
 		}
+		return retval;
+	}
+
+	/**
+	 * Create a randomly-generated worker using a name from file, asking the
+	 * user for Jobs and such but randomly generating stats.
+	 *
+	 * Each non-human race has a 1 in 20 chance of coming up; stats are all 3d6;
+	 * there are five 1-in-20 chances of starting with a level in some Job, and
+	 * the user will be prompted for what Job for each.
+	 *
+	 * TODO: racial adjustments to stats.
+	 *
+	 * @param idf
+	 *            the ID factory
+	 * @throws IOException
+	 *             on I/O error interacting with the user
+	 * @return the generated worker
+	 */
+	private Worker createWorker(final String name, final IDFactory idf)
+			throws IOException {
+		final String race = RaceFactory.getRace();
+		System.out.print("Worker ");
+		System.out.print(name);
+		System.out.print(" is a ");
+		System.out.println(race);
+		final Worker retval = new Worker(name, race, idf.createID());
+		int levels = 0;
+		for (int i = 0; i < 3; i++) {
+			// ESCA-JAVA0076:
+			if (SingletonRandom.RANDOM.nextInt(20) == 0) {
+				retval.addJob(new Job(// NOPMD
+						helper.inputString("Which Job does worker has a level in? "),
+						1));
+				levels++;
+			}
+		}
+		final int constitution = threeDeeSix();
+		final int conBonus = (constitution - STAT_BASIS) / 2;
+		final int hitp = 8 + conBonus + rollDeeEight(levels, conBonus);
+		retval.setStats(new WorkerStats(hitp, hitp, threeDeeSix(),
+				threeDeeSix(), constitution, threeDeeSix(), threeDeeSix(),
+				threeDeeSix()));
 		return retval;
 	}
 	/**
