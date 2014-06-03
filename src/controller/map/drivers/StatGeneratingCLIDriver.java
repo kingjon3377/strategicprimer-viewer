@@ -467,7 +467,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 								(IMutableTile) tile);
 					}
 				}
-				if (helper.inputBoolean("Load names from file and use randomly generated stats?")) {
+				if (helper.inputBoolean("Load names from file and use randomly generated stats? ")) {
 					createWorkersFromFile(model, idf, unit);
 				} else {
 					createWorkers(model, idf, unit);
