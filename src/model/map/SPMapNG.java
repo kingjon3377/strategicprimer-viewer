@@ -16,6 +16,7 @@ import model.viewer.PointIterator;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.ArraySet;
 import util.EmptyIterator;
 import util.IteratorWrapper;
 import util.NullCleaner;
@@ -23,7 +24,7 @@ import util.NullCleaner;
  * A proper implementation of IMapNG.
  * @author Jonathan Lovelace
  */
-public class SPMapNG implements IMapNG {
+public class SPMapNG implements IMutableMapNG {
 	/**
 	 * The set of mountainous places.
 	 * TODO: Populate the set.
@@ -41,7 +42,7 @@ public class SPMapNG implements IMapNG {
 	/**
 	 * The current turn.
 	 */
-	private final int turn;
+	private int turn;
 	/**
 	 * The forests in the map. If there's more than one forest, only one goes
 	 * here, and the rest go in the "miscellaneous fixtures" pile.
@@ -381,5 +382,129 @@ public class SPMapNG implements IMapNG {
 	@Override
 	public String toString() {
 		return "SPMapNG: FIXME: Implement properly";
+	}
+	/**
+	 * @param player the player to add
+	 */
+	@Override
+	public void addPlayer(final Player player) {
+		playerCollection.add(player);
+	}
+	/**
+	 * @param location a location
+	 * @param ttype the terrain there
+	 */
+	@Override
+	public void setBaseTerrain(final Point location, final TileType ttype) {
+		terrain.put(location, ttype);
+	}
+	/**
+	 * @param location a location
+	 * @param mtn whether it's mountainous there
+	 */
+	@Override
+	public void setMountainous(final Point location, final boolean mtn) {
+		if (mtn) {
+			mountains.add(location);
+		} else {
+			mountains.remove(location);
+		}
+	}
+	/**
+	 * @param location a location
+	 * @param rvrs rivers to add to that location
+	 */
+	@Override
+	public void addRivers(final Point location, final River... rvrs) {
+		final EnumSet<River> localRivers;
+		final EnumSet<River> temp = rivers.get(location);
+		if (temp == null) {
+			localRivers = EnumSet.noneOf(River.class);
+			rivers.put(location, localRivers);
+		} else {
+			localRivers = temp;
+		}
+		for (River river : rvrs) {
+			localRivers.add(river);
+		}
+	}
+	/**
+	 * @param location a location
+	 * @param rvrs rivers to remove from it
+	 */
+	@Override
+	public void removeRivers(final Point location, final River... rvrs) {
+		final Set<River> localRivers = rivers.get(location);
+		if (localRivers != null) {
+			for (River river : rvrs) {
+				localRivers.remove(river);
+			}
+		}
+	}
+	/**
+	 * @param location a location
+	 * @param forest what should be the primary forest there, if any
+	 */
+	@Override
+	public void setForest(final Point location, @Nullable final Forest forest) {
+		if (forest == null) {
+			forests.remove(location);
+		} else {
+			forests.put(location, forest);
+		}
+	}
+	/**
+	 * @param location a location
+	 * @param grnd what the ground there should be, if any
+	 */
+	@Override
+	public void setGround(final Point location, @Nullable final Ground grnd) {
+		if (grnd == null) {
+			ground.remove(location);
+		} else {
+			ground.put(location, grnd);
+		}
+	}
+	/**
+	 * @param location a location
+	 * @param fix a fixture to add there
+	 */
+	@Override
+	public void addFixture(final Point location, final TileFixture fix) {
+		final Collection<TileFixture> temp = fixtures.get(location);
+		final Collection<TileFixture> local;
+		if (temp == null) {
+			local = new ArraySet<>();
+			fixtures.put(location, local);
+		} else {
+			local = temp;
+		}
+		local.add(fix);
+	}
+	/**
+	 * @param location a location
+	 * @param fix a fixture to remove from that locaation
+	 */
+	@Override
+	public void removeFixture(final Point location, final TileFixture fix) {
+		final Collection<TileFixture> local = fixtures.get(location);
+		if (local != null) {
+			local.remove(fix);
+		}
+	}
+	/**
+	 * @param player the new current player
+	 */
+	@Override
+	public void setCurrentPlayer(final Player player) {
+		playerCollection.getCurrentPlayer().setCurrent(false);
+		playerCollection.getPlayer(player.getPlayerId()).setCurrent(true);
+	}
+	/**
+	 * @param curr the new current turn
+	 */
+	@Override
+	public void setTurn(final int curr) {
+		turn = curr;
 	}
 }
