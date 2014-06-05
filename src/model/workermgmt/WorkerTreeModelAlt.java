@@ -420,7 +420,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 			return;
 		}
 		TreeNode[] path = getPathToRoot(node);
-		int index = getIndexOfChild(path[path.length - 1], node);
+		int index = getIndexOfChild(path[path.length - 2], node);
 		fireTreeNodesChanged(this, path, new int[] { index }, new Object[] { node });
 	}
 
