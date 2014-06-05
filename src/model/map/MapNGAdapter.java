@@ -109,12 +109,12 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 			// return false;
 			retval = false;
 			ostream.append(ctxt);
-			ostream.append("\tPrimary forests differ, may be representation error\n");
+			ostream.append("\tPrimary forests differ. Representation error?\n");
 		} else if (!Objects.equals(getGround(loc), obj.getGround(loc))) { // NOPMD
 			// return false;
 			retval = false;
 			ostream.append(ctxt);
-			ostream.append("\tPrimary Ground differs, may be representation error\n");
+			ostream.append("\tPrimary Ground differs. Representation error?\n");
 		} else {
 			// TODO: Use Guava collection-from-iterable to improve/simplify this
 			final List<TileFixture> fixtures = new ArrayList<>();

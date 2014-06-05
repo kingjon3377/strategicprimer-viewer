@@ -270,6 +270,7 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 	 *            a string to print before every line of output, describing the
 	 *            context
 	 * @return whether the fixture is a "subset" of this
+	 * @throws IOException on I/O error writing to stream
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,

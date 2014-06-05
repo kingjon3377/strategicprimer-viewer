@@ -279,7 +279,8 @@ public final class Tile implements IMutableTile {
 						retval = false;
 					}
 				} else if (mine instanceof SubsettableFixture) {
-					if (!((SubsettableFixture) mine).isSubset(fix, ostream, context)) {
+					if (!((SubsettableFixture) mine).isSubset(fix, ostream,
+							context)) {
 						retval = false;
 					}
 				} else {

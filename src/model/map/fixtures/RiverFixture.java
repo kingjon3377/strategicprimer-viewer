@@ -133,14 +133,18 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 	}
 
 	/**
-	 * @param obj another RiverFixture
+	 * @param obj
+	 *            another RiverFixture
 	 * @return whether it's a strict subset of this one, containing no rivers
 	 *         that this doesn't
 	 * @param context
 	 *            a string to print before every line of output, describing the
 	 *            context
-	 * @param ostream a stream to print any error messages on, or which rivers are extra
-	 * @throws IOException on I/O error writing error messages
+	 * @param ostream
+	 *            a stream to print any error messages on, or which rivers are
+	 *            extra
+	 * @throws IOException
+	 *             on I/O error writing error messages
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,

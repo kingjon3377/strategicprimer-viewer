@@ -182,8 +182,8 @@ public class Worker implements HasName, HasKind, HasImage, IWorker {
 	 *             on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream, final String context)
-			throws IOException {
+	public boolean isSubset(final IFixture obj, final Appendable ostream,
+			final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Worker) {
 				String ctxt =

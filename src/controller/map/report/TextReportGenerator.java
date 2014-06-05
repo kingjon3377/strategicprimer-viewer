@@ -31,7 +31,8 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 			final ITileCollection tiles, final Player currentPlayer) {
 		final HtmlList list = new HtmlList("<h4>Miscellaneous Notes</h4>");
 		// TODO: We should probably sort the list by turn.
-		for (final Map.Entry<Integer,Pair<Point, IFixture>> entry : fixtures.entrySet()) {
+		for (final Map.Entry<Integer, Pair<Point, IFixture>> entry : fixtures
+				.entrySet()) {
 			final Pair<Point, IFixture> pair = entry.getValue();
 			if (pair.second() instanceof TextFixture) {
 				list.add(produce(fixtures, tiles, currentPlayer,
@@ -63,9 +64,10 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	@Override
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer, final TextFixture item,
-			final Point loc) {
-		final StringBuilder builder = new StringBuilder(item.getText().length() + 32);
+			final ITileCollection tiles, final Player currentPlayer,
+			final TextFixture item, final Point loc) {
+		final StringBuilder builder =
+				new StringBuilder(item.getText().length() + 32);
 		builder.append("At ");
 		builder.append(loc.toString());
 		if (item.getTurn() >= 0) {
@@ -86,8 +88,10 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer) {
-		final AbstractReportNode retval = new SectionListReportNode(4, "Miscellaneous Notes");
-		for (final Map.Entry<Integer,Pair<Point, IFixture>> entry : fixtures.entrySet()) {
+		final AbstractReportNode retval =
+				new SectionListReportNode(4, "Miscellaneous Notes");
+		for (final Map.Entry<Integer, Pair<Point, IFixture>> entry : fixtures
+				.entrySet()) {
 			final Pair<Point, IFixture> pair = entry.getValue();
 			if (pair.second() instanceof TextFixture) {
 				retval.add(produceRIR(fixtures, tiles, currentPlayer,
@@ -118,8 +122,8 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer, final TextFixture item,
-			final Point loc) {
+			final ITileCollection tiles, final Player currentPlayer,
+			final TextFixture item, final Point loc) {
 		if (item.getTurn() >= 0) {
 			return new SimpleReportNode("At ", loc.toString(), ": ",
 					"On turn ", Integer.toString(item.getTurn()), ": ",
