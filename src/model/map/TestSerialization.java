@@ -173,7 +173,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 						encapsulateRivers(River.North, River.South)),
 				SPMap.class);
 	}
-	
+
 	/**
 	 * @param type
 	 *            a tile type
@@ -329,6 +329,32 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				"columns", false);
 	}
 
+	/**
+	 * Test Map serialization ... primarily errors.
+	 *
+	 * @throws SPFormatException on SP format error
+	 * @throws XMLStreamException on XML reading error
+	 * @throws IOException on I/O error creating serialized form
+	 */
+//	@Test // FIXME: Uncomment when XML I/O doesn't break on IMapNG
+	public void testMapNGSerialization() throws XMLStreamException,
+			SPFormatException, IOException {
+		assertUnwantedChild(
+				"<map rows=\"1\" columns=\"1\" version=\"2\"><hill /></map>",
+				SPMapNG.class, false);
+		final PlayerCollection players = new PlayerCollection();
+		final Player player = new Player(1, "playerOne");
+		player.setCurrent(true);
+		players.add(player);
+		final SPMapNG one = new SPMapNG(new MapDimensions(1, 1, 2), players, 0);
+		final Point point = point(0, 0);
+		one.setBaseTerrain(point, TileType.Plains);
+		assertSerialization("Simple Map serialization", one, SPMapNG.class);
+		assertMissingProperty("<map version=\"2\" columns=\"1\" />",
+				SPMapNG.class, "rows", false);
+		assertMissingProperty("<map version=\"2\" rows=\"1\" />", SPMapNG.class,
+				"columns", false);
+	}
 	/**
 	 * Test view serialization.
 	 *
