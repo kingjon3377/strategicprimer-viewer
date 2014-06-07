@@ -229,7 +229,7 @@ public final class CompactResourceReader extends
 		default:
 			throw new IllegalArgumentException("Shouldn't get here");
 		}
-		spinUntilEnd(assertNotNullQName(elem.getName()), stream);
+		spinUntilEnd(NullCleaner.assertNotNull(elem.getName()), stream);
 		retval.setImage(getParameter(elem, "image", ""));
 		return retval;
 	}

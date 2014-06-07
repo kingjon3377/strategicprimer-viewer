@@ -11,6 +11,7 @@ import model.map.fixtures.Ground;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.IteratorWrapper;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -53,7 +54,7 @@ public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 		final String kind = getParamWithDeprecatedForm(element, "kind",
 				"ground", warner);
 		requireNonEmptyParameter(element, "exposed", true, warner);
-		spinUntilEnd(assertNotNullQName(element.getName()), stream);
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Ground retval = new Ground(kind,
 				Boolean.parseBoolean(getParameter(element, "exposed")));
 		retval.setImage(getParameter(element, "image", ""));

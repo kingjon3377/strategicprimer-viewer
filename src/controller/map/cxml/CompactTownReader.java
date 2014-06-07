@@ -116,7 +116,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			final IPlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
-		spinUntilEnd(assertNotNullQName(element.getName()), stream);
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final int idNum = getOrGenerateID(element, warner, idFactory);
 		final Village retval = new Village(
 				TownStatus.parseTownStatus(getParameter(element, "status")),
@@ -160,7 +160,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 		} else {
 			retval = new Fortification(status, size, dc, name, id, owner);
 		}
-		spinUntilEnd(assertNotNullQName(element.getName()), stream);
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}
@@ -217,7 +217,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 					&& "unit".equalsIgnoreCase(event.asStartElement().getName()
 							.getLocalPart())) {
 				retval.addUnit(CompactUnitReader.READER.read(
-						assertNotNullStartElement(event.asStartElement()),
+						NullCleaner.assertNotNull(event.asStartElement()),
 						stream, players, warner, idFactory));
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {

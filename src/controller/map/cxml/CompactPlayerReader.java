@@ -11,6 +11,7 @@ import model.map.Player;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.IteratorWrapper;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -52,7 +53,7 @@ public final class CompactPlayerReader extends AbstractCompactReader<Player> {
 		requireTag(element, "player");
 		requireNonEmptyParameter(element, "number", true, warner);
 		requireNonEmptyParameter(element, "code_name", true, warner);
-		spinUntilEnd(assertNotNullQName(element.getName()), stream);
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		return new Player(Integer.parseInt(getParameter(element, "number")),
 				getParameter(element, "code_name"));
 	}

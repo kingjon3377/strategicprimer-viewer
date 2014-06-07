@@ -132,7 +132,7 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 		if (attr == null) {
 			return defaultValue; // NOPMD
 		} else {
-			return valueOrDefault(attr.getValue(), defaultValue);
+			return NullCleaner.valueOrDefault(attr.getValue(), defaultValue);
 		}
 	}
 
@@ -317,46 +317,10 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	}
 
 	/**
-	 * Do not call this on anything that actually might be null; that will cause
-	 * an assertion failure and thus a crash.
-	 *
-	 * @param qname a QName that should never be null but Eclipse thinks might
-	 *        be
-	 * @return it, after asserting it is not null
-	 */
-	protected static QName assertNotNullQName(@Nullable final QName qname) {
-		return NullCleaner.assertNotNull(qname);
-	}
-
-	/**
-	 * @param element
-	 *            a StartElement, known from the guarantees of the documentation
-	 *            of the API to not be null, but which Eclipse is convinced
-	 *            might be
-	 * @return it, after asserting it is not null
-	 */
-	protected static StartElement assertNotNullStartElement(
-			@Nullable final StartElement element) {
-		return NullCleaner.assertNotNull(element);
-	}
-	/**
 	 * @param tag the name of a tag, which may be null
 	 * @return "a null tag" if null, or the tag name if not
 	 */
 	private static String tagOrNull(@Nullable final String tag) {
-		return valueOrDefault(tag, NULL_TAG);
-	}
-	/**
-	 * @param <T> the type of thing we're talking about here
-	 * @param value a value
-	 * @param def a default value
-	 * @return value if it isn't null, or default if it is
-	 */
-	private static <T> T valueOrDefault(@Nullable final T value, final T def) {
-		if (value == null) {
-			return def; // NOPMD
-		} else {
-			return value;
-		}
+		return NullCleaner.valueOrDefault(tag, NULL_TAG);
 	}
 }

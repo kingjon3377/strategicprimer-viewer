@@ -26,6 +26,7 @@ import model.map.fixtures.TextFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.IteratorWrapper;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
@@ -83,15 +84,15 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 						"kind", "type", warner)));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				if (isRiver(assertNotNullQName(event.asStartElement().getName()))) {
+				if (isRiver(NullCleaner.assertNotNull(event.asStartElement().getName()))) {
 					retval.addFixture(new RiverFixture(parseRiver(// NOPMD
-							assertNotNullStartElement(event.asStartElement()),
+							NullCleaner.assertNotNull(event.asStartElement()),
 							warner)));
-					spinUntilEnd(assertNotNullQName(event.asStartElement()
-							.getName()), stream);
+					spinUntilEnd(NullCleaner.assertNotNull(event.asStartElement()
+					.getName()), stream);
 				} else {
 					retval.addFixture(parseFixture(
-							assertNotNullStartElement(event.asStartElement()),
+							NullCleaner.assertNotNull(event.asStartElement()),
 							stream, players, idFactory, warner));
 				}
 			} else if (event.isCharacters()) {

@@ -88,7 +88,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				retval.addMember(parseChild(
-						assertNotNullStartElement(event.asStartElement()),
+						NullCleaner.assertNotNull(event.asStartElement()),
 						stream, players, idFactory, warner));
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());

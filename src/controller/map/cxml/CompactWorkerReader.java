@@ -66,13 +66,13 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 				if ("job".equalsIgnoreCase(NullCleaner.assertNotNull(event
 						.asStartElement().getName().getLocalPart()))) {
 					retval.addJob(parseJob(
-							assertNotNullStartElement(event.asStartElement()),
+							NullCleaner.assertNotNull(event.asStartElement()),
 							stream, warner));
 				} else if ("stats".equalsIgnoreCase(NullCleaner
 						.assertNotNull(event.asStartElement().getName()
 								.getLocalPart()))) {
 					retval.setStats(parseStats(
-							assertNotNullStartElement(event.asStartElement()),
+							NullCleaner.assertNotNull(event.asStartElement()),
 							stream));
 				} else {
 					throw new UnwantedChildException(
@@ -110,7 +110,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 				Integer.parseInt(getParameter(element, "int")),
 				Integer.parseInt(getParameter(element, "wis")),
 				Integer.parseInt(getParameter(element, "cha")));
-		spinUntilEnd(assertNotNullQName(element.getName()), stream);
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		return retval;
 	}
 
@@ -138,10 +138,10 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 				if ("skill".equalsIgnoreCase(NullCleaner.assertNotNull(event
 						.asStartElement().getName().getLocalPart()))) {
 					retval.addSkill(parseSkill(
-							assertNotNullStartElement(event.asStartElement()),
+							NullCleaner.assertNotNull(event.asStartElement()),
 							warner));
-					spinUntilEnd(assertNotNullQName(event.asStartElement()
-							.getName()), stream);
+					spinUntilEnd(NullCleaner.assertNotNull(event.asStartElement()
+					.getName()), stream);
 				} else {
 					throw new UnwantedChildException(
 							NullCleaner.assertNotNull(element.getName()

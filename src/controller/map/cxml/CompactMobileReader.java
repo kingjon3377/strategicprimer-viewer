@@ -236,7 +236,7 @@ public final class CompactMobileReader extends
 					getOrGenerateID(element, warner, idFactory));
 			break;
 		}
-		spinUntilEnd(assertNotNullQName(element.getName()), stream);
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		if (retval instanceof HasImage) {
 			((HasImage) retval).setImage(getParameter(element, "image", ""));
 		}

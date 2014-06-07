@@ -21,6 +21,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import util.EqualsAny;
 import util.IteratorWrapper;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.SPFormatException;
@@ -88,7 +89,7 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 			for (final XMLEvent event : stream) {
 				if (event.isStartElement()) {
 					parseChild(stream, warner, retval,
-							assertNotNullStartElement(event.asStartElement()),
+							NullCleaner.assertNotNull(event.asStartElement()),
 							idFactory);
 				} else if (event.isEndElement()
 						&& element.getName().equals(
@@ -153,7 +154,7 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 			throws SPFormatException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				return assertNotNullStartElement(event.asStartElement());
+				return NullCleaner.assertNotNull(event.asStartElement());
 			}
 		}
 		throw new MissingChildException(MAP_TAG, line);
