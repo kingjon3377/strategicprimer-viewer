@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 
@@ -18,9 +19,12 @@ import model.listeners.SelectionChangeSource;
 import model.map.IMap;
 import model.map.IMutableTile;
 import model.map.ITile;
+import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
+import model.map.fixtures.towns.Village;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -95,6 +99,22 @@ public final class ExplorationClickListener implements ActionListener,
 	protected void handleMove() {
 		try {
 			final List<TileFixture> fixtures = getSelectedValuesList(list);
+			if (Direction.Nowhere.equals(direction)) {
+				final int swearing = JOptionPane.showConfirmDialog(null,
+						"Should the explorer swear any villages on this tile?");
+				switch (swearing) {
+				case JOptionPane.CANCEL_OPTION:
+					return;
+				case JOptionPane.YES_OPTION:
+					swearVillages();
+					for (final MovementCostListener listener : mcListeners) {
+						listener.deduct(5);
+					}
+					break;
+				default: // NO_OPTION
+					break;
+				}
+			}
 			model.move(direction);
 			for (final Pair<IMap, File> pair : model.getSubordinateMaps()) {
 				final IMap map = pair.first();
@@ -120,6 +140,24 @@ public final class ExplorationClickListener implements ActionListener,
 			}
 			for (final MovementCostListener listener : mcListeners) {
 				listener.deduct(1);
+			}
+		}
+	}
+	/**
+	 * Change the allegiance of any villages on the current tile to the moving unit's owner.
+	 */
+	private void swearVillages() {
+		for (final Pair<IMap, File> pair : model.getAllMaps()) {
+			final IMap map = pair.first();
+			final ITile tile = map.getTile(model.getSelectedUnitLocation());
+			IUnit mover = model.getSelectedUnit();
+			if (mover != null) {
+				final Player owner = mover.getOwner();
+				for (final TileFixture fix : tile) {
+				if (fix instanceof Village) {
+						((Village) fix).setOwner(owner);
+					}
+				}
 			}
 		}
 	}
