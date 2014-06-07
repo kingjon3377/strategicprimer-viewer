@@ -321,10 +321,9 @@ public class Unit implements IUnit {
 	@Override
 	public String shortDesc() {
 		if (owner.isCurrent()) {
-			return "a(n) " + getKind() + " unit belonging to you"; // NOPMD
+			return "a(n) " + kind + " unit belonging to you"; // NOPMD
 		} else {
-			return "a(n) " + getKind() + " unit belonging to "
-					+ owner.getName();
+			return "a(n) " + kind + " unit belonging to " + owner.getName();
 		}
 	}
 	/**

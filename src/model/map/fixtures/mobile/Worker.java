@@ -245,7 +245,7 @@ public class Worker implements HasName, HasKind, HasImage, IWorker {
 	 */
 	@Override
 	public String getKind() {
-		return getRace();
+		return race;
 	}
 
 	/**

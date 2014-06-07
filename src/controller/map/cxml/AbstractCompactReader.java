@@ -199,18 +199,21 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	protected static int getOrGenerateID(final StartElement element,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		// ESCA-JAVA0177:
-		final int retval; // NOPMD
 		if (hasParameter(element, "id")) {
-			retval = idFactory.register(Integer.parseInt(getParameter(element,
+			try {
+				return idFactory.register(Integer.parseInt(getParameter(element,
 					"id")));
+			} catch (NumberFormatException except) {
+				throw new MissingPropertyException(tagOrNull(element.getName()
+						.getLocalPart()), "id", element.getLocation()
+						.getLineNumber());
+			}
 		} else {
 			final String tag = element.getName().getLocalPart();
 			warner.warn(new MissingPropertyException(tagOrNull(tag), "id",
 					element.getLocation().getLineNumber()));
-			retval = idFactory.createID();
+			return idFactory.createID();
 		}
-		return retval;
 	}
 
 	/**
@@ -293,7 +296,7 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	 * TODO: This should probably take Appendable and write the tabs directly.
 	 */
 	protected static String indent(final int tabs) {
-		final StringBuilder buf = new StringBuilder();
+		final StringBuilder buf = new StringBuilder(tabs);
 		for (int i = 0; i < tabs; i++) {
 			buf.append('\t');
 		}

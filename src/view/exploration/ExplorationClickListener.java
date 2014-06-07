@@ -143,8 +143,10 @@ public final class ExplorationClickListener implements ActionListener,
 			}
 		}
 	}
+
 	/**
-	 * Change the allegiance of any villages on the current tile to the moving unit's owner.
+	 * Change the allegiance of any villages on the current tile to the moving
+	 * unit's owner.
 	 */
 	private void swearVillages() {
 		for (final Pair<IMap, File> pair : model.getAllMaps()) {
