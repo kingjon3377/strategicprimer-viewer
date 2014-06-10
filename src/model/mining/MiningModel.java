@@ -40,6 +40,7 @@ public class MiningModel {
 		final Queue<Point> queue = new LinkedList<>();
 		queue.add(PointFactory.point(0, 0));
 		long counter = 0;
+		long pruneCounter = 0;
 		while (!queue.isEmpty()) {
 			final Point point = queue.remove();
 			counter++;
@@ -50,8 +51,10 @@ public class MiningModel {
 			}
 			// Limit the size of the output spreadsheet
 			if (Math.abs(point.row) > 400) {
+				pruneCounter++;
 				continue;
 			} else if (Math.abs(point.col) > 300) {
+				pruneCounter++;
 				continue;
 			}
 			final Point left = PointFactory.point(point.row, point.col - 1);
@@ -74,6 +77,9 @@ public class MiningModel {
 				queue.add(left);
 			}
 		}
+		System.out.print("\nPruned ");
+		System.out.print(pruneCounter);
+		System.out.println(" branches beyond our boundaries");
 		final int minCol =
 				getMinCol(NullCleaner.assertNotNull(unnormalized.keySet()));
 		for (final Map.Entry<Point, LodeStatus> entry : unnormalized.entrySet()) {
