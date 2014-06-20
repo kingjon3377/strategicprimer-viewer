@@ -148,30 +148,22 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		builder.append(". ");
 		final WorkerStats stats = worker.getStats();
 		if (stats != null && details) {
-			builder.append("He or she has the following stats:").append(
-					OPEN_LIST);
-			builder.append(OPEN_LIST_ITEM).append("Hit points: ")
-					.append(stats.getHitPoints()).append(" / ")
-					.append(stats.getMaxHitPoints()).append(CLOSE_LIST_ITEM);
-			builder.append(OPEN_LIST_ITEM).append("Strength: ")
-					.append(getModifierString(stats.getStrength()))
-					.append(CLOSE_LIST_ITEM);
-			builder.append(OPEN_LIST_ITEM).append("Dexterity: ")
-					.append(getModifierString(stats.getDexterity()))
-					.append(CLOSE_LIST_ITEM);
-			builder.append(OPEN_LIST_ITEM).append("Constitution: ")
-					.append(getModifierString(stats.getConstitution()))
-					.append(CLOSE_LIST_ITEM);
-			builder.append(OPEN_LIST_ITEM).append("Intelligence: ")
-					.append(getModifierString(stats.getIntelligence()))
-					.append(CLOSE_LIST_ITEM);
-			builder.append(OPEN_LIST_ITEM).append("Wisdom: ")
-					.append(getModifierString(stats.getWisdom()))
-					.append(CLOSE_LIST_ITEM);
-			builder.append(OPEN_LIST_ITEM).append("Charisma: ")
-					.append(getModifierString(stats.getCharisma()))
-					.append(CLOSE_LIST_ITEM);
-			builder.append(CLOSE_LIST);
+			builder.append("<p>He or she has the following stats: ");
+			builder.append(stats.getHitPoints()).append(" / ")
+					.append(stats.getMaxHitPoints()).append(" Hit Points");
+			builder.append(", Strength ").append(
+					getModifierString(stats.getStrength()));
+			builder.append(", Dexterity ").append(
+					getModifierString(stats.getDexterity()));
+			builder.append(", Constitution ").append(
+					getModifierString(stats.getConstitution()));
+			builder.append(", Intelligence ").append(
+					getModifierString(stats.getIntelligence()));
+			builder.append(", Wisdom: ").append(
+					getModifierString(stats.getWisdom()));
+			builder.append(", Charisma: ").append(
+					getModifierString(stats.getCharisma()));
+			builder.append("</p>");
 		}
 		if (worker.iterator().hasNext() && details) {
 			builder.append(HAS_TRAINING).append('\n').append(OPEN_LIST);
@@ -226,22 +218,18 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 				worker.getName() + ", a " + worker.getRace() + ". ");
 		final WorkerStats stats = worker.getStats();
 		if (stats != null && details) {
-			final AbstractReportNode statsNode = new ListReportNode(
-					"He or she has the following stats:");
-			statsNode.add(new StatReportNode(stats.getHitPoints(), stats
-					.getMaxHitPoints()));
-			statsNode
-					.add(new StatReportNode("Strength: ", stats.getStrength()));
-			statsNode.add(new StatReportNode("Dexterity: ", stats
-					.getDexterity()));
-			statsNode.add(new StatReportNode("Constitution: ", stats
-					.getConstitution()));
-			statsNode.add(new StatReportNode("Intelligence: ", stats
-					.getIntelligence()));
-			statsNode.add(new StatReportNode("Wisdom: ", stats.getWisdom()));
-			statsNode
-					.add(new StatReportNode("Charisma: ", stats.getCharisma()));
-			retval.add(statsNode);
+			retval.add(new SimpleReportNode(
+					"He or she has the following stats: ", Integer
+							.toString(stats.getHitPoints()), " / ", Integer
+							.toString(stats.getMaxHitPoints()),
+					" Hit Points, Strength ", getModifierString(stats
+							.getStrength()), ", Dexterity ",
+					getModifierString(stats.getDexterity()), ", Constitution ",
+					getModifierString(stats.getConstitution()),
+					", Intelligence ", getModifierString(stats
+							.getIntelligence()), ", Wisdom ",
+					getModifierString(stats.getWisdom()), ", Charisma ",
+					getModifierString(stats.getCharisma())));
 		}
 		if (worker.iterator().hasNext() && details) {
 			final AbstractReportNode jobs = new ListReportNode(HAS_TRAINING);
@@ -329,28 +317,6 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		}
 	}
 
-	/**
-	 * A {@link SimpleReportNode} with a constructor designed for worker stats.
-	 * @author Jonathan Lovelace
-	 */
-	private static class StatReportNode extends SimpleReportNode {
-		/**
-		 * @param hitPoints the worker's HP
-		 * @param max the worker's max HP
-		 */
-		protected StatReportNode(final int hitPoints, final int max) {
-			super("Hit points: ", Integer.toString(hitPoints), " / ", Integer
-					.toString(max));
-		}
-
-		/**
-		 * @param stat which stat
-		 * @param value its value
-		 */
-		protected StatReportNode(final String stat, final int value) {
-			super(stat, getModifierString(value));
-		}
-	}
 	/**
 	 * @return a String representation of the object
 	 */
