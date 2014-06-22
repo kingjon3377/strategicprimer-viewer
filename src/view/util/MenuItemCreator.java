@@ -4,6 +4,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 
+import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
@@ -36,6 +37,8 @@ public class MenuItemCreator {
 		mitem.setAccelerator(accel);
 		mitem.getAccessibleContext().setAccessibleDescription(desc);
 		mitem.addActionListener(list);
+		mitem.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(accel,
+				mitem.getAction());
 		return mitem;
 	}
 
