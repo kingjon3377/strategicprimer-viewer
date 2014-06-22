@@ -177,6 +177,10 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			pen.setColor(getTileColor(2, tile.getTerrain()));
 		}
 		pen.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
+		if (hasRivers(tile)) {
+			pen.drawImage(getImageForFixture(getRivers(tile)), coordinates.x,
+					coordinates.y, dimensions.x, dimensions.y, observer);
+		}
 		if (hasFixture(tile)) {
 			pen.drawImage(getImageForFixture(getTopFixture(tile)),
 					coordinates.x, coordinates.y, dimensions.x, dimensions.y,
@@ -200,7 +204,18 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		drawTile(pen, tile, PointFactory.coordinate(0, 0),
 				PointFactory.coordinate(width, height));
 	}
-
+	/**
+	 * @param tile a tile
+	 * @return whether that tile has any rivers that are not on top
+	 */
+	private static boolean hasRivers(final ITile tile) {
+		for (final TileFixture fix : tile) {
+			if (fix instanceof RiverFixture) {
+				return true;
+			}
+		}
+		return false;
+	}
 	/**
 	 * @param tile a tile
 	 * @return whether that tile has any fixtures (or any river
@@ -209,6 +224,20 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		return new FilteredIterator(tile.iterator(), zof).hasNext();
 	}
 
+	/**
+	 * @param tile
+	 *            a tile
+	 * @return any RiverFixture on that tile. We assume the tile cannot have
+	 *         more than one.
+	 */
+	private static RiverFixture getRivers(final ITile tile) {
+		for (final TileFixture item : tile) {
+			if (item instanceof RiverFixture) {
+				return (RiverFixture) item;
+			}
+		}
+		throw new IllegalArgumentException("Tile has no non-null fixtures");
+	}
 	/**
 	 * @param tile a tile
 	 * @return the top fixture on that tile.
