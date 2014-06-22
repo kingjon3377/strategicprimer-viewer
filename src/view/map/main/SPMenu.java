@@ -4,9 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+import javax.swing.InputMap;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 import model.listeners.PlayerChangeListener;
@@ -88,9 +90,23 @@ public class SPMenu extends JMenuBar {
 				}));
 		retval.addSeparator();
 		final ActionListener zoomListener = new ZoomListener(model);
-		retval.add(MenuItemCreator.createMenuItem("Zoom in", KeyEvent.VK_I,
-				MenuItemCreator.createHotkey(KeyEvent.VK_PLUS),
-				"Increase the visible size of each tile", zoomListener));
+		// VK_PLUS only works on non-US keyboards, but we leave it as the
+		// primary hotkey because it's the best to *show* in the menu.
+		final KeyStroke plusKey =
+				MenuItemCreator.createHotkey(KeyEvent.VK_PLUS);
+		final JMenuItem zoomInItem =
+				MenuItemCreator.createMenuItem("Zoom in", KeyEvent.VK_I,
+						plusKey, "Increase the visible size of each tile",
+						zoomListener);
+		final InputMap inputMap =
+				zoomInItem.getInputMap(WHEN_IN_FOCUSED_WINDOW);
+		inputMap.put(MenuItemCreator.createHotkey(KeyEvent.VK_EQUALS),
+				inputMap.get(plusKey));
+		inputMap.put(MenuItemCreator.createShiftHotkey(KeyEvent.VK_EQUALS),
+				inputMap.get(plusKey));
+		inputMap.put(MenuItemCreator.createHotkey(KeyEvent.VK_ADD),
+				inputMap.get(plusKey));
+		retval.add(zoomInItem);
 		retval.add(MenuItemCreator.createMenuItem("Zoom out", KeyEvent.VK_O,
 				MenuItemCreator.createHotkey(KeyEvent.VK_MINUS),
 				"Decrease the visible size of each tile", zoomListener));
