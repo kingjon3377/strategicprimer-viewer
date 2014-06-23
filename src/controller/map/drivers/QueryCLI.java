@@ -15,6 +15,7 @@ import javax.xml.stream.XMLStreamException;
 import model.exploration.HuntingModel;
 import model.map.IMap;
 import model.map.ITile;
+import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
@@ -113,12 +114,42 @@ public final class QueryCLI implements ISPDriver {
 		case 't':
 			new TrapModelDriver().startDriver(map);
 			break;
+		case 'd':
+			distance(map.getDimensions(), ostream);
+			break;
 		default:
 			ostream.append("Unknown command.\n");
 			break;
 		}
 	}
-
+	/**
+	 * Report the distance between two points.
+	 *
+	 * TODO: use some sort of pathfinding
+	 *
+	 * @param dims the dimensions of the map
+	 * @param ostream
+	 *            the stream to write to
+	 * @throws IOException on I/O error dealing with user input
+	 */
+	private void distance(final MapDimensions dims, final Appendable ostream)
+			throws IOException {
+		ostream.append("Starting point:\t");
+		final Point start = selectPoint();
+		ostream.append("Destination:\t");
+		final Point end = selectPoint();
+		int raw_xdiff = start.row - end.row;
+		int raw_ydiff = start.col - end.col;
+		int xdiff =
+				(raw_xdiff < (dims.rows / 2)) ? raw_xdiff : dims.rows
+						- raw_xdiff;
+		int ydiff =
+				(raw_ydiff < (dims.cols / 2)) ? raw_ydiff : dims.cols
+						- raw_ydiff;
+		ostream.append("Distance (as the crow flies, in tiles):\t");
+		ostream.append(Integer.toString((int) Math.round(Math.sqrt(xdiff
+				* xdiff + ydiff * ydiff))));
+	}
 	/**
 	 * Run herding. TODO: Move the logic here into the HuntingModel or a similar
 	 * class.
