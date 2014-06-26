@@ -88,7 +88,10 @@ public final class WorkerCreationListener implements ActionListener,
 			return -1;
 		}
 		@Override
-		public int compareTo(final TileFixture o) {
+		public int compareTo(@Nullable final TileFixture o) {
+			if (o == null) {
+				throw new IllegalArgumentException("Compared to null fixture");
+			}
 			return o.hashCode() - hashCode();
 		}
 		@Override

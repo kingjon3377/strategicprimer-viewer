@@ -4,6 +4,8 @@ import java.util.Comparator;
 
 import model.map.TileFixture;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A Comparator for TileFixtures. In the new map version, only the upper-most of
  * a tile's fixtures is visible.
@@ -22,7 +24,10 @@ public class FixtureComparator implements Comparator<TileFixture> {
 	 * @return the result of the comparison.
 	 */
 	@Override
-	public int compare(final TileFixture one, final TileFixture two) {
+	public int compare(@Nullable final TileFixture one, @Nullable final TileFixture two) {
+		if (one == null || two == null) {
+			throw new IllegalArgumentException("Asked to compare null fixture");
+		}
 		return two.getZValue() - one.getZValue();
 	}
 

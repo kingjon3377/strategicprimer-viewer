@@ -481,7 +481,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 				return this == obj;
 			}
 			@Override
-			public int compareTo(final TileFixture obj) {
+			public int compareTo(@Nullable final TileFixture obj) {
 				throw new IllegalStateException(
 						"Leak of an all-but-null object");
 			}

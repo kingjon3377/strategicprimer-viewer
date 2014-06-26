@@ -23,6 +23,9 @@ import javax.swing.text.View;
 
 import model.map.HasImage;
 import model.map.TileFixture;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.ImageLoader;
 import util.TypesafeLogger;
 
@@ -60,9 +63,14 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 	// ESCA-JAVA0138:
 	@Override
 	public Component getListCellRendererComponent(
-			final JList<? extends TileFixture> list, final TileFixture value,
-			final int index, final boolean isSelected,
-			final boolean cellHasFocus) {
+			@Nullable final JList<? extends TileFixture> list,
+			@Nullable final TileFixture value, final int index,
+			final boolean isSelected, final boolean cellHasFocus) {
+		if (value == null) {
+			throw new IllegalArgumentException("Asked to render null");
+		} else if (list == null) {
+			throw new IllegalArgumentException("Asked to render a null list");
+		}
 		final Component component = LIST_DEFAULT.getListCellRendererComponent(
 				list, value, index, isSelected, cellHasFocus);
 		((JLabel) component).setText("<html><p>" + value.toString()

@@ -135,7 +135,7 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	/**
 	 * This should be used in subclasses' equals() and equalsIgnoringID(), where
 	 * all that is needed is a check of the type of the object in question.
-	 * 
+	 *
 	 * @param fix
 	 *            a town-event
 	 * @return whether it's equal to this one ignoring ID.
@@ -220,7 +220,10 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	 * @return the result of the comparison
 	 */
 	@Override
-	public int compareTo(final TileFixture fix) {
+	public int compareTo(@Nullable final TileFixture fix) {
+		if (fix == null) {
+			throw new IllegalArgumentException("Compared to null fixture");
+		}
 		return fix.hashCode() - hashCode();
 	}
 

@@ -45,7 +45,10 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	 */
 	@Deprecated
 	@Override
-	public int compareTo(final TileFixture obj) {
+	public int compareTo(@Nullable final TileFixture obj) {
+		if (obj == null) {
+			throw new IllegalArgumentException("Compared to null fixture");
+		}
 		return obj.getZValue() - getZValue();
 	}
 

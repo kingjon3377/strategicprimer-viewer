@@ -356,6 +356,7 @@ public final class QueryCLI implements ISPDriver {
 		ostream.append("maintaining a herd.\n");
 		ostream.append("Trap: Switch to the trap-modeling program ");
 		ostream.append("to run trapping or fish-trapping.\n");
+		ostream.append("Distance: Report the distance between two points.");
 		ostream.append("Quit: Exit the program.\n");
 	}
 

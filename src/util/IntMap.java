@@ -77,7 +77,7 @@ public class IntMap<V> implements DelayedRemovalMap<Integer, V> { // NOPMD
 	 */
 	@Override
 	@Nullable
-	public V put(final Integer key, final V value) {
+	public V put(@Nullable final Integer key, @Nullable final V value) {
 		return backing.put(key, value);
 	}
 
@@ -115,7 +115,7 @@ public class IntMap<V> implements DelayedRemovalMap<Integer, V> { // NOPMD
 	 * @param map the map to insert
 	 */
 	@Override
-	public void putAll(final Map<? extends Integer, ? extends V> map) {
+	public void putAll(@Nullable final Map<? extends Integer, ? extends V> map) {
 		backing.putAll(map);
 	}
 

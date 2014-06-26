@@ -128,7 +128,10 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 	 * @return the result of the comparison
 	 */
 	@Override
-	public int compareTo(final TileFixture fix) {
+	public int compareTo(@Nullable final TileFixture fix) {
+		if (fix == null) {
+			throw new IllegalArgumentException("Compared to null fixture");
+		}
 		return fix.hashCode() - hashCode();
 	}
 

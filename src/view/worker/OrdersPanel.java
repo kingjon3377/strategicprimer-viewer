@@ -185,7 +185,10 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 			return this == fix;
 		}
 		@Override
-		public int compareTo(final TileFixture o) {
+		public int compareTo(@Nullable final TileFixture o) {
+			if (o == null) {
+				throw new IllegalArgumentException("Compared to null fixture");
+			}
 			return hashCode() - o.hashCode();
 		}
 		@Override

@@ -11,6 +11,8 @@ import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A comparator for towns, to put active ones before abandoned ones before
  * ruined ones before burned-out ones, bigger ones before smaller ones, cities
@@ -35,8 +37,10 @@ public final class TownComparator implements Comparator<AbstractTown> {
 		 *         is "greater" than the second.
 		 */
 		@Override
-		public int compare(final TownSize one, final TownSize two) {
-			if (one.equals(two)) {
+		public int compare(@Nullable final TownSize one, @Nullable final TownSize two) {
+			if (one == null || two == null) {
+				throw new IllegalArgumentException("Asked to compare null TownSize");
+			} else if (one.equals(two)) {
 				return 0; // NOPMD
 			} else if (TownSize.Large.equals(one)) {
 				return -1; // NOPMD
@@ -64,8 +68,11 @@ public final class TownComparator implements Comparator<AbstractTown> {
 		 *         is "greater" than the second.
 		 */
 		@Override
-		public int compare(final TownStatus one, final TownStatus two) {
-			if (one.equals(two)) {
+				public int compare(@Nullable final TownStatus one,
+						@Nullable final TownStatus two) {
+			if (one == null || two == null) {
+				throw new IllegalArgumentException("Asked to compare null TownStatus");
+			} else if (one.equals(two)) {
 				return 0; // NOPMD
 			} else if (TownStatus.Active.equals(one)) {
 				return -1; // NOPMD
@@ -97,8 +104,11 @@ public final class TownComparator implements Comparator<AbstractTown> {
 		 *         is "greater" than the second.
 		 */
 		@Override
-		public int compare(final ITownFixture one, final ITownFixture two) {
-			if (one instanceof Fortress) {
+				public int compare(@Nullable final ITownFixture one,
+						@Nullable final ITownFixture two) {
+			if (one == null || two == null) {
+				throw new IllegalArgumentException("Asked to compare null fixture");
+			} else if (one instanceof Fortress) {
 				if (two instanceof Fortress) {
 					return 0; // NOPMD
 				} else {
@@ -148,8 +158,10 @@ public final class TownComparator implements Comparator<AbstractTown> {
 	 *         "greater" than the second.
 	 */
 	@Override
-	public int compare(final AbstractTown one, final AbstractTown two) {
-		if (one.status().equals(two.status())) {
+	public int compare(@Nullable final AbstractTown one, @Nullable final AbstractTown two) {
+		if (one == null || two == null) {
+			throw new IllegalArgumentException("Asked to compare null fixture");
+		} else if (one.status().equals(two.status())) {
 			if (one.size().equals(two.size())) {
 				if (one.getClass().equals(two.getClass())) {
 					return one.getName().compareTo(two.getName()); // NOPMD

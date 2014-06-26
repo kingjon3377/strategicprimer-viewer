@@ -71,7 +71,7 @@ public final class ArraySet<T> implements Set<T> {
 	 * @return the contents of the set in that array
 	 */
 	@Override
-	public <TYPE> TYPE[] toArray(final TYPE[] array) {
+	public <TYPE> TYPE[] toArray(@Nullable final TYPE[] array) {
 		return NullCleaner.assertNotNull(impl.toArray(array));
 	}
 
@@ -80,8 +80,8 @@ public final class ArraySet<T> implements Set<T> {
 	 * @return the result of adding it to the set.
 	 */
 	@Override
-	public boolean add(final T elem) {
-		if (contains(elem)) {
+	public boolean add(@Nullable final T elem) {
+		if (elem == null || contains(elem)) {
 			return false; // NOPMD
 		} else {
 			impl.add(elem);
@@ -119,13 +119,15 @@ public final class ArraySet<T> implements Set<T> {
 	 * @see java.util.Set#addAll(java.util.Collection)
 	 */
 	@Override
-	public boolean addAll(final Collection<? extends T> coll) {
+	public boolean addAll(@Nullable final Collection<? extends T> coll) {
 		boolean retval = false;
-		for (final T obj : coll) {
-			if (obj == null) {
-				continue;
-			} else if (add(obj)) {
-				retval = true;
+		if (coll != null) {
+			for (final T obj : coll) {
+				if (obj == null) {
+					continue;
+				} else if (add(obj)) {
+					retval = true;
+				}
 			}
 		}
 		return retval;

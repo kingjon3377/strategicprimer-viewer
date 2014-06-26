@@ -13,6 +13,9 @@ import javax.swing.ListSelectionModel;
 import model.map.TileFixture;
 import model.viewer.FixtureFilterListModel;
 import model.viewer.ZOrderFilter;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.NullCleaner;
 
 /**
@@ -85,9 +88,14 @@ public class FixtureFilterList extends JList<Class<? extends TileFixture>>
 	 */
 	@Override
 	public Component getListCellRendererComponent(
-			final JList<? extends Class<? extends TileFixture>> list,
-			final Class<? extends TileFixture> value, final int index,
+			@Nullable final JList<? extends Class<? extends TileFixture>> list,
+			@Nullable final Class<? extends TileFixture> value, final int index,
 			final boolean isSelected, final boolean cellHasFocus) {
+		if (value == null) {
+			throw new IllegalArgumentException("Asked to render null");
+		} else if (list == null) {
+			throw new IllegalArgumentException("Asked to render null list");
+		}
 		final Component retval = lcr.getListCellRendererComponent(list, value,
 				index, isSelected, cellHasFocus);
 		if (retval instanceof JLabel) {

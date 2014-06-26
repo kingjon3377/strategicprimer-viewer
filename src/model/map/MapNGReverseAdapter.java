@@ -48,8 +48,10 @@ public class MapNGReverseAdapter implements IMap {
 	 * @return the result of the comparison
 	 */
 	@Override
-	public int compareTo(final IMap obj) {
-		if (equals(obj)) {
+	public int compareTo(@Nullable final IMap obj) {
+		if (obj == null) {
+			throw new IllegalArgumentException("Compared to null map");
+		} else if (equals(obj)) {
 			return 0; // NOPMD
 		} else {
 			return hashCode() - obj.hashCode();

@@ -1,5 +1,7 @@
 package util;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A pair of Comparables.
  *
@@ -29,7 +31,10 @@ public class ComparablePair<K extends Comparable<K>, V extends Comparable<V>>
 	 * @return the result of the comparison.
 	 */
 	@Override
-	public int compareTo(final ComparablePair<K, V> other) {
+	public int compareTo(@Nullable final ComparablePair<K, V> other) {
+		if (other == null) {
+			throw new IllegalArgumentException("Compared to null pair");
+		}
 		final int cmp = first().compareTo(other.first());
 		if (cmp == 0) {
 			return second().compareTo(other.second()); // NOPMD

@@ -30,7 +30,10 @@ public class ComparableIterator<T> implements Iterator<T>,
 	 * @return the result of a comparison between them.
 	 */
 	@Override
-	public int compareTo(final ComparableIterator<T> obj) {
+	public int compareTo(@Nullable final ComparableIterator<T> obj) {
+		if (obj == null) {
+			throw new IllegalArgumentException("Compared to null");
+		}
 		return obj.hashCode() - hashCode();
 	}
 

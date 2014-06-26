@@ -69,7 +69,10 @@ public class Point implements Comparable<Point> {
 	 * @return the result of a comparison with that point
 	 */
 	@Override
-	public int compareTo(final Point point) {
+	public int compareTo(@Nullable final Point point) {
+		if (point == null) {
+			throw new IllegalArgumentException("Compared to null point");
+		}
 		return (point.getRow() - getRow() << 7) + point.getCol() - getCol();
 	}
 
