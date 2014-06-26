@@ -138,14 +138,20 @@ public final class QueryCLI implements ISPDriver {
 		final Point start = selectPoint();
 		ostream.append("Destination:\t");
 		final Point end = selectPoint();
-		int raw_xdiff = start.row - end.row;
-		int raw_ydiff = start.col - end.col;
-		int xdiff =
-				(raw_xdiff < (dims.rows / 2)) ? raw_xdiff : dims.rows
-						- raw_xdiff;
-		int ydiff =
-				(raw_ydiff < (dims.cols / 2)) ? raw_ydiff : dims.cols
-						- raw_ydiff;
+		final int rawXdiff = start.row - end.row;
+		final int rawYdiff = start.col - end.col;
+		final int xdiff;
+		if (rawXdiff < (dims.rows / 2)) {
+			xdiff = rawXdiff;
+		} else {
+			xdiff = dims.rows - rawXdiff;
+		}
+		final int ydiff;
+		if (rawYdiff < (dims.cols / 2)) {
+			ydiff = rawYdiff;
+		} else {
+			ydiff = dims.cols - rawYdiff;
+		}
 		ostream.append("Distance (as the crow flies, in tiles):\t");
 		ostream.append(Integer.toString((int) Math.round(Math.sqrt(xdiff
 				* xdiff + ydiff * ydiff))));
