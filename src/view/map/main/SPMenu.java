@@ -70,8 +70,8 @@ public class SPMenu extends JMenuBar {
 					}
 				}));
 		final FindDialog finder = new FindDialog(parent, model);
-		final int findKey = KeyEvent.VK_SLASH;
-		final KeyStroke findStroke = KeyStroke.getKeyStroke(findKey, 0);
+		final int findKey = KeyEvent.VK_F;
+		final KeyStroke findStroke = MenuItemCreator.createHotkey(findKey);
 		final JMenuItem findItem =
 				MenuItemCreator.createMenuItem("Find a fixture", findKey,
 						findStroke, "Find a fixture by name, kind, or ID#",
@@ -83,11 +83,10 @@ public class SPMenu extends JMenuBar {
 							}
 						});
 		final InputMap findInput = findItem.getInputMap(WHEN_IN_FOCUSED_WINDOW);
-		findInput.put(MenuItemCreator.createHotkey(KeyEvent.VK_F),
-				findInput.get(findStroke));
+		findInput.put(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0), findInput.get(findStroke));
 		retval.add(findItem);
 		final int nextKey = KeyEvent.VK_N;
-		final KeyStroke nextStroke = KeyStroke.getKeyStroke(nextKey, 0);
+		final KeyStroke nextStroke = MenuItemCreator.createHotkey(KeyEvent.VK_G);
 		final JMenuItem nextItem =
 				MenuItemCreator.createMenuItem("Find next", nextKey,
 						nextStroke,
@@ -100,8 +99,7 @@ public class SPMenu extends JMenuBar {
 							}
 						});
 		final InputMap nextInput = nextItem.getInputMap(WHEN_IN_FOCUSED_WINDOW);
-		nextInput.put(MenuItemCreator.createHotkey(KeyEvent.VK_G),
-				nextInput.get(nextStroke));
+		nextInput.put(KeyStroke.getKeyStroke(nextKey, 0), nextInput.get(nextStroke));
 		retval.add(nextItem);
 		retval.addSeparator();
 		final ActionListener zoomListener = new ZoomListener(model);
