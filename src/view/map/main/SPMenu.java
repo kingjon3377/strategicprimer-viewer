@@ -70,24 +70,39 @@ public class SPMenu extends JMenuBar {
 					}
 				}));
 		final FindDialog finder = new FindDialog(parent, model);
-		retval.add(MenuItemCreator.createMenuItem("Find a fixture",
-				KeyEvent.VK_SLASH,
-				KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0),
-				"Find a fixture by name, kind, or ID#", new ActionListener() {
-					@Override
-					public void actionPerformed(@Nullable final ActionEvent evt) {
-						finder.setVisible(true);
-					}
-				}));
-		retval.add(MenuItemCreator.createMenuItem("Find next", KeyEvent.VK_N,
-				KeyStroke.getKeyStroke(KeyEvent.VK_N, 0),
-				"Find the next fixture matching the pattern",
-				new ActionListener() {
-					@Override
-					public void actionPerformed(@Nullable final ActionEvent evt) {
-						finder.search();
-					}
-				}));
+		final int findKey = KeyEvent.VK_SLASH;
+		final KeyStroke findStroke = KeyStroke.getKeyStroke(findKey, 0);
+		final JMenuItem findItem =
+				MenuItemCreator.createMenuItem("Find a fixture", findKey,
+						findStroke, "Find a fixture by name, kind, or ID#",
+						new ActionListener() {
+							@Override
+							public void actionPerformed(
+									@Nullable final ActionEvent evt) {
+								finder.setVisible(true);
+							}
+						});
+		final InputMap findInput = findItem.getInputMap(WHEN_IN_FOCUSED_WINDOW);
+		findInput.put(MenuItemCreator.createHotkey(KeyEvent.VK_F),
+				findInput.get(findStroke));
+		retval.add(findItem);
+		final int nextKey = KeyEvent.VK_N;
+		final KeyStroke nextStroke = KeyStroke.getKeyStroke(nextKey, 0);
+		final JMenuItem nextItem =
+				MenuItemCreator.createMenuItem("Find next", nextKey,
+						nextStroke,
+						"Find the next fixture matching the pattern",
+						new ActionListener() {
+							@Override
+							public void actionPerformed(
+									@Nullable final ActionEvent evt) {
+								finder.search();
+							}
+						});
+		final InputMap nextInput = nextItem.getInputMap(WHEN_IN_FOCUSED_WINDOW);
+		nextInput.put(MenuItemCreator.createHotkey(KeyEvent.VK_G),
+				nextInput.get(nextStroke));
+		retval.add(nextItem);
 		retval.addSeparator();
 		final ActionListener zoomListener = new ZoomListener(model);
 		// VK_PLUS only works on non-US keyboards, but we leave it as the
