@@ -1,6 +1,5 @@
 package model.map;
 
-import com.sun.istack.internal.NotNull;
 
 /**
  * An interface for the map and any wrappers around it.
@@ -13,21 +12,18 @@ public interface IMap extends Subsettable<IMap>, Comparable<IMap> {
 	/**
 	 * @return The map's dimensions and version.
 	 */
-	@NotNull
 	MapDimensions getDimensions();
 
 	/**
 	 * @param point a point
 	 * @return the tile at those coordinates
 	 */
-	@NotNull
-	ITile getTile(@NotNull  Point point);
+	ITile getTile(Point point);
 
 	/**
 	 *
 	 * @return the players in the map
 	 */
-	@NotNull
 	IPlayerCollection getPlayers();
 
 	/**
@@ -35,6 +31,5 @@ public interface IMap extends Subsettable<IMap>, Comparable<IMap> {
 	 *
 	 * @return the collection of tiles.
 	 */
-	@NotNull
 	ITileCollection getTiles();
 }

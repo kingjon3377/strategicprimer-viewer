@@ -12,8 +12,6 @@ import model.exploration.old.MissingTableException;
 import util.NullCleaner;
 import util.TypesafeLogger;
 
-import com.sun.istack.internal.NotNull;
-
 /**
  * A driver to help debug exploration tables.
  *
@@ -59,7 +57,7 @@ public class TableDebugger {
 	 * @param explRunner an exploration runner loaded with all the tables we
 	 *        want.
 	 */
-	public TableDebugger(@NotNull final ExplorationRunner explRunner) {
+	public TableDebugger(final ExplorationRunner explRunner) {
 		runner = explRunner;
 	}
 
@@ -70,7 +68,7 @@ public class TableDebugger {
 	 * @throws MissingTableException if a referenced table isn't there
 	 * @throws IOException on error writing to the stream
 	 */
-	public void debugTables(@NotNull final Appendable ostream)
+	public void debugTables(final Appendable ostream)
 			throws MissingTableException, IOException {
 		runner.verboseRecursiveCheck(ostream);
 		final EncounterTable mainTable = runner.getTable("main");
@@ -93,10 +91,9 @@ public class TableDebugger {
 	 * @throws MissingTableException if a table is missing
 	 * @throws IOException on I/O error writing to the stream
 	 */
-	private void debugTable(@NotNull final String before,
-			@NotNull final String after, @NotNull final EncounterTable table,
-			@NotNull final String tableName, @NotNull final Appendable ostream,
-			@NotNull final Set<EncounterTable> set)
+	private void debugTable(final String before, final String after,
+			final EncounterTable table, final String tableName,
+			final Appendable ostream, final Set<EncounterTable> set)
 			throws MissingTableException, IOException {
 		if (set.contains(table)) {
 			ostream.append("table ");
