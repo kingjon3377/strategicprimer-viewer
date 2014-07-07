@@ -109,8 +109,9 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 					@Nullable final Object value, final int index,
 					final boolean isSelected, final boolean cellHasFocus) {
 				final Component retval =
-						super.getListCellRendererComponent(list, value, index,
-								isSelected,						cellHasFocus);
+						super.getListCellRendererComponent(
+								NullCleaner.assertNotNull(list), value, index,
+								isSelected, cellHasFocus);
 				if (value instanceof IUnit && retval instanceof JLabel) {
 					((JLabel) retval).setText(String.format(
 							"Unit of type %s, named %s",
