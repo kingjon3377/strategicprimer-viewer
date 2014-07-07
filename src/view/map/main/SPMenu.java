@@ -83,7 +83,8 @@ public class SPMenu extends JMenuBar {
 							}
 						});
 		final InputMap findInput = findItem.getInputMap(WHEN_IN_FOCUSED_WINDOW);
-		findInput.put(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0), findInput.get(findStroke));
+		findInput.put(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0),
+				findInput.get(findStroke));
 		retval.add(findItem);
 		final int nextKey = KeyEvent.VK_N;
 		final KeyStroke nextStroke = MenuItemCreator.createHotkey(KeyEvent.VK_G);

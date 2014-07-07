@@ -24,7 +24,8 @@ public class FixtureComparator implements Comparator<TileFixture> {
 	 * @return the result of the comparison.
 	 */
 	@Override
-	public int compare(@Nullable final TileFixture one, @Nullable final TileFixture two) {
+	public int compare(@Nullable final TileFixture one,
+			@Nullable final TileFixture two) {
 		if (one == null || two == null) {
 			throw new IllegalArgumentException("Asked to compare null fixture");
 		}

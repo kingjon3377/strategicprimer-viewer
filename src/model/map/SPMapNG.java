@@ -78,7 +78,7 @@ public class SPMapNG implements IMutableMapNG {
 	private final Map<Point, EnumSet<River>> rivers = new HashMap<>();
 	/**
 	 * @param obj another map
-	 * @param ostream the stream to write verbose results to
+	 * @param out the stream to write verbose results to
 	 * @param context
 	 *            a string to print before every line of output, describing the
 	 *            context
@@ -86,17 +86,17 @@ public class SPMapNG implements IMutableMapNG {
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IMapNG obj, final Appendable ostream,
+	public boolean isSubset(final IMapNG obj, final Appendable out,
 			final String context) throws IOException {
 		if (dimensions().equals(obj.dimensions())) {
 			// TODO: We should probably delegate this to the PlayerCollection.
 			boolean retval = true;
 			for (final Player player : obj.players()) {
 				if (player != null && !playerCollection.contains(player)) {
-					ostream.append(context);
-					ostream.append("\tExtra player ");
-					ostream.append(player.toString());
-					ostream.append('\n');
+					out.append(context);
+					out.append("\tExtra player ");
+					out.append(player.toString());
+					out.append('\n');
 					retval = false;
 					// return false;
 				}
@@ -108,31 +108,31 @@ public class SPMapNG implements IMutableMapNG {
 					continue;
 				} else if (!getBaseTerrain(point).equals(
 						obj.getBaseTerrain(point))) {
-					ostream.append(ctxt);
-					ostream.append("\tBase terrain differs\n");
+					out.append(ctxt);
+					out.append("\tBase terrain differs\n");
 					retval = false;
 					continue;
 //					return false;
 				}
 				if (obj.isMountainous(point) && !isMountainous(point)) {
-					ostream.append(ctxt);
-					ostream.append("\tHas mountains we don't\n");
+					out.append(ctxt);
+					out.append("\tHas mountains we don't\n");
 					retval = false;
 					// return false;
 				}
 				if (!Objects.equals(getForest(point), obj.getForest(point))
 						&& obj.getForest(point) != null) {
 					// TODO: Shouldn't do getForest call twice
-					ostream.append(ctxt);
-					ostream.append("\tHas forest we don't, or different primary forest");
+					out.append(ctxt);
+					out.append("\tHas forest we don't, or different primary forest");
 					retval = false;
 					// return false;
 				}
 				if (!Objects.equals(getGround(point), obj.getGround(point))
 						&& obj.getGround(point) != null) {
 					// TODO: Shouldn't do getGround call twice
-					ostream.append(ctxt);
-					ostream.append("\tHas different primary ground, or ground we don't");
+					out.append(ctxt);
+					out.append("\tHas different primary ground, or ground we don't");
 					retval = false;
 					// return false;
 				}
@@ -142,10 +142,10 @@ public class SPMapNG implements IMutableMapNG {
 						.getOtherFixtures(point);
 				for (final TileFixture fix : theirFixtures) {
 					if (!ourFixtures.contains(fix)) {
-						ostream.append(ctxt);
-						ostream.append(" Extra fixture:\t");
-						ostream.append(fix.toString());
-						ostream.append('\n');
+						out.append(ctxt);
+						out.append(" Extra fixture:\t");
+						out.append(fix.toString());
+						out.append('\n');
 						retval = false;
 						break;
 						// return false;
@@ -155,8 +155,8 @@ public class SPMapNG implements IMutableMapNG {
 				final Iterable<River> theirRivers = obj.getRivers(point);
 				for (final River river : theirRivers) {
 					if (river != null && !ourRivers.contains(river)) {
-						ostream.append(ctxt);
-						ostream.append("\tExtra river\n");
+						out.append(ctxt);
+						out.append("\tExtra river\n");
 						retval = false;
 						break;
 						// return false;
@@ -165,8 +165,8 @@ public class SPMapNG implements IMutableMapNG {
 			}
 			return retval; // NOPMD
 		} else {
-			ostream.append(context);
-			ostream.append("\tDimension mismatch\n");
+			out.append(context);
+			out.append("\tDimension mismatch\n");
 			return false; // NOPMD
 		}
 	}

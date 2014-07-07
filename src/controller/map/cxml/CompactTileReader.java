@@ -84,7 +84,8 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 						"kind", "type", warner)));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				if (isRiver(NullCleaner.assertNotNull(event.asStartElement().getName()))) {
+				if (isRiver(NullCleaner.assertNotNull(event.asStartElement()
+						.getName()))) {
 					retval.addFixture(new RiverFixture(parseRiver(// NOPMD
 							NullCleaner.assertNotNull(event.asStartElement()),
 							warner)));

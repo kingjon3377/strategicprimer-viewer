@@ -81,19 +81,19 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	public static class WorkerTreeNode extends
 			DefaultMutableTreeNode implements Iterable<TreeNode> {
 		/**
-		 * @param userObject the user object the node wraps
-		 * @param allowsChildren whether to allow children
+		 * @param userObj the user object the node wraps
+		 * @param permitsChildren whether to allow children
 		 */
-		protected WorkerTreeNode(final Object userObject,
-				final boolean allowsChildren) {
-			super(userObject, allowsChildren);
+		protected WorkerTreeNode(final Object userObj,
+				final boolean permitsChildren) {
+			super(userObj, permitsChildren);
 		}
 		/**
 		 * Allows children without having to pass that to us.
-		 * @param userObject the user object the node wraps.
+		 * @param userObj the user object the node wraps.
 		 */
-		protected WorkerTreeNode(final Object userObject) {
-			super(userObject, true);
+		protected WorkerTreeNode(final Object userObj) {
+			super(userObj, true);
 		}
 		/**
 		 * @return an iterator over the immediate children of this node

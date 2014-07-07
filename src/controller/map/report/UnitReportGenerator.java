@@ -268,10 +268,12 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		final StringBuilder builder = new StringBuilder(8192)
 				.append("<h4>Units in the map</h4>\n");
 		builder.append("<p>(Any units listed above are not described again.)</p>\n");
-		final StringBuilder ours = new StringBuilder(8192).append("<h5>Your units</h5>\n");
+		final StringBuilder ours =
+				new StringBuilder(8192).append("<h5>Your units</h5>\n");
 		ours.append(OPEN_LIST);
 		boolean anyOurs = false;
-		final StringBuilder foreign = new StringBuilder(8192).append("<h5>Foreign units</h5>\n");
+		final StringBuilder foreign =
+				new StringBuilder(8192).append("<h5>Foreign units</h5>\n");
 		foreign.append(OPEN_LIST);
 		boolean anyForeign = false;
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {

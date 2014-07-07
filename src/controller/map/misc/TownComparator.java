@@ -37,7 +37,8 @@ public final class TownComparator implements Comparator<AbstractTown> {
 		 *         is "greater" than the second.
 		 */
 		@Override
-		public int compare(@Nullable final TownSize one, @Nullable final TownSize two) {
+				public int compare(@Nullable final TownSize one,
+						@Nullable final TownSize two) {
 			if (one == null || two == null) {
 				throw new IllegalArgumentException("Asked to compare null TownSize");
 			} else if (one.equals(two)) {
@@ -71,7 +72,8 @@ public final class TownComparator implements Comparator<AbstractTown> {
 				public int compare(@Nullable final TownStatus one,
 						@Nullable final TownStatus two) {
 			if (one == null || two == null) {
-				throw new IllegalArgumentException("Asked to compare null TownStatus");
+						throw new IllegalArgumentException(
+								"Asked to compare null TownStatus");
 			} else if (one.equals(two)) {
 				return 0; // NOPMD
 			} else if (TownStatus.Active.equals(one)) {
@@ -158,7 +160,8 @@ public final class TownComparator implements Comparator<AbstractTown> {
 	 *         "greater" than the second.
 	 */
 	@Override
-	public int compare(@Nullable final AbstractTown one, @Nullable final AbstractTown two) {
+	public int compare(@Nullable final AbstractTown one,
+			@Nullable final AbstractTown two) {
 		if (one == null || two == null) {
 			throw new IllegalArgumentException("Asked to compare null fixture");
 		} else if (one.status().equals(two.status())) {

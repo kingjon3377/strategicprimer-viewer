@@ -8,6 +8,7 @@ import model.map.Point;
 import model.map.PointFactory;
 import model.mining.LodeStatus;
 import model.mining.MiningModel;
+import util.NullCleaner;
 
 /**
  * A driver to create a spreadsheet model of a mine.
@@ -30,7 +31,8 @@ public class MiningCLI {
 		}
 		final String out = args[0];
 		final int index = Integer.parseInt(args[1]);
-		final LodeStatus initial = LodeStatus.values()[index];
+		final LodeStatus initial =
+				NullCleaner.assertNotNull(LodeStatus.values()[index]);
 		final long seed;
 		if (args.length >= 3) {
 			seed = Long.parseLong(args[2]);

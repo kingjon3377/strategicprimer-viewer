@@ -81,7 +81,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	/**
 	 * Helper to get numbers from the user, etc.
 	 */
-	private final CLIHelper helper = new CLIHelper();
+	private final CLIHelper cli = new CLIHelper();
 
 	/**
 	 * @return an object indicating how to use and invoke this driver.
@@ -128,7 +128,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 					except);
 		}
 		try {
-			if (helper.inputBoolean(PREGEN_PROMPT)) {
+			if (cli.inputBoolean(PREGEN_PROMPT)) {
 				enterStats(model);
 			} else {
 				createWorkers(model, IDFactoryFiller.createFactory(model));
@@ -199,7 +199,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	private void enterStats(final IExplorationModel model) throws IOException {
 		final List<Player> players = model.getPlayerChoices();
 		while (true) {
-			final int playerNum = helper.chooseFromList(players,
+			final int playerNum = cli.chooseFromList(players,
 					"Which player owns the worker in question?",
 					"There are no players shared by all the maps",
 					"Player selection: ", true);
@@ -223,7 +223,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			throws IOException {
 		final List<IUnit> units = removeStattedUnits(model.getUnits(player));
 		while (true) {
-			final int unitNum = helper
+			final int unitNum = cli
 					.chooseFromList(
 							units,
 							"Which unit contains the worker in question?",
@@ -302,7 +302,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			}
 		}
 		while (true) {
-			final int workerNum = helper.chooseFromList(workers,
+			final int workerNum = cli.chooseFromList(workers,
 					"Which worker do you want to enter stats for?",
 					"There are no workers without stats in that unit",
 					"Worker to modify: ", false);
@@ -342,13 +342,13 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 * @throws IOException on I/O error interacting with the user.
 	 */
 	private WorkerStats enterStats() throws IOException {
-		final int maxHP = helper.inputNumber("Max HP: ");
-		final int str = helper.inputNumber("Str: ");
-		final int dex = helper.inputNumber("Dex: ");
-		final int con = helper.inputNumber("Con: ");
-		final int intel = helper.inputNumber("Int: ");
-		final int wis = helper.inputNumber("Wis: ");
-		final int cha = helper.inputNumber("Cha: ");
+		final int maxHP = cli.inputNumber("Max HP: ");
+		final int str = cli.inputNumber("Str: ");
+		final int dex = cli.inputNumber("Dex: ");
+		final int con = cli.inputNumber("Con: ");
+		final int intel = cli.inputNumber("Int: ");
+		final int wis = cli.inputNumber("Wis: ");
+		final int cha = cli.inputNumber("Cha: ");
 		return new WorkerStats(maxHP, maxHP, str, dex, con, intel, wis, cha);
 	}
 
@@ -404,7 +404,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			final IDFactory idf) throws IOException {
 		final List<Player> players = model.getPlayerChoices();
 		while (true) {
-			final int playerNum = helper.chooseFromList(players,
+			final int playerNum = cli.chooseFromList(players,
 					"Which player owns the new worker(s)?",
 					"There are no players shared by all the maps",
 					"Player selection: ", true);
@@ -430,9 +430,9 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			final IDFactory idf, final Player player) throws IOException {
 		boolean again = true;
 		while (again) {
-			if (helper.inputBoolean("Add worker(s) to an existing unit? ")) {
+			if (cli.inputBoolean("Add worker(s) to an existing unit? ")) {
 				final List<IUnit> units = model.getUnits(player);
-				final int unitNum = helper.chooseFromList(units,
+				final int unitNum = cli.chooseFromList(units,
 						"Which unit contains the worker in question?",
 						"There are no units owned by that player",
 						"Unit selection: ", false);
@@ -444,11 +444,11 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 				}
 			} else {
 				final Point point = PointFactory.point(
-						helper.inputNumber("Row to put new unit: "),
-						helper.inputNumber("Column to put new unit: "));
+						cli.inputNumber("Row to put new unit: "),
+						cli.inputNumber("Column to put new unit: "));
 				final IUnit unit = new Unit(player, // NOPMD
-						helper.inputString("Kind of unit: "),
-						helper.inputString("Unit name: "), idf.createID());
+						cli.inputString("Kind of unit: "),
+						cli.inputString("Unit name: "), idf.createID());
 				for (final Pair<IMap, File> pair : model.getAllMaps()) {
 					final ITileCollection tiles = pair.first().getTiles();
 					final ITile tile = tiles.getTile(point);
@@ -467,14 +467,13 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 								(IMutableTile) tile);
 					}
 				}
-				if (helper
-						.inputBoolean("Load names from file and use randomly generated stats? ")) {
+				if (cli.inputBoolean("Load names from file and use randomly generated stats? ")) {
 					createWorkersFromFile(model, idf, unit);
 				} else {
 					createWorkers(model, idf, unit);
 				}
 			}
-			again = helper
+			again = cli
 					.inputBoolean("Add more workers to another unit? ");
 		}
 	}
@@ -489,7 +488,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 */
 	private void createWorkers(final IExplorationModel model,
 			final IDFactory idf, final IUnit unit) throws IOException {
-		final int count = helper.inputNumber("How many workers to generate? ");
+		final int count = cli.inputNumber("How many workers to generate? ");
 		for (int i = 0; i < count; i++) {
 			final Worker worker = createWorker(idf);
 			for (final Pair<IMap, File> pair : model.getAllMaps()) {
@@ -516,8 +515,8 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 */
 	private void createWorkersFromFile(final IExplorationModel model,
 			final IDFactory idf, final IUnit unit) throws IOException {
-		final int count = helper.inputNumber("How many workers to generate? ");
-		final String filename = helper.inputString("Filename to load names from: ");
+		final int count = cli.inputNumber("How many workers to generate? ");
+		final String filename = cli.inputString("Filename to load names from: ");
 		final List<String> names =
 				Files.readAllLines(FileSystems.getDefault().getPath(filename),
 						Charset.defaultCharset());
@@ -548,7 +547,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 */
 	private Worker createWorker(final IDFactory idf) throws IOException {
 		final String race = RaceFactory.getRace();
-		final String name = helper.inputString("Worker is a " + race
+		final String name = cli.inputString("Worker is a " + race
 				+ ". Worker name: ");
 		final Worker retval = new Worker(name, race, idf.createID());
 		int levels = 0;
@@ -556,12 +555,12 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			// ESCA-JAVA0076:
 			if (SingletonRandom.RANDOM.nextInt(20) == 0) {
 				retval.addJob(new Job(// NOPMD
-						helper.inputString("Which Job does worker have a level in? "),
+						cli.inputString("Which Job does worker have a level in? "),
 						1));
 				levels++;
 			}
 		}
-		final boolean pregenStats = helper
+		final boolean pregenStats = cli
 				.inputBoolean("Enter pregenerated stats? ");
 		if (pregenStats) {
 			retval.setStats(enterStats());
@@ -605,7 +604,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			// ESCA-JAVA0076:
 			if (SingletonRandom.RANDOM.nextInt(20) == 0) {
 				retval.addJob(new Job(// NOPMD
-						helper.inputString("Which Job does worker have a level in? "),
+						cli.inputString("Which Job does worker have a level in? "),
 						1));
 				levels++;
 			}
