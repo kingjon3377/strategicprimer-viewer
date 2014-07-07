@@ -29,7 +29,6 @@ public class MiningCLI {
 			System.exit(1);
 			return;
 		}
-		final String out = args[0];
 		final int index = Integer.parseInt(args[1]);
 		final LodeStatus initial =
 				NullCleaner.assertNotNull(LodeStatus.values()[index]);
@@ -43,6 +42,7 @@ public class MiningCLI {
 		final Point lowerRight = model.getMaxPoint();
 		final int maxCol = lowerRight.col + 1;
 		final int maxRow = lowerRight.row + 1;
+		final String out = args[0];
 		try (final PrintWriter ostream = new PrintWriter(new FileWriter(out))) {
 			for (int row = 0; row < maxRow; row++) {
 				for (int col = 0; col < maxCol; col++) {
