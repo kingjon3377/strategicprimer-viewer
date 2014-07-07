@@ -26,7 +26,7 @@ import model.map.fixtures.towns.Village;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.Pair;
-import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
 
 /**
  * A CLI to help running exploration. Now separated from the "driver" bits, to
@@ -55,13 +55,13 @@ public class ExplorationCLI {
 	/**
 	 * The helper to handle user I/O.
 	 */
-	private final CLIHelper helper;
+	private final ICLIHelper helper;
 	/**
 	 * @param emodel the exploration model to use
 	 * @param mhelper the helper to handle user I/O
 	 */
 	public ExplorationCLI(final IExplorationModel emodel,
-			final CLIHelper mhelper) {
+			final ICLIHelper mhelper) {
 		model = emodel;
 		helper = mhelper;
 	}

@@ -27,6 +27,7 @@ import util.Warning.Action;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
 import controller.map.misc.MapReaderAdapter;
 
 /**
@@ -51,7 +52,7 @@ public final class QueryCLI implements ISPDriver {
 	/**
 	 * Helper to get numbers from the user, etc.
 	 */
-	private final CLIHelper helper = new CLIHelper();
+	private final ICLIHelper helper = new CLIHelper();
 
 	/**
 	 * How many hours we assume a working day is for a hunter or such.

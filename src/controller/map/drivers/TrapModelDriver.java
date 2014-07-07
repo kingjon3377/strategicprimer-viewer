@@ -25,6 +25,7 @@ import util.Warning.Action;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
 import controller.map.misc.MapReaderAdapter;
 
 /**
@@ -60,7 +61,7 @@ public class TrapModelDriver implements ISPDriver {
 	/**
 	 * Helper to get numbers from the user, etc.
 	 */
-	private final CLIHelper helper = new CLIHelper();
+	private final ICLIHelper helper = new CLIHelper();
 
 	/**
 	 * How many minutes a fruitless check of a fishing trap takes.

@@ -44,6 +44,7 @@ import util.Warning;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.MapReaderAdapter;
@@ -81,7 +82,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	/**
 	 * Helper to get numbers from the user, etc.
 	 */
-	private final CLIHelper cli = new CLIHelper();
+	private final ICLIHelper cli = new CLIHelper();
 
 	/**
 	 * @return an object indicating how to use and invoke this driver.
