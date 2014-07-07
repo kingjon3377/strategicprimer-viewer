@@ -17,7 +17,6 @@ public class ConstraintHelper extends GridBagConstraints {
 	 * @param row the row
 	 */
 	public ConstraintHelper(final int col, final int row) {
-		super();
 		gridx = col;
 		gridy = row;
 	}

@@ -29,7 +29,6 @@ public final class Battlefield implements IEvent, HarvestableFixture {
 	 * @param idNum the ID number for the event.
 	 */
 	public Battlefield(final int discdc, final int idNum) {
-		super();
 		dc = discdc;
 		id = idNum;
 	}

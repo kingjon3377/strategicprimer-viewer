@@ -48,7 +48,6 @@ public class FixtureFilterList extends JList<Class<? extends TileFixture>>
 	 * Constructor.
 	 */
 	public FixtureFilterList() {
-		super();
 		plurals = new HashMap<>();
 		model = new FixtureFilterListModel();
 		setModel(model);

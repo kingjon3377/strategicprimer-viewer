@@ -36,7 +36,6 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	 *        grass or forest Fixture ...)
 	 */
 	public Ground(final String desc, final boolean exp) {
-		super();
 		kind = desc;
 		exposed = exp;
 	}

@@ -65,7 +65,6 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * Constructor.
 	 */
 	public CachingTileDrawHelper() {
-		super();
 		// Just to forestall the null-analysis checker's objection that they may
 		// not have been initialized, we initialize the shapes to, essentially,
 		// a dummy value.

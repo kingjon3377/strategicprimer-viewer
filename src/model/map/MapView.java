@@ -31,7 +31,6 @@ public class MapView implements IMutableMap {
 	 * @param curTurn the current turn
 	 */
 	public MapView(final IMap wrapped, final int curPlayer, final int curTurn) {
-		super();
 		map = wrapped;
 		map.getPlayers().getPlayer(curPlayer).setCurrent(true);
 		turn = curTurn;

@@ -25,7 +25,6 @@ public class Ogre implements MobileFixture, HasImage, UnitMember { // NOPMD
 	 * @param idNum the ID number.
 	 */
 	public Ogre(final int idNum) {
-		super();
 		id = idNum;
 	}
 

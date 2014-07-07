@@ -27,7 +27,6 @@ public class Troll implements MobileFixture, HasImage, UnitMember {
 	 * @param idNum the ID number.
 	 */
 	public Troll(final int idNum) {
-		super();
 		id = idNum;
 	}
 

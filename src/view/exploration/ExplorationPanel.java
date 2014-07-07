@@ -95,7 +95,6 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 	 * @param mpDoc the model underlying the remaining-MP text boxes.
 	 */
 	public ExplorationPanel(final IExplorationModel emodel, final Document mpDoc) {
-		super();
 		model = emodel;
 		final BoxPanel headerPanel = new BoxPanel(true);
 		headerPanel.add(new ListenedButton(BACK_TEXT, this));

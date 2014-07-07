@@ -25,7 +25,6 @@ public class Phoenix implements MobileFixture, HasImage, UnitMember {
 	 * @param idNum the ID number.
 	 */
 	public Phoenix(final int idNum) {
-		super();
 		id = idNum;
 	}
 

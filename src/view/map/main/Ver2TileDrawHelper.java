@@ -113,7 +113,6 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	public Ver2TileDrawHelper(final ImageObserver iobs,
 			final ZOrderFilter zofilt) {
-		super();
 		observer = iobs;
 		zof = zofilt;
 		final String[] files = new String[] { "trees.png", "mountain.png" };

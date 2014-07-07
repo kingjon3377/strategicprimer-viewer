@@ -64,7 +64,6 @@ public class Unit implements IUnit {
 	 */
 	public Unit(final Player unitOwner, final String unitType,
 			final String unitName, final int idNum) {
-		super();
 		owner = unitOwner;
 		kind = unitType;
 		name = unitName;

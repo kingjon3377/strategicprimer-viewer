@@ -48,7 +48,6 @@ public final class Tile implements IMutableTile {
 	 * @param tileType The tile type
 	 */
 	public Tile(final TileType tileType) {
-		super();
 		type = tileType;
 		// Can't be an otherwise-preferable TreeSet because of Java bug
 		// #7030899: TreeSet ignores equals() entirely.

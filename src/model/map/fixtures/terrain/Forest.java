@@ -45,7 +45,6 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	 * @param rowed whether the trees are in rows
 	 */
 	public Forest(final String kind, final boolean rowed) {
-		super();
 		trees = kind;
 		rows = rowed;
 	}

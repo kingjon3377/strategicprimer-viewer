@@ -57,7 +57,6 @@ public class Fortress implements HasImage, ITownFixture,
 	 */
 	public Fortress(final Player fortOwner, final String fortName,
 			final int idNum) {
-		super();
 		owner = fortOwner;
 		name = fortName;
 		units = new ArrayList<>();

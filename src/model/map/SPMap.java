@@ -39,7 +39,6 @@ public class SPMap implements IMutableMap {
 	 * @param dim the dimensions
 	 */
 	public SPMap(final MapDimensions dim) {
-		super();
 		tiles = new TileCollection();
 		players = new PlayerCollection();
 		dimensions = dim;

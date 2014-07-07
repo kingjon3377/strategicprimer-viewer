@@ -34,7 +34,6 @@ public class Fairy implements MobileFixture, HasImage, HasKind, UnitMember {
 	 * @param idNum the ID number.
 	 */
 	public Fairy(final String fKind, final int idNum) {
-		super();
 		kind = fKind;
 		id = idNum;
 	}

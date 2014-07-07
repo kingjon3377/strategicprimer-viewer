@@ -23,7 +23,6 @@ public class Oasis implements TerrainFixture, HasImage {
 	 * @param idNum the ID number.
 	 */
 	public Oasis(final int idNum) {
-		super();
 		id = idNum;
 	}
 

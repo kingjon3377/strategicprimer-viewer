@@ -41,7 +41,6 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 	 * @param initialTile the initial tile
 	 */
 	public TerrainChangingMenu(final int version, final ITile initialTile) {
-		super();
 		tile = initialTile;
 		updateForVersion(version);
 	}

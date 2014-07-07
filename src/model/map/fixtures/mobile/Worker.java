@@ -66,7 +66,6 @@ public class Worker implements HasName, HasKind, HasImage, IWorker {
 	 */
 	public Worker(final String wName, final String workerRace, final int idNum,
 			final Job... jobs) {
-		super();
 		name = wName;
 		id = idNum;
 		race = workerRace;

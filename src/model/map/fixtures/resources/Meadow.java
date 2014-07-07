@@ -49,7 +49,6 @@ public class Meadow implements HarvestableFixture, HasKind {
 	 */
 	public Meadow(final String grain, final boolean fld, final boolean cult,
 			final int idNum, final FieldStatus stat) {
-		super();
 		kind = grain;
 		field = fld;
 		cultivated = cult;

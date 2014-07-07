@@ -29,7 +29,6 @@ public class MapSizeListener extends ComponentAdapter {
 	 * @param map the map model we'll be modifying.
 	 */
 	public MapSizeListener(final IViewerModel map) {
-		super();
 		model = map;
 	}
 

@@ -54,7 +54,6 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 	 */
 	public Village(final TownStatus vstatus, final String vName,
 			final int idNum, final Player player, final String vRace) {
-		super();
 		status = vstatus;
 		name = vName;
 		id = idNum;

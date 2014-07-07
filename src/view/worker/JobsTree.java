@@ -35,7 +35,6 @@ public final class JobsTree extends JTree implements TreeSelectionListener,
 	 * @param jtmodel the tree model underlying this tree
 	 */
 	public JobsTree(final JobTreeModel jtmodel) {
-		super();
 		jtmodel.setSelectionModel(NullCleaner.assertNotNull(getSelectionModel()));
 		setModel(jtmodel);
 		final JTree tree = this;

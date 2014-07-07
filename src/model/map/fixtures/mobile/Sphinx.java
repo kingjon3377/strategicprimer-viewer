@@ -27,7 +27,6 @@ public class Sphinx implements MobileFixture, HasImage, UnitMember {
 	 * @param idNum the ID number.
 	 */
 	public Sphinx(final int idNum) {
-		super();
 		id = idNum;
 	}
 

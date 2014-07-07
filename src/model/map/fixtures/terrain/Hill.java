@@ -24,7 +24,6 @@ public class Hill implements TerrainFixture, HasImage {
 	 * @param idNum the ID number.
 	 */
 	public Hill(final int idNum) {
-		super();
 		id = idNum;
 	}
 

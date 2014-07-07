@@ -34,7 +34,6 @@ public class Centaur implements MobileFixture, HasImage, HasKind, UnitMember {
 	 * @param idNum the ID number.
 	 */
 	public Centaur(final String centKind, final int idNum) {
-		super();
 		kind = centKind;
 		id = idNum;
 	}

@@ -24,7 +24,6 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	 * @param idNum the ID number.
 	 */
 	public StoneDeposit(final StoneKind skind, final int discdc, final int idNum) {
-		super();
 		stone = skind;
 		dc = discdc;
 		id = idNum;

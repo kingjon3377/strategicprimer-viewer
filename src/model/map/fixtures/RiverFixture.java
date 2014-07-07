@@ -42,7 +42,6 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 	 * @param initial the initial state of the fixture
 	 */
 	public RiverFixture(final River... initial) {
-		super();
 		rivers = NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
 		for (final River river : initial) {
 			rivers.add(river);

@@ -43,7 +43,6 @@ public class Grove implements HarvestableFixture, HasKind {
 	 */
 	public Grove(final boolean fruit, final boolean cultivatedGrove,
 			final String tree, final int idNum) {
-		super();
 		orchard = fruit;
 		cultivated = cultivatedGrove;
 		kind = tree;

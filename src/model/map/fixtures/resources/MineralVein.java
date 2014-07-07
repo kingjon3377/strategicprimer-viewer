@@ -44,7 +44,6 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	 */
 	public MineralVein(final String minkind, final boolean exp,
 			final int discdc, final int idNum) {
-		super();
 		mineral = minkind;
 		exposed = exp;
 		dc = discdc;

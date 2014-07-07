@@ -41,7 +41,6 @@ public class CacheFixture implements HarvestableFixture, HasKind {
 	 */
 	public CacheFixture(final String category, final String cont,
 			final int idNum) {
-		super();
 		kind = category;
 		contents = cont;
 		id = idNum;

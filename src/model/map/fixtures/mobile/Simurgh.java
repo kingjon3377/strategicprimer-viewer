@@ -25,7 +25,6 @@ public class Simurgh implements MobileFixture, HasImage, UnitMember {
 	 * @param idNum the ID number.
 	 */
 	public Simurgh(final int idNum) {
-		super();
 		id = idNum;
 	}
 

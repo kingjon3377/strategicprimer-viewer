@@ -41,7 +41,6 @@ public class SPMenu extends JMenuBar {
 	 */
 	public SPMenu(final IOHandler handler, final JFrame parent,
 			final IViewerModel model) {
-		super();
 		add(createFileMenu(handler, parent));
 		add(createMapMenu(parent, model));
 		add(new WindowMenu());

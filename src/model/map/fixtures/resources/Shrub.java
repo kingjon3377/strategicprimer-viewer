@@ -30,7 +30,6 @@ public class Shrub implements HarvestableFixture, HasKind {
 	 * @param idNum the ID number.
 	 */
 	public Shrub(final String desc, final int idNum) {
-		super();
 		description = desc;
 		id = idNum;
 	}

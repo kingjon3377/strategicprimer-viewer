@@ -48,7 +48,6 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	 */
 	protected AbstractTown(final TownStatus tStatus, final TownSize tSize,
 			final String tName, final Player player) {
-		super();
 		status = tStatus;
 		size = tSize;
 		name = tName;

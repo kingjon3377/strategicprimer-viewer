@@ -25,7 +25,6 @@ public class Griffin implements MobileFixture, HasImage, UnitMember {
 	 * @param idNum the ID number.
 	 */
 	public Griffin(final int idNum) {
-		super();
 		id = idNum;
 	}
 

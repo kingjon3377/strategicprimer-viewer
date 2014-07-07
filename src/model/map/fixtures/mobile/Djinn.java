@@ -25,7 +25,6 @@ public class Djinn implements MobileFixture, HasImage, UnitMember {
 	 * @param idNum the ID number.
 	 */
 	public Djinn(final int idNum) {
-		super();
 		id = idNum;
 	}
 

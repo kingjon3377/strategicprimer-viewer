@@ -35,7 +35,6 @@ public class TextFixture implements TileFixture, HasImage {
 	 * @param turnNum the turn number it's associated with
 	 */
 	public TextFixture(final String theText, final int turnNum) {
-		super();
 		text = theText;
 		turn = turnNum;
 	}

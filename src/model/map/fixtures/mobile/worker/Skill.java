@@ -31,7 +31,6 @@ public class Skill implements ISkill {
 	 *        gained since last gaining a level.
 	 */
 	public Skill(final String skillName, final int skillLevel, final int time) {
-		super();
 		name = skillName;
 		level = skillLevel;
 		hours = time;

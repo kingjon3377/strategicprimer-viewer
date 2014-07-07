@@ -88,7 +88,6 @@ public final class KeyElement extends BoxPanel {
 		 */
 		protected KeyElementComponent(final Color col, final Dimension min,
 				final Dimension pref, final Dimension max) {
-			super();
 			color = col;
 			setMinimumSize(min);
 			setPreferredSize(pref);

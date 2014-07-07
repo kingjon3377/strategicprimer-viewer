@@ -52,7 +52,6 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	 * @param mapModel the map model we'll refer to
 	 */
 	public ComponentMouseListener(final IViewerModel mapModel) {
-		super();
 		model = mapModel;
 		menu = new TerrainChangingMenu(model.getMapDimensions().version, model
 				.getMap().getTile(model.getSelectedPoint()));

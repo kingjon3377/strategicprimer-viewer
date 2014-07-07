@@ -25,7 +25,6 @@ public class Minotaur implements MobileFixture, HasImage, UnitMember {
 	 * @param idNum the ID number.
 	 */
 	public Minotaur(final int idNum) {
-		super();
 		id = idNum;
 	}
 

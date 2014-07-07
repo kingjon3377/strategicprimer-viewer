@@ -41,7 +41,6 @@ public class Job implements IJob { // NOPMD
 	 *        the job.
 	 */
 	public Job(final String jobName, final int levels, final ISkill... skills) {
-		super();
 		name = jobName;
 		level = levels;
 		skillSet.addAll(Arrays.asList(skills));

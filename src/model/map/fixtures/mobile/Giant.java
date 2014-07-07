@@ -34,7 +34,6 @@ public class Giant implements MobileFixture, HasImage, HasKind, UnitMember {
 	 * @param idNum the ID number.
 	 */
 	public Giant(final String gKind, final int idNum) {
-		super();
 		kind = gKind;
 		id = idNum;
 	}

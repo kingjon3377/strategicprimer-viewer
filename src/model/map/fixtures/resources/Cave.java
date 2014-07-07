@@ -25,7 +25,6 @@ public final class Cave implements IEvent, HarvestableFixture {
 	 * @param idNum the ID number for the event.
 	 */
 	public Cave(final int discdc, final int idNum) {
-		super();
 		dc = discdc;
 		id = idNum;
 	}

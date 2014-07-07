@@ -36,7 +36,6 @@ public class Mine implements HarvestableFixture, HasKind {
 	 * @param idNum the ID number.
 	 */
 	public Mine(final String mineral, final TownStatus stat, final int idNum) {
-		super();
 		kind = mineral;
 		status = stat;
 		id = idNum;

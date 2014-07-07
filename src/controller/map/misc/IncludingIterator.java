@@ -137,7 +137,6 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 		 * @param cause the cause
 		 */
 		public NoSuchElementBecauseException(final Throwable cause) {
-			super();
 			super.initCause(cause);
 		}
 	}

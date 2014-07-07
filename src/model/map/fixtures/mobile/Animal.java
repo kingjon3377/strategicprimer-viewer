@@ -69,7 +69,6 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	 */
 	public Animal(final String animal, final boolean tracks,
 			final boolean talks, final String dStatus, final int idNum) {
-		super();
 		kind = animal;
 		traces = tracks;
 		talking = talks;

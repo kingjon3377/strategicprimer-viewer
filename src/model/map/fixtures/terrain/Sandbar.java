@@ -23,7 +23,6 @@ public class Sandbar implements TerrainFixture, HasImage {
 	 * @param idNum the ID number.
 	 */
 	public Sandbar(final int idNum) {
-		super();
 		id = idNum;
 	}
 

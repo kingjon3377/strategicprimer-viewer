@@ -34,7 +34,6 @@ public class Dragon implements MobileFixture, HasImage, HasKind, UnitMember {
 	 * @param idNum the ID number.
 	 */
 	public Dragon(final String dKind, final int idNum) {
-		super();
 		kind = dKind;
 		id = idNum;
 	}

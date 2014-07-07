@@ -30,7 +30,6 @@ public class Player implements Comparable<Player>, HasName {
 	 * @param name the player's code name
 	 */
 	public Player(final int idNum, final String name) {
-		super();
 		playerID = idNum;
 		playerName = name;
 		setCurrent(false);
