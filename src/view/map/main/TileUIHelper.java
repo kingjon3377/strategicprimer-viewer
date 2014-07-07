@@ -52,8 +52,8 @@ public class TileUIHelper {
 		one.put(TileType.Desert, new Color(249, 233, 28));
 		one.put(TileType.Jungle, new Color(229, 46, 46));
 		one.put(TileType.Mountain, new Color(249, 137, 28));
-		one.put(TileType.NotVisible, new Color(255, 255, 255));
-		one.put(TileType.Ocean, new Color(0, 0, 255));
+		one.put(TileType.NotVisible, Color.white);
+		one.put(TileType.Ocean, Color.blue);
 		one.put(TileType.Plains, new Color(0, 117, 0));
 		one.put(TileType.TemperateForest, new Color(72, 250, 72));
 		one.put(TileType.Tundra, new Color(153, 153, 153));
@@ -61,8 +61,8 @@ public class TileUIHelper {
 		final Map<TileType, Color> two = new EnumMap<>(TileType.class);
 		two.put(TileType.Desert, new Color(249, 233, 28));
 		two.put(TileType.Jungle, new Color(229, 46, 46));
-		two.put(TileType.NotVisible, new Color(255, 255, 255));
-		two.put(TileType.Ocean, new Color(0, 0, 255));
+		two.put(TileType.NotVisible, Color.white);
+		two.put(TileType.Ocean, Color.blue);
 		two.put(TileType.Plains, new Color(72, 218, 164));
 		two.put(TileType.Tundra, new Color(153, 153, 153));
 		two.put(TileType.Steppe, new Color(72, 100, 72));
