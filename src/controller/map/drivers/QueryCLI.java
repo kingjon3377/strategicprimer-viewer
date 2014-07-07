@@ -154,7 +154,7 @@ public final class QueryCLI implements ISPDriver {
 			ydiff = dims.cols - rawYdiff;
 		}
 		ostream.append("Distance (as the crow flies, in tiles):\t");
-		ostream.append(Integer.toString((int) Math.round(Math.sqrt(xdiff
+		ostream.append(Long.toString(Math.round(Math.sqrt(xdiff
 				* xdiff + ydiff * ydiff))));
 	}
 	/**
