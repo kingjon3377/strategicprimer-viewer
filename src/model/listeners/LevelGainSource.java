@@ -12,12 +12,12 @@ public interface LevelGainSource {
 	 *
 	 * @param list the listener to add
 	 */
-	void addLevelGainListener(final LevelGainListener list);
+	void addLevelGainListener(LevelGainListener list);
 
 	/**
 	 * Remove a listener.
 	 *
 	 * @param list the listener to remove
 	 */
-	void removeLevelGainListener(final LevelGainListener list);
+	void removeLevelGainListener(LevelGainListener list);
 }

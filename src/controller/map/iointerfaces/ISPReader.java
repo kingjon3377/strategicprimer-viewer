@@ -38,6 +38,6 @@ public interface ISPReader {
 	 * @throws XMLStreamException if XML isn't well-formed.
 	 * @throws SPFormatException if the data is invalid.
 	 */
-	<T> T readXML(final File file, final Reader istream, final Class<T> type,
-			final Warning warner) throws XMLStreamException, SPFormatException;
+	<T> T readXML(File file, Reader istream, Class<T> type,
+			Warning warner) throws XMLStreamException, SPFormatException;
 }

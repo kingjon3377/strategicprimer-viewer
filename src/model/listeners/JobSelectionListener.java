@@ -15,5 +15,5 @@ public interface JobSelectionListener {
 	/**
 	 * @param job the newly selected Job. May be null if no selection.
 	 */
-	void selectJob(@Nullable final IJob job);
+	void selectJob(@Nullable IJob job);
 }

@@ -20,7 +20,7 @@ public interface SelectionChangeListener extends EventListener {
 	 * @param old the previously selected location
 	 * @param newPoint the newly selected location
 	 */
-	void selectedPointChanged(@Nullable final Point old, final Point newPoint);
+	void selectedPointChanged(@Nullable  Point old,  Point newPoint);
 
 	/**
 	 * The selected tile changed.
@@ -28,5 +28,5 @@ public interface SelectionChangeListener extends EventListener {
 	 * @param old the previously selected tile
 	 * @param newTile the newly selected tile
 	 */
-	void selectedTileChanged(@Nullable final ITile old, final ITile newTile);
+	void selectedTileChanged(@Nullable  ITile old,  ITile newTile);
 }

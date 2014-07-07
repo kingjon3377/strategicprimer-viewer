@@ -11,10 +11,10 @@ public interface UnitMemberSelectionSource {
 	/**
 	 * @param list a listener to add
 	 */
-	void addUnitMemberListener(final UnitMemberListener list);
+	void addUnitMemberListener(UnitMemberListener list);
 
 	/**
 	 * @param list a listener to remove
 	 */
-	void removeUnitMemberListener(final UnitMemberListener list);
+	void removeUnitMemberListener(UnitMemberListener list);
 }

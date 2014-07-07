@@ -23,8 +23,7 @@ public interface TileDrawHelper {
 	 * @param width the width of the drawing area
 	 * @param height the height of the drawing area
 	 */
-	void drawTileTranslated(final Graphics pen, final ITile tile, final int width,
-			final int height);
+	void drawTileTranslated(Graphics pen, ITile tile, int width, int height);
 
 	/**
 	 * Draw a tile, at the given coordinates.
@@ -34,6 +33,6 @@ public interface TileDrawHelper {
 	 * @param coordinates the coordinates of the tile's upper-left corner
 	 * @param dimensions the width (X) and height (Y) of the tile
 	 */
-	void drawTile(final Graphics pen, final ITile tile,
-			final Coordinate coordinates, final Coordinate dimensions);
+	void drawTile(Graphics pen, ITile tile, Coordinate coordinates,
+			Coordinate dimensions);
 }

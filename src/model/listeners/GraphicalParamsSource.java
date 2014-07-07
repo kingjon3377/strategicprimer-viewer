@@ -11,10 +11,10 @@ public interface GraphicalParamsSource {
 	/**
 	 * @param list a listener to add
 	 */
-	void addGraphicalParamsListener(final GraphicalParamsListener list);
+	void addGraphicalParamsListener(GraphicalParamsListener list);
 
 	/**
 	 * @param list a listener to remove
 	 */
-	void removeGraphicalParamsListener(final GraphicalParamsListener list);
+	void removeGraphicalParamsListener(GraphicalParamsListener list);
 }

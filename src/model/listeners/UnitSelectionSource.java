@@ -8,9 +8,9 @@ public interface UnitSelectionSource {
 	/**
 	 * @param list a listener to add
 	 */
-	void addUnitSelectionListener(final UnitSelectionListener list);
+	void addUnitSelectionListener(UnitSelectionListener list);
 	/**
 	 * @param list a listener to remove
 	 */
-	void removeUnitSelectionListener(final UnitSelectionListener list);
+	void removeUnitSelectionListener(UnitSelectionListener list);
 }

@@ -16,12 +16,12 @@ public interface GraphicalParamsListener extends EventListener {
 	 * @param oldDim the previous dimensions
 	 * @param newDim the new dimensions
 	 */
-	void dimensionsChanged(final VisibleDimensions oldDim,
-			final VisibleDimensions newDim);
+	void dimensionsChanged(VisibleDimensions oldDim,
+			VisibleDimensions newDim);
 
 	/**
 	 * @param oldSize the previous tsize/zoom level
 	 * @param newSize the new tsize/zoom level
 	 */
-	void tsizeChanged(final int oldSize, final int newSize);
+	void tsizeChanged(int oldSize, int newSize);
 }

@@ -26,9 +26,9 @@ public interface ICLIHelper {
 	 * @return the user's selection, or -1 if there are none
 	 * @throws IOException on I/O error getting the user's input
 	 */
-	<T extends HasName> int chooseFromList(final List<? extends T> items,
-			final String desc, final String none, final String prompt,
-			final boolean auto) throws IOException;
+	<T extends HasName> int chooseFromList(List<? extends T> items,
+			String desc, String none, String prompt,
+			boolean auto) throws IOException;
 
 	/**
 	 * Read input from stdin repeatedly until a nonnegative integer is entered,
@@ -38,7 +38,7 @@ public interface ICLIHelper {
 	 * @return the number entered
 	 * @throws IOException on I/O error
 	 */
-	int inputNumber(final String prompt) throws IOException;
+	int inputNumber(String prompt) throws IOException;
 
 	/**
 	 * Read input from stdin. (The input is trimmed of leading and trailing
@@ -48,7 +48,7 @@ public interface ICLIHelper {
 	 * @return the string entered.
 	 * @throws IOException on I/O error
 	 */
-	String inputString(final String prompt) throws IOException;
+	String inputString(String prompt) throws IOException;
 
 	/**
 	 * Ask the user a yes-or-no question.
@@ -57,5 +57,5 @@ public interface ICLIHelper {
 	 * @return true if yes, false if no
 	 * @throws IOException on I/O error
 	 */
-	boolean inputBoolean(final String prompt) throws IOException;
+	boolean inputBoolean(String prompt) throws IOException;
 }

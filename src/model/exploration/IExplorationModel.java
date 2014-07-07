@@ -72,7 +72,7 @@ public interface IExplorationModel extends IMultiMapModel,
 	 * @param player a player
 	 * @return all that player's units in the master map
 	 */
-	List<IUnit> getUnits(final Player player);
+	List<IUnit> getUnits(Player player);
 
 	/**
 	 * Move the currently selected unit from its current tile one tile in the
@@ -88,14 +88,14 @@ public interface IExplorationModel extends IMultiMapModel,
 	 * @throws TraversalImpossibleException if movement in that direction is
 	 *         impossible
 	 */
-	int move(final Direction direction) throws TraversalImpossibleException;
+	int move(Direction direction) throws TraversalImpossibleException;
 
 	/**
 	 * @param point a point
 	 * @param direction a direction
 	 * @return the point bordering the specified one in the specified direction
 	 */
-	Point getDestination(final Point point, final Direction direction);
+	Point getDestination(Point point, Direction direction);
 
 	/**
 	 * @param fix a fixture
@@ -103,7 +103,7 @@ public interface IExplorationModel extends IMultiMapModel,
 	 *         a fixture "equal to" the specified one. (Using it on mountains,
 	 *         e.g., will *not* do what you want ...)
 	 */
-	Point find(final TileFixture fix);
+	Point find(TileFixture fix);
 
 	/**
 	 * @return the currently selected unit---may be null!

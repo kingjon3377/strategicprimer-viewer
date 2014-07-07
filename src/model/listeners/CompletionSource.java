@@ -10,10 +10,10 @@ public interface CompletionSource {
 	/**
 	 * @param list a listener to add
 	 */
-	void addCompletionListener(final CompletionListener list);
+	void addCompletionListener(CompletionListener list);
 
 	/**
 	 * @param list a listener to remove
 	 */
-	void removeCompletionListener(final CompletionListener list);
+	void removeCompletionListener(CompletionListener list);
 }

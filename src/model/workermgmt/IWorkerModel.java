@@ -17,22 +17,22 @@ public interface IWorkerModel extends IDriverModel {
 	 * @param player a player in the map
 	 * @return a list of the units in the map belonging to the player
 	 */
-	List<IUnit> getUnits(final Player player);
+	List<IUnit> getUnits(Player player);
 	/**
 	 * @param player a player in the map
 	 * @return the "kinds" of unit that player has.
 	 */
-	List<String> getUnitKinds(final Player player);
+	List<String> getUnitKinds(Player player);
 	/**
 	 * @param player a player in the map
 	 * @param kind a "kind" of unit.
 	 * @return a list of the units of that kind in the map belonging to that player
 	 */
-	List<IUnit> getUnits(final Player player, final String kind);
+	List<IUnit> getUnits(Player player, String kind);
 	/**
 	 * Add a unit in its owner's HQ.
 	 *
 	 * @param unit the unit to add.
 	 */
-	void addUnit(final IUnit unit);
+	void addUnit(IUnit unit);
 }

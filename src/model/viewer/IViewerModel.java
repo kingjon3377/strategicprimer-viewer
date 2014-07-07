@@ -26,19 +26,19 @@ public interface IViewerModel extends IDriverModel, SelectionChangeSource,
 	 *
 	 * @param point the location of the new tile.
 	 */
-	void setSelection(final Point point);
+	void setSelection(Point point);
 
 	/**
 	 * @param point a tile's location
 	 *
 	 * @return the tile at that location
 	 */
-	ITile getTile(final Point point);
+	ITile getTile(Point point);
 
 	/**
 	 * @param dim the new visible dimensions of the map
 	 */
-	void setDimensions(final VisibleDimensions dim);
+	void setDimensions(VisibleDimensions dim);
 
 	/**
 	 *

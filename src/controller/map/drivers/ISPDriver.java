@@ -18,7 +18,7 @@ public interface ISPDriver extends HasName {
 	 *        driver.
 	 * @throws DriverFailedException if it's impossible for the driver to start.
 	 */
-	void startDriver(final String... args) throws DriverFailedException;
+	void startDriver(String... args) throws DriverFailedException;
 
 	/**
 	 * An exception to throw when the driver fails ... such as if the map is

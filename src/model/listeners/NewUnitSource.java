@@ -10,10 +10,10 @@ public interface NewUnitSource {
 	/**
 	 * @param list a new listener to add
 	 */
-	void addNewUnitListener(final NewUnitListener list);
+	void addNewUnitListener(NewUnitListener list);
 
 	/**
 	 * @param list a listener to remove
 	 */
-	void removeNewUnitListener(final NewUnitListener list);
+	void removeNewUnitListener(NewUnitListener list);
 }

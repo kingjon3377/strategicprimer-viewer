@@ -26,21 +26,21 @@ public interface IWorkerTreeModel extends TreeModel, NewUnitListener,
 	 * @param old the prior owner
 	 * @param newOwner the new owner
 	 */
-	void moveMember(final UnitMember member, final IUnit old, final IUnit newOwner);
+	void moveMember(UnitMember member, IUnit old, IUnit newOwner);
 
 	/**
 	 * Add a new unit. Also handles adding it to the map (via the driver model).
 	 *
 	 * @param unit the unit to add.
 	 */
-	void addUnit(final IUnit unit);
+	void addUnit(IUnit unit);
 
 	/**
 	 * @param obj an object, possibly a node in the tree
 	 * @return the model object it represents, if it is a node, or the object
 	 *         itself otherwise
 	 */
-	Object getModelObject(final Object obj);
+	Object getModelObject(Object obj);
 
 	/**
 	 * Add a new member to a unit.
@@ -48,7 +48,7 @@ public interface IWorkerTreeModel extends TreeModel, NewUnitListener,
 	 * @param unit the unit that should own it
 	 * @param member the member to add
 	 */
-	void addUnitMember(final IUnit unit, final UnitMember member);
+	void addUnitMember(IUnit unit, UnitMember member);
 	/**
 	 * Rename a worker or unit.
 	 * @param item the item that has changed

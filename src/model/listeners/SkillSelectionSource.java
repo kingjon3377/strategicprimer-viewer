@@ -8,9 +8,9 @@ public interface SkillSelectionSource {
 	/**
 	 * @param list a listener to add
 	 */
-	void addSkillSelectionListener(final SkillSelectionListener list);
+	void addSkillSelectionListener(SkillSelectionListener list);
 	/**
 	 * @param list a listener to remove
 	 */
-	void removeSkillSelectionListener(final SkillSelectionListener list);
+	void removeSkillSelectionListener(SkillSelectionListener list);
 }

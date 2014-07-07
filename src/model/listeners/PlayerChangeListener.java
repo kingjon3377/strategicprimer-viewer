@@ -20,5 +20,5 @@ public interface PlayerChangeListener extends EventListener {
 	 * @param old the previous current player
 	 * @param newPlayer the new current player
 	 */
-	void playerChanged(@Nullable final Player old, final Player newPlayer);
+	void playerChanged(@Nullable  Player old,  Player newPlayer);
 }

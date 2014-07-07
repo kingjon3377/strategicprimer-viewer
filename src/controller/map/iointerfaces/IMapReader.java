@@ -34,7 +34,7 @@ public interface IMapReader {
 	 *             if the reader can't handle this map version or doesn't
 	 *             recognize the map format
 	 */
-	MapView readMap(final File file, final Warning warner)
+	MapView readMap(File file, Warning warner)
 			throws IOException, XMLStreamException, SPFormatException;
 
 	/**
@@ -53,6 +53,6 @@ public interface IMapReader {
 	 *             if the reader can't handle this map version or doesn't
 	 *             recognize the map format
 	 */
-	IMap readMap(final File file, final Reader istream, final Warning warner)
+	IMap readMap(File file, Reader istream, Warning warner)
 			throws XMLStreamException, SPFormatException;
 }

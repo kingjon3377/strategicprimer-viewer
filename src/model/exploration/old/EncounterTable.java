@@ -25,7 +25,7 @@ public interface EncounterTable {
 	 *
 	 * @return an appropriate event for that tile
 	 */
-	String generateEvent(final Point point, final ITile tile);
+	String generateEvent(Point point, ITile tile);
 
 	/**
 	 * For table-debugging purposes.

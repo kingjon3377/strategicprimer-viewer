@@ -19,6 +19,6 @@ public interface UnitMemberListener extends EventListener {
 	 * @param selected the new selection. Because sometimes there's no
 	 *        selection, may be null.
 	 */
-	void memberSelected(@Nullable final UnitMember old,
-			@Nullable final UnitMember selected);
+	void memberSelected(@Nullable  UnitMember old,
+			@Nullable  UnitMember selected);
 }

@@ -15,5 +15,5 @@ public interface SkillSelectionListener {
 	/**
 	 * @param skill the newly selected Skill. May be null if no selection.
 	 */
-	void selectSkill(@Nullable final ISkill skill);
+	void selectSkill(@Nullable  ISkill skill);
 }

@@ -19,7 +19,7 @@ public interface IDriverModel extends MapChangeSource, VersionChangeSource {
 	 * @param newMap the new map
 	 * @param origin the file from which it was loaded
 	 */
-	void setMap(final MapView newMap, File origin);
+	void setMap(MapView newMap, File origin);
 	/**
 	 *
 	 * @return the map

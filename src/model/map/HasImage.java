@@ -24,7 +24,7 @@ public interface HasImage {
 	 * @param image the new image for this *individual* fixture. If null or the
 	 *        empty string, the default image will be used.
 	 */
-	void setImage(final String image);
+	void setImage(String image);
 
 	/**
 	 * @return the name of an image to represent this individual fixture.

@@ -49,7 +49,7 @@ public interface CompactReader<T> {
 	 * @param tag a tag. May be null, to simplify callers.
 	 * @return whether we support it. Should return false if null.
 	 */
-	boolean isSupportedTag(@Nullable final String tag);
+	boolean isSupportedTag(@Nullable String tag);
 
 
 

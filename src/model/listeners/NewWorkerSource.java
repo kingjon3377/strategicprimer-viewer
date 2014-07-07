@@ -10,10 +10,10 @@ public interface NewWorkerSource {
 	/**
 	 * @param list a new listener to add
 	 */
-	void addNewWorkerListener(final NewWorkerListener list);
+	void addNewWorkerListener(NewWorkerListener list);
 
 	/**
 	 * @param list a listener to remove
 	 */
-	void removeNewWorkerListener(final NewWorkerListener list);
+	void removeNewWorkerListener(NewWorkerListener list);
 }

@@ -12,6 +12,6 @@ public interface IMutableMap extends IMap {
 	 *
 	 * @param player the player to add
 	 */
-	void addPlayer(@NotNull final Player player);
+	void addPlayer(@NotNull  Player player);
 
 }

@@ -15,5 +15,5 @@ public interface HasName {
 	/**
 	 * @param nomen the thing's new name
 	 */
-	void setName(final String nomen);
+	void setName(String nomen);
 }

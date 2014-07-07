@@ -10,10 +10,10 @@ public interface VersionChangeSource {
 	/**
 	 * @param list a listener to add
 	 */
-	void addVersionChangeListener(final VersionChangeListener list);
+	void addVersionChangeListener(VersionChangeListener list);
 
 	/**
 	 * @param list a listener to remove
 	 */
-	void removeVersionChangeListener(final VersionChangeListener list);
+	void removeVersionChangeListener(VersionChangeListener list);
 }

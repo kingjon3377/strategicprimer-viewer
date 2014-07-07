@@ -14,5 +14,5 @@ public interface HasOwner {
 	/**
 	 * @param player the player that should now own it.
 	 */
-	void setOwner(final Player player);
+	void setOwner(Player player);
 }

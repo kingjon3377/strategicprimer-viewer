@@ -11,14 +11,14 @@ import java.io.IOException;
 public interface SaveableOpenable {
 	/**
 	 * Load from file.
-	 * 
+	 *
 	 * @param file
 	 *            the filename to load from
-	 * 
+	 *
 	 * @throws IOException
 	 *             if the file doesn't exist or on other I/O error while loading
 	 */
-	void open(final String file) throws IOException;
+	void open(String file) throws IOException;
 
 	/**
 	 * Save to file.
@@ -27,5 +27,5 @@ public interface SaveableOpenable {
 	 *
 	 * @throws IOException on I/O error while saving
 	 */
-	void save(final String file) throws IOException;
+	void save(String file) throws IOException;
 }

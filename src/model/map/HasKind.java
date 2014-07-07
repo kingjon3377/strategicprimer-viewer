@@ -18,5 +18,5 @@ public interface HasKind {
 	/**
 	 * @param nKind the thing's new kind
 	 */
-	void setKind(final String nKind);
+	void setKind(String nKind);
 }

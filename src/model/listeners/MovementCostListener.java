@@ -15,5 +15,5 @@ public interface MovementCostListener extends EventListener {
 	 *
 	 * @param cost how much it cost
 	 */
-	void deduct(final int cost);
+	void deduct(int cost);
 }

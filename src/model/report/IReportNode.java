@@ -15,7 +15,7 @@ public interface IReportNode extends Comparable<IReportNode>, MutableTreeNode {
 	 * @param builder a string builder
 	 * @return that builder, with an HTML representation of the node added.
 	 */
-	StringBuilder produce(final StringBuilder builder);
+	StringBuilder produce(StringBuilder builder);
 	/**
 	 * @return an approximation of how large the HTML produced by this node will
 	 *         be.
@@ -28,5 +28,5 @@ public interface IReportNode extends Comparable<IReportNode>, MutableTreeNode {
 	/**
 	 * @param txt the new text for the node
 	 */
-	void setText(final String txt);
+	void setText(String txt);
 }

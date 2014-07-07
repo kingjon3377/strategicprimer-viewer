@@ -15,5 +15,5 @@ public interface UnitSelectionListener {
 	/**
 	 * @param unit the newly selected Unit. May be null if no selection.
 	 */
-	void selectUnit(@Nullable final IUnit unit);
+	void selectUnit(@Nullable  IUnit unit);
 }

@@ -13,10 +13,10 @@ public interface MovementCostSource {
 	 *
 	 * @param list the listener to add
 	 */
-	void addMovementCostListener(final MovementCostListener list);
+	void addMovementCostListener(MovementCostListener list);
 
 	/**
 	 * @param list the listener to remove
 	 */
-	void removeMovementCostListener(final MovementCostListener list);
+	void removeMovementCostListener(MovementCostListener list);
 }

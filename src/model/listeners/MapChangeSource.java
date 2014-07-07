@@ -13,12 +13,12 @@ public interface MapChangeSource {
 	 *
 	 * @param list the listener to add
 	 */
-	void addMapChangeListener(final MapChangeListener list);
+	void addMapChangeListener(MapChangeListener list);
 
 	/**
 	 * Remove a MapChangeListener.
 	 *
 	 * @param list the listener to remove
 	 */
-	void removeMapChangeListener(final MapChangeListener list);
+	void removeMapChangeListener(MapChangeListener list);
 }

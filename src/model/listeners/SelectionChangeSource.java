@@ -11,10 +11,10 @@ public interface SelectionChangeSource {
 	/**
 	 * @param list a listener to add
 	 */
-	void addSelectionChangeListener(final SelectionChangeListener list);
+	void addSelectionChangeListener(SelectionChangeListener list);
 
 	/**
 	 * @param list a listener to remove
 	 */
-	void removeSelectionChangeListener(final SelectionChangeListener list);
+	void removeSelectionChangeListener(SelectionChangeListener list);
 }

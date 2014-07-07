@@ -14,5 +14,5 @@ public interface ZOrderFilter {
 	 * @param fix a fixture
 	 * @return whether it should be displayed or not
 	 */
-	boolean shouldDisplay(final TileFixture fix);
+	boolean shouldDisplay(TileFixture fix);
 }

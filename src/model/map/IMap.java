@@ -21,7 +21,7 @@ public interface IMap extends Subsettable<IMap>, Comparable<IMap> {
 	 * @return the tile at those coordinates
 	 */
 	@NotNull
-	ITile getTile(@NotNull final Point point);
+	ITile getTile(@NotNull  Point point);
 
 	/**
 	 *

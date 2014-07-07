@@ -8,9 +8,9 @@ public interface JobSelectionSource {
 	/**
 	 * @param list a listener to add
 	 */
-	void addJobSelectionListener(final JobSelectionListener list);
+	void addJobSelectionListener(JobSelectionListener list);
 	/**
 	 * @param list a listener to remove
 	 */
-	void removeJobSelectionListener(final JobSelectionListener list);
+	void removeJobSelectionListener(JobSelectionListener list);
 }

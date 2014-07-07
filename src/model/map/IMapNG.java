@@ -45,19 +45,19 @@ public interface IMapNG extends Subsettable<IMapNG>, Comparable<IMapNG> {
 	 * @param location a location
 	 * @return the "base terrain" at that location
 	 */
-	TileType getBaseTerrain(final Point location);
+	TileType getBaseTerrain(Point location);
 
 	/**
 	 * @param location a location
 	 * @return whether that location is mountainous
 	 */
-	boolean isMountainous(final Point location);
+	boolean isMountainous(Point location);
 
 	/**
 	 * @param location a location
 	 * @return a view of the river directions, if any, at that location
 	 */
-	Iterable<River> getRivers(final Point location);
+	Iterable<River> getRivers(Point location);
 
 	/**
 	 * Implementations should aim to have only the "main" forest here, and any
@@ -67,7 +67,7 @@ public interface IMapNG extends Subsettable<IMapNG>, Comparable<IMapNG> {
 	 * @return the forest (if any) at that location; null if there is none
 	 */
 	@Nullable
-	Forest getForest(final Point location);
+	Forest getForest(Point location);
 
 	/**
 	 * Implementations should aim to have only the "main" Ground here, and any
@@ -77,14 +77,14 @@ public interface IMapNG extends Subsettable<IMapNG>, Comparable<IMapNG> {
 	 * @return the Ground at that location; null if there is none
 	 */
 	@Nullable
-	Ground getGround(final Point location);
+	Ground getGround(Point location);
 
 	/**
 	 * @param location a location
 	 * @return a view of any fixtures on the map that aren't covered in the
 	 *         other querying methods.
 	 */
-	Iterable<TileFixture> getOtherFixtures(final Point location);
+	Iterable<TileFixture> getOtherFixtures(Point location);
 
 	/**
 	 * @return the current turn

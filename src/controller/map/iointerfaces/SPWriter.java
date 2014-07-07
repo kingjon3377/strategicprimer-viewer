@@ -19,7 +19,7 @@ public interface SPWriter {
 	 * @param map the map to write.
 	 * @throws IOException on error opening the file
 	 */
-	void write(final File file, final IMap map) throws IOException;
+	void write(File file, IMap map) throws IOException;
 
 	/**
 	 * Write a map.
@@ -28,6 +28,6 @@ public interface SPWriter {
 	 * @param map the map to write
 	 * @throws IOException on error in writing
 	 */
-	void write(final Appendable ostream, final IMap map) throws IOException;
+	void write(Appendable ostream, IMap map) throws IOException;
 
 }

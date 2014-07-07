@@ -15,5 +15,5 @@ public interface NewWorkerListener extends EventListener {
 	 *
 	 * @param unit the unit to add
 	 */
-	void addNewWorker(final Worker unit);
+	void addNewWorker(Worker unit);
 }

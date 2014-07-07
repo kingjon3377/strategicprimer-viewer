@@ -15,5 +15,5 @@ public interface NewUnitListener extends EventListener {
 	 *
 	 * @param unit the unit to add
 	 */
-	void addNewUnit(final IUnit unit);
+	void addNewUnit(IUnit unit);
 }

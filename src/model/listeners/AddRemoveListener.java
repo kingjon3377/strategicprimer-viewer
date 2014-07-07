@@ -12,12 +12,12 @@ public interface AddRemoveListener extends EventListener {
 	 * @param category what kind of thing is being added
 	 * @param addendum A String description of the thing to be added
 	 */
-	void add(final String category, final String addendum);
+	void add(String category, String addendum);
 
 	/**
 	 * This method need not actually be implemented.
 	 *
 	 * @param category what kind of thing is being removed
 	 */
-	void remove(final String category);
+	void remove(String category);
 }
