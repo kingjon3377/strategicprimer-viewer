@@ -99,15 +99,15 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	protected static String getParameter(final StartElement element,
 			final String param) throws SPFormatException {
 		final Attribute attr = element.getAttributeByName(new QName(param));
-		final String local = element.getName().getLocalPart();
+		final String local = tagOrNull(element.getName().getLocalPart());
 		if (attr == null) {
-			throw new MissingPropertyException(tagOrNull(local), param, element
+			throw new MissingPropertyException(local, param, element
 					.getLocation().getLineNumber());
 		} else {
 			final String value = attr.getValue();
 			if (value == null) {
-				throw new MissingPropertyException(tagOrNull(local), param,
-						element.getLocation().getLineNumber());
+				throw new MissingPropertyException(local, param, element
+						.getLocation().getLineNumber());
 			} else {
 				return value;
 			}
