@@ -120,7 +120,13 @@ public final class TableLoader { // NOPMD
 			throw new IOException(
 					"File doesn't start with the number of rows of quadrants");
 		}
-		final int rows = Integer.parseInt(line);
+		final int rows;
+		try {
+			rows = Integer.parseInt(line);
+		} catch (NumberFormatException except) {
+			throw new IOException(
+					"File doesn't start with number of rows of quadrants", except);
+		}
 		final List<String> items = new LinkedList<>();
 		line = reader.readLine();
 		try {
@@ -150,9 +156,13 @@ public final class TableLoader { // NOPMD
 			if (array.length < SPLIT_ONCE) {
 				LOGGER.severe("Line with no blanks, continuing ...");
 			} else {
-				list.add(ComparablePair.of(
-						NullCleaner.assertNotNull(Integer.valueOf(array[0])),
-						NullCleaner.assertNotNull(array[1])));
+				try {
+					list.add(ComparablePair.of(NullCleaner
+							.assertNotNull(Integer.valueOf(array[0])),
+							NullCleaner.assertNotNull(array[1])));
+				} catch (NumberFormatException except) {
+					throw new IOException("Non-numeric data");
+				}
 			}
 			line = reader.readLine();
 		}
