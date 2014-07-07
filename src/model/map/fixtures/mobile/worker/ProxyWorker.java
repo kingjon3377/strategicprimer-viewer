@@ -29,15 +29,15 @@ public class ProxyWorker implements IWorker {
 	/**
 	 * The proxy Jobs.
 	 */
-	private List<IJob> proxyJobs = new ArrayList<>();
+	private final List<IJob> proxyJobs = new ArrayList<>();
 	/**
 	 * The jobs we're proxying for.
 	 */
-	private Set<String> jobNames;
+	private final Set<String> jobNames;
 	/**
 	 * The workers in the unit.
 	 */
-	private List<Worker> workers;
+	private final List<Worker> workers;
 	/**
 	 * @param unit the unit to proxy for
 	 */

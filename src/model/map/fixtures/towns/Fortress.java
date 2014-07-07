@@ -209,7 +209,7 @@ public class Fortress implements HasImage, ITownFixture,
 			ostream.append("Incompatible types");
 			return false;
 		}
-		Fortress fort = (Fortress) obj;
+		final Fortress fort = (Fortress) obj;
 		if (name.equals(fort.name)
 				&& fort.owner.getPlayerId() == owner.getPlayerId()) {
 			boolean retval = true;

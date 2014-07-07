@@ -99,7 +99,7 @@ public class UnitReader implements INodeHandler<Unit> {
 	private static String parseKind(final StartElement element,
 			final Warning warner) throws SPFormatException {
 		try {
-			String retval = getAttributeWithDeprecatedForm(element, // NOPMD
+			final String retval = getAttributeWithDeprecatedForm(element, // NOPMD
 					KIND_PROPERTY, "type", warner);
 			if (retval.isEmpty()) {
 				warner.warn(new MissingPropertyException(NullCleaner

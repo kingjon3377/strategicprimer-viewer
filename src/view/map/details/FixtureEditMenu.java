@@ -37,7 +37,7 @@ public class FixtureEditMenu extends JPopupMenu {
 	/**
 	 * Listeners to notify about name and kind changes.
 	 */
-	protected List<IWorkerTreeModel> listeners = new ArrayList<>();
+	protected final List<IWorkerTreeModel> listeners = new ArrayList<>();
 	/**
 	 * The listener for the name-changing menu item.
 	 *

@@ -419,8 +419,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		if (node == null) {
 			return;
 		}
-		TreeNode[] path = getPathToRoot(node);
-		int index = getIndexOfChild(path[path.length - 2], node);
+		final TreeNode[] path = getPathToRoot(node);
+		final int index = getIndexOfChild(path[path.length - 2], node);
 		fireTreeNodesChanged(this, path, new int[] { index }, new Object[] { node });
 	}
 
@@ -431,8 +431,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 			if (node == null) {
 				return;
 			}
-			TreeNode[] path = getPathToRoot(node);
-			int index = getIndexOfChild(path[path.length - 1], node);
+			final TreeNode[] path = getPathToRoot(node);
+			final int index = getIndexOfChild(path[path.length - 1], node);
 			fireTreeNodesChanged(this, path, new int[] { index },
 					new Object[] { node });
 		} else if (item instanceof IUnit) {
@@ -440,8 +440,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 			if (node == null) {
 				return;
 			}
-			TreeNode[] pathOne = getPathToRoot(node);
-			int indexOne = getIndexOfChild(pathOne[pathOne.length - 2], node);
+			final TreeNode[] pathOne = getPathToRoot(node);
+			final int indexOne = getIndexOfChild(pathOne[pathOne.length - 2], node);
 			TreeNode nodeTwo = null;
 			for (final TreeNode child : (PlayerNode) root) {
 				if (child instanceof KindNode
@@ -477,7 +477,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 						new int[] { getIndexOfChild(root, nodeTwo) },
 						new Object[] { nodeTwo });
 			} else {
-				int indexTwo = nodeTwo.getChildCount();
+				final int indexTwo = nodeTwo.getChildCount();
 				((MutableTreeNode) nodeTwo).insert((MutableTreeNode) node,
 						indexTwo);
 				fireTreeNodesInserted(this, new Object[] { root, nodeTwo },

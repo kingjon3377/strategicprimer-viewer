@@ -48,7 +48,7 @@ public class SPMap implements IMutableMap {
 	/**
 	 * The tiles on the map.
 	 */
-	private TileCollection tiles; // NOPMD
+	private final TileCollection tiles; // NOPMD
 	/**
 	 * The players in the game.
 	 */

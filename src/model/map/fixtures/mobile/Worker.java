@@ -186,7 +186,7 @@ public class Worker implements HasName, HasKind, HasImage, IWorker {
 			final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Worker) {
-				String ctxt =
+				final String ctxt =
 						context + " In worker " + ((Worker) obj).name
 								+ " (ID #" + Integer.toString(id) + "):";
 				if (!name.equals(((Worker) obj).name)) {

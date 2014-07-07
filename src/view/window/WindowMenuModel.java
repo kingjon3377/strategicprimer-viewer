@@ -121,7 +121,7 @@ public final class WindowMenuModel extends WindowAdapter implements
 		}
 		final Window source = evt.getWindow();
 		if (source != null && states.containsKey(source)) {
-			int state = evt.getNewState();
+			final int state = evt.getNewState();
 			if ((state & Frame.ICONIFIED) != 0) {
 				states.put(source, WindowState.Minimized);
 			} else if ((state & MAXIMIZED_ANY) != 0) {
@@ -200,7 +200,7 @@ public final class WindowMenuModel extends WindowAdapter implements
 		}
 		final Window source = evt.getWindow();
 		if (source != null && states.containsKey(source)) {
-			int state = evt.getNewState();
+			final int state = evt.getNewState();
 			if ((state & MAXIMIZED_ANY) != 0) {
 				states.put(source, WindowState.Maximized);
 			} else {
