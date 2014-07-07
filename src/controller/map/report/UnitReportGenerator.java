@@ -17,6 +17,7 @@ import model.report.ComplexReportNode;
 import model.report.EmptyReportNode;
 import model.report.ListReportNode;
 import model.report.SectionListReportNode;
+import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import util.DelayedRemovalMap;
 import util.NullCleaner;
@@ -267,20 +268,41 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		final StringBuilder builder = new StringBuilder(8192)
 				.append("<h4>Units in the map</h4>\n");
 		builder.append("<p>(Any units listed above are not described again.)</p>\n");
-		builder.append(OPEN_LIST);
-		boolean anyUnits = false;
+		final StringBuilder ours = new StringBuilder(8192).append("<h5>Your units</h5>\n");
+		ours.append(OPEN_LIST);
+		boolean anyOurs = false;
+		final StringBuilder foreign = new StringBuilder(8192).append("<h5>Foreign units</h5>\n");
+		foreign.append(OPEN_LIST);
+		boolean anyForeign = false;
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Unit) {
-				anyUnits = true;
-				builder.append(OPEN_LIST_ITEM)
-						.append(atPoint(pair.first()))
-						.append(produce(fixtures, tiles, currentPlayer,
-								(Unit) pair.second(), pair.first()))
-						.append(CLOSE_LIST_ITEM);
+				final Unit unit = (Unit) pair.second();
+				if (currentPlayer.equals(unit.getOwner())) {
+					anyOurs = true;
+					ours.append(OPEN_LIST_ITEM)
+							.append(atPoint(pair.first()))
+							.append(produce(fixtures, tiles, currentPlayer,
+									unit, pair.first()))
+							.append(CLOSE_LIST_ITEM);
+				} else {
+					anyForeign = true;
+					foreign.append(OPEN_LIST_ITEM)
+							.append(atPoint(pair.first()))
+							.append(produce(fixtures, tiles, currentPlayer,
+									unit, pair.first()))
+							.append(CLOSE_LIST_ITEM);
+				}
 			}
 		}
-		builder.append(CLOSE_LIST);
-		if (anyUnits) {
+		foreign.append(CLOSE_LIST);
+		ours.append(CLOSE_LIST);
+		if (anyOurs) {
+			builder.append(ours.toString());
+		}
+		if (anyForeign) {
+			builder.append(foreign.toString());
+		}
+		if (anyOurs || anyForeign) {
 			return NullCleaner.assertNotNull(builder.toString()); // NOPMD
 		} else {
 			return "";
@@ -299,18 +321,34 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer) {
-		final AbstractReportNode retval = new SectionListReportNode(4,
-				"Units in the map",
-				"(Any units reported above are not described again.)");
+		final AbstractReportNode retval =
+				new SectionReportNode(4, "Units in the map");
+		retval.add(new SimpleReportNode(
+				"(Any units reported above are not described again.)"));
+		final AbstractReportNode ours =
+				new SectionListReportNode(5, "Your units");
+		final AbstractReportNode theirs =
+				new SectionListReportNode(5, "Foreign units");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Unit) {
-				final AbstractReportNode unit = produceRIR(fixtures, tiles,
-						currentPlayer, (Unit) pair.second(), pair.first());
-				unit.setText(concat(atPoint(pair.first()), unit.getText()));
-				retval.add(unit);
+				final Unit unit = (Unit) pair.second();
+				final AbstractReportNode unitNode = produceRIR(fixtures, tiles,
+						currentPlayer, unit, pair.first());
+				unitNode.setText(concat(atPoint(pair.first()), unitNode.getText()));
+				if (currentPlayer.equals(unit.getOwner())) {
+					ours.add(unitNode);
+				} else {
+					theirs.add(unitNode);
+				}
 			}
 		}
-		if (retval.getChildCount() == 0) {
+		if (ours.getChildCount() != 0) {
+			retval.add(ours);
+		}
+		if (theirs.getChildCount() != 0) {
+			retval.add(theirs);
+		}
+		if (retval.getChildCount() == 1) { // 1, not 0, because of "any units ..."
 			return EmptyReportNode.NULL_NODE; // NOPMD
 		} else {
 			return retval;

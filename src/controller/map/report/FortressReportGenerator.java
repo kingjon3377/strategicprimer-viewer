@@ -18,6 +18,7 @@ import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.towns.Fortress;
 import model.report.AbstractReportNode;
+import model.report.ComplexReportNode;
 import model.report.EmptyReportNode;
 import model.report.ListReportNode;
 import model.report.SectionListReportNode;
@@ -57,19 +58,33 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer) {
 		// This can get long. We'll give it 16K.
-		final StringBuilder builder = new StringBuilder(16384)
-				.append("<h4>Fortresses in the map:</h4>\n");
+		final StringBuilder ours = new StringBuilder(16384)
+				.append("<h4>Your fortresses in the map:</h4>\n");
+		boolean anyours = false;
+		final StringBuilder builder =
+				new StringBuilder(16384)
+						.append("<h4>Foreign fortresses in the map:</h4>\n");
 		boolean anyforts = false;
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Fortress) {
-				anyforts = true;
-				builder.append(produce(
-						fixtures,
-						tiles, currentPlayer, (Fortress) pair.second(),
-						pair.first()));
+				final Fortress fort = (Fortress) pair.second();
+				if (currentPlayer.equals(fort.getOwner())) {
+					anyours = true;
+					ours.append(produce(fixtures, tiles, currentPlayer, fort,
+							pair.first()));
+				} else {
+					anyforts = true;
+					builder.append(produce(fixtures, tiles, currentPlayer,
+							fort, pair.first()));
+				}
 			}
 		}
-		if (anyforts) {
+		if (anyours) {
+			if (anyforts) {
+				ours.append(builder.toString());
+			}
+			return NullCleaner.assertNotNull(ours.toString()); // NOPMD
+		} else if (anyforts) {
 			return NullCleaner.assertNotNull(builder.toString()); // NOPMD
 		} else {
 			return "";
@@ -88,13 +103,28 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final ITileCollection tiles, final Player currentPlayer) {
-		final AbstractReportNode retval = new SectionReportNode(4,
-				"Fortresses in the map:");
+		final AbstractReportNode retval = new ComplexReportNode("");
+		final AbstractReportNode ours = new SectionReportNode(4,
+				"Your fortresses in the map:");
+		final AbstractReportNode foreign = new SectionReportNode(4,
+				"Foreign fortresses in the map:");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Fortress) {
-				retval.add(produceRIR(fixtures, tiles, currentPlayer,
-						(Fortress) pair.second(), pair.first()));
+				final Fortress fort = (Fortress) pair.second();
+				if (currentPlayer.equals(fort.getOwner())) {
+					ours.add(produceRIR(fixtures, tiles, currentPlayer,
+							(Fortress) pair.second(), pair.first()));
+				} else {
+					foreign.add(produceRIR(fixtures, tiles, currentPlayer,
+							(Fortress) pair.second(), pair.first()));
+				}
 			}
+		}
+		if (ours.getChildCount() != 0) {
+			retval.add(ours);
+		}
+		if (foreign.getChildCount() != 0) {
+			retval.add(foreign);
 		}
 		if (retval.getChildCount() == 0) {
 			return EmptyReportNode.NULL_NODE; // NOPMD
