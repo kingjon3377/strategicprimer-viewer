@@ -30,28 +30,6 @@ public class TableDebugger {
 	private final ExplorationRunner runner;
 
 	/**
-	 * A utility driver method that loads all files in tables/ under the current
-	 * directory, then checks to see whether any references a nonexistent table,
-	 * then does further tests for debugging purposes.
-	 *
-	 * @param args ignored
-	 */
-	public static void main(final String[] args) {
-		final ExplorationRunner runner = new ExplorationRunner();
-		TableLoader.loadAllTables("tables", runner);
-		try {
-			new TableDebugger(runner).debugTables(NullCleaner
-					.assertNotNull(System.out));
-		} catch (final MissingTableException e) {
-			LOGGER.log(Level.SEVERE, "Missing table", e);
-			System.exit(1);
-		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, "I/O error writing to stdout");
-			System.exit(2);
-		}
-	}
-
-	/**
 	 * Constructor.
 	 *
 	 * @param explRunner an exploration runner loaded with all the tables we
@@ -131,5 +109,26 @@ public class TableDebugger {
 	@Override
 	public String toString() {
 		return "TableDebugger";
+	}
+	/**
+	 * A utility driver method that loads all files in tables/ under the current
+	 * directory, then checks to see whether any references a nonexistent table,
+	 * then does further tests for debugging purposes.
+	 *
+	 * @param args ignored
+	 */
+	public static void main(final String[] args) {
+		final ExplorationRunner runner = new ExplorationRunner();
+		TableLoader.loadAllTables("tables", runner);
+		try {
+			new TableDebugger(runner).debugTables(NullCleaner
+					.assertNotNull(System.out));
+		} catch (final MissingTableException e) {
+			LOGGER.log(Level.SEVERE, "Missing table", e);
+			System.exit(1);
+		} catch (IOException e) {
+			LOGGER.log(Level.SEVERE, "I/O error writing to stdout");
+			System.exit(2);
+		}
 	}
 }
