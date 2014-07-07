@@ -2,8 +2,6 @@ package controller.map.cxml;
 
 import static java.lang.String.format;
 
-import java.util.Iterator;
-
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
@@ -21,7 +19,6 @@ import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
-import controller.map.misc.IncludingIterator;
 
 // ESCA-JAVA0011: Doesn't contain an abstract method
 // because we moved it up to the interface.
@@ -224,20 +221,6 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	protected static boolean hasParameter(final StartElement element,
 			final String param) {
 		return element.getAttributeByName(new QName(param)) != null;
-	}
-
-	/**
-	 * @param stream a source of XMLEvents
-	 * @return the file currently being read from if it's an
-	 *         {@link IncludingIterator}, or the empty string otherwise.
-	 */
-	protected static String getFile(final Iterable<XMLEvent> stream) {
-		final Iterator<?> iter = stream.iterator();
-		if (iter instanceof IncludingIterator) {
-			return ((IncludingIterator) iter).getFile(); // NOPMD
-		} else {
-			return "";
-		}
 	}
 
 	/**
