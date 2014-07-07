@@ -19,7 +19,7 @@ public class BadIncludeException extends SPFormatException {
 	public BadIncludeException(final String file, final Throwable cause,
 			final int line) {
 		super("File " + file + ", referenced by <include> tag on line" + line
-				+ ", contains XML format errors (see specified cause)", line);
-		initCause(cause);
+				+ ", contains XML format errors (see specified cause)", line,
+				cause);
 	}
 }

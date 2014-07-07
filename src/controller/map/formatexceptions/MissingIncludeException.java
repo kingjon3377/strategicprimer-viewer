@@ -19,7 +19,6 @@ public class MissingIncludeException extends SPFormatException {
 	public MissingIncludeException(final String file, final Throwable cause,
 			final int line) {
 		super("File " + file + ", referenced by <include> tag on line " + line
-				+ ", does not exist", line);
-		initCause(cause);
+				+ ", does not exist", line, cause);
 	}
 }
