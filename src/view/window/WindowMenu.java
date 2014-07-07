@@ -24,7 +24,7 @@ public class WindowMenu extends JMenu implements ListDataListener,
 	/**
 	 * Menu-item cache.
 	 */
-	private final Map<Frame, WindowMenuItem> cache = new HashMap<>();
+	private final Map<Window, WindowMenuItem> cache = new HashMap<>();
 	/**
 	 * Constructor.
 	 */
