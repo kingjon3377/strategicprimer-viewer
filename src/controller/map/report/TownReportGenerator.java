@@ -148,10 +148,10 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 								.status().toString(), " ",
 						((AbstractTown) item).kind());
 			} else {
-				return concat(atPoint(loc), item.getName(), ", a ", //NOPMD
+				return concat(atPoint(loc), item.getName(), ", a ", // NOPMD
 						item.size().toString(), " ", item.status().toString(),
-						" ", ((AbstractTown) item).kind().toString(),
-						" allied with ", playerNameOrYou(item.getOwner()));
+						" ", ((AbstractTown) item).kind(), " allied with ",
+						playerNameOrYou(item.getOwner()));
 			}
 		} else {
 			throw new IllegalStateException("Unhandled ITownFixture subclass");
@@ -191,9 +191,8 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 			} else {
 				return new SimpleReportNode(atPoint(loc), item.getName(),
 						", a ", item.size().toString(), " ", item.status()
-								.toString(), " ", ((AbstractTown) item).kind()
-								.toString(), " allied with "
-								+ playerNameOrYou(item.getOwner()));
+								.toString(), " ", ((AbstractTown) item).kind(),
+						" allied with " + playerNameOrYou(item.getOwner()));
 			}
 		} else {
 			throw new IllegalStateException("Unhandled ITownFixture subclass");

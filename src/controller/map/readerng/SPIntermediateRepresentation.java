@@ -161,7 +161,7 @@ public final class SPIntermediateRepresentation {
 				writeIfTagNotEmpty(writer, "\"");
 			}
 			if (children.isEmpty()) {
-				if (shouldSeparateClosingTag(tag) || !"".equals(text)) {
+				if (shouldSeparateClosingTag(tag) || !text.isEmpty()) {
 					writeIfTagNotEmpty(writer, ">");
 					writeIfTagNotEmpty(writer, text);
 					writeIfTagNotEmpty(writer, "</");

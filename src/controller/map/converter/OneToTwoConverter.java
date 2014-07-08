@@ -590,9 +590,9 @@ public class OneToTwoConverter { // NOPMD
 	 */
 	public static void main(final String[] args) {
 		if (args.length == 0) {
-			System.err.println("Usage: "
-					+ OneToTwoConverter.class.getSimpleName()
-					+ " mainmap.xml [playermap.xml ...]");
+			System.err.print("Usage: ");
+			System.err.print(OneToTwoConverter.class.getSimpleName());
+			System.err.println(" mainmap.xml [playermap.xml ...]");
 			System.exit(1);
 		} else {
 			boolean first = true;

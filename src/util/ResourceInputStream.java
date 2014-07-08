@@ -35,11 +35,11 @@ public class ResourceInputStream extends InputStream {
 		InputStream temp;
 		try {
 			temp = new FileInputStream(filename);
-		} catch (final FileNotFoundException fe) {
+		} catch (final FileNotFoundException except) {
 			temp = ResourceInputStream.class.getClassLoader()
 					.getResourceAsStream(filename);
 			if (temp == null) {
-				throw fe;
+				throw except;
 			}
 		}
 		wrapped = temp;
