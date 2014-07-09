@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import model.map.IMutableTile;
 import model.map.MapDimensions;
 import model.map.MapView;
 import model.map.Player;
@@ -71,8 +70,8 @@ public class TestWorkerModel {
 		final Iterable<Point> iter = new IteratorWrapper<>(new PointIterator(
 				map.getDimensions(), null, true, true));
 		for (final Point point : iter) {
-			((IMutableTile) map.getTile(NullCleaner.assertNotNull(point)))
-					.addFixture(NullCleaner.assertNotNull(fixtures.remove(0)));
+			map.getTile(NullCleaner.assertNotNull(point)).addFixture(
+					NullCleaner.assertNotNull(fixtures.remove(0)));
 		}
 		final IWorkerModel model = new WorkerModel(new MapView(map, 0, 0),
 				new File(""));

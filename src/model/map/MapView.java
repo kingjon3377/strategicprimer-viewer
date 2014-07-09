@@ -10,6 +10,11 @@ import util.NullCleaner;
  * A view of a map. This is in effect an extension of SPMap that adds the
  * current turn, the current player, and eventually changesets.
  *
+ * FIXME: What makes a "MapView" more than a "Map" should be extracted to an
+ * interface, so we can have immutable vs mutable implementations, and thus not
+ * have to return the mutable player collection or tile collection from an
+ * immutable map.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -92,16 +97,26 @@ public class MapView implements IMutableMap {
 	 * @return the tile at those coordinates
 	 */
 	@Override
-	public ITile getTile(final Point point) {
-		return map.getTile(point);
+	public IMutableTile getTile(final Point point) {
+		if (map instanceof IMutableMap) {
+			return ((IMutableMap) map).getTile(point);
+		} else {
+			throw new IllegalStateException(
+					"Mutable view of immutable map can't be queried");
+		}
 	}
 
 	/**
 	 * @return the collection of players in the map
 	 */
 	@Override
-	public IPlayerCollection getPlayers() {
-		return map.getPlayers();
+	public IMutablePlayerCollection getPlayers() {
+		if (map instanceof IMutableMap) {
+			return ((IMutableMap) map).getPlayers();
+		} else {
+			throw new IllegalStateException(
+					"Mutable view of immutable map can't be queried");
+		}
 	}
 
 	/**
@@ -110,8 +125,13 @@ public class MapView implements IMutableMap {
 	 * @return the collection of tiles that make up the map.
 	 */
 	@Override
-	public ITileCollection getTiles() {
-		return map.getTiles();
+	public IMutableTileCollection getTiles() {
+		if (map instanceof IMutableMap) {
+			return ((IMutableMap) map).getTiles();
+		} else {
+			throw new IllegalStateException(
+					"Mutable view of immutable map can't be queried");
+		}
 	}
 
 	/**

@@ -82,7 +82,7 @@ public class SPMap implements IMutableMap {
 	 * @return the tile at those coordinates
 	 */
 	@Override
-	public final ITile getTile(final Point point) {
+	public final IMutableTile getTile(final Point point) {
 		return tiles.getTile(point);
 	}
 
@@ -91,7 +91,7 @@ public class SPMap implements IMutableMap {
 	 * @return the players in the map
 	 */
 	@Override
-	public PlayerCollection getPlayers() {
+	public IMutablePlayerCollection getPlayers() {
 		return players;
 	}
 
@@ -193,7 +193,7 @@ public class SPMap implements IMutableMap {
 	 * @return the collection of tiles
 	 */
 	@Override
-	public TileCollection getTiles() {
+	public IMutableTileCollection getTiles() {
 		return tiles;
 	}
 
