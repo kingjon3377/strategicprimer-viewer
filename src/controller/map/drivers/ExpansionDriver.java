@@ -26,6 +26,7 @@ import model.map.TileType;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
+import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.towns.ITownFixture;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -302,7 +303,8 @@ public class ExpansionDriver implements ISPDriver {
 					continue;
 				} else if (SimpleMovement.shouldAlwaysNotice(owned, fix)) {
 					neighborFixtures.add(fix);
-				} else if (SimpleMovement.mightNotice(owned, fix)) {
+				} else if (SimpleMovement.mightNotice(owned, fix)
+						&& !(fix instanceof CacheFixture)) {
 					possibilities.add(fix);
 				}
 			}
