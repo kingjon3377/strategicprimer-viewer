@@ -93,6 +93,8 @@ public class AppStarter implements ISPDriver {
 		addChoice(new AppStarter());
 		// FIXME: Write a stat-generating/stat-entering GUI.
 		addChoice(new StatGeneratingCLIDriver());
+		// FIXME: Write a GUI for the map-expanding driver
+		addChoice(new ExpansionDriver());
 	}
 
 	/**
