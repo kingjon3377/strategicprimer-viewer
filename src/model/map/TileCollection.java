@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -25,7 +24,7 @@ public final class TileCollection implements IMutableTileCollection {
 	/**
 	 * The Map this is a wrapper around.
 	 */
-	private final Map<Point, IMutableTile> tiles = new ConcurrentHashMap<>();
+	private final Map<Point, IMutableTile> tiles = new HashMap<>();
 
 	/**
 	 * Add a Tile to the map.

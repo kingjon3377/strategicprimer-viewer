@@ -250,11 +250,15 @@ public class ExpansionDriver implements ISPDriver {
 				throw ise;
 			}
 		};
+		final Set<Point> villagePoints = new ArraySet<>();
 		for (final Point point : lmap.getTiles()) {
 			if (containsSwornVillage(master, point, player)) {
-				addSurroundingTerrain(point, master, lmap, terrainAdditions);
-				addSurroundingFixtures(point, master, fixAdditions, mock);
+				villagePoints.add(point);
 			}
+		}
+		for (final Point point : villagePoints) {
+			addSurroundingTerrain(point, master, lmap, terrainAdditions);
+			addSurroundingFixtures(point, master, fixAdditions, mock);
 		}
 		for (final Map.Entry<Point, TileType> entry : terrainAdditions
 				.entrySet()) {
