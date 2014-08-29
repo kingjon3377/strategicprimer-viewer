@@ -2,11 +2,14 @@ package model.exploration;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import model.listeners.MovementCostListener;
 import model.listeners.SelectionChangeListener;
 import model.map.FixtureIterable;
+import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.IMap;
 import model.map.IMutableTile;
@@ -30,6 +33,7 @@ import model.misc.AbstractMultiMapModel;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
 import util.Pair;
 
 /**
@@ -181,6 +185,8 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			selUnitLoc = dest;
 			fireSelectionChange(point, dest);
 			fireMovementCost(retval);
+			checkNearbyWatchers(getMap().getTiles(), getMap().getDimensions(),
+					unit, dest);
 			return retval;
 		} else {
 			for (final Pair<IMap, File> pair : getSubordinateMaps()) {
@@ -193,6 +199,59 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			}
 			fireMovementCost(1);
 			throw new TraversalImpossibleException();
+		}
+	}
+
+	/**
+	 * If a unit's motion could be observed by someone allied to another
+	 * (non-independent) player (which at present means the unit is moving *to*
+	 * a tile two or fewer tiles away from the watcher), print a message saying
+	 * so to stdout.
+	 *
+	 * @param tiles
+	 *            the main map's tiles.
+	 * @param dims the dimensions of the map
+	 * @param unit
+	 *            the mover
+	 * @param dest
+	 *            the unit's new location
+	 */
+	private static void checkNearbyWatchers(final ITileCollection tiles,
+			final MapDimensions dims, final IUnit unit, final Point dest) {
+		final Set<Point> done = new HashSet<>(25);
+		for (final Point point : new SurroundingPointIterable(dest, dims)) {
+			if (point == null || done.contains(point)) {
+				continue;
+			} else {
+				done.add(point);
+				checkNearbyWatcher(
+						NullCleaner.assertNotNull(tiles.getTile(point)), point,
+						unit, dest);
+			}
+		}
+	}
+
+	/**
+	 * If a unit's motion to a new tile could be observed by a watcher on a
+	 * specified nearby tile, print a message to stdout saying so.
+	 * @param tile the tile being considered
+	 * @param point its location
+	 * @param unit the mover
+	 * @param dest where the mover moved to
+	 */
+	private static void checkNearbyWatcher(final ITile tile, final Point point,
+			final IUnit unit, final Point dest) {
+		for (final TileFixture fix : tile) {
+			if (fix instanceof HasOwner
+					&& !((HasOwner) fix).getOwner().isIndependent()
+					&& !((HasOwner) fix).getOwner().equals(unit.getOwner())) {
+				System.out.print("Unit's motion to ");
+				System.out.print(dest);
+				System.out.print(" could be observed by ");
+				System.out.print(fix.shortDesc());
+				System.out.print(" at ");
+				System.out.println(point);
+			}
 		}
 	}
 	/**
