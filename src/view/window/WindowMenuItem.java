@@ -1,7 +1,6 @@
 package view.window;
 
 import java.awt.Frame;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -9,6 +8,7 @@ import javax.swing.JMenuItem;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import view.util.ApplicationFrame;
 import view.window.WindowMenuModel.WindowState;
 /**
  * A menu item in the Window menu.
@@ -18,7 +18,7 @@ public class WindowMenuItem extends JMenuItem {
 	/**
 	 * The window we wrap.
 	 */
-	private final Frame window;
+	private final ApplicationFrame window;
 	/**
 	 * The current status.
 	 */
@@ -31,7 +31,7 @@ public class WindowMenuItem extends JMenuItem {
 	 * Constructor.
 	 * @param win the window to wrap
 	 */
-	public WindowMenuItem(final Frame win) {
+	public WindowMenuItem(final ApplicationFrame win) {
 		super(win.getTitle());
 		window = win;
 		addActionListener(new ActionListener() {
@@ -46,7 +46,7 @@ public class WindowMenuItem extends JMenuItem {
 	/**
 	 * @return the window we wrap
 	 */
-	public Window getWindow() {
+	public ApplicationFrame getWindow() {
 		return window;
 	}
 	/**

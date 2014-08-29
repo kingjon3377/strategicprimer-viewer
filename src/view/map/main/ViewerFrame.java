@@ -3,24 +3,24 @@ package view.map.main;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 
-import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
 
 import model.viewer.IViewerModel;
 import view.map.details.DetailPanelNG;
+import view.util.ApplicationFrame;
 import view.util.SplitWithWeights;
 import view.window.WindowMenuModel;
 import view.window.WindowMenuModel.WindowState;
 import controller.map.misc.IOHandler;
 
 /**
- * The main driver class for the viewer app.
+ * The main driver class for the map viewer app.
  *
  * @author Jonathan Lovelace
  *
  */
-public final class ViewerFrame extends JFrame {
+public final class ViewerFrame extends ApplicationFrame {
 	/**
 	 * Default width of the Frame.
 	 */

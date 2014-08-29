@@ -10,7 +10,6 @@ import java.io.Writer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.xml.stream.XMLStreamException;
 
@@ -26,6 +25,7 @@ import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
+import view.util.ApplicationFrame;
 import view.util.StreamingLabel;
 import view.window.WindowMenuModel;
 import view.window.WindowMenuModel.WindowState;
@@ -39,7 +39,7 @@ import controller.map.misc.MapReaderAdapter;
  * @author Jonathan Lovelace
  *
  */
-public class SubsetFrame extends JFrame {
+public class SubsetFrame extends ApplicationFrame {
 	/**
 	 * Logger.
 	 */

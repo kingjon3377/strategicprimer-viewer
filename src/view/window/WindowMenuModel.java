@@ -17,13 +17,14 @@ import javax.swing.event.ListDataListener;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.NullCleaner;
+import view.util.ApplicationFrame;
 
 /**
  * A singleton object to hold the list of all open windows.
  * @author Jonathan Lovelace
  */
 public final class WindowMenuModel extends WindowAdapter implements
-		ListModel<Frame>, Iterable<Frame> {
+		ListModel<ApplicationFrame>, Iterable<ApplicationFrame> {
 	/**
 	 * If a window's 'state' bitmask matches any of these fields, it's
 	 * "maximized" for our purposes.
@@ -37,11 +38,11 @@ public final class WindowMenuModel extends WindowAdapter implements
 	/**
 	 * The list of windows.
 	 */
-	private final List<Frame> windows = new ArrayList<>();
+	private final List<ApplicationFrame> windows = new ArrayList<>();
 	/**
 	 * The windows' states.
 	 */
-	private final Map<Window, WindowState> states = new LinkedHashMap<>();
+	private final Map<ApplicationFrame, WindowState> states = new LinkedHashMap<>();
 	/**
 	 * The list of listeners to notify about changes to this model.
 	 */
@@ -78,7 +79,7 @@ public final class WindowMenuModel extends WindowAdapter implements
 	 * @param window the window to add
 	 * @param state its state
 	 */
-	public void addWindow(final Frame window, final WindowState state) {
+	public void addWindow(final ApplicationFrame window, final WindowState state) {
 		if (!windows.contains(window)) {
 			windows.add(window);
 		}
@@ -96,7 +97,7 @@ public final class WindowMenuModel extends WindowAdapter implements
 	 * Add a window in the default (non-minimized, non-maximized) state.
 	 * @param window the window to add
 	 */
-	public void addWindow(final Frame window) {
+	public void addWindow(final ApplicationFrame window) {
 		addWindow(window, WindowState.Visible);
 	}
 	/**
@@ -120,14 +121,14 @@ public final class WindowMenuModel extends WindowAdapter implements
 			return;
 		}
 		final Window source = evt.getWindow();
-		if (source != null && states.containsKey(source)) {
+		if (source instanceof ApplicationFrame && states.containsKey(source)) {
 			final int state = evt.getNewState();
 			if ((state & Frame.ICONIFIED) != 0) {
-				states.put(source, WindowState.Minimized);
+				states.put((ApplicationFrame) source, WindowState.Minimized);
 			} else if ((state & MAXIMIZED_ANY) != 0) {
-				states.put(source, WindowState.Maximized);
+				states.put((ApplicationFrame) source, WindowState.Maximized);
 			} else {
-				states.put(source, WindowState.Visible);
+				states.put((ApplicationFrame) source, WindowState.Visible);
 			}
 			final int index = windows.indexOf(source);
 			final ListDataEvent event =
@@ -182,8 +183,8 @@ public final class WindowMenuModel extends WindowAdapter implements
 			return;
 		}
 		final Window source = evt.getWindow();
-		if (source != null && states.containsKey(source)) {
-			states.put(source, WindowState.Minimized);
+		if (source instanceof ApplicationFrame && states.containsKey(source)) {
+			states.put((ApplicationFrame) source, WindowState.Minimized);
 			final int index = windows.indexOf(source);
 			final ListDataEvent event =
 					new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED,
@@ -199,12 +200,12 @@ public final class WindowMenuModel extends WindowAdapter implements
 			return;
 		}
 		final Window source = evt.getWindow();
-		if (source != null && states.containsKey(source)) {
+		if (source instanceof ApplicationFrame && states.containsKey(source)) {
 			final int state = evt.getNewState();
 			if ((state & MAXIMIZED_ANY) != 0) {
-				states.put(source, WindowState.Maximized);
+				states.put((ApplicationFrame) source, WindowState.Maximized);
 			} else {
-				states.put(source, WindowState.Visible);
+				states.put((ApplicationFrame) source, WindowState.Visible);
 			}
 			final int index = windows.indexOf(source);
 			final ListDataEvent event =
@@ -227,7 +228,7 @@ public final class WindowMenuModel extends WindowAdapter implements
 	 * @return the window at that index
 	 */
 	@Override
-	public Frame getElementAt(final int index) {
+	public ApplicationFrame getElementAt(final int index) {
 		return NullCleaner.assertNotNull(windows.get(index));
 	}
 	@Override
@@ -246,7 +247,7 @@ public final class WindowMenuModel extends WindowAdapter implements
 	 * @return the windows we know about
 	 */
 	@Override
-	public Iterator<Frame> iterator() {
+	public Iterator<ApplicationFrame> iterator() {
 		return NullCleaner.assertNotNull(windows.iterator());
 	}
 }

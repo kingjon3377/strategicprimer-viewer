@@ -21,14 +21,12 @@ import model.map.fixtures.mobile.Unit;
 import org.eclipse.jdt.annotation.Nullable;
 
 import view.util.ListenedButton;
-import view.window.WindowMenuModel;
-import view.window.WindowMenuModel.WindowState;
 import controller.map.misc.IDFactory;
 
 /**
  * A panel to let the user add a new unit. We fire the "add" property with the
  * value of the unit if OK is pressed and both fields are nonempty, then clear
- * them.
+ * them. As this is a dialog, we do *not* extend ApplicationFrame.
  *
  * @author Jonathan Lovelace
  *
@@ -87,7 +85,6 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 		setPreferredSize(new Dimension(200, PREF_HEIGHT));
 		setMaximumSize(new Dimension(300, PREF_HEIGHT));
 		pack();
-		WindowMenuModel.MODEL.addWindow(this, WindowState.NotVisible);
 	}
 
 	/**

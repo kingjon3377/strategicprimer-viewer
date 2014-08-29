@@ -14,6 +14,8 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import org.eclipse.jdt.annotation.Nullable;
+
+import view.util.ApplicationFrame;
 /**
  * A menu listing all the program's open windows.
  * @author Jonathan Lovelace
@@ -24,7 +26,7 @@ public class WindowMenu extends JMenu implements ListDataListener,
 	/**
 	 * Menu-item cache.
 	 */
-	private final Map<Window, WindowMenuItem> cache = new HashMap<>();
+	private final Map<ApplicationFrame, WindowMenuItem> cache = new HashMap<>();
 	/**
 	 * Constructor.
 	 */
@@ -32,7 +34,7 @@ public class WindowMenu extends JMenu implements ListDataListener,
 		super("Window");
 		setMnemonic(KeyEvent.VK_W);
 		WindowMenuModel.MODEL.addListDataListener(this);
-		for (final Frame window : WindowMenuModel.MODEL) {
+		for (final ApplicationFrame window : WindowMenuModel.MODEL) {
 			if (window != null) {
 				add(addToCache(window, new WindowMenuItem(window)));
 				window.addWindowFocusListener(this);
@@ -44,14 +46,15 @@ public class WindowMenu extends JMenu implements ListDataListener,
 	 * @param item its menu item
 	 * @return the menu item
 	 */
-	public WindowMenuItem addToCache(final Frame window, final WindowMenuItem item) {
+	public WindowMenuItem addToCache(final ApplicationFrame window,
+			final WindowMenuItem item) {
 		cache.put(window, item);
 		return item;
 	}
 	/**
 	 * @param window a window to remove from the cache
 	 */
-	public void removeFromCache(final Frame window) {
+	public void removeFromCache(final ApplicationFrame window) {
 		cache.remove(window);
 	}
 	/**
@@ -63,7 +66,7 @@ public class WindowMenu extends JMenu implements ListDataListener,
 			return;
 		}
 		final int index = evt.getIndex0();
-		final Frame window = WindowMenuModel.MODEL.getElementAt(index);
+		final ApplicationFrame window = WindowMenuModel.MODEL.getElementAt(index);
 		final WindowMenuItem item = new WindowMenuItem(window);
 		addToCache(window, item);
 		add(item);
@@ -77,16 +80,23 @@ public class WindowMenu extends JMenu implements ListDataListener,
 			return;
 		}
 		final int index = evt.getIndex0();
-		final Window window = WindowMenuModel.MODEL.getElementAt(index);
-		if (window instanceof Frame) {
-			removeFromCache((Frame) window);
-		}
+		final ApplicationFrame window = WindowMenuModel.MODEL.getElementAt(index);
+		removeFromCache(window);
+		boolean any = false;
 		for (final Component item : getComponents()) {
-			if (item instanceof WindowMenuItem
-					&& ((WindowMenuItem) item).getWindow() == window) {
-				remove(item);
-				break;
+			if (item instanceof WindowMenuItem) {
+				if (((WindowMenuItem) item).getWindow() == window
+						|| ((WindowMenuItem) item).getWindow().getWindowID() == window
+								.getWindowID()) {
+					remove(item);
+					any = true;
+					break;
+				}
 			}
+		}
+		if (!any) {
+			System.err
+					.println("Told to remove window but didn't match any menu items");
 		}
 	}
 	/**
@@ -123,7 +133,10 @@ public class WindowMenu extends JMenu implements ListDataListener,
 			return;
 		}
 		final Window window = e.getWindow();
-		cache.get(window).setCurrent(false);
+		final WindowMenuItem item = cache.get(window);
+		if (item != null) {
+			item.setCurrent(false);
+		}
 	}
 
 }

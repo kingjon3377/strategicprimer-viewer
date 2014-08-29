@@ -19,8 +19,6 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import util.NullCleaner;
 import util.TypesafeLogger;
-import view.window.WindowMenuModel;
-import view.window.WindowMenuModel.WindowState;
 import controller.map.drivers.AdvancementStart;
 import controller.map.drivers.ISPDriver;
 import controller.map.drivers.ISPDriver.DriverFailedException;
@@ -28,7 +26,8 @@ import controller.map.drivers.ViewerStart;
 import controller.map.drivers.WorkerStart;
 
 /**
- * A GUI to let the user choose which GUI to use.
+ * A GUI to let the user choose which GUI to use. We do *not* make this extend
+ * ApplicationFrame, because it's essentially a dialog, not an app.
  *
  * @author Jonathan Lovelace
  *
@@ -69,7 +68,6 @@ public class AppChooserFrame extends JFrame {
 				new JLabel("Please choose one of the applications below:"),
 				null, null, null));
 		pack();
-		WindowMenuModel.MODEL.addWindow(this, WindowState.NotVisible);
 	}
 
 	/**

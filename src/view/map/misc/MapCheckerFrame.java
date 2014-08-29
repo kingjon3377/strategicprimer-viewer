@@ -9,13 +9,13 @@ import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.xml.stream.XMLStreamException;
 
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
+import view.util.ApplicationFrame;
 import view.util.StreamingLabel;
 import view.window.WindowMenuModel;
 import view.window.WindowMenuModel.WindowState;
@@ -29,7 +29,7 @@ import controller.map.misc.MapReaderAdapter;
  * @author Jonathan Lovelace
  *
  */
-public class MapCheckerFrame extends JFrame {
+public class MapCheckerFrame extends ApplicationFrame {
 	/**
 	 * The color to use for errors.
 	 */
@@ -71,6 +71,7 @@ public class MapCheckerFrame extends JFrame {
 	 * Constructor.
 	 */
 	public MapCheckerFrame() {
+		super("Strategic Primer Map Checker");
 		setBackground(Color.black);
 		setMinimumSize(new Dimension(640, 320));
 		setContentPane(new JScrollPane(label));

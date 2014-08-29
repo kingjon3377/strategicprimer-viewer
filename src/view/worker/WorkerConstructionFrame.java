@@ -30,12 +30,11 @@ import util.SingletonRandom;
 import view.util.BorderedPanel;
 import view.util.ErrorShower;
 import view.util.ListenedButton;
-import view.window.WindowMenuModel;
-import view.window.WindowMenuModel.WindowState;
 import controller.map.misc.IDFactory;
 
 /**
- * A window to let the user add a new worker.
+ * A window to let the user add a new worker. As this is a dialog, we do *not*
+ * extend ApplicationFrame.
  *
  * @author Jonathan Lovelace
  *
@@ -124,7 +123,6 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener,
 				null, null));
 		setMinimumSize(new Dimension(320, 240));
 		pack();
-		WindowMenuModel.MODEL.addWindow(this, WindowState.NotVisible);
 	}
 	/**
 	 * @param box a text box
