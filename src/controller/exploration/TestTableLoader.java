@@ -58,7 +58,7 @@ public final class TestTableLoader {
 
 	/**
 	 * Test method for loading random tables.
-	 * 
+	 *
 	 * @throws IOException
 	 *             on I/O error in the test or in cleaning up after it.
 	 */
@@ -77,7 +77,7 @@ public final class TestTableLoader {
 
 	/**
 	 * Test method for loading terrain tables. .
-	 * 
+	 *
 	 * @throws IOException
 	 *             on I/O error in the test or in cleaning up after it.
 	 */
@@ -100,7 +100,7 @@ public final class TestTableLoader {
 
 	/**
 	 * Test method for loading constant tables. .
-	 * 
+	 *
 	 * @throws IOException
 	 *             on I/O error in the test or in cleaning up after it.
 	 */
