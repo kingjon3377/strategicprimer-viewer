@@ -35,7 +35,7 @@ public class TableDebugger {
 	 * @param explRunner an exploration runner loaded with all the tables we
 	 *        want.
 	 */
-	public TableDebugger(final ExplorationRunner explRunner) {
+	protected TableDebugger(final ExplorationRunner explRunner) {
 		runner = explRunner;
 	}
 
@@ -46,7 +46,7 @@ public class TableDebugger {
 	 * @throws MissingTableException if a referenced table isn't there
 	 * @throws IOException on error writing to the stream
 	 */
-	public void debugTables(final Appendable ostream)
+	private void debugTables(final Appendable ostream)
 			throws MissingTableException, IOException {
 		runner.verboseRecursiveCheck(ostream);
 		final EncounterTable mainTable = runner.getTable("main");
