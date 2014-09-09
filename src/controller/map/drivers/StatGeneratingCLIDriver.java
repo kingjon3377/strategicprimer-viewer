@@ -440,7 +440,11 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 				if (unitNum >= 0 && unitNum < units.size()) {
 					final IUnit unit = units.get(unitNum);
 					if (unit != null) {
-						createWorkers(model, idf, unit);
+						if (cli.inputBoolean("Load names from file and use randomly generated stats? ")) {
+							createWorkersFromFile(model, idf, unit);
+						} else {
+							createWorkers(model, idf, unit);
+						}
 					}
 				}
 			} else {
