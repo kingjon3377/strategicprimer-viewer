@@ -18,6 +18,7 @@ import model.map.HasName;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
+import model.map.fixtures.mobile.Unit;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -36,6 +37,10 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 */
 	protected final IWorkerModel model;
 
+	/**
+	 * A list of unit members that have been dismissed.
+	 */
+	private final List<UnitMember> dismissedMembers = new ArrayList<>();
 	/**
 	 * Constructor.
 	 *
@@ -435,6 +440,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 			final int index = getIndexOfChild(path[path.length - 1], node);
 			fireTreeNodesChanged(this, path, new int[] { index },
 					new Object[] { node });
+			// FIXME: We don't actually move unit members here!
 		} else if (item instanceof IUnit) {
 			final TreeNode node = getNode(item);
 			if (node == null) {
@@ -485,5 +491,28 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 			}
 
 		}
+	}
+
+	@Override
+	public void dismissUnitMember(final UnitMember member) {
+		final TreeNode node = getNode(member);
+		if (node == null) {
+			return;
+		}
+		final TreeNode parentNode = node.getParent();
+		if (!(parentNode instanceof UnitNode)) {
+			throw new IllegalStateException("Unexpected tree state");
+		}
+		final TreeNode[] path = getPathToRoot(node);
+		final int index = getIndexOfChild(path[path.length - 1], node);
+		fireTreeNodesRemoved(this, path, new int[] { index },
+				new Object[] { node });
+		dismissedMembers.add(member);
+		((Unit) ((UnitNode) parentNode).getUserObject()).removeMember(member);
+	}
+
+	@Override
+	public Iterable<UnitMember> dismissed() {
+		return dismissedMembers;
 	}
 }
