@@ -10,8 +10,6 @@ import model.viewer.IViewerModel;
 import view.map.details.DetailPanelNG;
 import view.util.ApplicationFrame;
 import view.util.SplitWithWeights;
-import view.window.WindowMenuModel;
-import view.window.WindowMenuModel.WindowState;
 import controller.map.misc.IOHandler;
 
 /**
@@ -83,6 +81,5 @@ public final class ViewerFrame extends ApplicationFrame {
 		setJMenuBar(new SPMenu(ioHandler, this, map));
 		getJMenuBar().add(ffmenu);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		WindowMenuModel.MODEL.addWindow(this, WindowState.NotVisible);
 	}
 }

@@ -20,9 +20,10 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import view.util.DriverQuit;
 import view.util.MenuItemCreator;
-import view.window.WindowMenu;
-import view.window.WindowMenuModel;
 import view.worker.PlayerChooserHandler;
+
+import com.bric.window.WindowMenu;
+
 import controller.map.misc.IOHandler;
 
 /**
@@ -43,10 +44,7 @@ public class SPMenu extends JMenuBar {
 			final IViewerModel model) {
 		add(createFileMenu(handler, parent));
 		add(createMapMenu(parent, model));
-		add(new WindowMenu());
-		parent.addWindowListener(WindowMenuModel.MODEL);
-		parent.addWindowStateListener(WindowMenuModel.MODEL);
-		parent.addWindowFocusListener(WindowMenuModel.MODEL);
+		add(new WindowMenu(parent));
 	}
 
 	/**

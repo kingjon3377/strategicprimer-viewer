@@ -47,8 +47,6 @@ import view.util.ApplicationFrame;
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
-import view.window.WindowMenuModel;
-import view.window.WindowMenuModel.WindowState;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
 import controller.map.report.ReportGenerator;
@@ -144,7 +142,6 @@ public class WorkerMgmtFrame extends ApplicationFrame {
 			tree.expandRow(i);
 		}
 		pack();
-		WindowMenuModel.MODEL.addWindow(this, WindowState.NotVisible);
 	}
 
 	/**
