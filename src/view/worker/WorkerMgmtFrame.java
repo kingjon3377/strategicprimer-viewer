@@ -27,6 +27,7 @@ import javax.swing.tree.TreePath;
 
 import model.listeners.MapChangeListener;
 import model.listeners.PlayerChangeListener;
+import model.map.HasName;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
@@ -131,7 +132,7 @@ public class WorkerMgmtFrame extends ApplicationFrame {
 								"Add New Unit", new WindowShower(newUnitFrame,
 										"Add New Unit")), new ListenedButton(
 								"Export a proto-strategy from units' orders",
-								new ExportButtonHandler(outer, smodel)), null,
+								new ExportButtonHandler(outer, smodel, wtmodel)), null,
 								null)), new BorderedPanel(new JScrollPane(
 						report), new JLabel(RPT_HDR), null, null, null)));
 
@@ -276,11 +277,12 @@ public class WorkerMgmtFrame extends ApplicationFrame {
 		/**
 		 * @param outer the surrounding frame.
 		 * @param smodel the driver model.
+		 * @param wtmodel the worker-tree model, to get dismissed unit-members from
 		 */
 		protected ExportButtonHandler(final Component outer,
-				final IWorkerModel smodel) {
+				final IWorkerModel smodel, final IWorkerTreeModel wtmodel) {
 			parent = outer;
-			exp = new StrategyExporter(smodel);
+			exp = new StrategyExporter(smodel, wtmodel);
 		}
 
 		/**
@@ -318,14 +320,20 @@ public class WorkerMgmtFrame extends ApplicationFrame {
 		 * The worker model.
 		 */
 		private final IWorkerModel model;
-
+		/**
+		 * Unit members that have been dismissed.
+		 */
+		private final IWorkerTreeModel tmodel;
 		/**
 		 * Constructor.
 		 *
 		 * @param wmodel the driver model to draw from
+		 * @param wtmodel the tree model to get dismissed unit members from
 		 */
-		public StrategyExporter(final IWorkerModel wmodel) {
+		public StrategyExporter(final IWorkerModel wmodel,
+				final IWorkerTreeModel wtmodel) {
 			model = wmodel;
+			tmodel = wtmodel;
 		}
 
 		/**
@@ -356,7 +364,7 @@ public class WorkerMgmtFrame extends ApplicationFrame {
 				list.add(unit);
 			}
 
-			int size = 34 + playerName.length() + turn.length();
+			int size = 58 + playerName.length() + turn.length();
 			for (final Entry<String, List<IUnit>> entry : unitsByKind.entrySet()) {
 				size += 4;
 				size += entry.getKey().length();
@@ -367,13 +375,35 @@ public class WorkerMgmtFrame extends ApplicationFrame {
 					size += unit.getOrders().length();
 				}
 			}
-
+			final Iterable<UnitMember> dismissed = tmodel.dismissed();
+			for (final UnitMember member : dismissed) {
+				size += 2;
+				if (member instanceof HasName) {
+					size += ((HasName) member).getName().length();
+				} else {
+					size += member.toString().length();
+				}
+			}
 			final StringBuilder builder = new StringBuilder(size);
 			builder.append('[');
 			builder.append(playerName);
 			builder.append("\nTurn ");
 			builder.append(turn);
 			builder.append("]\n\nInventions: TODO: any?\n\n");
+			if (dismissed.iterator().hasNext()) {
+				builder.append("Dismissed workers etc.: ");
+				String separator = "";
+				for (final UnitMember member : dismissed) {
+					builder.append(separator);
+					separator = ", ";
+					if (member instanceof HasName) {
+						builder.append(((HasName) member).getName());
+					} else {
+						builder.append(member.toString());
+					}
+				}
+				builder.append("\n\n");
+			}
 			builder.append("Workers:\n");
 			for (final Entry<String, List<IUnit>> entry : unitsByKind.entrySet()) {
 				builder.append("* ");

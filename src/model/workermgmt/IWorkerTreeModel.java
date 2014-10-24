@@ -60,4 +60,13 @@ public interface IWorkerTreeModel extends TreeModel, NewUnitListener,
 	 * @param item the item that has changed
 	 */
 	void moveItem(HasKind item);
+	/**
+	 * Dismiss a member from a unit and the player's service.
+	 * @param member the member to dismiss.
+	 */
+	void dismissUnitMember(UnitMember member);
+	/**
+	 * Unit members that have been dismissed during this session.
+	 */
+	Iterable<UnitMember> dismissed();
 }
