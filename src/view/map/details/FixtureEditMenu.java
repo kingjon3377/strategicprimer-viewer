@@ -1,5 +1,7 @@
 package view.map.details;
 
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+import static javax.swing.JOptionPane.showConfirmDialog;
 import static javax.swing.JOptionPane.showInputDialog;
 
 import java.awt.event.ActionEvent;
@@ -21,6 +23,7 @@ import model.map.IMutablePlayerCollection;
 import model.map.IPlayerCollection;
 import model.map.Player;
 import model.map.PlayerCollection;
+import model.map.fixtures.UnitMember;
 import model.workermgmt.IWorkerTreeModel;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -156,6 +159,24 @@ public class FixtureEditMenu extends JPopupMenu {
 						}
 					});
 			mutable = true;
+		}
+		if (fixture instanceof UnitMember) {
+			addMenuItem(new JMenuItem("Dismiss", KeyEvent.VK_D),
+					new ActionListener() {
+				@Override
+				public void actionPerformed(@Nullable final ActionEvent event) {
+							final int reply =
+									showConfirmDialog(
+											outer,
+											"Are you sure you want to dismiss this?",
+											"Confirm Dismissal", YES_NO_OPTION);
+					if (JOptionPane.YES_OPTION == reply) {
+						for (final IWorkerTreeModel listener : listeners) {
+							listener.dismissUnitMember((UnitMember) fixture);
+						}
+					}
+				}
+			});
 		}
 		if (!mutable) {
 			add(new JLabel("Fixture is not mutable"));

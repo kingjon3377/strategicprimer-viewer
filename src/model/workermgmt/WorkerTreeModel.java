@@ -35,7 +35,10 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 * The driver model.
 	 */
 	private final IWorkerModel model;
-
+	/**
+	 * A list of unit members that have been dismissed.
+	 */
+	private final List<UnitMember> dismissedMembers = new ArrayList<>();
 	/**
 	 * The listeners registered to listen for model changes.
 	 */
@@ -415,5 +418,34 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			listener.treeNodesChanged(new TreeModelEvent(this, path, // NOPMD
 					indices, children));
 		}
+	}
+	/**
+	 * Dismiss a member from a unit and the player's service.
+	 * @param member the member to dismiss
+	 */
+	@Override
+	public void dismissUnitMember(final UnitMember member) {
+		for (final IUnit unit : model.getUnits(root)) {
+			for (final UnitMember item : unit) {
+				if (member == item || item.equals(member)) {
+					final int index = getIndexOfChild(unit, item);
+					dismissedMembers.add(member);
+					unit.removeMember(member);
+					for (final TreeModelListener listener : listeners) {
+						listener.treeNodesRemoved(new TreeModelEvent(this,
+								new TreePath(new Object[] { root, unit }),
+								singletonInt(index), singletonObj(member)));
+					}
+					break;
+				}
+			}
+		}
+	}
+	/**
+	 * @return the unit members that have been dismissed.
+	 */
+	@Override
+	public Iterable<UnitMember> dismissed() {
+		return dismissedMembers;
 	}
 }
