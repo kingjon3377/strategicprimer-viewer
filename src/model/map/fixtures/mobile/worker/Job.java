@@ -156,7 +156,7 @@ public class Job implements IJob { // NOPMD
 					final int hours = pair.second().intValue();
 					if (skill.getLevel() > lvl) {
 						ostream.append(context);
-						ostream.append(" In Job");
+						ostream.append(" In Job ");
 						ostream.append(name);
 						ostream.append(":\tExtra level(s) in ");
 						ostream.append(skill.getName());

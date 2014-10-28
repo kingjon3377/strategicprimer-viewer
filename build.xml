@@ -127,7 +127,7 @@
 
   <!-- Release targets -->
   <target name="jar" depends="test,get-builder,get-version">
-    <jar destfile="${release}/${basename}.jar"
+    <jar destfile="${release}/${basename}.jar" level="9"
     filesetmanifest="mergewithoutmain">
       <manifest>
         <attribute name="Main-Class" value="${main-class}" />
