@@ -3,7 +3,10 @@ package view.map.main;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JCheckBoxMenuItem;
@@ -28,6 +31,10 @@ public class FixtureFilterMenu extends JMenu implements ZOrderFilter,
 	 */
 	private final Map<Class<? extends TileFixture>, JCheckBoxMenuItem> mapping =
 			new HashMap<>();
+	/**
+	 * The list of menu item names.
+	 */
+	private final List<String> itemNames = new ArrayList<>();
 	/**
 	 * Constructor.
 	 */
@@ -63,7 +70,11 @@ public class FixtureFilterMenu extends JMenu implements ZOrderFilter,
 		} else {
 			item = new JCheckBoxMenuItem(fix.plural(), true);
 			mapping.put(fix.getClass(), item);
-			add(item);
+			final String text = fix.plural();
+			itemNames.add(text);
+			Collections.sort(itemNames);
+			final int index = itemNames.indexOf(text);
+			add(item, index + 3); // "All", "None", and the separator
 		}
 		return item.isSelected();
 	}
