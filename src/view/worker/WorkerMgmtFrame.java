@@ -43,7 +43,6 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import util.NullCleaner;
 import util.TypesafeLogger;
-import view.util.ApplicationFrame;
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
@@ -57,7 +56,7 @@ import controller.map.report.ReportGenerator;
  * @author Jonathan Lovelace
  *
  */
-public class WorkerMgmtFrame extends ApplicationFrame {
+public class WorkerMgmtFrame extends JFrame {
 	/**
 	 * The header to put above the report.
 	 */
