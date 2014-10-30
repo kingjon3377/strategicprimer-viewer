@@ -3,12 +3,12 @@ package view.map.main;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 
+import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
 
 import model.viewer.IViewerModel;
 import view.map.details.DetailPanelNG;
-import view.util.ApplicationFrame;
 import view.util.SplitWithWeights;
 import controller.map.misc.IOHandler;
 
@@ -18,7 +18,7 @@ import controller.map.misc.IOHandler;
  * @author Jonathan Lovelace
  *
  */
-public final class ViewerFrame extends ApplicationFrame {
+public final class ViewerFrame extends JFrame {
 	/**
 	 * Default width of the Frame.
 	 */

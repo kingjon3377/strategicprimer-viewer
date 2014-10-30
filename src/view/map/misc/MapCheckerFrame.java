@@ -9,13 +9,13 @@ import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.xml.stream.XMLStreamException;
 
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
-import view.util.ApplicationFrame;
 import view.util.StreamingLabel;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
@@ -27,7 +27,7 @@ import controller.map.misc.MapReaderAdapter;
  * @author Jonathan Lovelace
  *
  */
-public class MapCheckerFrame extends ApplicationFrame {
+public class MapCheckerFrame extends JFrame {
 	/**
 	 * The color to use for errors.
 	 */

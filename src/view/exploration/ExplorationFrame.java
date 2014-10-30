@@ -7,12 +7,12 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
 import model.exploration.ExplorationModel;
 import model.listeners.CompletionListener;
 import util.NullCleaner;
-import view.util.ApplicationFrame;
 import controller.map.misc.MultiIOHandler;
 
 /**
@@ -20,7 +20,7 @@ import controller.map.misc.MultiIOHandler;
  *
  * @author Jonathan Lovelace
  */
-public class ExplorationFrame extends ApplicationFrame {
+public class ExplorationFrame extends JFrame {
 	/**
 	 * The exploration model.
 	 */

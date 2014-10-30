@@ -15,7 +15,6 @@ import model.workermgmt.IWorkerTreeModel;
 import model.workermgmt.JobTreeModel;
 import model.workermgmt.WorkerTreeModelAlt;
 import view.util.AddRemovePanel;
-import view.util.ApplicationFrame;
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
@@ -28,7 +27,7 @@ import controller.map.misc.IOHandler;
  * @author Jonathan Lovelace
  *
  */
-public class AdvancementFrame extends ApplicationFrame {
+public class AdvancementFrame extends JFrame {
 	/**
 	 * The text of the relevant button. Can't be private without causing
 	 * warnings, since it's used in an inner class.
