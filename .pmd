@@ -53,7 +53,7 @@
         </rule>
         <rule>
             <name>CollapsibleIfStatements</name>
-            <ruleset>Basic</ruleset>
+            <ruleset>Basic Velocity</ruleset>
         </rule>
         <rule>
             <name>DontCallThreadRun</name>
@@ -293,7 +293,7 @@
         </rule>
         <rule>
             <name>AvoidDeeplyNestedIfStmts</name>
-            <ruleset>Design</ruleset>
+            <ruleset>Basic Velocity</ruleset>
         </rule>
         <rule>
             <name>AvoidInstanceofChecksInCatchClause</name>
@@ -305,7 +305,7 @@
         </rule>
         <rule>
             <name>AvoidReassigningParameters</name>
-            <ruleset>Design</ruleset>
+            <ruleset>Basic Velocity</ruleset>
         </rule>
         <rule>
             <name>AvoidSynchronizedAtMethodLevel</name>
@@ -472,10 +472,6 @@
             <ruleset>Design</ruleset>
         </rule>
         <rule>
-            <name>UseSingleton</name>
-            <ruleset>Design</ruleset>
-        </rule>
-        <rule>
             <name>UseVarargs</name>
             <ruleset>Design</ruleset>
         </rule>
@@ -489,7 +485,7 @@
         </rule>
         <rule>
             <name>EmptyIfStmt</name>
-            <ruleset>Empty Code</ruleset>
+            <ruleset>Basic Velocity</ruleset>
         </rule>
         <rule>
             <name>EmptyInitializer</name>
