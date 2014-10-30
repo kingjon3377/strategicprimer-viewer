@@ -58,6 +58,12 @@ import controller.map.misc.MapReaderAdapter;
  */
 public class StatGeneratingCLIDriver implements ISPDriver {
 	/**
+	 * The prompt to use to ask the user if he or she wants to load names from
+	 * file and generate new stats.
+	 */
+	private static final String LOAD_NAMES =
+			"Load names from file and use randomly generated stats? ";
+	/**
 	 * The prompt to use to ask the user if he or she wants to enter
 	 * pregenerated stats for workers that already exist.
 	 */
@@ -440,7 +446,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 				if (unitNum >= 0 && unitNum < units.size()) {
 					final IUnit unit = units.get(unitNum);
 					if (unit != null) {
-						if (cli.inputBoolean("Load names from file and use randomly generated stats? ")) {
+						if (cli.inputBoolean(LOAD_NAMES)) {
 							createWorkersFromFile(model, idf, unit);
 						} else {
 							createWorkers(model, idf, unit);
@@ -472,7 +478,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 								(IMutableTile) tile);
 					}
 				}
-				if (cli.inputBoolean("Load names from file and use randomly generated stats? ")) {
+				if (cli.inputBoolean(LOAD_NAMES)) {
 					createWorkersFromFile(model, idf, unit);
 				} else {
 					createWorkers(model, idf, unit);
