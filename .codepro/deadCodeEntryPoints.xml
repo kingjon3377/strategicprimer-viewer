@@ -379,6 +379,12 @@
 				handle="=viewer/src&lt;view.util{package-info.java#"/>
 		<explicit-entry-point
 				handle="viewer/src&lt;view.util{package-info.java#org.eclipse.jd.annotation.NonNullByDefault"/>
+		<explicit-entry-point
+				handle="=viewer/src&lt;view.util{ErrorShower.java[ErrorShower~ErrorShower"/>
+		<explicit-entry-point
+				handle="=viewer/src&lt;view.util{DriverQuit.java[DriverQuit~DriverQuit"/>
+		<explicit-entry-point
+				handle="=viewer/src&lt;view.util{StreamingLabel.java[StreamingLabel~getWriter"/>
 	</explicit-entry-points>
 	<include-main
 			enabled="true"/>
