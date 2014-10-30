@@ -66,7 +66,7 @@ public interface IWorkerTreeModel extends TreeModel, NewUnitListener,
 	 */
 	void dismissUnitMember(UnitMember member);
 	/**
-	 * Unit members that have been dismissed during this session.
+	 * @return Unit members that have been dismissed during this session.
 	 */
 	Iterable<UnitMember> dismissed();
 }
