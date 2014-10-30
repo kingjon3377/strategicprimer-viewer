@@ -2,7 +2,6 @@ package controller.map.drivers;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
@@ -39,20 +38,6 @@ public final class EchoDriver implements ISPDriver {
 	 */
 	private static final Logger LOGGER = TypesafeLogger
 			.getLogger(EchoDriver.class);
-
-	/**
-	 * Main.
-	 *
-	 * @param args command-line arguments: the filename to read from and the
-	 *        filename to write to. These may be the same.
-	 */
-	public static void main(final String[] args) {
-		try {
-			new EchoDriver().startDriver(args);
-		} catch (final DriverFailedException except) {
-			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
-		}
-	}
 
 	/**
 	 * Run the driver.

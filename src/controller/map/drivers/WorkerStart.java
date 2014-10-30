@@ -7,19 +7,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.stream.XMLStreamException;
 
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
-import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
 import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
-import view.util.ErrorShower;
 import view.util.FilteredFileChooser;
 import view.worker.WorkerMgmtFrame;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
@@ -127,29 +123,6 @@ public class WorkerStart implements ISPDriver {
 					+ file.getPath(), e);
 		} catch (final SPFormatException e) {
 			throw new DriverFailedException(INV_DATA_ERROR, e);
-		}
-	}
-
-	/**
-	 * Run the app.
-	 *
-	 * @param args Command-line arguments. args[0] is the map filename, others
-	 *        are ignored. TODO: add option handling.
-	 */
-	public static void main(final String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException | UnsupportedLookAndFeelException except) {
-			LOGGER.log(Level.SEVERE,
-					"Failed to switch to system look-and-feel", except);
-		}
-		try {
-			new WorkerStart().startDriver(args);
-		} catch (final DriverFailedException except) {
-			final String message = NullCleaner.assertNotNull(except.getMessage());
-			LOGGER.log(Level.SEVERE, message, except.getCause());
-			ErrorShower.showErrorDialog(null, message);
 		}
 	}
 

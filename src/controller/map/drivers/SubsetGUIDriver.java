@@ -2,12 +2,9 @@ package controller.map.drivers;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.stream.XMLStreamException;
 
 import util.TypesafeLogger;
@@ -40,25 +37,6 @@ public class SubsetGUIDriver implements ISPDriver {
 			"Check that subordinate maps are subsets of the main map, containing "
 					+ "nothing that it does not contain in the same place",
 			SubsetGUIDriver.class);
-
-	/**
-	 * @param args the files to check
-	 */
-	// ESCA-JAVA0177:
-	public static void main(final String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException | UnsupportedLookAndFeelException except) {
-			LOGGER.log(Level.SEVERE,
-					"Failed to switch to system look-and-feel", except);
-		}
-		try {
-			new SubsetGUIDriver().startDriver(args);
-		} catch (final DriverFailedException except) {
-			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
-		}
-	}
 
 	/**
 	 * Run the driver.

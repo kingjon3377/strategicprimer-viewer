@@ -56,19 +56,6 @@ public class ReaderComparator implements ISPDriver {
 	 */
 	private final IMapReader two = new CompactXMLReader();
 	/**
-	 * Driver method.
-	 *
-	 * @param args The maps to test the two readers on.
-	 */
-	public static void main(final String[] args) {
-		try {
-			new ReaderComparator().startDriver(args);
-		} catch (final DriverFailedException except) {
-			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
-		}
-	}
-
-	/**
 	 * Compare the two readers.
 	 *
 	 * @param args The list of specified files to compare them on

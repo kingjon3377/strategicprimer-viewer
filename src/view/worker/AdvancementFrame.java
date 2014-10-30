@@ -5,6 +5,7 @@ import static javax.swing.JSplitPane.VERTICAL_SPLIT;
 
 import java.awt.Dimension;
 
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;

@@ -3,7 +3,6 @@ package controller.map.drivers;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
@@ -37,19 +36,6 @@ public class WorkerReportDriver implements ISPDriver {
 	 */
 	private static final Logger LOGGER = TypesafeLogger
 			.getLogger(ViewerFrame.class);
-
-	/**
-	 * Run the driver.
-	 *
-	 * @param args command-line arguments.
-	 */
-	public static void main(final String[] args) {
-		try {
-			new WorkerReportDriver().startDriver(args);
-		} catch (final DriverFailedException except) {
-			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
-		}
-	}
 
 	/**
 	 * Start the driver.

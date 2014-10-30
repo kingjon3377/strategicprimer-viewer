@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -17,7 +16,6 @@ import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.resources.CacheFixture;
-import util.TypesafeLogger;
 import util.Warning;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
@@ -41,18 +39,6 @@ public class DuplicateFixtureRemover implements ISPDriver {
 			"Remove duplicate fixtures---identical except ID# "
 					+ "and on the same tile---from a map.",
 			DuplicateFixtureRemover.class);
-
-	/**
-	 * @param args the list of maps to run the filter on
-	 */
-	public static void main(final String[] args) {
-		try {
-			new DuplicateFixtureRemover().startDriver(args);
-		} catch (final DriverFailedException except) {
-			TypesafeLogger.getLogger(DuplicateFixtureRemover.class).log(
-					Level.SEVERE, except.getMessage(), except.getCause());
-		}
-	}
 
 	/**
 	 * "Remove" (at first we just report) duplicate fixtures (i.e. hills,
