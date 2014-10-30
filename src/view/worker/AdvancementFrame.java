@@ -5,18 +5,15 @@ import static javax.swing.JSplitPane.VERTICAL_SPLIT;
 
 import java.awt.Dimension;
 
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
-import javax.swing.text.View;
 
 import model.map.Player;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
 import model.workermgmt.JobTreeModel;
 import model.workermgmt.WorkerTreeModelAlt;
-import util.NullCleaner;
 import view.util.AddRemovePanel;
 import view.util.ApplicationFrame;
 import view.util.BorderedPanel;
@@ -119,31 +116,5 @@ public class AdvancementFrame extends ApplicationFrame {
 	 */
 	private static JLabel htmlize(final String string) {
 		return new JLabel("<html><p align=\"left\">" + string + "</p></html>");
-	}
-
-	/**
-	 * Get a label's size given a fixed width. Adapted from
-	 * http://blog.nobel-joergensen
-	 * .com/2009/01/18/changing-preferred-size-of-a-html-jlabel/
-	 *
-	 * @param component the component we're laying out
-	 * @param width the width we're working within
-	 * @return the "ideal" dimensions for the component
-	 */
-	public static Dimension getComponentPreferredSize(
-			final JComponent component, final int width) {
-		final View view = (View) component
-				.getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey);
-		final Dimension defDim = component.getPreferredSize();
-		if (view == null) {
-			return NullCleaner.valueOrDefault(defDim, new Dimension(width, // NOPMD
-					width));
-		} else {
-			view.setSize(width, 0);
-			final int wid = (int) Math.ceil(view.getPreferredSpan(View.X_AXIS));
-			final int height = (int) Math.ceil(view
-					.getPreferredSpan(View.Y_AXIS));
-			return new Dimension(wid, height);
-		}
 	}
 }
