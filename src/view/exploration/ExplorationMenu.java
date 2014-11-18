@@ -101,6 +101,9 @@ public class ExplorationMenu extends JMenuBar {
 					}
 				}));
 		fileMenu.addSeparator();
+		fileMenu.add(createMenuItem("About", KeyEvent.VK_B,
+				createHotkey(KeyEvent.VK_B), "Show development credits", ioh));
+		fileMenu.addSeparator();
 		fileMenu.add(createMenuItem("Quit", KeyEvent.VK_Q,
 				createHotkey(KeyEvent.VK_Q), "Quit the application",
 				new ActionListener() {

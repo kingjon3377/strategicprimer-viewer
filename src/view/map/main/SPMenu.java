@@ -1,5 +1,8 @@
 package view.map.main;
 
+import static view.util.MenuItemCreator.createHotkey;
+import static view.util.MenuItemCreator.createMenuItem;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -186,6 +189,10 @@ public class SPMenu extends JMenuBar {
 						}
 					}
 				}));
+		fileMenu.addSeparator();
+		fileMenu.add(createMenuItem("About", KeyEvent.VK_B,
+				createHotkey(KeyEvent.VK_B), "Show development credits", handler));
+		fileMenu.addSeparator();
 		fileMenu.add(MenuItemCreator.createMenuItem("Quit", KeyEvent.VK_Q,
 				MenuItemCreator.createHotkey(KeyEvent.VK_Q), "Quit the viewer",
 				new ActionListener() {

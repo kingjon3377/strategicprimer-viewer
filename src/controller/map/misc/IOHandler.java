@@ -25,6 +25,7 @@ import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import view.map.main.ViewerFrame;
+import view.util.AboutDialog;
 import view.util.ErrorShower;
 import controller.map.formatexceptions.SPFormatException;
 
@@ -103,6 +104,8 @@ public class IOHandler implements ActionListener {
 				saveMapAs(model.getMap(), source);
 			} else if ("New".equals(event.getActionCommand())) {
 				startNewViewerWindow();
+			} else if ("About".equals(event.getActionCommand())) {
+				new AboutDialog(source, "Exploration Helper").setVisible(true);
 			}
 		}
 	}
