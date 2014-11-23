@@ -4,9 +4,11 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -20,6 +22,8 @@ import model.map.fixtures.mobile.Unit;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.IsNumeric;
+import util.NullCleaner;
 import view.util.ListenedButton;
 import controller.map.misc.IDFactory;
 
@@ -55,6 +59,11 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 	 */
 	private final JTextField kindField = new JTextField(10);
 	/**
+	 * The field to let the user specify the unit's ID #.
+	 */
+	private final JTextField idField = new JFormattedTextField(
+			NumberFormat.getIntegerInstance());
+	/**
 	 * Maximum and preferred height for the dialog.
 	 */
 	private static final int PREF_HEIGHT = 90;
@@ -72,11 +81,15 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 		owner = player;
 		idf = idFactory;
 
-		add(new JLabel("Unit name: "));
+		add(new JLabel("<html><b>Unit name:&nbsp;</b></html>"));
 		add(setupField(nameField));
 
-		add(new JLabel("Kind of unit: "));
+		add(new JLabel("<html><b>Kind of unit:&nbsp;</b></html>"));
 		add(setupField(kindField));
+
+		add(new JLabel("ID #: "));
+		idField.setColumns(10);
+		add(setupField(idField));
 
 		add(new ListenedButton("OK", this));
 		add(new ListenedButton("Cancel", this));
@@ -114,8 +127,15 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 			} else if (kind.isEmpty()) {
 				kindField.requestFocusInWindow();
 			} else {
+				String reqId = NullCleaner.assertNotNull(idField.getText().trim());
+				int idNum;
+				if (IsNumeric.isNumeric(reqId)) {
+					idNum = Integer.parseInt(reqId);
+				} else {
+					idNum = idf.createID();
+				}
 				final IUnit unit = new Unit(owner, kind,
-						name, idf.createID());
+						name, idNum);
 				for (final NewUnitListener list : nuListeners) {
 					list.addNewUnit(unit);
 				}
