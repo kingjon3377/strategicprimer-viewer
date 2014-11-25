@@ -39,9 +39,7 @@ public class Troll implements MobileFixture, HasImage, UnitMember {
 	}
 
 	/**
-	 * TODO: credit in 'About' box
-	 *
-	 * This image comes from a Flickr user who asks to be credited as 'www.36peas.com'
+	 * Image comes from a Flickr user who asks to be credited as 'www.36peas.com'.
 	 *
 	 * @return the name of an image to represent the troll
 	 */
