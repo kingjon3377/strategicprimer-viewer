@@ -15,7 +15,13 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class MiningCLI {
+public final class MiningCLI {
+	/**
+	 * Do not instantiate.
+	 */
+	private MiningCLI() {
+		// Do nothing
+	}
 	/**
 	 * @param args
 	 *            Arg 0 is the name of a file to write the CSV to; Arg 1 is the
