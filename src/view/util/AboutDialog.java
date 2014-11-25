@@ -44,6 +44,7 @@ public class AboutDialog extends JDialog {
 		builder.append(
 				"<p>Unit image by jreijonen from <a href=\"http://opengameart.org/content/faction-symbols-allies-axis\">OpenGameArt</a></p>");
 		builder.append("<p>Cave image by MrBeast from <a href=\"http://opengameart.org/content/cave-tileset-0\">OpenGameArt</a></p>");
+		builder.append("<p>Minotaur, troll, and ogre images by 'www.36peas.com', licensed under CC-BY</p>");
 		builder.append("<p>Code managing the Window menu adapted from BSD-licensed code by Jeremy Wood, downloaded from <a href=\"http://javagraphics.java.net\">javagraphics.java.net</a></p>");
 		builder.append("<p>Pair implementation by Peter Lawrey on <a href=\"https://stackoverflow.com/a/3646398\">StackOverflow</a>.</p>");
 		builder.append(
