@@ -59,7 +59,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace (fixups to match repository standards; hacks to fit
  *         our needs)
  */
-public class WindowList {
+public final class WindowList {
 	/**
 	 * The objects listening for changes to any of the windows.
 	 */
