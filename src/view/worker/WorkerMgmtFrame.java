@@ -127,13 +127,17 @@ public class WorkerMgmtFrame extends JFrame {
 						JSplitPane.VERTICAL_SPLIT, TWO_THIRDS, TWO_THIRDS,
 						new BorderedPanel(new JScrollPane(tree), plabel, null,
 								null, null),
-						new BorderedPanel(ordersPanel, new ListenedButton(
-								"Add New Unit", new WindowShower(newUnitFrame,
-										"Add New Unit")), new ListenedButton(
-								"Export a proto-strategy from units' orders",
-								new ExportButtonHandler(outer, smodel, wtmodel)), null,
-								null)), new BorderedPanel(new JScrollPane(
-						report), new JLabel(RPT_HDR), null, null, null)));
+						new BorderedPanel(
+								ordersPanel,
+								new ListenedButton("Add New Unit",
+										new WindowShower(newUnitFrame,
+												"Add New Unit")),
+								new ListenedButton(
+										"Export a proto-strategy from units' orders",
+										new ExportButtonHandler(outer, smodel,
+												wtmodel)), null, null)),
+				new BorderedPanel(new JScrollPane(report), new JLabel(RPT_HDR),
+						null, null, null)));
 
 		setJMenuBar(new WorkerMenu(ioHandler, this, pch));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
