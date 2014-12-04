@@ -79,8 +79,8 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 		}
 		final TextFixture fix =
 				new TextFixture(NullCleaner.assertNotNull(sbuild.toString()
-						.trim()), Integer.parseInt(getParameter(element,
-						"turn", "-1")));
+						.trim()), parseInt(getParameter(element,
+						"turn", "-1"), element.getLocation().getLineNumber()));
 		fix.setImage(getParameter(element, "image", ""));
 		return fix;
 	}

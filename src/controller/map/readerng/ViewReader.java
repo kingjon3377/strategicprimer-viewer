@@ -73,9 +73,14 @@ public class ViewReader implements INodeHandler<MapView> {
 		requireMapTag(event, element);
 		final MapView view =
 				new MapView(MAP_READER.parse(event, stream, players, warner,
-						idFactory), Integer.parseInt(getAttribute(element,
-						"current_player")), Integer.parseInt(getAttribute(
-						element, "current_turn")));
+						idFactory), XMLHelper.parseInt(
+						getAttribute(element, "current_player"),
+						NullCleaner.assertNotNull(element.getLocation())),
+						XMLHelper
+								.parseInt(
+										getAttribute(element, "current_turn"),
+										NullCleaner.assertNotNull(element
+												.getLocation())));
 		XMLHelper.spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		return view;
 	}

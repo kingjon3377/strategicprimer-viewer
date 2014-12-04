@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -198,10 +200,15 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener,
 			} else {
 				final Worker retval = new Worker(nameText, raceText,
 						idf.createID());
-				retval.setStats(new WorkerStats(parseInt(hpBox),
-						parseInt(maxHP), parseInt(str), parseInt(dex),
-						parseInt(con), parseInt(intel), parseInt(wis),
-						parseInt(cha)));
+				try {
+					retval.setStats(new WorkerStats(parseInt(hpBox),
+							parseInt(maxHP), parseInt(str), parseInt(dex),
+							parseInt(con), parseInt(intel), parseInt(wis),
+							parseInt(cha)));
+				} catch (ParseException e) {
+					ErrorShower.showErrorDialog(this, "All stats must be numbers");
+					return;
+				}
 				for (final NewWorkerListener list : nwListeners) {
 					list.addNewWorker(retval);
 				}
@@ -213,13 +220,18 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener,
 			dispose();
 		}
 	}
-
+	/**
+	 * Number parser.
+	 */
+	private static final NumberFormat NUM_PARSER = NullCleaner
+			.assertNotNull(NumberFormat.getIntegerInstance());
 	/**
 	 * @param box a text field
 	 * @return the integer value of its text
+	 * @throws ParseException on non-numeric input
 	 */
-	private static int parseInt(final JTextField box) {
-		return Integer.parseInt(box.getText().trim());
+	private static int parseInt(final JTextField box) throws ParseException {
+		return NUM_PARSER.parse(box.getText().trim()).intValue();
 	}
 
 	/**

@@ -4,11 +4,15 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -34,6 +38,7 @@ import model.map.TileType;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.IsNumeric;
+import util.NullCleaner;
 import util.Pair;
 import view.map.details.FixtureList;
 import view.util.BorderedPanel;
@@ -194,6 +199,16 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 		buttons.put(direction, dtb);
 		seconds.put(direction, secPCS);
 	}
+	/**
+	 * A parser for numeric input.
+	 */
+	private static final NumberFormat NUM_PARSER = NullCleaner
+			.assertNotNull(NumberFormat.getIntegerInstance());
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger
+			.getLogger(ExplorationPanel.class.getName()));
 
 	/**
 	 * Account for a movement cost.
@@ -204,7 +219,13 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 	public void deduct(final int cost) {
 		final String mpText = mpField.getText().trim();
 		if (mpText != null && IsNumeric.isNumeric(mpText)) {
-			int mpoints = Integer.parseInt(mpText);
+			int mpoints;
+			try {
+				mpoints = NUM_PARSER.parse(mpText).intValue();
+			} catch (ParseException e) {
+				LOGGER.log(Level.SEVERE, "Non-numeic data in movement-points field", e);
+				return;
+			}
 			mpoints -= cost;
 			mpField.setText(Integer.toString(mpoints));
 		}

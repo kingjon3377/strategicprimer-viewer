@@ -45,12 +45,13 @@ public class MineralReader implements INodeHandler<MineralVein> {
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		final MineralVein fix = new MineralVein(
-				getAttributeWithDeprecatedForm(element, "kind", "mineral",
-						warner),
-				Boolean.parseBoolean(getAttribute(element, "exposed")),
-				Integer.parseInt(getAttribute(element, "dc")), getOrGenerateID(
-						element, warner, idFactory));
+		final MineralVein fix =
+				new MineralVein(getAttributeWithDeprecatedForm(element, "kind",
+						"mineral", warner), Boolean.parseBoolean(getAttribute(
+						element, "exposed")), XMLHelper.parseInt(
+						getAttribute(element, "dc"),
+						NullCleaner.assertNotNull(element.getLocation())),
+						getOrGenerateID(element, warner, idFactory));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}

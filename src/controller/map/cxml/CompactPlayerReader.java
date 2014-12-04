@@ -27,7 +27,6 @@ public final class CompactPlayerReader extends AbstractCompactReader<Player> {
 	 * Singleton object.
 	 */
 	public static final CompactPlayerReader READER = new CompactPlayerReader();
-
 	/**
 	 * Singleton.
 	 */
@@ -54,8 +53,9 @@ public final class CompactPlayerReader extends AbstractCompactReader<Player> {
 		requireNonEmptyParameter(element, "number", true, warner);
 		requireNonEmptyParameter(element, "code_name", true, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		return new Player(Integer.parseInt(getParameter(element, "number")),
-				getParameter(element, "code_name"));
+		return new Player(parseInt(getParameter(element, "number"), element
+				.getLocation().getLineNumber()), getParameter(element,
+				"code_name"));
 	}
 
 	/**

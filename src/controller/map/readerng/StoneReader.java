@@ -44,12 +44,13 @@ public class StoneReader implements INodeHandler<StoneDeposit> {
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		final StoneDeposit fix = new StoneDeposit(
-				StoneKind.parseStoneKind(XMLHelper
+		final StoneDeposit fix =
+				new StoneDeposit(StoneKind.parseStoneKind(XMLHelper
 						.getAttributeWithDeprecatedForm(element, "kind",
-								"stone", warner)), Integer.parseInt(XMLHelper
-						.getAttribute(element, "dc")), getOrGenerateID(element,
-						warner, idFactory));
+								"stone", warner)), XMLHelper.parseInt(
+						XMLHelper.getAttribute(element, "dc"),
+						NullCleaner.assertNotNull(element.getLocation())),
+						getOrGenerateID(element, warner, idFactory));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}

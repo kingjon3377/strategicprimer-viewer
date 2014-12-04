@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -122,8 +124,8 @@ public final class TableLoader { // NOPMD
 		}
 		final int rows;
 		try {
-			rows = Integer.parseInt(line);
-		} catch (NumberFormatException except) {
+			rows = NumberFormat.getIntegerInstance().parse(line).intValue();
+		} catch (NumberFormatException | ParseException except) {
 			throw new IOException(
 					"File doesn't start with number of rows of quadrants", except);
 		}

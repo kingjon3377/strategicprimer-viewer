@@ -3,6 +3,8 @@ package controller.map.drivers;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.NumberFormat;
+import java.text.ParseException;
 
 import model.map.Point;
 import model.map.PointFactory;
@@ -35,7 +37,14 @@ public final class MiningCLI {
 			System.exit(1);
 			return;
 		}
-		final int index = Integer.parseInt(args[1]);
+		int index;
+		try {
+			index = NumberFormat.getIntegerInstance().parse(args[1]).intValue();
+		} catch (ParseException e) {
+			System.err.println("Non-numeric status index");
+			System.exit(2);
+			return;
+		}
 		final LodeStatus initial =
 				NullCleaner.assertNotNull(LodeStatus.values()[index]);
 		final long seed;

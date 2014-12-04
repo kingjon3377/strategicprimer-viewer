@@ -6,6 +6,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -28,6 +30,11 @@ public class CLIHelper implements ICLIHelper {
 	 * The input stream we'll read from.
 	 */
 	private final BufferedReader istream;
+	/**
+	 * A parser for numbers.
+	 */
+	private static final NumberFormat NUM_PARSER = NullCleaner
+			.assertNotNull(NumberFormat.getIntegerInstance());
 
 	/**
 	 * No-arg constructor.
@@ -132,7 +139,11 @@ public class CLIHelper implements ICLIHelper {
 			if (input == null) {
 				throw new IOException("Null line of input");
 			} else if (IsNumeric.isNumeric(input)) {
-				retval = Integer.parseInt(input);
+				try {
+					retval = NUM_PARSER.parse(input).intValue();
+				} catch (ParseException e) {
+					throw new NumberFormatException("Failed to parse number from input");
+				}
 			}
 		}
 		return retval;

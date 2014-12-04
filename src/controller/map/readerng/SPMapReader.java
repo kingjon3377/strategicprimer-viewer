@@ -1,12 +1,12 @@
 package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getAttribute;
-import static java.lang.Integer.parseInt;
 import static util.NullCleaner.assertNotNull;
 
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -66,10 +66,11 @@ public class SPMapReader implements INodeHandler<SPMap> {
 			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
+		final Location loc = NullCleaner.assertNotNull(element.getLocation());
 		final SPMap map = new SPMap(new MapDimensions(
-				Integer.parseInt(getAttribute(element, "rows")),
-				Integer.parseInt(getAttribute(element, "columns")),
-				Integer.parseInt(getAttribute(element, "version", "1"))));
+				XMLHelper.parseInt(getAttribute(element, "rows"), loc),
+				XMLHelper.parseInt(getAttribute(element, "columns"), loc),
+				XMLHelper.parseInt(getAttribute(element, "version", "1"), loc)));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				parseChild(stream, warner, map,
@@ -83,8 +84,8 @@ public class SPMapReader implements INodeHandler<SPMap> {
 		if (XMLHelper.hasAttribute(element, "current_player")) {
 			map.getPlayers()
 					.getPlayer(
-							Integer.parseInt(getAttribute(element,
-									"current_player"))).setCurrent(true);
+							XMLHelper.parseInt(getAttribute(element,
+									"current_player"), loc)).setCurrent(true);
 		}
 		return map;
 	}
@@ -114,8 +115,12 @@ public class SPMapReader implements INodeHandler<SPMap> {
 			// We deliberately ignore "row"; that had been a "continue",
 			// but we want to extract this as a method.
 			if ("tile".equalsIgnoreCase(type)) {
-				final int row = parseInt(getAttribute(elem, "row"));
-				final int col = parseInt(getAttribute(elem, "column"));
+				final int row =
+						XMLHelper.parseInt(getAttribute(elem, "row"),
+								NullCleaner.assertNotNull(elem.getLocation()));
+				final int col =
+						XMLHelper.parseInt(getAttribute(elem, "column"),
+								NullCleaner.assertNotNull(elem.getLocation()));
 				final Point loc = PointFactory.point(row, col);
 				map.addTile(loc, TILE_READER.parse(elem, stream,
 						map.getPlayers(), warner, idFactory));

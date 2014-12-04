@@ -44,8 +44,10 @@ public class BattlefieldReader implements INodeHandler<Battlefield> {
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		final Battlefield fix = new Battlefield(Integer.parseInt(getAttribute(
-				element, "dc")), getOrGenerateID(element, warner, idFactory));
+		final Battlefield fix =
+				new Battlefield(XMLHelper.parseInt(getAttribute(element, "dc"),
+						NullCleaner.assertNotNull(element.getLocation())), getOrGenerateID(element,
+						warner, idFactory));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}

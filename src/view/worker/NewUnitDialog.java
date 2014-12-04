@@ -5,8 +5,11 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -61,13 +64,16 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 	/**
 	 * The field to let the user specify the unit's ID #.
 	 */
-	private final JTextField idField = new JFormattedTextField(
+	private final JFormattedTextField idField = new JFormattedTextField(
 			NumberFormat.getIntegerInstance());
 	/**
 	 * Maximum and preferred height for the dialog.
 	 */
 	private static final int PREF_HEIGHT = 90;
-
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(NewUnitDialog.class.getName()));
 	/**
 	 * Constructor.
 	 *
@@ -130,7 +136,13 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 				String reqId = NullCleaner.assertNotNull(idField.getText().trim());
 				int idNum;
 				if (IsNumeric.isNumeric(reqId)) {
-					idNum = Integer.parseInt(reqId);
+					try {
+						idNum = NumberFormat.getIntegerInstance().parse(reqId).intValue();
+						idf.register(idNum);
+					} catch (ParseException e) {
+						LOGGER.log(Level.INFO, "Parse error parsing user-specified ID", e);
+						idNum = idf.createID();
+					}
 				} else {
 					idNum = idf.createID();
 				}

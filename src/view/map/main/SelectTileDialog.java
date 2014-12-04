@@ -4,6 +4,10 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -15,7 +19,6 @@ import model.viewer.IViewerModel;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import util.IsNumeric;
 import util.NullCleaner;
 import view.util.BoxPanel;
 import view.util.ListenedButton;
@@ -129,23 +132,28 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 		 */
 		Overflow;
 	}
-
+	/**
+	 * The parser to use for checking nnumbers.
+	 */
+	private static final NumberFormat NUM_PARSER = NullCleaner
+			.assertNotNull(NumberFormat.getIntegerInstance());
 	/**
 	 * @param text a String to test, representing a number
 	 * @param bound its maximum value
 	 * @return a State representing any problems with it.
 	 */
 	private static State checkNumber(final String text, final int bound) {
-		if (IsNumeric.isNumeric(text)) {
-			if (Integer.parseInt(text) < 0) {
-				return State.Negative; // NOPMD
-			} else if (Integer.parseInt(text) > bound) {
-				return State.Overflow; // NOPMD
+		try {
+			int num = NUM_PARSER.parse(text).intValue();
+			if (num < 0) {
+				return State.Negative;
+			} else if (num > bound) {
+				return State.Overflow;
 			} else {
-				return State.Valid; // NOPMD
+				return State.Valid;
 			}
-		} else {
-			return State.Nonnumeric; // NOPMD
+		} catch (ParseException e) {
+			return State.Nonnumeric;
 		}
 	}
 
@@ -171,7 +179,11 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 			throw new IllegalStateException("Default case of enum switch");
 		}
 	}
-
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger
+			.getLogger(SelectTileDialog.class.getName()));
 	/**
 	 * Handle the OK button.
 	 *
@@ -196,8 +208,12 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 			row.selectAll();
 		}
 		if (rowState == State.Valid && colState == State.Valid) {
-			map.setSelection(PointFactory.point(Integer.parseInt(rowText),
-					Integer.parseInt(colText)));
+			try {
+				map.setSelection(PointFactory.point(NUM_PARSER.parse(rowText).intValue(),
+						NUM_PARSER.parse(colText).intValue()));
+			} catch (ParseException e) {
+				LOGGER.log(Level.SEVERE, "Parse failure after we checked input was numeric", e);
+			}
 			setVisible(false);
 		} else {
 			pack();

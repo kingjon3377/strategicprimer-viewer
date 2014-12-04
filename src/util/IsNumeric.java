@@ -1,5 +1,8 @@
 package util;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
+
 /**
  * A helper class to determine whether a String is numeric or not.
  *
@@ -13,16 +16,21 @@ public final class IsNumeric {
 	private IsNumeric() {
 		// Do nothing.
 	}
-
+	/**
+	 * The NumberFormat object we use for parsing.
+	 */
+	private static final NumberFormat PARSER = NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
 	/**
 	 * @param string a String
 	 * @return whether it contains numeric data or not
 	 */
 	public static boolean isNumeric(final String string) {
 		try {
-			Integer.parseInt(string);
+			PARSER.parse(string);
 			return true; // NOPMD
 		} catch (final NumberFormatException except) {
+			return false;
+		} catch (ParseException e) {
 			return false;
 		}
 	}

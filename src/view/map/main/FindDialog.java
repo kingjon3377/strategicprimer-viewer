@@ -6,6 +6,10 @@ import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -34,6 +38,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import util.IsNumeric;
 import util.IteratorWrapper;
+import util.NullCleaner;
 import view.util.BorderedPanel;
 import view.util.BoxPanel;
 import view.util.ListenedButton;
@@ -134,7 +139,16 @@ public class FindDialog extends JDialog implements ActionListener {
 			setVisible(false);
 		}
 	}
-
+	/**
+	 * A parser to convert from strings to integers.
+	 */
+	private static final NumberFormat NUM_PARSER = NullCleaner
+			.assertNotNull(NumberFormat.getIntegerInstance());
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger
+			.getLogger(FindDialog.class.getName()));
 	/**
 	 * Search for the current pattern. If the pattern is found (as the ID of a
 	 * fixture, or the name of a hasName, or the kind of a hasKind), select the
@@ -154,7 +168,11 @@ public class FindDialog extends JDialog implements ActionListener {
 		}
 		int idNum = Integer.MIN_VALUE;
 		if (IsNumeric.isNumeric(pattern)) {
-			idNum = Integer.parseInt(pattern);
+			try {
+				idNum = NUM_PARSER.parse(pattern).intValue();
+			} catch (ParseException e) {
+				LOGGER.log(Level.SEVERE, "Pattern we detected as numeric wasn't", e);
+			}
 		}
 		final Iterable<Point> iter = new IteratorWrapper<>(new PointIterator(
 				map.getMapDimensions(), map.getSelectedPoint(),

@@ -3,6 +3,8 @@ package controller.map.formatexceptions;
 /**
  * A custom exception for XML format errors.
  *
+ * TODO: Take Location rather than int for the location in the XML.
+ *
  * @author Jonathan Lovelace
  *
  */

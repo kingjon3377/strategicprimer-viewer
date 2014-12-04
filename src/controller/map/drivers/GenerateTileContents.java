@@ -5,6 +5,8 @@ import static view.util.SystemOut.SYS_OUT;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -126,12 +128,14 @@ public final class GenerateTileContents {
 		if (args.length < 3) {
 			logger.severe("Usage: GenerateTileContents mapname.xml row col");
 		} else {
+			final NumberFormat numParser = NumberFormat.getIntegerInstance();
 			try {
 				getInstance(NullCleaner.assertNotNull(args[0]))
 						.generateTileContents(
-								PointFactory.point(Integer.parseInt(args[1]),
-										Integer.parseInt(args[2])));
-			} catch (final NumberFormatException e) {
+								PointFactory.point(numParser.parse(args[1])
+										.intValue(), numParser.parse(args[2])
+										.intValue()));
+			} catch (final NumberFormatException | ParseException e) {
 				logger.log(Level.SEVERE, "Non-numeric row or column", e);
 				System.exit(1);
 			} catch (final MapVersionException e) {

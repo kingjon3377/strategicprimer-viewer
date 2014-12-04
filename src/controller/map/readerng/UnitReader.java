@@ -53,11 +53,13 @@ public class UnitReader implements INodeHandler<Unit> {
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "owner", false, warner);
 		requireNonEmptyParameter(element, "name", false, warner);
-		final Unit fix = new Unit(
-				players.getPlayer(Integer.parseInt(ensureNumeric(getAttribute(
-						element, "owner", "-1")))), parseKind(element, warner),
-				getAttribute(element, "name", ""), getOrGenerateID(element,
-						warner, idFactory));
+		final Unit fix =
+				new Unit(players.getPlayer(XMLHelper.parseInt(
+						ensureNumeric(getAttribute(element, "owner", "-1")),
+						NullCleaner.assertNotNull(element.getLocation()))),
+						parseKind(element, warner), getAttribute(element,
+								"name", ""), getOrGenerateID(element, warner,
+								idFactory));
 		XMLHelper.addImage(element, fix);
 		final StringBuilder orders = new StringBuilder();
 		for (final XMLEvent event : stream) {

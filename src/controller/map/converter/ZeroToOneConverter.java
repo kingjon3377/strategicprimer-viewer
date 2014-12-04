@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -116,6 +118,8 @@ public class ZeroToOneConverter {
 	 * @param element the current element
 	 * @param attrs its attributes.
 	 * @return the converted tile, in XML representation
+	 * @throws ParseException if a tile has a nonnumeric 'event'
+	 * @throws NumberFormatException
 	 */
 	private static String convertTile(final StartElement element,
 			final Iterable<Attribute> attrs) {
@@ -125,7 +129,11 @@ public class ZeroToOneConverter {
 		builder.append(element.getName().getLocalPart());
 		for (final Attribute attr : attrs) {
 			if ("event".equalsIgnoreCase(attr.getName().getLocalPart())) {
-				events.push(Integer.valueOf(Integer.parseInt(attr.getValue())));
+				try {
+					events.push(Integer.valueOf(NumberFormat.getIntegerInstance().parse(attr.getValue()).intValue()));
+				} catch (ParseException e) {
+					LOGGER.log(Level.SEVERE, "Non-numeric 'event'", e);
+				}
 			} else {
 				builder.append(printAttribute(attr));
 			}

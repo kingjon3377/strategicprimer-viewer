@@ -48,12 +48,15 @@ public class TownReader implements INodeHandler<Town> {
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		final Town fix = new Town(TownStatus.parseTownStatus(getAttribute(
-				element, "status")), TownSize.parseTownSize(XMLHelper
-				.getAttribute(element, "size")), Integer.parseInt(getAttribute(
-				element, "dc")), getAttribute(element, "name", ""),
-				getOrGenerateID(element, warner, idFactory),
-				getPlayerOrIndependent(element, warner, players));
+		final Town fix =
+				new Town(TownStatus.parseTownStatus(getAttribute(element,
+						"status")), TownSize.parseTownSize(XMLHelper
+						.getAttribute(element, "size")), XMLHelper.parseInt(
+						getAttribute(element, "dc"),
+						NullCleaner.assertNotNull(element.getLocation())),
+						getAttribute(element, "name", ""), getOrGenerateID(
+								element, warner, idFactory),
+						getPlayerOrIndependent(element, warner, players));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}

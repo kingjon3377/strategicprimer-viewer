@@ -3,6 +3,7 @@ package controller.map.readerng;
 import java.util.Collections;
 import java.util.List;
 
+import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -54,15 +55,16 @@ public class StatsReader implements INodeHandler<WorkerStats> {
 			final Iterable<XMLEvent> stream, final IPlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		final WorkerStats retval = new WorkerStats(Integer.parseInt(XMLHelper
-				.getAttribute(element, "hp")), Integer.parseInt(XMLHelper
-				.getAttribute(element, "max")), Integer.parseInt(XMLHelper
-				.getAttribute(element, "str")), Integer.parseInt(XMLHelper
-				.getAttribute(element, "dex")), Integer.parseInt(XMLHelper
-				.getAttribute(element, "con")), Integer.parseInt(XMLHelper
-				.getAttribute(element, "int")), Integer.parseInt(XMLHelper
-				.getAttribute(element, "wis")), Integer.parseInt(XMLHelper
-				.getAttribute(element, "cha")));
+		final Location loc = NullCleaner.assertNotNull(element.getLocation());
+		final WorkerStats retval = new WorkerStats(XMLHelper.parseInt(XMLHelper
+				.getAttribute(element, "hp"), loc), XMLHelper.parseInt(XMLHelper
+				.getAttribute(element, "max"), loc), XMLHelper.parseInt(XMLHelper
+				.getAttribute(element, "str"), loc), XMLHelper.parseInt(XMLHelper
+				.getAttribute(element, "dex"), loc), XMLHelper.parseInt(XMLHelper
+				.getAttribute(element, "con"), loc), XMLHelper.parseInt(XMLHelper
+				.getAttribute(element, "int"), loc), XMLHelper.parseInt(XMLHelper
+				.getAttribute(element, "wis"), loc), XMLHelper.parseInt(XMLHelper
+				.getAttribute(element, "cha"), loc));
 		XMLHelper.spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		return retval;
 	}

@@ -70,8 +70,9 @@ public class JobReader implements INodeHandler<Job> {
 		}
 		final Job retval =
 				new Job(XMLHelper.getAttribute(element, "name"),
-						Integer.parseInt(XMLHelper.getAttribute(element,
-								"level")));
+						XMLHelper.parseInt(XMLHelper.getAttribute(element,
+								"level"), NullCleaner.assertNotNull(element
+								.getLocation())));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final Object result =
