@@ -174,7 +174,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 		final Skill retval =
 				new Skill(getParameter(element, "name"), parseInt(
 						getParameter(element, "level"), element.getLocation()
-								.getLineNumber()), Integer.parseInt(
+								.getLineNumber()), parseInt(
 						getParameter(element, "hours"), element.getLocation()
 								.getLineNumber()));
 		if ("miscellaneous".equals(retval.getName()) && retval.getLevel() > 0) {
