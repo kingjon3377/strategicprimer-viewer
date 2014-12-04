@@ -61,8 +61,9 @@ public class TextReader implements INodeHandler<TextFixture> {
 		}
 		final TextFixture fix =
 				new TextFixture(NullCleaner.assertNotNull(sbuild.toString()
-						.trim()), Integer.parseInt(getAttribute(element,
-						"turn", "-1")));
+						.trim()), XMLHelper.parseInt(
+						getAttribute(element, "turn", "-1"),
+						NullCleaner.assertNotNull(element.getLocation())));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}

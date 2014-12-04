@@ -2,6 +2,9 @@ package controller.map.cxml;
 
 import static java.lang.String.format;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
@@ -17,6 +20,7 @@ import util.Warning;
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.SPMalformedInputException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
 
@@ -211,9 +215,9 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 			throws SPFormatException {
 		if (hasParameter(element, "id")) {
 			try {
-				return idFactory.register(Integer.parseInt(getParameter(element,
-					"id")));
-			} catch (NumberFormatException except) {
+				return idFactory.register(NumberFormat.getIntegerInstance()
+						.parse(getParameter(element, "id")).intValue());
+			} catch (NumberFormatException | ParseException except) {
 				throw new MissingPropertyException(tagOrNull(element.getName()
 						.getLocalPart()), "id", element.getLocation()
 						.getLineNumber());
@@ -318,5 +322,25 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	 */
 	private static String tagOrNull(@Nullable final String tag) {
 		return NullCleaner.valueOrDefault(tag, NULL_TAG);
+	}
+	/**
+	 * A parser for numeric data.
+	 */
+	private static final NumberFormat NUM_PARSER = NullCleaner
+			.assertNotNull(NumberFormat.getIntegerInstance());
+
+	/**
+	 * Parse an integer.
+	 * @param str the text to parse
+	 * @param line the current line in the document
+	 * @throws SPFormatException if the string is nonnumeric or otherwise malformed
+	 */
+	protected static int parseInt(final String str, final int line)
+			throws SPFormatException {
+		try {
+			return NUM_PARSER.parse(str).intValue();
+		} catch (ParseException e) {
+			throw new SPMalformedInputException(line, e);
+		}
 	}
 }

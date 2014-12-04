@@ -2,8 +2,8 @@ package controller.map.readerng;
 
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
+import static controller.map.readerng.XMLHelper.parseInt;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
-import static java.lang.Integer.parseInt;
 
 import java.util.Collections;
 import java.util.List;
@@ -48,10 +48,12 @@ public class FortressReader implements INodeHandler<Fortress> {
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "owner", false, warner);
 		requireNonEmptyParameter(element, "name", false, warner);
-		final Fortress fort = new Fortress(
-				players.getPlayer(parseInt(getAttribute(element, "owner", "-1"))),
-				getAttribute(element, "name", ""), getOrGenerateID(element,
-						warner, idFactory));
+		final Fortress fort =
+				new Fortress(players.getPlayer(parseInt(
+						getAttribute(element, "owner", "-1"),
+						NullCleaner.assertNotNull(element.getLocation()))),
+						getAttribute(element, "name", ""), getOrGenerateID(
+								element, warner, idFactory));
 		XMLHelper.addImage(element, fort);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()

@@ -48,13 +48,15 @@ public class FortificationReader implements INodeHandler<Fortification> {
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		final Fortification fix = new Fortification(
-				TownStatus.parseTownStatus(getAttribute(element, "status")),
-				TownSize.parseTownSize(XMLHelper.getAttribute(element, "size")),
-				Integer.parseInt(getAttribute(element, "dc")), getAttribute(
-						element, "name", ""), getOrGenerateID(element, warner,
-						idFactory), getPlayerOrIndependent(element, warner,
-						players));
+		final Fortification fix =
+				new Fortification(TownStatus.parseTownStatus(getAttribute(
+						element, "status")), TownSize.parseTownSize(XMLHelper
+						.getAttribute(element, "size")), XMLHelper.parseInt(
+						getAttribute(element, "dc"),
+						NullCleaner.assertNotNull(element.getLocation())),
+						getAttribute(element, "name", ""), getOrGenerateID(
+								element, warner, idFactory),
+						getPlayerOrIndependent(element, warner, players));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}

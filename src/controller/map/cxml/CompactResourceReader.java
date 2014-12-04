@@ -241,7 +241,7 @@ public final class CompactResourceReader extends
 	 */
 	private static int getDC(final StartElement element)
 			throws SPFormatException {
-		return Integer.parseInt(getParameter(element, "dc"));
+		return parseInt(getParameter(element, "dc"), element.getLocation().getLineNumber());
 	}
 
 	/**

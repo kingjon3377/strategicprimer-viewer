@@ -1,6 +1,10 @@
 package controller.map.readerng;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
+
 import javax.xml.namespace.QName;
+import javax.xml.stream.Location;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -13,6 +17,7 @@ import util.Warning;
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.SPMalformedInputException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
@@ -26,6 +31,11 @@ import controller.map.misc.IncludingIterator;
  */
 @Deprecated
 public final class XMLHelper {
+	/**
+	 * Parser for numeric input.
+	 */
+	private static final NumberFormat NUM_PARSER = NullCleaner
+			.assertNotNull(NumberFormat.getIntegerInstance());
 	/**
 	 * Do not instantiate.
 	 */
@@ -186,8 +196,8 @@ public final class XMLHelper {
 		// ESCA-JAVA0177:
 		final Player retval; // NOPMD
 		if (hasAttribute(element, "owner")) {
-			retval = players.getPlayer(Integer.parseInt(getAttribute(element,
-					"owner")));
+			retval = players.getPlayer(parseInt(getAttribute(element,
+					"owner"), NullCleaner.assertNotNull(element.getLocation())));
 		} else {
 			warner.warn(new MissingPropertyException(NullCleaner
 					.assertNotNull(element.getName().getLocalPart()), "owner",
@@ -215,8 +225,8 @@ public final class XMLHelper {
 		// ESCA-JAVA0177:
 		final int retval; // NOPMD
 		if (hasAttribute(element, "id")) {
-			retval = idFactory.register(Integer.parseInt(getAttribute(element,
-					"id")));
+			retval = idFactory.register(parseInt(getAttribute(element,
+					"id"), NullCleaner.assertNotNull(element.getLocation())));
 		} else {
 			warner.warn(new MissingPropertyException(NullCleaner
 					.assertNotNull(element.getName().getLocalPart()), "id",
@@ -225,7 +235,20 @@ public final class XMLHelper {
 		}
 		return retval;
 	}
-
+	/**
+	 * @param line the current location in the XML
+	 * @param str a string
+	 * @return the integer it contains, or
+	 * @throws SPFormatException if it is nonnumeric or otherwise malformed
+	 */
+	public static int parseInt(final String str, final Location loc)
+			throws SPFormatException {
+		try {
+			return NUM_PARSER.parse(str).intValue();
+		} catch (ParseException e) {
+			throw new SPMalformedInputException(loc.getLineNumber(), e);
+		}
+	}
 	/**
 	 * @param stream a source of XMLEvents
 	 * @return the file currently being read from if it's an

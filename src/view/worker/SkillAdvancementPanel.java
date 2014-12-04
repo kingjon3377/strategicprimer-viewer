@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,8 +20,10 @@ import model.map.fixtures.mobile.worker.ISkill;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.NullCleaner;
 import util.SingletonRandom;
 import view.util.BoxPanel;
+import view.util.ErrorShower;
 import view.util.ListenedButton;
 
 /**
@@ -87,6 +91,11 @@ public class SkillAdvancementPanel extends BoxPanel implements ActionListener,
 		setMaximumSize(new Dimension(240, MAX_PANEL_HEIGHT));
 	}
 	/**
+	 * Parser for hours field.
+	 */
+	private static final NumberFormat NUM_PARSER = NullCleaner
+			.assertNotNull(NumberFormat.getIntegerInstance());
+	/**
 	 * Handle a button press.
 	 *
 	 * @param evt the event to handle
@@ -99,8 +108,13 @@ public class SkillAdvancementPanel extends BoxPanel implements ActionListener,
 		if ("OK".equalsIgnoreCase(evt.getActionCommand()) && skill != null) {
 			final ISkill skl = skill;
 			final int level = skl.getLevel();
-			skl.addHours(Integer.parseInt(hours.getText()),
-					SingletonRandom.RANDOM.nextInt(SKILL_DIE));
+			try {
+				skl.addHours(NUM_PARSER.parse(hours.getText()).intValue(),
+						SingletonRandom.RANDOM.nextInt(SKILL_DIE));
+			} catch (ParseException e) {
+				ErrorShower.showErrorDialog(this, "Hours to add must be a number");
+				return;
+			}
 			final int newLevel = skl.getLevel();
 			if (newLevel != level) {
 				for (final LevelGainListener list : listeners) {

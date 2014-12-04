@@ -3,6 +3,8 @@ package controller.map.cxml;
 import static util.NullCleaner.assertNotNull;
 
 import java.io.IOException;
+import java.text.NumberFormat;
+import java.text.ParseException;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -25,6 +27,7 @@ import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.SPMalformedInputException;
 import controller.map.formatexceptions.UnsupportedTagException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
@@ -74,12 +77,20 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 								.getLocalPart()), mapElement.getLocation()
 								.getLineNumber());
 			}
-			final MapView retval = new MapView(read(mapElement, stream,
-					players, warner, idFactory), Integer.parseInt(getParameter(
-					element, "current_player")), Integer.parseInt(getParameter(
-					element, "current_turn")));
-			spinUntilEnd(assertNotNull(element.getName()), stream);
-			return retval; // NOPMD:
+			final NumberFormat numParser = NumberFormat.getIntegerInstance();
+			try {
+				final MapView retval =
+						new MapView(read(mapElement, stream, players, warner,
+								idFactory), numParser.parse(
+								getParameter(element, "current_player"))
+								.intValue(), numParser.parse(
+								getParameter(element, "current_turn"))
+								.intValue());
+				spinUntilEnd(assertNotNull(element.getName()), stream);
+				return retval; // NOPMD:
+			} catch (ParseException e) {
+				throw new SPMalformedInputException(mapElement.getLocation().getLineNumber(), e);
+			}
 			// TODO: Perhaps split this into parseMap/parseView?
 		} else {
 			final SPMap retval = new SPMap(new MapDimensions(
@@ -127,13 +138,20 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 			map.addPlayer(CompactPlayerReader.READER.read(elem, stream,
 					map.getPlayers(), warner, idFactory));
 		} else if ("tile".equalsIgnoreCase(tag)) {
-			final int row = Integer.parseInt(getParameter(elem, "row"));
-			final int col = Integer.parseInt(getParameter(elem, "column"));
-			final Point loc = PointFactory.point(row, col);
-			map.addTile(
-					loc,
-					CompactTileReader.READER.read(elem, stream,
-							map.getPlayers(), warner, idFactory));
+			try {
+				final int row = NumberFormat.getIntegerInstance()
+						.parse(getParameter(elem, "row")).intValue();
+				final int col =
+						NumberFormat.getIntegerInstance()
+								.parse(getParameter(elem, "column")).intValue();
+				final Point loc = PointFactory.point(row, col);
+				map.addTile(
+						loc,
+						CompactTileReader.READER.read(elem, stream,
+								map.getPlayers(), warner, idFactory));
+			} catch (ParseException e) {
+				throw new SPMalformedInputException(elem.getLocation().getLineNumber(), e);
+			}
 		} else if (EqualsAny.equalsAny(tag, ISPReader.FUTURE)) {
 			warner.warn(new UnsupportedTagException(tag, elem.getLocation()
 					.getLineNumber()));

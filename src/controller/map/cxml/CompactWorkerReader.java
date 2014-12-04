@@ -102,14 +102,14 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 			final IteratorWrapper<XMLEvent> stream) throws SPFormatException {
 		requireTag(element, "stats");
 		final WorkerStats retval = new WorkerStats(
-				Integer.parseInt(getParameter(element, "hp")),
-				Integer.parseInt(getParameter(element, "max")),
-				Integer.parseInt(getParameter(element, "str")),
-				Integer.parseInt(getParameter(element, "dex")),
-				Integer.parseInt(getParameter(element, "con")),
-				Integer.parseInt(getParameter(element, "int")),
-				Integer.parseInt(getParameter(element, "wis")),
-				Integer.parseInt(getParameter(element, "cha")));
+				parseInt(getParameter(element, "hp"), element.getLocation().getLineNumber()),
+				parseInt(getParameter(element, "max"), element.getLocation().getLineNumber()),
+				parseInt(getParameter(element, "str"), element.getLocation().getLineNumber()),
+				parseInt(getParameter(element, "dex"), element.getLocation().getLineNumber()),
+				parseInt(getParameter(element, "con"), element.getLocation().getLineNumber()),
+				parseInt(getParameter(element, "int"), element.getLocation().getLineNumber()),
+				parseInt(getParameter(element, "wis"), element.getLocation().getLineNumber()),
+				parseInt(getParameter(element, "cha"), element.getLocation().getLineNumber()));
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		return retval;
 	}
@@ -127,8 +127,10 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 			final IteratorWrapper<XMLEvent> stream, final Warning warner)
 			throws SPFormatException {
 		requireTag(element, "job");
-		final Job retval = new Job(getParameter(element, "name"),
-				Integer.parseInt(getParameter(element, "level")));
+		final Job retval =
+				new Job(getParameter(element, "name"), parseInt(
+						getParameter(element, "level"), element.getLocation()
+								.getLineNumber()));
 		if (hasParameter(element, "hours")) {
 			warner.warn(new UnsupportedPropertyException("job", "hours",
 					element.getLocation().getLineNumber()));
@@ -169,9 +171,12 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	public static Skill parseSkill(final StartElement element,
 			final Warning warner) throws SPFormatException {
 		requireTag(element, "skill");
-		final Skill retval = new Skill(getParameter(element, "name"),
-				Integer.parseInt(getParameter(element, "level")),
-				Integer.parseInt(getParameter(element, "hours")));
+		final Skill retval =
+				new Skill(getParameter(element, "name"), parseInt(
+						getParameter(element, "level"), element.getLocation()
+								.getLineNumber()), Integer.parseInt(
+						getParameter(element, "hours"), element.getLocation()
+								.getLineNumber()));
 		if ("miscellaneous".equals(retval.getName()) && retval.getLevel() > 0) {
 			warner.warn(new DeprecatedPropertyException("skill",
 					"miscellaneous", "other", element.getLocation()
