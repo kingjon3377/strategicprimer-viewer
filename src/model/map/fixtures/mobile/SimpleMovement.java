@@ -60,7 +60,8 @@ public final class SimpleMovement {
 	 * @return the movement cost to traverse it.
 	 */
 	public static int getMovementCost(final ITile tile) {
-		if (TileType.Ocean.equals(tile.getTerrain())) {
+		if (TileType.Ocean.equals(tile.getTerrain())
+				|| TileType.NotVisible.equals(tile.getTerrain())) {
 			return Integer.MAX_VALUE; // NOPMD
 		} else if (isForest(tile) || isHill(tile)
 				|| TileType.Desert.equals(tile.getTerrain())) {
