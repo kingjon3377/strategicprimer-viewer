@@ -59,7 +59,9 @@ public class Dragon implements MobileFixture, HasImage, HasKind, UnitMember {
 	}
 
 	/**
-	 * @return the name of an image to represent the fairy
+	 * From OpenClipArt, public domain.
+	 * {@link https://openclipart.org/detail/166560/fire-dragon-by-olku}
+	 * @return the name of an image to represent the dragon
 	 */
 	@Override
 	public String getDefaultImage() {
