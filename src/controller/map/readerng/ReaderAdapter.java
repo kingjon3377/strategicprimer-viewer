@@ -123,9 +123,8 @@ public class ReaderAdapter implements INodeHandler<Object> {
 				new FortificationReader(), new TownReader());
 		factoryFour(new MineralReader(), new StoneReader(), new RiverReader(),
 				new ViewReader());
-		factory(new WorkerReader());
-		factory(new SkillReader());
-		factory(new StatsReader());
+		factoryFour(new WorkerReader(), new SkillReader(), new StatsReader(),
+				new AdventureReader());
 	}
 
 	/**

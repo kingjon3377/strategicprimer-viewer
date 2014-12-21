@@ -1,6 +1,7 @@
 package model.map.fixtures;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -8,7 +9,12 @@ import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.BaseTestFixtureSerialization;
+import model.map.MapDimensions;
 import model.map.Player;
+import model.map.PointFactory;
+import model.map.SPMap;
+import model.map.Tile;
+import model.map.TileType;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
@@ -428,7 +434,33 @@ public final class TestMoreFixtureSerialization extends
 				createSerializedForm(two, false).contains("some orders"));
 
 	}
-
+	/**
+	 * Test serialization of adventure hooks.
+	 * @throws SPFormatException on XML format error
+	 * @throws XMLStreamException on XML reader error
+	 * @throws IOException on I/O error creating serialized form
+	 */
+	@Test
+	public void testAdventureSerialization() throws XMLStreamException,
+			SPFormatException, IOException {
+		final Player independent = new Player(1, "independent");
+		final AdventureFixture one =
+				new AdventureFixture(independent,
+						"first hook brief", "first hook full", 1);
+		final AdventureFixture two =
+				new AdventureFixture(new Player(2, "player"),
+						"second hook brief", "second hook full", 2);
+		assertFalse("Two different hooks are not equal", one.equals(two));
+		final SPMap wrapper = new SPMap(new MapDimensions(1, 1, 2));
+		wrapper.addPlayer(independent);
+		final Tile wrapperTile = new Tile(TileType.Plains);
+		wrapperTile.addFixture(one);
+		wrapper.addTile(PointFactory.point(0, 0), wrapperTile);
+		assertSerialization("First adventure hook serialization test", wrapper,
+				SPMap.class);
+		assertSerialization("Second adventure hook serialization test", two,
+				AdventureFixture.class);
+	}
 	/**
 	 * @return a String representation of the object
 	 */

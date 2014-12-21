@@ -60,7 +60,8 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 								CompactTerrainReader.READER,
 								CompactTextReader.READER,
 								CompactTownReader.READER,
-								CompactGroundReader.READER));
+								CompactGroundReader.READER,
+								CompactAdventureReader.READER));
 		readers = assertNotNull(unmodifiableList(list));
 	}
 
