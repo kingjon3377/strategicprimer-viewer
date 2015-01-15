@@ -42,7 +42,7 @@ public class SubsetFrame extends JFrame {
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(MapCheckerFrame.class);
+			.getLogger(SubsetFrame.class);
 	/**
 	 * The map reader we'll use.
 	 */
