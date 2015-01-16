@@ -94,8 +94,6 @@
     <junit fork="yes" printsummary="withOutAndErr" failureproperty="junit.failure">
       <formatter type="xml" />
       <!-- TODO: run all tests, dynamically detected, rather than listing them. -->
-      <test name="controller.exploration.TestTableLoader" todir="${junit.output.dir}" />
-      <test name="model.exploration.old.TestExplorationRunner" todir="${junit.output.dir}" />
       <test name="model.map.TestSerialization" todir="${junit.output.dir}" />
       <test name="model.map.TestSubsets" todir="${junit.output.dir}" />
       <test name="model.map.TestEventSerialization" todir="${junit.output.dir}" />
@@ -103,7 +101,6 @@
       <test name="model.map.fixtures.TestMoreFixtureSerialization" todir="${junit.output.dir}" />
       <test name="model.viewer.PointIteratorTest" todir="${junit.output.dir}" />
       <test name="model.workermgmt.TestWorkerModel" todir="${junit.output.dir}" />
-      <test name="controller.map.converter.TestConverter" todir="${junit.output.dir}" />
       <classpath refid="viewer.classpath" />
     </junit>
     <fail if="junit.failure" message="Unit test(s) failed. See reports." />
