@@ -152,7 +152,7 @@ public class ScrollListener implements AdjustmentListener, MapChangeListener,
 		if (!isInRange(vdim.getMinimumCol(), newPoint.col, vdim.getMaximumCol())) {
 			hbar.getModel().setValue(Math.max(newPoint.col, 0));
 		}
-		if (!isInRange(vdim.getMaximumRow(), newPoint.row, vdim.getMaximumRow())) {
+		if (!isInRange(vdim.getMinimumRow(), newPoint.row, vdim.getMaximumRow())) {
 			vbar.getModel().setValue(Math.max(newPoint.row, 0));
 		}
 	}
