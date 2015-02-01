@@ -94,11 +94,7 @@
     <junit fork="yes" printsummary="withOutAndErr" failureproperty="junit.failure">
       <formatter type="xml" />
       <!-- TODO: run all tests, dynamically detected, rather than listing them. -->
-      <test name="model.map.TestSerialization" todir="${junit.output.dir}" />
       <test name="model.map.TestSubsets" todir="${junit.output.dir}" />
-      <test name="model.map.TestEventSerialization" todir="${junit.output.dir}" />
-      <test name="model.map.fixtures.TestFixtureSerialization" todir="${junit.output.dir}" />
-      <test name="model.map.fixtures.TestMoreFixtureSerialization" todir="${junit.output.dir}" />
       <test name="model.viewer.PointIteratorTest" todir="${junit.output.dir}" />
       <classpath refid="viewer.classpath" />
     </junit>
