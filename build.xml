@@ -94,7 +94,6 @@
     <junit fork="yes" printsummary="withOutAndErr" failureproperty="junit.failure">
       <formatter type="xml" />
       <!-- TODO: run all tests, dynamically detected, rather than listing them. -->
-      <test name="model.map.TestSubsets" todir="${junit.output.dir}" />
       <classpath refid="viewer.classpath" />
     </junit>
     <fail if="junit.failure" message="Unit test(s) failed. See reports." />
