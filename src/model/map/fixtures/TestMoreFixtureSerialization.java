@@ -435,7 +435,7 @@ public final class TestMoreFixtureSerialization extends
 
 	}
 	/**
-	 * Test serialization of adventure hooks.
+	 * Test serialization of adventure hooks and portals.
 	 * @throws SPFormatException on XML format error
 	 * @throws XMLStreamException on XML reader error
 	 * @throws IOException on I/O error creating serialized form
@@ -460,6 +460,12 @@ public final class TestMoreFixtureSerialization extends
 				SPMap.class);
 		assertSerialization("Second adventure hook serialization test", two,
 				AdventureFixture.class);
+		final Portal three = new Portal("portal dest", PointFactory.point(1, 2), 3);
+		final Portal four = new Portal("portal dest two", PointFactory.point(2, 1), 4);
+		assertFalse("TWo different portals are not equal", three.equals(four));
+		wrapperTile.addFixture(three);
+		assertSerialization("First portal serialization test", wrapper, SPMap.class);
+		assertSerialization("Second portal serialization test", four, Portal.class);
 	}
 	/**
 	 * @return a String representation of the object
