@@ -22,7 +22,9 @@ public class Portal implements TileFixture, HasImage {
 	 */
 	private String destinationWorld;
 	/**
-	 * The coordinates in that world that the portal connects to.
+	 * The coordinates in that world that the portal connects to. A negative
+	 * coordinate indicates that the coordinate needs to be generated, presumably
+	 * randomly.
 	 */
 	private Point destinationCoordinates;
 	/**
