@@ -92,6 +92,11 @@ public final class TestExplorationRunner {
 		 */
 		private final TileType terrain;
 		/**
+		 * An exception to throw if an unexpected method is called.
+		 */
+		private final IllegalStateException ise = new IllegalStateException(
+				"Unexpected method called on mock object");
+		/**
 		 * Constructor.
 		 * @param type the terrain type to report
 		 */
@@ -113,40 +118,35 @@ public final class TestExplorationRunner {
 		@Override
 		public boolean isSubset(final ITile obj, final Appendable ostream,
 				final String context) throws IOException {
-			throw new IllegalStateException(
-					"Unexpected method called on mock object");
+			throw ise;
 		}
 		/**
 		 * @return nothing, always throws
 		 */
 		@Override
 		public Iterator<TileFixture> iterator() {
-			throw new IllegalStateException(
-					"Unexpected method called on mock object");
+			throw ise;
 		}
 		/**
 		 * @return nothing, always throws
 		 */
 		@Override
 		public boolean isEmpty() {
-			throw new IllegalStateException(
-					"Unexpected method called on mock object");
+			throw ise;
 		}
 		/**
 		 * @return nothing, always throws
 		 */
 		@Override
 		public boolean hasRiver() {
-			throw new IllegalStateException(
-					"Unexpected method called on mock object");
+			throw ise;
 		}
 		/**
 		 * @return nothing, always throws
 		 */
 		@Override
 		public Iterable<River> getRivers() {
-			throw new IllegalStateException(
-					"Unexpected method called on mock object");
+			throw ise;
 		}
 		/**
 		 * @return the terrain type we were told
@@ -167,8 +167,7 @@ public final class TestExplorationRunner {
 		 */
 		@Override
 		public String toString() {
-			throw new IllegalStateException(
-					"Unexpected method called on mock object");
+			throw ise;
 		}
 	}
 	/**
