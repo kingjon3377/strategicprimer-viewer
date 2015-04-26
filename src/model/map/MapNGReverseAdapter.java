@@ -4,10 +4,16 @@ import static model.map.TileType.NotVisible;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import model.map.fixtures.RiverFixture;
+import model.map.fixtures.TextFixture;
+import model.map.fixtures.mobile.Animal;
+import model.map.fixtures.mobile.IUnit;
+import model.map.fixtures.resources.CacheFixture;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -41,7 +47,14 @@ public class MapNGReverseAdapter implements IMap {
 	@Override
 	public boolean isSubset(@Nullable final IMap obj, final Appendable ostream,
 			final String context) throws IOException {
-		throw new IllegalStateException("Not yet implemented");
+		// FIXME: This is probably quite inefficient
+		if (obj != null && getDimensions().equals(obj.getDimensions())) {
+			return getPlayers().isSubset(obj.getPlayers(), ostream, context) && getTiles().isSubset(obj.getTiles(), ostream, context);
+		} else {
+			ostream.append(context);
+			ostream.append("\tSizes differ\n");
+			return false;
+		}
 	}
 	/**
 	 * @param obj a map to compare to
@@ -144,7 +157,24 @@ public class MapNGReverseAdapter implements IMap {
 		public boolean isSubset(final ITileCollection obj,
 				final Appendable ostream, final String context)
 				throws IOException {
-			throw new IllegalStateException("FIXME: Not implemented yet");
+			boolean retval = true;
+			for (Point point : obj) {
+				if (point == null) {
+					continue;
+				} else if (hasTile(point) || obj.getTile(point).isEmpty()) {
+					ITile tile = getTile(point);
+					if (!tile.isSubset(obj.getTile(point), ostream, context + " At " + point + ':')) {
+						retval = false;
+					}
+				} else {
+					ostream.append(context);
+					ostream.append("\tExtra tile at ");
+					ostream.append(point.toString());
+					ostream.append('\n');
+					retval = false;
+				}
+			}
+			return retval;
 		}
 		/**
 		 * @param point a location on the map
@@ -243,7 +273,12 @@ public class MapNGReverseAdapter implements IMap {
 		 */
 		@Override
 		public Player getIndependent() {
-			throw new IllegalStateException("Not implemented yet");
+			for (Player player : outer.players()) {
+				if (player.isIndependent()) {
+					return player;
+				}
+			}
+			return new Player(-1, "Independent");
 		}
 		/**
 		 * @return the current player
@@ -310,10 +345,66 @@ public class MapNGReverseAdapter implements IMap {
 		@Override
 		public boolean isSubset(final ITile obj, final Appendable ostream,
 				final String context) throws IOException {
-			throw new IllegalStateException("Not yet implemented");
+			if (getTerrain().equals(obj.getTerrain())) {
+				Map<Integer, Subsettable<?>> subsettableContents = new HashMap<>();
+				for (TileFixture item : this) {
+					if (item instanceof Subsettable<?>) {
+						subsettableContents.put(Integer.valueOf(item.getID()), (SubsettableFixture) item);
+					}
+				}
+				List<TileFixture> contents = new ArrayList<>();
+				for (TileFixture fix : this) {
+					contents.add(fix);
+				}
+				List<TileFixture> temp = new ArrayList<>();
+				for (TileFixture fix : obj) {
+					if (fix != null && !contents.contains(fix) && !temp.contains(fix) && !shouldSkip(fix)) {
+						temp.add(fix);
+					}
+				}
+				boolean retval = true;
+				for (TileFixture fix : temp) {
+					assert fix != null;
+					if (fix instanceof SubsettableFixture && subsettableContents.containsKey(Integer.valueOf(fix.getID()))) {
+						final Subsettable<?> mine = subsettableContents.get(Integer.valueOf(fix.getID()));
+						if (mine instanceof IUnit && fix instanceof IUnit) {
+							if (!((IUnit) mine).isSubset((IUnit) fix, ostream, context)) {
+								retval = false;
+							}
+						} else if (mine instanceof SubsettableFixture) {
+							if (!((SubsettableFixture) mine).isSubset(fix, ostream, context)) {
+								retval = false;
+							}
+						} else {
+							throw new IllegalStateException("Unhandled Subsettable class");
+						}
+					} else {
+						retval = false;
+						ostream.append(context);
+						ostream.append(" Extra fixture:\t");
+						ostream.append(fix.toString());
+						ostream.append(", ID #");
+						ostream.append(Integer.toString(fix.getID()));
+						ostream.append('\n');
+					}
+				}
+				return retval;
+			} else {
+				ostream.append(context);
+				ostream.append("\tTile type wrong\n");
+				return false;
+			}
 		}
 
 		/**
+		 * @param fix a fixture
+		 * @return whether strict-subset calculations should skip it.
+		 */
+		public static boolean shouldSkip(final TileFixture fix) {
+			return fix instanceof CacheFixture || fix instanceof TextFixture
+					|| fix instanceof Animal && ((Animal) fix).isTraces();
+		}
+	/**
 		 * FIXME: Instead of constructing a new list every time, make a new
 		 * Iterator implementation for this class that keeps track of where the
 		 * reader is in the progression.
