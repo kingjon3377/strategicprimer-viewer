@@ -111,6 +111,7 @@ public class OneToTwoConverter { // NOPMD
 	 *        don't go on players' maps)
 	 * @return a version-2 equivalent with greater resolution
 	 */
+	@SuppressWarnings("deprecation")
 	public SPMap convert(final IMap old, final boolean main) {
 		final IDFactory idFactory = new IDFactory();
 		final MapDimensions oldDim = old.getDimensions();
@@ -471,6 +472,7 @@ public class OneToTwoConverter { // NOPMD
 	 * @param map the map it's in
 	 * @return whether the tile is adjacent to a town.
 	 */
+	@SuppressWarnings("deprecation")
 	private static boolean isAdjacentToTown(final Point point, final IMap map) {
 		for (final Point npoint : getNeighbors(point)) {
 			if (npoint == null) {
@@ -491,6 +493,7 @@ public class OneToTwoConverter { // NOPMD
 	 * @param map the map it's in
 	 * @return whether the tile is adjacent to a river or ocean
 	 */
+	@SuppressWarnings("deprecation")
 	private static boolean hasAdjacentWater(final Point point, final IMap map) {
 		for (final Point npoint : getNeighbors(point)) {
 			if (npoint == null) {
@@ -588,6 +591,7 @@ public class OneToTwoConverter { // NOPMD
 	/**
 	 * @param args command-line arguments, main map first, then players' maps
 	 */
+	@SuppressWarnings("deprecation")
 	public static void main(final String[] args) {
 		if (args.length == 0) {
 			System.err.print("Usage: ");

@@ -5,9 +5,10 @@ package model.map;
  * An interface for the map and any wrappers around it.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated The old map API is deprecated in the mapng branch
  */
 // ESCA-JAVA0237:
+@Deprecated
 public interface IMap extends Subsettable<IMap>, Comparable<IMap> {
 	/**
 	 * @return The map's dimensions and version.
