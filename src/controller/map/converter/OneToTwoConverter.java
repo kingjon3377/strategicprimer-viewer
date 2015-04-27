@@ -347,6 +347,7 @@ public class OneToTwoConverter { // NOPMD
 	 *        main map)
 	 * @param idFac the factory to use to create ID numbers
 	 */
+	@SuppressWarnings("deprecation")
 	private void perturb(final Point point, final IMutableTile tile, final IMap map,
 			final Random random, final boolean main, final IDFactory idFac) {
 		if (!TileType.Ocean.equals(tile.getTerrain())) {
