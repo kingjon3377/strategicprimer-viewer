@@ -13,7 +13,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMap;
-import model.map.MapView;
+import model.map.IMapNG;
+import model.map.MapNGAdapter;
+import model.map.MapNGReverseAdapter;
 import util.TypesafeLogger;
 import util.Warning;
 import controller.map.converter.ResolutionDecreaseConverter;
@@ -90,11 +92,12 @@ public final class ConverterDriver implements ISPDriver {
 			SYS_OUT.print(" ... ");
 			final File file = new File(filename);
 			try {
-				final IMap old = READER.readMap(file, Warning.INSTANCE);
+				final IMapNG old = new MapNGAdapter(READER.readMap(file, Warning.INSTANCE));
 				SYS_OUT.println(" ... Converting ... ");
 				final String newFilename = filename + ".new";
 				final File newFile = new File(newFilename);
-				final MapView map = ResolutionDecreaseConverter.convert(old);
+				// TODO: Drop the use of the adapter as soon as writing new-API maps to file is supported.
+				final IMap map = new MapNGReverseAdapter(ResolutionDecreaseConverter.convert(old));
 				SYS_OUT.print("About to write ");
 				SYS_OUT.println(newFilename);
 				new MapReaderAdapter().write(newFile, map); // NOPMD
