@@ -86,7 +86,7 @@ public final class CompactReaderAdapter {
 	 * @param type the type
 	 * @return a reader for the type
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	// We *do* check ... but neither Java nor Eclipse can know that
 	private static <T> CompactReader<T> getReader(final Class<T> type) {
 		final CompactReader<T> reader; // NOPMD
@@ -151,7 +151,7 @@ public final class CompactReaderAdapter {
 	 * @param indent the current indentation level.
 	 * @throws IOException on I/O problems
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	public static void write(final Appendable ostream, final Object obj,
 			final int indent) throws IOException {
 		@SuppressWarnings("rawtypes") // NOPMD

@@ -83,6 +83,7 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	 * @throws XMLStreamException on badly-formed XML
 	 * @throws SPFormatException on SP format problems
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public MapView readMap(final File file, final Reader istream,
 			final Warning warner) throws XMLStreamException, SPFormatException {

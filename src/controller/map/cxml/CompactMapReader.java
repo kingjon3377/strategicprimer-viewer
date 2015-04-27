@@ -39,6 +39,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
+@SuppressWarnings("deprecation")
 public final class CompactMapReader extends AbstractCompactReader<IMap> {
 	/**
 	 * Singleton instance.
