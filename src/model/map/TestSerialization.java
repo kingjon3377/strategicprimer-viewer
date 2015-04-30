@@ -371,7 +371,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final Point point = point(0, 0);
 		mOne.addTile(point, new Tile(TileType.Steppe));
 		final MapView one = new MapView(mOne, 1, 0);
-		assertSerialization("MapView serialization", one, MapView.class);
+		assertSerialization("MapView serialization", one, IMapView.class);
 		assertMissingProperty("<view current_turn=\"0\">"
 				+ "<map version=\"2\" rows=\"1\" columns=\"1\" /></view>",
 				MapView.class, "current_player", false);
