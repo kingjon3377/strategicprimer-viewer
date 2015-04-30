@@ -151,7 +151,7 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 		for (final River river : ours) {
 			theirRivers.remove(river);
 		}
-		return !theirRivers.isEmpty();
+		return theirRivers.isEmpty();
 	}
 
 	/**
