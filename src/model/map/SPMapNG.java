@@ -141,7 +141,10 @@ public class SPMapNG implements IMutableMapNG {
 					// return false;
 				}
 				final Collection<TileFixture> ourFixtures =
-						(Collection<TileFixture>) getOtherFixtures(point);
+						new ArrayList<TileFixture>();
+				for (TileFixture fix : getOtherFixtures(point)) {
+					ourFixtures.add(fix);
+				}
 				final Iterable<TileFixture> theirFixtures = obj
 						.getOtherFixtures(point);
 				for (final TileFixture fix : theirFixtures) {
