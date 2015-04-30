@@ -23,8 +23,9 @@ import util.NullCleaner;
  * An IMap implementation that uses an IMapNG for its backend.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated we want to use SPMapNG instead
  */
+@Deprecated
 public class MapNGReverseAdapter implements IMapView {
 	/**
 	 * The new-interface map we wrap.

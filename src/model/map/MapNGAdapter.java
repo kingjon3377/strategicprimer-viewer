@@ -26,7 +26,9 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  *
+ * @deprecated We want to use SPMapNG instead
  */
+@Deprecated
 public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 	/**
 	 * The old-interface map we use for our state.
@@ -203,7 +205,6 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 	 * @param location a location
 	 * @return whether that location is mountainous
 	 */
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean isMountainous(final Point location) {
 		if (dimensions().version < 2
