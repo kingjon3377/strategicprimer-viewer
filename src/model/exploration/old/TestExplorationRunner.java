@@ -76,8 +76,6 @@ public final class TestExplorationRunner {
 		final MockTile mock = new MockTile(TileType.Tundra);
 		assertEquals("primary rock test", runner.getPrimaryRock(point, mock),
 				"primary_rock_test");
-		assertFalse("Checking primary rock doesn't involve checking tile type",
-				mock.wasCalled());
 	}
 	/**
 	 * A mock-object for a Tile that only allows its terrain type to be queried.
@@ -227,9 +225,6 @@ public final class TestExplorationRunner {
 				mock), "test_two");
 		assertEquals("third table", runner.consultTable(TEST_TABLE_THREE,
 				point, mock), TEST_THREE);
-		assertFalse(
-				"Consulting a constant table shouldn't check the tile type",
-				mock.wasCalled());
 	}
 
 	/**
@@ -260,13 +255,11 @@ public final class TestExplorationRunner {
 		assertEquals("no recursion",
 				runner.recursiveConsultTable(TEST_TABLE_THREE, point, mockOne),
 				TEST_THREE);
-		assertFalse("Constant tables didn't ask for tile type", mockOne.wasCalled());
 		final MockTile mockTwo = new MockTile(TileType.Plains);
 		assertEquals(
 				"one-sided split",
 				runner.recursiveConsultTable("test_table_four", point, mockTwo),
 				"_ ( ( test_three ) )");
-		assertFalse("Constant tables didn't ask for tile type", mockTwo.wasCalled());
 	}
 
 	/**

@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Set;
 
 import model.map.IEvent;
-import model.map.ITile;
 import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
+import model.map.TileType;
 import model.map.fixtures.resources.Battlefield;
 import model.map.fixtures.resources.Cave;
 import model.map.fixtures.resources.MineralKind;
@@ -21,6 +21,8 @@ import model.map.fixtures.towns.Fortification;
 import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A table for legacy "events".
@@ -54,7 +56,7 @@ public class LegacyTable implements EncounterTable {
 			for (final TownSize size : TownSize.values()) {
 				if (status == null || size == null) {
 					continue;
-				} 
+				}
 				addData(new City(status, size, 0, "", 0, player)); // NOPMD
 				addData(new Fortification(status, size, 0, "", 0, player)); // NOPMD
 				addData(new Town(status, size, 0, "", 0, player)); // NOPMD
@@ -75,15 +77,19 @@ public class LegacyTable implements EncounterTable {
 	}
 
 	/**
-	 * @param tile the tile in question
-	 * @param point the tile's location
+	 * @param terrain ignored
+	 * @param point ignored
+	 * @param fixtures any fixtures on the tile
 	 * @return the event on that tile
 	 */
 	@Override
-	public String generateEvent(final Point point, final ITile tile) {
-		for (final TileFixture fix : tile) {
-			if (fix instanceof IEvent) {
-				return ((IEvent) fix).getText(); // NOPMD
+	public String generateEvent(final Point point, final TileType terrain,
+			@Nullable final Iterable<TileFixture> fixtures) {
+		if (fixtures != null) {
+			for (final TileFixture fix : fixtures) {
+				if (fix instanceof IEvent) {
+					return ((IEvent) fix).getText(); // NOPMD
+				}
 			}
 		}
 		return "Nothing interesting here ...";

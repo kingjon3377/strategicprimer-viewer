@@ -6,9 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import model.map.ITile;
 import model.map.Point;
+import model.map.TileFixture;
 import model.map.TileType;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.NullCleaner;
 import util.Pair;
 
@@ -37,15 +40,16 @@ public class TerrainTable implements EncounterTable {
 	}
 
 	/**
-	 * @param tile a tile
+	 * @param terrain the terrain at the location
+	 * @param fixtures ignored
 	 * @param point the location of the tile
 	 * @return what the table has for that kind of tile.
 	 */
 	@Override
-	public String generateEvent(final Point point, final ITile tile) {
-		final TileType type = tile.getTerrain();
-		if (mapping.containsKey(type)) {
-			return NullCleaner.assertNotNull(mapping.get(type));
+	public String generateEvent(final Point point, final TileType terrain,
+			@Nullable final Iterable<TileFixture> fixtures) {
+		if (mapping.containsKey(terrain)) {
+			return NullCleaner.assertNotNull(mapping.get(terrain));
 		} else {
 			throw new IllegalArgumentException(
 					"Table does not account for that terrain type");

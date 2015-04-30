@@ -10,7 +10,6 @@ import java.io.StringReader;
 import model.exploration.old.EncounterTable;
 import model.map.Point;
 import model.map.PointFactory;
-import model.map.Tile;
 import model.map.TileType;
 
 import org.junit.Test;
@@ -42,7 +41,7 @@ public final class TestTableLoader {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(0, 0);
 			assertEquals("loading quadrant table", ONE_STRING,
-					result.generateEvent(point, new Tile(TileType.Tundra)));
+					result.generateEvent(point, TileType.Tundra, null));
 			// TODO: somehow check that it got properly loaded, beyond this
 		}
 		try (final BufferedReader readerTwo = new BufferedReader(
@@ -71,7 +70,7 @@ public final class TestTableLoader {
 			final Point point = PointFactory.point(30, 30);
 			// ESCA-JAVA0076:
 			assertEquals("loading random table", ONE_STRING,
-					result.generateEvent(point, new Tile(TileType.Tundra)));
+					result.generateEvent(point, TileType.Tundra, null));
 		}
 	}
 
@@ -89,12 +88,12 @@ public final class TestTableLoader {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point one = PointFactory.point(30, 30);
 			assertEquals("loading terrain table: tundra", ONE_STRING,
-					result.generateEvent(one, new Tile(TileType.Tundra)));
+					result.generateEvent(one, TileType.Tundra, null));
 			final Point two = PointFactory.point(15, 15);
 			assertEquals("loading terrain table: plains", "two",
-					result.generateEvent(two, new Tile(TileType.Plains)));
+					result.generateEvent(two, TileType.Plains, null));
 			assertEquals("loading terrain table: ocean", "three",
-					result.generateEvent(two, new Tile(TileType.Ocean)));
+					result.generateEvent(two, TileType.Ocean, null));
 		}
 	}
 
@@ -112,7 +111,7 @@ public final class TestTableLoader {
 			final EncounterTable result = TableLoader.loadTableFromStream(one);
 			final Point point = PointFactory.point(10, 5);
 			assertEquals("loading constant table: first test", ONE_STRING,
-					result.generateEvent(point, new Tile(TileType.Plains)));
+					result.generateEvent(point, TileType.Plains, null));
 		}
 	}
 

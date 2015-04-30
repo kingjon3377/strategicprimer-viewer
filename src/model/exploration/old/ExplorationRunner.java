@@ -66,7 +66,7 @@ public class ExplorationRunner { // NOPMD
 	 */
 	public String getPrimaryRock(final Point point, final ITile tile)
 			throws MissingTableException {
-		return getTable("major_rock").generateEvent(point, tile);
+		return getTable("major_rock").generateEvent(point, tile.getTerrain(), tile);
 	}
 
 	/**
@@ -80,9 +80,9 @@ public class ExplorationRunner { // NOPMD
 	public String getPrimaryTree(final Point point, final ITile tile)
 			throws MissingTableException {
 		if (TileType.BorealForest.equals(tile.getTerrain())) {
-			return getTable("boreal_major_tree").generateEvent(point, tile); // NOPMD
+			return getTable("boreal_major_tree").generateEvent(point, tile.getTerrain(), tile); // NOPMD
 		} else if (TileType.TemperateForest.equals(tile.getTerrain())) {
-			return getTable("temperate_major_tree").generateEvent(point, tile);
+			return getTable("temperate_major_tree").generateEvent(point, tile.getTerrain(), tile);
 		} else {
 			throw new IllegalArgumentException(
 					"Only forests have primary trees");
@@ -103,7 +103,7 @@ public class ExplorationRunner { // NOPMD
 	 */
 	public String consultTable(final String table, final Point point,
 			final ITile tile) throws MissingTableException {
-		return getTable(table).generateEvent(point, tile);
+		return getTable(table).generateEvent(point, tile.getTerrain(), tile);
 	}
 
 	/**
