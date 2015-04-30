@@ -62,12 +62,12 @@ public class AdvancementFrame extends JFrame {
 
 		final PlayerChooserHandler pch = new PlayerChooserHandler(this, source);
 
-		final Player player = source.getMap().getPlayers().getCurrentPlayer();
+		final Player player = source.getMap().getCurrentPlayer();
 		final PlayerLabel plabel = new PlayerLabel("", player, "'s Units:");
 		pch.addPlayerChangeListener(plabel);
 		final IWorkerTreeModel wtmodel = new WorkerTreeModelAlt(player, source);
 		final WorkerTree tree =
-				new WorkerTree(wtmodel, source.getMap().getPlayers(), false);
+				new WorkerTree(wtmodel, source.getMap().players(), false);
 		pch.addPlayerChangeListener(wtmodel);
 		final WorkerCreationListener nwl = new WorkerCreationListener(wtmodel,
 				IDFactoryFiller.createFactory(source.getMap()));

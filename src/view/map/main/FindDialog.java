@@ -25,11 +25,12 @@ import model.map.HasKind;
 import model.map.HasName;
 import model.map.HasOwner;
 import model.map.IFixture;
-import model.map.IMap;
-import model.map.ITile;
+import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
+import model.map.fixtures.RiverFixture;
+import model.map.fixtures.terrain.Mountain;
 import model.viewer.IViewerModel;
 import model.viewer.PointIterator;
 import model.viewer.ZOrderFilter;
@@ -181,8 +182,16 @@ public class FindDialog extends JDialog implements ActionListener {
 			if (point == null) {
 				continue;
 			}
-			final ITile tile = map.getMap().getTile(point);
-			for (final TileFixture fix : tile) {
+			TileFixture ground = map.getMap().getGround(point);
+			TileFixture forest = map.getMap().getForest(point);
+			if ((ground != null && matches(pattern, idNum, ground, csen))
+					|| (forest != null && matches(pattern, idNum, forest, csen))) {
+				SYS_OUT.print("Found in point");
+				SYS_OUT.println(point);
+				map.setSelection(point);
+				return;
+			}
+			for (final TileFixture fix : map.getMap().getOtherFixtures(point)) {
 				if (fix != null && matches(pattern, idNum, fix, csen)) {
 					SYS_OUT.print("Found in point");
 					SYS_OUT.println(point);
@@ -322,7 +331,7 @@ public class FindDialog extends JDialog implements ActionListener {
 		/**
 		 * The map to populate it from.
 		 */
-		private final IMap map;
+		private final IMapNG map;
 
 		/**
 		 * Constructor.
@@ -340,25 +349,31 @@ public class FindDialog extends JDialog implements ActionListener {
 		 */
 		@Override
 		public void run() {
-			for (final Point point : map.getTiles()) {
+			for (final Point point : map.locations()) {
 				if (point != null) {
-					populate(map.getTiles().getTile(point));
+					populate(map.getGround(point));
+					populate(map.getForest(point));
+					if (map.isMountainous(point)) {
+						populate(new Mountain());
+					}
+					if (map.getRivers(point).iterator().hasNext()) {
+						populate(new RiverFixture());
+					}
+					populate(map.getOtherFixtures(point));
 				}
 			}
 		}
-
 		/**
-		 * Populate the filter.
-		 *
-		 * @param iter an iterable of fixtures.
+		 * Populate the filter with the given fixture.
+		 * @param fixture a fixture, or an iterable of fixtures, null
 		 */
-		private void populate(final FixtureIterable<? extends IFixture> iter) {
-			for (final IFixture item : iter) {
-				if (item instanceof TileFixture) {
-					filter.shouldDisplay((TileFixture) item);
-				}
-				if (item instanceof FixtureIterable<?>) {
-					populate((FixtureIterable<?>) item);
+		private void populate(@Nullable final Object fixture) {
+			if (fixture instanceof TileFixture) {
+				filter.shouldDisplay((TileFixture) fixture);
+			}
+			if (fixture instanceof Iterable<?>) {
+				for (Object item : (FixtureIterable<?>) fixture) {
+					populate(item);
 				}
 			}
 		}

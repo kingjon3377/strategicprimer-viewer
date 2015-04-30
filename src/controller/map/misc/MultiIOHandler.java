@@ -10,7 +10,9 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.xml.stream.XMLStreamException;
 
-import model.map.IMap;
+import model.map.IMutableMapNG;
+import model.map.MapNGAdapter;
+import model.map.MapNGReverseAdapter;
 import model.misc.IMultiMapModel;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -91,9 +93,9 @@ public class MultiIOHandler extends IOHandler {
 	 */
 	private void saveAll(@Nullable final Component source) {
 		final MapReaderAdapter adapter = new MapReaderAdapter();
-		for (final Pair<IMap, File> pair : model.getAllMaps()) {
+		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
 			try {
-				adapter.write(pair.second(), pair.first());
+				adapter.write(pair.second(), new MapNGReverseAdapter(pair.first()));
 			} catch (final IOException e) {
 				ErrorShower.showErrorDialog(source,
 						"I/O error writing to file " + pair.second());
@@ -114,7 +116,8 @@ public class MultiIOHandler extends IOHandler {
 				return;
 			}
 			try {
-				model.addSubordinateMap(readMap(file, Warning.INSTANCE), file);
+				model.addSubordinateMap(
+						new MapNGAdapter(readMap(file, Warning.INSTANCE)), file);
 			} catch (final IOException e) {
 				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
 						"a null path"), source);

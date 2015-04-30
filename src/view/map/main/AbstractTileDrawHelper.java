@@ -4,7 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import model.map.IEvent;
-import model.map.ITile;
+import model.map.IMapNG;
+import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.mobile.IUnit;
@@ -60,12 +61,13 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	}
 
 	/**
-	 * @param tile a tile
+	 * @param map a map
+	 * @param location a location
 	 *
-	 * @return whether the tile has any forts.
+	 * @return whether there are any fortresses at that location
 	 */
-	protected static boolean hasAnyForts(final ITile tile) {
-		for (final TileFixture fix : tile) {
+	protected static boolean hasAnyForts(final IMapNG map, final Point location) {
+		for (final TileFixture fix : map.getOtherFixtures(location)) {
 			if (fix instanceof Fortress) {
 				return true; // NOPMD
 			}
@@ -74,12 +76,13 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	}
 
 	/**
-	 * @param tile a tile
+	 * @param map a map
+	 * @param location a location
 	 *
-	 * @return whether the tile has any units.
+	 * @return whether there are any units at that location
 	 */
-	protected static boolean hasAnyUnits(final ITile tile) {
-		for (final TileFixture fix : tile) {
+	protected static boolean hasAnyUnits(final IMapNG map, final Point location) {
+		for (final TileFixture fix : map.getOtherFixtures(location)) {
 			if (fix instanceof IUnit) {
 				return true; // NOPMD
 			}
@@ -88,12 +91,13 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	}
 
 	/**
-	 * @param tile a tile
+	 * @param map a map
+	 * @param location a location
 	 *
-	 * @return whether the tile has any events
+	 * @return whether there are any 'events' at that location
 	 */
-	protected static boolean hasEvent(final ITile tile) {
-		for (final TileFixture fix : tile) {
+	protected static boolean hasEvent(final IMapNG map, final Point location) {
+		for (final TileFixture fix : map.getOtherFixtures(location)) {
 			if (fix instanceof IEvent) {
 				return true; // NOPMD
 			}
@@ -106,13 +110,15 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * that its origin is the tile's upper-left-hand corner.
 	 *
 	 * @param pen the graphics context
-	 * @param tile the tile to draw
+	 * @param map the map to draw the tile from
+	 * @param location the location to draw
 	 * @param width the width of the drawing area
 	 * @param height the height of the drawing area
 	 */
 	@Override
 	public abstract void drawTileTranslated(final Graphics pen,
-			final ITile tile, final int width, final int height);
+			final IMapNG map, final Point location, final int width,
+			final int height);
 
 	/**
 	 * @return the UI helper.

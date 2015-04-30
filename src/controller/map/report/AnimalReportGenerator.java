@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import model.map.IFixture;
-import model.map.ITileCollection;
+import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.fixtures.mobile.Animal;
@@ -30,14 +30,14 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	 * Produce the sub-report on sightings of animals.
 	 *
 	 * @param fixtures the set of fixtures
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the report
 	 */
 	@Override
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer) {
+			final IMapNG map, final Player currentPlayer) {
 		final Map<String, List<Point>> items = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Animal) {
@@ -84,14 +84,14 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	 * Produce the sub-report on sightings of animals.
 	 *
 	 * @param fixtures the set of fixtures
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the report
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer) {
+			final IMapNG map, final Player currentPlayer) {
 		final Map<String, List<Point>> items = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Animal) {
@@ -133,7 +133,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	/**
 	 * @param fixtures the set of fixtures
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param item an animal
 	 * @param loc its location
 	 * @return a sub-report on the animal
@@ -141,7 +141,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	@Override
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer,
+			final IMapNG map, final Player currentPlayer,
 			final Animal item, final Point loc) {
 		final String tracesOrTalking; // NOPMD
 		if (item.isTraces()) {
@@ -157,7 +157,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	/**
 	 * @param fixtures the set of fixtures
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param item an animal
 	 * @param loc its location
 	 * @return a sub-report on the animal
@@ -165,7 +165,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	@Override
 	public SimpleReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer,
+			final IMapNG map, final Player currentPlayer,
 			final Animal item, final Point loc) {
 		final String tracesOrTalking; // NOPMD
 		if (item.isTraces()) {

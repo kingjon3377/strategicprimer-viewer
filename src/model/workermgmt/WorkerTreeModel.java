@@ -289,7 +289,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 */
 	@Override
 	public void mapChanged() {
-		root = model.getMap().getPlayers().getCurrentPlayer();
+		root = model.getMap().getCurrentPlayer();
 		final TreePath path = new TreePath(root);
 		for (final TreeModelListener listener : listeners) {
 			listener.treeNodesChanged(new TreeModelEvent(this, path)); // NOPMD

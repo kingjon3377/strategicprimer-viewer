@@ -1,7 +1,7 @@
 package controller.map.report;
 
 import model.map.IFixture;
-import model.map.ITileCollection;
+import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.fixtures.resources.Battlefield;
@@ -32,14 +32,14 @@ public class ExplorableReportGenerator extends
 	 * fixtures referred to in this report are removed from the collection.
 	 *
 	 * @param fixtures the set of fixtures
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report listing things that can be explored.
 	 */
 	@Override
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer) {
+			final IMapNG map, final Player currentPlayer) {
 		// At only two (albeit potentially rather long) list items, I doubt this
 		// will ever be over one K ... but we'll give it two just in case.
 		final StringBuilder builder = new StringBuilder(2048).append(
@@ -85,14 +85,14 @@ public class ExplorableReportGenerator extends
 	 * fixtures referred to in this report are removed from the collection.
 	 *
 	 * @param fixtures the set of fixtures
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report listing things that can be explored.
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer) {
+			final IMapNG map, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionListReportNode(4,
 				"Caves and Battlefields");
 		boolean anyCaves = false;
@@ -133,7 +133,7 @@ public class ExplorableReportGenerator extends
 	 * Produces a more verbose sub-report on a cave or battlefield.
 	 *
 	 * @param fixtures the set of fixtures.
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param item the item to report on
 	 * @param loc its location
 	 * @param currentPlayer the player for whom the report is being produced
@@ -143,7 +143,7 @@ public class ExplorableReportGenerator extends
 	@Override
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer,
+			final IMapNG map, final Player currentPlayer,
 			final HarvestableFixture item, final Point loc) {
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));
@@ -152,7 +152,7 @@ public class ExplorableReportGenerator extends
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat("Signs of a long-ago battle on ", loc.toString()); // NOPMD
 		} else {
-			return new HarvestableReportGenerator().produce(fixtures, tiles,
+			return new HarvestableReportGenerator().produce(fixtures, map,
 					currentPlayer, item, loc);
 		}
 	}
@@ -161,7 +161,7 @@ public class ExplorableReportGenerator extends
 	 * Produces a more verbose sub-report on a cave or battlefield.
 	 *
 	 * @param fixtures the set of fixtures.
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param item the item to report on
 	 * @param loc its location
 	 * @param currentPlayer the player for whom the report is being produced
@@ -171,7 +171,7 @@ public class ExplorableReportGenerator extends
 	@Override
 	public SimpleReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer,
+			final IMapNG map, final Player currentPlayer,
 			final HarvestableFixture item, final Point loc) {
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));
@@ -181,7 +181,7 @@ public class ExplorableReportGenerator extends
 			return new SimpleReportNode("Signs of a long-ago battle on ", // NOPMD
 					loc.toString());
 		} else {
-			return new HarvestableReportGenerator().produceRIR(fixtures, tiles,
+			return new HarvestableReportGenerator().produceRIR(fixtures, map,
 					currentPlayer, item, loc);
 		}
 	}

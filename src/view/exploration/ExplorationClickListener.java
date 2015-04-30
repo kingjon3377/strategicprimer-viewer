@@ -16,21 +16,21 @@ import model.listeners.MovementCostListener;
 import model.listeners.MovementCostSource;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
-import model.map.IMap;
-import model.map.IMutableTile;
-import model.map.ITile;
+import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
+import model.map.fixtures.Ground;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
+import model.map.fixtures.terrain.Forest;
+import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
 
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.Pair;
 import view.map.details.FixtureList;
-import view.util.ErrorShower;
 
 /**
  * The listener for clicks on tile buttons indicating movement.
@@ -116,20 +116,21 @@ public final class ExplorationClickListener implements ActionListener,
 				}
 			}
 			model.move(direction);
-			for (final Pair<IMap, File> pair : model.getSubordinateMaps()) {
-				final IMap map = pair.first();
-				final ITile tile = map.getTile(model.getSelectedUnitLocation());
-				if (!(tile instanceof IMutableTile)) {
-					ErrorShower.showErrorDialog(null, "Adding fixtures to "
-							+ pair.second().getPath()
-							+ " failed because the tile was not mutable.");
-					return;
-				}
-				((IMutableTile) tile).setTerrain(model.getMap()
-						.getTile(model.getSelectedUnitLocation()).getTerrain());
+			Point dPoint = model.getSelectedUnitLocation();
+			for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
+				final IMutableMapNG map = pair.first();
+				map.setBaseTerrain(dPoint, model.getMap()
+						.getBaseTerrain(dPoint));
 				for (final TileFixture fix : fixtures) {
-					if (fix != null) {
-						((IMutableTile) tile).addFixture(fix);
+					if (fix instanceof Ground && map.getGround(dPoint) == null) {
+						map.setGround(dPoint, (Ground) fix);
+					} else if (fix instanceof Forest
+							&& map.getForest(dPoint) == null) {
+						map.setForest(dPoint, (Forest) fix);
+					} else if (fix instanceof Mountain) {
+						map.setMountainous(dPoint, true);
+					} else if (fix != null) {
+						map.addFixture(dPoint, fix);
 					}
 				}
 			}
@@ -149,14 +150,14 @@ public final class ExplorationClickListener implements ActionListener,
 	 * unit's owner.
 	 */
 	private void swearVillages() {
-		for (final Pair<IMap, File> pair : model.getAllMaps()) {
-			final IMap map = pair.first();
-			final ITile tile = map.getTile(model.getSelectedUnitLocation());
+		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
+			final IMutableMapNG map = pair.first();
 			IUnit mover = model.getSelectedUnit();
 			if (mover != null) {
 				final Player owner = mover.getOwner();
-				for (final TileFixture fix : tile) {
-				if (fix instanceof Village) {
+				for (final TileFixture fix : map.getOtherFixtures(model
+						.getSelectedUnitLocation())) {
+					if (fix instanceof Village) {
 						((Village) fix).setOwner(owner);
 					}
 				}

@@ -6,7 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import model.map.IMap;
+import model.map.IMapNG;
+import model.map.IMutableMapNG;
 import util.Pair;
 import util.SetPairConverter;
 
@@ -23,13 +24,13 @@ public abstract class AbstractMultiMapModel extends AbstractDriverModel
 	/**
 	 * The collection of subordinate maps.
 	 */
-	private final Map<IMap, File> subordinateMaps = new HashMap<>();
+	private final Map<IMutableMapNG, File> subordinateMaps = new HashMap<>();
 	/**
 	 * @param map the subordinate map to add
 	 * @param file the name of the file it was loaded from
 	 */
 	@Override
-	public final void addSubordinateMap(final IMap map, final File file) {
+	public final void addSubordinateMap(final IMutableMapNG map, final File file) {
 		subordinateMaps.put(map, file);
 	}
 
@@ -37,7 +38,7 @@ public abstract class AbstractMultiMapModel extends AbstractDriverModel
 	 * @param map the subordinate map to remove
 	 */
 	@Override
-	public final void removeSubordinateMap(final IMap map) {
+	public final void removeSubordinateMap(final IMapNG map) {
 		subordinateMaps.remove(map);
 	}
 
@@ -45,7 +46,7 @@ public abstract class AbstractMultiMapModel extends AbstractDriverModel
 	 * @return an iterator over the subordinate maps
 	 */
 	@Override
-	public final Iterable<Pair<IMap, File>> getSubordinateMaps() {
+	public final Iterable<Pair<IMutableMapNG, File>> getSubordinateMaps() {
 		return new SetPairConverter<>(subordinateMaps);
 	}
 
@@ -53,10 +54,10 @@ public abstract class AbstractMultiMapModel extends AbstractDriverModel
 	 * @return an iterator over both the main map and the subordinate maps
 	 */
 	@Override
-	public final Iterable<Pair<IMap, File>> getAllMaps() {
-		final List<Pair<IMap, File>> retval = new ArrayList<>();
-		retval.add(Pair.of((IMap) getMap(), getMapFile()));
-		for (final Pair<IMap, File> pair : getSubordinateMaps()) {
+	public final Iterable<Pair<IMutableMapNG, File>> getAllMaps() {
+		final List<Pair<IMutableMapNG, File>> retval = new ArrayList<>();
+		retval.add(Pair.of(getMap(), getMapFile()));
+		for (final Pair<IMutableMapNG, File> pair : getSubordinateMaps()) {
 			retval.add(pair);
 		}
 		return retval;

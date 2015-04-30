@@ -3,7 +3,6 @@ package model.listeners;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.map.ITile;
 import model.map.Point;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -42,22 +41,12 @@ public final class SelectionChangeSupport implements SelectionChangeSource {
 	 * infinite recursion.
 	 *
 	 * @param oldPoint the previously selected location
-	 * @param newPoint the newly selected location. If null, we won't fire point
-	 *        notifications at all
-	 * @param oldTile the previously selected tile
-	 * @param newTile the newly selected tile. If null, we won't fire tile
-	 *        notifications at all.
+	 * @param newPoint the newly selected location.
 	 */
 	public void fireChanges(@Nullable final Point oldPoint,
-			@Nullable final Point newPoint, @Nullable final ITile oldTile,
-			@Nullable final ITile newTile) {
+			final Point newPoint) {
 		for (final SelectionChangeListener list : listeners) {
-			if (newPoint != null) {
-				list.selectedPointChanged(oldPoint, newPoint);
-			}
-			if (newTile != null) {
-				list.selectedTileChanged(oldTile, newTile);
-			}
+			list.selectedPointChanged(oldPoint, newPoint);
 		}
 	}
 

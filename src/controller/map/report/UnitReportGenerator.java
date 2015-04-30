@@ -2,7 +2,7 @@ package controller.map.report;
 
 import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
 import model.map.IFixture;
-import model.map.ITileCollection;
+import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.fixtures.UnitMember;
@@ -41,7 +41,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 *
 	 * @param fixtures the set of fixtures, so we can remove the unit and its
 	 *        members from it.
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param unit a unit
 	 * @param loc the unit's location
 	 * @param currentPlayer the player for whom the report is being produced
@@ -50,7 +50,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	@Override
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer,
+			final IMapNG map, final Player currentPlayer,
 			final Unit unit, final Point loc) {
 		final StringBuilder builder =
 				new StringBuilder(52 + unit.getKind().length()
@@ -94,7 +94,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 *
 	 * @param fixtures the set of fixtures, so we can remove the unit and its
 	 *        members from it.
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param unit a unit
 	 * @param loc the unit's location
 	 * @param currentPlayer the player for whom the report is being produced
@@ -103,7 +103,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer,
+			final IMapNG map, final Player currentPlayer,
 			final Unit unit, final Point loc) {
 		final String simple; // NOPMD
 		if (unit.getOwner().isIndependent()) {
@@ -256,14 +256,14 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * All fixtures referred to in this report are removed from the collection.
 	 *
 	 * @param fixtures the set of fixtures
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report dealing with units
 	 */
 	@Override
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer) {
+			final IMapNG map, final Player currentPlayer) {
 		// This can get big; we'll say 8K.
 		final StringBuilder builder = new StringBuilder(8192)
 				.append("<h4>Units in the map</h4>\n");
@@ -283,14 +283,14 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 					anyOurs = true;
 					ours.append(OPEN_LIST_ITEM)
 							.append(atPoint(pair.first()))
-							.append(produce(fixtures, tiles, currentPlayer,
+							.append(produce(fixtures, map, currentPlayer,
 									unit, pair.first()))
 							.append(CLOSE_LIST_ITEM);
 				} else {
 					anyForeign = true;
 					foreign.append(OPEN_LIST_ITEM)
 							.append(atPoint(pair.first()))
-							.append(produce(fixtures, tiles, currentPlayer,
+							.append(produce(fixtures, map, currentPlayer,
 									unit, pair.first()))
 							.append(CLOSE_LIST_ITEM);
 				}
@@ -315,14 +315,14 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * All fixtures referred to in this report are removed from the collection.
 	 *
 	 * @param fixtures the set of fixtures
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report dealing with units
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer) {
+			final IMapNG map, final Player currentPlayer) {
 		final AbstractReportNode retval =
 				new SectionReportNode(4, "Units in the map");
 		retval.add(new SimpleReportNode(
@@ -334,7 +334,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Unit) {
 				final Unit unit = (Unit) pair.second();
-				final AbstractReportNode unitNode = produceRIR(fixtures, tiles,
+				final AbstractReportNode unitNode = produceRIR(fixtures, map,
 						currentPlayer, unit, pair.first());
 				unitNode.setText(concat(atPoint(pair.first()), unitNode.getText()));
 				if (currentPlayer.equals(unit.getOwner())) {

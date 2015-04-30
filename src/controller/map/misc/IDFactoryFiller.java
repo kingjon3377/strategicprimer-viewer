@@ -4,8 +4,8 @@ import java.io.File;
 
 import model.map.FixtureIterable;
 import model.map.IFixture;
-import model.map.IMap;
-import model.map.ITileCollection;
+import model.map.IMapNG;
+import model.map.IMutableMapNG;
 import model.map.Point;
 import model.misc.IMultiMapModel;
 import util.Pair;
@@ -28,12 +28,24 @@ public final class IDFactoryFiller {
 	 * @param map a map
 	 * @return an ID factory that won't generate an ID the map already uses
 	 */
-	public static IDFactory createFactory(final IMap map) {
+	public static IDFactory createFactory(final IMapNG map) {
 		final IDFactory retval = new IDFactory();
-		final ITileCollection tiles = map.getTiles();
-		for (final Point point : tiles) {
-			if (point != null) {
-				recursiveRegister(retval, tiles.getTile(point));
+		for (final Point point : map.locations()) {
+			if (point == null) {
+				continue;
+			}
+			// Ground, Forest, Rivers, and Mountains do not have IDs, so we
+			// can skip them and just test the "other" fixtures
+			for (IFixture fixture : map.getOtherFixtures(point)) {
+				final int idNum = fixture.getID();
+				if (!retval.used(idNum)) {
+					// We don't want to set off duplicate-ID warnings for
+					// the same fixture in multiple maps.
+					retval.register(idNum);
+				}
+				if (fixture instanceof FixtureIterable<?>) {
+					recursiveRegister(retval, (FixtureIterable<?>) fixture);
+				}
 			}
 		}
 		return retval;
@@ -46,11 +58,23 @@ public final class IDFactoryFiller {
 	 */
 	public static IDFactory createFactory(final IMultiMapModel model) {
 		final IDFactory retval = new IDFactory();
-		for (final Pair<IMap, File> pair : model.getAllMaps()) {
-			final ITileCollection tiles = pair.first().getTiles();
-			for (final Point point : tiles) {
-				if (point != null) {
-					recursiveRegister(retval, tiles.getTile(point));
+		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
+			for (final Point point : pair.first().locations()) {
+				if (point == null) {
+					continue;
+				}
+				// Ground, Forest, Rivers, and Mountains do not have IDs, so we
+				// can skip them and just test the "other" fixtures
+				for (IFixture fixture : pair.first().getOtherFixtures(point)) {
+					final int idNum = fixture.getID();
+					if (!retval.used(idNum)) {
+						// We don't want to set off duplicate-ID warnings for
+						// the same fixture in multiple maps.
+						retval.register(idNum);
+					}
+					if (fixture instanceof FixtureIterable<?>) {
+						recursiveRegister(retval, (FixtureIterable<?>) fixture);
+					}
 				}
 			}
 		}

@@ -11,7 +11,8 @@ import static view.util.DrawingNumericConstants.TWO_THIRDS;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import model.map.ITile;
+import model.map.IMapNG;
+import model.map.Point;
 import model.map.PointFactory;
 import model.map.River;
 import model.map.TileType;
@@ -30,33 +31,33 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 * Draw a tile at the specified coordinates.
 	 *
 	 * @param pen the graphics context.
-	 * @param tile the tile to draw
+	 * @param map the map to draw the tile from
+	 * @param location the location to draw
 	 * @param position the coordinates of the tile's upper-left corner
 	 * @param dims the width (X) and height (Y) of the tile
 	 */
 	// ESCA-JAVA0138:
 	@Override
-	public void drawTile(final Graphics pen, final ITile tile,
-			final Coordinate position, final Coordinate dims) {
+	public void drawTile(final Graphics pen, final IMapNG map,
+			final Point location, final Coordinate position,
+			final Coordinate dims) {
 		final Graphics context = pen.create();
 		try {
-			context.setColor(getTileColor(1, tile.getTerrain()));
+			context.setColor(getTileColor(1, map.getBaseTerrain(location)));
 			context.fillRect(position.x, position.y, dims.x, dims.y);
 			context.setColor(Color.black);
 			context.drawRect(position.x, position.y, dims.x, dims.y);
-			if (TileType.NotVisible.equals(tile.getTerrain())) {
+			if (TileType.NotVisible.equals(map.getBaseTerrain(location))) {
 				return;
 			}
 			context.setColor(Color.blue);
-			if (tile.hasRiver()) {
-				for (final River river : tile.getRivers()) {
-					if (river != null) {
-						drawRiver(context, river, position.x, position.y,
-								dims.x, dims.y);
-					}
+			for (final River river : map.getRivers(location)) {
+				if (river != null) {
+					drawRiver(context, river, position.x, position.y, dims.x,
+							dims.y);
 				}
 			}
-			if (hasAnyForts(tile)) {
+			if (hasAnyForts(map, location)) {
 				context.setColor(FORT_COLOR);
 				context.fillRect((int) Math.round(dims.x * TWO_THIRDS)
 						- 1 + position.x,
@@ -65,13 +66,13 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 						(int) Math.round(dims.x / THREE),
 						(int) Math.round(dims.y / THREE));
 			}
-			if (hasAnyUnits(tile)) {
+			if (hasAnyUnits(map, location)) {
 				context.setColor(UNIT_COLOR);
 				context.fillOval(((int) Math.round(dims.x / FOUR))
 						+ position.x, ((int) Math.round(dims.y / FOUR))
 						+ position.y, (int) Math.round(dims.x / FOUR),
 						(int) Math.round(dims.y / FOUR));
-			} else if (hasEvent(tile)) {
+			} else if (hasEvent(map, location)) {
 				context.setColor(EVENT_COLOR);
 				context.fillPolygon(
 						new int[] {
@@ -96,14 +97,15 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 * that its origin is the tile's upper-left-hand corner.
 	 *
 	 * @param pen the graphics context
-	 * @param tile the tile to draw
+	 * @param map the map to draw the tile from
+	 * @param location the location to draw
 	 * @param width the width of the drawing area
 	 * @param height the height of the drawing area
 	 */
 	@Override
-	public void drawTileTranslated(final Graphics pen, final ITile tile,
-			final int width, final int height) {
-		drawTile(pen, tile, PointFactory.coordinate(0, 0),
+	public void drawTileTranslated(final Graphics pen, final IMapNG map,
+			final Point location, final int width, final int height) {
+		drawTile(pen, map, location, PointFactory.coordinate(0, 0),
 				PointFactory.coordinate(width, height));
 	}
 

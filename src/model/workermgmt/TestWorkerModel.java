@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import model.map.MapDimensions;
+import model.map.MapNGAdapter;
 import model.map.MapView;
 import model.map.Player;
 import model.map.Point;
@@ -73,8 +74,9 @@ public class TestWorkerModel {
 			map.getTile(NullCleaner.assertNotNull(point)).addFixture(
 					NullCleaner.assertNotNull(fixtures.remove(0)));
 		}
-		final IWorkerModel model = new WorkerModel(new MapView(map, 0, 0),
-				new File(""));
+		final IWorkerModel model =
+				new WorkerModel(new MapNGAdapter(new MapView(map, 0, 0)),
+						new File(""));
 		final List<IUnit> listOneA = model.getUnits(playerOne);
 		assertTrue("Got all units for player 1", listOneA.containsAll(listOne));
 		assertTrue("And didn't miss any for player 1",

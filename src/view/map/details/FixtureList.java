@@ -19,10 +19,10 @@ import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
 import model.listeners.SelectionChangeListener;
-import model.map.IPlayerCollection;
-import model.map.ITile;
+import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
+import model.misc.IDriverModel;
 import model.viewer.CurriedFixtureTransferable;
 import model.viewer.FixtureListDropListener;
 import model.viewer.FixtureListModel;
@@ -42,16 +42,19 @@ public class FixtureList extends JList<TileFixture> implements
 	/**
 	 * The list model.
 	 */
-	private final FixtureListModel flm = new FixtureListModel();
+	private final FixtureListModel flm;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param parent a parent of this list
+	 * @param dmodel the driver model (needed to get at the map for the list model)
 	 * @param players the players in the map
 	 * @author Jonathan Lovelace
 	 */
-	public FixtureList(final JComponent parent, final IPlayerCollection players) {
+	public FixtureList(final JComponent parent, final IDriverModel dmodel,
+			final Iterable<Player> players) {
+		flm = new FixtureListModel(dmodel);
 		setModel(flm);
 		setCellRenderer(new FixtureCellRenderer());
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -124,14 +127,14 @@ public class FixtureList extends JList<TileFixture> implements
 		/**
 		 * The collection of players in the map.
 		 */
-		private final IPlayerCollection players;
+		private final Iterable<Player> players;
 
 		/**
 		 * Constructor.
 		 *
 		 * @param playerColl the collection of players in the map
 		 */
-		protected FixtureMouseListener(final IPlayerCollection playerColl) {
+		protected FixtureMouseListener(final Iterable<Player> playerColl) {
 			players = playerColl;
 		}
 
@@ -190,13 +193,5 @@ public class FixtureList extends JList<TileFixture> implements
 	public void selectedPointChanged(@Nullable final Point old,
 			final Point newPoint) {
 		flm.selectedPointChanged(old, newPoint);
-	}
-	/**
-	 * @param old passed to the list model
-	 * @param newTile passed to the list model
-	 */
-	@Override
-	public void selectedTileChanged(@Nullable final ITile old, final ITile newTile) {
-		flm.selectedTileChanged(old, newTile);
 	}
 }

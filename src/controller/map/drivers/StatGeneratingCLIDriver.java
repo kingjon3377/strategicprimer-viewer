@@ -1,7 +1,6 @@
 package controller.map.drivers;
 
 import static util.SingletonRandom.RANDOM;
-import static view.util.SystemOut.SYS_OUT;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,12 +17,10 @@ import model.exploration.ExplorationModel;
 import model.exploration.IExplorationModel;
 import model.map.FixtureIterable;
 import model.map.IFixture;
-import model.map.IMap;
-import model.map.IMutableTile;
-import model.map.IMutableTileCollection;
-import model.map.ITile;
-import model.map.ITileCollection;
-import model.map.MapView;
+import model.map.IMapNG;
+import model.map.IMutableMapNG;
+import model.map.MapNGAdapter;
+import model.map.MapNGReverseAdapter;
 import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
@@ -161,8 +158,8 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	private static void writeMaps(final IExplorationModel model)
 			throws IOException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		for (final Pair<IMap, File> pair : model.getAllMaps()) {
-			reader.write(pair.second(), pair.first());
+		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
+			reader.write(pair.second(), new MapNGReverseAdapter(pair.first()));
 		}
 	}
 
@@ -179,7 +176,8 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			throws IOException, XMLStreamException, SPFormatException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final File firstFile = new File(filenames[0]);
-		final MapView master = reader.readMap(firstFile, Warning.INSTANCE);
+		final IMutableMapNG master =
+				new MapNGAdapter(reader.readMap(firstFile, Warning.INSTANCE));
 		final ExplorationModel model = new ExplorationModel(master,
 				firstFile);
 		for (final String filename : filenames) {
@@ -187,8 +185,9 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 				continue;
 			}
 			final File file = new File(filename);
-			final IMap map = reader.readMap(file, Warning.INSTANCE);
-			if (!map.getDimensions().equals(master.getDimensions())) {
+			final IMutableMapNG map =
+					new MapNGAdapter(reader.readMap(file, Warning.INSTANCE));
+			if (!map.dimensions().equals(master.dimensions())) {
 				throw new IllegalArgumentException("Size mismatch between "
 						+ firstFile + " and " + filename);
 			}
@@ -333,8 +332,8 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	private void enterStats(final IExplorationModel model, final int idNum)
 			throws IOException {
 		final WorkerStats stats = enterStats();
-		for (final Pair<IMap, File> pair : model.getAllMaps()) {
-			final IMap map = pair.first();
+		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
+			final IMapNG map = pair.first();
 			final IFixture fix = find(map, idNum);
 			if (fix instanceof Worker && ((Worker) fix).getStats() == null) {
 				((Worker) fix).setStats(stats);
@@ -365,16 +364,24 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 * @return the fixture with that ID, or null if not found
 	 */
 	@Nullable
-	private static IFixture find(final IMap map, final int idNum) {
-		final ITileCollection tiles = map.getTiles();
-		for (final Point point : tiles) {
+	private static IFixture find(final IMapNG map, final int idNum) {
+		for (final Point point : map.locations()) {
 			if (point == null) {
 				continue;
 			}
-			final ITile tile = tiles.getTile(point);
-			final IFixture result = find(tile, idNum);
-			if (result != null) {
-				return result; // NOPMD
+			// TODO: If Ground or Forest ever gets ID, check it here.
+			for (IFixture fixture : map.getOtherFixtures(point)) {
+				if (fixture == null) {
+					continue;
+				} else if (fixture.getID() == idNum) {
+					return fixture;
+				} else if (fixture instanceof FixtureIterable<?>) {
+					final IFixture result =
+							find((FixtureIterable<?>) fixture, idNum);
+					if (result != null) {
+						return result; // NOPMD
+					}
+				}
 			}
 		}
 		return null;
@@ -460,23 +467,12 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 				final IUnit unit = new Unit(player, // NOPMD
 						cli.inputString("Kind of unit: "),
 						cli.inputString("Unit name: "), idf.createID());
-				for (final Pair<IMap, File> pair : model.getAllMaps()) {
-					final ITileCollection tiles = pair.first().getTiles();
-					final ITile tile = tiles.getTile(point);
-					if (!(tile instanceof IMutableTile)) {
-						SYS_OUT.print("Couldn't add to ");
-						SYS_OUT.print(pair.second().getPath());
-						SYS_OUT.println(" because tile wasn't mutable");
-					} else if (!(tiles instanceof IMutableTileCollection)) {
-						SYS_OUT.print("Couldn't add to ");
-						SYS_OUT.print(pair.second().getPath());
-						SYS_OUT.println(" because the map's tiles aren't mutable");
-					} else {
-						final IMutableTile mtile = (IMutableTile) tile;
-						mtile.addFixture(unit);
-						((IMutableTileCollection) tiles).addTile(point,
-								(IMutableTile) tile);
+				for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
+					if (pair == null) {
+						continue;
 					}
+					IMutableMapNG submap = pair.first();
+					submap.addFixture(point, unit);
 				}
 				if (cli.inputBoolean(LOAD_NAMES)) {
 					createWorkersFromFile(model, idf, unit);
@@ -502,7 +498,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		final int count = cli.inputNumber("How many workers to generate? ");
 		for (int i = 0; i < count; i++) {
 			final Worker worker = createWorker(idf);
-			for (final Pair<IMap, File> pair : model.getAllMaps()) {
+			for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
 				final IFixture fix = find(pair.first(), unit.getID());
 				if (fix instanceof IUnit) {
 					((IUnit) fix).addMember(worker);
@@ -535,7 +531,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			final Worker worker =
 					createWorker(
 							NullCleaner.assertNotNull(names.get(i).trim()), idf);
-			for (final Pair<IMap, File> pair : model.getAllMaps()) {
+			for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
 				final IFixture fix = find(pair.first(), unit.getID());
 				if (fix instanceof IUnit) {
 					((IUnit) fix).addMember(worker);

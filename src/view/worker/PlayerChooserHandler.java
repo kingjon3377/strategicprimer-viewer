@@ -11,7 +11,6 @@ import javax.swing.JOptionPane;
 import model.listeners.PlayerChangeListener;
 import model.listeners.PlayerChangeSource;
 import model.map.IMutablePlayerCollection;
-import model.map.IPlayerCollection;
 import model.map.Player;
 import model.map.PlayerCollection;
 import model.misc.IDriverModel;
@@ -60,7 +59,7 @@ public final class PlayerChooserHandler implements ActionListener,
 	public PlayerChooserHandler(final Component outer, final IDriverModel dmodel) {
 		parent = outer;
 		model = dmodel;
-		player = dmodel.getMap().getPlayers().getCurrentPlayer();
+		player = dmodel.getMap().getCurrentPlayer();
 	}
 
 	/**
@@ -90,7 +89,7 @@ public final class PlayerChooserHandler implements ActionListener,
 			final Player retval = (Player) JOptionPane.showInputDialog(parent,
 					"Player to view:", "Choose New Player",
 					JOptionPane.PLAIN_MESSAGE, null, playersAsArray(model
-							.getMap().getPlayers()), player);
+							.getMap().players()), player);
 			if (retval != null) {
 				for (final PlayerChangeListener list : listeners) {
 					list.playerChanged(player, retval);
@@ -111,7 +110,7 @@ public final class PlayerChooserHandler implements ActionListener,
 	 * @param players a collection of players
 	 * @return the players as an array
 	 */
-	private static Player[] playersAsArray(final IPlayerCollection players) {
+	private static Player[] playersAsArray(final Iterable<Player> players) {
 		if (players instanceof IMutablePlayerCollection) {
 			return ((PlayerCollection) players).asArray(); // NOPMD
 		} else {

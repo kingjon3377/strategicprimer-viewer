@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 
 import model.map.HasKind;
 import model.map.IFixture;
-import model.map.ITileCollection;
+import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.fixtures.mobile.Centaur;
@@ -45,14 +45,14 @@ public class ImmortalsReportGenerator extends
 	 * Produce the sub-report dealing with "immortals".
 	 *
 	 * @param fixtures the set of fixtures
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report listing "immortals"
 	 */
 	@Override
 	public String produce(// $codepro.audit.disable cyclomaticComplexity
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer) {
+			final IMapNG map, final Player currentPlayer) {
 		final Map<String, List<Point>> dragons = new HashMap<>();
 		final Map<String, List<Point>> fairies = new HashMap<>();
 		final List<Point> trolls = new ArrayList<>();
@@ -148,14 +148,14 @@ public class ImmortalsReportGenerator extends
 	 * Produce the sub-report dealing with "immortals".
 	 *
 	 * @param fixtures the set of fixtures
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report listing "immortals"
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer) {
+			final IMapNG map, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionListReportNode(4,
 				"Immortals");
 		final Map<String, List<Point>> dragons = new HashMap<>();
@@ -233,7 +233,7 @@ public class ImmortalsReportGenerator extends
 
 	/**
 	 * @param fixtures The set of fixtures
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param currentPlayer the current player
 	 * @param item a fixture
 	 * @param loc its location
@@ -243,7 +243,7 @@ public class ImmortalsReportGenerator extends
 	@Override
 	public String produce(// $codepro.audit.disable cyclomaticComplexity
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer,
+			final IMapNG map, final Player currentPlayer,
 			final MobileFixture item, final Point loc) {
 		//  TODO: Create Immortal marker interface
 		if (item instanceof Dragon || item instanceof Fairy
@@ -261,7 +261,7 @@ public class ImmortalsReportGenerator extends
 
 	/**
 	 * @param fixtures The set of fixtures
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param currentPlayer the current player
 	 * @param item a fixture
 	 * @param loc its location
@@ -271,7 +271,7 @@ public class ImmortalsReportGenerator extends
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer,
+			final IMapNG map, final Player currentPlayer,
 			final MobileFixture item, final Point loc) {
 		// TODO: Create Immortal marker interface
 		if (item instanceof Dragon || item instanceof Fairy

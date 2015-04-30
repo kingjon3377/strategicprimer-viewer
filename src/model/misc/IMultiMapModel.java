@@ -2,7 +2,8 @@ package model.misc;
 
 import java.io.File;
 
-import model.map.IMap;
+import model.map.IMapNG;
+import model.map.IMutableMapNG;
 import util.Pair;
 
 /**
@@ -19,21 +20,21 @@ public interface IMultiMapModel extends IDriverModel {
 	 * @param map the map to remove
 	 * @param file the file it was loaded from
 	 */
-	void addSubordinateMap(IMap map, File file);
+	void addSubordinateMap(IMutableMapNG map, File file);
 	/**
 	 * Remove a subordinate map.
 	 *
 	 * @param map the map to remove
 	 */
-	void removeSubordinateMap(IMap map);
+	void removeSubordinateMap(IMapNG map);
 
 	/**
 	 * @return an iterator over the subordinate maps
 	 */
-	Iterable<Pair<IMap, File>> getSubordinateMaps();
+	Iterable<Pair<IMutableMapNG, File>> getSubordinateMaps();
 	/**
 	 * @return an iterator over all the maps, including the main map and the
 	 *         subordinate maps
 	 */
-	Iterable<Pair<IMap, File>> getAllMaps();
+	Iterable<Pair<IMutableMapNG, File>> getAllMaps();
 }

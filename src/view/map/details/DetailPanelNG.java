@@ -6,9 +6,8 @@ import javax.swing.JSplitPane;
 
 import model.listeners.SelectionChangeListener;
 import model.listeners.VersionChangeListener;
-import model.map.IPlayerCollection;
-import model.map.ITile;
 import model.map.Point;
+import model.misc.IDriverModel;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -46,12 +45,12 @@ public class DetailPanelNG extends JSplitPane implements VersionChangeListener,
 	 * Constructor.
 	 *
 	 * @param version the (initial) map version
-	 * @param players the players in the map
+	 * @param model the driver model; needed for the fixture list
 	 */
-	public DetailPanelNG(final int version, final IPlayerCollection players) {
+	public DetailPanelNG(final int version, final IDriverModel model) {
 		super(HORIZONTAL_SPLIT, true);
 
-		fixList = new FixtureList(this, players);
+		fixList = new FixtureList(this, model, model.getMap().players());
 		final BorderedPanel listPanel = new BorderedPanel(new JScrollPane(
 				fixList), header, null, null, null);
 
@@ -79,13 +78,5 @@ public class DetailPanelNG extends JSplitPane implements VersionChangeListener,
 		fixList.selectedPointChanged(old, newPoint);
 		header.setText("<html><body><p>Contents of the tile at "
 				+ newPoint.toString() + ":</p></body></html>");
-	}
-	/**
-	 * @param old passed to fixture list
-	 * @param newTile passed to fixture list
-	 */
-	@Override
-	public void selectedTileChanged(@Nullable final ITile old, final ITile newTile) {
-		fixList.selectedTileChanged(old, newTile);
 	}
 }

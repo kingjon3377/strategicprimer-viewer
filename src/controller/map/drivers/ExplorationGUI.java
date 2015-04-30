@@ -11,8 +11,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.stream.XMLStreamException;
 
 import model.exploration.ExplorationModel;
-import model.map.IMap;
-import model.map.MapView;
+import model.map.IMutableMapNG;
+import model.map.MapNGAdapter;
 import util.Warning;
 import view.exploration.ExplorationFrame;
 import view.map.main.MapFileFilter;
@@ -73,7 +73,8 @@ public class ExplorationGUI implements ISPDriver {
 			throws IOException, XMLStreamException, SPFormatException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final File firstFile = new File(filenames[0]);
-		final MapView master = reader.readMap(firstFile, Warning.INSTANCE);
+		final IMutableMapNG master =
+				new MapNGAdapter(reader.readMap(firstFile, Warning.INSTANCE));
 		final ExplorationModel model = new ExplorationModel(master,
 				firstFile);
 		for (final String filename : filenames) {
@@ -81,8 +82,9 @@ public class ExplorationGUI implements ISPDriver {
 				continue;
 			}
 			final File file = new File(filename);
-			final IMap map = reader.readMap(file, Warning.INSTANCE);
-			if (!map.getDimensions().equals(master.getDimensions())) {
+			final IMutableMapNG map =
+					new MapNGAdapter(reader.readMap(file, Warning.INSTANCE));
+			if (!map.dimensions().equals(master.dimensions())) {
 				throw new IllegalArgumentException("Size mismatch between "
 						+ firstFile + " and " + filename);
 			}

@@ -7,10 +7,12 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -19,18 +21,21 @@ import java.util.logging.Logger;
 
 import model.map.HasImage;
 import model.map.IFixture;
-import model.map.ITile;
+import model.map.IMapNG;
+import model.map.Point;
 import model.map.PointFactory;
 import model.map.River;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
 import model.map.fixtures.RiverFixture;
+import model.map.fixtures.terrain.Mountain;
 import model.viewer.FixtureComparator;
 import model.viewer.ZOrderFilter;
 
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.ImageLoader;
+import util.IteratorStack;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.TypesafeLogger;
@@ -163,25 +168,26 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * alter the state freely and don't restore it.
 	 *
 	 * @param pen the graphics context.
-	 * @param tile the tile to draw
+	 * @param map the map to draw the tile from
+	 * @param location the location to draw
 	 * @param coordinates the coordinates of the tile's upper-left corner
 	 * @param dimensions the width (X) and height (Y) of the tile
 	 */
 	@Override
-	public void drawTile(final Graphics pen, final ITile tile,
+	public void drawTile(final Graphics pen, final IMapNG map, final Point location,
 			final Coordinate coordinates, final Coordinate dimensions) {
-		if (needsFixtureColor(tile)) {
-			pen.setColor(getFixtureColor(tile));
+		if (needsFixtureColor(map, location)) {
+			pen.setColor(getFixtureColor(map, location));
 		} else {
-			pen.setColor(getTileColor(2, tile.getTerrain()));
+			pen.setColor(getTileColor(2, map.getBaseTerrain(location)));
 		}
 		pen.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
-		if (hasRivers(tile)) {
-			pen.drawImage(getImageForFixture(getRivers(tile)), coordinates.x,
+		if (map.getRivers(location).iterator().hasNext()) {
+			pen.drawImage(getRiverImage(map.getRivers(location)), coordinates.x,
 					coordinates.y, dimensions.x, dimensions.y, observer);
 		}
-		if (hasFixture(tile)) {
-			pen.drawImage(getImageForFixture(getTopFixture(tile)),
+		if (hasFixture(map, location)) {
+			pen.drawImage(getImageForFixture(getTopFixture(map, location)),
 					coordinates.x, coordinates.y, dimensions.x, dimensions.y,
 					observer);
 		}
@@ -193,57 +199,68 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * Draw a tile at the upper-left corner of the drawing surface.
 	 *
 	 * @param pen the graphics context
-	 * @param tile the tile to draw
+	 * @param map the map to draw the tile from
+	 * @param location the location to draw
 	 * @param width the width of the drawing area
 	 * @param height the height of the drawing area
 	 */
 	@Override
-	public void drawTileTranslated(final Graphics pen, final ITile tile,
-			final int width, final int height) {
-		drawTile(pen, tile, PointFactory.coordinate(0, 0),
+	public void drawTileTranslated(final Graphics pen, final IMapNG map,
+			final Point location, final int width, final int height) {
+		drawTile(pen, map, location, PointFactory.coordinate(0, 0),
 				PointFactory.coordinate(width, height));
 	}
 	/**
-	 * @param tile a tile
-	 * @return whether that tile has any rivers that are not on top
+	 * @param map a map
+	 * @param location a location
+	 * @return an Iterable of the drawable fixtures there
 	 */
-	private static boolean hasRivers(final ITile tile) {
-		for (final TileFixture fix : tile) {
-			if (fix instanceof RiverFixture) {
-				return true;
-			}
+	private Iterable<TileFixture> getDrawableFixtures(final IMapNG map,
+			final Point location) {
+		final List<TileFixture> temp = new ArrayList<>();
+		if (map.getGround(location) != null) {
+			temp.add(map.getGround(location));
 		}
-		return false;
+		if (map.getForest(location) != null) {
+			temp.add(map.getForest(location));
+		}
+		if (map.isMountainous(location)) {
+			temp.add(new Mountain());
+		}
+		return new IteratorWrapper<>(new FilteredIterator(new IteratorStack<>(temp,
+				map.getOtherFixtures(location)), zof), fixComp);
 	}
 	/**
-	 * @param tile a tile
-	 * @return whether that tile has any fixtures (or any river
+	 * @param map a map
+	 * @param location a location
+	 * @return whether there are any fixtures worth drawing there
 	 */
-	private boolean hasFixture(final ITile tile) {
-		return new FilteredIterator(tile.iterator(), zof).hasNext();
+	private boolean hasFixture(final IMapNG map, final Point location) {
+		return getDrawableFixtures(map, location).iterator().hasNext();
 	}
 
 	/**
-	 * @param tile
-	 *            a tile
-	 * @return any RiverFixture on that tile. We assume the tile cannot have
-	 *         more than one.
+	 * @param rivers a collection of rivers
+	 * @return an image representing them
 	 */
-	private static RiverFixture getRivers(final ITile tile) {
-		for (final TileFixture item : tile) {
-			if (item instanceof RiverFixture) {
-				return (RiverFixture) item;
+	private Image getRiverImage(final Iterable<River> rivers) {
+		if (rivers instanceof Set<?>) {
+			return getImage(NullCleaner.assertNotNull(riverFiles.get(rivers)));
+		} else {
+			Set<River> riverSet = EnumSet.noneOf(River.class);
+			for (River river : rivers) {
+				riverSet.add(river);
 			}
+			return getImage(NullCleaner.assertNotNull(riverFiles.get(riverSet)));
 		}
-		throw new IllegalArgumentException("Tile has no non-null fixtures");
 	}
 	/**
-	 * @param tile a tile
-	 * @return the top fixture on that tile.
+	 * @param map a map
+	 * @param location a location
+	 * @return the top fixture there
 	 */
-	private TileFixture getTopFixture(final ITile tile) {
-		final Iterable<TileFixture> iter = new IteratorWrapper<>(
-				new FilteredIterator(tile.iterator(), zof), fixComp);
+	private TileFixture getTopFixture(final IMapNG map, final Point location) {
+		final Iterable<TileFixture> iter = getDrawableFixtures(map, location);
 		for (final TileFixture item : iter) {
 			if (item != null) {
 				return item;
@@ -256,27 +273,26 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * FIXME: This at present ignores the case of a forest *and* a mountain on a
 	 * tile; we can't show both as icons.
 	 *
-	 * @param tile a tile
-	 * @return whether it needs a different color to show a non-top fixture
+	 * @param map a map
+	 * @param location a location
+	 * @return whether we needs a different color to show a non-top fixture there
 	 *         (like a forest or mountain)
 	 */
-	private boolean needsFixtureColor(final ITile tile) {
-		if (hasTerrainFixture(tile)) {
-			return !(getTopFixture(tile) instanceof TerrainFixture); // NOPMD
+	private boolean needsFixtureColor(final IMapNG map, final Point location) {
+		if (hasTerrainFixture(map, location)) {
+			return !(getTopFixture(map, location) instanceof TerrainFixture); //NOPMD
 		} else {
 			return false;
 		}
 	}
 
 	/**
-	 * @param tile a tile
-	 * @return whether it has a TerrainFixture.
+	 * @param map a map
+	 * @param location a location
+	 * @return whether there is a terrain fixture there
 	 */
-	private boolean hasTerrainFixture(final ITile tile) {
-		final Iterable<TileFixture> iter =
-				new IteratorWrapper<>(
-						new FilteredIterator(tile.iterator(), zof));
-		for (final TileFixture fix : iter) {
+	private boolean hasTerrainFixture(final IMapNG map, final Point location) {
+		for (final TileFixture fix : getDrawableFixtures(map, location)) {
 			if (fix instanceof TerrainFixture) {
 				return true; // NOPMD
 			}
@@ -285,19 +301,17 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
-	 * @param tile a tile
-	 * @return a color to represent its not-on-top terrain feature.
+	 * @param map a map
+	 * @param location a location
+	 * @return a color to represent the not-on-top terrain feature there.
 	 */
-	private Color getFixtureColor(final ITile tile) {
-		final Iterable<TileFixture> iter =
-				new IteratorWrapper<>(
-						new FilteredIterator(tile.iterator(), zof));
-		for (final TileFixture fix : iter) {
+	private Color getFixtureColor(final IMapNG map, final Point location) {
+		for (final TileFixture fix : getDrawableFixtures(map, location)) {
 			if (fix instanceof TerrainFixture) {
 				return getHelper().getFeatureColor(fix); // NOPMD
 			}
 		}
-		return getTileColor(2, tile.getTerrain());
+		return getTileColor(2, map.getBaseTerrain(location));
 	}
 
 	/**

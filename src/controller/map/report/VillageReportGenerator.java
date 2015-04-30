@@ -1,7 +1,7 @@
 package controller.map.report;
 
 import model.map.IFixture;
-import model.map.ITileCollection;
+import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.fixtures.towns.Village;
@@ -28,12 +28,12 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 * @param fixtures the set of fixtures
 	 * @return the part of the report dealing with villages.
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @param tiles ignored
+	 * @param map ignored
 	 */
 	@Override
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer) {
+			final IMapNG map, final Player currentPlayer) {
 		final HeadedList<String> others = new HtmlList(
 				"<h4>Villages you know about:</h4>");
 		final HeadedList<String> own = new HtmlList(
@@ -42,7 +42,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 			if (pair.second() instanceof Village) {
 				final Village village = (Village) pair.second();
 				final String product =
-						produce(fixtures, tiles, currentPlayer, village,
+						produce(fixtures, map, currentPlayer, village,
 								pair.first());
 				if (village.getOwner().isCurrent()) {
 					own.add(product);
@@ -62,12 +62,12 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 * @param fixtures the set of fixtures
 	 * @return the part of the report dealing with villages.
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @param tiles ignored
+	 * @param map ignored
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer) {
+			final IMapNG map, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionReportNode(4, "Villages:");
 		final AbstractReportNode others = new SectionListReportNode(5,
 				"Villages you know about:");
@@ -77,7 +77,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 			if (pair.second() instanceof Village) {
 				final Village village = (Village) pair.second();
 				final IReportNode product =
-						produceRIR(fixtures, tiles, currentPlayer, village,
+						produceRIR(fixtures, map, currentPlayer, village,
 								pair.first());
 				if (village.getOwner().isCurrent()) {
 					own.add(product);
@@ -105,7 +105,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 *
 	 * @param fixtures the set of fixtures---we remove the specified village
 	 *        from it.
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param item the village to report on
 	 * @param loc its location
 	 * @param currentPlayer the player for whom the report is being produced
@@ -114,7 +114,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	@Override
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer,
+			final IMapNG map, final Player currentPlayer,
 			final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		if (item.getOwner().isIndependent()) {
@@ -132,7 +132,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	 *
 	 * @param fixtures the set of fixtures---we remove the specified village
 	 *        from it.
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param item the village to report on
 	 * @param loc its location
 	 * @param currentPlayer the player for whom the report is being produced
@@ -141,7 +141,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	@Override
 	public SimpleReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer,
+			final IMapNG map, final Player currentPlayer,
 			final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		if (item.getOwner().isIndependent()) {

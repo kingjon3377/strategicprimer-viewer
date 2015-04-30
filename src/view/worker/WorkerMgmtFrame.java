@@ -89,31 +89,29 @@ public class WorkerMgmtFrame extends JFrame {
 					model.getMapFile());
 		}
 		setMinimumSize(new Dimension(640, 480));
-		final NewUnitDialog newUnitFrame = new NewUnitDialog(model.getMap()
-				.getPlayers().getCurrentPlayer(),
-				IDFactoryFiller.createFactory(model.getMap()));
+		final NewUnitDialog newUnitFrame =
+				new NewUnitDialog(model.getMap().getCurrentPlayer(),
+						IDFactoryFiller.createFactory(model.getMap()));
 		final PlayerChooserHandler pch = new PlayerChooserHandler(this, model);
 		final IWorkerTreeModel wtmodel =
-				new WorkerTreeModelAlt(model.getMap().getPlayers()
-						.getCurrentPlayer(), model);
+				new WorkerTreeModelAlt(model.getMap().getCurrentPlayer(), model);
 		final WorkerTree tree =
-				new WorkerTree(wtmodel, model.getMap().getPlayers(), true);
+				new WorkerTree(wtmodel, model.getMap().players(), true);
 		pch.addPlayerChangeListener(wtmodel);
 		newUnitFrame.addNewUnitListener(wtmodel);
 		final PlayerLabel plabel = new PlayerLabel("Units belonging to", model
-				.getMap().getPlayers().getCurrentPlayer(), ":");
+				.getMap().getCurrentPlayer(), ":");
 		pch.addPlayerChangeListener(plabel);
 		pch.addPlayerChangeListener(newUnitFrame);
 		final OrdersPanel ordersPanel = new OrdersPanel(model);
 		pch.addPlayerChangeListener(ordersPanel);
-		ordersPanel.playerChanged(null, model.getMap().getPlayers()
-				.getCurrentPlayer());
+		ordersPanel.playerChanged(null, model.getMap().getCurrentPlayer());
 		tree.addTreeSelectionListener(ordersPanel);
 		final Component outer = this;
 		final IWorkerModel smodel = model;
 		final DefaultTreeModel reportModel = new DefaultTreeModel(
 				ReportGenerator.createAbbreviatedReportIR(model.getMap(), model
-						.getMap().getPlayers().getCurrentPlayer()));
+						.getMap().getCurrentPlayer()));
 		final JTree report = new JTree(reportModel);
 		report.setRootVisible(false);
 		report.expandPath(new TreePath(((DefaultMutableTreeNode) reportModel
@@ -227,8 +225,7 @@ public class WorkerMgmtFrame extends JFrame {
 		@Override
 		public void mapChanged() {
 			reportModel.setRoot(ReportGenerator.createAbbreviatedReportIR(
-					model.getMap(), model.getMap().getPlayers()
-							.getCurrentPlayer()));
+					model.getMap(), model.getMap().getCurrentPlayer()));
 		}
 
 		/**
@@ -343,8 +340,7 @@ public class WorkerMgmtFrame extends JFrame {
 		 * @return the proto-strategy as a String
 		 */
 		public String createStrategy() {
-			final Player currentPlayer =
-					model.getMap().getPlayers().getCurrentPlayer();
+			final Player currentPlayer = model.getMap().getCurrentPlayer();
 			final String playerName = currentPlayer.getName();
 			final String turn = Integer.toString(model.getMap().getCurrentTurn());
 			final List<IUnit> units = model.getUnits(currentPlayer);

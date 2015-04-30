@@ -10,10 +10,10 @@ import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
 import model.listeners.SelectionChangeSupport;
 import model.listeners.VersionChangeListener;
-import model.map.IMutableTile;
-import model.map.ITile;
 import model.map.Point;
+import model.map.PointFactory;
 import model.map.TileType;
+import model.misc.IDriverModel;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -25,9 +25,13 @@ import org.eclipse.jdt.annotation.Nullable;
 public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 		VersionChangeListener, SelectionChangeSource, SelectionChangeListener {
 	/**
-	 * The tile whose terrain we might change.
+	 * The driver model.
 	 */
-	private ITile tile;
+	private final IDriverModel model;
+	/**
+	 * The point at which we might change terrain.
+	 */
+	private Point point = PointFactory.point(-1, -1);
 
 	/**
 	 * The helper to handle selection-change listeners for us.
@@ -38,10 +42,10 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 	 * Constructor.
 	 *
 	 * @param version the map version
-	 * @param initialTile the initial tile
+	 * @param dmodel the driver model
 	 */
-	public TerrainChangingMenu(final int version, final ITile initialTile) {
-		tile = initialTile;
+	public TerrainChangingMenu(final int version, final IDriverModel dmodel) {
+		model = dmodel;
 		updateForVersion(version);
 	}
 
@@ -59,13 +63,6 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 	}
 
 	/**
-	 * @param newTile the tile whose terrain we might change
-	 */
-	public void setTile(final ITile newTile) {
-		tile = newTile;
-	}
-
-	/**
 	 * Handle Menu selections.
 	 *
 	 * @param event the menu-item-selected event we're handling.
@@ -74,9 +71,9 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 	public final void actionPerformed(@Nullable final ActionEvent event) {
 		if (event != null) {
 			final String command = event.getActionCommand();
-			if (command != null && tile instanceof IMutableTile) {
-				((IMutableTile) tile).setTerrain(TileType.valueOf(command));
-				scs.fireChanges(null, null, null, tile);
+			if (command != null) {
+				model.getMap().setBaseTerrain(point, TileType.valueOf(command));
+				scs.fireChanges(null, point);
 			}
 		}
 	}
@@ -115,15 +112,6 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 	@Override
 	public void selectedPointChanged(@Nullable final Point old,
 			final Point newPoint) {
-		// We only care about the tile itself
-	}
-
-	/**
-	 * @param old the previously selected tile
-	 * @param newTile the newly selected tile
-	 */
-	@Override
-	public void selectedTileChanged(@Nullable final ITile old, final ITile newTile) {
-		tile = newTile;
+		point = newPoint;
 	}
 }

@@ -12,7 +12,6 @@ import javax.swing.JScrollBar;
 import model.listeners.GraphicalParamsListener;
 import model.listeners.MapChangeListener;
 import model.listeners.SelectionChangeListener;
-import model.map.ITile;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.viewer.IViewerModel;
@@ -156,16 +155,6 @@ public class ScrollListener implements AdjustmentListener, MapChangeListener,
 			vbar.getModel().setValue(Math.max(newPoint.row, 0));
 		}
 	}
-
-	/**
-	 * @param old the previously selected tile
-	 * @param newTile the newly selected tile
-	 */
-	@Override
-	public void selectedTileChanged(@Nullable final ITile old, final ITile newTile) {
-		// We only care about the point.
-	}
-
 	/**
 	 * Handle notification that a new map was loaded.
 	 */

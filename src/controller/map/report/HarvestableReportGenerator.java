@@ -11,7 +11,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 
 import model.map.IFixture;
-import model.map.ITileCollection;
+import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.fixtures.resources.CacheFixture;
@@ -47,14 +47,14 @@ public class HarvestableReportGenerator extends // NOPMD
 	 * handled already.
 	 *
 	 * @param fixtures the set of fixtures
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param player the player for whom the report is being produced
 	 * @return the part of the report listing things that can be harvested.
 	 */
 	@Override
 	public String produce(// $codepro.audit.disable cyclomaticComplexity
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, //NOPMD
-			final ITileCollection tiles, final Player player) {
+			final IMapNG map, final Player player) {
 		// TODO: Use Guava Multimaps to reduce cyclomatic complexity
 		final HeadedList<String> caches = new HtmlList(
 				"<h5>Caches collected by your explorers and workers:</h5>");
@@ -72,18 +72,18 @@ public class HarvestableReportGenerator extends // NOPMD
 			final IFixture item = pair.second();
 			final Point point = pair.first();
 			if (item instanceof CacheFixture) {
-				caches.add(produce(fixtures, tiles, player,
+				caches.add(produce(fixtures, map, player,
 						(CacheFixture) item, point));
 			} else if (item instanceof Grove) {
-				groves.add(produce(fixtures, tiles, player, (Grove) item, point));
+				groves.add(produce(fixtures, map, player, (Grove) item, point));
 			} else if (item instanceof Meadow) {
-				meadows.add(produce(fixtures, tiles, player, (Meadow) item,
+				meadows.add(produce(fixtures, map, player, (Meadow) item,
 						point));
 			} else if (item instanceof Mine) {
-				mines.add(produce(fixtures, tiles, player, (Mine) item, point));
+				mines.add(produce(fixtures, map, player, (Mine) item, point));
 			} else if (item instanceof MineralVein) {
 				// TODO: Handle these like shrubs.
-				minerals.add(produce(fixtures, tiles, player,
+				minerals.add(produce(fixtures, map, player,
 						(MineralVein) item, point));
 			} else if (item instanceof Shrub) { // ESCA-JAVA0177:
 				// TODO: Use a Guava Multimap
@@ -98,7 +98,7 @@ public class HarvestableReportGenerator extends // NOPMD
 				fixtures.remove(Integer.valueOf(item.getID()));
 			} else if (item instanceof StoneDeposit) {
 				// TODO: Handle these like shrubs.
-				stone.add(produce(fixtures, tiles, player, (StoneDeposit) item,
+				stone.add(produce(fixtures, map, player, (StoneDeposit) item,
 						point));
 			}
 		}
@@ -136,14 +136,14 @@ public class HarvestableReportGenerator extends // NOPMD
 	 * handled already.
 	 *
 	 * @param fixtures the set of fixtures
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param player the player for whom the report is being produced
 	 * @return the part of the report listing things that can be harvested.
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player player) {
+			final IMapNG map, final Player player) {
 		//  TODO: Use Guava Multimaps to reduce cyclomatic complexity
 		final AbstractReportNode retval = new SectionReportNode(4,
 				"Resource Sources");
@@ -166,16 +166,16 @@ public class HarvestableReportGenerator extends // NOPMD
 						.second();
 				final Point loc = pair.first();
 				if (item instanceof CacheFixture) {
-					caches.add(produceRIR(fixtures, tiles, player, item, loc));
+					caches.add(produceRIR(fixtures, map, player, item, loc));
 				} else if (item instanceof Grove) {
-					groves.add(produceRIR(fixtures, tiles, player, item, loc));
+					groves.add(produceRIR(fixtures, map, player, item, loc));
 				} else if (item instanceof Meadow) {
-					meadows.add(produceRIR(fixtures, tiles, player, item, loc));
+					meadows.add(produceRIR(fixtures, map, player, item, loc));
 				} else if (item instanceof Mine) {
-					mines.add(produceRIR(fixtures, tiles, player, item, loc));
+					mines.add(produceRIR(fixtures, map, player, item, loc));
 				} else if (item instanceof MineralVein) {
 					// TODO: Handle these like shrubs.
-					minerals.add(produceRIR(fixtures, tiles, player, item,
+					minerals.add(produceRIR(fixtures, map, player, item,
 							loc));
 				} else if (item instanceof Shrub) {
 					// ESCA-JAVA0177:
@@ -190,7 +190,7 @@ public class HarvestableReportGenerator extends // NOPMD
 					fixtures.remove(Integer.valueOf(item.getID()));
 				} else if (item instanceof StoneDeposit) {
 					// TODO: Handle these like shrubs.
-					stone.add(produceRIR(fixtures, tiles, player, item, loc));
+					stone.add(produceRIR(fixtures, map, player, item, loc));
 				}
 			}
 		}
@@ -229,7 +229,7 @@ public class HarvestableReportGenerator extends // NOPMD
 	 * Produce the sub-sub-report dealing with a harvestable fixture.
 	 *
 	 * @param fixtures the set of fixtures
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param item the fixture to report on
 	 * @param loc its location
 	 * @param currentPlayer the player for whom the report is being produced
@@ -238,7 +238,7 @@ public class HarvestableReportGenerator extends // NOPMD
 	@Override
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer,
+			final IMapNG map, final Player currentPlayer,
 			final HarvestableFixture item, final Point loc) {
 		if (item instanceof CacheFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
@@ -282,7 +282,7 @@ public class HarvestableReportGenerator extends // NOPMD
 					((StoneDeposit) item).getKind(), " deposit");
 		} else {
 			// It's a battlefield or cave.
-			return new ExplorableReportGenerator().produce(fixtures, tiles,
+			return new ExplorableReportGenerator().produce(fixtures, map,
 					currentPlayer, item, loc);
 		}
 	}
@@ -291,7 +291,7 @@ public class HarvestableReportGenerator extends // NOPMD
 	 * Produce the sub-sub-report dealing with a harvestable fixture.
 	 *
 	 * @param fixtures the set of fixtures
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param item the fixture to report on
 	 * @param loc its location
 	 * @param currentPlayer the player for whom the report is being produced
@@ -300,7 +300,7 @@ public class HarvestableReportGenerator extends // NOPMD
 	@Override
 	public SimpleReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer,
+			final IMapNG map, final Player currentPlayer,
 			final HarvestableFixture item, final Point loc) {
 		if (item instanceof CacheFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
@@ -339,7 +339,7 @@ public class HarvestableReportGenerator extends // NOPMD
 					((StoneDeposit) item).getKind(), " deposit");
 		} else {
 			// It's a battlefield or cave.
-			return new ExplorableReportGenerator().produceRIR(fixtures, tiles,
+			return new ExplorableReportGenerator().produceRIR(fixtures, map,
 					currentPlayer, item, loc);
 		}
 	}

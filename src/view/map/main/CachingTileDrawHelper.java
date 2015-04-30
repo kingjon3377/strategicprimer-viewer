@@ -20,7 +20,8 @@ import java.awt.geom.Rectangle2D;
 import java.util.EnumMap;
 import java.util.Map;
 
-import model.map.ITile;
+import model.map.IMapNG;
+import model.map.Point;
 import model.map.River;
 import model.map.TileType;
 import view.util.Coordinate;
@@ -115,39 +116,38 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * it makes no attempt to save and restore that state either.
 	 *
 	 * @param pen the graphics context
-	 * @param tile the tile to draw
+	 * @param map the map to draw the tile from
+	 * @param location the location to draw
 	 * @param width the width of the drawing area
 	 * @param height the height of the drawing area
 	 */
 	@Override
-	public void drawTileTranslated(final Graphics pen, final ITile tile,
-			final int width, final int height) {
+	public void drawTileTranslated(final Graphics pen, final IMapNG map,
+			final Point location, final int width, final int height) {
 		checkCache(width, height);
 		if (!(pen instanceof Graphics2D)) {
 			throw new IllegalArgumentException(
 					"CachingTileDrawHelper requires Graphics2D");
 		}
 		final Graphics2D pen2d = (Graphics2D) pen;
-		pen2d.setColor(getTileColor(1, tile.getTerrain()));
+		pen2d.setColor(getTileColor(1, map.getBaseTerrain(location)));
 		pen2d.fill(backgroundShape);
 		pen2d.setColor(Color.BLACK);
 		pen2d.draw(backgroundShape);
-		if (!TileType.NotVisible.equals(tile.getTerrain())) {
+		if (!TileType.NotVisible.equals(map.getBaseTerrain(location))) {
 			pen2d.setColor(Color.BLUE);
-			if (tile.hasRiver()) {
-				for (final River river : tile.getRivers()) {
-					pen2d.fill(rivers.get(river));
-				}
+			for (final River river : map.getRivers(location)) {
+				pen2d.fill(rivers.get(river));
 			}
-			if (hasAnyForts(tile)) {
+			if (hasAnyForts(map, location)) {
 				pen2d.setColor(FORT_COLOR);
 				pen2d.fill(fort);
 			}
-			if (hasAnyUnits(tile)) {
+			if (hasAnyUnits(map, location)) {
 				pen2d.setColor(UNIT_COLOR);
 				pen2d.fill(unit);
 			}
-			if (hasEvent(tile)) {
+			if (hasEvent(map, location)) {
 				pen2d.setColor(EVENT_COLOR);
 				pen2d.fill(event);
 			}
@@ -170,13 +170,15 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * Draw a tile at the specified coordinates.
 	 *
 	 * @param pen the graphics context.
-	 * @param tile the tile to draw
+	 * @param map the map to draw the tile from
+	 * @param location the location to draw
 	 * @param coordinates the coordinates of the tile's upper-left corner
 	 * @param dimensions the width (X) and height (Y) of the tile
 	 */
 	@Override
-	public void drawTile(final Graphics pen, final ITile tile,
-			final Coordinate coordinates, final Coordinate dimensions) {
+	public void drawTile(final Graphics pen, final IMapNG map,
+			final Point location, final Coordinate coordinates,
+			final Coordinate dimensions) {
 		final Graphics context = pen.create(coordinates.x, coordinates.y,
 				dimensions.x, dimensions.y);
 		if (context == null) {
@@ -184,7 +186,7 @@ public class CachingTileDrawHelper extends AbstractTileDrawHelper {
 					"pen.create() created null Graphics");
 		}
 		try {
-			drawTileTranslated(context, tile, dimensions.x, dimensions.y);
+			drawTileTranslated(context, map, location, dimensions.x, dimensions.y);
 		} finally {
 			context.dispose();
 		}

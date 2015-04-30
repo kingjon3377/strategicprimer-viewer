@@ -65,7 +65,7 @@ public final class ViewerFrame extends JFrame {
 		map.addMapChangeListener(mapPanel);
 		map.addSelectionChangeListener(mapPanel);
 		final DetailPanelNG detailPanel = new DetailPanelNG(
-				map.getMapDimensions().version, map.getMap().getPlayers());
+				map.getMapDimensions().version, map);
 		map.addVersionChangeListener(detailPanel);
 		map.addSelectionChangeListener(detailPanel);
 		setContentPane(new SplitWithWeights(JSplitPane.VERTICAL_SPLIT,

@@ -13,9 +13,12 @@ import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 
-import model.map.IMap;
+import model.map.IMapNG;
+import model.map.MapNGAdapter;
+import model.map.MapNGReverseAdapter;
 import model.map.MapView;
-import model.map.SPMap;
+import model.map.PlayerCollection;
+import model.map.SPMapNG;
 import model.misc.IDriverModel;
 import model.viewer.ViewerModel;
 
@@ -78,7 +81,8 @@ public class IOHandler implements ActionListener {
 			}
 			// ESCA-JAVA0166:
 			try {
-				model.setMap(readMap(file, Warning.INSTANCE), file);
+				model.setMap(new MapNGAdapter(readMap(file, Warning.INSTANCE)),
+						file);
 			} catch (IOException | SPFormatException | XMLStreamException e) {
 				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
 						"a null path"), source);
@@ -126,10 +130,10 @@ public class IOHandler implements ActionListener {
 	 * model's current map.
 	 */
 	private void startNewViewerWindow() {
-		SwingUtilities.invokeLater(new WindowThread(new ViewerFrame(
-				new ViewerModel(new MapView(
-						new SPMap(model.getMapDimensions()), 0, model.getMap()
-								.getCurrentTurn()), new File("")), this)));
+		SwingUtilities.invokeLater(new WindowThread(
+				new ViewerFrame(new ViewerModel(new SPMapNG(model
+						.getMapDimensions(), new PlayerCollection(), model
+						.getMap().getCurrentTurn()), new File("")), this)));
 	}
 
 	/**
@@ -178,8 +182,8 @@ public class IOHandler implements ActionListener {
 	 */
 	private void saveMap(@Nullable final Component source) {
 		try {
-			new MapReaderAdapter()
-					.write(model.getMapFile(), model.getMap());
+			new MapReaderAdapter().write(model.getMapFile(),
+					new MapNGReverseAdapter(model.getMap()));
 		} catch (final IOException e) {
 			ErrorShower.showErrorDialog(source, "I/O error writing to file "
 					+ model.getMapFile().getPath());
@@ -194,14 +198,14 @@ public class IOHandler implements ActionListener {
 	 * @param source the source of the event. May be null if the source wasn't a
 	 *        component.
 	 */
-	private void saveMapAs(final IMap map, @Nullable final Component source) {
+	private void saveMapAs(final IMapNG map, @Nullable final Component source) {
 		if (chooser.showSaveDialog(source) == JFileChooser.APPROVE_OPTION) {
 			final File file = chooser.getSelectedFile();
 			if (file == null) {
 				return;
 			}
 			try {
-				new MapReaderAdapter().write(file, map);
+				new MapReaderAdapter().write(file, new MapNGReverseAdapter(map));
 			} catch (final IOException e) {
 				ErrorShower.showErrorDialog(source,
 						"I/O error writing to file "
