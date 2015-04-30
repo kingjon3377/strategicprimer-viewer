@@ -8,15 +8,12 @@ import java.util.Random;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.map.IMutableMap;
-import model.map.IMutableTile;
-import model.map.IMutableTileCollection;
-import model.map.ITile;
+import model.map.IMutableMapNG;
+import model.map.MapNGAdapter;
+import model.map.MapNGReverseAdapter;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.Unit;
-import model.map.fixtures.terrain.Forest;
-import model.map.fixtures.terrain.Mountain;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.CLIHelper;
@@ -31,7 +28,7 @@ public class TODOFixerDriver {
 	/**
 	 * The map we operate on.
 	 */
-	private final IMutableMap map;
+	private final IMutableMapNG map;
 	/**
 	 * A helper to get strings from the user.
 	 */
@@ -39,21 +36,19 @@ public class TODOFixerDriver {
 	/**
 	 * @param operand the map we operate on
 	 */
-	public TODOFixerDriver(final IMutableMap operand) {
+	public TODOFixerDriver(final IMutableMapNG operand) {
 		map = operand;
 	}
 	/**
 	 * Search for and fix units with kinds missing.
 	 */
 	public void fixUnits() {
-		final IMutableTileCollection tiles = map.getTiles();
-		for (final Point point : tiles) {
+		for (final Point point : map.locations()) {
 			if (point == null) {
 				continue;
 			}
-			final IMutableTile tile = tiles.getTile(point);
-			final List<String> jobList = getList(tile);
-			for (final TileFixture fix : tile) {
+			final List<String> jobList = getList(point);
+			for (final TileFixture fix : map.getOtherFixtures(point)) {
 				if (fix instanceof Unit && "TODO".equals(((Unit) fix).getKind())) {
 					fixUnit((Unit) fix, jobList);
 				}
@@ -120,12 +115,12 @@ public class TODOFixerDriver {
 	 */
 	private final List<String> oceanList = new ArrayList<>();
 	/**
-	 * @param tile a tile
-	 * @return a List of unit kinds (jobs) for that kind of tile.
+	 * @param location a location in the map
+	 * @return a List of unit kinds (jobs) for the terrain there
 	 */
 	@SuppressWarnings("deprecation")
-	private List<String> getList(final ITile tile) {
-		switch (tile.getTerrain()) {
+	private List<String> getList(final Point location) {
+		switch (map.getBaseTerrain(location)) {
 		case BorealForest:
 			return forestList;
 		case Desert:
@@ -139,14 +134,13 @@ public class TODOFixerDriver {
 		case Ocean:
 			return oceanList;
 		case Plains:
-			for (final TileFixture fixture : tile) {
-				if (fixture instanceof Mountain) {
-					return plainsList;
-				} else if (fixture instanceof Forest) {
-					return forestList;
-				}
+			if (map.isMountainous(location)) {
+				return plainsList;
+			} else if (map.getForest(location) != null) {
+				return forestList;
+			} else {
+				return plainsList;
 			}
-			return plainsList;
 		case Steppe:
 			return forestList;
 		case TemperateForest:
@@ -167,10 +161,10 @@ public class TODOFixerDriver {
 			if (arg == null) {
 				continue;
 			}
-			final IMutableMap map;
+			final IMutableMapNG map;
 			final File file = new File(arg);
 			try {
-				map = reader.readMap(file, Warning.INSTANCE);
+				map = new MapNGAdapter(reader.readMap(file, Warning.INSTANCE));
 			} catch (IOException | XMLStreamException | SPFormatException e) {
 				e.printStackTrace();
 				continue;
@@ -178,7 +172,7 @@ public class TODOFixerDriver {
 			final TODOFixerDriver driver = new TODOFixerDriver(map);
 			driver.fixUnits();
 			try {
-				reader.write(file, map);
+				reader.write(file, new MapNGReverseAdapter(map));
 			} catch (IOException e) {
 				e.printStackTrace();
 				continue;
