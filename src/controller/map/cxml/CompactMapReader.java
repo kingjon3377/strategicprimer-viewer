@@ -10,6 +10,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.IMap;
+import model.map.IMapView;
 import model.map.IPlayerCollection;
 import model.map.ITile;
 import model.map.MapDimensions;
@@ -212,9 +213,9 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 			ostream.append(Integer.toString(obj.getPlayers().getCurrentPlayer()
 					.getPlayerId()));
 			ostream.append("\" current_turn=\"");
-			ostream.append(Integer.toString(((MapView) obj).getCurrentTurn()));
+			ostream.append(Integer.toString(((IMapView) obj).getCurrentTurn()));
 			ostream.append("\">\n");
-			write(ostream, ((MapView) obj).getMap(), indent + 1);
+			write(ostream, ((IMapView) obj).getMap(), indent + 1);
 			ostream.append(indent(indent));
 			ostream.append("</view>\n");
 		} else if (obj instanceof SPMap) {

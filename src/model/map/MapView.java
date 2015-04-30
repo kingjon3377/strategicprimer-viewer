@@ -19,7 +19,7 @@ import util.NullCleaner;
  * @deprecated the old API is deprecated in this branch
  */
 @Deprecated
-public class MapView implements IMutableMap {
+public class MapView implements IMutableMapView {
 	/**
 	 * The map we wrap.
 	 */
@@ -140,6 +140,7 @@ public class MapView implements IMutableMap {
 	 *
 	 * @param current the new current player (number)
 	 */
+	@Override
 	public void setCurrentPlayer(final int current) {
 		map.getPlayers().getCurrentPlayer().setCurrent(false);
 		map.getPlayers().getPlayer(current).setCurrent(true);
@@ -150,6 +151,7 @@ public class MapView implements IMutableMap {
 	 *
 	 * @param current the new current turn
 	 */
+	@Override
 	public void setCurrentTurn(final int current) {
 		turn = current;
 	}
@@ -162,15 +164,15 @@ public class MapView implements IMutableMap {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof MapView
+		return this == obj || obj instanceof IMapView
 				&& equalsImpl((MapView) obj);
 	}
 	/**
 	 * @param obj another map-view
 	 * @return whether it's equal to this one
 	 */
-	private boolean equalsImpl(final MapView obj) {
-		return map.equals(obj.map) && turn == obj.turn;
+	private boolean equalsImpl(final IMapView obj) {
+		return map.equals(obj.getMap()) && turn == obj.getCurrentTurn();
 	}
 	/**
 	 * @return a hash code for the object
@@ -183,6 +185,7 @@ public class MapView implements IMutableMap {
 	/**
 	 * @return the current turn
 	 */
+	@Override
 	public int getCurrentTurn() {
 		return turn;
 	}
@@ -193,6 +196,7 @@ public class MapView implements IMutableMap {
 	 *
 	 * @return the map this wraps
 	 */
+	@Override
 	public IMap getMap() {
 		return map;
 	}
