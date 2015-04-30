@@ -18,8 +18,10 @@ import model.map.fixtures.resources.CacheFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.NullCleaner;
+
 /**
  * An IMap implementation that uses an IMapNG for its backend.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -28,36 +30,45 @@ public class MapNGReverseAdapter implements IMapView {
 	 * The new-interface map we wrap.
 	 */
 	private final IMapNG impl;
+
 	/**
-	 * @param wrapped the new-interface map to wrap
+	 * @param wrapped
+	 *            the new-interface map to wrap
 	 */
 	public MapNGReverseAdapter(final IMapNG wrapped) {
 		impl = wrapped;
 	}
+
 	/**
 	 *
-	 * @param obj another map
-	 * @param ostream a stream to write comments to
+	 * @param obj
+	 *            another map
+	 * @param ostream
+	 *            a stream to write comments to
 	 * @param context
 	 *            a string to print before every line of output, describing the
 	 *            context
 	 * @return whether it's a subset of this one
-	 * @throws IOException on I/O error writing output to the stream
+	 * @throws IOException
+	 *             on I/O error writing output to the stream
 	 */
 	@Override
 	public boolean isSubset(@Nullable final IMap obj, final Appendable ostream,
 			final String context) throws IOException {
 		// FIXME: This is probably quite inefficient
 		if (obj != null && getDimensions().equals(obj.getDimensions())) {
-			return getPlayers().isSubset(obj.getPlayers(), ostream, context) && getTiles().isSubset(obj.getTiles(), ostream, context);
+			return getPlayers().isSubset(obj.getPlayers(), ostream, context)
+					&& getTiles().isSubset(obj.getTiles(), ostream, context);
 		} else {
 			ostream.append(context);
 			ostream.append("\tSizes differ\n");
 			return false;
 		}
 	}
+
 	/**
-	 * @param obj a map to compare to
+	 * @param obj
+	 *            a map to compare to
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -70,8 +81,10 @@ public class MapNGReverseAdapter implements IMapView {
 			return hashCode() - obj.hashCode();
 		}
 	}
+
 	/**
-	 * @param obj an object
+	 * @param obj
+	 *            an object
 	 * @return whether it's a map equal to this one
 	 */
 	@Override
@@ -81,6 +94,7 @@ public class MapNGReverseAdapter implements IMapView {
 				&& getPlayers().equals(((IMap) obj).getPlayers())
 				&& getTiles().equals(((IMap) obj).getTiles());
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -88,6 +102,7 @@ public class MapNGReverseAdapter implements IMapView {
 	public int hashCode() {
 		return impl.hashCode();
 	}
+
 	/**
 	 * @return the dimensions of the map
 	 */
@@ -95,14 +110,17 @@ public class MapNGReverseAdapter implements IMapView {
 	public MapDimensions getDimensions() {
 		return impl.dimensions();
 	}
+
 	/**
-	 * @param point a point on the map
+	 * @param point
+	 *            a point on the map
 	 * @return what's there
 	 */
 	@Override
 	public ITile getTile(final Point point) {
 		return new TileAdapter(impl, point);
 	}
+
 	/**
 	 * @return the players in the map
 	 */
@@ -110,6 +128,7 @@ public class MapNGReverseAdapter implements IMapView {
 	public IPlayerCollection getPlayers() {
 		return new PlayerCollectionAdapter(impl);
 	}
+
 	/**
 	 * @return the locations in the map
 	 */
@@ -117,8 +136,10 @@ public class MapNGReverseAdapter implements IMapView {
 	public ITileCollection getTiles() {
 		return new TileCollectionAdapter(impl);
 	}
+
 	/**
 	 * An adaptor to the ITileCollection interface.
+	 *
 	 * @author Jonathan Lovelace
 	 */
 	private static final class TileCollectionAdapter implements ITileCollection {
@@ -126,13 +147,17 @@ public class MapNGReverseAdapter implements IMapView {
 		 * The map we're adapting.
 		 */
 		private final IMapNG outer;
+
 		/**
 		 * Constructor.
-		 * @param map the map we're adapting.
+		 *
+		 * @param map
+		 *            the map we're adapting.
 		 */
 		protected TileCollectionAdapter(final IMapNG map) {
 			outer = map;
 		}
+
 		/**
 		 * @return an iterator over the points in the map
 		 */
@@ -163,7 +188,8 @@ public class MapNGReverseAdapter implements IMapView {
 					continue;
 				} else if (hasTile(point) || obj.getTile(point).isEmpty()) {
 					ITile tile = getTile(point);
-					if (!tile.isSubset(obj.getTile(point), ostream, context + " At " + point + ':')) {
+					if (!tile.isSubset(obj.getTile(point), ostream, context
+							+ " At " + point + ':')) {
 						retval = false;
 					}
 				} else {
@@ -176,16 +202,20 @@ public class MapNGReverseAdapter implements IMapView {
 			}
 			return retval;
 		}
+
 		/**
-		 * @param point a location on the map
+		 * @param point
+		 *            a location on the map
 		 * @return the tile there
 		 */
 		@Override
 		public ITile getTile(final Point point) {
 			return new TileAdapter(outer, point);
 		}
+
 		/**
-		 * @param point a location
+		 * @param point
+		 *            a location
 		 * @return whether there is anything there
 		 */
 		@Override
@@ -196,6 +226,7 @@ public class MapNGReverseAdapter implements IMapView {
 					&& outer.getForest(point) == null
 					&& !outer.getOtherFixtures(point).iterator().hasNext();
 		}
+
 		/**
 		 * @return a String representation of the object
 		 */
@@ -204,8 +235,10 @@ public class MapNGReverseAdapter implements IMapView {
 			return "ITileCollection view of a MapNG.";
 		}
 	}
+
 	/**
 	 * An adapter to the IPlayerCollection interface.
+	 *
 	 * @author Jonathan Lovelace
 	 */
 	private static final class PlayerCollectionAdapter implements
@@ -214,8 +247,10 @@ public class MapNGReverseAdapter implements IMapView {
 		 * The new-interface map we're adapting.
 		 */
 		private final IMapNG outer;
+
 		/**
-		 * @param map the map to get the players from
+		 * @param map
+		 *            the map to get the players from
 		 */
 		protected PlayerCollectionAdapter(final IMapNG map) {
 			outer = map;
@@ -248,6 +283,7 @@ public class MapNGReverseAdapter implements IMapView {
 			}
 			return true;
 		}
+
 		/**
 		 * @return an iterator over the players
 		 */
@@ -255,8 +291,10 @@ public class MapNGReverseAdapter implements IMapView {
 		public Iterator<Player> iterator() {
 			return NullCleaner.assertNotNull(outer.players().iterator());
 		}
+
 		/**
-		 * @param player a player number
+		 * @param player
+		 *            a player number
 		 * @return the corresponding player
 		 */
 		@Override
@@ -268,6 +306,7 @@ public class MapNGReverseAdapter implements IMapView {
 			}
 			return new Player(-1, "");
 		}
+
 		/**
 		 * @return a player to own independent things
 		 */
@@ -280,6 +319,7 @@ public class MapNGReverseAdapter implements IMapView {
 			}
 			return new Player(-1, "Independent");
 		}
+
 		/**
 		 * @return the current player
 		 */
@@ -287,8 +327,10 @@ public class MapNGReverseAdapter implements IMapView {
 		public Player getCurrentPlayer() {
 			return outer.getCurrentPlayer();
 		}
+
 		/**
-		 * @param obj a player
+		 * @param obj
+		 *            a player
 		 * @return whether we contain it
 		 */
 		@Override
@@ -300,6 +342,7 @@ public class MapNGReverseAdapter implements IMapView {
 			}
 			return false;
 		}
+
 		/**
 		 * @return a String representation of the object
 		 */
@@ -308,6 +351,7 @@ public class MapNGReverseAdapter implements IMapView {
 			return "A IPlayerCollection view of a MapNG.";
 		}
 	}
+
 	/**
 	 * A "Tile" that looks to the IMapNG.
 	 */
@@ -320,10 +364,14 @@ public class MapNGReverseAdapter implements IMapView {
 		 * The map to refer to.
 		 */
 		protected final IMapNG map;
+
 		/**
 		 * Constructor.
-		 * @param outer the map to refer to
-		 * @param location where this tile is
+		 *
+		 * @param outer
+		 *            the map to refer to
+		 * @param location
+		 *            where this tile is
 		 */
 		protected TileAdapter(final IMapNG outer, final Point location) {
 			map = outer;
@@ -346,10 +394,12 @@ public class MapNGReverseAdapter implements IMapView {
 		public boolean isSubset(final ITile obj, final Appendable ostream,
 				final String context) throws IOException {
 			if (getTerrain().equals(obj.getTerrain())) {
-				Map<Integer, Subsettable<?>> subsettableContents = new HashMap<>();
+				Map<Integer, Subsettable<?>> subsettableContents =
+						new HashMap<>();
 				for (TileFixture item : this) {
 					if (item instanceof Subsettable<?>) {
-						subsettableContents.put(Integer.valueOf(item.getID()), (SubsettableFixture) item);
+						subsettableContents.put(Integer.valueOf(item.getID()),
+								(SubsettableFixture) item);
 					}
 				}
 				List<TileFixture> contents = new ArrayList<>();
@@ -358,25 +408,33 @@ public class MapNGReverseAdapter implements IMapView {
 				}
 				List<TileFixture> temp = new ArrayList<>();
 				for (TileFixture fix : obj) {
-					if (fix != null && !contents.contains(fix) && !temp.contains(fix) && !shouldSkip(fix)) {
+					if (fix != null && !contents.contains(fix)
+							&& !temp.contains(fix) && !shouldSkip(fix)) {
 						temp.add(fix);
 					}
 				}
 				boolean retval = true;
 				for (TileFixture fix : temp) {
 					assert fix != null;
-					if (fix instanceof SubsettableFixture && subsettableContents.containsKey(Integer.valueOf(fix.getID()))) {
-						final Subsettable<?> mine = subsettableContents.get(Integer.valueOf(fix.getID()));
+					if (fix instanceof SubsettableFixture
+							&& subsettableContents.containsKey(Integer
+									.valueOf(fix.getID()))) {
+						final Subsettable<?> mine =
+								subsettableContents.get(Integer.valueOf(fix
+										.getID()));
 						if (mine instanceof IUnit && fix instanceof IUnit) {
-							if (!((IUnit) mine).isSubset((IUnit) fix, ostream, context)) {
+							if (!((IUnit) mine).isSubset((IUnit) fix, ostream,
+									context)) {
 								retval = false;
 							}
 						} else if (mine instanceof SubsettableFixture) {
-							if (!((SubsettableFixture) mine).isSubset(fix, ostream, context)) {
+							if (!((SubsettableFixture) mine).isSubset(fix,
+									ostream, context)) {
 								retval = false;
 							}
 						} else {
-							throw new IllegalStateException("Unhandled Subsettable class");
+							throw new IllegalStateException(
+									"Unhandled Subsettable class");
 						}
 					} else {
 						retval = false;
@@ -397,14 +455,16 @@ public class MapNGReverseAdapter implements IMapView {
 		}
 
 		/**
-		 * @param fix a fixture
+		 * @param fix
+		 *            a fixture
 		 * @return whether strict-subset calculations should skip it.
 		 */
 		public static boolean shouldSkip(final TileFixture fix) {
 			return fix instanceof CacheFixture || fix instanceof TextFixture
 					|| fix instanceof Animal && ((Animal) fix).isTraces();
 		}
-	/**
+
+		/**
 		 * FIXME: Instead of constructing a new list every time, make a new
 		 * Iterator implementation for this class that keeps track of where the
 		 * reader is in the progression.
@@ -430,10 +490,14 @@ public class MapNGReverseAdapter implements IMapView {
 			}
 			return NullCleaner.assertNotNull(list.iterator());
 		}
+
 		/**
 		 * Does nothing if fix is null, which is the point.
-		 * @param list a list of fixtures
-		 * @param fix a fixture to add to it, or null.
+		 *
+		 * @param list
+		 *            a list of fixtures
+		 * @param fix
+		 *            a fixture to add to it, or null.
 		 */
 		private static void maybeAdd(final List<TileFixture> list,
 				@Nullable final TileFixture fix) {
@@ -441,6 +505,7 @@ public class MapNGReverseAdapter implements IMapView {
 				list.add(fix);
 			}
 		}
+
 		/**
 		 * @return false if there is anything here
 		 */
@@ -451,6 +516,7 @@ public class MapNGReverseAdapter implements IMapView {
 					&& map.getGround(loc) == null && map.getForest(loc) == null
 					&& !map.getOtherFixtures(loc).iterator().hasNext();
 		}
+
 		/**
 		 * @return whether there are any rivers here
 		 */
@@ -458,6 +524,7 @@ public class MapNGReverseAdapter implements IMapView {
 		public boolean hasRiver() {
 			return map.getRivers(loc).iterator().hasNext();
 		}
+
 		/**
 		 * @return the rivers here, if any
 		 */
@@ -465,6 +532,7 @@ public class MapNGReverseAdapter implements IMapView {
 		public Iterable<River> getRivers() {
 			return map.getRivers(loc);
 		}
+
 		/**
 		 * @return the terrain at this location
 		 */
@@ -472,6 +540,7 @@ public class MapNGReverseAdapter implements IMapView {
 		public TileType getTerrain() {
 			return map.getBaseTerrain(loc);
 		}
+
 		/**
 		 * @return a String representation of the object
 		 */
@@ -480,6 +549,7 @@ public class MapNGReverseAdapter implements IMapView {
 			return "Location " + loc + " in a MapNG.";
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */
@@ -488,6 +558,7 @@ public class MapNGReverseAdapter implements IMapView {
 		return "IMap adapter around the following MapNG instance:\n"
 				+ impl.toString();
 	}
+
 	/**
 	 * @return the current turn.
 	 */
@@ -495,6 +566,7 @@ public class MapNGReverseAdapter implements IMapView {
 	public int getCurrentTurn() {
 		return impl.getCurrentTurn();
 	}
+
 	/**
 	 * @return this
 	 */
