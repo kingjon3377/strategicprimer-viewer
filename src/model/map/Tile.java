@@ -26,8 +26,9 @@ import util.NullCleaner;
  * A tile in a map.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated the old map API is deprecated in this branch
  */
+@Deprecated
 public final class Tile implements IMutableTile {
 	/**
 	 * The tile type.

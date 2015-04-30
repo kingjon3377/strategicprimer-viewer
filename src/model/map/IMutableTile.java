@@ -2,8 +2,9 @@ package model.map;
 /**
  * An interface for modifying, not just querying, the contents of a tile.
  * @author Jonathan Lovelace
- *
+ * @deprecated the old map API is deprecated in this branch
  */
+@Deprecated
 public interface IMutableTile extends ITile {
 	/**
 	 * @param fix something new on the tile

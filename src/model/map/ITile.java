@@ -4,8 +4,9 @@ import java.util.Iterator;
 /**
  * An interface for the contents of a tile.
  * @author Jonathan Lovelace
- *
+ * @deprecated the old map API is deprecated in this branch
  */
+@Deprecated
 public interface ITile extends FixtureIterable<TileFixture>, Subsettable<ITile> {
 
 	/**
