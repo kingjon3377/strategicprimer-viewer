@@ -554,12 +554,16 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 				return true; // NOPMD
 			} else {
 				while (wrapped.hasNext()) {
-					final TileFixture tempCached = wrapped.next();
-					if (tempCached != null && tempCached != NULL_FIXT
-							&& zof.shouldDisplay(tempCached)) {
-						cached = tempCached;
-						hasCached = true;
-						return true; // NOPMD
+					try {
+						final TileFixture tempCached = wrapped.next();
+						if (tempCached != null && tempCached != NULL_FIXT
+								&& zof.shouldDisplay(tempCached)) {
+							cached = tempCached;
+							hasCached = true;
+							return true; // NOPMD
+						}
+					} catch (NoSuchElementException except) {
+						return false;
 					}
 				}
 				return false;
