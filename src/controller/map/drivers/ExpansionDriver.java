@@ -279,7 +279,8 @@ public class ExpansionDriver implements ISPDriver {
 				continue;
 			}
 			for (final TileFixture fix : entry.getValue()) {
-				lmap.addFixture(NullCleaner.assertNotNull(entry.getKey()), NullCleaner.assertNotNull(fix));
+				lmap.addFixture(NullCleaner.assertNotNull(entry.getKey()),
+						NullCleaner.assertNotNull(fix));
 			}
 		}
 		return true;
@@ -296,8 +297,9 @@ public class ExpansionDriver implements ISPDriver {
 	 *            a "unit" (probably a mock-object) indicating the player we're
 	 *            concerned with.
 	 */
-	private static void addSurroundingFixtures(final Point point, final IMapNG master,
-			final Map<Point, Set<TileFixture>> additions, final IUnit owned) {
+	private static void addSurroundingFixtures(final Point point,
+			final IMapNG master, final Map<Point, Set<TileFixture>> additions,
+			final IUnit owned) {
 		final List<TileFixture> possibilities = new ArrayList<>();
 		for (final Point neighbor : new SurroundingPointIterable(point,
 				master.dimensions())) {
@@ -368,7 +370,8 @@ public class ExpansionDriver implements ISPDriver {
 			if (neighbor == null) {
 				continue;
 			}
-			if (!additions.containsKey(neighbor) && TileType.NotVisible.equals(map.getBaseTerrain(neighbor))) {
+			if (!additions.containsKey(neighbor)
+					&& TileType.NotVisible.equals(map.getBaseTerrain(neighbor))) {
 				additions.put(neighbor, master.getBaseTerrain(neighbor));
 				if (master.isMountainous(neighbor)) {
 					map.setMountainous(neighbor, true);

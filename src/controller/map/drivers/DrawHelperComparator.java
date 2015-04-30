@@ -16,7 +16,6 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.IMapNG;
 import model.map.MapDimensions;
-import model.map.MapNGAdapter;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;

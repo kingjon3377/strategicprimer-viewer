@@ -23,7 +23,6 @@ public class CompactXMLWriter implements SPWriter {
 	 * @param map the map to write
 	 * @throws IOException on I/O error
 	 */
-	@SuppressWarnings("deprecation")
 	@Override
 	public void write(final File file, final IMapNG map) throws IOException {
 		writeObject(file, new MapNGReverseAdapter(map));
@@ -35,7 +34,6 @@ public class CompactXMLWriter implements SPWriter {
 	 * @param map the map to write
 	 * @throws IOException on I/O error
 	 */
-	@SuppressWarnings("deprecation")
 	@Override
 	public void write(final Appendable ostream, final IMapNG map)
 			throws IOException {
