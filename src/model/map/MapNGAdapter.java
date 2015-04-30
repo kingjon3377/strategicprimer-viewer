@@ -31,14 +31,14 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 	/**
 	 * The old-interface map we use for our state.
 	 */
-	private final MapView state;
+	private final IMutableMapView state;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param wrapped the map to adapt to the new interface
 	 */
-	public MapNGAdapter(final MapView wrapped) {
+	public MapNGAdapter(final IMutableMapView wrapped) {
 		state = wrapped;
 	}
 
