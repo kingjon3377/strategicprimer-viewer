@@ -372,7 +372,7 @@ public class FindDialog extends JDialog implements ActionListener {
 				filter.shouldDisplay((TileFixture) fixture);
 			}
 			if (fixture instanceof Iterable<?>) {
-				for (Object item : (FixtureIterable<?>) fixture) {
+				for (Object item : (Iterable<?>) fixture) {
 					populate(item);
 				}
 			}
