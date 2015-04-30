@@ -7,11 +7,7 @@ import static util.NullStream.DEV_NULL;
 import java.io.IOException;
 
 import model.map.fixtures.RiverFixture;
-import model.map.fixtures.TextFixture;
-import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Unit;
-import model.map.fixtures.resources.CacheFixture;
-import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Fortress;
 
 import org.junit.Test;
@@ -126,47 +122,6 @@ public class TestSubsets {
 		assertTrue("Fortress without is a subset of fortress with unit",
 				four.isSubset(one, DEV_NULL, ""));
 		assertFalse("Fortress with is not a subset of fortress without unit",
-				one.isSubset(four, DEV_NULL, ""));
-	}
-
-	/**
-	 * A test of Tile's subset feature.
-	 * @throws IOException on I/O error writing to the null stream
-	 */
-	@SuppressWarnings(ST_MET)
-	@Test
-	public void testTileSubset() throws IOException {
-		final Tile one = new Tile(TileType.Steppe);
-		final Tile three = new Tile(TileType.Desert);
-		assertFalse("Subset tile must match in type",
-				one.isSubset(three, DEV_NULL, ""));
-		assertFalse("Subset tile must match in type",
-				three.isSubset(one, DEV_NULL, ""));
-		final Tile four = new Tile(TileType.Steppe);
-		assertTrue("Tile is subset of self", one.isSubset(one, DEV_NULL, ""));
-		assertTrue("Tile is subset of equal tile",
-				one.isSubset(four, DEV_NULL, ""));
-		assertTrue("Tile is subset of equal tile",
-				four.isSubset(one, DEV_NULL, ""));
-		four.addFixture(new Mountain());
-		assertTrue("Tile with fixture is subset of tile without",
-				four.isSubset(one, DEV_NULL, ""));
-		assertFalse("Tile without fixture is not subset of tile with",
-				one.isSubset(four, DEV_NULL, ""));
-		one.addFixture(new Mountain());
-		assertTrue("Adding equal fixture makes it again a subset",
-				one.isSubset(four, DEV_NULL, ""));
-		four.addFixture(new CacheFixture("category", "contents", 1));
-		assertTrue("Subset calculation skips Caches",
-				one.isSubset(four, DEV_NULL, ""));
-		four.addFixture(new TextFixture("text", -1));
-		assertTrue("Subset calculation skips arbitrary-text",
-				one.isSubset(four, DEV_NULL, ""));
-		four.addFixture(new Animal("animal", true, false, "wild", 2));
-		assertTrue("Subset calculation skips animal tracks ...",
-				one.isSubset(four, DEV_NULL, ""));
-		four.addFixture(new Animal("animal", false, false, "wild", 3));
-		assertFalse("But not the animals themselves",
 				one.isSubset(four, DEV_NULL, ""));
 	}
 
