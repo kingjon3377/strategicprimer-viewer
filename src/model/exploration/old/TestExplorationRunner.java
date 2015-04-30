@@ -5,16 +5,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 
-import model.map.ITile;
 import model.map.Point;
 import model.map.PointFactory;
-import model.map.River;
-import model.map.TileFixture;
 import model.map.TileType;
 
 import org.junit.Before;
@@ -72,102 +67,9 @@ public final class TestExplorationRunner {
 	@Test
 	public void testGetPrimaryRock() throws MissingTableException {
 		runner.loadTable("major_rock", new ConstantTable("primary_rock_test"));
-		final Point point = PointFactory.point(0, 0);
-		final MockTile mock = new MockTile(TileType.Tundra);
-		assertEquals("primary rock test",
-				runner.getPrimaryRock(point, mock.getTerrain(), mock),
+		assertEquals("primary rock test", runner.getPrimaryRock(
+				PointFactory.point(0, 0), TileType.Tundra, null),
 				"primary_rock_test");
-	}
-	/**
-	 * A mock-object for a Tile that only allows its terrain type to be queried.
-	 */
-	private static class MockTile implements ITile {
-		/**
-		 * Whether the getTerrain method has been called.
-		 */
-		private boolean called = false;
-		/**
-		 * The terrain type.
-		 */
-		private final TileType terrain;
-		/**
-		 * An exception to throw if an unexpected method is called.
-		 */
-		private final IllegalStateException ise = new IllegalStateException(
-				"Unexpected method called on mock object");
-		/**
-		 * Constructor.
-		 * @param type the terrain type to report
-		 */
-		protected MockTile(final TileType type) {
-			terrain = type;
-		}
-
-		/**
-		 * @param obj
-		 *            ignored
-		 * @param ostream
-		 *            ignored
-		 * @param context
-		 *            ignored
-		 * @return nothing; always throws
-		 * @throws IOException
-		 *             never
-		 */
-		@Override
-		public boolean isSubset(final ITile obj, final Appendable ostream,
-				final String context) throws IOException {
-			throw ise;
-		}
-		/**
-		 * @return nothing, always throws
-		 */
-		@Override
-		public Iterator<TileFixture> iterator() {
-			throw ise;
-		}
-		/**
-		 * @return nothing, always throws
-		 */
-		@Override
-		public boolean isEmpty() {
-			throw ise;
-		}
-		/**
-		 * @return nothing, always throws
-		 */
-		@Override
-		public boolean hasRiver() {
-			throw ise;
-		}
-		/**
-		 * @return nothing, always throws
-		 */
-		@Override
-		public Iterable<River> getRivers() {
-			throw ise;
-		}
-		/**
-		 * @return the terrain type we were told
-		 */
-		@Override
-		public TileType getTerrain() {
-			called = true;
-			return terrain;
-		}
-		/**
-		 * @return whether the getTerrain method has been called
-		 */
-		protected boolean wasCalled() {
-			return called;
-		}
-		/**
-		 * @return a String representation of the object
-		 */
-		@Override
-		public String toString() {
-			throw ise;
-		}
 	}
 	/**
 	 * Test the getPrimaryTree method.
@@ -184,16 +86,13 @@ public final class TestExplorationRunner {
 		runner.loadTable("temperate_major_tree", new ConstantTable(
 				"temperate_major_test"));
 		final Point point = PointFactory.point(0, 0);
-		final MockTile mockOne = new MockTile(TileType.BorealForest);
 		assertEquals("primary tree test for boreal forest",
-				runner.getPrimaryTree(point, mockOne.getTerrain(), mockOne),
+				runner.getPrimaryTree(point, TileType.BorealForest, null),
 				"boreal_major_test");
-		assertTrue("Primary tree test queried the tile type", mockOne.wasCalled());
-		final MockTile mockTwo = new MockTile(TileType.TemperateForest);
-		assertEquals("primary tree test for temperate forest",
-				runner.getPrimaryTree(point, mockTwo.getTerrain(), mockTwo),
+		assertEquals(
+				"primary tree test for temperate forest",
+				runner.getPrimaryTree(point, TileType.TemperateForest, null),
 				"temperate_major_test");
-		assertTrue("Primary tree test queried tile type", mockTwo.wasCalled());
 	}
 
 	/**
@@ -221,13 +120,12 @@ public final class TestExplorationRunner {
 		runner.loadTable(TEST_TABLE_TWO, new ConstantTable("test_two"));
 		runner.loadTable(TEST_TABLE_THREE, new ConstantTable(TEST_THREE));
 		final Point point = PointFactory.point(0, 0);
-		final MockTile mock = new MockTile(TileType.Tundra);
 		assertEquals("first table", runner.consultTable(TEST_TABLE_ONE, point,
-				mock.getTerrain(), mock), "test_one");
+				TileType.Tundra, null), "test_one");
 		assertEquals("second table", runner.consultTable(TEST_TABLE_TWO, point,
-				mock.getTerrain(), mock), "test_two");
+				TileType.Tundra, null), "test_two");
 		assertEquals("third table", runner.consultTable(TEST_TABLE_THREE,
-				point, mock.getTerrain(), mock), TEST_THREE);
+				point, TileType.Tundra, null), TEST_THREE);
 	}
 
 	/**
@@ -248,24 +146,22 @@ public final class TestExplorationRunner {
 		runner.loadTable("test_table_four", new ConstantTable(
 				"_ #test_table_one"));
 		final Point point = PointFactory.point(0, 0);
-		final MockTile mockOne = new MockTile(TileType.Tundra);
 		assertEquals(
 				"two levels of recursion",
 				runner.recursiveConsultTable(TEST_TABLE_ONE, point,
-						mockOne.getTerrain(), mockOne), "( ( test_three ) )");
+						TileType.Tundra, null), "( ( test_three ) )");
 		assertEquals(
 				"one level of recursion",
 				runner.recursiveConsultTable(TEST_TABLE_TWO, point,
-						mockOne.getTerrain(), mockOne), "( test_three )");
+						TileType.Tundra, null), "( test_three )");
 		assertEquals(
 				"no recursion",
 				runner.recursiveConsultTable(TEST_TABLE_THREE, point,
-						mockOne.getTerrain(), mockOne), TEST_THREE);
-		final MockTile mockTwo = new MockTile(TileType.Plains);
+						TileType.Tundra, null), TEST_THREE);
 		assertEquals(
 				"one-sided split",
 				runner.recursiveConsultTable("test_table_four", point,
-						mockTwo.getTerrain(), mockTwo), "_ ( ( test_three ) )");
+						TileType.Plains, null), "_ ( ( test_three ) )");
 	}
 
 	/**
@@ -281,23 +177,17 @@ public final class TestExplorationRunner {
 		runner.loadTable("temperate_major_tree", new ConstantTable(
 				"temperate_tree"));
 		final Point point = PointFactory.point(0, 0);
-		final MockTile mockOne = new MockTile(TileType.Tundra);
 		assertEquals("defaultResults in non-forest",
 				"The primary rock type here is test_rock.\n",
-				runner.defaultResults(point, mockOne.getTerrain(), mockOne));
-		assertTrue("Default results checks tile type", mockOne.wasCalled());
-		final MockTile mockTwo = new MockTile(TileType.BorealForest);
+				runner.defaultResults(point, TileType.Tundra, null));
 		assertEquals("defaultResults in boreal forest",
 				"The primary rock type here is test_rock.\n"
 						+ "The main kind of tree is boreal_tree.\n",
-				runner.defaultResults(point, mockTwo.getTerrain(), mockTwo));
-		assertTrue("Default results checks tile type", mockTwo.wasCalled());
-		final MockTile mockThree = new MockTile(TileType.TemperateForest);
+				runner.defaultResults(point, TileType.BorealForest, null));
 		assertEquals("defaultResults in temperate forest",
 				"The primary rock type here is test_rock.\n"
 						+ "The main kind of tree is temperate_tree.\n",
-				runner.defaultResults(point, mockThree.getTerrain(), mockThree));
-		assertTrue("Default results checks tile type", mockThree.wasCalled());
+				runner.defaultResults(point, TileType.TemperateForest, null));
 	}
 
 	/**
