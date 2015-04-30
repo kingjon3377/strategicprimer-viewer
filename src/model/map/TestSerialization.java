@@ -37,6 +37,7 @@ import controller.map.formatexceptions.SPFormatException;
  * @author Jonathan Lovelace
  *
  */
+@SuppressWarnings("deprecation")
 public final class TestSerialization extends BaseTestFixtureSerialization {
 	/**
 	 * Extracted constant.

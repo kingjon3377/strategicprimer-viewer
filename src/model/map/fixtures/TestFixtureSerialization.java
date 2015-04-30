@@ -44,6 +44,7 @@ import controller.map.formatexceptions.SPFormatException;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("deprecation")
 public final class TestFixtureSerialization extends
 		BaseTestFixtureSerialization { // NOPMD
 	/**
@@ -331,11 +332,11 @@ public final class TestFixtureSerialization extends
 		assertUnwantedChild("<sphinx><troll /></sphinx>", Sphinx.class, false);
 		assertUnwantedChild("<troll><troll /></troll>", Troll.class, false);
 	}
-	
+
 	/**
 	 * Test that serialization of simple (no-parameter) fixtures preserves image
 	 * property.
-	 * 
+	 *
 	 * @throws SPFormatException
 	 *             on XML format error
 	 * @throws XMLStreamException
