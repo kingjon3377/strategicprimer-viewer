@@ -126,20 +126,29 @@ public class TestSubsets {
 	}
 
 	/**
-	 * Test the TileCollection subset feature.
+	 * Test the MapNG subset feature.
+	 *
+	 * FIXME: Cover more than terrain, like the now-deleted Tile subset test did.
+	 *
 	 * @throws IOException on I/O error writing to the null stream
 	 */
 	@SuppressWarnings(ST_MET)
 	@Test
-	public void testTileCollectionSubset() throws IOException {
-		final TileCollection zero = new TileCollection();
-		final TileCollection one = new TileCollection();
+	public void testMapSubset() throws IOException {
+		final IMutableMapNG zero =
+				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
+						-1);
+		final IMutableMapNG one =
+				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
+						-1);
 		final Point pointOne = PointFactory.point(0, 0);
-		one.addTile(pointOne, new Tile(TileType.Jungle));
-		final TileCollection two = new TileCollection();
-		two.addTile(pointOne, new Tile(TileType.Jungle));
+		one.setBaseTerrain(pointOne, TileType.Jungle);
+		final IMutableMapNG two =
+				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
+						-1);
+		two.setBaseTerrain(pointOne, TileType.Jungle);
 		final Point pointTwo = PointFactory.point(1, 1);
-		two.addTile(pointTwo, new Tile(TileType.Ocean));
+		two.setBaseTerrain(pointTwo, TileType.Ocean);
 		assertTrue("None is a subset of itself",
 				zero.isSubset(zero, DEV_NULL, ""));
 		assertTrue("None is a subset of one", one.isSubset(zero, DEV_NULL, ""));
@@ -152,7 +161,7 @@ public class TestSubsets {
 				zero.isSubset(two, DEV_NULL, ""));
 		assertFalse("Two is not a subset of one", one.isSubset(two, DEV_NULL, ""));
 		assertTrue("Two is a subset of itself", two.isSubset(two, DEV_NULL, ""));
-		one.addTile(pointTwo, new Tile(TileType.Plains));
+		one.setBaseTerrain(pointTwo, TileType.Plains);
 		assertFalse("Corresponding but non-matching tile breaks subset",
 				two.isSubset(one, DEV_NULL, ""));
 		assertFalse("Corresponding but non-matching tile breaks subset",
