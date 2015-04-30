@@ -23,7 +23,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class MapNGReverseAdapter implements IMap {
+public class MapNGReverseAdapter implements IMapView {
 	/**
 	 * The new-interface map we wrap.
 	 */
@@ -487,5 +487,19 @@ public class MapNGReverseAdapter implements IMap {
 	public String toString() {
 		return "IMap adapter around the following MapNG instance:\n"
 				+ impl.toString();
+	}
+	/**
+	 * @return the current turn.
+	 */
+	@Override
+	public int getCurrentTurn() {
+		return impl.getCurrentTurn();
+	}
+	/**
+	 * @return this
+	 */
+	@Override
+	public IMap getMap() {
+		return this;
 	}
 }
