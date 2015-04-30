@@ -268,18 +268,20 @@ public class OneToTwoConverter { // NOPMD
 			} else if (TileType.TemperateForest.equals(tile.getTerrain())) {
 				if (!hasForest(tile)) {
 					tile.addFixture(new Forest(runner.getPrimaryTree(point,
-							tile), false));
+							tile.getTerrain(), tile), false));
 				}
 				tile.setTerrain(TileType.Plains);
 			} else if (TileType.BorealForest.equals(tile.getTerrain())) {
 				if (!hasForest(tile)) {
 					tile.addFixture(new Forest(runner.getPrimaryTree(point,
-							tile), false));
+							tile.getTerrain(), tile), false));
 				}
 				tile.setTerrain(TileType.Steppe);
 			}
-			addFixture(tile, new Ground(runner.getPrimaryRock(point, tile),
-					false), main);
+			addFixture(
+					tile,
+					new Ground(runner.getPrimaryRock(point, tile.getTerrain(),
+							tile), false), main);
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing table", e);
 		}
@@ -398,13 +400,14 @@ public class OneToTwoConverter { // NOPMD
 				addFixture(
 						tile,
 						new Meadow(runner.recursiveConsultTable("grain", point,
-								tile), true, true, id, FieldStatus.random(id)),
-						main);
+								tile.getTerrain(), tile), true, true, id,
+								FieldStatus.random(id)), main);
 			} else {
 				addFixture(
 						tile,
 						new Grove(true, true, runner.recursiveConsultTable(
-								"fruit_trees", point, tile), id), main);
+								"fruit_trees", point, tile.getTerrain(), tile),
+								id), main);
 			}
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing encounter table", e);
@@ -425,7 +428,8 @@ public class OneToTwoConverter { // NOPMD
 			addFixture(
 					tile,
 					new Forest(runner.recursiveConsultTable(
-							"temperate_major_tree", point, tile), false), main);
+							"temperate_major_tree", point, tile.getTerrain(),
+							tile), false), main);
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing encounter table", e);
 		}

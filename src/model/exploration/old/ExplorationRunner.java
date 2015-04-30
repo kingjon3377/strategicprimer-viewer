@@ -6,9 +6,12 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import model.map.ITile;
 import model.map.Point;
+import model.map.TileFixture;
 import model.map.TileType;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.NullCleaner;
 
 /**
@@ -20,23 +23,25 @@ import util.NullCleaner;
  */
 public class ExplorationRunner { // NOPMD
 	/**
-	 * @param tile a tile
+	 * @param terrain the terrain at the location
+	 * @param fixtures any fixtures at the location
 	 * @param point the tile's location
 	 *
 	 * @return what the owner of a fortress on the tile knows
 	 * @throws MissingTableException on missing table
 	 */
 	@SuppressWarnings("deprecation")
-	public String defaultResults(final Point point, final ITile tile)
+	public String defaultResults(final Point point, final TileType terrain,
+			@Nullable final Iterable<TileFixture> fixtures)
 			throws MissingTableException {
 		final StringBuilder sbuild = new StringBuilder(80)
 				.append("The primary rock type here is ");
-		sbuild.append(getPrimaryRock(point, tile));
+		sbuild.append(getPrimaryRock(point, terrain, fixtures));
 		sbuild.append(".\n");
-		if (TileType.BorealForest.equals(tile.getTerrain())
-				|| TileType.TemperateForest.equals(tile.getTerrain())) {
+		if (TileType.BorealForest.equals(terrain)
+				|| TileType.TemperateForest.equals(terrain)) {
 			sbuild.append("The main kind of tree is ");
-			sbuild.append(getPrimaryTree(point, tile));
+			sbuild.append(getPrimaryTree(point, terrain, fixtures));
 			sbuild.append(".\n");
 		}
 		return NullCleaner.assertNotNull(sbuild.toString());
@@ -58,31 +63,38 @@ public class ExplorationRunner { // NOPMD
 	}
 
 	/**
-	 * @param tile a tile
+	 * @param terrain the terrain of the tile
+	 * @param fixtures any fixtures on the tile
 	 * @param point the location of the tile
 	 *
 	 * @return the main kind of rock on the tile
 	 * @throws MissingTableException if table missing
 	 */
-	public String getPrimaryRock(final Point point, final ITile tile)
+	public String getPrimaryRock(final Point point, final TileType terrain,
+			@Nullable final Iterable<TileFixture> fixtures)
 			throws MissingTableException {
-		return getTable("major_rock").generateEvent(point, tile.getTerrain(), tile);
+		return getTable("major_rock").generateEvent(point,
+				terrain, fixtures);
 	}
 
 	/**
-	 * @param tile a forest tile
+	 * @param terrain the tile type
+	 * @param fixtures any fixtures on the tile
 	 * @param point the location of the tile
 	 *
 	 * @return the main kind of tree on the tile
 	 * @throws MissingTableException on missing table
 	 */
 	@SuppressWarnings("deprecation")
-	public String getPrimaryTree(final Point point, final ITile tile)
+	public String getPrimaryTree(final Point point, final TileType terrain,
+			@Nullable final Iterable<TileFixture> fixtures)
 			throws MissingTableException {
-		if (TileType.BorealForest.equals(tile.getTerrain())) {
-			return getTable("boreal_major_tree").generateEvent(point, tile.getTerrain(), tile); // NOPMD
-		} else if (TileType.TemperateForest.equals(tile.getTerrain())) {
-			return getTable("temperate_major_tree").generateEvent(point, tile.getTerrain(), tile);
+		if (TileType.BorealForest.equals(terrain)) {
+			return getTable("boreal_major_tree").generateEvent(point,
+					terrain, fixtures); // NOPMD
+		} else if (TileType.TemperateForest.equals(terrain)) {
+			return getTable("temperate_major_tree").generateEvent(point,
+					terrain, fixtures);
 		} else {
 			throw new IllegalArgumentException(
 					"Only forests have primary trees");
@@ -95,15 +107,17 @@ public class ExplorationRunner { // NOPMD
 	 * name of another table, which should then be consulted.
 	 *
 	 * @param table the name of the table to consult
-	 * @param tile the tile to refer to
+	 * @param terrain the tile type
+	 * @param fixtures any fixtures on the tile
 	 * @param point the location of the tile
 	 *
 	 * @return the result of the consultation
 	 * @throws MissingTableException if the table is missing
 	 */
 	public String consultTable(final String table, final Point point,
-			final ITile tile) throws MissingTableException {
-		return getTable(table).generateEvent(point, tile.getTerrain(), tile);
+			final TileType terrain, @Nullable final Iterable<TileFixture> fixtures)
+			throws MissingTableException {
+		return getTable(table).generateEvent(point, terrain, fixtures);
 	}
 
 	/**
@@ -136,22 +150,24 @@ public class ExplorationRunner { // NOPMD
 	 * since we use String.split .
 	 *
 	 * @param table the name of the table to consult
-	 * @param tile the tile to refer to
+	 * @param terrain the tile type
+	 * @param fixtures any fixtures on the tile
 	 * @param point the location of the tile
 	 *
 	 * @return the result of the consultation
 	 * @throws MissingTableException on missing table
 	 */
 	public String recursiveConsultTable(final String table, final Point point,
-			final ITile tile) throws MissingTableException {
-		final String result = consultTable(table, point, tile);
+			final TileType terrain, @Nullable final Iterable<TileFixture> fixtures)
+			throws MissingTableException {
+		final String result = consultTable(table, point, terrain, fixtures);
 		if (result.contains("#")) {
 			final String[] split = result.split("#", 3);
 			final String before = NullCleaner.assertNotNull(split[0]);
 			final String middle = NullCleaner.assertNotNull(split[1]);
 			final StringBuilder builder = new StringBuilder(100);
 			builder.append(before);
-			builder.append(recursiveConsultTable(middle, point, tile));
+			builder.append(recursiveConsultTable(middle, point, terrain, fixtures));
 			if (split.length > 2) {
 				builder.append(split[2]);
 			}
