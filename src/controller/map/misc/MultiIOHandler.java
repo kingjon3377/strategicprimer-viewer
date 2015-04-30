@@ -11,7 +11,6 @@ import javax.swing.JFileChooser;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMutableMapNG;
-import model.map.MapNGReverseAdapter;
 import model.misc.IMultiMapModel;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -94,7 +93,7 @@ public class MultiIOHandler extends IOHandler {
 		final MapReaderAdapter adapter = new MapReaderAdapter();
 		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
 			try {
-				adapter.write(pair.second(), new MapNGReverseAdapter(pair.first()));
+				adapter.write(pair.second(), pair.first());
 			} catch (final IOException e) {
 				ErrorShower.showErrorDialog(source,
 						"I/O error writing to file " + pair.second());

@@ -10,7 +10,6 @@ import javax.xml.stream.XMLStreamException;
 import model.exploration.ExplorationModel;
 import model.exploration.IExplorationModel;
 import model.map.IMutableMapNG;
-import model.map.MapNGReverseAdapter;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
 import util.Pair;
@@ -144,7 +143,7 @@ public class ExplorationCLIDriver implements ISPDriver {
 			throws IOException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
-			reader.write(pair.second(), new MapNGReverseAdapter(pair.first()));
+			reader.write(pair.second(), pair.first());
 		}
 	}
 

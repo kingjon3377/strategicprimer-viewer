@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMapNG;
-import model.map.MapNGReverseAdapter;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -87,7 +86,7 @@ public final class EchoDriver implements ISPDriver {
 		}
 		final File outfile = new File(args[1]);
 		try {
-			new MapReaderAdapter().write(outfile, new MapNGReverseAdapter(map));
+			new MapReaderAdapter().write(outfile, map);
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error writing " + outfile,
 					except);

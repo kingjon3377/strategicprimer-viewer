@@ -17,7 +17,6 @@ import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
-import model.map.MapNGReverseAdapter;
 import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
@@ -134,7 +133,7 @@ public class ExpansionDriver implements ISPDriver {
 			}
 			if (expand(masterMap, map)) {
 				try {
-					reader.write(file, new MapNGReverseAdapter(map));
+					reader.write(file, map);
 				} catch (IOException except) {
 					throw new DriverFailedException("I/O error writing file "
 							+ file.getPath(), except);

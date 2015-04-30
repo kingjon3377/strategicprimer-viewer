@@ -13,7 +13,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMapNG;
-import model.map.MapNGReverseAdapter;
 import util.TypesafeLogger;
 import util.Warning;
 import controller.map.converter.ResolutionDecreaseConverter;
@@ -97,9 +96,7 @@ public final class ConverterDriver implements ISPDriver {
 				final IMapNG map = ResolutionDecreaseConverter.convert(old);
 				SYS_OUT.print("About to write ");
 				SYS_OUT.println(newFilename);
-				// TODO: Drop use of the adapter as soon as we can write new-API maps
-				new MapReaderAdapter().write(newFile, new MapNGReverseAdapter(//NOPMD
-						map));
+				new MapReaderAdapter().write(newFile, map); //NOPMD
 			} catch (final MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename
 						+ " not acceptable to reader", e);

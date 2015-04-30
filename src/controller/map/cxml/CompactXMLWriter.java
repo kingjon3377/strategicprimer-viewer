@@ -5,7 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-import model.map.IMap;
+import model.map.IMapNG;
+import model.map.MapNGReverseAdapter;
 import controller.map.iointerfaces.SPWriter;
 
 /**
@@ -24,8 +25,8 @@ public class CompactXMLWriter implements SPWriter {
 	 */
 	@SuppressWarnings("deprecation")
 	@Override
-	public void write(final File file, final IMap map) throws IOException {
-		writeObject(file, map);
+	public void write(final File file, final IMapNG map) throws IOException {
+		writeObject(file, new MapNGReverseAdapter(map));
 	}
 	/**
 	 * Write a map to a stream.
@@ -36,8 +37,9 @@ public class CompactXMLWriter implements SPWriter {
 	 */
 	@SuppressWarnings("deprecation")
 	@Override
-	public void write(final Appendable ostream, final IMap map) throws IOException {
-		writeObject(ostream, map);
+	public void write(final Appendable ostream, final IMapNG map)
+			throws IOException {
+		writeObject(ostream, new MapNGReverseAdapter(map));
 	}
 
 	/**

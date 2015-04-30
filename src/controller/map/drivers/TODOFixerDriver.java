@@ -9,7 +9,6 @@ import java.util.Random;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMutableMapNG;
-import model.map.MapNGReverseAdapter;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.Unit;
@@ -171,7 +170,7 @@ public class TODOFixerDriver {
 			final TODOFixerDriver driver = new TODOFixerDriver(map);
 			driver.fixUnits();
 			try {
-				reader.write(file, new MapNGReverseAdapter(map));
+				reader.write(file, map);
 			} catch (IOException e) {
 				e.printStackTrace();
 				continue;

@@ -15,7 +15,6 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
-import model.map.MapNGReverseAdapter;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
 import model.misc.IDriverModel;
@@ -180,8 +179,7 @@ public class IOHandler implements ActionListener {
 	 */
 	private void saveMap(@Nullable final Component source) {
 		try {
-			new MapReaderAdapter().write(model.getMapFile(),
-					new MapNGReverseAdapter(model.getMap()));
+			new MapReaderAdapter().write(model.getMapFile(), model.getMap());
 		} catch (final IOException e) {
 			ErrorShower.showErrorDialog(source, "I/O error writing to file "
 					+ model.getMapFile().getPath());
@@ -203,7 +201,7 @@ public class IOHandler implements ActionListener {
 				return;
 			}
 			try {
-				new MapReaderAdapter().write(file, new MapNGReverseAdapter(map));
+				new MapReaderAdapter().write(file, map);
 			} catch (final IOException e) {
 				ErrorShower.showErrorDialog(source,
 						"I/O error writing to file "

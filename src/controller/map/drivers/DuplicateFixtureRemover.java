@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMutableMapNG;
-import model.map.MapNGReverseAdapter;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.IUnit;
@@ -141,7 +140,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 				final IMutableMapNG map =
 						reader.readMap(file, Warning.INSTANCE);
 				filter(map, SYS_OUT);
-				reader.write(file, new MapNGReverseAdapter(map));
+				reader.write(file, map);
 			} catch (final IOException except) {
 				System.err.print("I/O error reading from or writing to ");
 				System.err.println(filename);

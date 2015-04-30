@@ -20,7 +20,9 @@ import model.map.IMap;
 import model.map.IMutableTile;
 import model.map.ITile;
 import model.map.MapDimensions;
+import model.map.MapNGAdapter;
 import model.map.MapNGReverseAdapter;
+import model.map.MapView;
 import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
@@ -627,7 +629,8 @@ public class OneToTwoConverter { // NOPMD
 				}
 				final IMap newMap = converter.convert(old, first);
 				try {
-					reader.write(new File(arg + ".converted.xml"), newMap);
+					reader.write(new File(arg + ".converted.xml"),
+							new MapNGAdapter(new MapView(newMap, -1, -1)));
 				} catch (IOException except) {
 					System.err.print("I/O error writing to ");
 					System.err.print(arg);

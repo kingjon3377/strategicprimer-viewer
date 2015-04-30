@@ -3,7 +3,7 @@ package controller.map.iointerfaces;
 import java.io.File;
 import java.io.IOException;
 
-import model.map.IMap;
+import model.map.IMapNG;
 
 /**
  * An interface for map (and other SP XML) writers.
@@ -19,7 +19,7 @@ public interface SPWriter {
 	 * @param map the map to write.
 	 * @throws IOException on error opening the file
 	 */
-	void write(File file, IMap map) throws IOException;
+	void write(File file, IMapNG map) throws IOException;
 
 	/**
 	 * Write a map.
@@ -28,6 +28,6 @@ public interface SPWriter {
 	 * @param map the map to write
 	 * @throws IOException on error in writing
 	 */
-	void write(Appendable ostream, IMap map) throws IOException;
+	void write(Appendable ostream, IMapNG map) throws IOException;
 
 }

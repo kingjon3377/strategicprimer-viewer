@@ -19,7 +19,6 @@ import model.map.FixtureIterable;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
-import model.map.MapNGReverseAdapter;
 import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
@@ -158,7 +157,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			throws IOException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
-			reader.write(pair.second(), new MapNGReverseAdapter(pair.first()));
+			reader.write(pair.second(), pair.first());
 		}
 	}
 
