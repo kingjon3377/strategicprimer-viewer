@@ -16,10 +16,6 @@ import util.NullCleaner;
 @Deprecated
 public class SPMap implements IMutableMap {
 	/**
-	 * Map max version.
-	 */
-	public static final int MAX_VERSION = 1;
-	/**
 	 * The map's version and dimensions.
 	 */
 	private final MapDimensions dimensions;

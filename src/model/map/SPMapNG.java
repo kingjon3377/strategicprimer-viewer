@@ -77,6 +77,10 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	private final Map<Point, EnumSet<River>> rivers = new HashMap<>();
 	/**
+	 * Map max version.
+	 */
+	public static final int MAX_VERSION = 1;
+	/**
 	 * @param obj another map
 	 * @param out the stream to write verbose results to
 	 * @param context
