@@ -462,7 +462,8 @@ public final class TestMoreFixtureSerialization extends
 		assertSerialization("Second adventure hook serialization test", two,
 				AdventureFixture.class);
 		final Portal three = new Portal("portal dest", PointFactory.point(1, 2), 3);
-		final Portal four = new Portal("portal dest two", PointFactory.point(2, 1), 4);
+		final Portal four =
+				new Portal("portal dest two", PointFactory.point(2, 1), 4);
 		assertFalse("TWo different portals are not equal", three.equals(four));
 		wrapperTile.addFixture(three);
 		assertSerialization("First portal serialization test", wrapper, SPMap.class);
