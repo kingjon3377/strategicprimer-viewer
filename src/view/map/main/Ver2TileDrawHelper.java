@@ -35,7 +35,6 @@ import model.viewer.ZOrderFilter;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.ImageLoader;
-import util.IteratorStack;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.TypesafeLogger;
@@ -227,8 +226,11 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		if (map.isMountainous(location)) {
 			temp.add(new Mountain());
 		}
-		return new IteratorWrapper<>(new FilteredIterator(new IteratorStack<>(temp,
-				map.getOtherFixtures(location)), zof), fixComp);
+		for (TileFixture fixture : map.getOtherFixtures(location)) {
+			temp.add(fixture);
+		}
+		return new IteratorWrapper<>(new FilteredIterator(
+				NullCleaner.assertNotNull(temp.iterator()), zof), fixComp);
 	}
 	/**
 	 * @param map a map
@@ -554,16 +556,12 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 				return true; // NOPMD
 			} else {
 				while (wrapped.hasNext()) {
-					try {
-						final TileFixture tempCached = wrapped.next();
-						if (tempCached != null && tempCached != NULL_FIXT
-								&& zof.shouldDisplay(tempCached)) {
-							cached = tempCached;
-							hasCached = true;
-							return true; // NOPMD
-						}
-					} catch (NoSuchElementException except) {
-						return false;
+					final TileFixture tempCached = wrapped.next();
+					if (tempCached != null && tempCached != NULL_FIXT
+							&& zof.shouldDisplay(tempCached)) {
+						cached = tempCached;
+						hasCached = true;
+						return true; // NOPMD
 					}
 				}
 				return false;
