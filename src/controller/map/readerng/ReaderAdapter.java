@@ -170,6 +170,11 @@ public class ReaderAdapter implements INodeHandler<Object> {
 			return ((INodeHandler<S>) WRITERS.get(obj.getClass()))
 					.write(obj);
 		} else {
+			for (Map.Entry<Class<?>, INodeHandler<?>> entry : WRITERS.entrySet()) {
+				if (entry.getKey().isAssignableFrom(obj.getClass())) {
+					return ((INodeHandler<S>) entry.getValue()).write(obj);
+				}
+			}
 			throw new IllegalArgumentException(
 					"Writable type this adapter can't handle: "
 							+ obj.getClass().getSimpleName());
