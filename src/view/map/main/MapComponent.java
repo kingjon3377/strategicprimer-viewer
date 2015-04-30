@@ -162,7 +162,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 			for (int j = minX; j < maxX && j + minCol < maxCol + 1; j++) {
 				final Point location = PointFactory.point(i + minRow, j
 						+ minCol);
-				paintTile(pen, i, j,
+				paintTile(pen, location, i, j,
 						getMapModel().getSelectedPoint().equals(location));
 			}
 		}
@@ -186,15 +186,16 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 * Paint a tile.
 	 *
 	 * @param pen the graphics context
+	 * @param point the point being drawn
 	 * @param row which row this is
 	 * @param col which column this is
 	 * @param selected whether the tile is the selected tile
 	 */
-	private void paintTile(final Graphics pen, final int row,
+	private void paintTile(final Graphics pen, final Point point, final int row,
 			final int col, final boolean selected) {
 		final int tsize = TileViewSize.scaleZoom(getMapModel().getZoomLevel(),
 				getMapModel().getMapDimensions().getVersion());
-		helper.drawTile(pen, model.getMap(), PointFactory.point(row, col),
+		helper.drawTile(pen, model.getMap(), point,
 				PointFactory.coordinate(col * tsize, row * tsize),
 				PointFactory.coordinate(tsize, tsize));
 		if (selected) {
