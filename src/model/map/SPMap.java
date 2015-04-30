@@ -11,8 +11,9 @@ import util.NullCleaner;
  * tile; each unit is either in a fortress or on a tile directly.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated the old map API is deprecated in this branch
  */
+@Deprecated
 public class SPMap implements IMutableMap {
 	/**
 	 * Map max version.

@@ -16,8 +16,9 @@ import util.NullCleaner;
  * immutable map.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated the old API is deprecated in this branch
  */
+@Deprecated
 public class MapView implements IMutableMap {
 	/**
 	 * The map we wrap.
