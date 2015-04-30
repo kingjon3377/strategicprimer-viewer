@@ -11,7 +11,6 @@ import javax.swing.JFileChooser;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMutableMapNG;
-import model.map.MapNGAdapter;
 import model.map.MapNGReverseAdapter;
 import model.misc.IMultiMapModel;
 
@@ -116,8 +115,7 @@ public class MultiIOHandler extends IOHandler {
 				return;
 			}
 			try {
-				model.addSubordinateMap(
-						new MapNGAdapter(readMap(file, Warning.INSTANCE)), file);
+				model.addSubordinateMap(readMap(file, Warning.INSTANCE), file);
 			} catch (final IOException e) {
 				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
 						"a null path"), source);

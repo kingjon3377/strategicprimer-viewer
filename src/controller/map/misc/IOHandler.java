@@ -14,9 +14,9 @@ import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMapNG;
+import model.map.IMutableMapNG;
 import model.map.MapNGAdapter;
 import model.map.MapNGReverseAdapter;
-import model.map.MapView;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
 import model.misc.IDriverModel;
@@ -81,8 +81,7 @@ public class IOHandler implements ActionListener {
 			}
 			// ESCA-JAVA0166:
 			try {
-				model.setMap(new MapNGAdapter(readMap(file, Warning.INSTANCE)),
-						file);
+				model.setMap(readMap(file, Warning.INSTANCE), file);
 			} catch (IOException | SPFormatException | XMLStreamException e) {
 				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
 						"a null path"), source);
@@ -223,9 +222,9 @@ public class IOHandler implements ActionListener {
 	 * @throws XMLStreamException if the XML isn't well-formed
 	 * @throws SPFormatException if the file contains invalid data
 	 */
-	protected static MapView readMap(final File file, final Warning warner)
+	protected static IMutableMapNG readMap(final File file, final Warning warner)
 			throws IOException, XMLStreamException, SPFormatException {
-		return new MapReaderAdapter().readMap(file, warner);
+		return new MapNGAdapter(new MapReaderAdapter().readMap(file, warner));
 	}
 
 	/**
