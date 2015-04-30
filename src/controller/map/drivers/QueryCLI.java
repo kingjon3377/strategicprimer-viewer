@@ -13,9 +13,9 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 
 import model.exploration.HuntingModel;
-import model.map.IMap;
-import model.map.ITile;
+import model.map.IMapNG;
 import model.map.MapDimensions;
+import model.map.MapNGAdapter;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
@@ -67,7 +67,7 @@ public final class QueryCLI implements ISPDriver {
 	 * @param map the map to explore
 	 * @param ostream the stream to write output to
 	 */
-	private void repl(final IMap map, final Appendable ostream) {
+	private void repl(final IMapNG map, final Appendable ostream) {
 		final HuntingModel hmodel = new HuntingModel(map);
 		try {
 			String input = helper.inputString("Command: ");
@@ -88,14 +88,14 @@ public final class QueryCLI implements ISPDriver {
 	 *
 	 * @throws IOException on I/O error
 	 */
-	public void handleCommand(final IMap map, final HuntingModel hmodel,
+	public void handleCommand(final IMapNG map, final HuntingModel hmodel,
 			final Appendable ostream, final char input) throws IOException {
 		switch (input) {
 		case '?':
 			usage(ostream);
 			break;
 		case 'f':
-			fortressInfo(selectTile(map), ostream);
+			fortressInfo(map, selectPoint(), ostream);
 			break;
 		case 'h':
 			hunt(hmodel, selectPoint(), true, ostream, HUNTER_HOURS
@@ -116,7 +116,7 @@ public final class QueryCLI implements ISPDriver {
 			new TrapModelDriver().startDriver(map);
 			break;
 		case 'd':
-			distance(map.getDimensions(), ostream);
+			distance(map.dimensions(), ostream);
 			break;
 		default:
 			ostream.append("Unknown command.\n");
@@ -266,19 +266,26 @@ public final class QueryCLI implements ISPDriver {
 	 * Give the data the player automatically knows about a user-specified tile
 	 * if he has a fortress on it.
 	 *
-	 * @param tile the selected tile
+	 * @param map the map
+	 * @param location the selected location
 	 * @param ostream the stream to print results to
 	 * @throws IOException on I/O error writing to stream
 	 */
-	private static void
-			fortressInfo(final ITile tile, final Appendable ostream)
-					throws IOException {
+	private static void fortressInfo(final IMapNG map, final Point location,
+			final Appendable ostream) throws IOException {
 		ostream.append("Terrain is ");
-		ostream.append(tile.getTerrain().toString());
+		ostream.append(map.getBaseTerrain(location).toString());
 		ostream.append('\n');
-		final List<TileFixture> fixtures = CLIHelper.toList(tile);
+		final List<TileFixture> fixtures =
+				CLIHelper.toList(map.getOtherFixtures(location));
 		final List<Ground> ground = new ArrayList<>();
 		final List<Forest> forests = new ArrayList<>();
+		if (map.getGround(location) != null) {
+			ground.add(map.getGround(location));
+		}
+		if (map.getForest(location) != null) {
+			forests.add(map.getForest(location));
+		}
 		for (final TileFixture fix : fixtures) {
 			if (fix instanceof Ground) {
 				ground.add((Ground) fix);
@@ -300,15 +307,6 @@ public final class QueryCLI implements ISPDriver {
 				ostream.append('\n');
 			}
 		}
-	}
-
-	/**
-	 * @param map The map we're dealing with
-	 * @return The tile the user specifies.
-	 * @throws IOException on I/O error
-	 */
-	private ITile selectTile(final IMap map) throws IOException {
-		return map.getTile(selectPoint());
 	}
 
 	/**
@@ -381,8 +379,8 @@ public final class QueryCLI implements ISPDriver {
 		}
 		final File file = new File(args[0]);
 		try {
-			repl(new MapReaderAdapter().readMap(file, new Warning(
-					Action.Warn)), SYS_OUT);
+			repl(new MapNGAdapter(new MapReaderAdapter().readMap(file, new Warning(
+					Action.Warn))), SYS_OUT);
 		} catch (final XMLStreamException e) {
 			throw new DriverFailedException("XML parsing error in "
 					+ file.getPath(), e);
