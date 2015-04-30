@@ -64,6 +64,7 @@ import controller.map.misc.MapReaderAdapter;
  * @author Jonathan Lovelace
  *
  */
+@SuppressWarnings("deprecation")
 public class OneToTwoConverter { // NOPMD
 	/**
 	 * Sixty percent. Our probability for a couple of perturbations.
@@ -114,7 +115,6 @@ public class OneToTwoConverter { // NOPMD
 	 *        don't go on players' maps)
 	 * @return a version-2 equivalent with greater resolution
 	 */
-	@SuppressWarnings("deprecation")
 	public SPMap convert(final IMap old, final boolean main) {
 		final IDFactory idFactory = new IDFactory();
 		final MapDimensions oldDim = old.getDimensions();
@@ -259,7 +259,6 @@ public class OneToTwoConverter { // NOPMD
 	 * @param point the location of the tile
 	 * @param main whether this is the main map or a player's map
 	 */
-	@SuppressWarnings("deprecation")
 	private void convertSubtile(final Point point, final IMutableTile tile,
 			final boolean main) {
 		try {
@@ -350,7 +349,6 @@ public class OneToTwoConverter { // NOPMD
 	 *        main map)
 	 * @param idFac the factory to use to create ID numbers
 	 */
-	@SuppressWarnings("deprecation")
 	private void perturb(final Point point, final IMutableTile tile, final IMap map,
 			final Random random, final boolean main, final IDFactory idFac) {
 		if (!TileType.Ocean.equals(tile.getTerrain())) {
@@ -476,7 +474,6 @@ public class OneToTwoConverter { // NOPMD
 	 * @param map the map it's in
 	 * @return whether the tile is adjacent to a town.
 	 */
-	@SuppressWarnings("deprecation")
 	private static boolean isAdjacentToTown(final Point point, final IMap map) {
 		for (final Point npoint : getNeighbors(point)) {
 			if (npoint == null) {
@@ -497,7 +494,6 @@ public class OneToTwoConverter { // NOPMD
 	 * @param map the map it's in
 	 * @return whether the tile is adjacent to a river or ocean
 	 */
-	@SuppressWarnings("deprecation")
 	private static boolean hasAdjacentWater(final Point point, final IMap map) {
 		for (final Point npoint : getNeighbors(point)) {
 			if (npoint == null) {
@@ -595,7 +591,6 @@ public class OneToTwoConverter { // NOPMD
 	/**
 	 * @param args command-line arguments, main map first, then players' maps
 	 */
-	@SuppressWarnings("deprecation")
 	public static void main(final String[] args) {
 		if (args.length == 0) {
 			System.err.print("Usage: ");
