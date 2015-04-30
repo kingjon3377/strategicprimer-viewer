@@ -16,7 +16,6 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.IMapNG;
 import model.map.MapDimensions;
-import model.map.MapNGAdapter;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
 
@@ -162,9 +161,7 @@ public class SubsetFrame extends JFrame {
 	public void loadMain(final File arg) throws SPFormatException,
 			XMLStreamException, IOException {
 		try {
-			mainMap =
-					new MapNGAdapter(reader.readMap(arg, new Warning(
-							Action.Ignore)));
+			mainMap = reader.readMap(arg, new Warning(Action.Ignore));
 		} catch (final FileNotFoundException except) {
 			printParagraph("File " + arg + " not found", ERROR_COLOR);
 			throw except;
@@ -212,9 +209,7 @@ public class SubsetFrame extends JFrame {
 		printParagraph("Testing " + arg + " ...", "");
 		// ESCA-JAVA0177:
 		try {
-			final IMapNG map =
-					new MapNGAdapter(reader.readMap(arg, new Warning(
-							Action.Ignore)));
+			final IMapNG map = reader.readMap(arg, new Warning(Action.Ignore));
 			try (final Writer out = new HTMLWriter(label.getWriter())) {
 				if (mainMap.isSubset(map, out, arg.getName() + ':')) {
 					printParagraph("OK", "green");

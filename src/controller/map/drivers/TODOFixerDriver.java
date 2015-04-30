@@ -9,7 +9,6 @@ import java.util.Random;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMutableMapNG;
-import model.map.MapNGAdapter;
 import model.map.MapNGReverseAdapter;
 import model.map.Point;
 import model.map.TileFixture;
@@ -164,7 +163,7 @@ public class TODOFixerDriver {
 			final IMutableMapNG map;
 			final File file = new File(arg);
 			try {
-				map = new MapNGAdapter(reader.readMap(file, Warning.INSTANCE));
+				map = reader.readMap(file, Warning.INSTANCE);
 			} catch (IOException | XMLStreamException | SPFormatException e) {
 				e.printStackTrace();
 				continue;

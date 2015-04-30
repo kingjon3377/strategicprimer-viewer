@@ -19,6 +19,7 @@ import model.exploration.old.ExplorationRunner;
 import model.exploration.old.MissingTableException;
 import model.map.IMap;
 import model.map.ITile;
+import model.map.MapNGReverseAdapter;
 import model.map.Point;
 import model.map.PointFactory;
 import util.NullCleaner;
@@ -77,8 +78,8 @@ public final class GenerateTileContents {
 		if (!INSTANCES.containsKey(filename)) {
 			INSTANCES.put(
 					filename,
-					new GenerateTileContents(READER.readMap(new File(filename),
-							Warning.INSTANCE)));
+					new GenerateTileContents(new MapNGReverseAdapter(READER
+							.readMap(new File(filename), Warning.INSTANCE))));
 		}
 		return NullCleaner.assertNotNull(INSTANCES.get(filename));
 	}

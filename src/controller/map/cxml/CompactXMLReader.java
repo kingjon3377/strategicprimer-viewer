@@ -9,7 +9,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.IMap;
+import model.map.IMutableMapNG;
 import model.map.IPlayerCollection;
+import model.map.MapNGAdapter;
 import model.map.MapView;
 import model.map.PlayerCollection;
 import model.map.SPMap;
@@ -29,6 +31,7 @@ import controller.map.misc.TypesafeXMLEventReader;
  * @author Jonathan Lovelace
  *
  */
+@SuppressWarnings("deprecation")
 public class CompactXMLReader implements IMapReader, ISPReader {
 	/**
 	 * @param <T> A supertype of the object the XML represents
@@ -69,7 +72,7 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
-	public MapView readMap(final File file, final Warning warner)
+	public IMutableMapNG readMap(final File file, final Warning warner)
 			throws IOException, XMLStreamException, SPFormatException {
 		try (final Reader istream = new FileReader(file)) {
 			return readMap(file, istream, warner);
@@ -85,14 +88,15 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	 */
 	@SuppressWarnings("deprecation")
 	@Override
-	public MapView readMap(final File file, final Reader istream,
+	public IMutableMapNG readMap(final File file, final Reader istream,
 			final Warning warner) throws XMLStreamException, SPFormatException {
+		// FIXME: Read a SPMapNG instead
 		final IMap retval = readXML(file, istream, MapView.class, warner);
 		if (retval instanceof SPMap) {
-			return new MapView(retval, retval//NOPMD
-					.getPlayers().getCurrentPlayer().getPlayerId(), 0);
+			return new MapNGAdapter(new MapView(retval, retval//NOPMD
+					.getPlayers().getCurrentPlayer().getPlayerId(), 0));
 		} else {
-			return (MapView) retval;
+			return new MapNGAdapter((MapView) retval);
 		}
 	}
 

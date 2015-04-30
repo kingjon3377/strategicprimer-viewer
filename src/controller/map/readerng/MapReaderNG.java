@@ -8,6 +8,8 @@ import java.io.Reader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.IMutableMapNG;
+import model.map.MapNGAdapter;
 import model.map.MapView;
 import model.map.PlayerCollection;
 import model.map.SPMap;
@@ -45,7 +47,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	 *             if the format isn't one we support or if the data is invalid
 	 */
 	@Override
-	public MapView readMap(final File file, final Warning warner)
+	public IMutableMapNG readMap(final File file, final Warning warner)
 			throws IOException, XMLStreamException, SPFormatException {
 		try (final Reader istream = new FileReader(file)) {
 			return readMap(file, istream, warner);
@@ -63,9 +65,9 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	 *         version isn't one we support
 	 */
 	@Override
-	public MapView readMap(final File file, final Reader istream,
+	public IMutableMapNG readMap(final File file, final Reader istream,
 			final Warning warner) throws XMLStreamException, SPFormatException {
-		return readXML(file, istream, MapView.class, warner);
+		return new MapNGAdapter(readXML(file, istream, MapView.class, warner));
 	}
 	/**
 	 * @param <T> A supertype of the object the XML represents

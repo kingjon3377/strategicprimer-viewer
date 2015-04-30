@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMapNG;
-import model.map.MapNGAdapter;
 import model.map.MapNGReverseAdapter;
 import util.TypesafeLogger;
 import util.Warning;
@@ -73,8 +72,9 @@ public final class EchoDriver implements ISPDriver {
 		final IMapNG map; // NOPMD
 		final File infile = new File(args[0]);
 		try {
-			map = new MapNGAdapter(new MapReaderAdapter().readMap(infile, // NOPMD
-					new Warning(Action.Ignore)));
+			map =
+					new MapReaderAdapter().readMap(infile, new Warning(
+							Action.Ignore));
 		} catch (final MapVersionException except) {
 			throw new DriverFailedException("Unsupported map version", except);
 		} catch (final IOException except) {

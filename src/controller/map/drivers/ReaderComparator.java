@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.map.IMap;
+import model.map.IMapNG;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
@@ -113,11 +113,11 @@ public class ReaderComparator implements ISPDriver {
 			final String contents = readIntoBuffer(arg);
 			final Warning warner = new Warning(Action.Ignore);
 			final long startOne = System.nanoTime();
-			final IMap map1 = one.readMap(arg, new StringReader(contents), warner);
+			final IMapNG map1 = one.readMap(arg, new StringReader(contents), warner);
 			final long endOne = System.nanoTime();
 			printElapsed("Old", endOne - startOne);
 			final long startTwo = System.nanoTime();
-			final IMap map2 = two.readMap(arg, new StringReader(contents), warner);
+			final IMapNG map2 = two.readMap(arg, new StringReader(contents), warner);
 			final long endTwo = System.nanoTime();
 			printElapsed("New", endTwo - startTwo);
 			if (map1.equals(map2)) {

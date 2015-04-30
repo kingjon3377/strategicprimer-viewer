@@ -19,7 +19,6 @@ import model.map.FixtureIterable;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
-import model.map.MapNGAdapter;
 import model.map.MapNGReverseAdapter;
 import model.map.Player;
 import model.map.Point;
@@ -177,7 +176,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final File firstFile = new File(filenames[0]);
 		final IMutableMapNG master =
-				new MapNGAdapter(reader.readMap(firstFile, Warning.INSTANCE));
+				reader.readMap(firstFile, Warning.INSTANCE);
 		final ExplorationModel model = new ExplorationModel(master,
 				firstFile);
 		for (final String filename : filenames) {
@@ -185,8 +184,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 				continue;
 			}
 			final File file = new File(filename);
-			final IMutableMapNG map =
-					new MapNGAdapter(reader.readMap(file, Warning.INSTANCE));
+			final IMutableMapNG map = reader.readMap(file, Warning.INSTANCE);
 			if (!map.dimensions().equals(master.dimensions())) {
 				throw new IllegalArgumentException("Size mismatch between "
 						+ firstFile + " and " + filename);

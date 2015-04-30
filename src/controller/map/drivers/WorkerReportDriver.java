@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.map.MapNGAdapter;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -70,8 +69,8 @@ public class WorkerReportDriver implements ISPDriver {
 			final String report; // NOPMD
 			try {
 				report =
-						ReportGenerator.createReport(new MapNGAdapter(reader
-								.readMap(new File(filename), warner)));
+						ReportGenerator.createReport(reader.readMap(new File(
+								filename), warner));
 				// report =
 				// ReportGenerator.createReportIR(reader.readMap(filename,
 				// warner)).produce();

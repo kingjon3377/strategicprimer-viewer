@@ -13,7 +13,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMapNG;
-import model.map.MapNGAdapter;
 import model.map.MapNGReverseAdapter;
 import util.TypesafeLogger;
 import util.Warning;
@@ -91,8 +90,7 @@ public final class ConverterDriver implements ISPDriver {
 			SYS_OUT.print(" ... ");
 			final File file = new File(filename);
 			try {
-				final IMapNG old =
-						new MapNGAdapter(READER.readMap(file, Warning.INSTANCE));
+				final IMapNG old = READER.readMap(file, Warning.INSTANCE);
 				SYS_OUT.println(" ... Converting ... ");
 				final String newFilename = filename + ".new";
 				final File newFile = new File(newFilename);

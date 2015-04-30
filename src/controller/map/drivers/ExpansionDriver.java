@@ -17,7 +17,6 @@ import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
-import model.map.MapNGAdapter;
 import model.map.MapNGReverseAdapter;
 import model.map.Player;
 import model.map.Point;
@@ -104,7 +103,7 @@ public class ExpansionDriver implements ISPDriver {
 		final IMapNG masterMap;
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		try {
-			masterMap = new MapNGAdapter(reader.readMap(masterFile, Warning.INSTANCE));
+			masterMap = reader.readMap(masterFile, Warning.INSTANCE);
 		} catch (final MapVersionException except) {
 			throw new DriverFailedException("Unsupported map version", except);
 		} catch (final IOException except) {
@@ -122,7 +121,7 @@ public class ExpansionDriver implements ISPDriver {
 			final File file = new File(arg);
 			final IMapNG map;
 			try {
-				 map = new MapNGAdapter(reader.readMap(file, Warning.INSTANCE));
+				 map = reader.readMap(file, Warning.INSTANCE);
 			} catch (final MapVersionException except) {
 				throw new DriverFailedException("Unsupported map version", except);
 			} catch (final IOException except) {

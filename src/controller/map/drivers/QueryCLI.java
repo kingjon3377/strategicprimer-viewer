@@ -15,7 +15,6 @@ import javax.xml.stream.XMLStreamException;
 import model.exploration.HuntingModel;
 import model.map.IMapNG;
 import model.map.MapDimensions;
-import model.map.MapNGAdapter;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
@@ -379,8 +378,8 @@ public final class QueryCLI implements ISPDriver {
 		}
 		final File file = new File(args[0]);
 		try {
-			repl(new MapNGAdapter(new MapReaderAdapter().readMap(file, new Warning(
-					Action.Warn))), SYS_OUT);
+			repl(new MapReaderAdapter().readMap(file, new Warning(Action.Warn)),
+					SYS_OUT);
 		} catch (final XMLStreamException e) {
 			throw new DriverFailedException("XML parsing error in "
 					+ file.getPath(), e);

@@ -11,7 +11,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.stream.XMLStreamException;
 
-import model.map.MapNGAdapter;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
 import util.NullCleaner;
@@ -111,9 +110,9 @@ public class WorkerStart implements ISPDriver {
 			return;
 		}
 		try {
-			final IWorkerModel model = new WorkerModel(new MapNGAdapter(
-					new MapReaderAdapter().readMap(file, new Warning(
-							Action.Warn))), file);
+			final IWorkerModel model =
+					new WorkerModel(new MapReaderAdapter().readMap(file,
+							new Warning(Action.Warn)), file);
 			SwingUtilities.invokeLater(new WindowThread(new WorkerMgmtFrame(
 					model, new IOHandler(model, new FilteredFileChooser(".",
 							new MapFileFilter())))));

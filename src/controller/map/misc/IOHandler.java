@@ -15,7 +15,6 @@ import javax.xml.stream.XMLStreamException;
 
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
-import model.map.MapNGAdapter;
 import model.map.MapNGReverseAdapter;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
@@ -224,7 +223,7 @@ public class IOHandler implements ActionListener {
 	 */
 	protected static IMutableMapNG readMap(final File file, final Warning warner)
 			throws IOException, XMLStreamException, SPFormatException {
-		return new MapNGAdapter(new MapReaderAdapter().readMap(file, warner));
+		return new MapReaderAdapter().readMap(file, warner);
 	}
 
 	/**

@@ -13,7 +13,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMutableMapNG;
-import model.map.MapNGAdapter;
 import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
 import util.NullCleaner;
@@ -124,8 +123,7 @@ public final class ViewerStart implements ISPDriver {
 				}
 				final File file = new File(filename);
 				try {
-					startFrame(new MapNGAdapter(reader.readMap(file, warner)), file,
-							chooser);
+					startFrame(reader.readMap(file, warner), file, chooser);
 				} catch (final XMLStreamException e) {
 					throw new DriverFailedException(XML_ERROR_STRING + ' '
 							+ filename, e);

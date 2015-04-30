@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMutableMapNG;
-import model.map.MapNGAdapter;
 import model.map.MapNGReverseAdapter;
 import model.map.Point;
 import model.map.TileFixture;
@@ -140,7 +139,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 			final File file = new File(filename);
 			try {
 				final IMutableMapNG map =
-						new MapNGAdapter(reader.readMap(file, Warning.INSTANCE));
+						reader.readMap(file, Warning.INSTANCE);
 				filter(map, SYS_OUT);
 				reader.write(file, new MapNGReverseAdapter(map));
 			} catch (final IOException except) {

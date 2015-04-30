@@ -20,6 +20,7 @@ import model.map.IMap;
 import model.map.IMutableTile;
 import model.map.ITile;
 import model.map.MapDimensions;
+import model.map.MapNGReverseAdapter;
 import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
@@ -611,7 +612,9 @@ public class OneToTwoConverter { // NOPMD
 				// ESCA-JAVA0177:
 				IMap old;
 				try {
-					old = reader.readMap(file, Warning.INSTANCE);
+					old =
+							new MapNGReverseAdapter(reader.readMap(file,
+									Warning.INSTANCE));
 				} catch (IOException | XMLStreamException
 						| SPFormatException except) {
 					printReadError(except, arg);

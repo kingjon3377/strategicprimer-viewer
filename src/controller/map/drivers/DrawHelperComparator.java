@@ -505,7 +505,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 			// ESCA-JAVA0177:
 			final IMapNG map; // NOPMD
 			try {
-				map = new MapNGAdapter(adapter.readMap(file, warner));
+				map = adapter.readMap(file, warner);
 			} catch (final IOException e) {
 				LOGGER.log(Level.SEVERE, "I/O error reading map", e);
 				continue; // NOPMD
