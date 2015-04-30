@@ -10,9 +10,9 @@ import java.util.logging.Level;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.map.IMap;
-import model.map.IMutableTile;
-import model.map.ITile;
+import model.map.IMutableMapNG;
+import model.map.MapNGAdapter;
+import model.map.MapNGReverseAdapter;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.IUnit;
@@ -63,18 +63,11 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	 * @param ostream the stream to report IDs of removed fixtures on.
 	 * @throws IOException on I/O error writing to stream
 	 */
-	public static void filter(final IMap map, final Appendable ostream)
+	public static void filter(final IMutableMapNG map, final Appendable ostream)
 			throws IOException {
-		for (final Point point : map.getTiles()) {
+		for (final Point point : map.locations()) {
 			if (point != null) {
-				final ITile tile = map.getTile(point);
-				if (tile instanceof IMutableTile) {
-					filter((IMutableTile) tile, ostream);
-				} else {
-					ostream.append("Tile at ");
-					ostream.append(point.toString());
-					ostream.append(" was not mutable, and so not filtered.\n");
-				}
+				filter(map, point, ostream);
 			}
 		}
 	}
@@ -84,16 +77,17 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	 * forests of the same kind, oases, etc.---we use
 	 * TileFixture#equalsIgnoringID(TileFixture)) from a tile.
 	 *
-	 * @param tile the tile to filter
+	 * @param map the map
+	 * @param location the location being considered now
 	 * @param ostream the stream to report IDs of removed fixtures on.
 	 * @throws IOException on I/O error writing to stream
 	 */
-	public static void
-			filter(final IMutableTile tile, final Appendable ostream)
-					throws IOException {
+	public static void filter(final IMutableMapNG map, final Point location,
+			final Appendable ostream) throws IOException {
 		final List<TileFixture> fixtures = new ArrayList<>();
 		final List<TileFixture> toRemove = new ArrayList<>();
-		for (final TileFixture fix : tile) {
+		// We ignore ground and forests because they don't have IDs.
+		for (final TileFixture fix : map.getOtherFixtures(location)) {
 			if (fix == null) {
 				continue;
 			}
@@ -120,7 +114,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 		}
 		for (final TileFixture fix : toRemove) {
 			if (fix != null) {
-				tile.removeFixture(fix);
+				map.removeFixture(location, fix);
 			}
 		}
 	}
@@ -145,9 +139,10 @@ public class DuplicateFixtureRemover implements ISPDriver {
 			}
 			final File file = new File(filename);
 			try {
-				final IMap map = reader.readMap(file, Warning.INSTANCE);
+				final IMutableMapNG map =
+						new MapNGAdapter(reader.readMap(file, Warning.INSTANCE));
 				filter(map, SYS_OUT);
-				reader.write(file, map);
+				reader.write(file, new MapNGReverseAdapter(map));
 			} catch (final IOException except) {
 				System.err.print("I/O error reading from or writing to ");
 				System.err.println(filename);
