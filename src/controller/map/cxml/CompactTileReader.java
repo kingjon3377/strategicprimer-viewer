@@ -38,6 +38,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
+@SuppressWarnings("deprecation")
 public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	/**
 	 * List of readers we'll try subtags on.
