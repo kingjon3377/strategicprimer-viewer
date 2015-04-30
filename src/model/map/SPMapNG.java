@@ -143,7 +143,7 @@ public class SPMapNG implements IMutableMapNG {
 					// return false;
 				}
 				final Collection<TileFixture> ourFixtures =
-						new ArrayList<TileFixture>();
+						new ArrayList<>();
 				for (TileFixture fix : getOtherFixtures(point)) {
 					ourFixtures.add(fix);
 				}
