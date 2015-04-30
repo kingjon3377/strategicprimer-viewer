@@ -91,7 +91,8 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 				spinUntilEnd(assertNotNull(element.getName()), stream);
 				return retval; // NOPMD:
 			} catch (ParseException e) {
-				throw new SPMalformedInputException(mapElement.getLocation().getLineNumber(), e);
+				throw new SPMalformedInputException(mapElement.getLocation()
+						.getLineNumber(), e);
 			}
 			// TODO: Perhaps split this into parseMap/parseView?
 		} else {
@@ -152,7 +153,8 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 						CompactTileReader.READER.read(elem, stream,
 								map.getPlayers(), warner, idFactory));
 			} catch (ParseException e) {
-				throw new SPMalformedInputException(elem.getLocation().getLineNumber(), e);
+				throw new SPMalformedInputException(elem.getLocation()
+						.getLineNumber(), e);
 			}
 		} else if (EqualsAny.equalsAny(tag, ISPReader.FUTURE)) {
 			warner.warn(new UnsupportedTagException(tag, elem.getLocation()
