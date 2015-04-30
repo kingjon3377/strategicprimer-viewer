@@ -106,12 +106,14 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 			retval = false;
 			ostream.append(ctxt);
 			ostream.append("\tExtra rivers\n");
-		} else if (!Objects.equals(getForest(loc), obj.getForest(loc))) { // NOPMD
+		} else if (obj.getForest(loc) != null
+				&& !Objects.equals(getForest(loc), obj.getForest(loc))) { // NOPMD
 			// return false;
 			retval = false;
 			ostream.append(ctxt);
 			ostream.append("\tPrimary forests differ. Representation error?\n");
-		} else if (!Objects.equals(getGround(loc), obj.getGround(loc))) { // NOPMD
+		} else if (obj.getGround(loc) != null
+				&& !Objects.equals(getGround(loc), obj.getGround(loc))) { // NOPMD
 			// return false;
 			retval = false;
 			ostream.append(ctxt);
