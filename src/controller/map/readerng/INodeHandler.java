@@ -5,7 +5,7 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.IPlayerCollection;
+import model.map.IMutablePlayerCollection;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -42,7 +42,7 @@ public interface INodeHandler<T> {
 	 * @throws SPFormatException on map format problems
 	 */
 	T parse(StartElement element, Iterable<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDFactory idFactory)
+			IMutablePlayerCollection players, Warning warner, IDFactory idFactory)
 			throws SPFormatException;
 
 	/**

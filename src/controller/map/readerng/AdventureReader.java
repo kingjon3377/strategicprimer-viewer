@@ -8,7 +8,7 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.IPlayerCollection;
+import model.map.IMutablePlayerCollection;
 import model.map.Player;
 import model.map.fixtures.AdventureFixture;
 import util.NullCleaner;
@@ -35,7 +35,7 @@ public class AdventureReader implements INodeHandler<AdventureFixture> {
 	 */
 	@Override
 	public AdventureFixture parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final IPlayerCollection players,
+			final Iterable<XMLEvent> stream, final IMutablePlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
