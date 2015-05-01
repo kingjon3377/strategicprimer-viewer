@@ -91,11 +91,12 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		final StartElement mapTag;
 		Location outerLoc = assertNotNull(element.getLocation());
 		String outerTag = assertNotNull(element.getName().getLocalPart());
-		if ("view".equalsIgnoreCase(element.getName().getLocalPart())) {
+		final int outerLine = outerLoc.getLineNumber();
+		if ("view".equalsIgnoreCase(outerTag)) {
 			currentTurn =
-					Integer.parseInt(
-							getParameter(element, "current_turn"));
-			mapTag = getFirstStartElement(stream, outerLoc.getLineNumber());
+					parseInt(getParameter(element, "current_turn"),
+							outerLine);
+			mapTag = getFirstStartElement(stream, outerLine);
 			if (!"map".equalsIgnoreCase(mapTag.getName().getLocalPart())) {
 				throw new UnwantedChildException(outerTag, assertNotNull(mapTag
 						.getName().getLocalPart()), mapTag.getLocation()
@@ -106,13 +107,13 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			mapTag = element;
 		} else {
 			throw new UnwantedChildException("xml", assertNotNull(outerTag),
-					outerLoc.getLineNumber());
+					outerLine);
 		}
 		final MapDimensions dimensions =
-				new MapDimensions(
-						Integer.parseInt(getParameter(mapTag, "rows")),
-						Integer.parseInt(getParameter(mapTag, "columns")),
-						Integer.parseInt(getParameter(mapTag, "version")));
+				new MapDimensions(parseInt(getParameter(mapTag, "rows"),
+						outerLine), parseInt(getParameter(mapTag, "columns"),
+						outerLine), parseInt(getParameter(mapTag, "version"),
+						outerLine));
 		SPMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		final Point nullPoint = PointFactory.point(-1, -1);
 		Point point = nullPoint;
@@ -121,6 +122,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				StartElement current = event.asStartElement();
 				String type = current.getName().getLocalPart();
 				Location currentLoc = assertNotNull(current.getLocation());
+				int currentLine = currentLoc.getLineNumber();
 				if (type == null) {
 					continue;
 				} else if ("player".equalsIgnoreCase(type)) {
@@ -135,9 +137,11 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 								currentLoc.getLineNumber());
 					}
 					point =
-							PointFactory.point(Integer.parseInt(getParameter(
-									current, "row")), Integer
-									.parseInt(getParameter(current, "column")));
+							PointFactory.point(
+									parseInt(getParameter(current, "row"),
+											currentLine),
+									parseInt(getParameter(current, "column"),
+											currentLine));
 					// Since tiles have been known to be *written* without
 					// "kind" and then fail to load, let's be liberal in what we
 					// accept here, since we can.
@@ -182,8 +186,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					Forest forest =
 							(Forest) CompactTerrainReader.READER.read(current,
 									stream, players, warner, idFactory);
-					Forest oldForest = retval.getForest(point);
-					if (oldForest == null) {
+					if (retval.getForest(point) == null) {
 						retval.setForest(point, forest);
 					} else {
 						// TODO: Should we do some ordering of Forests other
@@ -203,8 +206,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 							throw new UnwantedChildException(
 									assertNotNull(mapTag.getName()
 											.getLocalPart()),
-									except.getChild(),
-									currentLoc.getLineNumber());
+									except.getChild(), currentLine);
 						} else {
 							throw except;
 						}
@@ -214,10 +216,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 							final UnwantedChildException nexcept =
 									new UnwantedChildException(
 											assertNotNull(mapTag.getName()
-													.getLocalPart()),
-											assertNotNull(current.getName()
-													.getLocalPart()),
-											currentLoc.getLineNumber());
+													.getLocalPart()), type,
+											currentLine);
 							nexcept.initCause(except);
 							throw nexcept;
 						} else {
@@ -241,11 +241,11 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			}
 		}
 		if (hasParameter(mapTag, "current_player")) {
-			retval.setCurrentPlayer(players.getPlayer(Integer
-					.parseInt(getParameter(mapTag, "current_player"))));
+			retval.setCurrentPlayer(players.getPlayer(parseInt(
+					getParameter(mapTag, "current_player"), outerLine)));
 		} else if (hasParameter(element, "current_player")) {
-			retval.setCurrentPlayer(players.getPlayer(Integer
-					.parseInt(getParameter(element, "current_player"))));
+			retval.setCurrentPlayer(players.getPlayer(parseInt(
+					getParameter(element, "current_player"), outerLine)));
 		}
 		return retval;
 	}
