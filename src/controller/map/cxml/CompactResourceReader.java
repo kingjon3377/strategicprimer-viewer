@@ -12,7 +12,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.IEvent;
-import model.map.IPlayerCollection;
+import model.map.IMutablePlayerCollection;
 import model.map.fixtures.resources.Battlefield;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.resources.Cave;
@@ -176,7 +176,7 @@ public final class CompactResourceReader extends
 	@Override
 	public HarvestableFixture read(// $codepro.audit.disable cyclomaticComplexity
 			final StartElement elem, final IteratorWrapper<XMLEvent> stream,
-			final IPlayerCollection players, final Warning warner,
+			final IMutablePlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireTag(elem, "battlefield", "cache", "cave", "grove", "orchard",
 				"field", "meadow", "mine", "mineral", "shrub", "stone");

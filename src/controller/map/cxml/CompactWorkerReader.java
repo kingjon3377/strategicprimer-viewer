@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.IPlayerCollection;
+import model.map.IMutablePlayerCollection;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
@@ -54,7 +54,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	@Override
 	public Worker read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
-			final IPlayerCollection players, final Warning warner,
+			final IMutablePlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "worker");
 		final Worker retval = new Worker(getParameter(element, "name"),

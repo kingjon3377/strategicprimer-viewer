@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.IPlayerCollection;
+import model.map.IMutablePlayerCollection;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -32,7 +32,7 @@ public interface CompactReader<T> {
 	 * @throws SPFormatException on SP format errors
 	 */
 	T read(StartElement element, IteratorWrapper<XMLEvent> stream,
-			IPlayerCollection players, Warning warner, IDFactory idFactory)
+			IMutablePlayerCollection players, Warning warner, IDFactory idFactory)
 			throws SPFormatException;
 
 	/**

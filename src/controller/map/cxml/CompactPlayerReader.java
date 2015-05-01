@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.IPlayerCollection;
+import model.map.IMutablePlayerCollection;
 import model.map.Player;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -47,7 +47,7 @@ public final class CompactPlayerReader extends AbstractCompactReader<Player> {
 	@Override
 	public Player read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
-			final IPlayerCollection players, final Warning warner,
+			final IMutablePlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "player");
 		requireNonEmptyParameter(element, "number", true, warner);

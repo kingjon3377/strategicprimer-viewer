@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.IPlayerCollection;
+import model.map.IMutablePlayerCollection;
 import model.map.Player;
 import model.map.fixtures.AdventureFixture;
 
@@ -40,7 +40,7 @@ public class CompactAdventureReader extends
 	@Override
 	public AdventureFixture read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
-			final IPlayerCollection players, final Warning warner,
+			final IMutablePlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "adventure");
 		Player player = players.getIndependent();

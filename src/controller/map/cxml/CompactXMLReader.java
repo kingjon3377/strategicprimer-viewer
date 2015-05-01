@@ -10,7 +10,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IMap;
 import model.map.IMutableMapNG;
-import model.map.IPlayerCollection;
+import model.map.IMutablePlayerCollection;
 import model.map.MapNGAdapter;
 import model.map.MapView;
 import model.map.PlayerCollection;
@@ -51,7 +51,7 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 				istream);
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<>(
 				new IncludingIterator(file, reader));
-		final IPlayerCollection players = new PlayerCollection();
+		final IMutablePlayerCollection players = new PlayerCollection();
 		final IDFactory idFactory = new IDFactory();
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {

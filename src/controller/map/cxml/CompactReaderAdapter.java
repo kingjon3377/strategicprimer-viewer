@@ -7,7 +7,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IFixture;
 import model.map.IMap;
-import model.map.IPlayerCollection;
+import model.map.IMutablePlayerCollection;
 import model.map.ITile;
 import model.map.Player;
 import model.map.River;
@@ -63,7 +63,7 @@ public final class CompactReaderAdapter {
 	 */
 	public static <T> T parse(final Class<T> type, final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
-			final IPlayerCollection players, final Warning warner,
+			final IMutablePlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		// ESCA-JAVA0177:
 		final CompactReader<T> reader; // NOPMD
