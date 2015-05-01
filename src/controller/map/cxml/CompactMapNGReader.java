@@ -29,12 +29,15 @@ import model.map.fixtures.terrain.Forest;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import util.EqualsAny;
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnsupportedTagException;
 import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 /**
  * A reader for new-API maps.
@@ -146,6 +149,9 @@ public class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 								.getName().getLocalPart(), "kind", currentLoc
 								.getLineNumber()));
 					}
+				} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) {
+					warner.warn(new UnsupportedTagException(type, currentLoc
+							.getLineNumber()));
 				} else if (nullPoint.equals(point)) {
 					// fixture outside tile
 					throw new UnwantedChildException("map", type,
