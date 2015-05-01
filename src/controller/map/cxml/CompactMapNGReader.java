@@ -222,6 +222,9 @@ public class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		if (hasParameter(mapTag, "current_player")) {
 			retval.setCurrentPlayer(players.getPlayer(Integer
 					.parseInt(getParameter(mapTag, "current_player"))));
+		} else if (hasParameter(element, "current_player")) {
+			retval.setCurrentPlayer(players.getPlayer(Integer
+					.parseInt(getParameter(element, "current_player"))));
 		}
 		return retval;
 	}

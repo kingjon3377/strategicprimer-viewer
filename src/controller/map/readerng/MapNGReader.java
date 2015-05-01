@@ -253,6 +253,10 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 			retval.setCurrentPlayer(players.getPlayer(XMLHelper.parseInt(
 					XMLHelper.getAttribute(mapTag, "current_player"),
 					mapTagLocation)));
+		} else if (XMLHelper.hasAttribute(element, "current_player")) {
+			retval.setCurrentPlayer(players.getPlayer(XMLHelper.parseInt(
+					XMLHelper.getAttribute(element, "current_player"),
+					mapTagLocation)));
 		}
 		return retval;
 	}
