@@ -588,14 +588,12 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 *             on XML format error
 	 */
 	protected void assertMapDeserialization(final String message,
-			final MapView expected, final String xml)
+			final IMapNG expected, final String xml)
 			throws XMLStreamException, SPFormatException {
-		assertEquals(message, new MapNGAdapter(expected),
-				((IMapReader) oldReader).readMap(FAKE_FILENAME,
-						new StringReader(xml), new Warning(Action.Die)));
-		assertEquals(message, new MapNGAdapter(expected),
-				((IMapReader) newReader).readMap(FAKE_FILENAME,
-						new StringReader(xml), new Warning(Action.Die)));
+		assertEquals(message, expected, ((IMapReader) oldReader).readMap(
+				FAKE_FILENAME, new StringReader(xml), new Warning(Action.Die)));
+		assertEquals(message, expected, ((IMapReader) newReader).readMap(
+				FAKE_FILENAME, new StringReader(xml), new Warning(Action.Die)));
 	}
 
 	/**

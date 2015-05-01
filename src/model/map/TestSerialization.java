@@ -389,7 +389,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				IMapView.class, false);
 		assertMapDeserialization(
 				"Proper deserialization of map into view",
-				one,
+				new MapNGAdapter(one),
 				assertNotNull(new StringBuilder(200)
 						.append("<map version=\"2\" rows=\"1\" ")
 						.append("columns=\"1\" current_player=\"1\">")
