@@ -1,8 +1,12 @@
 package controller.map.cxml;
 
+import static java.util.Collections.unmodifiableList;
 import static util.NullCleaner.assertNotNull;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
@@ -41,6 +45,26 @@ public class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * Singleton instance.
 	 */
 	public static final CompactMapNGReader READER = new CompactMapNGReader();
+	/**
+	 * List of readers we'll try subtags on.
+	 */
+	private final List<CompactReader<? extends TileFixture>> readers;
+	/**
+	 * Singleton.
+	 */
+	private CompactMapNGReader() {
+		final List<CompactReader<? extends TileFixture>> list =
+				new ArrayList<CompactReader<? extends TileFixture>>(
+						Arrays.asList(CompactMobileReader.READER,
+								CompactResourceReader.READER,
+								CompactTerrainReader.READER,
+								CompactTextReader.READER,
+								CompactTownReader.READER,
+								CompactGroundReader.READER,
+								CompactAdventureReader.READER,
+								CompactPortalReader.READER));
+		readers = assertNotNull(unmodifiableList(list));
+	}
 	/**
 	 * Read a map from XML.
 	 *
@@ -144,9 +168,10 @@ public class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					retval.setMountainous(point, true);
 				} else {
 					try {
-						retval.addFixture(point, CompactReaderAdapter
-								.parse(TileFixture.class, current, stream,
-										players, warner, idFactory));
+						retval.addFixture(
+								point,
+								parseFixture(current, stream, players,
+										idFactory, warner));
 					} catch (final UnwantedChildException except) {
 						if ("unknown".equals(except.getTag())) {
 							throw new UnwantedChildException(
@@ -194,6 +219,31 @@ public class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					.parseInt(getParameter(mapTag, "current_player"))));
 		}
 		return retval;
+	}
+	/**
+	 * Parse what should be a TileFixture from the XML.
+	 *
+	 * @param element the XML element to parse
+	 * @param stream the stream to read more elements from
+	 * @param players the collection of players
+	 * @param idFactory the ID factory to generate IDs with
+	 * @param warner the Warning instance to use for warnings
+	 * @return the parsed fixture.
+	 * @throws SPFormatException on SP format problem
+	 */
+	private TileFixture parseFixture(final StartElement element,
+			final IteratorWrapper<XMLEvent> stream,
+			final IMutablePlayerCollection players, final IDFactory idFactory,
+			final Warning warner) throws SPFormatException {
+		final String name =
+				assertNotNull(element.getName().getLocalPart());
+		for (final CompactReader<? extends TileFixture> item : readers) {
+			if (item.isSupportedTag(name)) {
+				return item.read(element, stream, players, warner, idFactory);
+			}
+		}
+		throw new UnwantedChildException("tile", name, element.getLocation()
+				.getLineNumber());
 	}
 	/**
 	 * @param stream
