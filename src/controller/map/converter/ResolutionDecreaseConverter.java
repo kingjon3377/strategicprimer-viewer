@@ -46,7 +46,9 @@ public class ResolutionDecreaseConverter {
 				players.add(player);
 			}
 		}
-		final SPMapNG retval = new SPMapNG(new MapDimensions(newRows, newCols, 2), players, old.getCurrentTurn());
+		final SPMapNG retval =
+				new SPMapNG(new MapDimensions(newRows, newCols, 2), players,
+						old.getCurrentTurn());
 		for (int row = 0; row < newRows; row++) {
 			for (int col = 0; col < newCols; col++) {
 				final Point point = PointFactory.point(row, col);
@@ -54,7 +56,12 @@ public class ResolutionDecreaseConverter {
 				Point two = PointFactory.point(row * 2, col * 2 + 1);
 				Point three = PointFactory.point(row * 2 + 1, col * 2);
 				Point four = PointFactory.point(row * 2 + 1, col * 2 + 1);
-				retval.setBaseTerrain(point, consensus(old.getBaseTerrain(one), old.getBaseTerrain(two), old.getBaseTerrain(three), old.getBaseTerrain(four)));
+				retval.setBaseTerrain(
+						point,
+						consensus(old.getBaseTerrain(one),
+								old.getBaseTerrain(two),
+								old.getBaseTerrain(three),
+								old.getBaseTerrain(four)));
 				List<Point> oldPoints = new ArrayList<>();
 				oldPoints.add(one);
 				oldPoints.add(two);
@@ -97,8 +104,8 @@ public class ResolutionDecreaseConverter {
 					removeRivers(upperRightRivers, River.West, River.South);
 					removeRivers(lowerLeftRivers, River.East, River.North);
 					removeRivers(lowerRightRivers, River.West, River.North);
-					addRivers(combined, upperLeftRivers, upperRightRivers, lowerLeftRivers,
-							lowerRightRivers);
+					addRivers(combined, upperLeftRivers, upperRightRivers,
+							lowerLeftRivers, lowerRightRivers);
 					for (River river : combined) {
 						retval.addRivers(point, river);
 					}

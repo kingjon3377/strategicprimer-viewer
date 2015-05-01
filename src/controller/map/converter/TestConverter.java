@@ -30,7 +30,9 @@ public class TestConverter {
 	@SuppressWarnings("static-method")
 	@Test
 	public void testConversion() {
-		final SPMapNG start = new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), 0);
+		final SPMapNG start =
+				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
+						0);
 		final Point pointOne = PointFactory.point(0, 0);
 		final Animal fixture = new Animal("animal", false, true,
 				"domesticated", 1);
@@ -51,12 +53,18 @@ public class TestConverter {
 		final Point zeroPoint = PointFactory.point(0, 0);
 		assertTrue("Combined tile should contain fixtures from tile one",
 				doesIterableContain(converted.getOtherFixtures(zeroPoint), fixture));
-		assertTrue("Combined tile should contain fixtures from tile two",
-				doesIterableContain(converted.getOtherFixtures(zeroPoint), fixtureTwo));
-		assertTrue("Combined tile should contain fixtures from tile three",
-				doesIterableContain(converted.getOtherFixtures(zeroPoint), fixtureThree));
-		assertTrue("Combined tile should contain fixtures from tile four",
-				doesIterableContain(converted.getOtherFixtures(zeroPoint), fixtureFour));
+		assertTrue(
+				"Combined tile should contain fixtures from tile two",
+				doesIterableContain(converted.getOtherFixtures(zeroPoint),
+						fixtureTwo));
+		assertTrue(
+				"Combined tile should contain fixtures from tile three",
+				doesIterableContain(converted.getOtherFixtures(zeroPoint),
+						fixtureThree));
+		assertTrue(
+				"Combined tile should contain fixtures from tile four",
+				doesIterableContain(converted.getOtherFixtures(zeroPoint),
+						fixtureFour));
 	}
 
 	/**
