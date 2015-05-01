@@ -97,8 +97,9 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 							getParameter(element, "current_turn"));
 			mapTag = getFirstStartElement(stream, outerLoc.getLineNumber());
 			if (!"map".equalsIgnoreCase(mapTag.getName().getLocalPart())) {
-				throw new UnwantedChildException(outerTag, mapTag.getName()
-						.getLocalPart(), mapTag.getLocation().getLineNumber());
+				throw new UnwantedChildException(outerTag, assertNotNull(mapTag
+						.getName().getLocalPart()), mapTag.getLocation()
+						.getLineNumber());
 			}
 		} else if ("map".equalsIgnoreCase(outerTag)) {
 			currentTurn = 0;
@@ -146,9 +147,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 								.getTileType(getParamWithDeprecatedForm(
 										current, "kind", "type", warner)));
 					} else {
-						warner.warn(new MissingPropertyException(current
-								.getName().getLocalPart(), "kind", currentLoc
-								.getLineNumber()));
+						warner.warn(new MissingPropertyException(type, "kind",
+								currentLoc.getLineNumber()));
 					}
 				} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) {
 					warner.warn(new UnsupportedTagException(type, currentLoc
