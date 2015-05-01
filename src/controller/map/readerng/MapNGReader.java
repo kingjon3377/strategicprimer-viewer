@@ -130,7 +130,8 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 								XMLHelper.getAttribute(mapTag, "version"),
 								mapTagLocation));
 		SPMapNG retval = new SPMapNG(dimensions, players, currentTurn);
-		Point point = PointFactory.point(-1, -1);
+		final Point nullPoint = PointFactory.point(-1, -1);
+		Point point = nullPoint;
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				StartElement current = event.asStartElement();
@@ -162,6 +163,10 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 										.getAttributeWithDeprecatedForm(
 												current, "kind", "type", warner)));
 					}
+				} else if (nullPoint.equals(point)) {
+					// fixture outside tile
+					throw new UnwantedChildException("map", type,
+							currentLoc.getLineNumber());
 				} else if ("lake".equalsIgnoreCase(type)) {
 					retval.addRivers(point, River.Lake);
 				} else if ("river".equalsIgnoreCase(type)) {
