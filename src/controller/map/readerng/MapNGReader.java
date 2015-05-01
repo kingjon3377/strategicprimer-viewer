@@ -239,7 +239,9 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 			} else if (event.isCharacters()) {
 				String data =
 						assertNotNull(event.asCharacters().getData().trim());
-				retval.addFixture(point, new TextFixture(data, -1));
+				if (!data.isEmpty()) {
+					retval.addFixture(point, new TextFixture(data, -1));
+				}
 			}
 		}
 		if (XMLHelper.hasAttribute(mapTag, "current_player")) {

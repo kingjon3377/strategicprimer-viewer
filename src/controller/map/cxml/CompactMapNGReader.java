@@ -184,7 +184,9 @@ public class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			} else if (event.isCharacters()) {
 				String data =
 						assertNotNull(event.asCharacters().getData().trim());
-				retval.addFixture(point, new TextFixture(data, -1));
+				if (!data.isEmpty()) {
+					retval.addFixture(point, new TextFixture(data, -1));
+				}
 			}
 		}
 		if (hasParameter(mapTag, "current_player")) {
