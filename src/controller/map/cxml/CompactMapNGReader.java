@@ -125,6 +125,10 @@ public class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					// Deliberately ignore "row"s.
 					continue;
 				} else if ("tile".equalsIgnoreCase(type)) {
+					if (!nullPoint.equals(point)) {
+						throw new UnwantedChildException("tile", type,
+								currentLoc.getLineNumber());
+					}
 					point =
 							PointFactory.point(Integer.parseInt(getParameter(
 									current, "row")), Integer

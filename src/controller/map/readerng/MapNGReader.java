@@ -151,6 +151,10 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 					// Deliberately ignore "row"s.
 					continue;
 				} else if ("tile".equalsIgnoreCase(type)) {
+					if (!nullPoint.equals(point)) {
+						throw new UnwantedChildException("tile", type,
+								currentLoc.getLineNumber());
+					}
 					point =
 							PointFactory.point(XMLHelper.parseInt(
 									XMLHelper.getAttribute(current, "row"),
