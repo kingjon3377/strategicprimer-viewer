@@ -7,6 +7,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IFixture;
 import model.map.IMap;
+import model.map.IMapNG;
 import model.map.IMutablePlayerCollection;
 import model.map.ITile;
 import model.map.Player;
@@ -92,6 +93,8 @@ public final class CompactReaderAdapter {
 		final CompactReader<T> reader; // NOPMD
 		if (IMap.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactMapReader.READER;
+		} else if (IMap.class.isAssignableFrom(type)) {
+			reader = (CompactReader<T>) CompactMapNGReader.READER;
 		} else if (ITile.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactTileReader.READER;
 		} else if (Player.class.isAssignableFrom(type)) {
@@ -158,6 +161,8 @@ public final class CompactReaderAdapter {
 		final CompactReader reader; // NOPMD
 		if (obj instanceof IMap) {
 			reader = CompactMapReader.READER;
+		} else if (obj instanceof IMapNG) {
+			reader = CompactMapNGReader.READER;
 		} else if (obj instanceof ITile) {
 			reader = CompactTileReader.READER;
 		} else if (obj instanceof River) {

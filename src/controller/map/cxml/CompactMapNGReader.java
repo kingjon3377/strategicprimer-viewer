@@ -1,0 +1,333 @@
+package controller.map.cxml;
+
+import static util.NullCleaner.assertNotNull;
+
+import java.io.IOException;
+
+import javax.xml.stream.Location;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+
+import model.map.IMapNG;
+import model.map.IMutableMapNG;
+import model.map.IMutablePlayerCollection;
+import model.map.MapDimensions;
+import model.map.Player;
+import model.map.Point;
+import model.map.PointFactory;
+import model.map.River;
+import model.map.SPMapNG;
+import model.map.TileFixture;
+import model.map.TileType;
+import model.map.fixtures.Ground;
+import model.map.fixtures.TextFixture;
+import model.map.fixtures.terrain.Forest;
+
+import org.eclipse.jdt.annotation.Nullable;
+
+import util.IteratorWrapper;
+import util.Warning;
+import controller.map.formatexceptions.MissingChildException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.misc.IDFactory;
+/**
+ * A reader for new-API maps.
+ * @author Jonathan Lovelace
+ *
+ */
+public class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
+	/**
+	 * Singleton instance.
+	 */
+	public static final CompactMapNGReader READER = new CompactMapNGReader();
+	/**
+	 * Read a map from XML.
+	 *
+	 * @param element the element we're parsing
+	 * @param stream the source to read more elements from
+	 * @param players The collection to put players in
+	 * @param warner the Warning instance to use for warnings
+	 * @param idFactory the ID factory to use to generate IDs.
+	 * @return the parsed map
+	 * @throws SPFormatException on SP format problem
+	 */
+	@Override
+	public IMutableMapNG read(final StartElement element,
+			final IteratorWrapper<XMLEvent> stream,
+			final IMutablePlayerCollection players, final Warning warner,
+			final IDFactory idFactory) throws SPFormatException {
+		requireTag(element, "map", "view");
+		final int currentTurn;
+		final StartElement mapTag;
+		Location outerLoc = assertNotNull(element.getLocation());
+		String outerTag = assertNotNull(element.getName().getLocalPart());
+		if ("view".equalsIgnoreCase(element.getName().getLocalPart())) {
+			currentTurn =
+					Integer.parseInt(
+							getParameter(element, "current_turn"));
+			mapTag = getFirstStartElement(stream, outerLoc.getLineNumber());
+		} else if ("map".equalsIgnoreCase(outerTag)) {
+			currentTurn = -1;
+			mapTag = element;
+		} else {
+			throw new UnwantedChildException("xml", assertNotNull(outerTag),
+					outerLoc.getLineNumber());
+		}
+		final MapDimensions dimensions =
+				new MapDimensions(
+						Integer.parseInt(getParameter(mapTag, "rows")),
+						Integer.parseInt(getParameter(mapTag, "columns")),
+						Integer.parseInt(getParameter(mapTag, "version")));
+		SPMapNG retval = new SPMapNG(dimensions, players, currentTurn);
+		Point point = PointFactory.point(-1, -1);
+		for (final XMLEvent event : stream) {
+			if (event.isStartElement()) {
+				StartElement current = event.asStartElement();
+				String type = current.getName().getLocalPart();
+				Location currentLoc = assertNotNull(current.getLocation());
+				if (type == null) {
+					continue;
+				} else if ("player".equalsIgnoreCase(type)) {
+					retval.addPlayer(CompactPlayerReader.READER.read(current,
+							stream, players, warner, idFactory));
+				} else if ("row".equalsIgnoreCase(type)) {
+					// Deliberately ignore "row"s.
+					continue;
+				} else if ("tile".equalsIgnoreCase(type)) {
+					point =
+							PointFactory.point(Integer.parseInt(getParameter(
+									current, "row")), Integer
+									.parseInt(getParameter(current, "column")));
+					// Since tiles have been known to be *written* without
+					// "kind" and then fail to load, let's be liberal in what we
+					// accept here, since we can.
+					if (hasParameter(current, "kind")
+							|| hasParameter(current, "type")) {
+						retval.setBaseTerrain(point, TileType
+								.getTileType(getParamWithDeprecatedForm(
+										current, "kind", "type", warner)));
+					}
+				} else if ("lake".equalsIgnoreCase(type)) {
+					retval.addRivers(point, River.Lake);
+				} else if ("river".equalsIgnoreCase(type)) {
+					retval.addRivers(point,
+							CompactTileReader.parseRiver(current, warner));
+				} else if ("ground".equalsIgnoreCase(type)) {
+					Ground ground =
+							CompactGroundReader.READER.read(current, stream, players,
+									warner, idFactory);
+					Ground oldGround = retval.getGround(point);
+					if (oldGround == null) {
+						retval.setGround(point, ground);
+					} else if (ground.isExposed() && !oldGround.isExposed()) {
+						retval.setGround(point, ground);
+						retval.addFixture(point, oldGround);
+					} else {
+						// TODO: Should we do some ordering of Ground other than
+						// the order they are in the XML?
+						retval.addFixture(point, ground);
+					}
+				} else if ("forest".equalsIgnoreCase(type)) {
+					Forest forest =
+							(Forest) CompactTerrainReader.READER.read(current,
+									stream, players, warner, idFactory);
+					Forest oldForest = retval.getForest(point);
+					if (oldForest == null) {
+						retval.setForest(point, forest);
+					} else {
+						// TODO: Should we do some ordering of Forests other
+						// than the order they are in the XML?
+						retval.addFixture(point, forest);
+					}
+				} else if ("mountain".equalsIgnoreCase(type)) {
+					retval.setMountainous(point, true);
+				} else {
+					try {
+						retval.addFixture(point, CompactReaderAdapter
+								.parse(TileFixture.class, current, stream,
+										players, warner, idFactory));
+					} catch (final UnwantedChildException except) {
+						if ("unknown".equals(except.getTag())) {
+							throw new UnwantedChildException(
+									assertNotNull(mapTag.getName()
+											.getLocalPart()),
+									except.getChild(),
+									currentLoc.getLineNumber());
+						} else {
+							throw except;
+						}
+					} catch (final IllegalStateException except) {
+						if (except.getMessage().matches(
+								"^Wanted [^ ]*, was [^ ]*$")) {
+							final UnwantedChildException nexcept =
+									new UnwantedChildException(
+											assertNotNull(mapTag.getName()
+													.getLocalPart()),
+											assertNotNull(current.getName()
+													.getLocalPart()),
+											currentLoc.getLineNumber());
+							nexcept.initCause(except);
+							throw nexcept;
+						} else {
+							throw except;
+						}
+					}
+				}
+			} else if (event.isEndElement()) {
+				if (element.getName().equals(event.asEndElement().getName())) {
+					break;
+				} else if ("tile".equalsIgnoreCase(event.asEndElement()
+						.getName().getLocalPart())) {
+					point = PointFactory.point(-1, -1);
+				}
+			} else if (event.isCharacters()) {
+				String data =
+						assertNotNull(event.asCharacters().getData().trim());
+				retval.addFixture(point, new TextFixture(data, -1));
+			}
+		}
+		if (hasParameter(mapTag, "current_player")) {
+			retval.setCurrentPlayer(players.getPlayer(Integer
+					.parseInt(getParameter(mapTag, "current_player"))));
+		}
+		return retval;
+	}
+	/**
+	 * @param stream
+	 *            a stream of XMLEvents
+	 * @param line
+	 *            the line the parent tag is on
+	 * @throws SPFormatException
+	 *             if no start element in stream
+	 * @return the first start-element in the stream
+	 */
+	private static StartElement getFirstStartElement(
+			final Iterable<XMLEvent> stream, final int line)
+			throws SPFormatException {
+		for (final XMLEvent event : stream) {
+			if (event.isStartElement()) {
+				return assertNotNull(event.asStartElement());
+			}
+		}
+		throw new MissingChildException("map", line);
+	}
+	@Override
+	public void write(final Appendable ostream, final IMapNG obj, final int indent)
+			throws IOException {
+		ostream.append(indent(indent));
+		ostream.append("<view current_player=\"");
+		ostream.append(Integer.toString(obj.getCurrentPlayer().getPlayerId()));
+		ostream.append("\" current_turn=\"");
+		ostream.append(Integer.toString(obj.getCurrentTurn()));
+		ostream.append("\">\n");
+		ostream.append(indent(indent + 1));
+		final MapDimensions dim = obj.dimensions();
+		ostream.append("<map version=\"");
+		ostream.append(Integer.toString(dim.version));
+		ostream.append("\" rows=\"");
+		ostream.append(Integer.toString(dim.rows));
+		ostream.append("\" columns=\"");
+		ostream.append(Integer.toString(dim.cols));
+		ostream.append("\">\n");
+		for (Player player : obj.players()) {
+			if (player != null) {
+				CompactPlayerReader.READER.write(ostream, player, indent + 2);
+			}
+		}
+		for (int i = 0; i < dim.rows; i++) {
+			boolean rowEmpty = true;
+			for (int j = 0; j < dim.cols; j++) {
+				Point point = PointFactory.point(i, j);
+				if (!TileType.NotVisible.equals(obj.getBaseTerrain(point))
+						|| (obj.isMountainous(point)
+						|| obj.getGround(point) != null
+						|| obj.getForest(point) != null
+						|| obj.getOtherFixtures(point).iterator().hasNext())) {
+					if (rowEmpty) {
+						rowEmpty = false;
+						ostream.append(indent(indent + 2));
+						ostream.append("<row index=\"");
+						ostream.append(Integer.toString(i));
+						ostream.append("\">\n");
+					}
+					ostream.append(indent(indent + 3));
+					ostream.append("<tile row=\"");
+					ostream.append(Integer.toString(i));
+					ostream.append("\" column=\"");
+					ostream.append(Integer.toString(j));
+					if (!TileType.NotVisible.equals(obj.getBaseTerrain(point))) {
+						ostream.append("\" kind=\"");
+						ostream.append(obj.getBaseTerrain(point).toXML());
+					}
+					ostream.append("\">");
+					boolean needeol = true;
+					if (obj.isMountainous(point)) {
+						eolIfNeeded(needeol, ostream);
+						needeol = false;
+						ostream.append(indent(indent + 4));
+						ostream.append("<mountain />\n");
+					}
+					for (River river : obj.getRivers(point)) {
+						if (river != null) {
+							eolIfNeeded(needeol, ostream);
+							needeol = false;
+							CompactTileReader.writeRiver(ostream, river, indent + 4);
+						}
+					}
+					Ground ground = obj.getGround(point);
+					if (ground != null) {
+						eolIfNeeded(needeol, ostream);
+						needeol = false;
+						CompactReaderAdapter.write(ostream, ground, indent + 4);
+					}
+					Forest forest = obj.getForest(point);
+					if (forest != null) {
+						eolIfNeeded(needeol, ostream);
+						needeol = false;
+						CompactReaderAdapter.write(ostream, forest, indent + 4);
+					}
+					for (TileFixture fixture : obj.getOtherFixtures(point)) {
+						if (fixture != null) {
+							eolIfNeeded(needeol, ostream);
+							needeol = false;
+							CompactReaderAdapter.write(ostream, fixture, indent + 4);
+						}
+					}
+					if (!needeol) {
+						ostream.append(indent(indent + 3));
+					}
+					ostream.append("</tile>\n");
+				}
+			}
+			if (!rowEmpty) {
+				ostream.append(indent(indent + 2));
+				ostream.append("</row>\n");
+			}
+		}
+		ostream.append(indent(indent + 1));
+		ostream.append("</map>");
+		ostream.append(indent(indent));
+		ostream.append("</view>");
+	}
+	/**
+	 * @param tag a tag
+	 * @return whether this class supports it
+	 */
+	@Override
+	public boolean isSupportedTag(@Nullable final String tag) {
+		return "map".equalsIgnoreCase(tag) || "view".equalsIgnoreCase(tag);
+	}
+	/**
+	 * Write a newline if needed.
+	 * @param writer the writer to write to
+	 * @param needeol whether we need a newline.
+	 * @throws IOException on I/O error
+	 */
+	private static void eolIfNeeded(final boolean needeol,
+			final Appendable writer) throws IOException {
+		if (needeol) {
+			writer.append("\n");
+		}
+	}
+}
