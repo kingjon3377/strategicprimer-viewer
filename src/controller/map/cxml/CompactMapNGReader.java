@@ -150,9 +150,8 @@ public class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					// fixture outside tile
 					throw new UnwantedChildException("map", type,
 							currentLoc.getLineNumber());
-				} else if ("lake".equalsIgnoreCase(type)) {
-					retval.addRivers(point, River.Lake);
-				} else if ("river".equalsIgnoreCase(type)) {
+				} else if ("lake".equalsIgnoreCase(type)
+						|| "river".equalsIgnoreCase(type)) {
 					retval.addRivers(point,
 							CompactTileReader.parseRiver(current, warner));
 				} else if ("ground".equalsIgnoreCase(type)) {
