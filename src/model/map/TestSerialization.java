@@ -128,13 +128,13 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final Point point = point(0, 0);
 		assertSerialization("River in tile",
 				encapsulateTile(point, encapsulateRivers(River.East)),
-				SPMap.class);
+				IMap.class);
 		assertSerialization("Lake in tile",
 				encapsulateTile(point, encapsulateRivers(River.Lake)),
-				SPMap.class);
+				IMap.class);
 		assertSerialization("Another river in tile",
 				encapsulateTile(point, encapsulateRivers(River.North)),
-				SPMap.class);
+				IMap.class);
 		final Set<River> setOne = EnumSet.noneOf(River.class);
 		final Set<River> setTwo = EnumSet.noneOf(River.class);
 		assertEquals("Empty sets are equal", setOne, setTwo);
@@ -172,7 +172,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				"Two rivers",
 				encapsulateTile(point,
 						encapsulateRivers(River.North, River.South)),
-				SPMap.class);
+				IMap.class);
 	}
 
 	/**
@@ -204,19 +204,19 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	public void testTileSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
 		assertSerialization("Simple Tile",
-				encapsulateTile(point(0, 0), new Tile(Desert)), SPMap.class);
+				encapsulateTile(point(0, 0), new Tile(Desert)), IMap.class);
 		assertSerialization(
 				"Tile with one fixture",
 				encapsulateTile(point(1, 1),
 						encapsulateFixtures(Plains, new Griffin(1))),
-				SPMap.class);
+				IMap.class);
 		assertSerialization(
 				"Tile with two fixtures",
 				encapsulateTile(
 						point(2, 2),
 						encapsulateFixtures(Steppe, new Unit(new Player(1, ""),
 								"unitOne", "firstUnit", 1), new Forest(
-								"forestKind", true))), SPMap.class);
+								"forestKind", true))), IMap.class);
 		final IMutableTile four = new Tile(Jungle);
 		final Fortress fort = new Fortress(new Player(2, ""), "fortOne", 1);
 		fort.addUnit(new Unit(new Player(2, ""), "unitTwo", "secondUnit", 2));
@@ -224,18 +224,18 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		four.addFixture(new TextFixture("Random text here", 5));
 		four.addRiver(Lake);
 		assertSerialization("More complex tile",
-				encapsulateTile(point(3, 3), four), SPMap.class);
+				encapsulateTile(point(3, 3), four), IMap.class);
 		final SPMap five = encapsulateTile(point(4, 4), new Tile(Plains));
 		final String oldKindProperty = "type"; // NOPMD
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated tile-type idiom", five,
 				assertNotNull(createSerializedForm(five, true)
-						.replace("kind", oldKindProperty)), SPMap.class,
+						.replace("kind", oldKindProperty)), IMap.class,
 				oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated tile-type idiom", five,
 				assertNotNull(createSerializedForm(five, false)
-						.replace("kind", oldKindProperty)), SPMap.class,
+						.replace("kind", oldKindProperty)), IMap.class,
 				oldKindProperty);
 		assertMissingProperty("<tile column=\"0\" kind=\"plains\" />",
 				Tile.class, "row", false);
@@ -251,7 +251,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				new Player(2, ""), "explorer", "name two", 2));
 		assertEquals("Just checking ...", 2, iteratorSize(six));
 		assertSerialization("Multiple units should come through",
-				encapsulateTile(point(2, 3), six), SPMap.class);
+				encapsulateTile(point(2, 3), six), IMap.class);
 		final String xmlTwo = new StringBuilder(280)
 				.append("<map version=\"2\" rows=\"3\" columns=\"4\">\n")
 				.append("\t<row index=\"2\">\n")
@@ -295,14 +295,14 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertEquivalentForms("Two maps, one with row tags, one without",
 				"<map rows=\"1\" columns=\"1\" version=\"2\" />",
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><row /></map>",
-				SPMap.class, Action.Die);
+				IMap.class, Action.Die);
 		assertEquivalentForms("Two maps, one with future tag, one without",
 				"<map rows=\"1\" columns=\"1\" version=\"2\" />",
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>",
-				SPMap.class, Action.Ignore);
+				IMap.class, Action.Ignore);
 		assertUnsupportedTag(
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>",
-				SPMap.class, "future", true);
+				IMap.class, "future", true);
 	}
 
 	/**
@@ -317,16 +317,16 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 			SPFormatException, IOException {
 		assertUnwantedChild(
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><hill /></map>",
-				SPMap.class, false);
+				IMap.class, false);
 		final SPMap one = new SPMap(new MapDimensions(1, 1, 2));
 		one.addPlayer(new Player(1, "playerOne"));
 		one.getPlayers().getPlayer(1).setCurrent(true);
 		final Point point = point(0, 0);
 		one.addTile(point, new Tile(TileType.Plains));
-		assertSerialization("Simple Map serialization", one, SPMap.class);
+		assertSerialization("Simple Map serialization", one, IMap.class);
 		assertMissingProperty("<map version=\"2\" columns=\"1\" />",
-				SPMap.class, "rows", false);
-		assertMissingProperty("<map version=\"2\" rows=\"1\" />", SPMap.class,
+				IMap.class, "rows", false);
+		assertMissingProperty("<map version=\"2\" rows=\"1\" />", IMap.class,
 				"columns", false);
 	}
 
@@ -374,20 +374,20 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertSerialization("MapView serialization", one, IMapView.class);
 		assertMissingProperty("<view current_turn=\"0\">"
 				+ "<map version=\"2\" rows=\"1\" columns=\"1\" /></view>",
-				MapView.class, "current_player", false);
+				IMapView.class, "current_player", false);
 		assertMissingProperty("<view current_player=\"0\">"
 				+ "<map version=\"2\" rows=\"1\" columns=\"1\" /></view>",
-				MapView.class, "current_turn", false);
+				IMapView.class, "current_turn", false);
 		assertMissingChild("<view current_player=\"1\" current_turn=\"0\" />",
-				MapView.class, false);
+				IMapView.class, false);
 		assertUnwantedChild(assertNotNull(new StringBuilder(150)
 				.append("<view current_player=\"0\" current_turn=\"0\">")
 				.append("<map version=\"2\" rows=\"1\" columns=\"1\" />")
 				.append("<map version=\"2\" rows=\"1\" columns=\"1\" />")
-				.append("</view>").toString()), MapView.class, false);
+				.append("</view>").toString()), IMapView.class, false);
 		assertUnwantedChild(
 				"<view current_player=\"0\" current_turn=\"0\"><hill /></view>",
-				MapView.class, false);
+				IMapView.class, false);
 		assertMapDeserialization(
 				"Proper deserialization of map into view",
 				one,
