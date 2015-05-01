@@ -36,7 +36,6 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-@SuppressWarnings("deprecation")
 public class TestWorkerModel {
 	/**
 	 * Test for getUnits().

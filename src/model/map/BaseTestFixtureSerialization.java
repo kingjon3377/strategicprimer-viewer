@@ -35,7 +35,6 @@ import controller.map.iointerfaces.TestReaderFactory;
  * @author Jonathan Lovelace
  *
  */
-@SuppressWarnings("deprecation")
 public abstract class BaseTestFixtureSerialization { // NOPMD
 	/**
 	 * The "filename" to pass to the readers.
