@@ -31,6 +31,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import util.EqualsAny;
 import util.IteratorWrapper;
+import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.MissingPropertyException;
@@ -160,6 +161,8 @@ public class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						|| "river".equalsIgnoreCase(type)) {
 					retval.addRivers(point,
 							CompactTileReader.parseRiver(current, warner));
+					spinUntilEnd(NullCleaner.assertNotNull(current.getName()),
+							stream);
 				} else if ("ground".equalsIgnoreCase(type)) {
 					Ground ground =
 							CompactGroundReader.READER.read(current, stream, players,
