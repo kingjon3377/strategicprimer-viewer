@@ -93,7 +93,7 @@ public final class CompactReaderAdapter {
 		final CompactReader<T> reader; // NOPMD
 		if (IMap.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactMapReader.READER;
-		} else if (IMap.class.isAssignableFrom(type)) {
+		} else if (IMapNG.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactMapNGReader.READER;
 		} else if (ITile.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactTileReader.READER;
