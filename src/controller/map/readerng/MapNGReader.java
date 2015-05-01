@@ -112,6 +112,10 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 							XMLHelper.getAttribute(element, "current_turn"),
 							outerLoc);
 			mapTag = getFirstStartElement(stream, outerLoc.getLineNumber());
+			if (!"map".equals(mapTag.getName().getLocalPart())) {
+				throw new UnwantedChildException(outerTag, mapTag.getName()
+						.getLocalPart(), mapTag.getLocation().getLineNumber());
+			}
 		} else if ("map".equalsIgnoreCase(outerTag)) {
 			currentTurn = -1;
 			mapTag = element;

@@ -91,6 +91,7 @@ public class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					Integer.parseInt(
 							getParameter(element, "current_turn"));
 			mapTag = getFirstStartElement(stream, outerLoc.getLineNumber());
+			requireTag(mapTag, "map");
 		} else if ("map".equalsIgnoreCase(outerTag)) {
 			currentTurn = 0;
 			mapTag = element;
