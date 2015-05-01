@@ -118,7 +118,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	private static <T> T checkType(final Object obj, final Class<T> type) {
 		if (type.isAssignableFrom(obj.getClass())) {
 			return (T) obj; // NOPMD
-		} else if (type.equals(MapView.class) && obj instanceof SPMap) {
+		} else if (type.isAssignableFrom(IMapView.class) && obj instanceof SPMap) {
 			return (T) new MapView((SPMap) obj, ((SPMap) obj).getPlayers()
 					.getCurrentPlayer().getPlayerId(), 0);
 		} else if ((type.isAssignableFrom(IMap.class) || type
