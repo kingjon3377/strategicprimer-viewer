@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 import model.map.IMapNG;
-import model.map.MapNGReverseAdapter;
 import controller.map.iointerfaces.SPWriter;
 
 /**
@@ -25,7 +24,7 @@ public class CompactXMLWriter implements SPWriter {
 	 */
 	@Override
 	public void write(final File file, final IMapNG map) throws IOException {
-		writeObject(file, new MapNGReverseAdapter(map));
+		writeObject(file, map);
 	}
 	/**
 	 * Write a map to a stream.
@@ -37,7 +36,7 @@ public class CompactXMLWriter implements SPWriter {
 	@Override
 	public void write(final Appendable ostream, final IMapNG map)
 			throws IOException {
-		writeObject(ostream, new MapNGReverseAdapter(map));
+		writeObject(ostream, map);
 	}
 
 	/**
