@@ -11,9 +11,9 @@ import javax.xml.stream.XMLStreamException;
 import model.map.BaseTestFixtureSerialization;
 import model.map.MapDimensions;
 import model.map.Player;
+import model.map.PlayerCollection;
 import model.map.PointFactory;
-import model.map.SPMap;
-import model.map.Tile;
+import model.map.SPMapNG;
 import model.map.TileType;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Unit;
@@ -452,21 +452,23 @@ public final class TestMoreFixtureSerialization extends
 				new AdventureFixture(new Player(2, "player"),
 						"second hook brief", "second hook full", 2);
 		assertFalse("Two different hooks are not equal", one.equals(two));
-		final SPMap wrapper = new SPMap(new MapDimensions(1, 1, 2));
+		final SPMapNG wrapper =
+				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
+						-1);
 		wrapper.addPlayer(independent);
-		final Tile wrapperTile = new Tile(TileType.Plains);
-		wrapperTile.addFixture(one);
-		wrapper.addTile(PointFactory.point(0, 0), wrapperTile);
+		wrapper.setBaseTerrain(PointFactory.point(0, 0), TileType.Plains);
+		wrapper.addFixture(PointFactory.point(0, 0), one);
 		assertSerialization("First adventure hook serialization test", wrapper,
-				SPMap.class);
+				SPMapNG.class);
 		assertSerialization("Second adventure hook serialization test", two,
 				AdventureFixture.class);
 		final Portal three = new Portal("portal dest", PointFactory.point(1, 2), 3);
 		final Portal four =
 				new Portal("portal dest two", PointFactory.point(2, 1), 4);
 		assertFalse("TWo different portals are not equal", three.equals(four));
-		wrapperTile.addFixture(three);
-		assertSerialization("First portal serialization test", wrapper, SPMap.class);
+		wrapper.addFixture(PointFactory.point(0, 0), three);
+		assertSerialization("First portal serialization test", wrapper,
+				SPMapNG.class);
 		assertSerialization("Second portal serialization test", four, Portal.class);
 	}
 	/**
