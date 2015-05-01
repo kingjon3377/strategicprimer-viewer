@@ -165,7 +165,7 @@ public class MapView implements IMutableMapView {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof IMapView
-				&& equalsImpl((MapView) obj);
+				&& equalsImpl((IMapView) obj);
 	}
 	/**
 	 * @param obj another map-view
