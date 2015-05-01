@@ -38,7 +38,7 @@ public class SPMapNG implements IMutableMapNG {
 	/**
 	 * The players in the map.
 	 */
-	private final PlayerCollection playerCollection;
+	private final IMutablePlayerCollection playerCollection;
 	/**
 	 * The current turn.
 	 */
@@ -200,7 +200,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * @param currentTurn the current turn
 	 */
 	public SPMapNG(final MapDimensions dimensions,
-			final PlayerCollection players, final int currentTurn) {
+			final IMutablePlayerCollection players, final int currentTurn) {
 		dims = dimensions;
 		playerCollection = players;
 		turn = currentTurn;
