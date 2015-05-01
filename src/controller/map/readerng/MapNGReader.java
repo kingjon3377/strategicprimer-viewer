@@ -296,6 +296,7 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 						"rows", assertNotNull(Integer.toString(dim.rows))),
 						Pair.of("columns",
 								assertNotNull(Integer.toString(dim.cols))));
+		retval.addChild(mapTag);
 		for (Player player : obj.players()) {
 			if (player != null) {
 				mapTag.addChild(PLAYER_READER.write(player));
@@ -312,7 +313,7 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 						|| obj.getGround(point) != null
 						|| obj.getForest(point) != null
 						|| obj.getOtherFixtures(point).iterator().hasNext()) {
-					retval.addChild(row);
+					mapTag.addChild(row);
 					row.addChild(writeTile(obj, point));
 				}
 			}
