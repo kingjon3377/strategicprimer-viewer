@@ -8,7 +8,7 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.IPlayerCollection;
+import model.map.IMutablePlayerCollection;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.fixtures.Portal;
@@ -19,7 +19,7 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 
 /**
- * A reader for portals
+ * A reader for portals.
  *
  * @author Jonathan Lovelace
  * @deprecated ReaderNG is deprecated
@@ -46,7 +46,7 @@ public class PortalReader implements INodeHandler<Portal> {
 	 */
 	@Override
 	public Portal parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final IPlayerCollection players,
+			final Iterable<XMLEvent> stream, final IMutablePlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);

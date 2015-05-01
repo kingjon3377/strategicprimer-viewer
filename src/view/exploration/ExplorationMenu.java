@@ -15,8 +15,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
 import model.exploration.IExplorationModel;
-import model.map.IMap;
-import model.map.MapView;
+import model.map.IMutableMapNG;
 import model.viewer.ViewerModel;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -71,7 +70,7 @@ public class ExplorationMenu extends JMenuBar {
 					@Override
 					public void actionPerformed(@Nullable final ActionEvent evt) {
 						invokeLater(new ViewerOpener(model.getMap(), model
-								.getMapFile(), -1, -1, ioh));
+								.getMapFile(), ioh));
 					}
 				}));
 		fileMenu.add(createMenuItem(
@@ -82,12 +81,10 @@ public class ExplorationMenu extends JMenuBar {
 				new ActionListener() {
 					@Override
 					public void actionPerformed(@Nullable final ActionEvent evt) {
-						final Pair<IMap, File> mapPair = model
+						final Pair<IMutableMapNG, File> mapPair = model
 								.getSubordinateMaps().iterator().next();
 						invokeLater(new ViewerOpener(mapPair.first(), mapPair
-								.second(), model.getMap().getPlayers()
-								.getCurrentPlayer().getPlayerId(), model
-								.getMap().getCurrentTurn(), ioh));
+								.second(), ioh));
 					}
 				}));
 		fileMenu.addSeparator();
@@ -124,7 +121,7 @@ public class ExplorationMenu extends JMenuBar {
 		/**
 		 * The map view to open.
 		 */
-		private final MapView view;
+		private final IMutableMapNG view;
 		/**
 		 * The file name the map was loaded from.
 		 */
@@ -139,18 +136,11 @@ public class ExplorationMenu extends JMenuBar {
 		 *
 		 * @param map the map (view) to open
 		 * @param source the filename it was loaded from
-		 * @param player the current player's number---ignored if map is a
-		 *        MapView.
-		 * @param turn the current turn---ignored if map is a MapView.
 		 * @param ioHandler the I/O handler to let the menu handle 'open', etc.
 		 */
-		protected ViewerOpener(final IMap map, final File source, final int player,
-				final int turn, final IOHandler ioHandler) {
-			if (map instanceof MapView) {
-				view = (MapView) map;
-			} else {
-				view = new MapView(map, player, turn);
-			}
+		protected ViewerOpener(final IMutableMapNG map, final File source,
+				final IOHandler ioHandler) {
+			view = map;
 			file = source;
 			ioHelper = ioHandler;
 		}

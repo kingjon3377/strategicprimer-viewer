@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.xml.stream.XMLStreamException;
 
-import model.map.IMap;
+import model.map.IMutableMapNG;
 import model.misc.IMultiMapModel;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -91,7 +91,7 @@ public class MultiIOHandler extends IOHandler {
 	 */
 	private void saveAll(@Nullable final Component source) {
 		final MapReaderAdapter adapter = new MapReaderAdapter();
-		for (final Pair<IMap, File> pair : model.getAllMaps()) {
+		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
 			try {
 				adapter.write(pair.second(), pair.first());
 			} catch (final IOException e) {

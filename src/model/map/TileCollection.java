@@ -18,8 +18,9 @@ import util.NullCleaner;
  * sense.
  *
  * @author Jonathan Lovelace
- *
+ * @deprecated the old map API is deprecated in this branch
  */
+@Deprecated
 public final class TileCollection implements IMutableTileCollection {
 	/**
 	 * The Map this is a wrapper around.

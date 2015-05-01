@@ -16,7 +16,7 @@ import javax.xml.stream.XMLStreamException;
 
 import model.exploration.HuntingModel;
 import model.map.HasName;
-import model.map.IMap;
+import model.map.IMapNG;
 import model.map.Point;
 import util.NullCleaner;
 import util.TypesafeLogger;
@@ -154,7 +154,7 @@ public class TrapModelDriver implements ISPDriver {
 	 * @param map the map to explore
 	 * @param ostream the stream to write output to
 	 */
-	private void repl(final IMap map, final Appendable ostream) {
+	private void repl(final IMapNG map, final Appendable ostream) {
 		try {
 			final HuntingModel hmodel = new HuntingModel(map);
 			final boolean fishing = helper.inputBoolean(FISH_OR_TRAP);
@@ -285,8 +285,8 @@ public class TrapModelDriver implements ISPDriver {
 		}
 		final File file = new File(args[0]);
 		try {
-			repl(new MapReaderAdapter().readMap(file, new Warning(
-					Action.Warn)), SYS_OUT);
+			repl(new MapReaderAdapter().readMap(file, new Warning(Action.Warn)),
+					SYS_OUT);
 		} catch (final XMLStreamException e) {
 			throw new DriverFailedException("XML parsing error in "
 					+ file.getPath(), e);
@@ -305,7 +305,7 @@ public class TrapModelDriver implements ISPDriver {
 	 * Start this driver from another driver.
 	 * @param map the map to operate on
 	 */
-	public void startDriver(final IMap map) {
+	public void startDriver(final IMapNG map) {
 		repl(map, SYS_OUT);
 	}
 	/**

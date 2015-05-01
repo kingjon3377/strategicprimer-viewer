@@ -7,12 +7,15 @@ import java.util.Set;
 
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
-import model.map.ITile;
+import model.map.IMapNG;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
+import model.map.fixtures.Ground;
+import model.map.fixtures.terrain.Forest;
+import model.map.fixtures.terrain.Mountain;
 import model.viewer.FixtureComparator;
 import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
@@ -53,8 +56,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	 */
 	public ComponentMouseListener(final IViewerModel mapModel) {
 		model = mapModel;
-		menu = new TerrainChangingMenu(model.getMapDimensions().version, model
-				.getMap().getTile(model.getSelectedPoint()));
+		menu = new TerrainChangingMenu(model.getMapDimensions().version, model);
 		model.addSelectionChangeListener(menu);
 		model.addVersionChangeListener(menu);
 	}
@@ -74,10 +76,9 @@ public final class ComponentMouseListener extends MouseAdapter implements
 				+ dimensions.getMinimumRow(), eventPoint.x / tileSize
 				+ dimensions.getMinimumCol());
 		if (point.row < mapDim.getRows() && point.col < mapDim.getColumns()) {
-			final ITile tile = model.getTile(point);
-			return concat("<html><body>", point.toString(), ": ", tile//NOPMD
-					.getTerrain().toString(), "<br />",
-					getTerrainFixturesAndTop(tile), "</body></html>");
+			return concat("<html><body>", point.toString(), ": ", model
+					.getMap().getBaseTerrain(point).toString(), "<br />",
+					getTerrainFixturesAndTop(point), "</body></html>");
 		} else {
 			return null;
 		}
@@ -100,15 +101,28 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	}
 
 	/**
-	 * @param tile a tile
+	 * @param point a point
 	 * @return a HTML-ized String (including final newline entity) representing
-	 *         the TerrainFixtures on it, and the fixture the user can see as
+	 *         the TerrainFixtures at that point, and the fixture the user can see as
 	 *         its top fixture.
 	 */
-	private String getTerrainFixturesAndTop(final ITile tile) {
+	private String getTerrainFixturesAndTop(final Point point) {
+		final IMapNG map = model.getMap();
 		final Set<TileFixture> fixes = new ArraySet<>();
-		final Iterable<TileFixture> iter = new IteratorWrapper<>(
-				tile.iterator(), fixComp);
+		if (map.isMountainous(point)) {
+			fixes.add(new Mountain());
+		}
+		Ground ground = map.getGround(point);
+		if (ground != null) {
+			fixes.add(ground);
+		}
+		Forest forest = map.getForest(point);
+		if (forest != null) {
+			fixes.add(forest);
+		}
+		final Iterable<TileFixture> iter =
+				new IteratorWrapper<>(NullCleaner.assertNotNull(map
+						.getOtherFixtures(point).iterator()), fixComp);
 		final Iterator<TileFixture> iterat = iter.iterator();
 		if (iterat.hasNext()) {
 			fixes.add(iterat.next());
@@ -184,7 +198,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	public String toString() {
 		return "ComponentMouseListener";
 	}
-	
+
 	/**
 	 * @param list
 	 *            Something to listen for changes to the tile type of the

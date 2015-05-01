@@ -15,7 +15,6 @@ import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
 import model.listeners.PlayerChangeListener;
-import model.map.IPlayerCollection;
 import model.map.Player;
 import model.viewer.IViewerModel;
 
@@ -133,8 +132,7 @@ public class SPMenu extends JMenuBar {
 			@Override
 			public void playerChanged(@Nullable final Player old,
 					final Player newPlayer) {
-				final IPlayerCollection pColl = model.getMap().getPlayers();
-				for (final Player player : pColl) {
+				for (final Player player : model.getMap().players()) {
 					if (player.equals(newPlayer)) {
 						player.setCurrent(true);
 					} else {

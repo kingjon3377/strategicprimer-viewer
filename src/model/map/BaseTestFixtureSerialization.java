@@ -35,7 +35,6 @@ import controller.map.iointerfaces.TestReaderFactory;
  * @author Jonathan Lovelace
  *
  */
-@SuppressWarnings("deprecation")
 public abstract class BaseTestFixtureSerialization { // NOPMD
 	/**
 	 * The "filename" to pass to the readers.
@@ -503,6 +502,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @return its serialized form
 	 * @throws IOException on I/O error creating it
 	 */
+	@SuppressWarnings("deprecation")
 	protected static String createSerializedForm(final Object obj,
 			final boolean deprecated) throws IOException {
 		final StringWriter writer = new StringWriter();
@@ -588,14 +588,12 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 *             on XML format error
 	 */
 	protected void assertMapDeserialization(final String message,
-			final MapView expected, final String xml)
+			final IMapNG expected, final String xml)
 			throws XMLStreamException, SPFormatException {
 		assertEquals(message, expected, ((IMapReader) oldReader).readMap(
-				FAKE_FILENAME, new StringReader(xml), new Warning(
-						Action.Die)));
+				FAKE_FILENAME, new StringReader(xml), new Warning(Action.Die)));
 		assertEquals(message, expected, ((IMapReader) newReader).readMap(
-				FAKE_FILENAME, new StringReader(xml), new Warning(
-						Action.Die)));
+				FAKE_FILENAME, new StringReader(xml), new Warning(Action.Die)));
 	}
 
 	/**

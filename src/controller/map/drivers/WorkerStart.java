@@ -110,9 +110,9 @@ public class WorkerStart implements ISPDriver {
 			return;
 		}
 		try {
-			final IWorkerModel model = new WorkerModel(
-					new MapReaderAdapter().readMap(file, new Warning(
-							Action.Warn)), file);
+			final IWorkerModel model =
+					new WorkerModel(new MapReaderAdapter().readMap(file,
+							new Warning(Action.Warn)), file);
 			SwingUtilities.invokeLater(new WindowThread(new WorkerMgmtFrame(
 					model, new IOHandler(model, new FilteredFileChooser(".",
 							new MapFileFilter())))));

@@ -4,8 +4,7 @@ import java.util.EnumSet;
 import java.util.Set;
 
 import model.map.IFixture;
-import model.map.ITile;
-import model.map.ITileCollection;
+import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.River;
@@ -50,13 +49,13 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	 *
 	 * @param fixtures the set of fixtures
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @param tiles the tiles in the map (needed to get terrain information)
+	 * @param map the map (needed to get terrain information)
 	 * @return the part of the report dealing with fortresses
 	 */
 	@Override
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer) {
+			final IMapNG map, final Player currentPlayer) {
 		// This can get long. We'll give it 16K.
 		final StringBuilder ours = new StringBuilder(16384)
 				.append("<h4>Your fortresses in the map:</h4>\n");
@@ -70,11 +69,11 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 				final Fortress fort = (Fortress) pair.second();
 				if (currentPlayer.equals(fort.getOwner())) {
 					anyours = true;
-					ours.append(produce(fixtures, tiles, currentPlayer, fort,
+					ours.append(produce(fixtures, map, currentPlayer, fort,
 							pair.first()));
 				} else {
 					anyforts = true;
-					builder.append(produce(fixtures, tiles, currentPlayer,
+					builder.append(produce(fixtures, map, currentPlayer,
 							fort, pair.first()));
 				}
 			}
@@ -96,13 +95,13 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	 *
 	 * @param fixtures the set of fixtures
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @param tiles the tiles in the map (needed to get terrain information)
+	 * @param map the map (needed to get terrain information)
 	 * @return the part of the report dealing with fortresses
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer) {
+			final IMapNG map, final Player currentPlayer) {
 		final AbstractReportNode retval = new ComplexReportNode("");
 		final AbstractReportNode ours = new SectionReportNode(4,
 				"Your fortresses in the map:");
@@ -112,10 +111,10 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			if (pair.second() instanceof Fortress) {
 				final Fortress fort = (Fortress) pair.second();
 				if (currentPlayer.equals(fort.getOwner())) {
-					ours.add(produceRIR(fixtures, tiles, currentPlayer,
+					ours.add(produceRIR(fixtures, map, currentPlayer,
 							(Fortress) pair.second(), pair.first()));
 				} else {
-					foreign.add(produceRIR(fixtures, tiles, currentPlayer,
+					foreign.add(produceRIR(fixtures, map, currentPlayer,
 							(Fortress) pair.second(), pair.first()));
 				}
 			}
@@ -134,18 +133,27 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	}
 
 	/**
-	 * @param tile a tile
+	 * @param map the map
+	 * @param point a point
 	 * @param fixtures the set of fixtures, so we can schedule the removal the
 	 *        terrain fixtures from it
 	 * @return a String describing the terrain on it
 	 */
-	private static String getTerrain(final ITile tile,
+	private static String getTerrain(final IMapNG map, final Point point,
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures) {
 		final StringBuilder builder = new StringBuilder(130).append(
 				"Surrounding terrain: ").append(
-				tile.getTerrain().toXML().replace('_', ' '));
+				map.getBaseTerrain(point).toXML().replace('_', ' '));
 		boolean hasForest = false;
-		for (final TileFixture fix : tile) {
+		Forest forest = map.getForest(point);
+		if (forest != null) {
+			builder.append(", forested with ").append(forest.getKind());
+			hasForest = true;
+		}
+		if (map.isMountainous(point)) {
+			builder.append(", mountainous");
+		}
+		for (final TileFixture fix : map.getOtherFixtures(point)) {
 			if (fix instanceof Forest) {
 				if (!hasForest) {
 					hasForest = true;
@@ -227,14 +235,14 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	 * @param item the fortress to report on
 	 * @param loc its location
 	 * @param fixtures the set of fixtures
-	 * @param tiles the tiles in the map (needed to get terrain information)
+	 * @param map the map (needed to get terrain information)
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report dealing with fortresses
 	 */
 	@Override
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer,
+			final IMapNG map, final Player currentPlayer,
 			final Fortress item, final Point loc) {
 		// This can get long. we'll give it 16K.
 		final StringBuilder builder = new StringBuilder(16384)
@@ -243,12 +251,11 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 				.append(playerNameOrYou(item.getOwner())).append("</h5>\n")
 				.append(OPEN_LIST).append(OPEN_LIST_ITEM).append("Located at ")
 				.append(loc).append(CLOSE_LIST_ITEM).append(OPEN_LIST_ITEM);
-		final ITile tile = tiles.getTile(loc);
-		builder.append(getTerrain(tile, fixtures)).append(CLOSE_LIST_ITEM);
-		if (tile.hasRiver()) {
+		builder.append(getTerrain(map, loc, fixtures)).append(CLOSE_LIST_ITEM);
+		if (map.getRivers(loc).iterator().hasNext()) {
 			final Set<River> copy = NullCleaner.assertNotNull(EnumSet
 					.noneOf(River.class));
-			for (final River river : tile.getRivers()) {
+			for (final River river : map.getRivers(loc)) {
 				copy.add(river);
 			}
 			builder.append(riversToString(copy));
@@ -259,7 +266,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			for (final IUnit unit : item) {
 				if (unit instanceof Unit) {
 					builder.append(OPEN_LIST_ITEM)
-							.append(urg.produce(fixtures, tiles, currentPlayer,
+							.append(urg.produce(fixtures, map, currentPlayer,
 									(Unit) unit, loc)).append(CLOSE_LIST_ITEM);
 				}
 			}
@@ -276,25 +283,24 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	 * @param item the fortress to report on
 	 * @param loc its location
 	 * @param fixtures the set of fixtures
-	 * @param tiles the tiles in the map (needed to get terrain information)
+	 * @param map the map (needed to get terrain information)
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report dealing with the fortress
 	 */
 	@Override
 	public SectionListReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer,
+			final IMapNG map, final Player currentPlayer,
 			final Fortress item, final Point loc) {
 		final SectionListReportNode retval = new SectionListReportNode(5, concat(
 				"Fortress ", item.getName(), " belonging to ",
 				playerNameOrYou(item.getOwner())));
 		retval.add(new SimpleReportNode("Located at ", loc.toString()));
-		final ITile tile = tiles.getTile(loc);
-		retval.add(new SimpleReportNode(getTerrain(tile, fixtures)));
-		if (tile.hasRiver()) {
+		retval.add(new SimpleReportNode(getTerrain(map, loc, fixtures)));
+		if (map.getRivers(loc).iterator().hasNext()) {
 			final Set<River> copy = NullCleaner.assertNotNull(EnumSet
 					.noneOf(River.class));
-			for (final River river : tile.getRivers()) {
+			for (final River river : map.getRivers(loc)) {
 				copy.add(river);
 			}
 			riversToNode(retval, copy);
@@ -304,7 +310,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 					"Units on the tile:");
 			for (final IUnit unit : item) {
 				if (unit instanceof Unit) {
-					units.add(urg.produceRIR(fixtures, tiles, currentPlayer,
+					units.add(urg.produceRIR(fixtures, map, currentPlayer,
 							(Unit) unit, loc));
 				}
 			}

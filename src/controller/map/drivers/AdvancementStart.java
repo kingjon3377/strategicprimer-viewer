@@ -108,9 +108,9 @@ public final class AdvancementStart implements ISPDriver {
 								args[0], ""))).getFile();
 			}
 			try {
-				final IWorkerModel model = new WorkerModel(
-						new MapReaderAdapter().readMap(file, new Warning(
-								Action.Warn)), file);
+				final IWorkerModel model =
+						new WorkerModel(new MapReaderAdapter().readMap(file,
+								new Warning(Action.Warn)), file);
 				SwingUtilities.invokeLater(new WindowThread(new AdvancementFrame(
 						model, new IOHandler(model, new FilteredFileChooser(".",
 								new MapFileFilter())))));

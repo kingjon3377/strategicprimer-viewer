@@ -11,7 +11,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.HasImage;
 import model.map.HasKind;
-import model.map.IPlayerCollection;
+import model.map.IMutablePlayerCollection;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Centaur;
 import model.map.fixtures.mobile.Djinn;
@@ -196,7 +196,7 @@ public final class CompactMobileReader extends
 	@Override
 	public MobileFixture read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
-			final IPlayerCollection players, final Warning warner,
+			final IMutablePlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "animal", "centaur", "djinn", "dragon", "fairy",
 				"giant", "griffin", "minotaur", "ogre", "phoenix", "simurgh",

@@ -9,8 +9,7 @@ import javax.xml.stream.XMLStreamException;
 
 import model.exploration.ExplorationModel;
 import model.exploration.IExplorationModel;
-import model.map.IMap;
-import model.map.MapView;
+import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
 import util.Pair;
@@ -65,7 +64,8 @@ public class ExplorationCLIDriver implements ISPDriver {
 			throws IOException, XMLStreamException, SPFormatException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final File firstFile = new File(filenames[0]);
-		final MapView master = reader.readMap(firstFile, Warning.INSTANCE);
+		final IMutableMapNG master =
+				reader.readMap(firstFile, Warning.INSTANCE);
 		final ExplorationModel model = new ExplorationModel(master,
 				firstFile);
 		for (final String filename : filenames) {
@@ -73,8 +73,8 @@ public class ExplorationCLIDriver implements ISPDriver {
 				continue;
 			}
 			final File file = new File(filename);
-			final IMap map = reader.readMap(file, Warning.INSTANCE);
-			if (!map.getDimensions().equals(master.getDimensions())) {
+			final IMutableMapNG map = reader.readMap(file, Warning.INSTANCE);
+			if (!map.dimensions().equals(master.dimensions())) {
 				throw new IllegalArgumentException("Size mismatch between "
 						+ filenames[0] + " and " + filename);
 			}
@@ -142,7 +142,7 @@ public class ExplorationCLIDriver implements ISPDriver {
 	private static void writeMaps(final IExplorationModel model)
 			throws IOException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		for (final Pair<IMap, File> pair : model.getAllMaps()) {
+		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
 			reader.write(pair.second(), pair.first());
 		}
 	}

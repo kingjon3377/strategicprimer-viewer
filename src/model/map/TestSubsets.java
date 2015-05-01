@@ -7,11 +7,7 @@ import static util.NullStream.DEV_NULL;
 import java.io.IOException;
 
 import model.map.fixtures.RiverFixture;
-import model.map.fixtures.TextFixture;
-import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Unit;
-import model.map.fixtures.resources.CacheFixture;
-import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Fortress;
 
 import org.junit.Test;
@@ -130,61 +126,29 @@ public class TestSubsets {
 	}
 
 	/**
-	 * A test of Tile's subset feature.
+	 * Test the MapNG subset feature.
+	 *
+	 * FIXME: Cover more than terrain, like the now-deleted Tile subset test did.
+	 *
 	 * @throws IOException on I/O error writing to the null stream
 	 */
 	@SuppressWarnings(ST_MET)
 	@Test
-	public void testTileSubset() throws IOException {
-		final Tile one = new Tile(TileType.Steppe);
-		final Tile three = new Tile(TileType.Desert);
-		assertFalse("Subset tile must match in type",
-				one.isSubset(three, DEV_NULL, ""));
-		assertFalse("Subset tile must match in type",
-				three.isSubset(one, DEV_NULL, ""));
-		final Tile four = new Tile(TileType.Steppe);
-		assertTrue("Tile is subset of self", one.isSubset(one, DEV_NULL, ""));
-		assertTrue("Tile is subset of equal tile",
-				one.isSubset(four, DEV_NULL, ""));
-		assertTrue("Tile is subset of equal tile",
-				four.isSubset(one, DEV_NULL, ""));
-		four.addFixture(new Mountain());
-		assertTrue("Tile with fixture is subset of tile without",
-				four.isSubset(one, DEV_NULL, ""));
-		assertFalse("Tile without fixture is not subset of tile with",
-				one.isSubset(four, DEV_NULL, ""));
-		one.addFixture(new Mountain());
-		assertTrue("Adding equal fixture makes it again a subset",
-				one.isSubset(four, DEV_NULL, ""));
-		four.addFixture(new CacheFixture("category", "contents", 1));
-		assertTrue("Subset calculation skips Caches",
-				one.isSubset(four, DEV_NULL, ""));
-		four.addFixture(new TextFixture("text", -1));
-		assertTrue("Subset calculation skips arbitrary-text",
-				one.isSubset(four, DEV_NULL, ""));
-		four.addFixture(new Animal("animal", true, false, "wild", 2));
-		assertTrue("Subset calculation skips animal tracks ...",
-				one.isSubset(four, DEV_NULL, ""));
-		four.addFixture(new Animal("animal", false, false, "wild", 3));
-		assertFalse("But not the animals themselves",
-				one.isSubset(four, DEV_NULL, ""));
-	}
-
-	/**
-	 * Test the TileCollection subset feature.
-	 * @throws IOException on I/O error writing to the null stream
-	 */
-	@SuppressWarnings(ST_MET)
-	@Test
-	public void testTileCollectionSubset() throws IOException {
-		final TileCollection zero = new TileCollection();
-		final TileCollection one = new TileCollection();
+	public void testMapSubset() throws IOException {
+		final IMutableMapNG zero =
+				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
+						-1);
+		final IMutableMapNG one =
+				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
+						-1);
 		final Point pointOne = PointFactory.point(0, 0);
-		one.addTile(pointOne, new Tile(TileType.Jungle));
-		final TileCollection two = new TileCollection();
-		two.addTile(pointOne, new Tile(TileType.Jungle));
+		one.setBaseTerrain(pointOne, TileType.Jungle);
+		final IMutableMapNG two =
+				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
+						-1);
+		two.setBaseTerrain(pointOne, TileType.Jungle);
 		final Point pointTwo = PointFactory.point(1, 1);
-		two.addTile(pointTwo, new Tile(TileType.Ocean));
+		two.setBaseTerrain(pointTwo, TileType.Ocean);
 		assertTrue("None is a subset of itself",
 				zero.isSubset(zero, DEV_NULL, ""));
 		assertTrue("None is a subset of one", one.isSubset(zero, DEV_NULL, ""));
@@ -197,7 +161,7 @@ public class TestSubsets {
 				zero.isSubset(two, DEV_NULL, ""));
 		assertFalse("Two is not a subset of one", one.isSubset(two, DEV_NULL, ""));
 		assertTrue("Two is a subset of itself", two.isSubset(two, DEV_NULL, ""));
-		one.addTile(pointTwo, new Tile(TileType.Plains));
+		one.setBaseTerrain(pointTwo, TileType.Plains);
 		assertFalse("Corresponding but non-matching tile breaks subset",
 				two.isSubset(one, DEV_NULL, ""));
 		assertFalse("Corresponding but non-matching tile breaks subset",

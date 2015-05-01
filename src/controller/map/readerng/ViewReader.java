@@ -8,7 +8,8 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.IPlayerCollection;
+import model.map.IMapView;
+import model.map.IMutablePlayerCollection;
 import model.map.MapView;
 import util.NullCleaner;
 import util.Warning;
@@ -24,7 +25,7 @@ import controller.map.misc.IDFactory;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class ViewReader implements INodeHandler<MapView> {
+public class ViewReader implements INodeHandler<IMapView> {
 	/**
 	 * The (main) tag we deal with.
 	 */
@@ -39,8 +40,8 @@ public class ViewReader implements INodeHandler<MapView> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<MapView> writes() {
-		return MapView.class;
+	public Class<IMapView> writes() {
+		return IMapView.class;
 	}
 
 	/**
@@ -64,14 +65,14 @@ public class ViewReader implements INodeHandler<MapView> {
 	 * @throws SPFormatException on format problems
 	 */
 	@Override
-	public MapView parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final IPlayerCollection players,
+	public IMapView parse(final StartElement element,
+			final Iterable<XMLEvent> stream, final IMutablePlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		final StartElement event = getFirstStartElement(stream, element
 				.getLocation().getLineNumber());
 		requireMapTag(event, element);
-		final MapView view =
+		final IMapView view =
 				new MapView(MAP_READER.parse(event, stream, players, warner,
 						idFactory), XMLHelper.parseInt(
 						getAttribute(element, "current_player"),
@@ -111,7 +112,7 @@ public class ViewReader implements INodeHandler<MapView> {
 	 * @return an intermediate representation
 	 */
 	@Override
-	public <S extends MapView> SPIntermediateRepresentation write(final S obj) {
+	public <S extends IMapView> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				TAG);
 		retval.addAttribute(

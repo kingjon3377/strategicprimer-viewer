@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.map.IMap;
+import model.map.IMapNG;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -68,11 +68,12 @@ public final class EchoDriver implements ISPDriver {
 					new IllegalArgumentException("Need exactly two arguments"));
 		}
 		// ESCA-JAVA0177:
-		final IMap map; // NOPMD
+		final IMapNG map; // NOPMD
 		final File infile = new File(args[0]);
 		try {
-			map = new MapReaderAdapter().readMap(infile, new Warning(// NOPMD
-					Action.Ignore));
+			map =
+					new MapReaderAdapter().readMap(infile, new Warning(
+							Action.Ignore));
 		} catch (final MapVersionException except) {
 			throw new DriverFailedException("Unsupported map version", except);
 		} catch (final IOException except) {

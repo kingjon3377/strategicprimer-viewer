@@ -17,10 +17,10 @@ import javax.xml.stream.XMLStreamException;
 
 import model.exploration.old.ExplorationRunner;
 import model.exploration.old.MissingTableException;
-import model.map.IMap;
-import model.map.ITile;
+import model.map.IMapNG;
 import model.map.Point;
 import model.map.PointFactory;
+import model.map.TileType;
 import util.NullCleaner;
 import util.SingletonRandom;
 import util.TypesafeLogger;
@@ -45,7 +45,7 @@ public final class GenerateTileContents {
 	/**
 	 * The singleton map we'll be consulting.
 	 */
-	private final IMap map;
+	private final IMapNG map;
 
 	/**
 	 * The map reader to use.
@@ -88,7 +88,7 @@ public final class GenerateTileContents {
 	 *
 	 * @param theMap the map we'll be consulting.
 	 */
-	private GenerateTileContents(final IMap theMap) {
+	private GenerateTileContents(final IMapNG theMap) {
 		map = theMap;
 		TableLoader.loadAllTables("tables", runner);
 	}
@@ -101,21 +101,22 @@ public final class GenerateTileContents {
 	 */
 	public void generateTileContents(final Point point)
 			throws MissingTableException {
-		generateTileContents(point, map.getTile(point));
+		generateTileContents(point, map.getBaseTerrain(point));
 	}
 
 	/**
 	 * Generate the contents of a tile.
 	 *
-	 * @param tile the tile
+	 * @param terrain its tile type
 	 * @param point the location of the tile
 	 * @throws MissingTableException if a missing table is referenced
 	 */
-	private void generateTileContents(final Point point, final ITile tile)
+	private void generateTileContents(final Point point, final TileType terrain)
 			throws MissingTableException {
 		final int reps = SingletonRandom.RANDOM.nextInt(4) + 1;
 		for (int i = 0; i < reps; i++) {
-			println(runner.recursiveConsultTable("fisher", point, tile));
+			println(runner.recursiveConsultTable("fisher", point,
+					terrain, null));
 		}
 	}
 

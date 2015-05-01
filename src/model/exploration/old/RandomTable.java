@@ -6,8 +6,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import model.map.ITile;
 import model.map.Point;
+import model.map.TileFixture;
+import model.map.TileType;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.ComparablePair;
 import util.Pair;
 import util.SingletonRandom;
@@ -25,14 +29,16 @@ public class RandomTable implements EncounterTable {
 	private final List<ComparablePair<Integer, String>> table;
 
 	/**
-	 * @param tile ignored
+	 * @param terrain ignored
+	 * @param fixtures ignored
 	 * @param point ignored
 	 *
 	 * @return a random item from the table, or the last item in the table if
 	 *         the normal procedure fails.
 	 */
 	@Override
-	public String generateEvent(final Point point, final ITile tile) {
+	public String generateEvent(final Point point, final TileType terrain,
+			@Nullable final Iterable<TileFixture> fixtures) {
 		final int roll = SingletonRandom.RANDOM.nextInt(100);
 		return getLowestMatch(roll);
 	}

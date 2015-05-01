@@ -6,9 +6,10 @@ import java.util.List;
 
 import model.listeners.MapChangeListener;
 import model.listeners.VersionChangeListener;
+import model.map.IMutableMapNG;
 import model.map.MapDimensions;
-import model.map.MapView;
-import model.map.SPMap;
+import model.map.PlayerCollection;
+import model.map.SPMapNG;
 
 /**
  * A superclass for driver-models, to handle the common details.
@@ -29,7 +30,7 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	/**
 	 * The main map.
 	 */
-	private MapView map = new MapView(new SPMap(mapDim), -1, -1);
+	private IMutableMapNG map = new SPMapNG(mapDim, new PlayerCollection(), -1);
 	/**
 	 * The name from which the map was loaded.
 	 */
@@ -39,12 +40,12 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	 * @param origin the file from which the map was loaded
 	 */
 	@Override
-	public void setMap(final MapView newMap, final File origin) {
+	public void setMap(final IMutableMapNG newMap, final File origin) {
 		for (final VersionChangeListener list : vcListeners) {
-			list.changeVersion(mapDim.version, newMap.getDimensions().version);
+			list.changeVersion(mapDim.version, newMap.dimensions().version);
 		}
 		map = newMap;
-		mapDim = newMap.getDimensions();
+		mapDim = newMap.dimensions();
 		file = origin;
 		for (final MapChangeListener list : mcListeners) {
 			list.mapChanged();
@@ -56,7 +57,7 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	 * @return the main map
 	 */
 	@Override
-	public final MapView getMap() {
+	public final IMutableMapNG getMap() {
 		return map;
 	}
 

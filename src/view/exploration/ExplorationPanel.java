@@ -32,12 +32,9 @@ import model.listeners.CompletionSource;
 import model.listeners.MovementCostListener;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSupport;
-import model.map.IMap;
-import model.map.IPlayerCollection;
-import model.map.ITile;
+import model.map.IMutableMapNG;
+import model.map.Player;
 import model.map.Point;
-import model.map.Tile;
-import model.map.TileType;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -209,11 +206,13 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 	 */
 	private void addTileGUI(final JPanel panel, final Direction direction) {
 		final SelectionChangeSupport mainPCS = new SelectionChangeSupport();
-		final FixtureList mainList = new FixtureList(panel, model.getMap()
-				.getPlayers());
+		final FixtureList mainList = new FixtureList(panel, model, model.getMap()
+				.players());
 		mainPCS.addSelectionChangeListener(mainList);
 		panel.add(new JScrollPane(mainList));
-		final DualTileButton dtb = new DualTileButton();
+		final DualTileButton dtb =
+				new DualTileButton(model.getMap(), model.getSubordinateMaps()
+						.iterator().next().first());
 		// panel.add(new JScrollPane(dtb));
 		panel.add(dtb);
 		final ExplorationClickListener ecl = new ExplorationClickListener(
@@ -233,16 +232,16 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 		mainList.getModel().addListDataListener(
 				new ExplorationListListener(model, mainList));
 		final SelectionChangeSupport secPCS = new SelectionChangeSupport();
-		final Iterator<Pair<IMap, File>> subMaps = model.getSubordinateMaps()
-				.iterator();
+		final Iterator<Pair<IMutableMapNG, File>> subMaps =
+				model.getSubordinateMaps().iterator();
 		// ESCA-JAVA0177:
-		final IPlayerCollection players;
+		final Iterable<Player> players;
 		if (subMaps.hasNext()) {
-			players = subMaps.next().first().getPlayers();
+			players = subMaps.next().first().players();
 		} else {
-			players = model.getMap().getPlayers();
+			players = model.getMap().players();
 		}
-		final FixtureList secList = new FixtureList(panel, players);
+		final FixtureList secList = new FixtureList(panel, model, players);
 		secPCS.addSelectionChangeListener(secList);
 		panel.add(new JScrollPane(secList));
 		mains.put(direction, mainPCS);
@@ -273,7 +272,8 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 			try {
 				mpoints = NUM_PARSER.parse(mpText).intValue();
 			} catch (ParseException e) {
-				LOGGER.log(Level.SEVERE, "Non-numeic data in movement-points field", e);
+				LOGGER.log(Level.SEVERE,
+						"Non-numeic data in movement-points field", e);
 				return;
 			}
 			mpoints -= cost;
@@ -294,19 +294,9 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 				continue;
 			}
 			final Point point = model.getDestination(selPoint, dir);
-			final ITile tileOne = model.getMap().getTile(point);
-			final Iterator<Pair<IMap, File>> subs = model
-					.getSubordinateMaps().iterator();
-			// ESCA-JAVA0177:
-			final ITile tileTwo; // NOPMD
-			if (subs.hasNext()) {
-				tileTwo = subs.next().first().getTile(point);
-			} else {
-				tileTwo = new Tile(TileType.NotVisible); // NOPMD
-			}
-			mains.get(dir).fireChanges(null, null, null, tileOne);
-			seconds.get(dir).fireChanges(null, null, null, tileTwo);
-			buttons.get(dir).setTiles(tileOne, tileTwo);
+			mains.get(dir).fireChanges(selPoint, point);
+			seconds.get(dir).fireChanges(selPoint, point);
+			buttons.get(dir).setPoint(point);
 			buttons.get(dir).repaint();
 		}
 		locLabel.setText("<html><body>Currently exploring "
@@ -314,15 +304,6 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 				+ "; click a tile to explore it. "
 				+ "Selected fixtures in its left-hand list "
 				+ "will be 'discovered'.</body></html>");
-	}
-
-	/**
-	 * @param old the previously selected tile
-	 * @param newTile the newly selected tile
-	 */
-	@Override
-	public void selectedTileChanged(@Nullable final ITile old, final ITile newTile) {
-		// Everything is handled in selectedPointChanged().
 	}
 
 	/**

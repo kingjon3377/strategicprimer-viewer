@@ -300,7 +300,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 */
 	@Override
 	public final void mapChanged() {
-		setRoot(new PlayerNode(model.getMap().getPlayers().getCurrentPlayer(),
+		setRoot(new PlayerNode(model.getMap().getCurrentPlayer(),
 				model));
 	}
 

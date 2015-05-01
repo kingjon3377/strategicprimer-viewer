@@ -9,7 +9,7 @@ import java.util.TreeMap;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.IPlayerCollection;
+import model.map.IMutablePlayerCollection;
 import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
@@ -46,7 +46,7 @@ public class ReaderAdapter implements INodeHandler<Object> {
 	 */
 	@Override
 	public Object parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final IPlayerCollection players,
+			final Iterable<XMLEvent> stream, final IMutablePlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		final String iLocal =
@@ -126,6 +126,7 @@ public class ReaderAdapter implements INodeHandler<Object> {
 		factoryFour(new WorkerReader(), new SkillReader(), new StatsReader(),
 				new AdventureReader());
 		factory(new PortalReader());
+		factory(new MapNGReader());
 	}
 
 	/**
@@ -170,6 +171,11 @@ public class ReaderAdapter implements INodeHandler<Object> {
 			return ((INodeHandler<S>) WRITERS.get(obj.getClass()))
 					.write(obj);
 		} else {
+			for (Map.Entry<Class<?>, INodeHandler<?>> entry : WRITERS.entrySet()) {
+				if (entry.getKey().isAssignableFrom(obj.getClass())) {
+					return ((INodeHandler<S>) entry.getValue()).write(obj);
+				}
+			}
 			throw new IllegalArgumentException(
 					"Writable type this adapter can't handle: "
 							+ obj.getClass().getSimpleName());

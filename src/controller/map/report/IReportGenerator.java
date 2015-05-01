@@ -1,7 +1,7 @@
 package controller.map.report;
 
 import model.map.IFixture;
-import model.map.ITileCollection;
+import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.report.AbstractReportNode;
@@ -21,13 +21,13 @@ public interface IReportGenerator<T> {
 	 *
 	 * @param fixtures the set of fixtures (ignored if this is the map/map-view
 	 *        report generator)
-	 * @param tiles the collection of tiles in the map. (Needed to get terrain
+	 * @param map the map. (Needed to get terrain
 	 *        type for some reports.)
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the (sub-)report, or the empty string if nothing to report.
 	 */
 	String produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			ITileCollection tiles, Player currentPlayer);
+			IMapNG map, Player currentPlayer);
 
 	/**
 	 * Produce a report on a single item. All fixtures that this report
@@ -35,7 +35,7 @@ public interface IReportGenerator<T> {
 	 *
 	 * @param fixtures the set of fixtures (ignored if this is the map/map-view
 	 *        report generator)
-	 * @param tiles the collection of tiles in the map. (Needed to get terrain
+	 * @param map the map. (Needed to get terrain
 	 *        type for some reports.)
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @param item the particular item we are to be reporting on.
@@ -43,7 +43,7 @@ public interface IReportGenerator<T> {
 	 * @return the (sub-)report, or the empty string if nothing to report.
 	 */
 	String produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			ITileCollection tiles, Player currentPlayer, T item, Point loc);
+			IMapNG map, Player currentPlayer, T item, Point loc);
 
 	/**
 	 * All fixtures that this report references should be removed from the set
@@ -51,14 +51,14 @@ public interface IReportGenerator<T> {
 	 *
 	 * @param fixtures the set of fixtures (ignored if this is the map/map-view
 	 *        report generator)
-	 * @param tiles the collection of tiles in the map. (Needed to get terrain
+	 * @param map the map. (Needed to get terrain
 	 *        type for some reports.)
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the (sub-)report, or the empty string if nothing to report.
 	 */
 	AbstractReportNode produceRIR(
 			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			ITileCollection tiles, Player currentPlayer);
+			IMapNG map, Player currentPlayer);
 
 	/**
 	 * Produce a report on a single item. All fixtures that this report
@@ -66,7 +66,7 @@ public interface IReportGenerator<T> {
 	 *
 	 * @param fixtures the set of fixtures (ignored if this is the map/map-view
 	 *        report generator)
-	 * @param tiles the collection of tiles in the map. (Needed to get terrain
+	 * @param map the map. (Needed to get terrain
 	 *        type for some reports.)
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @param item the particular item we are to be reporting on.
@@ -75,6 +75,6 @@ public interface IReportGenerator<T> {
 	 */
 	AbstractReportNode produceRIR(
 			DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			ITileCollection tiles, Player currentPlayer, T item, Point loc);
+			IMapNG map, Player currentPlayer, T item, Point loc);
 
 }

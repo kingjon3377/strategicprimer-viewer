@@ -11,16 +11,17 @@ import java.util.List;
 
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
-import model.map.IMap;
-import model.map.IMutableTile;
-import model.map.ITile;
+import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
+import model.map.fixtures.Ground;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.terrain.Forest;
+import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -116,9 +117,9 @@ public class ExplorationCLI {
 	private void swearVillages(final Point point) {
 		final IUnit visitor = model.getSelectedUnit();
 		if (visitor != null) {
-			for (final Pair<IMap, File> mapPair : model.getAllMaps()) {
-				final IMap map = mapPair.first();
-				for (final TileFixture fix : map.getTile(point)) {
+			for (final Pair<IMutableMapNG, File> mapPair : model.getAllMaps()) {
+				final IMutableMapNG map = mapPair.first();
+				for (final TileFixture fix : map.getOtherFixtures(point)) {
 					if (fix instanceof Village) {
 						((Village) fix).setOwner(visitor.getOwner());
 					}
@@ -156,7 +157,27 @@ public class ExplorationCLI {
 		}
 		final List<TileFixture> allFixtures = new ArrayList<>();
 		final List<TileFixture> constants = new ArrayList<>();
-		for (final TileFixture fix : model.getMap().getTile(dPoint)) {
+		IMutableMapNG map = model.getMap();
+		if (map.isMountainous(dPoint)) {
+			constants.add(new Mountain());
+		}
+		Ground ground = map.getGround(dPoint);
+		if (ground != null) {
+			if (SimpleMovement.shouldAlwaysNotice(mover, ground)) {
+				constants.add(ground);
+			} else if (SimpleMovement.mightNotice(mover, ground)) {
+				allFixtures.add(ground);
+			}
+		}
+		Forest forest = map.getForest(dPoint);
+		if (forest != null) {
+			if (SimpleMovement.shouldAlwaysNotice(mover, forest)) {
+				constants.add(ground);
+			} else if (SimpleMovement.mightNotice(mover, forest)) {
+				allFixtures.add(ground);
+			}
+		}
+		for (final TileFixture fix : map.getOtherFixtures(dPoint)) {
 			if (SimpleMovement.shouldAlwaysNotice(mover, fix)) {
 				constants.add(fix);
 			} else if (SimpleMovement.mightNotice(mover, fix)) {
@@ -171,7 +192,7 @@ public class ExplorationCLI {
 		System.out.print("The explorer comes to ");
 		System.out.print(dPoint.toString());
 		System.out.print(", a tile with terrain ");
-		System.out.println(model.getMap().getTile(dPoint).getTerrain());
+		System.out.println(map.getBaseTerrain(dPoint));
 		if (allFixtures.isEmpty()) {
 			SYS_OUT.println("The following fixtures were automatically noticed:");
 		} else {
@@ -197,15 +218,16 @@ public class ExplorationCLI {
 			@Nullable final TileFixture fix) {
 		if (fix != null) {
 			SYS_OUT.println(fix);
-			for (final Pair<IMap, File> pair : model.getSubordinateMaps()) {
-				final IMap map = pair.first();
-				final ITile tile = map.getTile(dPoint);
-				if (tile instanceof IMutableTile) {
-					((IMutableTile) tile).addFixture(fix);
+			for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
+				final IMutableMapNG map = pair.first();
+				if (fix instanceof Ground && map.getGround(dPoint) == null) {
+					map.setGround(dPoint, (Ground) fix);
+				} else if (fix instanceof Forest && map.getForest(dPoint) == null) {
+					map.setForest(dPoint, (Forest) fix);
+				} else if (fix instanceof Mountain) {
+					map.setMountainous(dPoint, true);
 				} else {
-					SYS_OUT.print("Failed to copy fixture to ");
-					SYS_OUT.print(pair.second().getPath());
-					SYS_OUT.println(" because the tile there was not mutable.");
+					map.addFixture(dPoint, fix);
 				}
 			}
 		}

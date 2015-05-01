@@ -8,11 +8,10 @@ import java.io.Reader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.IMap;
-import model.map.IPlayerCollection;
-import model.map.MapView;
+import model.map.IMutableMapNG;
+import model.map.IMutablePlayerCollection;
 import model.map.PlayerCollection;
-import model.map.SPMap;
+import model.map.SPMapNG;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
@@ -48,7 +47,7 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 				istream);
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<>(
 				new IncludingIterator(file, reader));
-		final IPlayerCollection players = new PlayerCollection();
+		final IMutablePlayerCollection players = new PlayerCollection();
 		final IDFactory idFactory = new IDFactory();
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
@@ -69,7 +68,7 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
-	public MapView readMap(final File file, final Warning warner)
+	public IMutableMapNG readMap(final File file, final Warning warner)
 			throws IOException, XMLStreamException, SPFormatException {
 		try (final Reader istream = new FileReader(file)) {
 			return readMap(file, istream, warner);
@@ -84,15 +83,10 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
-	public MapView readMap(final File file, final Reader istream,
+	public IMutableMapNG readMap(final File file, final Reader istream,
 			final Warning warner) throws XMLStreamException, SPFormatException {
-		final IMap retval = readXML(file, istream, MapView.class, warner);
-		if (retval instanceof SPMap) {
-			return new MapView(retval, retval//NOPMD
-					.getPlayers().getCurrentPlayer().getPlayerId(), 0);
-		} else {
-			return (MapView) retval;
-		}
+		final IMutableMapNG retval = readXML(file, istream, SPMapNG.class, warner);
+		return retval;
 	}
 
 	/**

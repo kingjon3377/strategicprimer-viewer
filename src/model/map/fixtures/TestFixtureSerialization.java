@@ -5,13 +5,12 @@ import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 
 import model.map.BaseTestFixtureSerialization;
-import model.map.IMutableTile;
 import model.map.MapDimensions;
 import model.map.Player;
+import model.map.PlayerCollection;
 import model.map.Point;
 import model.map.PointFactory;
-import model.map.SPMap;
-import model.map.Tile;
+import model.map.SPMapNG;
 import model.map.TileType;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Centaur;
@@ -286,12 +285,13 @@ public final class TestFixtureSerialization extends
 		assertSerialization("Third test of Ground serialization", new Ground(
 				"three", false), Ground.class);
 		final Point point = PointFactory.point(0, 0);
-		final IMutableTile tile = new Tile(TileType.Steppe);
-		tile.addFixture(new Ground("four", true));
-		final SPMap map = new SPMap(new MapDimensions(1, 1, 2));
-		map.addTile(point, tile);
+		final SPMapNG map =
+				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
+						-1);
+		map.setBaseTerrain(point, TileType.Plains);
+		map.setGround(point, new Ground("four", true));
 		assertSerialization("Test that reader handles ground as a fixture",
-				map, SPMap.class);
+				map, SPMapNG.class);
 		assertUnwantedChild(
 				"<ground kind=\"sand\" exposed=\"true\"><hill /></ground>",
 				Ground.class, false);
@@ -331,11 +331,11 @@ public final class TestFixtureSerialization extends
 		assertUnwantedChild("<sphinx><troll /></sphinx>", Sphinx.class, false);
 		assertUnwantedChild("<troll><troll /></troll>", Troll.class, false);
 	}
-	
+
 	/**
 	 * Test that serialization of simple (no-parameter) fixtures preserves image
 	 * property.
-	 * 
+	 *
 	 * @throws SPFormatException
 	 *             on XML format error
 	 * @throws XMLStreamException

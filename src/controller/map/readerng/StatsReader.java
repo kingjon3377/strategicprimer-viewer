@@ -7,7 +7,7 @@ import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.IPlayerCollection;
+import model.map.IMutablePlayerCollection;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import util.NullCleaner;
 import util.Pair;
@@ -52,7 +52,7 @@ public class StatsReader implements INodeHandler<WorkerStats> {
 	 */
 	@Override
 	public WorkerStats parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final IPlayerCollection players,
+			final Iterable<XMLEvent> stream, final IMutablePlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		final Location loc = NullCleaner.assertNotNull(element.getLocation());

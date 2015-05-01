@@ -2,8 +2,11 @@ package model.exploration.old;
 
 import java.util.Set;
 
-import model.map.ITile;
 import model.map.Point;
+import model.map.TileFixture;
+import model.map.TileType;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * An interface for encounter tables, both quadrant and random-event tables. At
@@ -20,12 +23,14 @@ public interface EncounterTable {
 	 * each tile; for random event tables the result will be randomly selected
 	 * from that table.
 	 *
-	 * @param tile a tile
+	 * @param terrain the terrain at the location
+	 * @param fixtures the fixtures on the tile, if any
 	 * @param point the location of the tile
 	 *
 	 * @return an appropriate event for that tile
 	 */
-	String generateEvent(Point point, ITile tile);
+	String generateEvent(Point point, TileType terrain,
+			@Nullable Iterable<TileFixture> fixtures);
 
 	/**
 	 * For table-debugging purposes.

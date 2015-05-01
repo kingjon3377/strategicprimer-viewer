@@ -6,7 +6,9 @@ package model.map;
  * explicitly return mutable collections.
  *
  * @author Jonathan Lovelace
+ * @deprecated the old API is deprecated in this branch
  */
+@Deprecated
 public interface IMutableMap extends IMap {
 	/**
 	 * Add a player to the game.

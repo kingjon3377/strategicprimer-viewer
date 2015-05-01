@@ -14,10 +14,10 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.xml.stream.XMLStreamException;
 
-import model.map.IMap;
+import model.map.IMapNG;
 import model.map.MapDimensions;
-import model.map.MapView;
-import model.map.SPMap;
+import model.map.PlayerCollection;
+import model.map.SPMapNG;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -59,8 +59,8 @@ public class SubsetFrame extends JFrame {
 	/**
 	 * The main map.
 	 */
-	private IMap mainMap = new MapView(new SPMap(new MapDimensions(0, 0, 2)),
-			0, 0);
+	private IMapNG mainMap = new SPMapNG(new MapDimensions(0, 0, 2),
+			new PlayerCollection(), -1);
 
 	/**
 	 * A writer to put each line into an HTML paragraph, coloring them
@@ -209,7 +209,7 @@ public class SubsetFrame extends JFrame {
 		printParagraph("Testing " + arg + " ...", "");
 		// ESCA-JAVA0177:
 		try {
-			final IMap map = reader.readMap(arg, new Warning(Action.Ignore));
+			final IMapNG map = reader.readMap(arg, new Warning(Action.Ignore));
 			try (final Writer out = new HTMLWriter(label.getWriter())) {
 				if (mainMap.isSubset(map, out, arg.getName() + ':')) {
 					printParagraph("OK", "green");

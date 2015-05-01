@@ -2,7 +2,6 @@ package model.listeners;
 
 import java.util.EventListener;
 
-import model.map.ITile;
 import model.map.Point;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -21,12 +20,4 @@ public interface SelectionChangeListener extends EventListener {
 	 * @param newPoint the newly selected location
 	 */
 	void selectedPointChanged(@Nullable  Point old,  Point newPoint);
-
-	/**
-	 * The selected tile changed.
-	 *
-	 * @param old the previously selected tile
-	 * @param newTile the newly selected tile
-	 */
-	void selectedTileChanged(@Nullable  ITile old,  ITile newTile);
 }

@@ -38,7 +38,7 @@ public class SPMapNG implements IMutableMapNG {
 	/**
 	 * The players in the map.
 	 */
-	private final PlayerCollection playerCollection;
+	private final IMutablePlayerCollection playerCollection;
 	/**
 	 * The current turn.
 	 */
@@ -77,6 +77,10 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	private final Map<Point, EnumSet<River>> rivers = new HashMap<>();
 	/**
+	 * Map max version.
+	 */
+	public static final int MAX_VERSION = 1;
+	/**
 	 * @param obj another map
 	 * @param out the stream to write verbose results to
 	 * @param context
@@ -107,7 +111,9 @@ public class SPMapNG implements IMutableMapNG {
 				if (point == null) {
 					continue;
 				} else if (!getBaseTerrain(point).equals(
-						obj.getBaseTerrain(point))) {
+						obj.getBaseTerrain(point))
+						&& !TileType.NotVisible.equals(obj
+								.getBaseTerrain(point))) {
 					out.append(ctxt);
 					out.append("\tBase terrain differs\n");
 					retval = false;
@@ -137,7 +143,10 @@ public class SPMapNG implements IMutableMapNG {
 					// return false;
 				}
 				final Collection<TileFixture> ourFixtures =
-						(Collection<TileFixture>) getOtherFixtures(point);
+						new ArrayList<>();
+				for (TileFixture fix : getOtherFixtures(point)) {
+					ourFixtures.add(fix);
+				}
 				final Iterable<TileFixture> theirFixtures = obj
 						.getOtherFixtures(point);
 				for (final TileFixture fix : theirFixtures) {
@@ -191,7 +200,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * @param currentTurn the current turn
 	 */
 	public SPMapNG(final MapDimensions dimensions,
-			final PlayerCollection players, final int currentTurn) {
+			final IMutablePlayerCollection players, final int currentTurn) {
 		dims = dimensions;
 		playerCollection = players;
 		turn = currentTurn;
@@ -378,12 +387,56 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
-	 * FIXME: Implement properly.
 	 * @return a String representation of the object
 	 */
 	@Override
 	public String toString() {
-		return "SPMapNG: FIXME: Implement properly";
+		StringBuilder builder = new StringBuilder("SPMapNG:\n");
+		builder.append("Map version: ");
+		builder.append(dimensions().version);
+		builder.append("\nRows: ");
+		builder.append(dimensions().rows);
+		builder.append("\nColumns: ");
+		builder.append(dimensions().cols);
+		builder.append("\nCurrent Turn: ");
+		builder.append(getCurrentTurn());
+		builder.append("\n\nPlayers:\n");
+		for (Player player : players()) {
+			if (player != null) {
+				builder.append(player.toString());
+				if (player.equals(getCurrentPlayer())) {
+					builder.append(" (current)");
+				}
+				builder.append("\n");
+			}
+		}
+		builder.append("\nContents:\n");
+		for (Point location : locations()) {
+			builder.append("At ");
+			builder.append(location.toString());
+			builder.append(": ");
+			if (isMountainous(location)) {
+				builder.append("mountains, ");
+			}
+			builder.append("ground: ");
+			builder.append(getGround(location));
+			builder.append(", forest: ");
+			builder.append(getForest(location));
+			builder.append(", rivers:");
+			for (River river : getRivers(location)) {
+				builder.append(" ");
+				builder.append(river.toString());
+			}
+			builder.append(", other: ");
+			for (TileFixture fixture : getOtherFixtures(location)) {
+				builder.append("\n");
+				builder.append(fixture.toString());
+//				builder.append(" (");
+//				builder.append(fixture.getClass().getSimpleName());
+//				builder.append(")");
+			}
+		}
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 	/**
 	 * @param player the player to add

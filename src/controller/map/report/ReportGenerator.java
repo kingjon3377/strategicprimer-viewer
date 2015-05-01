@@ -6,9 +6,7 @@ import java.util.List;
 import model.map.FixtureIterable;
 import model.map.HasOwner;
 import model.map.IFixture;
-import model.map.IMap;
-import model.map.ITile;
-import model.map.ITileCollection;
+import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.fixtures.TextFixture;
@@ -45,7 +43,7 @@ public final class ReportGenerator {
 	 * @param map the map to base the report on
 	 * @return the report, in HTML, as a String
 	 */
-	public static String createReport(final IMap map) {
+	public static String createReport(final IMapNG map) {
 		// The full report for the world map, as of turn 11, is 8 megs. So we
 		// make a 10 meg buffer.
 		final StringBuilder builder = new StringBuilder(10485760)
@@ -55,33 +53,32 @@ public final class ReportGenerator {
 		builder.append("<body>");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
-		final ITileCollection tiles = map.getTiles();
-		final Player player = map.getPlayers().getCurrentPlayer();
-		builder.append(new FortressReportGenerator().produce(fixtures, tiles,
+		final Player player = map.getCurrentPlayer();
+		builder.append(new FortressReportGenerator().produce(fixtures, map,
 				player));
 		fixtures.coalesce();
-		builder.append(new UnitReportGenerator().produce(fixtures, tiles,
+		builder.append(new UnitReportGenerator().produce(fixtures, map,
 				player));
 		fixtures.coalesce();
-		builder.append(new TextReportGenerator().produce(fixtures, tiles,
+		builder.append(new TextReportGenerator().produce(fixtures, map,
 				player));
 		fixtures.coalesce();
-		builder.append(new TownReportGenerator().produce(fixtures, tiles,
+		builder.append(new TownReportGenerator().produce(fixtures, map,
 				player));
 		fixtures.coalesce();
-		builder.append(new ExplorableReportGenerator().produce(fixtures, tiles,
+		builder.append(new ExplorableReportGenerator().produce(fixtures, map,
 				player));
 		fixtures.coalesce();
 		builder.append(new HarvestableReportGenerator().produce(fixtures,
-				tiles, player));
+				map, player));
 		fixtures.coalesce();
-		builder.append(new AnimalReportGenerator().produce(fixtures, tiles,
+		builder.append(new AnimalReportGenerator().produce(fixtures, map,
 				player));
 		fixtures.coalesce();
-		builder.append(new VillageReportGenerator().produce(fixtures, tiles,
+		builder.append(new VillageReportGenerator().produce(fixtures, map,
 				player));
 		fixtures.coalesce();
-		builder.append(new ImmortalsReportGenerator().produce(fixtures, tiles,
+		builder.append(new ImmortalsReportGenerator().produce(fixtures, map,
 				player));
 		fixtures.coalesce();
 		builder.append("</body>\n</html>\n");
@@ -105,7 +102,7 @@ public final class ReportGenerator {
 	 * @return the report, in HTML, as a string.
 	 * @param player the player to report on
 	 */
-	public static String createAbbreviatedReport(final IMap map,
+	public static String createAbbreviatedReport(final IMapNG map,
 			final Player player) {
 		// The full report for the world map, as of turn 11, is 8 megs. So we
 		// make a 10 meg buffer.
@@ -116,7 +113,6 @@ public final class ReportGenerator {
 		builder.append("<body>");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
-		final ITileCollection tiles = map.getTiles();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if ((pair.second() instanceof Unit || pair.second() instanceof Fortress)
 					&& player.equals(((HasOwner) pair.second()).getOwner())) {
@@ -124,31 +120,31 @@ public final class ReportGenerator {
 			}
 		}
 		fixtures.coalesce();
-		builder.append(new FortressReportGenerator().produce(fixtures, tiles,
+		builder.append(new FortressReportGenerator().produce(fixtures, map,
 				player));
 		fixtures.coalesce();
-		builder.append(new UnitReportGenerator().produce(fixtures, tiles,
+		builder.append(new UnitReportGenerator().produce(fixtures, map,
 				player));
 		fixtures.coalesce();
-		builder.append(new TextReportGenerator().produce(fixtures, tiles,
+		builder.append(new TextReportGenerator().produce(fixtures, map,
 				player));
 		fixtures.coalesce();
-		builder.append(new TownReportGenerator().produce(fixtures, tiles,
+		builder.append(new TownReportGenerator().produce(fixtures, map,
 				player));
 		fixtures.coalesce();
-		builder.append(new ExplorableReportGenerator().produce(fixtures, tiles,
+		builder.append(new ExplorableReportGenerator().produce(fixtures, map,
 				player));
 		fixtures.coalesce();
 		builder.append(new HarvestableReportGenerator().produce(fixtures,
-				tiles, player));
+				map, player));
 		fixtures.coalesce();
-		builder.append(new AnimalReportGenerator().produce(fixtures, tiles,
+		builder.append(new AnimalReportGenerator().produce(fixtures, map,
 				player));
 		fixtures.coalesce();
-		builder.append(new VillageReportGenerator().produce(fixtures, tiles,
+		builder.append(new VillageReportGenerator().produce(fixtures, map,
 				player));
 		fixtures.coalesce();
-		builder.append(new ImmortalsReportGenerator().produce(fixtures, tiles,
+		builder.append(new ImmortalsReportGenerator().produce(fixtures, map,
 				player));
 		fixtures.coalesce();
 		builder.append("</body>\n</html>\n");
@@ -159,38 +155,37 @@ public final class ReportGenerator {
 	 * @param map the map to base the report on
 	 * @return the report, in ReportIntermediateRepresentation
 	 */
-	public static AbstractReportNode createReportIR(final IMap map) {
+	public static AbstractReportNode createReportIR(final IMapNG map) {
 		final AbstractReportNode retval = new RootReportNode(
 				"Strategic Primer map summary report");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
-		final ITileCollection tiles = map.getTiles();
-		final Player player = map.getPlayers().getCurrentPlayer();
-		retval.add(new FortressReportGenerator().produceRIR(fixtures, tiles,
+		final Player player = map.getCurrentPlayer();
+		retval.add(new FortressReportGenerator().produceRIR(fixtures, map,
 				player));
 		fixtures.coalesce();
 		retval.add(new UnitReportGenerator()
-				.produceRIR(fixtures, tiles, player));
+				.produceRIR(fixtures, map, player));
 		fixtures.coalesce();
 		retval.add(new TextReportGenerator()
-				.produceRIR(fixtures, tiles, player));
+				.produceRIR(fixtures, map, player));
 		fixtures.coalesce();
 		retval.add(new TownReportGenerator()
-				.produceRIR(fixtures, tiles, player));
+				.produceRIR(fixtures, map, player));
 		fixtures.coalesce();
-		retval.add(new ExplorableReportGenerator().produceRIR(fixtures, tiles,
+		retval.add(new ExplorableReportGenerator().produceRIR(fixtures, map,
 				player));
 		fixtures.coalesce();
-		retval.add(new HarvestableReportGenerator().produceRIR(fixtures, tiles,
+		retval.add(new HarvestableReportGenerator().produceRIR(fixtures, map,
 				player));
 		fixtures.coalesce();
-		retval.add(new AnimalReportGenerator().produceRIR(fixtures, tiles,
+		retval.add(new AnimalReportGenerator().produceRIR(fixtures, map,
 				player));
 		fixtures.coalesce();
-		retval.add(new VillageReportGenerator().produceRIR(fixtures, tiles,
+		retval.add(new VillageReportGenerator().produceRIR(fixtures, map,
 				player));
 		fixtures.coalesce();
-		retval.add(new ImmortalsReportGenerator().produceRIR(fixtures, tiles,
+		retval.add(new ImmortalsReportGenerator().produceRIR(fixtures, map,
 				player));
 		fixtures.coalesce();
 		return retval;
@@ -204,13 +199,12 @@ public final class ReportGenerator {
 	 * @return the report, in HTML, as a string.
 	 * @param player the player to report on
 	 */
-	public static AbstractReportNode createAbbreviatedReportIR(final IMap map,
+	public static AbstractReportNode createAbbreviatedReportIR(final IMapNG map,
 			final Player player) {
 		final AbstractReportNode retval = new RootReportNode(
 				"Strategic Primer map summary abbreviated report");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
-		final ITileCollection tiles = map.getTiles();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if ((pair.second() instanceof Unit || pair.second() instanceof Fortress)
 					&& player.equals(((HasOwner) pair.second()).getOwner())) {
@@ -218,31 +212,31 @@ public final class ReportGenerator {
 			}
 		}
 		fixtures.coalesce();
-		retval.add(new FortressReportGenerator().produceRIR(fixtures, tiles,
+		retval.add(new FortressReportGenerator().produceRIR(fixtures, map,
 				player));
 		fixtures.coalesce();
 		retval.add(new UnitReportGenerator()
-				.produceRIR(fixtures, tiles, player));
+				.produceRIR(fixtures, map, player));
 		fixtures.coalesce();
 		retval.add(new TextReportGenerator()
-				.produceRIR(fixtures, tiles, player));
+				.produceRIR(fixtures, map, player));
 		fixtures.coalesce();
 		retval.add(new TownReportGenerator()
-				.produceRIR(fixtures, tiles, player));
+				.produceRIR(fixtures, map, player));
 		fixtures.coalesce();
-		retval.add(new ExplorableReportGenerator().produceRIR(fixtures, tiles,
+		retval.add(new ExplorableReportGenerator().produceRIR(fixtures, map,
 				player));
 		fixtures.coalesce();
-		retval.add(new HarvestableReportGenerator().produceRIR(fixtures, tiles,
+		retval.add(new HarvestableReportGenerator().produceRIR(fixtures, map,
 				player));
 		fixtures.coalesce();
-		retval.add(new AnimalReportGenerator().produceRIR(fixtures, tiles,
+		retval.add(new AnimalReportGenerator().produceRIR(fixtures, map,
 				player));
 		fixtures.coalesce();
-		retval.add(new VillageReportGenerator().produceRIR(fixtures, tiles,
+		retval.add(new VillageReportGenerator().produceRIR(fixtures, map,
 				player));
 		fixtures.coalesce();
-		retval.add(new ImmortalsReportGenerator().produceRIR(fixtures, tiles,
+		retval.add(new ImmortalsReportGenerator().produceRIR(fixtures, map,
 				player));
 		fixtures.coalesce();
 		return retval;
@@ -254,14 +248,15 @@ public final class ReportGenerator {
 	 *         fixture's location and the fixture itself.
 	 */
 	private static DelayedRemovalMap<Integer, Pair<Point, IFixture>> getFixtures(
-			final IMap map) {
+			final IMapNG map) {
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> retval =
 				new IntMap<>();
 		final IDFactory idf = IDFactoryFiller.createFactory(map);
-		for (final Point point : map.getTiles()) {
+		for (final Point point : map.locations()) {
 			if (point != null) {
-				final ITile tile = map.getTile(point);
-				for (final IFixture fix : getFixtures(tile)) {
+				// Because neither Forests, Mountains, nor Ground have positive IDs,
+				// we can ignore everything but the "other" fixtures.
+				for (final IFixture fix : getFixtures(map.getOtherFixtures(point))) {
 					if (fix.getID() >= 0) {
 						retval.put(NullCleaner.assertNotNull(Integer
 								.valueOf(fix.getID())), Pair.of(point, fix));

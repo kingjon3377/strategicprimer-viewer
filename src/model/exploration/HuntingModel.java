@@ -10,8 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import model.map.IMap;
-import model.map.ITile;
+import model.map.IMapNG;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.TileFixture;
@@ -54,28 +53,26 @@ public class HuntingModel {
 	 * Constructor.
 	 * @param map the map to hunt in
 	 */
-	public HuntingModel(final IMap map) {
-		dims = map.getDimensions();
+	public HuntingModel(final IMapNG map) {
+		dims = map.dimensions();
 		final Set<String> fishKinds = new HashSet<>();
-		for (final Point point : map.getTiles()) {
+		for (final Point point : map.locations()) {
 			if (point == null) {
 				continue;
 			}
-			final ITile tile = map.getTile(point);
-			if (Ocean.equals(tile.getTerrain())) {
-				for (final TileFixture fix : tile) {
+			if (Ocean.equals(map.getBaseTerrain(point))) {
+				for (final TileFixture fix : map.getOtherFixtures(point)) {
 					if (fix instanceof Animal) {
 						fishKinds.add(((Animal) fix).getKind());
 					}
 				}
 			}
 		}
-		for (final Point point : map.getTiles()) {
+		for (final Point point : map.locations()) {
 			if (point == null) {
 				continue;
 			}
-			final ITile tile = map.getTile(point);
-			for (final TileFixture fix : tile) {
+			for (final TileFixture fix : map.getOtherFixtures(point)) {
 				if (fix instanceof Animal && !((Animal) fix).isTalking()
 						&& !((Animal) fix).isTraces()) {
 					if (fishKinds.contains(((Animal) fix).getKind())) {
@@ -95,7 +92,7 @@ public class HuntingModel {
 			final int len = plantList.size() - 1;
 			// ESCA-JAVA0177:
 			final int nothings; // NOPMD: TODO: extract method?
-			switch (tile.getTerrain()) {
+			switch (map.getBaseTerrain(point)) {
 			case Desert:
 			case Tundra:
 				nothings = len * 3;
@@ -129,7 +126,7 @@ public class HuntingModel {
 		}
 		list.add(string);
 	}
-	
+
 	/**
 	 * @param point
 	 *            a point
@@ -141,7 +138,7 @@ public class HuntingModel {
 	public List<String> hunt(final Point point, final int items) {
 		return chooseFromMap(point, items, animals);
 	}
-	
+
 	/**
 	 * @param point
 	 *            a point
@@ -203,7 +200,7 @@ public class HuntingModel {
 		}
 		return retval;
 	}
-	
+
 	/**
 	 * @return a String representation of the object
 	 */

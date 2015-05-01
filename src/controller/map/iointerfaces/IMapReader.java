@@ -6,8 +6,7 @@ import java.io.Reader;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.map.IMap;
-import model.map.MapView;
+import model.map.IMutableMapNG;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;
 
@@ -34,7 +33,7 @@ public interface IMapReader {
 	 *             if the reader can't handle this map version or doesn't
 	 *             recognize the map format
 	 */
-	MapView readMap(File file, Warning warner)
+	IMutableMapNG readMap(File file, Warning warner)
 			throws IOException, XMLStreamException, SPFormatException;
 
 	/**
@@ -53,6 +52,6 @@ public interface IMapReader {
 	 *             if the reader can't handle this map version or doesn't
 	 *             recognize the map format
 	 */
-	IMap readMap(File file, Reader istream, Warning warner)
+	IMutableMapNG readMap(File file, Reader istream, Warning warner)
 			throws XMLStreamException, SPFormatException;
 }

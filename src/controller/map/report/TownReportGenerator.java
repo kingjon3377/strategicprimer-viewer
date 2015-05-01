@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import model.map.IFixture;
-import model.map.ITileCollection;
+import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.fixtures.towns.AbstractTown;
@@ -39,7 +39,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 * TODO: Figure out some way to report what was found at any of the towns.
 	 *
 	 * @param fixtures the set of fixtures
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report dealing with towns, sorted in a way I hope
 	 *         is helpful.
@@ -47,7 +47,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	@Override
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer) {
+			final IMapNG map, final Player currentPlayer) {
 		final Map<AbstractTown, Point> townLocs = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof AbstractTown) {
@@ -63,7 +63,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 		for (final AbstractTown town : sorted) {
 			if (town != null) {
 				builder.append(OPEN_LIST_ITEM)
-						.append(produce(fixtures, tiles, currentPlayer, town,
+						.append(produce(fixtures, map, currentPlayer, town,
 								NullCleaner.assertNotNull(townLocs.get(town))))
 						.append(CLOSE_LIST_ITEM);
 			}
@@ -85,7 +85,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 * TODO: Figure out some way to report what was found at any of the towns.
 	 *
 	 * @param fixtures the set of fixtures
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report dealing with towns, sorted in a way I hope
 	 *         is helpful.
@@ -93,7 +93,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer) {
+			final IMapNG map, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionListReportNode(4,
 				"Cities, towns, and/or fortifications you know about:");
 		final Map<AbstractTown, Point> townLocs = new HashMap<>();
@@ -106,7 +106,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 		Collections.sort(sorted, new TownComparator());
 		for (final AbstractTown town : sorted) {
 			if (town != null) {
-				retval.add(produceRIR(fixtures, tiles, currentPlayer, town,
+				retval.add(produceRIR(fixtures, map, currentPlayer, town,
 						NullCleaner.assertNotNull(townLocs.get(town))));
 			}
 		}
@@ -123,7 +123,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 * town from the set of fixtures.
 	 *
 	 * @param fixtures the set of fixtures
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param item the town to report on
 	 * @param loc its location
 	 * @param currentPlayer the player for whom the report is being produced
@@ -132,13 +132,13 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	@Override
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer,
+			final IMapNG map, final Player currentPlayer,
 			final ITownFixture item, final Point loc) {
 		if (item instanceof Village) {
-			return new VillageReportGenerator().produce(fixtures, tiles, // NOPMD
+			return new VillageReportGenerator().produce(fixtures, map, // NOPMD
 					currentPlayer, (Village) item, loc);
 		} else if (item instanceof Fortress) {
-			return new FortressReportGenerator().produce(fixtures, tiles, // NOPMD
+			return new FortressReportGenerator().produce(fixtures, map, // NOPMD
 					currentPlayer, (Fortress) item, loc);
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(Integer.valueOf(item.getID()));
@@ -164,7 +164,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	 * town from the set of fixtures.
 	 *
 	 * @param fixtures the set of fixtures
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param item the town to report on
 	 * @param loc its location
 	 * @param currentPlayer the player for whom the report is being produced
@@ -173,14 +173,14 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer,
+			final IMapNG map, final Player currentPlayer,
 			final ITownFixture item, final Point loc) {
 		if (item instanceof Village) {
 			return new VillageReportGenerator().produceRIR(fixtures, // NOPMD
-					tiles, currentPlayer, (Village) item, loc);
+					map, currentPlayer, (Village) item, loc);
 		} else if (item instanceof Fortress) {
 			return new FortressReportGenerator().produceRIR(fixtures, // NOPMD
-					tiles, currentPlayer, (Fortress) item, loc);
+					map, currentPlayer, (Fortress) item, loc);
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			if (item.getOwner().isIndependent()) {

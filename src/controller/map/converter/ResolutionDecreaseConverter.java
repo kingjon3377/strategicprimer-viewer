@@ -1,25 +1,25 @@
 package controller.map.converter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import model.map.IMap;
-import model.map.IMutableTile;
-import model.map.ITile;
+import model.map.IMapNG;
 import model.map.MapDimensions;
-import model.map.MapView;
 import model.map.Player;
+import model.map.PlayerCollection;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.River;
-import model.map.SPMap;
-import model.map.Tile;
+import model.map.SPMapNG;
 import model.map.TileFixture;
 import model.map.TileType;
+import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
+import model.map.fixtures.terrain.Forest;
 import util.EnumCounter;
 import util.NullCleaner;
 
@@ -36,31 +36,76 @@ public class ResolutionDecreaseConverter {
 	 * @param old the map to convert.
 	 * @return an equivalent MapView.
 	 */
-	public static MapView convert(final IMap old) {
+	public static SPMapNG convert(final IMapNG old) {
 		checkRequirements(old);
-		final int newRows = old.getDimensions().rows / 2;
-		final int newCols = old.getDimensions().cols / 2;
-		final SPMap newMap = new SPMap(new MapDimensions(newRows, newCols, 2));
-		for (final Player player : old.getPlayers()) {
+		final int newRows = old.dimensions().rows / 2;
+		final int newCols = old.dimensions().cols / 2;
+		final PlayerCollection players = new PlayerCollection();
+		for (final Player player : old.players()) {
 			if (player != null) {
-				newMap.addPlayer(player);
+				players.add(player);
 			}
 		}
+		final SPMapNG retval = new SPMapNG(new MapDimensions(newRows, newCols, 2), players, old.getCurrentTurn());
 		for (int row = 0; row < newRows; row++) {
 			for (int col = 0; col < newCols; col++) {
 				final Point point = PointFactory.point(row, col);
-				newMap.addTile(
-						point,
-						convertTile(old.getTile(PointFactory.point(row * 2,
-								col * 2)), old.getTile(PointFactory.point(
-								row * 2, col * 2 + 1)), old
-								.getTile(PointFactory.point(row * 2 + 1,
-										col * 2)), old.getTile(PointFactory
-								.point(row * 2 + 1, col * 2 + 1))));
+				Point one = PointFactory.point(row * 2, col * 2);
+				Point two = PointFactory.point(row * 2, col * 2 + 1);
+				Point three = PointFactory.point(row * 2 + 1, col * 2);
+				Point four = PointFactory.point(row * 2 + 1, col * 2 + 1);
+				retval.setBaseTerrain(point, consensus(old.getBaseTerrain(one), old.getBaseTerrain(two), old.getBaseTerrain(three), old.getBaseTerrain(four)));
+				List<Point> oldPoints = new ArrayList<>();
+				oldPoints.add(one);
+				oldPoints.add(two);
+				oldPoints.add(three);
+				oldPoints.add(four);
+				for (Point oldPoint : oldPoints) {
+					if (oldPoint == null) {
+						continue;
+					} else if (old.isMountainous(oldPoint)) {
+						retval.setMountainous(point, true);
+					}
+					Ground ground = old.getGround(oldPoint);
+					if (ground != null) {
+						if (retval.getGround(point) == null) {
+							retval.setGround(point, ground);
+						} else {
+							retval.addFixture(point, ground);
+						}
+					}
+					Forest forest = old.getForest(oldPoint);
+					if (forest != null) {
+						if (retval.getForest(point) == null) {
+							retval.setForest(point, forest);
+						} else {
+							retval.addFixture(point, forest);
+						}
+					}
+					for (TileFixture fixture : old.getOtherFixtures(oldPoint)) {
+						if (fixture == null) {
+							continue;
+						}
+						retval.addFixture(point, fixture);
+					}
+					final Set<River> upperLeftRivers = getRivers(old, one);
+					final Set<River> upperRightRivers = getRivers(old, two);
+					final Set<River> lowerLeftRivers = getRivers(old, three);
+					final Set<River> lowerRightRivers = getRivers(old, four);
+					final RiverFixture combined = new RiverFixture();
+					removeRivers(upperLeftRivers, River.East, River.South);
+					removeRivers(upperRightRivers, River.West, River.South);
+					removeRivers(lowerLeftRivers, River.East, River.North);
+					removeRivers(lowerRightRivers, River.West, River.North);
+					addRivers(combined, upperLeftRivers, upperRightRivers, lowerLeftRivers,
+							lowerRightRivers);
+					for (River river : combined) {
+						retval.addRivers(point, river);
+					}
+					// FIXME: Rivers
+				}
 			}
 		}
-		final MapView retval = new MapView(newMap, newMap.getPlayers()
-				.getCurrentPlayer().getPlayerId(), 0);
 		return retval;
 	}
 
@@ -69,70 +114,24 @@ public class ResolutionDecreaseConverter {
 	 *
 	 * @param map the map to check.
 	 */
-	private static void checkRequirements(final IMap map) {
-		if (map.getDimensions().rows % 2 != 0
-				|| map.getDimensions().cols % 2 != 0) {
+	private static void checkRequirements(final IMapNG map) {
+		if (map.dimensions().rows % 2 != 0
+				|| map.dimensions().cols % 2 != 0) {
 			throw new IllegalArgumentException(
 					"Can only convert maps with even numbers of rows and columns.");
 		}
 	}
 
 	/**
-	 * @param upperLeft the upper-left tile of a group of four.
-	 * @param upperRight the upper-right tile of a group of four
-	 * @param lowerLeft the lower-left tile of a group of four
-	 * @param lowerRight the lower-right tile of a group of four.
-	 * @return a tile representing them on the lower-resolution map
+	 * @param old a map
+	 * @param point a point
+	 * @return the rivers there, if any
 	 */
-	private static IMutableTile convertTile(final ITile upperLeft,
-			final ITile upperRight, final ITile lowerLeft, final ITile lowerRight) {
-		final Set<River> upperLeftRivers = getRivers(upperLeft);
-		final Set<River> upperRightRivers = getRivers(upperRight);
-		final Set<River> lowerLeftRivers = getRivers(lowerLeft);
-		final Set<River> lowerRightRivers = getRivers(lowerRight);
-		final IMutableTile retval = new Tile(consensus(upperLeft.getTerrain(),
-				upperRight.getTerrain(), lowerLeft.getTerrain(),
-				lowerRight.getTerrain()));
-		addAllFixtures(upperLeft, retval);
-		addAllFixtures(upperRight, retval);
-		addAllFixtures(lowerLeft, retval);
-		addAllFixtures(lowerRight, retval);
-		final RiverFixture combined = new RiverFixture();
-		removeRivers(upperLeftRivers, River.East, River.South);
-		removeRivers(upperRightRivers, River.West, River.South);
-		removeRivers(lowerLeftRivers, River.East, River.North);
-		removeRivers(lowerRightRivers, River.West, River.North);
-		addRivers(combined, upperLeftRivers, upperRightRivers, lowerLeftRivers,
-				lowerRightRivers);
-		retval.addFixture(combined);
-		return retval;
-	}
-
-	/**
-	 * Add all non-river fixtures from the source to the destination tile.
-	 *
-	 * @param source a source tile
-	 * @param dest a destination tile
-	 */
-	private static void addAllFixtures(final ITile source, final IMutableTile dest) {
-		for (final TileFixture fix : source) {
-			if (fix != null && !(fix instanceof RiverFixture)) {
-				dest.addFixture(fix);
-			}
-		}
-	}
-
-	/**
-	 * @param tile a tile
-	 * @return its RiverFixture, or an empty one if it doesn't have one
-	 */
-	private static Set<River> getRivers(final ITile tile) {
+	private static Set<River> getRivers(final IMapNG old, final Point point) {
 		final Set<River> retval =
 				NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
-		if (tile.hasRiver()) {
-			for (final River river : tile.getRivers()) {
-				retval.add(river);
-			}
+		for (final River river : old.getRivers(point)) {
+			retval.add(river);
 		}
 		return retval;
 	}

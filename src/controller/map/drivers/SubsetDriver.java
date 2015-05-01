@@ -8,7 +8,7 @@ import java.util.logging.Level;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.map.IMap;
+import model.map.IMapNG;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
@@ -79,7 +79,7 @@ public final class SubsetDriver implements ISPDriver {
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final File mainFile = new File(args[0]);
 		try {
-			final IMap mainMap =
+			final IMapNG mainMap =
 					reader.readMap(mainFile, new Warning(Action.Ignore));
 			SYS_OUT.print("OK if strict subset, WARN if needs manual checking,");
 			SYS_OUT.println("FAIL if error in reading");
@@ -131,9 +131,9 @@ public final class SubsetDriver implements ISPDriver {
 	 * @return the result of doing a subset test on the named map
 	 */
 	private static Returns doSubsetTest(final File file,
-			final MapReaderAdapter reader, final IMap mainMap) {
+			final MapReaderAdapter reader, final IMapNG mainMap) {
 		try {
-			final IMap map = reader.readMap(file, new Warning(Action.Ignore));
+			final IMapNG map = reader.readMap(file, new Warning(Action.Ignore));
 			if (mainMap.isSubset(map, NullCleaner.assertNotNull(System.out),
 					"In " + file.getName() + ':')) {
 				return Returns.OK; // NOPMD

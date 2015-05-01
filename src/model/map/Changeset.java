@@ -35,5 +35,5 @@ public interface Changeset {
 	 *
 	 * @param map the map to apply it to.
 	 */
-	void apply(IMap map);
+	void apply(IMapNG map);
 }

@@ -1,6 +1,5 @@
 package model.map.fixtures.mobile;
 
-import model.map.ITile;
 import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.Ground;
@@ -48,37 +47,43 @@ public final class SimpleMovement {
 	}
 
 	/**
-	 * @param tile a tile
+	 * @param terrain a terrain type
 	 * @return whether it's passable by land movement.
 	 */
-	public static boolean isLandMovementPossible(final ITile tile) {
-		return !TileType.Ocean.equals(tile.getTerrain());
+	public static boolean isLandMovementPossible(final TileType terrain) {
+		return !TileType.Ocean.equals(terrain);
 	}
 
 	/**
-	 * @param tile a tile
-	 * @return the movement cost to traverse it.
+	 * @param terrain a terrain type
+	 * @param forest whether the location is forested
+	 * @param mountain whether the location is mountainous
+	 * @param river whether the location has a river
+	 * @param fixtures the fixtures at the location
+	 * @return the movement cost to traverse the location.
 	 */
-	public static int getMovementCost(final ITile tile) {
-		if (TileType.Ocean.equals(tile.getTerrain())
-				|| TileType.NotVisible.equals(tile.getTerrain())) {
+	public static int getMovementCost(final TileType terrain,
+			final boolean forest, final boolean mountain, final boolean river,
+			final Iterable<TileFixture> fixtures) {
+		if (TileType.Ocean.equals(terrain)
+				|| TileType.NotVisible.equals(terrain)) {
 			return Integer.MAX_VALUE; // NOPMD
-		} else if (isForest(tile) || isHill(tile)
-				|| TileType.Desert.equals(tile.getTerrain())) {
-			if (isRiver(tile)) {
+		} else if (forest || mountain || isForest(fixtures) || isHill(fixtures)
+				|| TileType.Desert.equals(terrain)) {
+			if (river) {
 				return 2; // NOPMD
 			} else {
 				return 3; // NOPMD
 			}
-		} else if (TileType.Jungle.equals(tile.getTerrain())) {
-			if (isRiver(tile)) {
+		} else if (TileType.Jungle.equals(terrain)) {
+			if (river) {
 				return 4;
 			} else {
 				return 6; // NOPMD
 			}
-		} else if (EqualsAny.equalsAny(tile.getTerrain(), TileType.Steppe,
+		} else if (EqualsAny.equalsAny(terrain, TileType.Steppe,
 				TileType.Plains, TileType.Tundra)) {
-			if (isRiver(tile)) {
+			if (river) {
 				return 1;
 			} else {
 				return 2;
@@ -88,53 +93,29 @@ public final class SimpleMovement {
 		}
 	}
 	/**
-	 * @param tile a tile
-	 * @return whether it contains a river
+	 * @param fixtures a sequence of fixtures
+	 * @return whether any of them is a forest
 	 */
-	private static boolean isRiver(final ITile tile) {
-		for (final TileFixture fix : tile) {
-			if (fix instanceof RiverFixture
-					&& ((RiverFixture) fix).iterator().hasNext()) {
-				return true;
+	private static boolean isForest(final Iterable<TileFixture> fixtures) {
+		for (final TileFixture fix : fixtures) {
+			if (fix instanceof Forest) {
+				return true; // NOPMD
 			}
 		}
 		return false;
 	}
-	/**
-	 * @param tile a tile
-	 * @return whether it is or contains a forest
-	 */
-	@SuppressWarnings("deprecation")
-	private static boolean isForest(final ITile tile) {
-		if (EqualsAny.equalsAny(tile.getTerrain(), TileType.BorealForest,
-				TileType.TemperateForest)) {
-			return true; // NOPMD
-		} else {
-			for (final TileFixture fix : tile) {
-				if (fix instanceof Forest) {
-					return true; // NOPMD
-				}
-			}
-			return false;
-		}
-	}
 
 	/**
-	 * @param tile a tile
-	 * @return whether it is mountainous or hilly
+	 * @param fixtures a sequence of fixtures
+	 * @return whether any of them is a mountain or a hill
 	 */
-	@SuppressWarnings("deprecation")
-	private static boolean isHill(final ITile tile) {
-		if (TileType.Mountain.equals(tile.getTerrain())) {
-			return true; // NOPMD
-		} else {
-			for (final TileFixture fix : tile) {
-				if (fix instanceof Mountain || fix instanceof Hill) {
-					return true; // NOPMD
-				}
+	private static boolean isHill(final Iterable<TileFixture> fixtures) {
+		for (final TileFixture fix : fixtures) {
+			if (fix instanceof Mountain || fix instanceof Hill) {
+				return true; // NOPMD
 			}
-			return false;
 		}
+		return false;
 	}
 
 	/**

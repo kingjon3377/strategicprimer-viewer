@@ -7,9 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import model.map.ITile;
-import model.map.ITileCollection;
-import model.map.MapView;
+import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
@@ -36,7 +34,7 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 	 *            the file the map was loaded from or should be
 	 *            saved to
 	 */
-	public WorkerModel(final MapView map, final File file) {
+	public WorkerModel(final IMutableMapNG map, final File file) {
 		setMap(map, file);
 	}
 	/**
@@ -46,11 +44,9 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 	@Override
 	public final List<IUnit> getUnits(final Player player) {
 		final List<IUnit> retval = new ArrayList<>();
-		final ITileCollection tiles = getMap().getTiles();
-		for (final Point point : tiles) {
+		for (final Point point : getMap().locations()) {
 			if (point != null) {
-				final ITile tile = tiles.getTile(point);
-				retval.addAll(getUnits(tile, player));
+				retval.addAll(getUnits(getMap().getOtherFixtures(point), player));
 			}
 		}
 		return retval;
@@ -111,13 +107,11 @@ public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
 	 */
 	@Override
 	public final void addUnit(final IUnit unit) {
-		final ITileCollection tiles = getMap().getTiles();
-		for (final Point point : tiles) {
+		for (final Point point : getMap().locations()) {
 			if (point == null) {
 				continue;
 			}
-			final ITile tile = tiles.getTile(point);
-			for (final TileFixture fix : tile) {
+			for (final TileFixture fix : getMap().getOtherFixtures(point)) {
 				if (fix instanceof Fortress
 						&& unit.getOwner().equals(((Fortress) fix).getOwner())
 						&& "HQ".equals(((Fortress) fix).getName())) {

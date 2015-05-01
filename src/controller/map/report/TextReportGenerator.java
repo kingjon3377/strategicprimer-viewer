@@ -3,7 +3,7 @@ package controller.map.report;
 import java.util.Map;
 
 import model.map.IFixture;
-import model.map.ITileCollection;
+import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.fixtures.TextFixture;
@@ -21,21 +21,21 @@ import util.Pair;
 public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	/**
 	 * @param fixtures the set of fixtures
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the sub-report dealing with arbitrary-text notes
 	 */
 	@Override
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer) {
+			final IMapNG map, final Player currentPlayer) {
 		final HtmlList list = new HtmlList("<h4>Miscellaneous Notes</h4>");
 		// TODO: We should probably sort the list by turn.
 		for (final Map.Entry<Integer, Pair<Point, IFixture>> entry : fixtures
 				.entrySet()) {
 			final Pair<Point, IFixture> pair = entry.getValue();
 			if (pair.second() instanceof TextFixture) {
-				list.add(produce(fixtures, tiles, currentPlayer,
+				list.add(produce(fixtures, map, currentPlayer,
 						(TextFixture) pair.second(), pair.first()));
 				fixtures.remove(entry.getKey());
 			}
@@ -53,7 +53,7 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	 *
 	 * @param fixtures
 	 *            the set of fixtures
-	 * @param tiles
+	 * @param map
 	 *            ignored
 	 * @param currentPlayer
 	 *            the player for whom the report is being produced
@@ -64,7 +64,7 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	@Override
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer,
+			final IMapNG map, final Player currentPlayer,
 			final TextFixture item, final Point loc) {
 		final StringBuilder builder =
 				new StringBuilder(item.getText().length() + 32);
@@ -80,21 +80,21 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	}
 	/**
 	 * @param fixtures the set of fixtures
-	 * @param tiles ignored
+	 * @param map ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the sub-report dealing with arbitrary-text notes
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer) {
+			final IMapNG map, final Player currentPlayer) {
 		final AbstractReportNode retval =
 				new SectionListReportNode(4, "Miscellaneous Notes");
 		for (final Map.Entry<Integer, Pair<Point, IFixture>> entry : fixtures
 				.entrySet()) {
 			final Pair<Point, IFixture> pair = entry.getValue();
 			if (pair.second() instanceof TextFixture) {
-				retval.add(produceRIR(fixtures, tiles, currentPlayer,
+				retval.add(produceRIR(fixtures, map, currentPlayer,
 						(TextFixture) pair.second(), pair.first()));
 				fixtures.remove(entry.getKey());
 			}
@@ -111,7 +111,7 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	 *
 	 * @param fixtures
 	 *            the set of fixtures
-	 * @param tiles
+	 * @param map
 	 *            ignored
 	 * @param currentPlayer
 	 *            the player for whom the report is being produced
@@ -122,7 +122,7 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	@Override
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final ITileCollection tiles, final Player currentPlayer,
+			final IMapNG map, final Player currentPlayer,
 			final TextFixture item, final Point loc) {
 		if (item.getTurn() >= 0) {
 			return new SimpleReportNode("At ", loc.toString(), ": ",

@@ -10,7 +10,7 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.IPlayerCollection;
+import model.map.IMutablePlayerCollection;
 import model.map.fixtures.mobile.Dragon;
 import util.NullCleaner;
 import util.Pair;
@@ -40,7 +40,7 @@ public class DragonReader implements INodeHandler<Dragon> {
 	 */
 	@Override
 	public Dragon parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final IPlayerCollection players,
+			final Iterable<XMLEvent> stream, final IMutablePlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);

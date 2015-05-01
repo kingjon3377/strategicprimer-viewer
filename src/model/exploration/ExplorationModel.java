@@ -11,29 +11,26 @@ import model.listeners.SelectionChangeListener;
 import model.map.FixtureIterable;
 import model.map.HasOwner;
 import model.map.IFixture;
-import model.map.IMap;
-import model.map.IMutableTile;
-import model.map.IMutableTileCollection;
-import model.map.ITile;
-import model.map.ITileCollection;
+import model.map.IMapNG;
+import model.map.IMutableMapNG;
 import model.map.MapDimensions;
-import model.map.MapView;
 import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
-import model.map.Tile;
 import model.map.TileFixture;
 import model.map.TileType;
+import model.map.fixtures.Ground;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.terrain.Forest;
+import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Fortress;
 import model.misc.AbstractMultiMapModel;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import util.NullCleaner;
 import util.Pair;
 
 /**
@@ -69,7 +66,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * @param map the starting main map
 	 * @param file the name it was loaded from
 	 */
-	public ExplorationModel(final MapView map, final File file) {
+	public ExplorationModel(final IMutableMapNG map, final File file) {
 		setMap(map, file);
 	}
 	/**
@@ -78,14 +75,14 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	@Override
 	public List<Player> getPlayerChoices() {
 		final List<Player> retval = new ArrayList<>();
-		for (final Player player : getMap().getPlayers()) {
+		for (final Player player : getMap().players()) {
 			retval.add(player);
 		}
 		final List<Player> temp = new ArrayList<>();
-		for (final Pair<IMap, File> pair : getSubordinateMaps()) {
-			final IMap map = pair.first();
+		for (final Pair<IMutableMapNG, File> pair : getSubordinateMaps()) {
+			final IMapNG map = pair.first();
 			temp.clear();
-			for (final Player player : map.getPlayers()) {
+			for (final Player player : map.players()) {
 				temp.add(player);
 			}
 			retval.retainAll(temp);
@@ -100,11 +97,9 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	@Override
 	public List<IUnit> getUnits(final Player player) {
 		final List<IUnit> retval = new ArrayList<>();
-		final ITileCollection tiles = getMap().getTiles();
-		for (final Point point : tiles) {
+		for (final Point point : getMap().locations()) {
 			if (point != null) {
-				final ITile tile = tiles.getTile(point);
-				retval.addAll(getUnits(tile, player));
+				retval.addAll(getUnits(getMap().getOtherFixtures(point), player));
 			}
 		}
 		return retval;
@@ -151,51 +146,49 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			throw new IllegalStateException(
 					"move() called when no unit selected");
 		}
+		IMutableMapNG map = getMap();
 		final Point point = selUnitLoc;
 		final Point dest = getDestination(point, direction);
-		final ITile sourceTile = getMap().getTile(point);
 		// ESCA-JAVA0177:
-		final ITile destTile = getMap().getTile(dest);
-		if (sourceTile instanceof IMutableTile && destTile instanceof IMutableTile
-				&& SimpleMovement.isLandMovementPossible(destTile)) {
+		if (SimpleMovement.isLandMovementPossible(map.getBaseTerrain(dest))) {
 			final int retval; // NOPMD
 			if (dest.equals(point)) {
 				retval = 1;
 			} else {
-				retval = SimpleMovement.getMovementCost(destTile);
+				retval =
+						SimpleMovement.getMovementCost(
+								map.getBaseTerrain(dest),
+								map.getForest(dest) != null,
+								map.isMountainous(dest), map.getRivers(dest)
+										.iterator().hasNext(),
+								map.getOtherFixtures(dest));
 			}
-			removeImpl((IMutableTile) sourceTile, unit);
-			((IMutableTile) destTile).addFixture(unit);
-			for (final Pair<IMap, File> pair : getSubordinateMaps()) {
-				final ITileCollection mapTilesPre = pair.first().getTiles();
-				if (!(mapTilesPre instanceof IMutableTileCollection)) {
-					throw new IllegalStateException("Immutable tile collection");
-				}
-				final IMutableTileCollection mapTiles =
-						(IMutableTileCollection) mapTilesPre;
-				final IMutableTile stile = mapTiles.getTile(point);
-				if (!tileHasFixture(stile, unit)) {
+			removeImpl(map, point, unit);
+			map.addFixture(dest, unit);
+			for (final Pair<IMutableMapNG, File> pair : getSubordinateMaps()) {
+				if (pair == null) {
 					continue;
 				}
-				ensureTerrain(mapTiles, dest, destTile.getTerrain());
-				final IMutableTile dtile = mapTiles.getTile(dest);
-				removeImpl(stile, unit);
-				dtile.addFixture(unit);
+				final IMutableMapNG subMap = pair.first();
+				if (!locationHasFixture(subMap, point, unit)) {
+					continue;
+				}
+				ensureTerrain(subMap, dest, map.getBaseTerrain(dest));
+				removeImpl(subMap, point, unit);
+				subMap.addFixture(dest, unit);
 			}
 			selUnitLoc = dest;
 			fireSelectionChange(point, dest);
 			fireMovementCost(retval);
-			checkNearbyWatchers(getMap().getTiles(), getMap().getDimensions(),
-					unit, dest);
+			checkNearbyWatchers(getMap(), unit, dest);
 			return retval;
 		} else {
-			for (final Pair<IMap, File> pair : getSubordinateMaps()) {
-				final ITileCollection tiles = pair.first().getTiles();
-				if (!(tiles instanceof IMutableTileCollection)) {
-					throw new IllegalStateException("Immutable collection of tiles");
+			for (final Pair<IMutableMapNG, File> pair : getSubordinateMaps()) {
+				if (pair == null) {
+					continue;
 				}
-				ensureTerrain((IMutableTileCollection) tiles, dest,
-						destTile.getTerrain());
+				final IMutableMapNG subMap = pair.first();
+				ensureTerrain(subMap, dest, map.getBaseTerrain(dest));
 			}
 			fireMovementCost(1);
 			throw new TraversalImpossibleException();
@@ -208,25 +201,24 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 * a tile two or fewer tiles away from the watcher), print a message saying
 	 * so to stdout.
 	 *
-	 * @param tiles
-	 *            the main map's tiles.
-	 * @param dims the dimensions of the map
+	 * @param map
+	 *            the main map.
 	 * @param unit
 	 *            the mover
 	 * @param dest
 	 *            the unit's new location
 	 */
-	private static void checkNearbyWatchers(final ITileCollection tiles,
-			final MapDimensions dims, final IUnit unit, final Point dest) {
+	private static void checkNearbyWatchers(final IMapNG map, final IUnit unit,
+			final Point dest) {
+		MapDimensions dims = map.dimensions();
 		final Set<Point> done = new HashSet<>(25);
 		for (final Point point : new SurroundingPointIterable(dest, dims)) {
 			if (point == null || done.contains(point)) {
 				continue;
 			} else {
 				done.add(point);
-				checkNearbyWatcher(
-						NullCleaner.assertNotNull(tiles.getTile(point)), point,
-						unit, dest);
+				checkNearbyWatcher(map.getOtherFixtures(point), point, unit,
+						dest);
 			}
 		}
 	}
@@ -234,14 +226,14 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	/**
 	 * If a unit's motion to a new tile could be observed by a watcher on a
 	 * specified nearby tile, print a message to stdout saying so.
-	 * @param tile the tile being considered
+	 * @param fixtures a collection of fixtures in the location being considered
 	 * @param point its location
 	 * @param unit the mover
 	 * @param dest where the mover moved to
 	 */
-	private static void checkNearbyWatcher(final ITile tile, final Point point,
-			final IUnit unit, final Point dest) {
-		for (final TileFixture fix : tile) {
+	private static void checkNearbyWatcher(final Iterable<TileFixture> fixtures,
+			final Point point, final IUnit unit, final Point dest) {
+		for (final TileFixture fix : fixtures) {
 			if (fix instanceof HasOwner
 					&& !((HasOwner) fix).getOwner().isIndependent()
 					&& !((HasOwner) fix).getOwner().equals(unit.getOwner())) {
@@ -255,14 +247,17 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		}
 	}
 	/**
-	 * @param sourceTile a tile
-	 * @param unit a unit to remove from that tile, even if it's in a fortress
+	 * @param map the map we're dealing with
+	 * @param point the location where the unit is
+	 * @param unit a unit to remove from that location, even if it's in a fortress
 	 */
-	private static void removeImpl(final IMutableTile sourceTile, final IUnit unit) {
-		for (final TileFixture fix : sourceTile) {
+	private static void removeImpl(final IMutableMapNG map, final Point point,
+			final IUnit unit) {
+		boolean outside = false;
+		for (final TileFixture fix : map.getOtherFixtures(point)) {
 			if (unit.equals(fix)) {
-				sourceTile.removeFixture(unit);
-				return; // NOPMD
+				outside = true;
+				break;
 			} else if (fix instanceof Fortress) {
 				for (final IUnit item : (Fortress) fix) {
 					if (unit.equals(item)) {
@@ -271,6 +266,9 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 					}
 				}
 			}
+		}
+		if (outside) {
+			map.removeFixture(point, unit);
 		}
 	}
 
@@ -296,29 +294,34 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	}
 
 	/**
-	 * Ensure that a given collection of tiles has at least terrain information
+	 * Ensure that a given map has at least terrain information
 	 * for the specified location.
 	 *
-	 * @param tiles the collection we're operating on
+	 * @param map the map we're operating on
 	 * @param point the location to look at
 	 * @param terrain the terrain type it should be
 	 */
-	private static void ensureTerrain(final IMutableTileCollection tiles,
+	private static void ensureTerrain(final IMutableMapNG map,
 			final Point point, final TileType terrain) {
-		if (!tiles.hasTile(point)) {
-			tiles.addTile(point, new Tile(terrain));
-		} else if (TileType.NotVisible.equals(tiles.getTile(point).getTerrain())) {
-			tiles.getTile(point).setTerrain(terrain);
+		if (TileType.NotVisible.equals(map.getBaseTerrain(point))) {
+			map.setBaseTerrain(point, terrain);
 		}
 	}
 
 	/**
-	 * @param tile a tile
+	 * @param map a map
+	 * @param point a location in that map
 	 * @param fix a fixture
-	 * @return whether the tile contains it
+	 * @return whether the map contains that fixture at that location
 	 */
-	private static boolean tileHasFixture(final ITile tile, final TileFixture fix) {
-		for (final TileFixture fixture : tile) {
+	private static boolean locationHasFixture(final IMapNG map, final Point point,
+			final TileFixture fix) {
+		if ((fix instanceof Forest && fix.equals(map.getForest(point)))
+				|| (fix instanceof Ground && fix.equals(map.getGround(point)))
+				|| (fix instanceof Mountain && map.isMountainous(point))) {
+			return true;
+		}
+		for (final TileFixture fixture : map.getOtherFixtures(point)) {
 			if (fixture.equals(fix)) {
 				return true; // NOPMD
 			} else if (fixture instanceof FixtureIterable) {
@@ -411,12 +414,19 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	 */
 	@Override
 	public Point find(final TileFixture fix) {
-		final IMap source = getMap();
-		for (final Point point : source.getTiles()) {
+		final IMapNG source = getMap();
+		for (final Point point : source.locations()) {
 			if (point == null) {
 				continue;
 			}
-			for (final TileFixture item : source.getTile(point)) {
+			if ((fix instanceof Mountain && source.isMountainous(point))
+					|| (fix instanceof Forest && fix.equals(source
+							.getForest(point)))
+					|| (fix instanceof Ground && fix.equals(source
+							.getGround(point)))) {
+				return point;
+			}
+			for (final TileFixture item : source.getOtherFixtures(point)) {
 				if (fix.equals(item)) {
 					return point; // NOPMD
 				} else if (item instanceof FixtureIterable) {

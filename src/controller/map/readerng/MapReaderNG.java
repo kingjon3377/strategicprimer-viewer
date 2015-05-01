@@ -8,9 +8,15 @@ import java.io.Reader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.IMap;
+import model.map.IMapNG;
+import model.map.IMapView;
+import model.map.IMutableMapNG;
+import model.map.MapNGReverseAdapter;
 import model.map.MapView;
 import model.map.PlayerCollection;
 import model.map.SPMap;
+import model.map.SPMapNG;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
@@ -45,7 +51,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	 *             if the format isn't one we support or if the data is invalid
 	 */
 	@Override
-	public MapView readMap(final File file, final Warning warner)
+	public IMutableMapNG readMap(final File file, final Warning warner)
 			throws IOException, XMLStreamException, SPFormatException {
 		try (final Reader istream = new FileReader(file)) {
 			return readMap(file, istream, warner);
@@ -63,9 +69,9 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	 *         version isn't one we support
 	 */
 	@Override
-	public MapView readMap(final File file, final Reader istream,
+	public IMutableMapNG readMap(final File file, final Reader istream,
 			final Warning warner) throws XMLStreamException, SPFormatException {
-		return readXML(file, istream, MapView.class, warner);
+		return readXML(file, istream, SPMapNG.class, warner);
 	}
 	/**
 	 * @param <T> A supertype of the object the XML represents
@@ -112,9 +118,12 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	private static <T> T checkType(final Object obj, final Class<T> type) {
 		if (type.isAssignableFrom(obj.getClass())) {
 			return (T) obj; // NOPMD
-		} else if (type.equals(MapView.class) && obj instanceof SPMap) {
+		} else if (type.isAssignableFrom(IMapView.class) && obj instanceof SPMap) {
 			return (T) new MapView((SPMap) obj, ((SPMap) obj).getPlayers()
 					.getCurrentPlayer().getPlayerId(), 0);
+		} else if ((type.isAssignableFrom(IMap.class) || type
+				.isAssignableFrom(IMapView.class)) && obj instanceof IMapNG) {
+			return (T) new MapNGReverseAdapter((IMapNG) obj);
 		} else {
 			throw new IllegalArgumentException("We want a node producing "
 					+ type.getSimpleName() + ", not "

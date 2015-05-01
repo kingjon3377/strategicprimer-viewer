@@ -5,10 +5,10 @@ import java.awt.Polygon;
 
 import javax.swing.JButton;
 
-import model.map.ITile;
-import model.map.Tile;
+import model.map.IMapNG;
+import model.map.Point;
+import model.map.PointFactory;
 import model.map.TileFixture;
-import model.map.TileType;
 import model.viewer.ZOrderFilter;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -26,29 +26,30 @@ public class DualTileButton extends JButton {
 	 * How much margin to give.
 	 */
 	private static final int MARGIN = 2;
-
 	/**
-	 * The main-map tile to paint.
+	 * The main map map.
 	 */
-	private ITile one = new Tile(TileType.NotVisible);
+	private final IMapNG mapOne;
 	/**
-	 * The secondary-map tile to paint.
+	 * The subordinate map.
 	 */
-	private ITile two = new Tile(TileType.NotVisible);
-
+	private final IMapNG mapTwo;
+	/**
+	 * @param one the first map
+	 * @param two the second map
+	 */
+	public DualTileButton(final IMapNG one, final IMapNG two) {
+		mapOne = one;
+		mapTwo = two;
+	}
+	/**
+	 * The currently selected point.
+	 */
+	private Point point = PointFactory.point(-1, -1);
 	/**
 	 * The ZOrderFilter instance to pass to the factory rather than null.
 	 */
 	private static final ZOrderFilter NULL_ZOF = new NullZOrderFilter();
-
-	/**
-	 * @param first the main-map tile to draw
-	 * @param second the secondary-map tile to draw
-	 */
-	public void setTiles(final ITile first, final ITile second) {
-		one = first;
-		two = second;
-	}
 
 	/**
 	 * A ZOrderFilter implementation that does nothing, to avoid passing null to
@@ -96,10 +97,18 @@ public class DualTileButton extends JButton {
 		pen.setClip(new Polygon(
 				new int[] { getWidth() - MARGIN, MARGIN, MARGIN }, new int[] {
 						MARGIN, getHeight() - MARGIN, MARGIN }, 3));
-		helper.drawTileTranslated(pen, one, getWidth(), getHeight());
+		helper.drawTileTranslated(pen, mapOne, point, getWidth(), getHeight());
 		pen.setClip(new Polygon(new int[] { getWidth() - MARGIN,
 				getWidth() - MARGIN, MARGIN }, new int[] { MARGIN,
 				getHeight() - MARGIN, getHeight() - MARGIN }, 3));
-		helper.drawTileTranslated(pen, two, getWidth(), getHeight());
+		helper.drawTileTranslated(pen, mapTwo, point, getWidth(), getHeight());
+	}
+	/**
+	 * Set the currently selected point.
+	 * @param newPoint the newly selected point
+	 */
+	public void setPoint(final Point newPoint) {
+		point = newPoint;
+		repaint();
 	}
 }

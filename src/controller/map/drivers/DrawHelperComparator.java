@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.map.IMap;
+import model.map.IMapNG;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
@@ -104,7 +104,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 *
 	 * @return how long the test took, in ns.
 	 */
-	public static long first(final TileDrawHelper helper, final IMap spmap,
+	public static long first(final TileDrawHelper helper, final IMapNG spmap,
 			final int reps, final int tsize) {
 		final BufferedImage image = new BufferedImage(tsize, tsize,
 				BufferedImage.TYPE_INT_RGB);
@@ -125,17 +125,17 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param tsize the size to draw each tile
 	 */
 	private static void firstBody(final TileDrawHelper helper,
-			final BufferedImage image, final IMap spmap, final int reps,
+			final BufferedImage image, final IMapNG spmap, final int reps,
 			final int tsize) {
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
-			for (final Point point : spmap.getTiles()) {
+			for (final Point point : spmap.locations()) {
 				if (point == null) {
 					continue;
 				}
 				helper.drawTileTranslated(
 						NullCleaner.assertNotNull(image.createGraphics()),
-						spmap.getTile(point), tsize, tsize);
+						spmap, point, tsize, tsize);
 			}
 		}
 	}
@@ -144,19 +144,19 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * The second test: Translating.
 	 *
 	 * @param helper the helper to test
-	 * @param spmap the map being used for the test
+	 * @param map the map being used for the test
 	 * @param reps the number of times to run this test between starting and
 	 *        stopping the timer
 	 * @param tsize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
-	public static long second(final TileDrawHelper helper, final IMap spmap,
+	public static long second(final TileDrawHelper helper, final IMapNG map,
 			final int reps, final int tsize) {
-		final MapDimensions dim = spmap.getDimensions();
+		final MapDimensions dim = map.dimensions();
 		final BufferedImage image = new BufferedImage(tsize * dim.cols, tsize
 				* dim.rows, BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
-		secondBody(helper, image, spmap, reps, tsize);
+		secondBody(helper, image, map, reps, tsize);
 		final long end = System.nanoTime();
 		return end - start;
 	}
@@ -166,24 +166,24 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 *
 	 * @param helper the helper to test
 	 * @param image the image used in the test.
-	 * @param spmap the map being used for the test
+	 * @param map the map being used for the test
 	 * @param reps the number of times to run this test between starting and
 	 *        stopping the timer
 	 * @param tsize the size to draw each tile
 	 */
 	private static void secondBody(final TileDrawHelper helper,
-			final BufferedImage image, final IMap spmap, final int reps,
+			final BufferedImage image, final IMapNG map, final int reps,
 			final int tsize) {
 		final Coordinate dimensions = PointFactory.coordinate(tsize, tsize);
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
-			for (final Point point : spmap.getTiles()) {
+			for (final Point point : map.locations()) {
 				if (point == null) {
 					continue;
 				}
 				helper.drawTile(
 						NullCleaner.assertNotNull(image.createGraphics()),
-						spmap.getTile(point),
+						map, point,
 						PointFactory.coordinate(point.row * tsize, point.col
 								* tsize), dimensions);
 			}
@@ -200,7 +200,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param tsize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
-	public static long third(final TileDrawHelper helper, final IMap spmap,
+	public static long third(final TileDrawHelper helper, final IMapNG spmap,
 			final int reps, final int tsize) {
 		final BufferedImage image = new BufferedImage(tsize, tsize, // NOPMD
 				BufferedImage.TYPE_INT_RGB);
@@ -224,10 +224,10 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param tsize the size to draw each tile
 	 */
 	private static void thirdBody(final TileDrawHelper helper,
-			final Graphics pen, final IMap spmap, final int tsize) {
-		for (final Point point : spmap.getTiles()) {
+			final Graphics pen, final IMapNG spmap, final int tsize) {
+		for (final Point point : spmap.locations()) {
 			if (point != null) {
-				helper.drawTileTranslated(pen, spmap.getTile(point), tsize, tsize);
+				helper.drawTileTranslated(pen, spmap, point, tsize, tsize);
 			}
 		}
 	}
@@ -242,9 +242,9 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param tsize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
-	public static long fourth(final TileDrawHelper helper, final IMap spmap,
+	public static long fourth(final TileDrawHelper helper, final IMapNG spmap,
 			final int reps, final int tsize) {
-		final MapDimensions dim = spmap.getDimensions();
+		final MapDimensions dim = spmap.dimensions();
 		final BufferedImage image = new BufferedImage(tsize * dim.cols, // NOPMD
 				tsize * dim.rows, BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
@@ -267,13 +267,13 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param tsize the size to draw each tile
 	 */
 	private static void fourthBody(final TileDrawHelper helper,
-			final Graphics pen, final IMap spmap, final int tsize) {
+			final Graphics pen, final IMapNG spmap, final int tsize) {
 		final Coordinate dimensions = PointFactory.coordinate(tsize, tsize);
-		for (final Point point : spmap.getTiles()) {
+		for (final Point point : spmap.locations()) {
 			if (point != null) {
 				helper.drawTile(
 						pen,
-						spmap.getTile(point),
+						spmap, point,
 						PointFactory.coordinate(point.row * tsize, point.col
 								* tsize), dimensions);
 			}
@@ -290,9 +290,9 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param tsize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
-	public static long fifthOne(final TileDrawHelper helper, final IMap spmap,
+	public static long fifthOne(final TileDrawHelper helper, final IMapNG spmap,
 			final int reps, final int tsize) {
-		final MapDimensions dim = spmap.getDimensions();
+		final MapDimensions dim = spmap.dimensions();
 		final BufferedImage image = new BufferedImage(tsize * dim.cols, // NOPMD
 				tsize * dim.rows, BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
@@ -313,13 +313,13 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param spmap the map being used for the test
 	 * @param tsize the size to draw each tile
 	 */
-	private static void fifthOneBody(final IMap spmap,
+	private static void fifthOneBody(final IMapNG spmap,
 			final TileDrawHelper helper, final Graphics pen, final int tsize) {
 		final Coordinate dimensions = PointFactory.coordinate(tsize, tsize);
 		for (int row = TEST_MIN_ROW; row < TEST_MAX_ROW; row++) {
 			for (int col = TEST_MIN_COL; col < TEST_MAX_COL; col++) {
 				final Point point = PointFactory.point(row, col);
-				helper.drawTile(pen, spmap.getTile(point),
+				helper.drawTile(pen, spmap, point,
 						PointFactory.coordinate(row * tsize, col * tsize),
 						dimensions);
 			}
@@ -336,9 +336,9 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param tsize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
-	public static long fifthTwo(final TileDrawHelper helper, final IMap spmap,
+	public static long fifthTwo(final TileDrawHelper helper, final IMapNG spmap,
 			final int reps, final int tsize) {
-		final MapDimensions dim = spmap.getDimensions();
+		final MapDimensions dim = spmap.dimensions();
 		final BufferedImage image = new BufferedImage(tsize * dim.cols, // NOPMD
 				tsize * dim.rows, BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
@@ -361,14 +361,14 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param tsize the size to draw each tile
 	 */
 	private static void fifthTwoBody(final TileDrawHelper helper,
-			final Graphics pen, final IMap spmap, final int tsize) {
+			final Graphics pen, final IMapNG spmap, final int tsize) {
 		final Coordinate dimensions = PointFactory.coordinate(tsize, tsize);
-		for (final Point point : spmap.getTiles()) {
+		for (final Point point : spmap.locations()) {
 			if (point.row >= TEST_MIN_ROW && point.row < TEST_MAX_ROW
 					&& point.col >= TEST_MIN_COL && point.col < TEST_MAX_COL) {
 				helper.drawTile(
 						pen,
-						spmap.getTile(point),
+						spmap, point,
 						PointFactory.coordinate(point.row * tsize, point.col
 								* tsize), dimensions);
 			}
@@ -396,10 +396,10 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param repetitions how many times to repeat each test (more takes longer,
 	 *        but gives more precise result)
 	 */
-	public static void runAllTests(final IMap map, final int repetitions) {
+	public static void runAllTests(final IMapNG map, final int repetitions) {
 		final int reps = repetitions;
 		final int tsize = TileViewSize.scaleZoom(ViewerModel.DEF_ZOOM_LEVEL,
-				map.getDimensions().version);
+				map.dimensions().version);
 		final TileDrawHelper hOne = new CachingTileDrawHelper();
 		final TileDrawHelper hTwo = new DirectTileDrawHelper();
 		final TileDrawHelper hThree = new Ver2TileDrawHelper(
@@ -502,7 +502,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 			}
 			final File file = new File(filename);
 			// ESCA-JAVA0177:
-			final IMap map; // NOPMD
+			final IMapNG map; // NOPMD
 			try {
 				map = adapter.readMap(file, warner);
 			} catch (final IOException e) {

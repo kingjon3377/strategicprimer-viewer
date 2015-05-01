@@ -21,7 +21,7 @@ import model.listeners.UnitMemberSelectionSource;
 import model.listeners.UnitSelectionListener;
 import model.listeners.UnitSelectionSource;
 import model.map.IFixture;
-import model.map.IPlayerCollection;
+import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Worker;
@@ -59,7 +59,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 	 *        "todo" or "fixme" or if a unit named "unassigned" is nonempty
 	 */
 	public WorkerTree(final IWorkerTreeModel wtModel,
-			final IPlayerCollection players, final boolean orderCheck) {
+			final Iterable<Player> players, final boolean orderCheck) {
 		setModel(wtModel);
 		final JTree tree = this;
 		wtModel.addTreeModelListener(new TreeModelListener() {
@@ -116,7 +116,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		/**
 		 * The collection of players in the map.
 		 */
-		private final IPlayerCollection players;
+		private final Iterable<Player> players;
 		/**
 		 * The tree model backing the tree.
 		 */
@@ -132,7 +132,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		 * @param tmodel the tree model backing the tree
 		 * @param jtree the tree we're watching
 		 */
-		protected TreeMouseListener(final IPlayerCollection playerColl,
+		protected TreeMouseListener(final Iterable<Player> playerColl,
 				final IWorkerTreeModel tmodel, final JTree jtree) {
 			players = playerColl;
 			model = tmodel;

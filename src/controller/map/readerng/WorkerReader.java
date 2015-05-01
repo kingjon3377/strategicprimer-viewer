@@ -6,7 +6,7 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.IPlayerCollection;
+import model.map.IMutablePlayerCollection;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
@@ -54,7 +54,7 @@ public class WorkerReader implements INodeHandler<Worker> {
 	 */
 	@Override
 	public Worker parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final IPlayerCollection players,
+			final Iterable<XMLEvent> stream, final IMutablePlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		final Worker retval = new Worker(

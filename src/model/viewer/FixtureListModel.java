@@ -3,16 +3,19 @@ package model.viewer;
 import javax.swing.DefaultListModel;
 
 import model.listeners.SelectionChangeListener;
-import model.map.IMutableTile;
-import model.map.ITile;
+import model.map.IMapNG;
+import model.map.IMutableMapNG;
 import model.map.Point;
-import model.map.Tile;
+import model.map.PointFactory;
+import model.map.River;
 import model.map.TileFixture;
 import model.map.TileType;
+import model.map.fixtures.Ground;
+import model.map.fixtures.RiverFixture;
+import model.map.fixtures.terrain.Forest;
+import model.misc.IDriverModel;
 
 import org.eclipse.jdt.annotation.Nullable;
-
-import view.util.ErrorShower;
 
 /**
  * A model for a FixtureList.
@@ -25,10 +28,19 @@ import view.util.ErrorShower;
 public final class FixtureListModel extends DefaultListModel<TileFixture>
 		implements SelectionChangeListener {
 	/**
-	 * The current tile.
+	 * The driver model, which we use to get the population at a location.
 	 */
-	private ITile tile = new Tile(TileType.NotVisible);
-
+	private final IDriverModel dmodel;
+	/**
+	 * The current point.
+	 */
+	private Point point = PointFactory.point(-1, -1);
+	/**
+	 * @param model the driver model to use
+	 */
+	public FixtureListModel(final IDriverModel model) {
+		dmodel = model;
+	}
 	/**
 	 * @param old the formerly selected location
 	 * @param newPoint the newly selected location
@@ -36,24 +48,38 @@ public final class FixtureListModel extends DefaultListModel<TileFixture>
 	@Override
 	public void selectedPointChanged(@Nullable final Point old,
 			final Point newPoint) {
-		// Do nothing; we only care about the tile, not its location.
-	}
-
-	/**
-	 * @param old the formerly selected tile
-	 * @param newTile the newly selected tile
-	 */
-	@Override
-	public void selectedTileChanged(@Nullable final ITile old,
-			final ITile newTile) {
-		tile = newTile;
 		this.clear();
-		if (!TileType.NotVisible.equals(tile.getTerrain())) {
-			addElement(new TileTypeFixture(tile.getTerrain()));
+		IMapNG map = dmodel.getMap();
+		final TileType base = map.getBaseTerrain(newPoint);
+		if (!TileType.NotVisible.equals(base)) {
+			addElement(new TileTypeFixture(base));
 		}
-		for (final TileFixture fix : tile) {
-			addElement(fix);
+		Iterable<River> rivers = map.getRivers(newPoint);
+		if (rivers.iterator().hasNext()) {
+			if (rivers instanceof TileFixture) {
+				addElement((TileFixture) rivers);
+			} else {
+				RiverFixture rfixt = new RiverFixture();
+				for (River river : rivers) {
+					if (river != null) {
+						rfixt.addRiver(river);
+					}
+				}
+				addElement(rfixt);
+			}
 		}
+		final Ground ground = map.getGround(newPoint);
+		if (ground != null) {
+			addElement(ground);
+		}
+		final Forest forest = map.getForest(newPoint);
+		if (forest != null) {
+			addElement(forest);
+		}
+		for (TileFixture fixture : map.getOtherFixtures(newPoint)) {
+			addElement(fixture);
+		}
+		point = newPoint;
 	}
 
 	/**
@@ -62,23 +88,25 @@ public final class FixtureListModel extends DefaultListModel<TileFixture>
 	 * @param fix the fixture to add.
 	 */
 	public void addFixture(final TileFixture fix) {
-		if (tile instanceof IMutableTile) {
-			if (fix instanceof TileTypeFixture) {
-				if (!tile.getTerrain().equals(
-						((TileTypeFixture) fix).getTileType())) {
-					((IMutableTile) tile).setTerrain(((TileTypeFixture) fix)
-							.getTileType());
-				}
-				addElement(fix);
-			} else if (((IMutableTile) tile).addFixture(fix)) {
-				// addFixture returns false if it wasn't actually added---e.g. it
-				// was already in the set---so we only want to add it to the display
-				// if it returns true.
-				addElement(fix);
+		IMutableMapNG map = dmodel.getMap();
+		if (fix instanceof Ground && map.getGround(point) == null) {
+			map.setGround(point, (Ground) fix);
+			selectedPointChanged(null, point);
+		} else if (fix instanceof Forest && map.getForest(point) == null) {
+			map.setForest(point, (Forest) fix);
+			selectedPointChanged(null, point);
+		} else if (fix instanceof TileTypeFixture) {
+			if (!map.getBaseTerrain(point).equals(
+					((TileTypeFixture) fix).getTileType())) {
+				map.setBaseTerrain(point, ((TileTypeFixture) fix).getTileType());
+				selectedPointChanged(null, point);
 			}
 		} else {
-			ErrorShower.showErrorDialog(null,
-					"Cannot add a fixture: selected tile is not mutable");
+			// FIXME: Make addFixture() on IMutableMapNG boolean so we can just
+			// add the fixture to the list model if the add operation isn't
+			// redundant, rather than regenerating it every time.
+			map.addFixture(point, fix);
+			selectedPointChanged(null, point);
 		}
 	}
 
@@ -88,28 +116,38 @@ public final class FixtureListModel extends DefaultListModel<TileFixture>
 	 * @param list the list of items to remove. If null, none are removed.
 	 */
 	public void remove(@Nullable final Iterable<TileFixture> list) {
-		if (tile instanceof IMutableTile) {
-			if (list != null) {
-				for (final TileFixture fix : list) {
-					if (fix == null) {
-						continue;
-					} else if (fix instanceof TileTypeFixture) {
-						((IMutableTile) tile).setTerrain(TileType.NotVisible);
-						removeElement(fix);
-					} else if (((IMutableTile) tile).removeFixture(fix)) {
-						removeElement(fix);
+		if (list != null) {
+			IMutableMapNG map = dmodel.getMap();
+			for (final TileFixture fix : list) {
+				if (fix == null) {
+					continue;
+				} else if (fix instanceof TileTypeFixture) {
+					map.setBaseTerrain(point, TileType.NotVisible);
+					removeElement(fix);
+				} else if (fix instanceof Ground
+						&& fix.equals(map.getGround(point))) {
+					map.setGround(point, null);
+					removeElement(fix);
+				} else if (fix instanceof Forest
+						&& fix.equals(map.getForest(point))) {
+					map.setForest(point, null);
+					removeElement(fix);
+				} else if (fix instanceof RiverFixture) {
+					for (River river : (RiverFixture) fix) {
+						map.removeRivers(point, river);
 					}
+					removeElement(fix);
+				} else {
+					map.removeFixture(point, fix);
+					removeElement(fix);
 				}
 			}
-		} else {
-			ErrorShower.showErrorDialog(null, "Cannot remove item from list: "
-					+ "selected tile is not mutable");
 		}
 	}
 
 	/**
-	 * A FixtureListModel is equal only to another FixtureListModel listening
-	 * for the same property and representing the same tile.
+	 * A FixtureListModel is equal only to another FixtureListModel representing
+	 * the same location in the same map.
 	 *
 	 * @param obj an object
 	 * @return whether we're equal to it
@@ -117,7 +155,8 @@ public final class FixtureListModel extends DefaultListModel<TileFixture>
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof FixtureListModel
-				&& ((FixtureListModel) obj).tile.equals(tile);
+				&& ((FixtureListModel) obj).dmodel.equals(dmodel)
+				&& ((FixtureListModel) obj).point.equals(point);
 	}
 
 	/**
@@ -125,6 +164,6 @@ public final class FixtureListModel extends DefaultListModel<TileFixture>
 	 */
 	@Override
 	public int hashCode() {
-		return tile.hashCode();
+		return dmodel.hashCode() | point.hashCode();
 	}
 }

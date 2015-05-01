@@ -7,6 +7,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.IEvent;
+import model.map.IMutablePlayerCollection;
 import model.map.IPlayerCollection;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
@@ -84,7 +85,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	@Override
 	public ITownFixture read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
-			final IPlayerCollection players, final Warning warner,
+			final IMutablePlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "village", "fortress", "town", "city",
 				"fortification");
@@ -149,7 +150,9 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 				element, "status"));
 		final TownSize size = TownSize.parseTownSize(getParameter(element,
 				"size"));
-		final int dc = parseInt(getParameter(element, "dc"), element.getLocation().getLineNumber()); // NOPMD
+		final int dc =
+				parseInt(getParameter(element, "dc"), element.getLocation()
+						.getLineNumber()); // NOPMD
 		final int id = getOrGenerateID(element, warner, idFactory); // NOPMD
 		final Player owner = getOwnerOrIndependent(element, warner, players); //NOPMD
 		final AbstractTown retval; // NOPMD
@@ -205,7 +208,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	 */
 	private static Fortress parseFortress(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
-			final IPlayerCollection players, final Warning warner,
+			final IMutablePlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, OWNER_PARAM, false, warner);
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);

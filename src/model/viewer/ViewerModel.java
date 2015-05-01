@@ -7,8 +7,7 @@ import java.util.List;
 import model.listeners.GraphicalParamsListener;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSupport;
-import model.map.ITile;
-import model.map.MapView;
+import model.map.IMutableMapNG;
 import model.map.Point;
 import model.map.PointFactory;
 import model.misc.AbstractDriverModel;
@@ -64,10 +63,10 @@ public final class ViewerModel extends AbstractDriverModel implements
 	 * @param file
 	 *            the name the map was loaded from or should be saved to
 	 */
-	public ViewerModel(final MapView firstMap, final File file) {
+	public ViewerModel(final IMutableMapNG firstMap, final File file) {
 		dimensions = new VisibleDimensions(0,
-				firstMap.getDimensions().rows - 1, 0,
-				firstMap.getDimensions().cols - 1);
+				firstMap.dimensions().rows - 1, 0,
+				firstMap.dimensions().cols - 1);
 		selPoint = PointFactory.point(-1, -1);
 		setMap(firstMap, file);
 	}
@@ -77,11 +76,11 @@ public final class ViewerModel extends AbstractDriverModel implements
 	 * @param file the file the map was loaded from or should be saved to
 	 */
 	@Override
-	public void setMap(final MapView newMap, final File file) {
+	public void setMap(final IMutableMapNG newMap, final File file) {
 		super.setMap(newMap, file);
 		clearSelection();
-		setDimensions(new VisibleDimensions(0, newMap.getDimensions().rows - 1,
-				0, newMap.getDimensions().cols - 1));
+		setDimensions(new VisibleDimensions(0, newMap.dimensions().rows - 1,
+				0, newMap.dimensions().cols - 1));
 		resetZoom();
 	}
 	/**
@@ -93,18 +92,7 @@ public final class ViewerModel extends AbstractDriverModel implements
 	public void setSelection(final Point point) {
 		final Point oldSel = selPoint;
 		selPoint = point;
-		scs.fireChanges(oldSel, selPoint, getMap().getTile(oldSel), getMap()
-				.getTile(selPoint));
-	}
-
-	/**
-	 * @param point a tile's location
-	 *
-	 * @return the tile at that location
-	 */
-	@Override
-	public ITile getTile(final Point point) {
-		return getMap().getTile(point);
+		scs.fireChanges(oldSel, selPoint);
 	}
 
 	/**
@@ -113,8 +101,7 @@ public final class ViewerModel extends AbstractDriverModel implements
 	public void clearSelection() {
 		final Point oldSel = selPoint;
 		selPoint = PointFactory.point(-1, -1);
-		scs.fireChanges(oldSel, selPoint, getMap().getTile(oldSel), getMap()
-				.getTile(selPoint));
+		scs.fireChanges(oldSel, selPoint);
 	}
 
 	/**

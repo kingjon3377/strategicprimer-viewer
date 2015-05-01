@@ -5,7 +5,9 @@ package model.map;
  * mutable collection of tiles can only contain mutable tiles.
  *
  * @author Jonathan Lovelace
+ * @deprecated the old map API is deprecated in this branch
  */
+@Deprecated
 public interface IMutableTileCollection extends ITileCollection {
 
 	/**

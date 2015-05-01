@@ -9,6 +9,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import model.map.fixtures.Ground;
+import model.map.fixtures.RiverFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 
@@ -25,19 +26,21 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  *
+ * @deprecated We want to use SPMapNG instead
  */
-public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
+@Deprecated
+public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 	/**
 	 * The old-interface map we use for our state.
 	 */
-	private final MapView state;
+	private final IMutableMapView state;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param wrapped the map to adapt to the new interface
 	 */
-	public MapNGAdapter(final MapView wrapped) {
+	public MapNGAdapter(final IMutableMapView wrapped) {
 		state = wrapped;
 	}
 
@@ -47,7 +50,7 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 	 * @param context
 	 *            a string to print before every line of output, describing the
 	 *            context
-	 * @return whether it is a strict subset of this map.
+	 * @return whether it is a strict subset of map.
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
@@ -105,12 +108,14 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 			retval = false;
 			ostream.append(ctxt);
 			ostream.append("\tExtra rivers\n");
-		} else if (!Objects.equals(getForest(loc), obj.getForest(loc))) { // NOPMD
+		} else if (obj.getForest(loc) != null
+				&& !Objects.equals(getForest(loc), obj.getForest(loc))) { // NOPMD
 			// return false;
 			retval = false;
 			ostream.append(ctxt);
 			ostream.append("\tPrimary forests differ. Representation error?\n");
-		} else if (!Objects.equals(getGround(loc), obj.getGround(loc))) { // NOPMD
+		} else if (obj.getGround(loc) != null
+				&& !Objects.equals(getGround(loc), obj.getGround(loc))) { // NOPMD
 			// return false;
 			retval = false;
 			ostream.append(ctxt);
@@ -150,7 +155,7 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 		for (final River river : ours) {
 			theirRivers.remove(river);
 		}
-		return !theirRivers.isEmpty();
+		return theirRivers.isEmpty();
 	}
 
 	/**
@@ -200,7 +205,6 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 	 * @param location a location
 	 * @return whether that location is mountainous
 	 */
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean isMountainous(final Point location) {
 		if (dimensions().version < 2
@@ -314,7 +318,7 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 	}
 	/**
 	 * @param obj another map
-	 * @return whether it equals this one
+	 * @return whether it equals one
 	 */
 	private boolean equalsImpl(final IMapNG obj) {
 		if (dimensions().equals(obj.dimensions())
@@ -393,5 +397,184 @@ public class MapNGAdapter implements IMapNG { // $codepro.audit.disable
 	@Override
 	public MapDimensions dimensions() {
 		return state.getDimensions();
+	}
+	/**
+	 * Add a player.
+	 * @param player the player to add.
+	 */
+	@Override
+	public void addPlayer(final Player player) {
+		state.addPlayer(player);
+	}
+	/**
+	 * Set the base terrain type at a point.
+	 * @param location the location in question
+	 * @param terrain the terrain type there
+	 */
+	@Override
+	public void setBaseTerrain(final Point location, final TileType terrain) {
+		IMutableTile tile = state.getTile(location);
+		tile.setTerrain(terrain);
+		state.getTiles().addTile(location, tile);
+	}
+	/**
+	 * Set whether the given point is mountainous.
+	 * @param a location in the map
+	 * @param mtn whether it is mountainous
+	 */
+	@Override
+	public void setMountainous(final Point location, final boolean mtn) {
+		IMutableTile tile = state.getTile(location);
+		if (mtn) {
+			for (TileFixture fix : tile) {
+				if (fix instanceof Mountain) {
+					return;
+				}
+			}
+			tile.addFixture(new Mountain());
+			state.getTiles().addTile(location, tile);
+		} else {
+			if (!isMountainous(location)) {
+				return;
+			}
+			// We take advantage of the fact that all Mountains are equal.
+			tile.removeFixture(new Mountain());
+			state.getTiles().addTile(location, tile);
+		}
+	}
+	/**
+	 * Add rivers to a location.
+	 * @param location the location
+	 * @param rivers the rivers to add
+	 */
+	@Override
+	public void addRivers(final Point location, final River... rivers) {
+		IMutableTile tile = state.getTile(location);
+		// Taking advantage of the special handling in Tile's addFixture()
+		tile.addFixture(new RiverFixture(rivers));
+		state.getTiles().addTile(location, tile);
+	}
+	/**
+	 * Remove rivers from a location.
+	 * @param location where to remove from
+	 * @param rivers the rivers to remove
+	 */
+	@Override
+	public void removeRivers(final Point location, final River... rivers) {
+		IMutableTile tile = state.getTile(location);
+		if (tile.hasRiver()) {
+			for (River river : rivers) {
+				if (river == null) {
+					continue;
+				}
+				tile.removeRiver(river);
+			}
+		}
+	}
+
+	@Override
+	public void setForest(final Point location, @Nullable final Forest forest) {
+		IMutableTile tile = state.getTile(location);
+		Forest old = getForest(location);
+		if (forest == null) {
+			if (old != null) {
+				tile.removeFixture(old);
+			}
+		} else if (!forest.equals(old)) {
+			if (old != null) {
+				tile.removeFixture(old);
+			}
+			tile.addFixture(forest);
+			state.getTiles().addTile(location, tile);
+		}
+	}
+
+	@Override
+	public void setGround(final Point location, @Nullable final Ground ground) {
+		IMutableTile tile = state.getTile(location);
+		Ground old = getGround(location);
+		if (ground == null) {
+			if (old != null) {
+				tile.removeFixture(old);
+			}
+		} else if (!ground.equals(old)) {
+			if (old != null) {
+				tile.removeFixture(old);
+			}
+			tile.addFixture(ground);
+			state.getTiles().addTile(location, tile);
+		}
+	}
+
+	@Override
+	public void addFixture(final Point location, final TileFixture fix) {
+		IMutableTile tile = state.getTile(location);
+		tile.addFixture(fix);
+		state.getTiles().addTile(location, tile);
+	}
+
+	@Override
+	public void removeFixture(final Point location, final TileFixture fix) {
+		IMutableTile tile = state.getTile(location);
+		tile.removeFixture(fix);
+	}
+
+	@Override
+	public void setCurrentPlayer(final Player player) {
+		state.setCurrentPlayer(player.getPlayerId());
+	}
+
+	@Override
+	public void setTurn(final int turn) {
+		state.setCurrentTurn(turn);
+	}
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder("MapNGAdapter:\n");
+		builder.append("Map version: ");
+		builder.append(dimensions().version);
+		builder.append("\nRows: ");
+		builder.append(dimensions().rows);
+		builder.append("\nColumns: ");
+		builder.append(dimensions().cols);
+		builder.append("\nCurrent Turn: ");
+		builder.append(getCurrentTurn());
+		builder.append("\n\nPlayers:\n");
+		for (Player player : players()) {
+			if (player != null) {
+				builder.append(player.toString());
+				if (player.equals(getCurrentPlayer())) {
+					builder.append(" (current)");
+				}
+				builder.append("\n");
+			}
+		}
+		builder.append("\nContents:\n");
+		for (Point location : locations()) {
+			builder.append("At ");
+			builder.append(location.toString());
+			builder.append(": ");
+			if (isMountainous(location)) {
+				builder.append("mountains, ");
+			}
+			builder.append("ground: ");
+			builder.append(getGround(location));
+			builder.append(", forest: ");
+			builder.append(getForest(location));
+			builder.append(", rivers:");
+			for (River river : getRivers(location)) {
+				builder.append(" ");
+				builder.append(river.toString());
+			}
+			builder.append(", other: ");
+			for (TileFixture fixture : getOtherFixtures(location)) {
+				builder.append("\n");
+				builder.append(fixture.toString());
+//				builder.append(" (");
+//				builder.append(fixture.getClass().getSimpleName());
+//				builder.append(")");
+			}
+		}
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 }

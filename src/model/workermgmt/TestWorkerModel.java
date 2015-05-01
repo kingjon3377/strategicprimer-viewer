@@ -8,10 +8,10 @@ import java.util.Collections;
 import java.util.List;
 
 import model.map.MapDimensions;
-import model.map.MapView;
 import model.map.Player;
+import model.map.PlayerCollection;
 import model.map.Point;
-import model.map.SPMap;
+import model.map.SPMapNG;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.IUnit;
@@ -21,11 +21,9 @@ import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.towns.Fortress;
-import model.viewer.PointIterator;
 
 import org.junit.Test;
 
-import util.IteratorWrapper;
 import util.NullCleaner;
 
 /**
@@ -42,7 +40,9 @@ public class TestWorkerModel {
 	@SuppressWarnings("static-method")
 	@Test
 	public void testGetUnits() {
-		final SPMap map = new SPMap(new MapDimensions(3, 3, 2));
+		final SPMapNG map =
+				new SPMapNG(new MapDimensions(3, 3, 2), new PlayerCollection(),
+						-1);
 		final Player playerOne = new Player(0, "player1");
 		final Player playerTwo = new Player(1, "player2");
 		final Player playerThree = new Player(2, "player3");
@@ -67,14 +67,11 @@ public class TestWorkerModel {
 				listOne);
 		fixtures.add(new Oasis(8));
 		Collections.shuffle(fixtures);
-		final Iterable<Point> iter = new IteratorWrapper<>(new PointIterator(
-				map.getDimensions(), null, true, true));
-		for (final Point point : iter) {
-			map.getTile(NullCleaner.assertNotNull(point)).addFixture(
+		for (final Point point : map.locations()) {
+			map.addFixture(NullCleaner.assertNotNull(point),
 					NullCleaner.assertNotNull(fixtures.remove(0)));
 		}
-		final IWorkerModel model = new WorkerModel(new MapView(map, 0, 0),
-				new File(""));
+		final IWorkerModel model = new WorkerModel(map, new File(""));
 		final List<IUnit> listOneA = model.getUnits(playerOne);
 		assertTrue("Got all units for player 1", listOneA.containsAll(listOne));
 		assertTrue("And didn't miss any for player 1",

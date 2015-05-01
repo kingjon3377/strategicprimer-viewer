@@ -10,7 +10,8 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.IMap;
-import model.map.IPlayerCollection;
+import model.map.IMapView;
+import model.map.IMutablePlayerCollection;
 import model.map.ITile;
 import model.map.MapDimensions;
 import model.map.MapView;
@@ -39,6 +40,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
+@SuppressWarnings("deprecation")
 public final class CompactMapReader extends AbstractCompactReader<IMap> {
 	/**
 	 * Singleton instance.
@@ -64,7 +66,7 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 	@Override
 	public IMap read(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
-			final IPlayerCollection players, final Warning warner,
+			final IMutablePlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, MAP_TAG, "view");
 		if ("view".equalsIgnoreCase(element.getName().getLocalPart())) {
@@ -89,7 +91,8 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 				spinUntilEnd(assertNotNull(element.getName()), stream);
 				return retval; // NOPMD:
 			} catch (ParseException e) {
-				throw new SPMalformedInputException(mapElement.getLocation().getLineNumber(), e);
+				throw new SPMalformedInputException(mapElement.getLocation()
+						.getLineNumber(), e);
 			}
 			// TODO: Perhaps split this into parseMap/parseView?
 		} else {
@@ -150,7 +153,8 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 						CompactTileReader.READER.read(elem, stream,
 								map.getPlayers(), warner, idFactory));
 			} catch (ParseException e) {
-				throw new SPMalformedInputException(elem.getLocation().getLineNumber(), e);
+				throw new SPMalformedInputException(elem.getLocation()
+						.getLineNumber(), e);
 			}
 		} else if (EqualsAny.equalsAny(tag, ISPReader.FUTURE)) {
 			warner.warn(new UnsupportedTagException(tag, elem.getLocation()
@@ -211,9 +215,9 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 			ostream.append(Integer.toString(obj.getPlayers().getCurrentPlayer()
 					.getPlayerId()));
 			ostream.append("\" current_turn=\"");
-			ostream.append(Integer.toString(((MapView) obj).getCurrentTurn()));
+			ostream.append(Integer.toString(((IMapView) obj).getCurrentTurn()));
 			ostream.append("\">\n");
-			write(ostream, ((MapView) obj).getMap(), indent + 1);
+			write(ostream, ((IMapView) obj).getMap(), indent + 1);
 			ostream.append(indent(indent));
 			ostream.append("</view>\n");
 		} else if (obj instanceof SPMap) {

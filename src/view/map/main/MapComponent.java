@@ -15,7 +15,6 @@ import javax.swing.JComponent;
 import model.listeners.GraphicalParamsListener;
 import model.listeners.MapChangeListener;
 import model.listeners.SelectionChangeListener;
-import model.map.ITile;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
@@ -163,8 +162,8 @@ public final class MapComponent extends JComponent implements MapGUI,
 			for (int j = minX; j < maxX && j + minCol < maxCol + 1; j++) {
 				final Point location = PointFactory.point(i + minRow, j
 						+ minCol);
-				paintTile(pen, model.getTile(location), i, j, getMapModel()
-						.getSelectedPoint().equals(location));
+				paintTile(pen, location, i, j,
+						getMapModel().getSelectedPoint().equals(location));
 			}
 		}
 	}
@@ -187,16 +186,16 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 * Paint a tile.
 	 *
 	 * @param pen the graphics context
-	 * @param tile the tile to paint
+	 * @param point the point being drawn
 	 * @param row which row this is
 	 * @param col which column this is
 	 * @param selected whether the tile is the selected tile
 	 */
-	private void paintTile(final Graphics pen, final ITile tile, final int row,
+	private void paintTile(final Graphics pen, final Point point, final int row,
 			final int col, final boolean selected) {
 		final int tsize = TileViewSize.scaleZoom(getMapModel().getZoomLevel(),
 				getMapModel().getMapDimensions().getVersion());
-		helper.drawTile(pen, tile,
+		helper.drawTile(pen, model.getMap(), point,
 				PointFactory.coordinate(col * tsize, row * tsize),
 				PointFactory.coordinate(tsize, tsize));
 		if (selected) {
@@ -251,18 +250,6 @@ public final class MapComponent extends JComponent implements MapGUI,
 	@Override
 	public void selectedPointChanged(@Nullable final Point old,
 			final Point newPoint) {
-		if (!isSelectionVisible()) {
-			fixVisibility();
-		}
-		repaint();
-	}
-
-	/**
-	 * @param old ignored
-	 * @param newTile ignored
-	 */
-	@Override
-	public void selectedTileChanged(@Nullable final ITile old, final ITile newTile) {
 		if (!isSelectionVisible()) {
 			fixVisibility();
 		}

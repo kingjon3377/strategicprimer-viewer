@@ -7,7 +7,8 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IFixture;
 import model.map.IMap;
-import model.map.IPlayerCollection;
+import model.map.IMapNG;
+import model.map.IMutablePlayerCollection;
 import model.map.ITile;
 import model.map.Player;
 import model.map.River;
@@ -63,7 +64,7 @@ public final class CompactReaderAdapter {
 	 */
 	public static <T> T parse(final Class<T> type, final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
-			final IPlayerCollection players, final Warning warner,
+			final IMutablePlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		// ESCA-JAVA0177:
 		final CompactReader<T> reader; // NOPMD
@@ -86,12 +87,14 @@ public final class CompactReaderAdapter {
 	 * @param type the type
 	 * @return a reader for the type
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	// We *do* check ... but neither Java nor Eclipse can know that
 	private static <T> CompactReader<T> getReader(final Class<T> type) {
 		final CompactReader<T> reader; // NOPMD
 		if (IMap.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactMapReader.READER;
+		} else if (IMapNG.class.isAssignableFrom(type)) {
+			reader = (CompactReader<T>) CompactMapNGReader.READER;
 		} else if (ITile.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactTileReader.READER;
 		} else if (Player.class.isAssignableFrom(type)) {
@@ -151,13 +154,15 @@ public final class CompactReaderAdapter {
 	 * @param indent the current indentation level.
 	 * @throws IOException on I/O problems
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	public static void write(final Appendable ostream, final Object obj,
 			final int indent) throws IOException {
 		@SuppressWarnings("rawtypes") // NOPMD
 		final CompactReader reader; // NOPMD
 		if (obj instanceof IMap) {
 			reader = CompactMapReader.READER;
+		} else if (obj instanceof IMapNG) {
+			reader = CompactMapNGReader.READER;
 		} else if (obj instanceof ITile) {
 			reader = CompactTileReader.READER;
 		} else if (obj instanceof River) {

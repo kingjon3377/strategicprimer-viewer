@@ -5,7 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-import model.map.IMap;
+import model.map.IMapNG;
+import model.map.MapNGReverseAdapter;
 import controller.map.iointerfaces.SPWriter;
 
 /**
@@ -24,8 +25,8 @@ public class MapWriterNG implements SPWriter {
 	 * @throws IOException on error opening the file
 	 */
 	@Override
-	public void write(final File file, final IMap map) throws IOException {
-		writeObject(file, map);
+	public void write(final File file, final IMapNG map) throws IOException {
+		writeObject(file, new MapNGReverseAdapter(map));
 	}
 	/**
 	 * Write a map.
@@ -35,8 +36,9 @@ public class MapWriterNG implements SPWriter {
 	 * @throws IOException on I/O error in writing
 	 */
 	@Override
-	public void write(final Appendable ostream, final IMap map) throws IOException {
-		writeObject(ostream, map);
+	public void write(final Appendable ostream, final IMapNG map)
+			throws IOException {
+		writeObject(ostream, new MapNGReverseAdapter(map));
 	}
 	/**
 	 * Write a SP object.

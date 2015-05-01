@@ -1,15 +1,13 @@
 package controller.map.converter;
 
 import static org.junit.Assert.assertTrue;
-import model.map.IMutableTile;
+import model.map.IMapNG;
 import model.map.MapDimensions;
-import model.map.MapView;
 import model.map.Player;
+import model.map.PlayerCollection;
 import model.map.Point;
 import model.map.PointFactory;
-import model.map.SPMap;
-import model.map.Tile;
-import model.map.TileType;
+import model.map.SPMapNG;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
@@ -32,41 +30,33 @@ public class TestConverter {
 	@SuppressWarnings("static-method")
 	@Test
 	public void testConversion() {
-		final SPMap start = new SPMap(new MapDimensions(2, 2, 2));
+		final SPMapNG start = new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), 0);
 		final Point pointOne = PointFactory.point(0, 0);
-		final IMutableTile tileOne = new Tile(TileType.Steppe);
 		final Animal fixture = new Animal("animal", false, true,
 				"domesticated", 1);
-		tileOne.addFixture(fixture);
-		start.addTile(pointOne, tileOne);
+		start.addFixture(pointOne, fixture);
 		final Point pointTwo = PointFactory.point(0, 1);
-		final IMutableTile tileTwo = new Tile(TileType.Ocean);
 		final CacheFixture fixtureTwo = new CacheFixture("gemstones", "small",
 				2);
-		tileTwo.addFixture(fixtureTwo);
-		start.addTile(pointTwo, tileTwo);
+		start.addFixture(pointTwo, fixtureTwo);
 		final Point pointThree = PointFactory.point(1, 0);
-		final IMutableTile tileThree = new Tile(TileType.Plains);
 		final IUnit fixtureThree = new Unit(new Player(0, "A. Player"),
 				"legion", "eagles", 3);
-		tileThree.addFixture(fixtureThree);
-		start.addTile(pointThree, tileThree);
+		start.addFixture(pointThree, fixtureThree);
 		final Point pointFour = PointFactory.point(1, 1);
-		final IMutableTile tileFour = new Tile(TileType.Jungle);
 		final Fortress fixtureFour = new Fortress(new Player(1, "B. Player"),
 				"HQ", 4);
-		tileFour.addFixture(fixtureFour);
-		start.addTile(pointFour, tileFour);
-		final MapView converted = ResolutionDecreaseConverter.convert(start);
+		start.addFixture(pointFour, fixtureFour);
+		final IMapNG converted = ResolutionDecreaseConverter.convert(start);
 		final Point zeroPoint = PointFactory.point(0, 0);
 		assertTrue("Combined tile should contain fixtures from tile one",
-				doesIterableContain(converted.getTile(zeroPoint), fixture));
+				doesIterableContain(converted.getOtherFixtures(zeroPoint), fixture));
 		assertTrue("Combined tile should contain fixtures from tile two",
-				doesIterableContain(converted.getTile(zeroPoint), fixtureTwo));
+				doesIterableContain(converted.getOtherFixtures(zeroPoint), fixtureTwo));
 		assertTrue("Combined tile should contain fixtures from tile three",
-				doesIterableContain(converted.getTile(zeroPoint), fixtureThree));
+				doesIterableContain(converted.getOtherFixtures(zeroPoint), fixtureThree));
 		assertTrue("Combined tile should contain fixtures from tile four",
-				doesIterableContain(converted.getTile(zeroPoint), fixtureFour));
+				doesIterableContain(converted.getOtherFixtures(zeroPoint), fixtureFour));
 	}
 
 	/**

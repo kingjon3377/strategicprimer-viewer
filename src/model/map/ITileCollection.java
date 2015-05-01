@@ -2,8 +2,9 @@ package model.map;
 /**
  * An interface for a collection of tiles.
  * @author Jonathan Lovelace
- *
+ * @deprecated the old map API is deprecated in this branch
  */
+@Deprecated
 public interface ITileCollection extends Iterable<Point>,
 		Subsettable<ITileCollection> {
 

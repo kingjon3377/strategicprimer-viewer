@@ -15,18 +15,18 @@ import javax.xml.stream.XMLStreamException;
 import model.exploration.SurroundingPointIterable;
 import model.map.HasOwner;
 import model.map.IFixture;
-import model.map.IMap;
-import model.map.IMutableMap;
-import model.map.IMutableTile;
-import model.map.ITile;
+import model.map.IMapNG;
+import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
+import model.map.fixtures.Ground;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.resources.CacheFixture;
+import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.ITownFixture;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -99,7 +99,7 @@ public class ExpansionDriver implements ISPDriver {
 					new IllegalArgumentException("Need at least two arguments"));
 		}
 		final File masterFile = new File(args[0]);
-		final IMap masterMap;
+		final IMapNG masterMap;
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		try {
 			masterMap = reader.readMap(masterFile, Warning.INSTANCE);
@@ -118,7 +118,7 @@ public class ExpansionDriver implements ISPDriver {
 				continue;
 			}
 			final File file = new File(arg);
-			final IMap map;
+			final IMapNG map;
 			try {
 				 map = reader.readMap(file, Warning.INSTANCE);
 			} catch (final MapVersionException except) {
@@ -150,12 +150,12 @@ public class ExpansionDriver implements ISPDriver {
 	 * @return true if the operation succeeded, false if the player's map was
 	 *         immutable
 	 */
-	private static boolean expand(final IMap master, final IMap map) {
-		if (!(map instanceof IMutableMap)) {
+	private static boolean expand(final IMapNG master, final IMapNG map) {
+		if (!(map instanceof IMutableMapNG)) {
 			return false;
 		}
-		IMutableMap lmap = (IMutableMap) map;
-		final Player player = map.getPlayers().getCurrentPlayer();
+		IMutableMapNG lmap = (IMutableMapNG) map;
+		final Player player = map.getCurrentPlayer();
 		final Map<Point, TileType> terrainAdditions = new HashMap<>();
 		final Map<Point, Set<TileFixture>> fixAdditions = new HashMap<>();
 		final IllegalStateException ise =
@@ -253,7 +253,7 @@ public class ExpansionDriver implements ISPDriver {
 			}
 		};
 		final Set<Point> villagePoints = new ArraySet<>();
-		for (final Point point : lmap.getTiles()) {
+		for (final Point point : lmap.locations()) {
 			if (point != null && containsSwornVillage(master, point, player)) {
 				villagePoints.add(point);
 			}
@@ -270,7 +270,7 @@ public class ExpansionDriver implements ISPDriver {
 			if (entry == null) {
 				continue;
 			}
-			lmap.getTile(NullCleaner.assertNotNull(entry.getKey())).setTerrain(
+			lmap.setBaseTerrain(NullCleaner.assertNotNull(entry.getKey()),
 					NullCleaner.assertNotNull(entry.getValue()));
 		}
 		for (final Map.Entry<Point, Set<TileFixture>> entry : fixAdditions
@@ -278,10 +278,9 @@ public class ExpansionDriver implements ISPDriver {
 			if (entry == null) {
 				continue;
 			}
-			final IMutableTile tile =
-					lmap.getTile(NullCleaner.assertNotNull(entry.getKey()));
 			for (final TileFixture fix : entry.getValue()) {
-				tile.addFixture(NullCleaner.assertNotNull(fix));
+				lmap.addFixture(NullCleaner.assertNotNull(entry.getKey()),
+						NullCleaner.assertNotNull(fix));
 			}
 		}
 		return true;
@@ -298,19 +297,27 @@ public class ExpansionDriver implements ISPDriver {
 	 *            a "unit" (probably a mock-object) indicating the player we're
 	 *            concerned with.
 	 */
-	private static void addSurroundingFixtures(final Point point, final IMap master,
-			final Map<Point, Set<TileFixture>> additions, final IUnit owned) {
+	private static void addSurroundingFixtures(final Point point,
+			final IMapNG master, final Map<Point, Set<TileFixture>> additions,
+			final IUnit owned) {
 		final List<TileFixture> possibilities = new ArrayList<>();
 		for (final Point neighbor : new SurroundingPointIterable(point,
-				master.getDimensions())) {
+				master.dimensions())) {
 			if (neighbor == null) {
 				continue;
 			}
 			final Set<TileFixture> neighborFixtures =
 					getSetFromMap(additions, neighbor);
-			final ITile ntile = master.getTile(neighbor);
 			possibilities.clear();
-			for (final TileFixture fix : ntile) {
+			Ground ground = master.getGround(neighbor);
+			Forest forest = master.getForest(neighbor);
+			if (ground != null) {
+				possibilities.add(ground);
+			}
+			if (forest != null) {
+				possibilities.add(forest);
+			}
+			for (final TileFixture fix : master.getOtherFixtures(neighbor)) {
 				if (fix == null || neighborFixtures.contains(fix)) {
 					continue;
 				} else if (SimpleMovement.shouldAlwaysNotice(owned, fix)) {
@@ -356,16 +363,19 @@ public class ExpansionDriver implements ISPDriver {
 	 * @param additions
 	 *            a collection of additions to make (by which they are returned)
 	 */
-	private static void addSurroundingTerrain(final Point point, final IMap master,
-			final IMutableMap map, final Map<Point, TileType> additions) {
+	private static void addSurroundingTerrain(final Point point, final IMapNG master,
+			final IMutableMapNG map, final Map<Point, TileType> additions) {
 		for (final Point neighbor : new SurroundingPointIterable(point,
-				map.getDimensions())) {
+				map.dimensions())) {
 			if (neighbor == null) {
 				continue;
 			}
 			if (!additions.containsKey(neighbor)
-					&& map.getTile(neighbor).isEmpty()) {
-				additions.put(neighbor, master.getTile(neighbor).getTerrain());
+					&& TileType.NotVisible.equals(map.getBaseTerrain(neighbor))) {
+				additions.put(neighbor, master.getBaseTerrain(neighbor));
+				if (master.isMountainous(neighbor)) {
+					map.setMountainous(neighbor, true);
+				}
 			}
 		}
 	}
@@ -379,10 +389,9 @@ public class ExpansionDriver implements ISPDriver {
 	 * @return whether there is a village or town at that location that belongs
 	 *         to that player
 	 */
-	private static boolean containsSwornVillage(final IMap map, final Point point,
+	private static boolean containsSwornVillage(final IMapNG map, final Point point,
 			final Player player) {
-		final ITile tile = map.getTile(point);
-		for (final TileFixture fix : tile) {
+		for (final TileFixture fix : map.getOtherFixtures(point)) {
 			if (fix instanceof ITownFixture
 					&& ((HasOwner) fix).getOwner().equals(player)) {
 				return true;

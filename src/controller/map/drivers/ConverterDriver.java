@@ -12,8 +12,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.stream.XMLStreamException;
 
-import model.map.IMap;
-import model.map.MapView;
+import model.map.IMapNG;
 import util.TypesafeLogger;
 import util.Warning;
 import controller.map.converter.ResolutionDecreaseConverter;
@@ -90,14 +89,14 @@ public final class ConverterDriver implements ISPDriver {
 			SYS_OUT.print(" ... ");
 			final File file = new File(filename);
 			try {
-				final IMap old = READER.readMap(file, Warning.INSTANCE);
+				final IMapNG old = READER.readMap(file, Warning.INSTANCE);
 				SYS_OUT.println(" ... Converting ... ");
 				final String newFilename = filename + ".new";
 				final File newFile = new File(newFilename);
-				final MapView map = ResolutionDecreaseConverter.convert(old);
+				final IMapNG map = ResolutionDecreaseConverter.convert(old);
 				SYS_OUT.print("About to write ");
 				SYS_OUT.println(newFilename);
-				new MapReaderAdapter().write(newFile, map); // NOPMD
+				new MapReaderAdapter().write(newFile, map); //NOPMD
 			} catch (final MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename
 						+ " not acceptable to reader", e);

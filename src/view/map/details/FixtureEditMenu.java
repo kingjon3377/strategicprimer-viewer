@@ -20,7 +20,6 @@ import model.map.HasName;
 import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.IMutablePlayerCollection;
-import model.map.IPlayerCollection;
 import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.fixtures.UnitMember;
@@ -106,7 +105,7 @@ public class FixtureEditMenu extends JPopupMenu {
 	 *            or kind has changed.
 	 */
 	public FixtureEditMenu(final IFixture fixture,
-			final IPlayerCollection players,
+			final Iterable<Player> players,
 			final IWorkerTreeModel... changeListeners) {
 		for (final IWorkerTreeModel listener : changeListeners) {
 			listeners.add(listener);
@@ -186,7 +185,7 @@ public class FixtureEditMenu extends JPopupMenu {
 	 * @param players a collection of players
 	 * @return it as an array
 	 */
-	protected static Player[] playersAsArray(final IPlayerCollection players) {
+	protected static Player[] playersAsArray(final Iterable<Player> players) {
 		if (players instanceof IMutablePlayerCollection) {
 			return ((PlayerCollection) players).asArray(); // NOPMD
 		} else {

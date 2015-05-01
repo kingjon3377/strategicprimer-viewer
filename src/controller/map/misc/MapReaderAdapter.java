@@ -5,8 +5,8 @@ import java.io.IOException;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.map.IMap;
-import model.map.MapView;
+import model.map.IMapNG;
+import model.map.IMutableMapNG;
 import util.Warning;
 import controller.map.cxml.CompactXMLReader;
 import controller.map.cxml.CompactXMLWriter;
@@ -53,7 +53,7 @@ public class MapReaderAdapter {
 	 *             if the reader can't handle this map version or there are map
 	 *             format errors
 	 */
-	public MapView readMap(final File file, final Warning warner)
+	public IMutableMapNG readMap(final File file, final Warning warner)
 			throws IOException, XMLStreamException, SPFormatException {
 		return reader.readMap(file, warner);
 	}
@@ -64,7 +64,7 @@ public class MapReaderAdapter {
 	 * @param map the map to write
 	 * @throws IOException on error opening the file
 	 */
-	public void write(final File file, final IMap map) throws IOException {
+	public void write(final File file, final IMapNG map) throws IOException {
 		writer.write(file, map);
 	}
 	/**
