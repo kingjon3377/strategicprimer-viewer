@@ -526,7 +526,6 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 
 	@Override
 	public void setTurn(final int turn) {
-		// TODO Auto-generated method stub
-
+		state.setCurrentTurn(turn);
 	}
 }
