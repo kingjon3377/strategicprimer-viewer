@@ -570,6 +570,9 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 			for (TileFixture fixture : getOtherFixtures(location)) {
 				builder.append("\n");
 				builder.append(fixture.toString());
+//				builder.append(" (");
+//				builder.append(fixture.getClass().getSimpleName());
+//				builder.append(")");
 			}
 		}
 		return NullCleaner.assertNotNull(builder.toString());

@@ -431,6 +431,9 @@ public class SPMapNG implements IMutableMapNG {
 			for (TileFixture fixture : getOtherFixtures(location)) {
 				builder.append("\n");
 				builder.append(fixture.toString());
+//				builder.append(" (");
+//				builder.append(fixture.getClass().getSimpleName());
+//				builder.append(")");
 			}
 		}
 		return NullCleaner.assertNotNull(builder.toString());
