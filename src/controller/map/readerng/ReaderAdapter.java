@@ -126,6 +126,7 @@ public class ReaderAdapter implements INodeHandler<Object> {
 		factoryFour(new WorkerReader(), new SkillReader(), new StatsReader(),
 				new AdventureReader());
 		factory(new PortalReader());
+//		factory(new MapNGReader());
 	}
 
 	/**
