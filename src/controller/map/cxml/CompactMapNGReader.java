@@ -358,7 +358,7 @@ public class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			}
 		}
 		ostream.append(indent(indent + 1));
-		ostream.append("</map>");
+		ostream.append("</map>\n");
 		ostream.append(indent(indent));
 		ostream.append("</view>");
 	}
