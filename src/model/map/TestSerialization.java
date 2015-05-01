@@ -84,19 +84,6 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	}
 
 	/**
-	 * @param tile a tile. Since a mutable tile collection can't contain
-	 *        immutable tiles, it must bee mutable.
-	 * @param point its location
-	 * @return a map containing the tile
-	 */
-	private static SPMap encapsulateTile(final Point point,
-			final IMutableTile tile) {
-		final SPMap retval = new SPMap(new MapDimensions(point.row + 1,
-				point.col + 1, 2));
-		retval.addTile(point, tile);
-		return retval;
-	}
-	/**
 	 * Encapsulate the given string in a 'tile' tag inside a 'map' tag.
 	 * @param str a string
 	 * @return it, encapsulated.
@@ -165,24 +152,6 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		encapsulateRivers(point, River.North, River.South), IMapNG.class);
 	}
 
-	/**
-	 * @param type
-	 *            a tile type
-	 * @param fixtures
-	 *            fixtures
-	 * @return a tile of that type containing them. Declared mutable for the
-	 *         sake of calling code.
-	 */
-	private static IMutableTile encapsulateFixtures(final TileType type,
-			final TileFixture... fixtures) {
-		final IMutableTile tile = new Tile(type);
-		for (final TileFixture fix : fixtures) {
-			if (fix != null) {
-				tile.addFixture(fix);
-			}
-		}
-		return tile;
-	}
 	/**
 	 * Create a simple SPMapNG.
 	 * @param dims the dimensions of the map
@@ -283,16 +252,20 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				createSerializedForm(five, false));
 		assertEquals(
 				"Shouldn't print empty not-visible tiles",
-				"<map version=\"2\" rows=\"1\" columns=\"1\" />\n",
+				"<view current_player=\"-1\" current_turn=\"-1\">\n\t"
+						+ "<map version=\"2\" rows=\"1\" columns=\"1\" />\n"
+						+ "</view>\n",
 				createSerializedForm(
-						encapsulateTile(point(0, 0), new Tile(NotVisible)),
-						true));
+						createSimpleMap(point(1, 1),
+								Pair.of(point(0, 0), NotVisible)), true));
 		assertEquals(
 				"Shouldn't print empty not-visible tiles",
-				"<map version=\"2\" rows=\"1\" columns=\"1\">\n</map>\n",
+				"<view current_player=\"-1\" current_turn=\"-1\">\n\t"
+						+ "<map version=\"2\" rows=\"1\" columns=\"1\">\n\t"
+						+ "</map>\n</view>\n",
 				createSerializedForm(
-						encapsulateTile(point(0, 0), new Tile(NotVisible)),
-						false));
+						createSimpleMap(point(1, 1),
+								Pair.of(point(0, 0), NotVisible)), false));
 		assertImageSerialization("Unit image property is preserved", new Unit(
 				new Player(5, ""), "herder", "herderName", 9), Unit.class);
 	}
