@@ -572,6 +572,6 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 				builder.append(fixture.toString());
 			}
 		}
-		return builder.toString();
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 }

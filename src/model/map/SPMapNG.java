@@ -433,7 +433,7 @@ public class SPMapNG implements IMutableMapNG {
 				builder.append(fixture.toString());
 			}
 		}
-		return builder.toString();
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 	/**
 	 * @param player the player to add
