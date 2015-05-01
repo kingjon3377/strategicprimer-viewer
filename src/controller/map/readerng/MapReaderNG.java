@@ -8,8 +8,11 @@ import java.io.Reader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
+import model.map.IMap;
+import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.MapNGAdapter;
+import model.map.MapNGReverseAdapter;
 import model.map.MapView;
 import model.map.PlayerCollection;
 import model.map.SPMap;
@@ -117,6 +120,8 @@ public class MapReaderNG implements IMapReader, ISPReader {
 		} else if (type.equals(MapView.class) && obj instanceof SPMap) {
 			return (T) new MapView((SPMap) obj, ((SPMap) obj).getPlayers()
 					.getCurrentPlayer().getPlayerId(), 0);
+		} else if (type.isAssignableFrom(IMap.class) && obj instanceof IMapNG) {
+			return (T) new MapNGReverseAdapter((IMapNG) obj);
 		} else {
 			throw new IllegalArgumentException("We want a node producing "
 					+ type.getSimpleName() + ", not "
