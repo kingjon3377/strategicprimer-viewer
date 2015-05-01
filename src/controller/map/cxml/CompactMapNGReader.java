@@ -45,7 +45,7 @@ import controller.map.misc.IDFactory;
  * @author Jonathan Lovelace
  *
  */
-public class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
+public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	/**
 	 * Singleton instance.
 	 */
