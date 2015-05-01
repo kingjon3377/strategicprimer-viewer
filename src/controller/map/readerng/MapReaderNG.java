@@ -12,11 +12,11 @@ import model.map.IMap;
 import model.map.IMapNG;
 import model.map.IMapView;
 import model.map.IMutableMapNG;
-import model.map.MapNGAdapter;
 import model.map.MapNGReverseAdapter;
 import model.map.MapView;
 import model.map.PlayerCollection;
 import model.map.SPMap;
+import model.map.SPMapNG;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
@@ -71,7 +71,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	@Override
 	public IMutableMapNG readMap(final File file, final Reader istream,
 			final Warning warner) throws XMLStreamException, SPFormatException {
-		return new MapNGAdapter(readXML(file, istream, MapView.class, warner));
+		return readXML(file, istream, SPMapNG.class, warner);
 	}
 	/**
 	 * @param <T> A supertype of the object the XML represents
