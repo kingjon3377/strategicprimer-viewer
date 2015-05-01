@@ -387,12 +387,53 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
-	 * FIXME: Implement properly.
 	 * @return a String representation of the object
 	 */
 	@Override
 	public String toString() {
-		return "SPMapNG: FIXME: Implement properly";
+		StringBuilder builder = new StringBuilder("SPMapNG:\n");
+		builder.append("Map version: ");
+		builder.append(dimensions().version);
+		builder.append("\nRows: ");
+		builder.append(dimensions().rows);
+		builder.append("\nColumns: ");
+		builder.append(dimensions().cols);
+		builder.append("\nCurrent Turn: ");
+		builder.append(getCurrentTurn());
+		builder.append("\n\nPlayers:\n");
+		for (Player player : players()) {
+			if (player != null) {
+				builder.append(player.toString());
+				if (player.equals(getCurrentPlayer())) {
+					builder.append(" (current)");
+				}
+				builder.append("\n");
+			}
+		}
+		builder.append("\nContents:\n");
+		for (Point location : locations()) {
+			builder.append("At ");
+			builder.append(location.toString());
+			builder.append(": ");
+			if (isMountainous(location)) {
+				builder.append("mountains, ");
+			}
+			builder.append("ground: ");
+			builder.append(getGround(location));
+			builder.append(", forest: ");
+			builder.append(getForest(location));
+			builder.append(", rivers:");
+			for (River river : getRivers(location)) {
+				builder.append(" ");
+				builder.append(river.toString());
+			}
+			builder.append(", other: ");
+			for (TileFixture fixture : getOtherFixtures(location)) {
+				builder.append("\n");
+				builder.append(fixture.toString());
+			}
+		}
+		return builder.toString();
 	}
 	/**
 	 * @param player the player to add

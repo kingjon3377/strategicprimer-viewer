@@ -50,7 +50,7 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 	 * @param context
 	 *            a string to print before every line of output, describing the
 	 *            context
-	 * @return whether it is a strict subset of this map.
+	 * @return whether it is a strict subset of map.
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
@@ -318,7 +318,7 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 	}
 	/**
 	 * @param obj another map
-	 * @return whether it equals this one
+	 * @return whether it equals one
 	 */
 	private boolean equalsImpl(final IMapNG obj) {
 		if (dimensions().equals(obj.dimensions())
@@ -527,5 +527,51 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 	@Override
 	public void setTurn(final int turn) {
 		state.setCurrentTurn(turn);
+	}
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder("MapNGAdapter:\n");
+		builder.append("Map version: ");
+		builder.append(dimensions().version);
+		builder.append("\nRows: ");
+		builder.append(dimensions().rows);
+		builder.append("\nColumns: ");
+		builder.append(dimensions().cols);
+		builder.append("\nCurrent Turn: ");
+		builder.append(getCurrentTurn());
+		builder.append("\n\nPlayers:\n");
+		for (Player player : players()) {
+			if (player != null) {
+				builder.append(player.toString());
+				if (player.equals(getCurrentPlayer())) {
+					builder.append(" (current)");
+				}
+				builder.append("\n");
+			}
+		}
+		builder.append("\nContents:\n");
+		for (Point location : locations()) {
+			builder.append("At ");
+			builder.append(location.toString());
+			builder.append(": ");
+			if (isMountainous(location)) {
+				builder.append("mountains, ");
+			}
+			builder.append("ground: ");
+			builder.append(getGround(location));
+			builder.append(", forest: ");
+			builder.append(getForest(location));
+			builder.append(", rivers:");
+			for (River river : getRivers(location)) {
+				builder.append(" ");
+				builder.append(river.toString());
+			}
+			builder.append(", other: ");
+			for (TileFixture fixture : getOtherFixtures(location)) {
+				builder.append("\n");
+				builder.append(fixture.toString());
+			}
+		}
+		return builder.toString();
 	}
 }
