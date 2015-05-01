@@ -19,7 +19,7 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 
 /**
- * A reader for portals
+ * A reader for portals.
  *
  * @author Jonathan Lovelace
  * @deprecated ReaderNG is deprecated

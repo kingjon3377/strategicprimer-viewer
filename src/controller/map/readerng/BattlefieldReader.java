@@ -46,8 +46,8 @@ public class BattlefieldReader implements INodeHandler<Battlefield> {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Battlefield fix =
 				new Battlefield(XMLHelper.parseInt(getAttribute(element, "dc"),
-						NullCleaner.assertNotNull(element.getLocation())), getOrGenerateID(element,
-						warner, idFactory));
+						NullCleaner.assertNotNull(element.getLocation())),
+						getOrGenerateID(element, warner, idFactory));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}

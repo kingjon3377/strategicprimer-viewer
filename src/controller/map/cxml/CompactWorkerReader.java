@@ -101,15 +101,23 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	private static WorkerStats parseStats(final StartElement element,
 			final IteratorWrapper<XMLEvent> stream) throws SPFormatException {
 		requireTag(element, "stats");
-		final WorkerStats retval = new WorkerStats(
-				parseInt(getParameter(element, "hp"), element.getLocation().getLineNumber()),
-				parseInt(getParameter(element, "max"), element.getLocation().getLineNumber()),
-				parseInt(getParameter(element, "str"), element.getLocation().getLineNumber()),
-				parseInt(getParameter(element, "dex"), element.getLocation().getLineNumber()),
-				parseInt(getParameter(element, "con"), element.getLocation().getLineNumber()),
-				parseInt(getParameter(element, "int"), element.getLocation().getLineNumber()),
-				parseInt(getParameter(element, "wis"), element.getLocation().getLineNumber()),
-				parseInt(getParameter(element, "cha"), element.getLocation().getLineNumber()));
+		final WorkerStats retval =
+				new WorkerStats(parseInt(getParameter(element, "hp"), element
+						.getLocation().getLineNumber()), parseInt(
+						getParameter(element, "max"), element.getLocation()
+								.getLineNumber()), parseInt(
+						getParameter(element, "str"), element.getLocation()
+								.getLineNumber()), parseInt(
+						getParameter(element, "dex"), element.getLocation()
+								.getLineNumber()), parseInt(
+						getParameter(element, "con"), element.getLocation()
+								.getLineNumber()), parseInt(
+						getParameter(element, "int"), element.getLocation()
+								.getLineNumber()), parseInt(
+						getParameter(element, "wis"), element.getLocation()
+								.getLineNumber()), parseInt(
+						getParameter(element, "cha"), element.getLocation()
+								.getLineNumber()));
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		return retval;
 	}

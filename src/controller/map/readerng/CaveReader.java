@@ -47,7 +47,7 @@ public class CaveReader implements INodeHandler<Cave> {
 				new Cave(XMLHelper.parseInt(
 						XMLHelper.getAttribute(element, "dc"),
 						NullCleaner.assertNotNull(element.getLocation())),
-						getOrGenerateID(element,						warner, idFactory));
+						getOrGenerateID(element, warner, idFactory));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}

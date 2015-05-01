@@ -150,7 +150,9 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 				element, "status"));
 		final TownSize size = TownSize.parseTownSize(getParameter(element,
 				"size"));
-		final int dc = parseInt(getParameter(element, "dc"), element.getLocation().getLineNumber()); // NOPMD
+		final int dc =
+				parseInt(getParameter(element, "dc"), element.getLocation()
+						.getLineNumber()); // NOPMD
 		final int id = getOrGenerateID(element, warner, idFactory); // NOPMD
 		final Player owner = getOwnerOrIndependent(element, warner, players); //NOPMD
 		final AbstractTown retval; // NOPMD
