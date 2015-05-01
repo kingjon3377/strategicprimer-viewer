@@ -28,6 +28,7 @@ import model.map.fixtures.towns.Fortress;
 import org.junit.Test;
 
 import util.NullCleaner;
+import util.Pair;
 import util.Warning.Action;
 import controller.map.formatexceptions.SPFormatException;
 
@@ -67,18 +68,19 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	}
 
 	/**
-	 * A factory to encapsulate rivers in a tile.
+	 * A factory to encapsulate rivers in a simple map.
+	 * @param point where to put the rivers
 	 * @param rivers the rivers to put on a tile
-	 * @return a tile containing them. Declared mutable for the sake of calling code.
+	 * @return a map containing them. Declared mutable for the sake of calling code.
 	 */
-	private static IMutableTile encapsulateRivers(final River... rivers) {
-		final IMutableTile tile = new Tile(TileType.Plains);
-		for (final River river : rivers) {
-			if (river != null) {
-				tile.addRiver(river);
-			}
-		}
-		return tile;
+	private static IMutableMapNG encapsulateRivers(final Point point,
+			final River... rivers) {
+		final IMutableMapNG retval =
+				new SPMapNG(new MapDimensions(point.row + 1, point.col + 1, 2),
+						new PlayerCollection(), -1);
+		retval.setBaseTerrain(point, Plains);
+		retval.addRivers(point, rivers);
+		return retval;
 	}
 
 	/**
@@ -95,15 +97,16 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		return retval;
 	}
 	/**
-	 * Encapsulate the given string in a 'tile' tag.
+	 * Encapsulate the given string in a 'tile' tag inside a 'map' tag.
 	 * @param str a string
 	 * @return it, encapsulated.
 	 */
 	private static String encapsulateTileString(final String str) {
 		final StringBuilder builder = new StringBuilder(55 + str.length());
+		builder.append("<map version=\"2\" rows=\"2\" columns=\"2\">");
 		builder.append("<tile row=\"1\" column=\"1\" kind=\"plains\">");
 		builder.append(str);
-		builder.append("</tile>");
+		builder.append("</tile></map>");
 		return assertNotNull(builder.toString());
 	}
 	/**
@@ -121,19 +124,16 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 					NullCleaner.assertNotNull(river), River.class);
 		}
 		assertUnwantedChild(encapsulateTileString("<lake><troll /></lake>"),
-				Tile.class, false);
-		assertMissingProperty(encapsulateTileString("<river />"), Tile.class,
+				IMapNG.class, false);
+		assertMissingProperty(encapsulateTileString("<river />"), IMapNG.class,
 				"direction", false);
 		final Point point = point(0, 0);
 		assertSerialization("River in tile",
-				encapsulateTile(point, encapsulateRivers(River.East)),
-				IMap.class);
+				encapsulateRivers(point, River.East), IMapNG.class);
 		assertSerialization("Lake in tile",
-				encapsulateTile(point, encapsulateRivers(River.Lake)),
-				IMap.class);
+				encapsulateRivers(point, River.Lake), IMapNG.class);
 		assertSerialization("Another river in tile",
-				encapsulateTile(point, encapsulateRivers(River.North)),
-				IMap.class);
+				encapsulateRivers(point, River.North), IMapNG.class);
 		final Set<River> setOne = EnumSet.noneOf(River.class);
 		final Set<River> setTwo = EnumSet.noneOf(River.class);
 		assertEquals("Empty sets are equal", setOne, setTwo);
@@ -155,23 +155,14 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final Set<TileFixture> hsetTwo = new HashSet<>();
 		hsetTwo.add(fixTwo);
 		assertEquals("Check Set.equals()", fixOne, fixTwo);
-		final IMutableTile tone = new Tile(TileType.Plains);
-		tone.addFixture(fixOne);
-		final IMutableTile ttwo = new Tile(TileType.Plains);
-		ttwo.addFixture(fixTwo);
-		assertEquals("Tile.equals(), RiverFixtures built separately", tone,
-				ttwo);
 		assertEquals("Tile equality with rivers",
-				encapsulateRivers(River.North, River.South),
-				encapsulateRivers(River.North, River.South));
+				encapsulateRivers(point(1, 1), River.North, River.South),
+				encapsulateRivers(point(1, 1), River.North, River.South));
 		assertEquals("Tile equality with different order of rivers",
-				encapsulateRivers(River.North, River.South),
-				encapsulateRivers(River.South, River.North));
-		assertSerialization(
-				"Two rivers",
-				encapsulateTile(point,
-						encapsulateRivers(River.North, River.South)),
-				IMap.class);
+				encapsulateRivers(point(1, 2), River.North, River.South),
+				encapsulateRivers(point(1, 2), River.South, River.North));
+		assertSerialization("Two rivers",
+		encapsulateRivers(point, River.North, River.South), IMapNG.class);
 	}
 
 	/**
@@ -193,6 +184,23 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		return tile;
 	}
 	/**
+	 * Create a simple SPMapNG.
+	 * @param dims the dimensions of the map
+	 * @param terrain the terrain to set at various points
+	 * @return the map
+	 */
+	@SafeVarargs
+	private static IMutableMapNG createSimpleMap(final Point dims,
+			final Pair<Point, TileType>... terrain) {
+		final IMutableMapNG retval =
+				new SPMapNG(new MapDimensions(dims.row, dims.col, 2),
+						new PlayerCollection(), -1);
+		for (Pair<Point, TileType> pair : terrain) {
+			retval.setBaseTerrain(pair.first(), pair.second());
+		}
+		return retval;
+	}
+	/**
 	 * Test Tile serialization.
 	 *
 	 * @throws SPFormatException on SP format error
@@ -203,68 +211,76 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	public void testTileSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
 		assertSerialization("Simple Tile",
-				encapsulateTile(point(0, 0), new Tile(Desert)), IMap.class);
-		assertSerialization(
-				"Tile with one fixture",
-				encapsulateTile(point(1, 1),
-						encapsulateFixtures(Plains, new Griffin(1))),
-				IMap.class);
-		assertSerialization(
-				"Tile with two fixtures",
-				encapsulateTile(
-						point(2, 2),
-						encapsulateFixtures(Steppe, new Unit(new Player(1, ""),
-								"unitOne", "firstUnit", 1), new Forest(
-								"forestKind", true))), IMap.class);
-		final IMutableTile four = new Tile(Jungle);
+				createSimpleMap(point(1, 1), Pair.of(point(0, 0), Desert)),
+				IMapNG.class);
+		IMutableMapNG one =
+				createSimpleMap(point(2, 2), Pair.of(point(1, 1), Plains));
+		one.addFixture(point(1, 1), new Griffin(1));
+		assertSerialization("Tile with one fixture", one, IMapNG.class);
+		IMutableMapNG two =
+				createSimpleMap(point(3, 3), Pair.of(point(2, 2), Steppe));
+		two.addFixture(point(2, 2), new Unit(new Player(1, ""), "unitOne",
+				"firstUnit", 1));
+		two.setForest(point(2, 2), new Forest("forestKind", true));
+		assertSerialization("Tile with two fixtures", two, IMapNG.class);
+		final IMutableMapNG three =
+				createSimpleMap(point(4, 4), Pair.of(point(3, 3), Jungle));
 		final Fortress fort = new Fortress(new Player(2, ""), "fortOne", 1);
 		fort.addUnit(new Unit(new Player(2, ""), "unitTwo", "secondUnit", 2));
-		four.addFixture(fort);
-		four.addFixture(new TextFixture("Random text here", 5));
-		four.addRiver(Lake);
-		assertSerialization("More complex tile",
-				encapsulateTile(point(3, 3), four), IMap.class);
-		final SPMap five = encapsulateTile(point(4, 4), new Tile(Plains));
+		three.addFixture(point(3, 3), fort);
+		three.addFixture(point(3, 3), new TextFixture("Random text here", 5));
+		three.addRivers(point(3, 3), Lake);
+		System.out.println(createSerializedForm(three, false));
+		assertSerialization("More complex tile", three, IMapNG.class);
+		IMutableMapNG four =
+				createSimpleMap(point(5, 5), Pair.of(point(4, 4), Plains));
 		final String oldKindProperty = "type"; // NOPMD
 		assertDeprecatedDeserialization(
-				"Deserialization of deprecated tile-type idiom", five,
-				assertNotNull(createSerializedForm(five, true)
-						.replace("kind", oldKindProperty)), IMap.class,
-				oldKindProperty);
+				"Deserialization of deprecated tile-type idiom",
+				four,
+				assertNotNull(createSerializedForm(four, true).replace("kind",
+						oldKindProperty)), IMapNG.class, oldKindProperty);
 		assertDeprecatedDeserialization(
-				"Deserialization of deprecated tile-type idiom", five,
-				assertNotNull(createSerializedForm(five, false)
-						.replace("kind", oldKindProperty)), IMap.class,
+				"Deserialization of deprecated tile-type idiom", four,
+				assertNotNull(createSerializedForm(four, false)
+						.replace("kind", oldKindProperty)), IMapNG.class,
 				oldKindProperty);
-		assertMissingProperty("<tile column=\"0\" kind=\"plains\" />",
-				Tile.class, "row", false);
-		assertMissingProperty("<tile row=\"0\" kind=\"plains\" />", Tile.class,
+		assertMissingProperty("<map version=\"2\" rows=\"1\" columns=\"1\">"
+				+ "<tile column=\"0\" kind=\"plains\" /></map>", IMapNG.class,
+				"row", false);
+		assertMissingProperty("<map version=\"2\" rows=\"1\" columns=\"1\">"
+				+ "<tile row=\"0\" kind=\"plains\" /></map>", IMapNG.class,
 				"column", false);
-		assertMissingProperty("<tile row=\"0\" column=\"0\" />", Tile.class,
-				KIND_PROPERTY, false);
+		assertMissingProperty("<map version=\"2\" rows=\"1\" columns=\"1\">"
+				+ "<tile row=\"0\" column=\"0\" /></map>", IMapNG.class,
+				KIND_PROPERTY, true);
 		assertUnwantedChild(
 				encapsulateTileString("<tile row=\"2\" column=\"0\" "
-						+ "kind=\"plains\" />"), Tile.class, false);
-		final IMutableTile six = encapsulateFixtures(TileType.Jungle, new Unit(
-				new Player(2, ""), "explorer", "name one", 1), new Unit(
+						+ "kind=\"plains\" />"), IMapNG.class, false);
+		final IMutableMapNG five =
+				createSimpleMap(point(3, 4), Pair.of(point(2, 3), Jungle));
+		five.addFixture(point(2, 3), new Unit(
+				new Player(2, ""), "explorer", "name one", 1));
+		five.addFixture(point(2, 3), new Unit(
 				new Player(2, ""), "explorer", "name two", 2));
-		assertEquals("Just checking ...", 2, iteratorSize(six));
-		assertSerialization("Multiple units should come through",
-				encapsulateTile(point(2, 3), six), IMap.class);
+		assertEquals("Just checking ...", 2,
+				iteratorSize(five.getOtherFixtures(point(2, 3))));
+		assertSerialization("Multiple units should come through", five,
+				IMapNG.class);
 		final String xmlTwo = new StringBuilder(280)
-				.append("<map version=\"2\" rows=\"3\" columns=\"4\">\n")
-				.append("\t<row index=\"2\">\n")
-				.append("\t\t<tile row=\"2\" column=\"3\" kind=\"jungle\">\n")
-				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" ")
+				.append("<view current_player=\"-1\" current_turn=\"-1\">\n")
+				.append("\t<map version=\"2\" rows=\"3\" columns=\"4\">\n")
+				.append("\t\t<row index=\"2\">\n")
+				.append("\t\t\t<tile row=\"2\" column=\"3\" kind=\"jungle\">\n")
+				.append("\t\t\t\t<unit owner=\"2\" kind=\"explorer\" ")
 				.append("name=\"name one\" id=\"1\" />\n")
-				.append("\t\t\t<unit owner=\"2\" kind=\"explorer\" ")
+				.append("\t\t\t\t<unit owner=\"2\" kind=\"explorer\" ")
 				.append("name=\"name two\" id=\"2\" />\n")
-				.append("\t\t</tile>\n").append("\t</row>\n</map>\n")
+				.append("\t\t\t</tile>\n").append("\t\t</row>\n\t</map>\n</view>\n")
 				.toString();
+		assertEquals("Multiple units", xmlTwo, createSerializedForm(five, true));
 		assertEquals("Multiple units", xmlTwo,
-				createSerializedForm(encapsulateTile(point(2, 3), six), true));
-		assertEquals("Multiple units", xmlTwo,
-				createSerializedForm(encapsulateTile(point(2, 3), six), false));
+				createSerializedForm(five, false));
 		assertEquals(
 				"Shouldn't print empty not-visible tiles",
 				"<map version=\"2\" rows=\"1\" columns=\"1\" />\n",
@@ -294,14 +310,14 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertEquivalentForms("Two maps, one with row tags, one without",
 				"<map rows=\"1\" columns=\"1\" version=\"2\" />",
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><row /></map>",
-				IMap.class, Action.Die);
+				IMapNG.class, Action.Die);
 		assertEquivalentForms("Two maps, one with future tag, one without",
 				"<map rows=\"1\" columns=\"1\" version=\"2\" />",
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>",
-				IMap.class, Action.Ignore);
+				IMapNG.class, Action.Ignore);
 		assertUnsupportedTag(
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>",
-				IMap.class, "future", true);
+				IMapNG.class, "future", true);
 	}
 
 	/**
@@ -316,16 +332,19 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 			SPFormatException, IOException {
 		assertUnwantedChild(
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><hill /></map>",
-				IMap.class, false);
-		final SPMap one = new SPMap(new MapDimensions(1, 1, 2));
-		one.addPlayer(new Player(1, "playerOne"));
-		one.getPlayers().getPlayer(1).setCurrent(true);
+				IMapNG.class, false);
+		final SPMapNG one =
+				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
+						-1);
+		final Player player = new Player(1, "playerOne");
+		player.setCurrent(true);
+		one.addPlayer(player);
 		final Point point = point(0, 0);
-		one.addTile(point, new Tile(TileType.Plains));
-		assertSerialization("Simple Map serialization", one, IMap.class);
+		one.setBaseTerrain(point, TileType.Plains);
+		assertSerialization("Simple Map serialization", one, IMapNG.class);
 		assertMissingProperty("<map version=\"2\" columns=\"1\" />",
-				IMap.class, "rows", false);
-		assertMissingProperty("<map version=\"2\" rows=\"1\" />", IMap.class,
+				IMapNG.class, "rows", false);
+		assertMissingProperty("<map version=\"2\" rows=\"1\" />", IMapNG.class,
 				"columns", false);
 	}
 
@@ -365,31 +384,34 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testViewSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
-		final SPMap mOne = new SPMap(new MapDimensions(1, 1, 2));
-		mOne.addPlayer(new Player(1, "playerOne"));
+		final SPMapNG one =
+				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
+						0);
+		final Player player = new Player(1, "playerOne");
+		player.setCurrent(true);
+		one.addPlayer(player);
 		final Point point = point(0, 0);
-		mOne.addTile(point, new Tile(TileType.Steppe));
-		final MapView one = new MapView(mOne, 1, 0);
-		assertSerialization("MapView serialization", one, IMapView.class);
+		one.setBaseTerrain(point, TileType.Steppe);
+		assertSerialization("SPMapNG serialization", one, IMapNG.class);
 		assertMissingProperty("<view current_turn=\"0\">"
 				+ "<map version=\"2\" rows=\"1\" columns=\"1\" /></view>",
-				IMapView.class, "current_player", false);
+				IMapNG.class, "current_player", false);
 		assertMissingProperty("<view current_player=\"0\">"
 				+ "<map version=\"2\" rows=\"1\" columns=\"1\" /></view>",
-				IMapView.class, "current_turn", false);
+				IMapNG.class, "current_turn", false);
 		assertMissingChild("<view current_player=\"1\" current_turn=\"0\" />",
-				IMapView.class, false);
+				IMapNG.class, false);
 		assertUnwantedChild(assertNotNull(new StringBuilder(150)
 				.append("<view current_player=\"0\" current_turn=\"0\">")
 				.append("<map version=\"2\" rows=\"1\" columns=\"1\" />")
 				.append("<map version=\"2\" rows=\"1\" columns=\"1\" />")
-				.append("</view>").toString()), IMapView.class, false);
+				.append("</view>").toString()), IMapNG.class, false);
 		assertUnwantedChild(
 				"<view current_player=\"0\" current_turn=\"0\"><hill /></view>",
-				IMapView.class, false);
+				IMapNG.class, false);
 		assertMapDeserialization(
 				"Proper deserialization of map into view",
-				new MapNGAdapter(one),
+				one,
 				assertNotNull(new StringBuilder(200)
 						.append("<map version=\"2\" rows=\"1\" ")
 						.append("columns=\"1\" current_player=\"1\">")
