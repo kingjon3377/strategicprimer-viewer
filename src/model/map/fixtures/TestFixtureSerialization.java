@@ -11,6 +11,7 @@ import model.map.PlayerCollection;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.SPMapNG;
+import model.map.TileType;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Centaur;
 import model.map.fixtures.mobile.Djinn;
@@ -287,6 +288,7 @@ public final class TestFixtureSerialization extends
 		final SPMapNG map =
 				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
 						-1);
+		map.setBaseTerrain(point, TileType.Plains);
 		map.setGround(point, new Ground("four", true));
 		assertSerialization("Test that reader handles ground as a fixture",
 				map, SPMapNG.class);

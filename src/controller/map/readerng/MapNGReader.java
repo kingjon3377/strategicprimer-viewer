@@ -30,6 +30,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.Pair;
 import util.Warning;
 import controller.map.formatexceptions.MissingChildException;
+import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
@@ -166,6 +167,10 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 								TileType.getTileType(XMLHelper
 										.getAttributeWithDeprecatedForm(
 												current, "kind", "type", warner)));
+					} else {
+						warner.warn(new MissingPropertyException(current
+								.getName().getLocalPart(), "kind", currentLoc
+								.getLineNumber()));
 					}
 				} else if (nullPoint.equals(point)) {
 					// fixture outside tile

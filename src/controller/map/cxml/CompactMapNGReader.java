@@ -32,6 +32,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.IteratorWrapper;
 import util.Warning;
 import controller.map.formatexceptions.MissingChildException;
+import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
@@ -136,6 +137,10 @@ public class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						retval.setBaseTerrain(point, TileType
 								.getTileType(getParamWithDeprecatedForm(
 										current, "kind", "type", warner)));
+					} else {
+						warner.warn(new MissingPropertyException(current
+								.getName().getLocalPart(), "kind", currentLoc
+								.getLineNumber()));
 					}
 				} else if (nullPoint.equals(point)) {
 					// fixture outside tile
