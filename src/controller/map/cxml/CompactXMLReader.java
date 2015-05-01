@@ -8,13 +8,10 @@ import java.io.Reader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.IMap;
 import model.map.IMutableMapNG;
 import model.map.IMutablePlayerCollection;
-import model.map.MapNGAdapter;
-import model.map.MapView;
 import model.map.PlayerCollection;
-import model.map.SPMap;
+import model.map.SPMapNG;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
@@ -31,7 +28,6 @@ import controller.map.misc.TypesafeXMLEventReader;
  * @author Jonathan Lovelace
  *
  */
-@SuppressWarnings("deprecation")
 public class CompactXMLReader implements IMapReader, ISPReader {
 	/**
 	 * @param <T> A supertype of the object the XML represents
@@ -89,14 +85,8 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	@Override
 	public IMutableMapNG readMap(final File file, final Reader istream,
 			final Warning warner) throws XMLStreamException, SPFormatException {
-		// FIXME: Read a SPMapNG instead
-		final IMap retval = readXML(file, istream, MapView.class, warner);
-		if (retval instanceof SPMap) {
-			return new MapNGAdapter(new MapView(retval, retval//NOPMD
-					.getPlayers().getCurrentPlayer().getPlayerId(), 0));
-		} else {
-			return new MapNGAdapter((MapView) retval);
-		}
+		final IMutableMapNG retval = readXML(file, istream, SPMapNG.class, warner);
+		return retval;
 	}
 
 	/**
