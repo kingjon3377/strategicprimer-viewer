@@ -199,7 +199,6 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		three.addFixture(point(3, 3), fort);
 		three.addFixture(point(3, 3), new TextFixture("Random text here", 5));
 		three.addRivers(point(3, 3), Lake);
-		System.out.println(createSerializedForm(three, false));
 		assertSerialization("More complex tile", three, IMapNG.class);
 		IMutableMapNG four =
 				createSimpleMap(point(5, 5), Pair.of(point(4, 4), Plains));
