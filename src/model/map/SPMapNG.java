@@ -11,6 +11,9 @@ import java.util.Objects;
 import java.util.Set;
 
 import model.map.fixtures.Ground;
+import model.map.fixtures.TextFixture;
+import model.map.fixtures.mobile.Animal;
+import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.viewer.PointIterator;
 
@@ -150,7 +153,7 @@ public class SPMapNG implements IMutableMapNG {
 				final Iterable<TileFixture> theirFixtures = obj
 						.getOtherFixtures(point);
 				for (final TileFixture fix : theirFixtures) {
-					if (!ourFixtures.contains(fix)) {
+					if (!ourFixtures.contains(fix) && !shouldSkip(fix)) {
 						out.append(ctxt);
 						out.append(" Extra fixture:\t");
 						out.append(fix.toString());
@@ -561,5 +564,13 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public void setTurn(final int curr) {
 		turn = curr;
+	}
+	/**
+	 * @param fix a fixture
+	 * @return whether strict-subset calculations should skip it.
+	 */
+	public static boolean shouldSkip(final TileFixture fix) {
+		return fix instanceof CacheFixture || fix instanceof TextFixture
+				|| fix instanceof Animal && ((Animal) fix).isTraces();
 	}
 }

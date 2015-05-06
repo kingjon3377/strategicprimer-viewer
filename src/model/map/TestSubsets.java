@@ -7,7 +7,10 @@ import static util.NullStream.DEV_NULL;
 import java.io.IOException;
 
 import model.map.fixtures.RiverFixture;
+import model.map.fixtures.TextFixture;
+import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.towns.Fortress;
 
 import org.junit.Test;
@@ -166,6 +169,18 @@ public class TestSubsets {
 				two.isSubset(one, DEV_NULL, ""));
 		assertFalse("Corresponding but non-matching tile breaks subset",
 				one.isSubset(two, DEV_NULL, ""));
+		two.setBaseTerrain(pointTwo, TileType.Plains);
+		assertTrue("Subset again after resetting terrain",
+				two.isSubset(one, DEV_NULL, ""));
+		one.addFixture(pointTwo, new CacheFixture("category", "contents", 3));
+		assertTrue("Subset calculation ignores caches",
+				two.isSubset(one, DEV_NULL, ""));
+		one.addFixture(pointTwo, new TextFixture("text", -1));
+		assertTrue("Subset calculation ignores text fixtures",
+				two.isSubset(one, DEV_NULL, ""));
+		one.addFixture(pointTwo, new Animal("animal", true, false, "status", 5));
+		assertTrue("Subset calculation ignores animal tracks",
+				two.isSubset(one, DEV_NULL, ""));
 	}
 	/**
 	 * @return a String representation of the object
