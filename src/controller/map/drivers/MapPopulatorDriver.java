@@ -28,6 +28,8 @@ import controller.map.misc.MapReaderAdapter;
  *
  */
 public class MapPopulatorDriver implements ISPDriver {
+	private static int suitableCount = 0;
+	private static int changedCount = 0;
 	/**
 	 * Whether the given location is suitable for the kind of fixture we're creating.
 	 * @param map the map
@@ -45,6 +47,7 @@ public class MapPopulatorDriver implements ISPDriver {
 		} else if (TileType.Ocean.equals(terrain)) {
 			return false;
 		} else {
+			suitableCount++;
 			return true;
 		}
 	}
@@ -61,6 +64,7 @@ public class MapPopulatorDriver implements ISPDriver {
 	 * @param idf an ID factory to generate the necessary ID #.
 	 */
 	private static void create(final Point location, final IMutableMapNG map, final IDFactory idf) {
+		changedCount++;
 		map.addFixture(location, new Animal("hare", false, false, "wild", idf.createID()));
 	}
 	/**
@@ -120,6 +124,10 @@ public class MapPopulatorDriver implements ISPDriver {
 		} catch (IOException e) {
 			throw new DriverFailedException("I/O error writing updated map", e);
 		}
+		System.out.print(changedCount);
+		System.out.print(" out of ");
+		System.out.print(suitableCount);
+		System.out.println(" suitable locations were changed");
 	}
 	/**
 	 * Add populations to the map.
