@@ -95,6 +95,8 @@ public class AppStarter implements ISPDriver {
 		addChoice(new StatGeneratingCLIDriver());
 		// FIXME: Write a GUI for the map-expanding driver
 		addChoice(new ExpansionDriver());
+		// TODO: Add a GUI equivalent of the MapPopulatorDriver
+		addChoice(new MapPopulatorDriver());
 	}
 
 	/**
