@@ -118,7 +118,11 @@ public class SPMapNG implements IMutableMapNG {
 						&& !TileType.NotVisible.equals(obj
 								.getBaseTerrain(point))) {
 					out.append(ctxt);
-					out.append("\tBase terrain differs\n");
+					if (TileType.NotVisible.equals(getBaseTerrain(point))) {
+						out.append("\tHas terrain information we don't\n");
+					} else {
+						out.append("\tBase terrain differs\n");
+					}
 					retval = false;
 					continue;
 //					return false;
