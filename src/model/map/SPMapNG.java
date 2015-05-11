@@ -133,7 +133,7 @@ public class SPMapNG implements IMutableMapNG {
 						&& obj.getForest(point) != null) {
 					// TODO: Shouldn't do getForest call twice
 					out.append(ctxt);
-					out.append("\tHas forest we don't, or different primary forest");
+					out.append("\tHas forest we don't, or different primary forest\n");
 					retval = false;
 					// return false;
 				}
@@ -141,7 +141,7 @@ public class SPMapNG implements IMutableMapNG {
 						&& obj.getGround(point) != null) {
 					// TODO: Shouldn't do getGround call twice
 					out.append(ctxt);
-					out.append("\tHas different primary ground, or ground we don't");
+					out.append("\tHas different primary ground, or ground we don't\n");
 					retval = false;
 					// return false;
 				}
