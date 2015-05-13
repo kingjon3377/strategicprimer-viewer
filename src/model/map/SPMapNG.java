@@ -154,7 +154,8 @@ public class SPMapNG implements IMutableMapNG {
 				final Map<Integer, SubsettableFixture> ourSubsettables = new HashMap<>();
 				for (TileFixture fix : getOtherFixtures(point)) {
 					if (fix instanceof SubsettableFixture) {
-						ourSubsettables.put(fix.getID(), (SubsettableFixture) fix);
+						ourSubsettables.put(Integer.valueOf(fix.getID()),
+								(SubsettableFixture) fix);
 					} else {
 						ourFixtures.add(fix);
 					}
@@ -162,11 +163,16 @@ public class SPMapNG implements IMutableMapNG {
 				final Iterable<TileFixture> theirFixtures = obj
 						.getOtherFixtures(point);
 				for (final TileFixture fix : theirFixtures) {
-					if (ourFixtures.contains(fix) || shouldSkip(fix)) {
+					if (fix == null || ourFixtures.contains(fix)
+							|| shouldSkip(fix)) {
 						continue;
 					} else if (fix instanceof SubsettableFixture
-							&& ourSubsettables.containsKey(fix.getID())) {
-						retval &= ourSubsettables.get(fix.getID()).isSubset(fix, out, ctxt);
+							&& ourSubsettables.containsKey(Integer.valueOf(fix
+									.getID()))) {
+						retval &=
+								ourSubsettables.get(
+										Integer.valueOf(fix.getID())).isSubset(
+										fix, out, ctxt);
 					} else {
 						out.append(ctxt);
 						out.append(" Extra fixture:\t");
