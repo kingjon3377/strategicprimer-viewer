@@ -327,7 +327,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 * @throws XMLStreamException on XML reading error
 	 * @throws IOException on I/O error creating serialized form
 	 */
-//	@Test // FIXME: Uncomment when XML I/O doesn't break on IMapNG
+	@Test
 	public void testMapNGSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
 		assertUnwantedChild(
