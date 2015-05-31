@@ -222,15 +222,14 @@ public class OneToTwoConverter { // NOPMD
 			final Random random = new Random(getSeed(point));
 			Collections.shuffle(initial, random);
 			Collections.shuffle(fixtures, random);
-			int iterations = 0;
-			while (iterations < MAX_ITERATIONS && !fixtures.isEmpty()) {
+			int iterations;
+			for (iterations = 0; iterations < MAX_ITERATIONS && !fixtures.isEmpty(); iterations++) {
 				if (isSubtileSuitable(newMap, assertNotNull(initial.get(0)))) {
 					final TileFixture fix = assertNotNull(fixtures.remove(0));
 					changeFor(newMap, assertNotNull(initial.get(0)), fix);
 					addFixture(newMap, assertNotNull(initial.get(0)), fix, main);
 				}
 				initial.add(initial.remove(0));
-				iterations++;
 			}
 			if (iterations == MAX_ITERATIONS) {
 				LOGGER.severe("Maximum number of iterations reached on tile ("
