@@ -28,7 +28,13 @@ import controller.map.misc.MapReaderAdapter;
  *
  */
 public class MapPopulatorDriver implements ISPDriver {
+	/**
+	 * How many tiles we've found suitable so far.
+	 */
 	private static int suitableCount = 0;
+	/**
+	 * How many tiles we've changed so far.
+	 */
 	private static int changedCount = 0;
 	/**
 	 * Whether the given location is suitable for the kind of fixture we're creating.
