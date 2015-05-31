@@ -15,6 +15,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 
 import model.listeners.NewUnitListener;
 import model.listeners.NewUnitSource;
@@ -103,6 +104,7 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 		setMinimumSize(new Dimension(150, 80));
 		setPreferredSize(new Dimension(200, PREF_HEIGHT));
 		setMaximumSize(new Dimension(300, PREF_HEIGHT));
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
 	}
 

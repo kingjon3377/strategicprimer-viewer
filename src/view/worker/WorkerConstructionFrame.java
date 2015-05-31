@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 
 import model.listeners.NewWorkerListener;
 import model.listeners.NewWorkerSource;
@@ -124,6 +125,7 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener,
 		setContentPane(new BorderedPanel(statsPanel, textPanel, buttonPanel,
 				null, null));
 		setMinimumSize(new Dimension(320, 240));
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
 	}
 	/**
