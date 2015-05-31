@@ -19,7 +19,9 @@ public final class IsNumeric {
 	/**
 	 * The NumberFormat object we use for parsing.
 	 */
-	private static final NumberFormat PARSER = NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
+	private static final NumberFormat PARSER = NullCleaner
+			.assertNotNull(NumberFormat.getIntegerInstance());
+
 	/**
 	 * @param string a String
 	 * @return whether it contains numeric data or not

@@ -151,7 +151,8 @@ public class SPMapNG implements IMutableMapNG {
 				}
 				final Collection<TileFixture> ourFixtures =
 						new ArrayList<>();
-				final Map<Integer, SubsettableFixture> ourSubsettables = new HashMap<>();
+				final Map<Integer, SubsettableFixture> ourSubsettables =
+						new HashMap<>();
 				for (TileFixture fix : getOtherFixtures(point)) {
 					if (fix instanceof SubsettableFixture) {
 						ourSubsettables.put(Integer.valueOf(fix.getID()),

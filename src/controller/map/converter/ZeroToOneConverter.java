@@ -130,7 +130,9 @@ public class ZeroToOneConverter {
 		for (final Attribute attr : attrs) {
 			if ("event".equalsIgnoreCase(attr.getName().getLocalPart())) {
 				try {
-					events.push(Integer.valueOf(NumberFormat.getIntegerInstance().parse(attr.getValue()).intValue()));
+					events.push(Integer.valueOf(NumberFormat
+							.getIntegerInstance().parse(attr.getValue())
+							.intValue()));
 				} catch (ParseException e) {
 					LOGGER.log(Level.SEVERE, "Non-numeric 'event'", e);
 				}

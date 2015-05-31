@@ -1,6 +1,7 @@
 package view.map.main;
 
 import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
+import static javax.swing.KeyStroke.getKeyStroke;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -49,22 +50,27 @@ public class ArrowKeyListener {
 		actionMap.put("up-left", new UpLeftListener(selListener, 1));
 		actionMap.put("down-right", new DownRightListener(selListener, 1));
 		actionMap.put("down-left", new DownLeftListener(selListener, 1));
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, CTRL_DOWN_MASK),
-				"ctrlUp");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, CTRL_DOWN_MASK),
-				"ctrlDown");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, CTRL_DOWN_MASK),
+		inputMap.put(getKeyStroke(KeyEvent.VK_UP, CTRL_DOWN_MASK), "ctrlUp");
+		inputMap.put(getKeyStroke(KeyEvent.VK_DOWN, CTRL_DOWN_MASK), "ctrlDown");
+		inputMap.put(getKeyStroke(KeyEvent.VK_RIGHT, CTRL_DOWN_MASK),
 				"ctrlRight");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, CTRL_DOWN_MASK),
+		inputMap.put(getKeyStroke(KeyEvent.VK_LEFT, CTRL_DOWN_MASK), "ctrlLeft");
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD2, CTRL_DOWN_MASK),
+				"ctrlDown");
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD6, CTRL_DOWN_MASK),
+				"ctrlRight");
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD8, CTRL_DOWN_MASK),
+				"ctrlUp");
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD4, CTRL_DOWN_MASK),
 				"ctrlLeft");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD2, CTRL_DOWN_MASK), "ctrlDown");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD6, CTRL_DOWN_MASK), "ctrlRight");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD8, CTRL_DOWN_MASK), "ctrlUp");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD4, CTRL_DOWN_MASK), "ctrlLeft");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD9, CTRL_DOWN_MASK), "ctrl-up-right");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD7, CTRL_DOWN_MASK), "ctrl-up-left");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD3, CTRL_DOWN_MASK), "ctrl-down-right");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD1, CTRL_DOWN_MASK), "ctrl-down-left");
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD9, CTRL_DOWN_MASK),
+				"ctrl-up-right");
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD7, CTRL_DOWN_MASK),
+				"ctrl-up-left");
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD3, CTRL_DOWN_MASK),
+				"ctrl-down-right");
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD1, CTRL_DOWN_MASK),
+				"ctrl-down-left");
 		actionMap.put("ctrlUp", new UpListener(selListener, 5));
 		actionMap.put("ctrlDown", new DownListener(selListener, 5));
 		actionMap.put("ctrlLeft", new LeftListener(selListener, 5));

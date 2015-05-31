@@ -120,7 +120,7 @@ public class ExpansionDriver implements ISPDriver {
 			final File file = new File(arg);
 			final IMapNG map;
 			try {
-				 map = reader.readMap(file, Warning.INSTANCE);
+				map = reader.readMap(file, Warning.INSTANCE);
 			} catch (final MapVersionException except) {
 				throw new DriverFailedException("Unsupported map version", except);
 			} catch (final IOException except) {

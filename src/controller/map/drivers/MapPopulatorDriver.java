@@ -57,15 +57,23 @@ public class MapPopulatorDriver implements ISPDriver {
 	private static double chance() {
 		return .05;
 	}
+
 	/**
-	 * Add a fixture of the kind with which we're populating the map to the specified location
-	 * @param location the location in question
-	 * @param map the map
-	 * @param idf an ID factory to generate the necessary ID #.
+	 * Add a fixture of the kind with which we're populating the map to the
+	 * specified location
+	 *
+	 * @param location
+	 *            the location in question
+	 * @param map
+	 *            the map
+	 * @param idf
+	 *            an ID factory to generate the necessary ID #.
 	 */
-	private static void create(final Point location, final IMutableMapNG map, final IDFactory idf) {
+	private static void create(final Point location, final IMutableMapNG map,
+			final IDFactory idf) {
 		changedCount++;
-		map.addFixture(location, new Animal("hare", false, false, "wild", idf.createID()));
+		map.addFixture(location,
+				new Animal("hare", false, false, "wild", idf.createID()));
 	}
 	/**
 	 * An object indicating how to use and invoke this driver.

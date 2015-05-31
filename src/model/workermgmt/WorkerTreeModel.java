@@ -81,7 +81,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			throw new ArrayIndexOutOfBoundsException(index);
 		} else if (parent instanceof Player && parent.equals(root)
 				&& index < model.getUnitKinds(root).size()) {
-			return NullCleaner.assertNotNull(model.getUnitKinds(root).// NOPMD
+			return NullCleaner.assertNotNull(model.getUnitKinds(root). // NOPMD
 					get(index));
 		} else if (parent instanceof String
 				&& model.getUnitKinds(root).contains(parent)

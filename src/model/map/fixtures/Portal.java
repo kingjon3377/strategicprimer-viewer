@@ -61,8 +61,10 @@ public class Portal implements TileFixture, HasImage {
 	public String toString() {
 		return "A portal to another world";
 	}
+
 	/**
-	 * @return the name of an image to represent the fixture if no instance-specific image has been specified
+	 * @return the name of an image to represent the fixture if no
+	 *         instance-specific image has been specified
 	 */
 	@Override
 	public String getDefaultImage() {
@@ -81,7 +83,8 @@ public class Portal implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Portal && id == ((Portal) obj).id && equalsIgnoringID((Portal) obj);
+		return this == obj || obj instanceof Portal && id == ((Portal) obj).id
+				&& equalsIgnoringID((Portal) obj);
 	}
 	/**
 	 * @return a hash value for the object
@@ -132,8 +135,10 @@ public class Portal implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture obj) {
-		return obj instanceof Portal && destinationWorld.equals(((Portal) obj).destinationWorld) &&
-				destinationCoordinates.equals(((Portal) obj).destinationCoordinates);
+		return obj instanceof Portal
+				&& destinationWorld.equals(((Portal) obj).destinationWorld)
+				&& destinationCoordinates
+						.equals(((Portal) obj).destinationCoordinates);
 	}
 	/**
 	 * @param obj a fixture
