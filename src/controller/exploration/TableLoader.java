@@ -163,7 +163,7 @@ public final class TableLoader { // NOPMD
 							.assertNotNull(Integer.valueOf(array[0])),
 							NullCleaner.assertNotNull(array[1])));
 				} catch (NumberFormatException except) {
-					throw new IOException("Non-numeric data");
+					throw new IOException("Non-numeric data", except);
 				}
 			}
 			line = reader.readLine();
