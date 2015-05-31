@@ -30,6 +30,7 @@ import java.awt.event.WindowEvent;
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
@@ -63,7 +64,7 @@ public final class WindowList {
 	/**
 	 * The objects listening for changes to any of the windows.
 	 */
-	private static ArrayList<ChangeListener> changeListeners =
+	private static List<ChangeListener> changeListeners =
 			new ArrayList<>();
 
 	/**
@@ -207,13 +208,13 @@ public final class WindowList {
 	 * References to every Window that has been activated, in order of when they
 	 * were made active.
 	 */
-	protected static ArrayList<WeakReference<Window>> windowLayerList =
+	protected static List<WeakReference<Window>> windowLayerList =
 			new ArrayList<>();
 	/**
 	 * References to every Window that has been activated, in order of
 	 * z-layering.
 	 */
-	protected static ArrayList<WeakReference<Window>> windowList =
+	protected static List<WeakReference<Window>> windowList =
 			new ArrayList<>();
 
 	static {
@@ -234,7 +235,7 @@ public final class WindowList {
 	 */
 	public static Window[] getWindows(final boolean sortByLayer,
 			final boolean includeInvisible) {
-		final ArrayList<WeakReference<Window>> list;
+		final List<WeakReference<Window>> list;
 		if (sortByLayer) {
 			list = windowLayerList;
 		} else {
@@ -278,7 +279,7 @@ public final class WindowList {
 	 */
 	public static Frame[] getFrames(final boolean sortByLayer,
 			final boolean includeInvisible, final boolean includeIconified) {
-		final ArrayList<WeakReference<Window>> list;
+		final List<WeakReference<Window>> list;
 		if (sortByLayer) {
 			list = windowLayerList;
 		} else {
