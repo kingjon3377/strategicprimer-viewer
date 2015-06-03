@@ -72,10 +72,11 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 				for (int i = 0; i < getRowCount(); i++) {
 					expandRow(i);
 				}
+				updateUI();
 			}
 			@Override
 			public void treeNodesRemoved(@Nullable final TreeModelEvent e) {
-				// Ignored
+				updateUI();
 			}
 			@Override
 			public void treeNodesInserted(@Nullable final TreeModelEvent e) {
@@ -84,6 +85,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 				}
 				tree.expandPath(e.getTreePath());
 				tree.expandPath(e.getTreePath().getParentPath());
+				updateUI();
 			}
 			@Override
 			public void treeNodesChanged(@Nullable final TreeModelEvent e) {
@@ -91,6 +93,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 					return;
 				}
 				tree.expandPath(e.getTreePath().getParentPath());
+				updateUI();
 			}
 		});
 		setRootVisible(false);
