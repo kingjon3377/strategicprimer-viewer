@@ -376,20 +376,6 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	}
 
 	/**
-	 * A driver method to compare the two helpers, and the two map-GUI
-	 * implementations.
-	 *
-	 * @param args the command-line arguments.
-	 */
-	public static void main(final String[] args) { // NOPMD
-		try {
-			new DrawHelperComparator().startDriver(args);
-		} catch (final DriverFailedException except) {
-			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
-		}
-	}
-
-	/**
 	 * Run all the tests on the specified file.
 	 *
 	 * @param map the map to use for the tests.

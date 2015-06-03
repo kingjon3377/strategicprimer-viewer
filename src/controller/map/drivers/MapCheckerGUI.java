@@ -1,10 +1,6 @@
 package controller.map.drivers;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import util.TypesafeLogger;
 import view.map.misc.MapCheckerFrame;
@@ -31,24 +27,6 @@ public class MapCheckerGUI implements ISPDriver {
 	 */
 	private static final Logger LOGGER = TypesafeLogger
 			.getLogger(MapCheckerGUI.class);
-
-	/**
-	 * @param args the list of filenames to check
-	 */
-	public static void main(final String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException | UnsupportedLookAndFeelException except) {
-			LOGGER.log(Level.SEVERE,
-					"Failed to switch to system look-and-feel", except);
-		}
-		try {
-			new MapCheckerGUI().startDriver(args);
-		} catch (final DriverFailedException except) {
-			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
-		}
-	}
 
 	/**
 	 * Run the driver.

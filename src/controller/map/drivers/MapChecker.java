@@ -43,17 +43,6 @@ public final class MapChecker implements ISPDriver {
 	private final MapReaderAdapter reader = new MapReaderAdapter();
 
 	/**
-	 * @param args the list of filenames to check
-	 */
-	public static void main(final String[] args) {
-		try {
-			new MapChecker().startDriver(args);
-		} catch (final DriverFailedException except) {
-			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
-		}
-	}
-
-	/**
 	 * Run the driver.
 	 *
 	 * @param args command-line arguments

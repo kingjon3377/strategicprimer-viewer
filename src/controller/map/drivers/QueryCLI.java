@@ -318,17 +318,6 @@ public final class QueryCLI implements ISPDriver {
 	}
 
 	/**
-	 * @param args command-line arguments
-	 */
-	public static void main(final String[] args) {
-		try {
-			new QueryCLI().startDriver(args);
-		} catch (final DriverFailedException except) {
-			LOGGER.log(Level.SEVERE, except.getMessage(), except.getCause());
-		}
-	}
-
-	/**
 	 *
 	 * @return a String representation of the object.
 	 */

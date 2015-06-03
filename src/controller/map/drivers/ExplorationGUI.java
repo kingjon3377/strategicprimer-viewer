@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.stream.XMLStreamException;
 
 import model.exploration.ExplorationModel;
@@ -36,27 +34,6 @@ public class ExplorationGUI implements ISPDriver {
 			"Move a unit around the map, "
 					+ "updating the player's map with what it sees.",
 			ExplorationGUI.class);
-
-	/**
-	 * Driver. Takes as its parameters the map files to use.
-	 *
-	 * @param args the command-line arguments
-	 */
-	public static void main(final String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException | UnsupportedLookAndFeelException except) {
-			System.err.println("Failed to switch to system look-and-feel");
-		}
-		try {
-			new ExplorationGUI().startDriver(args);
-		} catch (final DriverFailedException except) {
-			System.err.print(except.getMessage());
-			System.err.println(':');
-			System.err.println(except.getCause().getLocalizedMessage());
-		}
-	}
 
 	/**
 	 * Read maps.

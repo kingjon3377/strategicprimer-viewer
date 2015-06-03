@@ -37,21 +37,6 @@ public class ExplorationCLIDriver implements ISPDriver {
 			ExplorationCLIDriver.class);
 
 	/**
-	 * Driver. Takes as its parameters the map files to use.
-	 *
-	 * @param args the command-line arguments
-	 */
-	public static void main(final String[] args) {
-		try {
-			new ExplorationCLIDriver().startDriver(args);
-		} catch (final DriverFailedException except) {
-			System.err.print(except.getMessage());
-			System.err.println(':');
-			System.err.println(except.getCause().getLocalizedMessage());
-		}
-	}
-
-	/**
 	 * Read maps.
 	 *
 	 * @param filenames the files to read from

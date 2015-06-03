@@ -4,13 +4,11 @@ import static view.util.SystemOut.SYS_OUT;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
 
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMapNG;
 import util.NullCleaner;
-import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
@@ -49,19 +47,6 @@ public final class SubsetDriver implements ISPDriver {
 		 * The map failed to load.
 		 */
 		Fail;
-	}
-
-	/**
-	 * @param args the files to check
-	 */
-	// ESCA-JAVA0177:
-	public static void main(final String[] args) {
-		try {
-			new SubsetDriver().startDriver(args);
-		} catch (final DriverFailedException except) {
-			TypesafeLogger.getLogger(SubsetDriver.class).log(Level.SEVERE,
-					except.getMessage(), except.getCause());
-		}
 	}
 
 	/**

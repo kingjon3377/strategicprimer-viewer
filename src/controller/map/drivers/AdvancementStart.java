@@ -7,8 +7,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.xml.stream.XMLStreamException;
 
 import model.workermgmt.IWorkerModel;
@@ -19,7 +17,6 @@ import util.Warning;
 import util.Warning.Action;
 import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
-import view.util.ErrorShower;
 import view.util.FilteredFileChooser;
 import view.worker.AdvancementFrame;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
@@ -63,30 +60,6 @@ public final class AdvancementStart implements ISPDriver {
 	 * Error message when the map contains invalid data.
 	 */
 	private static final String INV_DATA_ERROR = "Map contained invalid data";
-
-	/**
-	 * Run the app.
-	 *
-	 * @param args Command-line arguments. args[0] is the map filename, others
-	 *        are ignored. TODO: add option handling.
-	 */
-	public static void main(final String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException | InstantiationException
-				| IllegalAccessException | UnsupportedLookAndFeelException except) {
-			LOGGER.log(Level.SEVERE,
-					"Failed to switch to system look-and-feel", except);
-		}
-		try {
-			new AdvancementStart().startDriver(args);
-		} catch (final DriverFailedException except) {
-			final String msg = except.getMessage();
-			final String message = NullCleaner.valueOrDefault(msg, "");
-			LOGGER.log(Level.SEVERE, message, except.getCause());
-			ErrorShower.showErrorDialog(null, message);
-		}
-	}
 
 	/**
 	 * Run the driver.
