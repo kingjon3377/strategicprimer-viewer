@@ -430,12 +430,12 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 				if (member == item || item.equals(member)) {
 					final int index = getIndexOfChild(unit, item);
 					dismissedMembers.add(member);
+					unit.removeMember(member);
 					for (final TreeModelListener listener : listeners) {
 						listener.treeNodesRemoved(new TreeModelEvent(this,
 								new TreePath(new Object[] { root, unit }),
 								singletonInt(index), singletonObj(member)));
 					}
-					unit.removeMember(member);
 					break;
 				}
 			}

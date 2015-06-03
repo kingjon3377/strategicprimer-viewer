@@ -505,10 +505,10 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 		final TreeNode[] path = getPathToRoot(node);
 		final int index = getIndexOfChild(path[path.length - 1], node);
+		((UnitNode) parentNode).remove((MutableTreeNode) node);
 		fireTreeNodesRemoved(this, path, new int[] { index },
 				new Object[] { node });
 		dismissedMembers.add(member);
-		((UnitNode) parentNode).remove((MutableTreeNode) node);
 		((Unit) ((UnitNode) parentNode).getUserObject()).removeMember(member);
 	}
 
