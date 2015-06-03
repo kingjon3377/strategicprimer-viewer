@@ -508,6 +508,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		fireTreeNodesRemoved(this, path, new int[] { index },
 				new Object[] { node });
 		dismissedMembers.add(member);
+		((UnitNode) parentNode).remove((MutableTreeNode) node);
 		((Unit) ((UnitNode) parentNode).getUserObject()).removeMember(member);
 	}
 
