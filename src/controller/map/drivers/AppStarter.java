@@ -133,8 +133,19 @@ public class AppStarter implements ISPDriver {
 				drivers = CACHE.get(option.toLowerCase(Locale.ENGLISH));
 			}
 		}
+		final boolean localGui = gui;
 		if (drivers == null) {
-			startChooser(gui, others);
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						startChooser(localGui, others);
+					} catch (DriverFailedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
 		} else if (gui) {
 			startChosenDriver(drivers.second(), others);
 		} else {
@@ -149,7 +160,7 @@ public class AppStarter implements ISPDriver {
 	 * @param others the parameters to pass to the chosen driver
 	 * @throws DriverFailedException if the chosen driver fails
 	 */
-	private static void startChooser(final boolean gui,
+	protected static void startChooser(final boolean gui,
 			final List<String> others) throws DriverFailedException {
 		if (gui) {
 			SwingUtilities.invokeLater(new WindowThread(new AppChooserFrame(
@@ -184,8 +195,18 @@ public class AppStarter implements ISPDriver {
 	 */
 	private static void startChosenDriver(final ISPDriver driver, // NOPMD
 			final List<String> params) throws DriverFailedException {
-		driver.startDriver(NullCleaner.assertNotNull(params
-				.toArray(new String[params.size()])));
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					driver.startDriver(NullCleaner.assertNotNull(params
+							.toArray(new String[params.size()])));
+				} catch (DriverFailedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	/**
