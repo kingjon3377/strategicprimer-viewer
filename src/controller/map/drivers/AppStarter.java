@@ -18,6 +18,7 @@ import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
 import view.util.AppChooserFrame;
+import view.util.ErrorShower;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.WindowThread;
@@ -134,6 +135,7 @@ public class AppStarter implements ISPDriver {
 			}
 		}
 		final boolean localGui = gui;
+		final Logger lgr = LOGGER;
 		if (drivers == null) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
@@ -141,13 +143,26 @@ public class AppStarter implements ISPDriver {
 					try {
 						startChooser(localGui, others);
 					} catch (DriverFailedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						final String message = NullCleaner.assertNotNull(e.getMessage());
+						lgr.log(Level.SEVERE, message, e.getCause());
+						ErrorShower.showErrorDialog(null, message);
 					}
 				}
 			});
 		} else if (gui) {
-			startChosenDriver(drivers.second(), others);
+			final ISPDriver driver = drivers.second();
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						startChosenDriver(driver, others);
+					} catch (DriverFailedException e) {
+						final String message = NullCleaner.assertNotNull(e.getMessage());
+						lgr.log(Level.SEVERE, message, e.getCause());
+						ErrorShower.showErrorDialog(null, message);
+					}
+				}
+			});
 		} else {
 			startChosenDriver(drivers.first(), others);
 		}
@@ -193,20 +208,10 @@ public class AppStarter implements ISPDriver {
 	 * @param params non-option parameters
 	 * @throws DriverFailedException on fatal error
 	 */
-	private static void startChosenDriver(final ISPDriver driver, // NOPMD
+	protected static void startChosenDriver(final ISPDriver driver, // NOPMD
 			final List<String> params) throws DriverFailedException {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					driver.startDriver(NullCleaner.assertNotNull(params
-							.toArray(new String[params.size()])));
-				} catch (DriverFailedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
+		driver.startDriver(NullCleaner.assertNotNull(params
+				.toArray(new String[params.size()])));
 	}
 
 	/**
