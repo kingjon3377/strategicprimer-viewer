@@ -2,12 +2,10 @@ package controller.map.drivers;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 
-import util.TypesafeLogger;
 import view.map.misc.SubsetFrame;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
@@ -24,11 +22,6 @@ import controller.map.misc.WindowThread;
  *
  */
 public class SubsetGUIDriver implements ISPDriver {
-	/**
-	 * A logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(SubsetDriver.class);
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */

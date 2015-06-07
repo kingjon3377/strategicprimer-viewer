@@ -2,12 +2,10 @@ package controller.map.drivers;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
 import model.map.IMapNG;
-import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
@@ -32,12 +30,6 @@ public final class EchoDriver implements ISPDriver {
 			"--echo", ParamCount.One, "Read, then write a map.",
 			"Read and write a map, correcting deprecated syntax.",
 			EchoDriver.class);
-
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(EchoDriver.class);
 
 	/**
 	 * Run the driver.

@@ -1,8 +1,5 @@
 package controller.map.drivers;
 
-import java.util.logging.Logger;
-
-import util.TypesafeLogger;
 import view.map.misc.MapCheckerFrame;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 
@@ -21,12 +18,6 @@ public class MapCheckerGUI implements ISPDriver {
 			"--check", ParamCount.Many, "Check map for errors",
 			"Check a map file for errors, deprecated syntax, etc.",
 			MapCheckerGUI.class);
-
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(MapCheckerGUI.class);
 
 	/**
 	 * Run the driver.

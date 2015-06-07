@@ -3,14 +3,11 @@ package controller.map.drivers;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
-import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
-import view.map.main.ViewerFrame;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
@@ -31,12 +28,6 @@ public class WorkerReportDriver implements ISPDriver {
 			"--worker", ParamCount.One, "Worker Report Generator",
 			"Produce HTML report of units, workers, etc., in a map.",
 			WorkerReportDriver.class);
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(ViewerFrame.class);
-
 	/**
 	 * Start the driver.
 	 *
