@@ -387,8 +387,8 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 	 */
 	@Override
 	public int hashCode() {
-		return dimensions().hashCode() + getCurrentTurn() << 3 + getCurrentPlayer()
-				.hashCode() << 5;
+		return dimensions().hashCode() + (getCurrentTurn() << 3) + (getCurrentPlayer()
+				.hashCode() << 5);
 	}
 
 	/**

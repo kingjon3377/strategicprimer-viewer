@@ -111,8 +111,8 @@ public class SPMap implements IMutableMap {
 	 */
 	@Override
 	public int hashCode() {
-		return getDimensions().hashCode() + players.hashCode() << PLAYERS_HASH_SHFT
-				+ tiles.hashCode() << TILES_HASH_SHIFT;
+		return getDimensions().hashCode() + (players.hashCode() << PLAYERS_HASH_SHFT)
+				+ (tiles.hashCode() << TILES_HASH_SHIFT);
 	}
 
 	/**

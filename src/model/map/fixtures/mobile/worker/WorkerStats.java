@@ -213,8 +213,8 @@ public class WorkerStats {
 	 */
 	@Override
 	public int hashCode() {
-		return (str + dex << 3 + con << 6 + intel << 9)
-				+ (wis << 12 + cha << 15 + hp << 18 + maxHP << 22);
+		return (str + (dex << 3) + (con << 6) + (intel << 9))
+				+ ((wis << 12) + (cha << 15) + (hp << 18) + (maxHP << 22));
 	}
 
 	/**
