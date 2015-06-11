@@ -16,3 +16,4 @@ bin/images/*.png
 .sawja_prefs
 org.eclipse.jdt.annotation*.jar
 .sauc.obj
+findbugs_analysis.xml
