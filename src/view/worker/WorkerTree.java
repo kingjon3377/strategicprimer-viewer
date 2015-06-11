@@ -304,7 +304,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 				}
 			} else if (sel == null) {
 				for (final UnitSelectionListener list : usListeners) {
-					list.selectUnit((IUnit) sel);
+					list.selectUnit(null);
 				}
 			}
 		}
