@@ -66,27 +66,13 @@ public class ExplorationMenu extends JMenuBar {
 		fileMenu.add(createMenuItem("Open in map viewer", KeyEvent.VK_M,
 				createHotkey(KeyEvent.VK_M),
 				"Open the main map in the map viewer for a broader view",
-				new ActionListener() {
-					@Override
-					public void actionPerformed(@Nullable final ActionEvent evt) {
-						invokeLater(new ViewerOpener(model.getMap(), model
-								.getMapFile(), ioh));
-					}
-				}));
+				new ViewerOpenerInvoker(model, true, ioh)));
 		fileMenu.add(createMenuItem(
 				"Open secondary map in map viewer",
 				KeyEvent.VK_E,
 				createHotkey(KeyEvent.VK_E),
 				"Open the first secondary map in the map viewer for a broader view",
-				new ActionListener() {
-					@Override
-					public void actionPerformed(@Nullable final ActionEvent evt) {
-						final Pair<IMutableMapNG, File> mapPair = model
-								.getSubordinateMaps().iterator().next();
-						invokeLater(new ViewerOpener(mapPair.first(), mapPair
-								.second(), ioh));
-					}
-				}));
+				new ViewerOpenerInvoker(model, false, ioh)));
 		fileMenu.addSeparator();
 		fileMenu.add(createMenuItem("Close", KeyEvent.VK_W,
 				createHotkey(KeyEvent.VK_W), "Close this window",
@@ -111,6 +97,35 @@ public class ExplorationMenu extends JMenuBar {
 				}));
 		add(fileMenu);
 		add(new WindowMenu(parent));
+	}
+	/**
+	 * A class to invoke a ViewerOpener (below).
+	 * @uathor Jonathan Lovelace
+	 */
+	protected static final class ViewerOpenerInvoker implements ActionListener {
+		/**
+		 *
+		 */
+		protected ViewerOpenerInvoker(final IExplorationModel model, final boolean first, final IOHandler ioHandler) {
+			theModel = model;
+			frst = first;
+			ioh = ioHandler;
+		}
+		private final IExplorationModel theModel;
+		private final boolean frst;
+		private final IOHandler ioh;
+		/**
+		 * Handle the action
+		 */
+		@Override
+		public final void actionPerformed(@Nullable final ActionEvent evt) {
+			if (frst) {
+				invokeLater(new ViewerOpener(theModel.getMap(), theModel.getMapFile(), ioh));
+			} else {
+				final Pair<IMutableMapNG, File> mapPair = theModel.getSubordinateMaps().iterator().next();
+				invokeLater(new ViewerOpener(mapPair.first(), mapPair.second(), ioh));
+			}
+		}
 	}
 
 	/**
