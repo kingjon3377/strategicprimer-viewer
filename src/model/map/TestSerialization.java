@@ -141,7 +141,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		hsetOne.add(fixOne);
 		final Set<TileFixture> hsetTwo = new HashSet<>();
 		hsetTwo.add(fixTwo);
-		assertEquals("Check Set.equals()", fixOne, fixTwo);
+		assertEquals("Check Set.equals()", hsetOne, hsetTwo);
 		assertEquals("Tile equality with rivers",
 				encapsulateRivers(point(1, 1), River.North, River.South),
 				encapsulateRivers(point(1, 1), River.North, River.South));
