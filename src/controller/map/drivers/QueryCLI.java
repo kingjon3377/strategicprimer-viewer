@@ -207,13 +207,13 @@ public final class QueryCLI implements ISPDriver {
 		ostream.append(" minutes with expert herders, twice daily.\n");
 		if (poultry) {
 			ostream.append(String.format(
-					"This produces %.0f eggs, totaling %.1f oz.\n",
+					"This produces %.0f eggs, totaling %.1f oz.%n",
 					Double.valueOf(rate * count),
 					Double.valueOf(rate * 2.0 * count)));
 		} else {
 			ostream.append("Gathering them for each milking takes 30 min more.\n");
 			ostream.append(String.format(
-					"This produces %,.1f gallons, %,.1f lbs, of milk per day.\n",
+					"This produces %,.1f gallons, %,.1f lbs, of milk per day.%n",
 					Double.valueOf(rate * count),
 					Double.valueOf(rate * 8.6 * count)));
 		}
