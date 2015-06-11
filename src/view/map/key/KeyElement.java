@@ -72,7 +72,7 @@ public final class KeyElement extends BoxPanel {
 	 * @author Jonathan Lovelace
 	 *
 	 */
-	private final class KeyElementComponent extends JComponent {
+	private static final class KeyElementComponent extends JComponent {
 		/**
 		 * The color of this Component.
 		 */
