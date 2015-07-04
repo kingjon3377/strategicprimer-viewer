@@ -2,6 +2,8 @@ package view.worker;
 
 import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
 
+import java.awt.GridLayout;
+
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -14,6 +16,7 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
+import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.WorkerStats;
 
 public class MemberDetailPanel extends JPanel implements UnitMemberListener {
@@ -27,7 +30,7 @@ public class MemberDetailPanel extends JPanel implements UnitMemberListener {
 	private final JLabel intLabel = new JLabel("+NaN");
 	private final JLabel wisLabel = new JLabel("+NaN");
 	private final JLabel chaLabel = new JLabel("+NaN");
-	private final JLabel jobsLabel = new JLabel("<html><p>One Job</p><p>Two Job</p><p>Three Job</p></html>");
+	private final JPanel jobsPanel = new JPanel(new GridLayout(0, 1));
 	public MemberDetailPanel() {
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
@@ -62,7 +65,7 @@ public class MemberDetailPanel extends JPanel implements UnitMemberListener {
 						.addComponent(conLabel).addComponent(chaCaption)
 						.addComponent(chaLabel))
 				.addGroup(layout.createParallelGroup().addComponent(jobsCaption)
-						.addComponent(jobsLabel)));
+						.addComponent(jobsPanel)));
 		layout.setHorizontalGroup(layout.createParallelGroup()
 				.addComponent(header)
 				.addGroup(layout.createSequentialGroup()
@@ -93,10 +96,10 @@ public class MemberDetailPanel extends JPanel implements UnitMemberListener {
 								.addGroup(layout.createSequentialGroup()
 										.addComponent(chaCaption)
 										.addComponent(chaLabel))
-								.addComponent(jobsLabel)
+								.addComponent(jobsPanel)
 						)));
 		layout.linkSize(SwingConstants.HORIZONTAL, typeCaption, nameCaption, kindCaption, jobsCaption);
-		layout.linkSize(SwingConstants.HORIZONTAL, typeLabel, nameLabel, kindLabel, jobsLabel);
+		layout.linkSize(SwingConstants.HORIZONTAL, typeLabel, nameLabel, kindLabel, jobsPanel);
 		layout.linkSize(strCaption, dexCaption, conCaption, intCaption, wisCaption, chaCaption);
 		layout.linkSize(strLabel, dexLabel, conLabel, intLabel, wisLabel, chaLabel);
 		layout.linkSize(SwingConstants.VERTICAL, typeCaption, typeLabel);
@@ -123,7 +126,7 @@ public class MemberDetailPanel extends JPanel implements UnitMemberListener {
 			intLabel.setText("");
 			wisLabel.setText("");
 			chaLabel.setText("");
-			jobsLabel.setText("");
+			jobsPanel.removeAll();
 		} else if (local instanceof Worker) {
 			typeLabel.setText("Worker");
 			nameLabel.setText(((Worker) local).getName());
@@ -144,16 +147,27 @@ public class MemberDetailPanel extends JPanel implements UnitMemberListener {
 				wisLabel.setText(getModifierString(stats.getWisdom()));
 				chaLabel.setText(getModifierString(stats.getCharisma()));
 			}
-			StringBuilder jobs = new StringBuilder("<html>");
+			jobsPanel.removeAll();
 			for (IJob job : (Worker) local) {
-				jobs.append("<p>");
-				jobs.append(job.getName());
-				jobs.append(' ');
-				jobs.append(job.getLevel());
-				jobs.append("</p>");
+				JLabel label = new JLabel(job.getName() + ' ' + job.getLevel());
+				StringBuilder builder = new StringBuilder();
+				boolean first = true;
+				for (ISkill skill : job) {
+					if (first) {
+						first = false;
+						builder.append("Skills: ");
+					} else {
+						builder.append(", ");
+					}
+					builder.append(skill.getName());
+					builder.append(' ');
+					builder.append(skill.getLevel());
+				}
+				if (!first) {
+					label.setToolTipText(builder.toString());
+				}
+				jobsPanel.add(label);
 			}
-			jobs.append("</html>");
-			jobsLabel.setText(jobs.toString());
 		} else if (local instanceof Animal) {
 			typeLabel.setText("Animal");
 			nameLabel.setText("");
@@ -164,7 +178,7 @@ public class MemberDetailPanel extends JPanel implements UnitMemberListener {
 			intLabel.setText("");
 			wisLabel.setText("");
 			chaLabel.setText("");
-			jobsLabel.setText("");
+			jobsPanel.removeAll();
 		} else {
 			typeLabel.setText("Unknown");
 			nameLabel.setText("");
@@ -175,7 +189,7 @@ public class MemberDetailPanel extends JPanel implements UnitMemberListener {
 			intLabel.setText("");
 			wisLabel.setText("");
 			chaLabel.setText("");
-			jobsLabel.setText("");
+			jobsPanel.removeAll();
 		}
 	}
 }
