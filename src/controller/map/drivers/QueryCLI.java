@@ -12,6 +12,11 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
+import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
+import controller.map.misc.MapReaderAdapter;
 import model.exploration.HuntingModel;
 import model.map.IMapNG;
 import model.map.MapDimensions;
@@ -23,11 +28,6 @@ import model.map.fixtures.terrain.Forest;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
-import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.CLIHelper;
-import controller.map.misc.ICLIHelper;
-import controller.map.misc.MapReaderAdapter;
 
 /**
  * A driver for running exploration results, etc., using the new model.
@@ -200,17 +200,23 @@ public final class QueryCLI implements ISPDriver {
 			return; // NOPMD
 		}
 		final int animalsPerHerder = (count + herders - 1) / herders;
-		ostream.append("Tending the animals takes ");
-		ostream.append(Integer.toString(animalsPerHerder * time));
-		ostream.append(" minutes, or ");
-		ostream.append(Integer.toString(animalsPerHerder * (time - 5)));
-		ostream.append(" minutes with expert herders, twice daily.\n");
 		if (poultry) {
+			ostream.append("Gathering eggs takes ");
+			ostream.append(Integer.toString(animalsPerHerder * 2));
+			ostream.append(" minutes; cleaning up after them,\n");
+			ostream.append(String.format(
+					"which should be done every third turn at least, takes %.1f hours.%n",
+					Double.valueOf(animalsPerHerder * 0.5)));
 			ostream.append(String.format(
 					"This produces %.0f eggs, totaling %.1f oz.%n",
 					Double.valueOf(rate * count),
 					Double.valueOf(rate * 2.0 * count)));
 		} else {
+			ostream.append("Tending the animals takes ");
+			ostream.append(Integer.toString(animalsPerHerder * time));
+			ostream.append(" minutes, or ");
+			ostream.append(Integer.toString(animalsPerHerder * (time - 5)));
+			ostream.append(" minutes with expert herders, twice daily.\n");
 			ostream.append("Gathering them for each milking takes 30 min more.\n");
 			ostream.append(String.format(
 					"This produces %,.1f gallons, %,.1f lbs, of milk per day.%n",
