@@ -25,6 +25,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import org.eclipse.jdt.annotation.Nullable;
+
+import controller.map.misc.IDFactoryFiller;
+import controller.map.misc.IOHandler;
+import controller.map.report.ReportGenerator;
 import model.listeners.MapChangeListener;
 import model.listeners.PlayerChangeListener;
 import model.map.HasName;
@@ -38,17 +43,11 @@ import model.map.fixtures.mobile.worker.Job;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
 import model.workermgmt.WorkerTreeModelAlt;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 import util.TypesafeLogger;
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
-import controller.map.misc.IDFactoryFiller;
-import controller.map.misc.IOHandler;
-import controller.map.report.ReportGenerator;
 
 /**
  * A window to let the player manage units.
@@ -120,6 +119,8 @@ public class WorkerMgmtFrame extends JFrame {
 				reportModel);
 		pch.addPlayerChangeListener(reportUpdater);
 		model.addMapChangeListener(reportUpdater);
+		final MemberDetailPanel mdp = new MemberDetailPanel();
+		tree.addUnitMemberListener(mdp);
 		setContentPane(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT,
 				HALF_WAY, HALF_WAY, new SplitWithWeights(
 						JSplitPane.VERTICAL_SPLIT, TWO_THIRDS, TWO_THIRDS,
@@ -135,7 +136,7 @@ public class WorkerMgmtFrame extends JFrame {
 										new ExportButtonHandler(outer, smodel,
 												wtmodel)), null, null)),
 				new BorderedPanel(new JScrollPane(report), new JLabel(RPT_HDR),
-						null, null, null)));
+						mdp, null, null)));
 
 		setJMenuBar(new WorkerMenu(ioHandler, this, pch));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
