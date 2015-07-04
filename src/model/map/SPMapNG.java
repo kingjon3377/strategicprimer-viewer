@@ -10,15 +10,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.fixtures.Ground;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.viewer.PointIterator;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.ArraySet;
 import util.EmptyIterator;
 import util.IteratorWrapper;
@@ -133,17 +132,17 @@ public class SPMapNG implements IMutableMapNG {
 					retval = false;
 					// return false;
 				}
-				if (!Objects.equals(getForest(point), obj.getForest(point))
-						&& obj.getForest(point) != null) {
-					// TODO: Shouldn't do getForest call twice
+				Forest forest = obj.getForest(point);
+				if (!Objects.equals(getForest(point), forest)
+						&& forest != null) {
 					out.append(ctxt);
 					out.append("\tHas forest we don't, or different primary forest\n");
 					retval = false;
 					// return false;
 				}
-				if (!Objects.equals(getGround(point), obj.getGround(point))
-						&& obj.getGround(point) != null) {
-					// TODO: Shouldn't do getGround call twice
+				Ground ground = obj.getGround(point);
+				if (!Objects.equals(getGround(point), ground)
+						&& ground != null) {
 					out.append(ctxt);
 					out.append("\tHas different primary ground, or ground we don't\n");
 					retval = false;
