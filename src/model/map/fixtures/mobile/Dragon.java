@@ -2,13 +2,13 @@ package model.map.fixtures.mobile;
 
 import java.io.IOException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A dragon. TODO: should probably be a unit, or something.
@@ -60,7 +60,7 @@ public class Dragon implements MobileFixture, HasImage, HasKind, UnitMember {
 
 	/**
 	 * From OpenClipArt, public domain.
-	 * {@link https://openclipart.org/detail/166560/fire-dragon-by-olku}
+	 * {@link "https://openclipart.org/detail/166560/fire-dragon-by-olku"}
 	 * @return the name of an image to represent the dragon
 	 */
 	@Override

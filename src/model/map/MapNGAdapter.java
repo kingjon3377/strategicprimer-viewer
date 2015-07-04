@@ -8,13 +8,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 
 /**
@@ -419,7 +418,7 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 	}
 	/**
 	 * Set whether the given point is mountainous.
-	 * @param a location in the map
+	 * @param location a location in the map
 	 * @param mtn whether it is mountainous
 	 */
 	@Override
@@ -471,7 +470,11 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 			}
 		}
 	}
-
+	/**
+	 * Set the forest at the given location.
+	 * @param location the location in question
+	 * @param forest the new forest there
+	 */
 	@Override
 	public void setForest(final Point location, @Nullable final Forest forest) {
 		IMutableTile tile = state.getTile(location);
@@ -488,7 +491,10 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 			state.getTiles().addTile(location, tile);
 		}
 	}
-
+	/**
+	 * @param location a location in the map
+	 * @param ground the new base-ground there
+	 */
 	@Override
 	public void setGround(final Point location, @Nullable final Ground ground) {
 		IMutableTile tile = state.getTile(location);
@@ -505,29 +511,42 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 			state.getTiles().addTile(location, tile);
 		}
 	}
-
+	/**
+	 * @param fix the fixture to add
+	 * @param location where to add it
+	 */
 	@Override
 	public void addFixture(final Point location, final TileFixture fix) {
 		IMutableTile tile = state.getTile(location);
 		tile.addFixture(fix);
 		state.getTiles().addTile(location, tile);
 	}
-
+	/**
+	 * @param fix the fixture to remove
+	 * @param location its location
+	 */
 	@Override
 	public void removeFixture(final Point location, final TileFixture fix) {
 		IMutableTile tile = state.getTile(location);
 		tile.removeFixture(fix);
 	}
-
+	/**
+	 * @parm player the new current player
+	 */
 	@Override
 	public void setCurrentPlayer(final Player player) {
 		state.setCurrentPlayer(player.getPlayerId());
 	}
-
+	/**
+	 * @param turn the new current turn
+	 */
 	@Override
 	public void setTurn(final int turn) {
 		state.setCurrentTurn(turn);
 	}
+	/**
+	 * @return a string representation of the map
+	 */
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder("MapNGAdapter:\n");

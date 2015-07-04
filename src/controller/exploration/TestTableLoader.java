@@ -7,12 +7,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 
+import org.junit.Test;
+
 import model.exploration.old.EncounterTable;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileType;
-
-import org.junit.Test;
 
 /**
  * @author Jonathan Lovelace

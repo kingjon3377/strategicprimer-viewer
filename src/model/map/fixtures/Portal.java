@@ -1,11 +1,11 @@
 package model.map.fixtures;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.Point;
 import model.map.TileFixture;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A fixture representing a portal to another world.
@@ -141,7 +141,7 @@ public class Portal implements TileFixture, HasImage {
 						.equals(((Portal) obj).destinationCoordinates);
 	}
 	/**
-	 * @param obj a fixture
+	 * @param fix a fixture
 	 * @return the result of a comparison between it and this
 	 */
 	@Override

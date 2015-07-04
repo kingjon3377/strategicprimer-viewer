@@ -9,11 +9,6 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.HasImage;
-import model.map.IPlayerCollection;
-import model.map.Player;
-import util.NullCleaner;
-import util.Warning;
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -21,6 +16,11 @@ import controller.map.formatexceptions.SPMalformedInputException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
+import model.map.HasImage;
+import model.map.IPlayerCollection;
+import model.map.Player;
+import util.NullCleaner;
+import util.Warning;
 
 /**
  * A class for helper methods.
@@ -236,7 +236,7 @@ public final class XMLHelper {
 		return retval;
 	}
 	/**
-	 * @param line the current location in the XML
+	 * @param loc the current location in the XML
 	 * @param str a string
 	 * @return the integer it contains, or
 	 * @throws SPFormatException if it is nonnumeric or otherwise malformed

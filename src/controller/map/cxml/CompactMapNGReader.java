@@ -12,6 +12,15 @@ import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.Nullable;
+
+import controller.map.formatexceptions.MissingChildException;
+import controller.map.formatexceptions.MissingPropertyException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnsupportedTagException;
+import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.iointerfaces.ISPReader;
+import controller.map.misc.IDFactory;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.IMutablePlayerCollection;
@@ -26,20 +35,10 @@ import model.map.TileType;
 import model.map.fixtures.Ground;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.terrain.Forest;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.EqualsAny;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
-import controller.map.formatexceptions.MissingChildException;
-import controller.map.formatexceptions.MissingPropertyException;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.formatexceptions.UnsupportedTagException;
-import controller.map.formatexceptions.UnwantedChildException;
-import controller.map.iointerfaces.ISPReader;
-import controller.map.misc.IDFactory;
 /**
  * A reader for new-API maps.
  * @author Jonathan Lovelace
@@ -293,6 +292,11 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		}
 		throw new MissingChildException("map", line);
 	}
+	/**
+	 * @param obj a map
+	 * @param ostream the stream to write it to
+	 * @param indent how far indented we are already
+	 */
 	@Override
 	public void write(final Appendable ostream, final IMapNG obj, final int indent)
 			throws IOException {

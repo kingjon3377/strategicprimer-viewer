@@ -18,19 +18,58 @@ import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.WorkerStats;
-
+/**
+ * A panel to show the details of the currently selected unit-member.
+ * @author Jonathan Lovelace
+ */
 public class MemberDetailPanel extends JPanel implements UnitMemberListener {
+	/**
+	 * The currently selected unit member, or null if no selection.
+	 */
 	@Nullable private UnitMember current = null;
+	/**
+	 * The label to say what kind of unit member this is.
+	 */
 	private final JLabel typeLabel = new JLabel("member type");
+	/**
+	 * The label to say the name of the unit member.
+	 */
 	private final JLabel nameLabel = new JLabel("member name");
+	/**
+	 * The label to say the race or kind of the unit member.
+	 */
 	private final JLabel kindLabel = new JLabel("member kind");
+	/**
+	 * The label to say a worker's strength.
+	 */
 	private final JLabel strLabel = new JLabel("+NaN");
+	/**
+	 * The label to say a worker's dexterity.
+	 */
 	private final JLabel dexLabel = new JLabel("+NaN");
+	/**
+	 * The label to say a worker's constitution.
+	 */
 	private final JLabel conLabel = new JLabel("+NaN");
+	/**
+	 * The label to say a worker's intelligence.
+	 */
 	private final JLabel intLabel = new JLabel("+NaN");
+	/**
+	 * The label to say a worker's wisdom.
+	 */
 	private final JLabel wisLabel = new JLabel("+NaN");
+	/**
+	 * The label to say a worker's charisma.
+	 */
 	private final JLabel chaLabel = new JLabel("+NaN");
+	/**
+	 * The subpanel to show a worker's Job experience or training.
+	 */
 	private final JPanel jobsPanel = new JPanel(new GridLayout(0, 1));
+	/**
+	 * Constructor: lay out, then clear, the panel.
+	 */
 	public MemberDetailPanel() {
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
@@ -107,13 +146,24 @@ public class MemberDetailPanel extends JPanel implements UnitMemberListener {
 		layout.linkSize(SwingConstants.VERTICAL, kindCaption, kindLabel);
 		recache();
 	}
+
+	/**
+	 * Handle a member-selection event. Only trigger an invalidation of the
+	 * content if it's a different member than before.
+	 * @param old what the caller thinks was the previously selected member
+	 * @param selected the newly selected unit member
+	 */
 	@Override
-	public void memberSelected(@Nullable final UnitMember old, @Nullable final UnitMember selected) {
+	public void memberSelected(@Nullable final UnitMember old,
+			@Nullable final UnitMember selected) {
 		if (selected != current) {
 			current = selected;
 			recache();
 		}
 	}
+	/**
+	 * Invalidate and recompute the display.
+	 */
 	private void recache() {
 		UnitMember local = current;
 		if (local == null) {

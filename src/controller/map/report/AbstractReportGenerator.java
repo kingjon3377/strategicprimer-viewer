@@ -3,11 +3,10 @@ package controller.map.report;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.map.Player;
-import model.map.Point;
-
 import org.eclipse.jdt.annotation.Nullable;
 
+import model.map.Player;
+import model.map.Point;
 import util.NullCleaner;
 
 // ESCA-JAVA0011: Abstract methods are now moved to interface.
@@ -40,6 +39,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 
 	/**
 	 * A list that prints a header in its toString().
+	 * @param <T> the type of thing in the list
 	 */
 	protected interface HeadedList<T> extends List<T> {
 		/**

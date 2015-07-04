@@ -3,11 +3,11 @@ package model.exploration.old;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * An EncounterTable that always returns the same value.
@@ -38,7 +38,7 @@ public class ConstantTable implements EncounterTable {
 	}
 
 	/**
-	 * @param tile ignored
+	 * @param terrain ignored
 	 * @param point ignored
 	 * @param fixtures ignored
 	 * @return our specified value.

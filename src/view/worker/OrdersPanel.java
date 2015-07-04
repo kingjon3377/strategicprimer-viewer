@@ -12,6 +12,8 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.listeners.PlayerChangeListener;
 import model.map.IFixture;
 import model.map.Player;
@@ -19,9 +21,6 @@ import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.workermgmt.IWorkerModel;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.EmptyIterator;
 import util.NullCleaner;
 import view.util.ApplyButtonHandler;
@@ -164,26 +163,46 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 			units = unitsList;
 			owner = playr;
 		}
+		/**
+		 * @return a dummy Z-value
+		 */
 		@Override
 		public int getZValue() {
 			return 0;
 		}
+		/**
+		 * @return "proxies"
+		 */
 		@Override
 		public String plural() {
 			return "proxies";
 		}
+		/**
+		 * @return "proxy"
+		 */
 		@Override
 		public String shortDesc() {
 			return "proxy";
 		}
+		/**
+		 * @return a dummy ID #
+		 */
 		@Override
 		public int getID() {
 			return -1;
 		}
+		/**
+		 * @param fix a fixture
+		 * @return whether it is this instance
+		 */
 		@Override
 		public boolean equalsIgnoringID(final IFixture fix) {
 			return this == fix;
 		}
+		/**
+		 * @param o a fixture
+		 * @return the result of comparing it to this
+		 */
 		@Override
 		public int compareTo(@Nullable final TileFixture o) {
 			if (o == null) {
@@ -191,46 +210,81 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 			}
 			return hashCode() - o.hashCode();
 		}
+		/**
+		 * @return a dummy image filename
+		 */
 		@Override
 		public String getDefaultImage() {
 			return "proxy.png";
 		}
+		/**
+		 * @param image ignored
+		 */
 		@Override
 		public void setImage(final String image) {
 			throw new IllegalStateException("setImage called on ProxyImage");
 		}
+		/**
+		 * @return the same dummy image filename
+		 */
 		@Override
 		public String getImage() {
 			return "proxy.png";
 		}
+		/**
+		 * @return the specified kind
+		 */
 		@Override
 		public String getKind() {
 			return kind;
 		}
+		/**
+		 * @param nKind ignored
+		 */
 		@Override
 		public void setKind(final String nKind) {
 			throw new IllegalStateException("setKind called on ProxyImage");
 		}
+		/**
+		 * @return an empty iterator
+		 */
 		@Override
 		public Iterator<UnitMember> iterator() {
 			return new EmptyIterator<>();
 		}
+		/**
+		 * @return a dummy name
+		 */
 		@Override
 		public String getName() {
 			return "proxy";
 		}
+		/**
+		 * @param nomen ignored
+		 */
 		@Override
 		public void setName(final String nomen) {
 			throw new IllegalStateException("setName called on ProxyUnit");
 		}
+		/**
+		 * @return the specified owner
+		 */
 		@Override
 		public Player getOwner() {
 			return owner;
 		}
+		/**
+		 * @param player ignored
+		 */
 		@Override
 		public void setOwner(final Player player) {
 			throw new IllegalStateException("setOwner called on ProxyUnit");
 		}
+		/**
+		 * @param obj ignored
+		 * @param ostream the stream to write the error message to
+		 * @param context the context in which to write the error message
+		 */
 		@Override
 		public boolean isSubset(final IUnit obj, final Appendable ostream,
 				final String context) throws IOException {
@@ -238,6 +292,11 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 			ostream.append("\tisSubset called on ProxyUnit\n");
 			return false;
 		}
+
+		/**
+		 * @return the orders that every unit of this kind shares, or the empty
+		 *         string if not all share the same orders.
+		 */
 		@Override
 		public String getOrders() {
 			String retval = null;
@@ -256,6 +315,9 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 				return retval;
 			}
 		}
+		/**
+		 * @param newOrders orders to set on every unit with this kind.
+		 */
 		@Override
 		public void setOrders(final String newOrders) {
 			for (final IUnit unit : units) {
@@ -264,14 +326,25 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 				}
 			}
 		}
+		/**
+		 * @return "proxy"
+		 */
 		@Override
 		public String verbose() {
 			return "proxy";
 		}
+		/**
+		 * TODO: We should probably throw, or at least log, an exception when this is called
+		 * @param member ignored
+		 */
 		@Override
 		public void addMember(final UnitMember member) {
 			// Do nothing
 		}
+		/**
+		 * TODO: We should probably throw, or at least log, an exception when this is called
+		 * @param member ignored
+		 */
 		@Override
 		public void removeMember(final UnitMember member) {
 			// Do nothing

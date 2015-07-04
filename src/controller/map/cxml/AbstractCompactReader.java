@@ -10,19 +10,18 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import model.map.HasImage;
-
 import org.eclipse.jdt.annotation.Nullable;
 
-import util.EqualsAny;
-import util.NullCleaner;
-import util.Warning;
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.SPMalformedInputException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
+import model.map.HasImage;
+import util.EqualsAny;
+import util.NullCleaner;
+import util.Warning;
 
 // ESCA-JAVA0011: Doesn't contain an abstract method
 // because we moved it up to the interface.
@@ -333,6 +332,7 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	 * Parse an integer.
 	 * @param str the text to parse
 	 * @param line the current line in the document
+	 * @return the result of parsing the text
 	 * @throws SPFormatException if the string is nonnumeric or otherwise malformed
 	 */
 	protected static int parseInt(final String str, final int line)

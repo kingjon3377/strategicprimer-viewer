@@ -10,6 +10,15 @@ import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.Nullable;
+
+import controller.map.formatexceptions.MissingChildException;
+import controller.map.formatexceptions.MissingPropertyException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnsupportedTagException;
+import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.iointerfaces.ISPReader;
+import controller.map.misc.IDFactory;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.IMutablePlayerCollection;
@@ -24,19 +33,9 @@ import model.map.TileType;
 import model.map.fixtures.Ground;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.terrain.Forest;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.EqualsAny;
 import util.Pair;
 import util.Warning;
-import controller.map.formatexceptions.MissingChildException;
-import controller.map.formatexceptions.MissingPropertyException;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.formatexceptions.UnsupportedTagException;
-import controller.map.formatexceptions.UnwantedChildException;
-import controller.map.iointerfaces.ISPReader;
-import controller.map.misc.IDFactory;
 
 /**
  * A reader to read new-API maps from XML and turn them into XML.
@@ -94,7 +93,7 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 	 *            the collection of players
 	 * @param warner
 	 *            the Warning instance to use for warnings
-	 * @param fctory
+	 * @param factory
 	 *            the factory to use to register ID numbers and generate new
 	 *            ones
 	 * @return the produced map
@@ -304,8 +303,6 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 	 *
 	 * TODO: changesets
 	 *
-	 * @param <S>
-	 *            the type of the object
 	 * @param obj
 	 *            the object to write
 	 * @return an intermediate representation
@@ -400,7 +397,9 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 			return ReaderAdapter.ADAPTER.write(fixture);
 		}
 	}
-
+	/**
+	 * @return the class this knows how to write
+	 */
 	@Override
 	public Class<IMapNG> writes() {
 		return IMapNG.class;

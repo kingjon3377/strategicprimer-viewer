@@ -9,14 +9,13 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasKind;
 import model.map.HasName;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 import util.TypesafeLogger;
 
@@ -382,7 +381,9 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 					indices, children));
 		}
 	}
-
+	/**
+	 * @param item the item to move to this point in the tree
+	 */
 	@Override
 	public void moveItem(final HasKind item) {
 		final TreePath path;

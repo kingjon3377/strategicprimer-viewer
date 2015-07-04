@@ -9,14 +9,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.resources.CacheFixture;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 
 /**
@@ -271,7 +270,7 @@ public class MapNGReverseAdapter implements IMapView {
 		 * @throws IOException
 		 *             on I/O error writing output to the stream
 		 *
-		 * @see model.map.Subsettable#isSubset(java.lang.Object, Appendable)
+		 * @see model.map.Subsettable#isSubset(java.lang.Object, Appendable, String)
 		 */
 		@Override
 		public boolean isSubset(final IPlayerCollection obj,

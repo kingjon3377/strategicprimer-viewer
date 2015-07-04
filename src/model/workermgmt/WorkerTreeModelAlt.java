@@ -13,15 +13,14 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasKind;
 import model.map.HasName;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 
 /**
@@ -428,7 +427,9 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		final int index = getIndexOfChild(path[path.length - 2], node);
 		fireTreeNodesChanged(this, path, new int[] { index }, new Object[] { node });
 	}
-
+	/**
+	 * @param item the item to move to this point in the tree
+	 */
 	@Override
 	public void moveItem(final HasKind item) {
 		if (item instanceof UnitMember) {
@@ -492,7 +493,9 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 
 		}
 	}
-
+	/**
+	 * @param member the member to dismiss
+	 */
 	@Override
 	public void dismissUnitMember(final UnitMember member) {
 		final TreeNode node = getNode(member);
@@ -511,7 +514,9 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		dismissedMembers.add(member);
 		((Unit) ((UnitNode) parentNode).getUserObject()).removeMember(member);
 	}
-
+	/**
+	 * @return an iteration over the unit-members the user has dismissed.
+	 */
 	@Override
 	public Iterable<UnitMember> dismissed() {
 		return dismissedMembers;

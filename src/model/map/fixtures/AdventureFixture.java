@@ -1,12 +1,12 @@
 package model.map.fixtures;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.TileFixture;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A Fixture representing an adventure hook.
@@ -174,14 +174,25 @@ public class AdventureFixture implements TileFixture, HasImage, HasOwner {
 	public String shortDesc() {
 		return briefDesc;
 	}
+	/**
+	 * @return the ID number of the adventure.
+	 */
 	@Override
 	public int getID() {
 		return id;
 	}
+	/**
+	 * @param fix a fixture
+	 * @return whether it's equal to this one except for its ID number
+	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof AdventureFixture && equalsImpl((AdventureFixture) fix);
 	}
+	/**
+	 * @param fix a fixture
+	 * @return the result of comparing this to it
+	 */
 	@Override
 	public int compareTo(@Nullable final TileFixture fix) {
 		if (fix == null) {

@@ -28,12 +28,17 @@ public class ProxySkill implements ISkill {
 			proxied.add(job);
 		}
 	}
+	/**
+	 * @return the skills' name
+	 */
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
 		return name;
 	}
-
+	/**
+	 * @param nomen the skills' new name
+	 */
 	@Override
 	public void setName(final String nomen) {
 		name = nomen;

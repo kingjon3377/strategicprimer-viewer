@@ -78,7 +78,9 @@ public class ProxyWorker implements IWorker {
 		return fix instanceof ProxyWorker
 				&& ((ProxyWorker) fix).proxied.equals(proxied);
 	}
-
+	/**
+	 * The iterator over the proxied jobs.
+	 */
 	@Override
 	public Iterator<IJob> iterator() {
 		return NullCleaner.assertNotNull(proxyJobs.iterator());

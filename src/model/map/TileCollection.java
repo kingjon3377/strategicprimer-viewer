@@ -111,7 +111,7 @@ public final class TileCollection implements IMutableTileCollection {
 
 	/**
 	 * We don't replace the "retval = false" with "return false" because
-	 * {@link Tile#isSubset(ITile, Appendable)} has the side effect of printing
+	 * {@link Tile#isSubset(ITile, Appendable, String)} has the side effect of printing
 	 * what makes it *not* a subset; we want that done for *all* relevant tiles.
 	 *
 	 * @param obj another TileCollection

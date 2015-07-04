@@ -14,20 +14,18 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
-import model.exploration.IExplorationModel;
-import model.map.IMutableMapNG;
-import model.viewer.ViewerModel;
-
 import org.eclipse.jdt.annotation.Nullable;
-
-import util.Pair;
-import view.map.main.ViewerFrame;
-import view.util.DriverQuit;
 
 import com.bric.window.WindowMenu;
 
 import controller.map.misc.IOHandler;
 import controller.map.misc.MultiIOHandler;
+import model.exploration.IExplorationModel;
+import model.map.IMutableMapNG;
+import model.viewer.ViewerModel;
+import util.Pair;
+import view.map.main.ViewerFrame;
+import view.util.DriverQuit;
 
 /**
  * Menus for the exploration GUI.
@@ -104,15 +102,26 @@ public class ExplorationMenu extends JMenuBar {
 	 */
 	protected static final class ViewerOpenerInvoker implements ActionListener {
 		/**
-		 *
+		 * @param model the exploration model
+		 * @param first whether this is to open the main map, or otherwise a subordinate map
+		 * @param ioHandler the I/O handler to use to actually open the file
 		 */
 		protected ViewerOpenerInvoker(final IExplorationModel model, final boolean first, final IOHandler ioHandler) {
 			theModel = model;
 			frst = first;
 			ioh = ioHandler;
 		}
+		/**
+		 * The exploration model.
+		 */
 		private final IExplorationModel theModel;
+		/**
+		 * Whether we will be opening the main map, rather than a subordinate map.
+		 */
 		private final boolean frst;
+		/**
+		 * The I/O handler to actually open the file.
+		 */
 		private final IOHandler ioh;
 		/**
 		 * Handle the action

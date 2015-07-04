@@ -5,17 +5,16 @@ import java.io.IOException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.Nullable;
+
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.PointFactory;
 import model.map.fixtures.Portal;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
 
 /**
  * A reader for portals.
@@ -89,6 +88,10 @@ public class CompactPortalReader extends AbstractCompactReader<Portal> {
 		ostream.append(imageXML(obj));
 		ostream.append(" />\n");
 	}
+	/**
+	 * @param tag a tag
+	 * @return whether it is one we support
+	 */
 	@Override
 	public boolean isSupportedTag(@Nullable final String tag) {
 		return "portal".equalsIgnoreCase(tag);

@@ -69,12 +69,16 @@ public class ProxyJob implements IJob {
 	public String getName() {
 		return name;
 	}
-
+	/**
+	 * @param nomen the new name
+	 */
 	@Override
 	public void setName(final String nomen) {
 		name = nomen;
 	}
-
+	/**
+	 * @return an iterator over the skills that any of the proxied jobs has.
+	 */
 	@Override
 	public Iterator<ISkill> iterator() {
 		return NullCleaner.assertNotNull(proxied.iterator());
