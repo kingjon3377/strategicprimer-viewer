@@ -135,18 +135,33 @@ public class SPMapNG implements IMutableMapNG {
 				Forest forest = obj.getForest(point);
 				if (!Objects.equals(getForest(point), forest)
 						&& forest != null) {
-					out.append(ctxt);
-					out.append("\tHas forest we don't, or different primary forest\n");
-					retval = false;
+					// There are *far* too many false positives if we don't check the "other fixtures,"
+					// because of the way we represent this in the XML. If we ever start a new campaign
+					// with a different data representation---perhaps a database---we should remove this
+					// check.
+					if (!fixtures.get(point).contains(forest)) {
+						out.append(ctxt);
+						out.append("\tHas forest we don't, or different primary forest\n");
+						retval = false;
+					}
 					// return false;
 				}
-				Ground ground = obj.getGround(point);
-				if (!Objects.equals(getGround(point), ground)
-						&& ground != null) {
-					out.append(ctxt);
-					out.append("\tHas different primary ground, or ground we don't\n");
-					retval = false;
-					// return false;
+				Ground theirGround = obj.getGround(point);
+				final Ground ourGround = getGround(point);
+				if (!Objects.equals(ourGround, theirGround)
+						&& theirGround != null) {
+					// There are *far* too many false positives if we don't check the "other fixtures,"
+					// because of the way we represent this in the XML. If we ever start a new campaign
+					// with a different data representation---perhaps a database---we should remove this
+					// check. Except for the 'exposed' bit.
+					if (ourGround != null && ourGround.getKind().equals(theirGround.getKind()) && ourGround.isExposed()) {
+						// They just don't have the exposed bit set; carry on ...
+					} else if (ourGround == null || !fixtures.get(point).contains(theirGround)) {
+						out.append(ctxt);
+						out.append("\tHas different primary ground, or ground we don't\n");
+						retval = false;
+						// return false;
+					}
 				}
 				final Collection<TileFixture> ourFixtures =
 						new ArrayList<>();
