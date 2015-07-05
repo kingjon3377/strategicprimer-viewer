@@ -181,6 +181,11 @@ public class SPMapNG implements IMutableMapNG {
 					if (fix == null || ourFixtures.contains(fix)
 							|| shouldSkip(fix)) {
 						continue;
+					} else if ((fix instanceof Ground
+							&& Objects.equals(fix, getGround(point)))
+							|| (fix instanceof Forest
+									&& Objects.equals(fix, getForest(point)))) {
+						continue;
 					} else if (fix instanceof SubsettableFixture
 							&& ourSubsettables.containsKey(Integer.valueOf(fix
 									.getID()))) {
