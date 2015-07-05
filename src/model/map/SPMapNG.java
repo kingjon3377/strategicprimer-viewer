@@ -15,6 +15,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import model.map.fixtures.Ground;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.viewer.PointIterator;
@@ -167,10 +168,14 @@ public class SPMapNG implements IMutableMapNG {
 						new ArrayList<>();
 				final Map<Integer, SubsettableFixture> ourSubsettables =
 						new HashMap<>();
+				// Because IUnit is Subsettable<IUnit> and thus incompatible with SubsettableFixture
+				final Map<Integer, IUnit> ourUnits = new HashMap<>();
 				for (TileFixture fix : getOtherFixtures(point)) {
 					if (fix instanceof SubsettableFixture) {
 						ourSubsettables.put(Integer.valueOf(fix.getID()),
 								(SubsettableFixture) fix);
+					} else if (fix instanceof IUnit) {
+						ourUnits.put(Integer.valueOf(fix.getID()), (IUnit) fix);
 					} else {
 						ourFixtures.add(fix);
 					}
@@ -186,6 +191,10 @@ public class SPMapNG implements IMutableMapNG {
 							|| (fix instanceof Forest
 									&& Objects.equals(fix, getForest(point)))) {
 						continue;
+					} else if (fix instanceof IUnit && ourUnits
+							.containsKey(Integer.valueOf(fix.getID()))) {
+						retval &= ourUnits.get(Integer.valueOf(fix.getID()))
+								.isSubset((IUnit) fix, out, ctxt);
 					} else if (fix instanceof SubsettableFixture
 							&& ourSubsettables.containsKey(Integer.valueOf(fix
 									.getID()))) {
