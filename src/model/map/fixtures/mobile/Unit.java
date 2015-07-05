@@ -6,13 +6,12 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.IFixture;
 import model.map.Player;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.ArraySet;
 import util.NullCleaner;
 
@@ -388,7 +387,18 @@ public class Unit implements IUnit {
 					retval = false;
 				}
 			}
-			return retval;
+			if (retval) {
+				if ("unassigned".equals(name) || "unassigned".equals(kind)) {
+					if (!members.isEmpty() && !obj.iterator().hasNext()) {
+						ostream.append(ctxt);
+						ostream.append(" Nonempty 'unassigned' when submap has it empty\n");
+					}
+				}
+				return true;
+			} else {
+				return false;
+			}
+//			return retval;
 		}
 	}
 }
