@@ -20,6 +20,8 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.FixtureIterable;
 import model.map.HasKind;
 import model.map.HasName;
@@ -34,9 +36,6 @@ import model.map.fixtures.terrain.Mountain;
 import model.viewer.IViewerModel;
 import model.viewer.PointIterator;
 import model.viewer.ZOrderFilter;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.IsNumeric;
 import util.IteratorWrapper;
 import util.NullCleaner;
@@ -95,6 +94,7 @@ public class FindDialog extends JDialog implements ActionListener {
 	 */
 	public FindDialog(final Frame parent, final IViewerModel model) {
 		super(parent);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		search.addActionListener(this);
 		search.setActionCommand("OK");
 		errorLabel.setText("");
@@ -138,6 +138,7 @@ public class FindDialog extends JDialog implements ActionListener {
 				search();
 			}
 			setVisible(false);
+			dispose();
 		}
 	}
 	/**

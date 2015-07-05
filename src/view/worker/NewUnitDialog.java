@@ -17,19 +17,18 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
+import org.eclipse.jdt.annotation.Nullable;
+
+import controller.map.misc.IDFactory;
 import model.listeners.NewUnitListener;
 import model.listeners.NewUnitSource;
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.IsNumeric;
 import util.NullCleaner;
 import view.util.ListenedButton;
-import controller.map.misc.IDFactory;
 
 /**
  * A panel to let the user add a new unit. We fire the "add" property with the
@@ -156,11 +155,13 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 				nameField.setText("");
 				kindField.setText("");
 				setVisible(false);
+				dispose();
 			}
 		} else if ("Cancel".equals(evt.getActionCommand())) {
 			nameField.setText("");
 			kindField.setText("");
 			setVisible(false);
+			dispose();
 		}
 	}
 

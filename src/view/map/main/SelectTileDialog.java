@@ -13,12 +13,11 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.MapDimensions;
 import model.map.PointFactory;
 import model.viewer.IViewerModel;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 import view.util.BoxPanel;
 import view.util.ListenedButton;
@@ -56,6 +55,7 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 	 */
 	public SelectTileDialog(final Frame parent, final IViewerModel model) {
 		super(parent);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		final JLabel mainLabel = new JLabel("Coordinates of tile to select:");
 		mainLabel.setAlignmentX(CENTER_ALIGNMENT);
 		mainLabel.setAlignmentY(LEFT_ALIGNMENT);
@@ -107,6 +107,7 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 				setVisible(false);
 				row.setText("-1");
 				column.setText("-1");
+				dispose();
 			}
 		}
 	}
@@ -215,6 +216,7 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 				LOGGER.log(Level.SEVERE, "Parse failure after we checked input was numeric", e);
 			}
 			setVisible(false);
+			dispose();
 		} else {
 			pack();
 		}
