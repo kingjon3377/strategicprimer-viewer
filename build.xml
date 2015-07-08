@@ -167,6 +167,7 @@
       <arg line="-o ../${basename}.dmg" />
       <arg value="." />
     </exec>
+    <delete dir="${release}/${basename}.app" />
   </target>
   <target name="dist" depends="build,doc">
     <tar destfile="${release}/${basename}.tbz2" compression="bzip2">
