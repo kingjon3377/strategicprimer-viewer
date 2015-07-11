@@ -12,6 +12,8 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.listeners.GraphicalParamsListener;
 import model.listeners.MapChangeListener;
 import model.listeners.SelectionChangeListener;
@@ -22,9 +24,6 @@ import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
 import model.viewer.ZOrderFilter;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 
 /**
@@ -278,9 +277,9 @@ public final class MapComponent extends JComponent implements MapGUI,
 		final int minCol = getMapModel().getDimensions().getMinimumCol();
 		final int maxCol = getMapModel().getDimensions().getMaximumCol();
 		final MapDimensions mapDim = getMapModel().getMapDimensions();
-		return (selRow <= 0 || selRow >= minRow)
+		return (selRow < 0 || selRow >= minRow)
 				&& (selRow >= mapDim.rows || selRow <= maxRow)
-				&& (selCol <= 0 || selCol >= minCol)
+				&& (selCol < 0 || selCol >= minCol)
 				&& (selCol >= mapDim.cols || selCol <= maxCol);
 	}
 
