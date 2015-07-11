@@ -3,10 +3,10 @@ package view.map.main;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.PointFactory;
 import model.viewer.IViewerModel;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A class for moving the cursor around the single-component map UI, including
@@ -71,7 +71,43 @@ public class DirectionSelectionChanger implements MouseWheelListener {
 					model.getSelectedPoint().col + 1));
 		}
 	}
-
+	/**
+	 * Move the cursor all the way to the top.
+	 */
+	public void jumpUp() {
+		if (model.getSelectedPoint().row > 0) {
+			model.setSelection(
+					PointFactory.point(0, model.getSelectedPoint().col));
+		}
+	}
+	/**
+	 * Move the cursor all the way to the bottom.
+	 */
+	public void jumpDown() {
+		if (model.getSelectedPoint().row < model.getMapDimensions().rows - 1) {
+			model.setSelection(
+					PointFactory.point(model.getMapDimensions().rows - 1,
+							model.getSelectedPoint().col));
+		}
+	}
+	/**
+	 * Move the cursor all the way to the left.
+	 */
+	public void jumpLeft() {
+		if (model.getSelectedPoint().col > 0) {
+			model.setSelection(
+					PointFactory.point(model.getSelectedPoint().row, 0));
+		}
+	}
+	/**
+	 * Move the cursor all the way to the right.
+	 */
+	public void jumpRight() {
+		if (model.getSelectedPoint().col < model.getMapDimensions().cols - 1) {
+			model.setSelection(PointFactory.point(model.getSelectedPoint().row,
+					model.getMapDimensions().rows - 1));
+		}
+	}
 	/**
 	 *
 	 * @return a String representation of the object.

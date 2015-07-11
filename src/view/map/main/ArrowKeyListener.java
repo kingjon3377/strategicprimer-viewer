@@ -1,6 +1,7 @@
 package view.map.main;
 
 import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
+import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
 import static javax.swing.KeyStroke.getKeyStroke;
 
 import java.awt.event.ActionEvent;
@@ -79,6 +80,24 @@ public class ArrowKeyListener {
 		actionMap.put("ctrl-up-left", new UpLeftListener(selListener, 5));
 		actionMap.put("ctrl-down-right", new DownRightListener(selListener, 5));
 		actionMap.put("ctrl-down-left", new DownLeftListener(selListener, 5));
+		inputMap.put(getKeyStroke(KeyEvent.VK_HOME, CTRL_DOWN_MASK), "ctrl-home");
+		inputMap.put(getKeyStroke(KeyEvent.VK_HOME, 0), "home");
+		inputMap.put(getKeyStroke(KeyEvent.VK_0, 0), "home");
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD0, 0), "home");
+		inputMap.put(getKeyStroke(KeyEvent.VK_END, CTRL_DOWN_MASK), "ctrl-end");
+		inputMap.put(getKeyStroke(KeyEvent.VK_END, 0), "end");
+		inputMap.put(getKeyStroke(KeyEvent.VK_3, SHIFT_DOWN_MASK), "end");
+		inputMap.put(getKeyStroke('#', 0), "end");
+		inputMap.put(getKeyStroke(KeyEvent.VK_6, SHIFT_DOWN_MASK), "caret");
+		inputMap.put(getKeyStroke('^', 0), "caret");
+		inputMap.put(getKeyStroke(KeyEvent.VK_DOLLAR, 0), "dollar");
+		inputMap.put(getKeyStroke(KeyEvent.VK_4, SHIFT_DOWN_MASK), "dollar");
+		actionMap.put("ctrl-home", new JumpUpLeftListener(selListener));
+		actionMap.put("home", new JumpUpListener(selListener));
+		actionMap.put("ctrl-end", new JumpDownRightListener(selListener));
+		actionMap.put("end", new JumpDownListener(selListener));
+		actionMap.put("caret", new JumpLeftListener(selListener));
+		actionMap.put("dollar", new JumpRightListener(selListener));
 	}
 
 	/**
@@ -359,6 +378,146 @@ public class ArrowKeyListener {
 			// TODO: Perhaps add proper support to DirectionSelectionChanger so we don't have to make two calls here
 			dsc.down();
 			dsc.left();
+		}
+	}
+	/**
+	 * A listener to move the cursor to the top left corner.
+	 */
+	private static class JumpUpLeftListener extends AbstractAction {
+		/**
+		 * The helper that actually performs the cursor movement.
+		 */
+		private final DirectionSelectionChanger dsc;
+		/**
+		 * @param dsch The helper to actually perform the cursor movement
+		 */
+		JumpUpLeftListener(final DirectionSelectionChanger dsch) {
+			dsc = dsch;
+		}
+		/**
+		 * Handle a key-press.
+		 * @param evt the event to handle.
+		 */
+		@Override
+		public void actionPerformed(@Nullable final ActionEvent evt) {
+			dsc.jumpUp();
+			dsc.jumpLeft();
+		}
+	}
+	/**
+	 * A listener to move the cursor to the bottom right corner.
+	 */
+	private static class JumpDownRightListener extends AbstractAction {
+		/**
+		 * The helper that actually performs the cursor movement.
+		 */
+		private final DirectionSelectionChanger dsc;
+		/**
+		 * @param dsch The helper to actually perform the cursor movement
+		 */
+		JumpDownRightListener(final DirectionSelectionChanger dsch) {
+			dsc = dsch;
+		}
+		/**
+		 * Handle a key-press.
+		 * @param evt the event to handle.
+		 */
+		@Override
+		public void actionPerformed(@Nullable final ActionEvent evt) {
+			dsc.jumpDown();
+			dsc.jumpRight();
+		}
+	}
+	/**
+	 * A listener to move the cursor all the way up.
+	 */
+	private static class JumpUpListener extends AbstractAction {
+		/**
+		 * The helper that actually performs the cursor movement.
+		 */
+		private final DirectionSelectionChanger dsc;
+		/**
+		 * @param dsch The helper to actually perform the cursor movement
+		 */
+		JumpUpListener(final DirectionSelectionChanger dsch) {
+			dsc = dsch;
+		}
+		/**
+		 * Handle a key-press.
+		 * @param evt the event to handle.
+		 */
+		@Override
+		public void actionPerformed(@Nullable final ActionEvent evt) {
+			dsc.jumpUp();
+		}
+	}
+	/**
+	 * A listener to move the cursor all the way down.
+	 */
+	private static class JumpDownListener extends AbstractAction {
+		/**
+		 * The helper that actually performs the cursor movement.
+		 */
+		private final DirectionSelectionChanger dsc;
+		/**
+		 * @param dsch The helper to actually perform the cursor movement
+		 */
+		JumpDownListener(final DirectionSelectionChanger dsch) {
+			dsc = dsch;
+		}
+		/**
+		 * Handle a key-press.
+		 * @param evt the event to handle.
+		 */
+		@Override
+		public void actionPerformed(@Nullable final ActionEvent evt) {
+			dsc.jumpDown();
+		}
+	}
+	/**
+	 * A listener to move the cursor all the way left.
+	 */
+	private static class JumpLeftListener extends AbstractAction {
+		/**
+		 * The helper that actually performs the cursor movement.
+		 */
+		private final DirectionSelectionChanger dsc;
+		/**
+		 * @param dsch The helper to actually perform the cursor movement
+		 */
+		JumpLeftListener(final DirectionSelectionChanger dsch) {
+			dsc = dsch;
+		}
+		/**
+		 * Handle a key-press.
+		 * @param evt the event to handle.
+		 */
+		@Override
+		public void actionPerformed(@Nullable final ActionEvent evt) {
+			dsc.jumpLeft();
+		}
+	}
+	/**
+	 * A listener to move the cursor all the way right.
+	 */
+	private static class JumpRightListener extends AbstractAction {
+		/**
+		 * The helper that actually performs the cursor movement.
+		 */
+		private final DirectionSelectionChanger dsc;
+		/**
+		 * @param dsch The helper to actually perform the cursor movement
+		 */
+		JumpRightListener(final DirectionSelectionChanger dsch) {
+			dsc = dsch;
+		}
+		/**
+		 * Handle a key-press.
+		 * @param evt the event to handle.
+		 */
+		@Override
+		public void actionPerformed(@Nullable final ActionEvent evt) {
+			dsc.jumpRight();
 		}
 	}
 }
