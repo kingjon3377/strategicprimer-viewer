@@ -7,6 +7,7 @@ import com.bric.window.WindowMenu;
 import controller.map.misc.MultiIOHandler;
 import model.exploration.IExplorationModel;
 import view.util.SPMenu;
+import view.worker.PlayerChooserHandler;
 
 /**
  * Menus for the exploration GUI.
@@ -27,6 +28,7 @@ public class ExplorationMenu extends SPMenu {
 			final IExplorationModel model, final JFrame parent) {
 		add(createFileMenu(ioh, parent, model));
 		addDisabled(createMapMenu(parent, model));
+		addDisabled(createEditMenu(new PlayerChooserHandler(parent, model)));
 		add(new WindowMenu(parent));
 	}
 }

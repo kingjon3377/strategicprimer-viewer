@@ -7,6 +7,7 @@ import com.bric.window.WindowMenu;
 import controller.map.misc.IOHandler;
 import model.viewer.IViewerModel;
 import view.util.SPMenu;
+import view.worker.PlayerChooserHandler;
 
 /**
  * A class encapsulating the menus.
@@ -26,6 +27,7 @@ public class ViewerMenu extends SPMenu {
 			final IViewerModel model) {
 		add(createFileMenu(handler, parent, model));
 		add(createMapMenu(parent, model));
+		addDisabled(createEditMenu(new PlayerChooserHandler(parent, model)));
 		add(new WindowMenu(parent));
 	}
 

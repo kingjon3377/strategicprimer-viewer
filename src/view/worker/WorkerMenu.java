@@ -1,19 +1,11 @@
 package view.worker;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 import com.bric.window.WindowMenu;
 
 import controller.map.misc.IOHandler;
 import model.misc.IDriverModel;
-import view.util.MenuItemCreator;
 import view.util.SPMenu;
 
 /**
@@ -38,28 +30,5 @@ public class WorkerMenu extends SPMenu {
 		addDisabled(createMapMenu(parent, model));
 		add(createEditMenu(pch));
 		add(new WindowMenu(parent));
-	}
-	/**
-	 * Create the "edit"menu.
-	 * @param pch the object to notify when the user selects a different player
-	 * @return the "edit" menu
-	 */
-	private static JMenu createEditMenu(final PlayerChooserHandler pch) {
-		final JMenu editMenu = new JMenu("Edit");
-		editMenu.setMnemonic(KeyEvent.VK_E);
-		editMenu.add(MenuItemCreator.createMenuItem(
-				PlayerChooserHandler.MENU_ITEM, KeyEvent.VK_P,
-				MenuItemCreator.createHotkey(KeyEvent.VK_P),
-				"Look at a different player's units and workers", pch));
-		editMenu.add(MenuItemCreator.createMenuItem("Reload tree",
-				KeyEvent.VK_R, MenuItemCreator.createHotkey(KeyEvent.VK_R),
-				"Refresh the view of the workers", new ActionListener() {
-
-			@Override
-			public void actionPerformed(@Nullable final ActionEvent e) {
-				pch.reload();
-			}
-		}));
-		return editMenu;
 	}
 }

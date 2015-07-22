@@ -275,6 +275,29 @@ public class SPMenu extends JMenuBar {
 		return retval;
 	}
 	/**
+	 * Create the "edit"menu.
+	 * @param pch the object to notify when the user selects a different player
+	 * @return the "edit" menu
+	 */
+	protected static JMenu createEditMenu(final PlayerChooserHandler pch) {
+		final JMenu editMenu = new JMenu("Edit");
+		editMenu.setMnemonic(KeyEvent.VK_E);
+		editMenu.add(MenuItemCreator.createMenuItem(
+				PlayerChooserHandler.MENU_ITEM, KeyEvent.VK_P,
+				MenuItemCreator.createHotkey(KeyEvent.VK_P),
+				"Look at a different player's units and workers", pch));
+		editMenu.add(MenuItemCreator.createMenuItem("Reload tree",
+				KeyEvent.VK_R, MenuItemCreator.createHotkey(KeyEvent.VK_R),
+				"Refresh the view of the workers", new ActionListener() {
+
+			@Override
+			public void actionPerformed(@Nullable final ActionEvent e) {
+				pch.reload();
+			}
+		}));
+		return editMenu;
+	}
+	/**
 	 * Add a menu, but set it to disabled.
 	 * @param menu a menu
 	 * @return it
