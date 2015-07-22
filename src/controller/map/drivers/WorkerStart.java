@@ -9,6 +9,13 @@ import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 
+import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.FileChooser;
+import controller.map.misc.FileChooser.ChoiceInterruptedException;
+import controller.map.misc.IOHandler;
+import controller.map.misc.MapReaderAdapter;
+import controller.map.misc.WindowThread;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
 import util.TypesafeLogger;
@@ -18,13 +25,6 @@ import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
 import view.util.FilteredFileChooser;
 import view.worker.WorkerMgmtFrame;
-import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.FileChooser;
-import controller.map.misc.FileChooser.ChoiceInterruptedException;
-import controller.map.misc.IOHandler;
-import controller.map.misc.MapReaderAdapter;
-import controller.map.misc.WindowThread;
 
 /**
  * A class to start the user worker management GUI.
@@ -106,9 +106,17 @@ public class WorkerStart implements ISPDriver {
 			return;
 		}
 		try {
+			final MapReaderAdapter reader = new MapReaderAdapter();
+			final Warning warner = new Warning(Action.Warn);
 			final IWorkerModel model =
-					new WorkerModel(new MapReaderAdapter().readMap(file,
-							new Warning(Action.Warn)), file);
+					new WorkerModel(reader.readMap(file,
+							warner), file);
+			for (String arg : args) {
+				if (arg != null && !arg.equals(args[0])) {
+					final File newFile = new File(arg);
+					model.addSubordinateMap(reader.readMap(newFile, warner), newFile);
+				}
+			}
 			SwingUtilities.invokeLater(new WindowThread(new WorkerMgmtFrame(
 					model, new IOHandler(model, new FilteredFileChooser(".",
 							new MapFileFilter())))));

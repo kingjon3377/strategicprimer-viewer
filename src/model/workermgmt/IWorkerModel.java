@@ -4,7 +4,7 @@ import java.util.List;
 
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
-import model.misc.IDriverModel;
+import model.misc.IMultiMapModel;
 
 /**
  * An interface for a model to underlie the advancement GUI, etc.
@@ -12,7 +12,7 @@ import model.misc.IDriverModel;
  * @author Jonathan Lovelace
  *
  */
-public interface IWorkerModel extends IDriverModel {
+public interface IWorkerModel extends IMultiMapModel {
 	/**
 	 * @param player a player in the map
 	 * @return a list of the units in the map belonging to the player

@@ -14,7 +14,7 @@ import model.map.TileFixture;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
-import model.misc.AbstractDriverModel;
+import model.misc.AbstractMultiMapModel;
 import util.NullCleaner;
 import view.util.SystemOut;
 
@@ -24,7 +24,7 @@ import view.util.SystemOut;
  * @author Jonathan Lovelace
  *
  */
-public class WorkerModel extends AbstractDriverModel implements IWorkerModel {
+public class WorkerModel extends AbstractMultiMapModel implements IWorkerModel {
 	/**
 	 * Constructor.
 	 *
