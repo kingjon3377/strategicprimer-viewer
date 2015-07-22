@@ -10,22 +10,30 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
+import javax.swing.InputMap;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 
 import org.eclipse.jdt.annotation.Nullable;
 
 import controller.map.misc.IOHandler;
 import controller.map.misc.MultiIOHandler;
+import model.listeners.PlayerChangeListener;
 import model.map.IMutableMapNG;
+import model.map.Player;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
 import util.Pair;
+import view.map.main.FindDialog;
+import view.map.main.SelectTileDialog;
 import view.map.main.ViewerFrame;
+import view.map.main.ZoomListener;
+import view.worker.PlayerChooserHandler;
 
 /**
  * A common superclass for application-specific menu bars.
@@ -142,6 +150,129 @@ public class SPMenu extends JMenuBar {
 					}
 				}));
 		return fileMenu;
+	}
+	/**
+	 * Create the "map" menu, including go-to-tile, find, and zooming functions. This
+	 * now takes any IDriverModel, because it's expected that apps where none of that
+	 * makes sense will show but disable the menu.
+	 * @param parent the menu-bar's parent window
+	 * @param model the driver model
+	 * @return the menu created
+	 */
+	protected static JMenu createMapMenu(final JFrame parent, final IDriverModel model) {
+		final JMenu retval = new JMenu("Map");
+		retval.setMnemonic(KeyEvent.VK_M);
+		final JMenuItem gotoTileItem;
+		final int findKey = KeyEvent.VK_F;
+		final KeyStroke findStroke = MenuItemCreator.createHotkey(findKey);
+		final JMenuItem findItem;
+		final JMenuItem nextItem;
+		final int nextKey = KeyEvent.VK_N;
+		final KeyStroke nextStroke = MenuItemCreator.createHotkey(KeyEvent.VK_G);
+		final ActionListener zoomListener;
+		if (model instanceof IViewerModel) {
+			gotoTileItem = MenuItemCreator.createMenuItem("Go to tile", KeyEvent.VK_T,
+					MenuItemCreator.createHotkey(KeyEvent.VK_T),
+					"Go to a tile by coordinates", new ActionListener() {
+						@Override
+						public void actionPerformed(@Nullable final ActionEvent evt) {
+							new SelectTileDialog(parent, (IViewerModel) model).setVisible(true);
+						}
+					});
+			final FindDialog finder = new FindDialog(parent, (IViewerModel) model);
+			findItem =
+					MenuItemCreator.createMenuItem("Find a fixture", findKey,
+							findStroke, "Find a fixture by name, kind, or ID#",
+							new ActionListener() {
+								@Override
+								public void actionPerformed(
+										@Nullable final ActionEvent evt) {
+									finder.setVisible(true);
+								}
+							});
+			nextItem =
+					MenuItemCreator.createMenuItem("Find next", nextKey,
+							nextStroke,
+							"Find the next fixture matching the pattern",
+							new ActionListener() {
+								@Override
+								public void actionPerformed(
+										@Nullable final ActionEvent evt) {
+									finder.search();
+								}
+							});
+			zoomListener = new ZoomListener((IViewerModel) model);
+		} else {
+			final ActionListener nullAction = new ActionListener() {
+				@Override
+				public void actionPerformed(
+						@Nullable final ActionEvent evt) {
+					// do nothing
+				}
+			};
+			gotoTileItem = MenuItemCreator.createMenuItem("Go to tile", KeyEvent.VK_T,
+					MenuItemCreator.createHotkey(KeyEvent.VK_T),
+					"Go to a tile by coordinates", nullAction);
+			gotoTileItem.setEnabled(false);
+			findItem = MenuItemCreator.createMenuItem("Find a fixture", findKey,
+					findStroke, "Find a fixture by name, kind, or ID#",
+					nullAction);
+			findItem.setEnabled(false);
+			nextItem =
+					MenuItemCreator.createMenuItem("Find next", nextKey,
+							nextStroke,
+							"Find the next fixture matching the pattern",
+							nullAction);
+			zoomListener = nullAction;
+		}
+		retval.add(gotoTileItem);
+		final InputMap findInput = findItem.getInputMap(WHEN_IN_FOCUSED_WINDOW);
+		findInput.put(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0),
+				findInput.get(findStroke));
+		retval.add(findItem);
+		final InputMap nextInput = nextItem.getInputMap(WHEN_IN_FOCUSED_WINDOW);
+		nextInput.put(KeyStroke.getKeyStroke(nextKey, 0), nextInput.get(nextStroke));
+		retval.add(nextItem);
+		retval.addSeparator();
+		// VK_PLUS only works on non-US keyboards, but we leave it as the
+		// primary hotkey because it's the best to *show* in the menu.
+		final KeyStroke plusKey =
+				MenuItemCreator.createHotkey(KeyEvent.VK_PLUS);
+		final JMenuItem zoomInItem =
+				MenuItemCreator.createMenuItem("Zoom in", KeyEvent.VK_I,
+						plusKey, "Increase the visible size of each tile",
+						zoomListener);
+		final InputMap inputMap =
+				zoomInItem.getInputMap(WHEN_IN_FOCUSED_WINDOW);
+		inputMap.put(MenuItemCreator.createHotkey(KeyEvent.VK_EQUALS),
+				inputMap.get(plusKey));
+		inputMap.put(MenuItemCreator.createShiftHotkey(KeyEvent.VK_EQUALS),
+				inputMap.get(plusKey));
+		inputMap.put(MenuItemCreator.createHotkey(KeyEvent.VK_ADD),
+				inputMap.get(plusKey));
+		retval.add(zoomInItem);
+		retval.add(MenuItemCreator.createMenuItem("Zoom out", KeyEvent.VK_O,
+				MenuItemCreator.createHotkey(KeyEvent.VK_MINUS),
+				"Decrease the visible size of each tile", zoomListener));
+		retval.addSeparator();
+		final PlayerChooserHandler pch = new PlayerChooserHandler(parent, model);
+		retval.add(MenuItemCreator.createMenuItem(
+				PlayerChooserHandler.MENU_ITEM, KeyEvent.VK_P, null,
+				"Mark a player as the current player in the map", pch));
+		pch.addPlayerChangeListener(new PlayerChangeListener() {
+			@Override
+			public void playerChanged(@Nullable final Player old,
+					final Player newPlayer) {
+				for (final Player player : model.getMap().players()) {
+					if (player.equals(newPlayer)) {
+						player.setCurrent(true);
+					} else {
+						player.setCurrent(false);
+					}
+				}
+			}
+		});
+		return retval;
 	}
 	/**
 	 * A class to invoke a ViewerOpener (below).

@@ -1,6 +1,7 @@
 package view.exploration;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
 
 import com.bric.window.WindowMenu;
 
@@ -26,6 +27,9 @@ public class ExplorationMenu extends SPMenu {
 	public ExplorationMenu(final MultiIOHandler ioh,
 			final IExplorationModel model, final JFrame parent) {
 		add(createFileMenu(ioh, parent, model));
+		JMenu mapMenu = createMapMenu(parent, model);
+		add(mapMenu);
+		mapMenu.setEnabled(false);
 		add(new WindowMenu(parent));
 	}
 }
