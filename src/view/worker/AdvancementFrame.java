@@ -13,7 +13,7 @@ import javax.swing.WindowConstants;
 import javax.swing.text.View;
 
 import controller.map.misc.IDFactoryFiller;
-import controller.map.misc.IOHandler;
+import controller.map.misc.MultiIOHandler;
 import model.map.Player;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
@@ -51,7 +51,7 @@ public class AdvancementFrame extends JFrame {
 	 * @param source the model containing the data to work from
 	 * @param ioHandler the I/O handler so the menu 'open' item, etc., will work
 	 */
-	public AdvancementFrame(final IWorkerModel source, final IOHandler ioHandler) {
+	public AdvancementFrame(final IWorkerModel source, final MultiIOHandler ioHandler) {
 		super("Worker Advancement");
 		if (source.getMapFile().exists()) {
 			setTitle(source.getMapFile().getName() + " | Worker Advancement");
