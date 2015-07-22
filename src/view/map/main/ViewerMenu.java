@@ -1,8 +1,5 @@
 package view.map.main;
 
-import static view.util.MenuItemCreator.createHotkey;
-import static view.util.MenuItemCreator.createMenuItem;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -10,23 +7,20 @@ import java.awt.event.KeyEvent;
 import javax.swing.InputMap;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-import model.listeners.PlayerChangeListener;
-import model.map.Player;
-import model.viewer.IViewerModel;
-
 import org.eclipse.jdt.annotation.Nullable;
-
-import view.util.DriverQuit;
-import view.util.MenuItemCreator;
-import view.worker.PlayerChooserHandler;
 
 import com.bric.window.WindowMenu;
 
 import controller.map.misc.IOHandler;
+import model.listeners.PlayerChangeListener;
+import model.map.Player;
+import model.viewer.IViewerModel;
+import view.util.MenuItemCreator;
+import view.util.SPMenu;
+import view.worker.PlayerChooserHandler;
 
 /**
  * A class encapsulating the menus.
@@ -34,7 +28,7 @@ import controller.map.misc.IOHandler;
  * @author Jonathan Lovelace
  *
  */
-public class ViewerMenu extends JMenuBar {
+public class ViewerMenu extends SPMenu {
 	/**
 	 * Constructor.
 	 *
@@ -44,7 +38,7 @@ public class ViewerMenu extends JMenuBar {
 	 */
 	public ViewerMenu(final IOHandler handler, final JFrame parent,
 			final IViewerModel model) {
-		add(createFileMenu(handler, parent));
+		add(createFileMenu(handler, parent, model));
 		add(createMapMenu(parent, model));
 		add(new WindowMenu(parent));
 	}
@@ -142,73 +136,6 @@ public class ViewerMenu extends JMenuBar {
 			}
 		});
 		return retval;
-	}
-
-	/**
-	 * Create the map menu.
-	 *
-	 * @param handler the class to handle I/O related menu items
-	 * @param parent the menu-bar's parent window---the window to close on
-	 *        "Close".
-	 * @return the map menu.
-	 */
-	private static JMenu createFileMenu(final IOHandler handler,
-			final JFrame parent) {
-		final JMenu fileMenu = new JMenu("File");
-		fileMenu.setMnemonic(KeyEvent.VK_F);
-		fileMenu.add(MenuItemCreator.createMenuItem("New", KeyEvent.VK_N,
-				MenuItemCreator.createHotkey(KeyEvent.VK_N),
-				"Create a new, empty map the same size as the current one",
-				handler));
-		fileMenu.add(MenuItemCreator.createMenuItem("Load", KeyEvent.VK_L,
-				MenuItemCreator.createHotkey(KeyEvent.VK_O),
-				"Load a map from file", handler));
-		fileMenu.add(MenuItemCreator.createMenuItem("Save", KeyEvent.VK_S,
-				MenuItemCreator.createHotkey(KeyEvent.VK_S),
-				"Save the map to the file it was loaded from", handler));
-		fileMenu.add(MenuItemCreator.createMenuItem("Save As", KeyEvent.VK_A,
-				MenuItemCreator.createShiftHotkey(KeyEvent.VK_S),
-				"Save the map to file", handler));
-		fileMenu.addSeparator();
-		fileMenu.add(MenuItemCreator.createMenuItem("Close", KeyEvent.VK_W,
-				MenuItemCreator.createHotkey(KeyEvent.VK_W),
-				"Close this window", new ActionListener() {
-					/**
-					 * Close the window when pressed.
-					 *
-					 * @param evt the event to handle
-					 */
-					@Override
-					public void actionPerformed(@Nullable final ActionEvent evt) {
-						if (evt != null
-								&& "Close".equals(evt.getActionCommand())) {
-							parent.setVisible(false);
-							parent.dispose();
-						}
-					}
-				}));
-		fileMenu.addSeparator();
-		fileMenu.add(createMenuItem("About", KeyEvent.VK_B,
-				createHotkey(KeyEvent.VK_B), "Show development credits", handler));
-		fileMenu.addSeparator();
-		fileMenu.add(MenuItemCreator.createMenuItem("Quit", KeyEvent.VK_Q,
-				MenuItemCreator.createHotkey(KeyEvent.VK_Q), "Quit the viewer",
-				new ActionListener() {
-					/**
-					 * Handle the menu "button" press.
-					 *
-					 * @param event the event to handle
-					 */
-					@Override
-					public void actionPerformed(
-							@Nullable final ActionEvent event) {
-						if (event != null
-								&& "Quit".equals(event.getActionCommand())) {
-							DriverQuit.quit(0);
-						}
-					}
-				}));
-		return fileMenu;
 	}
 
 	/**

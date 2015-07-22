@@ -12,6 +12,8 @@ import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 import javax.swing.text.View;
 
+import controller.map.misc.IDFactoryFiller;
+import controller.map.misc.IOHandler;
 import model.map.Player;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
@@ -22,8 +24,6 @@ import view.util.AddRemovePanel;
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
-import controller.map.misc.IDFactoryFiller;
-import controller.map.misc.IOHandler;
 
 /**
  * A GUI to let a user manage workers.
@@ -105,7 +105,7 @@ public class AdvancementFrame extends JFrame {
 			tree.expandRow(i);
 		}
 
-		setJMenuBar(new WorkerMenu(ioHandler, this, pch));
+		setJMenuBar(new WorkerMenu(ioHandler, this, pch, source));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
 	}
