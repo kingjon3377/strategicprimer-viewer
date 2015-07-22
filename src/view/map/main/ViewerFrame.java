@@ -78,7 +78,7 @@ public final class ViewerFrame extends JFrame {
 		addWindowListener(mwsl);
 		addWindowStateListener(mwsl);
 
-		setJMenuBar(new SPMenu(ioHandler, this, map));
+		setJMenuBar(new ViewerMenu(ioHandler, this, map));
 		getJMenuBar().add(ffmenu);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}

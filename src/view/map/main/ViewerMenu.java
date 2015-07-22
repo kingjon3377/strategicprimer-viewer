@@ -34,7 +34,7 @@ import controller.map.misc.IOHandler;
  * @author Jonathan Lovelace
  *
  */
-public class SPMenu extends JMenuBar {
+public class ViewerMenu extends JMenuBar {
 	/**
 	 * Constructor.
 	 *
@@ -42,7 +42,7 @@ public class SPMenu extends JMenuBar {
 	 * @param parent the frame we'll be attached to
 	 * @param model the map model
 	 */
-	public SPMenu(final IOHandler handler, final JFrame parent,
+	public ViewerMenu(final IOHandler handler, final JFrame parent,
 			final IViewerModel model) {
 		add(createFileMenu(handler, parent));
 		add(createMapMenu(parent, model));
