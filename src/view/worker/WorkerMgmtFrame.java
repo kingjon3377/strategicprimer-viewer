@@ -28,7 +28,7 @@ import javax.swing.tree.TreePath;
 import org.eclipse.jdt.annotation.Nullable;
 
 import controller.map.misc.IDFactoryFiller;
-import controller.map.misc.MultiIOHandler;
+import controller.map.misc.IOHandler;
 import controller.map.report.ReportGenerator;
 import model.listeners.MapChangeListener;
 import model.listeners.PlayerChangeListener;
@@ -80,7 +80,7 @@ public class WorkerMgmtFrame extends JFrame {
 	 * @param ioHandler the I/O handler, so we can handle 'open' and 'save' menu
 	 *        items.
 	 */
-	public WorkerMgmtFrame(final IWorkerModel model, final MultiIOHandler ioHandler) {
+	public WorkerMgmtFrame(final IWorkerModel model, final IOHandler ioHandler) {
 		super("Worker Management");
 		if (model.getMapFile().exists()) {
 			setTitle(model.getMapFile().getName() + " | Worker Management");

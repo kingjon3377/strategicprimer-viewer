@@ -13,8 +13,8 @@ import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.FileChooser;
 import controller.map.misc.FileChooser.ChoiceInterruptedException;
+import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
-import controller.map.misc.MultiIOHandler;
 import controller.map.misc.WindowThread;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
@@ -118,7 +118,7 @@ public class WorkerStart implements ISPDriver {
 				}
 			}
 			SwingUtilities.invokeLater(new WindowThread(new WorkerMgmtFrame(
-					model, new MultiIOHandler(model, new FilteredFileChooser(".",
+					model, new IOHandler(model, new FilteredFileChooser(".",
 							new MapFileFilter())))));
 		} catch (final XMLStreamException e) {
 			throw new DriverFailedException(XML_ERROR_STRING + ' '

@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 
 import com.bric.window.WindowMenu;
 
-import controller.map.misc.MultiIOHandler;
+import controller.map.misc.IOHandler;
 import model.exploration.IExplorationModel;
 import view.util.SPMenu;
 import view.worker.PlayerChooserHandler;
@@ -24,7 +24,7 @@ public class ExplorationMenu extends SPMenu {
 	 * @param parent the window this is to be attached to, which should close on
 	 *        "Close".
 	 */
-	public ExplorationMenu(final MultiIOHandler ioh,
+	public ExplorationMenu(final IOHandler ioh,
 			final IExplorationModel model, final JFrame parent) {
 		add(createFileMenu(ioh, parent, model));
 		addDisabled(createMapMenu(parent, model));

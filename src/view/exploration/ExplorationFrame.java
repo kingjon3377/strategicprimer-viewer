@@ -10,10 +10,10 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 
+import controller.map.misc.IOHandler;
 import model.exploration.ExplorationModel;
 import model.listeners.CompletionListener;
 import util.NullCleaner;
-import controller.map.misc.MultiIOHandler;
 
 /**
  * The main window for the exploration GUI.
@@ -92,7 +92,7 @@ public class ExplorationFrame extends JFrame {
 	 * @param ioHandler Passed to menu constructor
 	 */
 	public ExplorationFrame(final ExplorationModel emodel,
-			final MultiIOHandler ioHandler) {
+			final IOHandler ioHandler) {
 		super("Exploration");
 		if (emodel.getMapFile().exists()) {
 			setTitle(emodel.getMapFile().getName() + " | Exploration");

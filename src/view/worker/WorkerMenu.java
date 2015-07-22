@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 
 import com.bric.window.WindowMenu;
 
-import controller.map.misc.MultiIOHandler;
+import controller.map.misc.IOHandler;
 import model.misc.IDriverModel;
 import view.util.SPMenu;
 
@@ -24,7 +24,7 @@ public class WorkerMenu extends SPMenu {
 	 * @param pch a handler to listen to the 'change player' menu item.
 	 * @param model the current driver model
 	 */
-	public WorkerMenu(final MultiIOHandler handler, final JFrame parent,
+	public WorkerMenu(final IOHandler handler, final JFrame parent,
 			final PlayerChooserHandler pch, final IDriverModel model) {
 		add(createFileMenu(handler, parent, model));
 		addDisabled(createMapMenu(parent, model));

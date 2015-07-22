@@ -8,17 +8,17 @@ import java.io.IOException;
 import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 
+import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.IOHandler;
+import controller.map.misc.MapReaderAdapter;
+import controller.map.misc.WindowThread;
 import model.exploration.ExplorationModel;
 import model.map.IMutableMapNG;
 import util.Warning;
 import view.exploration.ExplorationFrame;
 import view.map.main.MapFileFilter;
 import view.util.FilteredFileChooser;
-import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.MapReaderAdapter;
-import controller.map.misc.MultiIOHandler;
-import controller.map.misc.WindowThread;
 
 /**
  * A class to start the exploration GUI.
@@ -85,7 +85,7 @@ public class ExplorationGUI implements ISPDriver {
 		try {
 			final ExplorationModel model = readMaps(args);
 			SwingUtilities.invokeLater(new WindowThread(new ExplorationFrame(
-					model, new MultiIOHandler(model, new FilteredFileChooser(
+					model, new IOHandler(model, new FilteredFileChooser(
 							".", new MapFileFilter())))));
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error reading maps", except);

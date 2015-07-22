@@ -20,7 +20,6 @@ import javax.swing.KeyStroke;
 import org.eclipse.jdt.annotation.Nullable;
 
 import controller.map.misc.IOHandler;
-import controller.map.misc.MultiIOHandler;
 import model.listeners.PlayerChangeListener;
 import model.map.IMutableMapNG;
 import model.map.Player;
@@ -87,7 +86,7 @@ public class SPMenu extends JMenuBar {
 				createHotkey(KeyEvent.VK_L), "Save all maps to their files",
 				handler);
 		fileMenu.add(saveAllItem);
-		if (!(model instanceof IMultiMapModel) || !(handler instanceof MultiIOHandler)) {
+		if (!(model instanceof IMultiMapModel)) {
 			loadSecondaryItem.setEnabled(false);
 			saveAllItem.setEnabled(false);
 		}

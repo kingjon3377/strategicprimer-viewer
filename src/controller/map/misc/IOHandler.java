@@ -13,22 +13,23 @@ import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
+import controller.map.formatexceptions.SPFormatException;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
 import model.misc.IDriverModel;
+import model.misc.IMultiMapModel;
 import model.viewer.ViewerModel;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
+import util.Pair;
 import util.TypesafeLogger;
 import util.Warning;
 import view.map.main.ViewerFrame;
 import view.util.AboutDialog;
 import view.util.ErrorShower;
-import controller.map.formatexceptions.SPFormatException;
 
 /**
  * An ActionListener to dispatch file I/O.
@@ -107,6 +108,10 @@ public class IOHandler implements ActionListener {
 				startNewViewerWindow();
 			} else if ("About".equals(event.getActionCommand())) {
 				new AboutDialog(source, "Exploration Helper").setVisible(true);
+			} else if ("Load secondary".equalsIgnoreCase(event.getActionCommand())) {
+				handleSecondaryLoadMenu(source);
+			} else if ("Save All".equalsIgnoreCase(event.getActionCommand())) {
+				saveAll(source);
 			}
 		}
 	}
@@ -224,6 +229,52 @@ public class IOHandler implements ActionListener {
 		return new MapReaderAdapter().readMap(file, warner);
 	}
 
+	/**
+	 * Save all maps to the filenames they were loaded from.
+	 *
+	 * @param source the source of the event that triggered this. May be null if
+	 *        it was not a component.
+	 */
+	private void saveAll(@Nullable final Component source) {
+		if (model instanceof IMultiMapModel) {
+			final MapReaderAdapter adapter = new MapReaderAdapter();
+			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getAllMaps()) {
+				try {
+					adapter.write(pair.second(), pair.first());
+				} catch (final IOException e) {
+					ErrorShower.showErrorDialog(source,
+							"I/O error writing to file " + pair.second());
+					LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Handle the 'load secondary map' menu item.
+	 *
+	 * @param source the component to attach the dialog box to. May be null.
+	 */
+	private void handleSecondaryLoadMenu(@Nullable final Component source) {
+		if (model instanceof IMultiMapModel && chooser.showOpenDialog(source) == JFileChooser.APPROVE_OPTION) {
+			final File file = chooser.getSelectedFile();
+			if (file == null) {
+				return;
+			}
+			try {
+				((IMultiMapModel) model).addSubordinateMap(readMap(file, Warning.INSTANCE), file);
+			} catch (final IOException e) {
+				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
+						"a null path"), source);
+			} catch (final SPFormatException e) {
+				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
+						"a null path"), source);
+			} catch (final XMLStreamException e) {
+				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
+						"a null path"), source);
+			}
+		}
+	}
 	/**
 	 *
 	 * @return a String representation of the object.
