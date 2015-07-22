@@ -275,6 +275,16 @@ public class SPMenu extends JMenuBar {
 		return retval;
 	}
 	/**
+	 * Add a menu, but set it to disabled.
+	 * @param menu a menu
+	 * @return it
+	 */
+	protected JMenu addDisabled(final JMenu menu) {
+		add(menu);
+		menu.setEnabled(false);
+		return menu;
+	}
+	/**
 	 * A class to invoke a ViewerOpener (below).
 	 * @uathor Jonathan Lovelace
 	 */

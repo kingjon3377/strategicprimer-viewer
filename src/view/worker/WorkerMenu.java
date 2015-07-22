@@ -35,9 +35,7 @@ public class WorkerMenu extends SPMenu {
 	public WorkerMenu(final IOHandler handler, final JFrame parent,
 			final PlayerChooserHandler pch, final IDriverModel model) {
 		add(createFileMenu(handler, parent, model));
-		JMenu mapMenu = createMapMenu(parent, model);
-		add(mapMenu);
-		mapMenu.setEnabled(false);
+		addDisabled(createMapMenu(parent, model));
 		add(createEditMenu(pch));
 		add(new WindowMenu(parent));
 	}
