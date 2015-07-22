@@ -44,33 +44,45 @@ public class ExplorationMenu extends JMenuBar {
 	 */
 	public ExplorationMenu(final MultiIOHandler ioh,
 			final IExplorationModel model, final JFrame parent) {
+		add(createFileMenu(ioh, model, parent));
+		add(new WindowMenu(parent));
+	}
+	/**
+	 * Create the file menu.
+	 * @param handler the object to handle I/O related menu items
+	 * @param model the driver model
+	 * @param parent the menu-bar's parent window, which is the window to close on "Close"
+	 * @return the file menu
+	 */
+	private static JMenu createFileMenu(final MultiIOHandler handler,
+			final IExplorationModel model, final JFrame parent) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		fileMenu.add(createMenuItem("Load", KeyEvent.VK_L,
-				createHotkey(KeyEvent.VK_O), "Load the main map from file", ioh));
+				createHotkey(KeyEvent.VK_O), "Load the main map from file", handler));
 		fileMenu.add(createMenuItem("Load secondary", KeyEvent.VK_E,
 				createShiftHotkey(KeyEvent.VK_O),
-				"Load an additional secondary map from file", ioh));
+				"Load an additional secondary map from file", handler));
 		fileMenu.add(createMenuItem("Save", KeyEvent.VK_S,
 				createHotkey(KeyEvent.VK_S),
-				"Save the main map to the file it was loaded from", ioh));
+				"Save the main map to the file it was loaded from", handler));
 		fileMenu.add(createMenuItem("Save As", KeyEvent.VK_A,
 				createShiftHotkey(KeyEvent.VK_S), "Save the main map to file",
-				ioh));
+				handler));
 		fileMenu.add(createMenuItem("Save All", KeyEvent.VK_V,
 				createHotkey(KeyEvent.VK_L), "Save all maps to their files",
-				ioh));
+				handler));
 		fileMenu.addSeparator();
 		fileMenu.add(createMenuItem("Open in map viewer", KeyEvent.VK_M,
 				createHotkey(KeyEvent.VK_M),
 				"Open the main map in the map viewer for a broader view",
-				new ViewerOpenerInvoker(model, true, ioh)));
+				new ViewerOpenerInvoker(model, true, handler)));
 		fileMenu.add(createMenuItem(
 				"Open secondary map in map viewer",
 				KeyEvent.VK_E,
 				createHotkey(KeyEvent.VK_E),
 				"Open the first secondary map in the map viewer for a broader view",
-				new ViewerOpenerInvoker(model, false, ioh)));
+				new ViewerOpenerInvoker(model, false, handler)));
 		fileMenu.addSeparator();
 		fileMenu.add(createMenuItem("Close", KeyEvent.VK_W,
 				createHotkey(KeyEvent.VK_W), "Close this window",
@@ -83,7 +95,7 @@ public class ExplorationMenu extends JMenuBar {
 				}));
 		fileMenu.addSeparator();
 		fileMenu.add(createMenuItem("About", KeyEvent.VK_B,
-				createHotkey(KeyEvent.VK_B), "Show development credits", ioh));
+				createHotkey(KeyEvent.VK_B), "Show development credits", handler));
 		fileMenu.addSeparator();
 		fileMenu.add(createMenuItem("Quit", KeyEvent.VK_Q,
 				createHotkey(KeyEvent.VK_Q), "Quit the application",
@@ -93,8 +105,7 @@ public class ExplorationMenu extends JMenuBar {
 						DriverQuit.quit(0);
 					}
 				}));
-		add(fileMenu);
-		add(new WindowMenu(parent));
+		return fileMenu;
 	}
 	/**
 	 * A class to invoke a ViewerOpener (below).
