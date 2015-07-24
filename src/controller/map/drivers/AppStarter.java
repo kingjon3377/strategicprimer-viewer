@@ -13,15 +13,15 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
+import controller.map.misc.CLIHelper;
+import controller.map.misc.WindowThread;
 import util.EqualsAny;
 import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
 import view.util.AppChooserFrame;
 import view.util.ErrorShower;
-import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
-import controller.map.misc.CLIHelper;
-import controller.map.misc.WindowThread;
 
 /**
  * A driver to start other drivers. At first it just starts one.
@@ -79,8 +79,7 @@ public class AppStarter implements ISPDriver {
 
 	static {
 		addChoice(new QueryCLI(), new ViewerStart());
-		// FIXME: Write a CLI to _automate_ advancement
-		addChoice(new AdvancementStart());
+		addChoice(new AdvancementCLIDriver(), new AdvancementStart());
 		addChoice(new WorkerReportDriver(), new WorkerStart());
 		addChoice(new ExplorationCLIDriver(), new ExplorationGUI());
 		addChoice(new ReaderComparator(), new DrawHelperComparator());
