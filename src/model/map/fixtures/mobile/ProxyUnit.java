@@ -1,0 +1,438 @@
+package model.map.fixtures.mobile;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.eclipse.jdt.annotation.Nullable;
+
+import model.map.IFixture;
+import model.map.Player;
+import model.map.TileFixture;
+import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.worker.ProxyWorker;
+import util.NullCleaner;
+/**
+ * A proxy for units in multiple maps.
+ * @author Jonathan Lovelace
+ *
+ */
+public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
+	/**
+	 * Constructor.
+	 * @param idNum the ID number of the units we are a proxy for.
+	 */
+	public ProxyUnit(final int idNum) {
+		id = idNum;
+	}
+	/**
+	 * The units we're a proxy for.
+	 */
+	private List<IUnit> proxied = new ArrayList<>();
+	/**
+	 * @param unit a unit to start proxying
+	 */
+	@Override
+	public void addProxied(final IUnit unit) {
+		if (unit == this) {
+			return;
+		} else if (unit.getID() != id) {
+			throw new IllegalArgumentException("Expected unit with ID #" + id);
+		} else {
+			proxied.add(unit);
+		}
+	}
+	/**
+	 * The ID # of the units we are a proxy for.
+	 */
+	private final int id;
+	/**
+	 * This should never be actually called; TODO: log the stack trace when it is.
+	 * @return a Z-value for the fixture
+	 */
+	@Override
+	public int getZValue() {
+		return -10;
+	}
+	/**
+	 * @return "Units"
+	 */
+	@Override
+	public String plural() {
+		return "Units";
+	}
+	/**
+	 * @return a short description
+	 */
+	@Override
+	public String shortDesc() {
+		if (getOwner().isCurrent()) {
+			return "a(n) " + getKind() + " unit belonging to you"; // NOPMD
+		} else if (getOwner().isIndependent()) {
+			return "an independent " + getKind() + " unit";
+		} else {
+			return "a(n) " + getKind() + " unit belonging to " + getOwner().getName();
+		}
+	}
+	/**
+	 * @return the ID number of the units we proxy for
+	 */
+	@Override
+	public int getID() {
+		return id;
+	}
+	/**
+	 * FIXME: implement
+	 *
+	 * TODO: log when this is called, because it shouldn't be (I think)
+	 *
+	 * @param fix a fixture
+	 * @return whether it equals this one except for ID #
+	 */
+	@Override
+	public boolean equalsIgnoringID(final IFixture fix) {
+		throw new IllegalStateException("FIXME: implement equalsIgnoringID()");
+	}
+	/**
+	 * TODO: log if this is called
+	 * @param fix a fixture
+	 * @return the result of a comparison with it
+	 */
+	@Override
+	public int compareTo(@Nullable final TileFixture fix) {
+		if (fix == null) {
+			throw new IllegalArgumentException("Compared to null fixture");
+		}
+		return fix.hashCode() - hashCode();
+	}
+	/**
+	 * TODO: pass through to proxied units
+	 * @return the name of an image to represent the unit
+	 */
+	@Override
+	public String getDefaultImage() {
+		for (IUnit unit : proxied) {
+			return unit.getDefaultImage();
+		}
+		return "unit.png";
+	}
+	/**
+	 * TODO: log if this is called, because it probably shouldn't be
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public final void setImage(final String img) {
+		for (IUnit unit : proxied) {
+			unit.setImage(img);
+		}
+	}
+
+	/**
+	 * TODO: pass through to proxied units.
+	 * @return the name of an image to use for this particular fixture.
+	 */
+	@Override
+	public String getImage() {
+		@Nullable String image = null;
+		for (IUnit unit : proxied) {
+			if (image == null) {
+				image = unit.getImage();
+			} else if (!image.equals(unit.getImage())) {
+				return "";
+			}
+		}
+		if (image == null) {
+			return "";
+		} else {
+			return image;
+		}
+	}
+	/**
+	 * @return the kind of the units
+	 */
+	@Override
+	public String getKind() {
+		@Nullable String kind = null;
+		for (IUnit unit : proxied) {
+			if (kind == null) {
+				kind = unit.getKind();
+			} else if (!kind.equals(unit.getKind())) {
+				return "proxied";
+			}
+		}
+		if (kind == null) {
+			return "proxied";
+		} else {
+			return kind;
+		}
+	}
+	/**
+	 * @param nKind the new kind of the proxied units
+	 */
+	@Override
+	public void setKind(final String nKind) {
+		for (IUnit unit : proxied) {
+			unit.setKind(nKind);
+		}
+	}
+	/**
+	 * @return an iterator over (proxies for) unit members
+	 */
+	@Override
+	public Iterator<UnitMember> iterator() {
+		Map<Integer, UnitMember> map = new TreeMap<>();
+		for (IUnit unit : proxied) {
+			for (UnitMember member : unit) {
+				if (member == null) {
+					continue;
+				}
+				@Nullable ProxyFor<? extends UnitMember> proxy = (ProxyFor<? extends UnitMember>) map.get(Integer.valueOf(member.getID()));
+				if (proxy == null) {
+					if (member instanceof IWorker) {
+						proxy = new ProxyWorker((IWorker) member);
+					} else {
+						proxy = new ProxyMember(member);
+					}
+					map.put(Integer.valueOf(member.getID()), (UnitMember) proxy);
+				} else {
+					if (proxy instanceof ProxyWorker) {
+						if (member instanceof IWorker) {
+							((ProxyWorker) proxy).addProxied((IWorker) member);
+						} else {
+							// FIXME: Log this unexpected situation!
+							continue;
+						}
+					} else {
+						((ProxyMember) proxy).addProxied(member);
+					}
+				}
+			}
+		}
+		return map.values().iterator();
+	}
+	/**
+	 * @return the name of the units (or "proxied" if they don't agree)
+	 */
+	@Override
+	public String getName() {
+		@Nullable String name = null;
+		for (IUnit unit : proxied) {
+			if (name == null) {
+				name = unit.getName();
+			} else if (!name.equals(unit.getName())) {
+				return "proxied";
+			}
+		}
+		if (name == null) {
+			return "proxied";
+		} else {
+			return name;
+		}
+	}
+	/**
+	 * @param nomen the new name for the units
+	 */
+	@Override
+	public void setName(final String nomen) {
+		for (IUnit unit : proxied) {
+			unit.setName(nomen);
+		}
+	}
+	/**
+	 * TODO: handle this like we handle 'name' and 'kind'
+	 * @return the owner of the first unit
+	 */
+	@Override
+	public Player getOwner() {
+		for (IUnit unit : proxied) {
+			return unit.getOwner();
+		}
+		return new Player(-1, "proxied");
+	}
+	/**
+	 * @param player the new owner for the units
+	 */
+	@Override
+	public void setOwner(final Player player) {
+		for (IUnit unit : proxied) {
+			unit.setOwner(player);
+		}
+	}
+	/**
+	 * TODO: implement properly?
+	 * @param obj ignored
+	 * @param ostream the stream to write to
+	 * @param context the context to write before writing our results
+	 */
+	@Override
+	public boolean isSubset(final IUnit obj, final Appendable ostream, final String context)
+			throws IOException {
+		ostream.append(context);
+		ostream.append("Called isSubset() in ProxyUnit");
+		return false;
+	}
+	/**
+	 * @return the orders shared by the units, or the empty string if their orders are different.
+	 */
+	@Override
+	public String getOrders() {
+		@Nullable String orders = null;
+		for (IUnit unit : proxied) {
+			if (orders == null) {
+				orders = unit.getOrders();
+			} else if ("".equals(orders)) {
+				continue;
+			} else if (!orders.equals(unit.getOrders())) {
+				return "";
+			}
+		}
+		if (orders == null) {
+			return "";
+		} else {
+			return orders;
+		}
+	}
+	/**
+	 * @param newOrders The units' new orders
+	 */
+	@Override
+	public void setOrders(final String newOrders) {
+		for (IUnit unit : proxied) {
+			unit.setOrders(newOrders);
+		}
+	}
+	/**
+	 * FIXME: Implement properly
+	 * @return a "verbose" description of the unit
+	 */
+	@Override
+	public String verbose() {
+		return "A proxy for units in several maps";
+	}
+	/**
+	 * Add a member to a unit.
+	 *
+	 * FIXME: This shouldn't add the *same* object to multiple proxied units!
+	 *
+	 * @param member the member to add
+	 */
+	@Override
+	public void addMember(final UnitMember member) {
+		for (IUnit unit : proxied) {
+			boolean shouldAdd = true;
+			for (UnitMember item : unit) {
+				if (member.equals(item)) {
+					shouldAdd = false;
+					break;
+				}
+			}
+			if (shouldAdd) {
+				unit.addMember(member);
+			}
+		}
+	}
+	/**
+	 * Remove a member from the units.
+	 *
+	 * FIXME: Is this really right?
+	 *
+	 * @param member the member to remove
+	 */
+	@Override
+	public void removeMember(final UnitMember member) {
+		for (IUnit unit : proxied) {
+			for (UnitMember item : unit) {
+				if (item == null) {
+					continue;
+				} else if (member.equals(item)) {
+					unit.removeMember(item);
+					break;
+				}
+			}
+		}
+	}
+	/**
+	 * @return the proxied units
+	 */
+	@Override
+	public Iterable<IUnit> getProxied() {
+		return proxied;
+	}
+	/**
+	 * A proxy for non-worker unit members.
+	 */
+	private class ProxyMember implements UnitMember, ProxyFor<UnitMember> {
+		/**
+		 * The proxied unit members.
+		 */
+		private List<UnitMember> proxied = new ArrayList<>();
+		/**
+		 * @param member the first member to proxy
+		 */
+		public ProxyMember(final UnitMember member) {
+			proxied.add(member);
+		}
+		/**
+		 * @return the ID number of the first proxied unit member (since they should all have the same, in the only usage of this class)
+		 */
+		@Override
+		public int getID() {
+			for (UnitMember member : proxied) {
+				return member.getID();
+			}
+			return -1;
+		}
+		/**
+		 * @param fix a fixture
+		 * @return whether it equals this one
+		 */
+		@Override
+		public boolean equalsIgnoringID(final IFixture fix) {
+			return fix instanceof ProxyMember && ((ProxyMember) fix).proxied.equals(proxied);
+		}
+		/**
+		 * @param obj ignored
+		 * @param ostream the stream to write to
+		 * @param context the context to write before we write our error
+		 */
+		@Override
+		public boolean isSubset(final IFixture obj, final Appendable ostream,
+				final String context) throws IOException {
+			ostream.append(context);
+			ostream.append("isSubset called on ProxyMember");
+			return false;
+		}
+		/**
+		 * Add an item to be proxied.
+		 * @param item the item to add
+		 */
+		@Override
+		public void addProxied(final UnitMember item) {
+			proxied.add(item);
+		}
+		/**
+		 * @return the proxied members
+		 */
+		@Override
+		public Iterable<UnitMember> getProxied() {
+			return proxied;
+		}
+		/**
+		 * @return a string representation of the proxied member
+		 */
+		@Override
+		public String toString() {
+			for (UnitMember member : proxied) {
+				if (member == null) {
+					continue;
+				} else {
+					return NullCleaner.assertNotNull(member.toString());
+				}
+			}
+			return "a proxy for no unit members";
+		}
+	}
+}

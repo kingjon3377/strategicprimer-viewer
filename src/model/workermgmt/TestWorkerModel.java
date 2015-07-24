@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.junit.Test;
+
 import model.map.MapDimensions;
 import model.map.Player;
 import model.map.PlayerCollection;
@@ -15,15 +17,13 @@ import model.map.SPMapNG;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.IUnit;
+import model.map.fixtures.mobile.ProxyFor;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.towns.Fortress;
-
-import org.junit.Test;
-
 import util.NullCleaner;
 
 /**
@@ -72,21 +72,40 @@ public class TestWorkerModel {
 					NullCleaner.assertNotNull(fixtures.remove(0)));
 		}
 		final IWorkerModel model = new WorkerModel(map, new File(""));
-		final List<IUnit> listOneA = model.getUnits(playerOne);
+		final List<IUnit> listOneA = filterProxies(model.getUnits(playerOne));
 		assertTrue("Got all units for player 1", listOneA.containsAll(listOne));
 		assertTrue("And didn't miss any for player 1",
 				listOne.containsAll(listOneA));
-		final List<IUnit> listTwoA = model.getUnits(playerTwo);
+		final List<IUnit> listTwoA = filterProxies(model.getUnits(playerTwo));
 		assertTrue("Got all units for player 2", listTwoA.containsAll(listTwo));
 		assertTrue("And didn't miss any for player 2",
 				listTwo.containsAll(listTwoA));
-		final List<IUnit> listThreeA = model.getUnits(playerThree);
+		final List<IUnit> listThreeA = filterProxies(model.getUnits(playerThree));
 		assertTrue("Got all units for player 3",
 				listThreeA.containsAll(listThree));
 		assertTrue("And didn't miss any for player 3",
 				listThree.containsAll(listThreeA));
 	}
-
+	/**
+	 * @param list a list
+	 * @param <T> the type of the list
+	 * @return the contents of that list, with any proxies replaced by the items they proxy
+	 */
+	private static <T> List<T> filterProxies(final List<T> list) {
+		final List<T> retval = new ArrayList<>();
+		for (T item : list) {
+			if (item instanceof ProxyFor<?>) {
+				@SuppressWarnings("unchecked") // this wouldn't work for Skills, but ...
+				ProxyFor<T> proxy = (ProxyFor<T>) item;
+				for (T proxied : proxy.getProxied()) {
+					retval.add(proxied);
+				}
+			} else {
+				retval.add(item);
+			}
+		}
+		return retval;
+	}
 	/**
 	 * Add to multiple lists.
 	 *

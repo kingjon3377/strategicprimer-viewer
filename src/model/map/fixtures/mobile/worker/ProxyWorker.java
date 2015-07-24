@@ -7,10 +7,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
+import model.map.fixtures.mobile.ProxyFor;
 import model.map.fixtures.mobile.Worker;
 import util.NullCleaner;
 
@@ -21,11 +24,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class ProxyWorker implements IWorker {
-	/**
-	 * The unit we're proxying for.
-	 */
-	private final IUnit proxied;
+public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 	/**
 	 * The proxy Jobs.
 	 */
@@ -33,18 +32,15 @@ public class ProxyWorker implements IWorker {
 	/**
 	 * The jobs we're proxying for.
 	 */
-	private final Set<String> jobNames;
+	private final Set<String> jobNames = new HashSet<>();
 	/**
-	 * The workers in the unit.
+	 * The workers being proxied.
 	 */
-	private final List<Worker> workers;
+	private final List<IWorker> workers = new ArrayList<>();
 	/**
 	 * @param unit the unit to proxy for
 	 */
 	public ProxyWorker(final IUnit unit) {
-		proxied = unit;
-		workers = new ArrayList<>();
-		jobNames = new HashSet<>();
 		for (final UnitMember member : unit) {
 			if (member instanceof Worker) {
 				workers.add((Worker) member);
@@ -63,6 +59,25 @@ public class ProxyWorker implements IWorker {
 		}
 	}
 	/**
+	 * @param proxied workers to proxy for
+	 */
+	public ProxyWorker(final IWorker... proxied) {
+		for (IWorker worker : proxied) {
+			if (worker == this) {
+				continue;
+			}
+			workers.add(worker);
+			for (final IJob job : worker) {
+				jobNames.add(job.getName());
+			}
+		}
+		for (String job : jobNames) {
+			if (job != null) {
+				proxyJobs.add(new ProxyJob(job, proxied));
+			}
+		}
+	}
+	/**
 	 * @return -1, since this isn't a valid fixture.
 	 */
 	@Override
@@ -76,7 +91,7 @@ public class ProxyWorker implements IWorker {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof ProxyWorker
-				&& ((ProxyWorker) fix).proxied.equals(proxied);
+				&& proxyJobs.equals(((ProxyWorker) fix).proxyJobs);
 	}
 	/**
 	 * The iterator over the proxied jobs.
@@ -119,5 +134,144 @@ public class ProxyWorker implements IWorker {
 		ostream.append("\tisSubset called on ProxyWorker\n");
 		return false;
 	}
+	/**
+	 * Proxy an additional worker.
+	 * @param item the worker to proxy
+	 */
+	@Override
+	public void addProxied(final IWorker item) {
+		if (item == this) {
+			return;
+		}
+		workers.add(item);
+		final Worker[] workerArray =
+				NullCleaner.assertNotNull(workers.toArray(new Worker[workers
+						.size()]));
+		for (final IJob job : item) {
+			String name = job.getName();
+			if (jobNames.contains(name)) {
+				for (IJob proxyJob : proxyJobs) {
+					if (proxyJob.getName().equals(name)) {
+						((ProxyJob) proxyJob).addProxied(job);
+					}
+				}
+			} else {
+				jobNames.add(name);
+				proxyJobs.add(new ProxyJob(name, workerArray));
+			}
+			jobNames.add(job.getName());
+		}
+	}
+	/**
+	 * @return the proxied Workers.
+	 */
+	@Override
+	public Iterable<IWorker> getProxied() {
+		return workers;
+	}
 
+	/**
+	 * TODO: pass through to proxied workers
+	 * @return the name of an image to represent the worker
+	 */
+	@Override
+	public String getDefaultImage() {
+		for (IWorker worker : workers) {
+			return worker.getDefaultImage();
+		}
+		return "worker.png";
+	}
+	/**
+	 * TODO: log if this is called, because it probably shouldn't be
+	 * @param img the name of an image to use for this particular fixture
+	 */
+	@Override
+	public final void setImage(final String img) {
+		for (IWorker worker : workers) {
+			worker.setImage(img);
+		}
+	}
+
+	/**
+	 * @return the name of an image to use for this particular fixture.
+	 */
+	@Override
+	public String getImage() {
+		@Nullable String image = null;
+		for (IWorker worker : workers) {
+			if (image == null) {
+				image = worker.getImage();
+			} else if (!image.equals(worker.getImage())) {
+				return "";
+			}
+		}
+		if (image == null) {
+			return "";
+		} else {
+			return image;
+		}
+	}
+	/**
+	 * @return the race of the workers
+	 */
+	@Override
+	public String getKind() {
+		@Nullable String kind = null;
+		for (IWorker worker : workers) {
+			if (kind == null) {
+				kind = worker.getKind();
+			} else if (!kind.equals(worker.getKind())) {
+				return "proxied";
+			}
+		}
+		if (kind == null) {
+			return "proxied";
+		} else {
+			return kind;
+		}
+	}
+	/**
+	 * @param nKind the new race of the proxied workers
+	 */
+	@Override
+	public void setKind(final String nKind) {
+		for (IWorker worker : workers) {
+			worker.setKind(nKind);
+		}
+	}
+	/**
+	 * @return the name of the workers (or "proxied" if they don't agree)
+	 */
+	@Override
+	public String getName() {
+		@Nullable String name = null;
+		for (IWorker worker : workers) {
+			if (name == null) {
+				name = worker.getName();
+			} else if (!name.equals(worker.getName())) {
+				return "proxied";
+			}
+		}
+		if (name == null) {
+			return "proxied";
+		} else {
+			return name;
+		}
+	}
+	/**
+	 * @param nomen the new name for the workers
+	 */
+	@Override
+	public void setName(final String nomen) {
+		for (IWorker worker : workers) {
+			worker.setName(nomen);
+		}
+	}
+	/**
+	 * @return the race of the proxied workers
+	 */
+	@Override
+	public String getRace() {
+		return getKind();
+	}
 }

@@ -5,17 +5,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
+import org.eclipse.jdt.annotation.Nullable;
+
+import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.IUnit;
+import model.map.fixtures.mobile.ProxyUnit;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 import model.misc.AbstractMultiMapModel;
 import util.NullCleaner;
+import util.Pair;
 import view.util.SystemOut;
 
 /**
@@ -43,13 +50,38 @@ public class WorkerModel extends AbstractMultiMapModel implements IWorkerModel {
 	 */
 	@Override
 	public final List<IUnit> getUnits(final Player player) {
-		final List<IUnit> retval = new ArrayList<>();
-		for (final Point point : getMap().locations()) {
-			if (point != null) {
-				retval.addAll(getUnits(getMap().getOtherFixtures(point), player));
+		if (getSubordinateMaps().iterator().hasNext()) {
+			Map<Integer, IUnit> retval = new TreeMap<>();
+			for (Pair<IMutableMapNG, File> pair : getAllMaps()) {
+				IMapNG map = pair.first();
+				for (Point point : map.locations()) {
+					if (point == null) {
+						continue;
+					}
+					for (IUnit unit : getUnits(map.getOtherFixtures(point), player)) {
+						@Nullable IUnit proxy = retval.get(Integer.valueOf(unit.getID()));
+						if (proxy == null) {
+							proxy = new ProxyUnit(unit.getID());
+							((ProxyUnit) proxy).addProxied(unit);
+							retval.put(Integer.valueOf(unit.getID()), proxy);
+						} else {
+							((ProxyUnit) proxy).addProxied(unit);
+						}
+					}
+				}
 			}
+			return new ArrayList<>(retval.values());
+		} else {
+			// Just in case I missed something in the proxy implementation, make
+			// sure things work correctly when there's only one map.
+			final List<IUnit> retval = new ArrayList<>();
+			for (final Point point : getMap().locations()) {
+				if (point != null) {
+					retval.addAll(getUnits(getMap().getOtherFixtures(point), player));
+				}
+			}
+			return retval;
 		}
-		return retval;
 	}
 
 	/**

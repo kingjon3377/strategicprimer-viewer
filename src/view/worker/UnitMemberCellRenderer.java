@@ -18,15 +18,15 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeNode;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.fixtures.mobile.IUnit;
+import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.workermgmt.WorkerTreeModelAlt.KindNode;
 import model.workermgmt.WorkerTreeModelAlt.UnitNode;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.ImageLoader;
 import util.NullCleaner;
 import util.TypesafeLogger;
@@ -101,8 +101,8 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 		if (internal instanceof HasImage) {
 			((JLabel) component).setIcon(getIcon((HasImage) internal));
 		}
-		if (internal instanceof Worker) {
-			final Worker worker = (Worker) internal;
+		if (internal instanceof IWorker) {
+			final IWorker worker = (IWorker) internal;
 			// Assume at least a K in size.
 			final StringBuilder builder = new StringBuilder(1024)
 					.append("<html><p>");

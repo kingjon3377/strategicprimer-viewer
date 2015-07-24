@@ -8,16 +8,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import model.map.HasImage;
-import model.map.HasKind;
-import model.map.HasName;
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.IFixture;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.ArraySet;
 import util.NullCleaner;
 
@@ -30,7 +26,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class Worker implements HasName, HasKind, HasImage, IWorker {
+public class Worker implements IWorker {
 	/**
 	 * The worker's name.
 	 */
@@ -107,6 +103,7 @@ public class Worker implements HasName, HasKind, HasImage, IWorker {
 	/**
 	 * @return the worker's race (elf, human, or whatever)
 	 */
+	@Override
 	public String getRace() {
 		return race;
 	}

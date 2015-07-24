@@ -7,14 +7,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import model.map.fixtures.mobile.Worker;
+import model.map.fixtures.mobile.IWorker;
+import model.map.fixtures.mobile.ProxyFor;
 import util.NullCleaner;
 /**
  * An IJob implementation to let the Job tree operate on a whole unit at once.
  * @author Jonathan Lovelace
  *
  */
-public class ProxyJob implements IJob {
+public class ProxyJob implements IJob, ProxyFor<IJob> {
 	/**
 	 * The name of the Job.
 	 */
@@ -26,23 +27,27 @@ public class ProxyJob implements IJob {
 	/**
 	 * Jobs we're proxying.
 	 */
-	private final List<Job> proxiedJobs = new ArrayList<>();
+	private final List<IJob> proxiedJobs = new ArrayList<>();
+	/**
+	 * The names of skills we're proxying.
+	 */
+	private Set<String> skillNames;
 	/**
 	 * @param nomen the name of the Job
 	 * @param workers being proxied
 	 */
-	public ProxyJob(final String nomen, final Worker... workers) {
+	public ProxyJob(final String nomen, final IWorker... workers) {
 		name = nomen;
-		final Set<String> skills = new HashSet<>();
-		for (final Worker worker : workers) {
+		skillNames = new HashSet<>();
+		for (final IWorker worker : workers) {
 			boolean touched = false;
 			for (final IJob job : worker) {
 				if (job instanceof ProxyJob || job == null) {
 					continue;
 				} else if (nomen.equals(job.getName())) {
-					proxiedJobs.add((Job) job);
+					proxiedJobs.add(job);
 					for (final ISkill skill : job) {
-						skills.add(skill.getName());
+						skillNames.add(skill.getName());
 					}
 					touched = true;
 				}
@@ -56,7 +61,7 @@ public class ProxyJob implements IJob {
 		final Job[] jobsArray =
 				NullCleaner.assertNotNull(proxiedJobs
 						.toArray(new Job[proxiedJobs.size()]));
-		for (final String skill : skills) {
+		for (final String skill : skillNames) {
 			if (skill != null) {
 				proxied.add(new ProxySkill(skill, jobsArray));
 			}
@@ -128,5 +133,36 @@ public class ProxyJob implements IJob {
 		ostream.append(context);
 		ostream.append("\tisSubset called on ProxyJob\n");
 		return false;
+	}
+	/**
+	 * Proxy an additional Job.
+	 * @param item the job to proxy for
+	 */
+	@Override
+	public void addProxied(final IJob item) {
+		if (item instanceof ProxyJob || !name.equals(item.getName())) {
+			return;
+		}
+		proxiedJobs.add(item);
+		for (ISkill skill : proxied) {
+			((ProxySkill) skill).addProxied(item);
+		}
+		final Job[] jobsArray =
+				NullCleaner.assertNotNull(proxiedJobs
+						.toArray(new Job[proxiedJobs.size()]));
+		for (ISkill skill : item) {
+			if (skill instanceof ProxySkill) {
+				continue;
+			} else if (!skillNames.contains(skill.getName())) {
+				proxied.add(new ProxySkill(skill.getName(), jobsArray));
+			}
+		}
+	}
+	/**
+	 * @return the proxied Jobs.
+	 */
+	@Override
+	public Iterable<IJob> getProxied() {
+		return proxiedJobs;
 	}
 }

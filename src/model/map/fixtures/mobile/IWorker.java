@@ -1,5 +1,8 @@
 package model.map.fixtures.mobile;
 
+import model.map.HasImage;
+import model.map.HasKind;
+import model.map.HasName;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.IJob;
 /**
@@ -7,7 +10,7 @@ import model.map.fixtures.mobile.worker.IJob;
  * @author Jonathan Lovelace
  *
  */
-public interface IWorker extends UnitMember, Iterable<IJob> {
+public interface IWorker extends UnitMember, Iterable<IJob>, HasName, HasKind, HasImage {
 	/**
 	 * Add a job.
 	 *
@@ -15,4 +18,8 @@ public interface IWorker extends UnitMember, Iterable<IJob> {
 	 * @return the result of the operation
 	 */
 	boolean addJob(IJob job);
+	/**
+	 * @return the worker's race
+	 */
+	String getRace();
 }

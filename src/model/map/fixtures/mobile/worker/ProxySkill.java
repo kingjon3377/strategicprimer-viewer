@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import model.map.fixtures.mobile.ProxyFor;
+
 /**
  * An implementation of ISkill whose operations act on multiple workers at once.
  * @author Jonathan Lovelace
  *
  */
-public class ProxySkill implements ISkill {
+public class ProxySkill implements ISkill, ProxyFor<IJob> {
 	/**
 	 * The name of the skill.
 	 */
@@ -17,7 +19,7 @@ public class ProxySkill implements ISkill {
 	/**
 	 * The Jobs we're proxying for.
 	 */
-	private final List<Job> proxied = new ArrayList<>();
+	private final List<IJob> proxied = new ArrayList<>();
 	/**
 	 * @param nomen the name of the skill
 	 * @param jobs the Jobs to add skill hours to when asked
@@ -116,5 +118,21 @@ public class ProxySkill implements ISkill {
 	@Override
 	public String toString() {
 		return name;
+	}
+	/**
+	 * Add a job to the list of jobs we're proxying a skill for.
+	 * @param item the job to add to the list
+	 */
+	@Override
+	public void addProxied(final IJob item) {
+		proxied.add(item);
+	}
+	/**
+	 * Note that this is the *one* place where ProxySkill should be a ProxyFor<ISkill> rather than ProxyFor<IJob>.
+	 * @return the proxied Jobs.
+	 */
+	@Override
+	public Iterable<IJob> getProxied() {
+		return proxied;
 	}
 }

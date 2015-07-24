@@ -16,6 +16,8 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.listeners.UnitMemberListener;
 import model.listeners.UnitMemberSelectionSource;
 import model.listeners.UnitSelectionListener;
@@ -24,13 +26,11 @@ import model.map.IFixture;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
+import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.ProxyWorker;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import model.workermgmt.IWorkerTreeModel;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 import view.map.details.FixtureEditMenu;
 
@@ -233,6 +233,28 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 						getModifierString(stats.getWisdom()),
 						getModifierString(stats.getCharisma()));
 			}
+		} else if (localNode instanceof ProxyWorker) {
+			for (IWorker proxied : ((ProxyWorker) localNode).getProxied()) {
+				if (proxied instanceof Worker) {
+					Worker worker = (Worker) proxied;
+					WorkerStats stats = worker.getStats();
+					if (stats == null) {
+						continue;
+					} else {
+						return getStatsToolTip(worker);
+					}
+				} else if (proxied == null) {
+					continue;
+				} else {
+					String ttip = getStatsToolTip(proxied);
+					if (ttip != null) {
+						return ttip;
+					} else {
+						continue;
+					}
+				}
+			}
+			return null;
 		} else {
 			return null;
 		}
