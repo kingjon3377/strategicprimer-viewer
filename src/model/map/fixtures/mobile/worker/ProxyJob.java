@@ -150,7 +150,7 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 	 */
 	@Override
 	public void addProxied(final IJob item) {
-		if (item instanceof ProxyJob || !name.equals(item.getName())) {
+		if (item == this || !name.equals(item.getName())) {
 			return;
 		}
 		proxiedJobs.add(item);
