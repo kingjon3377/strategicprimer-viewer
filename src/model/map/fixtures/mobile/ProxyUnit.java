@@ -15,6 +15,7 @@ import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.ProxyWorker;
 import util.NullCleaner;
+import view.util.SystemOut;
 /**
  * A proxy for units in multiple maps.
  * @author Jonathan Lovelace
@@ -203,6 +204,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 						if (member instanceof IWorker) {
 							((ProxyWorker) proxy).addProxied((IWorker) member);
 						} else {
+							SystemOut.SYS_OUT.println("Proxy is a ProxyWorker but member isn't a worker");
 							// FIXME: Log this unexpected situation!
 							continue;
 						}
