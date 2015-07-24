@@ -26,6 +26,11 @@ import util.NullCleaner;
  */
 public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 	/**
+	 * If false, this is representing all the workers in a single unit; if true, it is representing
+	 * corresponding workers in corresponding units in different maps.
+	 */
+	private final boolean parallel;
+	/**
 	 * The proxy Jobs.
 	 */
 	private final List<IJob> proxyJobs = new ArrayList<>();
@@ -41,6 +46,7 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 	 * @param unit the unit to proxy for
 	 */
 	public ProxyWorker(final IUnit unit) {
+		parallel = false;
 		for (final UnitMember member : unit) {
 			if (member instanceof Worker) {
 				workers.add((Worker) member);
@@ -54,7 +60,7 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 						.size()]));
 		for (final String job : jobNames) {
 			if (job != null) {
-				proxyJobs.add(new ProxyJob(job, workerArray));
+				proxyJobs.add(new ProxyJob(job, parallel, workerArray));
 			}
 		}
 	}
@@ -62,6 +68,7 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 	 * @param proxied workers to proxy for
 	 */
 	public ProxyWorker(final IWorker... proxied) {
+		parallel = true;
 		for (IWorker worker : proxied) {
 			if (worker == this) {
 				continue;
@@ -73,7 +80,7 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 		}
 		for (String job : jobNames) {
 			if (job != null) {
-				proxyJobs.add(new ProxyJob(job, proxied));
+				proxyJobs.add(new ProxyJob(job, parallel, proxied));
 			}
 		}
 	}
@@ -110,7 +117,7 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 			return false;
 		} else {
 			final ProxyJob proxy =
-					new ProxyJob(job.getName(),
+					new ProxyJob(job.getName(), parallel,
 							NullCleaner.assertNotNull(workers
 									.toArray(new Worker[workers.size()])));
 			jobNames.add(proxy.getName());
@@ -157,7 +164,7 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 				}
 			} else {
 				jobNames.add(name);
-				proxyJobs.add(new ProxyJob(name, workerArray));
+				proxyJobs.add(new ProxyJob(name, parallel, workerArray));
 			}
 			jobNames.add(job.getName());
 		}

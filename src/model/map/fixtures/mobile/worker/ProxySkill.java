@@ -13,6 +13,14 @@ import model.map.fixtures.mobile.ProxyFor;
  */
 public class ProxySkill implements ISkill, ProxyFor<IJob> {
 	/**
+	 * If false, the worker containing this is representing all the workers in a
+	 * single unit; if true, it is representing corresponding workers in
+	 * corresponding units in different maps. Thus, if true, we should use the
+	 * same "random" seed repeatedly in any given adding-hours operation, and
+	 * not if false.
+	 */
+	private final boolean parallel;
+	/**
 	 * The name of the skill.
 	 */
 	private String name;
@@ -24,7 +32,8 @@ public class ProxySkill implements ISkill, ProxyFor<IJob> {
 	 * @param nomen the name of the skill
 	 * @param jobs the Jobs to add skill hours to when asked
 	 */
-	public ProxySkill(final String nomen, final Job... jobs) {
+	public ProxySkill(final String nomen, final boolean parall, final Job... jobs) {
+		parallel = parall;
 		name = nomen;
 		for (final Job job : jobs) {
 			proxied.add(job);
@@ -95,20 +104,40 @@ public class ProxySkill implements ISkill, ProxyFor<IJob> {
 	@Override
 	public void addHours(final int hrs, final int condition) {
 		final Random random = new Random(condition);
-		for (final IJob job : proxied) {
-			boolean touched = false;
-			for (final ISkill skill : job) {
-				if (skill instanceof ProxySkill) {
-					continue;
-				} else if (skill != null && skill.getName().equals(name)) {
-					skill.addHours(hrs, random.nextInt(100));
-					touched = true;
+		if (parallel) {
+			int seed = random.nextInt(100);
+			for (final IJob job : proxied) {
+				boolean touched = false;
+				for (final ISkill skill : job) {
+					if (skill instanceof ProxySkill) {
+						continue;
+					} else if (skill != null && skill.getName().equals(name)) {
+						skill.addHours(hrs, seed);
+						touched = true;
+					}
+				}
+				if (!touched) {
+					final Skill skill = new Skill(name, 0, 0);
+					skill.addHours(hrs, seed);
+					job.addSkill(skill);
 				}
 			}
-			if (!touched) {
-				final Skill skill = new Skill(name, 0, 0);
-				skill.addHours(hrs, random.nextInt(100));
-				job.addSkill(skill);
+		} else {
+			for (final IJob job : proxied) {
+				boolean touched = false;
+				for (final ISkill skill : job) {
+					if (skill instanceof ProxySkill) {
+						continue;
+					} else if (skill != null && skill.getName().equals(name)) {
+						skill.addHours(hrs, random.nextInt(100));
+						touched = true;
+					}
+				}
+				if (!touched) {
+					final Skill skill = new Skill(name, 0, 0);
+					skill.addHours(hrs, random.nextInt(100));
+					job.addSkill(skill);
+				}
 			}
 		}
 	}

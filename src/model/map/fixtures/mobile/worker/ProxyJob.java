@@ -17,6 +17,14 @@ import util.NullCleaner;
  */
 public class ProxyJob implements IJob, ProxyFor<IJob> {
 	/**
+	 * If false, the worker containing this is representing all the workers in a
+	 * single unit; if true, it is representing corresponding workers in
+	 * corresponding units in different maps. Thus, if true, we should use the
+	 * same "random" seed repeatedly in any given adding-hours operation, and
+	 * not if false.
+	 */
+	private final boolean parallel;
+	/**
 	 * The name of the Job.
 	 */
 	private String name;
@@ -34,9 +42,11 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 	private Set<String> skillNames;
 	/**
 	 * @param nomen the name of the Job
+	 * @param parall whether the workers containing these jobs are corresponding workers in different maps (if true) or workers in the same unit (if false)
 	 * @param workers being proxied
 	 */
-	public ProxyJob(final String nomen, final IWorker... workers) {
+	public ProxyJob(final String nomen, final boolean parall, final IWorker... workers) {
+		parallel = parall;
 		name = nomen;
 		skillNames = new HashSet<>();
 		for (final IWorker worker : workers) {
@@ -63,7 +73,7 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 						.toArray(new Job[proxiedJobs.size()]));
 		for (final String skill : skillNames) {
 			if (skill != null) {
-				proxied.add(new ProxySkill(skill, jobsArray));
+				proxied.add(new ProxySkill(skill, parallel, jobsArray));
 			}
 		}
 	}
@@ -99,7 +109,7 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 				return false;
 			}
 		}
-		proxied.add(new ProxySkill(skill.getName(),
+		proxied.add(new ProxySkill(skill.getName(), parallel,
 				NullCleaner.assertNotNull(proxiedJobs
 						.toArray(new Job[proxiedJobs.size()]))));
 		return true;
@@ -154,7 +164,7 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 			if (skill instanceof ProxySkill) {
 				continue;
 			} else if (!skillNames.contains(skill.getName())) {
-				proxied.add(new ProxySkill(skill.getName(), jobsArray));
+				proxied.add(new ProxySkill(skill.getName(), parallel, jobsArray));
 			}
 		}
 	}
