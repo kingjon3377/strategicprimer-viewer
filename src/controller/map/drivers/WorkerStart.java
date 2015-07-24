@@ -37,7 +37,7 @@ public class WorkerStart implements ISPDriver {
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-w",
-			"--worker", ParamCount.One, "Manage a player's workers in units",
+			"--worker", ParamCount.Many, "Manage a player's workers in units",
 			"Organize the members of a player's units.", WorkerStart.class);
 
 	/**
