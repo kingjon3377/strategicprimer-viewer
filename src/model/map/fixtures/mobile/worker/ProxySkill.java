@@ -63,7 +63,7 @@ public class ProxySkill implements ISkill, ProxyFor<IJob> {
 		int level = Integer.MAX_VALUE;
 		for (final IJob job : proxied) {
 			for (final ISkill skill : job) {
-				if (skill instanceof ProxySkill) {
+				if (skill == this) {
 					continue;
 				} else if (skill.getName().equals(name)
 						&& skill.getLevel() < level) {
@@ -85,7 +85,7 @@ public class ProxySkill implements ISkill, ProxyFor<IJob> {
 		int hours = 0;
 		for (final IJob job : proxied) {
 			for (final ISkill skill : job) {
-				if (skill instanceof ProxySkill) {
+				if (skill == this) {
 					continue;
 				} else if (skill.getName().equals(name)
 						&& skill.getHours() > hours) {
@@ -110,7 +110,7 @@ public class ProxySkill implements ISkill, ProxyFor<IJob> {
 			for (final IJob job : proxied) {
 				boolean touched = false;
 				for (final ISkill skill : job) {
-					if (skill instanceof ProxySkill) {
+					if (skill == this) {
 						continue;
 					} else if (skill != null && skill.getName().equals(name)) {
 						skill.addHours(hrs, seed);
@@ -127,7 +127,7 @@ public class ProxySkill implements ISkill, ProxyFor<IJob> {
 			for (final IJob job : proxied) {
 				boolean touched = false;
 				for (final ISkill skill : job) {
-					if (skill instanceof ProxySkill) {
+					if (skill == this) {
 						continue;
 					} else if (skill != null && skill.getName().equals(name)) {
 						skill.addHours(hrs, random.nextInt(100));
