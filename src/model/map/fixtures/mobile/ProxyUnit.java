@@ -189,6 +189,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 				if (member == null) {
 					continue;
 				}
+				@SuppressWarnings("unchecked") // The type in the map is really UnitMember & ProxyFor<IWorker|UnitMember>
 				@Nullable ProxyFor<? extends UnitMember> proxy = (ProxyFor<? extends UnitMember>) map.get(Integer.valueOf(member.getID()));
 				if (proxy == null) {
 					if (member instanceof IWorker) {
@@ -211,7 +212,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 				}
 			}
 		}
-		return map.values().iterator();
+		return NullCleaner.assertNotNull(map.values().iterator());
 	}
 	/**
 	 * @return the name of the units (or "proxied" if they don't agree)
@@ -368,19 +369,19 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		/**
 		 * The proxied unit members.
 		 */
-		private List<UnitMember> proxied = new ArrayList<>();
+		private List<UnitMember> proxiedMembers = new ArrayList<>();
 		/**
 		 * @param member the first member to proxy
 		 */
 		public ProxyMember(final UnitMember member) {
-			proxied.add(member);
+			proxiedMembers.add(member);
 		}
 		/**
 		 * @return the ID number of the first proxied unit member (since they should all have the same, in the only usage of this class)
 		 */
 		@Override
 		public int getID() {
-			for (UnitMember member : proxied) {
+			for (UnitMember member : proxiedMembers) {
 				return member.getID();
 			}
 			return -1;
@@ -391,7 +392,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		 */
 		@Override
 		public boolean equalsIgnoringID(final IFixture fix) {
-			return fix instanceof ProxyMember && ((ProxyMember) fix).proxied.equals(proxied);
+			return fix instanceof ProxyMember && ((ProxyMember) fix).proxiedMembers.equals(proxiedMembers);
 		}
 		/**
 		 * @param obj ignored
@@ -411,21 +412,21 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		 */
 		@Override
 		public void addProxied(final UnitMember item) {
-			proxied.add(item);
+			proxiedMembers.add(item);
 		}
 		/**
 		 * @return the proxied members
 		 */
 		@Override
 		public Iterable<UnitMember> getProxied() {
-			return proxied;
+			return proxiedMembers;
 		}
 		/**
 		 * @return a string representation of the proxied member
 		 */
 		@Override
 		public String toString() {
-			for (UnitMember member : proxied) {
+			for (UnitMember member : proxiedMembers) {
 				if (member == null) {
 					continue;
 				} else {

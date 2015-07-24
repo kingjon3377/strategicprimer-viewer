@@ -23,7 +23,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import model.map.HasImage;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
-import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.workermgmt.WorkerTreeModelAlt.KindNode;
 import model.workermgmt.WorkerTreeModelAlt.UnitNode;
