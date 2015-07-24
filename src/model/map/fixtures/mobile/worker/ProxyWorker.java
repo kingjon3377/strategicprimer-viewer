@@ -48,15 +48,15 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 	public ProxyWorker(final IUnit unit) {
 		parallel = false;
 		for (final UnitMember member : unit) {
-			if (member instanceof Worker) {
-				workers.add((Worker) member);
-				for (final IJob job : (Worker) member) {
+			if (member instanceof IWorker) {
+				workers.add((IWorker) member);
+				for (final IJob job : (IWorker) member) {
 					jobNames.add(job.getName());
 				}
 			}
 		}
-		final Worker[] workerArray =
-				NullCleaner.assertNotNull(workers.toArray(new Worker[workers
+		final IWorker[] workerArray =
+				NullCleaner.assertNotNull(workers.toArray(new IWorker[workers
 						.size()]));
 		for (final String job : jobNames) {
 			if (job != null) {
