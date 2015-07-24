@@ -33,10 +33,10 @@ public class ProxySkill implements ISkill, ProxyFor<IJob> {
 	 * @param parall whether the worker containing this represents corresponding units in different maps, rather than workers in a single unit
 	 * @param jobs the Jobs to add skill hours to when asked
 	 */
-	public ProxySkill(final String nomen, final boolean parall, final Job... jobs) {
+	public ProxySkill(final String nomen, final boolean parall, final IJob... jobs) {
 		parallel = parall;
 		name = nomen;
-		for (final Job job : jobs) {
+		for (final IJob job : jobs) {
 			proxied.add(job);
 		}
 	}

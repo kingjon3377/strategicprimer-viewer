@@ -119,7 +119,7 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 			final ProxyJob proxy =
 					new ProxyJob(job.getName(), parallel,
 							NullCleaner.assertNotNull(workers
-									.toArray(new Worker[workers.size()])));
+									.toArray(new IWorker[workers.size()])));
 			jobNames.add(proxy.getName());
 			proxyJobs.add(proxy);
 			return true;

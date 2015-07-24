@@ -52,7 +52,7 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 		for (final IWorker worker : workers) {
 			boolean touched = false;
 			for (final IJob job : worker) {
-				if (job instanceof ProxyJob || job == null) {
+				if (job == this || job == null) {
 					continue;
 				} else if (nomen.equals(job.getName())) {
 					proxiedJobs.add(job);
@@ -68,9 +68,9 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 				worker.addJob(job);
 			}
 		}
-		final Job[] jobsArray =
+		final IJob[] jobsArray =
 				NullCleaner.assertNotNull(proxiedJobs
-						.toArray(new Job[proxiedJobs.size()]));
+						.toArray(new IJob[proxiedJobs.size()]));
 		for (final String skill : skillNames) {
 			if (skill != null) {
 				proxied.add(new ProxySkill(skill, parallel, jobsArray));
@@ -111,7 +111,7 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 		}
 		proxied.add(new ProxySkill(skill.getName(), parallel,
 				NullCleaner.assertNotNull(proxiedJobs
-						.toArray(new Job[proxiedJobs.size()]))));
+						.toArray(new IJob[proxiedJobs.size()]))));
 		return true;
 	}
 	/**
