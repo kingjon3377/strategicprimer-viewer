@@ -11,7 +11,7 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.Point;
 import model.map.PointFactory;
-import model.map.fixtures.Portal;
+import model.map.fixtures.explorable.Portal;
 import util.NullCleaner;
 import util.Pair;
 import util.Warning;

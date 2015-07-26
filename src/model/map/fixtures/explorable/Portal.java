@@ -1,8 +1,7 @@
-package model.map.fixtures;
+package model.map.fixtures.explorable;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import model.map.HasImage;
 import model.map.IFixture;
 import model.map.Point;
 import model.map.TileFixture;
@@ -12,7 +11,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Portal implements TileFixture, HasImage {
+public class Portal implements ExplorableFixture {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */

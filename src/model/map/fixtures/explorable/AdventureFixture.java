@@ -1,8 +1,7 @@
-package model.map.fixtures;
+package model.map.fixtures.explorable;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import model.map.HasImage;
 import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.Player;
@@ -13,7 +12,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class AdventureFixture implements TileFixture, HasImage, HasOwner {
+public class AdventureFixture implements ExplorableFixture, HasOwner {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */

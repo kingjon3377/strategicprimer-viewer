@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import javax.xml.stream.XMLStreamException;
 
-import model.map.fixtures.resources.Battlefield;
-import model.map.fixtures.resources.Cave;
+import model.map.fixtures.explorable.Battlefield;
+import model.map.fixtures.explorable.Cave;
 import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.resources.StoneKind;

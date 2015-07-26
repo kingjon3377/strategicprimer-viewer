@@ -10,7 +10,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import model.map.IMutablePlayerCollection;
 import model.map.Player;
-import model.map.fixtures.AdventureFixture;
+import model.map.fixtures.explorable.AdventureFixture;
 import util.NullCleaner;
 import util.Warning;
 import controller.map.formatexceptions.SPFormatException;

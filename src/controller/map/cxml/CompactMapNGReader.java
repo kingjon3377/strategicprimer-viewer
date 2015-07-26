@@ -66,7 +66,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 								CompactTownReader.READER,
 								CompactGroundReader.READER,
 								CompactAdventureReader.READER,
-								CompactPortalReader.READER));
+								CompactPortalReader.READER,
+								CompactExplorableReader.READER));
 		readers = assertNotNull(unmodifiableList(list));
 	}
 	/**

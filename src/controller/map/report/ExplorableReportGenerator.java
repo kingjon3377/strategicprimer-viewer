@@ -4,10 +4,13 @@ import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
-import model.map.fixtures.resources.Battlefield;
-import model.map.fixtures.resources.Cave;
-import model.map.fixtures.resources.HarvestableFixture;
+import model.map.fixtures.explorable.AdventureFixture;
+import model.map.fixtures.explorable.Battlefield;
+import model.map.fixtures.explorable.Cave;
+import model.map.fixtures.explorable.ExplorableFixture;
+import model.map.fixtures.explorable.Portal;
 import model.report.AbstractReportNode;
+import model.report.ComplexReportNode;
 import model.report.EmptyReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
@@ -21,7 +24,7 @@ import util.Pair;
  * @author Jonathan Lovelace
  */
 public class ExplorableReportGenerator extends
-		AbstractReportGenerator<HarvestableFixture> {
+		AbstractReportGenerator<ExplorableFixture> {
 	/**
 	 * A common string in this class.
 	 */
@@ -40,12 +43,14 @@ public class ExplorableReportGenerator extends
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		// At only two (albeit potentially rather long) list items, I doubt this
+		// At only three (albeit potentially rather long) list items, I doubt this
 		// will ever be over one K ... but we'll give it two just in case.
 		final StringBuilder builder = new StringBuilder(2048).append(
-				"<h4>Caves and Battlefields</h4>\n").append(OPEN_LIST);
+				"<h4>Caves, Battlefields, and Portals</h4>\n").append(OPEN_LIST);
 		boolean anyCaves = false;
 		boolean anyBattles = false;
+		boolean anyPortals = false;
+		boolean anyAdventures = false;
 		// Similarly, I doubt either of these will ever be over half a K, but
 		// we'll give each a whole K just in case.
 		final StringBuilder caveBuilder = new StringBuilder(1024).append(
@@ -53,6 +58,11 @@ public class ExplorableReportGenerator extends
 		final StringBuilder battleBuilder = new StringBuilder(1024).append(
 				OPEN_LIST_ITEM).append(
 				"Signs of long-ago battles on the following tiles: ");
+		final StringBuilder portalBuilder = new StringBuilder(1024)
+				.append(OPEN_LIST_ITEM).append("Portals to other worlds: ");
+		// I doubt this will ever be over a K either
+		final StringBuilder adventureBuilder = new StringBuilder(1024)
+				.append("<h4>Possible Adventures</h4>").append(OPEN_LIST);
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Cave) {
 				anyCaves = true;
@@ -61,6 +71,18 @@ public class ExplorableReportGenerator extends
 			} else if (pair.second() instanceof Battlefield) {
 				anyBattles = true;
 				battleBuilder.append(", ").append(pair.first().toString());
+				fixtures.remove(Integer.valueOf(pair.second().getID()));
+			} else if (pair.second() instanceof AdventureFixture) {
+				anyAdventures = true;
+				adventureBuilder.append(OPEN_LIST_ITEM)
+						.append(produce(fixtures, map, currentPlayer,
+								(ExplorableFixture) pair.second(),
+								pair.first()))
+						.append(CLOSE_LIST_ITEM);
+				fixtures.remove(Integer.valueOf(pair.second().getID()));
+			} else if (pair.second() instanceof Portal) {
+				anyPortals = true;
+				portalBuilder.append(", ").append(pair.first().toString());
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			}
 		}
@@ -72,11 +94,23 @@ public class ExplorableReportGenerator extends
 			builder.append(battleBuilder.append(CLOSE_LIST_ITEM).toString()
 					.replace(COLON_COMMA, ": "));
 		}
+		if (anyPortals) {
+			builder.append(portalBuilder.append(CLOSE_LIST_ITEM).toString()
+					.replace(COLON_COMMA, ": "));
+		}
+		adventureBuilder.append(CLOSE_LIST);
 		builder.append(CLOSE_LIST);
-		if (anyCaves || anyBattles) {
+		if (anyCaves || anyBattles || anyPortals) {
+			if (anyAdventures) {
+				builder.append(adventureBuilder.toString());
+			}
 			return NullCleaner.assertNotNull(builder.toString()); // NOPMD
 		} else {
-			return "";
+			if (anyAdventures) {
+				return NullCleaner.assertNotNull(adventureBuilder.toString());
+			} else {
+				return "";
+			}
 		}
 	}
 
@@ -97,12 +131,16 @@ public class ExplorableReportGenerator extends
 				"Caves and Battlefields");
 		boolean anyCaves = false;
 		boolean anyBattles = false;
+		boolean anyPortals = false;
+		final AbstractReportNode adventures = new SectionListReportNode(4, "Possible Adventures");
 		// We doubt either of these will be over half a K, but we'll give each a
 		// whole K just in case.
 		final StringBuilder caveBuilder = new StringBuilder(1024)
 				.append("Caves beneath the following tiles: ");
 		final StringBuilder battleBuilder = new StringBuilder(1024)
 				.append("Signs of long-ago battles on the following tiles: ");
+		final StringBuilder portalBuilder =
+				new StringBuilder(1024).append("Portals to other worlds: ");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Cave) {
 				anyCaves = true;
@@ -111,6 +149,13 @@ public class ExplorableReportGenerator extends
 			} else if (pair.second() instanceof Battlefield) {
 				anyBattles = true;
 				battleBuilder.append(", ").append(pair.first().toString());
+				fixtures.remove(Integer.valueOf(pair.second().getID()));
+			} else if (pair.second() instanceof AdventureFixture) {
+				adventures.add(produceRIR(fixtures, map, currentPlayer,
+						(ExplorableFixture) pair.second(), pair.first()));
+			} else if (pair.second() instanceof Portal) {
+				anyPortals = true;
+				portalBuilder.append(", ").append(pair.first().toString());
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			}
 		}
@@ -122,8 +167,21 @@ public class ExplorableReportGenerator extends
 			retval.add(new SimpleReportNode(battleBuilder.toString().replace(
 					COLON_COMMA, ": ")));
 		}
-		if (anyCaves || anyBattles) {
-			return retval; // NOPMD
+		if (anyPortals) {
+			retval.add(new SimpleReportNode(
+					portalBuilder.toString().replace(COLON_COMMA, ": ")));
+		}
+		if (anyCaves || anyBattles || anyPortals) {
+			if (adventures.getChildCount() > 0) {
+				final AbstractReportNode real = new ComplexReportNode("");
+				real.add(retval);
+				real.add(adventures);
+				return real;
+			} else {
+				return retval; // NOPMD
+			}
+		} else if (adventures.getChildCount() > 0) {
+			return adventures;
 		} else {
 			return EmptyReportNode.NULL_NODE;
 		}
@@ -137,23 +195,39 @@ public class ExplorableReportGenerator extends
 	 * @param item the item to report on
 	 * @param loc its location
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @return a sub-report (more verbose than the bulk produce() above reports)
+	 * @return a sub-report (more verbose than the bulk produce() above reports, for caves and battlefields)
 	 *         on the item
 	 */
 	@Override
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer,
-			final HarvestableFixture item, final Point loc) {
+			final ExplorableFixture item, final Point loc) {
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat("Caves beneath ", loc.toString()); // NOPMD
 		} else if (item instanceof Battlefield) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat("Signs of a long-ago battle on ", loc.toString()); // NOPMD
+		} else if (item instanceof AdventureFixture) {
+			if (((AdventureFixture) item).getOwner().isIndependent()) {
+				return concat(((AdventureFixture) item).getBriefDescription(),
+						" at ", loc.toString(), ": ",
+						((AdventureFixture) item).getFullDescription());
+			} else if (currentPlayer.equals(((AdventureFixture) item).getOwner())) {
+				return concat(((AdventureFixture) item).getBriefDescription(),
+						" at ", loc.toString(), ": ",
+						((AdventureFixture) item).getFullDescription(), " (already investigated by you)");
+			} else {
+				return concat(((AdventureFixture) item).getBriefDescription(),
+						" at ", loc.toString(), ": ",
+						((AdventureFixture) item).getFullDescription(), " (already investigated by another player)");
+			}
+		} else if (item instanceof Portal) {
+			fixtures.remove(Integer.valueOf(item.getID()));
+			return concat("A portal to another world at ", loc.toString());
 		} else {
-			return new HarvestableReportGenerator().produce(fixtures, map,
-					currentPlayer, item, loc);
+			throw new IllegalArgumentException("Unexpected ExplorableFixture type");
 		}
 	}
 
@@ -172,7 +246,7 @@ public class ExplorableReportGenerator extends
 	public SimpleReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer,
-			final HarvestableFixture item, final Point loc) {
+			final ExplorableFixture item, final Point loc) {
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode("Caves beneath ", loc.toString()); // NOPMD
@@ -180,9 +254,29 @@ public class ExplorableReportGenerator extends
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode("Signs of a long-ago battle on ", // NOPMD
 					loc.toString());
+		} else if (item instanceof AdventureFixture) {
+			fixtures.remove(Integer.valueOf(item.getID()));
+			if (((AdventureFixture) item).getOwner().isIndependent()) {
+				return new SimpleReportNode(
+						((AdventureFixture) item).getBriefDescription(), " at ",
+						loc.toString(),
+						((AdventureFixture) item).getFullDescription());
+			} else if (currentPlayer.equals(((AdventureFixture) item).getOwner())) {
+				return new SimpleReportNode(
+						((AdventureFixture) item).getBriefDescription(), " at ",
+						loc.toString(),
+						((AdventureFixture) item).getFullDescription(), " (already investigated by you)");
+			} else {
+				return new SimpleReportNode(
+						((AdventureFixture) item).getBriefDescription(), " at ",
+						loc.toString(),
+						((AdventureFixture) item).getFullDescription(), " (already investigated by another player)");
+			}
+		} else if (item instanceof Portal) {
+			fixtures.remove(Integer.valueOf(item.getID()));
+			return new SimpleReportNode("A portal to another world at ", loc.toString());
 		} else {
-			return new HarvestableReportGenerator().produceRIR(fixtures, map,
-					currentPlayer, item, loc);
+			throw new IllegalArgumentException("Unexpected ExplorableFixture type");
 		}
 	}
 

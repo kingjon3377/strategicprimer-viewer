@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.IDFactory;
 import model.map.IFixture;
 import model.map.IMap;
 import model.map.IMapNG;
@@ -14,11 +16,12 @@ import model.map.Player;
 import model.map.River;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
-import model.map.fixtures.AdventureFixture;
 import model.map.fixtures.Ground;
-import model.map.fixtures.Portal;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
+import model.map.fixtures.explorable.AdventureFixture;
+import model.map.fixtures.explorable.ExplorableFixture;
+import model.map.fixtures.explorable.Portal;
 import model.map.fixtures.mobile.MobileFixture;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
@@ -30,8 +33,6 @@ import model.viewer.TileTypeFixture;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
 
 /**
  * @author Jonathan Lovelace
@@ -140,6 +141,8 @@ public final class CompactReaderAdapter {
 			reader = (CompactReader<T>) CompactAdventureReader.READER;
 		} else if (Portal.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactPortalReader.READER;
+		} else if (ExplorableFixture.class.isAssignableFrom(type)) {
+			reader = (CompactReader<T>) CompactExplorableReader.READER;
 		} else {
 			throw new IllegalStateException("Unhandled type " + type.getName());
 		}

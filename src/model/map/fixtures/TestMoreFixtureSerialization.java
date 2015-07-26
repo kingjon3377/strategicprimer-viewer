@@ -15,6 +15,8 @@ import model.map.PlayerCollection;
 import model.map.PointFactory;
 import model.map.SPMapNG;
 import model.map.TileType;
+import model.map.fixtures.explorable.AdventureFixture;
+import model.map.fixtures.explorable.Portal;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;

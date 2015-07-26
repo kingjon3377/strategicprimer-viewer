@@ -11,7 +11,7 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.PointFactory;
-import model.map.fixtures.Portal;
+import model.map.fixtures.explorable.Portal;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;

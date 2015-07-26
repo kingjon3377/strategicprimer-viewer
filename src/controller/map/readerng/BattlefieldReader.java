@@ -11,7 +11,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import model.map.IMutablePlayerCollection;
-import model.map.fixtures.resources.Battlefield;
+import model.map.fixtures.explorable.Battlefield;
 import util.NullCleaner;
 import util.Pair;
 import util.Warning;

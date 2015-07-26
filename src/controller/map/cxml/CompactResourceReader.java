@@ -11,11 +11,15 @@ import java.util.Set;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.Nullable;
+
+import controller.map.formatexceptions.DeprecatedPropertyException;
+import controller.map.formatexceptions.MissingPropertyException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.IDFactory;
 import model.map.IEvent;
 import model.map.IMutablePlayerCollection;
-import model.map.fixtures.resources.Battlefield;
 import model.map.fixtures.resources.CacheFixture;
-import model.map.fixtures.resources.Cave;
 import model.map.fixtures.resources.FieldStatus;
 import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.HarvestableFixture;
@@ -26,17 +30,10 @@ import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.resources.StoneKind;
 import model.map.fixtures.towns.TownStatus;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.ArraySet;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
-import controller.map.formatexceptions.DeprecatedPropertyException;
-import controller.map.formatexceptions.MissingPropertyException;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
 
 /**
  * A reader for resource-bearing TileFixtures.
@@ -86,17 +83,9 @@ public final class CompactResourceReader extends
 	 */
 	private static enum HarvestableType {
 		/**
-		 * Battlefield.
-		 */
-		BattlefieldType("battlefield"),
-		/**
 		 * Cache.
 		 */
 		CacheType("cache"),
-		/**
-		 * Cave.
-		 */
-		CaveType("cave"),
 		/**
 		 * Grove.
 		 */
@@ -178,21 +167,15 @@ public final class CompactResourceReader extends
 			final StartElement elem, final IteratorWrapper<XMLEvent> stream,
 			final IMutablePlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
-		requireTag(elem, "battlefield", "cache", "cave", "grove", "orchard",
+		requireTag(elem, "cache", "grove", "orchard",
 				"field", "meadow", "mine", "mineral", "shrub", "stone");
 		final int idNum = getOrGenerateID(elem, warner, idFactory);
 		// ESCA-JAVA0177:
 		final HarvestableFixture retval; // NOPMD
 		switch (MAP.get(elem.getName().getLocalPart())) {
-		case BattlefieldType:
-			retval = new Battlefield(getDC(elem), idNum);
-			break;
 		case CacheType:
 			retval = new CacheFixture(getParameter(elem, KIND_PAR),
 					getParameter(elem, "contents"), idNum);
-			break;
-		case CaveType:
-			retval = new Cave(getDC(elem), idNum);
 			break;
 		case FieldType:
 			retval = createMeadow(elem, true, idNum, warner);
@@ -367,8 +350,8 @@ public final class CompactResourceReader extends
 			ostream.append(((StoneDeposit) obj).stone().toString());
 			ostream.append("\" dc=\"");
 			ostream.append(Integer.toString(((StoneDeposit) obj).getDC()));
-		} else if (obj instanceof IEvent) {
-			writeSimpleEvent(ostream, (IEvent) obj);
+		} else {
+			throw new IllegalStateException("Unhandled HarvestableFixture subtype");
 		}
 		ostream.append("\" id=\"");
 		ostream.append(Integer.toString(obj.getID()));
@@ -401,25 +384,6 @@ public final class CompactResourceReader extends
 		}
 	}
 
-	/**
-	 * Serialize a very simple Event.
-	 *
-	 * @param ostream the stream to write (most of) it to
-	 * @param event a simple (DC- and ID-only) IEvent
-	 * @throws IOException on I/O error
-	 */
-	private static void writeSimpleEvent(final Appendable ostream,
-			final IEvent event) throws IOException {
-		if (event instanceof Battlefield) {
-			ostream.append("<battlefield ");
-		} else if (event instanceof Cave) {
-			ostream.append("<cave ");
-		} else {
-			throw new IllegalStateException("Unhandled IEvent subtype");
-		}
-		ostream.append("dc=\"");
-		ostream.append(Integer.toString(event.getDC()));
-	}
 	/**
 	 * @return a String representation of the object
 	 */

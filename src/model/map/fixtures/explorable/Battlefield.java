@@ -1,40 +1,45 @@
-package model.map.fixtures.resources;
+package model.map.fixtures.explorable;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.IEvent;
 import model.map.IFixture;
 import model.map.TileFixture;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 /**
- * "There are extensive caves beneath this tile".
+ * "There are the signs of a long-ago battle here".
  *
  * @author Jonathan Lovelace
- *
  */
-public final class Cave implements IEvent, HarvestableFixture {
+public final class Battlefield implements IEvent, ExplorableFixture {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
 	private String image = "";
 
 	/**
+	 * A (U)ID.
+	 */
+	private final int id; // NOPMD
+
+	/**
 	 * Constructor.
 	 *
-	 * @param discdc the DC to discover the caves
+	 * @param discdc the DC to discover the battlefield.
 	 * @param idNum the ID number for the event.
 	 */
-	public Cave(final int discdc, final int idNum) {
+	public Battlefield(final int discdc, final int idNum) {
 		dc = discdc;
 		id = idNum;
 	}
 
 	/**
-	 * The DC to discover the caves. TODO: Should perhaps be mutable.
+	 * The DC to discover the battlefield. TODO: Should perhaps be mutable.
 	 */
 	private final int dc; // NOPMD
 
 	/**
+	 *
 	 *
 	 * @return the DC to discover the event.
 	 */
@@ -49,24 +54,23 @@ public final class Cave implements IEvent, HarvestableFixture {
 	 */
 	@Override
 	public String getText() {
-		return "There are extensive caves beneath this tile.";
+		return "There are the signs of a long-ago battle here.";
 	}
 
 	/**
 	 * @param obj an object
 	 *
-	 * @return whether it's an identical CaveEvent.
+	 * @return whether it's an identical BattlefieldEvent.
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Cave
+		return this == obj || obj instanceof Battlefield
 				&& ((TileFixture) obj).getID() == id;
 	}
 
 	/**
 	 *
-	 * @return a hash value for the event. Constant, as our only state is DC,
-	 *         and that's zeroed in players' maps.
+	 * @return a hash value for the event.
 	 */
 	@Override
 	public int hashCode() {
@@ -79,7 +83,7 @@ public final class Cave implements IEvent, HarvestableFixture {
 	 */
 	@Override
 	public String toString() {
-		return "Caves with DC " + dc;
+		return "An ancient battlefield with DC " + dc;
 	}
 
 	/**
@@ -104,12 +108,7 @@ public final class Cave implements IEvent, HarvestableFixture {
 	}
 
 	/**
-	 * The event's ID number.
-	 */
-	private final int id; // NOPMD
-
-	/**
-	 * @return the event's ID number.
+	 * @return the ID number for the event.
 	 */
 	@Override
 	public int getID() {
@@ -122,18 +121,15 @@ public final class Cave implements IEvent, HarvestableFixture {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return fix instanceof Cave;
+		return fix instanceof Battlefield;
 	}
 
 	/**
-	 * Image from OpenGameArt.org, by user MrBeast, from page
-	 * http://opengameart.org/content/cave-tileset-0 .
-	 *
-	 * @return the name of the image representing a cave
+	 * @return the name of the image to represent the event
 	 */
 	@Override
 	public String getDefaultImage() {
-		return "cave.png";
+		return "battlefield.png";
 	}
 
 	/**
@@ -153,17 +149,18 @@ public final class Cave implements IEvent, HarvestableFixture {
 	}
 
 	/**
-	 * @return a string describing all caves as a class
+	 * @return a string describing all battlefields as a class
 	 */
 	@Override
 	public String plural() {
-		return "Caves";
+		return "Battlefields";
 	}
 	/**
 	 * @return a short description of the fixture
 	 */
 	@Override
 	public String shortDesc() {
-		return "caves underground";
+		return "signs of a long-ago battle";
 	}
+
 }

@@ -11,7 +11,7 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.Player;
-import model.map.fixtures.AdventureFixture;
+import model.map.fixtures.explorable.AdventureFixture;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;

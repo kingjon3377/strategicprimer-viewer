@@ -281,9 +281,7 @@ public class HarvestableReportGenerator extends // NOPMD
 			return concat(atPoint(loc), "An exposed ", // NOPMD
 					((StoneDeposit) item).getKind(), " deposit");
 		} else {
-			// It's a battlefield or cave.
-			return new ExplorableReportGenerator().produce(fixtures, map,
-					currentPlayer, item, loc);
+			throw new IllegalArgumentException("Unexpected HarvestableFixture type");
 		}
 	}
 
@@ -338,9 +336,7 @@ public class HarvestableReportGenerator extends // NOPMD
 			return new SimpleReportNode(atPoint(loc), "An exposed ", // NOPMD
 					((StoneDeposit) item).getKind(), " deposit");
 		} else {
-			// It's a battlefield or cave.
-			return new ExplorableReportGenerator().produceRIR(fixtures, map,
-					currentPlayer, item, loc);
+			throw new IllegalArgumentException("Unexpected HarvestableFixture type");
 		}
 	}
 
