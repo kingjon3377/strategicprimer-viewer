@@ -13,6 +13,15 @@ import java.util.Random;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
+import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
+import controller.map.misc.IDFactory;
+import controller.map.misc.IDFactoryFiller;
+import controller.map.misc.MapReaderAdapter;
 import model.exploration.ExplorationModel;
 import model.exploration.IExplorationModel;
 import model.map.FixtureIterable;
@@ -29,20 +38,11 @@ import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import model.workermgmt.RaceFactory;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 import util.Pair;
 import util.SingletonRandom;
 import util.Warning;
-import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.CLIHelper;
-import controller.map.misc.ICLIHelper;
-import controller.map.misc.IDFactory;
-import controller.map.misc.IDFactoryFiller;
-import controller.map.misc.MapReaderAdapter;
+import view.util.SystemOut;
 
 /**
  * A driver to let the user enter pregenerated stats for existing workers or
@@ -558,11 +558,15 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		for (int i = 0; i < 3; i++) {
 			// ESCA-JAVA0076:
 			if (SingletonRandom.RANDOM.nextInt(20) == 0) {
-				retval.addJob(new Job(// NOPMD
-						cli.inputString("Which Job does worker have a level in? "),
-						1));
 				levels++;
 			}
+		}
+		if (levels > 1) {
+			SystemOut.SYS_OUT.print("Worker has ");
+			SystemOut.SYS_OUT.print(levels);
+			SystemOut.SYS_OUT.println(" job levels");
+		} else if (levels == 1) {
+			SystemOut.SYS_OUT.println("Worker has 1 job level");
 		}
 		final boolean pregenStats = cli
 				.inputBoolean("Enter pregenerated stats? ");
@@ -572,8 +576,18 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			final int constitution = threeDeeSix();
 			final int conBonus = (constitution - STAT_BASIS) / 2;
 			final int hitp = 8 + conBonus + rollDeeEight(levels, conBonus);
-			retval.setStats(new WorkerStats(hitp, hitp, threeDeeSix(), threeDeeSix(),
-					constitution, threeDeeSix(), threeDeeSix(), threeDeeSix()));
+			final WorkerStats stats = new WorkerStats(hitp, hitp, threeDeeSix(), threeDeeSix(),
+					constitution, threeDeeSix(), threeDeeSix(), threeDeeSix());
+			retval.setStats(stats);
+			if (levels > 0) {
+				SystemOut.SYS_OUT.println("Generated stats:");
+				SystemOut.SYS_OUT.print(stats);
+			}
+		}
+		for (int i = 0; i < levels; i++) {
+			retval.addJob(new Job(// NOPMD
+					cli.inputString("Which Job does worker have a level in? "),
+					1));
 		}
 		return retval;
 	}
@@ -607,18 +621,32 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		for (int i = 0; i < 3; i++) {
 			// ESCA-JAVA0076:
 			if (SingletonRandom.RANDOM.nextInt(20) == 0) {
-				retval.addJob(new Job(// NOPMD
-						cli.inputString("Which Job does worker have a level in? "),
-						1));
 				levels++;
 			}
 		}
 		final int constitution = threeDeeSix();
 		final int conBonus = (constitution - STAT_BASIS) / 2;
 		final int hitp = 8 + conBonus + rollDeeEight(levels, conBonus);
-		retval.setStats(new WorkerStats(hitp, hitp, threeDeeSix(),
+		final WorkerStats stats = new WorkerStats(hitp, hitp, threeDeeSix(),
 				threeDeeSix(), constitution, threeDeeSix(), threeDeeSix(),
-				threeDeeSix()));
+				threeDeeSix());
+		retval.setStats(stats);
+		if (levels > 1) {
+			SystemOut.SYS_OUT.print("Worker has ");
+			SystemOut.SYS_OUT.print(levels);
+			SystemOut.SYS_OUT.println(" Job levels.");
+			SystemOut.SYS_OUT.println("Worker stats:");
+			SystemOut.SYS_OUT.print(stats);
+		} else if (levels == 1) {
+			SystemOut.SYS_OUT.println("Worker has 1 Job level.");
+			SystemOut.SYS_OUT.println("Worker stats:");
+			SystemOut.SYS_OUT.print(stats);
+		}
+		for (int i = 0; i < levels; i++) {
+			retval.addJob(new Job(// NOPMD
+					cli.inputString("Which Job does worker have a level in? "),
+					1));
+		}
 		return retval;
 	}
 	/**
