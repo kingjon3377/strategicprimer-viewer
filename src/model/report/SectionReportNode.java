@@ -2,7 +2,6 @@ package model.report;
 
 import javax.swing.tree.TreeNode;
 
-import model.map.Point;
 import util.NullCleaner;
 
 /**
@@ -16,18 +15,6 @@ public class SectionReportNode extends AbstractReportNode {
 	 * The header level.
 	 */
 	private int level;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param point the point, if any, in the map that this represents something on
-	 * @param lvl the header level
-	 * @param header the header text
-	 */
-	public SectionReportNode(final Point point, final int lvl, final String header) {
-		super(point, header);
-		setLevel(lvl);
-	}
 
 	/**
 	 * Constructor.

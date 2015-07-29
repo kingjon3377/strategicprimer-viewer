@@ -43,46 +43,21 @@ public class SectionListReportNode extends AbstractReportNode {
 	 * @param header the header text
 	 */
 	public SectionListReportNode(final Point point, final int lvl, final String header) {
-		this(point, lvl, header, "");
+		super(point, header);
+		setLevel(lvl);
+		subheader = "";
 	}
 
 	/**
 	 * Constructor.
 	 *
-	 * @param point the point, if any, in the map that this represents something on
 	 * @param lvl the header level
 	 * @param header the header text
 	 */
 	public SectionListReportNode(final int lvl, final String header) {
-		this(lvl, header, "");
-	}
-	/**
-	 * Constructor.
-	 *
-	 * @param point the point, if any, in the map that this represents something on
-	 * @param lvl the header level
-	 * @param header the header text
-	 * @param subtext the sub-header text
-	 */
-	public SectionListReportNode(final Point point, final int lvl, final String header,
-			final String subtext) {
-		super(point, header);
-		setLevel(lvl);
-		subheader = subtext;
-	}
-
-	/**
-	 * Constructor.
-	 *
-	 * @param lvl the header level
-	 * @param header the header text
-	 * @param subtext the sub-header text
-	 */
-	public SectionListReportNode(final int lvl, final String header,
-			final String subtext) {
 		super(header);
 		setLevel(lvl);
-		subheader = subtext;
+		subheader = "";
 	}
 	/**
 	 * @return the HTML representation of the node
