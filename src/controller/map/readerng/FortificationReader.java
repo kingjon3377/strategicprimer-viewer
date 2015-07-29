@@ -12,14 +12,14 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.towns.Fortification;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 import util.NullCleaner;
 import util.Warning;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
 
 /**
  * A reader for fortifications.
@@ -89,14 +89,12 @@ public class FortificationReader implements INodeHandler<Fortification> {
 				"fortification");
 		retval.addAttribute("status", obj.status().toString());
 		retval.addAttribute("size", obj.size().toString());
-		retval.addAttribute("dc",
-				NullCleaner.assertNotNull(Integer.toString(obj.getDC())));
+		retval.addIntegerAttribute("dc", obj.getDC());
 		if (!obj.getName().isEmpty()) {
 			retval.addAttribute("name", obj.getName());
 		}
 		retval.addIdAttribute(obj.getID());
-		retval.addAttribute("owner", NullCleaner.assertNotNull(Integer
-				.toString(obj.getOwner().getPlayerId())));
+		retval.addIntegerAttribute("owner", obj.getOwner().getPlayerId());
 		retval.addImageAttribute(obj);
 		return retval;
 	}

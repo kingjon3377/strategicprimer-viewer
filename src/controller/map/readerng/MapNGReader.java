@@ -360,9 +360,9 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 			final Point point) {
 		// We can safely assume that an empty retval is not called for.
 		final SPIntermediateRepresentation retval =
-				new SPIntermediateRepresentation("tile", Pair.of("row",
-						assertNotNull(Integer.toString(point.row))), Pair.of(
-						"column", assertNotNull(Integer.toString(point.col))));
+				new SPIntermediateRepresentation("tile");
+		retval.addIntegerAttribute("row", point.row);
+		retval.addIntegerAttribute("column", point.col);
 		if (!TileType.NotVisible.equals(map.getBaseTerrain(point))) {
 			retval.addAttribute("kind", map.getBaseTerrain(point).toXML());
 		}

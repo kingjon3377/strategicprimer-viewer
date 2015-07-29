@@ -8,13 +8,13 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.Player;
 import model.map.fixtures.explorable.AdventureFixture;
 import util.NullCleaner;
 import util.Warning;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
 /**
  * A reader for adventure hooks.
  * @author Jonathan Lovelace
@@ -83,8 +83,7 @@ public class AdventureReader implements INodeHandler<AdventureFixture> {
 				new SPIntermediateRepresentation("adventure");
 		retval.addIdAttribute(obj.getID());
 		if (!obj.getOwner().isIndependent()) {
-			retval.addAttribute("owner", NullCleaner.assertNotNull(Integer
-					.toString(obj.getOwner().getPlayerId())));
+			retval.addIntegerAttribute("owner", obj.getOwner().getPlayerId());
 		}
 		if (!obj.getBriefDescription().isEmpty()) {
 			retval.addAttribute("brief", obj.getBriefDescription());

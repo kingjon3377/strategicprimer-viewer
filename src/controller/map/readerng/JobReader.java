@@ -6,16 +6,16 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnsupportedPropertyException;
+import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import util.NullCleaner;
 import util.Warning;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.formatexceptions.UnsupportedPropertyException;
-import controller.map.formatexceptions.UnwantedChildException;
-import controller.map.misc.IDFactory;
 
 /**
  * A reader for Jobs.
@@ -109,8 +109,7 @@ public class JobReader implements INodeHandler<Job> {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"job");
 		retval.addAttribute("name", obj.getName());
-		retval.addAttribute("level",
-				NullCleaner.assertNotNull(Integer.toString(obj.getLevel())));
+		retval.addIntegerAttribute("level", obj.getLevel());
 		for (final ISkill skill : obj) {
 			if (skill instanceof Skill) {
 				retval.addChild(SKILL_READER.write((Skill) skill));

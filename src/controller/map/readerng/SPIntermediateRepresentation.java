@@ -6,10 +6,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import model.map.HasImage;
-
 import org.eclipse.jdt.annotation.Nullable;
 
+import model.map.HasImage;
 import util.EqualsAny;
 import util.NullCleaner;
 import util.Pair;
@@ -69,7 +68,14 @@ public final class SPIntermediateRepresentation {
 			// attrs.add(attr);
 		}
 	}
-
+	/**
+	 * Add an attribute with an integer value.
+	 * @param name the name of the attribute
+	 * @param value its value
+	 */
+	public void addIntegerAttribute(final String name, final int value) {
+		addAttribute(name, NullCleaner.assertNotNull(Integer.toString(value)));
+	}
 
 	/**
 	 * Add an attribute.
@@ -253,6 +259,6 @@ public final class SPIntermediateRepresentation {
 	 * @param idNum the ID to add
 	 */
 	public void addIdAttribute(final int idNum) {
-		addAttribute("id", NullCleaner.assertNotNull(Integer.toString(idNum)));
+		addIntegerAttribute("id", idNum);
 	}
 }

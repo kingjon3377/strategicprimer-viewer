@@ -7,13 +7,12 @@ import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import util.NullCleaner;
-import util.Pair;
 import util.Warning;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
 
 /**
  * A reader for workers' stats.
@@ -73,19 +72,18 @@ public class StatsReader implements INodeHandler<WorkerStats> {
 	 * @param obj a stats object
 	 * @return the SPIR representing it
 	 */
-	@SuppressWarnings("null")
 	@Override
 	public SPIntermediateRepresentation write(final WorkerStats obj) {
-		// FIXME: Add an "addIntegerProperty" method to SPIR, and use it here.
-		return new SPIntermediateRepresentation("stats", Pair.of("hp",
-				Integer.toString(obj.getHitPoints())), Pair.of("max",
-				Integer.toString(obj.getMaxHitPoints())), Pair.of("str",
-				Integer.toString(obj.getStrength())), Pair.of("dex",
-				Integer.toString(obj.getDexterity())), Pair.of("con",
-				Integer.toString(obj.getConstitution())), Pair.of("int",
-				Integer.toString(obj.getIntelligence())), Pair.of("wis",
-				Integer.toString(obj.getWisdom())), Pair.of("cha",
-				Integer.toString(obj.getCharisma())));
+		SPIntermediateRepresentation retval = new SPIntermediateRepresentation("stats");
+		retval.addIntegerAttribute("hp", obj.getHitPoints());
+		retval.addIntegerAttribute("max", obj.getMaxHitPoints());
+		retval.addIntegerAttribute("str", obj.getStrength());
+		retval.addIntegerAttribute("dex", obj.getDexterity());
+		retval.addIntegerAttribute("con", obj.getConstitution());
+		retval.addIntegerAttribute("int", obj.getIntelligence());
+		retval.addIntegerAttribute("wis", obj.getWisdom());
+		retval.addIntegerAttribute("cha", obj.getCharisma());
+		return retval;
 	}
 
 	/**

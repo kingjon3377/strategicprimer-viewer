@@ -8,6 +8,8 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.Point;
 import model.map.PointFactory;
@@ -15,8 +17,6 @@ import model.map.fixtures.explorable.Portal;
 import util.NullCleaner;
 import util.Pair;
 import util.Warning;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
 
 /**
  * A reader for portals.
@@ -91,10 +91,8 @@ public class PortalReader implements INodeHandler<Portal> {
 				new SPIntermediateRepresentation("portal", Pair.of("world",
 						obj.getDestinationWorld()));
 		Point dest = obj.getDestinationCoordinates();
-		retval.addAttribute("row",
-				NullCleaner.assertNotNull(Integer.toString(dest.row)));
-		retval.addAttribute("column",
-				NullCleaner.assertNotNull(Integer.toString(dest.col)));
+		retval.addIntegerAttribute("row", dest.row);
+		retval.addIntegerAttribute("column", dest.col);
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

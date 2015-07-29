@@ -11,15 +11,15 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 import util.NullCleaner;
 import util.Warning;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.formatexceptions.UnwantedChildException;
-import controller.map.misc.IDFactory;
 
 /**
  * A reader for fortresses.
@@ -103,8 +103,7 @@ public class FortressReader implements INodeHandler<Fortress> {
 	public <S extends Fortress> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"fortress");
-		retval.addAttribute("owner", NullCleaner.assertNotNull(Integer
-				.toString(obj.getOwner().getPlayerId())));
+		retval.addIntegerAttribute("owner", obj.getOwner().getPlayerId());
 		if (!obj.getName().isEmpty()) {
 			retval.addAttribute("name", obj.getName());
 		}

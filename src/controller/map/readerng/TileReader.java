@@ -9,6 +9,9 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.IMutableTile;
 import model.map.ITile;
@@ -21,9 +24,6 @@ import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import util.NullCleaner;
 import util.Warning;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.formatexceptions.UnwantedChildException;
-import controller.map.misc.IDFactory;
 
 /**
  * A reader for Tiles.
@@ -191,10 +191,8 @@ public class TileReader implements INodeHandler<ITile> {
 		}
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"tile");
-		retval.addAttribute("row",
-				NullCleaner.assertNotNull(Integer.toString(point.row)));
-		retval.addAttribute("column",
-				NullCleaner.assertNotNull(Integer.toString(point.col)));
+		retval.addIntegerAttribute("row", point.row);
+		retval.addIntegerAttribute("column", point.col);
 		if (!(TileType.NotVisible.equals(obj.getTerrain()))) {
 			retval.addAttribute("kind", obj.getTerrain().toXML());
 		}

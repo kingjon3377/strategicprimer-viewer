@@ -8,13 +8,13 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.TextFixture;
 import util.NullCleaner;
 import util.Warning;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.formatexceptions.UnwantedChildException;
-import controller.map.misc.IDFactory;
 
 /**
  * A reader for text elements.
@@ -98,8 +98,7 @@ public class TextReader implements INodeHandler<TextFixture> {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"text");
 		if (obj.getTurn() != -1) {
-			retval.addAttribute("turn",
-					NullCleaner.assertNotNull(Integer.toString(obj.getTurn())));
+			retval.addIntegerAttribute("turn", obj.getTurn());
 		}
 		retval.addAttribute("text-contents",
 				NullCleaner.assertNotNull(obj.getText().trim()));

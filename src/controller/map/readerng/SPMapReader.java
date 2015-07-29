@@ -10,6 +10,11 @@ import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnsupportedTagException;
+import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.iointerfaces.ISPReader;
+import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.ITile;
 import model.map.MapDimensions;
@@ -19,13 +24,7 @@ import model.map.PointFactory;
 import model.map.SPMap;
 import util.EqualsAny;
 import util.NullCleaner;
-import util.Pair;
 import util.Warning;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.formatexceptions.UnsupportedTagException;
-import controller.map.formatexceptions.UnwantedChildException;
-import controller.map.iointerfaces.ISPReader;
-import controller.map.misc.IDFactory;
 
 /**
  * A reader to produce SPMaps.
@@ -162,17 +161,12 @@ public class SPMapReader implements INodeHandler<SPMap> {
 	public <S extends SPMap> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"map");
-		retval.addAttribute("version",
-				assertNotNull(Integer.toString(obj.getDimensions().version)));
-		retval.addAttribute("rows",
-				assertNotNull(Integer.toString(obj.getDimensions().rows)));
-		retval.addAttribute("columns",
-				assertNotNull(Integer.toString(obj.getDimensions().cols)));
+		retval.addIntegerAttribute("version",  obj.getDimensions().version);
+		retval.addIntegerAttribute("rows",  obj.getDimensions().rows);
+		retval.addIntegerAttribute("columns",  obj.getDimensions().cols);
 		if (!obj.getPlayers().getCurrentPlayer().getName().isEmpty()) {
-			retval.addAttribute(
-					"current_player",
-					assertNotNull(Integer.toString(obj.getPlayers()
-							.getCurrentPlayer().getPlayerId())));
+			retval.addIntegerAttribute("current_player",
+					obj.getPlayers().getCurrentPlayer().getPlayerId());
 		}
 		for (final Player player : obj.getPlayers()) {
 			if (player != null) {
@@ -183,8 +177,8 @@ public class SPMapReader implements INodeHandler<SPMap> {
 		for (int i = 0; i < dim.rows; i++) {
 			final SPIntermediateRepresentation row =
 					new SPIntermediateRepresentation(// NOPMD
-							"row", Pair.of("index",
-									assertNotNull(Integer.toString(i))));
+							"row");
+			row.addIntegerAttribute("index", i);
 			for (int j = 0; j < dim.cols; j++) {
 				final Point point = PointFactory.point(i, j);
 				final ITile tile = obj.getTile(point);

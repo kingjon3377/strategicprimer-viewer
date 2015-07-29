@@ -11,15 +11,15 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import controller.map.formatexceptions.MissingPropertyException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import util.NullCleaner;
 import util.Warning;
-import controller.map.formatexceptions.MissingPropertyException;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.formatexceptions.UnwantedChildException;
-import controller.map.misc.IDFactory;
 
 /**
  * A reader for Units.
@@ -147,8 +147,7 @@ public class UnitReader implements INodeHandler<Unit> {
 	public <S extends Unit> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"unit");
-		retval.addAttribute("owner", NullCleaner.assertNotNull(Integer
-				.toString(obj.getOwner().getPlayerId())));
+		retval.addIntegerAttribute("owner", obj.getOwner().getPlayerId());
 		if (!obj.getKind().isEmpty()) {
 			retval.addAttribute("kind", obj.getKind());
 		}

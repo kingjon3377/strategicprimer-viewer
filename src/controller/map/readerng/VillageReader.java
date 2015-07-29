@@ -13,14 +13,14 @@ import java.util.Random;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
 import model.workermgmt.RaceFactory;
 import util.NullCleaner;
 import util.Warning;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
 
 /**
  * A reader for Villages.
@@ -85,8 +85,7 @@ public class VillageReader implements INodeHandler<Village> {
 			retval.addAttribute("name", obj.getName());
 		}
 		retval.addIdAttribute(obj.getID());
-		retval.addAttribute("owner", NullCleaner.assertNotNull(Integer
-				.toString(obj.getOwner().getPlayerId())));
+		retval.addIntegerAttribute("owner", obj.getOwner().getPlayerId());
 		retval.addAttribute("race", obj.getRace());
 		retval.addImageAttribute(obj);
 		return retval;

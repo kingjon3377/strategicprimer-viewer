@@ -6,13 +6,13 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import controller.map.formatexceptions.DeprecatedPropertyException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.mobile.worker.Skill;
 import util.NullCleaner;
 import util.Warning;
-import controller.map.formatexceptions.DeprecatedPropertyException;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
 
 /**
  * A reader for Skills.
@@ -84,10 +84,8 @@ public class SkillReader implements INodeHandler<Skill> {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"skill");
 		retval.addAttribute("name", obj.getName());
-		retval.addAttribute("level",
-				NullCleaner.assertNotNull(Integer.toString(obj.getLevel())));
-		retval.addAttribute("hours",
-				NullCleaner.assertNotNull(Integer.toString(obj.getHours())));
+		retval.addIntegerAttribute("level", obj.getLevel());
+		retval.addIntegerAttribute("hours", obj.getHours());
 		return retval;
 	}
 

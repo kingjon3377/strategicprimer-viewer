@@ -8,15 +8,15 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import controller.map.formatexceptions.MissingChildException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.misc.IDFactory;
 import model.map.IMapView;
 import model.map.IMutablePlayerCollection;
 import model.map.MapView;
 import util.NullCleaner;
 import util.Warning;
-import controller.map.formatexceptions.MissingChildException;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.formatexceptions.UnwantedChildException;
-import controller.map.misc.IDFactory;
 
 /**
  * A reader to read map views from XML and turn them into XML. TODO: changesets.
@@ -115,12 +115,8 @@ public class ViewReader implements INodeHandler<IMapView> {
 	public <S extends IMapView> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				TAG);
-		retval.addAttribute(
-				"current_player",
-				NullCleaner.assertNotNull(Integer.toString(obj.getPlayers()
-						.getCurrentPlayer().getPlayerId())));
-		retval.addAttribute("current_turn", NullCleaner.assertNotNull(Integer
-				.toString(obj.getCurrentTurn())));
+		retval.addIntegerAttribute("current_player", obj.getPlayers().getCurrentPlayer().getPlayerId());
+		retval.addIntegerAttribute("current_turn", obj.getCurrentTurn());
 		retval.addChild(ReaderAdapter.ADAPTER.write(obj.getMap()));
 		return retval;
 	}
