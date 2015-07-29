@@ -1,7 +1,5 @@
 package model.report;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.Point;
 import util.NullCleaner;
 
@@ -17,10 +15,17 @@ public class SimpleReportNode extends AbstractReportNode {
 	 * @param texts a number of strings to concatenate and make the text of the
 	 *        node.
 	 */
-	public SimpleReportNode(@Nullable final Point point, final String... texts) {
+	public SimpleReportNode(final Point point, final String... texts) {
 		super(point, concat(texts));
 	}
 
+	/**
+	 * @param texts a number of strings to concatenate and make the text of the
+	 *        node.
+	 */
+	public SimpleReportNode(final String... texts) {
+		super(concat(texts));
+	}
 	/**
 	 * @param strings a number of strings
 	 * @return them all concatenated together

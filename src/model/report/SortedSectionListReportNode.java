@@ -18,12 +18,22 @@ public class SortedSectionListReportNode extends SectionListReportNode {
 	/**
 	 * Constructor.
 	 *
-	 * @param point the point, if any, in the map that this represents something on
+	 * @param point the point in the map that this represents something on
 	 * @param level the header level
 	 * @param text the header text
 	 */
-	public SortedSectionListReportNode(@Nullable final Point point, final int level, final String text) {
+	public SortedSectionListReportNode(final Point point, final int level, final String text) {
 		super(point, level, text);
+	}
+
+	/**
+	 * Constructor.
+	 *
+	 * @param level the header level
+	 * @param text the header text
+	 */
+	public SortedSectionListReportNode(final int level, final String text) {
+		super(level, text);
 	}
 
 	/**

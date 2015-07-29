@@ -121,7 +121,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 					concat(simple, ". Members of the unit:"));
 			for (final UnitMember member : unit) {
 				if (member instanceof Worker) {
-					retval.add(produceWorkerRIR((Worker) member,
+					retval.add(produceWorkerRIR(loc, (Worker) member,
 							currentPlayer.equals(unit.getOwner())));
 				} else {
 					// TODO: what about others?
@@ -209,20 +209,19 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	}
 
 	/**
-	 * FIXME: This should take a 'loc' parameter to pass to the nodes
-	 *
+	 * @param loc the location of the worker in the map
 	 * @param worker a Worker.
 	 * @param details whether we should give details of the worker's stats and
 	 *        experience---true only if the current player owns the worker.
 	 * @return a sub-report on that worker.
 	 */
-	private static AbstractReportNode produceWorkerRIR(final Worker worker,
+	private static AbstractReportNode produceWorkerRIR(final Point loc, final Worker worker,
 			final boolean details) {
-		final AbstractReportNode retval = new ComplexReportNode(null,
+		final AbstractReportNode retval = new ComplexReportNode(loc,
 				worker.getName() + ", a " + worker.getRace() + ". ");
 		final WorkerStats stats = worker.getStats();
 		if (stats != null && details) {
-			retval.add(new SimpleReportNode(null,
+			retval.add(new SimpleReportNode(loc,
 					"He or she has the following stats: ", Integer
 							.toString(stats.getHitPoints()), " / ", Integer
 							.toString(stats.getMaxHitPoints()),
@@ -236,10 +235,10 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 					getModifierString(stats.getCharisma())));
 		}
 		if (worker.iterator().hasNext() && details) {
-			final AbstractReportNode jobs = new ListReportNode(null, HAS_TRAINING);
+			final AbstractReportNode jobs = new ListReportNode(loc, HAS_TRAINING);
 			for (final IJob job : worker) {
 				if (job instanceof Job) {
-					jobs.add(produceJobRIR((Job) job));
+					jobs.add(produceJobRIR((Job) job, loc));
 				}
 			}
 			retval.add(jobs);
@@ -247,13 +246,12 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		return retval;
 	}
 	/**
-	 * FIXME: Should take a 'loc' parameter to pass to the node.
-	 *
+	 * @param loc the location of the worker in the map
 	 * @param job a Job
 	 * @return a sub-report on that Job.
 	 */
-	private static AbstractReportNode produceJobRIR(final Job job) {
-		return new SimpleReportNode(null, Integer.toString(job.getLevel()),
+	private static AbstractReportNode produceJobRIR(final Job job, final Point loc) {
+		return new SimpleReportNode(loc, Integer.toString(job.getLevel()),
 				" levels in ", job.getName(), getSkills(job));
 	}
 
@@ -329,13 +327,13 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
 		final AbstractReportNode retval =
-				new SectionReportNode(null, 4, "Units in the map");
-		retval.add(new SimpleReportNode(null,
+				new SectionReportNode(4, "Units in the map");
+		retval.add(new SimpleReportNode(
 				"(Any units reported above are not described again.)"));
 		final AbstractReportNode ours =
-				new SectionListReportNode(null, 5, "Your units");
+				new SectionListReportNode(5, "Your units");
 		final AbstractReportNode theirs =
-				new SectionListReportNode(null, 5, "Foreign units");
+				new SectionListReportNode(5, "Foreign units");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Unit) {
 				final Unit unit = (Unit) pair.second();

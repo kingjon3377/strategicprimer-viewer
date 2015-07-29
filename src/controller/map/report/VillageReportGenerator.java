@@ -68,10 +68,10 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		final AbstractReportNode retval = new SectionReportNode(null, 4, "Villages:");
-		final AbstractReportNode others = new SectionListReportNode(null, 5,
+		final AbstractReportNode retval = new SectionReportNode(4, "Villages:");
+		final AbstractReportNode others = new SectionListReportNode(5,
 				"Villages you know about:");
-		final AbstractReportNode own = new SectionListReportNode(null, 5,
+		final AbstractReportNode own = new SectionListReportNode(5,
 				"Villages pledged to your service:");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Village) {

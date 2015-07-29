@@ -120,11 +120,11 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 		if (items.isEmpty()) {
 			return EmptyReportNode.NULL_NODE; // NOPMD
 		} else {
-			final AbstractReportNode retval = new SectionListReportNode(null, 4,
+			final AbstractReportNode retval = new SectionListReportNode(4,
 					"Animal sightings or encounters");
 			for (final Entry<String, List<Point>> entry : items.entrySet()) {
 				// FIXME: There should be a node for each sighting
-				retval.add(new SimpleReportNode(null, entry.getKey(), ": at ", // NOPMD
+				retval.add(new SimpleReportNode(entry.getKey(), ": at ", // NOPMD
 						pointCSL(entry.getValue())));
 			}
 			return retval; // NOPMD

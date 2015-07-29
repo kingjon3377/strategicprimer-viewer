@@ -28,16 +28,27 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	/**
 	 * Constructor.
 	 *
-	 * @param pt the point, if any, in the map that this node represents something on
+	 * @param pt the point in the map that this node represents something on
 	 * @param txt the (header) text.
 	 */
-	protected AbstractReportNode(@Nullable final Point pt, final String txt) {
+	protected AbstractReportNode(final Point pt, final String txt) {
 		super(txt);
 		text = txt;
 		setText(txt);
 		point = pt;
 	}
 
+	/**
+	 * Constructor.
+	 *
+	 * @param txt the (header) text.
+	 */
+	protected AbstractReportNode(final String txt) {
+		super(txt);
+		text = txt;
+		setText(txt);
+		point = null;
+	}
 	/**
 	 * @return the HTML representation of the node.
 	 */

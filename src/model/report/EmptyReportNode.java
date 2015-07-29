@@ -16,7 +16,7 @@ public final class EmptyReportNode extends AbstractReportNode {
 	 * Constructor.
 	 */
 	private EmptyReportNode() {
-		super(null, "");
+		super("");
 	}
 
 	/**

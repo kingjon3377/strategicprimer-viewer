@@ -2,8 +2,6 @@ package model.report;
 
 import javax.swing.tree.TreeNode;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.Point;
 import util.NullCleaner;
 
@@ -28,13 +26,19 @@ public class ListReportNode extends AbstractReportNode {
 	 */
 	private static final int PER_CHILD_BOILERPLATE = "<li></li>\n".length();
 	/**
-	 * @param point the point, if any, in the map that this represents something on
+	 * @param point the point in the map that this represents something on
 	 * @param text the header text
 	 */
-	public ListReportNode(@Nullable final Point point, final String text) {
+	public ListReportNode(final Point point, final String text) {
 		super(point, text);
 	}
 
+	/**
+	 * @param text the header text
+	 */
+	public ListReportNode(final String text) {
+		super(text);
+	}
 	/**
 	 * @return the HTML representation of the node.
 	 */

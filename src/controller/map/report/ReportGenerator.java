@@ -156,7 +156,7 @@ public final class ReportGenerator {
 	 * @return the report, in ReportIntermediateRepresentation
 	 */
 	public static AbstractReportNode createReportIR(final IMapNG map) {
-		final AbstractReportNode retval = new RootReportNode(null,
+		final AbstractReportNode retval = new RootReportNode(
 				"Strategic Primer map summary report");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
@@ -201,7 +201,7 @@ public final class ReportGenerator {
 	 */
 	public static AbstractReportNode createAbbreviatedReportIR(final IMapNG map,
 			final Player player) {
-		final AbstractReportNode retval = new RootReportNode(null,
+		final AbstractReportNode retval = new RootReportNode(
 				"Strategic Primer map summary abbreviated report");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);

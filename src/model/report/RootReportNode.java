@@ -2,9 +2,6 @@ package model.report;
 
 import javax.swing.tree.TreeNode;
 
-import org.eclipse.jdt.annotation.Nullable;
-
-import model.map.Point;
 import util.NullCleaner;
 
 /**
@@ -17,11 +14,10 @@ public class RootReportNode extends AbstractReportNode {
 	/**
 	 * Constructor.
 	 *
-	 * @param point the point, if any, in the map that this represents something on
 	 * @param title the title text
 	 */
-	public RootReportNode(@Nullable final Point point, final String title) {
-		super(point, title);
+	public RootReportNode(final String title) {
+		super(title);
 	}
 
 	/**

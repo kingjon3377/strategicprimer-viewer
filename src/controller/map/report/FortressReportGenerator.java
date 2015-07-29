@@ -102,10 +102,10 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		final AbstractReportNode retval = new ComplexReportNode(null, "");
-		final AbstractReportNode ours = new SectionReportNode(null, 4,
+		final AbstractReportNode retval = new ComplexReportNode("");
+		final AbstractReportNode ours = new SectionReportNode(4,
 				"Your fortresses in the map:");
-		final AbstractReportNode foreign = new SectionReportNode(null, 4,
+		final AbstractReportNode foreign = new SectionReportNode(4,
 				"Foreign fortresses in the map:");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Fortress) {
@@ -203,13 +203,14 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		return NullCleaner.assertNotNull(builder.toString());
 	}
 	/**
+	 * @param loc where this is
 	 * @param parent the node to add nodes describing rivers to
 	 * @param rivers the collection of rivers
 	 */
-	private static void riversToNode(final AbstractReportNode parent,
+	private static void riversToNode(final Point loc, final AbstractReportNode parent,
 			final Set<River> rivers) {
 		if (rivers.contains(River.Lake)) {
-			parent.add(new SimpleReportNode(parent.getPoint(), "There is a nearby lake."));
+			parent.add(new SimpleReportNode(loc, "There is a nearby lake."));
 			rivers.remove(River.Lake);
 		}
 		if (!rivers.isEmpty()) {
@@ -225,7 +226,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 				}
 				builder.append(river.getDescription());
 			}
-			parent.add(new SimpleReportNode(parent.getPoint(), builder.toString()));
+			parent.add(new SimpleReportNode(loc, builder.toString()));
 		}
 	}
 
@@ -303,7 +304,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			for (final River river : map.getRivers(loc)) {
 				copy.add(river);
 			}
-			riversToNode(retval, copy);
+			riversToNode(loc, retval, copy);
 		}
 		if (item.iterator().hasNext()) {
 			final AbstractReportNode units = new ListReportNode(loc,

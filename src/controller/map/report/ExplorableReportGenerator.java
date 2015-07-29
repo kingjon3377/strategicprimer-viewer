@@ -128,12 +128,12 @@ public class ExplorableReportGenerator extends
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		final AbstractReportNode retval = new SectionListReportNode(null, 4,
+		final AbstractReportNode retval = new SectionListReportNode(4,
 				"Caves and Battlefields");
 		boolean anyCaves = false;
 		boolean anyBattles = false;
 		boolean anyPortals = false;
-		final AbstractReportNode adventures = new SectionListReportNode(null, 4, "Possible Adventures");
+		final AbstractReportNode adventures = new SectionListReportNode(4, "Possible Adventures");
 		// We doubt either of these will be over half a K, but we'll give each a
 		// whole K just in case.
 		final StringBuilder caveBuilder = new StringBuilder(1024)
@@ -161,20 +161,20 @@ public class ExplorableReportGenerator extends
 			}
 		}
 		if (anyCaves) {
-			retval.add(new SimpleReportNode(null, caveBuilder.toString().replace(
+			retval.add(new SimpleReportNode(caveBuilder.toString().replace(
 					COLON_COMMA, ": ")));
 		}
 		if (anyBattles) {
-			retval.add(new SimpleReportNode(null, battleBuilder.toString().replace(
+			retval.add(new SimpleReportNode(battleBuilder.toString().replace(
 					COLON_COMMA, ": ")));
 		}
 		if (anyPortals) {
-			retval.add(new SimpleReportNode(null,
+			retval.add(new SimpleReportNode(
 					portalBuilder.toString().replace(COLON_COMMA, ": ")));
 		}
 		if (anyCaves || anyBattles || anyPortals) {
 			if (adventures.getChildCount() > 0) {
-				final AbstractReportNode real = new ComplexReportNode(null, "");
+				final AbstractReportNode real = new ComplexReportNode("");
 				real.add(retval);
 				real.add(adventures);
 				return real;

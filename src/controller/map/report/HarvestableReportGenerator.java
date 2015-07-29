@@ -145,20 +145,20 @@ public class HarvestableReportGenerator extends // NOPMD
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player player) {
 		//  TODO: Use Guava Multimaps to reduce cyclomatic complexity
-		final AbstractReportNode retval = new SectionReportNode(null, 4,
+		final AbstractReportNode retval = new SectionReportNode(4,
 				"Resource Sources");
-		final AbstractReportNode caches = new SortedSectionListReportNode(null, 5,
+		final AbstractReportNode caches = new SortedSectionListReportNode(5,
 				"Caches collected by your explorers and workers:");
-		final AbstractReportNode groves = new SortedSectionListReportNode(null, 5,
+		final AbstractReportNode groves = new SortedSectionListReportNode(5,
 				"Groves and orchards");
-		final AbstractReportNode meadows = new SortedSectionListReportNode(null, 5,
+		final AbstractReportNode meadows = new SortedSectionListReportNode(5,
 				"Meadows and fields");
-		final AbstractReportNode mines = new SortedSectionListReportNode(null, 5,
+		final AbstractReportNode mines = new SortedSectionListReportNode(5,
 				"Mines");
-		final AbstractReportNode minerals = new SortedSectionListReportNode(null, 5,
+		final AbstractReportNode minerals = new SortedSectionListReportNode(5,
 				"Mineral deposits");
 		final Map<String, List<Point>> shrubs = new HashMap<>();
-		final AbstractReportNode stone = new SortedSectionListReportNode(null, 5,
+		final AbstractReportNode stone = new SortedSectionListReportNode(5,
 				"Exposed stone deposits");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof HarvestableFixture) {
@@ -194,10 +194,11 @@ public class HarvestableReportGenerator extends // NOPMD
 				}
 			}
 		}
-		final AbstractReportNode shrubsNode = new SortedSectionListReportNode(null,
+		final AbstractReportNode shrubsNode = new SortedSectionListReportNode(
 				5, "Shrubs, small trees, and such");
 		for (final Entry<String, List<Point>> entry : shrubs.entrySet()) {
-			shrubsNode.add(new SimpleReportNode(null, entry.getKey(), ": at ", // NOPMD
+			// FIXME: This should have one node per point
+			shrubsNode.add(new SimpleReportNode(entry.getKey(), ": at ", // NOPMD
 					pointCSL(entry.getValue())));
 		}
 		if (maybeAdd(retval, caches, groves, meadows, mines, minerals, stone,

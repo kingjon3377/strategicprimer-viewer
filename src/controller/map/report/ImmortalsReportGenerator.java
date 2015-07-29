@@ -156,7 +156,7 @@ public class ImmortalsReportGenerator extends
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		final AbstractReportNode retval = new SectionListReportNode(null, 4,
+		final AbstractReportNode retval = new SectionListReportNode(4,
 				"Immortals");
 		final Map<String, List<Point>> dragons = new HashMap<>();
 		final Map<String, List<Point>> fairies = new HashMap<>();
@@ -316,7 +316,8 @@ public class ImmortalsReportGenerator extends
 	private static void optionallyAddRIR(final Map<String, List<Point>> mapping,
 			final String infix, final AbstractReportNode parent) {
 		for (final Entry<String, List<Point>> entry : mapping.entrySet()) {
-			parent.add(new SimpleReportNode(null, entry.getKey(), infix, //NOPMD
+			// FIXME: This should be one node per point
+			parent.add(new SimpleReportNode(entry.getKey(), infix, //NOPMD
 					pointCSL(entry.getValue())));
 		}
 	}
@@ -350,7 +351,8 @@ public class ImmortalsReportGenerator extends
 	private static void optionallyAdd(final List<Point> points,
 			final String prefix, final AbstractReportNode parent) {
 		if (!points.isEmpty()) {
-			parent.add(new SimpleReportNode(null, prefix, pointCSL(points)));
+			// FIXME: This should be one node per point.
+			parent.add(new SimpleReportNode(prefix, pointCSL(points)));
 		}
 	}
 

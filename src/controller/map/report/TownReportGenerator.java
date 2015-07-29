@@ -94,7 +94,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		final AbstractReportNode retval = new SectionListReportNode(null, 4,
+		final AbstractReportNode retval = new SectionListReportNode(4,
 				"Cities, towns, and/or fortifications you know about:");
 		final Map<AbstractTown, Point> townLocs = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {

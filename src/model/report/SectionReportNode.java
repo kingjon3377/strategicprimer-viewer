@@ -2,8 +2,6 @@ package model.report;
 
 import javax.swing.tree.TreeNode;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.Point;
 import util.NullCleaner;
 
@@ -26,11 +24,21 @@ public class SectionReportNode extends AbstractReportNode {
 	 * @param lvl the header level
 	 * @param header the header text
 	 */
-	public SectionReportNode(@Nullable final Point point, final int lvl, final String header) {
+	public SectionReportNode(final Point point, final int lvl, final String header) {
 		super(point, header);
 		setLevel(lvl);
 	}
 
+	/**
+	 * Constructor.
+	 *
+	 * @param lvl the header level
+	 * @param header the header text
+	 */
+	public SectionReportNode(final int lvl, final String header) {
+		super(header);
+		setLevel(lvl);
+	}
 	/**
 	 * @return the HTML representation of the node
 	 */
