@@ -3,6 +3,8 @@ package controller.map.report;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.map.misc.IDFactory;
+import controller.map.misc.IDFactoryFiller;
 import model.map.FixtureIterable;
 import model.map.HasOwner;
 import model.map.IFixture;
@@ -20,8 +22,6 @@ import util.DelayedRemovalMap;
 import util.IntMap;
 import util.NullCleaner;
 import util.Pair;
-import controller.map.misc.IDFactory;
-import controller.map.misc.IDFactoryFiller;
 
 /**
  * A class to produce a report based on a map for a player.
@@ -156,7 +156,7 @@ public final class ReportGenerator {
 	 * @return the report, in ReportIntermediateRepresentation
 	 */
 	public static AbstractReportNode createReportIR(final IMapNG map) {
-		final AbstractReportNode retval = new RootReportNode(
+		final AbstractReportNode retval = new RootReportNode(null,
 				"Strategic Primer map summary report");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
@@ -201,7 +201,7 @@ public final class ReportGenerator {
 	 */
 	public static AbstractReportNode createAbbreviatedReportIR(final IMapNG map,
 			final Player player) {
-		final AbstractReportNode retval = new RootReportNode(
+		final AbstractReportNode retval = new RootReportNode(null,
 				"Strategic Primer map summary abbreviated report");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);

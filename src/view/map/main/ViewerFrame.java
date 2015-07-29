@@ -7,10 +7,10 @@ import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
 
+import controller.map.misc.IOHandler;
 import model.viewer.IViewerModel;
 import view.map.details.DetailPanelNG;
 import view.util.SplitWithWeights;
-import controller.map.misc.IOHandler;
 
 /**
  * The main driver class for the map viewer app.
@@ -31,7 +31,10 @@ public final class ViewerFrame extends JFrame {
 	 * The default proportion between map and detail panels.
 	 */
 	private static final double MAP_PROPORTION = 0.9;
-
+	/**
+	 * The driver model.
+	 */
+	private final IViewerModel model;
 	/**
 	 * Initialize size to the specified dimensions. Not that this actually works
 	 * ...
@@ -59,6 +62,7 @@ public final class ViewerFrame extends JFrame {
 			getRootPane().putClientProperty("Window.documentFile",
 					map.getMapFile());
 		}
+		model = map;
 		final FixtureFilterMenu ffmenu = new FixtureFilterMenu();
 		final MapComponent mapPanel = new MapComponent(map, ffmenu);
 		map.addGraphicalParamsListener(mapPanel);
@@ -81,5 +85,11 @@ public final class ViewerFrame extends JFrame {
 		setJMenuBar(new ViewerMenu(ioHandler, this, map));
 		getJMenuBar().add(ffmenu);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+	}
+	/**
+	 * @return the map model
+	 */
+	public IViewerModel getModel() {
+		return model;
 	}
 }

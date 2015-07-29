@@ -102,10 +102,10 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		final AbstractReportNode retval = new ComplexReportNode("");
-		final AbstractReportNode ours = new SectionReportNode(4,
+		final AbstractReportNode retval = new ComplexReportNode(null, "");
+		final AbstractReportNode ours = new SectionReportNode(null, 4,
 				"Your fortresses in the map:");
-		final AbstractReportNode foreign = new SectionReportNode(4,
+		final AbstractReportNode foreign = new SectionReportNode(null, 4,
 				"Foreign fortresses in the map:");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Fortress) {
@@ -209,7 +209,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	private static void riversToNode(final AbstractReportNode parent,
 			final Set<River> rivers) {
 		if (rivers.contains(River.Lake)) {
-			parent.add(new SimpleReportNode("There is a nearby lake."));
+			parent.add(new SimpleReportNode(parent.getPoint(), "There is a nearby lake."));
 			rivers.remove(River.Lake);
 		}
 		if (!rivers.isEmpty()) {
@@ -225,7 +225,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 				}
 				builder.append(river.getDescription());
 			}
-			parent.add(new SimpleReportNode(builder.toString()));
+			parent.add(new SimpleReportNode(parent.getPoint(), builder.toString()));
 		}
 	}
 
@@ -292,11 +292,11 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer,
 			final Fortress item, final Point loc) {
-		final SectionListReportNode retval = new SectionListReportNode(5, concat(
+		final SectionListReportNode retval = new SectionListReportNode(loc, 5, concat(
 				"Fortress ", item.getName(), " belonging to ",
 				playerNameOrYou(item.getOwner())));
-		retval.add(new SimpleReportNode("Located at ", loc.toString()));
-		retval.add(new SimpleReportNode(getTerrain(map, loc, fixtures)));
+		retval.add(new SimpleReportNode(loc, "Located at ", loc.toString()));
+		retval.add(new SimpleReportNode(loc, getTerrain(map, loc, fixtures)));
 		if (map.getRivers(loc).iterator().hasNext()) {
 			final Set<River> copy = NullCleaner.assertNotNull(EnumSet
 					.noneOf(River.class));
@@ -306,7 +306,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			riversToNode(retval, copy);
 		}
 		if (item.iterator().hasNext()) {
-			final AbstractReportNode units = new ListReportNode(
+			final AbstractReportNode units = new ListReportNode(loc,
 					"Units on the tile:");
 			for (final IUnit unit : item) {
 				if (unit instanceof Unit) {

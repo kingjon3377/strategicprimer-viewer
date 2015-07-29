@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import controller.map.misc.TownComparator;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -21,7 +22,6 @@ import model.report.SimpleReportNode;
 import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
-import controller.map.misc.TownComparator;
 
 /**
  * A report generator for towns.
@@ -94,7 +94,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		final AbstractReportNode retval = new SectionListReportNode(4,
+		final AbstractReportNode retval = new SectionListReportNode(null, 4,
 				"Cities, towns, and/or fortifications you know about:");
 		final Map<AbstractTown, Point> townLocs = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
@@ -184,12 +184,12 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			if (item.getOwner().isIndependent()) {
-				return new SimpleReportNode(atPoint(loc), item.getName(), // NOPMD
+				return new SimpleReportNode(loc, atPoint(loc), item.getName(), // NOPMD
 						", an independent ", item.size().toString(), " ", item
 								.status().toString(), " ",
 						((AbstractTown) item).kind());
 			} else {
-				return new SimpleReportNode(atPoint(loc), item.getName(),
+				return new SimpleReportNode(loc, atPoint(loc), item.getName(),
 						", a ", item.size().toString(), " ", item.status()
 								.toString(), " ", ((AbstractTown) item).kind(),
 						" allied with " + playerNameOrYou(item.getOwner()));

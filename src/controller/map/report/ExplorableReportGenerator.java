@@ -117,6 +117,7 @@ public class ExplorableReportGenerator extends
 	/**
 	 * Produce the sub-report on non-town things that can be explored. All
 	 * fixtures referred to in this report are removed from the collection.
+	 * FIXME: There should be a node for each instance
 	 *
 	 * @param fixtures the set of fixtures
 	 * @param map ignored
@@ -127,12 +128,12 @@ public class ExplorableReportGenerator extends
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		final AbstractReportNode retval = new SectionListReportNode(4,
+		final AbstractReportNode retval = new SectionListReportNode(null, 4,
 				"Caves and Battlefields");
 		boolean anyCaves = false;
 		boolean anyBattles = false;
 		boolean anyPortals = false;
-		final AbstractReportNode adventures = new SectionListReportNode(4, "Possible Adventures");
+		final AbstractReportNode adventures = new SectionListReportNode(null, 4, "Possible Adventures");
 		// We doubt either of these will be over half a K, but we'll give each a
 		// whole K just in case.
 		final StringBuilder caveBuilder = new StringBuilder(1024)
@@ -160,20 +161,20 @@ public class ExplorableReportGenerator extends
 			}
 		}
 		if (anyCaves) {
-			retval.add(new SimpleReportNode(caveBuilder.toString().replace(
+			retval.add(new SimpleReportNode(null, caveBuilder.toString().replace(
 					COLON_COMMA, ": ")));
 		}
 		if (anyBattles) {
-			retval.add(new SimpleReportNode(battleBuilder.toString().replace(
+			retval.add(new SimpleReportNode(null, battleBuilder.toString().replace(
 					COLON_COMMA, ": ")));
 		}
 		if (anyPortals) {
-			retval.add(new SimpleReportNode(
+			retval.add(new SimpleReportNode(null,
 					portalBuilder.toString().replace(COLON_COMMA, ": ")));
 		}
 		if (anyCaves || anyBattles || anyPortals) {
 			if (adventures.getChildCount() > 0) {
-				final AbstractReportNode real = new ComplexReportNode("");
+				final AbstractReportNode real = new ComplexReportNode(null, "");
 				real.add(retval);
 				real.add(adventures);
 				return real;
@@ -249,32 +250,32 @@ public class ExplorableReportGenerator extends
 			final ExplorableFixture item, final Point loc) {
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode("Caves beneath ", loc.toString()); // NOPMD
+			return new SimpleReportNode(loc, "Caves beneath ", loc.toString()); // NOPMD
 		} else if (item instanceof Battlefield) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode("Signs of a long-ago battle on ", // NOPMD
+			return new SimpleReportNode(loc, "Signs of a long-ago battle on ", // NOPMD
 					loc.toString());
 		} else if (item instanceof AdventureFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			if (((AdventureFixture) item).getOwner().isIndependent()) {
-				return new SimpleReportNode(
+				return new SimpleReportNode(loc,
 						((AdventureFixture) item).getBriefDescription(), " at ",
 						loc.toString(),
 						((AdventureFixture) item).getFullDescription());
 			} else if (currentPlayer.equals(((AdventureFixture) item).getOwner())) {
-				return new SimpleReportNode(
+				return new SimpleReportNode(loc,
 						((AdventureFixture) item).getBriefDescription(), " at ",
 						loc.toString(),
 						((AdventureFixture) item).getFullDescription(), " (already investigated by you)");
 			} else {
-				return new SimpleReportNode(
+				return new SimpleReportNode(loc,
 						((AdventureFixture) item).getBriefDescription(), " at ",
 						loc.toString(),
 						((AdventureFixture) item).getFullDescription(), " (already investigated by another player)");
 			}
 		} else if (item instanceof Portal) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode("A portal to another world at ", loc.toString());
+			return new SimpleReportNode(loc, "A portal to another world at ", loc.toString());
 		} else {
 			throw new IllegalArgumentException("Unexpected ExplorableFixture type");
 		}

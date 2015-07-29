@@ -6,6 +6,8 @@ import javax.swing.tree.MutableTreeNode;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import model.map.Point;
+
 /**
  * A node that sorts itself after every addition.
  *
@@ -16,11 +18,12 @@ public class SortedSectionListReportNode extends SectionListReportNode {
 	/**
 	 * Constructor.
 	 *
+	 * @param point the point, if any, in the map that this represents something on
 	 * @param level the header level
 	 * @param text the header text
 	 */
-	public SortedSectionListReportNode(final int level, final String text) {
-		super(level, text);
+	public SortedSectionListReportNode(@Nullable final Point point, final int level, final String text) {
+		super(point, level, text);
 	}
 
 	/**

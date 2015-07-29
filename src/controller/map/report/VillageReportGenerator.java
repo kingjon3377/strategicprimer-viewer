@@ -68,10 +68,10 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		final AbstractReportNode retval = new SectionReportNode(4, "Villages:");
-		final AbstractReportNode others = new SectionListReportNode(5,
+		final AbstractReportNode retval = new SectionReportNode(null, 4, "Villages:");
+		final AbstractReportNode others = new SectionListReportNode(null, 5,
 				"Villages you know about:");
-		final AbstractReportNode own = new SectionListReportNode(5,
+		final AbstractReportNode own = new SectionListReportNode(null, 5,
 				"Villages pledged to your service:");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Village) {
@@ -145,10 +145,10 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 			final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		if (item.getOwner().isIndependent()) {
-			return new SimpleReportNode(atPoint(loc), item.getName(), // NOPMD
+			return new SimpleReportNode(loc, atPoint(loc), item.getName(), // NOPMD
 					", a(n) ", item.getRace(), " village", ", independent");
 		} else {
-			return new SimpleReportNode(atPoint(loc), item.getName(),
+			return new SimpleReportNode(loc, atPoint(loc), item.getName(),
 					", a(n) ", item.getRace(), " village", ", sworn to "
 							+ playerNameOrYou(item.getOwner()));
 		}

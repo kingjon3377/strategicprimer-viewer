@@ -42,6 +42,9 @@ import view.worker.PlayerChooserHandler;
 public class SPMenu extends JMenuBar {
 	/**
 	 * Create the file menu.
+	 *
+	 * FIXME: Any menu items not handled by the IOHandler should be handled there.
+	 *
 	 * @param handler the class to handle I/O related menu items
 	 * @param parent the menu-bar's parent window, which should be the window closed when the user selects "close"
 	 * @param model the current driver model; only its type is used, to determine which menu items to disable.

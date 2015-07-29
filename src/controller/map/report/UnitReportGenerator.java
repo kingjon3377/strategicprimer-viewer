@@ -1,6 +1,7 @@
 package controller.map.report;
 
 import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
+
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -116,7 +117,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		}
 		fixtures.remove(Integer.valueOf(unit.getID()));
 		if (unit.iterator().hasNext()) {
-			final AbstractReportNode retval = new ListReportNode(
+			final AbstractReportNode retval = new ListReportNode(loc,
 					concat(simple, ". Members of the unit:"));
 			for (final UnitMember member : unit) {
 				if (member instanceof Worker) {
@@ -124,13 +125,13 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 							currentPlayer.equals(unit.getOwner())));
 				} else {
 					// TODO: what about others?
-					retval.add(new SimpleReportNode(member.toString())); // NOPMD
+					retval.add(new SimpleReportNode(loc, member.toString())); // NOPMD
 				}
 				fixtures.remove(Integer.valueOf(member.getID()));
 			}
 			return retval; // NOPMD
 		} else {
-			return new SimpleReportNode(simple);
+			return new SimpleReportNode(loc, simple);
 		}
 	}
 
@@ -208,6 +209,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	}
 
 	/**
+	 * FIXME: This should take a 'loc' parameter to pass to the nodes
+	 *
 	 * @param worker a Worker.
 	 * @param details whether we should give details of the worker's stats and
 	 *        experience---true only if the current player owns the worker.
@@ -215,11 +218,11 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 */
 	private static AbstractReportNode produceWorkerRIR(final Worker worker,
 			final boolean details) {
-		final AbstractReportNode retval = new ComplexReportNode(
+		final AbstractReportNode retval = new ComplexReportNode(null,
 				worker.getName() + ", a " + worker.getRace() + ". ");
 		final WorkerStats stats = worker.getStats();
 		if (stats != null && details) {
-			retval.add(new SimpleReportNode(
+			retval.add(new SimpleReportNode(null,
 					"He or she has the following stats: ", Integer
 							.toString(stats.getHitPoints()), " / ", Integer
 							.toString(stats.getMaxHitPoints()),
@@ -233,7 +236,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 					getModifierString(stats.getCharisma())));
 		}
 		if (worker.iterator().hasNext() && details) {
-			final AbstractReportNode jobs = new ListReportNode(HAS_TRAINING);
+			final AbstractReportNode jobs = new ListReportNode(null, HAS_TRAINING);
 			for (final IJob job : worker) {
 				if (job instanceof Job) {
 					jobs.add(produceJobRIR((Job) job));
@@ -244,11 +247,13 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		return retval;
 	}
 	/**
+	 * FIXME: Should take a 'loc' parameter to pass to the node.
+	 *
 	 * @param job a Job
 	 * @return a sub-report on that Job.
 	 */
 	private static AbstractReportNode produceJobRIR(final Job job) {
-		return new SimpleReportNode(Integer.toString(job.getLevel()),
+		return new SimpleReportNode(null, Integer.toString(job.getLevel()),
 				" levels in ", job.getName(), getSkills(job));
 	}
 
@@ -324,13 +329,13 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
 		final AbstractReportNode retval =
-				new SectionReportNode(4, "Units in the map");
-		retval.add(new SimpleReportNode(
+				new SectionReportNode(null, 4, "Units in the map");
+		retval.add(new SimpleReportNode(null,
 				"(Any units reported above are not described again.)"));
 		final AbstractReportNode ours =
-				new SectionListReportNode(5, "Your units");
+				new SectionListReportNode(null, 5, "Your units");
 		final AbstractReportNode theirs =
-				new SectionListReportNode(5, "Foreign units");
+				new SectionListReportNode(null, 5, "Foreign units");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Unit) {
 				final Unit unit = (Unit) pair.second();

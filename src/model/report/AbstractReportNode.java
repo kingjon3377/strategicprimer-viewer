@@ -5,6 +5,8 @@ import javax.swing.tree.MutableTreeNode;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import model.map.Point;
+
 /**
  * A superclass for report-nodes.
  *
@@ -14,6 +16,11 @@ import org.eclipse.jdt.annotation.Nullable;
 public abstract class AbstractReportNode extends DefaultMutableTreeNode
 		implements IReportNode {
 	/**
+	 * The point, if any, in the map that this node represents something on.
+	 */
+	@Nullable
+	private Point point;
+	/**
 	 * The (usually header) text. May be empty, but not null.
 	 */
 	private String text;
@@ -21,12 +28,14 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	/**
 	 * Constructor.
 	 *
+	 * @param pt the point, if any, in the map that this node represents something on
 	 * @param txt the (header) text.
 	 */
-	protected AbstractReportNode(final String txt) {
+	protected AbstractReportNode(@Nullable final Point pt, final String txt) {
 		super(txt);
 		text = txt;
 		setText(txt);
+		point = pt;
 	}
 
 	/**
@@ -125,5 +134,20 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 		if (node != null && !(node instanceof EmptyReportNode)) {
 			super.add(node);
 		}
+	}
+
+	/**
+	 * @return the point, if any, in the map that this represents something on
+	 */
+	@Nullable
+	public final Point getPoint() {
+		return point;
+	}
+
+	/**
+	 * @param pt the point, if any, in the map that this represents something on
+	 */
+	public final void setPoint(final Point pt) {
+		point = pt;
 	}
 }

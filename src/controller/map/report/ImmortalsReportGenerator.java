@@ -156,7 +156,7 @@ public class ImmortalsReportGenerator extends
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		final AbstractReportNode retval = new SectionListReportNode(4,
+		final AbstractReportNode retval = new SectionListReportNode(null, 4,
 				"Immortals");
 		final Map<String, List<Point>> dragons = new HashMap<>();
 		final Map<String, List<Point>> fairies = new HashMap<>();
@@ -281,7 +281,7 @@ public class ImmortalsReportGenerator extends
 				|| item instanceof Centaur || item instanceof Phoenix
 				|| item instanceof Simurgh || item instanceof Griffin) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc), "A(n) ", item.toString());
+			return new SimpleReportNode(loc, atPoint(loc), "A(n) ", item.toString());
 		} else {
 			return EmptyReportNode.NULL_NODE;
 		}
@@ -307,7 +307,7 @@ public class ImmortalsReportGenerator extends
 	/**
 	 * Add to the parent node nothing if the map is empty, or for each entry in
 	 * the entry set a simple node containing the key plus the infix plus a
-	 * comma-separated list of the points.
+	 * comma-separated list of the points. FIXME: Callers should probably make node for each point.
 	 *
 	 * @param parent the parent node
 	 * @param mapping the mapping from kinds (or whatever) to lists of points
@@ -316,7 +316,7 @@ public class ImmortalsReportGenerator extends
 	private static void optionallyAddRIR(final Map<String, List<Point>> mapping,
 			final String infix, final AbstractReportNode parent) {
 		for (final Entry<String, List<Point>> entry : mapping.entrySet()) {
-			parent.add(new SimpleReportNode(entry.getKey(), infix, //NOPMD
+			parent.add(new SimpleReportNode(null, entry.getKey(), infix, //NOPMD
 					pointCSL(entry.getValue())));
 		}
 	}
@@ -341,7 +341,7 @@ public class ImmortalsReportGenerator extends
 	/**
 	 * Add to the parent node nothing if the list is empty, or a simple node of
 	 * the prefix followed by a comma-separated list of all the points if it is
-	 * not.
+	 * not. FIXME: Callers should probably make node for each point.
 	 *
 	 * @param parent the parent to add the item to.
 	 * @param points a list of points
@@ -350,7 +350,7 @@ public class ImmortalsReportGenerator extends
 	private static void optionallyAdd(final List<Point> points,
 			final String prefix, final AbstractReportNode parent) {
 		if (!points.isEmpty()) {
-			parent.add(new SimpleReportNode(prefix, pointCSL(points)));
+			parent.add(new SimpleReportNode(null, prefix, pointCSL(points)));
 		}
 	}
 

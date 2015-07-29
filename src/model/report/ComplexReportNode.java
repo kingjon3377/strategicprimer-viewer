@@ -2,6 +2,9 @@ package model.report;
 
 import javax.swing.tree.TreeNode;
 
+import org.eclipse.jdt.annotation.Nullable;
+
+import model.map.Point;
 import util.NullCleaner;
 
 /**
@@ -16,9 +19,10 @@ import util.NullCleaner;
 public class ComplexReportNode extends AbstractReportNode {
 	/**
 	 * @param text the main text of the node
+	 * @param point the point, if any, in the map that this represents something on
 	 */
-	public ComplexReportNode(final String text) {
-		super(text);
+	public ComplexReportNode(@Nullable final Point point, final String text) {
+		super(point, text);
 	}
 
 	/**

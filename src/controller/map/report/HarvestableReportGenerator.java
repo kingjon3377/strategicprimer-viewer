@@ -131,9 +131,9 @@ public class HarvestableReportGenerator extends // NOPMD
 	}
 	/**
 	 * Produce the sub-reports dealing with "harvestable" fixtures. All fixtures
-	 * referred to in this report are to be removed from the collection. Caves
-	 * and battlefields, though HarvestableFixtures, are presumed to have been
-	 * handled already.
+	 * referred to in this report are to be removed from the collection.
+	 *
+	 * FIXME: Where there's a list of points in one node, each point should have its own node.
 	 *
 	 * @param fixtures the set of fixtures
 	 * @param map ignored
@@ -145,20 +145,20 @@ public class HarvestableReportGenerator extends // NOPMD
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player player) {
 		//  TODO: Use Guava Multimaps to reduce cyclomatic complexity
-		final AbstractReportNode retval = new SectionReportNode(4,
+		final AbstractReportNode retval = new SectionReportNode(null, 4,
 				"Resource Sources");
-		final AbstractReportNode caches = new SortedSectionListReportNode(5,
+		final AbstractReportNode caches = new SortedSectionListReportNode(null, 5,
 				"Caches collected by your explorers and workers:");
-		final AbstractReportNode groves = new SortedSectionListReportNode(5,
+		final AbstractReportNode groves = new SortedSectionListReportNode(null, 5,
 				"Groves and orchards");
-		final AbstractReportNode meadows = new SortedSectionListReportNode(5,
+		final AbstractReportNode meadows = new SortedSectionListReportNode(null, 5,
 				"Meadows and fields");
-		final AbstractReportNode mines = new SortedSectionListReportNode(5,
+		final AbstractReportNode mines = new SortedSectionListReportNode(null, 5,
 				"Mines");
-		final AbstractReportNode minerals = new SortedSectionListReportNode(5,
+		final AbstractReportNode minerals = new SortedSectionListReportNode(null, 5,
 				"Mineral deposits");
 		final Map<String, List<Point>> shrubs = new HashMap<>();
-		final AbstractReportNode stone = new SortedSectionListReportNode(5,
+		final AbstractReportNode stone = new SortedSectionListReportNode(null, 5,
 				"Exposed stone deposits");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof HarvestableFixture) {
@@ -194,10 +194,10 @@ public class HarvestableReportGenerator extends // NOPMD
 				}
 			}
 		}
-		final AbstractReportNode shrubsNode = new SortedSectionListReportNode(
+		final AbstractReportNode shrubsNode = new SortedSectionListReportNode(null,
 				5, "Shrubs, small trees, and such");
 		for (final Entry<String, List<Point>> entry : shrubs.entrySet()) {
-			shrubsNode.add(new SimpleReportNode(entry.getKey(), ": at ", // NOPMD
+			shrubsNode.add(new SimpleReportNode(null, entry.getKey(), ": at ", // NOPMD
 					pointCSL(entry.getValue())));
 		}
 		if (maybeAdd(retval, caches, groves, meadows, mines, minerals, stone,
@@ -302,38 +302,38 @@ public class HarvestableReportGenerator extends // NOPMD
 			final HarvestableFixture item, final Point loc) {
 		if (item instanceof CacheFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc), "A cache of ", // NOPMD
+			return new SimpleReportNode(loc, atPoint(loc), "A cache of ", // NOPMD
 					((CacheFixture) item).getKind(), ", containing ",
 					((CacheFixture) item).getContents());
 		} else if (item instanceof Grove) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc), "A ", ternary(//NOPMD
+			return new SimpleReportNode(loc, atPoint(loc), "A ", ternary(//NOPMD
 					((Grove) item).isCultivated(), "cultivated ", "wild "),
 					((Grove) item).getKind(), ternary(
 							((Grove) item).isOrchard(), " orchard", " grove"));
 		} else if (item instanceof Meadow) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc), "A ", ((Meadow) item)//NOPMD
+			return new SimpleReportNode(loc, atPoint(loc), "A ", ((Meadow) item)//NOPMD
 					.getStatus().toString(), ternary(
 					((Meadow) item).isCultivated(), " cultivated ",
 					" wild or abandoned "), ((Meadow) item).getKind(), ternary(
 					((Meadow) item).isField(), " field", " meadow"));
 		} else if (item instanceof Mine) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc), item.toString()); //NOPMD
+			return new SimpleReportNode(loc, atPoint(loc), item.toString()); //NOPMD
 		} else if (item instanceof MineralVein) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc), "An ", // NOPMD
+			return new SimpleReportNode(loc, atPoint(loc), "An ", // NOPMD
 					ternary(((MineralVein) item).isExposed(), "exposed ",
 							"unexposed "), "vein of ",
 					((MineralVein) item).getKind());
 		} else if (item instanceof Shrub) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			final String kind = ((Shrub) item).getKind();
-			return new SimpleReportNode(atPoint(loc), kind); // NOPMD
+			return new SimpleReportNode(loc, atPoint(loc), kind); // NOPMD
 		} else if (item instanceof StoneDeposit) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(atPoint(loc), "An exposed ", // NOPMD
+			return new SimpleReportNode(loc, atPoint(loc), "An exposed ", // NOPMD
 					((StoneDeposit) item).getKind(), " deposit");
 		} else {
 			throw new IllegalArgumentException("Unexpected HarvestableFixture type");

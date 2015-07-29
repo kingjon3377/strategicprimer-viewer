@@ -2,6 +2,9 @@ package model.report;
 
 import javax.swing.tree.TreeNode;
 
+import org.eclipse.jdt.annotation.Nullable;
+
+import model.map.Point;
 import util.NullCleaner;
 
 /**
@@ -14,7 +17,7 @@ public class ListReportNode extends AbstractReportNode {
 	 * The length of the boilerplate even if we have no text and no children.
 	 */
 	private static final int BOILERPLATE_LEN = "\n<ul>\n</ul>\n".length();
-	
+
 	/**
 	 * The estimated size of a child: half a kilobyte, which is absurdly high,
 	 * but we *really* don't want to resize the buffer!
@@ -25,12 +28,13 @@ public class ListReportNode extends AbstractReportNode {
 	 */
 	private static final int PER_CHILD_BOILERPLATE = "<li></li>\n".length();
 	/**
+	 * @param point the point, if any, in the map that this represents something on
 	 * @param text the header text
 	 */
-	public ListReportNode(final String text) {
-		super(text);
+	public ListReportNode(@Nullable final Point point, final String text) {
+		super(point, text);
 	}
-	
+
 	/**
 	 * @return the HTML representation of the node.
 	 */

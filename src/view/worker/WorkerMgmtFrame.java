@@ -2,8 +2,11 @@ package view.worker;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,12 +23,15 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import org.eclipse.jdt.annotation.Nullable;
+
+import com.bric.window.WindowList;
 
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
@@ -34,20 +40,27 @@ import model.listeners.MapChangeListener;
 import model.listeners.PlayerChangeListener;
 import model.map.HasName;
 import model.map.Player;
+import model.map.Point;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
+import model.misc.IDriverModel;
+import model.report.AbstractReportNode;
+import model.viewer.IViewerModel;
+import model.viewer.ViewerModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
 import model.workermgmt.WorkerTreeModelAlt;
 import util.NullCleaner;
 import util.TypesafeLogger;
+import view.map.main.ViewerFrame;
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
+import view.util.SystemOut;
 
 /**
  * A window to let the player manage units.
@@ -117,6 +130,37 @@ public class WorkerMgmtFrame extends JFrame {
 				.getRoot()).getPath()));
 		final ReportUpdater reportUpdater = new ReportUpdater(model,
 				reportModel);
+		report.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(@Nullable final MouseEvent evt) {
+				if (evt == null) {
+					SystemOut.SYS_OUT.println("MouseEvent was null");
+					return;
+				}
+				TreePath selPath = report.getPathForLocation(evt.getX(), evt.getY());
+				if (selPath == null) {
+					SystemOut.SYS_OUT.println("Selected path was null");
+					return;
+				}
+				Object node = selPath.getLastPathComponent();
+				if (evt.isControlDown() && node instanceof AbstractReportNode) {
+					final Point point = ((AbstractReportNode) node).getPoint();
+					if (point != null) {
+						final IViewerModel vModel = getViewerModelFor(model, ioHandler);
+						if (vModel == null) {
+							SystemOut.SYS_OUT.println("Failed to open a window");
+						} else {
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {
+									vModel.setSelection(point);
+								}
+							});
+						}
+					}
+				}
+			}
+		});
 		pch.addPlayerChangeListener(reportUpdater);
 		model.addMapChangeListener(reportUpdater);
 		final MemberDetailPanel mdp = new MemberDetailPanel();
@@ -145,7 +189,25 @@ public class WorkerMgmtFrame extends JFrame {
 		}
 		pack();
 	}
-
+	/**
+	 * @param file a file
+	 * @return the viewer model of a viewer window displaying that
+	 */
+	@Nullable
+	IViewerModel getViewerModelFor(final IDriverModel model, final IOHandler ioh) {
+		for (Frame frame : WindowList.getFrames(false, true, true)) {
+			if (frame instanceof ViewerFrame && ((ViewerFrame) frame).getModel().getMapFile().equals(model.getMapFile())) {
+				frame.toFront();
+				if (frame.getExtendedState() == Frame.ICONIFIED) {
+					frame.setExtendedState(Frame.NORMAL);
+				}
+				return ((ViewerFrame) frame).getModel();
+			}
+		}
+		ViewerFrame frame = new ViewerFrame(new ViewerModel(model.getMap(), model.getMapFile()), ioh);
+		frame.setVisible(true);
+		return frame.getModel();
+	}
 	/**
 	 * A listener to show a window on button press.
 	 *

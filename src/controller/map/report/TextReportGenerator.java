@@ -89,7 +89,7 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
 		final AbstractReportNode retval =
-				new SectionListReportNode(4, "Miscellaneous Notes");
+				new SectionListReportNode(null, 4, "Miscellaneous Notes");
 		for (final Map.Entry<Integer, Pair<Point, IFixture>> entry : fixtures
 				.entrySet()) {
 			final Pair<Point, IFixture> pair = entry.getValue();
@@ -125,11 +125,11 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 			final IMapNG map, final Player currentPlayer,
 			final TextFixture item, final Point loc) {
 		if (item.getTurn() >= 0) {
-			return new SimpleReportNode("At ", loc.toString(), ": ",
+			return new SimpleReportNode(loc, "At ", loc.toString(), ": ",
 					"On turn ", Integer.toString(item.getTurn()), ": ",
 							item.getText());
 		} else {
-			return new SimpleReportNode("At ", loc.toString(), ": ", item.getText());
+			return new SimpleReportNode(loc, "At ", loc.toString(), ": ", item.getText());
 		}
 	}
 

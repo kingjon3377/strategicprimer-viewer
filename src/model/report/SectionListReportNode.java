@@ -2,6 +2,9 @@ package model.report;
 
 import javax.swing.tree.TreeNode;
 
+import org.eclipse.jdt.annotation.Nullable;
+
+import model.map.Point;
 import util.NullCleaner;
 
 /**
@@ -37,23 +40,25 @@ public class SectionListReportNode extends AbstractReportNode {
 	/**
 	 * Constructor.
 	 *
+	 * @param point the point, if any, in the map that this represents something on
 	 * @param lvl the header level
 	 * @param header the header text
 	 */
-	public SectionListReportNode(final int lvl, final String header) {
-		this(lvl, header, "");
+	public SectionListReportNode(@Nullable final Point point, final int lvl, final String header) {
+		this(point, lvl, header, "");
 	}
 
 	/**
 	 * Constructor.
 	 *
+	 * @param point the point, if any, in the map that this represents something on
 	 * @param lvl the header level
 	 * @param header the header text
 	 * @param subtext the sub-header text
 	 */
-	public SectionListReportNode(final int lvl, final String header,
+	public SectionListReportNode(@Nullable final Point point, final int lvl, final String header,
 			final String subtext) {
-		super(header);
+		super(point, header);
 		setLevel(lvl);
 		subheader = subtext;
 	}
@@ -66,7 +71,7 @@ public class SectionListReportNode extends AbstractReportNode {
 		return NullCleaner.assertNotNull(produce(new StringBuilder(size()))
 				.toString());
 	}
-	
+
 	/**
 	 * @param builder a StringBuilder
 	 * @return it, with this node's HTML representation appended.
