@@ -24,6 +24,7 @@ import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.resources.StoneDeposit;
 import model.report.AbstractReportNode;
 import model.report.EmptyReportNode;
+import model.report.ListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import model.report.SortedSectionListReportNode;
@@ -133,8 +134,6 @@ public class HarvestableReportGenerator extends // NOPMD
 	 * Produce the sub-reports dealing with "harvestable" fixtures. All fixtures
 	 * referred to in this report are to be removed from the collection.
 	 *
-	 * FIXME: Where there's a list of points in one node, each point should have its own node.
-	 *
 	 * @param fixtures the set of fixtures
 	 * @param map ignored
 	 * @param player the player for whom the report is being produced
@@ -157,7 +156,7 @@ public class HarvestableReportGenerator extends // NOPMD
 				"Mines");
 		final AbstractReportNode minerals = new SortedSectionListReportNode(5,
 				"Mineral deposits");
-		final Map<String, List<Point>> shrubs = new HashMap<>();
+		final Map<String, AbstractReportNode> shrubs = new HashMap<>();
 		final AbstractReportNode stone = new SortedSectionListReportNode(5,
 				"Exposed stone deposits");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
@@ -179,14 +178,14 @@ public class HarvestableReportGenerator extends // NOPMD
 							loc));
 				} else if (item instanceof Shrub) {
 					// ESCA-JAVA0177:
-					final List<Point> shrubPoints; // NOPMD
+					final AbstractReportNode collection; // NOPMD
 					if (shrubs.containsKey(((Shrub) item).getKind())) {
-						shrubPoints = shrubs.get(((Shrub) item).getKind());
+						collection = shrubs.get(((Shrub) item).getKind());
 					} else {
-						shrubPoints = new ArrayList<>(); // NOPMD
-						shrubs.put(((Shrub) item).getKind(), shrubPoints);
+						collection = new ListReportNode(((Shrub) item).getKind());
+						shrubs.put(((Shrub) item).getKind(), collection);
 					}
-					shrubPoints.add(loc);
+					collection.add(produceRIR(fixtures, map, player, item, loc));
 					fixtures.remove(Integer.valueOf(item.getID()));
 				} else if (item instanceof StoneDeposit) {
 					// TODO: Handle these like shrubs.
@@ -196,10 +195,8 @@ public class HarvestableReportGenerator extends // NOPMD
 		}
 		final AbstractReportNode shrubsNode = new SortedSectionListReportNode(
 				5, "Shrubs, small trees, and such");
-		for (final Entry<String, List<Point>> entry : shrubs.entrySet()) {
-			// FIXME: This should have one node per point
-			shrubsNode.add(new SimpleReportNode(entry.getKey(), ": at ", // NOPMD
-					pointCSL(entry.getValue())));
+		for (final Entry<String, AbstractReportNode> entry : shrubs.entrySet()) {
+			shrubsNode.add(entry.getValue());
 		}
 		if (maybeAdd(retval, caches, groves, meadows, mines, minerals, stone,
 				shrubsNode)) {

@@ -12,6 +12,7 @@ import model.map.fixtures.explorable.Portal;
 import model.report.AbstractReportNode;
 import model.report.ComplexReportNode;
 import model.report.EmptyReportNode;
+import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import util.DelayedRemovalMap;
@@ -117,7 +118,6 @@ public class ExplorableReportGenerator extends
 	/**
 	 * Produce the sub-report on non-town things that can be explored. All
 	 * fixtures referred to in this report are removed from the collection.
-	 * FIXME: There should be a node for each instance
 	 *
 	 * @param fixtures the set of fixtures
 	 * @param map ignored
@@ -129,50 +129,36 @@ public class ExplorableReportGenerator extends
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionListReportNode(4,
-				"Caves and Battlefields");
-		boolean anyCaves = false;
-		boolean anyBattles = false;
-		boolean anyPortals = false;
+				"Caves, Battlefields, and Portals");
 		final AbstractReportNode adventures = new SectionListReportNode(4, "Possible Adventures");
-		// We doubt either of these will be over half a K, but we'll give each a
-		// whole K just in case.
-		final StringBuilder caveBuilder = new StringBuilder(1024)
-				.append("Caves beneath the following tiles: ");
-		final StringBuilder battleBuilder = new StringBuilder(1024)
-				.append("Signs of long-ago battles on the following tiles: ");
-		final StringBuilder portalBuilder =
-				new StringBuilder(1024).append("Portals to other worlds: ");
+		final AbstractReportNode caves = new ListReportNode("Caves");
+		final AbstractReportNode battles = new ListReportNode("Battlefields");
+		final AbstractReportNode portals = new ListReportNode("Portals");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Cave) {
-				anyCaves = true;
-				caveBuilder.append(", ").append(pair.first().toString());
-				fixtures.remove(Integer.valueOf(pair.second().getID()));
+				caves.add(produceRIR(fixtures, map, currentPlayer,
+						(ExplorableFixture) pair.second(), pair.first()));
 			} else if (pair.second() instanceof Battlefield) {
-				anyBattles = true;
-				battleBuilder.append(", ").append(pair.first().toString());
-				fixtures.remove(Integer.valueOf(pair.second().getID()));
+				battles.add(produceRIR(fixtures, map, currentPlayer,
+						(ExplorableFixture) pair.second(), pair.first()));
 			} else if (pair.second() instanceof AdventureFixture) {
 				adventures.add(produceRIR(fixtures, map, currentPlayer,
 						(ExplorableFixture) pair.second(), pair.first()));
 			} else if (pair.second() instanceof Portal) {
-				anyPortals = true;
-				portalBuilder.append(", ").append(pair.first().toString());
-				fixtures.remove(Integer.valueOf(pair.second().getID()));
+				portals.add(produceRIR(fixtures, map, currentPlayer,
+						(ExplorableFixture) pair.second(), pair.first()));
 			}
 		}
-		if (anyCaves) {
-			retval.add(new SimpleReportNode(caveBuilder.toString().replace(
-					COLON_COMMA, ": ")));
+		if (caves.getChildCount() > 0) {
+			retval.add(caves);
 		}
-		if (anyBattles) {
-			retval.add(new SimpleReportNode(battleBuilder.toString().replace(
-					COLON_COMMA, ": ")));
+		if (battles.getChildCount() > 0) {
+			retval.add(battles);
 		}
-		if (anyPortals) {
-			retval.add(new SimpleReportNode(
-					portalBuilder.toString().replace(COLON_COMMA, ": ")));
+		if (portals.getChildCount() > 0) {
+			retval.add(portals);
 		}
-		if (anyCaves || anyBattles || anyPortals) {
+		if (retval.getChildCount() > 0) {
 			if (adventures.getChildCount() > 0) {
 				final AbstractReportNode real = new ComplexReportNode("");
 				real.add(retval);

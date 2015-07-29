@@ -27,6 +27,7 @@ import model.map.fixtures.mobile.Sphinx;
 import model.map.fixtures.mobile.Troll;
 import model.report.AbstractReportNode;
 import model.report.EmptyReportNode;
+import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import util.DelayedRemovalMap;
@@ -158,79 +159,81 @@ public class ImmortalsReportGenerator extends
 			final IMapNG map, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionListReportNode(4,
 				"Immortals");
-		final Map<String, List<Point>> dragons = new HashMap<>();
-		final Map<String, List<Point>> fairies = new HashMap<>();
-		final List<Point> trolls = new ArrayList<>();
-		final List<Point> djinni = new ArrayList<>();
-		final List<Point> sphinxes = new ArrayList<>();
-		final Map<String, List<Point>> giants = new HashMap<>();
-		final List<Point> minotaurs = new ArrayList<>();
-		final List<Point> ogres = new ArrayList<>();
-		final Map<String, List<Point>> centaurs = new HashMap<>();
-		final List<Point> phoenixes = new ArrayList<>();
-		final List<Point> simurghs = new ArrayList<>();
-		final List<Point> griffins = new ArrayList<>();
+		final Map<String, AbstractReportNode> dragons = new HashMap<>();
+		final Map<String, AbstractReportNode> fairies = new HashMap<>();
+		final AbstractReportNode trolls = new ListReportNode("Trolls");
+		final AbstractReportNode djinni = new ListReportNode("Djinni");
+		final AbstractReportNode sphinxes = new ListReportNode("Sphinxes");
+		final Map<String, AbstractReportNode> giants = new HashMap<>();
+		final AbstractReportNode minotaurs = new ListReportNode("Minotaurs");
+		final AbstractReportNode ogres = new ListReportNode("Ogres");
+		final Map<String, AbstractReportNode> centaurs = new HashMap<>();
+		final AbstractReportNode phoenixes = new ListReportNode("Phoenixes");
+		final AbstractReportNode simurghs = new ListReportNode("Simurghs");
+		final AbstractReportNode griffins = new ListReportNode("Griffins");
 
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			final Point point = pair.first();
 			final IFixture immortal = pair.second();
 			if (immortal instanceof Dragon) {
-				separateByKind(dragons, (Dragon) immortal, point);
-				fixtures.remove(Integer.valueOf(immortal.getID()));
+				separateByKindRIR(dragons, (Dragon) immortal).add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
 			} else if (immortal instanceof Fairy) {
-				separateByKind(fairies, (Fairy) immortal, point);
-				fixtures.remove(Integer.valueOf(immortal.getID()));
+				separateByKindRIR(fairies, (Fairy) immortal).add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
 			} else if (immortal instanceof Troll) {
-				trolls.add(point);
-				fixtures.remove(Integer.valueOf(immortal.getID()));
+				trolls.add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
 			} else if (immortal instanceof Djinn) {
-				djinni.add(point);
-				fixtures.remove(Integer.valueOf(immortal.getID()));
+				djinni.add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
 			} else if (immortal instanceof Sphinx) {
-				sphinxes.add(point);
-				fixtures.remove(Integer.valueOf(immortal.getID()));
+				sphinxes.add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
 			} else if (immortal instanceof Giant) {
-				separateByKind(giants, (Giant) immortal, point);
-				fixtures.remove(Integer.valueOf(immortal.getID()));
+				separateByKindRIR(giants, (Giant) immortal).add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
 			} else if (immortal instanceof Minotaur) {
-				minotaurs.add(point);
-				fixtures.remove(Integer.valueOf(immortal.getID()));
+				minotaurs.add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
 			} else if (immortal instanceof Ogre) {
-				ogres.add(point);
-				fixtures.remove(Integer.valueOf(immortal.getID()));
+				ogres.add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
 			} else if (immortal instanceof Centaur) {
-				separateByKind(centaurs, (Centaur) immortal, point);
-				fixtures.remove(Integer.valueOf(immortal.getID()));
+				separateByKindRIR(centaurs, (Centaur) immortal).add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
 			} else if (immortal instanceof Phoenix) {
-				fixtures.remove(Integer.valueOf(immortal.getID()));
-				phoenixes.add(point);
+				phoenixes.add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
 			} else if (immortal instanceof Simurgh) {
-				fixtures.remove(Integer.valueOf(immortal.getID()));
-				simurghs.add(point);
+				simurghs.add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
 			} else if (immortal instanceof Griffin) {
-				griffins.add(point);
-				fixtures.remove(Integer.valueOf(immortal.getID()));
+				griffins.add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
 			}
 		}
-		optionallyAddRIR(dragons, "(s) at ", retval);
-		optionallyAddRIR(fairies, " at ", retval);
-		optionallyAdd(trolls, "Troll(s) at ", retval);
-		optionallyAdd(djinni, "Djinn(i) at ", retval);
-		optionallyAdd(sphinxes, "Sphinx(es) at ", retval);
-		optionallyAddRIR(giants, "(s) at ", retval);
-		optionallyAdd(minotaurs, "Minotaur(s) at ", retval);
-		optionallyAdd(ogres, "Ogre(s) at ", retval);
-		optionallyAddRIR(centaurs, "(s) at ", retval);
-		optionallyAdd(phoenixes, "Phoenix(es) at ", retval);
-		optionallyAdd(simurghs, "Simurgh(s) at ", retval);
-		optionallyAdd(griffins, "Griffin(s) at ", retval);
+		optionallyAdd(retval, coalesce("Dragons", dragons),
+				coalesce("Fairies", fairies), trolls, djinni, sphinxes,
+				coalesce("Giants", giants), minotaurs, ogres,
+				coalesce("Centaurs", centaurs), phoenixes, simurghs, griffins);
 		if (retval.getChildCount() == 0) {
 			return EmptyReportNode.NULL_NODE; // NOPMD
 		} else {
 			return retval;
 		}
 	}
-
+	/**
+	 * @param header the heading to put above the children
+	 * @param mapping a mapping from kinds to nodes
+	 * @return a node with all of the nodes as children
+	 */
+	private static AbstractReportNode coalesce(final String header, final Map<String, AbstractReportNode> mapping) {
+		final AbstractReportNode retval = new ListReportNode(header);
+		for (AbstractReportNode node : mapping.values()) {
+			retval.add(node);
+		}
+		return retval;
+	}
+	/**
+	 * @param parent a node
+	 * @param children possible children to add, if they have children of their own
+	 */
+	private static void optionallyAdd(final AbstractReportNode parent, final AbstractReportNode... children) {
+		for (AbstractReportNode child : children) {
+			if (child.getChildCount() > 0) {
+				parent.add(child);
+			}
+		}
+	}
 	/**
 	 * @param fixtures The set of fixtures
 	 * @param map ignored
@@ -305,24 +308,6 @@ public class ImmortalsReportGenerator extends
 	}
 
 	/**
-	 * Add to the parent node nothing if the map is empty, or for each entry in
-	 * the entry set a simple node containing the key plus the infix plus a
-	 * comma-separated list of the points. FIXME: Callers should probably make node for each point.
-	 *
-	 * @param parent the parent node
-	 * @param mapping the mapping from kinds (or whatever) to lists of points
-	 * @param infix what to print in the middle of each item
-	 */
-	private static void optionallyAddRIR(final Map<String, List<Point>> mapping,
-			final String infix, final AbstractReportNode parent) {
-		for (final Entry<String, List<Point>> entry : mapping.entrySet()) {
-			// FIXME: This should be one node per point
-			parent.add(new SimpleReportNode(entry.getKey(), infix, //NOPMD
-					pointCSL(entry.getValue())));
-		}
-	}
-
-	/**
 	 * Prints (to the builder) nothing if the list is empty, or the prefix
 	 * followed by a comma-separated list of the points, all enclosed in a list
 	 * item.
@@ -336,23 +321,6 @@ public class ImmortalsReportGenerator extends
 		if (!points.isEmpty()) {
 			builder.append(OPEN_LIST_ITEM).append(prefix)
 					.append(pointCSL(points)).append(CLOSE_LIST_ITEM);
-		}
-	}
-
-	/**
-	 * Add to the parent node nothing if the list is empty, or a simple node of
-	 * the prefix followed by a comma-separated list of all the points if it is
-	 * not. FIXME: Callers should probably make node for each point.
-	 *
-	 * @param parent the parent to add the item to.
-	 * @param points a list of points
-	 * @param prefix what to prepend to it if non-empty
-	 */
-	private static void optionallyAdd(final List<Point> points,
-			final String prefix, final AbstractReportNode parent) {
-		if (!points.isEmpty()) {
-			// FIXME: This should be one node per point.
-			parent.add(new SimpleReportNode(prefix, pointCSL(points)));
 		}
 	}
 
@@ -378,6 +346,29 @@ public class ImmortalsReportGenerator extends
 		}
 		points.add(point);
 	}
+	/**
+	 * If there's an entry in the map for the thing's kind already, return that
+	 * entry; if not, create one, add it to the map, and return it..
+	 *
+	 * @param mapping
+	 *            the mapping we're dealing with
+	 * @param item
+	 *            the item under consideration
+	 * @return the entry in the map for the item's kind
+	 */
+	private static AbstractReportNode separateByKindRIR(final Map<String, AbstractReportNode> mapping,
+			final HasKind item) {
+		// For the three classes we deal with here, we don't want just the kind,
+		// we want the full toString, so we use that instead of getKind.
+		if (mapping.containsKey(item.toString())) {
+			return NullCleaner.assertNotNull(mapping.get(item.toString()));
+		} else {
+			AbstractReportNode retval = new ListReportNode(NullCleaner.assertNotNull(item.toString()));
+			mapping.put(item.toString(), retval);
+			return retval;
+		}
+	}
+
 	/**
 	 * @return a String representation of the object
 	 */

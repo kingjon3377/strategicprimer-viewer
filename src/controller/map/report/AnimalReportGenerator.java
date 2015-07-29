@@ -13,6 +13,7 @@ import model.map.Point;
 import model.map.fixtures.mobile.Animal;
 import model.report.AbstractReportNode;
 import model.report.EmptyReportNode;
+import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import util.DelayedRemovalMap;
@@ -92,28 +93,20 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		final Map<String, List<Point>> items = new HashMap<>();
+		final Map<String, AbstractReportNode> items = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			if (pair.second() instanceof Animal) {
 				final Animal animal = (Animal) pair.second();
 				// ESCA-JAVA0177:
-				final String string; // NOPMD
-				if (animal.isTraces()) {
-					string = concat("tracks or traces of ", animal.getKind());
-				} else if (animal.isTalking()) {
-					string = concat("talking ", animal.getKind());
-				} else {
-					string = animal.getKind();
-				}
-				// ESCA-JAVA0177:
-				final List<Point> points; // NOPMD
+				final String string = animal.getKind();
+				final AbstractReportNode collection;
 				if (items.containsKey(string)) {
-					points = items.get(string);
+					collection = items.get(string);
 				} else {
-					points = new ArrayList<>(); // NOPMD
-					items.put(string, points);
+					collection = new ListReportNode(string); // NOPMD
+					items.put(string, collection);
 				}
-				points.add(pair.first());
+				collection.add(produceRIR(fixtures, map, currentPlayer, animal, pair.first()));
 				fixtures.remove(Integer.valueOf(animal.getID()));
 			}
 		}
@@ -122,10 +115,8 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 		} else {
 			final AbstractReportNode retval = new SectionListReportNode(4,
 					"Animal sightings or encounters");
-			for (final Entry<String, List<Point>> entry : items.entrySet()) {
-				// FIXME: There should be a node for each sighting
-				retval.add(new SimpleReportNode(entry.getKey(), ": at ", // NOPMD
-						pointCSL(entry.getValue())));
+			for (final Entry<String, AbstractReportNode> entry : items.entrySet()) {
+				retval.add(entry.getValue());
 			}
 			return retval; // NOPMD
 		}
