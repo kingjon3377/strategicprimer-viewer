@@ -45,7 +45,6 @@ public class ProxySkill implements ISkill, ProxyFor<IJob> {
 	 */
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
 		return name;
 	}
 	/**

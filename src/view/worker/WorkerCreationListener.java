@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
+import org.eclipse.jdt.annotation.Nullable;
+
+import controller.map.misc.IDFactory;
 import model.listeners.NewWorkerListener;
 import model.listeners.UnitSelectionListener;
 import model.map.IFixture;
@@ -17,13 +20,9 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Worker;
 import model.workermgmt.IWorkerTreeModel;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.EmptyIterator;
 import util.NullCleaner;
 import util.TypesafeLogger;
-import controller.map.misc.IDFactory;
 
 /**
  * A listener to keep track of the currently selected unit and listen for
@@ -124,8 +123,7 @@ public final class WorkerCreationListener implements ActionListener,
 		}
 		@Override
 		public void setName(final String nomen) {
-			// TODO Auto-generated method stub
-
+			throw new IllegalStateException("Can't set name on a null unit");
 		}
 		@Override
 		public Player getOwner() {
@@ -138,7 +136,8 @@ public final class WorkerCreationListener implements ActionListener,
 		@Override
 		public boolean isSubset(final IUnit obj, final Appendable ostream,
 				final String context) throws IOException {
-			// TODO Auto-generated method stub
+			ostream.append(context);
+			ostream.append("isSubset called on null unit");
 			return false;
 		}
 		@Override
