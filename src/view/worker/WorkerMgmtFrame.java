@@ -139,7 +139,6 @@ public class WorkerMgmtFrame extends JFrame {
 				}
 				TreePath selPath = report.getPathForLocation(evt.getX(), evt.getY());
 				if (selPath == null) {
-					SystemOut.SYS_OUT.println("Selected path was null");
 					return;
 				}
 				Object node = selPath.getLastPathComponent();
