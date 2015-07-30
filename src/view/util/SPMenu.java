@@ -257,6 +257,10 @@ public class SPMenu extends JMenuBar {
 				MenuItemCreator.createHotkey(KeyEvent.VK_MINUS),
 				"Decrease the visible size of each tile", zoomListener));
 		retval.addSeparator();
+		retval.add(MenuItemCreator.createMenuItem("Center", KeyEvent.VK_C,
+				MenuItemCreator.createHotkey(KeyEvent.VK_C),
+				"Center the view on the selected tile", zoomListener));
+		retval.addSeparator();
 		final PlayerChooserHandler pch = new PlayerChooserHandler(parent, model);
 		retval.add(MenuItemCreator.createMenuItem(
 				PlayerChooserHandler.MENU_ITEM, KeyEvent.VK_P, null,
