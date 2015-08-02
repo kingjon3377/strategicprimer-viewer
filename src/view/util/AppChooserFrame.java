@@ -17,13 +17,14 @@ import javax.swing.SwingUtilities;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import util.NullCleaner;
-import util.TypesafeLogger;
 import controller.map.drivers.AdvancementStart;
+import controller.map.drivers.ExplorationGUI;
 import controller.map.drivers.ISPDriver;
 import controller.map.drivers.ISPDriver.DriverFailedException;
 import controller.map.drivers.ViewerStart;
 import controller.map.drivers.WorkerStart;
+import util.NullCleaner;
+import util.TypesafeLogger;
 
 /**
  * A GUI to let the user choose which GUI to use. We do *not* make this extend
@@ -64,6 +65,7 @@ public class AppChooserFrame extends JFrame {
 				AdvancementStart.class));
 		buttonPanel.add(button("Unit Orders and Worker Management", parameters,
 				WorkerStart.class));
+		buttonPanel.add(button("Exploration", parameters, ExplorationGUI.class));
 		setContentPane(new BorderedPanel(new JScrollPane(buttonPanel),
 				new JLabel("Please choose one of the applications below:"),
 				null, null, null));
