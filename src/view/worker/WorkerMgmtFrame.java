@@ -189,11 +189,12 @@ public class WorkerMgmtFrame extends JFrame {
 		pack();
 	}
 	/**
-	 * @param file a file
-	 * @return the viewer model of a viewer window displaying that
+	 * @param model the driver-model of the worker-management GUI
+	 * @param ioh the I/O handler
+	 * @return the viewer model of a viewer window the same map as that in the given driver-model
 	 */
 	@Nullable
-	IViewerModel getViewerModelFor(final IDriverModel model, final IOHandler ioh) {
+	protected static IViewerModel getViewerModelFor(final IDriverModel model, final IOHandler ioh) {
 		for (Frame frame : WindowList.getFrames(false, true, true)) {
 			if (frame instanceof ViewerFrame && ((ViewerFrame) frame).getModel().getMapFile().equals(model.getMapFile())) {
 				frame.toFront();
