@@ -20,11 +20,16 @@ import controller.map.misc.MapReaderAdapter;
 import model.exploration.HuntingModel;
 import model.map.IMapNG;
 import model.map.MapDimensions;
+import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
 import model.map.fixtures.Ground;
+import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.IUnit;
+import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.terrain.Forest;
+import model.map.fixtures.towns.Fortress;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -117,11 +122,61 @@ public final class QueryCLI implements ISPDriver {
 		case 'd':
 			distance(map.dimensions(), ostream);
 			break;
+		case 'c':
+			count(map, CLIHelper.toList(map.players()), ostream);
+			break;
 		default:
 			ostream.append("Unknown command.\n");
 			break;
 		}
 	}
+	/**
+	 * Count the workers belonging to a player
+	 * @param map the map
+	 * @param players the list of players in the map
+	 * @param ostream the stream to write results to
+	 * @throws IOException on I/O error interacting with user
+	 */
+	private void count(final IMapNG map, final List<Player> players, final Appendable ostream) throws IOException {
+		final int playerNum = helper.chooseFromList(players,
+				"Players in the map:", "Map contains no players",
+				"Owner of workers to count: ", true);
+		if (playerNum < 0 || playerNum >= players.size()) {
+			return;
+		}
+		Player player = players.get(playerNum);
+		int count = 0;
+		for (Point loc : map.locations()) {
+			if (loc == null) {
+				continue;
+			}
+			for (TileFixture fix : map.getOtherFixtures(loc)) {
+				if (fix instanceof IUnit && player.equals(((IUnit) fix).getOwner())) {
+					for (UnitMember member : (IUnit) fix) {
+						if (member instanceof IWorker) {
+							count++;
+						}
+					}
+				} else if (fix instanceof Fortress) {
+					for (IUnit unit : (Fortress) fix) {
+						if (!player.equals(unit.getOwner())) {
+							continue;
+						}
+						for (UnitMember member : unit) {
+							if (member instanceof IWorker) {
+								count++;
+							}
+						}
+					}
+				}
+			}
+		}
+		ostream.append(player.getName());
+		ostream.append(" has ");
+		ostream.append(Integer.toString(count));
+		ostream.append(" workers.\n");
+	}
+
 	/**
 	 * Report the distance between two points.
 	 *
@@ -355,7 +410,8 @@ public final class QueryCLI implements ISPDriver {
 		ostream.append("maintaining a herd.\n");
 		ostream.append("Trap: Switch to the trap-modeling program ");
 		ostream.append("to run trapping or fish-trapping.\n");
-		ostream.append("Distance: Report the distance between two points.");
+		ostream.append("Distance: Report the distance between two points.\n");
+		ostream.append("Count: Count the number of workers belonging to a player.\n");
 		ostream.append("Quit: Exit the program.\n");
 	}
 
