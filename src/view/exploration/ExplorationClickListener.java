@@ -10,12 +10,15 @@ import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
 import model.listeners.MovementCostListener;
 import model.listeners.MovementCostSource;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
+import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
@@ -26,9 +29,6 @@ import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.Pair;
 import view.map.details.FixtureList;
 
@@ -124,12 +124,16 @@ public final class ExplorationClickListener implements ActionListener,
 				for (final TileFixture fix : fixtures) {
 					if (fix instanceof Ground && map.getGround(dPoint) == null) {
 						map.setGround(dPoint, (Ground) fix);
+					} else if (fix instanceof Ground && fix.equals(map.getGround(dPoint))) {
+						continue;
 					} else if (fix instanceof Forest
 							&& map.getForest(dPoint) == null) {
 						map.setForest(dPoint, (Forest) fix);
+					} else if (fix instanceof Forest && fix.equals(map.getForest(dPoint))) {
+						continue;
 					} else if (fix instanceof Mountain) {
 						map.setMountainous(dPoint, true);
-					} else if (fix != null) {
+					} else if (fix != null && !hasFixture(map, dPoint, fix)) {
 						map.addFixture(dPoint, fix);
 					}
 				}
@@ -143,6 +147,21 @@ public final class ExplorationClickListener implements ActionListener,
 				listener.deduct(1);
 			}
 		}
+	}
+	/**
+	 * @param map a map
+	 * @param dPoint a point
+	 * @param fix a fixture
+	 * @return whether the map has that fixture there
+	 */
+	private static boolean hasFixture(final IMapNG map, final Point dPoint,
+			final TileFixture fix) {
+		for (TileFixture item : map.getOtherFixtures(dPoint)) {
+			if (fix.equals(item)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
