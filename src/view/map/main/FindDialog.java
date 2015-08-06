@@ -85,6 +85,10 @@ public class FindDialog extends JDialog implements ActionListener {
 	 * The filter, to let the user filter which fixtures are displayed.
 	 */
 	private final FixtureFilterList ffl;
+	/**
+	 * The frame that is this frame's parent.
+	 */
+	private Frame parentFrame;
 
 	/**
 	 * Constructor.
@@ -94,6 +98,7 @@ public class FindDialog extends JDialog implements ActionListener {
 	 */
 	public FindDialog(final Frame parent, final IViewerModel model) {
 		super(parent);
+		parentFrame = parent;
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		search.addActionListener(this);
 		search.setActionCommand("OK");
@@ -138,6 +143,7 @@ public class FindDialog extends JDialog implements ActionListener {
 				search();
 			}
 			setVisible(false);
+			parentFrame.requestFocus();
 			dispose();
 		}
 	}

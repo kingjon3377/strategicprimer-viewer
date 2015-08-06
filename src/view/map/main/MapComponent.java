@@ -1,6 +1,7 @@
 package view.map.main;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
@@ -11,6 +12,7 @@ import java.awt.event.MouseMotionAdapter;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
+import javax.swing.SwingUtilities;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -89,6 +91,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 				repaint();
 			}
 		});
+		setRequestFocusEnabled(true);
 	}
 
 	/**
@@ -249,6 +252,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	@Override
 	public void selectedPointChanged(@Nullable final Point old,
 			final Point newPoint) {
+		SwingUtilities.invokeLater(new FocusHelper(this));
 		if (!isSelectionVisible()) {
 			fixVisibility();
 		}
@@ -313,5 +317,33 @@ public final class MapComponent extends JComponent implements MapGUI,
 		}
 		getMapModel().setDimensions(
 				new VisibleDimensions(minRow, maxRow, minCol, maxCol));
+	}
+
+	/**
+	 * A class to help this get the focus when it's supposed to. Calling
+	 * requestFocusInWindow() directly doesn't seem to work, but delaying the
+	 * call until the event queue has settled down (using invokeLater()) does.
+	 *
+	 * @author Jonathan Lovelace
+	 *
+	 */
+	private static class FocusHelper implements Runnable {
+		/**
+		 * The enclosing component
+		 */
+		Component outer;
+		/**
+		 * @param comp the enclosing component
+		 */
+		protected FocusHelper(final Component comp) {
+			outer = comp;
+		}
+		/**
+		 * Ask for the component to get the focus.
+		 */
+		@Override
+		public void run() {
+			outer.requestFocusInWindow();
+		}
 	}
 }
