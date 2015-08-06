@@ -177,6 +177,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					} else if (ground.isExposed() && !oldGround.isExposed()) {
 						retval.setGround(point, ground);
 						retval.addFixture(point, oldGround);
+					} else if (oldGround.equals(ground)) {
+						continue;
 					} else {
 						// TODO: Should we do some ordering of Ground other than
 						// the order they are in the XML?
@@ -186,8 +188,11 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					Forest forest =
 							(Forest) CompactTerrainReader.READER.read(current,
 									stream, players, warner, idFactory);
-					if (retval.getForest(point) == null) {
+					final Forest oldForest = retval.getForest(point);
+					if (oldForest == null) {
 						retval.setForest(point, forest);
+					} else if (oldForest.equals(forest)) {
+						continue;
 					} else {
 						// TODO: Should we do some ordering of Forests other
 						// than the order they are in the XML?

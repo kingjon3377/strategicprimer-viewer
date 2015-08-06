@@ -199,6 +199,8 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 					} else if (ground.isExposed() && !oldGround.isExposed()) {
 						retval.setGround(point, ground);
 						retval.addFixture(point, oldGround);
+					} else if (ground.equals(oldGround)) {
+						continue;
 					} else {
 						// TODO: Should we do some ordering of Ground other than
 						// the order they are in the XML?
@@ -211,6 +213,8 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 					Forest oldForest = retval.getForest(point);
 					if (oldForest == null) {
 						retval.setForest(point, forest);
+					} else if (oldForest.equals(forest)) {
+						continue;
 					} else {
 						// TODO: Should we do some ordering of Forests other
 						// than the order they are in the XML?
