@@ -18,7 +18,11 @@ public enum StoneKind {
 	/**
 	 * Marble.
 	 */
-	Marble("marble");
+	Marble("marble"),
+	/**
+	 * Slate.
+	 */
+	Slate("slate");
 	/**
 	 * A string representing the StoneKind.
 	 */
