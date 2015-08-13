@@ -144,7 +144,7 @@ public class WorkerMgmtFrame extends JFrame {
 				Object node = selPath.getLastPathComponent();
 				if (evt.isControlDown() && node instanceof AbstractReportNode) {
 					final Point point = ((AbstractReportNode) node).getPoint();
-					if (point != null) {
+					if (point.getRow() > Integer.MIN_VALUE) { // (-inf, -inf) replaces null
 						final IViewerModel vModel = getViewerModelFor(model, ioHandler);
 						if (vModel == null) {
 							SystemOut.SYS_OUT.println("Failed to open a window");

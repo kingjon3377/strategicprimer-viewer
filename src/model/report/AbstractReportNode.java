@@ -1,11 +1,15 @@
 package model.report;
 
+import java.util.Iterator;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.Point;
+import model.map.PointFactory;
+import util.EnumerationWrapper;
 
 /**
  * A superclass for report-nodes.
@@ -14,7 +18,7 @@ import model.map.Point;
  *
  */
 public abstract class AbstractReportNode extends DefaultMutableTreeNode
-		implements IReportNode {
+		implements IReportNode, Iterable<AbstractReportNode> {
 	/**
 	 * The point, if any, in the map that this node represents something on.
 	 */
@@ -150,9 +154,24 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	/**
 	 * @return the point, if any, in the map that this represents something on
 	 */
-	@Nullable
 	public final Point getPoint() {
-		return point;
+		if (point != null) {
+			return point;
+		} else {
+			Point locPoint = null;
+			for (AbstractReportNode child : this) {
+				if (locPoint == null) {
+					locPoint = child.getPoint();
+				} else if (!locPoint.equals(child.getPoint())) {
+					locPoint = PointFactory.point(Integer.MIN_VALUE, Integer.MIN_VALUE);
+				}
+			}
+			if (locPoint == null) {
+				return PointFactory.point(Integer.MIN_VALUE, Integer.MIN_VALUE);
+			} else {
+				return locPoint;
+			}
+		}
 	}
 
 	/**
@@ -160,5 +179,12 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	 */
 	public final void setPoint(final Point pt) {
 		point = pt;
+	}
+	/**
+	 * @return an iterator over the children
+	 */
+	@Override
+	public Iterator<AbstractReportNode> iterator() {
+		return new EnumerationWrapper<>(children());
 	}
 }
