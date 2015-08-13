@@ -6,6 +6,11 @@ import java.io.IOException;
 
 import javax.xml.stream.XMLStreamException;
 
+import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.IDFactory;
+import controller.map.misc.IDFactoryFiller;
+import controller.map.misc.MapReaderAdapter;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Point;
@@ -14,11 +19,6 @@ import model.map.fixtures.mobile.Animal;
 import util.SingletonRandom;
 import util.Warning;
 import util.Warning.Action;
-import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
-import controller.map.misc.IDFactoryFiller;
-import controller.map.misc.MapReaderAdapter;
 
 /**
  * A driver to add some kind of fixture to suitable tiles throughout the map.
@@ -66,7 +66,7 @@ public class MapPopulatorDriver implements ISPDriver {
 
 	/**
 	 * Add a fixture of the kind with which we're populating the map to the
-	 * specified location
+	 * specified location.
 	 *
 	 * @param location
 	 *            the location in question

@@ -139,7 +139,7 @@ public class AdvancementCLIDriver implements ISPDriver {
 		}
 	}
 	/**
-	 * Let the user add experience to a player's workers
+	 * Let the user add experience to a player's workers.
 	 * @param model the driver model
 	 * @param player the player whose workers we're interested in
 	 * @throws IOException on I/O error getting input from user

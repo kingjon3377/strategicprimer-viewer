@@ -329,9 +329,9 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 */
 	private static class FocusHelper implements Runnable {
 		/**
-		 * The enclosing component
+		 * The enclosing component.
 		 */
-		Component outer;
+		private Component outer;
 		/**
 		 * @param comp the enclosing component
 		 */

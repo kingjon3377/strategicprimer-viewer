@@ -179,7 +179,7 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 	}
 
 	/**
-	 * TODO: pass through to proxied workers
+	 * TODO: pass through to proxied workers.
 	 * @return the name of an image to represent the worker
 	 */
 	@Override
@@ -190,7 +190,7 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 		return "worker.png";
 	}
 	/**
-	 * TODO: log if this is called, because it probably shouldn't be
+	 * TODO: log if this is called, because it probably shouldn't be.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override

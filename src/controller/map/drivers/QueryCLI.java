@@ -131,7 +131,7 @@ public final class QueryCLI implements ISPDriver {
 		}
 	}
 	/**
-	 * Count the workers belonging to a player
+	 * Count the workers belonging to a player.
 	 * @param map the map
 	 * @param players the list of players in the map
 	 * @param ostream the stream to write results to

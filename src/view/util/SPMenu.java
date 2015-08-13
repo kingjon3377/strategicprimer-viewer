@@ -356,10 +356,10 @@ public class SPMenu extends JMenuBar {
 		 */
 		private final IOHandler ioh;
 		/**
-		 * Handle the action
+		 * Handle the action.
 		 */
 		@Override
-		public final void actionPerformed(@Nullable final ActionEvent evt) {
+		public void actionPerformed(@Nullable final ActionEvent evt) {
 			if (frst) {
 				invokeLater(new ViewerOpener(theModel.getMap(),
 						theModel.getMapFile(), ioh));

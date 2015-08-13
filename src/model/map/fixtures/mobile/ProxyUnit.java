@@ -87,7 +87,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		return id;
 	}
 	/**
-	 * FIXME: implement
+	 * FIXME: implement.
 	 *
 	 * TODO: log when this is called, because it shouldn't be (I think)
 	 *
@@ -99,7 +99,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		throw new IllegalStateException("FIXME: implement equalsIgnoringID()");
 	}
 	/**
-	 * TODO: log if this is called
+	 * TODO: log if this is called.
 	 * @param fix a fixture
 	 * @return the result of a comparison with it
 	 */
@@ -111,7 +111,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		return fix.hashCode() - hashCode();
 	}
 	/**
-	 * TODO: pass through to proxied units
+	 * TODO: pass through to proxied units.
 	 * @return the name of an image to represent the unit
 	 */
 	@Override
@@ -122,7 +122,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		return "unit.png";
 	}
 	/**
-	 * TODO: log if this is called, because it probably shouldn't be
+	 * TODO: log if this is called, because it probably shouldn't be.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
@@ -252,7 +252,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		}
 	}
 	/**
-	 * TODO: handle this like we handle 'name' and 'kind'
+	 * TODO: handle this like we handle 'name' and 'kind'.
 	 * @return the owner of the first unit
 	 */
 	@Override
@@ -318,7 +318,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		}
 	}
 	/**
-	 * FIXME: Implement properly
+	 * FIXME: Implement properly.
 	 * @return a "verbose" description of the unit
 	 */
 	@Override

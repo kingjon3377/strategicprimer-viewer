@@ -336,7 +336,7 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 
 		/**
 		 * TODO: We should probably throw, or at least log, an exception when
-		 * this is called
+		 * this is called.
 		 *
 		 * @param member
 		 *            ignored
@@ -348,7 +348,7 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 
 		/**
 		 * TODO: We should probably throw, or at least log, an exception when
-		 * this is called
+		 * this is called.
 		 *
 		 * @param member
 		 *            ignored
