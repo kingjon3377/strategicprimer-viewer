@@ -86,6 +86,7 @@ public class ArrowKeyListener {
 		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD0, 0), "home");
 		inputMap.put(getKeyStroke(KeyEvent.VK_END, CTRL_DOWN_MASK), "ctrl-end");
 		inputMap.put(getKeyStroke(KeyEvent.VK_END, 0), "end");
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMBER_SIGN, 0), "end");
 		inputMap.put(getKeyStroke(KeyEvent.VK_3, SHIFT_DOWN_MASK), "end");
 		inputMap.put(getKeyStroke('#', 0), "end");
 		inputMap.put(getKeyStroke(KeyEvent.VK_6, SHIFT_DOWN_MASK), "caret");
