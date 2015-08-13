@@ -83,6 +83,7 @@
   </target>
   <target name="doc" depends="init">
     <javadoc sourcepath="${source_dir}" defaultexcludes="yes" destdir="${javadoc_dir}" author="true">
+      <arg value="-notimestamp" />
       <tag name="todo" scope="all" description="To do:"/>
       <tag name="fixme" scope="all" description="FIXME:" />
       <classpath refid="viewer.classpath" />
