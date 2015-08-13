@@ -16,12 +16,14 @@
     <!-- See comment in paths.properties. -->
     <pathelement location="${junit.jar.path}" />
     <pathelement location="${hamcrest.jar.path}" />
+    <pathelement location="${windowmenu.jar.path}" />
   </path>
   <path id="viewer.classpath">
     <pathelement location="${bin_dir}" />
     <path refid="junit.classpath" />
     <!-- See comment in paths.properties -->
     <pathelement location="${nullness.jar.path}" />
+    <pathelement location="${windowmenu.jar.path}" />
   </path>
 
 
@@ -138,6 +140,7 @@
 	<attribute name="Mercurial-Revision" value="${scm.revision.id}" />
       </manifest>
       <fileset dir="${project_home}/bin" />
+      <zipfileset src="${windowmenu.jar.path}" />
     </jar>
   </target>
   <target name="exe" depends="jar">
