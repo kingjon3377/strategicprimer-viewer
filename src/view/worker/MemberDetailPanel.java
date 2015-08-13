@@ -137,9 +137,12 @@ public class MemberDetailPanel extends JPanel implements UnitMemberListener {
 										.addComponent(chaLabel))
 								.addComponent(jobsPanel)
 						)));
-		layout.linkSize(SwingConstants.HORIZONTAL, typeCaption, nameCaption, kindCaption, jobsCaption);
-		layout.linkSize(SwingConstants.HORIZONTAL, typeLabel, nameLabel, kindLabel, jobsPanel);
-		layout.linkSize(strCaption, dexCaption, conCaption, intCaption, wisCaption, chaCaption);
+		layout.linkSize(SwingConstants.HORIZONTAL, typeCaption, nameCaption,
+				kindCaption, jobsCaption);
+		layout.linkSize(SwingConstants.HORIZONTAL, typeLabel, nameLabel,
+				kindLabel, jobsPanel);
+		layout.linkSize(strCaption, dexCaption, conCaption, intCaption,
+				wisCaption, chaCaption);
 		layout.linkSize(strLabel, dexLabel, conLabel, intLabel, wisLabel, chaLabel);
 		layout.linkSize(SwingConstants.VERTICAL, typeCaption, typeLabel);
 		layout.linkSize(SwingConstants.VERTICAL, nameCaption, nameLabel);

@@ -86,16 +86,21 @@ public class TestWorkerModel {
 		assertTrue("And didn't miss any for player 3",
 				listThree.containsAll(listThreeA));
 	}
+
 	/**
-	 * @param list a list
-	 * @param <T> the type of the list
-	 * @return the contents of that list, with any proxies replaced by the items they proxy
+	 * @param list
+	 *            a list
+	 * @param <T>
+	 *            the type of the list
+	 * @return the contents of that list, with any proxies replaced by the items
+	 *         they proxy
 	 */
 	private static <T> List<T> filterProxies(final List<T> list) {
 		final List<T> retval = new ArrayList<>();
 		for (T item : list) {
 			if (item instanceof ProxyFor<?>) {
-				@SuppressWarnings("unchecked") // this wouldn't work for Skills, but ...
+				// this wouldn't work for Skills, but ...
+				@SuppressWarnings("unchecked")
 				ProxyFor<T> proxy = (ProxyFor<T>) item;
 				for (T proxied : proxy.getProxied()) {
 					retval.add(proxied);

@@ -75,7 +75,8 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		} else if (getOwner().isIndependent()) {
 			return "an independent " + getKind() + " unit";
 		} else {
-			return "a(n) " + getKind() + " unit belonging to " + getOwner().getName();
+			return "a(n) " + getKind() + " unit belonging to "
+					+ getOwner().getName();
 		}
 	}
 	/**
@@ -190,8 +191,13 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 				if (member == null) {
 					continue;
 				}
-				@SuppressWarnings("unchecked") // The type in the map is really UnitMember & ProxyFor<IWorker|UnitMember>
-				@Nullable ProxyFor<? extends UnitMember> proxy = (ProxyFor<? extends UnitMember>) map.get(Integer.valueOf(member.getID()));
+				// Warning suppressed because the type in the map is really
+				// UnitMember&ProxyFor<IWorker|UnitMember>
+				@SuppressWarnings("unchecked")
+				@Nullable
+				ProxyFor<? extends UnitMember> proxy =
+						(ProxyFor<? extends UnitMember>) map
+								.get(Integer.valueOf(member.getID()));
 				if (proxy == null) {
 					if (member instanceof IWorker) {
 						proxy = new ProxyWorker((IWorker) member);
@@ -204,7 +210,8 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 						if (member instanceof IWorker) {
 							((ProxyWorker) proxy).addProxied((IWorker) member);
 						} else {
-							SystemOut.SYS_OUT.println("Proxy is a ProxyWorker but member isn't a worker");
+							SystemOut.SYS_OUT.println(
+									"Proxy is a ProxyWorker but member isn't a worker");
 							// FIXME: Log this unexpected situation!
 							continue;
 						}
@@ -271,14 +278,17 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 * @param context the context to write before writing our results
 	 */
 	@Override
-	public boolean isSubset(final IUnit obj, final Appendable ostream, final String context)
+	public boolean isSubset(final IUnit obj, final Appendable ostream,
+			final String context)
 			throws IOException {
 		ostream.append(context);
 		ostream.append("Called isSubset() in ProxyUnit");
 		return false;
 	}
+
 	/**
-	 * @return the orders shared by the units, or the empty string if their orders are different.
+	 * @return the orders shared by the units, or the empty string if their
+	 *         orders are different.
 	 */
 	@Override
 	public String getOrders() {
@@ -378,8 +388,10 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		public ProxyMember(final UnitMember member) {
 			proxiedMembers.add(member);
 		}
+
 		/**
-		 * @return the ID number of the first proxied unit member (since they should all have the same, in the only usage of this class)
+		 * @return the ID number of the first proxied unit member (since they
+		 *         should all have the same, in the only usage of this class)
 		 */
 		@Override
 		public int getID() {
@@ -394,7 +406,9 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		 */
 		@Override
 		public boolean equalsIgnoringID(final IFixture fix) {
-			return fix instanceof ProxyMember && ((ProxyMember) fix).proxiedMembers.equals(proxiedMembers);
+			return fix instanceof ProxyMember
+					&& ((ProxyMember) fix).proxiedMembers
+							.equals(proxiedMembers);
 		}
 		/**
 		 * @param obj ignored

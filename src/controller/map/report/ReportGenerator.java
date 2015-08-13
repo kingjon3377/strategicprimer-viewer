@@ -85,7 +85,8 @@ public final class ReportGenerator {
 		builder.append("</body>\n</html>\n");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			final IFixture fix = pair.second();
-			if (fix instanceof Hill || fix instanceof Sandbar || fix instanceof Oasis) {
+			if (fix instanceof Hill || fix instanceof Sandbar
+					|| fix instanceof Oasis) {
 				fixtures.remove(Integer.valueOf(fix.getID()));
 				continue;
 			}

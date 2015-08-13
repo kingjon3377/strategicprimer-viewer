@@ -238,7 +238,8 @@ public class IOHandler implements ActionListener {
 	private void saveAll(@Nullable final Component source) {
 		if (model instanceof IMultiMapModel) {
 			final MapReaderAdapter adapter = new MapReaderAdapter();
-			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getAllMaps()) {
+			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model)
+					.getAllMaps()) {
 				try {
 					adapter.write(pair.second(), pair.first());
 				} catch (final IOException e) {
@@ -256,13 +257,15 @@ public class IOHandler implements ActionListener {
 	 * @param source the component to attach the dialog box to. May be null.
 	 */
 	private void handleSecondaryLoadMenu(@Nullable final Component source) {
-		if (model instanceof IMultiMapModel && chooser.showOpenDialog(source) == JFileChooser.APPROVE_OPTION) {
+		if (model instanceof IMultiMapModel && chooser
+				.showOpenDialog(source) == JFileChooser.APPROVE_OPTION) {
 			final File file = chooser.getSelectedFile();
 			if (file == null) {
 				return;
 			}
 			try {
-				((IMultiMapModel) model).addSubordinateMap(readMap(file, Warning.INSTANCE), file);
+				((IMultiMapModel) model).addSubordinateMap(
+						readMap(file, Warning.INSTANCE), file);
 			} catch (final IOException e) {
 				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
 						"a null path"), source);

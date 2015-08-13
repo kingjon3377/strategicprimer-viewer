@@ -210,10 +210,12 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 		}
 		if (rowState == State.Valid && colState == State.Valid) {
 			try {
-				map.setSelection(PointFactory.point(NUM_PARSER.parse(rowText).intValue(),
+				map.setSelection(
+						PointFactory.point(NUM_PARSER.parse(rowText).intValue(),
 						NUM_PARSER.parse(colText).intValue()));
 			} catch (ParseException e) {
-				LOGGER.log(Level.SEVERE, "Parse failure after we checked input was numeric", e);
+				LOGGER.log(Level.SEVERE,
+						"Parse failure after we checked input was numeric", e);
 			}
 			setVisible(false);
 			dispose();

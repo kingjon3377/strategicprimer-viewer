@@ -115,7 +115,8 @@ public class ViewReader implements INodeHandler<IMapView> {
 	public <S extends IMapView> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				TAG);
-		retval.addIntegerAttribute("current_player", obj.getPlayers().getCurrentPlayer().getPlayerId());
+		retval.addIntegerAttribute("current_player",
+				obj.getPlayers().getCurrentPlayer().getPlayerId());
 		retval.addIntegerAttribute("current_turn", obj.getCurrentTurn());
 		retval.addChild(ReaderAdapter.ADAPTER.write(obj.getMap()));
 		return retval;

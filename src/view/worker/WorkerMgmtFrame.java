@@ -144,8 +144,10 @@ public class WorkerMgmtFrame extends JFrame {
 				Object node = selPath.getLastPathComponent();
 				if (evt.isControlDown() && node instanceof AbstractReportNode) {
 					final Point point = ((AbstractReportNode) node).getPoint();
-					if (point.getRow() > Integer.MIN_VALUE) { // (-inf, -inf) replaces null
-						final IViewerModel vModel = getViewerModelFor(model, ioHandler);
+					// (-inf, -inf) replaces null
+					if (point.getRow() > Integer.MIN_VALUE) {
+						final IViewerModel vModel =
+								getViewerModelFor(model, ioHandler);
 						if (vModel == null) {
 							SystemOut.SYS_OUT.println("Failed to open a window");
 						} else {
@@ -188,15 +190,21 @@ public class WorkerMgmtFrame extends JFrame {
 		}
 		pack();
 	}
+
 	/**
-	 * @param model the driver-model of the worker-management GUI
-	 * @param ioh the I/O handler
-	 * @return the viewer model of a viewer window the same map as that in the given driver-model
+	 * @param model
+	 *            the driver-model of the worker-management GUI
+	 * @param ioh
+	 *            the I/O handler
+	 * @return the viewer model of a viewer window the same map as that in the
+	 *         given driver-model
 	 */
 	@Nullable
-	protected static IViewerModel getViewerModelFor(final IDriverModel model, final IOHandler ioh) {
+	protected static IViewerModel getViewerModelFor(final IDriverModel model,
+			final IOHandler ioh) {
 		for (Frame frame : WindowList.getFrames(false, true, true)) {
-			if (frame instanceof ViewerFrame && ((ViewerFrame) frame).getModel().getMapFile().equals(model.getMapFile())) {
+			if (frame instanceof ViewerFrame && ((ViewerFrame) frame).getModel()
+					.getMapFile().equals(model.getMapFile())) {
 				frame.toFront();
 				if (frame.getExtendedState() == Frame.ICONIFIED) {
 					frame.setExtendedState(Frame.NORMAL);
@@ -204,7 +212,8 @@ public class WorkerMgmtFrame extends JFrame {
 				return ((ViewerFrame) frame).getModel();
 			}
 		}
-		ViewerFrame frame = new ViewerFrame(new ViewerModel(model.getMap(), model.getMapFile()), ioh);
+		ViewerFrame frame = new ViewerFrame(
+				new ViewerModel(model.getMap(), model.getMapFile()), ioh);
 		frame.setVisible(true);
 		return frame.getModel();
 	}

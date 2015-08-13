@@ -40,12 +40,19 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 	 * The names of skills we're proxying.
 	 */
 	private Set<String> skillNames;
+
 	/**
-	 * @param nomen the name of the Job
-	 * @param parall whether the workers containing these jobs are corresponding workers in different maps (if true) or workers in the same unit (if false)
-	 * @param workers being proxied
+	 * @param nomen
+	 *            the name of the Job
+	 * @param parall
+	 *            whether the workers containing these jobs are corresponding
+	 *            workers in different maps (if true) or workers in the same
+	 *            unit (if false)
+	 * @param workers
+	 *            being proxied
 	 */
-	public ProxyJob(final String nomen, final boolean parall, final IWorker... workers) {
+	public ProxyJob(final String nomen, final boolean parall,
+			final IWorker... workers) {
 		parallel = parall;
 		name = nomen;
 		skillNames = new HashSet<>();

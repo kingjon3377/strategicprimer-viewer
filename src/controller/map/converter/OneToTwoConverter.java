@@ -16,6 +16,11 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
+import controller.exploration.TableLoader;
+import controller.map.formatexceptions.MapVersionException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.IDFactory;
+import controller.map.misc.MapReaderAdapter;
 import model.exploration.old.ExplorationRunner;
 import model.exploration.old.MissingTableException;
 import model.map.IMapNG;
@@ -46,11 +51,6 @@ import model.workermgmt.RaceFactory;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
-import controller.exploration.TableLoader;
-import controller.map.formatexceptions.MapVersionException;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
-import controller.map.misc.MapReaderAdapter;
 
 /**
  * A class to convert a version-1 map to a version-2 map with greater
@@ -223,7 +223,8 @@ public class OneToTwoConverter { // NOPMD
 			Collections.shuffle(initial, random);
 			Collections.shuffle(fixtures, random);
 			int iterations;
-			for (iterations = 0; iterations < MAX_ITERATIONS && !fixtures.isEmpty(); iterations++) {
+			for (iterations = 0; iterations < MAX_ITERATIONS
+					&& !fixtures.isEmpty(); iterations++) {
 				if (isSubtileSuitable(newMap, assertNotNull(initial.get(0)))) {
 					final TileFixture fix = assertNotNull(fixtures.remove(0));
 					changeFor(newMap, assertNotNull(initial.get(0)), fix);

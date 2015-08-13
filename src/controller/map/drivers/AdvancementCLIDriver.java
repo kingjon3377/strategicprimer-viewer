@@ -117,9 +117,12 @@ public class AdvancementCLIDriver implements ISPDriver {
 		List<Player> playerList = new ArrayList<>(allPlayers);
 		try {
 			while (true) {
-				int playerNum = cli.chooseFromList(playerList, "Available players:", "No players found.", "Chosen player: ", false);
+				int playerNum =
+						cli.chooseFromList(playerList, "Available players:",
+								"No players found.", "Chosen player: ", false);
 				if (playerNum >= 0 && playerNum < playerList.size()) {
-					advanceWorkers(model, NullCleaner.assertNotNull(playerList.remove(playerNum)));
+					advanceWorkers(model, NullCleaner
+							.assertNotNull(playerList.remove(playerNum)));
 				} else {
 					break;
 				}
@@ -141,8 +144,10 @@ public class AdvancementCLIDriver implements ISPDriver {
 	 * @param player the player whose workers we're interested in
 	 * @throws IOException on I/O error getting input from user
 	 */
-	private void advanceWorkers(final IWorkerModel model, final Player player) throws IOException {
-		boolean proxy = !cli.inputBoolean("Add experience to workers individually? ");
+	private void advanceWorkers(final IWorkerModel model, final Player player)
+			throws IOException {
+		boolean proxy =
+				!cli.inputBoolean("Add experience to workers individually? ");
 		List<IUnit> units = model.getUnits(player);
 		while (!units.isEmpty()) {
 			int unitNum = cli.chooseFromList(units,
@@ -150,9 +155,11 @@ public class AdvancementCLIDriver implements ISPDriver {
 					"No unadvanced units remain.", "Chosen unit: ", false);
 			if (unitNum >= 0 && unitNum < units.size()) {
 				if (proxy) {
-					advanceWorker(new ProxyWorker(NullCleaner.assertNotNull(units.remove(unitNum))));
+					advanceWorker(new ProxyWorker(
+							NullCleaner.assertNotNull(units.remove(unitNum))));
 				} else {
-					advanceWorkersInUnit(NullCleaner.assertNotNull(units.remove(unitNum)));
+					advanceWorkersInUnit(
+							NullCleaner.assertNotNull(units.remove(unitNum)));
 				}
 			} else {
 				break;
@@ -193,7 +200,8 @@ public class AdvancementCLIDriver implements ISPDriver {
 			jobs.add(job);
 		}
 		while (true) {
-			int jobNum = cli.chooseFromList(jobs, "Jobs in worker:", "No existing jobs.", "Job to advance: ", false);
+			int jobNum = cli.chooseFromList(jobs, "Jobs in worker:",
+					"No existing jobs.", "Job to advance: ", false);
 			if (jobNum > jobs.size()) {
 				break;
 			} else if (jobNum < 0 || jobNum == jobs.size()) {
@@ -224,7 +232,8 @@ public class AdvancementCLIDriver implements ISPDriver {
 			skills.add(skill);
 		}
 		while (true) {
-			int skillNum = cli.chooseFromList(skills, "Skills in Job:", "No existing Skills.", "Skill to advance: ", false);
+			int skillNum = cli.chooseFromList(skills, "Skills in Job:",
+					"No existing Skills.", "Skill to advance: ", false);
 			if (skillNum > skills.size()) {
 				break;
 			} else if (skillNum < 0 || skillNum == skills.size()) {
@@ -238,7 +247,8 @@ public class AdvancementCLIDriver implements ISPDriver {
 				continue;
 			} else {
 				int hours = cli.inputNumber("Hours of experience to add: ");
-				skills.get(skillNum).addHours(hours, SingletonRandom.RANDOM.nextInt(100));
+				skills.get(skillNum).addHours(hours,
+						SingletonRandom.RANDOM.nextInt(100));
 				if (!cli.inputBoolean("Select another Skill in this Job? ")) {
 					break;
 				}

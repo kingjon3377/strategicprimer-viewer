@@ -163,7 +163,8 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 				if (locPoint == null) {
 					locPoint = child.getPoint();
 				} else if (!locPoint.equals(child.getPoint())) {
-					locPoint = PointFactory.point(Integer.MIN_VALUE, Integer.MIN_VALUE);
+					locPoint = PointFactory.point(Integer.MIN_VALUE,
+							Integer.MIN_VALUE);
 				}
 			}
 			if (locPoint == null) {

@@ -26,8 +26,9 @@ import util.NullCleaner;
  */
 public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 	/**
-	 * If false, this is representing all the workers in a single unit; if true, it is representing
-	 * corresponding workers in corresponding units in different maps.
+	 * If false, this is representing all the workers in a single unit; if true,
+	 * it is representing corresponding workers in corresponding units in
+	 * different maps.
 	 */
 	private final boolean parallel;
 	/**

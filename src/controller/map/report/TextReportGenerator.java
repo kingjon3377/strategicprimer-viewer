@@ -129,7 +129,8 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 					"On turn ", Integer.toString(item.getTurn()), ": ",
 							item.getText());
 		} else {
-			return new SimpleReportNode(loc, "At ", loc.toString(), ": ", item.getText());
+			return new SimpleReportNode(loc, "At ", loc.toString(), ": ",
+					item.getText());
 		}
 	}
 

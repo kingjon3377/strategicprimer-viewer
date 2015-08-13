@@ -111,16 +111,20 @@ public final class TileCollection implements IMutableTileCollection {
 
 	/**
 	 * We don't replace the "retval = false" with "return false" because
-	 * {@link Tile#isSubset(ITile, Appendable, String)} has the side effect of printing
-	 * what makes it *not* a subset; we want that done for *all* relevant tiles.
+	 * {@link Tile#isSubset(ITile, Appendable, String)} has the side effect of
+	 * printing what makes it *not* a subset; we want that done for *all*
+	 * relevant tiles.
 	 *
-	 * @param obj another TileCollection
+	 * @param obj
+	 *            another TileCollection
 	 * @return whether it's a strict subset of this one
-	 * @param ostream the stream to write details of differences to
+	 * @param ostream
+	 *            the stream to write details of differences to
 	 * @param context
 	 *            a string to print before every line of output, describing the
 	 *            context
-	 * @throws IOException on I/O error writing output to the stream
+	 * @throws IOException
+	 *             on I/O error writing output to the stream
 	 */
 	@Override
 	public boolean isSubset(final ITileCollection obj,

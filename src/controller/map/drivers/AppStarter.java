@@ -142,7 +142,8 @@ public class AppStarter implements ISPDriver {
 					try {
 						startChooser(localGui, others);
 					} catch (DriverFailedException e) {
-						final String message = NullCleaner.assertNotNull(e.getMessage());
+						final String message =
+								NullCleaner.assertNotNull(e.getMessage());
 						lgr.log(Level.SEVERE, message, e.getCause());
 						ErrorShower.showErrorDialog(null, message);
 					}
@@ -156,7 +157,8 @@ public class AppStarter implements ISPDriver {
 					try {
 						startChosenDriver(driver, others);
 					} catch (DriverFailedException e) {
-						final String message = NullCleaner.assertNotNull(e.getMessage());
+						final String message =
+								NullCleaner.assertNotNull(e.getMessage());
 						lgr.log(Level.SEVERE, message, e.getCause());
 						ErrorShower.showErrorDialog(null, message);
 					}

@@ -391,7 +391,8 @@ public class Unit implements IUnit {
 				if ("unassigned".equals(name) || "unassigned".equals(kind)) {
 					if (!members.isEmpty() && !obj.iterator().hasNext()) {
 						ostream.append(ctxt);
-						ostream.append(" Nonempty 'unassigned' when submap has it empty\n");
+						ostream.append(
+								" Nonempty 'unassigned' when submap has it empty\n");
 					}
 				}
 				return true;

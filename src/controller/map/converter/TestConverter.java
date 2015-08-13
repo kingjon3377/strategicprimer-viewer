@@ -1,6 +1,9 @@
 package controller.map.converter;
 
 import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
 import model.map.IMapNG;
 import model.map.MapDimensions;
 import model.map.Player;
@@ -13,8 +16,6 @@ import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.towns.Fortress;
-
-import org.junit.Test;
 
 /**
  * The test case for map-conversion code paths.

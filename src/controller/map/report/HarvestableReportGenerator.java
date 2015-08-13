@@ -311,11 +311,12 @@ public class HarvestableReportGenerator extends // NOPMD
 							((Grove) item).isOrchard(), " orchard", " grove"));
 		} else if (item instanceof Meadow) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(loc, atPoint(loc), "A ", ((Meadow) item)//NOPMD
-					.getStatus().toString(), ternary(
-					((Meadow) item).isCultivated(), " cultivated ",
-					" wild or abandoned "), ((Meadow) item).getKind(), ternary(
-					((Meadow) item).isField(), " field", " meadow"));
+			return new SimpleReportNode(loc, atPoint(loc), "A ",
+					((Meadow) item).getStatus().toString(),
+					ternary(((Meadow) item).isCultivated(), " cultivated ",
+							" wild or abandoned "),
+					((Meadow) item).getKind(),
+					ternary(((Meadow) item).isField(), " field", " meadow"));
 		} else if (item instanceof Mine) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, atPoint(loc), item.toString()); //NOPMD

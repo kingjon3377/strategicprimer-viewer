@@ -58,8 +58,10 @@ public class WorkerModel extends AbstractMultiMapModel implements IWorkerModel {
 					if (point == null) {
 						continue;
 					}
-					for (IUnit unit : getUnits(map.getOtherFixtures(point), player)) {
-						@Nullable IUnit proxy = retval.get(Integer.valueOf(unit.getID()));
+					for (IUnit unit : getUnits(map.getOtherFixtures(point),
+							player)) {
+						@Nullable
+						IUnit proxy = retval.get(Integer.valueOf(unit.getID()));
 						if (proxy == null) {
 							proxy = new ProxyUnit(unit.getID());
 							((ProxyUnit) proxy).addProxied(unit);
@@ -77,7 +79,8 @@ public class WorkerModel extends AbstractMultiMapModel implements IWorkerModel {
 			final List<IUnit> retval = new ArrayList<>();
 			for (final Point point : getMap().locations()) {
 				if (point != null) {
-					retval.addAll(getUnits(getMap().getOtherFixtures(point), player));
+					retval.addAll(
+							getUnits(getMap().getOtherFixtures(point), player));
 				}
 			}
 			return retval;

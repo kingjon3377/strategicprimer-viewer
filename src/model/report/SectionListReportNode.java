@@ -42,7 +42,8 @@ public class SectionListReportNode extends AbstractReportNode {
 	 * @param lvl the header level
 	 * @param header the header text
 	 */
-	public SectionListReportNode(final Point point, final int lvl, final String header) {
+	public SectionListReportNode(final Point point, final int lvl,
+			final String header) {
 		super(point, header);
 		setLevel(lvl);
 		subheader = "";

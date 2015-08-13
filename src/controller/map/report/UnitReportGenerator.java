@@ -125,7 +125,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 							currentPlayer.equals(unit.getOwner())));
 				} else {
 					// TODO: what about others?
-					retval.add(new SimpleReportNode(loc, member.toString())); // NOPMD
+					retval.add(new SimpleReportNode(loc, member.toString()));
 				}
 				fixtures.remove(Integer.valueOf(member.getID()));
 			}
@@ -215,7 +215,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 *        experience---true only if the current player owns the worker.
 	 * @return a sub-report on that worker.
 	 */
-	private static AbstractReportNode produceWorkerRIR(final Point loc, final Worker worker,
+	private static AbstractReportNode produceWorkerRIR(final Point loc,
+			final Worker worker,
 			final boolean details) {
 		final AbstractReportNode retval = new ComplexReportNode(loc,
 				worker.getName() + ", a " + worker.getRace() + ". ");

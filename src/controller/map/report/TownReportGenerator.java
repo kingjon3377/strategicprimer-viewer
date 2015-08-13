@@ -184,7 +184,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			if (item.getOwner().isIndependent()) {
-				return new SimpleReportNode(loc, atPoint(loc), item.getName(), // NOPMD
+				return new SimpleReportNode(loc, atPoint(loc), item.getName(),
 						", an independent ", item.size().toString(), " ", item
 								.status().toString(), " ",
 						((AbstractTown) item).kind());

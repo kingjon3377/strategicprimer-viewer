@@ -289,7 +289,8 @@ public class ArrowKeyListener {
 		 */
 		@Override
 		protected void move() {
-			// TODO: Perhaps add proper support to DirectionSelectionChanger so we don't have to make two calls here
+			// TODO: Perhaps add proper support to DirectionSelectionChanger so
+			// we don't have to make two calls here
 			dsc.up();
 			dsc.right();
 		}
@@ -318,7 +319,8 @@ public class ArrowKeyListener {
 		 */
 		@Override
 		protected void move() {
-			// TODO: Perhaps add proper support to DirectionSelectionChanger so we don't have to make two calls here
+			// TODO: Perhaps add proper support to DirectionSelectionChanger so
+			// we don't have to make two calls here
 			dsc.up();
 			dsc.left();
 		}
@@ -347,7 +349,8 @@ public class ArrowKeyListener {
 		 */
 		@Override
 		protected void move() {
-			// TODO: Perhaps add proper support to DirectionSelectionChanger so we don't have to make two calls here
+			// TODO: Perhaps add proper support to DirectionSelectionChanger so
+			// we don't have to make two calls here
 			dsc.down();
 			dsc.right();
 		}
@@ -376,7 +379,8 @@ public class ArrowKeyListener {
 		 */
 		@Override
 		protected void move() {
-			// TODO: Perhaps add proper support to DirectionSelectionChanger so we don't have to make two calls here
+			// TODO: Perhaps add proper support to DirectionSelectionChanger so
+			// we don't have to make two calls here
 			dsc.down();
 			dsc.left();
 		}

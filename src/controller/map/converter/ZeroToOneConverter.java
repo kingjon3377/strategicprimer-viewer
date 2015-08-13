@@ -115,12 +115,16 @@ public class ZeroToOneConverter {
 	}
 
 	/**
-	 * Used to throw ParseException if a tile has a nonnumeric 'event'; now merely logs that, I think.
+	 * Used to throw ParseException if a tile has a nonnumeric 'event'; now
+	 * merely logs that, I think.
 	 *
-	 * @param element the current element
-	 * @param attrs its attributes.
+	 * @param element
+	 *            the current element
+	 * @param attrs
+	 *            its attributes.
 	 * @return the converted tile, in XML representation
-	 * @throws NumberFormatException if a tile has a non-numeric 'event'
+	 * @throws NumberFormatException
+	 *             if a tile has a non-numeric 'event'
 	 */
 	private static String convertTile(final StartElement element,
 			final Iterable<Attribute> attrs) {

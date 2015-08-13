@@ -137,7 +137,8 @@ public final class QueryCLI implements ISPDriver {
 	 * @param ostream the stream to write results to
 	 * @throws IOException on I/O error interacting with user
 	 */
-	private void count(final IMapNG map, final List<Player> players, final Appendable ostream) throws IOException {
+	private void count(final IMapNG map, final List<Player> players,
+			final Appendable ostream) throws IOException {
 		final int playerNum = helper.chooseFromList(players,
 				"Players in the map:", "Map contains no players",
 				"Owner of workers to count: ", true);
@@ -151,7 +152,8 @@ public final class QueryCLI implements ISPDriver {
 				continue;
 			}
 			for (TileFixture fix : map.getOtherFixtures(loc)) {
-				if (fix instanceof IUnit && player.equals(((IUnit) fix).getOwner())) {
+				if (fix instanceof IUnit
+						&& player.equals(((IUnit) fix).getOwner())) {
 					for (UnitMember member : (IUnit) fix) {
 						if (member instanceof IWorker) {
 							count++;
@@ -411,7 +413,7 @@ public final class QueryCLI implements ISPDriver {
 		ostream.append("Trap: Switch to the trap-modeling program ");
 		ostream.append("to run trapping or fish-trapping.\n");
 		ostream.append("Distance: Report the distance between two points.\n");
-		ostream.append("Count: Count the number of workers belonging to a player.\n");
+		ostream.append("Count: Count how many workers belong to a player.\n");
 		ostream.append("Quit: Exit the program.\n");
 	}
 

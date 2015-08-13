@@ -10,7 +10,8 @@ import model.map.fixtures.mobile.worker.IJob;
  * @author Jonathan Lovelace
  *
  */
-public interface IWorker extends UnitMember, Iterable<IJob>, HasName, HasKind, HasImage {
+public interface IWorker extends UnitMember, Iterable<IJob>, HasName, HasKind,
+		HasImage {
 	/**
 	 * Add a job.
 	 *

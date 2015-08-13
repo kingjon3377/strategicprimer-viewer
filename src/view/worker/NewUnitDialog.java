@@ -73,7 +73,9 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(NewUnitDialog.class.getName()));
+	private static final Logger LOGGER = NullCleaner
+			.assertNotNull(Logger.getLogger(NewUnitDialog.class.getName()));
+
 	/**
 	 * Constructor.
 	 *
@@ -138,10 +140,12 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 				int idNum;
 				if (IsNumeric.isNumeric(reqId)) {
 					try {
-						idNum = NumberFormat.getIntegerInstance().parse(reqId).intValue();
+						idNum = NumberFormat.getIntegerInstance().parse(reqId)
+								.intValue();
 						idf.register(idNum);
 					} catch (ParseException e) {
-						LOGGER.log(Level.INFO, "Parse error parsing user-specified ID", e);
+						LOGGER.log(Level.INFO,
+								"Parse error parsing user-specified ID", e);
 						idNum = idf.createID();
 					}
 				} else {

@@ -333,17 +333,25 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 		public String verbose() {
 			return "proxy";
 		}
+
 		/**
-		 * TODO: We should probably throw, or at least log, an exception when this is called
-		 * @param member ignored
+		 * TODO: We should probably throw, or at least log, an exception when
+		 * this is called
+		 *
+		 * @param member
+		 *            ignored
 		 */
 		@Override
 		public void addMember(final UnitMember member) {
 			// Do nothing
 		}
+
 		/**
-		 * TODO: We should probably throw, or at least log, an exception when this is called
-		 * @param member ignored
+		 * TODO: We should probably throw, or at least log, an exception when
+		 * this is called
+		 *
+		 * @param member
+		 *            ignored
 		 */
 		@Override
 		public void removeMember(final UnitMember member) {

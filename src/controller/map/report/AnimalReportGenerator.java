@@ -106,7 +106,8 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 					collection = new ListReportNode(string); // NOPMD
 					items.put(string, collection);
 				}
-				collection.add(produceRIR(fixtures, map, currentPlayer, animal, pair.first()));
+				collection.add(produceRIR(fixtures, map, currentPlayer, animal,
+						pair.first()));
 				fixtures.remove(Integer.valueOf(animal.getID()));
 			}
 		}

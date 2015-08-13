@@ -28,10 +28,15 @@ public class ProxySkill implements ISkill, ProxyFor<IJob> {
 	 * The Jobs we're proxying for.
 	 */
 	private final List<IJob> proxied = new ArrayList<>();
+
 	/**
-	 * @param nomen the name of the skill
-	 * @param parall whether the worker containing this represents corresponding units in different maps, rather than workers in a single unit
-	 * @param jobs the Jobs to add skill hours to when asked
+	 * @param nomen
+	 *            the name of the skill
+	 * @param parall
+	 *            whether the worker containing this represents corresponding
+	 *            units in different maps, rather than workers in a single unit
+	 * @param jobs
+	 *            the Jobs to add skill hours to when asked
 	 */
 	public ProxySkill(final String nomen, final boolean parall, final IJob... jobs) {
 		parallel = parall;
@@ -156,8 +161,11 @@ public class ProxySkill implements ISkill, ProxyFor<IJob> {
 	public void addProxied(final IJob item) {
 		proxied.add(item);
 	}
+
 	/**
-	 * Note that this is the *one* place where ProxySkill should be a ProxyFor<ISkill> rather than ProxyFor<IJob>.
+	 * Note that this is the *one* place where ProxySkill should be a ProxyFor
+	 * <ISkill> rather than ProxyFor<IJob>.
+	 *
 	 * @return the proxied Jobs.
 	 */
 	@Override

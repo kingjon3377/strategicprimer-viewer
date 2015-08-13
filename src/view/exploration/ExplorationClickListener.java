@@ -124,12 +124,14 @@ public final class ExplorationClickListener implements ActionListener,
 				for (final TileFixture fix : fixtures) {
 					if (fix instanceof Ground && map.getGround(dPoint) == null) {
 						map.setGround(dPoint, (Ground) fix);
-					} else if (fix instanceof Ground && fix.equals(map.getGround(dPoint))) {
+					} else if (fix instanceof Ground
+							&& fix.equals(map.getGround(dPoint))) {
 						continue;
 					} else if (fix instanceof Forest
 							&& map.getForest(dPoint) == null) {
 						map.setForest(dPoint, (Forest) fix);
-					} else if (fix instanceof Forest && fix.equals(map.getForest(dPoint))) {
+					} else if (fix instanceof Forest
+							&& fix.equals(map.getForest(dPoint))) {
 						continue;
 					} else if (fix instanceof Mountain) {
 						map.setMountainous(dPoint, true);

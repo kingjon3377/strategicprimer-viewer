@@ -576,8 +576,9 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			final int constitution = threeDeeSix();
 			final int conBonus = (constitution - STAT_BASIS) / 2;
 			final int hitp = 8 + conBonus + rollDeeEight(levels, conBonus);
-			final WorkerStats stats = new WorkerStats(hitp, hitp, threeDeeSix(), threeDeeSix(),
-					constitution, threeDeeSix(), threeDeeSix(), threeDeeSix());
+			final WorkerStats stats = new WorkerStats(hitp, hitp, threeDeeSix(),
+					threeDeeSix(), constitution, threeDeeSix(), threeDeeSix(),
+					threeDeeSix());
 			retval.setStats(stats);
 			if (levels > 0) {
 				SystemOut.SYS_OUT.println("Generated stats:");

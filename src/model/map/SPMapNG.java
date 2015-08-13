@@ -136,13 +136,16 @@ public class SPMapNG implements IMutableMapNG {
 				Forest forest = obj.getForest(point);
 				if (!Objects.equals(getForest(point), forest)
 						&& forest != null) {
-					// There are *far* too many false positives if we don't check the "other fixtures,"
-					// because of the way we represent this in the XML. If we ever start a new campaign
-					// with a different data representation---perhaps a database---we should remove this
+					// There are *far* too many false positives if we don't
+					// check the "other fixtures," because of the way we
+					// represent this in the XML. If we ever start a new
+					// campaign with a different data representation---perhaps a
+					// database---we should remove this
 					// check.
 					if (!fixtures.get(point).contains(forest)) {
 						out.append(ctxt);
-						out.append("\tHas forest we don't, or different primary forest\n");
+						out.append(
+								"\tHas forest we don't, or different primary forest\n");
 						retval = false;
 					}
 					// return false;
@@ -151,15 +154,21 @@ public class SPMapNG implements IMutableMapNG {
 				final Ground ourGround = getGround(point);
 				if (!Objects.equals(ourGround, theirGround)
 						&& theirGround != null) {
-					// There are *far* too many false positives if we don't check the "other fixtures,"
-					// because of the way we represent this in the XML. If we ever start a new campaign
-					// with a different data representation---perhaps a database---we should remove this
+					// There are *far* too many false positives if we don't
+					// check the "other fixtures," because of the way we
+					// represent this in the XML. If we ever start a new
+					// campaign with a different data representation---perhaps a
+					// database---we should remove this
 					// check. Except for the 'exposed' bit.
-					if (ourGround != null && ourGround.getKind().equals(theirGround.getKind()) && ourGround.isExposed()) {
+					if (ourGround != null
+							&& ourGround.getKind().equals(theirGround.getKind())
+							&& ourGround.isExposed()) {
 						// They just don't have the exposed bit set; carry on ...
-					} else if (ourGround == null || !fixtures.get(point).contains(theirGround)) {
+					} else if (ourGround == null
+							|| !fixtures.get(point).contains(theirGround)) {
 						out.append(ctxt);
-						out.append("\tHas different primary ground, or ground we don't\n");
+						out.append(
+								"\tHas different primary ground, or ground we don't\n");
 						retval = false;
 						// return false;
 					}
@@ -168,7 +177,8 @@ public class SPMapNG implements IMutableMapNG {
 						new ArrayList<>();
 				final Map<Integer, SubsettableFixture> ourSubsettables =
 						new HashMap<>();
-				// Because IUnit is Subsettable<IUnit> and thus incompatible with SubsettableFixture
+				// Because IUnit is Subsettable<IUnit> and thus incompatible
+				// with SubsettableFixture
 				final Map<Integer, IUnit> ourUnits = new HashMap<>();
 				for (TileFixture fix : getOtherFixtures(point)) {
 					if (fix instanceof SubsettableFixture) {
@@ -434,8 +444,8 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public int hashCode() {
-		return dimensions().hashCode() + (getCurrentTurn() << 3) + (getCurrentPlayer()
-				.hashCode() << 5);
+		return dimensions().hashCode() + (getCurrentTurn() << 3)
+				+ (getCurrentPlayer().hashCode() << 5);
 	}
 
 	/**

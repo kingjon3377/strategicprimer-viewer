@@ -89,7 +89,8 @@ public final class AdvancementStart implements ISPDriver {
 				for (String arg : args) {
 					if (arg != null && !arg.equals(args[0])) {
 						final File newFile = new File(arg);
-						model.addSubordinateMap(reader.readMap(newFile, warner), newFile);
+						model.addSubordinateMap(reader.readMap(newFile, warner),
+								newFile);
 					}
 				}
 				SwingUtilities.invokeLater(new WindowThread(new AdvancementFrame(
