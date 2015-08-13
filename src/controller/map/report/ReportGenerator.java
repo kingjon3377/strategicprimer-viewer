@@ -14,6 +14,7 @@ import model.map.Point;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Hill;
+import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.Fortress;
 import model.report.AbstractReportNode;
@@ -84,7 +85,7 @@ public final class ReportGenerator {
 		builder.append("</body>\n</html>\n");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			final IFixture fix = pair.second();
-			if (fix instanceof Hill || fix instanceof Sandbar) {
+			if (fix instanceof Hill || fix instanceof Sandbar || fix instanceof Oasis) {
 				fixtures.remove(Integer.valueOf(fix.getID()));
 				continue;
 			}
