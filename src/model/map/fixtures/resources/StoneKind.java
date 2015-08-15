@@ -22,7 +22,27 @@ public enum StoneKind {
 	/**
 	 * Slate.
 	 */
-	Slate("slate");
+	Slate("slate"),
+	/**
+	 * Pumice.
+	 */
+	Pumice("pumice"),
+	/**
+	 * Conglomerate.
+	 */
+	Conglomerate("conglomerate"),
+	/**
+	 * Sandstone.
+	 */
+	Sandstone("sandstone"),
+	/**
+	 * Laterite. TODO: Is this only under jungle?
+	 */
+	Laterite("laterite"),
+	/**
+	 * Shale.
+	 */
+	Shale("shale");
 	/**
 	 * A string representing the StoneKind.
 	 */
