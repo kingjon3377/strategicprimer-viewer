@@ -18,6 +18,7 @@ import model.listeners.MovementCostListener;
 import model.listeners.MovementCostSource;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
+import model.map.HasOwner;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
@@ -29,6 +30,7 @@ import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
+import util.NullCleaner;
 import util.Pair;
 import view.map.details.FixtureList;
 
@@ -95,6 +97,8 @@ public final class ExplorationClickListener implements ActionListener,
 	 * method because it has to be run on the EDT to prevent concurrency issues,
 	 * and putting this code in the Runnable means accessing private members
 	 * from that inner class ...
+	 *
+	 * TODO: Remove caches from main map.
 	 */
 	protected void handleMove() {
 		try {
@@ -117,26 +121,29 @@ public final class ExplorationClickListener implements ActionListener,
 			}
 			model.move(direction);
 			Point dPoint = model.getSelectedUnitLocation();
+			Player player = NullCleaner.assertNotNull(model.getSelectedUnit()).getOwner();
 			for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 				final IMutableMapNG map = pair.first();
 				map.setBaseTerrain(dPoint, model.getMap()
 						.getBaseTerrain(dPoint));
 				for (final TileFixture fix : fixtures) {
 					if (fix instanceof Ground && map.getGround(dPoint) == null) {
-						map.setGround(dPoint, (Ground) fix);
+						map.setGround(dPoint, ((Ground) fix).copy(false));
 					} else if (fix instanceof Ground
 							&& fix.equals(map.getGround(dPoint))) {
 						continue;
 					} else if (fix instanceof Forest
 							&& map.getForest(dPoint) == null) {
-						map.setForest(dPoint, (Forest) fix);
+						map.setForest(dPoint, ((Forest) fix).copy(false));
 					} else if (fix instanceof Forest
 							&& fix.equals(map.getForest(dPoint))) {
 						continue;
 					} else if (fix instanceof Mountain) {
 						map.setMountainous(dPoint, true);
 					} else if (fix != null && !hasFixture(map, dPoint, fix)) {
-						map.addFixture(dPoint, fix);
+						boolean zero = fix instanceof HasOwner && !((HasOwner) fix)
+								.getOwner().equals(player);
+						map.addFixture(dPoint, fix.copy(zero));
 					}
 				}
 			}

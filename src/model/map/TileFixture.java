@@ -26,4 +26,11 @@ public interface TileFixture extends IFixture, Comparable<TileFixture> {
 	 *         what it is when an explorer happens on it.
 	 */
 	String shortDesc();
+	/**
+	 * Specialization of method from IFixture.
+	 * @return a copy of this fixture
+	 * @param zero whether to "zero out" any sensitive information
+	 */
+	@Override
+	TileFixture copy(boolean zero);
 }
