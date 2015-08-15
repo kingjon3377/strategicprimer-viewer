@@ -529,7 +529,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 				return "null";
 			}
 			@Override
-			public IFixture copy(final boolean zero) {
+			public TileFixture copy(final boolean zero) {
 				throw new IllegalStateException("Leak of an all-but-null object");
 			}
 
