@@ -71,6 +71,27 @@ public class Unit implements IUnit {
 	}
 
 	/**
+	 * TODO: There should be some way to convey the unit's *size* without the
+	 * *details* of its contents. Or maybe we should give the contents but not
+	 * *their* details?
+	 *
+	 * @return a copy of this unit
+	 * @param zero
+	 *            whether to omit its contents and orders
+	 */
+	@Override
+	public Unit copy(final boolean zero) {
+		Unit retval = new Unit(owner, kind, name, id);
+		if (!zero) {
+			retval.setOrders(orders);
+			for (UnitMember member : this) {
+				retval.addMember(member.copy(false));
+			}
+		}
+		retval.setImage(image);
+		return retval;
+	}
+	/**
 	 *
 	 * @return the player that owns the unit
 	 */

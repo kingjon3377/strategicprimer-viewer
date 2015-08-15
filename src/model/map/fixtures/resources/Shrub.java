@@ -1,10 +1,10 @@
 package model.map.fixtures.resources;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A TileFixture to represent shrubs, or their aquatic equivalents, on a tile.
@@ -34,6 +34,16 @@ public class Shrub implements HarvestableFixture, HasKind {
 		id = idNum;
 	}
 
+	/**
+	 * @return a copy of this shrub
+	 * @param zero ignored, as there's no sensitive data
+	 */
+	@Override
+	public Shrub copy(final boolean zero) {
+		Shrub retval = new Shrub(description, id);
+		retval.setImage(image);
+		return retval;
+	}
 	/**
 	 * @return a description of the shrub
 	 */

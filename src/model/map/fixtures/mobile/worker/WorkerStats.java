@@ -76,7 +76,13 @@ public class WorkerStats {
 		wis = wisdom;
 		cha = charisma;
 	}
-
+	/**
+	 * @return a copy of this
+	 * @param zero ignored, as all our information is "essential"
+	 */
+	public WorkerStats copy(final boolean zero) {
+		return new WorkerStats(hp, maxHP, str, dex, con, intel, wis, cha);
+	}
 	/**
 	 * @return the worker's health
 	 */

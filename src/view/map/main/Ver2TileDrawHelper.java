@@ -19,6 +19,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.IMapNG;
@@ -31,9 +33,6 @@ import model.map.fixtures.RiverFixture;
 import model.map.fixtures.terrain.Mountain;
 import model.viewer.FixtureComparator;
 import model.viewer.ZOrderFilter;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.ImageLoader;
 import util.IteratorWrapper;
 import util.NullCleaner;
@@ -528,6 +527,10 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			@Override
 			public String shortDesc() {
 				return "null";
+			}
+			@Override
+			public IFixture copy(final boolean zero) {
+				throw new IllegalStateException("Leak of an all-but-null object");
 			}
 
 		};

@@ -2,12 +2,12 @@ package model.map.fixtures.mobile;
 
 import java.io.IOException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A troll. TODO: should probably be a unit, or something.
@@ -29,7 +29,16 @@ public class Troll implements MobileFixture, HasImage, UnitMember {
 	public Troll(final int idNum) {
 		id = idNum;
 	}
-
+	/**
+	 * @return a copy of this troll
+	 * @param zero ignored; there is no sensitive information to zero out
+	 */
+	@Override
+	public Troll copy(final boolean zero) {
+		Troll retval = new Troll(id);
+		retval.setImage(image);
+		return retval;
+	}
 	/**
 	 * @return a String representation of the djinn
 	 */

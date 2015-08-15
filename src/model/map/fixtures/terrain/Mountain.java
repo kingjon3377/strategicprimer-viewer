@@ -1,11 +1,11 @@
 package model.map.fixtures.terrain;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A mountain on the map---or at least a fixture representing mountainous
@@ -15,6 +15,20 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  */
 public class Mountain implements TerrainFixture, HasImage {
+	/**
+	 * Even though Mountains have no state other than their image, we still copy
+	 * because they might eventually.
+	 *
+	 * @return a copy of this mountain
+	 * @param zero
+	 *            ignored, as a mountain has no state (other than its image)
+	 */
+	@Override
+	public Mountain copy(final boolean zero) {
+		Mountain retval = new Mountain();
+		retval.setImage(image);
+		return retval;
+	}
 	/**
 	 * @return a String representation of the forest.
 	 */

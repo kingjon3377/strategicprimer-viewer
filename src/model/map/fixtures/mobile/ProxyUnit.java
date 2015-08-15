@@ -47,6 +47,18 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		}
 	}
 	/**
+	 * @return a copy of this proxy
+	 * @param zero whether to "zero out" sensitive information
+	 */
+	@Override
+	public IUnit copy(final boolean zero) {
+		ProxyUnit retval = new ProxyUnit(id);
+		for (IUnit unit : proxied) {
+			retval.addProxied(unit.copy(zero));
+		}
+		return retval;
+	}
+	/**
 	 * The ID # of the units we are a proxy for.
 	 */
 	private final int id;
@@ -383,12 +395,30 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		 */
 		private List<UnitMember> proxiedMembers = new ArrayList<>();
 		/**
+		 * No-arg no-op constructor for use in copy().
+		 */
+		private ProxyMember() {
+			// do nothing
+		}
+		/**
 		 * @param member the first member to proxy
 		 */
 		public ProxyMember(final UnitMember member) {
 			proxiedMembers.add(member);
 		}
 
+		/**
+		 * @return a copy of this proxy
+		 * @param zero whether to "zero out" sensitive information
+		 */
+		@Override
+		public ProxyMember copy(final boolean zero) {
+			ProxyMember retval = new ProxyMember();
+			for (UnitMember member : proxiedMembers) {
+				retval.addProxied(member.copy(zero));
+			}
+			return retval;
+		}
 		/**
 		 * @return the ID number of the first proxied unit member (since they
 		 *         should all have the same, in the only usage of this class)

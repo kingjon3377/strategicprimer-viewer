@@ -1,6 +1,7 @@
 package view.worker;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -138,6 +139,8 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 	/**
 	 * A "unit" that serves as the proxy, for orders purposes, for all units of
 	 * a kind.
+	 *
+	 * FIXME: This should probably be removed in favor of the top-level ProxyUnit class.
 	 */
 	private static class ProxyUnit implements IUnit {
 		/**
@@ -162,6 +165,18 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 			kind = unitKind;
 			units = unitsList;
 			owner = playr;
+		}
+		/**
+		 * @return a copy of this proxy
+		 * @param zero whether to "zero out" sensitive information
+		 */
+		@Override
+		public IUnit copy(final boolean zero) {
+			List<IUnit> copies = new ArrayList<>();
+			for (IUnit unit : units) {
+				copies.add(unit.copy(zero));
+			}
+			return new ProxyUnit(kind, copies, owner);
 		}
 		/**
 		 * @return a dummy Z-value

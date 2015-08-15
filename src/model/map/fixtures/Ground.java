@@ -1,11 +1,11 @@
 package model.map.fixtures;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A TileFixture to represent the basic rock beneath the tile, possibly exposed.
@@ -38,6 +38,16 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	public Ground(final String desc, final boolean exp) {
 		kind = desc;
 		exposed = exp;
+	}
+	/**
+	 * @return a copy of this ground
+	 * @param zero ignored, as there's no sensitive data
+	 */
+	@Override
+	public Ground copy(final boolean zero) {
+		Ground retval = new Ground(kind, exposed);
+		retval.setImage(image);
+		return retval;
 	}
 
 	/**

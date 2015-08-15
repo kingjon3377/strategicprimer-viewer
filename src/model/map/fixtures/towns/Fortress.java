@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.FixtureIterable;
 import model.map.HasImage;
 import model.map.IFixture;
@@ -14,9 +16,6 @@ import model.map.Player;
 import model.map.SubsettableFixture;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.IUnit;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 
 /**
@@ -62,7 +61,22 @@ public class Fortress implements HasImage, ITownFixture,
 		units = new ArrayList<>();
 		id = idNum;
 	}
-
+	/**
+	 * TODO: Should we omit its name?
+	 * @return a copy of this fortress
+	 * @param zero whether to omit the fortress's contents
+	 */
+	@Override
+	public Fortress copy(final boolean zero) {
+		Fortress retval = new Fortress(owner, name, id);
+		if (!zero) {
+			for (IUnit unit : this) {
+				retval.addUnit(unit.copy(false));
+			}
+		}
+		retval.setImage(image);
+		return retval;
+	}
 	/**
 	 *
 	 * @return the units in the fortress.

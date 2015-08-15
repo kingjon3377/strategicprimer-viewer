@@ -2,13 +2,13 @@ package model.map.fixtures.mobile;
 
 import java.io.IOException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A centaur. TODO: Should probably be a kind of unit instead, or something ...
@@ -38,6 +38,16 @@ public class Centaur implements MobileFixture, HasImage, HasKind, UnitMember {
 		id = idNum;
 	}
 
+	/**
+	 * @return a copy of this centaur
+	 * @param zero ignored, as a centaur has no sensitive information
+	 */
+	@Override
+	public Centaur copy(final boolean zero) {
+		Centaur retval = new Centaur(kind, id);
+		retval.setImage(image);
+		return retval;
+	}
 	/**
 	 * @return the kind of centaur
 	 */

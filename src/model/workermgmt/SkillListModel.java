@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.swing.DefaultListModel;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.listeners.AddRemoveListener;
 import model.listeners.CompletionListener;
 import model.listeners.CompletionSource;
@@ -15,9 +17,6 @@ import model.listeners.LevelGainListener;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Skill;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.EmptyIterator;
 import util.NullCleaner;
 
@@ -69,6 +68,14 @@ public final class SkillListModel extends DefaultListModel<ISkill> implements
 		@Override
 		public int getLevel() {
 			return -1;
+		}
+		/**
+		 * @return nothing
+		 * @param zero ignored
+		 */
+		@Override
+		public IJob copy(final boolean zero) {
+			throw new IllegalStateException("Tried to copy a 'null' job");
 		}
 	};
 	/**

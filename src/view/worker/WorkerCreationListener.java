@@ -152,6 +152,10 @@ public final class WorkerCreationListener implements ActionListener,
 		public void removeMember(final UnitMember member) {
 			// Do nothing
 		}
+		@Override
+		public IUnit copy(final boolean zero) {
+			throw new IllegalStateException("Tried to copy 'null' unit");
+		}
 	};
 	/**
 	 * The tree model.

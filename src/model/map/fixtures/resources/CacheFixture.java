@@ -1,11 +1,10 @@
 package model.map.fixtures.resources;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 
 /**
@@ -46,6 +45,16 @@ public class CacheFixture implements HarvestableFixture, HasKind {
 		id = idNum;
 	}
 
+	/**
+	 * @return a copy of this cache
+	 * @param zero ignored, as there's no sensitive data
+	 */
+	@Override
+	public CacheFixture copy(final boolean zero) {
+		CacheFixture retval = new CacheFixture(kind, contents, id);
+		retval.setImage(image);
+		return retval;
+	}
 	/**
 	 * @return what kind of things this is a cache of
 	 */

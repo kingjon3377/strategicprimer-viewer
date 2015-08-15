@@ -1,12 +1,11 @@
 package model.map.fixtures.resources;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasKind;
 import model.map.IEvent;
 import model.map.IFixture;
 import model.map.TileFixture;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 
 /**
@@ -29,6 +28,21 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 		id = idNum;
 	}
 
+	/**
+	 * @return a copy of this deposit
+	 * @param zero whether to zero out the DC
+	 */
+	@Override
+	public StoneDeposit copy(final boolean zero) {
+		StoneDeposit retval;
+		if (zero) {
+			retval = new StoneDeposit(stone, 0, id);
+		} else {
+			retval = new StoneDeposit(stone, dc, id);
+		}
+		retval.setImage(image);
+		return retval;
+	}
 	/**
 	 * What kind of stone this deposit is.
 	 */

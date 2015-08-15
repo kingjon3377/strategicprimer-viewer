@@ -1,11 +1,11 @@
 package model.map.fixtures.terrain;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A sandbar on the map.
@@ -132,5 +132,15 @@ public class Sandbar implements TerrainFixture, HasImage {
 	@Override
 	public String shortDesc() {
 		return "a sandbar";
+	}
+	/**
+	 * @return a copy of this sandbar
+	 * @param zero ignored, as a sandbar has no sensitive information
+	 */
+	@Override
+	public Sandbar copy(final boolean zero) {
+		Sandbar retval = new Sandbar(id);
+		retval.setImage(image);
+		return retval;
 	}
 }

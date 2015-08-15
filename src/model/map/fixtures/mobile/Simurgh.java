@@ -2,12 +2,12 @@ package model.map.fixtures.mobile;
 
 import java.io.IOException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A simurgh. TODO: should probably be a unit, or something.
@@ -28,6 +28,16 @@ public class Simurgh implements MobileFixture, HasImage, UnitMember {
 		id = idNum;
 	}
 
+	/**
+	 * @return a copy of this simurgh
+	 * @param zero ignored, as a simurgh has no sensitive information
+	 */
+	@Override
+	public Simurgh copy(final boolean zero) {
+		Simurgh retval = new Simurgh(id);
+		retval.setImage(image);
+		return retval;
+	}
 	/**
 	 * @return a String representation of the djinn
 	 */

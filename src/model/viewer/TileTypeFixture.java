@@ -38,6 +38,21 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	}
 
 	/**
+	 * @return a copy of this fixture
+	 * @param zero
+	 *            ignored, as this has no state other than the terrain
+	 * @deprecated This class should only ever be in a FixtureListModel, and
+	 *             copying a tile's terrain type should be handled specially
+	 *             anyway, so this method should never be called.
+	 */
+	@Deprecated
+	@Override
+	public TileTypeFixture copy(final boolean zero) {
+		TileTypeFixture retval = new TileTypeFixture(ttype);
+		retval.setImage(image);
+		return retval;
+	}
+	/**
 	 * @param obj another TileFixture
 	 * @return the result of a comparison
 	 * @deprecated This class should only ever be in a FixtureListModel, so this

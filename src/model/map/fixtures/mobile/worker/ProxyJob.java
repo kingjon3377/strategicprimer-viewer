@@ -85,6 +85,18 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 		}
 	}
 	/**
+	 * @return a copy of this
+	 * @param zero whether to "zero out" sensitive information
+	 */
+	@Override
+	public IJob copy(final boolean zero) {
+		ProxyJob retval = new ProxyJob(name, parallel);
+		for (IJob job : proxiedJobs) {
+			retval.addProxied(job.copy(zero));
+		}
+		return retval;
+	}
+	/**
 	 * @return the name of the Job.
 	 */
 	@Override

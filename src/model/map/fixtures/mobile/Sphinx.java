@@ -2,12 +2,12 @@ package model.map.fixtures.mobile;
 
 import java.io.IOException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A sphinx. TODO: should probably be a unit, or something.
@@ -30,6 +30,16 @@ public class Sphinx implements MobileFixture, HasImage, UnitMember {
 		id = idNum;
 	}
 
+	/**
+	 * @return a copy of this sphinx
+	 * @param zero ignored, as a sphinx has no sensitive information
+	 */
+	@Override
+	public Sphinx copy(final boolean zero) {
+		Sphinx retval = new Sphinx(id);
+		retval.setImage(image);
+		return retval;
+	}
 	/**
 	 * @return a String representation of the djinn
 	 */

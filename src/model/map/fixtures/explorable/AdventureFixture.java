@@ -53,6 +53,16 @@ public class AdventureFixture implements ExplorableFixture, HasOwner {
 		id = idNum;
 	}
 	/**
+	 * @return a copy of this fixture
+	 * @param zero ignored, as there is no sensitive information that is not essential
+	 */
+	@Override
+	public AdventureFixture copy(final boolean zero) {
+		AdventureFixture retval = new AdventureFixture(owner, briefDesc, fullDesc, id);
+		retval.setImage(image);
+		return retval;
+	}
+	/**
 	 * @return a brief description of the adventure
 	 */
 	public String getBriefDescription() {

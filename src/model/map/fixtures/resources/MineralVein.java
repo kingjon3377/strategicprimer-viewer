@@ -1,12 +1,11 @@
 package model.map.fixtures.resources;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasKind;
 import model.map.IEvent;
 import model.map.IFixture;
 import model.map.TileFixture;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 
 /**
@@ -50,6 +49,21 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 		id = idNum;
 	}
 
+	/**
+	 * @return a copy of this vein
+	 * @param zero whether to zero out the DC
+	 */
+	@Override
+	public MineralVein copy(final boolean zero) {
+		MineralVein retval;
+		if (zero) {
+			retval = new MineralVein(mineral, exposed, 0, id);
+		} else {
+			retval = new MineralVein(mineral, exposed, dc, id);
+		}
+		retval.setImage(image);
+		return retval;
+	}
 	/**
 	 *
 	 * @return what kind of mineral this is

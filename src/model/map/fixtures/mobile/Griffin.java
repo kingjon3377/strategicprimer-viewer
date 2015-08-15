@@ -2,12 +2,12 @@ package model.map.fixtures.mobile;
 
 import java.io.IOException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A griffin. TODO: should probably be a unit, or something.
@@ -28,6 +28,16 @@ public class Griffin implements MobileFixture, HasImage, UnitMember {
 		id = idNum;
 	}
 
+	/**
+	 * @return a copy of this troll
+	 * @param zero ignored; there is no sensitive information to zero out
+	 */
+	@Override
+	public Griffin copy(final boolean zero) {
+		Griffin retval = new Griffin(id);
+		retval.setImage(image);
+		return retval;
+	}
 	/**
 	 * @return a String representation of the griffin
 	 */

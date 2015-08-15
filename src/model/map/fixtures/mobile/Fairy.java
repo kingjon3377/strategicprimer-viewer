@@ -2,13 +2,13 @@ package model.map.fixtures.mobile;
 
 import java.io.IOException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A fairy. TODO: should probably be a unit, or something.
@@ -38,6 +38,16 @@ public class Fairy implements MobileFixture, HasImage, HasKind, UnitMember {
 		id = idNum;
 	}
 
+	/**
+	 * @return a copy of this fairy
+	 * @param zero ignored, as a fairy has no sensitive information
+	 */
+	@Override
+	public Fairy copy(final boolean zero) {
+		Fairy retval = new Fairy(kind, id);
+		retval.setImage(image);
+		return retval;
+	}
 	/**
 	 * @return the kind of fairy
 	 */

@@ -1,12 +1,12 @@
 package model.map.fixtures.terrain;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A forest on a tile.
@@ -49,6 +49,16 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 		rows = rowed;
 	}
 
+	/**
+	 * @return a copy of this forest
+	 * @param zero ignored, as there's no sensitive data
+	 */
+	@Override
+	public Forest copy(final boolean zero) {
+		Forest retval = new Forest(trees, rows);
+		retval.setImage(image);
+		return retval;
+	}
 	/**
 	 * @return a String representation of the forest.
 	 */

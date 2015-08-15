@@ -28,6 +28,22 @@ public final class City extends AbstractTown {
 	}
 
 	/**
+	 * TODO: Should we "zero out" the name or owner?
+	 * @return a copy of this city
+	 * @param zero whether to zero out the DC
+	 */
+	@Override
+	public City copy(final boolean zero) {
+		City retval;
+		if (zero) {
+			retval = new City(status(), size(), 0, getName(), id, getOwner());
+		} else {
+			retval = new City(status(), size(), dc, getName(), id, getOwner());
+		}
+		retval.setImage(getImage());
+		return retval;
+	}
+	/**
 	 * The DC to discover the city. TODO: Should perhaps be mutable.
 	 */
 	private final int dc; // NOPMD

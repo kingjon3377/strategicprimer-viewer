@@ -2,14 +2,13 @@ package model.map.fixtures.mobile;
 
 import java.io.IOException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 
 /**
@@ -284,5 +283,17 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	@Override
 	public String shortDesc() {
 		return toString();
+	}
+
+	/**
+	 * @return a copy of this
+	 * @param zero whether to "zero out" sensitive information
+	 */
+	@Override
+	public Animal copy(final boolean zero) {
+		// TODO: Should we "zero" out any information?
+		Animal retval = new Animal(kind, traces, talking, status, id);
+		retval.setImage(image);
+		return retval;
 	}
 }

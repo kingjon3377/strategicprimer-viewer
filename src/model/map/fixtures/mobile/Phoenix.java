@@ -2,12 +2,12 @@ package model.map.fixtures.mobile;
 
 import java.io.IOException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A phoenix. TODO: should probably be a unit, or something.
@@ -28,6 +28,16 @@ public class Phoenix implements MobileFixture, HasImage, UnitMember {
 		id = idNum;
 	}
 
+	/**
+	 * @return a copy of this phoenix
+	 * @param zero ignored, as a phoenix has no sensitive information
+	 */
+	@Override
+	public Phoenix copy(final boolean zero) {
+		Phoenix retval = new Phoenix(id);
+		retval.setImage(image);
+		return retval;
+	}
 	/**
 	 * @return a String representation of the djinn
 	 */

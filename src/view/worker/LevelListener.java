@@ -4,6 +4,8 @@ import static view.util.SystemOut.SYS_OUT;
 
 import java.io.IOException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.listeners.LevelGainListener;
 import model.listeners.SkillSelectionListener;
 import model.listeners.UnitMemberListener;
@@ -11,9 +13,6 @@ import model.map.HasName;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.ISkill;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 
 /**
@@ -56,6 +55,10 @@ public final class LevelListener implements LevelGainListener,
 		public int getHours() {
 			return -1;
 		}
+		@Override
+		public ISkill copy(final boolean zero) {
+			throw new IllegalStateException("copy called on null Skill");
+		}
 	};
 	/**
 	 * A type-safe null UnitMember.
@@ -84,6 +87,14 @@ public final class LevelListener implements LevelGainListener,
 		public boolean isSubset(final IFixture obj, final Appendable ostream,
 				final String context) throws IOException {
 			return false;
+		}
+		/**
+		 * @return nothing; throws
+		 * @param zero ignored
+		 */
+		@Override
+		public UnitMember copy(final boolean zero) {
+			throw new IllegalStateException("Tried to copy a null object");
 		}
 	};
 	/**

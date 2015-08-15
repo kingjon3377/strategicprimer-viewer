@@ -39,6 +39,16 @@ public class Dragon implements MobileFixture, HasImage, HasKind, UnitMember {
 	}
 
 	/**
+	 * @return a copy of this dragon
+	 * @param zero ignored, as a dragon has no sensitive information
+	 */
+	@Override
+	public Dragon copy(final boolean zero) {
+		Dragon retval = new Dragon(kind, id);
+		retval.setImage(image);
+		return retval;
+	}
+	/**
 	 * @return the kind of dragon
 	 */
 	@Override

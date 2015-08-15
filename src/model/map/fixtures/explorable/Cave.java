@@ -30,6 +30,21 @@ public final class Cave implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * @return a copy of this cave
+	 * @param zero whether to zero out the DC
+	 */
+	@Override
+	public Cave copy(final boolean zero) {
+		Cave retval;
+		if (zero) {
+			retval = new Cave(0, id);
+		} else {
+			retval = new Cave(dc, id);
+		}
+		retval.setImage(image);
+		return retval;
+	}
+	/**
 	 * The DC to discover the caves. TODO: Should perhaps be mutable.
 	 */
 	private final int dc; // NOPMD

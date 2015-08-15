@@ -1,11 +1,11 @@
 package model.map.fixtures.resources;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.towns.TownStatus;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A mine---a source of mineral resources.
@@ -41,6 +41,16 @@ public class Mine implements HarvestableFixture, HasKind {
 		id = idNum;
 	}
 
+	/**
+	 * @return a copy of this mine
+	 * @param zero ignored; there isn't any sensitive information
+	 */
+	@Override
+	public Mine copy(final boolean zero) {
+		Mine retval = new Mine(kind, status, id);
+		retval.setImage(image);
+		return retval;
+	}
 	/**
 	 * @return what the mine produces
 	 */

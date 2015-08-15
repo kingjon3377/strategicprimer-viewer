@@ -2,14 +2,13 @@ package model.map.fixtures.towns;
 
 import java.io.IOException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.SubsettableFixture;
 import model.map.TileFixture;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 
 /**
@@ -59,6 +58,19 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 		id = idNum;
 		owner = player;
 		race = vRace;
+	}
+
+	/**
+	 * @return a copy of this village
+	 * @param zero
+	 *            ignored, as a village has no sensitive information that is not
+	 *            essential
+	 */
+	@Override
+	public Village copy(final boolean zero) {
+		Village retval = new Village(status, name, id, owner, race);
+		retval.setImage(image);
+		return retval;
 	}
 
 	/**

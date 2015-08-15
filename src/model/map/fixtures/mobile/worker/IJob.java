@@ -21,5 +21,9 @@ public interface IJob extends HasName, Iterable<ISkill>, Subsettable<IJob> {
 	 * @return the worker's level in the job
 	 */
 	int getLevel();
-
+	/**
+	 * @return a copy of this Job
+	 * @param zero whether to "zero out" sensitive details
+	 */
+	IJob copy(boolean zero);
 }

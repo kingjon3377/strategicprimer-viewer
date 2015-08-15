@@ -21,4 +21,12 @@ public interface IFixture {
 	 * @return whether it's equal, ignoring ID (and DC for events), to this one
 	 */
 	boolean equalsIgnoringID(IFixture fix);
+
+	/**
+	 * @return A copy of this fixture, possibly "sanitized" in a way that won't
+	 *         break subsets.
+	 * @param zero
+	 *            whether to "zero out" (omit) sensitive information in the copy
+	 */
+	IFixture copy(boolean zero);
 }

@@ -12,6 +12,12 @@ import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
+import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
+import controller.map.formatexceptions.MapVersionException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.MapReaderAdapter;
 import model.exploration.SurroundingPointIterable;
 import model.map.HasOwner;
 import model.map.IFixture;
@@ -28,16 +34,9 @@ import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.ITownFixture;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.ArraySet;
 import util.NullCleaner;
 import util.Warning;
-import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
-import controller.map.formatexceptions.MapVersionException;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.MapReaderAdapter;
 
 /**
  * A driver to update a player's map to include a certain minimum distance
@@ -249,6 +248,10 @@ public class ExpansionDriver implements ISPDriver {
 			}
 			@Override
 			public void removeMember(final UnitMember member) {
+				throw ise;
+			}
+			@Override
+			public IUnit copy(final boolean zero) {
 				throw ise;
 			}
 		};

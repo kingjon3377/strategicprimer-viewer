@@ -46,6 +46,18 @@ public class ProxySkill implements ISkill, ProxyFor<IJob> {
 		}
 	}
 	/**
+	 * @return a copy of this proxy
+	 * @param zero whether to "zero out" sensitive information
+	 */
+	@Override
+	public ISkill copy(final boolean zero) {
+		ProxySkill retval = new ProxySkill(name, parallel);
+		for (IJob job : proxied) {
+			retval.addProxied(job.copy(zero));
+		}
+		return retval;
+	}
+	/**
 	 * @return the skills' name
 	 */
 	@Override

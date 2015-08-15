@@ -34,6 +34,21 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	}
 
 	/**
+	 * @return a copy of this battlefield
+	 * @param zero whether to zero out the DC
+	 */
+	@Override
+	public Battlefield copy(final boolean zero) {
+		Battlefield retval;
+		if (zero) {
+			retval = new Battlefield(0, id);
+		} else {
+			retval = new Battlefield(dc, id);
+		}
+		retval.setImage(image);
+		return retval;
+	}
+	/**
 	 * The DC to discover the battlefield. TODO: Should perhaps be mutable.
 	 */
 	private final int dc; // NOPMD

@@ -44,6 +44,13 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 	 */
 	private final List<IWorker> workers = new ArrayList<>();
 	/**
+	 * No-op constructor for use by copy().
+	 * @param paral whether this is a "parallel" or "serial" proxy
+	 */
+	private ProxyWorker(final boolean paral) {
+		parallel = paral;
+	}
+	/**
 	 * @param unit the unit to proxy for
 	 */
 	public ProxyWorker(final IUnit unit) {
@@ -64,6 +71,18 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 				proxyJobs.add(new ProxyJob(job, parallel, workerArray));
 			}
 		}
+	}
+	/**
+	 * @return a copy of this proxy
+	 * @param zero whether to "zero out" sensitive information
+	 */
+	@Override
+	public IWorker copy(final boolean zero) {
+		ProxyWorker retval = new ProxyWorker(parallel);
+		for (IWorker worker : workers) {
+			addProxied(worker.copy(zero));
+		}
+		return retval;
 	}
 	/**
 	 * @param proxied workers to proxy for

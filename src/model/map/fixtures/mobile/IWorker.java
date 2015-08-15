@@ -23,4 +23,11 @@ public interface IWorker extends UnitMember, Iterable<IJob>, HasName, HasKind,
 	 * @return the worker's race
 	 */
 	String getRace();
+	/**
+	 * Specialization of method from IFixture.
+	 * @return a copy of this worker
+	 * @param zero whether to "zero out" sensitive information
+	 */
+	@Override
+	IWorker copy(boolean zero);
 }

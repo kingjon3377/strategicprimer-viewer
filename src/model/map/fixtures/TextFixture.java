@@ -1,10 +1,10 @@
 package model.map.fixtures;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TileFixture;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A Fixture to encapsulate arbitrary text associated with a tile, so we can
@@ -37,6 +37,16 @@ public class TextFixture implements TileFixture, HasImage {
 	public TextFixture(final String theText, final int turnNum) {
 		text = theText;
 		turn = turnNum;
+	}
+	/**
+	 * @return a copy of this fixture
+	 * @param zero ignored, as a text fixture without its sensitive information is meaningless
+	 */
+	@Override
+	public TextFixture copy(final boolean zero) {
+		TextFixture retval = new TextFixture(text, turn);
+		retval.setImage(image);
+		return retval;
 	}
 
 	/**

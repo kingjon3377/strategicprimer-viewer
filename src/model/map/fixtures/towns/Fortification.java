@@ -30,6 +30,22 @@ public final class Fortification extends AbstractTown {
 	}
 
 	/**
+	 * TODO: Should we "zero out" the name or owner?
+	 * @return a copy of this fortification
+	 * @param zero whether to zero out the DC
+	 */
+	@Override
+	public Fortification copy(final boolean zero) {
+		Fortification retval;
+		if (zero) {
+			retval = new Fortification(status(), size(), 0, getName(), id, getOwner());
+		} else {
+			retval = new Fortification(status(), size(), dc, getName(), id, getOwner());
+		}
+		retval.setImage(getImage());
+		return retval;
+	}
+	/**
 	 * The DC to discover the fortification. TODO: Should perhaps be mutable.
 	 */
 	private final int dc; // NOPMD

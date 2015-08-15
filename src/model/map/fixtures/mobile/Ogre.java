@@ -2,12 +2,12 @@ package model.map.fixtures.mobile;
 
 import java.io.IOException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * An ogre. TODO: should probably be a unit, or something.
@@ -28,6 +28,16 @@ public class Ogre implements MobileFixture, HasImage, UnitMember { // NOPMD
 		id = idNum;
 	}
 
+	/**
+	 * @return a copy of this ogre
+	 * @param zero ignored, as an ogre has no sensitive information
+	 */
+	@Override
+	public Ogre copy(final boolean zero) {
+		Ogre retval = new Ogre(id);
+		retval.setImage(image);
+		return retval;
+	}
 	/**
 	 * @return a String representation of the ogre
 	 */

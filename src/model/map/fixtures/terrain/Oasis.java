@@ -1,11 +1,11 @@
 package model.map.fixtures.terrain;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * An oasis on the map.
@@ -24,6 +24,16 @@ public class Oasis implements TerrainFixture, HasImage {
 	 */
 	public Oasis(final int idNum) {
 		id = idNum;
+	}
+	/**
+	 * @return a copy of this oasis
+	 * @param zero ignored, as an oasis has no sensitive information
+	 */
+	@Override
+	public Oasis copy(final boolean zero) {
+		Oasis retval = new Oasis(id);
+		retval.setImage(image);
+		return retval;
 	}
 
 	/**

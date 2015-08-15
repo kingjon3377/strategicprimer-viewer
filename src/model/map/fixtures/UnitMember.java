@@ -14,4 +14,11 @@ import model.map.SubsettableFixture;
  */
 public interface UnitMember extends SubsettableFixture {
 	// Just a marker interface for now. TODO: members?
+	/**
+	 * A specialization of the method from IFixture.
+	 * @return a copy of the member
+	 * @param zero whether to "zero out" or omit sensitive information
+	 */
+	@Override
+	UnitMember copy(boolean zero);
 }

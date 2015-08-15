@@ -4,6 +4,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.IFixture;
 import model.map.Point;
+import model.map.PointFactory;
 import model.map.TileFixture;
 
 /**
@@ -40,6 +41,22 @@ public class Portal implements ExplorableFixture {
 		destinationWorld = dest;
 		destinationCoordinates = destCoords;
 		id = idNum;
+	}
+	/**
+	 * TODO: Should we "zero out" (to "unknown") the destination world?
+	 * @return a copy of this portal
+	 * @param zero whether to "zero out" the destination coordinates
+	 */
+	@Override
+	public Portal copy(final boolean zero) {
+		Portal retval;
+		if (zero) {
+			retval = new Portal(destinationWorld, PointFactory.point(-1,  -1), id);
+		} else {
+			retval = new Portal(destinationWorld, destinationCoordinates, id);
+		}
+		retval.setImage(image);
+		return retval;
 	}
 	/**
 	 * @return a string identifying the world the portal connects to

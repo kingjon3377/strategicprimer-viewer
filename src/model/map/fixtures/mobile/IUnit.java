@@ -36,4 +36,11 @@ public interface IUnit extends MobileFixture, HasImage, HasKind,
 	 * @param member the member to remove
 	 */
 	void removeMember(UnitMember member);
+	/**
+	 * A specialization of the method from IFixture.
+	 * @return a copy of the member
+	 * @param zero whether to "zero out" or omit sensitive information
+	 */
+	@Override
+	IUnit copy(boolean zero);
 }

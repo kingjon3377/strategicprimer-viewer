@@ -1,11 +1,10 @@
 package model.map.fixtures.resources;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 
 /**
@@ -49,6 +48,16 @@ public class Grove implements HarvestableFixture, HasKind {
 		id = idNum;
 	}
 
+	/**
+	 * @return a copy of this grove
+	 * @param zero ignored, as a grove has no sensitive information
+	 */
+	@Override
+	public Grove copy(final boolean zero) {
+		Grove retval = new Grove(orchard, cultivated, kind, id);
+		retval.setImage(image);
+		return retval;
+	}
 	/**
 	 * @return true if this is an orchard, false otherwise
 	 */

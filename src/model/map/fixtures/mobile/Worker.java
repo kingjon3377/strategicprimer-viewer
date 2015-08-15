@@ -301,4 +301,27 @@ public class Worker implements IWorker {
 	public String getImage() {
 		return image;
 	}
+	/**
+	 * @return a copy of this worker
+	 * @param zero whether to "zero out" the worker
+	 */
+	@Override
+	public Worker copy(final boolean zero) {
+		if (zero) {
+			Worker retval = new Worker(name, race, id);
+			retval.setImage(image);
+			return retval;
+		} else {
+			Worker retval = new Worker(name, race, id);
+			WorkerStats localStats = stats;
+			if (localStats != null) {
+				retval.setStats(localStats.copy(true));
+			}
+			retval.setImage(image);
+			for (IJob job : this) {
+				retval.addJob(job.copy(true));
+			}
+			return retval;
+		}
+	}
 }

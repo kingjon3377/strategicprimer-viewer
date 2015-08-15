@@ -25,4 +25,9 @@ public interface ISkill extends HasName {
 	 *        addition, level up and zero the hours instead.
 	 */
 	void addHours(int hrs, int condition);
+	/**
+	 * @return a copy of this skill
+	 * @param zero whether to "zero out" sensitive details
+	 */
+	ISkill copy(boolean zero);
 }

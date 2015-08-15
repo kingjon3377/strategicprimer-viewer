@@ -45,6 +45,22 @@ public class Job implements IJob { // NOPMD
 		level = levels;
 		skillSet.addAll(Arrays.asList(skills));
 	}
+	/**
+	 * @return a copy of this
+	 * @param zero whether to "zero out" sensitive information
+	 */
+	@Override
+	public IJob copy(final boolean zero) {
+		if (zero) {
+			return new Job(name, 0);
+		} else {
+			Job retval = new Job(name, level);
+			for (ISkill skill : this) {
+				retval.addSkill(skill.copy(false));
+			}
+			return retval;
+		}
+	}
 
 	/**
 	 * Add a skill.

@@ -5,13 +5,12 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.IFixture;
 import model.map.River;
 import model.map.SubsettableFixture;
 import model.map.TileFixture;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 
 /**
@@ -48,6 +47,20 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 		}
 	}
 
+	/**
+	 * @return a copy of this fixture
+	 * @param zero ignored, as this fixture has no sensitive information
+	 */
+	@Override
+	public RiverFixture copy(final boolean zero) {
+		RiverFixture retval = new RiverFixture();
+		for (River river : this) {
+			if (river != null) {
+				retval.addRiver(river);
+			}
+		}
+		return retval;
+	}
 	/**
 	 * Add a river.
 	 *
@@ -178,7 +191,7 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 	 * TODO: investigate how FreeCol does it.
 	 *
 	 * @return an ID for the fixture. This is constant because it's really a
-	 *         container for a ollection of rivers.
+	 *         container for a collection of rivers.
 	 *
 	 */
 	@Override
