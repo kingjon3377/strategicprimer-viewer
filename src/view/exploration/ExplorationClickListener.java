@@ -4,7 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
@@ -27,6 +29,7 @@ import model.map.TileFixture;
 import model.map.fixtures.Ground;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
+import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
@@ -122,6 +125,7 @@ public final class ExplorationClickListener implements ActionListener,
 			model.move(direction);
 			Point dPoint = model.getSelectedUnitLocation();
 			Player player = NullCleaner.assertNotNull(model.getSelectedUnit()).getOwner();
+			Set<CacheFixture> caches = new HashSet<>();
 			for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 				final IMutableMapNG map = pair.first();
 				map.setBaseTerrain(dPoint, model.getMap()
@@ -144,7 +148,15 @@ public final class ExplorationClickListener implements ActionListener,
 						boolean zero = fix instanceof HasOwner && !((HasOwner) fix)
 								.getOwner().equals(player);
 						map.addFixture(dPoint, fix.copy(zero));
+						if (fix instanceof CacheFixture) {
+							caches.add((CacheFixture) fix);
+						}
 					}
+				}
+			}
+			for (CacheFixture cache : caches) {
+				if (cache != null) {
+					model.getMap().removeFixture(dPoint, cache);
 				}
 			}
 		} catch (final TraversalImpossibleException except) {

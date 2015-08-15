@@ -24,6 +24,7 @@ import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
@@ -235,6 +236,9 @@ public class ExplorationCLI {
 					map.addFixture(dPoint, fix.copy(zero));
 				}
 			}
+		}
+		if (fix instanceof CacheFixture) {
+			model.getMap().removeFixture(dPoint, fix);
 		}
 	}
 
