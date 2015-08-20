@@ -174,12 +174,14 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 		final Worker[] workerArray =
 				NullCleaner.assertNotNull(workers.toArray(new Worker[workers
 						.size()]));
+		List<IJob> proxyJobsTemp = new ArrayList<>(proxyJobs);
 		for (final IJob job : item) {
 			String name = job.getName();
 			if (jobNames.contains(name)) {
 				for (IJob proxyJob : proxyJobs) {
 					if (proxyJob.getName().equals(name)) {
 						((ProxyJob) proxyJob).addProxied(job);
+						proxyJobsTemp.remove(proxyJob);
 					}
 				}
 			} else {
@@ -187,6 +189,11 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 				proxyJobs.add(new ProxyJob(name, parallel, workerArray));
 			}
 			jobNames.add(job.getName());
+		}
+		for (IJob proxyJob : proxyJobs) {
+			String name = proxyJob.getName();
+			Job job = new Job(name, 0);
+			((ProxyJob) proxyJob).addProxied(job);
 		}
 	}
 	/**
