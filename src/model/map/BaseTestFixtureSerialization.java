@@ -13,10 +13,6 @@ import java.util.Iterator;
 
 import javax.xml.stream.XMLStreamException;
 
-import util.FatalWarningException;
-import util.NullCleaner;
-import util.Warning;
-import util.Warning.Action;
 import controller.map.cxml.CompactXMLWriter;
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingChildException;
@@ -27,10 +23,31 @@ import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.iointerfaces.TestReaderFactory;
+import util.FatalWarningException;
+import util.NullCleaner;
+import util.Warning;
+import util.Warning.Action;
 
 // ESCA-JAVA0011:
 /**
  * An abstract base class for this helper method.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2012-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jonathan Lovelace
  *

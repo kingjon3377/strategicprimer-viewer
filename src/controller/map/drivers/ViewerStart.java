@@ -10,6 +10,13 @@ import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 
+import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.FileChooser;
+import controller.map.misc.FileChooser.ChoiceInterruptedException;
+import controller.map.misc.IOHandler;
+import controller.map.misc.MapReaderAdapter;
+import controller.map.misc.WindowThread;
 import model.map.IMutableMapNG;
 import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
@@ -19,17 +26,27 @@ import util.Warning.Action;
 import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
 import view.util.FilteredFileChooser;
-import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.FileChooser;
-import controller.map.misc.FileChooser.ChoiceInterruptedException;
-import controller.map.misc.IOHandler;
-import controller.map.misc.MapReaderAdapter;
-import controller.map.misc.WindowThread;
 
 /**
  * A class to start the viewer, to reduce circular dependencies between
  * packages.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2011-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jonathan Lovelace
  *

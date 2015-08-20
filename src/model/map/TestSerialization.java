@@ -17,6 +17,9 @@ import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.junit.Test;
+
+import controller.map.formatexceptions.SPFormatException;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Griffin;
@@ -24,16 +27,29 @@ import model.map.fixtures.mobile.Ogre;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.Fortress;
-
-import org.junit.Test;
-
 import util.NullCleaner;
 import util.Pair;
 import util.Warning.Action;
-import controller.map.formatexceptions.SPFormatException;
 
 /**
  * A class to test the serialization of XMLWritable objects other than Fixtures.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2012-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jonathan Lovelace
  *

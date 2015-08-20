@@ -14,6 +14,24 @@ import javax.swing.JLabel;
 import org.eclipse.jdt.annotation.Nullable;
 /**
  * A dialog to explain what this program is, and the sources of code and graphics.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2014-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -44,6 +62,10 @@ public class AboutDialog extends JDialog {
 				"Strategic Primer");
 		builder.append("</p>");
 		paragraph("Developed by Jonathan Lovelace");
+		builder.append("<p>Released under the terms of ");
+		link("https://www.gnu.org/licenses/gpl-3.0.en.html",
+				"the GNU General Public License version 3");
+		builder.append("</p>");
 		builder.append("<p>Unit image by jreijonen from ");
 		link("http://opengameart.org/content/faction-symbols-allies-axis",
 				"OpenGameArt");

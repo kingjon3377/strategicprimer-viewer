@@ -8,6 +8,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.listeners.AddRemoveListener;
 import model.listeners.CompletionListener;
 import model.listeners.JobSelectionListener;
@@ -17,11 +19,26 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.IJob;
 import model.workermgmt.JobsListModel;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 /**
  * A visual list of a worker's Jobs. We also handle listening for selection
  * changes.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2013-2014 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jonathan Lovelace
  *
