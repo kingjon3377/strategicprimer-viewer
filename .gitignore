@@ -1,0 +1,19 @@
+syntax: glob
+.bzr
+*.class
+bin/tiles.jar
+src/view/util/IsAdmin.java
+bin/tables
+.pt
+pmd-eclipse.log
+release/*
+junit/*
+javadocs/*
+bin/*.png
+bin/images/*.png
+.*.swp
+.*.swo
+.sawja_prefs
+org.eclipse.jdt.annotation*.jar
+.sauc.obj
+findbugs_analysis.xml
