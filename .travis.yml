@@ -4,5 +4,5 @@ jdk:
   - oraclejdk7
   - openjdk7
 before_install:
-  - ./install-launch4j.sh
-install: ant -Dlaunch4j.dir=./launch4j deps
+  - ./install-deps.sh
+install: ant -Dlaunch4j.dir=./launch4j
