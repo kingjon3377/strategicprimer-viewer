@@ -1,8 +1,9 @@
 language: java
+sudo: required
 jdk:
   - oraclejdk8
   - oraclejdk7
   - openjdk7
 before_install:
   - ./install-deps.sh
-install: ant -Dlaunch4j.dir=./launch4j
+install: ant -Dlaunch4j.dir=./launch4j -Dnullness.jar.path=/usr/share/eclipse/dropins/jdt/plugins/org.eclipse.jdt.annotation_1.0.0.dist.jar
