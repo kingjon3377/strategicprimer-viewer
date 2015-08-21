@@ -1,6 +1,8 @@
 language: java
-install: ant deps
 jdk:
   - oraclejdk8
   - oraclejdk7
   - openjdk7
+before_install:
+  - ./install-launch4j.sh
+install: ant -Dlaunch4j.dir=./launch4j deps
