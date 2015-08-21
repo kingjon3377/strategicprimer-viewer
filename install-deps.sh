@@ -7,3 +7,4 @@ tar xzf jarbundler-2.4.0.tar.gz
 mkdir -p "${HOME}/.ant/lib"
 mv -i jarbundler-2.4.0/jarbundler-2.4.0.jar "${HOME}/.ant/lib/"
 wget http://central.maven.org/maven2/org/eclipse/jdt/org.eclipse.jdt.annotation/1.1.0/org.eclipse.jdt.annotation-1.1.0.jar
+wget http://javagraphics.java.net/jars/WindowMenu.jar
