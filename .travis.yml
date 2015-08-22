@@ -14,3 +14,17 @@ before_install:
   - ./install-deps.sh
 install: true
 script: ant -Dlaunch4j.dir=./launch4j -Dnullness.jar.path=./org.eclipse.jdt.annotation-1.1.0.jar -Djunit.jar.path=/usr/share/java/junit4.jar -Dwindowmenu.jar.path=./WindowMenu.jar test
+deploy:
+  provider: releases
+  api_key:
+    secure: j6oZuPy9LFMj2MrUPupXHlwrHfNCl7Gl225hHYcC/7Eat9j1hW6B3cEkOG7RMMBfhI7kcipN0mPaWgT056SnMTY1VdXYS5NlDqCdFBnmMiZgV67GYmMcJLRs3hVhYQpNQE9xARucalC83FJyweyRsL3lwzkczIIhXrr2rB3auWTsB9P7AqLXFUS90frxBqqcf3lZTGGAAwp7l/jD7wlNUXsvJN1llpM6FCf0QqvsF9wfvFx0RD9bpMYYdH5eQ8NEudnJA8ad1klD0kOZ4hBZ/fsgTcJwHoLd+EO6d8DdHCaVbFeVZ7p6jE1ayFzYYf2iHfbQbRqecmmNGwllXGC3dWi5laO+HENxB9nyS4CO15wQASbUJ6iSKiqDyPMdhm7zy+DbHXpnIXEqLcQAFoh5JwGnrcxO75EBTnbY0QA/gIACPTvDZWAuKODGcwiN9YiGAfqRYZOO4Pk3hSX1xd/JX6HDJ/zn4PnhtgMn/hhVP44je27BPjSF8ZppxepSyGBr3+Xakaah+t0aqIjuUtzpsl81AH/Ixb9QVfRp2ACmiHe2IUBwP+sL6cpxzZrNMYX5uefM/S3kQxI3d3N5OcdXNtCXMp9JagjGTJP4vg5CsbJfaySQrsm6jyedcods61zS4TMWAcDpHY+F7PGbHynhrODYcQSvd1zGzqLSUAktmHA=
+  file_glob: true
+  skip_cleanup: true
+  file:
+    - release/viewer-*.tbz2
+    - release/viewer-*.dmg
+    - release/viewer-*.exe
+    - release/viewer-*.jar
+  on:
+    repo: kingjon3377/strategicprimer-viewer
+    tags: true
