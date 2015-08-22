@@ -1,6 +1,6 @@
 package model.map;
 
-import com.sun.istack.internal.NotNull;
+import org.eclipse.jdt.annotation.NonNull;
 
 /**
  * An interface to specify all the mutator methods that were in IMap.
@@ -12,6 +12,6 @@ public interface IMutableMap extends IMap {
 	 *
 	 * @param player the player to add
 	 */
-	void addPlayer(@NotNull final Player player);
+	void addPlayer(@NonNull final Player player);
 
 }
