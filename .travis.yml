@@ -10,6 +10,7 @@ addons:
       - junit4
       - ant-optional
       - libc6:i386
+      - libxstream-java
 before_install:
   - test -f .git/refs/heads/master || git checkout -b master
   - ./install-deps.sh
