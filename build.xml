@@ -103,8 +103,6 @@
     <junit fork="yes" printsummary="withOutAndErr" failureproperty="junit.failure">
       <formatter type="xml" />
       <!-- TODO: run all tests, dynamically detected, rather than listing them. -->
-      <test name="controller.exploration.TestTableLoader" todir="${junit.output.dir}" />
-      <test name="model.exploration.old.TestExplorationRunner" todir="${junit.output.dir}" />
       <test name="model.map.TestSerialization" todir="${junit.output.dir}" />
       <test name="model.map.TestSubsets" todir="${junit.output.dir}" />
       <test name="model.map.TestEventSerialization" todir="${junit.output.dir}" />
