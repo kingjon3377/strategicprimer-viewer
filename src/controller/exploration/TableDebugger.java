@@ -11,7 +11,7 @@ import model.exploration.old.ExplorationRunner;
 import model.exploration.old.MissingTableException;
 import util.TypesafeLogger;
 
-import com.sun.istack.internal.NotNull;
+import org.eclipse.jdt.annotation.NonNull;
 
 /**
  * A driver to help debug exploration tables.
@@ -55,7 +55,7 @@ public class TableDebugger {
 	 * @param explRunner an exploration runner loaded with all the tables we
 	 *        want.
 	 */
-	public TableDebugger(@NotNull final ExplorationRunner explRunner) {
+	public TableDebugger(@NonNull final ExplorationRunner explRunner) {
 		runner = explRunner;
 	}
 
@@ -65,7 +65,7 @@ public class TableDebugger {
 	 * @param ostream the stream to print to.
 	 * @throws MissingTableException if a referenced table isn't there
 	 */
-	public void debugTables(@NotNull final PrintStream ostream)
+	public void debugTables(@NonNull final PrintStream ostream)
 			throws MissingTableException {
 		runner.verboseRecursiveCheck(ostream);
 		final EncounterTable mainTable = runner.getTable("main");
@@ -87,10 +87,10 @@ public class TableDebugger {
 	 *        recursion
 	 * @throws MissingTableException if a table is missing
 	 */
-	private void debugTable(@NotNull final String before,
-			@NotNull final String after, @NotNull final EncounterTable table,
-			@NotNull final String tableName, @NotNull final PrintStream ostream,
-			@NotNull final Set<EncounterTable> set)
+	private void debugTable(@NonNull final String before,
+			@NonNull final String after, @NonNull final EncounterTable table,
+			@NonNull final String tableName, @NonNull final PrintStream ostream,
+			@NonNull final Set<EncounterTable> set)
 			throws MissingTableException {
 		if (set.contains(table)) {
 			ostream.print("table ");
