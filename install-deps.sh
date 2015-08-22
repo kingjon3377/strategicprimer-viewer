@@ -10,3 +10,6 @@ wget http://central.maven.org/maven2/org/eclipse/jdt/org.eclipse.jdt.annotation/
 wget http://javagraphics.java.net/jars/WindowMenu.jar
 wget https://github.com/Hunternif/JGitVersion/releases/download/v1.0.13/jgitversion-1.0.13.jar
 mv jgitversion-1.0.13.jar "${HOME}/.ant/lib/"
+wget https://github.com/Hunternif/JGitVersion/archive/v1.0.13.tar.gz
+tar xzf v1.0.13.tar.gz
+mv JGitVersion-1.0.13/lib/jgit/*.jar JGitVersion-1.0.13/lib/gitective/*.jar "${HOME}/.ant/lib"
