@@ -35,7 +35,7 @@ public interface IMap extends Subsettable<IMap>, Comparable<IMap> {
 	 * @return the players in the map
 	 */
 	@NonNull
-	PlayerCollection getPlayers();
+	IPlayerCollection getPlayers();
 
 	/**
 	 * We need this for subset calculations if nothing else.
