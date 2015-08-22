@@ -13,3 +13,5 @@ mv jgitversion-1.0.13.jar "${HOME}/.ant/lib/"
 wget https://github.com/Hunternif/JGitVersion/archive/v1.0.13.tar.gz
 tar xzf v1.0.13.tar.gz
 mv JGitVersion-1.0.13/lib/jgit/*.jar JGitVersion-1.0.13/lib/gitective/*.jar "${HOME}/.ant/lib"
+sudo apt-get update -qq
+sudo apt-get install genisoimage
