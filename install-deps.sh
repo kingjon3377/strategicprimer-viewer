@@ -3,10 +3,6 @@ set -ex
 mkdir -p "${HOME}/.ant/lib"
 wget http://sourceforge.net/projects/launch4j/files/launch4j-3/3.8/launch4j-3.8-linux.tgz/download -O launch4j-3.8-linux.tgz
 tar xzf launch4j-3.8-linux.tgz
-cp launch4j/launch4j.jar "${HOME}/.ant/lib"
-cp launch4j/lib/xstream.jar "${HOME}/.ant/lib"
-mkdir -p "${HOME}/.ant/lib/bin"
-cp launch4j/bin/* "${HOME}/.ant/lib/bin"
 wget https://github.com/tofi86/Jarbundler/releases/download/v2.4.0/jarbundler-2.4.0.tar.gz
 tar xzf jarbundler-2.4.0.tar.gz
 mv jarbundler-2.4.0/jarbundler-2.4.0.jar "${HOME}/.ant/lib/"
