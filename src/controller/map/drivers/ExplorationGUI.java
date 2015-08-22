@@ -4,6 +4,7 @@ import static view.util.SystemOut.SYS_OUT;
 
 import java.io.IOException;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
@@ -14,6 +15,7 @@ import model.exploration.ExplorationModel;
 import model.map.IMap;
 import model.map.MapView;
 import util.NullCleaner;
+import util.TypesafeLogger;
 import util.Warning;
 import view.exploration.ExplorationFrame;
 import view.map.main.MapFileFilter;
