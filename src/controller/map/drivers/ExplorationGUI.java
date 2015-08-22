@@ -40,6 +40,11 @@ public class ExplorationGUI implements ISPDriver {
 			ExplorationGUI.class);
 
 	/**
+	 * Logger for the class.
+	 */
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(ExplorationGUI.class);
+	/**
 	 * Driver. Takes as its parameters the map files to use.
 	 *
 	 * @param args the command-line arguments
