@@ -5,6 +5,22 @@
   <tstamp />
   <!-- ANT 1.7 is required -->
 
+  <!-- Try to get version number from git -->
+<taskdef name="jgitversion" classname="hunternif.jgitversion.JGitVersionTask">
+    <classpath>
+        <pathelement path="${jgitversion.jar.path}"/>
+        <pathelement path="${gitective.jar.path}"/>
+        <pathelement path="${jgit.jar.path}"/>
+    </classpath>
+</taskdef>
+
+<target name="get-version">
+    <jgitversion dir="." property="version-number"/>
+    <echo message="${version-number}" />
+    <property name="version-number" value="${major-version-number}.${minor-version-number}.SNAPSHOT" />
+    <property name="basename" value="${shortname}-${version-number}" />
+</target>
+
   <!-- Versioning -->
   <property file="version.properties" />
 
@@ -33,26 +49,19 @@
     <delete dir="${javadoc_dir}" />
   </target>
 
-  <!-- Target to get the Mercurial revision number, which we use as the micro version. -->
-  <target name="get-version">
-    <exec executable="/usr/bin/hg" outputproperty="scm.revision.number">
-      <arg value="id" />
-      <arg value="-n" />
-    </exec>
-    <exec executable="/usr/bin/hg" outputproperty="scm.revision.id">
-      <arg value="id" />
-      <arg value="-i" />
-    </exec>
-    <property name="version-number" value="${major-version-number}.${minor-version-number}.${scm.revision.number}" />
-    <property name="basename" value="viewer-${version-number}" />
-  </target>
-
   <target name="get-builder">
-    <!-- This requires the HgConfig extension, https://bitbucket.org/alu/hgconfig -->
-    <exec executable="/usr/bin/hg" outputproperty="scm.builder">
-      <arg value="showconfig" />
-      <arg value="ui.username" />
+    <exec executable="/usr/bin/git" outputproperty="scm.builder.username">
+    	<arg value="config" />
+	<arg value="--get" />
+	<arg value="user.name" />
     </exec>
+    <exec executable="/usr/bin/git" outputproperty="scm.builder.email">
+    	<arg value="config" />
+	<arg value="--get" />
+	<arg value="user.email" />
+    </exec>
+    <property name="scm.builder" value="${scm.builder.username} &lt;${scm.builder.email}&gt;" />
+    <echo message="${scm.builder}" />
   </target>
 
   <!-- Build targets -->
