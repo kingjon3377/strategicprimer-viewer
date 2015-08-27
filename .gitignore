@@ -17,3 +17,4 @@ bin/images/*.png
 org.eclipse.jdt.annotation*.jar
 .sauc.obj
 findbugs_analysis.xml
+.ant-targets-build.xml
