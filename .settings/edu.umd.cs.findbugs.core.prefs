@@ -1,5 +1,5 @@
 #FindBugs User Preferences
-#Wed Aug 12 23:22:54 EDT 2015
+#Thu Aug 27 21:56:37 EDT 2015
 cloud_id=edu.umd.cs.findbugs.cloud.doNothingCloud
 detectorAppendingToAnObjectOutputStream=AppendingToAnObjectOutputStream|true
 detectorAtomicityProblem=AtomicityProblem|true
@@ -60,7 +60,7 @@ detectorFindNakedNotify=FindNakedNotify|true
 detectorFindNonSerializableStoreIntoSession=FindNonSerializableStoreIntoSession|false
 detectorFindNonSerializableValuePassedToWriteObject=FindNonSerializableValuePassedToWriteObject|false
 detectorFindNonShortCircuit=FindNonShortCircuit|true
-detectorFindNullDeref=FindNullDeref|true
+detectorFindNullDeref=FindNullDeref|false
 detectorFindNullDerefsInvolvingNonShortCircuitEvaluation=FindNullDerefsInvolvingNonShortCircuitEvaluation|true
 detectorFindOpenStream=FindOpenStream|true
 detectorFindPuzzlers=FindPuzzlers|true
