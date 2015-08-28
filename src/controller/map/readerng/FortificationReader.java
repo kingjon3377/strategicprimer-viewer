@@ -83,7 +83,7 @@ public class FortificationReader implements INodeHandler<Fortification> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("fortification"));
+		return Collections.singletonList("fortification");
 	}
 
 	/**

@@ -72,7 +72,7 @@ public class CentaurReader implements INodeHandler<Centaur> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("centaur"));
+		return Collections.singletonList("centaur");
 	}
 
 	/** @return the kind we know how to read */

@@ -14,7 +14,6 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.xml.stream.XMLStreamException;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import controller.map.formatexceptions.MapVersionException;
@@ -109,10 +108,9 @@ public class SubsetFrame extends JFrame {
 		 */
 		@Override
 		public Writer append(@Nullable final CharSequence str) throws IOException {
-			@NonNull
 			final String local =
-					NullCleaner.assertNotNull(NullCleaner.valueOrDefault(str,
-							"null").toString());
+					NullCleaner.valueOrDefault(str, "null").toString();
+			assert local != null;
 			if (!middle) {
 				super.append("<p style=\"color:white\">");
 			}

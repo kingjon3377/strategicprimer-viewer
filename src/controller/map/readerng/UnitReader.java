@@ -81,8 +81,8 @@ public class UnitReader implements INodeHandler<Unit> {
 		final StringBuilder orders = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final StartElement selem =
-						NullCleaner.assertNotNull(event.asStartElement());
+				final StartElement selem = event.asStartElement();
+				assert selem != null;
 				final Object result = ReaderAdapter.ADAPTER.parse(selem,
 						stream, players, warner, idFactory);
 				if (result instanceof UnitMember) {
@@ -173,9 +173,7 @@ public class UnitReader implements INodeHandler<Unit> {
 		}
 		retval.addIdAttribute(obj.getID());
 		for (final UnitMember member : obj) {
-			if (member != null) {
-				retval.addChild(ReaderAdapter.ADAPTER.write(member));
-			}
+			retval.addChild(ReaderAdapter.ADAPTER.write(member));
 		}
 		if (!obj.getOrders().trim().isEmpty()) {
 			retval.addAttribute("text-contents", obj.getOrders().trim() + '\n');

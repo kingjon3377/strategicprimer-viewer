@@ -15,6 +15,8 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import util.NullCleaner;
@@ -44,11 +46,11 @@ import util.Pair;
  * @author Jonathan Lovelace
  *
  */
-public class IncludingIterator implements Iterator<XMLEvent> {
+public class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	/**
 	 * The stack of iterators we're working with.
 	 */
-	private final Deque<Pair<String, ComparableIterator<XMLEvent>>> stack;
+	private final Deque<Pair<String, ComparableIterator<@NonNull XMLEvent>>> stack;
 
 	/**
 	 * FIXME: We should use Files "all the way down" if we can. But we can't yet
@@ -59,7 +61,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 	 * @param iter
 	 *            the iterator we'll start with.
 	 */
-	public IncludingIterator(final File file, final Iterator<XMLEvent> iter) {
+	public IncludingIterator(final File file, final Iterator<@NonNull XMLEvent> iter) {
 		this(NullCleaner.assertNotNull(file.getPath()), iter);
 	}
 	/**
@@ -68,7 +70,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 	 * @param file the name of the file we're reading
 	 * @param iter the iterator we'll start with.
 	 */
-	public IncludingIterator(final String file, final Iterator<XMLEvent> iter) {
+	public IncludingIterator(final String file, final Iterator<@NonNull XMLEvent> iter) {
 		stack = new LinkedList<>();
 		stack.addFirst(Pair.of(file, new ComparableIterator<>(iter)));
 	}
@@ -111,7 +113,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 			throw new NoSuchElementException();
 		}
 		XMLEvent retval = stack.peekFirst().second().next();
-		while (retval != null && retval.isStartElement()
+		while (retval.isStartElement()
 				&& "include".equals(retval.asStartElement().getName()
 						.getLocalPart())) {
 			handleInclude(NullCleaner.assertNotNull(retval.asStartElement()));
@@ -121,11 +123,7 @@ public class IncludingIterator implements Iterator<XMLEvent> {
 			}
 			retval = stack.peekFirst().second().next();
 		}
-		if (retval != null) {
-			return retval;
-		} else {
-			throw new NoSuchElementException();
-		}
+		return retval;
 	}
 
 	/**

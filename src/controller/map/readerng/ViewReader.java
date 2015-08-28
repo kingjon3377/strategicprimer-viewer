@@ -66,7 +66,7 @@ public class ViewReader implements INodeHandler<IMapView> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList(TAG));
+		return Collections.singletonList(TAG);
 	}
 
 	/**

@@ -111,9 +111,11 @@ public enum TileType {
 	 */
 	public static Set<TileType> valuesForVersion(final int ver) {
 		final Integer boxedVer = Integer.valueOf(ver);
+		assert boxedVer != null;
 		synchronized (VALS_BY_VER) {
 			if (!VALS_BY_VER.containsKey(boxedVer)) {
 				final Set<TileType> set = EnumSet.noneOf(TileType.class);
+				assert set != null;
 				for (final TileType type : values()) {
 					if (type.isSupportedByVersion(ver)) {
 						set.add(type);
@@ -122,8 +124,7 @@ public enum TileType {
 				VALS_BY_VER.put(boxedVer, set);
 			}
 		}
-		return NullCleaner.assertNotNull(unmodifiableSet(VALS_BY_VER
-				.get(boxedVer)));
+		return unmodifiableSet(VALS_BY_VER.get(boxedVer));
 	}
 
 	/**
@@ -135,7 +136,7 @@ public enum TileType {
 	private TileType(final String descr, final int... vers) {
 		versions = new ArrayList<>();
 		for (final int ver : vers) {
-			versions.add(Integer.valueOf(ver));
+			versions.add(NullCleaner.assertNotNull(Integer.valueOf(ver)));
 		}
 		desc = descr;
 	}

@@ -76,18 +76,16 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 */
 	private CompactMapNGReader() {
 		final List<CompactReader<? extends TileFixture>> list =
-				new ArrayList<CompactReader<? extends TileFixture>>(
-						Arrays.asList(CompactMobileReader.READER,
-								CompactResourceReader.READER,
-								CompactTerrainReader.READER,
-								CompactTextReader.READER,
-								CompactTownReader.READER,
-								CompactGroundReader.READER,
-								CompactAdventureReader.READER,
-								CompactPortalReader.READER,
-								CompactExplorableReader.READER));
+				new ArrayList<>(Arrays.asList(CompactMobileReader.READER,
+						CompactResourceReader.READER,
+						CompactTerrainReader.READER, CompactTextReader.READER,
+						CompactTownReader.READER, CompactGroundReader.READER,
+						CompactAdventureReader.READER,
+						CompactPortalReader.READER,
+						CompactExplorableReader.READER));
 		readers = assertNotNull(unmodifiableList(list));
 	}
+
 	/**
 	 * Read a map from XML.
 	 *
@@ -287,8 +285,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			final IteratorWrapper<XMLEvent> stream,
 			final IMutablePlayerCollection players, final IDFactory idFactory,
 			final Warning warner) throws SPFormatException {
-		final String name =
-				assertNotNull(element.getName().getLocalPart());
+		final String name = element.getName().getLocalPart();
+		assert name != null;
 		for (final CompactReader<? extends TileFixture> item : readers) {
 			if (item.isSupportedTag(name)) {
 				return item.read(element, stream, players, warner, idFactory);
@@ -340,9 +338,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		ostream.append(Integer.toString(dim.cols));
 		ostream.append("\">\n");
 		for (Player player : obj.players()) {
-			if (player != null) {
-				CompactPlayerReader.READER.write(ostream, player, indent + 2);
-			}
+			CompactPlayerReader.READER.write(ostream, player, indent + 2);
 		}
 		for (int i = 0; i < dim.rows; i++) {
 			boolean rowEmpty = true;
@@ -378,11 +374,9 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						ostream.append("<mountain />\n");
 					}
 					for (River river : obj.getRivers(point)) {
-						if (river != null) {
-							eolIfNeeded(needeol, ostream);
-							needeol = false;
-							CompactTileReader.writeRiver(ostream, river, indent + 4);
-						}
+						eolIfNeeded(needeol, ostream);
+						needeol = false;
+						CompactTileReader.writeRiver(ostream, river, indent + 4);
 					}
 					Ground ground = obj.getGround(point);
 					if (ground != null) {
@@ -397,11 +391,9 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						CompactReaderAdapter.write(ostream, forest, indent + 4);
 					}
 					for (TileFixture fixture : obj.getOtherFixtures(point)) {
-						if (fixture != null) {
-							eolIfNeeded(needeol, ostream);
-							needeol = false;
-							CompactReaderAdapter.write(ostream, fixture, indent + 4);
-						}
+						eolIfNeeded(needeol, ostream);
+						needeol = false;
+						CompactReaderAdapter.write(ostream, fixture, indent + 4);
 					}
 					if (!needeol) {
 						ostream.append(indent(indent + 3));

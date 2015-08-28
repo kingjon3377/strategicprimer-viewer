@@ -77,7 +77,7 @@ public class StoneReader implements INodeHandler<StoneDeposit> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("stone"));
+		return Collections.singletonList("stone");
 	}
 
 	/**

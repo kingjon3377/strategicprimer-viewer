@@ -72,7 +72,7 @@ public class GiantReader implements INodeHandler<Giant> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("giant"));
+		return Collections.singletonList("giant");
 	}
 
 	/**

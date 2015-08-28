@@ -71,7 +71,7 @@ public class ForestReader implements INodeHandler<Forest> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("forest"));
+		return Collections.singletonList("forest");
 	}
 
 	/** @return the class we know how to write */

@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.listeners.SelectionChangeListener;
@@ -136,9 +137,8 @@ public final class ComponentMouseListener extends MouseAdapter implements
 		if (forest != null) {
 			fixes.add(forest);
 		}
-		final Iterable<TileFixture> iter =
-				new IteratorWrapper<>(NullCleaner.assertNotNull(map
-						.getOtherFixtures(point).iterator()), fixComp);
+		final Iterable<@NonNull TileFixture> iter = new IteratorWrapper<>(
+				map.getOtherFixtures(point).iterator(), fixComp);
 		final Iterator<TileFixture> iterat = iter.iterator();
 		if (iterat.hasNext()) {
 			fixes.add(iterat.next());

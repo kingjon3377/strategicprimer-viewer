@@ -176,9 +176,11 @@ public final class TableLoader { // NOPMD
 				LOGGER.severe("Line with no blanks, continuing ...");
 			} else {
 				try {
-					list.add(ComparablePair.of(NullCleaner
-							.assertNotNull(Integer.valueOf(array[0])),
-							NullCleaner.assertNotNull(array[1])));
+					final String left = array[0];
+					final String right = array[1];
+					final Integer leftNum = Integer.valueOf(left);
+					assert left != null && right != null && leftNum != null;
+					list.add(ComparablePair.of(leftNum, right));
 				} catch (NumberFormatException except) {
 					throw new IOException("Non-numeric data", except);
 				}

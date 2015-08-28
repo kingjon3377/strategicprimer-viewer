@@ -72,7 +72,7 @@ public class PlayerReader implements INodeHandler<Player> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("player"));
+		return Collections.singletonList("player");
 	}
 
 	/**

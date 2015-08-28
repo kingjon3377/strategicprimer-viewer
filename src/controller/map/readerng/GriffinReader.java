@@ -70,7 +70,7 @@ public class GriffinReader implements INodeHandler<Griffin> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("griffin"));
+		return Collections.singletonList("griffin");
 	}
 
 	/**

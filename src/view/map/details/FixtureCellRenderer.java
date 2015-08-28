@@ -27,7 +27,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import model.map.HasImage;
 import model.map.TileFixture;
 import util.ImageLoader;
-import util.NullCleaner;
 import util.TypesafeLogger;
 
 /**
@@ -107,8 +106,8 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 	/**
 	 * A cache of icon filenames that aren't available.
 	 */
-	private static final Set<String> MISSING = NullCleaner
-			.assertNotNull(Collections.synchronizedSet(new HashSet<String>()));
+	private static final Set<String> MISSING =
+			Collections.synchronizedSet(new HashSet<String>());
 
 	/**
 	 * @param obj a HasImage object

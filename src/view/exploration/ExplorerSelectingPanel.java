@@ -187,8 +187,8 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	 */
 	@Override
 	public void valueChanged(@Nullable final ListSelectionEvent evt) {
-		final Player newPlayer = playerList.getSelectedValue();
-		if (newPlayer != null) {
+		if (!playerList.isSelectionEmpty()) {
+			final Player newPlayer = playerList.getSelectedValue();
 			for (final PlayerChangeListener list : listeners) {
 				list.playerChanged(null, newPlayer);
 			}
@@ -203,9 +203,12 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	@Override
 	public void actionPerformed(@Nullable final ActionEvent event) {
 		final IUnit selectedValue = unitList.getSelectedValue();
+		// Eclipse claims getSelectedValue can never return null; the
+		// documentation contradicts this, but it returns null when
+		// isSelectionEmpty is true, which we do check.
 		if (event != null
 				&& BUTTON_TEXT.equalsIgnoreCase(event.getActionCommand())
-				&& !unitList.isSelectionEmpty() && selectedValue != null) {
+				&& !unitList.isSelectionEmpty()) {
 			model.selectUnit(selectedValue);
 			for (final CompletionListener list : cListeners) {
 				list.stopWaitingOn(true);

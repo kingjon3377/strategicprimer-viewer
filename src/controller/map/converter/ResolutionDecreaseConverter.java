@@ -146,6 +146,7 @@ public class ResolutionDecreaseConverter {
 	 */
 	private static Set<River> getRivers(final IMapNG old, final Point point) {
 		final Set<River> retval = EnumSet.noneOf(River.class);
+		assert retval != null;
 		for (final River river : old.getRivers(point)) {
 			retval.add(river);
 		}

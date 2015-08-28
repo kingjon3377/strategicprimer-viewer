@@ -69,7 +69,7 @@ public class HillReader implements INodeHandler<Hill> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("hill"));
+		return Collections.singletonList("hill");
 	}
 
 	/**

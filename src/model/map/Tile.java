@@ -89,9 +89,7 @@ public final class Tile implements IMutableTile {
 			if (hasRiver()) {
 				final RiverFixture rivers = (RiverFixture) getRivers();
 				for (final River river : (RiverFixture) fix) {
-					if (river != null) {
-						rivers.addRiver(river);
-					}
+					rivers.addRiver(river);
 				}
 				return true; // NOPMD
 			} else if (((RiverFixture) fix).getRivers().isEmpty()) {
@@ -279,7 +277,7 @@ public final class Tile implements IMutableTile {
 		final List<TileFixture> temp = new ArrayList<>();
 		final Map<Integer, Subsettable<@NonNull ?>> mySubsettables = getSubsettableContents();
 		for (final TileFixture fix : obj) {
-			if (fix != null && !contents.contains(fix) && !temp.contains(fix)
+			if (!contents.contains(fix) && !temp.contains(fix)
 					&& !shouldSkip(fix)) {
 				temp.add(fix);
 			}
@@ -325,7 +323,7 @@ public final class Tile implements IMutableTile {
 		final Map<Integer, Subsettable<@NonNull ?>> mySubsettables = new HashMap<>();
 		for (final TileFixture fix : contents) {
 			if (fix instanceof Subsettable) {
-				mySubsettables.put(Integer.valueOf(fix.getID()),
+				mySubsettables.put(NullCleaner.assertNotNull(Integer.valueOf(fix.getID())),
 						(Subsettable<@NonNull ?>) fix);
 			}
 		}

@@ -9,6 +9,7 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import controller.map.formatexceptions.MissingPropertyException;
@@ -66,14 +67,14 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	 * Singleton.
 	 */
 	private CompactUnitReader() {
-		final List<CompactReader<? extends IFixture>> temp = new ArrayList<>();
+		final List<CompactReader<@NonNull ? extends IFixture>> temp = new ArrayList<>();
 		temp.add(CompactMobileReader.READER);
 		temp.add(CompactResourceReader.READER);
 		temp.add(CompactTerrainReader.READER);
 		temp.add(CompactTextReader.READER);
 		temp.add(CompactTownReader.READER);
 		temp.add(CompactWorkerReader.READER);
-		readers = NullCleaner.assertNotNull(unmodifiableList(temp));
+		readers = unmodifiableList(temp);
 	}
 
 	/**
@@ -134,8 +135,8 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 			final IteratorWrapper<XMLEvent> stream,
 			final IMutablePlayerCollection players, final IDFactory idFactory,
 			final Warning warner) throws SPFormatException {
-		final String name =
-				NullCleaner.assertNotNull(element.getName().getLocalPart());
+		final String name = element.getName().getLocalPart();
+		assert name != null;
 		for (final CompactReader<? extends IFixture> item : readers) {
 			if (item.isSupportedTag(name)) {
 				final IFixture retval = item.read(element, stream, players,
@@ -229,9 +230,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 		if (obj.iterator().hasNext() || !obj.getOrders().trim().isEmpty()) {
 			ostream.append('>').append(obj.getOrders().trim()).append('\n');
 			for (final UnitMember member : obj) {
-				if (member != null) {
-					CompactReaderAdapter.write(ostream, member, indent + 1);
-				}
+				CompactReaderAdapter.write(ostream, member, indent + 1);
 			}
 			ostream.append(indent(indent));
 			ostream.append("</unit>\n");

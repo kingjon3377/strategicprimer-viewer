@@ -171,9 +171,7 @@ public final class CompactMobileReader extends
 			MAP.put(mtype.tag, mtype);
 			suppTagsTemp.add(mtype.tag);
 		}
-		SUPP_TAGS =
-				NullCleaner.assertNotNull(Collections
-						.unmodifiableSet(suppTagsTemp));
+		SUPP_TAGS = Collections.unmodifiableSet(suppTagsTemp);
 		TAG_MAP = new HashMap<>();
 		TAG_MAP.put(Animal.class, "animal");
 		TAG_MAP.put(Centaur.class, "centaur");

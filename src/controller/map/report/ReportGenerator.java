@@ -274,17 +274,15 @@ public final class ReportGenerator {
 				new IntMap<>();
 		final IDFactory idf = IDFactoryFiller.createFactory(map);
 		for (final Point point : map.locations()) {
-			if (point != null) {
-				// Because neither Forests, Mountains, nor Ground have positive IDs,
-				// we can ignore everything but the "other" fixtures.
-				for (final IFixture fix : getFixtures(map.getOtherFixtures(point))) {
-					if (fix.getID() >= 0) {
-						retval.put(NullCleaner.assertNotNull(Integer
-								.valueOf(fix.getID())), Pair.of(point, fix));
-					} else if (fix instanceof TextFixture) {
-						retval.put(Integer.valueOf(idf.createID()),
-								Pair.of(point, fix));
-					}
+			// Because neither Forests, Mountains, nor Ground have positive IDs,
+			// we can ignore everything but the "other" fixtures.
+			for (final IFixture fix : getFixtures(map.getOtherFixtures(point))) {
+				if (fix.getID() >= 0) {
+					retval.put(NullCleaner.assertNotNull(Integer
+							.valueOf(fix.getID())), Pair.of(point, fix));
+				} else if (fix instanceof TextFixture) {
+					retval.put(NullCleaner.assertNotNull(Integer.valueOf(idf.createID())),
+							Pair.of(point, fix));
 				}
 			}
 		}

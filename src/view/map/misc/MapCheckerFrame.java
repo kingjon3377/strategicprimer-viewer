@@ -158,6 +158,7 @@ public class MapCheckerFrame extends JFrame {
 					+ "; see following error message for details", ERROR_COLOR);
 			final String message = NullCleaner.valueOrDefault(
 					except.getLocalizedMessage(), "(message was null)");
+			assert message != null;
 			printParagraph(message, ERROR_COLOR);
 			LOGGER.log(Level.SEVERE, "Malformed XML in file " + filename,
 					except);

@@ -47,9 +47,9 @@ public class EnumCounter<T extends Enum<T>> {
 	 */
 	public void count(final T value) {
 		if (map.containsKey(value)) {
-			map.put(value, Integer.valueOf(map.get(value).intValue() + 1));
+			map.put(value, NullCleaner.assertNotNull(Integer.valueOf(map.get(value).intValue() + 1)));
 		} else {
-			map.put(value, Integer.valueOf(1));
+			map.put(value, NullCleaner.assertNotNull(Integer.valueOf(1)));
 		}
 	}
 

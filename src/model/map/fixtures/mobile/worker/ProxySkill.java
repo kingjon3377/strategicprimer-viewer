@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.fixtures.mobile.ProxyFor;
 
 /**
@@ -56,7 +58,7 @@ public class ProxySkill implements ISkill, ProxyFor<IJob> {
 	 * @param jobs
 	 *            the Jobs to add skill hours to when asked
 	 */
-	public ProxySkill(final String nomen, final boolean parall, final IJob... jobs) {
+	public ProxySkill(final String nomen, final boolean parall, final @NonNull IJob... jobs) {
 		parallel = parall;
 		name = nomen;
 		for (final IJob job : jobs) {
@@ -146,7 +148,7 @@ public class ProxySkill implements ISkill, ProxyFor<IJob> {
 				for (final ISkill skill : job) {
 					if (skill == this) {
 						continue;
-					} else if (skill != null && skill.getName().equals(name)) {
+					} else if (skill.getName().equals(name)) {
 						skill.addHours(hrs, seed);
 						touched = true;
 					}
@@ -163,7 +165,7 @@ public class ProxySkill implements ISkill, ProxyFor<IJob> {
 				for (final ISkill skill : job) {
 					if (skill == this) {
 						continue;
-					} else if (skill != null && skill.getName().equals(name)) {
+					} else if (skill.getName().equals(name)) {
 						skill.addHours(hrs, random.nextInt(100));
 						touched = true;
 					}

@@ -70,7 +70,7 @@ public class SphinxReader implements INodeHandler<Sphinx> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("sphinx"));
+		return Collections.singletonList("sphinx");
 	}
 
 	/**

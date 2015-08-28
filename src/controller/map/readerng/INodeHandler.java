@@ -72,5 +72,5 @@ public interface INodeHandler<@NonNull T> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	<@NonNull S extends T> SPIntermediateRepresentation write(S obj);
+	<@NonNull S extends @NonNull T> SPIntermediateRepresentation write(S obj);
 }

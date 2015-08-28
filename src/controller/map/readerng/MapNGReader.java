@@ -124,8 +124,9 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 			final IDFactory factory) throws SPFormatException {
 		final int currentTurn;
 		final StartElement mapTag;
-		Location outerLoc = assertNotNull(element.getLocation());
-		String outerTag = assertNotNull(element.getName().getLocalPart());
+		Location outerLoc = element.getLocation();
+		String outerTag = element.getName().getLocalPart();
+		assert outerLoc != null && outerTag != null;
 		if ("view".equalsIgnoreCase(element.getName().getLocalPart())) {
 			currentTurn =
 					XMLHelper.parseInt(
@@ -345,9 +346,7 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 								assertNotNull(Integer.toString(dim.cols))));
 		retval.addChild(mapTag);
 		for (Player player : obj.players()) {
-			if (player != null) {
-				mapTag.addChild(PLAYER_READER.write(player));
-			}
+			mapTag.addChild(PLAYER_READER.write(player));
 		}
 		for (int i = 0; i < dim.rows; i++) {
 			final SPIntermediateRepresentation row =
@@ -391,9 +390,7 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 			retval.addChild(new SPIntermediateRepresentation("mountain"));
 		}
 		for (River river : map.getRivers(point)) {
-			if (river != null) {
-				retval.addChild(RIVER_READER.write(river));
-			}
+			retval.addChild(RIVER_READER.write(river));
 		}
 		retval.addChild(writeFixture(map.getGround(point)));
 		retval.addChild(writeFixture(map.getForest(point)));

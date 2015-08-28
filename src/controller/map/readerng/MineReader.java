@@ -76,7 +76,7 @@ public class MineReader implements INodeHandler<Mine> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("mine"));
+		return Collections.singletonList("mine");
 	}
 
 	/**

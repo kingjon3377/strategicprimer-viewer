@@ -97,7 +97,7 @@ public class FortressReader implements INodeHandler<Fortress> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("fortress"));
+		return Collections.singletonList("fortress");
 	}
 
 	/**

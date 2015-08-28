@@ -74,7 +74,7 @@ public class CaveReader implements INodeHandler<Cave> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("cave"));
+		return Collections.singletonList("cave");
 	}
 
 	/** @return the class we know how to write */

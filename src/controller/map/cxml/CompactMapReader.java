@@ -263,9 +263,7 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 		}
 		ostream.append("\">\n");
 		for (final Player player : obj.getPlayers()) {
-			if (player != null) {
-				CompactPlayerReader.READER.write(ostream, player, indent + 1);
-			}
+			CompactPlayerReader.READER.write(ostream, player, indent + 1);
 		}
 		for (int i = 0; i < dim.rows; i++) {
 			boolean rowEmpty = true;

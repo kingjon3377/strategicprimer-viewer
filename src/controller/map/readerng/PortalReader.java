@@ -92,7 +92,7 @@ public class PortalReader implements INodeHandler<Portal> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("portal"));
+		return Collections.singletonList("portal");
 	}
 
 	/**

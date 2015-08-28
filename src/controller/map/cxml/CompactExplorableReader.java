@@ -59,8 +59,7 @@ public class CompactExplorableReader
 		final Set<String> suppTagsTemp = new ArraySet<>();
 		suppTagsTemp.add("cave");
 		suppTagsTemp.add("battlefield");
-		SUPP_TAGS = NullCleaner
-				.assertNotNull(Collections.unmodifiableSet(suppTagsTemp));
+		SUPP_TAGS = Collections.unmodifiableSet(suppTagsTemp);
 	}
 	/**
 	 * @param tag a tag

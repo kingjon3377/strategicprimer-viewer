@@ -83,7 +83,7 @@ public class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 		}
 		@NonNull
 		final IWorker @NonNull [] workerArray =
-				workers.toArray(new IWorker @NonNull[workers.size()]);
+				workers.toArray(new IWorker @NonNull [workers.size()]);
 		for (final String job : jobNames) {
 			proxyJobs.add(new ProxyJob(job, parallel, workerArray));
 		}

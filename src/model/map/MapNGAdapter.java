@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.fixtures.Ground;
@@ -244,7 +245,7 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 		if (state.getTile(location).hasRiver()) {
 			return state.getTile(location).getRivers(); // NOPMD
 		} else {
-			return EnumSet.noneOf(River.class);
+			return NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
 		}
 	}
 
@@ -462,7 +463,7 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 	 * @param rivers the rivers to add
 	 */
 	@Override
-	public void addRivers(final Point location, final River... rivers) {
+	public void addRivers(final Point location, final @NonNull River... rivers) {
 		IMutableTile tile = state.getTile(location);
 		// Taking advantage of the special handling in Tile's addFixture()
 		tile.addFixture(new RiverFixture(rivers));

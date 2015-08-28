@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.HasImage;
@@ -284,9 +285,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	private TileFixture getTopFixture(final IMapNG map, final Point location) {
 		final Iterable<TileFixture> iter = getDrawableFixtures(map, location);
 		for (final TileFixture item : iter) {
-			if (item != null) {
-				return item;
-			}
+			return item;
 		}
 		throw new IllegalArgumentException("Tile has no non-null fixtures");
 	}
@@ -445,8 +444,9 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @param rivers any number of rivers
 	 * @return a set containing them
 	 */
-	private static Set<River> createRiverSet(final River... rivers) {
+	private static Set<River> createRiverSet(final @NonNull River... rivers) {
 		final Set<River> set = EnumSet.noneOf(River.class);
+		assert set != null;
 		for (final River river : rivers) {
 			set.add(river);
 		}
@@ -580,7 +580,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			} else {
 				while (wrapped.hasNext()) {
 					final TileFixture tempCached = wrapped.next();
-					if (tempCached != null && tempCached != NULL_FIXT
+					if (tempCached != NULL_FIXT
 							&& zof.shouldDisplay(tempCached)) {
 						cached = tempCached;
 						hasCached = true;

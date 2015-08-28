@@ -272,6 +272,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		builder.append(getTerrain(map, loc, fixtures)).append(CLOSE_LIST_ITEM);
 		if (map.getRivers(loc).iterator().hasNext()) {
 			final Set<River> copy = EnumSet.noneOf(River.class);
+			assert copy != null;
 			for (final River river : map.getRivers(loc)) {
 				copy.add(river);
 			}
@@ -316,6 +317,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		retval.add(new SimpleReportNode(loc, getTerrain(map, loc, fixtures)));
 		if (map.getRivers(loc).iterator().hasNext()) {
 			final Set<River> copy = EnumSet.noneOf(River.class);
+			assert copy != null;
 			for (final River river : map.getRivers(loc)) {
 				copy.add(river);
 			}

@@ -179,7 +179,7 @@ public class TileReader implements INodeHandler<ITile> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("tile"));
+		return Collections.singletonList("tile");
 	}
 
 	/**
@@ -215,9 +215,7 @@ public class TileReader implements INodeHandler<ITile> {
 		}
 		if (obj.iterator().hasNext()) {
 			for (final TileFixture fix : obj) {
-				if (fix != null) {
-					writeFixture(fix, retval);
-				}
+				writeFixture(fix, retval);
 			}
 		}
 		return retval;
@@ -234,9 +232,7 @@ public class TileReader implements INodeHandler<ITile> {
 			final SPIntermediateRepresentation parent) {
 		if (fix instanceof RiverFixture) {
 			for (final River river : (RiverFixture) fix) {
-				if (river != null) {
-					parent.addChild(READER.write(river));
-				}
+				parent.addChild(READER.write(river));
 			}
 		} else {
 			parent.addChild(ReaderAdapter.ADAPTER.write(fix));

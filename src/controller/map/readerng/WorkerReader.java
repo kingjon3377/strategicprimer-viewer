@@ -55,7 +55,7 @@ public class WorkerReader implements INodeHandler<Worker> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("worker"));
+		return Collections.singletonList("worker");
 	}
 
 	/**
@@ -96,6 +96,7 @@ public class WorkerReader implements INodeHandler<Worker> {
 							NullCleaner.valueOrDefault(NullCleaner
 									.assertNotNull(event.asStartElement())
 									.getName().getLocalPart(), "a null tag");
+					assert innerName != null;
 					throw new UnwantedChildException(outerName, innerName,
 							event.getLocation().getLineNumber());
 				}

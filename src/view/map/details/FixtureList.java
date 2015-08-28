@@ -185,11 +185,12 @@ public class FixtureList extends JList<TileFixture> implements
 		private void handleMouseEvent(@Nullable final MouseEvent event) {
 			if (event != null && event.isPopupTrigger()
 					&& event.getClickCount() == 1) {
-				final TileFixture selectedElement = getModel().getElementAt(
-								locationToIndex(event.getPoint()));
-				if (selectedElement != null) {
-					new FixtureEditMenu(selectedElement, players).show(
-							event.getComponent(), event.getX(), event.getY());
+				int index = locationToIndex(event.getPoint());
+				if (index >= 0 && index < getModel().getSize()) {
+					new FixtureEditMenu(getModel().getElementAt(
+							locationToIndex(event.getPoint())), players).show(
+									event.getComponent(), event.getX(),
+									event.getY());
 				}
 			}
 		}

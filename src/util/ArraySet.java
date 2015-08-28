@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -88,9 +89,9 @@ public final class ArraySet<T> implements Set<T> {
 	 * @return the contents of the set in that array
 	 */
 	@Override
-	public <TYPE> TYPE[] toArray(final TYPE @Nullable [] array) {
-		return NullCleaner.assertNotNull(impl.toArray(NullCleaner
-				.assertNotNull(array)));
+	@NonNullByDefault({})
+	public <TYPE> TYPE[] toArray(final TYPE [] array) {
+		return impl.toArray(array);
 	}
 
 	/**

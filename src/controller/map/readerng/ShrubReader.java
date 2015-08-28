@@ -73,7 +73,7 @@ public class ShrubReader implements INodeHandler<Shrub> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("shrub"));
+		return Collections.singletonList("shrub");
 	}
 
 	/**

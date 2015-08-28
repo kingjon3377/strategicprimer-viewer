@@ -47,8 +47,7 @@ public class SetPairConverter<I, K> implements Iterable<Pair<I, K>> {
 
 	@Override
 	public Iterator<Pair<I, K>> iterator() {
-		return new IteratorImpl<>(NullCleaner.assertNotNull(theMap.entrySet()
-				.iterator()));
+		return new IteratorImpl<>(theMap.entrySet().iterator());
 	}
 
 	/**

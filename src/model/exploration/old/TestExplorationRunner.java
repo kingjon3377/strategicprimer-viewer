@@ -8,6 +8,7 @@ import static org.junit.Assert.fail;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -225,7 +226,7 @@ public final class TestExplorationRunner {
 		runner.loadTable(
 				"referent_three",
 				new QuadrantTable(1, new ArrayList<>(Arrays
-						.asList(new String[] { "#referent_one#",
+						.asList(new String @NonNull [] { "#referent_one#",
 								"#referent_two#" }))));
 		assertFalse("recursive case to exercise cache-hits",
 				runner.recursiveCheck("referent_three"));

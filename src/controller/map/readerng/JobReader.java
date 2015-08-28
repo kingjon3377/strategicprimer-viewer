@@ -62,7 +62,7 @@ public class JobReader implements INodeHandler<Job> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("job"));
+		return Collections.singletonList("job");
 	}
 
 	/**

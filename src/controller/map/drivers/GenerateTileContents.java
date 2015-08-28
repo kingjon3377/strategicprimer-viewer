@@ -1,6 +1,5 @@
 package controller.map.drivers;
 
-import static util.NullCleaner.assertNotNull;
 import static view.util.SystemOut.SYS_OUT;
 
 import java.io.File;
@@ -74,8 +73,8 @@ public final class GenerateTileContents {
 	 * maps.
 	 */
 	private static final Map<String, GenerateTileContents> INSTANCES =
-			assertNotNull(Collections
-					.synchronizedMap(new HashMap<String, GenerateTileContents>()));
+			Collections.synchronizedMap(
+					new HashMap<String, GenerateTileContents>());
 
 	/**
 	 * @param filename

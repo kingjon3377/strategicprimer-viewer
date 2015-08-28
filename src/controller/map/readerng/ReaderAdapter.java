@@ -15,7 +15,6 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
-import util.NullCleaner;
 import util.Warning;
 
 /**
@@ -68,8 +67,8 @@ public class ReaderAdapter implements INodeHandler<Object> {
 			final Iterable<XMLEvent> stream, final IMutablePlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		final String iLocal =
-				NullCleaner.assertNotNull(element.getName().getLocalPart());
+		final String iLocal = element.getName().getLocalPart();
+		assert iLocal != null;
 		if (READ_CACHE.containsKey(iLocal)) {
 			return READ_CACHE.get(iLocal).parse(element, stream, players,
 					warner, idFactory);

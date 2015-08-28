@@ -71,15 +71,12 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	 */
 	private CompactTileReader() {
 		final List<CompactReader<? extends TileFixture>> list =
-				new ArrayList<CompactReader<? extends TileFixture>>(
-						Arrays.asList(CompactMobileReader.READER,
-								CompactResourceReader.READER,
-								CompactTerrainReader.READER,
-								CompactTextReader.READER,
-								CompactTownReader.READER,
-								CompactGroundReader.READER,
-								CompactAdventureReader.READER,
-								CompactPortalReader.READER));
+				new ArrayList<>(Arrays.asList(CompactMobileReader.READER,
+						CompactResourceReader.READER,
+						CompactTerrainReader.READER, CompactTextReader.READER,
+						CompactTownReader.READER, CompactGroundReader.READER,
+						CompactAdventureReader.READER,
+						CompactPortalReader.READER));
 		readers = assertNotNull(unmodifiableList(list));
 	}
 
@@ -146,8 +143,8 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 			final IteratorWrapper<XMLEvent> stream,
 			final IMutablePlayerCollection players, final IDFactory idFactory,
 			final Warning warner) throws SPFormatException {
-		final String name =
-				assertNotNull(element.getName().getLocalPart());
+		final String name = element.getName().getLocalPart();
+		assert name != null;
 		for (final CompactReader<? extends TileFixture> item : readers) {
 			if (item.isSupportedTag(name)) {
 				return item.read(element, stream, players, warner, idFactory);
@@ -235,9 +232,7 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 			if (obj.iterator().hasNext()) {
 				ostream.append('\n');
 				for (final TileFixture fix : obj) {
-					if (fix != null) {
-						CompactReaderAdapter.write(ostream, fix, indent + 1);
-					}
+					CompactReaderAdapter.write(ostream, fix, indent + 1);
 				}
 				ostream.append(indent(indent));
 			}
@@ -279,9 +274,7 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	public static void writeRivers(final Appendable ostream,
 			final Iterable<River> iter, final int indent) throws IOException {
 		for (final River river : iter) {
-			if (river != null) {
-				writeRiver(ostream, river, indent);
-			}
+			writeRiver(ostream, river, indent);
 		}
 	}
 	/**

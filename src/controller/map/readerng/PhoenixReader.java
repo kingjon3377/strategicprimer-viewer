@@ -70,7 +70,7 @@ public class PhoenixReader implements INodeHandler<Phoenix> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("phoenix"));
+		return Collections.singletonList("phoenix");
 	}
 
 	/**

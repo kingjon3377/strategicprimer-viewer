@@ -93,8 +93,8 @@ public class GroveReader implements INodeHandler<Grove> {
 			return Boolean.parseBoolean(XMLHelper.getAttribute(element, // NOPMD
 					CULTIVATED_ATTR));
 		} else {
-			final String local =
-					NullCleaner.assertNotNull(element.getName().getLocalPart());
+			final String local = element.getName().getLocalPart();
+			assert local != null;
 			if (XMLHelper.hasAttribute(element, "wild")) {
 				warner.warn(new DeprecatedPropertyException(local, "wild",
 						CULTIVATED_ATTR, element.getLocation().getLineNumber()));
@@ -112,7 +112,7 @@ public class GroveReader implements INodeHandler<Grove> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Arrays.asList("grove", "orchard"));
+		return Arrays.asList("grove", "orchard");
 	}
 
 	/**

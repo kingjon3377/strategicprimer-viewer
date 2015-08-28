@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.NullCleaner;
@@ -162,7 +163,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 			independent = player;
 		}
 		final boolean retval = !players.containsValue(player);
-		players.put(Integer.valueOf(player.getPlayerId()), player);
+		players.put(NullCleaner.assertNotNull(Integer.valueOf(player.getPlayerId())), player);
 		return retval;
 	}
 
@@ -205,6 +206,6 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 */
 	public Player[] asArray() {
 		return NullCleaner.assertNotNull(players.values().toArray(
-				new Player[players.size()]));
+				new Player @NonNull [players.size()]));
 	}
 }

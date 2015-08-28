@@ -82,7 +82,8 @@ public class SPMapReader implements INodeHandler<SPMap> {
 			final Iterable<XMLEvent> stream, final IMutablePlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		final Location loc = NullCleaner.assertNotNull(element.getLocation());
+		final Location loc = element.getLocation();
+		assert loc != null;
 		final SPMap map = new SPMap(new MapDimensions(
 				XMLHelper.parseInt(getAttribute(element, "rows"), loc),
 				XMLHelper.parseInt(getAttribute(element, "columns"), loc),
@@ -186,9 +187,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 					obj.getPlayers().getCurrentPlayer().getPlayerId());
 		}
 		for (final Player player : obj.getPlayers()) {
-			if (player != null) {
-				retval.addChild(PLAYER_READER.write(player));
-			}
+			retval.addChild(PLAYER_READER.write(player));
 		}
 		final MapDimensions dim = obj.getDimensions();
 		for (int i = 0; i < dim.rows; i++) {

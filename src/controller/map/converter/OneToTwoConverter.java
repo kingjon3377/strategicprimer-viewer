@@ -16,8 +16,6 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.exploration.TableLoader;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;

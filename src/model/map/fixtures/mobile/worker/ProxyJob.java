@@ -51,11 +51,11 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 	/**
 	 * Proxy-skills.
 	 */
-	private final List<ISkill> proxied = new ArrayList<>();
+	private final List<@NonNull ISkill> proxied = new ArrayList<>();
 	/**
 	 * Jobs we're proxying.
 	 */
-	private final List<IJob> proxiedJobs = new ArrayList<>();
+	private final List<@NonNull IJob> proxiedJobs = new ArrayList<>();
 	/**
 	 * The names of skills we're proxying.
 	 */
@@ -98,9 +98,7 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 		final @NonNull IJob @NonNull [] jobsArray =
 				proxiedJobs.toArray(new IJob[proxiedJobs.size()]);
 		for (final String skill : skillNames) {
-			if (skill != null) {
-				proxied.add(new ProxySkill(skill, parallel, jobsArray));
-			}
+			proxied.add(new ProxySkill(skill, parallel, jobsArray));
 		}
 	}
 	/**
@@ -133,7 +131,7 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 	 * @return an iterator over the skills that any of the proxied jobs has.
 	 */
 	@Override
-	public Iterator<ISkill> iterator() {
+	public Iterator<@NonNull ISkill> iterator() {
 		return proxied.iterator();
 	}
 	/**
@@ -143,7 +141,7 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 	@Override
 	public boolean addSkill(final ISkill skill) {
 		for (final ISkill proxy : proxied) {
-			if (proxy != null && proxy.getName().equals(skill.getName())) {
+			if (proxy.getName().equals(skill.getName())) {
 				return false;
 			}
 		}
@@ -195,8 +193,8 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 		for (ISkill skill : proxied) {
 			((ProxySkill) skill).addProxied(item);
 		}
-		final Job[] jobsArray =
-				proxiedJobs.toArray(new Job[proxiedJobs.size()]);
+		final Job @NonNull [] jobsArray =
+				proxiedJobs.toArray(new Job @NonNull [proxiedJobs.size()]);
 		for (ISkill skill : item) {
 			if (!skillNames.contains(skill.getName())) {
 				proxied.add(new ProxySkill(skill.getName(), parallel, jobsArray));

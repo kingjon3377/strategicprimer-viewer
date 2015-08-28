@@ -17,6 +17,7 @@ import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.junit.Test;
 
 import controller.map.formatexceptions.SPFormatException;
@@ -27,7 +28,6 @@ import model.map.fixtures.mobile.Ogre;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.Fortress;
-import util.NullCleaner;
 import util.Pair;
 import util.Warning.Action;
 
@@ -90,7 +90,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 * @return a map containing them. Declared mutable for the sake of calling code.
 	 */
 	private static IMutableMapNG encapsulateRivers(final Point point,
-			final River... rivers) {
+			final @NonNull River... rivers) {
 		final IMutableMapNG retval =
 				new SPMapNG(new MapDimensions(point.row + 1, point.col + 1, 2),
 						new PlayerCollection(), -1);
@@ -123,8 +123,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	public void testRiverSerializationOne() throws XMLStreamException,
 			SPFormatException, IOException {
 		for (final River river : River.values()) {
-			assertSerialization("River alone",
-					NullCleaner.assertNotNull(river), River.class);
+			assert river != null;
+			assertSerialization("River alone", river, River.class);
 		}
 		assertUnwantedChild(encapsulateTileString("<lake><troll /></lake>"),
 				IMapNG.class, false);

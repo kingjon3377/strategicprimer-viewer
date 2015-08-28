@@ -152,9 +152,9 @@ public class ZeroToOneConverter {
 		for (final Attribute attr : attrs) {
 			if ("event".equalsIgnoreCase(attr.getName().getLocalPart())) {
 				try {
-					events.push(Integer.valueOf(NumberFormat
+					events.push(NullCleaner.assertNotNull(Integer.valueOf(NumberFormat
 							.getIntegerInstance().parse(attr.getValue())
-							.intValue()));
+							.intValue())));
 				} catch (ParseException e) {
 					LOGGER.log(Level.SEVERE, "Non-numeric 'event'", e);
 				}
@@ -226,9 +226,7 @@ public class ZeroToOneConverter {
 		final Iterable<Attribute> attrs = new IteratorWrapper<>(// NOPMD
 				element.getAttributes());
 		for (final Attribute attr : attrs) {
-			if (attr != null) {
-				builder.append(printAttribute(attr));
-			}
+			builder.append(printAttribute(attr));
 		}
 		builder.append('>');
 		return NullCleaner.assertNotNull(builder.toString());
@@ -252,7 +250,7 @@ public class ZeroToOneConverter {
 	 */
 	private static void addXML(final String xml, final int... nums) {
 		for (final int num : nums) {
-			EQUIVS.put(Integer.valueOf(num), xml);
+			EQUIVS.put(NullCleaner.assertNotNull(Integer.valueOf(num)), xml);
 		}
 	}
 

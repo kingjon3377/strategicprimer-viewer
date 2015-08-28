@@ -59,7 +59,7 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	 * @param initial the initial state of the fixture
 	 */
 	public RiverFixture(final @NonNull River... initial) {
-		rivers = EnumSet.noneOf(River.class);
+		rivers = NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
 		for (final River river : initial) {
 			rivers.add(river);
 		}
@@ -99,7 +99,7 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	 * @return the river directions
 	 */
 	public Set<River> getRivers() {
-		return EnumSet.copyOf(rivers);
+		return NullCleaner.assertNotNull(EnumSet.copyOf(rivers));
 	}
 
 	/**

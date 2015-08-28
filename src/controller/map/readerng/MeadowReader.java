@@ -93,7 +93,7 @@ public class MeadowReader implements INodeHandler<Meadow> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Arrays.asList("meadow", "field"));
+		return Arrays.asList("meadow", "field");
 	}
 
 	/**
@@ -114,8 +114,8 @@ public class MeadowReader implements INodeHandler<Meadow> {
 	 */
 	@Override
 	public <S extends Meadow> SPIntermediateRepresentation write(final S obj) {
-		final String cult = NullCleaner.assertNotNull(Boolean.toString(obj
-				.isCultivated()));
+		final String cult = Boolean.toString(obj.isCultivated());
+		assert cult != null;
 		final String tag; // NOPMD
 		if (obj.isField()) {
 			tag = "field";

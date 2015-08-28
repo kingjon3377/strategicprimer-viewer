@@ -74,7 +74,7 @@ public class BattlefieldReader implements INodeHandler<Battlefield> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("battlefield"));
+		return Collections.singletonList("battlefield");
 	}
 
 	/** @return the class we know how to write */

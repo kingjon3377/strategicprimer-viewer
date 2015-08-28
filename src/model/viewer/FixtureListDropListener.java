@@ -224,9 +224,7 @@ public class FixtureListDropListener implements DropTargetListener {
 				.equalsAny(CurriedFixtureTransferable.FLAVOR, dflav)) {
 			for (final Transferable item : (List<Transferable>) trans
 					.getTransferData(CurriedFixtureTransferable.FLAVOR)) {
-				if (item != null) {
-					handleDrop(item);
-				}
+				handleDrop(item);
 			}
 		} else {
 			throw new UnsupportedFlavorException(

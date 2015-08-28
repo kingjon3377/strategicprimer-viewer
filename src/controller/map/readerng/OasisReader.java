@@ -69,7 +69,7 @@ public class OasisReader implements INodeHandler<Oasis> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("oasis"));
+		return Collections.singletonList("oasis");
 	}
 
 	/**

@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 /**
  * A stack of iterators. Useful for when we have several collections of things
  * we need to do the same thing to. The order in which the iterators are
@@ -44,9 +46,12 @@ public class IteratorStack<T> implements Iterator<T> {
 	 * @param iters sources for iterators to put in the queue.
 	 */
 	@SafeVarargs
-	public IteratorStack(final Iterable<T>... iters) {
+	public IteratorStack(final @NonNull Iterable<T>... iters) {
 		for (final Iterable<T> iter : iters) {
-			queue.addFirst(iter.iterator());
+			final Iterator<T> iterator = iter.iterator();
+			if (iterator != null) {
+				queue.addFirst(iterator);
+			}
 		}
 		removeEmptyIterators();
 	}
@@ -57,7 +62,7 @@ public class IteratorStack<T> implements Iterator<T> {
 	 * @param iters the iterators to put in the queue.
 	 */
 	@SafeVarargs
-	public IteratorStack(final Iterator<T>... iters) {
+	public IteratorStack(final @NonNull Iterator<T>... iters) {
 		for (final Iterator<T> iter : iters) {
 			queue.addFirst(iter);
 		}

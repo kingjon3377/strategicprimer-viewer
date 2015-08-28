@@ -339,7 +339,7 @@ public class SPMapNG implements IMutableMapNG {
 		if (rivers.containsKey(location)) {
 			return rivers.get(location); // NOPMD
 		} else {
-			return EnumSet.noneOf(River.class);
+			return NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
 		}
 	}
 
@@ -555,6 +555,7 @@ public class SPMapNG implements IMutableMapNG {
 			localRivers  = rivers.get(location);
 		} else {
 			localRivers = EnumSet.noneOf(River.class);
+			assert localRivers != null;
 			rivers.put(location, localRivers);
 		}
 		for (River river : rvrs) {

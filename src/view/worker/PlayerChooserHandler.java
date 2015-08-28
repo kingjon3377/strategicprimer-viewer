@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.listeners.PlayerChangeListener;
@@ -134,7 +135,7 @@ public final class PlayerChooserHandler implements ActionListener,
 			for (final Player player : players) {
 				list.add(player);
 			}
-			return NullCleaner.assertNotNull(list.toArray(new Player[list
+			return NullCleaner.assertNotNull(list.toArray(new Player @NonNull [list
 					.size()]));
 		}
 	}

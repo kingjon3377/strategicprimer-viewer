@@ -75,8 +75,9 @@ public class AppChooserFrame extends JFrame {
 		super("SP App Chooser");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-		final @NonNull List<@NonNull String> parameters =
+		final List<@NonNull String> parameters =
 				Collections.unmodifiableList(params);
+		assert parameters != null;
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
 		buttonPanel.add(button("Map Viewer", parameters, ViewerStart.class));
 		buttonPanel.add(button("Worker Skill Advancement", parameters,
@@ -147,6 +148,7 @@ public class AppChooserFrame extends JFrame {
 				final String msg = except.getMessage();
 				final String message = NullCleaner.valueOrDefault(msg,
 						"Exception with null message");
+				assert message != null;
 				LOGGER.log(Level.SEVERE, message, except.getCause());
 				ErrorShower.showErrorDialog(outer, message);
 			}
