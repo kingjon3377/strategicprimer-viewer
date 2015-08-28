@@ -168,12 +168,7 @@ public class WorkerMgmtFrame extends JFrame {
 						if (vModel == null) {
 							SystemOut.SYS_OUT.println("Failed to open a window");
 						} else {
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {
-									vModel.setSelection(point);
-								}
-							});
+							SwingUtilities.invokeLater(() -> vModel.setSelection(point));
 						}
 					}
 				}

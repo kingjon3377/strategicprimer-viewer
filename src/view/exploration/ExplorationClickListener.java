@@ -104,12 +104,7 @@ public final class ExplorationClickListener implements ActionListener,
 	 */
 	@Override
 	public void actionPerformed(@Nullable final ActionEvent evt) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				handleMove();
-			}
-		});
+		SwingUtilities.invokeLater(() -> handleMove());
 	}
 
 	/**

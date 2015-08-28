@@ -45,17 +45,7 @@ public final class TownComparator implements Comparator<AbstractTown> {
 	/**
 	 * A comparator for town-sizes.
 	 */
-	private static final Comparator<TownSize> SIZE_CMP = new Comparator<TownSize>() {
-		/**
-		 * @param one the first kind
-		 * @param two the second kind
-		 * @return a negative integer if the first is "less" than the second,
-		 *         zero if they're the same, and a positive integer if the first
-		 *         is "greater" than the second.
-		 */
-		@Override
-				public int compare(@Nullable final TownSize one,
-						@Nullable final TownSize two) {
+	private static final Comparator<TownSize> SIZE_CMP = (one, two) -> {
 			if (one == null || two == null) {
 				throw new IllegalArgumentException("Asked to compare null TownSize");
 			} else if (one.equals(two)) {
@@ -69,43 +59,31 @@ public final class TownComparator implements Comparator<AbstractTown> {
 			} else {
 				return 1;
 			}
-		}
-	};
+		};
 
 	/**
 	 * A comparator for town-statuses, to put active towns before abandoned ones
 	 * before ruined ones before burned-out ones.
 	 */
 	private static final Comparator<TownStatus> ST_CMP =
-			new Comparator<TownStatus>() {
-		/**
-		 * @param one the first kind
-		 * @param two the second kind
-		 * @return a negative integer if the first is "less" than the second,
-		 *         zero if they're the same, and a positive integer if the first
-		 *         is "greater" than the second.
-		 */
-		@Override
-				public int compare(@Nullable final TownStatus one,
-						@Nullable final TownStatus two) {
-			if (one == null || two == null) {
-						throw new IllegalArgumentException(
-								"Asked to compare null TownStatus");
-			} else if (one.equals(two)) {
-				return 0; // NOPMD
-			} else if (TownStatus.Active.equals(one)) {
-				return -1; // NOPMD
-			} else if (TownStatus.Active.equals(two)) {
-				return 1; // NOPMD
-			} else if (TownStatus.Abandoned.equals(one)) {
-				return -1; // NOPMD
-			} else if (TownStatus.Abandoned.equals(two)) {
-				return 1; // NOPMD
-			} else if (TownStatus.Ruined.equals(one)) {
-				return -1; // NOPMD
-			} else {
-				return 1;
-			}
+			(one, two) -> {
+		if (one == null || two == null) {
+			throw new IllegalArgumentException(
+				"Asked to compare null TownStatus");
+		} else if (one.equals(two)) {
+			return 0; // NOPMD
+		} else if (TownStatus.Active.equals(one)) {
+			return -1; // NOPMD
+		} else if (TownStatus.Active.equals(two)) {
+			return 1; // NOPMD
+		} else if (TownStatus.Abandoned.equals(one)) {
+			return -1; // NOPMD
+		} else if (TownStatus.Abandoned.equals(two)) {
+			return 1; // NOPMD
+		} else if (TownStatus.Ruined.equals(one)) {
+			return -1; // NOPMD
+		} else {
+			return 1;
 		}
 	};
 
@@ -114,55 +92,44 @@ public final class TownComparator implements Comparator<AbstractTown> {
 	 * fortresses before cities before towns before fortifications before villages.
 	 */
 	private static final Comparator<ITownFixture> KIND_CMP =
-			new Comparator<ITownFixture>() {
-		/**
-		 * @param one the first kind
-		 * @param two the second kind
-		 * @return a negative integer if the first is "less" than the second,
-		 *         zero if they're the same, and a positive integer if the first
-		 *         is "greater" than the second.
-		 */
-		@Override
-				public int compare(@Nullable final ITownFixture one,
-						@Nullable final ITownFixture two) {
-			if (one == null || two == null) {
-				throw new IllegalArgumentException("Asked to compare null fixture");
-			} else if (one instanceof Fortress) {
-				if (two instanceof Fortress) {
-					return 0; // NOPMD
-				} else {
-					return -1; // NOPMD
-				}
-			} else if (two instanceof Fortress) {
-				return 1; // NOPMD
-			} else if (one instanceof City) {
-				if (two instanceof City) {
-					return 0; // NOPMD
-				} else {
-					return -1; // NOPMD
-				}
-			} else if (two instanceof City) {
-				return 1; // NOPMD
-			} else if (one instanceof Town) {
-				if (two instanceof Town) {
-					return 0; // NOPMD
-				} else {
-					return -1; // NOPMD
-				}
-			} else if (two instanceof Town) {
-				return 1; // NOPMD
-			} else if (one instanceof Fortification) {
-				if (two instanceof Fortification) {
-					return 0; // NOPMD
-				} else {
-					return -1; // NOPMD
-				}
-			} else if (two instanceof Fortification) {
-				return 1; // NOPMD
+			(one, two) -> {
+		if (one == null || two == null) {
+			throw new IllegalArgumentException("Asked to compare null fixture");
+		} else if (one instanceof Fortress) {
+			if (two instanceof Fortress) {
+				return 0; // NOPMD
 			} else {
-				// They should be both villages ...
-				return 0;
+				return -1; // NOPMD
 			}
+		} else if (two instanceof Fortress) {
+			return 1; // NOPMD
+		} else if (one instanceof City) {
+			if (two instanceof City) {
+				return 0; // NOPMD
+			} else {
+				return -1; // NOPMD
+			}
+		} else if (two instanceof City) {
+			return 1; // NOPMD
+		} else if (one instanceof Town) {
+			if (two instanceof Town) {
+				return 0; // NOPMD
+			} else {
+				return -1; // NOPMD
+			}
+		} else if (two instanceof Town) {
+			return 1; // NOPMD
+		} else if (one instanceof Fortification) {
+			if (two instanceof Fortification) {
+				return 0; // NOPMD
+			} else {
+				return -1; // NOPMD
+			}
+		} else if (two instanceof Fortification) {
+			return 1; // NOPMD
+		} else {
+			// They should be both villages ...
+			return 0;
 		}
 	};
 	/**

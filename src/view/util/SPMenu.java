@@ -20,7 +20,6 @@ import javax.swing.KeyStroke;
 import org.eclipse.jdt.annotation.Nullable;
 
 import controller.map.misc.IOHandler;
-import model.listeners.PlayerChangeListener;
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.misc.IDriverModel;
@@ -140,19 +139,11 @@ public class SPMenu extends JMenuBar {
 		fileMenu.addSeparator();
 		fileMenu.add(MenuItemCreator.createMenuItem("Close", KeyEvent.VK_W,
 				MenuItemCreator.createHotkey(KeyEvent.VK_W),
-				"Close this window", new ActionListener() {
-					/**
-					 * Close the window when pressed.
-					 *
-					 * @param evt the event to handle
-					 */
-					@Override
-					public void actionPerformed(@Nullable final ActionEvent evt) {
-						if (evt != null
-								&& "Close".equals(evt.getActionCommand())) {
-							parent.setVisible(false);
-							parent.dispose();
-						}
+				"Close this window", evt -> {
+					if (evt != null
+							&& "Close".equals(evt.getActionCommand())) {
+						parent.setVisible(false);
+						parent.dispose();
 					}
 				}));
 		fileMenu.addSeparator();
@@ -161,19 +152,9 @@ public class SPMenu extends JMenuBar {
 		fileMenu.addSeparator();
 		fileMenu.add(MenuItemCreator.createMenuItem("Quit", KeyEvent.VK_Q,
 				MenuItemCreator.createHotkey(KeyEvent.VK_Q), "Quit the application",
-				new ActionListener() {
-					/**
-					 * Handle the menu "button" press.
-					 *
-					 * @param event the event to handle
-					 */
-					@Override
-					public void actionPerformed(
-							@Nullable final ActionEvent event) {
-						if (event != null
-								&& "Quit".equals(event.getActionCommand())) {
-							DriverQuit.quit(0);
-						}
+				event -> {
+					if (event != null && "Quit".equals(event.getActionCommand())) {
+						DriverQuit.quit(0);
 					}
 				}));
 		return fileMenu;
@@ -201,45 +182,23 @@ public class SPMenu extends JMenuBar {
 		if (model instanceof IViewerModel) {
 			gotoTileItem = MenuItemCreator.createMenuItem("Go to tile",
 					KeyEvent.VK_T, MenuItemCreator.createHotkey(KeyEvent.VK_T),
-					"Go to a tile by coordinates", new ActionListener() {
-						@Override
-						public void actionPerformed(
-								@Nullable final ActionEvent evt) {
-							new SelectTileDialog(parent, (IViewerModel) model)
-									.setVisible(true);
-						}
-					});
+					"Go to a tile by coordinates", evt -> new SelectTileDialog(parent, (IViewerModel) model)
+							.setVisible(true));
 			final FindDialog finder = new FindDialog(parent, (IViewerModel) model);
 			findItem =
 					MenuItemCreator.createMenuItem("Find a fixture", findKey,
 							findStroke, "Find a fixture by name, kind, or ID#",
-							new ActionListener() {
-								@Override
-								public void actionPerformed(
-										@Nullable final ActionEvent evt) {
-									finder.setVisible(true);
-								}
-							});
+							evt -> finder.setVisible(true));
 			nextItem =
 					MenuItemCreator.createMenuItem("Find next", nextKey,
 							nextStroke,
 							"Find the next fixture matching the pattern",
-							new ActionListener() {
-								@Override
-								public void actionPerformed(
-										@Nullable final ActionEvent evt) {
-									finder.search();
-								}
-							});
+							evt -> finder.search());
 			zoomListener = new ZoomListener((IViewerModel) model);
 		} else {
-			final ActionListener nullAction = new ActionListener() {
-				@Override
-				public void actionPerformed(
-						@Nullable final ActionEvent evt) {
+			final ActionListener nullAction = evt -> {
 					// do nothing
-				}
-			};
+				};
 			gotoTileItem = MenuItemCreator.createMenuItem("Go to tile",
 					KeyEvent.VK_T, MenuItemCreator.createHotkey(KeyEvent.VK_T),
 					"Go to a tile by coordinates", nullAction);
@@ -293,10 +252,7 @@ public class SPMenu extends JMenuBar {
 		retval.add(MenuItemCreator.createMenuItem(
 				PlayerChooserHandler.MENU_ITEM, KeyEvent.VK_P, null,
 				"Mark a player as the current player in the map", pch));
-		pch.addPlayerChangeListener(new PlayerChangeListener() {
-			@Override
-			public void playerChanged(@Nullable final Player old,
-					final Player newPlayer) {
+		pch.addPlayerChangeListener((old, newPlayer) -> {
 				for (final Player player : model.getMap().players()) {
 					if (player.equals(newPlayer)) {
 						player.setCurrent(true);
@@ -304,8 +260,7 @@ public class SPMenu extends JMenuBar {
 						player.setCurrent(false);
 					}
 				}
-			}
-		});
+			});
 		return retval;
 	}
 	/**
@@ -322,13 +277,7 @@ public class SPMenu extends JMenuBar {
 				"Look at a different player's units and workers", pch));
 		editMenu.add(MenuItemCreator.createMenuItem("Reload tree",
 				KeyEvent.VK_R, MenuItemCreator.createHotkey(KeyEvent.VK_R),
-				"Refresh the view of the workers", new ActionListener() {
-
-			@Override
-			public void actionPerformed(@Nullable final ActionEvent e) {
-				pch.reload();
-			}
-		}));
+				"Refresh the view of the workers", e -> pch.reload()));
 		return editMenu;
 	}
 	/**

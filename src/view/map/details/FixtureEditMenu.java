@@ -136,21 +136,17 @@ public class FixtureEditMenu extends JPopupMenu {
 		}
 		if (fixture instanceof HasKind) {
 			addMenuItem(new JMenuItem("Change kind", KeyEvent.VK_K),
-					new ActionListener() {
-						@Override
-						public void actionPerformed(
-								@Nullable final ActionEvent event) {
-							final String old = ((HasKind) fixture).getKind();
-							final String result = (String) showInputDialog(
-									outer, "Fixture's new kind:",
-									"Change Fixture Kind",
-									JOptionPane.PLAIN_MESSAGE, null, null,
-									((HasKind) fixture).getKind());
-							if (result != null && !old.equals(result)) {
-								((HasKind) fixture).setKind(result);
-								for (final IWorkerTreeModel listener : listeners) {
-									listener.moveItem((HasKind) fixture);
-								}
+					event -> {
+						final String old = ((HasKind) fixture).getKind();
+						final String result = (String) showInputDialog(
+								outer, "Fixture's new kind:",
+								"Change Fixture Kind",
+								JOptionPane.PLAIN_MESSAGE, null, null,
+								((HasKind) fixture).getKind());
+						if (result != null && !old.equals(result)) {
+							((HasKind) fixture).setKind(result);
+							for (final IWorkerTreeModel listener : listeners) {
+								listener.moveItem((HasKind) fixture);
 							}
 						}
 					});
@@ -158,41 +154,32 @@ public class FixtureEditMenu extends JPopupMenu {
 		}
 		if (fixture instanceof HasOwner) {
 			addMenuItem(new JMenuItem("Change owner", KeyEvent.VK_O),
-					new ActionListener() {
-						@Override
-						public void actionPerformed(
-								@Nullable final ActionEvent event) {
-							final Player result =
-									(Player) showInputDialog(outer,
-											"Fixture's new owner:",
-											"Change Fixture Owner",
-											JOptionPane.PLAIN_MESSAGE, null,
-											playersAsArray(players),
-											((HasOwner) fixture).getOwner());
-							if (result != null) {
-								((HasOwner) fixture).setOwner(result);
-							}
+					event -> {
+						final Player result =
+								(Player) showInputDialog(outer,
+										"Fixture's new owner:",
+										"Change Fixture Owner",
+										JOptionPane.PLAIN_MESSAGE, null,
+										playersAsArray(players),
+										((HasOwner) fixture).getOwner());
+						if (result != null) {
+							((HasOwner) fixture).setOwner(result);
 						}
 					});
 			mutable = true;
 		}
 		if (fixture instanceof UnitMember) {
 			addMenuItem(new JMenuItem("Dismiss", KeyEvent.VK_D),
-					new ActionListener() {
-				@Override
-				public void actionPerformed(@Nullable final ActionEvent event) {
-							final int reply =
-									showConfirmDialog(
-											outer,
-											"Are you sure you want to dismiss this?",
-											"Confirm Dismissal", YES_NO_OPTION);
-					if (JOptionPane.YES_OPTION == reply) {
-						for (final IWorkerTreeModel listener : listeners) {
-							listener.dismissUnitMember((UnitMember) fixture);
+					event -> {
+						final int reply = showConfirmDialog(
+								outer, "Are you sure you want to dismiss this?",
+								"Confirm Dismissal", YES_NO_OPTION);
+						if (JOptionPane.YES_OPTION == reply) {
+							for (final IWorkerTreeModel listener : listeners) {
+								listener.dismissUnitMember((UnitMember) fixture);
+							}
 						}
-					}
-				}
-			});
+					});
 		}
 		if (!mutable) {
 			add(new JLabel("Fixture is not mutable"));

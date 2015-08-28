@@ -87,17 +87,13 @@ public class FileChooser {
 				}
 			} else {
 				final FilteredFileChooser fileChooser = chooser;
-				invoke(new Runnable() {
-					@Override
-					public void run() {
-						if (fileChooser.showOpenDialog(null) == APPROVE_OPTION) {
-							setFile(NullCleaner
-									.valueOrDefault(
-											fileChooser.getSelectedFile(),
-											new File("")));
-						}
+				invoke(() -> {
+					if (fileChooser.showOpenDialog(null) == APPROVE_OPTION) {
+						setFile(NullCleaner
+								.valueOrDefault(
+										fileChooser.getSelectedFile(),
+										new File("")));
 					}
-
 				});
 			}
 		}
