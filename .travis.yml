@@ -13,9 +13,9 @@ before_install:
   - ./install-deps.sh
 install: true
 before-script: test -f export_viewer.xml && mv export_viewer.xml build.xml || true
-script: ant -Dlaunch4j.dir=./launch4j -Dnullness.jar.path=./org.eclipse.jdt.annotation-1.1.0.jar -Djunit.jar.path=/usr/share/java/junit4.jar -Dwindowmenu.jar.path=./WindowMenu.jar test
+script: ant -Dlaunch4j.dir=./launch4j -Dnullness.jar.path=./org.eclipse.jdt.annotation-2.0.0.jar -Djunit.jar.path=/usr/share/java/junit4.jar -Dwindowmenu.jar.path=./WindowMenu.jar test
 before_deploy:
-- ant -lib ./launch4j -lib ./launch4j/lib -Dlaunch4j.dir=./launch4j -Dnullness.jar.path=./org.eclipse.jdt.annotation-1.1.0.jar -Djunit.jar.path=/usr/share/java/junit4.jar -Dwindowmenu.jar.path=./WindowMenu.jar release
+- ant -lib ./launch4j -lib ./launch4j/lib -Dlaunch4j.dir=./launch4j -Dnullness.jar.path=./org.eclipse.jdt.annotation-2.0.0.jar -Djunit.jar.path=/usr/share/java/junit4.jar -Dwindowmenu.jar.path=./WindowMenu.jar release
 env:
   - GIT_NAME="Travis CI" GIT_EMAIL="kingjon3377+travis@gmail.com"
 deploy:
