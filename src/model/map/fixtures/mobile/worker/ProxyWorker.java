@@ -81,9 +81,8 @@ public class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 				}
 			}
 		}
-		@NonNull
-		final IWorker @NonNull [] workerArray =
-				workers.toArray(new IWorker @NonNull [workers.size()]);
+		final IWorker[] workerArray = NullCleaner.assertNotNullArray(
+				workers.toArray(new IWorker[workers.size()]));
 		for (final String job : jobNames) {
 			proxyJobs.add(new ProxyJob(job, parallel, workerArray));
 		}
@@ -185,8 +184,8 @@ public class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 			return;
 		}
 		workers.add(item);
-		final IWorker @NonNull [] workerArray =
-				workers.toArray(new Worker @NonNull [workers.size()]);
+		final IWorker @NonNull [] workerArray = NullCleaner.assertNotNullArray(
+				workers.toArray(new Worker[workers.size()]));
 		List<IJob> proxyJobsTemp = new ArrayList<>(proxyJobs);
 		for (final IJob job : item) {
 			String name = job.getName();

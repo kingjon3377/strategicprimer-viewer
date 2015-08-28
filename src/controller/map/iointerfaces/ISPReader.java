@@ -8,9 +8,8 @@ import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import controller.map.formatexceptions.SPFormatException;
+import util.NullCleaner;
 import util.Warning;
 
 /**
@@ -41,10 +40,10 @@ public interface ISPReader {
 	 * Tags we expect to use in the future; they are skipped for now and we'll
 	 * warn if they're used.
 	 */
-	List<String> FUTURE = Collections
-			.unmodifiableList(Arrays.asList(new String @NonNull [] { "future",
-					"explorer", "building", "resource", "changeset", "change",
-					"move", "work", "discover", "submap" }));
+	List<String> FUTURE = Collections.unmodifiableList(
+			Arrays.asList(NullCleaner.assertNotNullArray(new String[] {
+					"future", "explorer", "building", "resource", "changeset",
+					"change", "move", "work", "discover", "submap" })));
 
 	/**
 	 * @param <T> A supertype of the object the XML represents

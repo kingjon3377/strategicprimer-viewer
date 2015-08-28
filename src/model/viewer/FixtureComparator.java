@@ -2,6 +2,7 @@ package model.viewer;
 
 import java.util.Comparator;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.TileFixture;
@@ -32,7 +33,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class FixtureComparator implements Comparator<TileFixture> {
+public class FixtureComparator implements Comparator<@NonNull TileFixture> {
 	/**
 	 * Compare two fixtures.
 	 *

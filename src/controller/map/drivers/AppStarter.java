@@ -13,8 +13,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.WindowThread;
@@ -228,7 +226,7 @@ public class AppStarter implements ISPDriver {
 	 */
 	protected static void startChosenDriver(final ISPDriver driver, // NOPMD
 			final List<String> params) throws DriverFailedException {
-		driver.startDriver(params.toArray(new String @NonNull [params.size()]));
+		driver.startDriver(NullCleaner.assertNotNullArray(params.toArray(new String[params.size()])));
 	}
 
 	/**

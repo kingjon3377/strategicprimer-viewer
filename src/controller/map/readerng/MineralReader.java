@@ -78,7 +78,7 @@ public class MineralReader implements INodeHandler<MineralVein> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("mineral");
+		return NullCleaner.assertNotNull(Collections.singletonList("mineral"));
 	}
 
 	/**

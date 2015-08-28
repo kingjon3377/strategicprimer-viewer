@@ -84,10 +84,13 @@ public class Warning {
 		case Die:
 			throw new FatalWarningException(warning); // NOPMD
 		case Warn:
-			final Class<? extends StackTraceElement> warnClass = warning
-					.getStackTrace()[0].getClass();
-			final Logger logger = TypesafeLogger.getLogger(NullCleaner
-					.valueOrDefault(warnClass, Warning.class));
+			final Class<?> warnClass;
+			if (warning.getStackTrace().length > 0) {
+				warnClass = StackTraceElement.class;
+			} else {
+				warnClass = Warning.class;
+			}
+			final Logger logger = TypesafeLogger.getLogger(warnClass);
 			if (warning instanceof SPFormatException
 					|| warning instanceof IDFactory.DuplicateIDException) {
 				logger.warning("Warning: " + warning.getMessage());

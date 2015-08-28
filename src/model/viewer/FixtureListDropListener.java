@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.TileFixture;
@@ -84,10 +85,10 @@ public class FixtureListDropListener implements DropTargetListener {
 	public void dragEnter(@Nullable final DropTargetDragEvent dtde) {
 		if (dtde != null) {
 			if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
-					&& (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
-							dtde.getCurrentDataFlavorsAsList()) || EqualsAny
-							.equalsAny(CurriedFixtureTransferable.FLAVOR,
-									dtde.getCurrentDataFlavorsAsList()))
+					&& (dtde.getCurrentDataFlavorsAsList().contains(
+							FixtureTransferable.FLAVOR)
+					|| dtde.getCurrentDataFlavorsAsList()
+							.contains(CurriedFixtureTransferable.FLAVOR))
 					&& !isIntraComponentXfr(dtde)) {
 				dtde.acceptDrag(dtde.getDropAction());
 			} else {
@@ -117,10 +118,10 @@ public class FixtureListDropListener implements DropTargetListener {
 	public void dragOver(@Nullable final DropTargetDragEvent dtde) {
 		if (dtde != null) {
 			if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
-					&& (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
-							dtde.getCurrentDataFlavorsAsList()) || EqualsAny
-							.equalsAny(CurriedFixtureTransferable.FLAVOR,
-									dtde.getCurrentDataFlavorsAsList()))
+					&& (dtde.getCurrentDataFlavorsAsList().contains(
+							FixtureTransferable.FLAVOR)
+					|| dtde.getCurrentDataFlavorsAsList()
+							.contains(CurriedFixtureTransferable.FLAVOR))
 					&& !isIntraComponentXfr(dtde)) {
 				dtde.acceptDrag(dtde.getDropAction());
 			} else {
@@ -138,10 +139,10 @@ public class FixtureListDropListener implements DropTargetListener {
 	public void dropActionChanged(@Nullable final DropTargetDragEvent dtde) {
 		if (dtde != null) {
 			if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
-					&& (EqualsAny.equalsAny(FixtureTransferable.FLAVOR,
-							dtde.getCurrentDataFlavorsAsList()) || EqualsAny
-							.equalsAny(CurriedFixtureTransferable.FLAVOR,
-									dtde.getCurrentDataFlavorsAsList()))
+					&& (dtde.getCurrentDataFlavorsAsList().contains(
+							FixtureTransferable.FLAVOR)
+					|| dtde.getCurrentDataFlavorsAsList()
+							.contains(CurriedFixtureTransferable.FLAVOR))
 					&& !isIntraComponentXfr(dtde)) {
 				dtde.acceptDrag(dtde.getDropAction());
 			} else {
@@ -214,22 +215,26 @@ public class FixtureListDropListener implements DropTargetListener {
 			throw new UnsupportedFlavorException(new DataFlavor(
 					DataFlavor.class, "null"));
 		}
-		if (EqualsAny.equalsAny(FixtureTransferable.FLAVOR, dflav)) {
-			final TileFixture transferData = (TileFixture) trans
-					.getTransferData(FixtureTransferable.FLAVOR);
-			if (transferData != null) {
-				model.addFixture(transferData);
+		assert dflav != null;
+		for (DataFlavor flavor : dflav) {
+			if (flavor == null) {
+				continue;
+			} else if (flavor.equals(FixtureTransferable.FLAVOR)) {
+				TileFixture transferData = (TileFixture) trans.getTransferData(flavor);
+				if (transferData != null) {
+					model.addFixture(transferData);
+				}
+				return;
+			} else if (flavor.equals(CurriedFixtureTransferable.FLAVOR)) {
+				List<Transferable> curried = (List<@NonNull Transferable>) trans
+						.getTransferData(flavor);
+				for (Transferable item : curried) {
+					handleDrop(item);
+				}
+				return;
 			}
-		} else if (EqualsAny
-				.equalsAny(CurriedFixtureTransferable.FLAVOR, dflav)) {
-			for (final Transferable item : (List<Transferable>) trans
-					.getTransferData(CurriedFixtureTransferable.FLAVOR)) {
-				handleDrop(item);
-			}
-		} else {
-			throw new UnsupportedFlavorException(
-					trans.getTransferDataFlavors()[0]);
 		}
+		throw new UnsupportedFlavorException(trans.getTransferDataFlavors()[0]);
 	}
 
 	/**

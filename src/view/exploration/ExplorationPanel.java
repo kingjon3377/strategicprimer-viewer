@@ -111,32 +111,32 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 	private static final Map<Direction, KeyStroke> NUM_KPAD = new EnumMap<>(
 			Direction.class);
 	static {
-		ARROW_KEYS.put(Direction.North,
-				KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0));
-		ARROW_KEYS.put(Direction.South,
-				KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0));
-		ARROW_KEYS.put(Direction.West,
-				KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0));
-		ARROW_KEYS.put(Direction.East,
-				KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0));
-		NUM_KPAD.put(Direction.North,
-				KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD8, 0));
-		NUM_KPAD.put(Direction.South,
-				KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD2, 0));
-		NUM_KPAD.put(Direction.West,
-				KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD4, 0));
-		NUM_KPAD.put(Direction.East,
-				KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD6, 0));
-		NUM_KPAD.put(Direction.Northeast,
-				KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD9, 0));
-		NUM_KPAD.put(Direction.Northwest,
-				KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD7, 0));
-		NUM_KPAD.put(Direction.Southeast,
-				KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD3, 0));
-		NUM_KPAD.put(Direction.Southwest,
-				KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD1, 0));
-		NUM_KPAD.put(Direction.Nowhere,
-				KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD5, 0));
+		ARROW_KEYS.put(Direction.North, NullCleaner
+				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0)));
+		ARROW_KEYS.put(Direction.South, NullCleaner
+				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0)));
+		ARROW_KEYS.put(Direction.West, NullCleaner
+				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0)));
+		ARROW_KEYS.put(Direction.East, NullCleaner
+				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0)));
+		NUM_KPAD.put(Direction.North, NullCleaner
+				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD8, 0)));
+		NUM_KPAD.put(Direction.South, NullCleaner
+				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD2, 0)));
+		NUM_KPAD.put(Direction.West, NullCleaner
+				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD4, 0)));
+		NUM_KPAD.put(Direction.East, NullCleaner
+				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD6, 0)));
+		NUM_KPAD.put(Direction.Northeast, NullCleaner
+				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD9, 0)));
+		NUM_KPAD.put(Direction.Northwest, NullCleaner
+				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD7, 0)));
+		NUM_KPAD.put(Direction.Southeast, NullCleaner
+				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD3, 0)));
+		NUM_KPAD.put(Direction.Southwest, NullCleaner
+				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD1, 0)));
+		NUM_KPAD.put(Direction.Nowhere, NullCleaner
+				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD5, 0)));
 	}
 	/**
 	 * The exploration model.

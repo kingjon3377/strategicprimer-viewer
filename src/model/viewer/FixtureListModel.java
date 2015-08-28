@@ -2,6 +2,7 @@ package model.viewer;
 
 import javax.swing.DefaultListModel;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.listeners.SelectionChangeListener;
@@ -42,7 +43,7 @@ import model.misc.IDriverModel;
  * @author Jonathan Lovelace
  *
  */
-public final class FixtureListModel extends DefaultListModel<TileFixture>
+public final class FixtureListModel extends DefaultListModel<@NonNull TileFixture>
 		implements SelectionChangeListener {
 	/**
 	 * The driver model, which we use to get the population at a location.
