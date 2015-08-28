@@ -69,11 +69,13 @@ public class QuadrantTable implements EncounterTable {
 		final int rowRemain = MAP_SIZE_ROWS % rows;
 		final int colRemain = MAP_SIZE_COLS % cols;
 		quadrants = new HashMap<>();
+		int i = 0;
 		for (int row = 0; row < MAP_SIZE_ROWS - rowRemain; row += rowstep) {
 			for (int col = 0; col < MAP_SIZE_COLS - colRemain; col += colstep) {
 				// System.out.println("Adding " + items.get(0) + " at (" + row +
 				// ", " + col +").");
-				quadrants.put(PointFactory.point(row, col), items.remove(0));
+				quadrants.put(PointFactory.point(row, col), items.get(i));
+				i++;
 			}
 		}
 	}
