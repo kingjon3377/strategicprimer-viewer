@@ -617,7 +617,7 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public void removeFixture(final Point location, final TileFixture fix) {
-		if (fixtures.contains(location) {
+		if (fixtures.containsKey(location)) {
 			fixtures.get(location).remove(fix);
 		}
 	}
