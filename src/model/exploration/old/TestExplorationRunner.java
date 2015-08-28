@@ -5,7 +5,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.Before;
@@ -14,7 +13,6 @@ import org.junit.Test;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileType;
-import util.NullCleaner;
 
 /**
  * A test case for TestExplorationRunner.
@@ -223,10 +221,8 @@ public final class TestExplorationRunner {
 		runner.loadTable("referent_one", new ConstantTable("#existent_table#"));
 		runner.loadTable("referent_two", new ConstantTable(
 				"( #existent_table# )"));
-		runner.loadTable("referent_three",
-				new QuadrantTable(1, new ArrayList<>(Arrays
-						.asList(NullCleaner.assertNotNullArray(new String[] {
-								"#referent_one#", "#referent_two#" })))));
+		runner.loadTable("referent_three", new QuadrantTable(1,
+				Arrays.asList("#referent_one#", "#referent_two#")));
 		assertFalse("recursive case to exercise cache-hits",
 				runner.recursiveCheck("referent_three"));
 		runner.loadTable("false_referent", new ConstantTable("#nonexistent#"));
