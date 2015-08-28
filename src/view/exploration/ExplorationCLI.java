@@ -190,9 +190,9 @@ public class ExplorationCLI {
 		Forest forest = map.getForest(dPoint);
 		if (forest != null) {
 			if (SimpleMovement.shouldAlwaysNotice(mover, forest)) {
-				constants.add(ground);
+				constants.add(forest);
 			} else if (SimpleMovement.mightNotice(mover, forest)) {
-				allFixtures.add(ground);
+				allFixtures.add(forest);
 			}
 		}
 		for (final TileFixture fix : map.getOtherFixtures(dPoint)) {
