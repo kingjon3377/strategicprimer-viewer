@@ -1,5 +1,6 @@
 package model.map;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.fixtures.Ground;
@@ -51,12 +52,12 @@ public interface IMapNG extends Subsettable<IMapNG>, Comparable<IMapNG> {
 	/**
 	 * @return a view of the players in the map.
 	 */
-	Iterable<Player> players();
+	Iterable<@NonNull Player> players();
 
 	/**
 	 * @return a view of the locations on the map
 	 */
-	Iterable<Point> locations();
+	Iterable<@NonNull Point> locations();
 
 	/**
 	 * @param location a location
@@ -74,7 +75,7 @@ public interface IMapNG extends Subsettable<IMapNG>, Comparable<IMapNG> {
 	 * @param location a location
 	 * @return a view of the river directions, if any, at that location
 	 */
-	Iterable<River> getRivers(Point location);
+	Iterable<@NonNull River> getRivers(Point location);
 
 	/**
 	 * Implementations should aim to have only the "main" forest here, and any
@@ -101,7 +102,7 @@ public interface IMapNG extends Subsettable<IMapNG>, Comparable<IMapNG> {
 	 * @return a view of any fixtures on the map that aren't covered in the
 	 *         other querying methods.
 	 */
-	Iterable<TileFixture> getOtherFixtures(Point location);
+	Iterable<@NonNull TileFixture> getOtherFixtures(Point location);
 
 	/**
 	 * @return the current turn

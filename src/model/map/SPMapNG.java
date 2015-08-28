@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.fixtures.Ground;
@@ -117,7 +118,7 @@ public class SPMapNG implements IMutableMapNG {
 			// TODO: We should probably delegate this to the PlayerCollection.
 			boolean retval = true;
 			for (final Player player : obj.players()) {
-				if (player != null && !playerCollection.contains(player)) {
+				if (!playerCollection.contains(player)) {
 					out.append(context);
 					out.append("\tExtra player ");
 					out.append(player.toString());
@@ -129,9 +130,7 @@ public class SPMapNG implements IMutableMapNG {
 			for (final Point point : locations()) {
 				final String ctxt =
 						context + " At " + Objects.toString(point) + ':';
-				if (point == null) {
-					continue;
-				} else if (!getBaseTerrain(point).equals(
+				if (!getBaseTerrain(point).equals(
 						obj.getBaseTerrain(point))
 						&& !TileType.NotVisible.equals(obj
 								.getBaseTerrain(point))) {
@@ -200,10 +199,15 @@ public class SPMapNG implements IMutableMapNG {
 				final Map<Integer, IUnit> ourUnits = new HashMap<>();
 				for (TileFixture fix : getOtherFixtures(point)) {
 					if (fix instanceof SubsettableFixture) {
-						ourSubsettables.put(Integer.valueOf(fix.getID()),
+						ourSubsettables.put(
+								NullCleaner.assertNotNull(
+										Integer.valueOf(fix.getID())),
 								(SubsettableFixture) fix);
 					} else if (fix instanceof IUnit) {
-						ourUnits.put(Integer.valueOf(fix.getID()), (IUnit) fix);
+						ourUnits.put(
+								NullCleaner.assertNotNull(
+										Integer.valueOf(fix.getID())),
+								(IUnit) fix);
 					} else {
 						ourFixtures.add(fix);
 					}
@@ -211,8 +215,7 @@ public class SPMapNG implements IMutableMapNG {
 				final Iterable<TileFixture> theirFixtures = obj
 						.getOtherFixtures(point);
 				for (final TileFixture fix : theirFixtures) {
-					if (fix == null || ourFixtures.contains(fix)
-							|| shouldSkip(fix)) {
+					if (ourFixtures.contains(fix) || shouldSkip(fix)) {
 						continue;
 					} else if ((fix instanceof Ground
 							&& Objects.equals(fix, getGround(point)))
@@ -243,7 +246,7 @@ public class SPMapNG implements IMutableMapNG {
 				final Set<River> ourRivers = rivers.get(point);
 				final Iterable<River> theirRivers = obj.getRivers(point);
 				for (final River river : theirRivers) {
-					if (river != null && !ourRivers.contains(river)) {
+					if (!ourRivers.contains(river)) {
 						out.append(ctxt);
 						out.append("\tExtra river\n");
 						retval = false;
@@ -334,9 +337,9 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public Iterable<River> getRivers(final Point location) {
 		if (rivers.containsKey(location)) {
-			return NullCleaner.assertNotNull(rivers.get(location)); // NOPMD
+			return rivers.get(location); // NOPMD
 		} else {
-			return NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
+			return EnumSet.noneOf(River.class);
 		}
 	}
 
@@ -402,9 +405,7 @@ public class SPMapNG implements IMutableMapNG {
 				&& getCurrentTurn() == obj.getCurrentTurn()
 				&& getCurrentPlayer().equals(obj.getCurrentPlayer())) {
 			for (final Point point : locations()) {
-				if (point == null) {
-					continue;
-				} else if (!getBaseTerrain(point).equals(
+				if (!getBaseTerrain(point).equals(
 						obj.getBaseTerrain(point))
 						|| isMountainous(point) != obj.isMountainous(point)
 						|| !iterablesEqual(getRivers(point),
@@ -482,13 +483,11 @@ public class SPMapNG implements IMutableMapNG {
 		builder.append(getCurrentTurn());
 		builder.append("\n\nPlayers:\n");
 		for (Player player : players()) {
-			if (player != null) {
-				builder.append(player.toString());
-				if (player.equals(getCurrentPlayer())) {
-					builder.append(" (current)");
-				}
-				builder.append("\n");
+			builder.append(player.toString());
+			if (player.equals(getCurrentPlayer())) {
+				builder.append(" (current)");
 			}
+			builder.append("\n");
 		}
 		builder.append("\nContents:\n");
 		for (Point location : locations()) {
@@ -550,14 +549,13 @@ public class SPMapNG implements IMutableMapNG {
 	 * @param rvrs rivers to add to that location
 	 */
 	@Override
-	public void addRivers(final Point location, final River... rvrs) {
+	public void addRivers(final Point location, final @NonNull River... rvrs) {
 		final EnumSet<River> localRivers;
-		final EnumSet<River> temp = rivers.get(location);
-		if (temp == null) {
+		if (rivers.containsKey(location)) {
+			localRivers  = rivers.get(location);
+		} else {
 			localRivers = EnumSet.noneOf(River.class);
 			rivers.put(location, localRivers);
-		} else {
-			localRivers = temp;
 		}
 		for (River river : rvrs) {
 			localRivers.add(river);
@@ -568,12 +566,10 @@ public class SPMapNG implements IMutableMapNG {
 	 * @param rvrs rivers to remove from it
 	 */
 	@Override
-	public void removeRivers(final Point location, final River... rvrs) {
+	public void removeRivers(final Point location, final @NonNull River... rvrs) {
 		final Set<River> localRivers = rivers.get(location);
-		if (localRivers != null) {
-			for (River river : rvrs) {
-				localRivers.remove(river);
-			}
+		for (River river : rvrs) {
+			localRivers.remove(river);
 		}
 	}
 	/**
@@ -606,13 +602,12 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public void addFixture(final Point location, final TileFixture fix) {
-		final Collection<TileFixture> temp = fixtures.get(location);
 		final Collection<TileFixture> local;
-		if (temp == null) {
+		if (!fixtures.containsKey(location)) {
 			local = new ArraySet<>();
 			fixtures.put(location, local);
 		} else {
-			local = temp;
+			local = fixtures.get(location);
 		}
 		local.add(fix);
 	}
@@ -622,9 +617,8 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public void removeFixture(final Point location, final TileFixture fix) {
-		final Collection<TileFixture> local = fixtures.get(location);
-		if (local != null) {
-			local.remove(fix);
+		if (fixtures.contains(location) {
+			fixtures.get(location).remove(fix);
 		}
 	}
 	/**

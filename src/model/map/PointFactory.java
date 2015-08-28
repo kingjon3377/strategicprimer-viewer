@@ -5,6 +5,8 @@ import static util.NullCleaner.assertNotNull;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import view.util.Coordinate;
 
 /**
@@ -39,13 +41,13 @@ public final class PointFactory {
 	/**
 	 * The point cache.
 	 */
-	private static final Map<Integer, Map<Integer, Point>> POINT_CACHE =
+	private static final Map<@NonNull Integer, Map<@NonNull Integer, @NonNull Point>> POINT_CACHE =
 			new ConcurrentHashMap<>();
 
 	/**
 	 * Coordinate cache.
 	 */
-	private static final Map<Integer, Map<Integer, Coordinate>> C_CACHE =
+	private static final Map<@NonNull Integer, Map<@NonNull Integer, @NonNull Coordinate>> C_CACHE =
 			new ConcurrentHashMap<>();
 
 	/**
@@ -85,6 +87,7 @@ public final class PointFactory {
 		if (useCache) {
 			final Integer boxedRow = Integer.valueOf(row);
 			final Integer boxedCol = Integer.valueOf(col);
+			assert boxedRow != null && boxedCol != null;
 			if (!POINT_CACHE.containsKey(boxedRow)) {
 				POINT_CACHE.put(boxedRow,
 						new ConcurrentHashMap<Integer, Point>());
@@ -108,6 +111,7 @@ public final class PointFactory {
 		if (useCache) {
 			final Integer boxedX = Integer.valueOf(xCoord);
 			final Integer boxedY = Integer.valueOf(yCoord);
+			assert boxedX != null && boxedY != null;
 			if (!C_CACHE.containsKey(boxedX)) {
 				C_CACHE.put(boxedX,
 						new ConcurrentHashMap<Integer, Coordinate>());
@@ -116,11 +120,7 @@ public final class PointFactory {
 				C_CACHE.get(boxedX).put(boxedY,
 						new Coordinate(xCoord, yCoord));
 			}
-			final Coordinate retval = C_CACHE.get(boxedX).get(boxedY);
-			if (retval == null) {
-				throw new IllegalStateException("Cache produced null result");
-			}
-			return retval; // NOPMD
+			return C_CACHE.get(boxedX).get(boxedY); // NOPMD
 		} else {
 			return new Coordinate(xCoord, yCoord);
 		}

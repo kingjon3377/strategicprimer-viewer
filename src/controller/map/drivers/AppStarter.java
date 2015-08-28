@@ -13,6 +13,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.WindowThread;
@@ -140,9 +142,7 @@ public class AppStarter implements ISPDriver {
 		// Pair of it and the AppChooserFrame be the default.
 		Pair<ISPDriver, ISPDriver> drivers = null;
 		for (final String option : options) {
-			if (option == null) {
-				continue;
-			} else if (EqualsAny.equalsAny(option, "-g", "--gui")) {
+			if (EqualsAny.equalsAny(option, "-g", "--gui")) {
 				gui = true;
 			} else if (EqualsAny.equalsAny(option, "-c", "--cli")) {
 				gui = false;
@@ -159,8 +159,8 @@ public class AppStarter implements ISPDriver {
 					try {
 						startChooser(localGui, others);
 					} catch (DriverFailedException e) {
-						final String message =
-								NullCleaner.assertNotNull(e.getMessage());
+						final String message = e.getMessage();
+						assert message != null;
 						lgr.log(Level.SEVERE, message, e.getCause());
 						ErrorShower.showErrorDialog(null, message);
 					}
@@ -174,8 +174,8 @@ public class AppStarter implements ISPDriver {
 					try {
 						startChosenDriver(driver, others);
 					} catch (DriverFailedException e) {
-						final String message =
-								NullCleaner.assertNotNull(e.getMessage());
+						final String message = e.getMessage();
+						assert message != null;
 						lgr.log(Level.SEVERE, message, e.getCause());
 						ErrorShower.showErrorDialog(null, message);
 					}
@@ -228,8 +228,7 @@ public class AppStarter implements ISPDriver {
 	 */
 	protected static void startChosenDriver(final ISPDriver driver, // NOPMD
 			final List<String> params) throws DriverFailedException {
-		driver.startDriver(NullCleaner.assertNotNull(params
-				.toArray(new String[params.size()])));
+		driver.startDriver(params.toArray(new String @NonNull [params.size()]));
 	}
 
 	/**

@@ -1,4 +1,7 @@
 package model.map;
+
+import org.eclipse.jdt.annotation.NonNull;
+
 /**
  * An interface for collections of players.
  *
@@ -21,7 +24,7 @@ package model.map;
  *
  * @author Jonathan Lovelace
  */
-public interface IPlayerCollection extends Iterable<Player>,
+public interface IPlayerCollection extends Iterable<@NonNull Player>,
 		Subsettable<IPlayerCollection> {
 
 	/**

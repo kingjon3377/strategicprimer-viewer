@@ -1,5 +1,7 @@
 package model.map.fixtures.mobile.worker;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.HasName;
 import model.map.Subsettable;
 /**
@@ -25,7 +27,7 @@ import model.map.Subsettable;
  * @author Jonathan Lovelace
  *
  */
-public interface IJob extends HasName, Iterable<ISkill>, Subsettable<IJob> {
+public interface IJob extends HasName, Iterable<@NonNull ISkill>, Subsettable<IJob> {
 
 	/**
 	 * Add a skill.

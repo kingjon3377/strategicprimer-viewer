@@ -13,6 +13,7 @@ import java.util.Random;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
@@ -253,9 +254,6 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 				break;
 			} else {
 				final IUnit unit = units.get(unitNum);
-				if (unit == null) {
-					continue;
-				}
 				enterStats(model, unit);
 				if (!hasUnstattedWorker(model, unit.getID())) {
 					units.remove(unit);
@@ -297,7 +295,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	private static List<IUnit> removeStattedUnits(final List<IUnit> units) {
 		final List<IUnit> retval = new ArrayList<>();
 		for (final IUnit unit : units) {
-			if (unit != null && hasUnstattedWorker(unit)) {
+			if (hasUnstattedWorker(unit)) {
 				retval.add(unit);
 			}
 		}
@@ -380,18 +378,13 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	@Nullable
 	private static IFixture find(final IMapNG map, final int idNum) {
 		for (final Point point : map.locations()) {
-			if (point == null) {
-				continue;
-			}
 			// TODO: If Ground or Forest ever gets ID, check it here.
 			for (IFixture fixture : map.getOtherFixtures(point)) {
-				if (fixture == null) {
-					continue;
-				} else if (fixture.getID() == idNum) {
+				if (fixture.getID() == idNum) {
 					return fixture;
-				} else if (fixture instanceof FixtureIterable<?>) {
+				} else if (fixture instanceof FixtureIterable) {
 					final IFixture result =
-							find((FixtureIterable<?>) fixture, idNum);
+							find((FixtureIterable<@NonNull ?>) fixture, idNum);
 					if (result != null) {
 						return result; // NOPMD
 					}
@@ -407,12 +400,12 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 * @return the fixture with that ID, or null if not found
 	 */
 	@Nullable
-	private static IFixture find(final FixtureIterable<?> iter, final int idNum) {
+	private static IFixture find(final FixtureIterable<@NonNull ?> iter, final int idNum) {
 		for (final IFixture fix : iter) {
 			if (fix.getID() == idNum) {
 				return fix; // NOPMD
-			} else if (fix instanceof FixtureIterable<?>) {
-				final IFixture result = find((FixtureIterable<?>) fix, idNum);
+			} else if (fix instanceof FixtureIterable) {
+				final IFixture result = find((FixtureIterable<@NonNull ?>) fix, idNum);
 				if (result != null) {
 					return result; // NOPMD
 				}
@@ -466,12 +459,10 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 						"Unit selection: ", false);
 				if (unitNum >= 0 && unitNum < units.size()) {
 					final IUnit unit = units.get(unitNum);
-					if (unit != null) {
-						if (cli.inputBoolean(LOAD_NAMES)) {
-							createWorkersFromFile(model, idf, unit);
-						} else {
-							createWorkers(model, idf, unit);
-						}
+					if (cli.inputBoolean(LOAD_NAMES)) {
+						createWorkersFromFile(model, idf, unit);
+					} else {
+						createWorkers(model, idf, unit);
 					}
 				}
 			} else {
@@ -482,11 +473,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 						cli.inputString("Kind of unit: "),
 						cli.inputString("Unit name: "), idf.createID());
 				for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
-					if (pair == null) {
-						continue;
-					}
-					IMutableMapNG submap = pair.first();
-					submap.addFixture(point, unit);
+					pair.first().addFixture(point, unit);
 				}
 				if (cli.inputBoolean(LOAD_NAMES)) {
 					createWorkersFromFile(model, idf, unit);

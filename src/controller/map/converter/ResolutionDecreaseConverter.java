@@ -59,9 +59,7 @@ public class ResolutionDecreaseConverter {
 		final int newCols = old.dimensions().cols / 2;
 		final PlayerCollection players = new PlayerCollection();
 		for (final Player player : old.players()) {
-			if (player != null) {
-				players.add(player);
-			}
+			players.add(player);
 		}
 		final SPMapNG retval =
 				new SPMapNG(new MapDimensions(newRows, newCols, 2), players,
@@ -85,9 +83,7 @@ public class ResolutionDecreaseConverter {
 				oldPoints.add(three);
 				oldPoints.add(four);
 				for (Point oldPoint : oldPoints) {
-					if (oldPoint == null) {
-						continue;
-					} else if (old.isMountainous(oldPoint)) {
+					if (old.isMountainous(oldPoint)) {
 						retval.setMountainous(point, true);
 					}
 					Ground ground = old.getGround(oldPoint);
@@ -107,9 +103,6 @@ public class ResolutionDecreaseConverter {
 						}
 					}
 					for (TileFixture fixture : old.getOtherFixtures(oldPoint)) {
-						if (fixture == null) {
-							continue;
-						}
 						retval.addFixture(point, fixture);
 					}
 					final Set<River> upperLeftRivers = getRivers(old, one);
@@ -152,8 +145,7 @@ public class ResolutionDecreaseConverter {
 	 * @return the rivers there, if any
 	 */
 	private static Set<River> getRivers(final IMapNG old, final Point point) {
-		final Set<River> retval =
-				NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
+		final Set<River> retval = EnumSet.noneOf(River.class);
 		for (final River river : old.getRivers(point)) {
 			retval.add(river);
 		}
@@ -169,9 +161,7 @@ public class ResolutionDecreaseConverter {
 			final Iterable<River>... rivers) {
 		for (final Iterable<River> riverFix : rivers) {
 			for (final River river : riverFix) {
-				if (river != null) {
-					fix.addRiver(river);
-				}
+				fix.addRiver(river);
 			}
 		}
 	}

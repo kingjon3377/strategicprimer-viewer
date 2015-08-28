@@ -88,7 +88,7 @@ public final class ArraySet<T> implements Set<T> {
 	 * @return the contents of the set in that array
 	 */
 	@Override
-	public <TYPE> TYPE[] toArray(@Nullable final TYPE[] array) {
+	public <TYPE> TYPE[] toArray(final TYPE @Nullable [] array) {
 		return NullCleaner.assertNotNull(impl.toArray(NullCleaner
 				.assertNotNull(array)));
 	}

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.junit.Test;
 
 import model.map.MapDimensions;
@@ -24,7 +25,6 @@ import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.towns.Fortress;
-import util.NullCleaner;
 
 /**
  * A class to test MapHelper methods (starting with ones that don't involve
@@ -85,8 +85,7 @@ public class TestWorkerModel {
 		fixtures.add(new Oasis(8));
 		Collections.shuffle(fixtures);
 		for (final Point point : map.locations()) {
-			map.addFixture(NullCleaner.assertNotNull(point),
-					NullCleaner.assertNotNull(fixtures.remove(0)));
+			map.addFixture(point, fixtures.remove(0));
 		}
 		final IWorkerModel model = new WorkerModel(map, new File(""));
 		final List<IUnit> listOneA = filterProxies(model.getUnits(playerOne));
@@ -115,10 +114,10 @@ public class TestWorkerModel {
 	private static <T> List<T> filterProxies(final List<T> list) {
 		final List<T> retval = new ArrayList<>();
 		for (T item : list) {
-			if (item instanceof ProxyFor<?>) {
+			if (item instanceof ProxyFor) {
 				// this wouldn't work for Skills, but ...
 				@SuppressWarnings("unchecked")
-				ProxyFor<T> proxy = (ProxyFor<T>) item;
+				ProxyFor<@NonNull T> proxy = (ProxyFor<@NonNull T>) item;
 				for (T proxied : proxy.getProxied()) {
 					retval.add(proxied);
 				}

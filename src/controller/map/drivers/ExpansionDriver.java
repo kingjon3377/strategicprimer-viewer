@@ -274,14 +274,11 @@ public class ExpansionDriver implements ISPDriver {
 		};
 		final Set<Point> villagePoints = new ArraySet<>();
 		for (final Point point : lmap.locations()) {
-			if (point != null && containsSwornVillage(master, point, player)) {
+			if (containsSwornVillage(master, point, player)) {
 				villagePoints.add(point);
 			}
 		}
 		for (final Point point : villagePoints) {
-			if (point == null) {
-				continue;
-			}
 			addSurroundingTerrain(point, master, lmap, terrainAdditions);
 			addSurroundingFixtures(point, master, fixAdditions, mock);
 		}
@@ -323,9 +320,6 @@ public class ExpansionDriver implements ISPDriver {
 		final List<TileFixture> possibilities = new ArrayList<>();
 		for (final Point neighbor : new SurroundingPointIterable(point,
 				master.dimensions())) {
-			if (neighbor == null) {
-				continue;
-			}
 			final Set<TileFixture> neighborFixtures =
 					getSetFromMap(additions, neighbor);
 			possibilities.clear();
@@ -338,7 +332,7 @@ public class ExpansionDriver implements ISPDriver {
 				possibilities.add(forest);
 			}
 			for (final TileFixture fix : master.getOtherFixtures(neighbor)) {
-				if (fix == null || neighborFixtures.contains(fix)) {
+				if (neighborFixtures.contains(fix)) {
 					continue;
 				} else if (SimpleMovement.shouldAlwaysNotice(owned, fix)) {
 					neighborFixtures.add(fix);
@@ -366,12 +360,13 @@ public class ExpansionDriver implements ISPDriver {
 	 */
 	private static <K, V> Set<V> getSetFromMap(final Map<K, Set<V>> map,
 			final K key) {
-		Set<V> retval = map.get(key);
-		if (retval == null) {
-			retval = new ArraySet<>();
+		if (map.containsKey(key)) {
+			return map.get(key);
+		} else {
+			Set<V> retval = new ArraySet<>();
 			map.put(key, retval);
+			return retval;
 		}
-		return retval;
 	}
 	/**
 	 * @param point
@@ -387,9 +382,6 @@ public class ExpansionDriver implements ISPDriver {
 			final IMutableMapNG map, final Map<Point, TileType> additions) {
 		for (final Point neighbor : new SurroundingPointIterable(point,
 				map.dimensions())) {
-			if (neighbor == null) {
-				continue;
-			}
 			if (!additions.containsKey(neighbor)
 					&& TileType.NotVisible.equals(map.getBaseTerrain(neighbor))) {
 				additions.put(neighbor, master.getBaseTerrain(neighbor));

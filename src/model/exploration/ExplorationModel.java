@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.listeners.MovementCostListener;
@@ -114,9 +115,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	public List<IUnit> getUnits(final Player player) {
 		final List<IUnit> retval = new ArrayList<>();
 		for (final Point point : getMap().locations()) {
-			if (point != null) {
-				retval.addAll(getUnits(getMap().getOtherFixtures(point), player));
-			}
+			retval.addAll(getUnits(getMap().getOtherFixtures(point), player));
 		}
 		return retval;
 	}
@@ -182,9 +181,6 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			removeImpl(map, point, unit);
 			map.addFixture(dest, unit);
 			for (final Pair<IMutableMapNG, File> pair : getSubordinateMaps()) {
-				if (pair == null) {
-					continue;
-				}
 				final IMutableMapNG subMap = pair.first();
 				if (!locationHasFixture(subMap, point, unit)) {
 					continue;
@@ -200,9 +196,6 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			return retval;
 		} else {
 			for (final Pair<IMutableMapNG, File> pair : getSubordinateMaps()) {
-				if (pair == null) {
-					continue;
-				}
 				final IMutableMapNG subMap = pair.first();
 				ensureTerrain(subMap, dest, map.getBaseTerrain(dest));
 			}
@@ -229,7 +222,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 		MapDimensions dims = map.dimensions();
 		final Set<Point> done = new HashSet<>(25);
 		for (final Point point : new SurroundingPointIterable(dest, dims)) {
-			if (point == null || done.contains(point)) {
+			if (done.contains(point)) {
 				continue;
 			} else {
 				done.add(point);
@@ -341,7 +334,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 			if (fixture.equals(fix)) {
 				return true; // NOPMD
 			} else if (fixture instanceof FixtureIterable) {
-				for (final IFixture inner : (FixtureIterable<?>) fixture) {
+				for (final IFixture inner : (FixtureIterable<@NonNull ?>) fixture) {
 					if (fix.equals(inner)) {
 						return true; // NOPMD
 					}
@@ -432,9 +425,6 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	public Point find(final TileFixture fix) {
 		final IMapNG source = getMap();
 		for (final Point point : source.locations()) {
-			if (point == null) {
-				continue;
-			}
 			if ((fix instanceof Mountain && source.isMountainous(point))
 					|| (fix instanceof Forest && fix.equals(source
 							.getForest(point)))
@@ -446,7 +436,7 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 				if (fix.equals(item)) {
 					return point; // NOPMD
 				} else if (item instanceof FixtureIterable) {
-					for (final IFixture inner : (FixtureIterable<?>) item) {
+					for (final IFixture inner : (FixtureIterable<@NonNull ?>) item) {
 						if (fix.equals(inner)) {
 							return point; // NOPMD
 						}

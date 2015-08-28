@@ -214,7 +214,9 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 */
 	@Override
 	public void addTreeModelListener(@Nullable final TreeModelListener list) {
-		listeners.add(list);
+		if (list != null) {
+			listeners.add(list);
+		}
 	}
 
 	/**

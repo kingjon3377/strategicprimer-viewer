@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.IFixture;
@@ -41,7 +42,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
+public class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	/**
 	 * If false, this is representing all the workers in a single unit; if true,
 	 * it is representing corresponding workers in corresponding units in
@@ -51,15 +52,15 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 	/**
 	 * The proxy Jobs.
 	 */
-	private final List<IJob> proxyJobs = new ArrayList<>();
+	private final List<@NonNull IJob> proxyJobs = new ArrayList<>();
 	/**
 	 * The jobs we're proxying for.
 	 */
-	private final Set<String> jobNames = new HashSet<>();
+	private final Set<@NonNull String> jobNames = new HashSet<>();
 	/**
 	 * The workers being proxied.
 	 */
-	private final List<IWorker> workers = new ArrayList<>();
+	private final List<@NonNull IWorker> workers = new ArrayList<>();
 	/**
 	 * No-op constructor for use by copy().
 	 * @param paral whether this is a "parallel" or "serial" proxy
@@ -80,13 +81,11 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 				}
 			}
 		}
-		final IWorker[] workerArray =
-				NullCleaner.assertNotNull(workers.toArray(new IWorker[workers
-						.size()]));
+		@NonNull
+		final IWorker @NonNull [] workerArray =
+				workers.toArray(new IWorker @NonNull[workers.size()]);
 		for (final String job : jobNames) {
-			if (job != null) {
-				proxyJobs.add(new ProxyJob(job, parallel, workerArray));
-			}
+			proxyJobs.add(new ProxyJob(job, parallel, workerArray));
 		}
 	}
 	/**
@@ -104,7 +103,7 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 	/**
 	 * @param proxied workers to proxy for
 	 */
-	public ProxyWorker(final IWorker... proxied) {
+	public ProxyWorker(final @NonNull IWorker... proxied) {
 		parallel = true;
 		for (IWorker worker : proxied) {
 			if (worker == this) {
@@ -116,9 +115,7 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 			}
 		}
 		for (String job : jobNames) {
-			if (job != null) {
-				proxyJobs.add(new ProxyJob(job, parallel, proxied));
-			}
+			proxyJobs.add(new ProxyJob(job, parallel, proxied));
 		}
 	}
 	/**
@@ -156,7 +153,7 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 			final ProxyJob proxy =
 					new ProxyJob(job.getName(), parallel,
 							NullCleaner.assertNotNull(workers
-									.toArray(new IWorker[workers.size()])));
+									.toArray(new IWorker @NonNull [workers.size()])));
 			jobNames.add(proxy.getName());
 			proxyJobs.add(proxy);
 			return true;
@@ -188,9 +185,8 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 			return;
 		}
 		workers.add(item);
-		final Worker[] workerArray =
-				NullCleaner.assertNotNull(workers.toArray(new Worker[workers
-						.size()]));
+		final IWorker @NonNull [] workerArray =
+				workers.toArray(new Worker @NonNull [workers.size()]);
 		List<IJob> proxyJobsTemp = new ArrayList<>(proxyJobs);
 		for (final IJob job : item) {
 			String name = job.getName();

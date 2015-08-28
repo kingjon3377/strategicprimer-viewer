@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.IFixture;
@@ -37,7 +38,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public final class RiverFixture implements TileFixture, Iterable<River>,
+public final class RiverFixture implements TileFixture, Iterable<@NonNull River>,
 		SubsettableFixture {
 	/**
 	 * The maximum size of a river's equivalent string, plus a space.
@@ -57,8 +58,8 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 	 *
 	 * @param initial the initial state of the fixture
 	 */
-	public RiverFixture(final River... initial) {
-		rivers = NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
+	public RiverFixture(final @NonNull River... initial) {
+		rivers = EnumSet.noneOf(River.class);
 		for (final River river : initial) {
 			rivers.add(river);
 		}
@@ -72,9 +73,7 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 	public RiverFixture copy(final boolean zero) {
 		RiverFixture retval = new RiverFixture();
 		for (River river : this) {
-			if (river != null) {
-				retval.addRiver(river);
-			}
+			retval.addRiver(river);
 		}
 		return retval;
 	}
@@ -100,7 +99,7 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 	 * @return the river directions
 	 */
 	public Set<River> getRivers() {
-		return NullCleaner.assertNotNull(EnumSet.copyOf(rivers));
+		return EnumSet.copyOf(rivers);
 	}
 
 	/**

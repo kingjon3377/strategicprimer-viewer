@@ -203,9 +203,7 @@ public final class CompactReaderAdapter {
 			// Skip it.
 			return;
 		} else if (obj instanceof IFixture) {
-			reader =
-					getFixtureReader(NullCleaner.assertNotNull(((IFixture) obj)
-							.getClass()));
+			reader = getFixtureReader(((IFixture) obj).getClass());
 		} else {
 			throw new IllegalStateException("Don't know how to write this type");
 		}

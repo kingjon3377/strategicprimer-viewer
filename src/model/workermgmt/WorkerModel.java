@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
@@ -72,19 +70,14 @@ public class WorkerModel extends AbstractMultiMapModel implements IWorkerModel {
 			for (Pair<IMutableMapNG, File> pair : getAllMaps()) {
 				IMapNG map = pair.first();
 				for (Point point : map.locations()) {
-					if (point == null) {
-						continue;
-					}
 					for (IUnit unit : getUnits(map.getOtherFixtures(point),
 							player)) {
-						@Nullable
-						IUnit proxy = retval.get(Integer.valueOf(unit.getID()));
-						if (proxy == null) {
-							proxy = new ProxyUnit(unit.getID());
+						if (!retval.containsKey(Integer.valueOf(unit.getID()))) {
+							IUnit proxy = new ProxyUnit(unit.getID());
 							((ProxyUnit) proxy).addProxied(unit);
-							retval.put(Integer.valueOf(unit.getID()), proxy);
+							retval.put(NullCleaner.assertNotNull(Integer.valueOf(unit.getID())), proxy);
 						} else {
-							((ProxyUnit) proxy).addProxied(unit);
+							((ProxyUnit) retval.get(Integer.valueOf(unit.getID()))).addProxied(unit);
 						}
 					}
 				}
@@ -95,10 +88,8 @@ public class WorkerModel extends AbstractMultiMapModel implements IWorkerModel {
 			// sure things work correctly when there's only one map.
 			final List<IUnit> retval = new ArrayList<>();
 			for (final Point point : getMap().locations()) {
-				if (point != null) {
-					retval.addAll(
-							getUnits(getMap().getOtherFixtures(point), player));
-				}
+				retval.addAll(
+						getUnits(getMap().getOtherFixtures(point), player));
 			}
 			return retval;
 		}
@@ -134,8 +125,7 @@ public class WorkerModel extends AbstractMultiMapModel implements IWorkerModel {
 		for (final IUnit unit : units) {
 			retval.add(unit.getKind());
 		}
-		return NullCleaner.assertNotNull(Collections
-				.unmodifiableList(new ArrayList<>(retval)));
+		return Collections.unmodifiableList(new ArrayList<>(retval));
 	}
 
 	/**
@@ -160,9 +150,6 @@ public class WorkerModel extends AbstractMultiMapModel implements IWorkerModel {
 	@Override
 	public final void addUnit(final IUnit unit) {
 		for (final Point point : getMap().locations()) {
-			if (point == null) {
-				continue;
-			}
 			for (final TileFixture fix : getMap().getOtherFixtures(point)) {
 				if (fix instanceof Fortress
 						&& unit.getOwner().equals(((Fortress) fix).getOwner())

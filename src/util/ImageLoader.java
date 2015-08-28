@@ -101,7 +101,7 @@ public final class ImageLoader {
 		if (!cache.containsKey(file)) {
 			try (final ResourceInputStream res = new ResourceInputStream(
 					"images/" + file)) {
-				cache.put(file, ImageIO.read(res));
+				cache.put(file, NullCleaner.assertNotNull(ImageIO.read(res)));
 			}
 		}
 		return NullCleaner.assertNotNull(cache.get(file));

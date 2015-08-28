@@ -540,9 +540,6 @@ public class WorkerMgmtFrame extends JFrame {
 						.append(" [");
 				boolean first = true;
 				for (final UnitMember member : unit) {
-					if (member == null) {
-						continue;
-					}
 					if (first) {
 						first = false;
 					} else {

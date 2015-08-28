@@ -1,5 +1,7 @@
 package model.map.fixtures.mobile;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.HasName;
@@ -28,7 +30,7 @@ import model.map.fixtures.mobile.worker.IJob;
  * @author Jonathan Lovelace
  *
  */
-public interface IWorker extends UnitMember, Iterable<IJob>, HasName, HasKind,
+public interface IWorker extends UnitMember, Iterable<@NonNull IJob>, HasName, HasKind,
 		HasImage {
 	/**
 	 * Add a job.

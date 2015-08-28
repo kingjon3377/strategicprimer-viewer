@@ -1,5 +1,7 @@
 package model.map;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 /**
  * Interface to give us knowledge at run-time that an iterable is an iterable of
  * some sort of fixture.
@@ -25,6 +27,6 @@ package model.map;
  *
  * @param <T> the type of the iterable.
  */
-public interface FixtureIterable<T extends IFixture> extends Iterable<T> {
+public interface FixtureIterable<@NonNull T extends IFixture> extends Iterable<T> {
 	// Nothing new.
 }

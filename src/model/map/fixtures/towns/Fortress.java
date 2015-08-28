@@ -245,14 +245,13 @@ public class Fortress implements HasImage, ITownFixture,
 			boolean retval = true;
 			final Map<Integer, IUnit> ours = new HashMap<>();
 			for (final IUnit unit : this) {
-				ours.put(Integer.valueOf(unit.getID()), unit);
+				ours.put(NullCleaner
+						.assertNotNull(Integer.valueOf(unit.getID())), unit);
 			}
 			final String ctxt =
 					context + " In fortress " + name + " (ID #" + id + "):";
 			for (final IUnit unit : fort) {
-				if (unit == null) {
-					continue;
-				} else if (!ours.containsKey(Integer.valueOf(unit.getID()))) {
+				if (!ours.containsKey(Integer.valueOf(unit.getID()))) {
 					ostream.append(ctxt);
 					ostream.append(" Extra unit:\t");
 					ostream.append(unit.toString());

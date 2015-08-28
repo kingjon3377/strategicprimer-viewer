@@ -147,12 +147,7 @@ public class ExplorationRunner { // NOPMD
 	public EncounterTable getTable(final String name)
 			throws MissingTableException {
 		if (tables.containsKey(name)) {
-			final EncounterTable retval = tables.get(name);
-			if (retval == null) {
-				throw new MissingTableException(name);
-			} else {
-				return retval;
-			}
+				return tables.get(name);
 		} else {
 			throw new MissingTableException(name);
 		}
@@ -254,7 +249,7 @@ public class ExplorationRunner { // NOPMD
 	public boolean recursiveCheck() {
 		final Set<String> state = new HashSet<>(); // NOPMD
 		for (final String table : tables.keySet()) {
-			if (table != null && recursiveCheck(table, state)) {
+			if (recursiveCheck(table, state)) {
 				return true; // NOPMD;
 			}
 		}
@@ -270,9 +265,7 @@ public class ExplorationRunner { // NOPMD
 	public void verboseRecursiveCheck(final Appendable ostream) throws IOException {
 		final Set<String> state = new HashSet<>(); // NOPMD
 		for (final String table : tables.keySet()) {
-			if (table != null) {
-				verboseRecursiveCheck(table, ostream, state);
-			}
+			verboseRecursiveCheck(table, ostream, state);
 		}
 	}
 

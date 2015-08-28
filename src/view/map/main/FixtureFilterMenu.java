@@ -68,16 +68,11 @@ public class FixtureFilterMenu extends JMenu implements ZOrderFilter,
 	}
 
 	/**
-	 * @param fix a kind of fixture. We mark it Nullable because nulls got passed
-	 *        in anyway.
+	 * @param fix a kind of fixture. 
 	 * @return whether the view should display that kind of fixture
 	 */
 	@Override
-	public boolean shouldDisplay(@Nullable final TileFixture fix) {
-		// ESCA-JAVA0177:
-		if (fix == null) {
-			return false; // NOPMD
-		}
+	public boolean shouldDisplay(final TileFixture fix) {
 		final JCheckBoxMenuItem item; // NOPMD
 		if (mapping.containsKey(fix.getClass())) {
 			item = mapping.get(fix.getClass());

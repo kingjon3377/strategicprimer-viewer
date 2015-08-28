@@ -403,16 +403,14 @@ public class Unit implements IUnit {
 			boolean retval = true;
 			final Map<Integer, UnitMember> ours = new HashMap<>();
 			for (final UnitMember member : this) {
-				ours.put(Integer.valueOf(member.getID()), member);
+				ours.put(NullCleaner.assertNotNull(Integer.valueOf(member.getID())), member);
 			}
 			final String ctxt =
-					NullCleaner.assertNotNull(String.format(
-							"%s In unit of kind %s named %s (ID #%d):",
-							context, kind, name, Integer.valueOf(id)));
+					String.format("%s In unit of kind %s named %s (ID #%d):",
+							context, kind, name, Integer.valueOf(id));
+			assert ctxt != null;
 			for (final UnitMember member : obj) {
-				if (member == null) {
-					continue;
-				} else if (!ours.containsKey(Integer.valueOf(member.getID()))) {
+				if (!ours.containsKey(Integer.valueOf(member.getID()))) {
 					ostream.append(ctxt);
 					ostream.append(" Extra member:\t");
 					ostream.append(member.toString());

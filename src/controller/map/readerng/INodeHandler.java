@@ -5,6 +5,8 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
@@ -35,7 +37,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public interface INodeHandler<T> {
+public interface INodeHandler<@NonNull T> {
 	/**
 	 * @return the class this can write to a writer.
 	 */
@@ -70,5 +72,5 @@ public interface INodeHandler<T> {
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
-	<S extends T> SPIntermediateRepresentation write(S obj);
+	<@NonNull S extends T> SPIntermediateRepresentation write(S obj);
 }

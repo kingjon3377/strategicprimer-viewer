@@ -75,7 +75,7 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 		if (dimensions().equals(obj.dimensions())) {
 			boolean retval = true;
 			for (final Player player : obj.players()) {
-				if (player != null && !state.getPlayers().contains(player)) {
+				if (!state.getPlayers().contains(player)) {
 					// return false;
 					retval = false;
 					ostream.append(context);
@@ -85,7 +85,7 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 				}
 			}
 			for (final Point point : obj.locations()) {
-				if (point != null && !isTileSubset(obj, ostream, point, context)) {
+				if (!isTileSubset(obj, ostream, point, context)) {
 					retval = false;
 				}
 			}
@@ -143,7 +143,7 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 				fixtures.add(fix);
 			}
 			for (final TileFixture fix : obj.getOtherFixtures(loc)) {
-				if (fix != null && !fixtures.contains(fix)
+				if (!fixtures.contains(fix)
 						&& !Tile.shouldSkip(fix)) {
 					// return false;
 					retval = false;
@@ -244,7 +244,7 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 		if (state.getTile(location).hasRiver()) {
 			return state.getTile(location).getRivers(); // NOPMD
 		} else {
-			return NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
+			return EnumSet.noneOf(River.class);
 		}
 	}
 
@@ -342,9 +342,7 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 				&& getCurrentTurn() == obj.getCurrentTurn()
 				&& getCurrentPlayer().equals(obj.getCurrentPlayer())) {
 			for (final Point point : locations()) {
-				if (point == null) {
-					continue;
-				} else if (!getBaseTerrain(point).equals(obj.getBaseTerrain(point))
+				if (!getBaseTerrain(point).equals(obj.getBaseTerrain(point))
 						|| isMountainous(point) != obj.isMountainous(point)
 						|| !iterablesEqual(getRivers(point),
 								obj.getRivers(point))
@@ -577,13 +575,11 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 		builder.append(getCurrentTurn());
 		builder.append("\n\nPlayers:\n");
 		for (Player player : players()) {
-			if (player != null) {
-				builder.append(player.toString());
-				if (player.equals(getCurrentPlayer())) {
-					builder.append(" (current)");
-				}
-				builder.append("\n");
+			builder.append(player.toString());
+			if (player.equals(getCurrentPlayer())) {
+				builder.append(" (current)");
 			}
+			builder.append("\n");
 		}
 		builder.append("\nContents:\n");
 		for (Point location : locations()) {

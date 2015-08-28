@@ -146,9 +146,6 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			for (final Point point : spmap.locations()) {
-				if (point == null) {
-					continue;
-				}
 				helper.drawTileTranslated(
 						NullCleaner.assertNotNull(image.createGraphics()),
 						spmap, point, tsize, tsize);
@@ -194,9 +191,6 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			for (final Point point : map.locations()) {
-				if (point == null) {
-					continue;
-				}
 				helper.drawTile(
 						NullCleaner.assertNotNull(image.createGraphics()),
 						map, point,
@@ -242,9 +236,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	private static void thirdBody(final TileDrawHelper helper,
 			final Graphics pen, final IMapNG spmap, final int tsize) {
 		for (final Point point : spmap.locations()) {
-			if (point != null) {
-				helper.drawTileTranslated(pen, spmap, point, tsize, tsize);
-			}
+			helper.drawTileTranslated(pen, spmap, point, tsize, tsize);
 		}
 	}
 
@@ -286,13 +278,8 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 			final Graphics pen, final IMapNG spmap, final int tsize) {
 		final Coordinate dimensions = PointFactory.coordinate(tsize, tsize);
 		for (final Point point : spmap.locations()) {
-			if (point != null) {
-				helper.drawTile(
-						pen,
-						spmap, point,
-						PointFactory.coordinate(point.row * tsize, point.col
-								* tsize), dimensions);
-			}
+			helper.drawTile(pen, spmap, point, PointFactory.coordinate(
+					point.row * tsize, point.col * tsize), dimensions);
 		}
 	}
 

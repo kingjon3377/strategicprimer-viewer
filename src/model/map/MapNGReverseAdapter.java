@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.fixtures.RiverFixture;
@@ -201,9 +202,7 @@ public class MapNGReverseAdapter implements IMapView {
 				throws IOException {
 			boolean retval = true;
 			for (Point point : obj) {
-				if (point == null) {
-					continue;
-				} else if (hasTile(point) || obj.getTile(point).isEmpty()) {
+				if (hasTile(point) || obj.getTile(point).isEmpty()) {
 					ITile tile = getTile(point);
 					if (!tile.isSubset(obj.getTile(point), ostream, context
 							+ " At " + point + ':')) {
@@ -294,7 +293,7 @@ public class MapNGReverseAdapter implements IMapView {
 				final Appendable ostream, final String context)
 				throws IOException {
 			for (final Player player : obj) {
-				if (player != null && !contains(player)) {
+				if (!contains(player)) {
 					return false; // NOPMD
 				}
 			}
@@ -411,11 +410,11 @@ public class MapNGReverseAdapter implements IMapView {
 		public boolean isSubset(final ITile obj, final Appendable ostream,
 				final String context) throws IOException {
 			if (getTerrain().equals(obj.getTerrain())) {
-				Map<Integer, Subsettable<?>> subsettableContents =
+				Map<Integer, Subsettable<@NonNull ?>> subsettableContents =
 						new HashMap<>();
 				for (TileFixture item : this) {
-					if (item instanceof Subsettable<?>) {
-						subsettableContents.put(Integer.valueOf(item.getID()),
+					if (item instanceof Subsettable) {
+						subsettableContents.put(NullCleaner.assertNotNull(Integer.valueOf(item.getID())),
 								(SubsettableFixture) item);
 					}
 				}
@@ -425,7 +424,7 @@ public class MapNGReverseAdapter implements IMapView {
 				}
 				List<TileFixture> temp = new ArrayList<>();
 				for (TileFixture fix : obj) {
-					if (fix != null && !contents.contains(fix)
+					if (!contents.contains(fix)
 							&& !temp.contains(fix) && !shouldSkip(fix)) {
 						temp.add(fix);
 					}
@@ -436,7 +435,7 @@ public class MapNGReverseAdapter implements IMapView {
 					if (fix instanceof SubsettableFixture
 							&& subsettableContents.containsKey(Integer
 									.valueOf(fix.getID()))) {
-						final Subsettable<?> mine =
+						final Subsettable<@NonNull ?> mine =
 								subsettableContents.get(Integer.valueOf(fix
 										.getID()));
 						if (mine instanceof IUnit && fix instanceof IUnit) {
@@ -499,9 +498,7 @@ public class MapNGReverseAdapter implements IMapView {
 			if (hasRiver()) {
 				final RiverFixture rivers = new RiverFixture();
 				for (final River river : getRivers()) {
-					if (river != null) {
-						rivers.addRiver(river);
-					}
+					rivers.addRiver(river);
 				}
 				list.add(rivers);
 			}

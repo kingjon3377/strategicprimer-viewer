@@ -209,7 +209,9 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 */
 	@Override
 	public void addTreeModelListener(@Nullable final TreeModelListener list) {
-		listeners.add(list);
+		if (list != null) {
+			listeners.add(list);
+		}
 	}
 
 	/**

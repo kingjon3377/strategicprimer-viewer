@@ -94,8 +94,7 @@ public class SetPairConverter<I, K> implements Iterable<Pair<I, K>> {
 		@Override
 		public Pair<I, K> next() {
 			final Map.Entry<I, K> entry = wrapped.next();
-			return Pair.of(NullCleaner.assertNotNull(entry.getKey()),
-					NullCleaner.assertNotNull(entry.getValue()));
+			return Pair.of(entry.getKey(), entry.getValue());
 		}
 
 		/**

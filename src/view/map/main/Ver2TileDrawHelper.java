@@ -29,7 +29,9 @@ import model.map.PointFactory;
 import model.map.River;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
+import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
+import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.viewer.FixtureComparator;
 import model.viewer.ZOrderFilter;
@@ -233,11 +235,13 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	private Iterable<TileFixture> getDrawableFixtures(final IMapNG map,
 			final Point location) {
 		final List<TileFixture> temp = new ArrayList<>();
-		if (map.getGround(location) != null) {
-			temp.add(map.getGround(location));
+		final @Nullable Ground ground = map.getGround(location);
+		if (ground != null) {
+			temp.add(ground);
 		}
-		if (map.getForest(location) != null) {
-			temp.add(map.getForest(location));
+		final @Nullable Forest forest = map.getForest(location);
+		if (forest != null) {
+			temp.add(forest);
 		}
 		if (map.isMountainous(location)) {
 			temp.add(new Mountain());
@@ -442,8 +446,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return a set containing them
 	 */
 	private static Set<River> createRiverSet(final River... rivers) {
-		final Set<River> set =
-				NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
+		final Set<River> set = EnumSet.noneOf(River.class);
 		for (final River river : rivers) {
 			set.add(river);
 		}

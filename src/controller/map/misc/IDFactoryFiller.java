@@ -2,6 +2,8 @@ package controller.map.misc;
 
 import java.io.File;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.FixtureIterable;
 import model.map.IFixture;
 import model.map.IMapNG;
@@ -48,9 +50,6 @@ public final class IDFactoryFiller {
 	public static IDFactory createFactory(final IMapNG map) {
 		final IDFactory retval = new IDFactory();
 		for (final Point point : map.locations()) {
-			if (point == null) {
-				continue;
-			}
 			// Ground, Forest, Rivers, and Mountains do not have IDs, so we
 			// can skip them and just test the "other" fixtures
 			for (IFixture fixture : map.getOtherFixtures(point)) {
@@ -60,8 +59,8 @@ public final class IDFactoryFiller {
 					// the same fixture in multiple maps.
 					retval.register(idNum);
 				}
-				if (fixture instanceof FixtureIterable<?>) {
-					recursiveRegister(retval, (FixtureIterable<?>) fixture);
+				if (fixture instanceof FixtureIterable) {
+					recursiveRegister(retval, (FixtureIterable<@NonNull ?>) fixture);
 				}
 			}
 		}
@@ -77,9 +76,6 @@ public final class IDFactoryFiller {
 		final IDFactory retval = new IDFactory();
 		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
 			for (final Point point : pair.first().locations()) {
-				if (point == null) {
-					continue;
-				}
 				// Ground, Forest, Rivers, and Mountains do not have IDs, so we
 				// can skip them and just test the "other" fixtures
 				for (IFixture fixture : pair.first().getOtherFixtures(point)) {
@@ -89,8 +85,8 @@ public final class IDFactoryFiller {
 						// the same fixture in multiple maps.
 						retval.register(idNum);
 					}
-					if (fixture instanceof FixtureIterable<?>) {
-						recursiveRegister(retval, (FixtureIterable<?>) fixture);
+					if (fixture instanceof FixtureIterable) {
+						recursiveRegister(retval, (FixtureIterable<@NonNull ?>) fixture);
 					}
 				}
 			}
@@ -103,7 +99,7 @@ public final class IDFactoryFiller {
 	 * @return an ID factory that won't generate an ID already used in the
 	 *         collection
 	 */
-	public static IDFactory createFactory(final FixtureIterable<?> iter) {
+	public static IDFactory createFactory(final FixtureIterable<@NonNull ?> iter) {
 		final IDFactory retval = new IDFactory();
 		recursiveRegister(retval, iter);
 		return retval;
@@ -115,7 +111,7 @@ public final class IDFactoryFiller {
 	 *        have their IDs marked as used.
 	 */
 	private static void recursiveRegister(final IDFactory idf,
-			final FixtureIterable<?> iter) {
+			final FixtureIterable<@NonNull ?> iter) {
 		for (final IFixture fix : iter) {
 			final int idNum = fix.getID();
 			if (!idf.used(idNum)) {
@@ -123,8 +119,8 @@ public final class IDFactoryFiller {
 				// fixture in multiple maps. Or for Mountains and the like.
 				idf.register(idNum);
 			}
-			if (fix instanceof FixtureIterable<?>) {
-				recursiveRegister(idf, (FixtureIterable<?>) fix);
+			if (fix instanceof FixtureIterable) {
+				recursiveRegister(idf, (FixtureIterable<@NonNull ?>) fix);
 			}
 		}
 	}

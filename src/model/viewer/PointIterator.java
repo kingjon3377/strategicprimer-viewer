@@ -3,6 +3,7 @@ package model.viewer;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.MapDimensions;
@@ -33,7 +34,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class PointIterator implements Iterator<Point> {
+public class PointIterator implements Iterator<@NonNull Point> {
 	/**
 	 * Whether we're searching forwards (if true) or backwards (if false).
 	 */

@@ -16,6 +16,8 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import controller.exploration.TableLoader;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
@@ -136,11 +138,9 @@ public class OneToTwoConverter { // NOPMD
 						oldDim.cols * RES_JUMP, 2), new PlayerCollection(), -1);
 		Player independent = new Player(-1, "independent");
 		for (final Player player : old.players()) {
-			if (player != null) {
-				retval.addPlayer(player);
-				if (player.isIndependent()) {
-					independent = player;
-				}
+			retval.addPlayer(player);
+			if (player.isIndependent()) {
+				independent = player;
 			}
 		}
 		final List<Point> converted = new LinkedList<>();
@@ -156,9 +156,7 @@ public class OneToTwoConverter { // NOPMD
 		final Random random = new Random(MAX_ITERATIONS);
 		Collections.shuffle(converted, random);
 		for (final Point point : converted) {
-			if (point != null) {
-				perturb(point, retval, random, main, idFactory);
-			}
+			perturb(point, retval, random, main, idFactory);
 		}
 		return retval;
 	}
@@ -226,11 +224,13 @@ public class OneToTwoConverter { // NOPMD
 						RaceFactory.getRace(new Random(idNum))));
 			}
 			final List<TileFixture> fixtures = new LinkedList<>();
-			if (oldMap.getGround(point) != null) {
-				fixtures.add(oldMap.getGround(point));
+			final Ground oldGround = oldMap.getGround(point);
+			if (oldGround != null) {
+				fixtures.add(oldGround);
 			}
-			if (oldMap.getForest(point) != null) {
-				fixtures.add(oldMap.getForest(point));
+			final Forest oldForest = oldMap.getForest(point);
+			if (oldForest != null) {
+				fixtures.add(oldForest);
 			}
 			for (final TileFixture fixture : oldMap.getOtherFixtures(point)) {
 				fixtures.add(fixture);
@@ -279,9 +279,7 @@ public class OneToTwoConverter { // NOPMD
 			final IMutableMapNG newMap) {
 		final Iterable<River> rivers = oldMap.getRivers(point);
 		for (final River river : rivers) {
-			if (river != null) {
 				addRiver(river, initial, newMap);
-			}
 		}
 	}
 
@@ -342,7 +340,7 @@ public class OneToTwoConverter { // NOPMD
 	 */
 	private static boolean isSubtileSuitable(final IMapNG map, final Point point) {
 		for (final TileFixture fix : map.getOtherFixtures(point)) {
-			if (fix == null || !isBackground(fix)) {
+			if (!isBackground(fix)) {
 				return false; // NOPMD
 			}
 		}
@@ -380,9 +378,7 @@ public class OneToTwoConverter { // NOPMD
 				}
 			}
 			for (final TileFixture fixture : forests) {
-				if (fixture != null) {
-					map.removeFixture(point, fixture);
-				}
+				map.removeFixture(point, fixture);
 			}
 			map.setForest(point, null);
 		}
@@ -524,7 +520,7 @@ public class OneToTwoConverter { // NOPMD
 	private static Iterable<Point> getNeighbors(final Point point) {
 		final int row = point.row;
 		final int col = point.col;
-		return NullCleaner.assertNotNull(Arrays.asList(
+		return Arrays.asList(
 				PointFactory.point(row - 1, col - 1),
 				PointFactory.point(row - 1, col),
 				PointFactory.point(row - 1, col + 1),
@@ -532,7 +528,7 @@ public class OneToTwoConverter { // NOPMD
 				PointFactory.point(row, col + 1),
 				PointFactory.point(row + 1, col - 1),
 				PointFactory.point(row + 1, col),
-				PointFactory.point(row + 1, col + 1)));
+				PointFactory.point(row + 1, col + 1));
 	}
 
 	/**
@@ -542,9 +538,6 @@ public class OneToTwoConverter { // NOPMD
 	 */
 	private static boolean isAdjacentToTown(final Point point, final IMapNG map) {
 		for (final Point npoint : getNeighbors(point)) {
-			if (npoint == null) {
-				continue;
-			}
 			for (final TileFixture fix : map.getOtherFixtures(npoint)) {
 				if (fix instanceof Village || fix instanceof ITownFixture) {
 					return true; // NOPMD
@@ -561,9 +554,6 @@ public class OneToTwoConverter { // NOPMD
 	 */
 	private static boolean hasAdjacentWater(final Point point, final IMapNG map) {
 		for (final Point npoint : getNeighbors(point)) {
-			if (npoint == null) {
-				continue;
-			}
 			if (map.getRivers(npoint).iterator().hasNext()
 					|| TileType.Ocean.equals(map.getBaseTerrain(npoint))) {
 				return true; // NOPMD
