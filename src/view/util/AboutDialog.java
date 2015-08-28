@@ -112,7 +112,6 @@ public class AboutDialog extends JDialog {
 	 * Add a link to the string.
 	 * @param href the target of the link
 	 * @param text the text of the link
-	 * @param period whether to put a period after the link
 	 */
 	private void link(final String href, final String text) {
 		builder.append("<a href=\"");
