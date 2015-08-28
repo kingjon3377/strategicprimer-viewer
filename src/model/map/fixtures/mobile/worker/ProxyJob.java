@@ -12,6 +12,24 @@ import model.map.fixtures.mobile.ProxyFor;
 import util.NullCleaner;
 /**
  * An IJob implementation to let the Job tree operate on a whole unit at once.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2014-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -40,12 +58,19 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 	 * The names of skills we're proxying.
 	 */
 	private Set<String> skillNames;
+
 	/**
-	 * @param nomen the name of the Job
-	 * @param parall whether the workers containing these jobs are corresponding workers in different maps (if true) or workers in the same unit (if false)
-	 * @param workers being proxied
+	 * @param nomen
+	 *            the name of the Job
+	 * @param parall
+	 *            whether the workers containing these jobs are corresponding
+	 *            workers in different maps (if true) or workers in the same
+	 *            unit (if false)
+	 * @param workers
+	 *            being proxied
 	 */
-	public ProxyJob(final String nomen, final boolean parall, final IWorker... workers) {
+	public ProxyJob(final String nomen, final boolean parall,
+			final IWorker... workers) {
 		parallel = parall;
 		name = nomen;
 		skillNames = new HashSet<>();
@@ -76,6 +101,18 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 				proxied.add(new ProxySkill(skill, parallel, jobsArray));
 			}
 		}
+	}
+	/**
+	 * @return a copy of this
+	 * @param zero whether to "zero out" sensitive information
+	 */
+	@Override
+	public IJob copy(final boolean zero) {
+		ProxyJob retval = new ProxyJob(name, parallel);
+		for (IJob job : proxiedJobs) {
+			retval.addProxied(job.copy(zero));
+		}
+		return retval;
 	}
 	/**
 	 * @return the name of the Job.

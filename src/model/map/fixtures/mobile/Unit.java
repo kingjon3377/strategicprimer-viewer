@@ -18,6 +18,23 @@ import util.NullCleaner;
 /**
  * A unit on the map.
  *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2012-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -70,6 +87,27 @@ public class Unit implements IUnit {
 		orders = "";
 	}
 
+	/**
+	 * TODO: There should be some way to convey the unit's *size* without the
+	 * *details* of its contents. Or maybe we should give the contents but not
+	 * *their* details?
+	 *
+	 * @return a copy of this unit
+	 * @param zero
+	 *            whether to omit its contents and orders
+	 */
+	@Override
+	public Unit copy(final boolean zero) {
+		Unit retval = new Unit(owner, kind, name, id);
+		if (!zero) {
+			retval.setOrders(orders);
+			for (UnitMember member : this) {
+				retval.addMember(member.copy(false));
+			}
+		}
+		retval.setImage(image);
+		return retval;
+	}
 	/**
 	 *
 	 * @return the player that owns the unit
@@ -391,7 +429,8 @@ public class Unit implements IUnit {
 				if ("unassigned".equals(name) || "unassigned".equals(kind)) {
 					if (!members.isEmpty() && !obj.iterator().hasNext()) {
 						ostream.append(ctxt);
-						ostream.append(" Nonempty 'unassigned' when submap has it empty\n");
+						ostream.append(
+								" Nonempty 'unassigned' when submap has it empty\n");
 					}
 				}
 				return true;

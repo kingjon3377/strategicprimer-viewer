@@ -4,7 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
@@ -18,6 +20,7 @@ import model.listeners.MovementCostListener;
 import model.listeners.MovementCostSource;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
+import model.map.HasOwner;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
@@ -26,14 +29,33 @@ import model.map.TileFixture;
 import model.map.fixtures.Ground;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
+import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
+import util.NullCleaner;
 import util.Pair;
 import view.map.details.FixtureList;
 
 /**
  * The listener for clicks on tile buttons indicating movement.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2013-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jonathan Lovelace
  *
@@ -95,6 +117,8 @@ public final class ExplorationClickListener implements ActionListener,
 	 * method because it has to be run on the EDT to prevent concurrency issues,
 	 * and putting this code in the Runnable means accessing private members
 	 * from that inner class ...
+	 *
+	 * TODO: Remove caches from main map.
 	 */
 	protected void handleMove() {
 		try {
@@ -117,25 +141,39 @@ public final class ExplorationClickListener implements ActionListener,
 			}
 			model.move(direction);
 			Point dPoint = model.getSelectedUnitLocation();
+			Player player = NullCleaner.assertNotNull(model.getSelectedUnit()).getOwner();
+			Set<CacheFixture> caches = new HashSet<>();
 			for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 				final IMutableMapNG map = pair.first();
 				map.setBaseTerrain(dPoint, model.getMap()
 						.getBaseTerrain(dPoint));
 				for (final TileFixture fix : fixtures) {
 					if (fix instanceof Ground && map.getGround(dPoint) == null) {
-						map.setGround(dPoint, (Ground) fix);
-					} else if (fix instanceof Ground && fix.equals(map.getGround(dPoint))) {
+						map.setGround(dPoint, ((Ground) fix).copy(false));
+					} else if (fix instanceof Ground
+							&& fix.equals(map.getGround(dPoint))) {
 						continue;
 					} else if (fix instanceof Forest
 							&& map.getForest(dPoint) == null) {
-						map.setForest(dPoint, (Forest) fix);
-					} else if (fix instanceof Forest && fix.equals(map.getForest(dPoint))) {
+						map.setForest(dPoint, ((Forest) fix).copy(false));
+					} else if (fix instanceof Forest
+							&& fix.equals(map.getForest(dPoint))) {
 						continue;
 					} else if (fix instanceof Mountain) {
 						map.setMountainous(dPoint, true);
 					} else if (fix != null && !hasFixture(map, dPoint, fix)) {
-						map.addFixture(dPoint, fix);
+						boolean zero = fix instanceof HasOwner && !((HasOwner) fix)
+								.getOwner().equals(player);
+						map.addFixture(dPoint, fix.copy(zero));
+						if (fix instanceof CacheFixture) {
+							caches.add((CacheFixture) fix);
+						}
 					}
+				}
+			}
+			for (CacheFixture cache : caches) {
+				if (cache != null) {
+					model.getMap().removeFixture(dPoint, cache);
 				}
 			}
 		} catch (final TraversalImpossibleException except) {

@@ -36,6 +36,24 @@ import view.worker.PlayerChooserHandler;
 
 /**
  * A common superclass for application-specific menu bars.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2015-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -43,14 +61,21 @@ public class SPMenu extends JMenuBar {
 	/**
 	 * Create the file menu.
 	 *
-	 * FIXME: Any menu items not handled by the IOHandler should be handled there.
+	 * FIXME: Any menu items not handled by the IOHandler should be handled
+	 * there.
 	 *
-	 * @param handler the class to handle I/O related menu items
-	 * @param parent the menu-bar's parent window, which should be the window closed when the user selects "close"
-	 * @param model the current driver model; only its type is used, to determine which menu items to disable.
+	 * @param handler
+	 *            the class to handle I/O related menu items
+	 * @param parent
+	 *            the menu-bar's parent window, which should be the window
+	 *            closed when the user selects "close"
+	 * @param model
+	 *            the current driver model; only its type is used, to determine
+	 *            which menu items to disable.
 	 * @return the file menu
 	 */
-	protected static JMenu createFileMenu(final IOHandler handler, final JFrame parent, final IDriverModel model) {
+	protected static JMenu createFileMenu(final IOHandler handler,
+			final JFrame parent, final IDriverModel model) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		JMenuItem newItem = MenuItemCreator.createMenuItem("New", KeyEvent.VK_N,
@@ -75,8 +100,8 @@ public class SPMenu extends JMenuBar {
 		}
 		fileMenu.add(createMenuItem("Load", KeyEvent.VK_L,
 				createHotkey(KeyEvent.VK_O), loadCaption, handler));
-		final JMenuItem loadSecondaryItem = createMenuItem("Load secondary", KeyEvent.VK_E,
-				createShiftHotkey(KeyEvent.VK_O),
+		final JMenuItem loadSecondaryItem = createMenuItem("Load secondary",
+				KeyEvent.VK_E, createShiftHotkey(KeyEvent.VK_O),
 				"Load an additional secondary map from file", handler);
 		fileMenu.add(loadSecondaryItem);
 		fileMenu.add(createMenuItem("Save", KeyEvent.VK_S,
@@ -94,8 +119,8 @@ public class SPMenu extends JMenuBar {
 			saveAllItem.setEnabled(false);
 		}
 		fileMenu.addSeparator();
-		final JMenuItem openViewerItem = createMenuItem("Open in map viewer", KeyEvent.VK_M,
-				createHotkey(KeyEvent.VK_M),
+		final JMenuItem openViewerItem = createMenuItem("Open in map viewer",
+				KeyEvent.VK_M, createHotkey(KeyEvent.VK_M),
 				"Open the main map in the map viewer for a broader view",
 				new ViewerOpenerInvoker(model, true, handler));
 		fileMenu.add(openViewerItem);
@@ -161,7 +186,8 @@ public class SPMenu extends JMenuBar {
 	 * @param model the driver model
 	 * @return the menu created
 	 */
-	protected static JMenu createMapMenu(final JFrame parent, final IDriverModel model) {
+	protected static JMenu createMapMenu(final JFrame parent,
+			final IDriverModel model) {
 		final JMenu retval = new JMenu("Map");
 		retval.setMnemonic(KeyEvent.VK_M);
 		final JMenuItem gotoTileItem;
@@ -173,12 +199,14 @@ public class SPMenu extends JMenuBar {
 		final KeyStroke nextStroke = MenuItemCreator.createHotkey(KeyEvent.VK_G);
 		final ActionListener zoomListener;
 		if (model instanceof IViewerModel) {
-			gotoTileItem = MenuItemCreator.createMenuItem("Go to tile", KeyEvent.VK_T,
-					MenuItemCreator.createHotkey(KeyEvent.VK_T),
+			gotoTileItem = MenuItemCreator.createMenuItem("Go to tile",
+					KeyEvent.VK_T, MenuItemCreator.createHotkey(KeyEvent.VK_T),
 					"Go to a tile by coordinates", new ActionListener() {
 						@Override
-						public void actionPerformed(@Nullable final ActionEvent evt) {
-							new SelectTileDialog(parent, (IViewerModel) model).setVisible(true);
+						public void actionPerformed(
+								@Nullable final ActionEvent evt) {
+							new SelectTileDialog(parent, (IViewerModel) model)
+									.setVisible(true);
 						}
 					});
 			final FindDialog finder = new FindDialog(parent, (IViewerModel) model);
@@ -212,8 +240,8 @@ public class SPMenu extends JMenuBar {
 					// do nothing
 				}
 			};
-			gotoTileItem = MenuItemCreator.createMenuItem("Go to tile", KeyEvent.VK_T,
-					MenuItemCreator.createHotkey(KeyEvent.VK_T),
+			gotoTileItem = MenuItemCreator.createMenuItem("Go to tile",
+					KeyEvent.VK_T, MenuItemCreator.createHotkey(KeyEvent.VK_T),
 					"Go to a tile by coordinates", nullAction);
 			gotoTileItem.setEnabled(false);
 			findItem = MenuItemCreator.createMenuItem("Find a fixture", findKey,
@@ -319,11 +347,16 @@ public class SPMenu extends JMenuBar {
 	 */
 	protected static final class ViewerOpenerInvoker implements ActionListener {
 		/**
-		 * @param model the exploration model
-		 * @param first whether this is to open the main map, or otherwise a subordinate map
-		 * @param ioHandler the I/O handler to use to actually open the file
+		 * @param model
+		 *            the exploration model
+		 * @param first
+		 *            whether this is to open the main map, or otherwise a
+		 *            subordinate map
+		 * @param ioHandler
+		 *            the I/O handler to use to actually open the file
 		 */
-		protected ViewerOpenerInvoker(final IDriverModel model, final boolean first, final IOHandler ioHandler) {
+		protected ViewerOpenerInvoker(final IDriverModel model,
+				final boolean first, final IOHandler ioHandler) {
 			theModel = model;
 			frst = first;
 			ioh = ioHandler;
@@ -341,15 +374,19 @@ public class SPMenu extends JMenuBar {
 		 */
 		private final IOHandler ioh;
 		/**
-		 * Handle the action
+		 * Handle the action.
 		 */
 		@Override
-		public final void actionPerformed(@Nullable final ActionEvent evt) {
+		public void actionPerformed(@Nullable final ActionEvent evt) {
 			if (frst) {
-				invokeLater(new ViewerOpener(theModel.getMap(), theModel.getMapFile(), ioh));
+				invokeLater(new ViewerOpener(theModel.getMap(),
+						theModel.getMapFile(), ioh));
 			} else if (theModel instanceof IMultiMapModel) {
-				final Pair<IMutableMapNG, File> mapPair = ((IMultiMapModel) theModel).getSubordinateMaps().iterator().next();
-				invokeLater(new ViewerOpener(mapPair.first(), mapPair.second(), ioh));
+				final Pair<IMutableMapNG, File> mapPair =
+						((IMultiMapModel) theModel).getSubordinateMaps()
+								.iterator().next();
+				invokeLater(new ViewerOpener(mapPair.first(), mapPair.second(),
+						ioh));
 			}
 		}
 	}

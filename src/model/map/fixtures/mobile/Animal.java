@@ -2,20 +2,36 @@ package model.map.fixtures.mobile;
 
 import java.io.IOException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 
 /**
  * An animal or group of animals.
  *
  * TODO: Add more features (population, to start with).
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2012-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jonathan Lovelace
  *
@@ -284,5 +300,17 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	@Override
 	public String shortDesc() {
 		return toString();
+	}
+
+	/**
+	 * @return a copy of this
+	 * @param zero whether to "zero out" sensitive information
+	 */
+	@Override
+	public Animal copy(final boolean zero) {
+		// TODO: Should we "zero" out any information?
+		Animal retval = new Animal(kind, traces, talking, status, id);
+		retval.setImage(image);
+		return retval;
 	}
 }

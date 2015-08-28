@@ -65,6 +65,23 @@ import view.util.SystemOut;
 /**
  * A window to let the player manage units.
  *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2013-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -144,8 +161,10 @@ public class WorkerMgmtFrame extends JFrame {
 				Object node = selPath.getLastPathComponent();
 				if (evt.isControlDown() && node instanceof AbstractReportNode) {
 					final Point point = ((AbstractReportNode) node).getPoint();
-					if (point != null) {
-						final IViewerModel vModel = getViewerModelFor(model, ioHandler);
+					// (-inf, -inf) replaces null
+					if (point.getRow() > Integer.MIN_VALUE) {
+						final IViewerModel vModel =
+								getViewerModelFor(model, ioHandler);
 						if (vModel == null) {
 							SystemOut.SYS_OUT.println("Failed to open a window");
 						} else {
@@ -188,15 +207,21 @@ public class WorkerMgmtFrame extends JFrame {
 		}
 		pack();
 	}
+
 	/**
-	 * @param model the driver-model of the worker-management GUI
-	 * @param ioh the I/O handler
-	 * @return the viewer model of a viewer window the same map as that in the given driver-model
+	 * @param model
+	 *            the driver-model of the worker-management GUI
+	 * @param ioh
+	 *            the I/O handler
+	 * @return the viewer model of a viewer window the same map as that in the
+	 *         given driver-model
 	 */
 	@Nullable
-	protected static IViewerModel getViewerModelFor(final IDriverModel model, final IOHandler ioh) {
+	protected static IViewerModel getViewerModelFor(final IDriverModel model,
+			final IOHandler ioh) {
 		for (Frame frame : WindowList.getFrames(false, true, true)) {
-			if (frame instanceof ViewerFrame && ((ViewerFrame) frame).getModel().getMapFile().equals(model.getMapFile())) {
+			if (frame instanceof ViewerFrame && ((ViewerFrame) frame).getModel()
+					.getMapFile().equals(model.getMapFile())) {
 				frame.toFront();
 				if (frame.getExtendedState() == Frame.ICONIFIED) {
 					frame.setExtendedState(Frame.NORMAL);
@@ -204,7 +229,8 @@ public class WorkerMgmtFrame extends JFrame {
 				return ((ViewerFrame) frame).getModel();
 			}
 		}
-		ViewerFrame frame = new ViewerFrame(new ViewerModel(model.getMap(), model.getMapFile()), ioh);
+		ViewerFrame frame = new ViewerFrame(
+				new ViewerModel(model.getMap(), model.getMapFile()), ioh);
 		frame.setVisible(true);
 		return frame.getModel();
 	}

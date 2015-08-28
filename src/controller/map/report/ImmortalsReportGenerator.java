@@ -37,6 +37,23 @@ import util.Pair;
 /**
  * A report generator for "immortals"---dragons, fairies, centaurs, and such.
  *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2013-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -176,29 +193,45 @@ public class ImmortalsReportGenerator extends
 			final Point point = pair.first();
 			final IFixture immortal = pair.second();
 			if (immortal instanceof Dragon) {
-				separateByKindRIR(dragons, (Dragon) immortal).add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
+				separateByKindRIR(dragons, (Dragon) immortal)
+						.add(produceRIR(fixtures, map, currentPlayer,
+								(MobileFixture) immortal, point));
 			} else if (immortal instanceof Fairy) {
-				separateByKindRIR(fairies, (Fairy) immortal).add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
+				separateByKindRIR(fairies, (Fairy) immortal)
+						.add(produceRIR(fixtures, map, currentPlayer,
+								(MobileFixture) immortal, point));
 			} else if (immortal instanceof Troll) {
-				trolls.add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
+				trolls.add(produceRIR(fixtures, map, currentPlayer,
+						(MobileFixture) immortal, point));
 			} else if (immortal instanceof Djinn) {
-				djinni.add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
+				djinni.add(produceRIR(fixtures, map, currentPlayer,
+						(MobileFixture) immortal, point));
 			} else if (immortal instanceof Sphinx) {
-				sphinxes.add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
+				sphinxes.add(produceRIR(fixtures, map, currentPlayer,
+						(MobileFixture) immortal, point));
 			} else if (immortal instanceof Giant) {
-				separateByKindRIR(giants, (Giant) immortal).add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
+				separateByKindRIR(giants, (Giant) immortal)
+						.add(produceRIR(fixtures, map, currentPlayer,
+								(MobileFixture) immortal, point));
 			} else if (immortal instanceof Minotaur) {
-				minotaurs.add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
+				minotaurs.add(produceRIR(fixtures, map, currentPlayer,
+						(MobileFixture) immortal, point));
 			} else if (immortal instanceof Ogre) {
-				ogres.add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
+				ogres.add(produceRIR(fixtures, map, currentPlayer,
+						(MobileFixture) immortal, point));
 			} else if (immortal instanceof Centaur) {
-				separateByKindRIR(centaurs, (Centaur) immortal).add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
+				separateByKindRIR(centaurs, (Centaur) immortal)
+						.add(produceRIR(fixtures, map, currentPlayer,
+								(MobileFixture) immortal, point));
 			} else if (immortal instanceof Phoenix) {
-				phoenixes.add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
+				phoenixes.add(produceRIR(fixtures, map, currentPlayer,
+						(MobileFixture) immortal, point));
 			} else if (immortal instanceof Simurgh) {
-				simurghs.add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
+				simurghs.add(produceRIR(fixtures, map, currentPlayer,
+						(MobileFixture) immortal, point));
 			} else if (immortal instanceof Griffin) {
-				griffins.add(produceRIR(fixtures, map, currentPlayer, (MobileFixture) immortal, point));
+				griffins.add(produceRIR(fixtures, map, currentPlayer,
+						(MobileFixture) immortal, point));
 			}
 		}
 		optionallyAdd(retval, coalesce("Dragons", dragons),
@@ -216,7 +249,8 @@ public class ImmortalsReportGenerator extends
 	 * @param mapping a mapping from kinds to nodes
 	 * @return a node with all of the nodes as children
 	 */
-	private static AbstractReportNode coalesce(final String header, final Map<String, AbstractReportNode> mapping) {
+	private static AbstractReportNode coalesce(final String header,
+			final Map<String, AbstractReportNode> mapping) {
 		final AbstractReportNode retval = new ListReportNode(header);
 		for (AbstractReportNode node : mapping.values()) {
 			retval.add(node);
@@ -227,7 +261,8 @@ public class ImmortalsReportGenerator extends
 	 * @param parent a node
 	 * @param children possible children to add, if they have children of their own
 	 */
-	private static void optionallyAdd(final AbstractReportNode parent, final AbstractReportNode... children) {
+	private static void optionallyAdd(final AbstractReportNode parent,
+			final AbstractReportNode... children) {
 		for (AbstractReportNode child : children) {
 			if (child.getChildCount() > 0) {
 				parent.add(child);
@@ -356,14 +391,16 @@ public class ImmortalsReportGenerator extends
 	 *            the item under consideration
 	 * @return the entry in the map for the item's kind
 	 */
-	private static AbstractReportNode separateByKindRIR(final Map<String, AbstractReportNode> mapping,
+	private static AbstractReportNode separateByKindRIR(
+			final Map<String, AbstractReportNode> mapping,
 			final HasKind item) {
 		// For the three classes we deal with here, we don't want just the kind,
 		// we want the full toString, so we use that instead of getKind.
 		if (mapping.containsKey(item.toString())) {
 			return NullCleaner.assertNotNull(mapping.get(item.toString()));
 		} else {
-			AbstractReportNode retval = new ListReportNode(NullCleaner.assertNotNull(item.toString()));
+			AbstractReportNode retval = new ListReportNode(
+					NullCleaner.assertNotNull(item.toString()));
 			mapping.put(item.toString(), retval);
 			return retval;
 		}

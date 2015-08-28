@@ -1,15 +1,32 @@
 package model.map.fixtures;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TileFixture;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A Fixture to encapsulate arbitrary text associated with a tile, so we can
  * improve the interface, have more than one set of text per tile, and be clear
  * on <em>which turn</em> encounters happened.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2011-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jonathan Lovelace
  *
@@ -37,6 +54,16 @@ public class TextFixture implements TileFixture, HasImage {
 	public TextFixture(final String theText, final int turnNum) {
 		text = theText;
 		turn = turnNum;
+	}
+	/**
+	 * @return a copy of this fixture
+	 * @param zero ignored, as a text fixture without its sensitive information is meaningless
+	 */
+	@Override
+	public TextFixture copy(final boolean zero) {
+		TextFixture retval = new TextFixture(text, turn);
+		retval.setImage(image);
+		return retval;
 	}
 
 	/**

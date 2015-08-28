@@ -4,10 +4,29 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.IFixture;
 import model.map.Point;
+import model.map.PointFactory;
 import model.map.TileFixture;
 
 /**
  * A fixture representing a portal to another world.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2015-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -40,6 +59,22 @@ public class Portal implements ExplorableFixture {
 		destinationWorld = dest;
 		destinationCoordinates = destCoords;
 		id = idNum;
+	}
+	/**
+	 * TODO: Should we "zero out" (to "unknown") the destination world?
+	 * @return a copy of this portal
+	 * @param zero whether to "zero out" the destination coordinates
+	 */
+	@Override
+	public Portal copy(final boolean zero) {
+		Portal retval;
+		if (zero) {
+			retval = new Portal(destinationWorld, PointFactory.point(-1,  -1), id);
+		} else {
+			retval = new Portal(destinationWorld, destinationCoordinates, id);
+		}
+		retval.setImage(image);
+		return retval;
 	}
 	/**
 	 * @return a string identifying the world the portal connects to

@@ -9,6 +9,24 @@ import model.map.TileFixture;
 
 /**
  * A Fixture representing an adventure hook.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2015-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -51,6 +69,16 @@ public class AdventureFixture implements ExplorableFixture, HasOwner {
 		briefDesc = brief;
 		fullDesc = full;
 		id = idNum;
+	}
+	/**
+	 * @return a copy of this fixture
+	 * @param zero ignored, as there is no sensitive information that is not essential
+	 */
+	@Override
+	public AdventureFixture copy(final boolean zero) {
+		AdventureFixture retval = new AdventureFixture(owner, briefDesc, fullDesc, id);
+		retval.setImage(image);
+		return retval;
 	}
 	/**
 	 * @return a brief description of the adventure

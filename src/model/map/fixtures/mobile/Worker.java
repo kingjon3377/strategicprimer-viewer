@@ -23,6 +23,23 @@ import util.NullCleaner;
  *
  * And TODO: some of the other MobileFixtures should be similarly converted.
  *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2012-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -300,5 +317,28 @@ public class Worker implements IWorker {
 	@Override
 	public String getImage() {
 		return image;
+	}
+	/**
+	 * @return a copy of this worker
+	 * @param zero whether to "zero out" the worker
+	 */
+	@Override
+	public Worker copy(final boolean zero) {
+		if (zero) {
+			Worker retval = new Worker(name, race, id);
+			retval.setImage(image);
+			return retval;
+		} else {
+			Worker retval = new Worker(name, race, id);
+			WorkerStats localStats = stats;
+			if (localStats != null) {
+				retval.setStats(localStats.copy(true));
+			}
+			retval.setImage(image);
+			for (IJob job : this) {
+				retval.addJob(job.copy(true));
+			}
+			return retval;
+		}
 	}
 }

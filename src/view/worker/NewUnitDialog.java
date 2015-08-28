@@ -35,6 +35,23 @@ import view.util.ListenedButton;
  * value of the unit if OK is pressed and both fields are nonempty, then clear
  * them. As this is a dialog, we do *not* extend ApplicationFrame.
  *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2013-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -73,7 +90,9 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(NewUnitDialog.class.getName()));
+	private static final Logger LOGGER = NullCleaner
+			.assertNotNull(Logger.getLogger(NewUnitDialog.class.getName()));
+
 	/**
 	 * Constructor.
 	 *
@@ -138,10 +157,12 @@ public class NewUnitDialog extends JFrame implements ActionListener,
 				int idNum;
 				if (IsNumeric.isNumeric(reqId)) {
 					try {
-						idNum = NumberFormat.getIntegerInstance().parse(reqId).intValue();
+						idNum = NumberFormat.getIntegerInstance().parse(reqId)
+								.intValue();
 						idf.register(idNum);
 					} catch (ParseException e) {
-						LOGGER.log(Level.INFO, "Parse error parsing user-specified ID", e);
+						LOGGER.log(Level.INFO,
+								"Parse error parsing user-specified ID", e);
 						idNum = idf.createID();
 					}
 				} else {

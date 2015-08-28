@@ -9,8 +9,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.jdt.annotation.Nullable;
+
+import controller.map.misc.ICLIHelper;
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
+import model.map.HasOwner;
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
@@ -20,18 +24,32 @@ import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.Pair;
-import controller.map.misc.ICLIHelper;
 
 /**
  * A CLI to help running exploration. Now separated from the "driver" bits, to
  * simplify things.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2013-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jonathan Lovelace
  *
@@ -202,34 +220,42 @@ public class ExplorationCLI {
 			constants.add(allFixtures.get(0));
 		}
 		for (final TileFixture fix : constants) {
-			printAndTransferFixture(dPoint, fix);
+			printAndTransferFixture(dPoint, fix, mover);
 		}
 		return cost;
 	}
 
 	/**
+	 * TODO: Remove caches from master map.
 	 * @param dPoint
 	 *            the current location
 	 * @param fix
 	 *            the fixture to copy to subordinate maps. May be null, to
 	 *            simplify the caller.
+	 * @param mover
+	 *            the current unit (needed for its owner)
 	 */
 	private void printAndTransferFixture(final Point dPoint,
-			@Nullable final TileFixture fix) {
+			@Nullable final TileFixture fix, final IUnit mover) {
 		if (fix != null) {
 			SYS_OUT.println(fix);
+			boolean zero = fix instanceof HasOwner && !((HasOwner) fix)
+					.getOwner().equals(mover.getOwner());
 			for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 				final IMutableMapNG map = pair.first();
 				if (fix instanceof Ground && map.getGround(dPoint) == null) {
-					map.setGround(dPoint, (Ground) fix);
+					map.setGround(dPoint, ((Ground) fix).copy(false));
 				} else if (fix instanceof Forest && map.getForest(dPoint) == null) {
-					map.setForest(dPoint, (Forest) fix);
+					map.setForest(dPoint, ((Forest) fix).copy(false));
 				} else if (fix instanceof Mountain) {
 					map.setMountainous(dPoint, true);
 				} else {
-					map.addFixture(dPoint, fix);
+					map.addFixture(dPoint, fix.copy(zero));
 				}
 			}
+		}
+		if (fix instanceof CacheFixture) {
+			model.getMap().removeFixture(dPoint, fix);
 		}
 	}
 

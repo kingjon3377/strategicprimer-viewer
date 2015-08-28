@@ -48,6 +48,23 @@ import view.util.SystemOut;
  * A driver to let the user enter pregenerated stats for existing workers or
  * generate new workers.
  *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2013-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -576,8 +593,9 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			final int constitution = threeDeeSix();
 			final int conBonus = (constitution - STAT_BASIS) / 2;
 			final int hitp = 8 + conBonus + rollDeeEight(levels, conBonus);
-			final WorkerStats stats = new WorkerStats(hitp, hitp, threeDeeSix(), threeDeeSix(),
-					constitution, threeDeeSix(), threeDeeSix(), threeDeeSix());
+			final WorkerStats stats = new WorkerStats(hitp, hitp, threeDeeSix(),
+					threeDeeSix(), constitution, threeDeeSix(), threeDeeSix(),
+					threeDeeSix());
 			retval.setStats(stats);
 			if (levels > 0) {
 				SystemOut.SYS_OUT.println("Generated stats:");

@@ -28,6 +28,23 @@ import view.util.SystemOut;
 /**
  * A model to underlie the advancement GUI, etc.
  *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2013-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -58,8 +75,10 @@ public class WorkerModel extends AbstractMultiMapModel implements IWorkerModel {
 					if (point == null) {
 						continue;
 					}
-					for (IUnit unit : getUnits(map.getOtherFixtures(point), player)) {
-						@Nullable IUnit proxy = retval.get(Integer.valueOf(unit.getID()));
+					for (IUnit unit : getUnits(map.getOtherFixtures(point),
+							player)) {
+						@Nullable
+						IUnit proxy = retval.get(Integer.valueOf(unit.getID()));
 						if (proxy == null) {
 							proxy = new ProxyUnit(unit.getID());
 							((ProxyUnit) proxy).addProxied(unit);
@@ -77,7 +96,8 @@ public class WorkerModel extends AbstractMultiMapModel implements IWorkerModel {
 			final List<IUnit> retval = new ArrayList<>();
 			for (final Point point : getMap().locations()) {
 				if (point != null) {
-					retval.addAll(getUnits(getMap().getOtherFixtures(point), player));
+					retval.addAll(
+							getUnits(getMap().getOtherFixtures(point), player));
 				}
 			}
 			return retval;

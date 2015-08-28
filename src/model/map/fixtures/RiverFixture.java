@@ -5,18 +5,34 @@ import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.IFixture;
 import model.map.River;
 import model.map.SubsettableFixture;
 import model.map.TileFixture;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 
 /**
  * A Fixture to encapsulate the rivers on a tile, so we can show a chit for
  * rivers.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2011-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jonathan Lovelace
  *
@@ -48,6 +64,20 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 		}
 	}
 
+	/**
+	 * @return a copy of this fixture
+	 * @param zero ignored, as this fixture has no sensitive information
+	 */
+	@Override
+	public RiverFixture copy(final boolean zero) {
+		RiverFixture retval = new RiverFixture();
+		for (River river : this) {
+			if (river != null) {
+				retval.addRiver(river);
+			}
+		}
+		return retval;
+	}
 	/**
 	 * Add a river.
 	 *
@@ -178,7 +208,7 @@ public final class RiverFixture implements TileFixture, Iterable<River>,
 	 * TODO: investigate how FreeCol does it.
 	 *
 	 * @return an ID for the fixture. This is constant because it's really a
-	 *         container for a ollection of rivers.
+	 *         container for a collection of rivers.
 	 *
 	 */
 	@Override

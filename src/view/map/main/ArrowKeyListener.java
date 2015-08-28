@@ -17,6 +17,23 @@ import org.eclipse.jdt.annotation.Nullable;
 /**
  * A class to handle setting up listeners for the arrow keys.
  *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2011-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -86,6 +103,7 @@ public class ArrowKeyListener {
 		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD0, 0), "home");
 		inputMap.put(getKeyStroke(KeyEvent.VK_END, CTRL_DOWN_MASK), "ctrl-end");
 		inputMap.put(getKeyStroke(KeyEvent.VK_END, 0), "end");
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMBER_SIGN, 0), "end");
 		inputMap.put(getKeyStroke(KeyEvent.VK_3, SHIFT_DOWN_MASK), "end");
 		inputMap.put(getKeyStroke('#', 0), "end");
 		inputMap.put(getKeyStroke(KeyEvent.VK_6, SHIFT_DOWN_MASK), "caret");
@@ -288,7 +306,8 @@ public class ArrowKeyListener {
 		 */
 		@Override
 		protected void move() {
-			// TODO: Perhaps add proper support to DirectionSelectionChanger so we don't have to make two calls here
+			// TODO: Perhaps add proper support to DirectionSelectionChanger so
+			// we don't have to make two calls here
 			dsc.up();
 			dsc.right();
 		}
@@ -317,7 +336,8 @@ public class ArrowKeyListener {
 		 */
 		@Override
 		protected void move() {
-			// TODO: Perhaps add proper support to DirectionSelectionChanger so we don't have to make two calls here
+			// TODO: Perhaps add proper support to DirectionSelectionChanger so
+			// we don't have to make two calls here
 			dsc.up();
 			dsc.left();
 		}
@@ -346,7 +366,8 @@ public class ArrowKeyListener {
 		 */
 		@Override
 		protected void move() {
-			// TODO: Perhaps add proper support to DirectionSelectionChanger so we don't have to make two calls here
+			// TODO: Perhaps add proper support to DirectionSelectionChanger so
+			// we don't have to make two calls here
 			dsc.down();
 			dsc.right();
 		}
@@ -375,7 +396,8 @@ public class ArrowKeyListener {
 		 */
 		@Override
 		protected void move() {
-			// TODO: Perhaps add proper support to DirectionSelectionChanger so we don't have to make two calls here
+			// TODO: Perhaps add proper support to DirectionSelectionChanger so
+			// we don't have to make two calls here
 			dsc.down();
 			dsc.left();
 		}

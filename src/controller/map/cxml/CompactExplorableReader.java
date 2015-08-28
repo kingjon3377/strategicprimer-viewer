@@ -23,14 +23,34 @@ import util.Warning;
 
 /**
  * A reader for Caves and Battlefields.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2015-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author Jonathan Lovelace
  *
  */
-public class CompactExplorableReader extends AbstractCompactReader<ExplorableFixture> {
+public class CompactExplorableReader
+		extends AbstractCompactReader<ExplorableFixture> {
 	/**
 	 * Singleton object.
 	 */
-	public static final CompactExplorableReader READER = new CompactExplorableReader();
+	public static final CompactExplorableReader READER =
+			new CompactExplorableReader();
 	/**
 	 * List of supported tags.
 	 */
@@ -39,7 +59,8 @@ public class CompactExplorableReader extends AbstractCompactReader<ExplorableFix
 		final Set<String> suppTagsTemp = new ArraySet<>();
 		suppTagsTemp.add("cave");
 		suppTagsTemp.add("battlefield");
-		SUPP_TAGS = NullCleaner.assertNotNull(Collections.unmodifiableSet(suppTagsTemp));
+		SUPP_TAGS = NullCleaner
+				.assertNotNull(Collections.unmodifiableSet(suppTagsTemp));
 	}
 	/**
 	 * @param tag a tag
@@ -83,7 +104,8 @@ public class CompactExplorableReader extends AbstractCompactReader<ExplorableFix
 		} else if ("cave".equalsIgnoreCase(tag)) {
 			retval = new Cave(getDC(elem), idNum);
 		} else {
-			throw new UnsupportedTagException(NullCleaner.assertNotNull(tag), elem.getLocation().getLineNumber());
+			throw new UnsupportedTagException(NullCleaner.assertNotNull(tag),
+					elem.getLocation().getLineNumber());
 		}
 		spinUntilEnd(NullCleaner.assertNotNull(elem.getName()), stream);
 		retval.setImage(getParameter(elem, "image", ""));
@@ -98,7 +120,8 @@ public class CompactExplorableReader extends AbstractCompactReader<ExplorableFix
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Appendable ostream, final ExplorableFixture obj, final int indent) throws IOException {
+	public void write(final Appendable ostream, final ExplorableFixture obj,
+			final int indent) throws IOException {
 		ostream.append(indent(indent));
 		if (obj instanceof Battlefield) {
 			ostream.append("<battlefield ");

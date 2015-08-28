@@ -4,6 +4,8 @@ import static view.util.SystemOut.SYS_OUT;
 
 import java.io.IOException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.listeners.LevelGainListener;
 import model.listeners.SkillSelectionListener;
 import model.listeners.UnitMemberListener;
@@ -11,13 +13,27 @@ import model.map.HasName;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.ISkill;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 
 /**
  * A listener to print a line when a worker gains a level.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2013-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jonathan Lovelace
  */
@@ -56,6 +72,10 @@ public final class LevelListener implements LevelGainListener,
 		public int getHours() {
 			return -1;
 		}
+		@Override
+		public ISkill copy(final boolean zero) {
+			throw new IllegalStateException("copy called on null Skill");
+		}
 	};
 	/**
 	 * A type-safe null UnitMember.
@@ -84,6 +104,14 @@ public final class LevelListener implements LevelGainListener,
 		public boolean isSubset(final IFixture obj, final Appendable ostream,
 				final String context) throws IOException {
 			return false;
+		}
+		/**
+		 * @return nothing; throws
+		 * @param zero ignored
+		 */
+		@Override
+		public UnitMember copy(final boolean zero) {
+			throw new IllegalStateException("Tried to copy a null object");
 		}
 	};
 	/**

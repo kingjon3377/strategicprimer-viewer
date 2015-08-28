@@ -28,6 +28,23 @@ import view.util.ErrorShower;
  *
  * TODO: make it possible to start multiple specified drivers.
  *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2013-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author Jonathan Lovelace
  *
  */
@@ -142,7 +159,8 @@ public class AppStarter implements ISPDriver {
 					try {
 						startChooser(localGui, others);
 					} catch (DriverFailedException e) {
-						final String message = NullCleaner.assertNotNull(e.getMessage());
+						final String message =
+								NullCleaner.assertNotNull(e.getMessage());
 						lgr.log(Level.SEVERE, message, e.getCause());
 						ErrorShower.showErrorDialog(null, message);
 					}
@@ -156,7 +174,8 @@ public class AppStarter implements ISPDriver {
 					try {
 						startChosenDriver(driver, others);
 					} catch (DriverFailedException e) {
-						final String message = NullCleaner.assertNotNull(e.getMessage());
+						final String message =
+								NullCleaner.assertNotNull(e.getMessage());
 						lgr.log(Level.SEVERE, message, e.getCause());
 						ErrorShower.showErrorDialog(null, message);
 					}

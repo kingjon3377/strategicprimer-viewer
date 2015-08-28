@@ -37,6 +37,23 @@ import util.Warning.Action;
 /**
  * A driver for running exploration results, etc., using the new model.
  *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2012-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author Jonathan Lovelace
  */
 public final class QueryCLI implements ISPDriver {
@@ -131,13 +148,14 @@ public final class QueryCLI implements ISPDriver {
 		}
 	}
 	/**
-	 * Count the workers belonging to a player
+	 * Count the workers belonging to a player.
 	 * @param map the map
 	 * @param players the list of players in the map
 	 * @param ostream the stream to write results to
 	 * @throws IOException on I/O error interacting with user
 	 */
-	private void count(final IMapNG map, final List<Player> players, final Appendable ostream) throws IOException {
+	private void count(final IMapNG map, final List<Player> players,
+			final Appendable ostream) throws IOException {
 		final int playerNum = helper.chooseFromList(players,
 				"Players in the map:", "Map contains no players",
 				"Owner of workers to count: ", true);
@@ -151,7 +169,8 @@ public final class QueryCLI implements ISPDriver {
 				continue;
 			}
 			for (TileFixture fix : map.getOtherFixtures(loc)) {
-				if (fix instanceof IUnit && player.equals(((IUnit) fix).getOwner())) {
+				if (fix instanceof IUnit
+						&& player.equals(((IUnit) fix).getOwner())) {
 					for (UnitMember member : (IUnit) fix) {
 						if (member instanceof IWorker) {
 							count++;
@@ -411,7 +430,7 @@ public final class QueryCLI implements ISPDriver {
 		ostream.append("Trap: Switch to the trap-modeling program ");
 		ostream.append("to run trapping or fish-trapping.\n");
 		ostream.append("Distance: Report the distance between two points.\n");
-		ostream.append("Count: Count the number of workers belonging to a player.\n");
+		ostream.append("Count: Count how many workers belong to a player.\n");
 		ostream.append("Quit: Exit the program.\n");
 	}
 

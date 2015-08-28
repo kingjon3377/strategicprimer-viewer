@@ -1,20 +1,41 @@
 package model.report;
 
+import java.util.Iterator;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.Point;
+import model.map.PointFactory;
+import util.EnumerationWrapper;
 
 /**
  * A superclass for report-nodes.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2013-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jonathan Lovelace
  *
  */
 public abstract class AbstractReportNode extends DefaultMutableTreeNode
-		implements IReportNode {
+		implements IReportNode, Iterable<AbstractReportNode> {
 	/**
 	 * The point, if any, in the map that this node represents something on.
 	 */
@@ -150,9 +171,25 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	/**
 	 * @return the point, if any, in the map that this represents something on
 	 */
-	@Nullable
 	public final Point getPoint() {
-		return point;
+		if (point != null) {
+			return point;
+		} else {
+			Point locPoint = null;
+			for (AbstractReportNode child : this) {
+				if (locPoint == null) {
+					locPoint = child.getPoint();
+				} else if (!locPoint.equals(child.getPoint())) {
+					locPoint = PointFactory.point(Integer.MIN_VALUE,
+							Integer.MIN_VALUE);
+				}
+			}
+			if (locPoint == null) {
+				return PointFactory.point(Integer.MIN_VALUE, Integer.MIN_VALUE);
+			} else {
+				return locPoint;
+			}
+		}
 	}
 
 	/**
@@ -160,5 +197,12 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	 */
 	public final void setPoint(final Point pt) {
 		point = pt;
+	}
+	/**
+	 * @return an iterator over the children
+	 */
+	@Override
+	public Iterator<AbstractReportNode> iterator() {
+		return new EnumerationWrapper<>(children());
 	}
 }

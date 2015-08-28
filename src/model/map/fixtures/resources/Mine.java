@@ -1,14 +1,31 @@
 package model.map.fixtures.resources;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.towns.TownStatus;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 /**
  * A mine---a source of mineral resources.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2012-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jonathan Lovelace
  *
@@ -41,6 +58,16 @@ public class Mine implements HarvestableFixture, HasKind {
 		id = idNum;
 	}
 
+	/**
+	 * @return a copy of this mine
+	 * @param zero ignored; there isn't any sensitive information
+	 */
+	@Override
+	public Mine copy(final boolean zero) {
+		Mine retval = new Mine(kind, status, id);
+		retval.setImage(image);
+		return retval;
+	}
 	/**
 	 * @return what the mine produces
 	 */

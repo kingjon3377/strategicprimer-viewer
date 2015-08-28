@@ -22,6 +22,23 @@ import util.Pair;
 /**
  * A report generator for caves and battlefields.
  *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2013-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author Jonathan Lovelace
  */
 public class ExplorableReportGenerator extends
@@ -130,7 +147,8 @@ public class ExplorableReportGenerator extends
 			final IMapNG map, final Player currentPlayer) {
 		final AbstractReportNode retval = new SectionListReportNode(4,
 				"Caves, Battlefields, and Portals");
-		final AbstractReportNode adventures = new SectionListReportNode(4, "Possible Adventures");
+		final AbstractReportNode adventures =
+				new SectionListReportNode(4, "Possible Adventures");
 		final AbstractReportNode caves = new ListReportNode("Caves");
 		final AbstractReportNode battles = new ListReportNode("Battlefields");
 		final AbstractReportNode portals = new ListReportNode("Portals");
@@ -177,13 +195,18 @@ public class ExplorableReportGenerator extends
 	/**
 	 * Produces a more verbose sub-report on a cave or battlefield.
 	 *
-	 * @param fixtures the set of fixtures.
-	 * @param map ignored
-	 * @param item the item to report on
-	 * @param loc its location
-	 * @param currentPlayer the player for whom the report is being produced
-	 * @return a sub-report (more verbose than the bulk produce() above reports, for caves and battlefields)
-	 *         on the item
+	 * @param fixtures
+	 *            the set of fixtures.
+	 * @param map
+	 *            ignored
+	 * @param item
+	 *            the item to report on
+	 * @param loc
+	 *            its location
+	 * @param currentPlayer
+	 *            the player for whom the report is being produced
+	 * @return a sub-report (more verbose than the bulk produce() above reports,
+	 *         for caves and battlefields) on the item
 	 */
 	@Override
 	public String produce(
@@ -204,11 +227,13 @@ public class ExplorableReportGenerator extends
 			} else if (currentPlayer.equals(((AdventureFixture) item).getOwner())) {
 				return concat(((AdventureFixture) item).getBriefDescription(),
 						" at ", loc.toString(), ": ",
-						((AdventureFixture) item).getFullDescription(), " (already investigated by you)");
+						((AdventureFixture) item).getFullDescription(),
+						" (already investigated by you)");
 			} else {
 				return concat(((AdventureFixture) item).getBriefDescription(),
 						" at ", loc.toString(), ": ",
-						((AdventureFixture) item).getFullDescription(), " (already investigated by another player)");
+						((AdventureFixture) item).getFullDescription(),
+						" (already investigated by another player)");
 			}
 		} else if (item instanceof Portal) {
 			fixtures.remove(Integer.valueOf(item.getID()));
@@ -236,10 +261,10 @@ public class ExplorableReportGenerator extends
 			final ExplorableFixture item, final Point loc) {
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(loc, "Caves beneath ", loc.toString()); // NOPMD
+			return new SimpleReportNode(loc, "Caves beneath ", loc.toString());
 		} else if (item instanceof Battlefield) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(loc, "Signs of a long-ago battle on ", // NOPMD
+			return new SimpleReportNode(loc, "Signs of a long-ago battle on ",
 					loc.toString());
 		} else if (item instanceof AdventureFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
@@ -252,16 +277,19 @@ public class ExplorableReportGenerator extends
 				return new SimpleReportNode(loc,
 						((AdventureFixture) item).getBriefDescription(), " at ",
 						loc.toString(),
-						((AdventureFixture) item).getFullDescription(), " (already investigated by you)");
+						((AdventureFixture) item).getFullDescription(),
+						" (already investigated by you)");
 			} else {
 				return new SimpleReportNode(loc,
 						((AdventureFixture) item).getBriefDescription(), " at ",
 						loc.toString(),
-						((AdventureFixture) item).getFullDescription(), " (already investigated by another player)");
+						((AdventureFixture) item).getFullDescription(),
+						" (already investigated by another player)");
 			}
 		} else if (item instanceof Portal) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(loc, "A portal to another world at ", loc.toString());
+			return new SimpleReportNode(loc, "A portal to another world at ",
+					loc.toString());
 		} else {
 			throw new IllegalArgumentException("Unexpected ExplorableFixture type");
 		}

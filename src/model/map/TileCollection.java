@@ -17,6 +17,23 @@ import util.NullCleaner;
  * anything about the map's size and so doesn't check whether a key makes any
  * sense.
  *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2011-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author Jonathan Lovelace
  * @deprecated the old map API is deprecated in this branch
  */
@@ -111,16 +128,20 @@ public final class TileCollection implements IMutableTileCollection {
 
 	/**
 	 * We don't replace the "retval = false" with "return false" because
-	 * {@link Tile#isSubset(ITile, Appendable, String)} has the side effect of printing
-	 * what makes it *not* a subset; we want that done for *all* relevant tiles.
+	 * {@link Tile#isSubset(ITile, Appendable, String)} has the side effect of
+	 * printing what makes it *not* a subset; we want that done for *all*
+	 * relevant tiles.
 	 *
-	 * @param obj another TileCollection
+	 * @param obj
+	 *            another TileCollection
 	 * @return whether it's a strict subset of this one
-	 * @param ostream the stream to write details of differences to
+	 * @param ostream
+	 *            the stream to write details of differences to
 	 * @param context
 	 *            a string to print before every line of output, describing the
 	 *            context
-	 * @throws IOException on I/O error writing output to the stream
+	 * @throws IOException
+	 *             on I/O error writing output to the stream
 	 */
 	@Override
 	public boolean isSubset(final ITileCollection obj,

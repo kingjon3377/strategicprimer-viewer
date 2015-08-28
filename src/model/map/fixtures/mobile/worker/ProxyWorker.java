@@ -21,13 +21,31 @@ import util.NullCleaner;
  * An IWorker implementation to make the UI able to operate on all of a unit's
  * workers at once.
  *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2014-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
  * @author Jonathan Lovelace
  *
  */
 public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 	/**
-	 * If false, this is representing all the workers in a single unit; if true, it is representing
-	 * corresponding workers in corresponding units in different maps.
+	 * If false, this is representing all the workers in a single unit; if true,
+	 * it is representing corresponding workers in corresponding units in
+	 * different maps.
 	 */
 	private final boolean parallel;
 	/**
@@ -42,6 +60,13 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 	 * The workers being proxied.
 	 */
 	private final List<IWorker> workers = new ArrayList<>();
+	/**
+	 * No-op constructor for use by copy().
+	 * @param paral whether this is a "parallel" or "serial" proxy
+	 */
+	private ProxyWorker(final boolean paral) {
+		parallel = paral;
+	}
 	/**
 	 * @param unit the unit to proxy for
 	 */
@@ -63,6 +88,18 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 				proxyJobs.add(new ProxyJob(job, parallel, workerArray));
 			}
 		}
+	}
+	/**
+	 * @return a copy of this proxy
+	 * @param zero whether to "zero out" sensitive information
+	 */
+	@Override
+	public IWorker copy(final boolean zero) {
+		ProxyWorker retval = new ProxyWorker(parallel);
+		for (IWorker worker : workers) {
+			addProxied(worker.copy(zero));
+		}
+		return retval;
 	}
 	/**
 	 * @param proxied workers to proxy for
@@ -154,12 +191,14 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 		final Worker[] workerArray =
 				NullCleaner.assertNotNull(workers.toArray(new Worker[workers
 						.size()]));
+		List<IJob> proxyJobsTemp = new ArrayList<>(proxyJobs);
 		for (final IJob job : item) {
 			String name = job.getName();
 			if (jobNames.contains(name)) {
 				for (IJob proxyJob : proxyJobs) {
 					if (proxyJob.getName().equals(name)) {
 						((ProxyJob) proxyJob).addProxied(job);
+						proxyJobsTemp.remove(proxyJob);
 					}
 				}
 			} else {
@@ -167,6 +206,11 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 				proxyJobs.add(new ProxyJob(name, parallel, workerArray));
 			}
 			jobNames.add(job.getName());
+		}
+		for (IJob proxyJob : proxyJobs) {
+			String name = proxyJob.getName();
+			Job job = new Job(name, 0);
+			((ProxyJob) proxyJob).addProxied(job);
 		}
 	}
 	/**
@@ -178,7 +222,7 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 	}
 
 	/**
-	 * TODO: pass through to proxied workers
+	 * TODO: pass through to proxied workers.
 	 * @return the name of an image to represent the worker
 	 */
 	@Override
@@ -189,7 +233,7 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 		return "worker.png";
 	}
 	/**
-	 * TODO: log if this is called, because it probably shouldn't be
+	 * TODO: log if this is called, because it probably shouldn't be.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override

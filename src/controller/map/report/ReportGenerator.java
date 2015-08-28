@@ -14,6 +14,7 @@ import model.map.Point;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Hill;
+import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.Fortress;
 import model.report.AbstractReportNode;
@@ -27,6 +28,23 @@ import util.Pair;
  * A class to produce a report based on a map for a player.
  *
  * TODO: Use an IR for lists, producing "" if empty, to simplify these methods!
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2013-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jonathan Lovelace
  *
@@ -84,7 +102,8 @@ public final class ReportGenerator {
 		builder.append("</body>\n</html>\n");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			final IFixture fix = pair.second();
-			if (fix instanceof Hill || fix instanceof Sandbar) {
+			if (fix instanceof Hill || fix instanceof Sandbar
+					|| fix instanceof Oasis) {
 				fixtures.remove(Integer.valueOf(fix.getID()));
 				continue;
 			}

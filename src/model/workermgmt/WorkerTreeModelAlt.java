@@ -3,10 +3,8 @@ package model.workermgmt;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -21,10 +19,28 @@ import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
+import util.EnumerationWrapper;
 import util.NullCleaner;
 
 /**
  * An alternative implementation of the worker tree model.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2013-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jonathan Lovelace
  *
@@ -186,79 +202,6 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 */
 		public UnitMemberNode(final UnitMember member) {
 			super(member, false);
-		}
-	}
-
-	/**
-	 * A wrapper around an Enumeration to make it fit the Iterable interface.
-	 *
-	 * @param <T> the type parameter
-	 * @author Jonathan Lovelace
-	 */
-	public static final class EnumerationWrapper<T> implements Iterator<T> {
-		/**
-		 * The object we're wrapping.
-		 */
-		private final Enumeration<T> wrapped;
-
-		/**
-		 * @param enumer the object we're wrapping.
-		 */
-		public EnumerationWrapper(@Nullable final Enumeration<T> enumer) {
-			if (enumer == null) {
-				wrapped = new Enumeration<T>() {
-					@Override
-					public boolean hasMoreElements() {
-						return false;
-					}
-
-					@Override
-					public T nextElement() {
-						throw new NoSuchElementException(
-								"No elements in empty enumeration (replacing null)");
-					}
-				};
-			} else {
-				wrapped = enumer;
-			}
-		}
-
-		/**
-		 * @return whether there are more elements
-		 */
-		@Override
-		public boolean hasNext() {
-			return wrapped.hasMoreElements();
-		}
-
-		/**
-		 * @return the next element
-		 * @throws NoSuchElementException if no more elements
-		 */
-		// ESCA-JAVA0126:
-		// ESCA-JAVA0277:
-		@Nullable
-		@Override
-		public T next() throws NoSuchElementException { // NOPMD: throws clause
-														// required by
-														// superclass
-			return wrapped.nextElement();
-		}
-
-		/**
-		 * Not supported.
-		 */
-		@Override
-		public void remove() {
-			throw new UnsupportedOperationException(
-					"Not supported by Enumeration");
-		}
-		/**
-		 * @return a String representation of the object
-		 */
-		@Override
-		public String toString() {
-			return "EnumerationWrapper";
 		}
 	}
 

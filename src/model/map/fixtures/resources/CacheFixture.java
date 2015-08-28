@@ -1,15 +1,31 @@
 package model.map.fixtures.resources;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 
 /**
  * A cache (of vegetables, or a hidden treasure, or ...) on a tile.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2012-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jonathan Lovelace
  *
@@ -46,6 +62,16 @@ public class CacheFixture implements HarvestableFixture, HasKind {
 		id = idNum;
 	}
 
+	/**
+	 * @return a copy of this cache
+	 * @param zero ignored, as there's no sensitive data
+	 */
+	@Override
+	public CacheFixture copy(final boolean zero) {
+		CacheFixture retval = new CacheFixture(kind, contents, id);
+		retval.setImage(image);
+		return retval;
+	}
 	/**
 	 * @return what kind of things this is a cache of
 	 */

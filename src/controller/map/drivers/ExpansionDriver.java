@@ -12,6 +12,12 @@ import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
+import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
+import controller.map.formatexceptions.MapVersionException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.MapReaderAdapter;
 import model.exploration.SurroundingPointIterable;
 import model.map.HasOwner;
 import model.map.IFixture;
@@ -28,20 +34,30 @@ import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.ITownFixture;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.ArraySet;
 import util.NullCleaner;
 import util.Warning;
-import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
-import controller.map.formatexceptions.MapVersionException;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.MapReaderAdapter;
 
 /**
  * A driver to update a player's map to include a certain minimum distance
  * around allied villages.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2014-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jonathan Lovelace
  *
@@ -249,6 +265,10 @@ public class ExpansionDriver implements ISPDriver {
 			}
 			@Override
 			public void removeMember(final UnitMember member) {
+				throw ise;
+			}
+			@Override
+			public IUnit copy(final boolean zero) {
 				throw ise;
 			}
 		};

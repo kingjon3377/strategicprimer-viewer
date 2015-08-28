@@ -19,6 +19,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.IMapNG;
@@ -31,9 +33,6 @@ import model.map.fixtures.RiverFixture;
 import model.map.fixtures.terrain.Mountain;
 import model.viewer.FixtureComparator;
 import model.viewer.ZOrderFilter;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import util.ImageLoader;
 import util.IteratorWrapper;
 import util.NullCleaner;
@@ -42,6 +41,23 @@ import view.util.Coordinate;
 
 /**
  * A TileDrawHelper for the new map version.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2011-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jonathan Lovelace
  *
@@ -528,6 +544,10 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			@Override
 			public String shortDesc() {
 				return "null";
+			}
+			@Override
+			public TileFixture copy(final boolean zero) {
+				throw new IllegalStateException("Leak of an all-but-null object");
 			}
 
 		};

@@ -20,6 +20,25 @@ import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.WorkerStats;
 /**
  * A panel to show the details of the currently selected unit-member.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2015-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
  * @author Jonathan Lovelace
  */
 public class MemberDetailPanel extends JPanel implements UnitMemberListener {
@@ -137,9 +156,12 @@ public class MemberDetailPanel extends JPanel implements UnitMemberListener {
 										.addComponent(chaLabel))
 								.addComponent(jobsPanel)
 						)));
-		layout.linkSize(SwingConstants.HORIZONTAL, typeCaption, nameCaption, kindCaption, jobsCaption);
-		layout.linkSize(SwingConstants.HORIZONTAL, typeLabel, nameLabel, kindLabel, jobsPanel);
-		layout.linkSize(strCaption, dexCaption, conCaption, intCaption, wisCaption, chaCaption);
+		layout.linkSize(SwingConstants.HORIZONTAL, typeCaption, nameCaption,
+				kindCaption, jobsCaption);
+		layout.linkSize(SwingConstants.HORIZONTAL, typeLabel, nameLabel,
+				kindLabel, jobsPanel);
+		layout.linkSize(strCaption, dexCaption, conCaption, intCaption,
+				wisCaption, chaCaption);
 		layout.linkSize(strLabel, dexLabel, conLabel, intLabel, wisLabel, chaLabel);
 		layout.linkSize(SwingConstants.VERTICAL, typeCaption, typeLabel);
 		layout.linkSize(SwingConstants.VERTICAL, nameCaption, nameLabel);

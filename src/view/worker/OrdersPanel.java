@@ -1,6 +1,7 @@
 package view.worker;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,6 +31,23 @@ import view.util.ListenedButton;
 
 /**
  * A panel for the user to enter a unit's orders.
+ *
+ * This is part of the Strategic Primer assistive programs suite developed by
+ * Jonathan Lovelace.
+ *
+ * Copyright (C) 2013-2015 Jonathan Lovelace
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of version 3 of the GNU General Public License as published by the
+ * Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * @author Jonathan Lovelace
  *
@@ -138,6 +156,8 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 	/**
 	 * A "unit" that serves as the proxy, for orders purposes, for all units of
 	 * a kind.
+	 *
+	 * FIXME: This should probably be removed in favor of the top-level ProxyUnit class.
 	 */
 	private static class ProxyUnit implements IUnit {
 		/**
@@ -162,6 +182,18 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 			kind = unitKind;
 			units = unitsList;
 			owner = playr;
+		}
+		/**
+		 * @return a copy of this proxy
+		 * @param zero whether to "zero out" sensitive information
+		 */
+		@Override
+		public IUnit copy(final boolean zero) {
+			List<IUnit> copies = new ArrayList<>();
+			for (IUnit unit : units) {
+				copies.add(unit.copy(zero));
+			}
+			return new ProxyUnit(kind, copies, owner);
 		}
 		/**
 		 * @return a dummy Z-value
@@ -333,17 +365,25 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 		public String verbose() {
 			return "proxy";
 		}
+
 		/**
-		 * TODO: We should probably throw, or at least log, an exception when this is called
-		 * @param member ignored
+		 * TODO: We should probably throw, or at least log, an exception when
+		 * this is called.
+		 *
+		 * @param member
+		 *            ignored
 		 */
 		@Override
 		public void addMember(final UnitMember member) {
 			// Do nothing
 		}
+
 		/**
-		 * TODO: We should probably throw, or at least log, an exception when this is called
-		 * @param member ignored
+		 * TODO: We should probably throw, or at least log, an exception when
+		 * this is called.
+		 *
+		 * @param member
+		 *            ignored
 		 */
 		@Override
 		public void removeMember(final UnitMember member) {
