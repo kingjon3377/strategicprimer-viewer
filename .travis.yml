@@ -2,8 +2,6 @@ language: java
 sudo: true # until travis-ci/apt-package-whitelist#588 is fixed
 jdk:
   - oraclejdk8
-  - oraclejdk7
-  - openjdk7
 addons:
   apt:
     packages:
