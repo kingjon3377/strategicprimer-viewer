@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.TileFixture;
 import util.NullCleaner;
 
@@ -32,7 +34,7 @@ import util.NullCleaner;
  *
  */
 public final class FixtureFilterListModel extends
-		AbstractListModel<Class<? extends TileFixture>> {
+		AbstractListModel<@NonNull Class<@NonNull ? extends @NonNull TileFixture>> {
 	/**
 	 * The list backing this model.
 	 */
