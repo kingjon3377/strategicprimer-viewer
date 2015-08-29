@@ -165,11 +165,7 @@ public class WorkerMgmtFrame extends JFrame {
 					if (point.getRow() > Integer.MIN_VALUE) {
 						final IViewerModel vModel =
 								getViewerModelFor(model, ioHandler);
-						if (vModel == null) {
-							SystemOut.SYS_OUT.println("Failed to open a window");
-						} else {
-							SwingUtilities.invokeLater(() -> vModel.setSelection(point));
-						}
+						SwingUtilities.invokeLater(() -> vModel.setSelection(point));
 					}
 				}
 			}
@@ -211,7 +207,6 @@ public class WorkerMgmtFrame extends JFrame {
 	 * @return the viewer model of a viewer window the same map as that in the
 	 *         given driver-model
 	 */
-	@Nullable
 	protected static IViewerModel getViewerModelFor(final IDriverModel model,
 			final IOHandler ioh) {
 		for (Frame frame : WindowList.getFrames(false, true, true)) {
