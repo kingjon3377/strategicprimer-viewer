@@ -9,8 +9,6 @@ import java.text.ParseException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.SPMalformedInputException;
@@ -210,7 +208,7 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 	 * @return whether it's one we support
 	 */
 	@Override
-	public boolean isSupportedTag(@Nullable final String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return MAP_TAG.equalsIgnoreCase(tag) || "view".equalsIgnoreCase(tag);
 	}
 

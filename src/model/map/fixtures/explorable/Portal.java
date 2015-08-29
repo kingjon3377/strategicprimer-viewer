@@ -179,10 +179,7 @@ public class Portal implements ExplorableFixture {
 	 * @return the result of a comparison between it and this
 	 */
 	@Override
-	public int compareTo(@Nullable final TileFixture fix) {
-		if (fix == null) {
-			throw new IllegalArgumentException("Compared to null fixture");
-		}
+	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
 	}
 }

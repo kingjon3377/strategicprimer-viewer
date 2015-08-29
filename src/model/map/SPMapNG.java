@@ -267,10 +267,8 @@ public class SPMapNG implements IMutableMapNG {
 	 * @return the result of a comparison between us and it.
 	 */
 	@Override
-	public int compareTo(@Nullable final IMapNG other) {
-		if (other == null) {
-			throw new IllegalArgumentException("Compared to null map");
-		} else if (equals(other)) {
+	public int compareTo(final IMapNG other) {
+		if (equals(other)) {
 			return 0; // NOPMD
 		} else {
 			return hashCode() - other.hashCode();

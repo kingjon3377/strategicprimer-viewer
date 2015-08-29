@@ -120,10 +120,7 @@ public class Fairy implements MobileFixture, HasImage, HasKind, UnitMember {
 	 * @return the result of the comparison
 	 */
 	@Override
-	public int compareTo(@Nullable final TileFixture fix) {
-		if (fix == null) {
-			throw new IllegalArgumentException("Compared to null fixture");
-		}
+	public int compareTo(final TileFixture fix) {
 		return fix.hashCode() - hashCode();
 	}
 

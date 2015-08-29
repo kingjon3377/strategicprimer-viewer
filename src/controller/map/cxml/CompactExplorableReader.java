@@ -7,8 +7,6 @@ import java.util.Set;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnsupportedTagException;
 import controller.map.misc.IDFactory;
@@ -66,7 +64,7 @@ public class CompactExplorableReader
 	 * @return whether we support it
 	 */
 	@Override
-	public boolean isSupportedTag(@Nullable final String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return SUPP_TAGS.contains(tag);
 	}
 

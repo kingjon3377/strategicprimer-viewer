@@ -12,8 +12,6 @@ import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -416,7 +414,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * @return whether this class supports it
 	 */
 	@Override
-	public boolean isSupportedTag(@Nullable final String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return "map".equalsIgnoreCase(tag) || "view".equalsIgnoreCase(tag);
 	}
 	/**

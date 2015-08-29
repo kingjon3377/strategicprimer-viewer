@@ -404,7 +404,7 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 	 * "Write" a TileFixture by creating its SPIR.
 	 *
 	 * @param fixture
-	 *            the fixture to write
+	 *            the fixture to write. Nullable to simplify writing a tile's ground and forest.
 	 * @return an intermediate representation of it
 	 */
 	private static SPIntermediateRepresentation writeFixture(

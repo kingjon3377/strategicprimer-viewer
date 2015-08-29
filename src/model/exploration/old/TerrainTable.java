@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jdt.annotation.NonNull;
 
 import model.map.Point;
 import model.map.TileFixture;
@@ -63,7 +63,7 @@ public class TerrainTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-			@Nullable final Iterable<TileFixture> fixtures) {
+			final Iterable<@NonNull TileFixture> fixtures) {
 		if (mapping.containsKey(terrain)) {
 			return NullCleaner.assertNotNull(mapping.get(terrain));
 		} else {

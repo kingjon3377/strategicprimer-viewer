@@ -71,10 +71,10 @@ public class MapNGReverseAdapter implements IMapView {
 	 *             on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(@Nullable final IMap obj, final Appendable ostream,
+	public boolean isSubset(final IMap obj, final Appendable ostream,
 			final String context) throws IOException {
 		// FIXME: This is probably quite inefficient
-		if (obj != null && getDimensions().equals(obj.getDimensions())) {
+		if (getDimensions().equals(obj.getDimensions())) {
 			return getPlayers().isSubset(obj.getPlayers(), ostream, context)
 					&& getTiles().isSubset(obj.getTiles(), ostream, context);
 		} else {
@@ -90,10 +90,8 @@ public class MapNGReverseAdapter implements IMapView {
 	 * @return the result of the comparison
 	 */
 	@Override
-	public int compareTo(@Nullable final IMap obj) {
-		if (obj == null) {
-			throw new IllegalArgumentException("Compared to null map");
-		} else if (equals(obj)) {
+	public int compareTo(final IMap obj) {
+		if (equals(obj)) {
 			return 0; // NOPMD
 		} else {
 			return hashCode() - obj.hashCode();

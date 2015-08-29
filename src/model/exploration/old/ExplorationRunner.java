@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jdt.annotation.NonNull;
 
 import model.map.Point;
 import model.map.TileFixture;
@@ -48,7 +48,7 @@ public class ExplorationRunner { // NOPMD
 	 */
 	@SuppressWarnings("deprecation")
 	public String defaultResults(final Point point, final TileType terrain,
-			@Nullable final Iterable<TileFixture> fixtures)
+			final Iterable<@NonNull TileFixture> fixtures)
 			throws MissingTableException {
 		final StringBuilder sbuild = new StringBuilder(80)
 				.append("The primary rock type here is ");
@@ -87,7 +87,7 @@ public class ExplorationRunner { // NOPMD
 	 * @throws MissingTableException if table missing
 	 */
 	public String getPrimaryRock(final Point point, final TileType terrain,
-			@Nullable final Iterable<TileFixture> fixtures)
+			final Iterable<@NonNull TileFixture> fixtures)
 			throws MissingTableException {
 		return getTable("major_rock").generateEvent(point,
 				terrain, fixtures);
@@ -103,7 +103,7 @@ public class ExplorationRunner { // NOPMD
 	 */
 	@SuppressWarnings("deprecation")
 	public String getPrimaryTree(final Point point, final TileType terrain,
-			@Nullable final Iterable<TileFixture> fixtures)
+			final Iterable<@NonNull TileFixture> fixtures)
 			throws MissingTableException {
 		if (TileType.BorealForest.equals(terrain)) {
 			return getTable("boreal_major_tree").generateEvent(point,
@@ -131,7 +131,7 @@ public class ExplorationRunner { // NOPMD
 	 * @throws MissingTableException if the table is missing
 	 */
 	public String consultTable(final String table, final Point point,
-			final TileType terrain, @Nullable final Iterable<TileFixture> fixtures)
+			final TileType terrain, final Iterable<@NonNull TileFixture> fixtures)
 			throws MissingTableException {
 		return getTable(table).generateEvent(point, terrain, fixtures);
 	}
@@ -169,7 +169,7 @@ public class ExplorationRunner { // NOPMD
 	 * @throws MissingTableException on missing table
 	 */
 	public String recursiveConsultTable(final String table, final Point point,
-			final TileType terrain, @Nullable final Iterable<TileFixture> fixtures)
+			final TileType terrain, final Iterable<@NonNull TileFixture> fixtures)
 			throws MissingTableException {
 		final String result = consultTable(table, point, terrain, fixtures);
 		if (result.contains("#")) {

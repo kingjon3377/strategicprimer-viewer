@@ -6,8 +6,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import util.EqualsAny;
 import util.NullCleaner;
@@ -244,8 +242,8 @@ public final class SPIntermediateRepresentation {
 	 *             if I/O error in writing
 	 */
 	private void writeIfTagNotEmpty(final Appendable writer,
-			@Nullable final String string) throws IOException {
-		if (!tag.isEmpty() && string != null) {
+			final String string) throws IOException {
+		if (!tag.isEmpty()) {
 			writer.append(string);
 		}
 	}

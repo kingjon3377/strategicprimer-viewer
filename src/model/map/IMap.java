@@ -1,5 +1,6 @@
 package model.map;
 
+import org.eclipse.jdt.annotation.NonNull;
 
 /**
  * An interface for the map and any wrappers around it.
@@ -26,7 +27,7 @@ package model.map;
  */
 // ESCA-JAVA0237:
 @Deprecated
-public interface IMap extends Subsettable<IMap>, Comparable<IMap> {
+public interface IMap extends Subsettable<@NonNull IMap>, Comparable<@NonNull IMap> {
 	/**
 	 * @return The map's dimensions and version.
 	 */

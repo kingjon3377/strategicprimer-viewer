@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jdt.annotation.NonNull;
 
 import model.map.IEvent;
 import model.map.Player;
@@ -95,12 +95,10 @@ public class LegacyTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-			@Nullable final Iterable<TileFixture> fixtures) {
-		if (fixtures != null) {
-			for (final TileFixture fix : fixtures) {
-				if (fix instanceof IEvent) {
-					return ((IEvent) fix).getText(); // NOPMD
-				}
+			final Iterable<@NonNull TileFixture> fixtures) {
+		for (final TileFixture fix : fixtures) {
+			if (fix instanceof IEvent) {
+				return ((IEvent) fix).getText(); // NOPMD
 			}
 		}
 		return "Nothing interesting here ...";

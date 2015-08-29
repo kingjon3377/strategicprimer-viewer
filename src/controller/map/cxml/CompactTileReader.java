@@ -12,8 +12,6 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
@@ -188,7 +186,7 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	 * @return whether it's one we can read
 	 */
 	@Override
-	public boolean isSupportedTag(@Nullable final String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return "tile".equalsIgnoreCase(tag);
 	}
 

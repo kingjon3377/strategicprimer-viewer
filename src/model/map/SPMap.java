@@ -193,10 +193,8 @@ public class SPMap implements IMutableMap {
 	 * @return the result of the comparison
 	 */
 	@Override
-	public int compareTo(@Nullable final IMap other) {
-		if (other == null) {
-			throw new IllegalArgumentException("Asked to compare null map");
-		} else if (equals(other)) {
+	public int compareTo(final IMap other) {
+		if (equals(other)) {
 			return 0; // NOPMD
 		} else {
 			return hashCode() - other.hashCode();

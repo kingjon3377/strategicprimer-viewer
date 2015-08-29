@@ -5,8 +5,6 @@ import java.io.IOException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
@@ -65,7 +63,7 @@ public interface CompactReader<T> {
 	 * @param tag a tag. May be null, to simplify callers.
 	 * @return whether we support it. Should return false if null.
 	 */
-	boolean isSupportedTag(@Nullable String tag);
+	boolean isSupportedTag(String tag);
 
 
 

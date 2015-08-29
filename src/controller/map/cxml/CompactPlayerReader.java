@@ -5,8 +5,6 @@ import java.io.IOException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
@@ -79,7 +77,7 @@ public final class CompactPlayerReader extends AbstractCompactReader<Player> {
 	 * @return whether it's one we can read
 	 */
 	@Override
-	public boolean isSupportedTag(@Nullable final String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return "player".equalsIgnoreCase(tag);
 	}
 

@@ -11,8 +11,6 @@ import java.util.Set;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -166,7 +164,7 @@ public final class CompactResourceReader extends
 	 * @return whether we support it
 	 */
 	@Override
-	public boolean isSupportedTag(@Nullable final String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return SUPP_TAGS.contains(tag);
 	}
 

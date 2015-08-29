@@ -10,7 +10,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -194,7 +193,7 @@ public final class CompactMobileReader extends
 	 * @return whether we support it
 	 */
 	@Override
-	public boolean isSupportedTag(@Nullable final String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return SUPP_TAGS.contains(tag);
 	}
 

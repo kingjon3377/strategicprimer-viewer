@@ -337,7 +337,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * @return whether we support it
 	 */
 	@Override
-	public boolean isSupportedTag(@Nullable final String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return "worker".equals(tag);
 	}
 

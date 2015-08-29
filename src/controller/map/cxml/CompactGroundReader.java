@@ -5,8 +5,6 @@ import java.io.IOException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
@@ -82,7 +80,7 @@ public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 	 * @return whether it's one we support
 	 */
 	@Override
-	public boolean isSupportedTag(@Nullable final String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return "ground".equalsIgnoreCase(tag);
 	}
 

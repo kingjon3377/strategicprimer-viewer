@@ -12,8 +12,6 @@ import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
@@ -199,7 +197,7 @@ public class ExpansionDriver implements ISPDriver {
 				throw ise;
 			}
 			@Override
-			public int compareTo(@Nullable final TileFixture o) {
+			public int compareTo(final TileFixture o) {
 				throw ise;
 			}
 			@Override

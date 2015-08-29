@@ -3,7 +3,7 @@ package controller.map.report;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jdt.annotation.NonNull;
 
 import model.map.Player;
 import model.map.Point;
@@ -135,8 +135,8 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 *            a list of points
 	 * @return a comma-separated string representing them.
 	 */
-	protected static String pointCSL(@Nullable final List<Point> points) {
-		if (points == null || points.isEmpty()) {
+	protected static String pointCSL(final List<@NonNull Point> points) {
+		if (points.isEmpty()) {
 			return ""; // NOPMD
 		} else if (points.size() == 1) {
 			return points.get(0).toString(); // NOPMD

@@ -9,8 +9,6 @@ import java.util.Set;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.HasImage;
@@ -132,7 +130,7 @@ public final class CompactTerrainReader extends
 	 * @return whether we support it
 	 */
 	@Override
-	public boolean isSupportedTag(@Nullable final String tag) {
+	public boolean isSupportedTag(final String tag) {
 		return SUPP_TAGS.contains(tag);
 	}
 

@@ -1,5 +1,7 @@
 package model.map;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 /**
  * Something that can go on a tile.
  *
@@ -22,7 +24,7 @@ package model.map;
  *
  * @author Jonathan Lovelace
  */
-public interface TileFixture extends IFixture, Comparable<TileFixture> {
+public interface TileFixture extends IFixture, Comparable<@NonNull TileFixture> {
 	// Marker interface; also, TODO: what members should this have?
 	/**
 	 * TODO: This should be user-configurable.
