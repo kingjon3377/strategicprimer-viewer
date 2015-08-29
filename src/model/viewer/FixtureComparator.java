@@ -3,7 +3,6 @@ package model.viewer;
 import java.util.Comparator;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.TileFixture;
 
@@ -42,11 +41,7 @@ public class FixtureComparator implements Comparator<@NonNull TileFixture> {
 	 * @return the result of the comparison.
 	 */
 	@Override
-	public int compare(@Nullable final TileFixture one,
-			@Nullable final TileFixture two) {
-		if (one == null || two == null) {
-			throw new IllegalArgumentException("Asked to compare null fixture");
-		}
+	public int compare(final TileFixture one, final TileFixture two) {
 		return two.getZValue() - one.getZValue();
 	}
 
