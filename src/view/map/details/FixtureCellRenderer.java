@@ -22,6 +22,7 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.text.View;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.HasImage;
@@ -52,7 +53,7 @@ import util.TypesafeLogger;
  * @author Jonathan Lovelace
  *
  */
-public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
+public class FixtureCellRenderer implements ListCellRenderer<@NonNull TileFixture> {
 	/**
 	 * Logger.
 	 */
@@ -80,12 +81,10 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 	// ESCA-JAVA0138:
 	@Override
 	public Component getListCellRendererComponent(
-			@Nullable final JList<? extends TileFixture> list,
-			@Nullable final TileFixture value, final int index,
+			@Nullable final JList<@NonNull ? extends TileFixture> list,
+			final TileFixture value, final int index,
 			final boolean isSelected, final boolean cellHasFocus) {
-		if (value == null) {
-			throw new IllegalArgumentException("Asked to render null");
-		} else if (list == null) {
+		if (list == null) {
 			throw new IllegalArgumentException("Asked to render a null list");
 		}
 		final Component component = LIST_DEFAULT.getListCellRendererComponent(
