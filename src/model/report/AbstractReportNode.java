@@ -108,18 +108,6 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * @param obj an object to compare to.
-	 * @return the result of the comparison
-	 */
-	@Override
-	public int compareTo(@Nullable final IReportNode obj) {
-		if (obj == null) {
-			throw new IllegalArgumentException("Compared to null node");
-		}
-		return produce().compareTo(obj.produce());
-	}
-
-	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */

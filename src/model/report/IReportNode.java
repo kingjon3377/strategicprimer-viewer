@@ -2,6 +2,8 @@ package model.report;
 
 import javax.swing.tree.MutableTreeNode;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 /**
  * An interface for report nodes.
  *
@@ -24,7 +26,7 @@ import javax.swing.tree.MutableTreeNode;
  *
  * @author Jonathan Lovelace
  */
-public interface IReportNode extends Comparable<IReportNode>, MutableTreeNode {
+public interface IReportNode extends Comparable<@NonNull IReportNode>, MutableTreeNode {
 	/**
 	 * @return the HTML representation of the node.
 	 */
@@ -47,4 +49,12 @@ public interface IReportNode extends Comparable<IReportNode>, MutableTreeNode {
 	 * @param txt the new text for the node
 	 */
 	void setText(String txt);
+	/**
+	 * @param obj an object to compare to.
+	 * @return the result of the comparison
+	 */
+	@Override
+	default int compareTo(final IReportNode obj) {
+		return produce().compareTo(obj.produce());
+	}
 }
