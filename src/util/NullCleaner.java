@@ -1,5 +1,6 @@
 package util;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -37,7 +38,7 @@ public final class NullCleaner {
 	 * @param def a default value
 	 * @return val if it isn't null, def if val is null
 	 */
-	public static <T> T valueOrDefault(@Nullable final T val, final T def) {
+	public static <@NonNull T> T valueOrDefault(@Nullable final T val, final T def) {
 		if (val == null) {
 			return def;
 		} else {
@@ -50,7 +51,7 @@ public final class NullCleaner {
 	 * @param val the value
 	 * @return it, if it isn't null.
 	 */
-	public static <T> T assertNotNull(@Nullable final T val) {
+	public static <@NonNull T> T assertNotNull(@Nullable final T val) {
 		assert val != null;
 		return val;
 	}
@@ -60,7 +61,7 @@ public final class NullCleaner {
 	 * @param array the array
 	 * @return it
 	 */
-	public static <T> T[] assertNotNullArray(final T @Nullable [] array) {
+	public static <@NonNull T> T[] assertNotNullArray(final T @Nullable [] array) {
 		assert array != null;
 		for (@Nullable T item : array) {
 			assert item != null;
