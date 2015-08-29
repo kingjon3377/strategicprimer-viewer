@@ -18,7 +18,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import model.listeners.PlayerChangeListener;
 import model.map.IFixture;
 import model.map.Player;
-import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.workermgmt.IWorkerModel;
@@ -230,17 +229,6 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 		@Override
 		public boolean equalsIgnoringID(final IFixture fix) {
 			return this == fix;
-		}
-		/**
-		 * @param o a fixture
-		 * @return the result of comparing it to this
-		 */
-		@Override
-		public int compareTo(@Nullable final TileFixture o) {
-			if (o == null) {
-				throw new IllegalArgumentException("Compared to null fixture");
-			}
-			return hashCode() - o.hashCode();
 		}
 		/**
 		 * @return a dummy image filename

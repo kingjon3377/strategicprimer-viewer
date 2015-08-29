@@ -129,9 +129,15 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	public boolean equalsIgnoringID(final IFixture fix) {
 		throw new IllegalStateException("FIXME: implement equalsIgnoringID()");
 	}
+
 	/**
 	 * TODO: log if this is called.
-	 * @param fix a fixture
+	 *
+	 * We don't use the (identical to the below) default implementation because
+	 * we eventually want to log calls.
+	 *
+	 * @param fix
+	 *            a fixture
 	 * @return the result of a comparison with it
 	 */
 	@Override

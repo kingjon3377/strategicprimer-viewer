@@ -127,16 +127,6 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	}
 
 	/**
-	 * @param fix A TileFixture to compare to
-	 *
-	 * @return the result of the comparison
-	 */
-	@Override
-	public int compareTo(final TileFixture fix) {
-		return fix.hashCode() - hashCode();
-	}
-
-	/**
 	 * @return the ID number for the event.
 	 */
 	@Override

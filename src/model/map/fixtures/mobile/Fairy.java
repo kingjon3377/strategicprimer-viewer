@@ -7,7 +7,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
-import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 
 /**
@@ -113,15 +112,6 @@ public class Fairy implements MobileFixture, HasImage, HasKind, UnitMember {
 	@Override
 	public int hashCode() {
 		return id;
-	}
-
-	/**
-	 * @param fix a TileFixture to compare to
-	 * @return the result of the comparison
-	 */
-	@Override
-	public int compareTo(final TileFixture fix) {
-		return fix.hashCode() - hashCode();
 	}
 
 	/**

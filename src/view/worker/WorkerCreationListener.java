@@ -15,7 +15,6 @@ import model.listeners.NewWorkerListener;
 import model.listeners.UnitSelectionListener;
 import model.map.IFixture;
 import model.map.Player;
-import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Worker;
@@ -102,13 +101,6 @@ public final class WorkerCreationListener implements ActionListener,
 		@Override
 		public int getID() {
 			return -1;
-		}
-		@Override
-		public int compareTo(@Nullable final TileFixture o) {
-			if (o == null) {
-				throw new IllegalArgumentException("Compared to null fixture");
-			}
-			return o.hashCode() - hashCode();
 		}
 		@Override
 		public String getDefaultImage() {

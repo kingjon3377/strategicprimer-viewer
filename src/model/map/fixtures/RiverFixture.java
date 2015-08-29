@@ -151,16 +151,6 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	}
 
 	/**
-	 * @param fix A TileFixture to compare to
-	 *
-	 * @return the result of the comparison
-	 */
-	@Override
-	public int compareTo(final TileFixture fix) {
-		return fix.hashCode() - hashCode();
-	}
-
-	/**
 	 * @param obj
 	 *            another RiverFixture
 	 * @return whether it's a strict subset of this one, containing no rivers

@@ -5,7 +5,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import model.map.IFixture;
 import model.map.Point;
 import model.map.PointFactory;
-import model.map.TileFixture;
 
 /**
  * A fixture representing a portal to another world.
@@ -173,13 +172,5 @@ public class Portal implements ExplorableFixture {
 				&& destinationWorld.equals(((Portal) obj).destinationWorld)
 				&& destinationCoordinates
 						.equals(((Portal) obj).destinationCoordinates);
-	}
-	/**
-	 * @param fix a fixture
-	 * @return the result of a comparison between it and this
-	 */
-	@Override
-	public int compareTo(final TileFixture fix) {
-		return fix.hashCode() - hashCode();
 	}
 }

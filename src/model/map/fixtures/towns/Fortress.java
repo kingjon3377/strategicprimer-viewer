@@ -14,7 +14,6 @@ import model.map.HasImage;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.SubsettableFixture;
-import model.map.TileFixture;
 import model.map.fixtures.mobile.IUnit;
 import util.NullCleaner;
 
@@ -191,15 +190,6 @@ public class Fortress implements HasImage, ITownFixture,
 			}
 		}
 		return NullCleaner.assertNotNull(sbuild.toString());
-	}
-
-	/**
-	 * @param fix A TileFixture to compare to
-	 * @return the result of the comparison
-	 */
-	@Override
-	public int compareTo(final TileFixture fix) {
-		return fix.hashCode() - hashCode();
 	}
 
 	/**
