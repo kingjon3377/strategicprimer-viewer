@@ -161,8 +161,8 @@
     <copy file="${release}/${basename}.jar" tofile="${release}/${shortname}.jar" />
     <jarbundler dir="${release}" name="${basename}" mainclass="${main-class}"
       jar="${release}/${shortname}.jar" version="${major-version-number}.${minor-version-number}"
-      build="${scm.revision.number}" shortname="SP helpers" />
-    <symlink link="${release}/${basename}.app/${stub-path}" resource="${stub-native-path}" />
+      build="${scm.revision.number}" shortname="SP helpers" stubfile="${stub-script-path}"
+      useJavaXKey="true" />
     <tar destfile="${release}/${basename}.app.tbz2" compression="bzip2">
       <tarfileset dir="${release}">
         <include name="${basename}.app/**" />
