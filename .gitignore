@@ -22,3 +22,6 @@ findbugs_analysis.xml
 /junit/
 /release/
 /bin/
+icon.icns
+icon.ico
+icon_*px.png

@@ -8,6 +8,8 @@ addons:
       - junit4
       - ant-optional
       - libc6:i386
+      - icnsutils
+      - icoutils
 before_install:
   - test -f .git/refs/heads/master || git checkout -b master
   - ./install-deps.sh

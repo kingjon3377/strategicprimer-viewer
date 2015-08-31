@@ -14,6 +14,9 @@
     </classpath>
 </taskdef>
 
+  <!-- Use ant-contrib, for the 'for' task and perhaps others -->
+  <taskdef resource="net/sf/antcontrib/antlib.xml" />
+
 <target name="get-version">
     <jgitversion dir="." property="version-number"/>
     <echo message="${version-number}" />
@@ -46,6 +49,10 @@
   <!-- Clean targets -->
   <target name="clean">
     <delete dir="${bin_dir}" />
+    <delete>
+      <fileset dir="${basedir}" includes="icon_*px.png" />
+      <fileset dir="${basedir}" includes="icon.ic*" />
+    </delete>
   </target>
   <target depends="clean" name="cleanall">
     <delete dir="${release}" />
@@ -153,16 +160,45 @@
       <zipfileset src="${windowmenu.jar.path}" />
     </jar>
   </target>
-  <target name="exe" depends="jar">
+  <target name="icon">
+    <for list="512,256,128,64,48,32,16" param="resolution">
+      <sequential>
+        <exec executable="/usr/bin/convert" dir="${basedir}">
+          <arg value="src/images/icon.png" />
+	  <arg value="-adaptive-resize" />
+	  <arg value="@{resolution}x@{resolution}" />
+	  <arg value="icon_@{resolution}px.png" />
+        </exec>
+      </sequential>
+    </for>
+  </target>
+  <target name="exe" depends="jar,icon">
+    <exec executable="/usr/bin/icotool" dir="${basedir}">
+      <arg value="-o" />
+      <arg value="icon.ico" />
+      <arg value="--create" />
+      <arg value="icon_64px.png" />
+      <arg value="icon_32px.png" />
+      <arg value="icon_16px.png" />
+    </exec>
     <launch4j configFile="${project_home}/launch4j.cfg.xml"
       outfile="${release}/${basename}.exe" jar="${release}/${basename}.jar" />
   </target>
-  <target name="app" depends="jar">
+  <target name="app" depends="jar,icon">
+    <exec executable="/usr/bin/png2icns" dir="${basedir}">
+      <arg value="icon.icns" />
+      <arg value="icon_512px.png" />
+      <arg value="icon_256px.png" />
+      <arg value="icon_128px.png" />
+      <arg value="icon_48px.png" />
+      <arg value="icon_32px.png" />
+      <arg value="icon_16px.png" />
+    </exec>
     <copy file="${release}/${basename}.jar" tofile="${release}/${shortname}.jar" />
     <jarbundler dir="${release}" name="${basename}" mainclass="${main-class}"
       jar="${release}/${shortname}.jar" version="${major-version-number}.${minor-version-number}"
       build="${scm.revision.number}" shortname="SP helpers" stubfile="${stub-script-path}"
-      useJavaXKey="true" />
+      icon="icon.icns" useJavaXKey="true" />
     <tar destfile="${release}/${basename}.app.tbz2" compression="bzip2">
       <tarfileset dir="${release}">
         <include name="${basename}.app/**" />
