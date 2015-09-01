@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.Collections;
 
 import org.junit.Test;
 
@@ -58,7 +59,7 @@ public final class TestTableLoader {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(0, 0);
 			assertEquals("loading quadrant table", ONE_STRING,
-					result.generateEvent(point, TileType.Tundra, null));
+					result.generateEvent(point, TileType.Tundra, Collections.emptyList()));
 			// TODO: somehow check that it got properly loaded, beyond this
 		}
 		try (final BufferedReader readerTwo = new BufferedReader(
@@ -87,7 +88,7 @@ public final class TestTableLoader {
 			final Point point = PointFactory.point(30, 30);
 			// ESCA-JAVA0076:
 			assertEquals("loading random table", ONE_STRING,
-					result.generateEvent(point, TileType.Tundra, null));
+					result.generateEvent(point, TileType.Tundra, Collections.emptyList()));
 		}
 	}
 
@@ -105,12 +106,12 @@ public final class TestTableLoader {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point one = PointFactory.point(30, 30);
 			assertEquals("loading terrain table: tundra", ONE_STRING,
-					result.generateEvent(one, TileType.Tundra, null));
+					result.generateEvent(one, TileType.Tundra, Collections.emptyList()));
 			final Point two = PointFactory.point(15, 15);
 			assertEquals("loading terrain table: plains", "two",
-					result.generateEvent(two, TileType.Plains, null));
+					result.generateEvent(two, TileType.Plains, Collections.emptyList()));
 			assertEquals("loading terrain table: ocean", "three",
-					result.generateEvent(two, TileType.Ocean, null));
+					result.generateEvent(two, TileType.Ocean, Collections.emptyList()));
 		}
 	}
 
@@ -128,7 +129,7 @@ public final class TestTableLoader {
 			final EncounterTable result = TableLoader.loadTableFromStream(one);
 			final Point point = PointFactory.point(10, 5);
 			assertEquals("loading constant table: first test", ONE_STRING,
-					result.generateEvent(point, TileType.Plains, null));
+					result.generateEvent(point, TileType.Plains, Collections.emptyList()));
 		}
 	}
 

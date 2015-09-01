@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -84,7 +85,7 @@ public final class TestExplorationRunner {
 	public void testGetPrimaryRock() throws MissingTableException {
 		runner.loadTable("major_rock", new ConstantTable("primary_rock_test"));
 		assertEquals("primary rock test", runner.getPrimaryRock(
-				PointFactory.point(0, 0), TileType.Tundra, null),
+				PointFactory.point(0, 0), TileType.Tundra, Collections.emptyList()),
 				"primary_rock_test");
 	}
 	/**
@@ -103,11 +104,11 @@ public final class TestExplorationRunner {
 				"temperate_major_test"));
 		final Point point = PointFactory.point(0, 0);
 		assertEquals("primary tree test for boreal forest",
-				runner.getPrimaryTree(point, TileType.BorealForest, null),
+				runner.getPrimaryTree(point, TileType.BorealForest, Collections.emptyList()),
 				"boreal_major_test");
 		assertEquals(
 				"primary tree test for temperate forest",
-				runner.getPrimaryTree(point, TileType.TemperateForest, null),
+				runner.getPrimaryTree(point, TileType.TemperateForest, Collections.emptyList()),
 				"temperate_major_test");
 	}
 
@@ -119,7 +120,7 @@ public final class TestExplorationRunner {
 	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalGetPrimaryTree() throws MissingTableException {
 		final Point point = PointFactory.point(0, 0);
-		runner.getPrimaryTree(point, TileType.Tundra, null);
+		runner.getPrimaryTree(point, TileType.Tundra, Collections.emptyList());
 		fail("gave a primary tree for non-forest");
 	}
 
@@ -137,11 +138,11 @@ public final class TestExplorationRunner {
 		runner.loadTable(TEST_TABLE_THREE, new ConstantTable(TEST_THREE));
 		final Point point = PointFactory.point(0, 0);
 		assertEquals("first table", runner.consultTable(TEST_TABLE_ONE, point,
-				TileType.Tundra, null), "test_one");
+				TileType.Tundra, Collections.emptyList()), "test_one");
 		assertEquals("second table", runner.consultTable(TEST_TABLE_TWO, point,
-				TileType.Tundra, null), "test_two");
+				TileType.Tundra, Collections.emptyList()), "test_two");
 		assertEquals("third table", runner.consultTable(TEST_TABLE_THREE,
-				point, TileType.Tundra, null), TEST_THREE);
+				point, TileType.Tundra, Collections.emptyList()), TEST_THREE);
 	}
 
 	/**
@@ -165,19 +166,19 @@ public final class TestExplorationRunner {
 		assertEquals(
 				"two levels of recursion",
 				runner.recursiveConsultTable(TEST_TABLE_ONE, point,
-						TileType.Tundra, null), "( ( test_three ) )");
+						TileType.Tundra, Collections.emptyList()), "( ( test_three ) )");
 		assertEquals(
 				"one level of recursion",
 				runner.recursiveConsultTable(TEST_TABLE_TWO, point,
-						TileType.Tundra, null), "( test_three )");
+						TileType.Tundra, Collections.emptyList()), "( test_three )");
 		assertEquals(
 				"no recursion",
 				runner.recursiveConsultTable(TEST_TABLE_THREE, point,
-						TileType.Tundra, null), TEST_THREE);
+						TileType.Tundra, Collections.emptyList()), TEST_THREE);
 		assertEquals(
 				"one-sided split",
 				runner.recursiveConsultTable("test_table_four", point,
-						TileType.Plains, null), "_ ( ( test_three ) )");
+						TileType.Plains, Collections.emptyList()), "_ ( ( test_three ) )");
 	}
 
 	/**
@@ -195,15 +196,15 @@ public final class TestExplorationRunner {
 		final Point point = PointFactory.point(0, 0);
 		assertEquals("defaultResults in non-forest",
 				"The primary rock type here is test_rock.\n",
-				runner.defaultResults(point, TileType.Tundra, null));
+				runner.defaultResults(point, TileType.Tundra, Collections.emptyList()));
 		assertEquals("defaultResults in boreal forest",
 				"The primary rock type here is test_rock.\n"
 						+ "The main kind of tree is boreal_tree.\n",
-				runner.defaultResults(point, TileType.BorealForest, null));
+				runner.defaultResults(point, TileType.BorealForest, Collections.emptyList()));
 		assertEquals("defaultResults in temperate forest",
 				"The primary rock type here is test_rock.\n"
 						+ "The main kind of tree is temperate_tree.\n",
-				runner.defaultResults(point, TileType.TemperateForest, null));
+				runner.defaultResults(point, TileType.TemperateForest, Collections.emptyList()));
 	}
 
 	/**
