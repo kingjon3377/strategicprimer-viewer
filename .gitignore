@@ -21,3 +21,4 @@ findbugs_analysis.xml
 icon.icns
 icon.ico
 icon_*px.png
+bin/.gitignore
