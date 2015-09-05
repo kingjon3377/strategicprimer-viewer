@@ -7,11 +7,10 @@ import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-
-import com.sun.istack.internal.logging.Logger;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
@@ -51,7 +50,7 @@ public class FortressReader implements INodeHandler<Fortress> {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(FortressReader.class);
+	private static final Logger LOGGER = Logger.getLogger(FortressReader.class.getName());
 	/**
 	 * Parse a fortress.
 	 *

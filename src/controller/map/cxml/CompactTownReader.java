@@ -2,11 +2,10 @@ package controller.map.cxml;
 
 import java.io.IOException;
 import java.util.Random;
+import java.util.logging.Logger;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-
-import com.sun.istack.internal.logging.Logger;
 
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -60,7 +59,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(CompactTownReader.class);
+	private static final Logger LOGGER = Logger.getLogger(CompactTownReader.class.getName());
 	/**
 	 * Singleton object.
 	 */
