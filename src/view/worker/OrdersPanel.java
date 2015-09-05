@@ -306,7 +306,7 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 		 * @param context the context in which to write the error message
 		 */
 		@Override
-		public boolean isSubset(final IUnit obj, final Appendable ostream,
+		public boolean isSubset(final IFixture obj, final Appendable ostream,
 				final String context) throws IOException {
 			ostream.append(context);
 			ostream.append("\tisSubset called on ProxyUnit\n");

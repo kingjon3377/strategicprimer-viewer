@@ -211,7 +211,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final IMutableMapNG three =
 				createSimpleMap(point(4, 4), Pair.of(point(3, 3), Jungle));
 		final Fortress fort = new Fortress(new Player(2, ""), "fortOne", 1);
-		fort.addUnit(new Unit(new Player(2, ""), "unitTwo", "secondUnit", 2));
+		fort.addMember(new Unit(new Player(2, ""), "unitTwo", "secondUnit", 2));
 		three.addFixture(point(3, 3), fort);
 		three.addFixture(point(3, 3), new TextFixture("Random text here", 5));
 		three.addRivers(point(3, 3), Lake);

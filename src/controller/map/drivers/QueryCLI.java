@@ -24,6 +24,7 @@ import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
+import model.map.fixtures.FortressMember;
 import model.map.fixtures.Ground;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
@@ -174,13 +175,13 @@ public final class QueryCLI implements ISPDriver {
 						}
 					}
 				} else if (fix instanceof Fortress) {
-					for (IUnit unit : (Fortress) fix) {
-						if (!player.equals(unit.getOwner())) {
-							continue;
-						}
-						for (UnitMember member : unit) {
-							if (member instanceof IWorker) {
-								count++;
+					for (FortressMember unit : (Fortress) fix) {
+						if (unit instanceof IUnit
+								&& player.equals(((IUnit) unit).getOwner())) {
+							for (UnitMember member : (IUnit) unit) {
+								if (member instanceof IWorker) {
+									count++;
+								}
 							}
 						}
 					}

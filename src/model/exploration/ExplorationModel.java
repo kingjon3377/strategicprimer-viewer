@@ -22,6 +22,7 @@ import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
 import model.map.TileType;
+import model.map.fixtures.FortressMember;
 import model.map.fixtures.Ground;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
@@ -268,9 +269,9 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 				outside = true;
 				break;
 			} else if (fix instanceof Fortress) {
-				for (final IUnit item : (Fortress) fix) {
+				for (final FortressMember item : (Fortress) fix) {
 					if (unit.equals(item)) {
-						((Fortress) fix).removeUnit(unit);
+						((Fortress) fix).removeMember(unit);
 						return;
 					}
 				}

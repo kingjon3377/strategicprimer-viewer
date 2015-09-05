@@ -14,6 +14,7 @@ import model.map.HasImage;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.SubsettableFixture;
+import model.map.fixtures.FortressMember;
 import model.map.fixtures.mobile.IUnit;
 import util.NullCleaner;
 
@@ -44,7 +45,7 @@ import util.NullCleaner;
  *
  */
 public class Fortress implements HasImage, ITownFixture,
-		FixtureIterable<IUnit>, SubsettableFixture {
+		FixtureIterable<FortressMember>, SubsettableFixture {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -61,7 +62,7 @@ public class Fortress implements HasImage, ITownFixture,
 	/**
 	 * The units in the fortress.
 	 */
-	private final List<IUnit> units; // Should this be a Set?
+	private final List<FortressMember> units; // Should this be a Set?
 
 	/**
 	 * Constructor.
@@ -86,8 +87,8 @@ public class Fortress implements HasImage, ITownFixture,
 	public Fortress copy(final boolean zero) {
 		Fortress retval = new Fortress(owner, name, id);
 		if (!zero) {
-			for (IUnit unit : this) {
-				retval.addUnit(unit.copy(false));
+			for (FortressMember unit : this) {
+				retval.addMember(unit.copy(false));
 			}
 		}
 		retval.setImage(image);
@@ -98,7 +99,7 @@ public class Fortress implements HasImage, ITownFixture,
 	 * @return the units in the fortress.
 	 */
 	@Override
-	public final Iterator<IUnit> iterator() {
+	public final Iterator<FortressMember> iterator() {
 		return NullCleaner.assertNotNull(units.iterator());
 	}
 
@@ -107,7 +108,7 @@ public class Fortress implements HasImage, ITownFixture,
 	 *
 	 * @param unit the unit to add
 	 */
-	public final void addUnit(final IUnit unit) {
+	public final void addMember(final FortressMember unit) {
 		units.add(unit);
 	}
 
@@ -116,7 +117,7 @@ public class Fortress implements HasImage, ITownFixture,
 	 *
 	 * @param unit the unit to remove
 	 */
-	public final void removeUnit(final IUnit unit) {
+	public final void removeMember(final FortressMember unit) {
 		units.remove(unit);
 	}
 
@@ -167,23 +168,28 @@ public class Fortress implements HasImage, ITownFixture,
 		sbuild.append(name);
 		sbuild.append(", owned by player ");
 		sbuild.append(ownerStr);
-		sbuild.append(". Units:");
+		sbuild.append(". Members:");
 		int count = 0;
-		for (final IUnit unit : units) {
+		for (final FortressMember member : units) {
 			sbuild.append("\n\t\t\t");
-			sbuild.append(unit.getName());
-			if (unit.getOwner().equals(owner)) {
-				sbuild.append(" (");
-				sbuild.append(unit.getKind());
-				sbuild.append(')');
-			} else if (unit.getOwner().isIndependent()) {
-				sbuild.append(", an independent ");
-				sbuild.append(unit.getKind());
+			if (member instanceof IUnit) {
+				IUnit unit = (IUnit) member;
+				sbuild.append(unit.getName());
+				if (unit.getOwner().equals(owner)) {
+					sbuild.append(" (");
+					sbuild.append(unit.getKind());
+					sbuild.append(')');
+				} else if (unit.getOwner().isIndependent()) {
+					sbuild.append(", an independent ");
+					sbuild.append(unit.getKind());
+				} else {
+					sbuild.append(" (");
+					sbuild.append(unit.getKind());
+					sbuild.append("), belonging to ");
+					sbuild.append(unit.getOwner());
+				}
 			} else {
-				sbuild.append(" (");
-				sbuild.append(unit.getKind());
-				sbuild.append("), belonging to ");
-				sbuild.append(unit.getOwner());
+				sbuild.append(member.toString());
 			}
 			if (++count < units.size() - 1) {
 				sbuild.append(';');
@@ -230,14 +236,14 @@ public class Fortress implements HasImage, ITownFixture,
 		if (name.equals(fort.name)
 				&& fort.owner.getPlayerId() == owner.getPlayerId()) {
 			boolean retval = true;
-			final Map<Integer, IUnit> ours = new HashMap<>();
-			for (final IUnit unit : this) {
+			final Map<Integer, FortressMember> ours = new HashMap<>();
+			for (final FortressMember unit : this) {
 				ours.put(NullCleaner
 						.assertNotNull(Integer.valueOf(unit.getID())), unit);
 			}
 			final String ctxt =
 					context + " In fortress " + name + " (ID #" + id + "):";
-			for (final IUnit unit : fort) {
+			for (final FortressMember unit : fort) {
 				if (!ours.containsKey(Integer.valueOf(unit.getID()))) {
 					ostream.append(ctxt);
 					ostream.append(" Extra unit:\t");

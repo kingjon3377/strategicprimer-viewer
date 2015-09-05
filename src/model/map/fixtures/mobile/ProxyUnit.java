@@ -309,7 +309,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 * @param context the context to write before writing our results
 	 */
 	@Override
-	public boolean isSubset(final IUnit obj, final Appendable ostream,
+	public boolean isSubset(final IFixture obj, final Appendable ostream,
 			final String context)
 			throws IOException {
 		ostream.append(context);

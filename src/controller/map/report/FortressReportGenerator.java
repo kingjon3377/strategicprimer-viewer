@@ -1,6 +1,8 @@
 package controller.map.report;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 import model.map.IFixture;
@@ -9,7 +11,7 @@ import model.map.Player;
 import model.map.Point;
 import model.map.River;
 import model.map.TileFixture;
-import model.map.fixtures.mobile.IUnit;
+import model.map.fixtures.FortressMember;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
@@ -279,16 +281,26 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			builder.append(riversToString(copy));
 		}
 		if (item.iterator().hasNext()) {
+			List<FortressMember> contents = new ArrayList<>();
 			builder.append(OPEN_LIST_ITEM).append("Units on the tile:\n")
 					.append(OPEN_LIST);
-			for (final IUnit unit : item) {
-				if (unit instanceof Unit) {
+			for (final FortressMember member : item) {
+				if (member instanceof Unit) {
 					builder.append(OPEN_LIST_ITEM)
 							.append(urg.produce(fixtures, map, currentPlayer,
-									(Unit) unit, loc)).append(CLOSE_LIST_ITEM);
+									(Unit) member, loc)).append(CLOSE_LIST_ITEM);
+				} else {
+					contents.add(member);
 				}
 			}
 			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
+			if (!contents.isEmpty()) {
+				builder.append(OPEN_LIST_ITEM).append("Other fortress contents:\n").append(OPEN_LIST);
+				for (FortressMember member : contents) {
+					// FIXME: Produce and append the proper sub-report
+				}
+				builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
+			}
 		}
 		builder.append(CLOSE_LIST);
 		fixtures.remove(Integer.valueOf(item.getID()));
@@ -326,13 +338,21 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		if (item.iterator().hasNext()) {
 			final AbstractReportNode units = new ListReportNode(loc,
 					"Units on the tile:");
-			for (final IUnit unit : item) {
+			final AbstractReportNode contents = new ListReportNode(loc, "Other Contents of Fortress:");
+			for (final FortressMember unit : item) {
 				if (unit instanceof Unit) {
 					units.add(urg.produceRIR(fixtures, map, currentPlayer,
 							(Unit) unit, loc));
+				} else {
+					// FIXME: Produce the sub-report using the proper generator.
 				}
 			}
-			retval.add(units);
+			if (units.getChildCount() != 0) {
+				retval.add(units);
+			}
+			if (contents.getChildCount() != 0) {
+				retval.add(contents);
+			}
 		}
 		fixtures.remove(Integer.valueOf(item.getID()));
 		return retval;

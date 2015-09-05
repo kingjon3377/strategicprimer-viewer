@@ -241,7 +241,7 @@ public class ExpansionDriver implements ISPDriver {
 				throw ise;
 			}
 			@Override
-			public boolean isSubset(final IUnit obj, final Appendable ostream,
+			public boolean isSubset(final IFixture obj, final Appendable ostream,
 					final String context) throws IOException {
 				throw ise;
 			}

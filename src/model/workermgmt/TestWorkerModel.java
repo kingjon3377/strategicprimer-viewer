@@ -75,7 +75,7 @@ public class TestWorkerModel {
 				listTwo);
 		final Fortress fort = new Fortress(new Player(3, "player4"), "fort", 4);
 		final IUnit unit = new Unit(playerThree, "three", "unitThree", 5);
-		fort.addUnit(unit);
+		fort.addMember(unit);
 		listThree.add(unit);
 		fixtures.add(fort);
 		fixtures.add(new Forest("forest", false));

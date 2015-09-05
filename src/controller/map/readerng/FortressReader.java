@@ -11,11 +11,13 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import com.sun.istack.internal.logging.Logger;
+
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
-import model.map.fixtures.mobile.IUnit;
+import model.map.fixtures.FortressMember;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 import util.NullCleaner;
@@ -47,6 +49,10 @@ import util.Warning;
 @Deprecated
 public class FortressReader implements INodeHandler<Fortress> {
 	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(FortressReader.class);
+	/**
 	 * Parse a fortress.
 	 *
 	 * @param element the element to start with
@@ -76,7 +82,7 @@ public class FortressReader implements INodeHandler<Fortress> {
 			if (event.isStartElement()
 					&& "unit".equalsIgnoreCase(event.asStartElement().getName()
 							.getLocalPart())) {
-				fort.addUnit(UNIT_READER.parse(
+				fort.addMember(UNIT_READER.parse(
 						NullCleaner.assertNotNull(event.asStartElement()),
 						stream, players, warner, idFactory));
 			} else if (event.isEndElement()
@@ -125,9 +131,11 @@ public class FortressReader implements INodeHandler<Fortress> {
 			retval.addAttribute("name", obj.getName());
 		}
 		retval.addIdAttribute(obj.getID());
-		for (final IUnit unit : obj) {
-			if (unit instanceof Unit) {
-				retval.addChild(UNIT_READER.write((Unit) unit));
+		for (final FortressMember member : obj) {
+			if (member instanceof Unit) {
+				retval.addChild(UNIT_READER.write((Unit) member));
+			} else {
+				LOGGER.severe("Unhandled FortressMember class: " + member.getClass().getName());
 			}
 		}
 		retval.addImageAttribute(obj);

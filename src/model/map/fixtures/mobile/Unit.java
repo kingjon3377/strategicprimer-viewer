@@ -361,31 +361,39 @@ public class Unit implements IUnit {
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IUnit obj, final Appendable ostream,
+	public boolean isSubset(final IFixture obj, final Appendable ostream,
 			final String context) throws IOException {
 		if (obj.getID() != id) {
 			ostream.append(context);
-			ostream.append("\tUnits have different IDs\n");
+			ostream.append("\tFixtures have different IDs\n");
 			return false; // NOPMD
-		} else if (obj.getOwner().getPlayerId() != owner.getPlayerId()) {
+		}
+		else if (!(obj instanceof IUnit)) {
+			ostream.append(context);
+			ostream.append("Different kinds of fixtures for ID #");
+			ostream.append(Integer.toString(obj.getID()));
+			ostream.append('\n');
+			return false;
+		} else if (((IUnit) obj).getOwner().getPlayerId() != owner.getPlayerId()) {
 			ostream.append(context);
 			ostream.append(" Unit of ID #");
 			ostream.append(Integer.toString(id));
 			ostream.append(":\tOwners differ\n");
 			return false; // NOPMD
-		} else if (!name.equals(obj.getName())) {
+		} else if (!name.equals(((IUnit) obj).getName())) {
 			ostream.append(context);
 			ostream.append(" Unit of ID #");
 			ostream.append(Integer.toString(id));
 			ostream.append(":\tNames differ\n");
 			return false; // NOPMD
-		} else if (!kind.equals(obj.getKind())) {
+		} else if (!kind.equals(((IUnit) obj).getKind())) {
 			ostream.append(context);
 			ostream.append(" Unit of ID #");
 			ostream.append(Integer.toString(id));
 			ostream.append(":\tKinds differ\n");
 			return false; // NOPMD
 		} else {
+			final IUnit other = (IUnit) obj;
 			boolean retval = true;
 			final Map<Integer, UnitMember> ours = new HashMap<>();
 			for (final UnitMember member : this) {
@@ -395,7 +403,7 @@ public class Unit implements IUnit {
 					String.format("%s In unit of kind %s named %s (ID #%d):",
 							context, kind, name, Integer.valueOf(id));
 			assert ctxt != null;
-			for (final UnitMember member : obj) {
+			for (final UnitMember member : other) {
 				if (!ours.containsKey(Integer.valueOf(member.getID()))) {
 					ostream.append(ctxt);
 					ostream.append(" Extra member:\t");
@@ -411,7 +419,7 @@ public class Unit implements IUnit {
 			}
 			if (retval) {
 				if ("unassigned".equals(name) || "unassigned".equals(kind)) {
-					if (!members.isEmpty() && !obj.iterator().hasNext()) {
+					if (!members.isEmpty() && !other.iterator().hasNext()) {
 						ostream.append(ctxt);
 						ostream.append(
 								" Nonempty 'unassigned' when submap has it empty\n");

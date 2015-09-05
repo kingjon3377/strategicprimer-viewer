@@ -154,7 +154,7 @@ public class WorkerModel extends AbstractMultiMapModel implements IWorkerModel {
 				if (fix instanceof Fortress
 						&& unit.getOwner().equals(((Fortress) fix).getOwner())
 						&& "HQ".equals(((Fortress) fix).getName())) {
-					((Fortress) fix).addUnit(unit);
+					((Fortress) fix).addMember(unit);
 					return;
 				}
 			}

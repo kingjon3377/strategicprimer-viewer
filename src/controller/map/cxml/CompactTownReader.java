@@ -6,6 +6,8 @@ import java.util.Random;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import com.sun.istack.internal.logging.Logger;
+
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
@@ -14,7 +16,7 @@ import model.map.IEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.IPlayerCollection;
 import model.map.Player;
-import model.map.fixtures.mobile.IUnit;
+import model.map.fixtures.FortressMember;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.City;
@@ -55,6 +57,10 @@ import util.Warning;
  *
  */
 public final class CompactTownReader extends AbstractCompactReader<ITownFixture> {
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(CompactTownReader.class);
 	/**
 	 * Singleton object.
 	 */
@@ -233,7 +239,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			if (event.isStartElement()
 					&& "unit".equalsIgnoreCase(event.asStartElement().getName()
 							.getLocalPart())) {
-				retval.addUnit(CompactUnitReader.READER.read(
+				retval.addMember(CompactUnitReader.READER.read(
 						NullCleaner.assertNotNull(event.asStartElement()),
 						stream, players, warner, idFactory));
 			} else if (event.isEndElement()
@@ -292,10 +298,12 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			ostream.append('"').append(imageXML((Fortress) obj)).append('>');
 			if (((Fortress) obj).iterator().hasNext()) {
 				ostream.append('\n');
-				for (final IUnit unit : (Fortress) obj) {
+				for (final FortressMember unit : (Fortress) obj) {
 					if (unit instanceof Unit) {
 						CompactUnitReader.READER.write(ostream, (Unit) unit,
 								indent + 1);
+					} else {
+						LOGGER.severe("Unhandled FortressMember class " + unit.getClass().getName());
 					}
 				}
 				ostream.append(indent(indent));

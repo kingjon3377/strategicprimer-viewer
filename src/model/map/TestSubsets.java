@@ -138,7 +138,7 @@ public class TestSubsets {
 				one.isSubset(four, DEV_NULL, ""));
 		assertTrue("Subset doesn't require identiy or ID equality",
 				four.isSubset(one, DEV_NULL, ""));
-		four.addUnit(new Unit(new Player(2, "two"), "unit_type", "unit_name", 4));
+		four.addMember(new Unit(new Player(2, "two"), "unit_type", "unit_name", 4));
 		assertTrue("Fortress without is a subset of fortress with unit",
 				four.isSubset(one, DEV_NULL, ""));
 		assertFalse("Fortress with is not a subset of fortress without unit",

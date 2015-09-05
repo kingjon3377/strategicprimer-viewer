@@ -5,7 +5,7 @@ import model.map.HasImage;
 import model.map.HasKind;
 import model.map.HasName;
 import model.map.HasOwner;
-import model.map.Subsettable;
+import model.map.fixtures.FortressMember;
 import model.map.fixtures.UnitMember;
 
 /**
@@ -31,7 +31,7 @@ import model.map.fixtures.UnitMember;
  * @author Jonathan Lovelace
  */
 public interface IUnit extends MobileFixture, HasImage, HasKind,
-		FixtureIterable<UnitMember>, HasName, HasOwner, Subsettable<IUnit> {
+		FixtureIterable<UnitMember>, HasName, HasOwner, FortressMember {
 	/**
 	 * @return the unit's orders
 	 */
