@@ -2,8 +2,6 @@ package model.map;
 
 import java.io.IOException;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 
 /**
  * An interface to let us check converted player maps against the main map.
@@ -29,7 +27,7 @@ import org.eclipse.jdt.annotation.NonNull;
  *
  * @param <T> The type itself.
  */
-public interface Subsettable<@NonNull T> {
+public interface Subsettable<T> {
 	/**
 	 * @param obj
 	 *            an object

@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.IFixture;
@@ -79,12 +78,11 @@ public class Worker implements IWorker {
 	 * @param jobs the Jobs the worker is trained in
 	 */
 	public Worker(final String wName, final String workerRace, final int idNum,
-			final @NonNull Job... jobs) {
+			final Job... jobs) {
 		name = wName;
 		id = idNum;
 		race = workerRace;
 		jobSet.addAll(Arrays.asList(jobs));
-		stats = null;
 	}
 
 	/**
@@ -225,7 +223,9 @@ public class Worker implements IWorker {
 						ours.put(job.getName(), job);
 					}
 					for (final IJob job : ((Worker) obj).jobSet) {
-						if (!ours.containsKey(job.getName())) {
+						if (job == null) {
+							continue;
+						} else if (!ours.containsKey(job.getName())) {
 							ostream.append(ctxt);
 							ostream.append("\tExtra Job: ");
 							ostream.append(job.getName());

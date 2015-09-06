@@ -1,7 +1,4 @@
 package model.map;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 /**
  * An interface for a collection of tiles.
  *
@@ -26,7 +23,7 @@ import org.eclipse.jdt.annotation.NonNull;
  * @deprecated the old map API is deprecated in this branch
  */
 @Deprecated
-public interface ITileCollection extends Iterable<@NonNull Point>,
+public interface ITileCollection extends Iterable<Point>,
 		Subsettable<ITileCollection> {
 
 	/**

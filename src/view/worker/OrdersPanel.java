@@ -18,6 +18,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import model.listeners.PlayerChangeListener;
 import model.map.IFixture;
 import model.map.Player;
+import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.workermgmt.IWorkerModel;
@@ -215,6 +216,19 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 		public String shortDesc() {
 			return "proxy";
 		}
+		/**
+		 * @param fix A TileFixture to compare to
+		 *
+		 * @return the result of the comparison
+		 */
+		@Override
+		public int compareTo(@Nullable final TileFixture fix) {
+			if (fix == null) {
+				throw new IllegalArgumentException("Compared to null fixture");
+			}
+			return fix.hashCode() - hashCode();
+		}
+
 		/**
 		 * @return a dummy ID #
 		 */

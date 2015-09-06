@@ -5,6 +5,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.Player;
+import model.map.TileFixture;
 
 /**
  * A Fixture representing an adventure hook.
@@ -157,6 +158,19 @@ public class AdventureFixture implements ExplorableFixture, HasOwner {
 	public int hashCode() {
 		return briefDesc.hashCode() | (fullDesc.hashCode() << owner.getPlayerId());
 	}
+	/**
+	 * @param fix A TileFixture to compare to
+	 *
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(@Nullable final TileFixture fix) {
+		if (fix == null) {
+			throw new IllegalArgumentException("Compared to null fixture");
+		}
+		return fix.hashCode() - hashCode();
+	}
+
 	/**
 	 * @return the player that has taken on this adventure
 	 */

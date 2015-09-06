@@ -1,7 +1,4 @@
 package model.map.fixtures.mobile;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 /**
  * An interface for 'proxy' implementations.
  *
@@ -26,7 +23,7 @@ import org.eclipse.jdt.annotation.NonNull;
  *
  * @param <T> the type being proxied
  */
-public interface ProxyFor<@NonNull T> /* extends T */ {
+public interface ProxyFor<T> /* extends T */ {
 	/**
 	 * Add another object to be proxied.
 	 * @param item the object to be proxied.

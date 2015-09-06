@@ -5,6 +5,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import model.map.IFixture;
 import model.map.Point;
 import model.map.PointFactory;
+import model.map.TileFixture;
 
 /**
  * A fixture representing a portal to another world.
@@ -126,6 +127,19 @@ public class Portal implements ExplorableFixture {
 	public int hashCode() {
 		return id;
 	}
+	/**
+	 * @param fix A TileFixture to compare to
+	 *
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(@Nullable final TileFixture fix) {
+		if (fix == null) {
+			throw new IllegalArgumentException("Compared to null fixture");
+		}
+		return fix.hashCode() - hashCode();
+	}
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */

@@ -34,7 +34,7 @@ import util.NullCleaner;
  *
  */
 public final class FixtureFilterListModel extends
-		AbstractListModel<@NonNull Class<@NonNull ? extends @NonNull TileFixture>> {
+		AbstractListModel<Class<? extends TileFixture>> {
 	/**
 	 * The list backing this model.
 	 */

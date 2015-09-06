@@ -76,7 +76,7 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 		if (dimensions().equals(obj.dimensions())) {
 			boolean retval = true;
 			for (final Player player : obj.players()) {
-				if (!state.getPlayers().contains(player)) {
+				if (player != null && !state.getPlayers().contains(player)) {
 					// return false;
 					retval = false;
 					ostream.append(context);
@@ -86,7 +86,7 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 				}
 			}
 			for (final Point point : obj.locations()) {
-				if (!isTileSubset(obj, ostream, point, context)) {
+				if (point != null && !isTileSubset(obj, ostream, point, context)) {
 					retval = false;
 				}
 			}
@@ -144,7 +144,7 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 				fixtures.add(fix);
 			}
 			for (final TileFixture fix : obj.getOtherFixtures(loc)) {
-				if (!fixtures.contains(fix)
+				if (fix != null && !fixtures.contains(fix)
 						&& !Tile.shouldSkip(fix)) {
 					// return false;
 					retval = false;
@@ -183,11 +183,11 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 	 * @return the result of the comparison
 	 */
 	@Override
-	public int compareTo(final IMapNG other) {
+	public int compareTo(@Nullable final IMapNG other) {
 		if (equals(other)) {
 			return 0; // NOPMD
 		} else {
-			return hashCode() - other.hashCode();
+			return hashCode() - Objects.hashCode(other);
 		}
 	}
 
@@ -341,7 +341,9 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 				&& getCurrentTurn() == obj.getCurrentTurn()
 				&& getCurrentPlayer().equals(obj.getCurrentPlayer())) {
 			for (final Point point : locations()) {
-				if (!getBaseTerrain(point).equals(obj.getBaseTerrain(point))
+				if (point == null) {
+					continue;
+				} else if (!getBaseTerrain(point).equals(obj.getBaseTerrain(point))
 						|| isMountainous(point) != obj.isMountainous(point)
 						|| !iterablesEqual(getRivers(point),
 								obj.getRivers(point))
@@ -574,11 +576,13 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 		builder.append(getCurrentTurn());
 		builder.append("\n\nPlayers:\n");
 		for (Player player : players()) {
-			builder.append(player.toString());
-			if (player.equals(getCurrentPlayer())) {
-				builder.append(" (current)");
+			if (player != null) {
+				builder.append(player.toString());
+				if (player.equals(getCurrentPlayer())) {
+					builder.append(" (current)");
+				}
+				builder.append("\n");
 			}
-			builder.append("\n");
 		}
 		builder.append("\nContents:\n");
 		for (Point location : locations()) {

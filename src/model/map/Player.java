@@ -1,6 +1,5 @@
 package model.map;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -26,7 +25,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author jsl7
  *
  */
-public class Player implements Comparable<@NonNull Player>, HasName {
+public class Player implements Comparable<Player>, HasName {
 	/**
 	 * The player's number.
 	 */
@@ -98,7 +97,10 @@ public class Player implements Comparable<@NonNull Player>, HasName {
 	 * @return the result of the comparison
 	 */
 	@Override
-	public int compareTo(final Player player) {
+	public int compareTo(@Nullable final Player player) {
+		if (player == null) {
+			throw new IllegalArgumentException("Asked to compare to null player.");
+		}
 		return player.hashCode() - hashCode();
 	}
 

@@ -10,7 +10,6 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.TileFixture;
@@ -41,17 +40,17 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class FixtureFilterList extends JList<@NonNull Class<@NonNull ? extends TileFixture>>
-		implements ZOrderFilter, ListCellRenderer<@NonNull Class<@NonNull ? extends TileFixture>> {
+public class FixtureFilterList extends JList<Class<? extends TileFixture>>
+		implements ZOrderFilter, ListCellRenderer<Class<? extends TileFixture>> {
 	/**
 	 * The renderer that does most of the work.
 	 */
-	private final ListCellRenderer<@NonNull Object> lcr = new DefaultListCellRenderer();
+	private final ListCellRenderer<Object> lcr = new DefaultListCellRenderer();
 
 	/**
 	 * A mapping from classes of fixtures to their plurals.
 	 */
-	private final Map<@NonNull Class<@NonNull ? extends TileFixture>, String> plurals;
+	private final Map<Class<? extends TileFixture>, String> plurals;
 	/**
 	 * The selection model.
 	 */
@@ -104,8 +103,8 @@ public class FixtureFilterList extends JList<@NonNull Class<@NonNull ? extends T
 	 */
 	@Override
 	public Component getListCellRendererComponent(
-			@Nullable final JList<@NonNull ? extends Class<@NonNull ? extends @NonNull TileFixture>> list,
-			final Class<@NonNull ? extends @NonNull TileFixture> value, final int index,
+			@Nullable final JList<? extends Class<? extends TileFixture>> list,
+			@Nullable final Class<? extends TileFixture> value, final int index,
 			final boolean isSelected, final boolean cellHasFocus) {
 		if (list == null) {
 			throw new IllegalArgumentException("Asked to render null list");

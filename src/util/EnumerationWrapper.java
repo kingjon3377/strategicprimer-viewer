@@ -71,6 +71,7 @@ public final class EnumerationWrapper<T> implements Iterator<T> {
 	 */
 	// ESCA-JAVA0126:
 	// ESCA-JAVA0277:
+	@Nullable
 	@Override
 	public T next() throws NoSuchElementException { // NOPMD: throws clause
 													// required by

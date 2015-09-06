@@ -7,8 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.ProxyFor;
 import util.NullCleaner;
@@ -51,11 +49,11 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 	/**
 	 * Proxy-skills.
 	 */
-	private final List<@NonNull ISkill> proxied = new ArrayList<>();
+	private final List<ISkill> proxied = new ArrayList<>();
 	/**
 	 * Jobs we're proxying.
 	 */
-	private final List<@NonNull IJob> proxiedJobs = new ArrayList<>();
+	private final List<IJob> proxiedJobs = new ArrayList<>();
 	/**
 	 * The names of skills we're proxying.
 	 */
@@ -79,7 +77,7 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 		for (final IWorker worker : workers) {
 			boolean touched = false;
 			for (final IJob job : worker) {
-				if (job == this) {
+				if (job == this || job == null) {
 					continue;
 				} else if (nomen.equals(job.getName())) {
 					proxiedJobs.add(job);
@@ -95,9 +93,9 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 				worker.addJob(job);
 			}
 		}
-		final IJob @NonNull [] jobsArray =
-				NullCleaner.assertNotNullArray(
-						proxiedJobs.toArray(new IJob[proxiedJobs.size()]));
+		final IJob[] jobsArray =
+				NullCleaner.assertNotNull(proxiedJobs
+						.toArray(new IJob[proxiedJobs.size()]));
 		for (final String skill : skillNames) {
 			proxied.add(new ProxySkill(skill, parallel, jobsArray));
 		}
@@ -132,8 +130,8 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 	 * @return an iterator over the skills that any of the proxied jobs has.
 	 */
 	@Override
-	public Iterator<@NonNull ISkill> iterator() {
-		return proxied.iterator();
+	public Iterator<ISkill> iterator() {
+		return NullCleaner.assertNotNull(proxied.iterator());
 	}
 	/**
 	 * @param skill a skill to proxy
@@ -147,8 +145,8 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 			}
 		}
 		proxied.add(new ProxySkill(skill.getName(), parallel,
-				NullCleaner.assertNotNullArray(NullCleaner.assertNotNull(proxiedJobs
-						.toArray(new IJob[proxiedJobs.size()])))));
+				NullCleaner.assertNotNull(
+						proxiedJobs.toArray(new IJob[proxiedJobs.size()]))));
 		return true;
 	}
 	/**
@@ -194,8 +192,9 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 		for (ISkill skill : proxied) {
 			((ProxySkill) skill).addProxied(item);
 		}
-		final Job @NonNull [] jobsArray =
-				NullCleaner.assertNotNullArray(proxiedJobs.toArray(new Job[proxiedJobs.size()]));
+		final Job[] jobsArray =
+				NullCleaner.assertNotNull(proxiedJobs
+						.toArray(new Job[proxiedJobs.size()]));
 		for (ISkill skill : item) {
 			if (!skillNames.contains(skill.getName())) {
 				proxied.add(new ProxySkill(skill.getName(), parallel, jobsArray));

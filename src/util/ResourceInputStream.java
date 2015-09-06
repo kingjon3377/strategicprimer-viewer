@@ -79,7 +79,7 @@ public class ResourceInputStream extends InputStream {
 	 * @throws IOException when thrown by wrapped stream
 	 */
 	@Override
-	public int read(final byte @Nullable [] buf) throws IOException {
+	public int read(@Nullable final byte[] buf) throws IOException {
 		return wrapped.read(buf);
 	}
 
@@ -92,7 +92,7 @@ public class ResourceInputStream extends InputStream {
 	 * @see InputStream#read(byte[], int, int)
 	 */
 	@Override
-	public int read(final byte @Nullable [] buf, final int off, final int len)
+	public int read(@Nullable final byte[] buf, final int off, final int len)
 			throws IOException {
 		return wrapped.read(buf, off, len);
 	}

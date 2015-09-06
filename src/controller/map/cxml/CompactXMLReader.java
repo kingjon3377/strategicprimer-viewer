@@ -59,12 +59,12 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException on SP XML format error
 	 */
 	@Override
-	public <@NonNull T> T readXML(final File file, final Reader istream,
+	public <T> T readXML(final File file, final Reader istream,
 			final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		final TypesafeXMLEventReader reader = new TypesafeXMLEventReader(
 				istream);
-		final IteratorWrapper<@NonNull XMLEvent> eventReader = new IteratorWrapper<>(
+		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<>(
 				new IncludingIterator(file, reader));
 		final IMutablePlayerCollection players = new PlayerCollection();
 		final IDFactory idFactory = new IDFactory();

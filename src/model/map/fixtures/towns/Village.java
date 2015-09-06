@@ -8,6 +8,7 @@ import model.map.HasImage;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.SubsettableFixture;
+import model.map.TileFixture;
 import util.NullCleaner;
 
 /**
@@ -150,6 +151,19 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 	@Override
 	public int hashCode() {
 		return id;
+	}
+
+	/**
+	 * @param fix A TileFixture to compare to
+	 *
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(@Nullable final TileFixture fix) {
+		if (fix == null) {
+			throw new IllegalArgumentException("Compared to null fixture");
+		}
+		return fix.hashCode() - hashCode();
 	}
 
 	/**

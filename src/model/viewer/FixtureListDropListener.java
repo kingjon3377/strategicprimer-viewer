@@ -226,7 +226,7 @@ public class FixtureListDropListener implements DropTargetListener {
 				}
 				return;
 			} else if (flavor.equals(CurriedFixtureTransferable.FLAVOR)) {
-				List<Transferable> curried = (List<@NonNull Transferable>) trans
+				List<Transferable> curried = (List<Transferable>) trans
 						.getTransferData(flavor);
 				for (Transferable item : curried) {
 					handleDrop(item);

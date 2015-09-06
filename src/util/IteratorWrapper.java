@@ -4,7 +4,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.PriorityQueue;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -35,7 +34,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @param <T> the type of the iterator.
  *
  */
-public class IteratorWrapper<@NonNull T> implements Iterable<@NonNull T> {
+public class IteratorWrapper<T> implements Iterable<T> {
 	/**
 	 * The iterator we're wrapping.
 	 */
@@ -46,7 +45,7 @@ public class IteratorWrapper<@NonNull T> implements Iterable<@NonNull T> {
 	 *
 	 * @param iterator the iterator to wrap
 	 */
-	public IteratorWrapper(@Nullable final Iterator<@NonNull T> iterator) {
+	public IteratorWrapper(@Nullable final Iterator<T> iterator) {
 		if (iterator == null) {
 			iter = new EmptyIterator<>();
 		} else {

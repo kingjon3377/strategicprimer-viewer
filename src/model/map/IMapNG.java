@@ -1,6 +1,5 @@
 package model.map;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.fixtures.Ground;
@@ -43,7 +42,7 @@ import model.map.fixtures.terrain.Forest;
  * @author Jonathan Lovelace
  *
  */
-public interface IMapNG extends Subsettable<@NonNull IMapNG>, Comparable<@NonNull IMapNG> {
+public interface IMapNG extends Subsettable<IMapNG>, Comparable<IMapNG> {
 	/**
 	 * @return the map version and dimensions
 	 */
@@ -52,12 +51,12 @@ public interface IMapNG extends Subsettable<@NonNull IMapNG>, Comparable<@NonNul
 	/**
 	 * @return a view of the players in the map.
 	 */
-	Iterable<@NonNull Player> players();
+	Iterable<Player> players();
 
 	/**
 	 * @return a view of the locations on the map
 	 */
-	Iterable<@NonNull Point> locations();
+	Iterable<Point> locations();
 
 	/**
 	 * @param location a location
@@ -75,7 +74,7 @@ public interface IMapNG extends Subsettable<@NonNull IMapNG>, Comparable<@NonNul
 	 * @param location a location
 	 * @return a view of the river directions, if any, at that location
 	 */
-	Iterable<@NonNull River> getRivers(Point location);
+	Iterable<River> getRivers(Point location);
 
 	/**
 	 * Implementations should aim to have only the "main" forest here, and any
@@ -102,7 +101,7 @@ public interface IMapNG extends Subsettable<@NonNull IMapNG>, Comparable<@NonNul
 	 * @return a view of any fixtures on the map that aren't covered in the
 	 *         other querying methods.
 	 */
-	Iterable<@NonNull TileFixture> getOtherFixtures(Point location);
+	Iterable<TileFixture> getOtherFixtures(Point location);
 
 	/**
 	 * @return the current turn

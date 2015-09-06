@@ -2,7 +2,6 @@ package model.viewer;
 
 import javax.swing.DefaultListModel;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.listeners.SelectionChangeListener;
@@ -43,7 +42,7 @@ import model.misc.IDriverModel;
  * @author Jonathan Lovelace
  *
  */
-public final class FixtureListModel extends DefaultListModel<@NonNull TileFixture>
+public final class FixtureListModel extends DefaultListModel<TileFixture>
 		implements SelectionChangeListener {
 	/**
 	 * The driver model, which we use to get the population at a location.
@@ -79,7 +78,9 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 			} else {
 				RiverFixture rfixt = new RiverFixture();
 				for (River river : rivers) {
-					rfixt.addRiver(river);
+					if (river != null) {
+						rfixt.addRiver(river);
+					}
 				}
 				addElement(rfixt);
 			}
@@ -131,28 +132,32 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 *
 	 * @param list the list of items to remove. If null, none are removed.
 	 */
-	public void remove(final Iterable<TileFixture> list) {
-		IMutableMapNG map = dmodel.getMap();
-		for (final TileFixture fix : list) {
-			if (fix instanceof TileTypeFixture) {
-				map.setBaseTerrain(point, TileType.NotVisible);
-				removeElement(fix);
-			} else
-				if (fix instanceof Ground && fix.equals(map.getGround(point))) {
-				map.setGround(point, null);
-				removeElement(fix);
-			} else if (fix instanceof Forest
-					&& fix.equals(map.getForest(point))) {
-				map.setForest(point, null);
-				removeElement(fix);
-			} else if (fix instanceof RiverFixture) {
-				for (River river : (RiverFixture) fix) {
-					assert river != null;
-					map.removeRivers(point, river);
+	public void remove(@Nullable final Iterable<TileFixture> list) {
+		if (list != null) {
+			IMutableMapNG map = dmodel.getMap();
+			for (final TileFixture fix : list) {
+				if (fix == null) {
+					continue;
+				} else if (fix instanceof TileTypeFixture) {
+					map.setBaseTerrain(point, TileType.NotVisible);
+					removeElement(fix);
+				} else if (fix instanceof Ground
+						&& fix.equals(map.getGround(point))) {
+					map.setGround(point, null);
+					removeElement(fix);
+				} else if (fix instanceof Forest
+						&& fix.equals(map.getForest(point))) {
+					map.setForest(point, null);
+					removeElement(fix);
+				} else if (fix instanceof RiverFixture) {
+					for (River river : (RiverFixture) fix) {
+						map.removeRivers(point, river);
+					}
+					removeElement(fix);
+				} else {
+					map.removeFixture(point, fix);
+					removeElement(fix);
 				}
-				removeElement(fix);
-			} else {
-				map.removeFixture(point, fix);
 				removeElement(fix);
 			}
 		}

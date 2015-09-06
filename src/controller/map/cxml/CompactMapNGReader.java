@@ -68,12 +68,12 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	/**
 	 * List of readers we'll try subtags on.
 	 */
-	private final List<CompactReader<? extends TileFixture>> readers;
+	private final List<AbstractCompactReader<? extends TileFixture>> readers;
 	/**
 	 * Singleton.
 	 */
 	private CompactMapNGReader() {
-		final List<CompactReader<? extends TileFixture>> list =
+		final List<AbstractCompactReader<? extends TileFixture>> list =
 				new ArrayList<>(Arrays.asList(CompactMobileReader.READER,
 						CompactResourceReader.READER,
 						CompactTerrainReader.READER, CompactTextReader.READER,

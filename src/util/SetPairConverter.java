@@ -30,7 +30,7 @@ import org.eclipse.jdt.annotation.NonNull;
  * @param <I> the first parameter of the map
  * @param <K> the second parameter of the map.
  */
-public class SetPairConverter<@NonNull I, @NonNull K> implements Iterable<Pair<I, K>> {
+public class SetPairConverter<I, K> implements Iterable<Pair<I, K>> {
 	/**
 	 * The map.
 	 */
@@ -58,7 +58,7 @@ public class SetPairConverter<@NonNull I, @NonNull K> implements Iterable<Pair<I
 	 * @param <K> the second parameter of the map
 	 * @author Jonathan Lovelace
 	 */
-	private static class IteratorImpl<@NonNull I, @NonNull K> implements Iterator<@NonNull Pair<I, K>> {
+	private static class IteratorImpl<I, K> implements Iterator<Pair<I, K>> {
 		/**
 		 * The object we're a wrapper around.
 		 */
@@ -95,7 +95,8 @@ public class SetPairConverter<@NonNull I, @NonNull K> implements Iterable<Pair<I
 		@Override
 		public Pair<I, K> next() {
 			final Map.Entry<I, K> entry = wrapped.next();
-			return Pair.of(entry.getKey(), entry.getValue());
+			return Pair.of(NullCleaner.assertNotNull(entry.getKey()),
+					NullCleaner.assertNotNull(entry.getValue()));
 		}
 
 		/**

@@ -95,9 +95,13 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			SPFormatException, IOException {
 		final Player owner = new Player(-1, "");
 		for (final TownStatus status : TownStatus.values()) {
-			assert status != null;
+			if (status == null) {
+				continue;
+			}
 			for (final TownSize size : TownSize.values()) {
-				assert size != null;
+				if (size == null) {
+					continue;
+				}
 				// ESCA-JAVA0076:
 				assertSerialization(
 						"First CityEvent serialization test, status " + status
@@ -143,9 +147,13 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			SPFormatException, IOException {
 		final Player owner = new Player(-1, "");
 		for (final TownStatus status : TownStatus.values()) {
-			assert status != null;
+			if (status == null) {
+				continue;
+			}
 			for (final TownSize size : TownSize.values()) {
-				assert size != null;
+				if (size == null) {
+					continue;
+				}
 				assertSerialization("Fortification serialization test, status "
 						+ status + ", size " + size, new Fortification(// NOPMD
 						status, size, 10, "one", 1, owner), Fortification.class);
@@ -230,7 +238,9 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	public void testStoneSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
 		for (final StoneKind kind : StoneKind.values()) {
-			assert kind != null;
+			if (kind == null) {
+				continue;
+			}
 			assertSerialization("First StoneDeposit test, kind: " + kind,
 					new StoneDeposit(kind, 8, 1), StoneDeposit.class); // NOPMD
 			assertSerialization("Second StoneDeposit test, kind: " + kind,
@@ -273,9 +283,13 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			SPFormatException, IOException {
 		final Player owner = new Player(-1, "");
 		for (final TownStatus status : TownStatus.values()) {
-			assert status != null;
+			if (status == null) {
+				continue;
+			}
 			for (final TownSize size : TownSize.values()) {
-				assert size != null;
+				if (size == null) {
+					continue;
+				}
 				assertSerialization(
 						"First TownEvent serialization test, reflection, status "
 								+ status + " and size " + size, new Town(// NOPMD

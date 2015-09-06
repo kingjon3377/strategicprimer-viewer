@@ -331,7 +331,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML reading problem
 	 * @throws IOException on I/O error creating serialized form
 	 */
-	protected <@NonNull T> void assertSerialization(final String message, final T obj,
+	protected <T> void assertSerialization(final String message, final T obj,
 			final Class<T> type) throws XMLStreamException, SPFormatException,
 			IOException {
 		assertSerialization(message, obj, type, new Warning(Action.Die));
@@ -350,7 +350,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML reading problem
 	 * @throws IOException on I/O error creating serialized form
 	 */
-	protected <@NonNull T> void assertSerialization(final String message, final T obj,
+	protected <T> void assertSerialization(final String message, final T obj,
 			final Class<T> type, final Warning warning)
 			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization(message, oldReader, obj, type, warning);
@@ -371,7 +371,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML reading problem
 	 * @throws IOException on I/O error creating serialized form
 	 */
-	private static <@NonNull T> void assertSerialization(final String message,
+	private static <T> void assertSerialization(final String message,
 			final ISPReader reader, final T obj, final Class<T> type,
 			final Warning warner) throws XMLStreamException, SPFormatException,
 			IOException {

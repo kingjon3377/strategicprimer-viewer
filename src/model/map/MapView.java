@@ -85,7 +85,7 @@ public class MapView implements IMutableMapView {
 	 * @return the result of a comparison with it.
 	 */
 	@Override
-	public int compareTo(final IMap obj) {
+	public int compareTo(@Nullable final IMap obj) {
 		return map.compareTo(obj);
 	}
 

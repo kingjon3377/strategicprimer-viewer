@@ -3,8 +3,6 @@ package controller.map.report;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
 import model.map.FixtureIterable;
@@ -299,7 +297,7 @@ public final class ReportGenerator {
 		for (final IFixture fix : iter) {
 			retval.add(fix);
 			if (fix instanceof FixtureIterable) {
-				retval.addAll(getFixtures((FixtureIterable<@NonNull ?>) fix));
+				retval.addAll(getFixtures((FixtureIterable<?>) fix));
 			}
 		}
 		return retval;

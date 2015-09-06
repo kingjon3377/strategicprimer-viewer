@@ -62,7 +62,7 @@ public class ConstantTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-			final Iterable<@NonNull TileFixture> fixtures) {
+			final Iterable<TileFixture> fixtures) {
 		return value;
 	}
 

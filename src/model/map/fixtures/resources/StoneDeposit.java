@@ -123,6 +123,19 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * @param fix A TileFixture to compare to
+	 *
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(@Nullable final TileFixture fix) {
+		if (fix == null) {
+			throw new IllegalArgumentException("Compared to null fixture");
+		}
+		return fix.hashCode() - hashCode();
+	}
+
+	/**
 	 *
 	 * @return a string representation of the object
 	 */

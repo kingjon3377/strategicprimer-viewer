@@ -135,7 +135,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 *            a list of points
 	 * @return a comma-separated string representing them.
 	 */
-	protected static String pointCSL(final List<@NonNull Point> points) {
+	protected static String pointCSL(final List<Point> points) {
 		if (points.isEmpty()) {
 			return ""; // NOPMD
 		} else if (points.size() == 1) {

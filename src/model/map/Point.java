@@ -1,6 +1,5 @@
 package model.map;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -26,7 +25,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class Point implements Comparable<@NonNull Point> {
+public class Point implements Comparable<Point> {
 	/**
 	 * The first coordinate.
 	 */
@@ -87,7 +86,10 @@ public class Point implements Comparable<@NonNull Point> {
 	 * @return the result of a comparison with that point
 	 */
 	@Override
-	public int compareTo(final Point point) {
+	public int compareTo(@Nullable final Point point) {
+		if (point == null) {
+			throw new IllegalArgumentException("Asked to compare null point");
+		}
 		return (point.getRow() - getRow() << 7) + point.getCol() - getCol();
 	}
 

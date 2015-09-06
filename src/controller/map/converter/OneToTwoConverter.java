@@ -136,9 +136,11 @@ public class OneToTwoConverter { // NOPMD
 						oldDim.cols * RES_JUMP, 2), new PlayerCollection(), -1);
 		Player independent = new Player(-1, "independent");
 		for (final Player player : old.players()) {
-			retval.addPlayer(player);
-			if (player.isIndependent()) {
-				independent = player;
+			if (player != null) {
+				retval.addPlayer(player);
+				if (player.isIndependent()) {
+					independent = player;
+				}
 			}
 		}
 		final List<Point> converted = new LinkedList<>();
@@ -154,7 +156,9 @@ public class OneToTwoConverter { // NOPMD
 		final Random random = new Random(MAX_ITERATIONS);
 		Collections.shuffle(converted, random);
 		for (final Point point : converted) {
-			perturb(point, retval, random, main, idFactory);
+			if (point != null) {
+				perturb(point, retval, random, main, idFactory);
+			}
 		}
 		return retval;
 	}
@@ -222,13 +226,11 @@ public class OneToTwoConverter { // NOPMD
 						RaceFactory.getRace(new Random(idNum))));
 			}
 			final List<TileFixture> fixtures = new LinkedList<>();
-			final Ground oldGround = oldMap.getGround(point);
-			if (oldGround != null) {
-				fixtures.add(oldGround);
+			if (oldMap.getGround(point) != null) {
+				fixtures.add(oldMap.getGround(point));
 			}
-			final Forest oldForest = oldMap.getForest(point);
-			if (oldForest != null) {
-				fixtures.add(oldForest);
+			if (oldMap.getForest(point) != null) {
+				fixtures.add(oldMap.getForest(point));
 			}
 			for (final TileFixture fixture : oldMap.getOtherFixtures(point)) {
 				fixtures.add(fixture);
@@ -277,7 +279,9 @@ public class OneToTwoConverter { // NOPMD
 			final IMutableMapNG newMap) {
 		final Iterable<River> rivers = oldMap.getRivers(point);
 		for (final River river : rivers) {
+			if (river != null) {
 				addRiver(river, initial, newMap);
+			}
 		}
 	}
 
@@ -338,7 +342,7 @@ public class OneToTwoConverter { // NOPMD
 	 */
 	private static boolean isSubtileSuitable(final IMapNG map, final Point point) {
 		for (final TileFixture fix : map.getOtherFixtures(point)) {
-			if (!isBackground(fix)) {
+			if (fix == null || !isBackground(fix)) {
 				return false; // NOPMD
 			}
 		}
@@ -376,7 +380,9 @@ public class OneToTwoConverter { // NOPMD
 				}
 			}
 			for (final TileFixture fixture : forests) {
-				map.removeFixture(point, fixture);
+				if (fixture != null) {
+					map.removeFixture(point, fixture);
+				}
 			}
 			map.setForest(point, null);
 		}
@@ -518,7 +524,7 @@ public class OneToTwoConverter { // NOPMD
 	private static Iterable<Point> getNeighbors(final Point point) {
 		final int row = point.row;
 		final int col = point.col;
-		return Arrays.asList(
+		return NullCleaner.assertNotNull(Arrays.asList(
 				PointFactory.point(row - 1, col - 1),
 				PointFactory.point(row - 1, col),
 				PointFactory.point(row - 1, col + 1),
@@ -526,7 +532,7 @@ public class OneToTwoConverter { // NOPMD
 				PointFactory.point(row, col + 1),
 				PointFactory.point(row + 1, col - 1),
 				PointFactory.point(row + 1, col),
-				PointFactory.point(row + 1, col + 1));
+				PointFactory.point(row + 1, col + 1)));
 	}
 
 	/**
@@ -536,6 +542,9 @@ public class OneToTwoConverter { // NOPMD
 	 */
 	private static boolean isAdjacentToTown(final Point point, final IMapNG map) {
 		for (final Point npoint : getNeighbors(point)) {
+			if (npoint == null) {
+				continue;
+			}
 			for (final TileFixture fix : map.getOtherFixtures(npoint)) {
 				if (fix instanceof Village || fix instanceof ITownFixture) {
 					return true; // NOPMD
@@ -552,6 +561,9 @@ public class OneToTwoConverter { // NOPMD
 	 */
 	private static boolean hasAdjacentWater(final Point point, final IMapNG map) {
 		for (final Point npoint : getNeighbors(point)) {
+			if (npoint == null) {
+				continue;
+			}
 			if (map.getRivers(npoint).iterator().hasNext()
 					|| TileType.Ocean.equals(map.getBaseTerrain(npoint))) {
 				return true; // NOPMD

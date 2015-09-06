@@ -3,7 +3,9 @@ package controller.map.drivers;
 import static view.util.SystemOut.SYS_OUT;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
@@ -12,6 +14,8 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
@@ -19,8 +23,10 @@ import model.map.IMapNG;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
+import model.map.TileFixture;
 import model.viewer.TileViewSize;
 import model.viewer.ViewerModel;
+import model.viewer.ZOrderFilter;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
@@ -140,6 +146,9 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			for (final Point point : spmap.locations()) {
+				if (point == null) {
+					continue;
+				}
 				helper.drawTileTranslated(
 						NullCleaner.assertNotNull(image.createGraphics()),
 						spmap, point, tsize, tsize);
@@ -185,6 +194,9 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			for (final Point point : map.locations()) {
+				if (point == null) {
+					continue;
+				}
 				helper.drawTile(
 						NullCleaner.assertNotNull(image.createGraphics()),
 						map, point,
@@ -230,7 +242,9 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	private static void thirdBody(final TileDrawHelper helper,
 			final Graphics pen, final IMapNG spmap, final int tsize) {
 		for (final Point point : spmap.locations()) {
-			helper.drawTileTranslated(pen, spmap, point, tsize, tsize);
+			if (point != null) {
+				helper.drawTileTranslated(pen, spmap, point, tsize, tsize);
+			}
 		}
 	}
 
@@ -272,8 +286,13 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 			final Graphics pen, final IMapNG spmap, final int tsize) {
 		final Coordinate dimensions = PointFactory.coordinate(tsize, tsize);
 		for (final Point point : spmap.locations()) {
-			helper.drawTile(pen, spmap, point, PointFactory.coordinate(
-					point.row * tsize, point.col * tsize), dimensions);
+			if (point != null) {
+				helper.drawTile(
+						pen,
+						spmap, point,
+						PointFactory.coordinate(point.row * tsize, point.col
+								* tsize), dimensions);
+			}
 		}
 	}
 
@@ -386,7 +405,18 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		final TileDrawHelper hOne = new CachingTileDrawHelper();
 		final TileDrawHelper hTwo = new DirectTileDrawHelper();
 		final TileDrawHelper hThree = new Ver2TileDrawHelper(
-				(img, infoflags, xCoord, yCoord, width, height) -> false, fix -> true);
+				new ImageObserver() {
+					@Override
+					public boolean imageUpdate(@Nullable final Image img, final int infoflags,
+							final int xCoord, final int yCoord, final int width, final int height) {
+						return false;
+					}
+				}, new ZOrderFilter() {
+					@Override
+					public boolean shouldDisplay(final TileFixture fix) {
+						return true;
+					}
+				});
 		SYS_OUT.println("1. All in one place:");
 		long oneTotal = printStats(CACHING, first(hOne, map, reps, tsize), reps);
 		long twoTotal = printStats(DIRECT, first(hTwo, map, reps, tsize), reps);

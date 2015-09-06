@@ -66,7 +66,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	 * Singleton.
 	 */
 	private CompactUnitReader() {
-		final List<CompactReader<@NonNull ? extends IFixture>> temp = new ArrayList<>();
+		final List<CompactReader<? extends IFixture>> temp = new ArrayList<>();
 		temp.add(CompactMobileReader.READER);
 		temp.add(CompactResourceReader.READER);
 		temp.add(CompactTerrainReader.READER);

@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -34,11 +33,11 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @param <T> the type of thing stored in the set
  */
-public final class ArraySet<@NonNull T> implements Set<T> {
+public final class ArraySet<T> implements Set<T> {
 	/**
 	 * The backing array.
 	 */
-	private final List<@NonNull T> impl = new ArrayList<>();
+	private final List<T> impl = new ArrayList<>();
 	/**
 	 * The running total of the hash code.
 	 */
@@ -90,9 +89,9 @@ public final class ArraySet<@NonNull T> implements Set<T> {
 	 * @return the contents of the set in that array
 	 */
 	@Override
-	@NonNullByDefault({})
-	public <TYPE> TYPE[] toArray(final TYPE [] array) {
-		return impl.toArray(array);
+	public <TYPE> TYPE[] toArray(@Nullable final TYPE[] array) {
+		return NullCleaner.assertNotNull(impl.toArray(NullCleaner
+				.assertNotNull(array)));
 	}
 
 	/**
@@ -100,12 +99,12 @@ public final class ArraySet<@NonNull T> implements Set<T> {
 	 * @return the result of adding it to the set.
 	 */
 	@Override
-	public boolean add(final T elem) {
+	public boolean add(@Nullable final T elem) {
 		if (contains(elem)) {
 			return false; // NOPMD
 		} else {
 			impl.add(elem);
-			hash += elem.hashCode();
+			hash += Objects.hashCode(elem);
 			return true;
 		}
 	}

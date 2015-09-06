@@ -18,7 +18,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @param <L> The first type in the pair.
  * @param <R> The second type in the pair.
  */
-public class Pair<@NonNull L, @NonNull R> {
+public class Pair<L, R> {
 	/**
 	 * The first item in the pair.
 	 */
@@ -66,7 +66,7 @@ public class Pair<@NonNull L, @NonNull R> {
 	 * @param second The second element in the pair.
 	 * @return a pair containing the two elements
 	 */
-	public static <@NonNull FIRST, @NonNull SECOND> Pair<FIRST, SECOND> of(final FIRST first, // NOPMD
+	public static <FIRST, SECOND> Pair<FIRST, SECOND> of(final FIRST first, // NOPMD
 			final SECOND second) {
 		return new Pair<>(first, second);
 	}

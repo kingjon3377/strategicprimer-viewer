@@ -27,7 +27,7 @@ import org.eclipse.jdt.annotation.NonNull;
  */
 // ESCA-JAVA0237:
 @Deprecated
-public interface IMap extends Subsettable<@NonNull IMap>, Comparable<@NonNull IMap> {
+public interface IMap extends Subsettable<IMap>, Comparable<IMap> {
 	/**
 	 * @return The map's dimensions and version.
 	 */

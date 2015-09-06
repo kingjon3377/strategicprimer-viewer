@@ -148,7 +148,9 @@ public final class TileCollection implements IMutableTileCollection {
 			final Appendable ostream, final String context) throws IOException {
 		boolean retval = true; // NOPMD
 		for (final Point point : obj) {
-			if (tiles.containsKey(point) || obj.getTile(point).isEmpty()) {
+			if (point == null) {
+				continue;
+			} else if (tiles.containsKey(point) || obj.getTile(point).isEmpty()) {
 				final String ctxt = context + " At " + point.toString() + ':';
 				if (!tiles.get(point).isSubset(obj.getTile(point), ostream,
 						ctxt)) {

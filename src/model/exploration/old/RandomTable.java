@@ -54,7 +54,7 @@ public class RandomTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-			final Iterable<@NonNull TileFixture> fixtures) {
+			final Iterable<TileFixture> fixtures) {
 		final int roll = SingletonRandom.RANDOM.nextInt(100);
 		return getLowestMatch(roll);
 	}

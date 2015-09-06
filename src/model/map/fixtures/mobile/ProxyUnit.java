@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.IFixture;
@@ -141,7 +140,10 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 * @return the result of a comparison with it
 	 */
 	@Override
-	public int compareTo(final TileFixture fix) {
+	public int compareTo(@Nullable final TileFixture fix) {
+		if (fix == null) {
+			throw new IllegalArgumentException("Compared to null fixture");
+		}
 		return fix.hashCode() - hashCode();
 	}
 	/**
@@ -222,21 +224,24 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		Map<Integer, UnitMember> map = new TreeMap<>();
 		for (IUnit unit : proxied) {
 			for (UnitMember member : unit) {
-				if (map.containsKey(Integer.valueOf(member.getID()))) {
-					ProxyFor<@NonNull ? extends @NonNull UnitMember> proxy;
+				if (member == null) {
+					continue;
+				}
+				// Warning suppressed because the type in the map is really
+				// UnitMember&ProxyFor<IWorker|UnitMember>
+				@SuppressWarnings("unchecked")
+				@Nullable
+				ProxyFor<? extends UnitMember> proxy =
+						(ProxyFor<? extends UnitMember>) map
+								.get(Integer.valueOf(member.getID()));
+				if (proxy == null) {
 					if (member instanceof IWorker) {
 						proxy = new ProxyWorker((IWorker) member);
 					} else {
 						proxy = new ProxyMember(member);
 					}
-					map.put(NullCleaner.assertNotNull(Integer.valueOf(member.getID())), (UnitMember) proxy);
+					map.put(Integer.valueOf(member.getID()), (UnitMember) proxy);
 				} else {
-					// Warning suppressed because the type in the map is really
-					// UnitMember&ProxyFor<IWorker|UnitMember>
-					@SuppressWarnings("unchecked")
-					ProxyFor<? extends UnitMember> proxy =
-							(ProxyFor<? extends UnitMember>) map
-									.get(Integer.valueOf(member.getID()));
 					if (proxy instanceof ProxyWorker) {
 						if (member instanceof IWorker) {
 							((ProxyWorker) proxy).addProxied((IWorker) member);
@@ -389,7 +394,9 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	public void removeMember(final UnitMember member) {
 		for (IUnit unit : proxied) {
 			for (UnitMember item : unit) {
-				if (member.equals(item)) {
+				if (item == null) {
+					continue;
+				} else if (member.equals(item)) {
 					unit.removeMember(item);
 					break;
 				}
@@ -490,7 +497,11 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		@Override
 		public String toString() {
 			for (UnitMember member : proxiedMembers) {
-				return NullCleaner.assertNotNull(member.toString());
+				if (member == null) {
+					continue;
+				} else {
+					return NullCleaner.assertNotNull(member.toString());
+				}
 			}
 			return "a proxy for no unit members";
 		}

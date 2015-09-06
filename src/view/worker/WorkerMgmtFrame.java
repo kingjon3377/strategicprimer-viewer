@@ -165,7 +165,12 @@ public class WorkerMgmtFrame extends JFrame {
 					if (point.getRow() > Integer.MIN_VALUE) {
 						final IViewerModel vModel =
 								getViewerModelFor(model, ioHandler);
-						SwingUtilities.invokeLater(() -> vModel.setSelection(point));
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								vModel.setSelection(point);
+							}
+						});
 					}
 				}
 			}
@@ -530,6 +535,9 @@ public class WorkerMgmtFrame extends JFrame {
 						.append(" [");
 				boolean first = true;
 				for (final UnitMember member : unit) {
+					if (member == null) {
+						continue;
+					}
 					if (first) {
 						first = false;
 					} else {

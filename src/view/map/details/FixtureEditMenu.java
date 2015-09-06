@@ -122,7 +122,7 @@ public class FixtureEditMenu extends JPopupMenu {
 	 *            or kind has changed.
 	 */
 	public FixtureEditMenu(final IFixture fixture,
-			final Iterable<@NonNull Player> players,
+			final Iterable<Player> players,
 			final @NonNull IWorkerTreeModel... changeListeners) {
 		for (final IWorkerTreeModel listener : changeListeners) {
 			listeners.add(listener);
@@ -136,17 +136,20 @@ public class FixtureEditMenu extends JPopupMenu {
 		}
 		if (fixture instanceof HasKind) {
 			addMenuItem(new JMenuItem("Change kind", KeyEvent.VK_K),
-					event -> {
-						final String old = ((HasKind) fixture).getKind();
-						final String result = (String) showInputDialog(
-								outer, "Fixture's new kind:",
-								"Change Fixture Kind",
-								JOptionPane.PLAIN_MESSAGE, null, null,
-								((HasKind) fixture).getKind());
-						if (result != null && !old.equals(result)) {
-							((HasKind) fixture).setKind(result);
-							for (final IWorkerTreeModel listener : listeners) {
-								listener.moveItem((HasKind) fixture);
+					new ActionListener() {
+						@Override
+						public void actionPerformed(@Nullable final ActionEvent event) {
+							final String old = ((HasKind) fixture).getKind();
+							final String result = (String) showInputDialog(
+									outer, "Fixture's new kind:",
+									"Change Fixture Kind",
+									JOptionPane.PLAIN_MESSAGE, null, null,
+									((HasKind) fixture).getKind());
+							if (result != null && !old.equals(result)) {
+								((HasKind) fixture).setKind(result);
+								for (final IWorkerTreeModel listener : listeners) {
+									listener.moveItem((HasKind) fixture);
+								}
 							}
 						}
 					});
@@ -154,29 +157,35 @@ public class FixtureEditMenu extends JPopupMenu {
 		}
 		if (fixture instanceof HasOwner) {
 			addMenuItem(new JMenuItem("Change owner", KeyEvent.VK_O),
-					event -> {
-						final Player result =
-								(Player) showInputDialog(outer,
-										"Fixture's new owner:",
-										"Change Fixture Owner",
-										JOptionPane.PLAIN_MESSAGE, null,
-										playersAsArray(players),
-										((HasOwner) fixture).getOwner());
-						if (result != null) {
-							((HasOwner) fixture).setOwner(result);
+					new ActionListener() {
+						@Override
+						public void actionPerformed(@Nullable final ActionEvent event) {
+							final Player result =
+									(Player) showInputDialog(outer,
+											"Fixture's new owner:",
+											"Change Fixture Owner",
+											JOptionPane.PLAIN_MESSAGE, null,
+											playersAsArray(players),
+											((HasOwner) fixture).getOwner());
+							if (result != null) {
+								((HasOwner) fixture).setOwner(result);
+							}
 						}
 					});
 			mutable = true;
 		}
 		if (fixture instanceof UnitMember) {
 			addMenuItem(new JMenuItem("Dismiss", KeyEvent.VK_D),
-					event -> {
-						final int reply = showConfirmDialog(
-								outer, "Are you sure you want to dismiss this?",
-								"Confirm Dismissal", YES_NO_OPTION);
-						if (JOptionPane.YES_OPTION == reply) {
-							for (final IWorkerTreeModel listener : listeners) {
-								listener.dismissUnitMember((UnitMember) fixture);
+					new ActionListener() {
+						@Override
+						public void actionPerformed(@Nullable final ActionEvent event) {
+							final int reply = showConfirmDialog(
+									outer, "Are you sure you want to dismiss this?",
+									"Confirm Dismissal", YES_NO_OPTION);
+							if (JOptionPane.YES_OPTION == reply) {
+								for (final IWorkerTreeModel listener : listeners) {
+									listener.dismissUnitMember((UnitMember) fixture);
+								}
 							}
 						}
 					});
@@ -197,7 +206,7 @@ public class FixtureEditMenu extends JPopupMenu {
 			for (final Player player : players) {
 				list.add(player);
 			}
-			return NullCleaner.assertNotNull(list.toArray(new Player @NonNull [list.size()]));
+			return NullCleaner.assertNotNull(list.toArray(new Player[list.size()]));
 		}
 	}
 	/**

@@ -299,4 +299,17 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 		}
 		return NullCleaner.assertNotNull(builder.toString());
 	}
-}
+	/**
+	 * @param fix A TileFixture to compare to
+	 *
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(@Nullable final TileFixture fix) {
+		if (fix == null) {
+			throw new IllegalArgumentException("Compared to null fixture");
+		}
+		return fix.hashCode() - hashCode();
+	}
+
+	}

@@ -1,6 +1,5 @@
 package model.map;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.fixtures.Ground;
@@ -48,12 +47,12 @@ public interface IMutableMapNG extends IMapNG {
 	 * @param location a location
 	 * @param rivers rivers to add there
 	 */
-	void addRivers(Point location, @NonNull River... rivers);
+	void addRivers(Point location, River... rivers);
 	/**
 	 * @param location a location
 	 * @param rivers rivers to remove there
 	 */
-	void removeRivers(Point location, @NonNull River... rivers);
+	void removeRivers(Point location, River... rivers);
 
 	/**
 	 * @param location

@@ -14,6 +14,7 @@ import model.map.HasImage;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.SubsettableFixture;
+import model.map.TileFixture;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.mobile.IUnit;
 import util.NullCleaner;
@@ -237,14 +238,15 @@ public class Fortress implements HasImage, ITownFixture,
 				&& fort.owner.getPlayerId() == owner.getPlayerId()) {
 			boolean retval = true;
 			final Map<Integer, FortressMember> ours = new HashMap<>();
-			for (final FortressMember unit : this) {
-				ours.put(NullCleaner
-						.assertNotNull(Integer.valueOf(unit.getID())), unit);
+			for (final FortressMember member : this) {
+				ours.put(Integer.valueOf(member.getID()), member);
 			}
 			final String ctxt =
 					context + " In fortress " + name + " (ID #" + id + "):";
 			for (final FortressMember unit : fort) {
-				if (!ours.containsKey(Integer.valueOf(unit.getID()))) {
+				if (unit == null) {
+					continue;
+				} else if (!ours.containsKey(Integer.valueOf(unit.getID()))) {
 					ostream.append(ctxt);
 					ostream.append(" Extra unit:\t");
 					ostream.append(unit.toString());
@@ -261,6 +263,19 @@ public class Fortress implements HasImage, ITownFixture,
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * @param fix A TileFixture to compare to
+	 *
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(@Nullable final TileFixture fix) {
+		if (fix == null) {
+			throw new IllegalArgumentException("Compared to null fixture");
+		}
+		return fix.hashCode() - hashCode();
 	}
 
 	/**

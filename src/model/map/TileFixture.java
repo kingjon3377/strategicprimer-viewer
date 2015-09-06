@@ -1,7 +1,5 @@
 package model.map;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 /**
  * Something that can go on a tile.
  *
@@ -24,7 +22,7 @@ import org.eclipse.jdt.annotation.NonNull;
  *
  * @author Jonathan Lovelace
  */
-public interface TileFixture extends IFixture, Comparable<@NonNull TileFixture> {
+public interface TileFixture extends IFixture, Comparable<TileFixture> {
 	// Marker interface; also, TODO: what members should this have?
 	/**
 	 * TODO: This should be user-configurable.
@@ -52,13 +50,4 @@ public interface TileFixture extends IFixture, Comparable<@NonNull TileFixture> 
 	 */
 	@Override
 	TileFixture copy(boolean zero);
-	/**
-	 * Default implementation of compareTo for TileFixtures.
-	 * @param fix the other fixture
-	 * @return the result of the comparison
-	 */
-	@Override
-	default int compareTo(final TileFixture fix) {
-		return fix.hashCode() - hashCode();
-	}
 }

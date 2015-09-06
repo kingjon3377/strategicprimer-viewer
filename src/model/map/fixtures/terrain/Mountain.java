@@ -5,6 +5,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TerrainFixture;
+import model.map.TileFixture;
 
 /**
  * A mountain on the map---or at least a fixture representing mountainous
@@ -87,6 +88,19 @@ public class Mountain implements TerrainFixture, HasImage {
 	@Override
 	public int hashCode() {
 		return 1;
+	}
+
+	/**
+	 * @param fix A TileFixture to compare to
+	 *
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(@Nullable final TileFixture fix) {
+		if (fix == null) {
+			throw new IllegalArgumentException("Compared to null fixture");
+		}
+		return fix.hashCode() - hashCode();
 	}
 
 	/**

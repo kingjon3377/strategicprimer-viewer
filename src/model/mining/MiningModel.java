@@ -77,11 +77,8 @@ public class MiningModel {
 			final Point left = PointFactory.point(point.row, point.col - 1);
 			final Point down = PointFactory.point(point.row + 1, point.col);
 			final Point right = PointFactory.point(point.row, point.col + 1);
-			if (!unnormalized.containsKey(point)) {
-				continue;
-			}
 			LodeStatus current = unnormalized.get(point);
-			if (LodeStatus.None == current) {
+			if (current == null || LodeStatus.None == current) {
 				continue;
 			}
 			if (!unnormalized.containsKey(right)) {

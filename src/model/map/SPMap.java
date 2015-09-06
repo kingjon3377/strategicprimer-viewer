@@ -1,6 +1,7 @@
 package model.map;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -193,11 +194,11 @@ public class SPMap implements IMutableMap {
 	 * @return the result of the comparison
 	 */
 	@Override
-	public int compareTo(final IMap other) {
+	public int compareTo(@Nullable final IMap other) {
 		if (equals(other)) {
 			return 0; // NOPMD
 		} else {
-			return hashCode() - other.hashCode();
+			return hashCode() - Objects.hashCode(other);
 		}
 	}
 

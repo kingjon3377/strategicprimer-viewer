@@ -2,8 +2,6 @@ package util;
 
 import java.util.Map;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 /**
  * A Map that actually executes the removal of elements only when the coalesce()
  * method is called.
@@ -30,7 +28,7 @@ import org.eclipse.jdt.annotation.NonNull;
  * @param <K> the first type parameter
  * @param <V> the second type parameter
  */
-public interface DelayedRemovalMap<@NonNull K, V> extends Map<@NonNull K, V> {
+public interface DelayedRemovalMap<K, V> extends Map<K, V> {
 
 	/**
 	 * Apply all scheduled removals.

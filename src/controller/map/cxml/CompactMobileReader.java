@@ -9,7 +9,7 @@ import java.util.Set;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
@@ -75,7 +75,7 @@ public final class CompactMobileReader extends
 	 *
 	 * FIXME: This is brittle and doesn't work well with extensible classes.
 	 */
-	private static final Map<Class<@NonNull ? extends MobileFixture>, String> TAG_MAP;
+	private static final Map<Class<? extends MobileFixture>, String> TAG_MAP;
 	/**
 	 * Singleton object.
 	 */
@@ -218,6 +218,9 @@ public final class CompactMobileReader extends
 		// ESCA-JAVA0177:
 		final MobileFixture retval; // NOPMD
 		final MobileType type = MAP.get(element.getName().getLocalPart());
+		if (type == null) {
+			throw new IllegalStateException("Tag turned into a null type.");
+		}
 		switch (type) {
 		case UnitType:
 			return CompactUnitReader.READER.read(element, stream, players, // NOPMD

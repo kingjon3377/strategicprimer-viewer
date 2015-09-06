@@ -63,7 +63,7 @@ public class TerrainTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-			final Iterable<@NonNull TileFixture> fixtures) {
+			final Iterable<TileFixture> fixtures) {
 		if (mapping.containsKey(terrain)) {
 			return NullCleaner.assertNotNull(mapping.get(terrain));
 		} else {

@@ -306,7 +306,9 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 			final Point newPoint) {
 		final Point selPoint = model.getSelectedUnitLocation();
 		for (final Direction dir : Direction.values()) {
-			assert dir != null;
+			if (dir == null) {
+				continue;
+			}
 			final Point point = model.getDestination(selPoint, dir);
 			mains.get(dir).fireChanges(selPoint, point);
 			seconds.get(dir).fireChanges(selPoint, point);

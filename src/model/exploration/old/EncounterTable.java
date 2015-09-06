@@ -2,8 +2,6 @@ package model.exploration.old;
 
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -47,7 +45,7 @@ public interface EncounterTable {
 	 * @return an appropriate event for that tile
 	 */
 	String generateEvent(Point point, TileType terrain,
-			Iterable<@NonNull TileFixture> fixtures);
+			Iterable<TileFixture> fixtures);
 
 	/**
 	 * For table-debugging purposes.

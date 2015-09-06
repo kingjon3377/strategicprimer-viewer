@@ -10,6 +10,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.IFixture;
 import model.map.Player;
+import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import util.ArraySet;
 import util.NullCleaner;
@@ -194,6 +195,19 @@ public class Unit implements IUnit {
 	@Override
 	public int hashCode() {
 		return id;
+	}
+
+	/**
+	 * @param fix A TileFixture to compare to
+	 *
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(@Nullable final TileFixture fix) {
+		if (fix == null) {
+			throw new IllegalArgumentException("Compared to null fixture");
+		}
+		return fix.hashCode() - hashCode();
 	}
 
 	/**
@@ -397,14 +411,16 @@ public class Unit implements IUnit {
 			boolean retval = true;
 			final Map<Integer, UnitMember> ours = new HashMap<>();
 			for (final UnitMember member : this) {
-				ours.put(NullCleaner.assertNotNull(Integer.valueOf(member.getID())), member);
+				ours.put(Integer.valueOf(member.getID()), member);
 			}
 			final String ctxt =
-					String.format("%s In unit of kind %s named %s (ID #%d):",
-							context, kind, name, Integer.valueOf(id));
-			assert ctxt != null;
+					NullCleaner.assertNotNull(String.format(
+							"%s In unit of kind %s named %s (ID #%d):",
+							context, kind, name, Integer.valueOf(id)));
 			for (final UnitMember member : other) {
-				if (!ours.containsKey(Integer.valueOf(member.getID()))) {
+				if (member == null) {
+					continue;
+				} else if (!ours.containsKey(Integer.valueOf(member.getID()))) {
 					ostream.append(ctxt);
 					ostream.append(" Extra member:\t");
 					ostream.append(member.toString());

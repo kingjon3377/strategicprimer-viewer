@@ -7,12 +7,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Collections;
+import java.util.List;
 
 import org.junit.Test;
 
 import model.exploration.old.EncounterTable;
 import model.map.Point;
 import model.map.PointFactory;
+import model.map.TileFixture;
 import model.map.TileType;
 
 /**
@@ -38,6 +40,10 @@ import model.map.TileType;
 // ESCA-JAVA0137:
 public final class TestTableLoader {
 	/**
+	 * The empty list.
+	 */
+	private static final List<TileFixture> EMPTY = Collections.emptyList();
+	/**
 	 * "one".
 	 */
 	private static final String ONE_STRING = "one";
@@ -59,7 +65,7 @@ public final class TestTableLoader {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(0, 0);
 			assertEquals("loading quadrant table", ONE_STRING,
-					result.generateEvent(point, TileType.Tundra, Collections.emptyList()));
+					result.generateEvent(point, TileType.Tundra, EMPTY));
 			// TODO: somehow check that it got properly loaded, beyond this
 		}
 		try (final BufferedReader readerTwo = new BufferedReader(
@@ -88,7 +94,7 @@ public final class TestTableLoader {
 			final Point point = PointFactory.point(30, 30);
 			// ESCA-JAVA0076:
 			assertEquals("loading random table", ONE_STRING,
-					result.generateEvent(point, TileType.Tundra, Collections.emptyList()));
+					result.generateEvent(point, TileType.Tundra, EMPTY));
 		}
 	}
 
@@ -106,12 +112,12 @@ public final class TestTableLoader {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point one = PointFactory.point(30, 30);
 			assertEquals("loading terrain table: tundra", ONE_STRING,
-					result.generateEvent(one, TileType.Tundra, Collections.emptyList()));
+					result.generateEvent(one, TileType.Tundra, EMPTY));
 			final Point two = PointFactory.point(15, 15);
 			assertEquals("loading terrain table: plains", "two",
-					result.generateEvent(two, TileType.Plains, Collections.emptyList()));
+					result.generateEvent(two, TileType.Plains, EMPTY));
 			assertEquals("loading terrain table: ocean", "three",
-					result.generateEvent(two, TileType.Ocean, Collections.emptyList()));
+					result.generateEvent(two, TileType.Ocean, EMPTY));
 		}
 	}
 
@@ -129,7 +135,7 @@ public final class TestTableLoader {
 			final EncounterTable result = TableLoader.loadTableFromStream(one);
 			final Point point = PointFactory.point(10, 5);
 			assertEquals("loading constant table: first test", ONE_STRING,
-					result.generateEvent(point, TileType.Plains, Collections.emptyList()));
+					result.generateEvent(point, TileType.Plains, EMPTY));
 		}
 	}
 

@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.fixtures.RiverFixture;
@@ -275,7 +274,7 @@ public final class Tile implements IMutableTile {
 	protected boolean isSubsetImpl(final ITile obj, final Appendable ostream,
 			final String context) throws IOException {
 		final List<TileFixture> temp = new ArrayList<>();
-		final Map<Integer, Subsettable<@NonNull ?>> mySubsettables = getSubsettableContents();
+		final Map<Integer, Subsettable<?>> mySubsettables = getSubsettableContents();
 		for (final TileFixture fix : obj) {
 			if (!contents.contains(fix) && !temp.contains(fix)
 					&& !shouldSkip(fix)) {
@@ -287,7 +286,7 @@ public final class Tile implements IMutableTile {
 			assert fix != null;
 			if (fix instanceof Subsettable
 					&& mySubsettables.containsKey(Integer.valueOf(fix.getID()))) {
-				final Subsettable<@NonNull ?> mine = mySubsettables.get(Integer
+				final Subsettable<?> mine = mySubsettables.get(Integer
 						.valueOf(fix.getID()));
 				if (mine instanceof IUnit && fix instanceof IUnit) {
 					if (!((IUnit) mine).isSubset((IUnit) fix, ostream, context)) {
@@ -319,12 +318,12 @@ public final class Tile implements IMutableTile {
 	 * @return the contents of the tile that are Subsettable implementations,
 	 *         each mapped from its ID # to itself.
 	 */
-	private Map<Integer, Subsettable<@NonNull ?>> getSubsettableContents() {
-		final Map<Integer, Subsettable<@NonNull ?>> mySubsettables = new HashMap<>();
+	private Map<Integer, Subsettable<?>> getSubsettableContents() {
+		final Map<Integer, Subsettable<?>> mySubsettables = new HashMap<>();
 		for (final TileFixture fix : contents) {
 			if (fix instanceof Subsettable) {
-				mySubsettables.put(NullCleaner.assertNotNull(Integer.valueOf(fix.getID())),
-						(Subsettable<@NonNull ?>) fix);
+				mySubsettables.put(Integer.valueOf(fix.getID()),
+						(Subsettable<?>) fix);
 			}
 		}
 		return mySubsettables;

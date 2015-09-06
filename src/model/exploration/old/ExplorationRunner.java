@@ -6,8 +6,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -48,7 +46,7 @@ public class ExplorationRunner { // NOPMD
 	 */
 	@SuppressWarnings("deprecation")
 	public String defaultResults(final Point point, final TileType terrain,
-			final Iterable<@NonNull TileFixture> fixtures)
+			final Iterable<TileFixture> fixtures)
 			throws MissingTableException {
 		final StringBuilder sbuild = new StringBuilder(80)
 				.append("The primary rock type here is ");
@@ -87,7 +85,7 @@ public class ExplorationRunner { // NOPMD
 	 * @throws MissingTableException if table missing
 	 */
 	public String getPrimaryRock(final Point point, final TileType terrain,
-			final Iterable<@NonNull TileFixture> fixtures)
+			final Iterable<TileFixture> fixtures)
 			throws MissingTableException {
 		return getTable("major_rock").generateEvent(point,
 				terrain, fixtures);
@@ -103,7 +101,7 @@ public class ExplorationRunner { // NOPMD
 	 */
 	@SuppressWarnings("deprecation")
 	public String getPrimaryTree(final Point point, final TileType terrain,
-			final Iterable<@NonNull TileFixture> fixtures)
+			final Iterable<TileFixture> fixtures)
 			throws MissingTableException {
 		if (TileType.BorealForest.equals(terrain)) {
 			return getTable("boreal_major_tree").generateEvent(point,
@@ -131,7 +129,7 @@ public class ExplorationRunner { // NOPMD
 	 * @throws MissingTableException if the table is missing
 	 */
 	public String consultTable(final String table, final Point point,
-			final TileType terrain, final Iterable<@NonNull TileFixture> fixtures)
+			final TileType terrain, final Iterable<TileFixture> fixtures)
 			throws MissingTableException {
 		return getTable(table).generateEvent(point, terrain, fixtures);
 	}
@@ -147,7 +145,12 @@ public class ExplorationRunner { // NOPMD
 	public EncounterTable getTable(final String name)
 			throws MissingTableException {
 		if (tables.containsKey(name)) {
-				return tables.get(name);
+			final EncounterTable retval = tables.get(name);
+			if (retval == null) {
+				throw new MissingTableException(name);
+			} else {
+				return retval;
+			}
 		} else {
 			throw new MissingTableException(name);
 		}
@@ -169,7 +172,7 @@ public class ExplorationRunner { // NOPMD
 	 * @throws MissingTableException on missing table
 	 */
 	public String recursiveConsultTable(final String table, final Point point,
-			final TileType terrain, final Iterable<@NonNull TileFixture> fixtures)
+			final TileType terrain, final Iterable<TileFixture> fixtures)
 			throws MissingTableException {
 		final String result = consultTable(table, point, terrain, fixtures);
 		if (result.contains("#")) {
@@ -250,7 +253,7 @@ public class ExplorationRunner { // NOPMD
 	public boolean recursiveCheck() {
 		final Set<String> state = new HashSet<>(); // NOPMD
 		for (final String table : tables.keySet()) {
-			if (recursiveCheck(table, state)) {
+			if (table != null && recursiveCheck(table, state)) {
 				return true; // NOPMD;
 			}
 		}
@@ -266,7 +269,9 @@ public class ExplorationRunner { // NOPMD
 	public void verboseRecursiveCheck(final Appendable ostream) throws IOException {
 		final Set<String> state = new HashSet<>(); // NOPMD
 		for (final String table : tables.keySet()) {
-			verboseRecursiveCheck(table, ostream, state);
+			if (table != null) {
+				verboseRecursiveCheck(table, ostream, state);
+			}
 		}
 	}
 

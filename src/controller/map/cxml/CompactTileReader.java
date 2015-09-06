@@ -57,7 +57,7 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	/**
 	 * List of readers we'll try subtags on.
 	 */
-	private final List<CompactReader<? extends TileFixture>> readers;
+	private final List<AbstractCompactReader<? extends TileFixture>> readers;
 
 	/**
 	 * Singleton object.
@@ -68,7 +68,7 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	 * Singleton.
 	 */
 	private CompactTileReader() {
-		final List<CompactReader<? extends TileFixture>> list =
+		final List<AbstractCompactReader<? extends TileFixture>> list =
 				new ArrayList<>(Arrays.asList(CompactMobileReader.READER,
 						CompactResourceReader.READER,
 						CompactTerrainReader.READER, CompactTextReader.READER,

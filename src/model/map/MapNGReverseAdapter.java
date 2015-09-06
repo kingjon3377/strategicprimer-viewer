@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.fixtures.RiverFixture;
@@ -90,11 +90,11 @@ public class MapNGReverseAdapter implements IMapView {
 	 * @return the result of the comparison
 	 */
 	@Override
-	public int compareTo(final IMap obj) {
+	public int compareTo(@Nullable final IMap obj) {
 		if (equals(obj)) {
 			return 0; // NOPMD
 		} else {
-			return hashCode() - obj.hashCode();
+			return hashCode() - Objects.hashCode(obj);
 		}
 	}
 
@@ -200,7 +200,9 @@ public class MapNGReverseAdapter implements IMapView {
 				throws IOException {
 			boolean retval = true;
 			for (Point point : obj) {
-				if (hasTile(point) || obj.getTile(point).isEmpty()) {
+				if (point == null) {
+					continue;
+				} else if (hasTile(point) || obj.getTile(point).isEmpty()) {
 					ITile tile = getTile(point);
 					if (!tile.isSubset(obj.getTile(point), ostream, context
 							+ " At " + point + ':')) {
@@ -291,7 +293,7 @@ public class MapNGReverseAdapter implements IMapView {
 				final Appendable ostream, final String context)
 				throws IOException {
 			for (final Player player : obj) {
-				if (!contains(player)) {
+				if (player != null && !contains(player)) {
 					return false; // NOPMD
 				}
 			}
@@ -408,11 +410,11 @@ public class MapNGReverseAdapter implements IMapView {
 		public boolean isSubset(final ITile obj, final Appendable ostream,
 				final String context) throws IOException {
 			if (getTerrain().equals(obj.getTerrain())) {
-				Map<Integer, Subsettable<@NonNull ?>> subsettableContents =
+				Map<Integer, Subsettable<?>> subsettableContents =
 						new HashMap<>();
 				for (TileFixture item : this) {
-					if (item instanceof Subsettable) {
-						subsettableContents.put(NullCleaner.assertNotNull(Integer.valueOf(item.getID())),
+					if (item instanceof Subsettable<?>) {
+						subsettableContents.put(Integer.valueOf(item.getID()),
 								(SubsettableFixture) item);
 					}
 				}
@@ -422,7 +424,7 @@ public class MapNGReverseAdapter implements IMapView {
 				}
 				List<TileFixture> temp = new ArrayList<>();
 				for (TileFixture fix : obj) {
-					if (!contents.contains(fix)
+					if (fix != null && !contents.contains(fix)
 							&& !temp.contains(fix) && !shouldSkip(fix)) {
 						temp.add(fix);
 					}
@@ -433,11 +435,11 @@ public class MapNGReverseAdapter implements IMapView {
 					if (fix instanceof SubsettableFixture
 							&& subsettableContents.containsKey(Integer
 									.valueOf(fix.getID()))) {
-						final Subsettable<@NonNull ?> mine =
+						final Subsettable<?> mine =
 								subsettableContents.get(Integer.valueOf(fix
 										.getID()));
 						if (mine instanceof IUnit && fix instanceof IUnit) {
-							if (!((IUnit) mine).isSubset((IUnit) fix, ostream,
+							if (!((IUnit) mine).isSubset(fix, ostream,
 									context)) {
 								retval = false;
 							}
@@ -496,7 +498,9 @@ public class MapNGReverseAdapter implements IMapView {
 			if (hasRiver()) {
 				final RiverFixture rivers = new RiverFixture();
 				for (final River river : getRivers()) {
-					rivers.addRiver(river);
+					if (river != null) {
+						rivers.addRiver(river);
+					}
 				}
 				list.add(rivers);
 			}

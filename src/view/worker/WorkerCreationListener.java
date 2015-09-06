@@ -15,6 +15,7 @@ import model.listeners.NewWorkerListener;
 import model.listeners.UnitSelectionListener;
 import model.map.IFixture;
 import model.map.Player;
+import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Worker;
@@ -164,6 +165,13 @@ public final class WorkerCreationListener implements ActionListener,
 		@Override
 		public IUnit copy(final boolean zero) {
 			throw new IllegalStateException("Tried to copy 'null' unit");
+		}
+		@Override
+		public int compareTo(@Nullable final TileFixture fix) {
+			if (fix == null) {
+				throw new IllegalArgumentException("Asked to compare null fixture");
+			}
+			return fix.hashCode() - hashCode();
 		}
 	};
 	/**

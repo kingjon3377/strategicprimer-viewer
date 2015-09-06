@@ -4,6 +4,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.HasKind;
 import model.map.IFixture;
+import model.map.TileFixture;
 import util.NullCleaner;
 
 /**
@@ -140,6 +141,19 @@ public class CacheFixture implements HarvestableFixture, HasKind {
 	}
 
 	/**
+	 * @param fix A TileFixture to compare to
+	 *
+	 * @return the result of the comparison
+	 */
+	@Override
+	public int compareTo(@Nullable final TileFixture fix) {
+		if (fix == null) {
+			throw new IllegalArgumentException("Compared to null fixture");
+		}
+		return fix.hashCode() - hashCode();
+	}
+
+		/**
 	 * ID number.
 	 */
 	private final int id; // NOPMD
