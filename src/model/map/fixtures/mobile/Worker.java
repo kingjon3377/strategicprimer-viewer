@@ -332,11 +332,11 @@ public class Worker implements IWorker {
 			Worker retval = new Worker(name, race, id);
 			WorkerStats localStats = stats;
 			if (localStats != null) {
-				retval.setStats(localStats.copy(true));
+				retval.setStats(localStats.copy(false));
 			}
 			retval.setImage(image);
 			for (IJob job : this) {
-				retval.addJob(job.copy(true));
+				retval.addJob(job.copy(false));
 			}
 			return retval;
 		}
