@@ -174,14 +174,32 @@ public class Worker implements IWorker {
 	private boolean equalsIgIDImpl(final Worker fix) {
 		final WorkerStats locStats = stats;
 		if (locStats == null) {
-			return fix.name.equals(name) && fix.jobSet.equals(jobSet) // NOPMD
+			return fix.name.equals(name) && jobSetsEqual(jobSet, fix.jobSet) // NOPMD
 					&& fix.race.equals(race) && fix.stats == null;
 		} else {
-			return fix.name.equals(name) && fix.jobSet.equals(jobSet)
+			return fix.name.equals(name) && Worker.jobSetsEqual(jobSet, fix.jobSet)
 					&& fix.race.equals(race) && locStats.equals(fix.stats);
 		}
 	}
-
+	/**
+	 * TODO: Improve performance
+	 * @param one a set of Jobs
+	 * @param two a set of Jobs
+	 * @return whether they are equal, ignoring any "empty" Jobs.
+	 */
+	private static boolean jobSetsEqual(final Set<IJob> one, final Set<IJob> two) {
+		for (IJob job : one) {
+			if (!job.isEmpty() && !two.contains(job)) {
+				return false;
+			}
+		}
+		for (IJob job : two) {
+			if (!job.isEmpty() && !one.contains(job)) {
+				return false;
+			}
+		}
+		return true;
+	}
 	/**
 	 * @param obj
 	 *            another UnitMember
@@ -336,7 +354,9 @@ public class Worker implements IWorker {
 			}
 			retval.setImage(image);
 			for (IJob job : this) {
-				retval.addJob(job.copy(false));
+				if (!job.isEmpty()) {
+					retval.addJob(job.copy(false));
+				}
 			}
 			return retval;
 		}
