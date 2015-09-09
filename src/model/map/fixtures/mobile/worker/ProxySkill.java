@@ -142,7 +142,7 @@ public class ProxySkill implements ISkill, ProxyFor<IJob> {
 	public void addHours(final int hrs, final int condition) {
 		final Random random = new Random(condition);
 		if (parallel) {
-			int seed = random.nextInt(100);
+			int seed = condition;
 			for (final IJob job : proxied) {
 				boolean touched = false;
 				for (final ISkill skill : job) {
