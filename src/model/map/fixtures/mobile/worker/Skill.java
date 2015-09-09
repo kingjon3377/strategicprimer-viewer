@@ -138,4 +138,13 @@ public class Skill implements ISkill {
 	public final void setName(final String nomen) {
 		name = nomen;
 	}
+	/**
+	 * A Skill is "empty" if the worker has no levels in it and no hours of experience in it.
+	 * @return whether this skill is "empty"
+	 */
+	@Override
+	public boolean isEmpty() {
+		return level == 0 && hours == 0;
+	}
+
 }

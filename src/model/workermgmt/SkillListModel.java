@@ -94,6 +94,10 @@ public final class SkillListModel extends DefaultListModel<ISkill> implements
 		public IJob copy(final boolean zero) {
 			throw new IllegalStateException("Tried to copy a 'null' job");
 		}
+		@Override
+		public boolean isEmpty() {
+			return true;
+		}
 	};
 	/**
 	 * The current Job.

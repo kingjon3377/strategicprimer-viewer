@@ -76,6 +76,10 @@ public final class LevelListener implements LevelGainListener,
 		public ISkill copy(final boolean zero) {
 			throw new IllegalStateException("copy called on null Skill");
 		}
+		@Override
+		public boolean isEmpty() {
+			return true;
+		}
 	};
 	/**
 	 * A type-safe null UnitMember.

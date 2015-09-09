@@ -233,4 +233,21 @@ public class Job implements IJob { // NOPMD
 	public final void setName(final String nomen) {
 		name = nomen;
 	}
+	/**
+	 * A Job is "empty" if the worker has no levels in it and no experience in any skills it contains.
+	 * @return whether this Job is "empty"
+	 */
+	@Override
+	public boolean isEmpty() {
+		if (level > 0) {
+			return false;
+		} else {
+			for (ISkill skill : this) {
+				if (!skill.isEmpty()) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }

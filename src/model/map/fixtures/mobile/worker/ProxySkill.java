@@ -204,4 +204,20 @@ public class ProxySkill implements ISkill, ProxyFor<IJob> {
 	public Iterable<IJob> getProxied() {
 		return proxied;
 	}
+	/**
+	 * @return whther any of the proxied Skills is "empty"
+	 */
+	@Override
+	public boolean isEmpty() {
+		for (IJob job : proxied) {
+			for (ISkill skill : job) {
+				if (skill == this) {
+					continue;
+				} else if (skill.getName().equals(name) && !skill.isEmpty()) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }

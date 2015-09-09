@@ -48,4 +48,9 @@ public interface ISkill extends HasName {
 	 * @param zero whether to "zero out" sensitive details
 	 */
 	ISkill copy(boolean zero);
+	/**
+	 * A Skill is "empty" if the worker has no levels in it and no hours of experience in it.
+	 * @return whether this skill is "empty"
+	 */
+	boolean isEmpty();
 }

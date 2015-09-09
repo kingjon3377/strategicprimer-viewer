@@ -208,4 +208,17 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 	public Iterable<IJob> getProxied() {
 		return proxiedJobs;
 	}
+	/**
+	 * A Job is "empty" if the worker has no levels in it and no experience in any skills it contains.
+	 * @return whether all of the Jobs this is a proxy for are "empty"
+	 */
+	@Override
+	public boolean isEmpty() {
+		for (IJob job : proxiedJobs) {
+			if (!job.isEmpty()) {
+				return false;
+			}
+		}
+		return true;
+	}
 }
