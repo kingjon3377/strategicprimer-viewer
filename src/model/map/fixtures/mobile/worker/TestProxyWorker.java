@@ -1,7 +1,7 @@
 package model.map.fixtures.mobile.worker;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -106,14 +106,14 @@ public class TestProxyWorker {
 				oneCopy);
 		assertEquals("Two copies of second worker should be equal", two,
 				twoCopy);
-		assertNotEquals("First worker should not still be as it was originally",
-				oneOrig, one);
+		assertFalse("First worker should not still be as it was originally",
+				oneOrig.equals(one));
 		assertTrue(
 				"But first worker original should be a subset of first worker now",
 				one.isSubset(oneOrig, NullStream.DEV_NULL, ""));
-		assertNotEquals(
+		assertFalse(
 				"Two copies of second worker shouldn't still be as it was originally",
-				twoOrig, two);
+				twoOrig.equals(two));
 		assertTrue(
 				"But second worker original should be a subset of second worker now",
 				two.isSubset(twoOrig, NullStream.DEV_NULL, ""));
@@ -158,14 +158,14 @@ public class TestProxyWorker {
 				twoCopy);
 		assertWorkerHasJob(one, "jobTwo");
 		assertWorkerHasJob(two, "jobOne");
-		assertNotEquals("First worker should not still be as it was originally",
-				oneOrig, one);
+		assertFalse("First worker should not still be as it was originally",
+				oneOrig.equals(one));
 		assertTrue(
 				"But first worker original should be a subset of first worker now",
 				one.isSubset(oneOrig, NullStream.DEV_NULL, ""));
-		assertNotEquals(
+		assertFalse(
 				"Two copies of second worker shouldn't still be as it was originally",
-				twoOrig, two);
+				twoOrig.equals(two));
 		assertTrue(
 				"But second worker original should be a subset of second worker now",
 				two.isSubset(twoOrig, NullStream.DEV_NULL, ""));
