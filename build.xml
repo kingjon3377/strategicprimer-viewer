@@ -123,6 +123,7 @@
       <test name="model.viewer.PointIteratorTest" todir="${junit.output.dir}" />
       <test name="model.workermgmt.TestWorkerModel" todir="${junit.output.dir}" />
       <test name="controller.map.converter.TestConverter" todir="${junit.output.dir}" />
+      <test name="model.map.fixtures.mobile.worker.TestProxyWorker" todir="${junit.output.dir}" />
       <classpath refid="viewer.classpath" />
     </junit>
     <fail if="junit.failure" message="Unit test(s) failed. See reports." />
