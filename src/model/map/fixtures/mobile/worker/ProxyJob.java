@@ -89,8 +89,18 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 			}
 			if (!touched) {
 				final Job job = new Job(nomen, 0);
-				proxiedJobs.add(job);
 				worker.addJob(job);
+				boolean found = false;
+				for (final IJob temp : worker) {
+					if (temp.getName().equals(nomen)) {
+						proxiedJobs.add(temp);
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					proxiedJobs.add(job);
+				}
 			}
 		}
 		final IJob[] jobsArray =

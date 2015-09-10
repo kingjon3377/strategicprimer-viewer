@@ -172,8 +172,18 @@ public class ProxySkill implements ISkill, ProxyFor<IJob> {
 				}
 				if (!touched) {
 					final Skill skill = new Skill(name, 0, 0);
-					skill.addHours(hrs, random.nextInt(100));
 					job.addSkill(skill);
+					boolean found = false;
+					for (final ISkill temp : job) {
+						if (temp.getName().equals(name)) {
+							temp.addHours(hrs, random.nextInt(100));
+							found = true;
+							break;
+						}
+					}
+					if (!found) {
+						skill.addHours(hrs, random.nextInt(100));
+					}
 				}
 			}
 		}
