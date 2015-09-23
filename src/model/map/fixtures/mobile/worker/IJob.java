@@ -30,7 +30,15 @@ public interface IJob extends HasName, Iterable<ISkill>, Subsettable<IJob> {
 	/**
 	 * Add a skill.
 	 *
-	 * @param skill the skill to add
+	 * Note that this does not guarantee that the Job will contain this Skill
+	 * object, nor that any changes made to it will be applied to the Skill that
+	 * the Job already had or that is actually added. (TODO: implementations
+	 * *should* do that.) If levels or hours *need* to be added, callers should
+	 * get the Skill the Job contains after this returns (TODO: make that
+	 * easier) and apply changes to that.
+	 *
+	 * @param skill
+	 *            the skill to add
 	 * @return the result of the operation
 	 */
 	boolean addSkill(ISkill skill);

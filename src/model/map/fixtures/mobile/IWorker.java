@@ -33,7 +33,15 @@ public interface IWorker extends UnitMember, Iterable<IJob>, HasName, HasKind,
 	/**
 	 * Add a job.
 	 *
-	 * @param job the job to add.
+	 * Note that this does not guarantee that the worker will contain this Job
+	 * object, nor that any changes made to it will be applied to the Job that
+	 * the worker already had or that is actually added. (TODO: implementations
+	 * *should* do that.) If levels *need* to be added, callers should get the
+	 * Job the worker contains after this returns (TODO: make that easier) and
+	 * apply changes to that.
+	 *
+	 * @param job
+	 *            the job to add.
 	 * @return the result of the operation
 	 */
 	boolean addJob(IJob job);
