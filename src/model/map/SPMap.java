@@ -217,4 +217,34 @@ public class SPMap implements IMutableMap {
 	public MapDimensions getDimensions() {
 		return dimensions;
 	}
+	/**
+	 * @return a copy of this map
+	 * @param zero whether to "zero" sensitive data (probably just DCs)
+	 */
+	@Override
+	public IMap copy(final boolean zero) {
+		SPMap retval = new SPMap(dimensions);
+		for (Player player : players) {
+			if (player != null) {
+				retval.addPlayer(player);
+			}
+		}
+		for (Point point : tiles) {
+			if (point != null && tiles.hasTile(point)) {
+				ITile tile = tiles.getTile(point);
+				assert (tile != null);
+				Tile newTile = new Tile(tile.getTerrain());
+				for (TileFixture fixture : tile) {
+					if (fixture instanceof IEvent) {
+						newTile.addFixture(fixture.copy(zero));
+					} else {
+						// TODO: Should we zero other fixtures?
+						newTile.addFixture(fixture.copy(false));
+					}
+				}
+				retval.addTile(point, newTile);
+			}
+		}
+		return retval;
+	}
 }

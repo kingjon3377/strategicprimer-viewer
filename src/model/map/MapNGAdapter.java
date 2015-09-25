@@ -612,4 +612,46 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 		}
 		return NullCleaner.assertNotNull(builder.toString());
 	}
+	/**
+	 * FIXME: Add tests to ensure that a zeroed map is still a subset, and a
+	 * non-zeroed map is still equal.
+	 *
+	 * @return a copy of this map
+	 * @param zero
+	 *            whether to "zero" sensitive data (probably just DCs)
+	 */
+	@Override
+	public IMapNG copy(final boolean zero) {
+		SPMapNG retval = new SPMapNG(dimensions(), state.getPlayers().copy(false),
+				getCurrentTurn());
+		for (Point point : locations()) {
+			assert(point != null);
+			retval.setBaseTerrain(point, getBaseTerrain(point));
+			Ground grd = getGround(point);
+			if (grd == null) {
+				retval.setGround(point, null);
+			} else {
+				retval.setGround(point, grd.copy(false));
+			}
+			Forest frst = getForest(point);
+			if (frst == null) {
+				retval.setForest(point, null);
+			} else {
+				retval.setForest(point, frst.copy(false));
+			}
+			retval.setMountainous(point, isMountainous(point));
+			for (River river : getRivers(point)) {
+				retval.addRivers(point, river);
+			}
+			for (TileFixture fixture : getOtherFixtures(point)) {
+				assert fixture != null;
+				if (fixture instanceof IEvent) {
+					retval.addFixture(point, fixture.copy(zero));
+				} else {
+					retval.addFixture(point, fixture.copy(false));
+				}
+			}
+		}
+		return retval;
+	}
 }

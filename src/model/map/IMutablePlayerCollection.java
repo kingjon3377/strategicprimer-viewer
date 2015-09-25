@@ -38,5 +38,11 @@ public interface IMutablePlayerCollection extends IPlayerCollection {
 	 * @return true if it was removed as a result of this call
 	 */
 	boolean remove(Object obj);
+	/**
+	 * @param zero whether to "zero" sensitive details: should probably be ignored
+	 * @return a copy of this collection
+	 */
+	@Override
+	IMutablePlayerCollection copy(boolean zero);
 
 }

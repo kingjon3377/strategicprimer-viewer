@@ -52,5 +52,9 @@ public interface IPlayerCollection extends Iterable<Player>,
 	 * @return a player for "independent" fixtures.
 	 */
 	Player getIndependent();
-
+	/**
+	 * @param zero whether to "zero" sensitive details: should probably be ignored
+	 * @return a copy of this collection
+	 */
+	IPlayerCollection copy(boolean zero);
 }

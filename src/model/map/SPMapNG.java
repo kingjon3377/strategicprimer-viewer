@@ -23,6 +23,7 @@ import util.ArraySet;
 import util.EmptyIterator;
 import util.IteratorWrapper;
 import util.NullCleaner;
+
 /**
  * A proper implementation of IMapNG.
  *
@@ -47,13 +48,11 @@ import util.NullCleaner;
  */
 public class SPMapNG implements IMutableMapNG {
 	/**
-	 * The set of mountainous places.
-	 * TODO: Populate the set.
+	 * The set of mountainous places. TODO: Populate the set.
 	 */
 	private final Set<Point> mountains = new HashSet<>();
 	/**
-	 * The base terrain at points in the map.
-	 * TODO: Populate the map.
+	 * The base terrain at points in the map. TODO: Populate the map.
 	 */
 	private final Map<Point, TileType> terrain = new HashMap<>();
 	/**
@@ -80,7 +79,8 @@ public class SPMapNG implements IMutableMapNG {
 	 *
 	 * TODO: Use a multimap once we add the Guava dependency.
 	 */
-	private final Map<Point, Collection<TileFixture>> fixtures = new HashMap<>();
+	private final Map<Point, Collection<TileFixture>> fixtures =
+			new HashMap<>();
 	/**
 	 * The dimensions of the map.
 	 */
@@ -93,22 +93,26 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	private final Map<Point, Ground> ground = new HashMap<>();
 	/**
-	 * The rivers in the map.
-	 * TODO: populate the map; remember to use EnumSets, not RiverFixtures.
+	 * The rivers in the map. TODO: populate the map; remember to use EnumSets,
+	 * not RiverFixtures.
 	 */
 	private final Map<Point, EnumSet<River>> rivers = new HashMap<>();
 	/**
 	 * Map max version.
 	 */
 	public static final int MAX_VERSION = 1;
+
 	/**
-	 * @param obj another map
-	 * @param out the stream to write verbose results to
+	 * @param obj
+	 *            another map
+	 * @param out
+	 *            the stream to write verbose results to
 	 * @param context
 	 *            a string to print before every line of output, describing the
 	 *            context
 	 * @return whether the other map is a subset of this one
-	 * @throws IOException on I/O error writing output to the stream
+	 * @throws IOException
+	 *             on I/O error writing output to the stream
 	 */
 	@Override
 	public boolean isSubset(final IMapNG obj, final Appendable out,
@@ -131,10 +135,10 @@ public class SPMapNG implements IMutableMapNG {
 						context + " At " + Objects.toString(point) + ':';
 				if (point == null) {
 					continue;
-				} else if (!getBaseTerrain(point).equals(
-						obj.getBaseTerrain(point))
-						&& !TileType.NotVisible.equals(obj
-								.getBaseTerrain(point))) {
+				} else
+					if (!getBaseTerrain(point).equals(obj.getBaseTerrain(point))
+							&& !TileType.NotVisible
+									.equals(obj.getBaseTerrain(point))) {
 					out.append(ctxt);
 					if (TileType.NotVisible.equals(getBaseTerrain(point))) {
 						out.append("\tHas terrain information we don't\n");
@@ -143,7 +147,7 @@ public class SPMapNG implements IMutableMapNG {
 					}
 					retval = false;
 					continue;
-//					return false;
+					// return false;
 				}
 				if (obj.isMountainous(point) && !isMountainous(point)) {
 					out.append(ctxt);
@@ -181,7 +185,8 @@ public class SPMapNG implements IMutableMapNG {
 					if (ourGround != null
 							&& ourGround.getKind().equals(theirGround.getKind())
 							&& ourGround.isExposed()) {
-						// They just don't have the exposed bit set; carry on ...
+						// They just don't have the exposed bit set; carry on
+						// ...
 					} else if (ourGround == null
 							|| !fixtures.get(point).contains(theirGround)) {
 						out.append(ctxt);
@@ -191,8 +196,7 @@ public class SPMapNG implements IMutableMapNG {
 						// return false;
 					}
 				}
-				final Collection<TileFixture> ourFixtures =
-						new ArrayList<>();
+				final Collection<TileFixture> ourFixtures = new ArrayList<>();
 				final Map<Integer, SubsettableFixture> ourSubsettables =
 						new HashMap<>();
 				// Because IUnit is Subsettable<IUnit> and thus incompatible
@@ -208,8 +212,8 @@ public class SPMapNG implements IMutableMapNG {
 						ourFixtures.add(fix);
 					}
 				}
-				final Iterable<TileFixture> theirFixtures = obj
-						.getOtherFixtures(point);
+				final Iterable<TileFixture> theirFixtures =
+						obj.getOtherFixtures(point);
 				for (final TileFixture fix : theirFixtures) {
 					if (fix == null || ourFixtures.contains(fix)
 							|| shouldSkip(fix)) {
@@ -223,13 +227,12 @@ public class SPMapNG implements IMutableMapNG {
 							.containsKey(Integer.valueOf(fix.getID()))) {
 						retval &= ourUnits.get(Integer.valueOf(fix.getID()))
 								.isSubset(fix, out, ctxt);
-					} else if (fix instanceof SubsettableFixture
-							&& ourSubsettables.containsKey(Integer.valueOf(fix
-									.getID()))) {
-						retval &=
-								ourSubsettables.get(
-										Integer.valueOf(fix.getID())).isSubset(
-										fix, out, ctxt);
+					} else
+						if (fix instanceof SubsettableFixture && ourSubsettables
+								.containsKey(Integer.valueOf(fix.getID()))) {
+						retval &= ourSubsettables
+								.get(Integer.valueOf(fix.getID()))
+								.isSubset(fix, out, ctxt);
 					} else {
 						out.append(ctxt);
 						out.append(" Extra fixture:\t");
@@ -259,8 +262,10 @@ public class SPMapNG implements IMutableMapNG {
 			return false; // NOPMD
 		}
 	}
+
 	/**
-	 * @param other another map
+	 * @param other
+	 *            another map
 	 * @return the result of a comparison between us and it.
 	 */
 	@Override
@@ -271,11 +276,16 @@ public class SPMapNG implements IMutableMapNG {
 			return hashCode() - Objects.hashCode(other);
 		}
 	}
+
 	/**
 	 * Constructor.
-	 * @param dimensions the dimensions of the map
-	 * @param players the players in the map
-	 * @param currentTurn the current turn
+	 *
+	 * @param dimensions
+	 *            the dimensions of the map
+	 * @param players
+	 *            the players in the map
+	 * @param currentTurn
+	 *            the current turn
 	 */
 	public SPMapNG(final MapDimensions dimensions,
 			final IMutablePlayerCollection players, final int currentTurn) {
@@ -283,6 +293,7 @@ public class SPMapNG implements IMutableMapNG {
 		playerCollection = players;
 		turn = currentTurn;
 	}
+
 	/**
 	 * @return the map's dimensions
 	 */
@@ -290,6 +301,7 @@ public class SPMapNG implements IMutableMapNG {
 	public MapDimensions dimensions() {
 		return dims;
 	}
+
 	/**
 	 * @return the players in the map
 	 */
@@ -297,16 +309,19 @@ public class SPMapNG implements IMutableMapNG {
 	public Iterable<Player> players() {
 		return playerCollection;
 	}
+
 	/**
 	 * @return the locations in the map
 	 */
 	@Override
 	public Iterable<Point> locations() {
-		return new IteratorWrapper<>(new PointIterator(dimensions(), null,
-				true, true));
+		return new IteratorWrapper<>(
+				new PointIterator(dimensions(), null, true, true));
 	}
+
 	/**
-	 * @param location a location
+	 * @param location
+	 *            a location
 	 * @return the base terrain at that location
 	 */
 	@Override
@@ -317,16 +332,20 @@ public class SPMapNG implements IMutableMapNG {
 			return TileType.NotVisible;
 		}
 	}
+
 	/**
-	 * @param location a location
+	 * @param location
+	 *            a location
 	 * @return whether that location is mountainous
 	 */
 	@Override
 	public boolean isMountainous(final Point location) {
 		return mountains.contains(location);
 	}
+
 	/**
-	 * @param location a location
+	 * @param location
+	 *            a location
 	 * @return the rivers there
 	 */
 	@Override
@@ -339,25 +358,30 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
-	 * @param location a location
+	 * @param location
+	 *            a location
 	 * @return any forests there
 	 */
 	@Override
-	@Nullable public Forest getForest(final Point location) {
+	@Nullable
+	public Forest getForest(final Point location) {
 		return forests.get(location);
 	}
 
 	/**
-	 * @param location a location
+	 * @param location
+	 *            a location
 	 * @return the ground there
 	 */
 	@Override
-	@Nullable public Ground getGround(final Point location) {
+	@Nullable
+	public Ground getGround(final Point location) {
 		return ground.get(location);
 	}
 
 	/**
-	 * @param location a location
+	 * @param location
+	 *            a location
 	 * @return any other fixtures there
 	 */
 	@Override
@@ -368,6 +392,7 @@ public class SPMapNG implements IMutableMapNG {
 			return new IteratorWrapper<>(new EmptyIterator<TileFixture>());
 		}
 	}
+
 	/**
 	 * @return the current turn
 	 */
@@ -375,6 +400,7 @@ public class SPMapNG implements IMutableMapNG {
 	public int getCurrentTurn() {
 		return turn;
 	}
+
 	/**
 	 * @return the current player
 	 */
@@ -382,16 +408,20 @@ public class SPMapNG implements IMutableMapNG {
 	public Player getCurrentPlayer() {
 		return playerCollection.getCurrentPlayer();
 	}
+
 	/**
-	 * @param obj an object
+	 * @param obj
+	 *            an object
 	 * @return whether it's a map equal to this one
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return obj == this || obj instanceof IMapNG && equalsImpl((IMapNG) obj);
 	}
+
 	/**
-	 * @param obj another map
+	 * @param obj
+	 *            another map
 	 * @return whether it equals this one
 	 */
 	private boolean equalsImpl(final IMapNG obj) {
@@ -402,17 +432,17 @@ public class SPMapNG implements IMutableMapNG {
 			for (final Point point : locations()) {
 				if (point == null) {
 					continue;
-				} else if (!getBaseTerrain(point).equals(
-						obj.getBaseTerrain(point))
-						|| isMountainous(point) != obj.isMountainous(point)
-						|| !iterablesEqual(getRivers(point),
-								obj.getRivers(point))
-						|| !Objects.equals(getForest(point),
-								obj.getForest(point))
-						|| !Objects.equals(getGround(point),
-								obj.getGround(point))
-						|| !iterablesEqual(getOtherFixtures(point),
-								obj.getOtherFixtures(point))) {
+				} else
+					if (!getBaseTerrain(point).equals(obj.getBaseTerrain(point))
+							|| isMountainous(point) != obj.isMountainous(point)
+							|| !iterablesEqual(getRivers(point),
+									obj.getRivers(point))
+							|| !Objects.equals(getForest(point),
+									obj.getForest(point))
+							|| !Objects.equals(getGround(point),
+									obj.getGround(point))
+							|| !iterablesEqual(getOtherFixtures(point),
+									obj.getOtherFixtures(point))) {
 					return false; // NOPMD
 				}
 			}
@@ -421,11 +451,16 @@ public class SPMapNG implements IMutableMapNG {
 			return false; // NOPMD
 		}
 	}
+
 	/**
 	 * FIXME: This is probably very slow ...
-	 * @param one one iterable
-	 * @param two another
-	 * @param <T> the type of thing they contain
+	 *
+	 * @param one
+	 *            one iterable
+	 * @param two
+	 *            another
+	 * @param <T>
+	 *            the type of thing they contain
 	 * @return whether they contain the same elements.
 	 */
 	private static <T> boolean iterablesEqual(final Iterable<T> one,
@@ -509,31 +544,39 @@ public class SPMapNG implements IMutableMapNG {
 			for (TileFixture fixture : getOtherFixtures(location)) {
 				builder.append("\n");
 				builder.append(fixture.toString());
-//				builder.append(" (");
-//				builder.append(fixture.getClass().getSimpleName());
-//				builder.append(")");
+				// builder.append(" (");
+				// builder.append(fixture.getClass().getSimpleName());
+				// builder.append(")");
 			}
 		}
 		return NullCleaner.assertNotNull(builder.toString());
 	}
+
 	/**
-	 * @param player the player to add
+	 * @param player
+	 *            the player to add
 	 */
 	@Override
 	public void addPlayer(final Player player) {
 		playerCollection.add(player);
 	}
+
 	/**
-	 * @param location a location
-	 * @param ttype the terrain there
+	 * @param location
+	 *            a location
+	 * @param ttype
+	 *            the terrain there
 	 */
 	@Override
 	public void setBaseTerrain(final Point location, final TileType ttype) {
 		terrain.put(location, ttype);
 	}
+
 	/**
-	 * @param location a location
-	 * @param mtn whether it's mountainous there
+	 * @param location
+	 *            a location
+	 * @param mtn
+	 *            whether it's mountainous there
 	 */
 	@Override
 	public void setMountainous(final Point location, final boolean mtn) {
@@ -543,9 +586,12 @@ public class SPMapNG implements IMutableMapNG {
 			mountains.remove(location);
 		}
 	}
+
 	/**
-	 * @param location a location
-	 * @param rvrs rivers to add to that location
+	 * @param location
+	 *            a location
+	 * @param rvrs
+	 *            rivers to add to that location
 	 */
 	@Override
 	public void addRivers(final Point location, final River... rvrs) {
@@ -562,9 +608,12 @@ public class SPMapNG implements IMutableMapNG {
 			localRivers.add(river);
 		}
 	}
+
 	/**
-	 * @param location a location
-	 * @param rvrs rivers to remove from it
+	 * @param location
+	 *            a location
+	 * @param rvrs
+	 *            rivers to remove from it
 	 */
 	@Override
 	public void removeRivers(final Point location, final River... rvrs) {
@@ -575,9 +624,12 @@ public class SPMapNG implements IMutableMapNG {
 			}
 		}
 	}
+
 	/**
-	 * @param location a location
-	 * @param forest what should be the primary forest there, if any
+	 * @param location
+	 *            a location
+	 * @param forest
+	 *            what should be the primary forest there, if any
 	 */
 	@Override
 	public void setForest(final Point location, @Nullable final Forest forest) {
@@ -587,9 +639,12 @@ public class SPMapNG implements IMutableMapNG {
 			forests.put(location, forest);
 		}
 	}
+
 	/**
-	 * @param location a location
-	 * @param grnd what the ground there should be, if any
+	 * @param location
+	 *            a location
+	 * @param grnd
+	 *            what the ground there should be, if any
 	 */
 	@Override
 	public void setGround(final Point location, @Nullable final Ground grnd) {
@@ -599,9 +654,12 @@ public class SPMapNG implements IMutableMapNG {
 			ground.put(location, grnd);
 		}
 	}
+
 	/**
-	 * @param location a location
-	 * @param fix a fixture to add there
+	 * @param location
+	 *            a location
+	 * @param fix
+	 *            a fixture to add there
 	 */
 	@Override
 	public void addFixture(final Point location, final TileFixture fix) {
@@ -615,9 +673,12 @@ public class SPMapNG implements IMutableMapNG {
 		}
 		local.add(fix);
 	}
+
 	/**
-	 * @param location a location
-	 * @param fix a fixture to remove from that locaation
+	 * @param location
+	 *            a location
+	 * @param fix
+	 *            a fixture to remove from that locaation
 	 */
 	@Override
 	public void removeFixture(final Point location, final TileFixture fix) {
@@ -626,27 +687,76 @@ public class SPMapNG implements IMutableMapNG {
 			local.remove(fix);
 		}
 	}
+
 	/**
-	 * @param player the new current player
+	 * @param player
+	 *            the new current player
 	 */
 	@Override
 	public void setCurrentPlayer(final Player player) {
 		playerCollection.getCurrentPlayer().setCurrent(false);
 		playerCollection.getPlayer(player.getPlayerId()).setCurrent(true);
 	}
+
 	/**
-	 * @param curr the new current turn
+	 * @param curr
+	 *            the new current turn
 	 */
 	@Override
 	public void setTurn(final int curr) {
 		turn = curr;
 	}
+
 	/**
-	 * @param fix a fixture
+	 * @param fix
+	 *            a fixture
 	 * @return whether strict-subset calculations should skip it.
 	 */
 	public static boolean shouldSkip(final TileFixture fix) {
 		return fix instanceof CacheFixture || fix instanceof TextFixture
 				|| fix instanceof Animal && ((Animal) fix).isTraces();
+	}
+
+	/**
+	 * FIXME: Add tests to ensure that a zeroed map is still a subset, and a
+	 * non-zeroed map is still equal.
+	 *
+	 * @return a copy of this map
+	 * @param zero
+	 *            whether to "zero" sensitive data (probably just DCs)
+	 */
+	@Override
+	public IMapNG copy(final boolean zero) {
+		SPMapNG retval = new SPMapNG(dimensions(), playerCollection.copy(false),
+				getCurrentTurn());
+		for (Point point : locations()) {
+			assert(point != null);
+			retval.setBaseTerrain(point, getBaseTerrain(point));
+			Ground grd = getGround(point);
+			if (grd == null) {
+				retval.setGround(point, null);
+			} else {
+				retval.setGround(point, grd.copy(false));
+			}
+			Forest frst = getForest(point);
+			if (frst == null) {
+				retval.setForest(point, null);
+			} else {
+				retval.setForest(point, frst.copy(false));
+			}
+			retval.setMountainous(point, isMountainous(point));
+			for (River river : getRivers(point)) {
+				retval.addRivers(point, river);
+			}
+			for (TileFixture fixture : getOtherFixtures(point)) {
+				assert fixture != null;
+				if (fixture instanceof IEvent) {
+					retval.addFixture(point, fixture.copy(zero));
+				} else {
+					retval.addFixture(point, fixture.copy(false));
+				}
+			}
+		}
+		return retval;
 	}
 }

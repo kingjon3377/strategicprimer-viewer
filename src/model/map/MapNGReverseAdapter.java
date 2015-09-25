@@ -366,6 +366,20 @@ public class MapNGReverseAdapter implements IMapView {
 		public String toString() {
 			return "A IPlayerCollection view of a MapNG.";
 		}
+		/**
+		 * @param zero ignored
+		 * @return a copy of this collection
+		 */
+		@Override
+		public IMutablePlayerCollection copy(final boolean zero) {
+			final PlayerCollection retval = new PlayerCollection();
+			for (Player player : this) {
+				if (player != null) {
+					retval.add(player);
+				}
+			}
+			return retval;
+		}
 	}
 
 	/**
@@ -589,5 +603,39 @@ public class MapNGReverseAdapter implements IMapView {
 	@Override
 	public IMap getMap() {
 		return this;
+	}
+
+	/**
+	 * FIXME: Add tests to ensure that a zeroed map is still a subset, and a non-zeroed map is still equal.
+	 *
+	 * @return a copy of this map
+	 * @param zero whether to "zero" sensitive data (probably just DCs)
+	 */
+	@Override
+	public IMapView copy(final boolean zero) {
+		final SPMap map = new SPMap(getDimensions());
+		for (Player player : getPlayers()) {
+			if (player != null) {
+				map.addPlayer(player);
+			}
+		}
+		ITileCollection tiles = getTiles();
+		for (Point point : tiles) {
+			if (point != null && tiles.hasTile(point)) {
+				ITile tile = tiles.getTile(point);
+				assert (tile != null);
+				Tile newTile = new Tile(tile.getTerrain());
+				for (TileFixture fixture : tile) {
+					if (fixture instanceof IEvent) {
+						newTile.addFixture(fixture.copy(zero));
+					} else {
+						// TODO: Should we zero other fixtures?
+						newTile.addFixture(fixture.copy(false));
+					}
+				}
+				map.addTile(point, newTile);
+			}
+		}
+		return new MapView(map, impl.getCurrentPlayer().getPlayerId(), getCurrentTurn());
 	}
 }

@@ -239,4 +239,13 @@ public class MapView implements IMutableMapView {
 	public MapDimensions getDimensions() {
 		return map.getDimensions();
 	}
+
+	/**
+	 * @return a copy of this map view
+	 * @param zero whether to "zero" sensitive data (probably just DCs)
+	 */
+	@Override
+	public IMapView copy(final boolean zero) {
+		return new MapView(map.copy(zero), getPlayers().getCurrentPlayer().getPlayerId(), getCurrentTurn());
+	}
 }

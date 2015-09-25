@@ -207,4 +207,19 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 		return NullCleaner.assertNotNull(players.values().toArray(
 				new Player[players.size()]));
 	}
+
+	/**
+	 * @param zero ignored
+	 * @return a copy of this collection
+	 */
+	@Override
+	public IMutablePlayerCollection copy(final boolean zero) {
+		final PlayerCollection retval = new PlayerCollection();
+		for (Player player : this) {
+			if (player != null) {
+				retval.add(player);
+			}
+		}
+		return retval;
+	}
 }

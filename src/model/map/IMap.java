@@ -1,7 +1,5 @@
 package model.map;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 /**
  * An interface for the map and any wrappers around it.
  *
@@ -51,4 +49,11 @@ public interface IMap extends Subsettable<IMap>, Comparable<IMap> {
 	 * @return the collection of tiles.
 	 */
 	ITileCollection getTiles();
+	/**
+	 * FIXME: Add tests to ensure that a zeroed map is still a subset, and a non-zeroed map is still equal.
+	 *
+	 * @return a copy of this map
+	 * @param zero whether to "zero" sensitive data (probably just DCs)
+	 */
+	IMap copy(boolean zero);
 }
