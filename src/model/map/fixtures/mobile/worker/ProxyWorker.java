@@ -325,4 +325,20 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 	public String getRace() {
 		return getKind();
 	}
+	/**
+	 * TODO: Should we return a new Job (after adding it) instead of null in the not-present case?
+	 *
+	 * @param name the name of a Job
+	 * @return the Job by that name the worker has, or null if it has none
+	 */
+	@Nullable
+	@Override
+	public IJob getJob(final String name) {
+		for (IJob job : proxyJobs) {
+			if (name.equals(job.getName())) {
+				return job;
+			}
+		}
+		return null;
+	}
 }

@@ -98,6 +98,11 @@ public final class SkillListModel extends DefaultListModel<ISkill> implements
 		public boolean isEmpty() {
 			return true;
 		}
+		@Nullable
+		@Override
+		public ISkill getSkill(final String name) {
+			throw new IllegalStateException("getSkill called on null job");
+		}
 	};
 	/**
 	 * The current Job.

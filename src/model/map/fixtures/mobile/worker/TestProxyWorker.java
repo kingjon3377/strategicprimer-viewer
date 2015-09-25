@@ -176,10 +176,8 @@ public class TestProxyWorker {
 	 * @param jobName the name of the Job.
 	 */
 	public void assertWorkerHasJob(final IWorker worker, final String jobName) {
-		for (IJob job : worker) {
-			if (job.getName().equals(jobName) && !job.isEmpty()) {
-				return;
-			}
+		if (worker.getJob(jobName) != null) {
+			return;
 		}
 		StringBuilder builder = new StringBuilder("Worker should contain job ");
 		builder.append(jobName);

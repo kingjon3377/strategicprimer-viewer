@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.ProxyFor;
 import util.NullCleaner;
@@ -230,5 +232,21 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 			}
 		}
 		return true;
+	}
+	/**
+	 * TODO: Should we return a new Skill (after adding it) instead of null in the not-present case?
+	 *
+	 * @param skillName the name of a Skill
+	 * @return the Skill by that name the Job has, or null if it has none
+	 */
+	@Nullable
+	@Override
+	public ISkill getSkill(final String skillName) {
+		for (ISkill skill : proxied) {
+			if (skillName.equals(skill.getName())) {
+				return skill;
+			}
+		}
+		return null;
 	}
 }

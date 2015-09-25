@@ -361,4 +361,20 @@ public class Worker implements IWorker {
 			return retval;
 		}
 	}
+	/**
+	 * TODO: Should we return a new Job (after adding it) instead of null in the not-present case?
+	 *
+	 * @param jobName the name of a Job
+	 * @return the Job by that name the worker has, or null if it has none
+	 */
+	@Nullable
+	@Override
+	public IJob getJob(final String jobName) {
+		for (IJob job : this) {
+			if (jobName.equals(job.getName())) {
+				return job;
+			}
+		}
+		return null;
+	}
 }

@@ -1,5 +1,7 @@
 package model.map.fixtures.mobile;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.HasName;
@@ -56,4 +58,12 @@ public interface IWorker extends UnitMember, Iterable<IJob>, HasName, HasKind,
 	 */
 	@Override
 	IWorker copy(boolean zero);
+	/**
+	 * TODO: Should we return a new Job (after adding it) instead of null in the not-present case?
+	 *
+	 * @param name the name of a Job
+	 * @return the Job by that name the worker has, or null if it has none
+	 */
+	@Nullable
+	IJob getJob(String name);
 }

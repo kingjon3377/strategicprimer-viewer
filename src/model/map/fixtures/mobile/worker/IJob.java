@@ -1,5 +1,7 @@
 package model.map.fixtures.mobile.worker;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasName;
 import model.map.Subsettable;
 /**
@@ -57,4 +59,12 @@ public interface IJob extends HasName, Iterable<ISkill>, Subsettable<IJob> {
 	 * @return whether this Job is "empty"
 	 */
 	boolean isEmpty();
+	/**
+	 * TODO: Should we add and return a new Skill in the not-present case?
+	 *
+	 * @param name the name of a Skill
+	 * @return the Skill by that name in the Job, or none if not present
+	 */
+	@Nullable
+	ISkill getSkill(String name);
 }
