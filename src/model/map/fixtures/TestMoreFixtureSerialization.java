@@ -31,6 +31,7 @@ import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
 import model.map.fixtures.resources.Mine;
 import model.map.fixtures.resources.Shrub;
+import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
 import util.NullCleaner;
@@ -494,5 +495,17 @@ public final class TestMoreFixtureSerialization extends
 	@Override
 	public String toString() {
 		return "TestMoreFixtureSerialization";
+	}
+	/**
+	 * Test serialization of fortress members other than units.
+	 * @throws SPFormatException on XML format error
+	 * @throws XMLStreamException on XML reader error
+	 * @throws IOException on I/O error creating serialized form
+	 */
+	@Test
+	public void testFortressMemberSerialization() throws XMLStreamException, SPFormatException, IOException {
+		final Fortress one = new Fortress(new Player(1, ""), "fortName", 1);
+		one.addMember(new Implement(2, "implKind"));
+		assertSerialization("Fortress can have an Implement as a member", one, Fortress.class);
 	}
 }

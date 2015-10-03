@@ -143,6 +143,7 @@ public class ReaderAdapter implements INodeHandler<Object> {
 				new AdventureReader());
 		factory(new PortalReader());
 		factory(new MapNGReader());
+		factory(new ImplementReader());
 	}
 
 	/**

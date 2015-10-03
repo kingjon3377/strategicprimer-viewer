@@ -17,6 +17,7 @@ import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.FortressMember;
+import model.map.fixtures.Implement;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 import util.NullCleaner;
@@ -84,6 +85,10 @@ public class FortressReader implements INodeHandler<Fortress> {
 				fort.addMember(UNIT_READER.parse(
 						NullCleaner.assertNotNull(event.asStartElement()),
 						stream, players, warner, idFactory));
+			} else if (event.isStartElement() && "implement".equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
+				fort.addMember(IMPL_READER.parse(
+						NullCleaner.assertNotNull(event.asStartElement()),
+						stream, players, warner, idFactory));
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {
 				break;
@@ -133,6 +138,8 @@ public class FortressReader implements INodeHandler<Fortress> {
 		for (final FortressMember member : obj) {
 			if (member instanceof Unit) {
 				retval.addChild(UNIT_READER.write((Unit) member));
+			} else if (member instanceof Implement) {
+				retval.addChild(IMPL_READER.write((Implement) member));
 			} else {
 				LOGGER.severe("Unhandled FortressMember class: " + member.getClass().getName());
 			}
@@ -145,6 +152,10 @@ public class FortressReader implements INodeHandler<Fortress> {
 	 * The reader to use to parse units.
 	 */
 	private static final UnitReader UNIT_READER = new UnitReader();
+	/**
+	 * The reader to use to parse Implements.
+	 */
+	private static final ImplementReader IMPL_READER = new ImplementReader();
 
 	/**
 	 * @return a String representation of the object

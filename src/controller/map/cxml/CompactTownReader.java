@@ -16,6 +16,7 @@ import model.map.IMutablePlayerCollection;
 import model.map.IPlayerCollection;
 import model.map.Player;
 import model.map.fixtures.FortressMember;
+import model.map.fixtures.Implement;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.City;
@@ -241,6 +242,11 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 				retval.addMember(CompactUnitReader.READER.read(
 						NullCleaner.assertNotNull(event.asStartElement()),
 						stream, players, warner, idFactory));
+			} else if (event.isStartElement() && "implement".equalsIgnoreCase(
+					event.asStartElement().getName().getLocalPart())) {
+				retval.addMember(CompactImplementReader.READER.read(
+						NullCleaner.assertNotNull(event.asStartElement()),
+						stream, players, warner, idFactory));
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {
 				break;
@@ -301,6 +307,8 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 					if (unit instanceof Unit) {
 						CompactUnitReader.READER.write(ostream, (Unit) unit,
 								indent + 1);
+					} else if (unit instanceof Implement) {
+						CompactImplementReader.READER.write(ostream, (Implement) unit, indent);
 					} else {
 						LOGGER.severe("Unhandled FortressMember class " + unit.getClass().getName());
 					}
