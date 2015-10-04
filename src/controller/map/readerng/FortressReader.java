@@ -18,6 +18,7 @@ import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.Implement;
+import model.map.fixtures.ResourcePile;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 import util.NullCleaner;
@@ -79,24 +80,29 @@ public class FortressReader implements INodeHandler<Fortress> {
 								element, warner, idFactory));
 		XMLHelper.addImage(element, fort);
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement()
-					&& "unit".equalsIgnoreCase(event.asStartElement().getName()
-							.getLocalPart())) {
-				fort.addMember(UNIT_READER.parse(
-						NullCleaner.assertNotNull(event.asStartElement()),
-						stream, players, warner, idFactory));
-			} else if (event.isStartElement() && "implement".equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
-				fort.addMember(IMPL_READER.parse(
-						NullCleaner.assertNotNull(event.asStartElement()),
-						stream, players, warner, idFactory));
+			if (event.isStartElement()) {
+				String memberTag = event.asStartElement().getName().getLocalPart().toLowerCase();
+				if ("unit".equals(memberTag)) {
+					fort.addMember(UNIT_READER.parse(
+							NullCleaner.assertNotNull(event.asStartElement()),
+							stream, players, warner, idFactory));
+				} else if ("implement".equals(memberTag)) {
+					fort.addMember(IMPL_READER.parse(
+							NullCleaner.assertNotNull(event.asStartElement()),
+							stream, players, warner, idFactory));
+				} else if ("resource".equals(memberTag)) {
+					fort.addMember(RES_READER.parse(
+							NullCleaner.assertNotNull(event.asStartElement()),
+							stream, players, warner, idFactory));
+				} else {
+					throw new UnwantedChildException("fortress",
+							NullCleaner.assertNotNull(event.asStartElement()
+									.getName().getLocalPart()), event.getLocation()
+									.getLineNumber());
+				}
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {
 				break;
-			} else if (event.isStartElement()) {
-				throw new UnwantedChildException("fortress",
-						NullCleaner.assertNotNull(event.asStartElement()
-								.getName().getLocalPart()), event.getLocation()
-								.getLineNumber());
 			}
 		}
 		return fort;
@@ -140,6 +146,8 @@ public class FortressReader implements INodeHandler<Fortress> {
 				retval.addChild(UNIT_READER.write((Unit) member));
 			} else if (member instanceof Implement) {
 				retval.addChild(IMPL_READER.write((Implement) member));
+			} else if (member instanceof ResourcePile) {
+				retval.addChild(RES_READER.write((ResourcePile) member));
 			} else {
 				LOGGER.severe("Unhandled FortressMember class: " + member.getClass().getName());
 			}
@@ -156,6 +164,10 @@ public class FortressReader implements INodeHandler<Fortress> {
 	 * The reader to use to parse Implements.
 	 */
 	private static final ImplementReader IMPL_READER = new ImplementReader();
+	/**
+	 * The reader to use to parse Resource Piles.
+	 */
+	private static final ResourceReader RES_READER = new ResourceReader();
 
 	/**
 	 * @return a String representation of the object

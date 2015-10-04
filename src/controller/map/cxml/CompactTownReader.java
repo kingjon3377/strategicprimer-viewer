@@ -17,6 +17,7 @@ import model.map.IPlayerCollection;
 import model.map.Player;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.Implement;
+import model.map.fixtures.ResourcePile;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.City;
@@ -236,27 +237,31 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 				warner, players), getParameter(element, NAME_PARAM, ""),
 				getOrGenerateID(element, warner, idFactory));
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement()
-					&& "unit".equalsIgnoreCase(event.asStartElement().getName()
-							.getLocalPart())) {
-				retval.addMember(CompactUnitReader.READER.read(
-						NullCleaner.assertNotNull(event.asStartElement()),
-						stream, players, warner, idFactory));
-			} else if (event.isStartElement() && "implement".equalsIgnoreCase(
-					event.asStartElement().getName().getLocalPart())) {
-				retval.addMember(CompactImplementReader.READER.read(
-						NullCleaner.assertNotNull(event.asStartElement()),
-						stream, players, warner, idFactory));
+			if (event.isStartElement()) {
+				String memberTag = event.asStartElement().getName().getLocalPart().toLowerCase();
+				if ("unit".equals(memberTag)) {
+					retval.addMember(CompactUnitReader.READER.read(
+							NullCleaner.assertNotNull(event.asStartElement()),
+							stream, players, warner, idFactory));
+				} else if ("implement".equals(memberTag)) {
+					retval.addMember(CompactImplementReader.READER.read(
+							NullCleaner.assertNotNull(event.asStartElement()),
+							stream, players, warner, idFactory));
+				} else if ("resource".equals(memberTag)) {
+					retval.addMember(CompactResourcePileReader.READER.read(
+							NullCleaner.assertNotNull(event.asStartElement()),
+							stream, players, warner, idFactory));
+				} else {
+					throw new UnwantedChildException(
+							NullCleaner.assertNotNull(element.getName()
+									.getLocalPart()),
+							NullCleaner.assertNotNull(event.asStartElement()
+									.getName().getLocalPart()), event.getLocation()
+									.getLineNumber());
+				}
 			} else if (event.isEndElement()
 					&& element.getName().equals(event.asEndElement().getName())) {
 				break;
-			} else if (event.isStartElement()) {
-				throw new UnwantedChildException(
-						NullCleaner.assertNotNull(element.getName()
-								.getLocalPart()),
-						NullCleaner.assertNotNull(event.asStartElement()
-								.getName().getLocalPart()), event.getLocation()
-								.getLineNumber());
 			}
 		}
 		retval.setImage(getParameter(element, "image", ""));
@@ -309,6 +314,8 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 								indent + 1);
 					} else if (unit instanceof Implement) {
 						CompactImplementReader.READER.write(ostream, (Implement) unit, indent);
+					} else if (unit instanceof ResourcePile) {
+						CompactResourcePileReader.READER.write(ostream, (ResourcePile) unit, indent);
 					} else {
 						LOGGER.severe("Unhandled FortressMember class " + unit.getClass().getName());
 					}

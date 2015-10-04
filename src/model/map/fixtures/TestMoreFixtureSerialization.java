@@ -507,5 +507,7 @@ public final class TestMoreFixtureSerialization extends
 		final Fortress one = new Fortress(new Player(1, ""), "fortName", 1);
 		one.addMember(new Implement(2, "implKind"));
 		assertSerialization("Fortress can have an Implement as a member", one, Fortress.class);
+		one.addMember(new ResourcePile(3, "generalKind", "specificKind", 10, "each"));
+		assertSerialization("Fortress can have a Resource Pile as a member", one, Fortress.class);
 	}
 }

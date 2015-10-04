@@ -18,6 +18,7 @@ import model.map.TerrainFixture;
 import model.map.TileFixture;
 import model.map.fixtures.Ground;
 import model.map.fixtures.Implement;
+import model.map.fixtures.ResourcePile;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.explorable.AdventureFixture;
@@ -163,6 +164,8 @@ public final class CompactReaderAdapter {
 			reader = (CompactReader<T>) CompactExplorableReader.READER;
 		} else if (Implement.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactImplementReader.READER;
+		} else if (ResourcePile.class.isAssignableFrom(type)) {
+			reader = (CompactReader<T>) CompactResourcePileReader.READER;
 		} else {
 			throw new IllegalStateException("Unhandled type " + type.getName());
 		}
