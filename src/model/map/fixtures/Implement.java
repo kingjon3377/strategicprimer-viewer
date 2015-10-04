@@ -155,4 +155,11 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasImage 
 	public int hashCode() {
 		return id | kind.hashCode();
 	}
+	/**
+	 * @return a String representation of the implement
+	 */
+	@Override
+	public String toString() {
+		return "An implement of kind " + kind;
+	}
 }
