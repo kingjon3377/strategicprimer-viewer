@@ -289,7 +289,7 @@ public final class Tile implements IMutableTile {
 				final Subsettable<?> mine = mySubsettables.get(Integer
 						.valueOf(fix.getID()));
 				if (mine instanceof IUnit && fix instanceof IUnit) {
-					if (!((IUnit) mine).isSubset((IUnit) fix, ostream, context)) {
+					if (!((IUnit) mine).isSubset(fix, ostream, context)) {
 						retval = false;
 					}
 				} else if (mine instanceof SubsettableFixture) {
