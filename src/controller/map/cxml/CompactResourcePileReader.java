@@ -67,7 +67,7 @@ public class CompactResourcePileReader extends AbstractCompactReader<ResourcePil
 				new ResourcePile(getOrGenerateID(element, warner, idFactory),
 						getParameter(element, "kind"),
 						getParameter(element, "contents"),
-						Integer.parseInt(getParameter(element, "quantity")),
+						getIntegerParameter(element, "quantity"),
 						getParameter(element, "unit", ""));
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		retval.setImage(getParameter(element, "image", ""));

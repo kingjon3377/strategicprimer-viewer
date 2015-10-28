@@ -171,9 +171,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 				element, "status"));
 		final TownSize size = TownSize.parseTownSize(getParameter(element,
 				"size"));
-		final int dc =
-				parseInt(getParameter(element, "dc"), element.getLocation()
-						.getLineNumber()); // NOPMD
+		final int dc = getIntegerParameter(element, "dc"); // NOPMD
 		final int id = getOrGenerateID(element, warner, idFactory); // NOPMD
 		final Player owner = getOwnerOrIndependent(element, warner, players); //NOPMD
 		final AbstractTown retval; // NOPMD
@@ -205,8 +203,8 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 		// ESCA-JAVA0177:
 		final Player retval; // NOPMD
 		if (hasParameter(element, OWNER_PARAM)) {
-			retval = players.getPlayer(Integer.parseInt(getParameter(element,
-					OWNER_PARAM)));
+			retval = players
+					.getPlayer(getIntegerParameter(element, OWNER_PARAM));
 		} else {
 			warner.warn(new MissingPropertyException(NullCleaner
 					.assertNotNull(element.getName().getLocalPart()),

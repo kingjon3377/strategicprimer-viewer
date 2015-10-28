@@ -67,9 +67,8 @@ public final class CompactPlayerReader extends AbstractCompactReader<Player> {
 		requireNonEmptyParameter(element, "number", true, warner);
 		requireNonEmptyParameter(element, "code_name", true, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		return new Player(parseInt(getParameter(element, "number"), element
-				.getLocation().getLineNumber()), getParameter(element,
-				"code_name"));
+		return new Player(getIntegerParameter(element, "number"),
+				getParameter(element, "code_name"));
 	}
 
 	/**

@@ -75,8 +75,7 @@ public class CompactExplorableReader
 	 */
 	private static int getDC(final StartElement element)
 			throws SPFormatException {
-		return parseInt(getParameter(element, "dc"), element.getLocation()
-				.getLineNumber());
+		return getIntegerParameter(element, "dc");
 	}
 	/**
 	 * @param elem the XML element to parse

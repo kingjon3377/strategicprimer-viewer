@@ -107,9 +107,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		String outerTag = assertNotNull(element.getName().getLocalPart());
 		final int outerLine = outerLoc.getLineNumber();
 		if ("view".equalsIgnoreCase(outerTag)) {
-			currentTurn =
-					parseInt(getParameter(element, "current_turn"),
-							outerLine);
+			currentTurn = getIntegerParameter(element, "current_turn");
 			mapTag = getFirstStartElement(stream, outerLine);
 			if (!"map".equalsIgnoreCase(mapTag.getName().getLocalPart())) {
 				throw new UnwantedChildException(outerTag, assertNotNull(mapTag
@@ -124,10 +122,9 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					outerLine);
 		}
 		final MapDimensions dimensions =
-				new MapDimensions(parseInt(getParameter(mapTag, "rows"),
-						outerLine), parseInt(getParameter(mapTag, "columns"),
-						outerLine), parseInt(getParameter(mapTag, "version"),
-						outerLine));
+				new MapDimensions(getIntegerParameter(mapTag, "rows"),
+						getIntegerParameter(mapTag, "columns"),
+						getIntegerParameter(mapTag, "version"));
 		SPMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		final Point nullPoint = PointFactory.point(-1, -1);
 		Point point = nullPoint;
@@ -150,12 +147,9 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						throw new UnwantedChildException("tile", type,
 								currentLoc.getLineNumber());
 					}
-					point =
-							PointFactory.point(
-									parseInt(getParameter(current, "row"),
-											currentLine),
-									parseInt(getParameter(current, "column"),
-											currentLine));
+					point = PointFactory.point(
+							getIntegerParameter(current, "row"),
+							getIntegerParameter(current, "column"));
 					// Since tiles have been known to be *written* without
 					// "kind" and then fail to load, let's be liberal in what we
 					// accept here, since we can.

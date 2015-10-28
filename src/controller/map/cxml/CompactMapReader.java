@@ -111,9 +111,9 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 			// TODO: Perhaps split this into parseMap/parseView?
 		} else {
 			final SPMap retval = new SPMap(new MapDimensions(
-					Integer.parseInt(getParameter(element, "rows")),
-					Integer.parseInt(getParameter(element, "columns")),
-					Integer.parseInt(getParameter(element, "version", "1"))));
+					getIntegerParameter(element, "rows"),
+					getIntegerParameter(element, "columns"),
+					getIntegerParameter(element, "version", 1)));
 			for (final XMLEvent event : stream) {
 				if (event.isStartElement()) {
 					parseChild(stream, warner, retval,
@@ -128,8 +128,8 @@ public final class CompactMapReader extends AbstractCompactReader<IMap> {
 			if (hasParameter(element, "current_player")) {
 				retval.getPlayers()
 						.getPlayer(
-								Integer.parseInt(getParameter(element,
-										"current_player"))).setCurrent(true);
+								getIntegerParameter(element, "current_player"))
+						.setCurrent(true);
 			}
 			return retval;
 		}

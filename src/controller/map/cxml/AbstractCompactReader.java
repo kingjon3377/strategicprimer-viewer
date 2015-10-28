@@ -360,4 +360,47 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 			throw new SPMalformedInputException(line, e);
 		}
 	}
+	/**
+	 * Parse an integer parameter.
+	 *
+	 * @param tag
+	 *            the tag to get the parameter from
+	 * @param parameter
+	 *            the name of the parameter
+	 * @return the result of parsing the text
+	 * @throws SPFormatException
+	 *             if the tag doesn't have that parameter or if its value is
+	 *             nonnumeric or otherwise malformed
+	 */
+	protected static int getIntegerParameter(final StartElement tag, final String parameter)
+			throws SPFormatException {
+		return parseInt(getParameter(tag, parameter), tag.getLocation().getLineNumber());
+	}
+
+	/**
+	 * Parse an integer parameter.
+	 *
+	 * @param tag
+	 *            the tag to get the parameter from
+	 * @param parameter
+	 *            the name of the parameter
+	 * @param defaultValue
+	 *            the default value to return if the parameter is missing
+	 * @return the result of parsing the text
+	 * @throws SPFormatException
+	 *             if the parameter's value is nonnumeric or otherwise malformed
+	 */
+	protected static int getIntegerParameter(final StartElement tag,
+			final String parameter, final int defaultValue) throws SPFormatException {
+		final Attribute attr = tag.getAttributeByName(new QName(parameter));
+		if (attr == null) {
+			return defaultValue; // NOPMD
+		}
+		String val = attr.getValue();
+		if (val == null) {
+			return defaultValue;
+		} else {
+			return parseInt(val, tag.getLocation().getLineNumber());
+		}
+	}
 }

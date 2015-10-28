@@ -60,9 +60,7 @@ public class CompactAdventureReader extends
 		requireTag(element, "adventure");
 		Player player = players.getIndependent();
 		if (hasParameter(element, "owner")) {
-			player =
-					players.getPlayer(parseInt(getParameter(element, "owner"),
-							element.getLocation().getLineNumber()));
+			player = players.getPlayer(getIntegerParameter(element, "owner"));
 		}
 		final AdventureFixture retval =
 				new AdventureFixture(player,
