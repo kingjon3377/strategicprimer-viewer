@@ -471,10 +471,14 @@ public class ExplorationModel extends AbstractMultiMapModel implements
 	/**
 	 * @param unit the new selected unit
 	 */
-	public void selectUnit(final IUnit unit) {
+	public void selectUnit(@Nullable final IUnit unit) {
 		final Point oldLoc = selUnitLoc;
 		selUnit = unit;
-		selUnitLoc = find(unit);
+		if (unit == null) {
+			selUnitLoc = PointFactory.point(-1, -1);
+		} else {
+			selUnitLoc = find(unit);
+		}
 		fireSelectionChange(oldLoc, selUnitLoc);
 	}
 
