@@ -93,7 +93,8 @@ public class AboutDialog extends JDialog {
 				"Java Programming Forums");
 		builder.append("</p>");
 		builder.append("<p>WrapLayout taken from ");
-		link("http://tips4java.wordpress.com/2008/11/06/wrap-layout/", "tips4java.wordpress.com");
+		link("http://tips4java.wordpress.com/2008/11/06/wrap-layout/",
+				"tips4java.wordpress.com");
 		builder.append(", which released code to be used \"without restriction\".</p>");
 		builder.append("</html>");
 		add(new JLabel(builder.toString()));

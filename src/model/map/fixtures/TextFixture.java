@@ -55,9 +55,12 @@ public class TextFixture implements TileFixture, HasImage {
 		text = theText;
 		turn = turnNum;
 	}
+
 	/**
 	 * @return a copy of this fixture
-	 * @param zero ignored, as a text fixture without its sensitive information is meaningless
+	 * @param zero
+	 *            ignored, as a text fixture without its sensitive information
+	 *            is meaningless
 	 */
 	@Override
 	public TextFixture copy(final boolean zero) {
