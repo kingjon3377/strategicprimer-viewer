@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import util.ArraySet;
@@ -58,7 +57,7 @@ public class Job implements IJob { // NOPMD
 	 * @param skills the worker's level in the various skills associated with
 	 *        the job.
 	 */
-	public Job(final String jobName, final int levels, final @NonNull ISkill... skills) {
+	public Job(final String jobName, final int levels, final ISkill... skills) {
 		name = jobName;
 		level = levels;
 		skillSet.addAll(Arrays.asList(skills));

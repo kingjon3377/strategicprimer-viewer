@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.fixtures.mobile.ProxyFor;
 
 /**
@@ -58,7 +56,7 @@ public class ProxySkill implements ISkill, ProxyFor<IJob> {
 	 * @param jobs
 	 *            the Jobs to add skill hours to when asked
 	 */
-	public ProxySkill(final String nomen, final boolean parall, final @NonNull IJob... jobs) {
+	public ProxySkill(final String nomen, final boolean parall, final IJob... jobs) {
 		parallel = parall;
 		name = nomen;
 		for (final IJob job : jobs) {
