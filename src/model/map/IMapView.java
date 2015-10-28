@@ -38,11 +38,14 @@ public interface IMapView extends IMap {
 	 * @return the map this wraps
 	 */
 	IMap getMap();
+
 	/**
-	 * FIXME: Add tests to ensure that a zeroed map is still a subset, and a non-zeroed map is still equal.
+	 * FIXME: Add tests to ensure that a zeroed map is still a subset, and a
+	 * non-zeroed map is still equal.
 	 *
 	 * @return a copy of this map view
-	 * @param zero whether to "zero" sensitive data (probably just DCs)
+	 * @param zero
+	 *            whether to "zero" sensitive data (probably just DCs)
 	 */
 	@Override
 	IMapView copy(boolean zero);

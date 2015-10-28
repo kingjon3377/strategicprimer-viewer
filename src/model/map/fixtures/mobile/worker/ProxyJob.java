@@ -222,8 +222,11 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 	public Iterable<IJob> getProxied() {
 		return proxiedJobs;
 	}
+
 	/**
-	 * A Job is "empty" if the worker has no levels in it and no experience in any skills it contains.
+	 * A Job is "empty" if the worker has no levels in it and no experience in
+	 * any skills it contains.
+	 *
 	 * @return whether all of the Jobs this is a proxy for are "empty"
 	 */
 	@Override
@@ -236,7 +239,7 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 		return true;
 	}
 	/**
-	 * TODO: Should we return a new Skill (after adding it) instead of null in the not-present case?
+	 * TODO: Should we return a new Skill (and add it) instead of null if not present?
 	 *
 	 * @param skillName the name of a Skill
 	 * @return the Skill by that name the Job has, or null if it has none

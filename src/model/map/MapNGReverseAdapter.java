@@ -606,10 +606,12 @@ public class MapNGReverseAdapter implements IMapView {
 	}
 
 	/**
-	 * FIXME: Add tests to ensure that a zeroed map is still a subset, and a non-zeroed map is still equal.
+	 * FIXME: Add tests to ensure that a zeroed map is still a subset, and a
+	 * non-zeroed map is still equal.
 	 *
 	 * @return a copy of this map
-	 * @param zero whether to "zero" sensitive data (probably just DCs)
+	 * @param zero
+	 *            whether to "zero" sensitive data (probably just DCs)
 	 */
 	@Override
 	public IMapView copy(final boolean zero) {
@@ -623,7 +625,7 @@ public class MapNGReverseAdapter implements IMapView {
 		for (Point point : tiles) {
 			if (point != null && tiles.hasTile(point)) {
 				ITile tile = tiles.getTile(point);
-				assert (tile != null);
+				assert tile != null;
 				Tile newTile = new Tile(tile.getTerrain());
 				for (TileFixture fixture : tile) {
 					if (fixture instanceof IEvent) {

@@ -182,7 +182,7 @@ public class Worker implements IWorker {
 		}
 	}
 	/**
-	 * TODO: Improve performance
+	 * TODO: Improve performance.
 	 * @param one a set of Jobs
 	 * @param two a set of Jobs
 	 * @return whether they are equal, ignoring any "empty" Jobs.
@@ -362,7 +362,7 @@ public class Worker implements IWorker {
 		}
 	}
 	/**
-	 * TODO: Should we return a new Job (after adding it) instead of null in the not-present case?
+	 * TODO: Should we add and return a new Job instead of null if not present?
 	 *
 	 * @param jobName the name of a Job
 	 * @return the Job by that name the worker has, or null if it has none

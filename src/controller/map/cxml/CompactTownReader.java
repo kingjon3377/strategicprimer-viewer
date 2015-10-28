@@ -61,7 +61,8 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(CompactTownReader.class.getName());
+	private static final Logger LOGGER =
+			Logger.getLogger(CompactTownReader.class.getName());
 	/**
 	 * Singleton object.
 	 */
@@ -236,7 +237,8 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 				getOrGenerateID(element, warner, idFactory));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				String memberTag = event.asStartElement().getName().getLocalPart().toLowerCase();
+				String memberTag = event.asStartElement().getName()
+						.getLocalPart().toLowerCase();
 				if ("unit".equals(memberTag)) {
 					retval.addMember(CompactUnitReader.READER.read(
 							NullCleaner.assertNotNull(event.asStartElement()),
@@ -311,11 +313,14 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 						CompactUnitReader.READER.write(ostream, (Unit) unit,
 								indent + 1);
 					} else if (unit instanceof Implement) {
-						CompactImplementReader.READER.write(ostream, (Implement) unit, indent);
+						CompactImplementReader.READER.write(ostream,
+								(Implement) unit, indent);
 					} else if (unit instanceof ResourcePile) {
-						CompactResourcePileReader.READER.write(ostream, (ResourcePile) unit, indent);
+						CompactResourcePileReader.READER.write(ostream,
+								(ResourcePile) unit, indent);
 					} else {
-						LOGGER.severe("Unhandled FortressMember class " + unit.getClass().getName());
+						LOGGER.severe("Unhandled FortressMember class "
+								+ unit.getClass().getName());
 					}
 				}
 				ostream.append(indent(indent));

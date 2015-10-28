@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;

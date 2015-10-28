@@ -81,7 +81,8 @@ public class FortressReader implements INodeHandler<Fortress> {
 		XMLHelper.addImage(element, fort);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				String memberTag = event.asStartElement().getName().getLocalPart().toLowerCase();
+				String memberTag = event.asStartElement().getName()
+						.getLocalPart().toLowerCase();
 				if ("unit".equals(memberTag)) {
 					fort.addMember(UNIT_READER.parse(
 							NullCleaner.assertNotNull(event.asStartElement()),
@@ -149,7 +150,8 @@ public class FortressReader implements INodeHandler<Fortress> {
 			} else if (member instanceof ResourcePile) {
 				retval.addChild(RES_READER.write((ResourcePile) member));
 			} else {
-				LOGGER.severe("Unhandled FortressMember class: " + member.getClass().getName());
+				LOGGER.severe("Unhandled FortressMember class: "
+						+ member.getClass().getName());
 			}
 		}
 		retval.addImageAttribute(obj);

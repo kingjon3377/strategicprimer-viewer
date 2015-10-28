@@ -3,8 +3,6 @@ package controller.map.report;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.Player;
 import model.map.Point;
 import util.NullCleaner;

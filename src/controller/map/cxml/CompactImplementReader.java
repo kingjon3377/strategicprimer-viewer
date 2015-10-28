@@ -65,7 +65,9 @@ public class CompactImplementReader extends AbstractCompactReader<Implement> {
 			final IMutablePlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "implement");
-		final Implement retval = new Implement(getOrGenerateID(element, warner, idFactory), getParameter(element, "kind"));
+		final Implement retval =
+				new Implement(getOrGenerateID(element, warner, idFactory),
+						getParameter(element, "kind"));
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
@@ -86,7 +88,8 @@ public class CompactImplementReader extends AbstractCompactReader<Implement> {
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Appendable ostream, final Implement obj, final int indent) throws IOException {
+	public void write(final Appendable ostream, final Implement obj,
+			final int indent) throws IOException {
 		for (int i = 0; i < indent; i++) {
 			ostream.append('\t');
 		}

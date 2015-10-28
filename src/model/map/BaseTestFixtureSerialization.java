@@ -13,8 +13,6 @@ import java.util.Iterator;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import controller.map.cxml.CompactXMLWriter;
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingChildException;

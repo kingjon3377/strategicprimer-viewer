@@ -295,7 +295,8 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			}
 			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
 			if (!contents.isEmpty()) {
-				builder.append(OPEN_LIST_ITEM).append("Other fortress contents:\n").append(OPEN_LIST);
+				builder.append(OPEN_LIST_ITEM)
+						.append("Other fortress contents:\n").append(OPEN_LIST);
 				for (FortressMember member : contents) {
 					// FIXME: Produce and append the proper sub-report
 				}
@@ -338,7 +339,8 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		if (item.iterator().hasNext()) {
 			final AbstractReportNode units = new ListReportNode(loc,
 					"Units on the tile:");
-			final AbstractReportNode contents = new ListReportNode(loc, "Other Contents of Fortress:");
+			final AbstractReportNode contents =
+					new ListReportNode(loc, "Other Contents of Fortress:");
 			for (final FortressMember unit : item) {
 				if (unit instanceof Unit) {
 					units.add(urg.produceRIR(fixtures, map, currentPlayer,

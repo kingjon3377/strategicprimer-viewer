@@ -54,8 +54,11 @@ public interface IJob extends HasName, Iterable<ISkill>, Subsettable<IJob> {
 	 * @param zero whether to "zero out" sensitive details
 	 */
 	IJob copy(boolean zero);
+
 	/**
-	 * A Job is "empty" if the worker has no levels in it and no experience in any skills it contains.
+	 * A Job is "empty" if the worker has no levels in it and no experience in
+	 * any skills it contains.
+	 *
 	 * @return whether this Job is "empty"
 	 */
 	boolean isEmpty();

@@ -381,8 +381,7 @@ public class Unit implements IUnit {
 			ostream.append(context);
 			ostream.append("\tFixtures have different IDs\n");
 			return false; // NOPMD
-		}
-		else if (!(obj instanceof IUnit)) {
+		} else if (!(obj instanceof IUnit)) {
 			ostream.append(context);
 			ostream.append("Different kinds of fixtures for ID #");
 			ostream.append(Integer.toString(obj.getID()));

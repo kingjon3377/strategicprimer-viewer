@@ -284,7 +284,7 @@ public class ArrowKeyListener {
 	}
 	/**
 	 * A listener to move the cursor up and right.
-	 * @uathor Jonathan Lovelace
+	 * @author Jonathan Lovelace
 	 */
 	private static class UpRightListener extends AbstractDirListener {
 		/**
@@ -314,7 +314,7 @@ public class ArrowKeyListener {
 	}
 	/**
 	 * A listener to move the cursor up and left.
-	 * @uathor Jonathan Lovelace
+	 * @author Jonathan Lovelace
 	 */
 	private static class UpLeftListener extends AbstractDirListener {
 		/**
@@ -344,7 +344,7 @@ public class ArrowKeyListener {
 	}
 	/**
 	 * A listener to move the cursor down and right.
-	 * @uathor Jonathan Lovelace
+	 * @author Jonathan Lovelace
 	 */
 	private static class DownRightListener extends AbstractDirListener {
 		/**
@@ -374,7 +374,7 @@ public class ArrowKeyListener {
 	}
 	/**
 	 * A listener to move the cursor down and left.
-	 * @uathor Jonathan Lovelace
+	 * @author Jonathan Lovelace
 	 */
 	private static class DownLeftListener extends AbstractDirListener {
 		/**

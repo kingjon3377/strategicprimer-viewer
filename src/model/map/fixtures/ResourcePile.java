@@ -65,7 +65,8 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	 * @param qty how much of the resource is in the pile
 	 * @param qtyUnit what units the quantity is measured in
 	 */
-	public ResourcePile(final int idNum, final String resKind, final String resContents, final int qty, final String qtyUnit) {
+	public ResourcePile(final int idNum, final String resKind,
+			final String resContents, final int qty, final String qtyUnit) {
 		id = idNum;
 		kind = resKind;
 		contents = resContents;
@@ -138,22 +139,28 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 				&& quantity == ((ResourcePile) fix).getQuantity()
 				&& unit.equals(((ResourcePile) fix).getUnits());
 	}
+
 	/**
-	 * @param ostream the stream to report errors to
-	 * @param context the context to report before errors
-	 * @param obj a fixture
-	 * @return whether it's a subset of (i.e. equal to, except perhaps with different quantity from) this one
+	 * @param ostream
+	 *            the stream to report errors to
+	 * @param context
+	 *            the context to report before errors
+	 * @param obj
+	 *            a fixture
+	 * @return whether it's a subset of (i.e. equal to, except perhaps with
+	 *         different quantity from) this one
 	 */
 	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream, final String context)
-			throws IOException {
+	public boolean isSubset(final IFixture obj, final Appendable ostream,
+			final String context)			throws IOException {
 		if (obj.getID() != id) {
 			ostream.append(context);
 			ostream.append("\tIDs differ");
 			return false;
 		} else if (obj instanceof ResourcePile) {
 			boolean retval = true;
-			String ctxt = String.format("%s\tIn Resource Pile, ID #%d: ", context, Integer.valueOf(id));
+			String ctxt = String.format("%s\tIn Resource Pile, ID #%d: ",
+					context, Integer.valueOf(id));
 			if (!kind.equals(((ResourcePile) obj).getKind())) {
 				ostream.append(ctxt);
 				ostream.append("Kinds differ\n");
@@ -169,7 +176,8 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 				ostream.append("Units differ\n");
 				retval = false;
 			}
-			if (quantity != ((ResourcePile) obj).quantity && 0 != ((ResourcePile) obj).quantity) {
+			if (quantity != ((ResourcePile) obj).quantity
+					&& 0 != ((ResourcePile) obj).quantity) {
 				ostream.append(ctxt);
 				ostream.append("Quantities differ\n");
 				retval = false;
@@ -214,8 +222,11 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	public void setUnits(final String newUnit) {
 		unit = newUnit;
 	}
+
 	/**
-	 * This hash code function is modified, I think without changing the algorithm, from the auto-generated one.
+	 * This hash code function is modified, I think without changing the
+	 * algorithm, from the auto-generated one.
+	 *
 	 * @return a hash code for the object.
 	 */
 	@Override

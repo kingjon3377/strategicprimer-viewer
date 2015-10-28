@@ -162,7 +162,8 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 			independent = player;
 		}
 		final boolean retval = !players.containsValue(player);
-		players.put(NullCleaner.assertNotNull(Integer.valueOf(player.getPlayerId())), player);
+		players.put(NullCleaner
+				.assertNotNull(Integer.valueOf(player.getPlayerId())), player);
 		return retval;
 	}
 

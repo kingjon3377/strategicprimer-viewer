@@ -9,8 +9,6 @@ import java.util.Set;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.HasImage;

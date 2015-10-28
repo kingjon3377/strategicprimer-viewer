@@ -5,7 +5,6 @@ import java.awt.event.MouseEvent;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.listeners.SelectionChangeListener;

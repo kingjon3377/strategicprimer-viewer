@@ -112,11 +112,14 @@ public interface IMapNG extends Subsettable<IMapNG>, Comparable<IMapNG> {
 	 * @return the current player
 	 */
 	Player getCurrentPlayer();
+
 	/**
-	 * FIXME: Add tests to ensure that a zeroed map is still a subset, and a non-zeroed map is still equal.
+	 * FIXME: Add tests to ensure that a zeroed map is still a subset, and a
+	 * non-zeroed map is still equal.
 	 *
 	 * @return a copy of this map
-	 * @param zero whether to "zero" sensitive data (probably just DCs)
+	 * @param zero
+	 *            whether to "zero" sensitive data (probably just DCs)
 	 */
 	IMapNG copy(boolean zero);
 }

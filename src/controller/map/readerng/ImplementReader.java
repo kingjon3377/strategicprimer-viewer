@@ -60,7 +60,9 @@ public class ImplementReader implements INodeHandler<Implement> {
 			final IMutablePlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		final Implement retval = new Implement(getOrGenerateID(element, warner, idFactory), getAttribute(element, "kind"));
+		final Implement retval =
+				new Implement(getOrGenerateID(element, warner, idFactory),
+						getAttribute(element, "kind"));
 		addImage(element, retval);
 		return retval;
 	}
@@ -79,14 +81,15 @@ public class ImplementReader implements INodeHandler<Implement> {
 		return Implement.class;
 	}
 	/**
-	 * Create an intermediate representation to convert to XML
+	 * Create an intermediate representation to convert to XML.
 	 *
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final Implement obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("implement");
+		final SPIntermediateRepresentation retval =
+				new SPIntermediateRepresentation("implement");
 		retval.addIdAttribute(obj.getID());
 		retval.addAttribute("kind", obj.getKind());
 		retval.addImageAttribute(obj);

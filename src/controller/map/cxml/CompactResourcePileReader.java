@@ -36,11 +36,14 @@ import util.Warning;
  * @author Jonathan Lovelace
  *
  */
-public class CompactResourcePileReader extends AbstractCompactReader<ResourcePile> {
+public class CompactResourcePileReader
+		extends AbstractCompactReader<ResourcePile> {
 	/**
 	 * Singleton object.
 	 */
-	public static final CompactResourcePileReader READER = new CompactResourcePileReader();
+	public static final CompactResourcePileReader READER =
+			new CompactResourcePileReader();
+
 	/**
 	 * Singleton.
 	 */
@@ -89,7 +92,8 @@ public class CompactResourcePileReader extends AbstractCompactReader<ResourcePil
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void write(final Appendable ostream, final ResourcePile obj, final int indent) throws IOException {
+	public void write(final Appendable ostream, final ResourcePile obj,
+			final int indent) throws IOException {
 		for (int i = 0; i < indent; i++) {
 			ostream.append('\t');
 		}

@@ -232,7 +232,7 @@ public class SPMap implements IMutableMap {
 		for (Point point : tiles) {
 			if (point != null && tiles.hasTile(point)) {
 				ITile tile = tiles.getTile(point);
-				assert (tile != null);
+				assert tile != null;
 				Tile newTile = new Tile(tile.getTerrain());
 				for (TileFixture fixture : tile) {
 					if (fixture instanceof IEvent) {

@@ -71,7 +71,8 @@ public final class TownComparator implements Comparator<AbstractTown> {
 	private static final Comparator<TownStatus> ST_CMP =
 			new Comparator<TownStatus>() {
 				@Override
-				public int compare(@Nullable final TownStatus one, @Nullable final TownStatus two) {
+				public int compare(@Nullable final TownStatus one,
+						@Nullable final TownStatus two) {
 					if (one == null || two == null) {
 						throw new IllegalArgumentException(
 								"Asked to compare null");
@@ -156,7 +157,8 @@ public final class TownComparator implements Comparator<AbstractTown> {
 	 *         "greater" than the second.
 	 */
 	@Override
-	public int compare(@Nullable final AbstractTown one, @Nullable final AbstractTown two) {
+	public int compare(@Nullable final AbstractTown one,
+			@Nullable final AbstractTown two) {
 		if (one == null || two == null) {
 			throw new IllegalArgumentException("Asked to compare null");
 		} else if (one.status().equals(two.status())) {

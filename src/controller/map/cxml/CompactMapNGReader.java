@@ -118,8 +118,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			currentTurn = 0;
 			mapTag = element;
 		} else {
-			throw new UnwantedChildException("xml", assertNotNull(outerTag),
-					outerLine);
+			throw new UnwantedChildException("xml", outerTag, outerLine);
 		}
 		final MapDimensions dimensions =
 				new MapDimensions(getIntegerParameter(mapTag, "rows"),
@@ -145,14 +144,13 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				} else if ("tile".equalsIgnoreCase(type)) {
 					if (!nullPoint.equals(point)) {
 						throw new UnwantedChildException("tile", type,
-								currentLoc.getLineNumber());
+								currentLine);
 					}
 					point = PointFactory.point(
 							getIntegerParameter(current, "row"),
 							getIntegerParameter(current, "column"));
-					// Since tiles have been known to be *written* without
-					// "kind" and then fail to load, let's be liberal in what we
-					// accept here, since we can.
+					// Since tiles have sometimes been *written* without "kind",
+					// then failed to load, be liberal in what we accept here
 					if (hasParameter(current, "kind")
 							|| hasParameter(current, "type")) {
 						retval.setBaseTerrain(point, TileType
@@ -163,12 +161,10 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 								currentLoc.getLineNumber()));
 					}
 				} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) {
-					warner.warn(new UnsupportedTagException(type, currentLoc
-							.getLineNumber()));
+					warner.warn(new UnsupportedTagException(type, currentLine));
 				} else if (nullPoint.equals(point)) {
 					// fixture outside tile
-					throw new UnwantedChildException("map", type,
-							currentLoc.getLineNumber());
+					throw new UnwantedChildException("map", type, currentLine);
 				} else if ("lake".equalsIgnoreCase(type)
 						|| "river".equalsIgnoreCase(type)) {
 					retval.addRivers(point,
@@ -209,6 +205,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				} else if ("mountain".equalsIgnoreCase(type)) {
 					retval.setMountainous(point, true);
 				} else {
+					String mapName =
+							assertNotNull(mapTag.getName().getLocalPart());
 					try {
 						retval.addFixture(
 								point,
@@ -216,9 +214,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 										idFactory, warner));
 					} catch (final UnwantedChildException except) {
 						if ("unknown".equals(except.getTag())) {
-							throw new UnwantedChildException(
-									assertNotNull(mapTag.getName()
-											.getLocalPart()),
+							throw new UnwantedChildException(mapName,
 									except.getChild(), currentLine);
 						} else {
 							throw except;
@@ -227,9 +223,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						if (except.getMessage().matches(
 								"^Wanted [^ ]*, was [^ ]*$")) {
 							final UnwantedChildException nexcept =
-									new UnwantedChildException(
-											assertNotNull(mapTag.getName()
-													.getLocalPart()), type,
+									new UnwantedChildException(mapName, type,
 											currentLine);
 							nexcept.initCause(except);
 							throw nexcept;
@@ -254,11 +248,11 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			}
 		}
 		if (hasParameter(mapTag, "current_player")) {
-			retval.setCurrentPlayer(players.getPlayer(parseInt(
-					getParameter(mapTag, "current_player"), outerLine)));
+			retval.setCurrentPlayer(players
+					.getPlayer(getIntegerParameter(mapTag, "current_player")));
 		} else if (hasParameter(element, "current_player")) {
-			retval.setCurrentPlayer(players.getPlayer(parseInt(
-					getParameter(element, "current_player"), outerLine)));
+			retval.setCurrentPlayer(players
+					.getPlayer(getIntegerParameter(element, "current_player")));
 		}
 		return retval;
 	}

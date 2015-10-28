@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.swing.AbstractListModel;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.TileFixture;
 import util.NullCleaner;
 

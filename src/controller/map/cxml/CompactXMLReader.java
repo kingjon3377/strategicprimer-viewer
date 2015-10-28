@@ -8,8 +8,6 @@ import java.io.Reader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.ISPReader;

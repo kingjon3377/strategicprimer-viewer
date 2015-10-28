@@ -730,7 +730,7 @@ public class SPMapNG implements IMutableMapNG {
 		SPMapNG retval = new SPMapNG(dimensions(), playerCollection.copy(false),
 				getCurrentTurn());
 		for (Point point : locations()) {
-			assert(point != null);
+			assert point != null;
 			retval.setBaseTerrain(point, getBaseTerrain(point));
 			Ground grd = getGround(point);
 			if (grd == null) {

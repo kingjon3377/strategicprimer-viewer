@@ -2,8 +2,6 @@ package model.exploration;
 
 import javax.swing.DefaultListModel;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.listeners.MapChangeListener;
 import model.map.Player;
 

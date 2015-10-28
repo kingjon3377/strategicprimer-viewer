@@ -197,25 +197,24 @@ public class SPMenu extends JMenuBar {
 						}
 					});
 			final FindDialog finder = new FindDialog(parent, (IViewerModel) model);
-			findItem =
-					MenuItemCreator.createMenuItem("Find a fixture", findKey,
-							findStroke, "Find a fixture by name, kind, or ID#",
-							new ActionListener() {
-								@Override
-								public void actionPerformed(@Nullable final ActionEvent evt) {
-									finder.setVisible(true);
-								}
-							});
-			nextItem =
-					MenuItemCreator.createMenuItem("Find next", nextKey,
-							nextStroke,
-							"Find the next fixture matching the pattern",
-							new ActionListener() {
-								@Override
-								public void actionPerformed(@Nullable final ActionEvent evt) {
-									finder.search();
-								}
-							});
+			findItem = MenuItemCreator.createMenuItem("Find a fixture", findKey,
+					findStroke, "Find a fixture by name, kind, or ID#",
+					new ActionListener() {
+						@Override
+						public void actionPerformed(
+								@Nullable final ActionEvent evt) {
+							finder.setVisible(true);
+						}
+					});
+			nextItem = MenuItemCreator.createMenuItem("Find next", nextKey,
+					nextStroke, "Find the next fixture matching the pattern",
+					new ActionListener() {
+						@Override
+						public void actionPerformed(
+								@Nullable final ActionEvent evt) {
+							finder.search();
+						}
+					});
 			zoomListener = new ZoomListener((IViewerModel) model);
 		} else {
 			final ActionListener nullAction = new ActionListener() {
@@ -279,15 +278,16 @@ public class SPMenu extends JMenuBar {
 				"Mark a player as the current player in the map", pch));
 		pch.addPlayerChangeListener(new PlayerChangeListener() {
 			@Override
-			public void playerChanged(@Nullable final Player old, final Player newPlayer) {
-					for (final Player player : model.getMap().players()) {
-						if (player.equals(newPlayer)) {
-							player.setCurrent(true);
-						} else {
-							player.setCurrent(false);
-						}
+			public void playerChanged(@Nullable final Player old,
+					final Player newPlayer) {
+				for (final Player player : model.getMap().players()) {
+					if (player.equals(newPlayer)) {
+						player.setCurrent(true);
+					} else {
+						player.setCurrent(false);
 					}
 				}
+			}
 		});
 		return retval;
 	}
@@ -325,7 +325,7 @@ public class SPMenu extends JMenuBar {
 	}
 	/**
 	 * A class to invoke a ViewerOpener (below).
-	 * @uathor Jonathan Lovelace
+	 * @author Jonathan Lovelace
 	 */
 	protected static final class ViewerOpenerInvoker implements ActionListener {
 		/**

@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.swing.DefaultListModel;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.listeners.PlayerChangeListener;

@@ -246,6 +246,8 @@ public class MapView implements IMutableMapView {
 	 */
 	@Override
 	public IMapView copy(final boolean zero) {
-		return new MapView(map.copy(zero), getPlayers().getCurrentPlayer().getPlayerId(), getCurrentTurn());
+		return new MapView(map.copy(zero),
+				getPlayers().getCurrentPlayer().getPlayerId(),
+				getCurrentTurn());
 	}
 }

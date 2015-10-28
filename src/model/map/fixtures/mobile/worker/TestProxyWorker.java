@@ -47,8 +47,10 @@ public class TestProxyWorker {
 	 */
 	@Test
 	public void testProxyWorker() {
-		Worker one = new Worker("one", "human", 1, new Job("jobOne", 1, new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
-		Worker two = new Worker("two", "elf", 2, new Job("jobTwo", 1, new Skill("skillThree", 1, 19), new Skill("skillFour", 0, 99)));
+		Worker one = new Worker("one", "human", 1, new Job("jobOne", 1,
+				new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
+		Worker two = new Worker("two", "elf", 2, new Job("jobTwo", 1,
+				new Skill("skillThree", 1, 19), new Skill("skillFour", 0, 99)));
 		Worker three = new Worker("three", "dwarf", 5);
 		ProxyWorker proxy = new ProxyWorker(one, two, three);
 		for (IJob job : proxy) {
@@ -66,21 +68,31 @@ public class TestProxyWorker {
 						new Skill("skillTwo", 0, 10)),
 				new Job("jobTwo", 1, new Skill("skillThree", 1, 29),
 						new Skill("skillFour", 1, 0)));
-		Worker threeCopy = new Worker("three", "dwarf", 5, new Job("jobOne", 0, new Skill("skillOne", 0, 10),
-						new Skill("skillTwo", 0, 10)), new Job("jobTwo", 0, new Skill("skillThree", 0, 10),
+		Worker threeCopy = new Worker("three", "dwarf", 5,
+				new Job("jobOne", 0, new Skill("skillOne", 0, 10),
+						new Skill("skillTwo", 0, 10)),
+				new Job("jobTwo", 0, new Skill("skillThree", 0, 10),
 						new Skill("skillFour", 0, 10)));
 		assertEquals("First worker should have appropriate experience", oneCopy, one);
 		assertEquals("Second worker should have appropriate experience", twoCopy, two);
-		assertEquals("Initially-empty worker should have appropriate experience", threeCopy, three);
+		assertEquals(
+				"Initially-empty worker should have appropriate experience",
+				threeCopy, three);
 	}
+
 	/**
-	 * Test that the next simplest case, of a proxy for the workers in a unit, works properly.
-	 * @throws IOException never; required to be declared by our use of isSubset().
+	 * Test that the next simplest case, of a proxy for the workers in a unit,
+	 * works properly.
+	 *
+	 * @throws IOException
+	 *             never; required to be declared by our use of isSubset().
 	 */
 	@Test
 	public void testProxyUnit() throws IOException {
-		Worker one = new Worker("one", "human", 1, new Job("jobOne", 1, new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
-		Worker two = new Worker("two", "elf", 2, new Job("jobTwo", 1, new Skill("skillThree", 1, 19), new Skill("skillFour", 0, 99)));
+		Worker one = new Worker("one", "human", 1, new Job("jobOne", 1,
+				new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
+		Worker two = new Worker("two", "elf", 2, new Job("jobTwo", 1,
+				new Skill("skillThree", 1, 19), new Skill("skillFour", 0, 99)));
 		Worker oneCopy = one.copy(false);
 		Worker twoCopy = two.copy(false);
 		Worker oneOrig = one.copy(false);
@@ -127,8 +139,10 @@ public class TestProxyWorker {
 	 */
 	@Test
 	public void testProxyUnitProxy() throws IOException {
-		Worker one = new Worker("one", "human", 1, new Job("jobOne", 1, new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
-		Worker two = new Worker("two", "elf", 2, new Job("jobTwo", 1, new Skill("skillThree", 1, 19), new Skill("skillFour", 0, 99)));
+		Worker one = new Worker("one", "human", 1, new Job("jobOne", 1,
+				new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
+		Worker two = new Worker("two", "elf", 2, new Job("jobTwo", 1,
+				new Skill("skillThree", 1, 19), new Skill("skillFour", 0, 99)));
 		Worker oneCopy = one.copy(false);
 		Worker twoCopy = two.copy(false);
 		Worker oneOrig = one.copy(false);
@@ -199,7 +213,8 @@ public class TestProxyWorker {
 	 */
 	@Test
 	public void testWorkerCopy() {
-		Worker one = new Worker("one", "human", 1, new Job("jobOne", 1, new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
+		Worker one = new Worker("one", "human", 1, new Job("jobOne", 1,
+				new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
 		assertEquals(one, one.copy(false));
 	}
 }

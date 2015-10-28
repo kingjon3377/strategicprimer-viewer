@@ -372,8 +372,8 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 	 *             if the tag doesn't have that parameter or if its value is
 	 *             nonnumeric or otherwise malformed
 	 */
-	protected static int getIntegerParameter(final StartElement tag, final String parameter)
-			throws SPFormatException {
+	protected static int getIntegerParameter(final StartElement tag,
+			final String parameter) throws SPFormatException {
 		return parseInt(getParameter(tag, parameter), tag.getLocation().getLineNumber());
 	}
 

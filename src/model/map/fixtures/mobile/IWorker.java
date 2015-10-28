@@ -59,7 +59,7 @@ public interface IWorker extends UnitMember, Iterable<IJob>, HasName, HasKind,
 	@Override
 	IWorker copy(boolean zero);
 	/**
-	 * TODO: Should we return a new Job (after adding it) instead of null in the not-present case?
+	 * TODO: Should we create and return a new Job instead of null if not present?
 	 *
 	 * @param name the name of a Job
 	 * @return the Job by that name the worker has, or null if it has none

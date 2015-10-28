@@ -42,7 +42,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class ResourceReader implements INodeHandler<ResourcePile>{
+public class ResourceReader implements INodeHandler<ResourcePile> {
 	/**
 	 * Parse a resource pile.
 	 * @param element the element to read from
@@ -84,14 +84,15 @@ public class ResourceReader implements INodeHandler<ResourcePile>{
 		return ResourcePile.class;
 	}
 	/**
-	 * Create an intermediate representation to convert to XML
+	 * Create an intermediate representation to convert to XML.
 	 *
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final ResourcePile obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation("resource");
+		final SPIntermediateRepresentation retval =
+				new SPIntermediateRepresentation("resource");
 		retval.addIdAttribute(obj.getID());
 		retval.addAttribute("kind", obj.getKind());
 		retval.addAttribute("contents", obj.getContents());

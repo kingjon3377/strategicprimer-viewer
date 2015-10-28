@@ -74,8 +74,8 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasImage 
 	 * @return whether it's a subset of (i.e. equal to) this one
 	 */
 	@Override
-	public boolean isSubset(final IFixture obj, final Appendable ostream, final String context)
-			throws IOException {
+	public boolean isSubset(final IFixture obj, final Appendable ostream,
+			final String context)			throws IOException {
 		if (obj.getID() != id) {
 			ostream.append(context);
 			ostream.append("\tIDs differ");
@@ -146,7 +146,8 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasImage 
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return obj instanceof Implement && ((Implement) obj).id == id && ((Implement) obj).kind.equals(kind);
+		return obj instanceof Implement && ((Implement) obj).id == id
+				&& ((Implement) obj).kind.equals(kind);
 	}
 	/**
 	 * @return a hash value for this object

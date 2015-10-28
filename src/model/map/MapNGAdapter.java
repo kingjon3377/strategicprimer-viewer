@@ -463,7 +463,7 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 	 * @param rivers the rivers to add
 	 */
 	@Override
-	public void addRivers(final Point location, final @NonNull River... rivers) {
+	public void addRivers(final Point location, @NonNull final River... rivers) {
 		IMutableTile tile = state.getTile(location);
 		// Taking advantage of the special handling in Tile's addFixture()
 		tile.addFixture(new RiverFixture(rivers));
@@ -625,7 +625,7 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 		SPMapNG retval = new SPMapNG(dimensions(), state.getPlayers().copy(false),
 				getCurrentTurn());
 		for (Point point : locations()) {
-			assert(point != null);
+			assert point != null;
 			retval.setBaseTerrain(point, getBaseTerrain(point));
 			Ground grd = getGround(point);
 			if (grd == null) {

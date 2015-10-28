@@ -326,7 +326,7 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 		return getKind();
 	}
 	/**
-	 * TODO: Should we return a new Job (after adding it) instead of null in the not-present case?
+	 * TODO: Should we add and return a new Job instead of null if not present?
 	 *
 	 * @param name the name of a Job
 	 * @return the Job by that name the worker has, or null if it has none

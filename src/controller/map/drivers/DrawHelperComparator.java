@@ -407,8 +407,10 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		final TileDrawHelper hThree = new Ver2TileDrawHelper(
 				new ImageObserver() {
 					@Override
-					public boolean imageUpdate(@Nullable final Image img, final int infoflags,
-							final int xCoord, final int yCoord, final int width, final int height) {
+					public boolean imageUpdate(@Nullable final Image img,
+							final int infoflags, final int xCoord,
+							final int yCoord, final int width,
+							final int height) {
 						return false;
 					}
 				}, new ZOrderFilter() {
