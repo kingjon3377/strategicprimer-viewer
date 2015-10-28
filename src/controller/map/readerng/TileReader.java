@@ -215,7 +215,9 @@ public class TileReader implements INodeHandler<ITile> {
 		}
 		if (obj.iterator().hasNext()) {
 			for (final TileFixture fix : obj) {
-				writeFixture(fix, retval);
+				if (fix != null) {
+					writeFixture(fix, retval);
+				}
 			}
 		}
 		return retval;
@@ -232,7 +234,9 @@ public class TileReader implements INodeHandler<ITile> {
 			final SPIntermediateRepresentation parent) {
 		if (fix instanceof RiverFixture) {
 			for (final River river : (RiverFixture) fix) {
-				parent.addChild(READER.write(river));
+				if (river != null) {
+					parent.addChild(READER.write(river));
+				}
 			}
 		} else {
 			parent.addChild(ReaderAdapter.ADAPTER.write(fix));

@@ -230,7 +230,9 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 			if (obj.iterator().hasNext()) {
 				ostream.append('\n');
 				for (final TileFixture fix : obj) {
-					CompactReaderAdapter.write(ostream, fix, indent + 1);
+					if (fix != null) {
+						CompactReaderAdapter.write(ostream, fix, indent + 1);
+					}
 				}
 				ostream.append(indent(indent));
 			}
@@ -272,7 +274,9 @@ public final class CompactTileReader extends AbstractCompactReader<ITile> {
 	public static void writeRivers(final Appendable ostream,
 			final Iterable<River> iter, final int indent) throws IOException {
 		for (final River river : iter) {
-			writeRiver(ostream, river, indent);
+			if (river != null) {
+				writeRiver(ostream, river, indent);
+			}
 		}
 	}
 	/**

@@ -19,7 +19,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.HasImage;
@@ -281,7 +280,9 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	private TileFixture getTopFixture(final IMapNG map, final Point location) {
 		final Iterable<TileFixture> iter = getDrawableFixtures(map, location);
 		for (final TileFixture item : iter) {
-			return item;
+			if (item != null) {
+				return item;
+			}
 		}
 		throw new IllegalArgumentException("Tile has no non-null fixtures");
 	}
@@ -576,7 +577,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			} else {
 				while (wrapped.hasNext()) {
 					final TileFixture tempCached = wrapped.next();
-					if (tempCached != NULL_FIXT
+					if (tempCached != null && tempCached != NULL_FIXT
 							&& zof.shouldDisplay(tempCached)) {
 						cached = tempCached;
 						hasCached = true;

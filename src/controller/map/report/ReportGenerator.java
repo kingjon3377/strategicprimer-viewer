@@ -272,6 +272,9 @@ public final class ReportGenerator {
 				new IntMap<>();
 		final IDFactory idf = IDFactoryFiller.createFactory(map);
 		for (final Point point : map.locations()) {
+			if (point == null) {
+				continue;
+			}
 			// Because neither Forests, Mountains, nor Ground have positive IDs,
 			// we can ignore everything but the "other" fixtures.
 			for (final IFixture fix : getFixtures(map.getOtherFixtures(point))) {

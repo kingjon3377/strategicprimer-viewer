@@ -9,8 +9,6 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
@@ -229,7 +227,9 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 		if (obj.iterator().hasNext() || !obj.getOrders().trim().isEmpty()) {
 			ostream.append('>').append(obj.getOrders().trim()).append('\n');
 			for (final UnitMember member : obj) {
-				CompactReaderAdapter.write(ostream, member, indent + 1);
+				if (member != null) {
+					CompactReaderAdapter.write(ostream, member, indent + 1);
+				}
 			}
 			ostream.append(indent(indent));
 			ostream.append("</unit>\n");

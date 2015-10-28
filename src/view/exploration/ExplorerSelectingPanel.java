@@ -189,8 +189,10 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	public void valueChanged(@Nullable final ListSelectionEvent evt) {
 		if (!playerList.isSelectionEmpty()) {
 			final Player newPlayer = playerList.getSelectedValue();
-			for (final PlayerChangeListener list : listeners) {
-				list.playerChanged(null, newPlayer);
+			if (newPlayer != null) {
+				for (final PlayerChangeListener list : listeners) {
+					list.playerChanged(null, newPlayer);
+				}
 			}
 		}
 	}

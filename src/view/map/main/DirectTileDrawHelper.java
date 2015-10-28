@@ -69,8 +69,10 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 			}
 			context.setColor(Color.blue);
 			for (final River river : map.getRivers(location)) {
-				drawRiver(context, river, position.x, position.y, dims.x,
-						dims.y);
+				if (river != null) {
+					drawRiver(context, river, position.x, position.y, dims.x,
+							dims.y);
+				}
 			}
 			if (hasAnyForts(map, location)) {
 				context.setColor(FORT_COLOR);

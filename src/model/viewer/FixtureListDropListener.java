@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.TileFixture;
@@ -229,7 +228,9 @@ public class FixtureListDropListener implements DropTargetListener {
 				List<Transferable> curried = (List<Transferable>) trans
 						.getTransferData(flavor);
 				for (Transferable item : curried) {
-					handleDrop(item);
+					if (item != null) {
+						handleDrop(item);
+					}
 				}
 				return;
 			}

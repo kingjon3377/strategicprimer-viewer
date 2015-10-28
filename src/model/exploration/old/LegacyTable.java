@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.IEvent;
 import model.map.Player;
 import model.map.Point;
@@ -87,7 +85,10 @@ public class LegacyTable implements EncounterTable {
 		}
 		data.add("Nothing interesting here ...");
 		for (final StoneKind stone : StoneKind.values()) {
-			addData(new StoneDeposit(stone, 0, 0)); // NOPMD
+			if (stone != null)
+			 {
+				addData(new StoneDeposit(stone, 0, 0)); // NOPMD
+			}
 		}
 	}
 

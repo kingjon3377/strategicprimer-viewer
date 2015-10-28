@@ -346,7 +346,9 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 								assertNotNull(Integer.toString(dim.cols))));
 		retval.addChild(mapTag);
 		for (Player player : obj.players()) {
-			mapTag.addChild(PLAYER_READER.write(player));
+			if (player != null) {
+				mapTag.addChild(PLAYER_READER.write(player));
+			}
 		}
 		for (int i = 0; i < dim.rows; i++) {
 			final SPIntermediateRepresentation row =
@@ -390,7 +392,9 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 			retval.addChild(new SPIntermediateRepresentation("mountain"));
 		}
 		for (River river : map.getRivers(point)) {
-			retval.addChild(RIVER_READER.write(river));
+			if (river != null) {
+				retval.addChild(RIVER_READER.write(river));
+			}
 		}
 		retval.addChild(writeFixture(map.getGround(point)));
 		retval.addChild(writeFixture(map.getForest(point)));
