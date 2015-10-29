@@ -4,8 +4,9 @@ import model.map.HasImage;
 import model.map.TileFixture;
 
 /**
- * A (for now marker) interface for fixtures that can be somehow explored. TODO:
- * what methods should this have?
+ * A (for now marker) interface for fixtures that can be somehow explored.
+ * 
+ * TODO: what methods should this have?
  *
  * This is part of the Strategic Primer assistive programs suite developed by
  * Jonathan Lovelace.
