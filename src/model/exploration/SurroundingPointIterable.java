@@ -11,8 +11,8 @@ import model.map.Point;
 import util.NullCleaner;
 
 /**
- * An iterator over the twenty-five points (including itself) surrounding a
- * point.
+ * An iterator over the points in a square surrounding a point, with points that
+ * are closer appearing in the iterator multiple times.
  *
  * This is part of the Strategic Primer assistive programs suite developed by
  * Jonathan Lovelace.
@@ -35,47 +35,36 @@ import util.NullCleaner;
  */
 public class SurroundingPointIterable implements Iterable<Point> {
 	/**
-	 * Two below the point.
-	 */
-	private static final int TWO_BELOW = -2;
-	/**
-	 * Two above the point. (Since we loop to an exclusive bound, using
-	 * less-than not less-than-or-equals)
-	 */
-	private static final int TWO_ABOVE = 3;
-	/**
-	 * How many times the current point needs to be added to make it come up
-	 * half the time.
-	 *
-	 * (TODO: is that really what's going on? And should we perhaps just add
-	 * the current tile in one of the other loops instead of giving it its
-	 * own?)
-	 */
-	private static final int HALF_COUNT = 14;
-	/**
 	 * the list of points.
 	 */
 	private final List<Point> points = new ArrayList<>();
 	/**
+	 * Pass the default radius of 2.
+	 *
 	 * @param starting the starting point.
 	 * @param dimensions the dimensions of the map
 	 */
 	public SurroundingPointIterable(final Point starting,
 			final MapDimensions dimensions) {
-		for (int row = TWO_BELOW; row < TWO_ABOVE; row++) {
-			for (int col = TWO_BELOW; col < TWO_ABOVE; col++) {
-				points.add(point(roundRow(starting.row + row, dimensions),
-						roundCol(starting.col + col, dimensions)));
+		this(starting, dimensions, 2);
+	}
+
+	/**
+	 * @param starting the starting point.
+	 * @param dimensions the dimensions of the map
+	 * @param radius how far from the starting point to go
+	 */
+	public SurroundingPointIterable(final Point starting,
+			final MapDimensions dimensions, final int radius) {
+		for (int rad = radius; rad >= 0; rad--) {
+			final int lowerBound = 0 - rad;
+			final int upperBound = rad + 1;
+			for (int row = lowerBound; row < upperBound; row++) {
+				for (int col = lowerBound; col < upperBound; col++) {
+					points.add(point(roundRow(starting.row + row, dimensions),
+							roundCol(starting.col + col, dimensions)));
+				}
 			}
-		}
-		for (int row = -1; row < 2; row++) {
-			for (int col = -1; col < 2; col++) {
-				points.add(point(roundRow(starting.row + row, dimensions),
-						roundCol(starting.col + col, dimensions)));
-			}
-		}
-		for (int i = 0; i < HALF_COUNT; i++) {
-			points.add(starting);
 		}
 	}
 	/**
