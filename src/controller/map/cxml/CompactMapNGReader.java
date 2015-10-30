@@ -158,7 +158,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 										current, "kind", "type", warner)));
 					} else {
 						warner.warn(new MissingPropertyException(type, "kind",
-								currentLoc.getLineNumber()));
+								currentLine));
 					}
 				} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) {
 					warner.warn(new UnsupportedTagException(type, currentLine));
@@ -208,10 +208,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					String mapName =
 							assertNotNull(mapTag.getName().getLocalPart());
 					try {
-						retval.addFixture(
-								point,
-								parseFixture(current, stream, players,
-										idFactory, warner));
+						retval.addFixture(point, parseFixture(current, stream,
+								players, idFactory, warner));
 					} catch (final UnwantedChildException except) {
 						if ("unknown".equals(except.getTag())) {
 							throw new UnwantedChildException(mapName,
