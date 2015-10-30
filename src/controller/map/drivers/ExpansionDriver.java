@@ -298,9 +298,16 @@ public class ExpansionDriver implements ISPDriver {
 			if (entry == null) {
 				continue;
 			}
+			Point point = NullCleaner.assertNotNull(entry.getKey());
 			for (final TileFixture fix : entry.getValue()) {
-				lmap.addFixture(NullCleaner.assertNotNull(entry.getKey()),
-						NullCleaner.assertNotNull(fix));
+				if (fix == null) {
+					continue;
+				} else if (fix instanceof HasOwner) {
+					lmap.addFixture(point, fix
+							.copy(!((HasOwner) fix).getOwner().equals(player)));
+				} else {
+					lmap.addFixture(point, fix.copy(true));
+				}
 			}
 		}
 		return true;
