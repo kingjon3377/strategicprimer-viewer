@@ -130,10 +130,8 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 		String outerTag = element.getName().getLocalPart();
 		assert outerLoc != null && outerTag != null;
 		if ("view".equalsIgnoreCase(element.getName().getLocalPart())) {
-			currentTurn =
-					XMLHelper.parseInt(
-							XMLHelper.getAttribute(element, "current_turn"),
-							outerLoc);
+			currentTurn = XMLHelper.parseInt(
+					XMLHelper.getAttribute(element, "current_turn"), outerLoc);
 			mapTag = getFirstStartElement(stream, outerLoc.getLineNumber());
 			if (!"map".equals(mapTag.getName().getLocalPart())) {
 				throw new UnwantedChildException(outerTag, assertNotNull(mapTag
@@ -148,15 +146,13 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 					outerLoc.getLineNumber());
 		}
 		Location mapTagLocation = assertNotNull(mapTag.getLocation());
-		final MapDimensions dimensions =
-				new MapDimensions(
-						XMLHelper.parseInt(
-								XMLHelper.getAttribute(mapTag, "rows"),
-								mapTagLocation), XMLHelper.parseInt(
-								XMLHelper.getAttribute(mapTag, "columns"),
-								mapTagLocation), XMLHelper.parseInt(
-								XMLHelper.getAttribute(mapTag, "version"),
-								mapTagLocation));
+		final MapDimensions dimensions = new MapDimensions(
+				XMLHelper.parseInt(XMLHelper.getAttribute(mapTag, "rows"),
+						mapTagLocation),
+				XMLHelper.parseInt(XMLHelper.getAttribute(mapTag, "columns"),
+						mapTagLocation),
+				XMLHelper.parseInt(XMLHelper.getAttribute(mapTag, "version"),
+						mapTagLocation));
 		SPMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		final Point nullPoint = PointFactory.point(-1, -1);
 		Point point = nullPoint;
@@ -178,10 +174,9 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 						throw new UnwantedChildException("tile", type,
 								currentLoc.getLineNumber());
 					}
-					point =
-							PointFactory.point(XMLHelper.parseInt(
-									XMLHelper.getAttribute(current, "row"),
-									currentLoc), XMLHelper.parseInt(
+					point = PointFactory.point(XMLHelper.parseInt(
+							XMLHelper.getAttribute(current, "row"), currentLoc),
+							XMLHelper.parseInt(
 									XMLHelper.getAttribute(current, "column"),
 									currentLoc));
 					// Since tiles have been known to be *written* without
@@ -189,11 +184,10 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 					// accept here, since we can.
 					if (XMLHelper.hasAttribute(current, "kind")
 							|| XMLHelper.hasAttribute(current, "type")) {
-						retval.setBaseTerrain(
-								point,
+						retval.setBaseTerrain(point,
 								TileType.getTileType(XMLHelper
-										.getAttributeWithDeprecatedForm(
-												current, "kind", "type", warner)));
+										.getAttributeWithDeprecatedForm(current,
+												"kind", "type", warner)));
 					} else {
 						warner.warn(new MissingPropertyException(type, "kind",
 								currentLoc.getLineNumber()));
@@ -210,14 +204,12 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 					retval.addRivers(point, RIVER_READER.parse(current, stream,
 							players, warner, factory));
 				} else if ("ground".equalsIgnoreCase(type)) {
-					Ground ground =
-							GROUND_READER.parse(current, stream, players,
-									warner, factory);
+					Ground ground = GROUND_READER.parse(current, stream,
+							players, warner, factory);
 					addFixture(retval, point, ground);
 				} else if ("forest".equalsIgnoreCase(type)) {
-					Forest forest =
-							FOREST_READER.parse(current, stream, players,
-									warner, factory);
+					Forest forest = FOREST_READER.parse(current, stream,
+							players, warner, factory);
 					addFixture(retval, point, forest);
 				} else if ("mountain".equalsIgnoreCase(type)) {
 					retval.setMountainous(point, true);
