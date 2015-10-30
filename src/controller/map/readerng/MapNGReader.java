@@ -31,8 +31,10 @@ import model.map.SPMapNG;
 import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.Ground;
+import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.terrain.Forest;
+import model.map.fixtures.terrain.Mountain;
 import util.EqualsAny;
 import util.Pair;
 import util.Warning;
@@ -211,33 +213,12 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 					Ground ground =
 							GROUND_READER.parse(current, stream, players,
 									warner, factory);
-					Ground oldGround = retval.getGround(point);
-					if (oldGround == null) {
-						retval.setGround(point, ground);
-					} else if (ground.isExposed() && !oldGround.isExposed()) {
-						retval.setGround(point, ground);
-						retval.addFixture(point, oldGround);
-					} else if (ground.equals(oldGround)) {
-						continue;
-					} else {
-						// TODO: Should we do some ordering of Ground other than
-						// the order they are in the XML?
-						retval.addFixture(point, ground);
-					}
+					addFixture(retval, point, ground);
 				} else if ("forest".equalsIgnoreCase(type)) {
 					Forest forest =
 							FOREST_READER.parse(current, stream, players,
 									warner, factory);
-					Forest oldForest = retval.getForest(point);
-					if (oldForest == null) {
-						retval.setForest(point, forest);
-					} else if (oldForest.equals(forest)) {
-						continue;
-					} else {
-						// TODO: Should we do some ordering of Forests other
-						// than the order they are in the XML?
-						retval.addFixture(point, forest);
-					}
+					addFixture(retval, point, forest);
 				} else if ("mountain".equalsIgnoreCase(type)) {
 					retval.setMountainous(point, true);
 				} else {
@@ -298,6 +279,54 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 					mapTagLocation)));
 		}
 		return retval;
+	}
+	/**
+	 * Add a fixture to a point in a map, accounting for the special cases.
+	 * @param map the map
+	 * @param point where to add the fixture
+	 * @param fix the fixture to add
+	 */
+	private static void addFixture(final IMutableMapNG map, final Point point,
+			final TileFixture fix) {
+		if (fix instanceof Ground) {
+			Ground ground = (Ground) fix;
+			Ground oldGround = map.getGround(point);
+			if (oldGround == null) {
+				map.setGround(point, ground);
+			} else if (ground.isExposed() && !oldGround.isExposed()) {
+				map.setGround(point, ground);
+				map.addFixture(point, oldGround);
+			} else if (!oldGround.equals(ground)) {
+				// TODO: Should we do some ordering of Ground other than
+				// the order they are in the XML?
+				map.addFixture(point, ground);
+			}
+		} else if (fix instanceof Forest) {
+			final Forest forest = (Forest) fix;
+			final Forest oldForest = map.getForest(point);
+			if (oldForest == null) {
+				map.setForest(point, forest);
+			} else if (!oldForest.equals(forest)) {
+				// TODO: Should we do some ordering of Forests other
+				// than the order they are in the XML?
+				map.addFixture(point, forest);
+			}
+		} else if (fix instanceof Mountain) {
+			// We shouldn't get here, since the parser above doesn't even
+			// instantiate Mountains, but we don't want to lose data if I
+			// forget.
+			map.setMountainous(point, true);
+		} else if (fix instanceof RiverFixture) {
+			// Similarly
+			for (River river : (RiverFixture) fix) {
+				map.addRivers(point, river);
+			}
+		} else {
+			// We shouldn't get here either, since the parser above handles
+			// other fixtures directly, but again we don't want to lose data if
+			// I forget.
+			map.addFixture(point, fix);
+		}
 	}
 
 	/**
