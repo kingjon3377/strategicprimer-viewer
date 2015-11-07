@@ -158,7 +158,7 @@
 	<attribute name="Mercurial-Revision" value="${scm.revision.id}" />
       </manifest>
       <fileset dir="${project_home}/bin" />
-      <zipfileset src="${windowmenu.jar.path}" />
+      <zipfileset excludes="META-INF/**/*" src="${windowmenu.jar.path}" />
     </jar>
   </target>
   <target name="icon">
