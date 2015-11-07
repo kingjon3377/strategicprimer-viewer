@@ -28,6 +28,7 @@
   <property file="version.properties" />
 
   <!-- Paths to find necessary files and paths within the repository -->
+  <property file="paths.local.properties" />
   <property file="paths.properties" />
 
   <!-- Paths within the repository. This should just work, so long as the directories exist. -->
