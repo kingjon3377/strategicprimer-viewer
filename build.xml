@@ -28,6 +28,7 @@
   <property file="version.properties" />
 
   <!-- Paths to find necessary files and paths within the repository -->
+  <property file="paths.local.properties" />
   <property file="paths.properties" />
 
   <!-- Paths within the repository. This should just work, so long as the directories exist. -->
@@ -158,13 +159,13 @@
 	<attribute name="Mercurial-Revision" value="${scm.revision.id}" />
       </manifest>
       <fileset dir="${project_home}/bin" />
-      <zipfileset src="${windowmenu.jar.path}" />
+      <zipfileset excludes="META-INF/**/*" src="${windowmenu.jar.path}" />
     </jar>
   </target>
   <target name="icon">
     <for list="512,256,128,64,48,32,16" param="resolution">
       <sequential>
-        <exec executable="/usr/bin/convert" dir="${basedir}">
+          <exec executable="${convert.path}" dir="${basedir}">
           <arg value="src/images/icon.png" />
 	  <arg value="-adaptive-resize" />
 	  <arg value="@{resolution}x@{resolution}" />
@@ -174,7 +175,7 @@
     </for>
   </target>
   <target name="exe" depends="jar,icon">
-    <exec executable="/usr/bin/icotool" dir="${basedir}">
+      <exec executable="${icotool.path}" dir="${basedir}">
       <arg value="-o" />
       <arg value="icon.ico" />
       <arg value="--create" />
@@ -186,7 +187,7 @@
       outfile="${release}/${basename}.exe" jar="${release}/${basename}.jar" />
   </target>
   <target name="app" depends="jar,icon">
-    <exec executable="/usr/bin/png2icns" dir="${basedir}">
+      <exec executable="${png2icns.path}" dir="${basedir}">
       <arg value="icon.icns" />
       <arg value="icon_512px.png" />
       <arg value="icon_256px.png" />
