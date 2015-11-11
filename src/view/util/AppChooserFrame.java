@@ -149,6 +149,7 @@ public class AppChooserFrame extends JFrame {
 				assert message != null;
 				LOGGER.log(Level.SEVERE, message, except.getCause());
 				ErrorShower.showErrorDialog(outer, message);
+				return;
 			}
 			SwingUtilities.invokeLater(this);
 		}
