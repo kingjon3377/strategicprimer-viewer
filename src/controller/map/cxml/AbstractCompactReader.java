@@ -234,9 +234,11 @@ public abstract class AbstractCompactReader<T> implements CompactReader<T> {
 				return idFactory.register(NumberFormat.getIntegerInstance()
 						.parse(getParameter(element, "id")).intValue());
 			} catch (NumberFormatException | ParseException except) {
-				throw new MissingPropertyException(tagOrNull(element.getName()
-						.getLocalPart()), "id", element.getLocation()
-						.getLineNumber());
+				SPFormatException nexcept = new MissingPropertyException(
+						tagOrNull(element.getName().getLocalPart()), "id",
+						element.getLocation().getLineNumber());
+				nexcept.initCause(except);
+				throw nexcept;
 			}
 		} else {
 			final String tag = element.getName().getLocalPart();

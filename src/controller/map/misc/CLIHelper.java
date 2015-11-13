@@ -159,8 +159,10 @@ public class CLIHelper implements ICLIHelper {
 				try {
 					retval = NUM_PARSER.parse(input).intValue();
 				} catch (ParseException e) {
-					throw new NumberFormatException(
+					NumberFormatException nexcept = new NumberFormatException(
 							"Failed to parse number from input");
+					nexcept.initCause(e);
+					throw nexcept;
 				}
 			}
 		}
