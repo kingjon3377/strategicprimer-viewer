@@ -27,3 +27,5 @@ icon.ico
 icon_*px.png
 bin/.gitignore
 paths.local.properties
+compiled/*
+dist/*
