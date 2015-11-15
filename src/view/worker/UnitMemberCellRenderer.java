@@ -105,7 +105,7 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 			@Nullable final Object value, final boolean selected,
 			final boolean expanded, final boolean leaf, final int row,
 			final boolean hasFocus) {
-		assert tree != null && value != null;
+		assert tree != null && value != null : "UnitMemberCellRenderer passed a null tree or value";
 		final Component component =
 				NullCleaner.assertNotNull(DFLT.getTreeCellRendererComponent(
 						tree, value, selected, expanded, leaf, row, hasFocus));

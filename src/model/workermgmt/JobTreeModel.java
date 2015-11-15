@@ -143,7 +143,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	@Override
 	public int getChildCount(@Nullable final Object parent) {
 		if (parent instanceof IWorker || parent instanceof IJob) {
-			assert parent != null;
+			assert parent != null : "Impossible null in JobTreeModel";
 			final Iterator<?> iter = ((Iterable<?>) parent).iterator();
 			int count = 0;
 			// ESCA-JAVA0254:
@@ -196,7 +196,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 			@Nullable final Object child) {
 		if (parent instanceof IWorker || parent instanceof IJob) {
 			int index = 0;
-			assert parent != null;
+			assert parent != null : "Impossible null in JobTreeModel#getIndexOfChild";
 			for (final Object item : (Iterable<?>) parent) {
 				if (item.equals(child)) {
 					return index; // NOPMD
