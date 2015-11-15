@@ -71,8 +71,7 @@ public class StatsReader implements INodeHandler<WorkerStats> {
 			final Iterable<XMLEvent> stream, final IMutablePlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		final Location loc = element.getLocation();
-		assert loc != null;
+		final Location loc = NullCleaner.assertNotNull(element.getLocation());
 		final WorkerStats retval = new WorkerStats(XMLHelper.parseInt(XMLHelper
 				.getAttribute(element, "hp"), loc), XMLHelper.parseInt(XMLHelper
 				.getAttribute(element, "max"), loc), XMLHelper.parseInt(XMLHelper

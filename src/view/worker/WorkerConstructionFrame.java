@@ -184,8 +184,7 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener,
 	private static String numericExpl(final Pair<String, String>... numbers) {
 		final StringBuilder builder = new StringBuilder(40);
 		for (final Pair<String, String> number : numbers) {
-			final String num = number.first().trim();
-			assert num != null;
+			final String num = NullCleaner.assertNotNull(number.first().trim());
 			if (!isNumeric(num)) {
 				builder.append(number.second());
 				builder.append(" must be a number.\n");

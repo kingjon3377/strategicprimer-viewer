@@ -82,8 +82,7 @@ public class SPMapReader implements INodeHandler<SPMap> {
 			final Iterable<XMLEvent> stream, final IMutablePlayerCollection players,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		final Location loc = element.getLocation();
-		assert loc != null;
+		final Location loc = NullCleaner.assertNotNull(element.getLocation());
 		final SPMap map = new SPMap(new MapDimensions(
 				XMLHelper.parseInt(getAttribute(element, "rows"), loc),
 				XMLHelper.parseInt(getAttribute(element, "columns"), loc),

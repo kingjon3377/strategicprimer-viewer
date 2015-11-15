@@ -598,8 +598,7 @@ public class SPMapNG implements IMutableMapNG {
 		final EnumSet<River> localRivers;
 		final EnumSet<River> temp = rivers.get(location);
 		if (temp == null) {
-			localRivers = EnumSet.noneOf(River.class);
-			assert localRivers != null;
+			localRivers = NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
 			rivers.put(location, localRivers);
 		} else {
 			localRivers = temp;

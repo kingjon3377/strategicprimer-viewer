@@ -110,12 +110,10 @@ public enum TileType {
 	 * @return a list of all tile-types that version supports.
 	 */
 	public static Set<TileType> valuesForVersion(final int ver) {
-		final Integer boxedVer = Integer.valueOf(ver);
-		assert boxedVer != null;
+		final Integer boxedVer = NullCleaner.assertNotNull(Integer.valueOf(ver));
 		synchronized (VALS_BY_VER) {
 			if (!VALS_BY_VER.containsKey(boxedVer)) {
-				final Set<TileType> set = EnumSet.noneOf(TileType.class);
-				assert set != null;
+				final Set<TileType> set = NullCleaner.assertNotNull(EnumSet.noneOf(TileType.class));
 				for (final TileType type : values()) {
 					if (type.isSupportedByVersion(ver)) {
 						set.add(type);

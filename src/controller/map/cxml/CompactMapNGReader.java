@@ -298,8 +298,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			final IteratorWrapper<XMLEvent> stream,
 			final IMutablePlayerCollection players, final IDFactory idFactory,
 			final Warning warner) throws SPFormatException {
-		final String name = element.getName().getLocalPart();
-		assert name != null;
+		final String name = NullCleaner.assertNotNull(element.getName().getLocalPart());
 		for (final CompactReader<? extends TileFixture> item : readers) {
 			if (item.isSupportedTag(name)) {
 				return item.read(element, stream, players, warner, idFactory);

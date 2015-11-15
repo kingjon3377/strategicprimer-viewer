@@ -81,8 +81,7 @@ public class UnitReader implements INodeHandler<Unit> {
 		final StringBuilder orders = new StringBuilder();
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final StartElement selem = event.asStartElement();
-				assert selem != null;
+				final StartElement selem = NullCleaner.assertNotNull(event.asStartElement());
 				final Object result = ReaderAdapter.ADAPTER.parse(selem,
 						stream, players, warner, idFactory);
 				if (result instanceof UnitMember) {

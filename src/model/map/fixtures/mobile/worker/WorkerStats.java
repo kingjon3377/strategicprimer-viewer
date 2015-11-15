@@ -246,8 +246,7 @@ public class WorkerStats {
 	 */
 	public static String getModifierString(final int stat) {
 		final int modifier = (stat - STAT_BASIS) / 2;
-		final String modStr = Integer.toString(modifier);
-		assert modStr != null;
+		final String modStr = NullCleaner.assertNotNull(Integer.toString(modifier));
 		if (modifier >= 0) {
 			return '+' + modStr; // NOPMD
 		} else {

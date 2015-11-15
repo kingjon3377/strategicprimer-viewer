@@ -177,9 +177,8 @@ public class ExplorationRunner { // NOPMD
 		final String result = consultTable(table, point, terrain, fixtures);
 		if (result.contains("#")) {
 			final String[] split = result.split("#", 3);
-			final String before = split[0];
-			final String middle = split[1];
-			assert before != null && middle != null;
+			final String before = NullCleaner.assertNotNull(split[0]);
+			final String middle = NullCleaner.assertNotNull(split[1]);
 			final StringBuilder builder = new StringBuilder(100);
 			builder.append(before);
 			builder.append(recursiveConsultTable(middle, point, terrain, fixtures));

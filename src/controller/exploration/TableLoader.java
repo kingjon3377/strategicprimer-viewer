@@ -179,8 +179,8 @@ public final class TableLoader { // NOPMD
 					final String left = array[0];
 					final String right = array[1];
 					final Integer leftNum = Integer.valueOf(left);
-					assert left != null && right != null && leftNum != null;
-					list.add(ComparablePair.of(leftNum, right));
+					list.add(ComparablePair.of(NullCleaner.assertNotNull(leftNum),
+							NullCleaner.assertNotNull(right)));
 				} catch (NumberFormatException except) {
 					throw new IOException("Non-numeric data", except);
 				}

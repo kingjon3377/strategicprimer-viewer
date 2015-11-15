@@ -624,8 +624,7 @@ public class MapNGReverseAdapter implements IMapView {
 		ITileCollection tiles = getTiles();
 		for (Point point : tiles) {
 			if (point != null && tiles.hasTile(point)) {
-				ITile tile = tiles.getTile(point);
-				assert tile != null;
+				ITile tile = NullCleaner.assertNotNull(tiles.getTile(point));
 				Tile newTile = new Tile(tile.getTerrain());
 				for (TileFixture fixture : tile) {
 					if (fixture instanceof IEvent) {

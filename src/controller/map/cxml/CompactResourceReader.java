@@ -298,8 +298,7 @@ public final class CompactResourceReader extends
 		if (hasParameter(element, CULTIVATED_PARAM)) {
 			return parseBoolean(getParameter(element, CULTIVATED_PARAM)); // NOPMD
 		} else {
-			final String local = element.getName().getLocalPart();
-			assert local != null;
+			final String local = NullCleaner.assertNotNull(element.getName().getLocalPart());
 			if (hasParameter(element, "wild")) {
 				warner.warn(new DeprecatedPropertyException(local, "wild",
 						CULTIVATED_PARAM, element.getLocation().getLineNumber()));

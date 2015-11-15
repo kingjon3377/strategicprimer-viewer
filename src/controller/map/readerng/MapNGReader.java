@@ -36,6 +36,7 @@ import model.map.fixtures.TextFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import util.EqualsAny;
+import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 
@@ -126,9 +127,8 @@ public class MapNGReader implements INodeHandler<IMapNG> {
 			final IDFactory factory) throws SPFormatException {
 		final int currentTurn;
 		final StartElement mapTag;
-		Location outerLoc = element.getLocation();
-		String outerTag = element.getName().getLocalPart();
-		assert outerLoc != null && outerTag != null;
+		Location outerLoc = NullCleaner.assertNotNull(element.getLocation());
+		String outerTag = NullCleaner.assertNotNull(element.getName().getLocalPart());
 		if ("view".equalsIgnoreCase(element.getName().getLocalPart())) {
 			currentTurn = XMLHelper.parseInt(
 					XMLHelper.getAttribute(element, "current_turn"), outerLoc);
