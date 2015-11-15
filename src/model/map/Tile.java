@@ -285,8 +285,9 @@ public final class Tile implements IMutableTile {
 		}
 		boolean retval = true;
 		for (final TileFixture fix : temp) {
-			assert fix != null;
-			if (fix instanceof Subsettable
+			if (fix == null) {
+				continue;
+			} else if (fix instanceof Subsettable
 					&& mySubsettables.containsKey(Integer.valueOf(fix.getID()))) {
 				final Subsettable<?> mine = mySubsettables.get(Integer
 						.valueOf(fix.getID()));

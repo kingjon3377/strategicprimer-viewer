@@ -445,8 +445,9 @@ public class MapNGReverseAdapter implements IMapView {
 				}
 				boolean retval = true;
 				for (TileFixture fix : temp) {
-					assert fix != null;
-					if (fix instanceof SubsettableFixture
+					if (fix == null) {
+						continue;
+					} else if (fix instanceof SubsettableFixture
 							&& subsettableContents.containsKey(Integer
 									.valueOf(fix.getID()))) {
 						final Subsettable<?> mine =

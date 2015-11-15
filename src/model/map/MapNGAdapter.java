@@ -625,7 +625,9 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 		SPMapNG retval = new SPMapNG(dimensions(), state.getPlayers().copy(false),
 				getCurrentTurn());
 		for (Point point : locations()) {
-			assert point != null;
+			if (point == null) {
+				continue;
+			}
 			retval.setBaseTerrain(point, getBaseTerrain(point));
 			Ground grd = getGround(point);
 			if (grd == null) {
@@ -644,8 +646,9 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 				retval.addRivers(point, river);
 			}
 			for (TileFixture fixture : getOtherFixtures(point)) {
-				assert fixture != null;
-				if (fixture instanceof IEvent) {
+				if (fixture == null) {
+					continue;
+				} else if (fixture instanceof IEvent) {
 					retval.addFixture(point, fixture.copy(zero));
 				} else {
 					retval.addFixture(point, fixture.copy(false));

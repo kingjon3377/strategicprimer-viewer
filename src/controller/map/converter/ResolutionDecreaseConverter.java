@@ -203,7 +203,9 @@ public class ResolutionDecreaseConverter {
 		counter.countMany(one, two, three, four);
 		final Set<TileType> twos = EnumSet.noneOf(TileType.class);
 		for (final TileType type : TileType.values()) {
-			assert type != null;
+			if (type == null) {
+				continue;
+			}
 			switch (counter.getCount(type)) {
 			case 0:
 				// skip
