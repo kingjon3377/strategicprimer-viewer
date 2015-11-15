@@ -146,7 +146,6 @@ public class AppChooserFrame extends JFrame {
 				final String msg = except.getMessage();
 				final String message = NullCleaner.valueOrDefault(msg,
 						"Exception with null message");
-				assert message != null;
 				LOGGER.log(Level.SEVERE, message, except.getCause());
 				ErrorShower.showErrorDialog(outer, message);
 				return;

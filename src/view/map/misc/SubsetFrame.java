@@ -110,7 +110,6 @@ public class SubsetFrame extends JFrame {
 		public Writer append(@Nullable final CharSequence str) throws IOException {
 			final String local =
 					NullCleaner.valueOrDefault(str, "null").toString();
-			assert local != null;
 			if (!middle) {
 				super.append("<p style=\"color:white\">");
 			}

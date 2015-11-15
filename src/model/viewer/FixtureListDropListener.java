@@ -213,29 +213,29 @@ public class FixtureListDropListener implements DropTargetListener {
 		if (dflav == null) {
 			throw new UnsupportedFlavorException(new DataFlavor(
 					DataFlavor.class, "null"));
-		}
-		assert dflav != null;
-		for (DataFlavor flavor : dflav) {
-			if (flavor == null) {
-				continue;
-			} else if (flavor.equals(FixtureTransferable.FLAVOR)) {
-				TileFixture transferData = (TileFixture) trans.getTransferData(flavor);
-				if (transferData != null) {
-					model.addFixture(transferData);
-				}
-				return;
-			} else if (flavor.equals(CurriedFixtureTransferable.FLAVOR)) {
-				List<Transferable> curried = (List<Transferable>) trans
-						.getTransferData(flavor);
-				for (Transferable item : curried) {
-					if (item != null) {
-						handleDrop(item);
+		} else {
+			for (DataFlavor flavor : dflav) {
+				if (flavor == null) {
+					continue;
+				} else if (flavor.equals(FixtureTransferable.FLAVOR)) {
+					TileFixture transferData = (TileFixture) trans.getTransferData(flavor);
+					if (transferData != null) {
+						model.addFixture(transferData);
 					}
+					return;
+				} else if (flavor.equals(CurriedFixtureTransferable.FLAVOR)) {
+					List<Transferable> curried = (List<Transferable>) trans
+							.getTransferData(flavor);
+					for (Transferable item : curried) {
+						if (item != null) {
+							handleDrop(item);
+						}
+					}
+					return;
 				}
-				return;
 			}
+			throw new UnsupportedFlavorException(trans.getTransferDataFlavors()[0]);
 		}
-		throw new UnsupportedFlavorException(trans.getTransferDataFlavors()[0]);
 	}
 
 	/**
