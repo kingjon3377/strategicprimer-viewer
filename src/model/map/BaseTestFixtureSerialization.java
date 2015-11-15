@@ -131,7 +131,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 				final Throwable cause = except.getCause();
 				assertTrue("Unsupported tag",
 						cause instanceof UnsupportedTagException);
-				assert cause instanceof UnsupportedTagException;
+				assert cause instanceof UnsupportedTagException : "Duplicate assertion for flow-sensitive typing";
 				assertEquals("The tag we expected", tag,
 						((UnsupportedTagException) cause).getTag());
 			}
@@ -231,7 +231,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 				final Throwable cause = except.getCause();
 				assertTrue("Missing property",
 						cause instanceof MissingPropertyException);
-				assert cause instanceof MissingPropertyException;
+				assert cause instanceof MissingPropertyException : "Duplicate assertion for flow-sensitive typing";
 				assertEquals(
 						"The missing property should be the one we're expecting",
 						property, ((MissingPropertyException) cause).getParam());
@@ -299,7 +299,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 				final Throwable cause = except.getCause();
 				assertTrue("Missing property",
 						cause instanceof DeprecatedPropertyException);
-				assert cause instanceof DeprecatedPropertyException;
+				assert cause instanceof DeprecatedPropertyException : "Duplicate assertion for flow-sensitive typing";
 				assertEquals(
 						"The missing property should be the one we're expecting",
 						deprecated,
