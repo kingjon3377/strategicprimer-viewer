@@ -138,17 +138,17 @@ public class SPMapNG implements IMutableMapNG {
 				} else
 					if (!getBaseTerrain(point).equals(obj.getBaseTerrain(point))
 							&& !TileType.NotVisible
-									.equals(obj.getBaseTerrain(point))) {
-					out.append(ctxt);
-					if (TileType.NotVisible.equals(getBaseTerrain(point))) {
-						out.append("\tHas terrain information we don't\n");
-					} else {
-						out.append("\tBase terrain differs\n");
+							.equals(obj.getBaseTerrain(point))) {
+						out.append(ctxt);
+						if (TileType.NotVisible.equals(getBaseTerrain(point))) {
+							out.append("\tHas terrain information we don't\n");
+						} else {
+							out.append("\tBase terrain differs\n");
+						}
+						retval = false;
+						continue;
+						// return false;
 					}
-					retval = false;
-					continue;
-					// return false;
-				}
 				if (obj.isMountainous(point) && !isMountainous(point)) {
 					out.append(ctxt);
 					out.append("\tHas mountains we don't\n");
@@ -230,18 +230,18 @@ public class SPMapNG implements IMutableMapNG {
 					} else
 						if (fix instanceof SubsettableFixture && ourSubsettables
 								.containsKey(Integer.valueOf(fix.getID()))) {
-						retval &= ourSubsettables
-								.get(Integer.valueOf(fix.getID()))
-								.isSubset(fix, out, ctxt);
-					} else {
-						out.append(ctxt);
-						out.append(" Extra fixture:\t");
-						out.append(fix.toString());
-						out.append('\n');
-						retval = false;
-						break;
-						// return false;
-					}
+							retval &= ourSubsettables
+									.get(Integer.valueOf(fix.getID()))
+									.isSubset(fix, out, ctxt);
+						} else {
+							out.append(ctxt);
+							out.append(" Extra fixture:\t");
+							out.append(fix.toString());
+							out.append('\n');
+							retval = false;
+							break;
+							// return false;
+						}
 				}
 				final Set<River> ourRivers = rivers.get(point);
 				final Iterable<River> theirRivers = obj.getRivers(point);
@@ -443,8 +443,8 @@ public class SPMapNG implements IMutableMapNG {
 									obj.getGround(point))
 							|| !iterablesEqual(getOtherFixtures(point),
 									obj.getOtherFixtures(point))) {
-					return false; // NOPMD
-				}
+						return false; // NOPMD
+					}
 			}
 			return true; // NOPMD
 		} else {
@@ -466,24 +466,34 @@ public class SPMapNG implements IMutableMapNG {
 	private static <T> boolean iterablesEqual(final Iterable<T> one,
 			final Iterable<T> two) {
 		final Collection<T> first;
+		final Collection<T> firstCopy;
 		if (one instanceof Collection) {
 			first = (Collection<T>) one;
+			firstCopy = new ArrayList<>((Collection<T>) one);
 		} else {
 			first = new ArrayList<>();
+			firstCopy = new ArrayList<>();
 			for (final T item : one) {
 				first.add(item);
+				firstCopy.add(item);
 			}
 		}
 		final Collection<T> second;
+		final Collection<T> secondCopy;
 		if (two instanceof Collection) {
 			second = (Collection<T>) two;
+			secondCopy = new ArrayList<>((Collection<T>) two);
 		} else {
 			second = new ArrayList<>();
+			secondCopy = new ArrayList<>();
 			for (final T item : two) {
 				second.add(item);
+				secondCopy.add(item);
 			}
 		}
-		return first.containsAll(second) && second.containsAll(first);
+		firstCopy.removeAll(second);
+		secondCopy.removeAll(first);
+		return first.containsAll(second) && second.containsAll(first) && secondCopy.isEmpty() && firstCopy.isEmpty();
 	}
 
 	/**
@@ -717,9 +727,6 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
-	 * FIXME: Add tests to ensure that a zeroed map is still a subset, and a
-	 * non-zeroed map is still equal.
-	 *
 	 * @return a copy of this map
 	 * @param zero
 	 *            whether to "zero" sensitive data (probably just DCs)

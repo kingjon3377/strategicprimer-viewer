@@ -1,6 +1,8 @@
 package model.map;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static util.NullStream.DEV_NULL;
 
@@ -12,8 +14,14 @@ import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.mobile.Worker;
+import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.resources.CacheFixture;
+import model.map.fixtures.towns.AbstractTown;
+import model.map.fixtures.towns.Fortification;
 import model.map.fixtures.towns.Fortress;
+import model.map.fixtures.towns.TownSize;
+import model.map.fixtures.towns.TownStatus;
 
 /**
  * Tests for Subsettable functionality.
@@ -198,6 +206,45 @@ public class TestSubsets {
 		one.addFixture(pointTwo, new Animal("animal", true, false, "status", 5));
 		assertTrue("Subset calculation ignores animal tracks",
 				two.isSubset(one, DEV_NULL, ""));
+	}
+	/**
+	 * Test subsets' interaction with copy().
+	 */
+	@Test
+	public void testSubsetsAndCopy() throws IOException {
+		final IMutableMapNG zero =
+				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
+						-1);
+		final IMutableMapNG one =
+				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
+						-1);
+		final Point pointOne = PointFactory.point(0, 0);
+		one.setBaseTerrain(pointOne, TileType.Jungle);
+		final IMutableMapNG two =
+				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
+						-1);
+		two.setBaseTerrain(pointOne, TileType.Jungle);
+		final Point pointTwo = PointFactory.point(1, 1);
+		two.setBaseTerrain(pointTwo, TileType.Ocean);
+		one.setBaseTerrain(pointTwo, TileType.Plains);
+		two.setBaseTerrain(pointTwo, TileType.Plains);
+		one.addFixture(pointTwo, new CacheFixture("category", "contents", 3));
+		one.addFixture(pointTwo, new TextFixture("text", -1));
+		one.addFixture(pointTwo, new Animal("animal", true, false, "status", 5));
+		one.addFixture(pointOne, new Fortification(TownStatus.Burned, TownSize.Large, 15, "fortification", 6, new Player(0, "")));
+		assertEquals("Cloned map equals original", one, one.copy(false));
+		IMapNG clone = one.copy(false);
+		// DCs, the only thing zeroed out in *map* copy() at the moment, are ignored in equals().
+		for (TileFixture fix : clone.getOtherFixtures(pointOne)) {
+			if (fix instanceof AbstractTown) {
+				assertNotEquals("Copied map didn't copy DCs", 15, fix.getID());
+			}
+		}
+		final Unit uOne = new Unit(new Player(0, ""), "type", "name", 7);
+		uOne.addMember(new Worker("worker", "dwarf", 8, new Job("job", 1)));
+		assertEquals("clone equals original", uOne, uOne.copy(false));
+		assertNotEquals("zeroed clone doesn't equal original", uOne, uOne.copy(true));
+		assertTrue("zeroed clone is subset of original", uOne.isSubset(uOne.copy(true), DEV_NULL, ""));
 	}
 	/**
 	 * @return a String representation of the object
