@@ -260,6 +260,7 @@ public class AppStarter implements ISPDriver {
 			LOGGER.log(Level.SEVERE,
 					"Failed to switch to system look-and-feel", except);
 		}
+		System.setProperty("apple.laf.useScreenMenuBar", "true");
 		try {
 			new AppStarter().startDriver(args);
 		} catch (final DriverFailedException except) {
