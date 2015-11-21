@@ -96,8 +96,7 @@ public class ExplorationGUI implements ISPDriver {
 		if (dmodel instanceof ExplorationModel) {
 			model = (ExplorationModel) dmodel;
 		} else {
-			// FIXME: Use a copy constructor
-			throw new DriverFailedException(new IllegalArgumentException("ExplorationGUI needs an ExplorationModel"));
+			model = new ExplorationModel(dmodel);
 		}
 		SwingUtilities.invokeLater(
 				new WindowThread(new ExplorationFrame(model, new IOHandler(model,

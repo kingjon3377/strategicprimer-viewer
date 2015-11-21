@@ -137,8 +137,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 		if (dmodel instanceof IExplorationModel) {
 			model = (IExplorationModel) dmodel;
 		} else {
-			// FIXME: Use copy constructor
-			throw new DriverFailedException(new IllegalArgumentException("StatGeneratingCLI needs an exploration model"));
+			model = new ExplorationModel(dmodel);
 		}
 		try {
 			if (cli.inputBoolean(PREGEN_PROMPT)) {

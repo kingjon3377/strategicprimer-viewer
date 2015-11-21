@@ -11,6 +11,7 @@ import model.map.IMutableMapNG;
 import model.map.Point;
 import model.map.PointFactory;
 import model.misc.AbstractDriverModel;
+import model.misc.IDriverModel;
 
 /**
  * A class to encapsulate the various model-type things views need to do with
@@ -39,7 +40,7 @@ import model.misc.AbstractDriverModel;
  *
  */
 public final class ViewerModel extends AbstractDriverModel implements
-		IViewerModel {
+IViewerModel {
 	/**
 	 * The current zoom level.
 	 */
@@ -86,6 +87,21 @@ public final class ViewerModel extends AbstractDriverModel implements
 				firstMap.dimensions().cols - 1);
 		selPoint = PointFactory.point(-1, -1);
 		setMap(firstMap, file);
+	}
+	/**
+	 * Copy constructor.
+	 * @param model a driver model
+	 */
+	public ViewerModel(final IDriverModel model) {
+		if (model instanceof IViewerModel) {
+			dimensions = ((IViewerModel) model).getDimensions();
+			selPoint = ((IViewerModel) model).getSelectedPoint();
+		} else {
+			dimensions = new VisibleDimensions(0, model.getMapDimensions().rows - 1, 0,
+					model.getMapDimensions().cols - 1);
+			selPoint = PointFactory.point(-1, -1);
+		}
+		setMap(model.getMap(), model.getMapFile());
 	}
 
 	/**

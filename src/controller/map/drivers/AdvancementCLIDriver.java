@@ -114,8 +114,7 @@ public class AdvancementCLIDriver implements ISPDriver {
 		if (dmodel instanceof IWorkerModel) {
 			model = (IWorkerModel) dmodel;
 		} else {
-			// FIXME: Add copy constructor to WorkerModel
-			throw new DriverFailedException(new IllegalArgumentException("Passed a DriverModel we don't know how to handle"));
+			model = new WorkerModel(dmodel);
 		}
 		final Set<Player> allPlayers = new HashSet<>();
 		for (Pair<IMutableMapNG, File> pair : model.getAllMaps()) {

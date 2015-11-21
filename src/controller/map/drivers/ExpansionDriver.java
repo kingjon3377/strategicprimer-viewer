@@ -36,6 +36,7 @@ import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.ITownFixture;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
+import model.workermgmt.WorkerModel;
 import util.ArraySet;
 import util.NullCleaner;
 import util.Pair;
@@ -115,8 +116,9 @@ public class ExpansionDriver implements ISPDriver {
 		if (dmodel instanceof IMultiMapModel) {
 			model = (IMultiMapModel) dmodel;
 		} else {
-			// FIXME: Add a copy constructor to whichever IDriverModel class we should use
-			throw new DriverFailedException(new IllegalArgumentException("DriverModel class ExpansionDriver can't handle"));
+			// TODO: Make a new, more limited, IMultiMapModel implementation for this and the subset driver
+			// FIXME: Log this pointless invocation (no expansion is actually possible)
+			model = new WorkerModel(dmodel);
 		}
 		for (Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 			expand(model.getMap(), pair.first());

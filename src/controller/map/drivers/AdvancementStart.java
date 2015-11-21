@@ -89,8 +89,7 @@ public final class AdvancementStart implements ISPDriver {
 		if (dmodel instanceof IWorkerModel) {
 			model = (IWorkerModel) dmodel;
 		} else {
-			// FIXME: Add copy constructor to WorkerModel
-			throw new DriverFailedException(new IllegalArgumentException("Driver-mpdel AdvancementStart can't use yet"));
+			model = new WorkerModel(dmodel);
 		}
 		SwingUtilities.invokeLater(
 				new WindowThread(new AdvancementFrame(model, new IOHandler(model,

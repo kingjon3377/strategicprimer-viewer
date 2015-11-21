@@ -14,6 +14,7 @@ import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
+import model.workermgmt.WorkerModel;
 import util.NullCleaner;
 import util.Pair;
 import util.Warning;
@@ -80,8 +81,9 @@ public final class SubsetDriver implements ISPDriver {
 		if (dmodel instanceof IMultiMapModel) {
 			model = (IMultiMapModel) dmodel;
 		} else {
-			// FIXME: Use a copy constructor instead of throwing
-			throw new DriverFailedException(new IllegalArgumentException("SubsetDriver needs a multi-map model"));
+			// FIXME: Create and use a more limited IMultiMapDriver implementation
+			model = new WorkerModel(dmodel);
+			// FIXME: Log this pointless invocation: sno subset testing can be done if no subordinate maps
 		}
 		for (Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 			SYS_OUT.print(pair.second().getName());

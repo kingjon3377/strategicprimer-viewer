@@ -96,8 +96,7 @@ public class ExplorationCLIDriver implements ISPDriver {
 		if (dmodel instanceof ExplorationModel) {
 			model = (ExplorationModel) dmodel;
 		} else {
-			// FIXME: Add copy constructor to ExplorationModel
-			throw new DriverFailedException(new IllegalArgumentException("DriverModel class ExplorationCLI can't handle"));
+			model = new ExplorationModel(dmodel);
 		}
 		final ExplorationCLI cli = new ExplorationCLI(model, new CLIHelper());
 		try {

@@ -89,8 +89,7 @@ public final class ViewerStart implements ISPDriver {
 		if (dmodel instanceof IViewerModel) {
 			model = (IViewerModel) dmodel;
 		} else {
-			// FIXME: Add copy constructor to ViewerModel
-			throw new DriverFailedException(new IllegalArgumentException("ViewerStart needs an IViewerModel"));
+			model = new ViewerModel(dmodel);
 		}
 		SwingUtilities.invokeLater(new WindowThread(new ViewerFrame(model, new IOHandler(model,
 				new FilteredFileChooser(".", new MapFileFilter())))));
