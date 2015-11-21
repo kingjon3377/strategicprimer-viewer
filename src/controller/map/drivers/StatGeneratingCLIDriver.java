@@ -37,6 +37,7 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
+import model.misc.IDriverModel;
 import model.workermgmt.RaceFactory;
 import util.NullCleaner;
 import util.Pair;
@@ -125,7 +126,30 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	public void setName(final String nomen) {
 		throw new IllegalStateException("Can't rename a driver");
 	}
-
+	/**
+	 * Run the driver.
+	 * @param dmodel the driver model
+	 * @throws DriverFailedException on error
+	 */
+	@Override
+	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
+		IExplorationModel model;
+		if (dmodel instanceof IExplorationModel) {
+			model = (IExplorationModel) dmodel;
+		} else {
+			// FIXME: Use copy constructor
+			throw new DriverFailedException(new IllegalArgumentException("StatGeneratingCLI needs an exploration model"));
+		}
+		try {
+			if (cli.inputBoolean(PREGEN_PROMPT)) {
+				enterStats(model);
+			} else {
+				createWorkers(model, IDFactoryFiller.createFactory(model));
+			}
+		} catch (IOException except) {
+			throw new DriverFailedException("I/O error interacting with user", except);
+		}
+	}
 	/**
 	 * Start the driver.
 	 *
@@ -146,16 +170,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 			throw new DriverFailedException("SP format error in map file",
 					except);
 		}
-		try {
-			if (cli.inputBoolean(PREGEN_PROMPT)) {
-				enterStats(model);
-			} else {
-				createWorkers(model, IDFactoryFiller.createFactory(model));
-			}
-		} catch (final IOException except) {
-			throw new DriverFailedException("I/O error interacting with user",
-					except);
-		}
+		startDriver(model);
 		try {
 			writeMaps(model);
 		} catch (final IOException except) {

@@ -16,6 +16,7 @@ import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;
+import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
 import util.NullCleaner;
@@ -59,7 +60,7 @@ public final class AdvancementStart implements ISPDriver {
 			"View a player's workers and manage their advancement",
 			"View a player's units, the workers in those units, each worker's Jobs, "
 					+ "and his or her level in each Skill in each Job.",
-			AdvancementStart.class);
+					AdvancementStart.class);
 
 	/**
 	 * An error message refactored from at least four uses.
@@ -77,7 +78,24 @@ public final class AdvancementStart implements ISPDriver {
 	 * Error message when the map contains invalid data.
 	 */
 	private static final String INV_DATA_ERROR = "Map contained invalid data";
-
+	/**
+	 * Run the driver
+	 * @param dmodel the driver model
+	 * @throws DriverFailedException on error
+	 */
+	@Override
+	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
+		IWorkerModel model;
+		if (dmodel instanceof IWorkerModel) {
+			model = (IWorkerModel) dmodel;
+		} else {
+			// FIXME: Add copy constructor to WorkerModel
+			throw new DriverFailedException(new IllegalArgumentException("Driver-mpdel AdvancementStart can't use yet"));
+		}
+		SwingUtilities.invokeLater(
+				new WindowThread(new AdvancementFrame(model, new IOHandler(model,
+						new FilteredFileChooser(".", new MapFileFilter())))));
+	}
 	/**
 	 * Run the driver.
 	 *
@@ -118,7 +136,7 @@ public final class AdvancementStart implements ISPDriver {
 						+ file.getPath(), e);
 			} catch (final FileNotFoundException e) {
 				throw new DriverFailedException("File " + file.getPath()
-						+ NOT_FOUND_ERROR, e);
+				+ NOT_FOUND_ERROR, e);
 			} catch (final IOException e) {
 				throw new DriverFailedException("I/O error reading "
 						+ file.getPath(), e);

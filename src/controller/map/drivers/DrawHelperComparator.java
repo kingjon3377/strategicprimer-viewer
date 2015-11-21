@@ -20,14 +20,18 @@ import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 import model.map.IMapNG;
+import model.map.IMutableMapNG;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
+import model.misc.IDriverModel;
+import model.misc.IMultiMapModel;
 import model.viewer.TileViewSize;
 import model.viewer.ViewerModel;
 import model.viewer.ZOrderFilter;
 import util.NullCleaner;
+import util.Pair;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -94,7 +98,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 			"Test the performance of the TileDrawHelper classes---which "
 					+ "do the heavy lifting of rendering the map\n"
 					+ "in the viewer---using a variety of automated tests.",
-			DrawHelperComparator.class);
+					DrawHelperComparator.class);
 
 	/**
 	 * Label to put before every direct-helper test result.
@@ -487,11 +491,60 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		return "DrawHelperComparator";
 	}
 
+	@Override
+	public void startDriver(final IDriverModel model) throws DriverFailedException {
+		final Random random = new Random();
+		final int reps = 50; // NOPMD
+		if (model instanceof IMultiMapModel) {
+			for (Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getAllMaps()) {
+				SYS_OUT.print("Testing using ");
+				SYS_OUT.println(pair.second().getName());
+				IMapNG map = pair.first();
+				PointFactory.clearCache();
+				if (random.nextBoolean()) {
+					PointFactory.shouldUseCache(true);
+					SYS_OUT.println("Using cache:");
+					runAllTests(map, reps);
+					PointFactory.shouldUseCache(false);
+					SYS_OUT.println("Not using cache:");
+					runAllTests(map, reps);
+				} else {
+					PointFactory.shouldUseCache(false);
+					SYS_OUT.println("Not using cache:");
+					runAllTests(map, reps);
+					PointFactory.shouldUseCache(true);
+					SYS_OUT.println("Using cache:");
+					runAllTests(map, reps);
+				}
+			}
+		} else {
+			SYS_OUT.print("Testing using ");
+			SYS_OUT.println(model.getMapFile().getName());
+			IMapNG map = model.getMap();
+			PointFactory.clearCache();
+			if (random.nextBoolean()) {
+				PointFactory.shouldUseCache(true);
+				SYS_OUT.println("Using cache:");
+				runAllTests(map, reps);
+				PointFactory.shouldUseCache(false);
+				SYS_OUT.println("Not using cache:");
+				runAllTests(map, reps);
+			} else {
+				PointFactory.shouldUseCache(false);
+				SYS_OUT.println("Not using cache:");
+				runAllTests(map, reps);
+				PointFactory.shouldUseCache(true);
+				SYS_OUT.println("Using cache:");
+				runAllTests(map, reps);
+			}
+		}
+	}
 	/**
 	 * Run the driver.
 	 *
 	 * @param args command-line arguments
 	 * @throws DriverFailedException on error
+	 * FIXME: Adapt to create a MultiMapModel and use the driver-model-taking version.
 	 */
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {

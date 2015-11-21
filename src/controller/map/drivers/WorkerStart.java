@@ -16,6 +16,7 @@ import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;
+import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
 import util.TypesafeLogger;
@@ -99,6 +100,24 @@ public class WorkerStart implements ISPDriver {
 	}
 
 	/**
+	 * Run the driver. This form is, at the moment, primarily for use in test code, but that may change.
+	 * @param dmodel the driver-model that should be used by the app
+	 * @throws DriverFailedException if the driver fails for some reason
+	 */
+	@Override
+	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
+		IWorkerModel model;
+		if (dmodel instanceof IWorkerModel) {
+			model = (IWorkerModel) dmodel;
+		} else {
+			// FIXME: Add copy constructor to WorkerModel
+			throw new DriverFailedException(new IllegalArgumentException("Passed a DriverModel class we can't handle"));
+		}
+		SwingUtilities.invokeLater(new WindowThread(new WorkerMgmtFrame(
+				model, new IOHandler(model, new FilteredFileChooser(".",
+						new MapFileFilter())))));
+	}
+	/**
 	 * Run the driver.
 	 *
 	 * @param args Command-line arguments.
@@ -143,7 +162,7 @@ public class WorkerStart implements ISPDriver {
 					+ file.getPath(), e);
 		} catch (final FileNotFoundException e) {
 			throw new DriverFailedException("File " + file.getPath()
-					+ NOT_FOUND_ERROR, e);
+			+ NOT_FOUND_ERROR, e);
 		} catch (final IOException e) {
 			throw new DriverFailedException("I/O error reading "
 					+ file.getPath(), e);

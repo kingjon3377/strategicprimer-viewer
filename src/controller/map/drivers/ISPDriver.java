@@ -1,6 +1,7 @@
 package controller.map.drivers;
 
 import model.map.HasName;
+import model.misc.IDriverModel;
 
 /**
  * An interface for drivers, so one main() method can start different ones
@@ -37,6 +38,17 @@ public interface ISPDriver extends HasName {
 	 */
 	void startDriver(String... args) throws DriverFailedException;
 
+	/**
+	 * Run the driver. This form is, at the moment, primarily for use in test
+	 * code, but that may change. At the moment implementations should *not*
+	 * interact with the filesystem, including calling methods that will.
+	 *
+	 * @param model
+	 *            the driver-model that should be used by the app
+	 * @throws DriverFailedException
+	 *             if the driver fails for some reason
+	 */
+	void startDriver(IDriverModel model) throws DriverFailedException;
 	/**
 	 * An exception to throw when the driver fails ... such as if the map is
 	 * improperly formatted, etc. This means we don't have to declare a long

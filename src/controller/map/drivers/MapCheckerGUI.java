@@ -1,6 +1,7 @@
 package controller.map.drivers;
 
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
+import model.misc.IDriverModel;
 import view.map.misc.MapCheckerFrame;
 
 /**
@@ -35,7 +36,14 @@ public class MapCheckerGUI implements ISPDriver {
 			"--check", ParamCount.Many, "Check map for errors",
 			"Check a map file for errors, deprecated syntax, etc.",
 			MapCheckerGUI.class);
-
+	/**
+	 * @param model ignored
+	 * @throws DriverFailedException always; this doesn't make sense on a driver model
+	 */
+	@Override
+	public void startDriver(final IDriverModel model) throws DriverFailedException {
+		throw new DriverFailedException(new IllegalStateException("The MapCheckerGUI doesn't make sense on a driver model"));
+	}
 	/**
 	 * Run the driver.
 	 *

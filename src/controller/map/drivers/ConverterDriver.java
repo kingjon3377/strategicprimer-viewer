@@ -16,6 +16,7 @@ import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 import model.map.IMapNG;
+import model.misc.IDriverModel;
 import util.TypesafeLogger;
 import util.Warning;
 
@@ -60,7 +61,14 @@ public final class ConverterDriver implements ISPDriver {
 	 * The map reader we'll use.
 	 */
 	private static final MapReaderAdapter READER = new MapReaderAdapter();
-
+	/**
+	 * @throws DriverFailedException always: this driver doesn't hold a map in memory any longer than it has to
+	 * @param model ignored
+	 */
+	@Override
+	public void startDriver(final IDriverModel model) throws DriverFailedException {
+		throw new DriverFailedException(new IllegalStateException("ConverterDriver can't operate on a driver model"));
+	}
 	/**
 	 * Run the driver.
 	 *

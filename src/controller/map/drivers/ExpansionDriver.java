@@ -34,8 +34,11 @@ import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.ITownFixture;
+import model.misc.IDriverModel;
+import model.misc.IMultiMapModel;
 import util.ArraySet;
 import util.NullCleaner;
+import util.Pair;
 import util.Warning;
 
 /**
@@ -103,6 +106,24 @@ public class ExpansionDriver implements ISPDriver {
 	}
 	/**
 	 * Run the driver.
+	 * @param dmodel the driver model
+	 * @throws DriverFailedException on error
+	 */
+	@Override
+	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
+		IMultiMapModel model;
+		if (dmodel instanceof IMultiMapModel) {
+			model = (IMultiMapModel) dmodel;
+		} else {
+			// FIXME: Add a copy constructor to whichever IDriverModel class we should use
+			throw new DriverFailedException(new IllegalArgumentException("DriverModel class ExpansionDriver can't handle"));
+		}
+		for (Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
+			expand(model.getMap(), pair.first());
+		}
+	}
+	/**
+	 * Run the driver. FIXME: use driver-model-based overload instead of duplicating code
 	 *
 	 * @param args command-line arguments
 	 * @throws DriverFailedException on error

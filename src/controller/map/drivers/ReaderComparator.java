@@ -20,6 +20,7 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.readerng.MapReaderNG;
 import model.map.IMapNG;
+import model.misc.IDriverModel;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
@@ -57,7 +58,7 @@ public class ReaderComparator implements ISPDriver {
 			"--test", ParamCount.One, "Test map readers",
 			"Test the two map-reading implementations by "
 					+ "comparing their results on the same file.",
-			ReaderComparator.class);
+					ReaderComparator.class);
 
 	/**
 	 * Logger.
@@ -110,7 +111,7 @@ public class ReaderComparator implements ISPDriver {
 	 * @throws SPFormatException if either reader claims invalid data
 	 */
 	public void compareReaders(final File arg) throws XMLStreamException,
-			SPFormatException {
+	SPFormatException {
 		SYS_OUT.print(arg);
 		SYS_OUT.println(':');
 		try {
@@ -177,7 +178,14 @@ public class ReaderComparator implements ISPDriver {
 	public String toString() {
 		return "ReaderComparator";
 	}
-
+	/**
+	 * @throws DriverFailedException always; this is meaningless on a driver-model.
+	 * @param model ignored
+	 */
+	@Override
+	public void startDriver(final IDriverModel model) throws DriverFailedException {
+		throw new DriverFailedException(new IllegalStateException("ReaderComparator is meaningless for a driver model"));
+	}
 	/**
 	 * Run the driver, comparing the readers' performance.
 	 *

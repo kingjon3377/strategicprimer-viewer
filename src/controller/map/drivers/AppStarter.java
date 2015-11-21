@@ -16,6 +16,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.WindowThread;
+import model.misc.IDriverModel;
 import util.EqualsAny;
 import util.NullCleaner;
 import util.Pair;
@@ -115,7 +116,15 @@ public class AppStarter implements ISPDriver {
 		// TODO: Add a GUI equivalent of the MapPopulatorDriver
 		addChoice(new MapPopulatorDriver());
 	}
-
+	/**
+	 * FIXME: Once all DriverModels have copy constructors, implement this properly.
+	 * @param model the driver model
+	 * @throws DriverFailedException always, for the moment
+	 */
+	@Override
+	public void startDriver(final IDriverModel model) throws DriverFailedException {
+		throw new DriverFailedException(new IllegalArgumentException("Because some drivers operate on files, AppStarter can't operate on driver models alone"));
+	}
 	/**
 	 * Start the driver, and then start the specified other driver.
 	 *

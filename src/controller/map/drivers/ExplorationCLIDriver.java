@@ -16,6 +16,7 @@ import model.exploration.IExplorationModel;
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
+import model.misc.IDriverModel;
 import util.Pair;
 import util.Warning;
 import view.exploration.ExplorationCLI;
@@ -51,7 +52,7 @@ public class ExplorationCLIDriver implements ISPDriver {
 			"--explore", ParamCount.Many, "Run exploration.",
 			"Move a unit around the map, "
 					+ "updating the player's map with what it sees.",
-			ExplorationCLIDriver.class);
+					ExplorationCLIDriver.class);
 
 	/**
 	 * Read maps.
@@ -84,7 +85,36 @@ public class ExplorationCLIDriver implements ISPDriver {
 		}
 		return model;
 	}
-
+	/**
+	 * Run the driver.
+	 * @param dmodel the driver model
+	 * @throws DriverFailedException on error
+	 */
+	@Override
+	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
+		ExplorationModel model;
+		if (dmodel instanceof ExplorationModel) {
+			model = (ExplorationModel) dmodel;
+		} else {
+			// FIXME: Add copy constructor to ExplorationModel
+			throw new DriverFailedException(new IllegalArgumentException("DriverModel class ExplorationCLI can't handle"));
+		}
+		final ExplorationCLI cli = new ExplorationCLI(model, new CLIHelper());
+		try {
+			final Player player = cli.choosePlayer();
+			if (player.getPlayerId() < 0) {
+				return;
+			}
+			final IUnit unit = cli.chooseUnit(player);
+			if (unit.getID() < 0) {
+				return;
+			}
+			model.selectUnit(unit);
+			cli.moveUntilDone();
+		} catch (IOException except) {
+			throw new DriverFailedException("I/O error interacting with user", except);
+		}
+	}
 	/**
 	 * Run the driver.
 	 *
@@ -111,22 +141,7 @@ public class ExplorationCLIDriver implements ISPDriver {
 			throw new DriverFailedException("SP format error in map file",
 					except);
 		}
-		final ExplorationCLI cli = new ExplorationCLI(model, new CLIHelper());
-		try {
-			final Player player = cli.choosePlayer();
-			if (player.getPlayerId() < 0) {
-				return; // NOPMD
-			}
-			final IUnit unit = cli.chooseUnit(player);
-			if (unit.getID() < 0) {
-				return; // NOPMD
-			}
-			model.selectUnit(unit);
-			cli.moveUntilDone();
-		} catch (final IOException except) {
-			throw new DriverFailedException("I/O error interacting with user",
-					except);
-		}
+		startDriver(model);
 		try {
 			writeMaps(model);
 		} catch (final IOException except) {

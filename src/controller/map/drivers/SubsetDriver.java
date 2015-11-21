@@ -11,7 +11,11 @@ import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 import model.map.IMapNG;
+import model.map.IMutableMapNG;
+import model.misc.IDriverModel;
+import model.misc.IMultiMapModel;
 import util.NullCleaner;
+import util.Pair;
 import util.Warning;
 import util.Warning.Action;
 
@@ -46,7 +50,7 @@ public final class SubsetDriver implements ISPDriver {
 			"--subset", ParamCount.Many, "Check players' maps against master",
 			"Check that subordinate maps are subsets of the main map, containing "
 					+ "nothing that it does not contain in the same place",
-			SubsetDriver.class);
+					SubsetDriver.class);
 
 	/**
 	 * Possible return values for sub-maps.
@@ -65,7 +69,27 @@ public final class SubsetDriver implements ISPDriver {
 		 */
 		Fail;
 	}
-
+	/**
+	 * Run the driver.
+	 * @param dmodel the driver model
+	 * @throws DriverFailedException on error
+	 */
+	@Override
+	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
+		IMultiMapModel model;
+		if (dmodel instanceof IMultiMapModel) {
+			model = (IMultiMapModel) dmodel;
+		} else {
+			// FIXME: Use a copy constructor instead of throwing
+			throw new DriverFailedException(new IllegalArgumentException("SubsetDriver needs a multi-map model"));
+		}
+		for (Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
+			SYS_OUT.print(pair.second().getName());
+			SYS_OUT.print("\t...\t\t");
+			// FIXME: Extract a method taking the map to test, not its filename and the map reader, from doSubsetTest().
+			printReturn(doSubsetTest(pair.second(), new MapReaderAdapter(), model.getMap()));
+		}
+	}
 	/**
 	 * Run the driver.
 	 *

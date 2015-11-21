@@ -31,6 +31,7 @@ import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.Fortress;
+import model.misc.IDriverModel;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -311,7 +312,7 @@ public final class QueryCLI implements ISPDriver {
 	 */
 	private static void hunt(final HuntingModel hmodel, final Point point,
 			final boolean land, final Appendable ostream, final int encounters)
-			throws IOException {
+					throws IOException {
 		if (land) {
 			for (final String item : hmodel.hunt(point, encounters)) {
 				ostream.append(item);
@@ -434,9 +435,17 @@ public final class QueryCLI implements ISPDriver {
 		ostream.append("Count: Count how many workers belong to a player.\n");
 		ostream.append("Quit: Exit the program.\n");
 	}
-
 	/**
 	 * Run the driver.
+	 * @param model the driver model
+	 * @throws DriverFailedException on error
+	 */
+	@Override
+	public void startDriver(final IDriverModel model) throws DriverFailedException {
+		repl(model.getMap(), SYS_OUT);
+	}
+	/**
+	 * Run the driver. FIXME: Delegate to the version taking a driver model, and make the REPL operate on a driver model too.
 	 *
 	 * @param args command-line arguments
 	 * @throws DriverFailedException if something goes wrong
@@ -456,13 +465,13 @@ public final class QueryCLI implements ISPDriver {
 					+ file.getPath(), e);
 		} catch (final FileNotFoundException e) {
 			throw new DriverFailedException("File " + file.getPath()
-					+ " not found", e);
+			+ " not found", e);
 		} catch (final IOException e) {
 			throw new DriverFailedException("I/O error reading "
 					+ file.getPath(), e);
 		} catch (final SPFormatException e) {
 			throw new DriverFailedException("Map " + file.getPath()
-					+ " contains invalid data", e);
+			+ " contains invalid data", e);
 		}
 	}
 

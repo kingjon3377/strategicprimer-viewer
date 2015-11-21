@@ -15,6 +15,7 @@ import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;
 import model.exploration.ExplorationModel;
 import model.map.IMutableMapNG;
+import model.misc.IDriverModel;
 import util.Warning;
 import view.exploration.ExplorationFrame;
 import view.map.main.MapFileFilter;
@@ -50,7 +51,7 @@ public class ExplorationGUI implements ISPDriver {
 			"--explore", ParamCount.Many, "Run exploration.",
 			"Move a unit around the map, "
 					+ "updating the player's map with what it sees.",
-			ExplorationGUI.class);
+					ExplorationGUI.class);
 
 	/**
 	 * Read maps.
@@ -84,7 +85,24 @@ public class ExplorationGUI implements ISPDriver {
 		}
 		return model;
 	}
-
+	/**
+	 * Run the driver.
+	 * @param dmodel the driver model
+	 * @throws DriverFailedException on error
+	 */
+	@Override
+	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
+		ExplorationModel model;
+		if (dmodel instanceof ExplorationModel) {
+			model = (ExplorationModel) dmodel;
+		} else {
+			// FIXME: Use a copy constructor
+			throw new DriverFailedException(new IllegalArgumentException("ExplorationGUI needs an ExplorationModel"));
+		}
+		SwingUtilities.invokeLater(
+				new WindowThread(new ExplorationFrame(model, new IOHandler(model,
+						new FilteredFileChooser(".", new MapFileFilter())))));
+	}
 	/**
 	 * Run the driver.
 	 *

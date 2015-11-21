@@ -26,6 +26,7 @@ import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.ProxyWorker;
 import model.map.fixtures.mobile.worker.Skill;
+import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
@@ -67,7 +68,7 @@ public class AdvancementCLIDriver implements ISPDriver {
 			"View a player's workers and manage their advancement",
 			"View a player's units, the workers in those units, each worker's Jobs, "
 					+ "and his or her level in each Skill in each Job.",
-			AdvancementCLIDriver.class);
+					AdvancementCLIDriver.class);
 	/**
 	 * The CLI helper.
 	 */
@@ -103,27 +104,18 @@ public class AdvancementCLIDriver implements ISPDriver {
 		return "AdvancementCLIDriver";
 	}
 	/**
-	 * Run the driver.
-	 * @param args the command-line arguments (map files)
+	 * Run the driver. This form is, at the moment, primarily for use in test code, but that may change.
+	 * @param dmodel the driver-model that should be used by the app
+	 * @throws DriverFailedException if the driver fails for some reason
 	 */
 	@Override
-	public void startDriver(final String... args) throws DriverFailedException {
-		if (args.length == 0) {
-			SYS_OUT.print("Usage: ");
-			SYS_OUT.print(getClass().getSimpleName());
-			SYS_OUT.println(" map [map ...]");
-			System.exit(1);
-		}
-		final WorkerModel model;
-		try {
-			model = readMaps(args);
-		} catch (final IOException except) {
-			throw new DriverFailedException("I/O error reading maps", except);
-		} catch (final XMLStreamException except) {
-			throw new DriverFailedException("Malformed XML in map file", except);
-		} catch (final SPFormatException except) {
-			throw new DriverFailedException("SP format error in map file",
-					except);
+	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
+		IWorkerModel model;
+		if (dmodel instanceof IWorkerModel) {
+			model = (IWorkerModel) dmodel;
+		} else {
+			// FIXME: Add copy constructor to WorkerModel
+			throw new DriverFailedException(new IllegalArgumentException("Passed a DriverModel we don't know how to handle"));
 		}
 		final Set<Player> allPlayers = new HashSet<>();
 		for (Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
@@ -148,6 +140,31 @@ public class AdvancementCLIDriver implements ISPDriver {
 			throw new DriverFailedException("I/O error interacting with user",
 					except);
 		}
+	}
+	/**
+	 * Run the driver.
+	 * @param args the command-line arguments (map files)
+	 */
+	@Override
+	public void startDriver(final String... args) throws DriverFailedException {
+		if (args.length == 0) {
+			SYS_OUT.print("Usage: ");
+			SYS_OUT.print(getClass().getSimpleName());
+			SYS_OUT.println(" map [map ...]");
+			System.exit(1);
+		}
+		final WorkerModel model;
+		try {
+			model = readMaps(args);
+		} catch (final IOException except) {
+			throw new DriverFailedException("I/O error reading maps", except);
+		} catch (final XMLStreamException except) {
+			throw new DriverFailedException("Malformed XML in map file", except);
+		} catch (final SPFormatException except) {
+			throw new DriverFailedException("SP format error in map file",
+					except);
+		}
+		startDriver(model);
 		try {
 			writeMaps(model);
 		} catch (final IOException except) {

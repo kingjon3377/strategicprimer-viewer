@@ -18,6 +18,7 @@ import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;
 import model.map.IMutableMapNG;
+import model.misc.IDriverModel;
 import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
 import util.TypesafeLogger;
@@ -77,7 +78,23 @@ public final class ViewerStart implements ISPDriver {
 	 * Error message when the map contains invalid data.
 	 */
 	private static final String INV_DATA_ERROR = "Map contained invalid data";
-
+	/**
+	 * Run the driver.
+	 * @param dmodel the driver model
+	 * @throws DriverFailedException on error
+	 */
+	@Override
+	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
+		IViewerModel model;
+		if (dmodel instanceof IViewerModel) {
+			model = (IViewerModel) dmodel;
+		} else {
+			// FIXME: Add copy constructor to ViewerModel
+			throw new DriverFailedException(new IllegalArgumentException("ViewerStart needs an IViewerModel"));
+		}
+		SwingUtilities.invokeLater(new WindowThread(new ViewerFrame(model, new IOHandler(model,
+				new FilteredFileChooser(".", new MapFileFilter())))));
+	}
 	/**
 	 * Run the driver. TODO: Somehow unify similar code between this and other
 	 * similar drivers.

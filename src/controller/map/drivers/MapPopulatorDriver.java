@@ -16,6 +16,7 @@ import model.map.IMutableMapNG;
 import model.map.Point;
 import model.map.TileType;
 import model.map.fixtures.mobile.Animal;
+import model.misc.IDriverModel;
 import util.SingletonRandom;
 import util.Warning;
 import util.Warning.Action;
@@ -121,6 +122,15 @@ public class MapPopulatorDriver implements ISPDriver {
 		throw new IllegalStateException("Can't rename a driver");
 	}
 	/**
+	 * Run the driver. This form is, at the moment, primarily for use in test code, but that may change.
+	 * @param model the driver-model that should be used by the app
+	 * @throws DriverFailedException if the driver fails for some reason
+	 */
+	@Override
+	public void startDriver(final IDriverModel model) throws DriverFailedException {
+		populate(model.getMap());
+	}
+	/**
 	 * Run the driver.
 	 *
 	 * @param args command-line arguments
@@ -141,13 +151,13 @@ public class MapPopulatorDriver implements ISPDriver {
 					+ file.getPath(), e);
 		} catch (final FileNotFoundException e) {
 			throw new DriverFailedException("File " + file.getPath()
-					+ " not found", e);
+			+ " not found", e);
 		} catch (final IOException e) {
 			throw new DriverFailedException("I/O error reading "
 					+ file.getPath(), e);
 		} catch (final SPFormatException e) {
 			throw new DriverFailedException("Map " + file.getPath()
-					+ " contains invalid data", e);
+			+ " contains invalid data", e);
 		}
 		populate(map);
 		try {

@@ -9,6 +9,8 @@ import javax.xml.stream.XMLStreamException;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.WindowThread;
+import model.misc.IDriverModel;
+import model.misc.IMultiMapModel;
 import view.map.misc.SubsetFrame;
 
 /**
@@ -46,8 +48,22 @@ public class SubsetGUIDriver implements ISPDriver {
 			"--subset", ParamCount.Many, "Check players' maps against master",
 			"Check that subordinate maps are subsets of the main map, containing "
 					+ "nothing that it does not contain in the same place",
-			SubsetGUIDriver.class);
-
+					SubsetGUIDriver.class);
+	/**
+	 * Run the driver.
+	 * @param model the driver model
+	 * @throws DriverFailedException on error
+	 */
+	@Override
+	public void startDriver(final IDriverModel model) throws DriverFailedException {
+		if (model instanceof IMultiMapModel) {
+			// FIXME: Implement: Make SubsetFrame take maps, rather than just files; if it does already, use those methods
+			throw new DriverFailedException(new IllegalStateException("SubsetGUI doesn't yet operate on driver models"));
+		} else {
+			// FIXME: Fail more gracefully, just logging the condtion, showing a message, and returning normally
+			throw new DriverFailedException(new IllegalArgumentException("SubsetGUI doesn't make sense on a non-multi-map driver model"));
+		}
+	}
 	/**
 	 * Run the driver.
 	 *

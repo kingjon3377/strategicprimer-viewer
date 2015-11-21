@@ -23,6 +23,7 @@ import model.exploration.HuntingModel;
 import model.map.HasName;
 import model.map.IMapNG;
 import model.map.Point;
+import model.misc.IDriverModel;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
@@ -198,7 +199,7 @@ public class TrapModelDriver implements ISPDriver {
 				if (input >= 0) {
 					final TrapperCommand command =
 							NullCleaner
-									.assertNotNull(TrapperCommand.values()[input]);
+							.assertNotNull(TrapperCommand.values()[input]);
 					minutes -= handleCommand(fixtures, ostream,
 							command, fishing);
 					ostream.append(inHours(minutes));
@@ -286,7 +287,15 @@ public class TrapModelDriver implements ISPDriver {
 			throw new IllegalArgumentException("Unhandled case");
 		}
 	}
-
+	/**
+	 * Start the driver.
+	 * @param model the driver model to operate on
+	 * @throws DriverFailedException never?
+	 */
+	@Override
+	public void startDriver(final IDriverModel model) throws DriverFailedException {
+		repl(model.getMap(), SYS_OUT);
+	}
 	/**
 	 * Run the driver.
 	 *
@@ -308,19 +317,21 @@ public class TrapModelDriver implements ISPDriver {
 					+ file.getPath(), e);
 		} catch (final FileNotFoundException e) {
 			throw new DriverFailedException("File " + file.getPath()
-					+ " not found", e);
+			+ " not found", e);
 		} catch (final IOException e) {
 			throw new DriverFailedException("I/O error reading "
 					+ file.getPath(), e);
 		} catch (final SPFormatException e) {
 			throw new DriverFailedException("Map " + file.getPath()
-					+ " contains invalid data", e);
+			+ " contains invalid data", e);
 		}
 	}
 	/**
 	 * Start this driver from another driver.
 	 * @param map the map to operate on
+	 * @deprecated in favor of the overload taking a DriverModel
 	 */
+	@Deprecated
 	public void startDriver(final IMapNG map) {
 		repl(map, SYS_OUT);
 	}

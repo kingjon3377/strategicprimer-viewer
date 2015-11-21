@@ -14,6 +14,7 @@ import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
+import model.misc.IDriverModel;
 import util.TypesafeLogger;
 import util.Warning;
 
@@ -91,7 +92,7 @@ public final class MapChecker implements ISPDriver {
 			reader.readMap(file, Warning.INSTANCE);
 		} catch (final MapVersionException e) {
 			LOGGER.log(Level.SEVERE, "Map version in " + file.getPath()
-					+ " not acceptable to reader", e);
+			+ " not acceptable to reader", e);
 			retval = false;
 		} catch (final FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE, file.getPath() + " not found", e);
@@ -143,5 +144,13 @@ public final class MapChecker implements ISPDriver {
 	@Override
 	public String toString() {
 		return "MapChecker";
+	}
+	/**
+	 * @throws DriverFailedException always; this driver has finished once maps are fully read.
+	 * @param model ignored
+	 */
+	@Override
+	public void startDriver(final IDriverModel model) throws DriverFailedException {
+		throw new DriverFailedException(new IllegalStateException("MapChecker can't operate on a driver model"));
 	}
 }

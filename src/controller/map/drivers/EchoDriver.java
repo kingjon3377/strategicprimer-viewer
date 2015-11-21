@@ -10,6 +10,7 @@ import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 import model.map.IMapNG;
+import model.misc.IDriverModel;
 import util.Warning;
 import util.Warning.Action;
 
@@ -47,7 +48,14 @@ public final class EchoDriver implements ISPDriver {
 			"--echo", ParamCount.One, "Read, then write a map.",
 			"Read and write a map, correcting deprecated syntax.",
 			EchoDriver.class);
-
+	/**
+	 * @throws DriverFailedException always
+	 * @param model ignored
+	 */
+	@Override
+	public void startDriver(final IDriverModel model) throws DriverFailedException {
+		throw new DriverFailedException(new IllegalStateException("EchoDriver doesn't make sense on a driver-model object"));
+	}
 	/**
 	 * Run the driver.
 	 *

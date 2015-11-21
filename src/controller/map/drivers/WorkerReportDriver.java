@@ -11,6 +11,7 @@ import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.report.ReportGenerator;
+import model.misc.IDriverModel;
 import util.Warning;
 import util.Warning.Action;
 
@@ -45,6 +46,15 @@ public class WorkerReportDriver implements ISPDriver {
 			"--worker", ParamCount.One, "Worker Report Generator",
 			"Produce HTML report of units, workers, etc., in a map.",
 			WorkerReportDriver.class);
+	/**
+	 * Run the driver.
+	 * @param model ignored
+	 * @throws DriverFailedException always: this driver has to write to the filesystem
+	 */
+	@Override
+	public void startDriver(final IDriverModel model) throws DriverFailedException {
+		throw new DriverFailedException(new IllegalStateException("The report driver has to interact with files"));
+	}
 	/**
 	 * Start the driver.
 	 *

@@ -17,6 +17,9 @@ import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.resources.CacheFixture;
+import model.misc.IDriverModel;
+import model.misc.IMultiMapModel;
+import util.Pair;
 import util.Warning;
 
 /**
@@ -53,7 +56,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 			"--dupl", ParamCount.One, "Remove duplicate fixtures",
 			"Remove duplicate fixtures---identical except ID# "
 					+ "and on the same tile---from a map.",
-			DuplicateFixtureRemover.class);
+					DuplicateFixtureRemover.class);
 
 	/**
 	 * "Remove" (at first we just report) duplicate fixtures (i.e. hills,
@@ -119,9 +122,27 @@ public class DuplicateFixtureRemover implements ISPDriver {
 			}
 		}
 	}
-
 	/**
 	 * Run the driver.
+	 * @param model the driver model
+	 * @throws DriverFailedException on error
+	 */
+	@Override
+	public void startDriver(final IDriverModel model) throws DriverFailedException {
+		try {
+			if (model instanceof IMultiMapModel) {
+				for (Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getAllMaps()) {
+					filter(pair.first(), SYS_OUT);
+				}
+			} else {
+				filter(model.getMap(), SYS_OUT);
+			}
+		} catch (IOException except) {
+			throw new DriverFailedException("I/O error interacting with user", except);
+		}
+	}
+	/**
+	 * Run the driver. FIXME: Refactor to use the overload taking a driver model
 	 *
 	 * @param args Command-line arguments
 	 * @throws DriverFailedException on error
