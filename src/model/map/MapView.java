@@ -10,11 +10,6 @@ import util.NullCleaner;
  * A view of a map. This is in effect an extension of SPMap that adds the
  * current turn, the current player, and eventually changesets.
  *
- * FIXME: What makes a "MapView" more than a "Map" should be extracted to an
- * interface, so we can have immutable vs mutable implementations, and thus not
- * have to return the mutable player collection or tile collection from an
- * immutable map.
- *
  * This is part of the Strategic Primer assistive programs suite developed by
  * Jonathan Lovelace.
  *

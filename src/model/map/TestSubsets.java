@@ -156,8 +156,6 @@ public class TestSubsets {
 	/**
 	 * Test the MapNG subset feature.
 	 *
-	 * FIXME: Cover more than terrain, like the now-deleted Tile subset test did.
-	 *
 	 * @throws IOException on I/O error writing to the null stream
 	 */
 	@SuppressWarnings(ST_MET)
