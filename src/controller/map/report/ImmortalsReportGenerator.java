@@ -2,6 +2,7 @@ package controller.map.report;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -91,7 +92,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 		final List<Point> griffins = new ArrayList<>();
 
 		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		values.sort(pairComparator);
+		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			final Point point = pair.first();
 			final IFixture immortal = pair.second();
@@ -197,7 +198,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 		final AbstractReportNode simurghs = new ListReportNode("Simurghs");
 		final AbstractReportNode griffins = new ListReportNode("Griffins");
 		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		values.sort(pairComparator);
+		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			final Point point = pair.first();
 			final IFixture immortal = pair.second();

@@ -1,6 +1,7 @@
 package controller.map.report;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +66,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 			final IMapNG map, final Player currentPlayer) {
 		final Map<String, List<Point>> items = new HashMap<>();
 		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		values.sort(pairComparator);
+		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Animal) {
 				final Animal animal = (Animal) pair.second();
@@ -121,7 +122,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 			final IMapNG map, final Player currentPlayer) {
 		final Map<String, AbstractReportNode> items = new HashMap<>();
 		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		values.sort(pairComparator);
+		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Animal) {
 				final Animal animal = (Animal) pair.second();

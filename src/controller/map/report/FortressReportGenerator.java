@@ -1,6 +1,7 @@
 package controller.map.report;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
@@ -91,7 +92,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 				.append("<h4>Foreign fortresses in the map:</h4>\n");
 		boolean anyforts = false;
 		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		values.sort(pairComparator);
+		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Fortress) {
 				final Fortress fort = (Fortress) pair.second();
@@ -136,7 +137,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		final AbstractReportNode foreign = new SectionReportNode(4,
 				"Foreign fortresses in the map:");
 		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		values.sort(pairComparator);
+		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Fortress) {
 				final Fortress fort = (Fortress) pair.second();

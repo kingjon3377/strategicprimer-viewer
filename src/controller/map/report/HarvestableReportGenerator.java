@@ -93,7 +93,7 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 		final HeadedList<String> stone = new HtmlList(
 				"<h5>Exposed stone deposits</h5>");
 		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		values.sort(pairComparator);
+		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			final IFixture item = pair.second();
 			final Point point = pair.first();
@@ -185,7 +185,7 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 		final AbstractReportNode stone = new SortedSectionListReportNode(5,
 				"Exposed stone deposits");
 		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		values.sort(pairComparator);
+		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof HarvestableFixture) {
 				final HarvestableFixture item = (HarvestableFixture) pair

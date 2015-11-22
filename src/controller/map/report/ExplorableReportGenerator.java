@@ -1,6 +1,7 @@
 package controller.map.report;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -91,7 +92,7 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 		final StringBuilder adventureBuilder = new StringBuilder(1024)
 				.append("<h4>Possible Adventures</h4>").append(OPEN_LIST);
 		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		values.sort(pairComparator);
+		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Cave) {
 				anyCaves = true;
@@ -164,7 +165,7 @@ public class ExplorableReportGenerator extends AbstractReportGenerator<Explorabl
 		final AbstractReportNode battles = new ListReportNode("Battlefields");
 		final AbstractReportNode portals = new ListReportNode("Portals");
 		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		values.sort(pairComparator);
+		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Cave) {
 				caves.add(produceRIR(fixtures, map, currentPlayer,

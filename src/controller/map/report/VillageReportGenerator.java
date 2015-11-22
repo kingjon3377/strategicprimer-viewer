@@ -1,6 +1,7 @@
 package controller.map.report;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -66,7 +67,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 		final HeadedList<String> own = new HtmlList(
 				"<h4>Villages pledged to your service:</h4>");
 		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		values.sort(pairComparator);
+		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Village) {
 				final Village village = (Village) pair.second();
@@ -103,7 +104,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 		final AbstractReportNode own = new SectionListReportNode(5,
 				"Villages pledged to your service:");
 		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
-		values.sort(pairComparator);
+		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Village) {
 				final Village village = (Village) pair.second();
