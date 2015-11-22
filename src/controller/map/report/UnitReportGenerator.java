@@ -2,6 +2,10 @@ package controller.map.report;
 
 import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -48,6 +52,12 @@ import util.Pair;
  *
  */
 public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
+	/**
+	 * @param comparator a comparator for pairs of Points and fixtures.
+	 */
+	public UnitReportGenerator(final Comparator<Pair<Point, IFixture>> comparator) {
+		super(comparator);
+	}
 	/**
 	 * A string to indicate a worker has training or experience.
 	 */
@@ -169,7 +179,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		if (stats != null && details) {
 			builder.append("<p>He or she has the following stats: ");
 			builder.append(stats.getHitPoints()).append(" / ")
-					.append(stats.getMaxHitPoints()).append(" Hit Points");
+			.append(stats.getMaxHitPoints()).append(" Hit Points");
 			builder.append(", Strength ").append(
 					getModifierString(stats.getStrength()));
 			builder.append(", Dexterity ").append(
@@ -241,8 +251,8 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		if (stats != null && details) {
 			retval.add(new SimpleReportNode(loc,
 					"He or she has the following stats: ", Integer
-							.toString(stats.getHitPoints()), " / ", Integer
-							.toString(stats.getMaxHitPoints()),
+					.toString(stats.getHitPoints()), " / ", Integer
+					.toString(stats.getMaxHitPoints()),
 					" Hit Points, Strength ", getModifierString(stats
 							.getStrength()), ", Dexterity ",
 					getModifierString(stats.getDexterity()), ", Constitution ",
@@ -297,23 +307,27 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 				new StringBuilder(8192).append("<h5>Foreign units</h5>\n");
 		foreign.append(OPEN_LIST);
 		boolean anyForeign = false;
-		for (final Pair<Point, IFixture> pair : fixtures.values()) {
+		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		values.sort(pairComparator);
+		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Unit) {
 				final Unit unit = (Unit) pair.second();
 				if (currentPlayer.equals(unit.getOwner())) {
 					anyOurs = true;
 					ours.append(OPEN_LIST_ITEM)
-							.append(atPoint(pair.first()))
-							.append(produce(fixtures, map, currentPlayer,
-									unit, pair.first()))
-							.append(CLOSE_LIST_ITEM);
+					.append(atPoint(pair.first()))
+					.append(' ').append(distCalculator.distanceString(pair.first()))
+					.append(produce(fixtures, map, currentPlayer,
+							unit, pair.first()))
+					.append(CLOSE_LIST_ITEM);
 				} else {
 					anyForeign = true;
 					foreign.append(OPEN_LIST_ITEM)
-							.append(atPoint(pair.first()))
-							.append(produce(fixtures, map, currentPlayer,
-									unit, pair.first()))
-							.append(CLOSE_LIST_ITEM);
+					.append(atPoint(pair.first()))
+					.append(' ').append(distCalculator.distanceString(pair.first()))
+					.append(produce(fixtures, map, currentPlayer,
+							unit, pair.first()))
+					.append(CLOSE_LIST_ITEM);
 				}
 			}
 		}
@@ -352,12 +366,15 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 				new SectionListReportNode(5, "Your units");
 		final AbstractReportNode theirs =
 				new SectionListReportNode(5, "Foreign units");
-		for (final Pair<Point, IFixture> pair : fixtures.values()) {
+		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		values.sort(pairComparator);
+		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Unit) {
 				final Unit unit = (Unit) pair.second();
 				final AbstractReportNode unitNode = produceRIR(fixtures, map,
 						currentPlayer, unit, pair.first());
-				unitNode.setText(concat(atPoint(pair.first()), unitNode.getText()));
+				unitNode.setText(concat(atPoint(pair.first()), unitNode.getText(), " ",
+						distCalculator.distanceString(pair.first())));
 				if (currentPlayer.equals(unit.getOwner())) {
 					ours.add(unitNode);
 				} else {

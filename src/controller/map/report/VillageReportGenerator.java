@@ -1,5 +1,9 @@
 package controller.map.report;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -39,6 +43,12 @@ import util.Pair;
  */
 public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	/**
+	 * @param comparator a comparator for pairs of Points and fixtures.
+	 */
+	public VillageReportGenerator(final Comparator<Pair<Point, IFixture>> comparator) {
+		super(comparator);
+	}
+	/**
 	 * Produce the report on all villages. All fixtures referred to in this
 	 * report are removed from the collection. TODO: sort this by owner.
 	 *
@@ -55,7 +65,9 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 				"<h4>Villages you know about:</h4>");
 		final HeadedList<String> own = new HtmlList(
 				"<h4>Villages pledged to your service:</h4>");
-		for (final Pair<Point, IFixture> pair : fixtures.values()) {
+		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		values.sort(pairComparator);
+		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Village) {
 				final Village village = (Village) pair.second();
 				final String product =
@@ -90,7 +102,9 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 				"Villages you know about:");
 		final AbstractReportNode own = new SectionListReportNode(5,
 				"Villages pledged to your service:");
-		for (final Pair<Point, IFixture> pair : fixtures.values()) {
+		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		values.sort(pairComparator);
+		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Village) {
 				final Village village = (Village) pair.second();
 				final IReportNode product =
@@ -136,11 +150,11 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		if (item.getOwner().isIndependent()) {
 			return concat(atPoint(loc), item.getName(), ", a(n) ", // NOPMD
-					item.getRace(), " village", ", independent");
+					item.getRace(), " village", ", independent ", distCalculator.distanceString(loc));
 		} else {
 			return concat(atPoint(loc), item.getName(), ", a(n) ",
 					item.getRace(), " village", ", sworn to "
-							+ playerNameOrYou(item.getOwner()));
+							+ playerNameOrYou(item.getOwner()), " ", distCalculator.distanceString(loc));
 		}
 	}
 
@@ -163,11 +177,11 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		if (item.getOwner().isIndependent()) {
 			return new SimpleReportNode(loc, atPoint(loc), item.getName(), // NOPMD
-					", a(n) ", item.getRace(), " village", ", independent");
+					", a(n) ", item.getRace(), " village", ", independent ", distCalculator.distanceString(loc));
 		} else {
 			return new SimpleReportNode(loc, atPoint(loc), item.getName(),
 					", a(n) ", item.getRace(), " village", ", sworn to "
-							+ playerNameOrYou(item.getOwner()));
+							+ playerNameOrYou(item.getOwner()), " ", distCalculator.distanceString(loc));
 		}
 	}
 

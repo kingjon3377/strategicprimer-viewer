@@ -1,5 +1,6 @@
 package controller.map.report;
 
+import java.util.Comparator;
 import java.util.Map;
 
 import model.map.IFixture;
@@ -38,6 +39,12 @@ import util.Pair;
  */
 public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	/**
+	 * @param comparator a comparator for pairs of Points and fixtures.
+	 */
+	public TextReportGenerator(final Comparator<Pair<Point, IFixture>> comparator) {
+		super(comparator);
+	}
+	/**
 	 * @param fixtures the set of fixtures
 	 * @param map ignored
 	 * @param currentPlayer the player for whom the report is being produced
@@ -48,7 +55,7 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
 		final HtmlList list = new HtmlList("<h4>Miscellaneous Notes</h4>");
-		// TODO: We should probably sort the list by turn.
+		// FIXME: sort the list by turn.
 		for (final Map.Entry<Integer, Pair<Point, IFixture>> entry : fixtures
 				.entrySet()) {
 			final Pair<Point, IFixture> pair = entry.getValue();
@@ -88,6 +95,8 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 				new StringBuilder(item.getText().length() + 32);
 		builder.append("At ");
 		builder.append(loc.toString());
+		builder.append(' ');
+		builder.append(distCalculator.distanceString(loc));
 		if (item.getTurn() >= 0) {
 			builder.append(": On turn ");
 			builder.append(Integer.toString(item.getTurn()));
@@ -143,12 +152,12 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 			final IMapNG map, final Player currentPlayer,
 			final TextFixture item, final Point loc) {
 		if (item.getTurn() >= 0) {
-			return new SimpleReportNode(loc, "At ", loc.toString(), ": ",
-					"On turn ", Integer.toString(item.getTurn()), ": ",
-							item.getText());
+			return new SimpleReportNode(loc, "At ", loc.toString(), " ",
+					distCalculator.distanceString(loc), ": ", "On turn ",
+					Integer.toString(item.getTurn()), ": ", item.getText());
 		} else {
-			return new SimpleReportNode(loc, "At ", loc.toString(), ": ",
-					item.getText());
+			return new SimpleReportNode(loc, "At ", loc.toString(), " ",
+					distCalculator.distanceString(loc), ": ", item.getText());
 		}
 	}
 

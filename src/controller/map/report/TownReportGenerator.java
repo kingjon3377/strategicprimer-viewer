@@ -2,6 +2,7 @@ package controller.map.report;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,12 @@ import util.Pair;
  */
 public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	/**
+	 * @param comparator a comparator for pairs of Points and fixtures.
+	 */
+	public TownReportGenerator(final Comparator<Pair<Point, IFixture>> comparator) {
+		super(comparator);
+	}
+	/**
 	 * Produce the part of the report dealing with towns. Note that while this
 	 * class specifies {@link ITownFixture}, this method ignores
 	 * {@link Fortress}es and {@link Village}s. All fixtures referred to in this
@@ -73,6 +80,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 		}
 		final List<AbstractTown> sorted = new ArrayList<>(townLocs.keySet());
 		Collections.sort(sorted, new TownComparator());
+		// FIXME: Within any given status, sort by distance from HQ
 		final int len = 80 + sorted.size() * 512;
 		final StringBuilder builder = new StringBuilder(len)
 				.append("<h4>Cities, towns, and/or fortifications ")
@@ -81,7 +89,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 			if (town != null) {
 				builder.append(OPEN_LIST_ITEM).append(produce(fixtures, map,
 						currentPlayer, town, townLocs.get(town)))
-						.append(CLOSE_LIST_ITEM);
+				.append(CLOSE_LIST_ITEM);
 			}
 		}
 		builder.append(CLOSE_LIST);
@@ -120,6 +128,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 		}
 		final List<AbstractTown> sorted = new ArrayList<>(townLocs.keySet());
 		Collections.sort(sorted, new TownComparator());
+		// FIXME: Within any given status, sort by distance from HQ
 		for (final AbstractTown town : sorted) {
 			if (town != null) {
 				retval.add(produceRIR(fixtures, map, currentPlayer, town,
@@ -151,23 +160,23 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 			final IMapNG map, final Player currentPlayer,
 			final ITownFixture item, final Point loc) {
 		if (item instanceof Village) {
-			return new VillageReportGenerator().produce(fixtures, map, // NOPMD
+			return new VillageReportGenerator(pairComparator).produce(fixtures, map, // NOPMD
 					currentPlayer, (Village) item, loc);
 		} else if (item instanceof Fortress) {
-			return new FortressReportGenerator().produce(fixtures, map, // NOPMD
+			return new FortressReportGenerator(pairComparator).produce(fixtures, map, // NOPMD
 					currentPlayer, (Fortress) item, loc);
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			if (item.getOwner().isIndependent()) {
 				return concat(atPoint(loc), item.getName(), //NOPMD
 						", an independent ", item.size().toString(), " ", item
-								.status().toString(), " ",
-						((AbstractTown) item).kind());
+						.status().toString(), " ",
+						((AbstractTown) item).kind(), " ", distCalculator.distanceString(loc));
 			} else {
 				return concat(atPoint(loc), item.getName(), ", a ", // NOPMD
 						item.size().toString(), " ", item.status().toString(),
 						" ", ((AbstractTown) item).kind(), " allied with ",
-						playerNameOrYou(item.getOwner()));
+						playerNameOrYou(item.getOwner()), " ", distCalculator.distanceString(loc));
 			}
 		} else {
 			throw new IllegalStateException("Unhandled ITownFixture subclass");
@@ -192,23 +201,23 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 			final IMapNG map, final Player currentPlayer,
 			final ITownFixture item, final Point loc) {
 		if (item instanceof Village) {
-			return new VillageReportGenerator().produceRIR(fixtures, // NOPMD
+			return new VillageReportGenerator(pairComparator).produceRIR(fixtures, // NOPMD
 					map, currentPlayer, (Village) item, loc);
 		} else if (item instanceof Fortress) {
-			return new FortressReportGenerator().produceRIR(fixtures, // NOPMD
+			return new FortressReportGenerator(pairComparator).produceRIR(fixtures, // NOPMD
 					map, currentPlayer, (Fortress) item, loc);
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			if (item.getOwner().isIndependent()) {
 				return new SimpleReportNode(loc, atPoint(loc), item.getName(),
 						", an independent ", item.size().toString(), " ", item
-								.status().toString(), " ",
-						((AbstractTown) item).kind());
+						.status().toString(), " ",
+						((AbstractTown) item).kind(), " ", distCalculator.distanceString(loc));
 			} else {
 				return new SimpleReportNode(loc, atPoint(loc), item.getName(),
 						", a ", item.size().toString(), " ", item.status()
-								.toString(), " ", ((AbstractTown) item).kind(),
-						" allied with " + playerNameOrYou(item.getOwner()));
+						.toString(), " ", ((AbstractTown) item).kind(),
+						" allied with " + playerNameOrYou(item.getOwner()), " ", distCalculator.distanceString(loc));
 			}
 		} else {
 			throw new IllegalStateException("Unhandled ITownFixture subclass");

@@ -1,16 +1,22 @@
 package controller.map.report;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
+import model.map.DistanceComparator;
+import model.map.IFixture;
 import model.map.Player;
 import model.map.Point;
+import model.map.PointFactory;
 import util.NullCleaner;
+import util.Pair;
+import util.PairComparator;
 
 // ESCA-JAVA0011: Abstract methods are now moved to interface.
 /**
- * An interface for classes that generate reports for particular kinds of SP
- * objects.
+ * An abstract superclass for classes that generate reports for particular kinds of SP
+ * objects. It's mostly interface and helper methods, but contains one bit of shared state.
  *
  * This is part of the Strategic Primer assistive programs suite developed by
  * Jonathan Lovelace.
@@ -33,6 +39,27 @@ import util.NullCleaner;
  * @param <T> the type of thing the class knows how to generate a report on
  */
 public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> {
+	/**
+	 * A comparator for pairs of Points and fixtures.
+	 */
+	protected final Comparator<Pair<Point, IFixture>> pairComparator;
+	/**
+	 * A distance calculator (comparator).
+	 */
+	protected final DistanceComparator distCalculator;
+	/**
+	 * @param comparator a comparator for pairs of Points and fixtures.
+	 */
+	protected AbstractReportGenerator(final Comparator<Pair<Point, IFixture>> comparator) {
+		pairComparator = comparator;
+		if (comparator instanceof PairComparator
+				&& ((PairComparator<Point, IFixture>) comparator)
+				.first() instanceof DistanceComparator) {
+			distCalculator = (DistanceComparator) ((PairComparator<Point, IFixture>) comparator).first();
+		} else {
+			distCalculator = new DistanceComparator(PointFactory.point(-1, -1));
+		}
+	}
 	/**
 	 * The HTML tag for the end of a bulleted list. Plus a newline.
 	 */
@@ -67,7 +94,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 * @author Jonathan Lovelace
 	 */
 	protected static class HtmlList extends ArrayList<String> implements
-			HeadedList<String> {
+	HeadedList<String> {
 		/**
 		 * Version UID for serialization.
 		 */
@@ -109,7 +136,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 						.append(header).append('\n').append(OPEN_LIST);
 				for (final String item : this) {
 					builder.append(OPEN_LIST_ITEM).append(item)
-							.append(CLOSE_LIST_ITEM);
+					.append(CLOSE_LIST_ITEM);
 				}
 				final String retval = builder.append(CLOSE_LIST).toString();
 				return NullCleaner.valueOrDefault(retval, "");

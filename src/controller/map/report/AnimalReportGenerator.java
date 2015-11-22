@@ -1,6 +1,7 @@
 package controller.map.report;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,12 @@ import util.Pair;
  */
 public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	/**
+	 * @param comparator a comparator for pairs of Points and fixtures.
+	 */
+	public AnimalReportGenerator(final Comparator<Pair<Point, IFixture>> comparator) {
+		super(comparator);
+	}
+	/**
 	 * Produce the sub-report on sightings of animals.
 	 *
 	 * @param fixtures the set of fixtures
@@ -57,7 +64,9 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
 		final Map<String, List<Point>> items = new HashMap<>();
-		for (final Pair<Point, IFixture> pair : fixtures.values()) {
+		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		values.sort(pairComparator);
+		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Animal) {
 				final Animal animal = (Animal) pair.second();
 				// ESCA-JAVA0177:
@@ -87,11 +96,11 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 			// We doubt this list will ever be over 16K.
 			final StringBuilder builder = new StringBuilder(16384).append(
 					"<h4>Animal sightings or encounters</h4>\n").append(
-					OPEN_LIST);
+							OPEN_LIST);
 			for (final Entry<String, List<Point>> entry : items.entrySet()) {
 				builder.append(OPEN_LIST_ITEM).append(entry.getKey())
-						.append(": at ").append(pointCSL(entry.getValue()))
-						.append(CLOSE_LIST_ITEM);
+				.append(": at ").append(pointCSL(entry.getValue()))
+				.append(CLOSE_LIST_ITEM);
 			}
 			return NullCleaner.assertNotNull(builder.append(CLOSE_LIST)
 					.toString()); // NOPMD
@@ -111,7 +120,9 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
 		final Map<String, AbstractReportNode> items = new HashMap<>();
-		for (final Pair<Point, IFixture> pair : fixtures.values()) {
+		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		values.sort(pairComparator);
+		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Animal) {
 				final Animal animal = (Animal) pair.second();
 				// ESCA-JAVA0177:
@@ -161,7 +172,8 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 		} else {
 			tracesOrTalking = "";
 		}
-		return concat(atPoint(loc), tracesOrTalking, item.getKind());
+		return concat(atPoint(loc), tracesOrTalking, item.getKind(), " ",
+				distCalculator.distanceString(loc));
 	}
 
 	/**
@@ -186,7 +198,7 @@ public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 			tracesOrTalking = "";
 		}
 		return new SimpleReportNode(loc, atPoint(loc), tracesOrTalking,
-				item.getKind());
+				item.getKind(), " ", distCalculator.distanceString(loc));
 	}
 
 	/**

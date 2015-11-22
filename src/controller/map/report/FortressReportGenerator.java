@@ -1,6 +1,7 @@
 package controller.map.report;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
@@ -53,9 +54,15 @@ import util.Pair;
  */
 public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	/**
+	 * @param comparator a comparator for pairs of Points and fixtures.
+	 */
+	public FortressReportGenerator(final Comparator<Pair<Point, IFixture>> comparator) {
+		super(comparator);
+	}
+	/**
 	 * Instance we use.
 	 */
-	private final UnitReportGenerator urg = new UnitReportGenerator();
+	private final UnitReportGenerator urg = new UnitReportGenerator(pairComparator);
 
 	/**
 	 * The longest a river report could be.
@@ -81,9 +88,11 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		boolean anyours = false;
 		final StringBuilder builder =
 				new StringBuilder(16384)
-						.append("<h4>Foreign fortresses in the map:</h4>\n");
+				.append("<h4>Foreign fortresses in the map:</h4>\n");
 		boolean anyforts = false;
-		for (final Pair<Point, IFixture> pair : fixtures.values()) {
+		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		values.sort(pairComparator);
+		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Fortress) {
 				final Fortress fort = (Fortress) pair.second();
 				if (currentPlayer.equals(fort.getOwner())) {
@@ -126,7 +135,9 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 				"Your fortresses in the map:");
 		final AbstractReportNode foreign = new SectionReportNode(4,
 				"Foreign fortresses in the map:");
-		for (final Pair<Point, IFixture> pair : fixtures.values()) {
+		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		values.sort(pairComparator);
+		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Fortress) {
 				final Fortress fort = (Fortress) pair.second();
 				if (currentPlayer.equals(fort.getOwner())) {
@@ -162,7 +173,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures) {
 		final StringBuilder builder = new StringBuilder(130).append(
 				"Surrounding terrain: ").append(
-				map.getBaseTerrain(point).toXML().replace('_', ' '));
+						map.getBaseTerrain(point).toXML().replace('_', ' '));
 		boolean hasForest = false;
 		Forest forest = map.getForest(point);
 		if (forest != null) {
@@ -265,12 +276,12 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			final IMapNG map, final Player currentPlayer,
 			final Fortress item, final Point loc) {
 		// This can get long. we'll give it 16K.
-		final StringBuilder builder = new StringBuilder(16384)
-				.append("<h5>Fortress ").append(item.getName())
-				.append(" belonging to ")
+		final StringBuilder builder = new StringBuilder(16384).append("<h5>Fortress ")
+				.append(item.getName()).append(" belonging to ")
 				.append(playerNameOrYou(item.getOwner())).append("</h5>\n")
 				.append(OPEN_LIST).append(OPEN_LIST_ITEM).append("Located at ")
-				.append(loc).append(CLOSE_LIST_ITEM).append(OPEN_LIST_ITEM);
+				.append(loc).append(' ').append(distCalculator.distanceString(loc))
+				.append(CLOSE_LIST_ITEM).append(OPEN_LIST_ITEM);
 		builder.append(getTerrain(map, loc, fixtures)).append(CLOSE_LIST_ITEM);
 		if (map.getRivers(loc).iterator().hasNext()) {
 			final Set<River> copy = NullCleaner.assertNotNull(EnumSet
@@ -283,12 +294,12 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		if (item.iterator().hasNext()) {
 			List<FortressMember> contents = new ArrayList<>();
 			builder.append(OPEN_LIST_ITEM).append("Units on the tile:\n")
-					.append(OPEN_LIST);
+			.append(OPEN_LIST);
 			for (final FortressMember member : item) {
 				if (member instanceof Unit) {
 					builder.append(OPEN_LIST_ITEM)
-							.append(urg.produce(fixtures, map, currentPlayer,
-									(Unit) member, loc)).append(CLOSE_LIST_ITEM);
+					.append(urg.produce(fixtures, map, currentPlayer,
+							(Unit) member, loc)).append(CLOSE_LIST_ITEM);
 				} else {
 					contents.add(member);
 				}
@@ -296,7 +307,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 			builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
 			if (!contents.isEmpty()) {
 				builder.append(OPEN_LIST_ITEM)
-						.append("Other fortress contents:\n").append(OPEN_LIST);
+				.append("Other fortress contents:\n").append(OPEN_LIST);
 				for (FortressMember member : contents) {
 					// FIXME: Produce and append the proper sub-report
 				}
@@ -326,7 +337,8 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 		final SectionListReportNode retval = new SectionListReportNode(loc, 5,
 				concat("Fortress ", item.getName(), " belonging to ",
 						playerNameOrYou(item.getOwner())));
-		retval.add(new SimpleReportNode(loc, "Located at ", loc.toString()));
+		retval.add(new SimpleReportNode(loc, "Located at ", loc.toString(), " ",
+				distCalculator.distanceString(loc)));
 		retval.add(new SimpleReportNode(loc, getTerrain(map, loc, fixtures)));
 		if (map.getRivers(loc).iterator().hasNext()) {
 			final Set<River> copy = NullCleaner.assertNotNull(EnumSet

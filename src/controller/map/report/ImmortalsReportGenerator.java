@@ -2,6 +2,7 @@ package controller.map.report;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,8 +58,13 @@ import util.Pair;
  * @author Jonathan Lovelace
  *
  */
-public class ImmortalsReportGenerator extends
-		AbstractReportGenerator<MobileFixture> {
+public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixture> {
+	/**
+	 * @param comparator a comparator for pairs of Points and fixtures.
+	 */
+	public ImmortalsReportGenerator(final Comparator<Pair<Point, IFixture>> comparator) {
+		super(comparator);
+	}
 	/** // $codepro.audit.disable sourceLength
 	 * Produce the sub-report dealing with "immortals".
 	 *
@@ -84,7 +90,9 @@ public class ImmortalsReportGenerator extends
 		final List<Point> simurghs = new ArrayList<>();
 		final List<Point> griffins = new ArrayList<>();
 
-		for (final Pair<Point, IFixture> pair : fixtures.values()) {
+		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		values.sort(pairComparator);
+		for (final Pair<Point, IFixture> pair : values) {
 			final Point point = pair.first();
 			final IFixture immortal = pair.second();
 			if (immortal instanceof Dragon) {
@@ -188,18 +196,19 @@ public class ImmortalsReportGenerator extends
 		final AbstractReportNode phoenixes = new ListReportNode("Phoenixes");
 		final AbstractReportNode simurghs = new ListReportNode("Simurghs");
 		final AbstractReportNode griffins = new ListReportNode("Griffins");
-
-		for (final Pair<Point, IFixture> pair : fixtures.values()) {
+		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		values.sort(pairComparator);
+		for (final Pair<Point, IFixture> pair : values) {
 			final Point point = pair.first();
 			final IFixture immortal = pair.second();
 			if (immortal instanceof Dragon) {
 				separateByKindRIR(dragons, (Dragon) immortal)
-						.add(produceRIR(fixtures, map, currentPlayer,
-								(MobileFixture) immortal, point));
+				.add(produceRIR(fixtures, map, currentPlayer,
+						(MobileFixture) immortal, point));
 			} else if (immortal instanceof Fairy) {
 				separateByKindRIR(fairies, (Fairy) immortal)
-						.add(produceRIR(fixtures, map, currentPlayer,
-								(MobileFixture) immortal, point));
+				.add(produceRIR(fixtures, map, currentPlayer,
+						(MobileFixture) immortal, point));
 			} else if (immortal instanceof Troll) {
 				trolls.add(produceRIR(fixtures, map, currentPlayer,
 						(MobileFixture) immortal, point));
@@ -211,8 +220,8 @@ public class ImmortalsReportGenerator extends
 						(MobileFixture) immortal, point));
 			} else if (immortal instanceof Giant) {
 				separateByKindRIR(giants, (Giant) immortal)
-						.add(produceRIR(fixtures, map, currentPlayer,
-								(MobileFixture) immortal, point));
+				.add(produceRIR(fixtures, map, currentPlayer,
+						(MobileFixture) immortal, point));
 			} else if (immortal instanceof Minotaur) {
 				minotaurs.add(produceRIR(fixtures, map, currentPlayer,
 						(MobileFixture) immortal, point));
@@ -221,8 +230,8 @@ public class ImmortalsReportGenerator extends
 						(MobileFixture) immortal, point));
 			} else if (immortal instanceof Centaur) {
 				separateByKindRIR(centaurs, (Centaur) immortal)
-						.add(produceRIR(fixtures, map, currentPlayer,
-								(MobileFixture) immortal, point));
+				.add(produceRIR(fixtures, map, currentPlayer,
+						(MobileFixture) immortal, point));
 			} else if (immortal instanceof Phoenix) {
 				phoenixes.add(produceRIR(fixtures, map, currentPlayer,
 						(MobileFixture) immortal, point));
@@ -291,7 +300,7 @@ public class ImmortalsReportGenerator extends
 				|| item instanceof Centaur || item instanceof Phoenix
 				|| item instanceof Simurgh || item instanceof Griffin) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat(atPoint(loc), "A(n) ", item.toString());
+			return concat(atPoint(loc), "A(n) ", item.toString(), " ", distCalculator.distanceString(loc));
 		} else {
 			return "";
 		}
@@ -319,7 +328,7 @@ public class ImmortalsReportGenerator extends
 				|| item instanceof Centaur || item instanceof Phoenix
 				|| item instanceof Simurgh || item instanceof Griffin) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(loc, atPoint(loc), "A(n) ", item.toString());
+			return new SimpleReportNode(loc, atPoint(loc), "A(n) ", item.toString(), " ", distCalculator.distanceString(loc));
 		} else {
 			return EmptyReportNode.NULL_NODE;
 		}
@@ -338,7 +347,7 @@ public class ImmortalsReportGenerator extends
 			final String infix, final StringBuilder builder) {
 		for (final Entry<String, List<Point>> entry : mapping.entrySet()) {
 			builder.append(OPEN_LIST_ITEM).append(entry.getKey()).append(infix)
-					.append(pointCSL(entry.getValue())).append(CLOSE_LIST_ITEM);
+			.append(pointCSL(entry.getValue())).append(CLOSE_LIST_ITEM);
 		}
 	}
 
@@ -355,7 +364,7 @@ public class ImmortalsReportGenerator extends
 			final String prefix, final StringBuilder builder) {
 		if (!points.isEmpty()) {
 			builder.append(OPEN_LIST_ITEM).append(prefix)
-					.append(pointCSL(points)).append(CLOSE_LIST_ITEM);
+			.append(pointCSL(points)).append(CLOSE_LIST_ITEM);
 		}
 	}
 

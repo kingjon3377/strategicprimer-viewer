@@ -2,6 +2,7 @@ package controller.map.report;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,8 +56,13 @@ import util.Pair;
  * @author Jonathan Lovelace
  *
  */
-public class HarvestableReportGenerator extends // NOPMD
-		AbstractReportGenerator<HarvestableFixture> {
+public class HarvestableReportGenerator extends AbstractReportGenerator<HarvestableFixture> {
+	/**
+	 * @param comparator a comparator for pairs of Points and fixtures.
+	 */
+	public HarvestableReportGenerator(final Comparator<Pair<Point, IFixture>> comparator) {
+		super(comparator);
+	}
 
 	/**
 	 * Produce the sub-reports dealing with "harvestable" fixtures. All fixtures
@@ -86,7 +92,9 @@ public class HarvestableReportGenerator extends // NOPMD
 		final Map<String, List<Point>> shrubs = new HashMap<>();
 		final HeadedList<String> stone = new HtmlList(
 				"<h5>Exposed stone deposits</h5>");
-		for (final Pair<Point, IFixture> pair : fixtures.values()) {
+		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		values.sort(pairComparator);
+		for (final Pair<Point, IFixture> pair : values) {
 			final IFixture item = pair.second();
 			final Point point = pair.first();
 			if (item instanceof CacheFixture) {
@@ -176,7 +184,9 @@ public class HarvestableReportGenerator extends // NOPMD
 		final Map<String, AbstractReportNode> shrubs = new HashMap<>();
 		final AbstractReportNode stone = new SortedSectionListReportNode(5,
 				"Exposed stone deposits");
-		for (final Pair<Point, IFixture> pair : fixtures.values()) {
+		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		values.sort(pairComparator);
+		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof HarvestableFixture) {
 				final HarvestableFixture item = (HarvestableFixture) pair
 						.second();
@@ -257,7 +267,8 @@ public class HarvestableReportGenerator extends // NOPMD
 			final HarvestableFixture item, final Point loc) {
 		if (item instanceof CacheFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat(atPoint(loc), "A cache of ", // NOPMD
+			return concat(atPoint(loc), " ", distCalculator.distanceString(loc),
+					"A cache of ", // NOPMD
 					((CacheFixture) item).getKind(), ", containing ",
 					((CacheFixture) item).getContents());
 		} else if (item instanceof Grove) {
@@ -267,7 +278,8 @@ public class HarvestableReportGenerator extends // NOPMD
 					"A ",
 					ternary(((Grove) item).isCultivated(), "cultivated ",
 							"wild "), ((Grove) item).getKind(),
-					ternary(((Grove) item).isOrchard(), " orchard", " grove"));
+					ternary(((Grove) item).isOrchard(), " orchard", " grove"), " ",
+					distCalculator.distanceString(loc));
 		} else if (item instanceof Meadow) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat(// NOPMD
@@ -276,10 +288,11 @@ public class HarvestableReportGenerator extends // NOPMD
 					((Meadow) item).getStatus().toString(),
 					ternary(((Meadow) item).isCultivated(), " cultivated ",
 							" wild or abandoned "), ((Meadow) item).getKind(),
-					ternary(((Meadow) item).isField(), " field", " meadow"));
+					ternary(((Meadow) item).isField(), " field", " meadow"), " ",
+					distCalculator.distanceString(loc));
 		} else if (item instanceof Mine) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat(atPoint(loc), item.toString()); // NOPMD
+			return concat(atPoint(loc), item.toString(), " ", distCalculator.distanceString(loc)); // NOPMD
 		} else if (item instanceof MineralVein) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat(// NOPMD
@@ -287,14 +300,16 @@ public class HarvestableReportGenerator extends // NOPMD
 					"An ",
 					ternary(((MineralVein) item).isExposed(), "exposed ",
 							"unexposed "), "vein of ",
-					((MineralVein) item).getKind());
+					((MineralVein) item).getKind(), " ", distCalculator.distanceString(loc));
 		} else if (item instanceof Shrub) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat(atPoint(loc), ((Shrub) item).getKind()); // NOPMD
+			return concat(atPoint(loc), ((Shrub) item).getKind(), " ",
+					distCalculator.distanceString(loc)); // NOPMD
 		} else if (item instanceof StoneDeposit) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat(atPoint(loc), "An exposed ", // NOPMD
-					((StoneDeposit) item).getKind(), " deposit");
+					((StoneDeposit) item).getKind(), " deposit",
+					distCalculator.distanceString(loc));
 		} else {
 			throw new IllegalArgumentException("Unexpected HarvestableFixture type");
 		}
@@ -317,15 +332,18 @@ public class HarvestableReportGenerator extends // NOPMD
 			final HarvestableFixture item, final Point loc) {
 		if (item instanceof CacheFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(loc, atPoint(loc), "A cache of ", // NOPMD
+			return new SimpleReportNode(loc, atPoint(loc), " ",
+					distCalculator.distanceString(loc), " A cache of ", // NOPMD
 					((CacheFixture) item).getKind(), ", containing ",
 					((CacheFixture) item).getContents());
 		} else if (item instanceof Grove) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(loc, atPoint(loc), "A ", ternary(//NOPMD
-					((Grove) item).isCultivated(), "cultivated ", "wild "),
-					((Grove) item).getKind(), ternary(
-							((Grove) item).isOrchard(), " orchard", " grove"));
+			return new SimpleReportNode(loc, atPoint(loc), "A ",
+					ternary(// NOPMD
+							((Grove) item).isCultivated(), "cultivated ", "wild "),
+					((Grove) item).getKind(),
+					ternary(((Grove) item).isOrchard(), " orchard", " grove"), " ",
+					distCalculator.distanceString(loc));
 		} else if (item instanceof Meadow) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, atPoint(loc), "A ",
@@ -333,24 +351,29 @@ public class HarvestableReportGenerator extends // NOPMD
 					ternary(((Meadow) item).isCultivated(), " cultivated ",
 							" wild or abandoned "),
 					((Meadow) item).getKind(),
-					ternary(((Meadow) item).isField(), " field", " meadow"));
+					ternary(((Meadow) item).isField(), " field", " meadow"), " ",
+					distCalculator.distanceString(loc));
 		} else if (item instanceof Mine) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(loc, atPoint(loc), item.toString()); //NOPMD
+			return new SimpleReportNode(loc, atPoint(loc), item.toString(), " ",
+					distCalculator.distanceString(loc)); //NOPMD
 		} else if (item instanceof MineralVein) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, atPoint(loc), "An ", // NOPMD
 					ternary(((MineralVein) item).isExposed(), "exposed ",
 							"unexposed "), "vein of ",
-					((MineralVein) item).getKind());
+					((MineralVein) item).getKind(), " ",
+					distCalculator.distanceString(loc));
 		} else if (item instanceof Shrub) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			final String kind = ((Shrub) item).getKind();
-			return new SimpleReportNode(loc, atPoint(loc), kind); // NOPMD
+			return new SimpleReportNode(loc, atPoint(loc), kind, " ",
+					distCalculator.distanceString(loc)); // NOPMD
 		} else if (item instanceof StoneDeposit) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, atPoint(loc), "An exposed ", // NOPMD
-					((StoneDeposit) item).getKind(), " deposit");
+					((StoneDeposit) item).getKind(), " deposit", " ",
+					distCalculator.distanceString(loc));
 		} else {
 			throw new IllegalArgumentException("Unexpected HarvestableFixture type");
 		}
