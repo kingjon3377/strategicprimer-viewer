@@ -195,9 +195,6 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	}
 
 	/**
-	 * FIXME: This should probably take Appendable (the StringBuilder) to avoid
-	 * a new StringBuilder instantiation.
-	 *
 	 * @param strings
 	 *            a series of strings
 	 * @return them concatenated
