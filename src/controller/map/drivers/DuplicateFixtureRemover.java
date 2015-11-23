@@ -139,7 +139,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 		}
 	}
 	/**
-	 * Run the driver. FIXME: Refactor to use the overload taking a driver model
+	 * Run the driver.
 	 *
 	 * @param args Command-line arguments
 	 * @throws DriverFailedException on error
