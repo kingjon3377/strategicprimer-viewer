@@ -210,7 +210,7 @@ public class WorkerMgmtFrame extends JFrame {
 					return;
 				}
 				Object node = selPath.getLastPathComponent();
-				if (evt.isControlDown() && node instanceof AbstractReportNode) {
+				if ((evt.isControlDown() || evt.isMetaDown()) && node instanceof AbstractReportNode) {
 					final Point point = ((AbstractReportNode) node).getPoint();
 					// (-inf, -inf) replaces null
 					if (point.getRow() > Integer.MIN_VALUE) {
