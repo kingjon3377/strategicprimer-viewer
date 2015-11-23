@@ -253,6 +253,7 @@ public class AppStarter implements ISPDriver {
 	 * @param args command-line arguments
 	 */
 	public static void main(final String[] args) {
+		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "SP Helpers");
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (ClassNotFoundException | InstantiationException
