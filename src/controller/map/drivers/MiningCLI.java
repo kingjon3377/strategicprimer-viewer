@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import model.map.Point;
 import model.map.PointFactory;
@@ -43,6 +45,10 @@ public final class MiningCLI {
 		// Do nothing
 	}
 	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(MiningCLI.class.getName()));
+	/**
 	 * @param args
 	 *            Arg 0 is the name of a file to write the CSV to; Arg 1 is the
 	 *            value of the top center (as an index into the LodeStatus
@@ -59,7 +65,7 @@ public final class MiningCLI {
 		try {
 			index = NumberFormat.getIntegerInstance().parse(args[1]).intValue();
 		} catch (ParseException e) {
-			System.err.println("Non-numeric status index");
+			LOGGER.log(Level.SEVERE, "non-numeric status index", e);
 			System.exit(2);
 			return;
 		}
@@ -86,7 +92,7 @@ public final class MiningCLI {
 				ostream.println();
 			}
 		} catch (IOException except) {
-			System.out.println("I/O error writing to file");
+			LOGGER.log(Level.SEVERE, "I/O error writing to file", except);
 			System.exit(2);
 		}
 	}

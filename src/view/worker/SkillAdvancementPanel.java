@@ -8,6 +8,8 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -50,6 +52,10 @@ import view.util.ListenedButton;
  */
 public class SkillAdvancementPanel extends BoxPanel implements ActionListener,
 		SkillSelectionListener, LevelGainSource {
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(SkillAdvancementPanel.class.getName()));
 	/**
 	 * The list of listeners.
 	 */
@@ -128,6 +134,7 @@ public class SkillAdvancementPanel extends BoxPanel implements ActionListener,
 				skl.addHours(NUM_PARSER.parse(hours.getText()).intValue(),
 						SingletonRandom.RANDOM.nextInt(SKILL_DIE));
 			} catch (ParseException e) {
+				LOGGER.log(Level.FINE, "Non-numeric input", e);
 				ErrorShower.showErrorDialog(this, "Hours to add must be a number");
 				return;
 			}

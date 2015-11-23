@@ -693,9 +693,7 @@ public class OneToTwoConverter { // NOPMD
 				try {
 					reader.write(new File(arg + ".converted.xml"), newMap);
 				} catch (IOException except) {
-					System.err.print("I/O error writing to ");
-					System.err.print(arg);
-					System.err.println(".converted.xml");
+					LOGGER.log(Level.SEVERE, "I/O error writing to " + arg + ".converted.xml", except);
 					if (first) {
 						System.exit(4);
 					}

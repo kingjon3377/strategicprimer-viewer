@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -40,7 +42,10 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 * The collection this class wraps.
 	 */
 	private final Map<Integer, Player> players = new HashMap<>();
-
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(PlayerCollection.class.getName()));
 	/**
 	 * @param player a player-id
 	 *
@@ -77,6 +82,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 					&& isSubset((IPlayerCollection) obj, DEV_NULL, "")
 					&& ((IPlayerCollection) obj).isSubset(this, DEV_NULL, "");
 		} catch (IOException e) {
+			LOGGER.log(Level.SEVERE, "I/O error from NullStream", e);
 			return false;
 		}
 	}

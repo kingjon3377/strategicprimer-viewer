@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -28,6 +30,7 @@ import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
+import util.NullCleaner;
 import util.Pair;
 
 /**
@@ -55,6 +58,10 @@ import util.Pair;
  *
  */
 public class ExplorationCLI {
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(ExplorationCLI.class.getName()));
 	/**
 	 * The direction prompt.
 	 */
@@ -169,6 +176,7 @@ public class ExplorationCLI {
 		try {
 			cost = model.move(direction);
 		} catch (final TraversalImpossibleException except) {
+			LOGGER.log(Level.FINEST, "Attempted movement to impassable destination", except);
 			System.out.print("That direction is impassable; we've made sure ");
 			System.out.println("all maps show that at a cost of 1 MP");
 			return 1; // NOPMD

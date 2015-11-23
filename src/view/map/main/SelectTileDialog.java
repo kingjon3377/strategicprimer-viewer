@@ -171,6 +171,7 @@ public class SelectTileDialog extends JDialog implements ActionListener {
 				return State.Valid;
 			}
 		} catch (ParseException e) {
+			LOGGER.log(Level.FINE, "Non-numeric input", e);
 			return State.Nonnumeric;
 		}
 	}

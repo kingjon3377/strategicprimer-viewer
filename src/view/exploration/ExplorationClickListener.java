@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
@@ -62,6 +64,10 @@ import view.map.details.FixtureList;
  */
 public final class ExplorationClickListener implements ActionListener,
 		MovementCostSource, SelectionChangeSource {
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(ExplorationClickListener.class.getName()));
 	/**
 	 * The list of movement-cost listeners.
 	 */
@@ -178,6 +184,7 @@ public final class ExplorationClickListener implements ActionListener,
 				model.getMap().removeFixture(dPoint, cache);
 			}
 		} catch (final TraversalImpossibleException except) {
+			LOGGER.log(Level.FINEST, "Attempted movement to impassable destination", except);
 			final Point sel = model.getSelectedUnitLocation();
 			for (final SelectionChangeListener listener : scListeners) {
 				listener.selectedPointChanged(null, sel);

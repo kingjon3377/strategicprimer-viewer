@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import model.map.Point;
 import model.map.TileFixture;
@@ -36,6 +38,10 @@ import util.NullCleaner;
  *
  */
 public class ExplorationRunner { // NOPMD
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(ExplorationRunner.class.getName());
 	/**
 	 * @param terrain the terrain at the location
 	 * @param fixtures any fixtures at the location
@@ -232,6 +238,7 @@ public class ExplorationRunner { // NOPMD
 						}
 					}
 				} catch (final MissingTableException e) {
+					LOGGER.log(Level.INFO, "Missing table " + table, e);
 					return true; // NOPMD
 				}
 				return false; // NOPMD

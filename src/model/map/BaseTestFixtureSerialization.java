@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -65,7 +67,10 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * An instance of the current-generation reader to test against.
 	 */
 	private final ISPReader newReader = TestReaderFactory.createNewReader();
-
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(BaseTestFixtureSerialization.class.getName()));
 	/**
 	 * Assert that reading the given XML will produce an UnwantedChildException.
 	 * If it's only supposed to be a warning, assert that it'll pass with
@@ -583,7 +588,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 						desideratum, new Warning(Action.Ignore));
 				fail("We were expecting a MissingChildException");
 			} catch (final MissingChildException except) {
-				assertTrue("Got the expected MissingChildException", true);
+				LOGGER.log(Level.FINEST, "Got the expected MissingChildException", except);
 			}
 		}
 	}

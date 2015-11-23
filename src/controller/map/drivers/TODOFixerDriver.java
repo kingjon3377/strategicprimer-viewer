@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -15,6 +17,7 @@ import model.map.IMutableMapNG;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.Unit;
+import util.NullCleaner;
 import util.Warning;
 
 /**
@@ -49,6 +52,12 @@ public class TODOFixerDriver {
 	 * A helper to get strings from the user.
 	 */
 	private final CLIHelper helper = new CLIHelper();
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = NullCleaner
+			.assertNotNull(Logger.getLogger(TODOFixerDriver.class.getName()));
+
 	/**
 	 * @param operand the map we operate on
 	 */
@@ -115,6 +124,7 @@ public class TODOFixerDriver {
 			unit.setKind(string);
 			jobList.add(string);
 		} catch (IOException e) {
+			LOGGER.log(Level.FINE, "I/O error interacting with user", e);
 			return;
 		}
 	}

@@ -11,6 +11,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -60,6 +62,10 @@ import view.util.ListenedButton;
  */
 public class WorkerConstructionFrame extends JFrame implements ActionListener,
 		NewWorkerSource {
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(WorkerConstructionFrame.class.getName()));
 	/**
 	 * The ID factory to use to generate IDs.
 	 */
@@ -224,6 +230,7 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener,
 							parseInt(con), parseInt(intel), parseInt(wis),
 							parseInt(cha)));
 				} catch (ParseException e) {
+					LOGGER.log(Level.FINE, "Non-numeric input", e);
 					ErrorShower.showErrorDialog(this, "All stats must be numbers");
 					return;
 				}

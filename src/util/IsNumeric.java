@@ -2,6 +2,8 @@ package util;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A helper class to determine whether a String is numeric or not.
@@ -28,6 +30,10 @@ import java.text.ParseException;
  */
 public final class IsNumeric {
 	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(IsNumeric.class.getName()));
+	/**
 	 * Do not instantiate.
 	 */
 	private IsNumeric() {
@@ -48,8 +54,10 @@ public final class IsNumeric {
 			PARSER.parse(string);
 			return true; // NOPMD
 		} catch (final NumberFormatException except) {
+			LOGGER.log(Level.FINE, "Non-numeric input", except);
 			return false;
 		} catch (ParseException e) {
+			LOGGER.log(Level.FINE, "Non-numeric input", e);
 			return false;
 		}
 	}
