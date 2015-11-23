@@ -212,6 +212,32 @@ public class SubsetFrame extends JFrame {
 						+ "error in reading", "");
 	}
 	/**
+	 * Load a new, but already-read-from-file, map as the main map, which all the others should be subsets of.
+	 * @param map the map to load.
+	 */
+	public void loadMain(final IMapNG map) {
+		mainMap = map;
+	}
+	/**
+	 * Test a map against the main map, to see if it's a strict subset of it.
+	 * @param map the map to test
+	 * @param file the file from which it was loaded
+	 */
+	public void test(final IMapNG map, final File file) {
+		printParagraph("Testing " + file + " ...", "");
+		try (final Writer out = new HTMLWriter(label.getWriter())) {
+			if (mainMap.isSubset(map, out, file.getName() + ":")) {
+				printParagraph("OK", "green");
+			} else {
+				printParagraph("WARN", "yellow");
+			}
+		} catch (IOException e) {
+			LOGGER.log(Level.SEVERE, "I/O error writing to window", e);
+			printParagraph("ERROR: I/O error writing to window", ERROR_COLOR);
+			return;
+		}
+	}
+	/**
 	 * Test a map against the main map, to see if it's a strict subset of it.
 	 * This method "eats" (but logs) all (anticipated) errors in reading the
 	 * file.

@@ -9,8 +9,10 @@ import javax.xml.stream.XMLStreamException;
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.WindowThread;
+import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
+import util.Pair;
 import view.map.misc.SubsetFrame;
 
 /**
@@ -57,8 +59,12 @@ public class SubsetGUIDriver implements ISPDriver {
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
 		if (model instanceof IMultiMapModel) {
-			// FIXME: Implement: Make SubsetFrame take maps, rather than just files; if it does already, use those methods
-			throw new DriverFailedException(new IllegalStateException("SubsetGUI doesn't yet operate on driver models"));
+			final SubsetFrame frame = new SubsetFrame();
+			SwingUtilities.invokeLater(new WindowThread(frame));
+			frame.loadMain(model.getMap());
+			for (Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getSubordinateMaps()) {
+				frame.test(pair.first(), pair.second());
+			}
 		} else {
 			// FIXME: Fail more gracefully, just logging the condtion, showing a message, and returning normally
 			throw new DriverFailedException(new IllegalArgumentException("SubsetGUI doesn't make sense on a non-multi-map driver model"));
