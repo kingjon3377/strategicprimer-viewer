@@ -5,6 +5,7 @@ import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
 import static javax.swing.KeyStroke.getKeyStroke;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
@@ -39,6 +40,10 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public class ArrowKeyListener {
 	/**
+	 * Whether this is running on a Mac.
+	 */
+	private static final boolean ON_MAC = System.getProperty("os.name").toLowerCase().startsWith("mac os x");
+	/**
 	 * Set up listeners.
 	 *
 	 * @param selListener The actual listener whose methods have to be attached.
@@ -48,6 +53,7 @@ public class ArrowKeyListener {
 	public static void setUpListeners(
 			final DirectionSelectionChanger selListener,
 			final InputMap inputMap, final ActionMap actionMap) {
+		// FIXME: Throughout this method, try VK_KP_{UP,DOWN,LEFT,RIGHT} in addition to VK_NUMPAD?
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "up");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "down");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "right");
@@ -68,26 +74,32 @@ public class ArrowKeyListener {
 		actionMap.put("up-left", new UpLeftListener(selListener, 1));
 		actionMap.put("down-right", new DownRightListener(selListener, 1));
 		actionMap.put("down-left", new DownLeftListener(selListener, 1));
-		inputMap.put(getKeyStroke(KeyEvent.VK_UP, CTRL_DOWN_MASK), "ctrlUp");
-		inputMap.put(getKeyStroke(KeyEvent.VK_DOWN, CTRL_DOWN_MASK), "ctrlDown");
-		inputMap.put(getKeyStroke(KeyEvent.VK_RIGHT, CTRL_DOWN_MASK),
+		final int fiveMask;
+		if (ON_MAC) {
+			fiveMask = InputEvent.ALT_DOWN_MASK;
+		} else {
+			fiveMask = InputEvent.CTRL_DOWN_MASK;
+		}
+		inputMap.put(getKeyStroke(KeyEvent.VK_UP, fiveMask), "ctrlUp");
+		inputMap.put(getKeyStroke(KeyEvent.VK_DOWN, fiveMask), "ctrlDown");
+		inputMap.put(getKeyStroke(KeyEvent.VK_RIGHT, fiveMask),
 				"ctrlRight");
-		inputMap.put(getKeyStroke(KeyEvent.VK_LEFT, CTRL_DOWN_MASK), "ctrlLeft");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD2, CTRL_DOWN_MASK),
+		inputMap.put(getKeyStroke(KeyEvent.VK_LEFT, fiveMask), "ctrlLeft");
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD2, fiveMask),
 				"ctrlDown");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD6, CTRL_DOWN_MASK),
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD6, fiveMask),
 				"ctrlRight");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD8, CTRL_DOWN_MASK),
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD8, fiveMask),
 				"ctrlUp");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD4, CTRL_DOWN_MASK),
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD4, fiveMask),
 				"ctrlLeft");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD9, CTRL_DOWN_MASK),
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD9, fiveMask),
 				"ctrl-up-right");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD7, CTRL_DOWN_MASK),
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD7, fiveMask),
 				"ctrl-up-left");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD3, CTRL_DOWN_MASK),
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD3, fiveMask),
 				"ctrl-down-right");
-		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD1, CTRL_DOWN_MASK),
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD1, fiveMask),
 				"ctrl-down-left");
 		actionMap.put("ctrlUp", new UpListener(selListener, 5));
 		actionMap.put("ctrlDown", new DownListener(selListener, 5));
@@ -97,11 +109,24 @@ public class ArrowKeyListener {
 		actionMap.put("ctrl-up-left", new UpLeftListener(selListener, 5));
 		actionMap.put("ctrl-down-right", new DownRightListener(selListener, 5));
 		actionMap.put("ctrl-down-left", new DownLeftListener(selListener, 5));
-		inputMap.put(getKeyStroke(KeyEvent.VK_HOME, CTRL_DOWN_MASK), "ctrl-home");
+		if (ON_MAC) {
+			inputMap.put(getKeyStroke(KeyEvent.VK_HOME, InputEvent.META_DOWN_MASK), "ctrl-home");
+			inputMap.put(getKeyStroke(KeyEvent.VK_END, InputEvent.META_DOWN_MASK), "ctrl-end");
+			inputMap.put(getKeyStroke(KeyEvent.VK_UP, InputEvent.META_DOWN_MASK), "home");
+			inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD8, InputEvent.META_DOWN_MASK), "home");
+			inputMap.put(getKeyStroke(KeyEvent.VK_DOWN, InputEvent.META_DOWN_MASK), "end");
+			inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD2, InputEvent.META_DOWN_MASK), "end");
+			inputMap.put(getKeyStroke(KeyEvent.VK_LEFT, InputEvent.META_DOWN_MASK), "caret");
+			inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD4, InputEvent.META_DOWN_MASK), "caret");
+			inputMap.put(getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.META_DOWN_MASK), "dollar");
+			inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD6, InputEvent.META_DOWN_MASK), "dollar");
+		} else {
+			inputMap.put(getKeyStroke(KeyEvent.VK_HOME, CTRL_DOWN_MASK), "ctrl-home");
+			inputMap.put(getKeyStroke(KeyEvent.VK_END, CTRL_DOWN_MASK), "ctrl-end");
+		}
 		inputMap.put(getKeyStroke(KeyEvent.VK_HOME, 0), "home");
 		inputMap.put(getKeyStroke(KeyEvent.VK_0, 0), "home");
 		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD0, 0), "home");
-		inputMap.put(getKeyStroke(KeyEvent.VK_END, CTRL_DOWN_MASK), "ctrl-end");
 		inputMap.put(getKeyStroke(KeyEvent.VK_END, 0), "end");
 		inputMap.put(getKeyStroke(KeyEvent.VK_NUMBER_SIGN, 0), "end");
 		inputMap.put(getKeyStroke(KeyEvent.VK_3, SHIFT_DOWN_MASK), "end");
