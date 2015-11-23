@@ -88,8 +88,7 @@ public final class SubsetDriver implements ISPDriver {
 		for (Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 			SYS_OUT.print(pair.second().getName());
 			SYS_OUT.print("\t...\t\t");
-			// FIXME: Extract a method taking the map to test, not its filename and the map reader, from doSubsetTest().
-			printReturn(doSubsetTest(pair.second(), new MapReaderAdapter(), model.getMap()));
+			printReturn(doSubsetTest(model.getMap(), pair.first(), pair.second()));
 		}
 	}
 	/**
@@ -151,7 +150,26 @@ public final class SubsetDriver implements ISPDriver {
 			throw new IllegalStateException("Can't get here");
 		}
 	}
-
+	/**
+	 * @param mainMap the main map
+	 * @param map a subordinate map
+	 * @param file the file the subordinate map came from
+	 * @return the result of doing the subset test with those maps
+	 */
+	private static Returns doSubsetTest(final IMapNG mainMap, final IMapNG map, final File file) {
+		try {
+			if (mainMap.isSubset(map, NullCleaner.assertNotNull(System.out),
+					"In " + file.getName() + ':')) {
+				return Returns.OK;
+			} else {
+				System.out.flush();
+				return Returns.Warn;
+			}
+		} catch (IOException e) {
+			Warning.INSTANCE.warn(e);
+			return Returns.Fail;
+		}
+	}
 	/**
 	 * @param file a file
 	 * @param reader the map reader to use
@@ -162,13 +180,7 @@ public final class SubsetDriver implements ISPDriver {
 			final MapReaderAdapter reader, final IMapNG mainMap) {
 		try {
 			final IMapNG map = reader.readMap(file, new Warning(Action.Ignore));
-			if (mainMap.isSubset(map, NullCleaner.assertNotNull(System.out),
-					"In " + file.getName() + ':')) {
-				return Returns.OK; // NOPMD
-			} else {
-				System.out.flush();
-				return Returns.Warn; // NOPMD
-			}
+			return doSubsetTest(mainMap, map, file);
 		} catch (final IOException except) {
 			Warning.INSTANCE.warn(except);
 			return Returns.Fail; // NOPMD
