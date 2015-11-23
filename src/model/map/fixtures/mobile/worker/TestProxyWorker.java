@@ -204,7 +204,7 @@ public class TestProxyWorker {
 			if (job instanceof ProxyJob) {
 				builder.append(" (proxy)");
 			}
-			builder.append("\n");
+			builder.append('\n');
 		}
 		throw new AssertionFailedError(builder.toString());
 	}

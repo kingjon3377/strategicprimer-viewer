@@ -581,7 +581,7 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 				if (player.equals(getCurrentPlayer())) {
 					builder.append(" (current)");
 				}
-				builder.append("\n");
+				builder.append('\n');
 			}
 		}
 		builder.append("\nContents:\n");
@@ -598,12 +598,12 @@ public class MapNGAdapter implements IMutableMapNG { // $codepro.audit.disable
 			builder.append(getForest(location));
 			builder.append(", rivers:");
 			for (River river : getRivers(location)) {
-				builder.append(" ");
+				builder.append(' ');
 				builder.append(river.toString());
 			}
 			builder.append(", other: ");
 			for (TileFixture fixture : getOtherFixtures(location)) {
-				builder.append("\n");
+				builder.append('\n');
 				builder.append(fixture.toString());
 //				builder.append(" (");
 //				builder.append(fixture.getClass().getSimpleName());

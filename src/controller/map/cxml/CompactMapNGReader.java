@@ -447,7 +447,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	private static void eolIfNeeded(final boolean needeol,
 			final Appendable writer) throws IOException {
 		if (needeol) {
-			writer.append("\n");
+			writer.append('\n');
 		}
 	}
 }
