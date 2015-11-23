@@ -129,7 +129,7 @@ public class ExpansionDriver implements ISPDriver {
 		}
 	}
 	/**
-	 * Run the driver. FIXME: use driver-model-based overload instead of duplicating code
+	 * Run the driver.
 	 *
 	 * @param args command-line arguments
 	 * @throws DriverFailedException on error
@@ -141,11 +141,12 @@ public class ExpansionDriver implements ISPDriver {
 			throw new DriverFailedException("Not enough arguments",
 					new IllegalArgumentException("Need at least two arguments"));
 		}
+		final IMultiMapModel model;
 		final File masterFile = new File(args[0]);
-		final IMapNG masterMap;
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		try {
-			masterMap = reader.readMap(masterFile, Warning.INSTANCE);
+			// TODO: Make a new, more limited, IMultiMapModel implementation for this and the subset driver
+			model = new WorkerModel(reader.readMap(masterFile,  Warning.INSTANCE), masterFile);
 		} catch (final MapVersionException except) {
 			throw new DriverFailedException("Unsupported map version", except);
 		} catch (final IOException except) {
@@ -161,9 +162,8 @@ public class ExpansionDriver implements ISPDriver {
 				continue;
 			}
 			final File file = new File(arg);
-			final IMapNG map;
 			try {
-				map = reader.readMap(file, Warning.INSTANCE);
+				model.addSubordinateMap(reader.readMap(file, Warning.INSTANCE), file);
 			} catch (final MapVersionException except) {
 				throw new DriverFailedException("Unsupported map version", except);
 			} catch (final IOException except) {
@@ -174,13 +174,14 @@ public class ExpansionDriver implements ISPDriver {
 			} catch (final SPFormatException except) {
 				throw new DriverFailedException("SP map format error", except);
 			}
-			if (expand(masterMap, map)) {
-				try {
-					reader.write(file, map);
-				} catch (IOException except) {
-					throw new DriverFailedException("I/O error writing file "
-							+ file.getPath(), except);
-				}
+		}
+		startDriver(model);
+		for (Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
+			try {
+				reader.write(pair.second(), pair.first());
+			} catch (IOException except) {
+				throw new DriverFailedException("I/O error writing file "
+						+ pair.second().getPath(), except);
 			}
 		}
 	}
