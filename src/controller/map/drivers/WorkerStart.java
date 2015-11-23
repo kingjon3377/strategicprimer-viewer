@@ -1,16 +1,12 @@
 package controller.map.drivers;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
-import javax.xml.stream.XMLStreamException;
 
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
-import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.FileChooser;
 import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
@@ -59,22 +55,10 @@ public class WorkerStart implements ISPDriver {
 			"Organize the members of a player's units.", WorkerStart.class);
 
 	/**
-	 * An error message refactored from at least four uses.
-	 */
-	private static final String XML_ERROR_STRING = "Error reading XML file";
-	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
 			.getLogger(ViewerFrame.class);
-	/**
-	 * Error message fragment when file not found.
-	 */
-	private static final String NOT_FOUND_ERROR = " not found";
-	/**
-	 * Error message when the map contains invalid data.
-	 */
-	private static final String INV_DATA_ERROR = "Map contained invalid data";
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
@@ -140,34 +124,12 @@ public class WorkerStart implements ISPDriver {
 					except);
 			return;
 		}
-		try {
-			final MapReaderAdapter reader = new MapReaderAdapter();
-			final Warning warner = new Warning(Action.Warn);
-			final IWorkerModel model =
-					new WorkerModel(reader.readMap(file,
-							warner), file);
-			for (String arg : args) {
-				if (arg != null && !arg.equals(args[0])) {
-					final File newFile = new File(arg);
-					model.addSubordinateMap(reader.readMap(newFile, warner),
-							newFile);
-				}
-			}
-			SwingUtilities.invokeLater(new WindowThread(new WorkerMgmtFrame(
-					model, new IOHandler(model, new FilteredFileChooser(".",
-							new MapFileFilter())))));
-		} catch (final XMLStreamException e) {
-			throw new DriverFailedException(XML_ERROR_STRING + ' '
-					+ file.getPath(), e);
-		} catch (final FileNotFoundException e) {
-			throw new DriverFailedException("File " + file.getPath()
-			+ NOT_FOUND_ERROR, e);
-		} catch (final IOException e) {
-			throw new DriverFailedException("I/O error reading "
-					+ file.getPath(), e);
-		} catch (final SPFormatException e) {
-			throw new DriverFailedException(INV_DATA_ERROR, e);
-		}
+		final IWorkerModel model = new WorkerModel(
+				new MapReaderAdapter().readMultiMapModel(new Warning(Action.Warn), file,
+						MapReaderAdapter.namesToFiles(args)));
+		SwingUtilities.invokeLater(
+				new WindowThread(new WorkerMgmtFrame(model, new IOHandler(model,
+						new FilteredFileChooser(".", new MapFileFilter())))));
 	}
 	/**
 	 * @return a String representation of the object

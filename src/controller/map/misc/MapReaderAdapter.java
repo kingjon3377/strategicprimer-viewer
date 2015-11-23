@@ -2,16 +2,25 @@ package controller.map.misc;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
 
 import controller.map.cxml.CompactXMLReader;
 import controller.map.cxml.CompactXMLWriter;
+import controller.map.drivers.ISPDriver.DriverFailedException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.SPWriter;
+import model.exploration.ExplorationModel;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
+import model.misc.IDriverModel;
+import model.misc.IMultiMapModel;
+import model.viewer.ViewerModel;
+import util.ArraySet;
+import util.NullCleaner;
+import util.Pair;
 import util.Warning;
 
 /**
@@ -76,6 +85,58 @@ public class MapReaderAdapter {
 	}
 
 	/**
+	 * Because this is intended to be used by implementations of ISPDriver,
+	 * which can only throw DriverFailedException, we use that class for all
+	 * errors we generate.
+	 *
+	 * @param file
+	 *            the file to open
+	 * @param warner
+	 *            the Warning instance to use for warnings
+	 * @return a driver model containing the map described by that file
+	 */
+	public IDriverModel readMapModel(final File file, final Warning warner)
+			throws DriverFailedException {
+		try {
+			return new ViewerModel(readMap(file, warner), file);
+		} catch (IOException except) {
+			throw new DriverFailedException("I/O error reading " + file.getPath(), except);
+		} catch (XMLStreamException except) {
+			throw new DriverFailedException("Malformed XML in " + file.getPath(), except);
+		} catch (SPFormatException except) {
+			throw new DriverFailedException("SP map format error in " + file.getPath(), except);
+		}
+	}
+	/**
+	 * Read several maps into a driver model.
+	 * Because this is intended to be used by implementations of ISPDriver,
+	 * which can only throw DriverFailedException, we use that class for all
+	 * errors we generate.
+	 *
+	 * @param files
+	 *            the files to open
+	 * @param warner
+	 *            the Warning instance to use for warnings
+	 * @return a driver model containing the maps described by those files
+	 */
+	public IMultiMapModel readMultiMapModel(final Warning warner, final File master, final File... files) throws DriverFailedException {
+		String current = master.getPath();
+		try {
+			IMultiMapModel retval = new ExplorationModel(readMap(master, warner), master);
+			for (File file : files) {
+				current = file.getPath();
+				retval.addSubordinateMap(readMap(file, warner), file);
+			}
+			return retval;
+		} catch (IOException except) {
+			throw new DriverFailedException("I/O error reading from file" + current, except);
+		} catch (XMLStreamException except) {
+			throw new DriverFailedException("Malformed XML in " + current, except);
+		} catch (SPFormatException except) {
+			throw new DriverFailedException("SP map format error in " + current, except);
+		}
+	}
+	/**
 	 * Write a map.
 	 * @param file the file to write to
 	 * @param map the map to write
@@ -85,10 +146,46 @@ public class MapReaderAdapter {
 		writer.write(file, map);
 	}
 	/**
+	 * Because this is intended to be used by implementations of ISPDriver,
+	 * which can only throw DriverFailedException, we use that class for all
+	 * errors we generate.
+	 * Write maps from a map model back to file.
+	 * @param model the model to write from
+	 * @throws IOException on error opening or writing to a file
+	 */
+	public void writeModel(final IDriverModel model) throws DriverFailedException {
+		try {
+			writer.write(model.getMapFile(), model.getMap());
+		} catch (IOException except) {
+			throw new DriverFailedException("I/O error writing to " + model.getMapFile(), except);
+		}
+		if (model instanceof IMultiMapModel) {
+			for (Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getSubordinateMaps()) {
+				try {
+					writer.write(pair.second(), pair.first());
+				} catch (IOException except) {
+					throw new DriverFailedException("I/O error writing to " + pair.second(), except);
+				}
+			}
+		}
+	}
+	/**
 	 * @return a String representation of the object
 	 */
 	@Override
 	public String toString() {
 		return "MapReaderAdapter";
+	}
+	/**
+	 * This eliminates duplicates.
+	 * @param names some filenames
+	 * @return an array of equivalent Files
+	 */
+	public static File[] namesToFiles(final String... names) {
+		final Set<File> retval = new ArraySet<>();
+		for (String name : names) {
+			retval.add(new File(name));
+		}
+		return NullCleaner.assertNotNull(retval.toArray(new File[retval.size()]));
 	}
 }

@@ -3,18 +3,14 @@ package controller.map.drivers;
 import static view.util.SystemOut.SYS_OUT;
 
 import java.io.File;
-import java.io.IOException;
 
 import javax.swing.SwingUtilities;
-import javax.xml.stream.XMLStreamException;
 
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
-import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;
 import model.exploration.ExplorationModel;
-import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
 import util.Warning;
 import view.exploration.ExplorationFrame;
@@ -54,38 +50,6 @@ public class ExplorationGUI implements ISPDriver {
 					ExplorationGUI.class);
 
 	/**
-	 * Read maps.
-	 *
-	 * @param filenames the files to read from
-	 * @return an exploration-model containing all of them
-	 * @throws SPFormatException on SP format problems
-	 * @throws XMLStreamException on malformed XML
-	 * @throws IOException on basic file I/O error
-	 * TODO: Should probably take Files rather than names.
-	 */
-	private static ExplorationModel readMaps(final String[] filenames)
-			throws IOException, XMLStreamException, SPFormatException {
-		final MapReaderAdapter reader = new MapReaderAdapter();
-		final File firstFile = new File(filenames[0]);
-		final IMutableMapNG master =
-				reader.readMap(firstFile, Warning.INSTANCE);
-		final ExplorationModel model = new ExplorationModel(master,
-				firstFile);
-		for (final String filename : filenames) {
-			if (filename == null || filename.equals(filenames[0])) {
-				continue;
-			}
-			final File file = new File(filename);
-			final IMutableMapNG map = reader.readMap(file, Warning.INSTANCE);
-			if (!map.dimensions().equals(master.dimensions())) {
-				throw new IllegalArgumentException("Size mismatch between "
-						+ firstFile + " and " + filename);
-			}
-			model.addSubordinateMap(map, file);
-		}
-		return model;
-	}
-	/**
 	 * Run the driver.
 	 * @param dmodel the driver model
 	 * @throws DriverFailedException on error
@@ -116,19 +80,12 @@ public class ExplorationGUI implements ISPDriver {
 			SYS_OUT.println(" master-map [player-map ...]");
 			System.exit(1);
 		}
-		try {
-			final ExplorationModel model = readMaps(args);
-			SwingUtilities.invokeLater(new WindowThread(new ExplorationFrame(
-					model, new IOHandler(model, new FilteredFileChooser(
-							".", new MapFileFilter())))));
-		} catch (final IOException except) {
-			throw new DriverFailedException("I/O error reading maps", except);
-		} catch (final XMLStreamException except) {
-			throw new DriverFailedException("Malformed XML in map file", except);
-		} catch (final SPFormatException except) {
-			throw new DriverFailedException("SP format error in map file",
-					except);
-		}
+		final ExplorationModel model = new ExplorationModel(
+				new MapReaderAdapter().readMultiMapModel(Warning.INSTANCE,
+						new File(args[0]), MapReaderAdapter.namesToFiles(args)));
+		SwingUtilities.invokeLater(new WindowThread(new ExplorationFrame(
+				model, new IOHandler(model, new FilteredFileChooser(
+						".", new MapFileFilter())))));
 	}
 
 	/**

@@ -11,12 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javax.xml.stream.XMLStreamException;
-
 import org.eclipse.jdt.annotation.Nullable;
 
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
-import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IDFactory;
@@ -157,71 +154,11 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 */
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
-		// ESCA-JAVA0177:
-		final IExplorationModel model; // NOPMD
-		try {
-			model = readMaps(args);
-		} catch (final IOException except) {
-			throw new DriverFailedException("I/O error reading maps", except);
-		} catch (final XMLStreamException except) {
-			throw new DriverFailedException("Malformed XML in map file", except);
-		} catch (final SPFormatException except) {
-			throw new DriverFailedException("SP format error in map file",
-					except);
-		}
+		final MapReaderAdapter reader = new MapReaderAdapter();
+		final IExplorationModel model = new ExplorationModel(reader.readMultiMapModel(
+				Warning.INSTANCE, new File(args[0]), MapReaderAdapter.namesToFiles(args)));
 		startDriver(model);
-		try {
-			writeMaps(model);
-		} catch (final IOException except) {
-			throw new DriverFailedException("I/O error writing to a map file",
-					except);
-		}
-	}
-
-	/**
-	 * Write maps to disk.
-	 *
-	 * @param model the model containing all the maps
-	 * @throws IOException on I/O error
-	 */
-	private static void writeMaps(final IExplorationModel model)
-			throws IOException {
-		final MapReaderAdapter reader = new MapReaderAdapter();
-		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
-			reader.write(pair.second(), pair.first());
-		}
-	}
-
-	/**
-	 * Read maps.
-	 *
-	 * @param filenames the files to read from
-	 * @return an exploration-model containing all of them
-	 * @throws SPFormatException on SP format problems
-	 * @throws XMLStreamException on malformed XML
-	 * @throws IOException on basic file I/O error
-	 */
-	private static ExplorationModel readMaps(final String[] filenames)
-			throws IOException, XMLStreamException, SPFormatException {
-		final MapReaderAdapter reader = new MapReaderAdapter();
-		final File firstFile = new File(filenames[0]);
-		final IMutableMapNG master =
-				reader.readMap(firstFile, Warning.INSTANCE);
-		final ExplorationModel model = new ExplorationModel(master,
-				firstFile);
-		for (final String filename : filenames) {
-			if (filename == null || filename.equals(filenames[0])) {
-				continue;
-			}
-			final File file = new File(filename);
-			final IMutableMapNG map = reader.readMap(file, Warning.INSTANCE);
-			if (!map.dimensions().equals(master.dimensions())) {
-				throw new IllegalArgumentException("Size mismatch between "
-						+ firstFile + " and " + filename);
-			}
-			model.addSubordinateMap(map, file);
-		}
-		return model;
+		reader.writeModel(model);
 	}
 
 	/**

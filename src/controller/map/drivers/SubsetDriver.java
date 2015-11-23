@@ -6,10 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import javax.xml.stream.XMLStreamException;
-
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
-import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -108,30 +105,9 @@ public final class SubsetDriver implements ISPDriver {
 			return;
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		final File mainFile = new File(args[0]);
-		try {
-			final IMapNG mainMap =
-					reader.readMap(mainFile, new Warning(Action.Ignore));
-			SYS_OUT.print("OK if strict subset, WARN if needs manual checking,");
-			SYS_OUT.println("FAIL if error in reading");
-			for (final String arg : args) {
-				if (arg.equals(args[0])) {
-					continue;
-				}
-				SYS_OUT.print(arg);
-				SYS_OUT.print("\t...\t\t");
-				printReturn(doSubsetTest(new File(arg), reader, mainMap));
-			}
-		} catch (final IOException except) {
-			throw new DriverFailedException("I/O error loading main map "
-					+ mainFile.getPath(), except);
-		} catch (final XMLStreamException except) {
-			throw new DriverFailedException("XML error reading main map "
-					+ mainFile.getPath(), except);
-		} catch (final SPFormatException except) {
-			throw new DriverFailedException("Invalid SP XML in main map "
-					+ mainFile.getPath(), except);
-		}
+		final IMultiMapModel model = reader.readMultiMapModel(new Warning(Action.Ignore),
+				new File(args[0]), MapReaderAdapter.namesToFiles(args));
+		startDriver(model);
 	}
 
 	/**
@@ -174,29 +150,6 @@ public final class SubsetDriver implements ISPDriver {
 			return Returns.Fail;
 		}
 	}
-	/**
-	 * @param file a file
-	 * @param reader the map reader to use
-	 * @param mainMap the main map
-	 * @return the result of doing a subset test on the named map
-	 */
-	private static Returns doSubsetTest(final File file,
-			final MapReaderAdapter reader, final IMapNG mainMap) {
-		try {
-			final IMapNG map = reader.readMap(file, new Warning(Action.Ignore));
-			return doSubsetTest(mainMap, map, file);
-		} catch (final IOException except) {
-			Warning.INSTANCE.warn(except);
-			return Returns.Fail; // NOPMD
-		} catch (final XMLStreamException except) {
-			Warning.INSTANCE.warn(except);
-			return Returns.Fail; // NOPMD
-		} catch (final SPFormatException except) {
-			Warning.INSTANCE.warn(except);
-			return Returns.Fail; // NOPMD
-		}
-	}
-
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */

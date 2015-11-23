@@ -1,13 +1,8 @@
 package controller.map.drivers;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import javax.xml.stream.XMLStreamException;
 
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
-import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.MapReaderAdapter;
@@ -142,29 +137,10 @@ public class MapPopulatorDriver implements ISPDriver {
 			throw new DriverFailedException("Need one argument",
 					new IllegalArgumentException("Need one argument"));
 		}
-		final File file = new File(args[0]);
-		final IMutableMapNG map;
-		try {
-			map = new MapReaderAdapter().readMap(file, new Warning(Action.Warn));
-		} catch (final XMLStreamException e) {
-			throw new DriverFailedException("XML parsing error in "
-					+ file.getPath(), e);
-		} catch (final FileNotFoundException e) {
-			throw new DriverFailedException("File " + file.getPath()
-			+ " not found", e);
-		} catch (final IOException e) {
-			throw new DriverFailedException("I/O error reading "
-					+ file.getPath(), e);
-		} catch (final SPFormatException e) {
-			throw new DriverFailedException("Map " + file.getPath()
-			+ " contains invalid data", e);
-		}
-		populate(map);
-		try {
-			new MapReaderAdapter().write(file, map);
-		} catch (IOException e) {
-			throw new DriverFailedException("I/O error writing updated map", e);
-		}
+		MapReaderAdapter reader = new MapReaderAdapter();
+		final IDriverModel model = reader.readMapModel(new File(args[0]), new Warning(Action.Warn));
+		populate(model.getMap());
+		reader.writeModel(model);
 		System.out.print(changedCount);
 		System.out.print(" out of ");
 		System.out.print(suitableCount);

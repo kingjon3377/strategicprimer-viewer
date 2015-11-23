@@ -7,10 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.stream.XMLStreamException;
-
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
-import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 import model.map.IMutableMapNG;
 import model.map.Point;
@@ -155,33 +152,10 @@ public class DuplicateFixtureRemover implements ISPDriver {
 					new IllegalArgumentException("Need at least one argument"));
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		for (final String filename : args) {
-			if (filename == null) {
-				continue;
-			}
-			final File file = new File(filename);
-			try {
-				final IMutableMapNG map =
-						reader.readMap(file, Warning.INSTANCE);
-				filter(map, SYS_OUT);
-				reader.write(file, map);
-			} catch (final IOException except) {
-				System.err.print("I/O error reading from or writing to ");
-				System.err.println(filename);
-				System.err.println(except.getLocalizedMessage());
-				continue;
-			} catch (final XMLStreamException except) {
-				System.err.print("XML parsing error reading ");
-				System.err.println(filename);
-				System.err.println(except.getLocalizedMessage());
-				continue;
-			} catch (final SPFormatException except) {
-				System.err.print("SP format error in ");
-				System.err.println(filename);
-				System.err.println(except.getLocalizedMessage());
-				continue;
-			}
-		}
+		IMultiMapModel model = reader.readMultiMapModel(Warning.INSTANCE,
+				new File(args[0]), MapReaderAdapter.namesToFiles(args));
+		startDriver(model);
+		reader.writeModel(model);
 	}
 
 	/**

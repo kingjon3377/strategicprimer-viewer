@@ -11,13 +11,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import javax.xml.stream.XMLStreamException;
-
 import org.eclipse.jdt.annotation.Nullable;
 
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
-import controller.map.formatexceptions.MapVersionException;
-import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 import model.exploration.SurroundingPointIterable;
 import model.map.HasOwner;
@@ -141,49 +137,12 @@ public class ExpansionDriver implements ISPDriver {
 			throw new DriverFailedException("Not enough arguments",
 					new IllegalArgumentException("Need at least two arguments"));
 		}
-		final IMultiMapModel model;
 		final File masterFile = new File(args[0]);
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		try {
-			// TODO: Make a new, more limited, IMultiMapModel implementation for this and the subset driver
-			model = new WorkerModel(reader.readMap(masterFile,  Warning.INSTANCE), masterFile);
-		} catch (final MapVersionException except) {
-			throw new DriverFailedException("Unsupported map version", except);
-		} catch (final IOException except) {
-			throw new DriverFailedException(
-					"I/O error reading file " + masterFile.getPath(), except);
-		} catch (final XMLStreamException except) {
-			throw new DriverFailedException("Malformed XML", except);
-		} catch (final SPFormatException except) {
-			throw new DriverFailedException("SP map format error", except);
-		}
-		for (final String arg : args) {
-			if (arg == null || arg.equals(args[0])) {
-				continue;
-			}
-			final File file = new File(arg);
-			try {
-				model.addSubordinateMap(reader.readMap(file, Warning.INSTANCE), file);
-			} catch (final MapVersionException except) {
-				throw new DriverFailedException("Unsupported map version", except);
-			} catch (final IOException except) {
-				throw new DriverFailedException(
-						"I/O error reading file " + file.getPath(), except);
-			} catch (final XMLStreamException except) {
-				throw new DriverFailedException("Malformed XML", except);
-			} catch (final SPFormatException except) {
-				throw new DriverFailedException("SP map format error", except);
-			}
-		}
+		final IMultiMapModel model = reader.readMultiMapModel(Warning.INSTANCE,
+				masterFile, MapReaderAdapter.namesToFiles(args));
 		startDriver(model);
-		for (Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
-			try {
-				reader.write(pair.second(), pair.first());
-			} catch (IOException except) {
-				throw new DriverFailedException("I/O error writing file "
-						+ pair.second().getPath(), except);
-			}
-		}
+		reader.writeModel(model);
 	}
 
 	/**

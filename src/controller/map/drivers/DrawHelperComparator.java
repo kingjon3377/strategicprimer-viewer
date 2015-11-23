@@ -7,17 +7,11 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.File;
-import java.io.IOException;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.xml.stream.XMLStreamException;
 
 import org.eclipse.jdt.annotation.Nullable;
 
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
-import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -32,7 +26,6 @@ import model.viewer.ViewerModel;
 import model.viewer.ZOrderFilter;
 import util.NullCleaner;
 import util.Pair;
-import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
 import view.map.main.CachingTileDrawHelper;
@@ -65,12 +58,6 @@ import view.util.Coordinate;
  *
  */
 public class DrawHelperComparator implements ISPDriver { // NOPMD
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(DrawHelperComparator.class);
-
 	/**
 	 * The minimum row for the iteration-vs-filtering test.
 	 */
@@ -548,48 +535,8 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 */
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
-		final Random random = new Random();
-		final MapReaderAdapter adapter = new MapReaderAdapter();
-		final int reps = 50; // NOPMD
-		final Warning warner = new Warning(Action.Ignore);
-		for (final String filename : args) {
-			if (filename == null) {
-				continue;
-			}
-			final File file = new File(filename);
-			// ESCA-JAVA0177:
-			final IMapNG map; // NOPMD
-			try {
-				map = adapter.readMap(file, warner);
-			} catch (final IOException e) {
-				LOGGER.log(Level.SEVERE, "I/O error reading map", e);
-				continue; // NOPMD
-			} catch (final XMLStreamException e) {
-				LOGGER.log(Level.SEVERE, "XML error reading map", e);
-				continue; // NOPMD
-			} catch (final SPFormatException e) {
-				LOGGER.log(Level.SEVERE, "Map format error reading map", e);
-				continue;
-			}
-			SYS_OUT.print("Testing using ");
-			SYS_OUT.println(filename);
-			PointFactory.clearCache();
-			if (random.nextBoolean()) {
-				PointFactory.shouldUseCache(true);
-				SYS_OUT.println("Using cache:");
-				runAllTests(map, reps);
-				PointFactory.shouldUseCache(false);
-				SYS_OUT.println("Not using cache:");
-				runAllTests(map, reps);
-			} else {
-				PointFactory.shouldUseCache(false);
-				SYS_OUT.println("Not using cache:");
-				runAllTests(map, reps);
-				PointFactory.shouldUseCache(true);
-				SYS_OUT.println("Using cache:");
-				runAllTests(map, reps);
-			}
-		}
+		startDriver(new MapReaderAdapter().readMultiMapModel(new Warning(Action.Ignore),
+				new File(args[0]), MapReaderAdapter.namesToFiles(args)));
 	}
 
 	/**

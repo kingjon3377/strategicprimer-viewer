@@ -1,17 +1,12 @@
 package controller.map.drivers;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
-import javax.xml.stream.XMLStreamException;
 
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
-import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.FileChooser;
 import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
@@ -19,8 +14,10 @@ import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;
 import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
+import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
+import util.Pair;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
@@ -62,22 +59,10 @@ public final class ViewerStart implements ISPDriver {
 			ViewerStart.class);
 
 	/**
-	 * An error message refactored from at least four uses.
-	 */
-	private static final String XML_ERROR_STRING = "Error reading XML file";
-	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
 			.getLogger(ViewerFrame.class);
-	/**
-	 * Error message fragment when file not found.
-	 */
-	private static final String NOT_FOUND_ERROR = " not found";
-	/**
-	 * Error message when the map contains invalid data.
-	 */
-	private static final String INV_DATA_ERROR = "Map contained invalid data";
 	/**
 	 * Run the driver.
 	 * @param dmodel the driver model
@@ -85,9 +70,14 @@ public final class ViewerStart implements ISPDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
-		IViewerModel model;
+		final IViewerModel model;
 		if (dmodel instanceof IViewerModel) {
 			model = (IViewerModel) dmodel;
+		} else if (dmodel instanceof IMultiMapModel) {
+			for (Pair<IMutableMapNG, File> pair : ((IMultiMapModel) dmodel).getAllMaps()) {
+				startDriver(new ViewerModel(pair.first(), pair.second()));
+			}
+			return;
 		} else {
 			model = new ViewerModel(dmodel);
 		}
@@ -118,45 +108,12 @@ public final class ViewerStart implements ISPDriver {
 				return;
 			}
 		} else {
-			final MapReaderAdapter reader = new MapReaderAdapter();
-			final Warning warner = new Warning(Action.Warn);
-			final FilteredFileChooser chooser = new FilteredFileChooser(".",
-					new MapFileFilter());
-			for (final String filename : args) {
-				if (filename == null) {
-					continue;
-				}
-				final File file = new File(filename);
-				try {
-					startFrame(reader.readMap(file, warner), file, chooser);
-				} catch (final XMLStreamException e) {
-					throw new DriverFailedException(XML_ERROR_STRING + ' '
-							+ filename, e);
-				} catch (final FileNotFoundException e) {
-					throw new DriverFailedException("File " + filename
-							+ NOT_FOUND_ERROR, e);
-				} catch (final IOException e) {
-					throw new DriverFailedException("I/O error reading "
-							+ filename, e);
-				} catch (final SPFormatException e) {
-					throw new DriverFailedException(INV_DATA_ERROR, e);
-				}
-			}
+			// We get a MultiMapModel so the overload that takes a map-model can
+			// start one window for each map, without having to make multiple
+			// calls to the reader.
+			startDriver(new MapReaderAdapter().readMultiMapModel(new Warning(Action.Warn),
+					new File(args[0]), MapReaderAdapter.namesToFiles(args)));
 		}
-	}
-
-	/**
-	 * Start a viewer frame based on the given map.
-	 *
-	 * @param map the map object
-	 * @param file the file it was loaded from
-	 * @param chooser the file-chooser to pass to the frame
-	 */
-	private static void startFrame(final IMutableMapNG map, final File file,
-			final JFileChooser chooser) {
-		final IViewerModel model = new ViewerModel(map, file);
-		SwingUtilities.invokeLater(new WindowThread(new ViewerFrame(model,
-				new IOHandler(model, chooser))));
 	}
 
 	/**

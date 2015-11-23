@@ -30,6 +30,8 @@ import model.map.MapDimensions;
  *
  * @author Jonathan Lovelace
  *
+ * TODO: Maybe (to accomodate MapChecker et al) store format errors in the driver model?
+ *
  */
 public interface IDriverModel extends MapChangeSource, VersionChangeSource {
 	/**
