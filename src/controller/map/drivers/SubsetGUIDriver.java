@@ -14,6 +14,7 @@ import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import util.Pair;
 import view.map.misc.SubsetFrame;
+import view.util.ErrorShower;
 
 /**
  * A driver to check whether player maps are subsets of the main map and display
@@ -66,8 +67,7 @@ public class SubsetGUIDriver implements ISPDriver {
 				frame.test(pair.first(), pair.second());
 			}
 		} else {
-			// FIXME: Fail more gracefully, just logging the condtion, showing a message, and returning normally
-			throw new DriverFailedException(new IllegalArgumentException("SubsetGUI doesn't make sense on a non-multi-map driver model"));
+			ErrorShower.showErrorDialog(null, "The subset driver doesn't make sense on a non-multi-map driver model.");
 		}
 	}
 	/**
