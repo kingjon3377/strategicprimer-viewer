@@ -86,16 +86,18 @@ public final class QueryCLI implements ISPDriver {
 	 * @param map the map to explore
 	 * @param ostream the stream to write output to
 	 */
-	private void repl(final IMapNG map, final Appendable ostream) {
-		final HuntingModel hmodel = new HuntingModel(map);
+	private void repl(final IDriverModel model, final Appendable ostream) {
+		final HuntingModel hmodel = new HuntingModel(model.getMap());
 		try {
 			String input = helper.inputString("Command: ");
 			while (input.length() > 0 && input.charAt(0) != 'q') {
-				handleCommand(map, hmodel, ostream, input.charAt(0));
+				handleCommand(model, hmodel, ostream, input.charAt(0));
 				input = helper.inputString("Command: ");
 			}
 		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O exception", except);
+		} catch (DriverFailedException except) {
+			LOGGER.log(Level.SEVERE, "Problem in the trapping program", except);
 		}
 	}
 
@@ -106,15 +108,16 @@ public final class QueryCLI implements ISPDriver {
 	 * @param input the command
 	 *
 	 * @throws IOException on I/O error
+	 * @throws DriverFailedException on error (in the trap model driver)
 	 */
-	public void handleCommand(final IMapNG map, final HuntingModel hmodel,
-			final Appendable ostream, final char input) throws IOException {
+	public void handleCommand(final IDriverModel model, final HuntingModel hmodel,
+			final Appendable ostream, final char input) throws IOException, DriverFailedException {
 		switch (input) {
 		case '?':
 			usage(ostream);
 			break;
 		case 'f':
-			fortressInfo(map, selectPoint(), ostream);
+			fortressInfo(model.getMap(), selectPoint(), ostream);
 			break;
 		case 'h':
 			hunt(hmodel, selectPoint(), true, ostream, HUNTER_HOURS
@@ -132,13 +135,13 @@ public final class QueryCLI implements ISPDriver {
 			herd(ostream);
 			break;
 		case 't':
-			new TrapModelDriver().startDriver(map);
+			new TrapModelDriver().startDriver(model);
 			break;
 		case 'd':
-			distance(map.dimensions(), ostream);
+			distance(model.getMapDimensions(), ostream);
 			break;
 		case 'c':
-			count(map, CLIHelper.toList(map.players()), ostream);
+			count(model.getMap(), CLIHelper.toList(model.getMap().players()), ostream);
 			break;
 		default:
 			ostream.append("Unknown command.\n");
@@ -438,10 +441,10 @@ public final class QueryCLI implements ISPDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
-		repl(model.getMap(), SYS_OUT);
+		repl(model, SYS_OUT);
 	}
 	/**
-	 * Run the driver. FIXME: Delegate to the version taking a driver model, and make the REPL operate on a driver model too.
+	 * Run the driver.
 	 *
 	 * @param args command-line arguments
 	 * @throws DriverFailedException if something goes wrong
