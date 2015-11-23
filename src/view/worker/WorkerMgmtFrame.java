@@ -24,11 +24,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
 import javax.swing.WindowConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import com.bric.window.WindowList;
@@ -38,15 +41,19 @@ import controller.map.misc.IOHandler;
 import controller.map.report.ReportGenerator;
 import model.listeners.MapChangeListener;
 import model.listeners.PlayerChangeListener;
+import model.map.DistanceComparator;
 import model.map.HasName;
 import model.map.Player;
 import model.map.Point;
+import model.map.PointFactory;
+import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
+import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
 import model.report.AbstractReportNode;
 import model.viewer.IViewerModel;
@@ -147,6 +154,50 @@ public class WorkerMgmtFrame extends JFrame {
 				.getRoot()).getPath()));
 		final ReportUpdater reportUpdater = new ReportUpdater(model,
 				reportModel);
+		@NonNull
+		Point hqLoc = PointFactory.point(-1, -1);
+		boolean found = false;
+		for (Point location : model.getMap().locations()) {
+			if (found) {
+				break;
+			} else if (location == null) {
+				continue;
+			} else {
+				for (TileFixture fix : model.getMap().getOtherFixtures(location)) {
+					if (fix instanceof Fortress && ((Fortress) fix).getOwner().equals(model.getMap().getCurrentPlayer())) {
+						if (((Fortress) fix).getName().equals("HQ")) {
+							hqLoc = location;
+							found = true;
+							break;
+						} else if (hqLoc.row < 0 && location.row >= 0) {
+							hqLoc = location;
+							break;
+						}
+					}
+				}
+			}
+		}
+		final DistanceComparator distCalculator = new DistanceComparator(hqLoc);
+		report.setCellRenderer(new DefaultTreeCellRenderer() {
+			@SuppressWarnings("hiding")
+			@Override
+			public Component getTreeCellRendererComponent(@Nullable final JTree tree, @Nullable final Object value,
+                    final boolean selected, final boolean expanded,
+                    final boolean leaf, final int row, final boolean hasFocus) {
+				Component retval = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+				if (value instanceof AbstractReportNode) {
+					final Point point = ((AbstractReportNode) value).getPoint();
+					// (-inf, -inf) replaces null
+					if (point.getRow() > Integer.MIN_VALUE) {
+						((JLabel) retval).setToolTipText(distCalculator.distanceString(point));
+					} else {
+						((JLabel) retval).setToolTipText(null);
+					}
+				}
+				return retval;
+			}
+		});
+		ToolTipManager.sharedInstance().registerComponent(report);
 		report.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(@Nullable final MouseEvent evt) {
