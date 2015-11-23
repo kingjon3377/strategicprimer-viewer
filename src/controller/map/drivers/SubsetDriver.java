@@ -4,6 +4,7 @@ import static view.util.SystemOut.SYS_OUT;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -52,7 +53,10 @@ public final class SubsetDriver implements ISPDriver {
 			"Check that subordinate maps are subsets of the main map, containing "
 					+ "nothing that it does not contain in the same place",
 					SubsetDriver.class);
-
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(SubsetDriver.class.getName()));
 	/**
 	 * Possible return values for sub-maps.
 	 */
@@ -83,7 +87,7 @@ public final class SubsetDriver implements ISPDriver {
 		} else {
 			// FIXME: Create and use a more limited IMultiMapDriver implementation
 			model = new WorkerModel(dmodel);
-			// FIXME: Log this pointless invocation: sno subset testing can be done if no subordinate maps
+			LOGGER.warning("Subset checking does nothing with no subordinate maps");
 		}
 		for (Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 			SYS_OUT.print(pair.second().getName());

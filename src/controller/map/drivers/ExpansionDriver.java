@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -74,7 +75,10 @@ public class ExpansionDriver implements ISPDriver {
 			"--expand", ParamCount.Many, "Expand a player's map.",
 			"Ensure a player's map covers all terrain allied villages can see.",
 			ExpansionDriver.class);
-
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(ExpansionDriver.class.getName()));
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
@@ -117,7 +121,7 @@ public class ExpansionDriver implements ISPDriver {
 			model = (IMultiMapModel) dmodel;
 		} else {
 			// TODO: Make a new, more limited, IMultiMapModel implementation for this and the subset driver
-			// FIXME: Log this pointless invocation (no expansion is actually possible)
+			LOGGER.warning("Expansion on a master map with no subordinate maps does nothing");
 			model = new WorkerModel(dmodel);
 		}
 		for (Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
