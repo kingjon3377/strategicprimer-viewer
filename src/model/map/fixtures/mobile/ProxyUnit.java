@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Logger;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -40,6 +41,10 @@ import view.util.SystemOut;
  *
  */
 public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(ProxyUnit.class.getName()));
 	/**
 	 * Constructor.
 	 * @param idNum the ID number of the units we are a proxy for.
@@ -81,11 +86,12 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	private final int id;
 	/**
-	 * This should never be actually called; TODO: log the stack trace when it is.
+	 * This should never be actually called
 	 * @return a Z-value for the fixture
 	 */
 	@Override
 	public int getZValue() {
+		LOGGER.warning("getZValue called on a ProxyUnit");
 		return -10;
 	}
 	/**
@@ -119,28 +125,23 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	/**
 	 * FIXME: implement.
 	 *
-	 * TODO: log when this is called, because it shouldn't be (I think)
-	 *
 	 * @param fix a fixture
 	 * @return whether it equals this one except for ID #
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
+		LOGGER.warning("equalsIgnoringID called on a ProxyUnit");
 		throw new IllegalStateException("FIXME: implement equalsIgnoringID()");
 	}
 
 	/**
-	 * TODO: log if this is called.
-	 *
-	 * We don't use the (identical to the below) default implementation because
-	 * we eventually want to log calls.
-	 *
 	 * @param fix
 	 *            a fixture
 	 * @return the result of a comparison with it
 	 */
 	@Override
 	public int compareTo(@Nullable final TileFixture fix) {
+		LOGGER.warning("compareTo called on ProxyUnit");
 		if (fix == null) {
 			throw new IllegalArgumentException("Compared to null fixture");
 		}
@@ -158,11 +159,11 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		return "unit.png";
 	}
 	/**
-	 * TODO: log if this is called, because it probably shouldn't be.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
 	public final void setImage(final String img) {
+		LOGGER.warning("setImage() called on a ProxyUnit");
 		for (IUnit unit : proxied) {
 			unit.setImage(img);
 		}

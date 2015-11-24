@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -42,6 +44,10 @@ import util.NullCleaner;
  *
  */
 public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(ProxyWorker.class.getName()));
 	/**
 	 * If false, this is representing all the workers in a single unit; if true,
 	 * it is representing corresponding workers in corresponding units in
@@ -233,11 +239,11 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 		return "worker.png";
 	}
 	/**
-	 * TODO: log if this is called, because it probably shouldn't be.
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
 	public final void setImage(final String img) {
+		LOGGER.log(Level.WARNING, "setImage() called on a ProxyWorker");
 		for (IWorker worker : workers) {
 			worker.setImage(img);
 		}
