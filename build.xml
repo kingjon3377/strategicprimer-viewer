@@ -5,24 +5,8 @@
   <tstamp />
   <!-- ANT 1.7 is required -->
 
-  <!-- Try to get version number from git -->
-<taskdef name="jgitversion" classname="hunternif.jgitversion.JGitVersionTask">
-    <classpath>
-        <pathelement path="${jgitversion.jar.path}"/>
-        <pathelement path="${gitective.jar.path}"/>
-        <pathelement path="${jgit.jar.path}"/>
-    </classpath>
-</taskdef>
-
   <!-- Use ant-contrib, for the 'for' task and perhaps others -->
   <taskdef resource="net/sf/antcontrib/antlib.xml" />
-
-<target name="get-version">
-    <jgitversion dir="." property="version-number"/>
-    <echo message="${version-number}" />
-    <property name="version-number" value="${major-version-number}.${minor-version-number}.SNAPSHOT" />
-    <property name="basename" value="${shortname}-${version-number}" />
-</target>
 
   <!-- Versioning -->
   <property file="version.properties" />
@@ -198,8 +182,8 @@
     </exec>
     <copy file="${release}/${basename}.jar" tofile="${release}/${shortname}.jar" />
     <jarbundler dir="${release}" name="${basename}" mainclass="${main-class}"
-      jar="${release}/${shortname}.jar" version="${major-version-number}.${minor-version-number}"
-      build="${scm.revision.number}" shortname="SP helpers" stubfile="${stub-script-path}"
+      jar="${release}/${shortname}.jar" version="${version-number}"
+      shortname="SP helpers" stubfile="${stub-script-path}"
       icon="icon.icns" useJavaXKey="true" />
     <tar destfile="${release}/${basename}.app.tbz2" compression="bzip2">
       <tarfileset dir="${release}">
