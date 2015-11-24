@@ -531,7 +531,6 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	 *
 	 * @param args command-line arguments
 	 * @throws DriverFailedException on error
-	 * FIXME: Adapt to create a MultiMapModel and use the driver-model-taking version.
 	 */
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
