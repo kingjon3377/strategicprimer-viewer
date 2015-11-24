@@ -13,5 +13,5 @@ sudo apt-get install genisoimage
 wget https://github.com/tofi86/universalJavaApplicationStub/archive/v0.9.0.tar.gz -O universalJavaApplicationStub-0.9.0.tar.gz
 tar xzf universalJavaApplicationStub-0.9.0.tar.gz
 if test -n "${TRAVIS_TAG}"; then
-    echo "${TRAVIS_TAG}" | sed 's@^v[0-9]\.[0-9]\.\([0-9]*\)$@s:SNAPSHOT:\1:@' | sed -f - version.properties
+    echo "${TRAVIS_TAG}" | sed 's@^v[0-9]\.[0-9]\.\([0-9]*\)$@s:SNAPSHOT:\1:@' | sed -f - -i version.properties
 fi
