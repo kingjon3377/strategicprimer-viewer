@@ -131,7 +131,7 @@
     classname="net.sourceforge.jarbundler.JarBundler" />
 
   <!-- Release targets -->
-  <target name="jar" depends="test,get-builder,get-version">
+  <target name="jar" depends="test,get-builder">
     <jar destfile="${release}/${basename}.jar" level="9"
     filesetmanifest="mergewithoutmain">
       <manifest>
