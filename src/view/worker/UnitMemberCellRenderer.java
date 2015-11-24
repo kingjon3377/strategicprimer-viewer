@@ -220,25 +220,38 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 	 * @return an icon representing it
 	 */
 	private Icon getIcon(final HasImage obj) {
-		String image = obj.getImage();
-		if (image.isEmpty()) {
-			image = obj.getDefaultImage();
+		final String image = obj.getImage();
+		if (!image.isEmpty()) {
+			final Icon icon = getIconForFile(image);
+			if (icon != null) {
+				return icon;
+			}
 		}
-		// FIXME: If getImage() references a file that's not there, try the
-		// default image for that kind of fixture.
-		try {
-			return ImageLoader.getLoader().loadIcon(image); // NOPMD
-		} catch (final FileNotFoundException e) {
-			LOGGER.log(Level.SEVERE, "image file images/" + image
-					+ " not found");
-			LOGGER.log(Level.FINEST, "with stack trace", e);
-			return defaultFixtIcon; // NOPMD
-		} catch (final IOException e) {
-			LOGGER.log(Level.SEVERE, "I/O error reading image", e);
+		Icon icon = getIconForFile(obj.getDefaultImage());
+		if (icon == null) {
 			return defaultFixtIcon;
+		} else {
+			return icon;
 		}
 	}
-
+	/**
+	 * This method exists to log and eat exceptions.
+	 * @param filename the filename of an image
+	 * @return the image contained in that file, or null on error
+	 */
+	@Nullable
+	private Icon getIconForFile(final String filename) {
+		try {
+			return ImageLoader.getLoader().loadIcon(filename);
+		} catch (final FileNotFoundException except) {
+			LOGGER.severe("image file images/" + filename + " not found");
+			LOGGER.log(Level.FINEST, "with stack trace", except);
+			return null;
+		} catch (final IOException except) {
+			LOGGER.log(Level.SEVERE, "I/O error reading image", except);
+			return null;
+		}
+	}
 	/**
 	 * @return the default icon for fixtures.
 	 */
