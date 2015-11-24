@@ -1,8 +1,6 @@
 package controller.map.drivers;
 
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 
@@ -15,11 +13,9 @@ import controller.map.misc.WindowThread;
 import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
-import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
 import view.map.main.MapFileFilter;
-import view.map.main.ViewerFrame;
 import view.util.FilteredFileChooser;
 import view.worker.WorkerMgmtFrame;
 
@@ -54,11 +50,6 @@ public class WorkerStart implements ISPDriver {
 			"--worker", ParamCount.Many, "Manage a player's workers in units",
 			"Organize the members of a player's units.", WorkerStart.class);
 
-	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(ViewerFrame.class);
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
@@ -118,11 +109,7 @@ public class WorkerStart implements ISPDriver {
 				file = new FileChooser(new File(args[0])).getFile();
 			}
 		} catch (final ChoiceInterruptedException except) {
-			LOGGER.log(
-					Level.INFO,
-					"Choice was interrupted or user declined to choose; aborting.",
-					except);
-			return;
+			throw new DriverFailedException("File choice was interrupted or user didn't choose", except);
 		}
 		final IWorkerModel model = new WorkerModel(
 				new MapReaderAdapter().readMultiMapModel(new Warning(Action.Warn), file,
