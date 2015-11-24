@@ -36,8 +36,8 @@ public interface IJob extends HasName, Iterable<ISkill>, Subsettable<IJob> {
 	 * object, nor that any changes made to it will be applied to the Skill that
 	 * the Job already had or that is actually added. (TODO: implementations
 	 * *should* do that.) If levels or hours *need* to be added, callers should
-	 * get the Skill the Job contains after this returns (TODO: make that
-	 * easier) and apply changes to that.
+	 * get the Skill the Job contains after this returns using
+	 * {@link #getSkill(String)} and apply changes to that.
 	 *
 	 * @param skill
 	 *            the skill to add

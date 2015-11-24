@@ -39,8 +39,8 @@ public interface IWorker extends UnitMember, Iterable<IJob>, HasName, HasKind,
 	 * object, nor that any changes made to it will be applied to the Job that
 	 * the worker already had or that is actually added. (TODO: implementations
 	 * *should* do that.) If levels *need* to be added, callers should get the
-	 * Job the worker contains after this returns (TODO: make that easier) and
-	 * apply changes to that.
+	 * Job the worker contains after this returns using {@link #getJob(String)}
+	 * and apply changes to that.
 	 *
 	 * @param job
 	 *            the job to add.
