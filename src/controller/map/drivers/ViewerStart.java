@@ -1,8 +1,6 @@
 package controller.map.drivers;
 
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 
@@ -18,7 +16,6 @@ import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
 import util.Pair;
-import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
 import view.map.main.MapFileFilter;
@@ -59,11 +56,6 @@ public final class ViewerStart implements ISPDriver {
 			ViewerStart.class);
 
 	/**
-	 * Logger.
-	 */
-	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(ViewerFrame.class);
-	/**
 	 * Run the driver.
 	 * @param dmodel the driver model
 	 * @throws DriverFailedException on error
@@ -101,11 +93,7 @@ public final class ViewerStart implements ISPDriver {
 			try {
 				startDriver(new FileChooser(new File("")).getFile().getPath());
 			} catch (final ChoiceInterruptedException except) {
-				LOGGER.log(
-						Level.INFO,
-						"Choice was interrupted or user didn't choose; aborting",
-						except);
-				return;
+				throw new DriverFailedException("File choice was interrupted or user didn't choose", except);
 			}
 		} else {
 			// We get a MultiMapModel so the overload that takes a map-model can
