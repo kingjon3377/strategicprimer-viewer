@@ -14,14 +14,8 @@ import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
 import controller.map.misc.TypesafeXMLEventReader;
-import model.map.IMap;
-import model.map.IMapNG;
-import model.map.IMapView;
 import model.map.IMutableMapNG;
-import model.map.MapNGReverseAdapter;
-import model.map.MapView;
 import model.map.PlayerCollection;
-import model.map.SPMap;
 import model.map.SPMapNG;
 import util.IteratorWrapper;
 import util.NullCleaner;
@@ -135,12 +129,6 @@ public class MapReaderNG implements IMapReader, ISPReader {
 	private static <T> T checkType(final Object obj, final Class<T> type) {
 		if (type.isAssignableFrom(obj.getClass())) {
 			return (T) obj; // NOPMD
-		} else if (type.isAssignableFrom(IMapView.class) && obj instanceof SPMap) {
-			return (T) new MapView((SPMap) obj, ((SPMap) obj).getPlayers()
-					.getCurrentPlayer().getPlayerId(), 0);
-		} else if ((type.isAssignableFrom(IMap.class) || type
-				.isAssignableFrom(IMapView.class)) && obj instanceof IMapNG) {
-			return (T) new MapNGReverseAdapter((IMapNG) obj);
 		} else {
 			throw new IllegalArgumentException("We want a node producing "
 					+ type.getSimpleName() + ", not "

@@ -170,7 +170,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				} else if ("lake".equalsIgnoreCase(type)
 						|| "river".equalsIgnoreCase(type)) {
 					retval.addRivers(point,
-							CompactTileReader.parseRiver(current, warner));
+							parseRiver(current, warner));
 					spinUntilEnd(NullCleaner.assertNotNull(current.getName()),
 							stream);
 				} else if ("ground".equalsIgnoreCase(type)) {
@@ -391,7 +391,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						if (river != null) {
 							eolIfNeeded(needeol, ostream);
 							needeol = false;
-							CompactTileReader.writeRiver(ostream, river,
+							writeRiver(ostream, river,
 									indent + 4);
 						}
 					}
@@ -448,6 +448,63 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			final Appendable writer) throws IOException {
 		if (needeol) {
 			writer.append('\n');
+		}
+	}
+	/**
+	 * Parse a river from XML. The caller is now responsible for getting past
+	 * the closing tag.
+	 *
+	 * @param element the element to parse
+	 * @param warner the Warning instance to use as needed
+	 * @return the parsed river
+	 * @throws SPFormatException on SP format problem
+	 */
+	public static River parseRiver(final StartElement element,
+			final Warning warner) throws SPFormatException {
+		requireTag(element, "river", "lake");
+		if ("lake".equalsIgnoreCase(element.getName().getLocalPart())) {
+			return River.Lake; // NOPMD
+		} else {
+			requireNonEmptyParameter(element, "direction", true, warner);
+			return River.getRiver(getParameter(element, "direction"));
+		}
+	}
+	/**
+	 * Write a river.
+	 *
+	 * @param ostream the stream we're writing to
+	 * @param obj the river to write
+	 * @param indent the indentation level
+	 * @throws IOException on I/O error
+	 */
+	public static void writeRiver(final Appendable ostream, final River obj,
+			final int indent) throws IOException {
+		for (int i = 0; i < indent; i++) {
+			ostream.append('\t');
+		}
+		if (River.Lake.equals(obj)) {
+			ostream.append("<lake />");
+		} else {
+			ostream.append("<river direction=\"");
+			ostream.append(obj.getDescription());
+			ostream.append("\" />");
+		}
+		ostream.append('\n');
+	}
+	/**
+	 * Write a series of rivers.
+	 *
+	 * @param ostream the stream to write to
+	 * @param iter a series of rivers to write
+	 * @param indent the indentation level
+	 * @throws IOException on I/O error
+	 */
+	public static void writeRivers(final Appendable ostream,
+			final Iterable<River> iter, final int indent) throws IOException {
+		for (final River river : iter) {
+			if (river != null) {
+				writeRiver(ostream, river, indent);
+			}
 		}
 	}
 }

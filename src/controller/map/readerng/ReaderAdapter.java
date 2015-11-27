@@ -119,8 +119,8 @@ public class ReaderAdapter implements INodeHandler<Object> {
 	}
 
 	static {
-		factoryFour(new SPMapReader(), new PlayerReader(), new TileReader(),
-				new AnimalReader());
+		factory(new PlayerReader());
+		factory(new AnimalReader());
 		factoryFour(new CacheReader(), new CentaurReader(), new DjinnReader(),
 				new DragonReader());
 		factoryFour(new FairyReader(), new ForestReader(),
@@ -137,8 +137,9 @@ public class ReaderAdapter implements INodeHandler<Object> {
 				new BattlefieldReader());
 		factoryFour(new CaveReader(), new CityReader(),
 				new FortificationReader(), new TownReader());
-		factoryFour(new MineralReader(), new StoneReader(), new RiverReader(),
-				new ViewReader());
+		factory(new MineralReader());
+		factory(new StoneReader());
+		factory(new RiverReader());
 		factoryFour(new WorkerReader(), new SkillReader(), new StatsReader(),
 				new AdventureReader());
 		factoryFour(new PortalReader(), new MapNGReader(),

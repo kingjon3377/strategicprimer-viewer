@@ -8,10 +8,8 @@ import javax.xml.stream.events.XMLEvent;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.IFixture;
-import model.map.IMap;
 import model.map.IMapNG;
 import model.map.IMutablePlayerCollection;
-import model.map.ITile;
 import model.map.Player;
 import model.map.River;
 import model.map.TerrainFixture;
@@ -90,7 +88,7 @@ public final class CompactReaderAdapter {
 		final CompactReader<T> reader; // NOPMD
 		if (River.class.isAssignableFrom(type)) {
 			// Handle rivers specially.
-			final T river = (T) CompactTileReader.parseRiver(element, warner);
+			final T river = (T) CompactMapNGReader.parseRiver(element, warner);
 			AbstractCompactReader.spinUntilEnd(
 					NullCleaner.assertNotNull(element.getName()), stream);
 			return river; // NOPMD
@@ -107,16 +105,12 @@ public final class CompactReaderAdapter {
 	 * @param type the type
 	 * @return a reader for the type
 	 */
-	@SuppressWarnings({ "unchecked", "deprecation" })
+	@SuppressWarnings({ "unchecked" })
 	// We *do* check ... but neither Java nor Eclipse can know that
 	private static <T> CompactReader<T> getReader(final Class<T> type) {
 		final CompactReader<T> reader; // NOPMD
-		if (IMap.class.isAssignableFrom(type)) {
-			reader = (CompactReader<T>) CompactMapReader.READER;
-		} else if (IMapNG.class.isAssignableFrom(type)) {
+		if (IMapNG.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactMapNGReader.READER;
-		} else if (ITile.class.isAssignableFrom(type)) {
-			reader = (CompactReader<T>) CompactTileReader.READER;
 		} else if (Player.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactPlayerReader.READER;
 		} else if (TileFixture.class.isAssignableFrom(type)) {
@@ -180,22 +174,18 @@ public final class CompactReaderAdapter {
 	 * @param indent the current indentation level.
 	 * @throws IOException on I/O problems
 	 */
-	@SuppressWarnings({ "unchecked", "deprecation" })
+	@SuppressWarnings({ "unchecked" })
 	public static void write(final Appendable ostream, final Object obj,
 			final int indent) throws IOException {
 		@SuppressWarnings("rawtypes") // NOPMD
 		final CompactReader reader; // NOPMD
-		if (obj instanceof IMap) {
-			reader = CompactMapReader.READER;
-		} else if (obj instanceof IMapNG) {
+		if (obj instanceof IMapNG) {
 			reader = CompactMapNGReader.READER;
-		} else if (obj instanceof ITile) {
-			reader = CompactTileReader.READER;
 		} else if (obj instanceof River) {
-			CompactTileReader.writeRiver(ostream, (River) obj, indent);
+			CompactMapNGReader.writeRiver(ostream, (River) obj, indent);
 			return; // NOPMD
 		} else if (obj instanceof RiverFixture) {
-			CompactTileReader.writeRivers(ostream, (RiverFixture) obj, indent);
+			CompactMapNGReader.writeRivers(ostream, (RiverFixture) obj, indent);
 			return; // NOPMD
 		} else if (obj instanceof Job) {
 			CompactWorkerReader.writeJob(ostream, (Job) obj, indent);

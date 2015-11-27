@@ -7,7 +7,6 @@ import java.io.Writer;
 
 import controller.map.iointerfaces.SPWriter;
 import model.map.IMapNG;
-import model.map.MapNGReverseAdapter;
 
 /**
  * Entry point for the new map writing framework.
@@ -43,7 +42,7 @@ public class MapWriterNG implements SPWriter {
 	 */
 	@Override
 	public void write(final File file, final IMapNG map) throws IOException {
-		writeObject(file, new MapNGReverseAdapter(map));
+		writeObject(file, map);
 	}
 	/**
 	 * Write a map.
@@ -55,7 +54,7 @@ public class MapWriterNG implements SPWriter {
 	@Override
 	public void write(final Appendable ostream, final IMapNG map)
 			throws IOException {
-		writeObject(ostream, new MapNGReverseAdapter(map));
+		writeObject(ostream, map);
 	}
 	/**
 	 * Write a SP object.
