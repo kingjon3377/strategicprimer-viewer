@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.FixtureIterable;
@@ -238,8 +239,8 @@ public class FindDialog extends JDialog implements ActionListener {
 			final IFixture fix, final boolean csen) {
 		if (matchesSimple(pattern, idNum, fix, csen)) {
 			return true; // NOPMD
-		} else if (fix instanceof FixtureIterable<?>) {
-			for (final IFixture member : (FixtureIterable<?>) fix) {
+		} else if (fix instanceof FixtureIterable) {
+			for (final IFixture member : (FixtureIterable<@NonNull ?>) fix) {
 				if (member != null && matches(pattern, idNum, member, csen)) {
 					return true; // NOPMD
 				}

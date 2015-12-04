@@ -6,6 +6,8 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
@@ -41,7 +43,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class WorkerReader implements INodeHandler<Worker> {
+public class WorkerReader implements INodeHandler<@NonNull Worker> {
 	/**
 	 * @return the class this knows how to write.
 	 */

@@ -89,8 +89,8 @@ public final class ArraySet<T> implements Set<T> {
 	 * @return the contents of the set in that array
 	 */
 	@Override
-	public <TYPE> TYPE[] toArray(@Nullable final TYPE[] array) {
-		return NullCleaner.assertNotNull(impl.toArray(NullCleaner
+	public <TYPE> TYPE[] toArray(final TYPE @Nullable [] array) {
+		return NullCleaner.assertNotNullArray(impl.toArray(NullCleaner
 				.assertNotNull(array)));
 	}
 
@@ -99,7 +99,7 @@ public final class ArraySet<T> implements Set<T> {
 	 * @return the result of adding it to the set.
 	 */
 	@Override
-	public boolean add(@Nullable final T elem) {
+	public boolean add(final T elem) {
 		if (contains(elem)) {
 			return false; // NOPMD
 		} else {

@@ -8,6 +8,8 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
@@ -42,7 +44,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class PortalReader implements INodeHandler<Portal> {
+public class PortalReader implements INodeHandler<@NonNull Portal> {
 	/**
 	 * Parse a portal. Parse an adventure hook.
 	 *

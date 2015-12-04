@@ -9,6 +9,8 @@ import java.util.TreeMap;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
@@ -80,19 +82,19 @@ public class ReaderAdapter implements INodeHandler<Object> {
 	 * Map from tags to readers. Initializer moved to static block below because
 	 * here it made the line *way* too long.
 	 */
-	private static final Map<String, INodeHandler<?>> READ_CACHE = new TreeMap<>(
+	private static final Map<String, INodeHandler<@NonNull ?>> READ_CACHE = new TreeMap<>(
 			String.CASE_INSENSITIVE_ORDER);
 	/**
 	 * Map from writable objects to writers. Initializer in static block below.
 	 */
-	private static final Map<Class<?>, INodeHandler<?>> WRITERS = new HashMap<>();
+	private static final Map<Class<?>, INodeHandler<@NonNull ?>> WRITERS = new HashMap<>();
 
 	/**
 	 * Add a reader to the cache.
 	 *
 	 * @param reader the reader to add
 	 */
-	static void factory(final INodeHandler<?> reader) { // NOPMD
+	static void factory(final INodeHandler<@NonNull ?> reader) { // NOPMD
 		for (final String tag : reader.understands()) {
 			READ_CACHE.put(tag, reader);
 		}
@@ -109,9 +111,9 @@ public class ReaderAdapter implements INodeHandler<Object> {
 	 * @param three the third reader
 	 * @param four the fourth reader
 	 */
-	private static void factoryFour(final INodeHandler<?> one,
-			final INodeHandler<?> two, final INodeHandler<?> three,
-			final INodeHandler<?> four) {
+	private static void factoryFour(final INodeHandler<@NonNull ?> one,
+			final INodeHandler<@NonNull ?> two, final INodeHandler<@NonNull ?> three,
+			final INodeHandler<@NonNull ?> four) {
 		factory(one);
 		factory(two);
 		factory(three);
@@ -183,12 +185,12 @@ public class ReaderAdapter implements INodeHandler<Object> {
 	 * @return an intermediate representation
 	 */
 	@Override
-	public <S> SPIntermediateRepresentation write(final S obj) {
+	public <@NonNull S> SPIntermediateRepresentation write(final S obj) {
 		if (WRITERS.containsKey(obj.getClass())) {
 			return ((INodeHandler<S>) WRITERS.get(obj.getClass()))
 					.write(obj);
 		} else {
-			for (Map.Entry<Class<?>, INodeHandler<?>> entry : WRITERS.entrySet()) {
+			for (Map.Entry<Class<?>, INodeHandler<@NonNull ?>> entry : WRITERS.entrySet()) {
 				if (entry.getKey().isAssignableFrom(obj.getClass())) {
 					return ((INodeHandler<S>) entry.getValue()).write(obj);
 				}

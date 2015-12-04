@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -33,15 +35,15 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  * @param <V> the kind of thing stored in the map.
  */
-public class IntMap<V> implements DelayedRemovalMap<Integer, V> { // NOPMD
+public class IntMap<V> implements DelayedRemovalMap<@NonNull Integer, V> { // NOPMD
 	/**
 	 * The map that we use as a backing store.
 	 */
-	private final Map<Integer, V> backing = new HashMap<>();
+	private final Map<@NonNull Integer, V> backing = new HashMap<>();
 	/**
 	 * The list of items to remove when we're told to remove them.
 	 */
-	private final List<Integer> toRemove = new ArrayList<>();
+	private final List<@NonNull Integer> toRemove = new ArrayList<>();
 
 	/**
 	 * @return the size of the map
@@ -82,7 +84,6 @@ public class IntMap<V> implements DelayedRemovalMap<Integer, V> { // NOPMD
 	 * @return the corresponding value in the map, if it exists
 	 */
 	@Override
-	@Nullable
 	public V get(@Nullable final Object key) {
 		return backing.get(key);
 	}
@@ -93,8 +94,7 @@ public class IntMap<V> implements DelayedRemovalMap<Integer, V> { // NOPMD
 	 * @return the result of putting the value into the map at the key
 	 */
 	@Override
-	@Nullable
-	public V put(@Nullable final Integer key, @Nullable final V value) {
+	public V put(final Integer key, final V value) {
 		return backing.put(key, value);
 	}
 
@@ -105,7 +105,6 @@ public class IntMap<V> implements DelayedRemovalMap<Integer, V> { // NOPMD
 	 * @return false, as it isn't actually removed yet.
 	 */
 	@Override
-	@Nullable
 	public V remove(@Nullable final Object key) {
 		if (key instanceof Integer) {
 			toRemove.add((Integer) key);
@@ -166,8 +165,9 @@ public class IntMap<V> implements DelayedRemovalMap<Integer, V> { // NOPMD
 	 * @return the set of entries in the map
 	 */
 	@Override
-	public Set<Map.Entry<Integer, V>> entrySet() {
-		return NullCleaner.assertNotNull(backing.entrySet());
+	@NonNullByDefault({}) // FIXME: Remove when we get external annotations for JDK
+	public Set<Map.Entry<@NonNull Integer, V>> entrySet() {
+		return backing.entrySet();
 	}
 	/**
 	 * @return a String representation of the object

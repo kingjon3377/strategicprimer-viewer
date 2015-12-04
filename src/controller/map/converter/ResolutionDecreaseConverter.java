@@ -7,6 +7,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.IMapNG;
 import model.map.MapDimensions;
 import model.map.Player;
@@ -151,8 +153,8 @@ public class ResolutionDecreaseConverter {
 	 * @param point a point
 	 * @return the rivers there, if any
 	 */
-	private static Set<River> getRivers(final IMapNG old, final Point point) {
-		final Set<River> retval =
+	private static Set<@NonNull River> getRivers(final IMapNG old, final Point point) {
+		final Set<@NonNull River> retval =
 				NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
 		for (final River river : old.getRivers(point)) {
 			retval.add(river);

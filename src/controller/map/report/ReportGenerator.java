@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import controller.map.misc.IDFactory;
@@ -350,7 +351,7 @@ public final class ReportGenerator {
 		for (final IFixture fix : iter) {
 			retval.add(fix);
 			if (fix instanceof FixtureIterable) {
-				retval.addAll(getFixtures((FixtureIterable<?>) fix));
+				retval.addAll(getFixtures((FixtureIterable<@NonNull ?>) fix));
 			}
 		}
 		return retval;

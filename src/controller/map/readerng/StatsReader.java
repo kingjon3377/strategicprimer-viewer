@@ -7,6 +7,8 @@ import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
@@ -38,7 +40,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class StatsReader implements INodeHandler<WorkerStats> {
+public class StatsReader implements INodeHandler<@NonNull WorkerStats> {
 	/**
 	 * @return the class this knows how to write.
 	 */

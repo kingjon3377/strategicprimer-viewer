@@ -18,6 +18,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import model.map.TileFixture;
 import model.viewer.TileTypeFixture;
 import model.viewer.ZOrderFilter;
+import util.NullCleaner;
 
 /**
  * A menu to let the player turn of display of kinds of fixtures.
@@ -86,10 +87,10 @@ public class FixtureFilterMenu extends JMenu implements ZOrderFilter,
 			item = mapping.get(fix.getClass());
 		} else if ("null".equals(fix.shortDesc())) {
 			item = new JCheckBoxMenuItem(fix.plural(), false);
-			mapping.put(fix.getClass(), item);
+			mapping.put(NullCleaner.assertNotNull(fix).getClass(), item);
 		} else {
 			item = new JCheckBoxMenuItem(fix.plural(), true);
-			mapping.put(fix.getClass(), item);
+			mapping.put(NullCleaner.assertNotNull(fix).getClass(), item);
 			final String text = fix.plural();
 			itemNames.add(text);
 			Collections.sort(itemNames);

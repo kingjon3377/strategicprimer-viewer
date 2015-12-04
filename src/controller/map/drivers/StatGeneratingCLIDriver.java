@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
@@ -340,9 +341,9 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 					continue;
 				} else if (fixture.getID() == idNum) {
 					return fixture;
-				} else if (fixture instanceof FixtureIterable<?>) {
+				} else if (fixture instanceof FixtureIterable) {
 					final IFixture result =
-							find((FixtureIterable<?>) fixture, idNum);
+							find((FixtureIterable<@NonNull ?>) fixture, idNum);
 					if (result != null) {
 						return result; // NOPMD
 					}
@@ -358,12 +359,12 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	 * @return the fixture with that ID, or null if not found
 	 */
 	@Nullable
-	private static IFixture find(final FixtureIterable<?> iter, final int idNum) {
+	private static IFixture find(final FixtureIterable<@NonNull ?> iter, final int idNum) {
 		for (final IFixture fix : iter) {
 			if (fix.getID() == idNum) {
 				return fix; // NOPMD
-			} else if (fix instanceof FixtureIterable<?>) {
-				final IFixture result = find((FixtureIterable<?>) fix, idNum);
+			} else if (fix instanceof FixtureIterable) {
+				final IFixture result = find((FixtureIterable<@NonNull ?>) fix, idNum);
 				if (result != null) {
 					return result; // NOPMD
 				}

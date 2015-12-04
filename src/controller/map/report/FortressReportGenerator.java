@@ -7,6 +7,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -285,7 +287,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 				.append(CLOSE_LIST_ITEM).append(OPEN_LIST_ITEM);
 		builder.append(getTerrain(map, loc, fixtures)).append(CLOSE_LIST_ITEM);
 		if (map.getRivers(loc).iterator().hasNext()) {
-			final Set<River> copy = NullCleaner.assertNotNull(EnumSet
+			final Set<@NonNull River> copy = NullCleaner.assertNotNull(EnumSet
 					.noneOf(River.class));
 			for (final River river : map.getRivers(loc)) {
 				copy.add(river);

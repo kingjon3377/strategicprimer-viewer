@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.fixtures.Ground;
@@ -604,9 +605,9 @@ public class SPMapNG implements IMutableMapNG {
 	 *            rivers to add to that location
 	 */
 	@Override
-	public void addRivers(final Point location, final River... rvrs) {
-		final EnumSet<River> localRivers;
-		final EnumSet<River> temp = rivers.get(location);
+	public void addRivers(final Point location, final River ... rvrs) {
+		final EnumSet<@NonNull River> localRivers;
+		final EnumSet<@NonNull River> temp = rivers.get(location);
 		if (temp == null) {
 			localRivers = NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
 			rivers.put(location, localRivers);

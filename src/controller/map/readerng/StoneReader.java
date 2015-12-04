@@ -9,6 +9,8 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
@@ -42,7 +44,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class StoneReader implements INodeHandler<StoneDeposit> {
+public class StoneReader implements INodeHandler<@NonNull StoneDeposit> {
 	/**
 	 * Parse a Stone.
 	 *

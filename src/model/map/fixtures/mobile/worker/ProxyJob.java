@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.fixtures.mobile.IWorker;
@@ -35,7 +36,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class ProxyJob implements IJob, ProxyFor<IJob> {
+public class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	/**
 	 * If false, the worker containing this is representing all the workers in a
 	 * single unit; if true, it is representing corresponding workers in
@@ -105,7 +106,7 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 				}
 			}
 		}
-		final IJob[] jobsArray =
+		final IJob @NonNull [] jobsArray =
 				NullCleaner.assertNotNull(proxiedJobs
 						.toArray(new IJob[proxiedJobs.size()]));
 		for (final String skill : skillNames) {
@@ -144,7 +145,7 @@ public class ProxyJob implements IJob, ProxyFor<IJob> {
 	 * @return an iterator over the skills that any of the proxied jobs has.
 	 */
 	@Override
-	public Iterator<ISkill> iterator() {
+	public Iterator<@NonNull ISkill> iterator() {
 		return NullCleaner.assertNotNull(proxied.iterator());
 	}
 	/**

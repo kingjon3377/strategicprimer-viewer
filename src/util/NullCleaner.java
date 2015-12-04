@@ -1,5 +1,6 @@
 package util;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -50,8 +51,21 @@ public final class NullCleaner {
 	 * @param val the value
 	 * @return it, if it isn't null.
 	 */
-	public static <T> T assertNotNull(@Nullable final T val) {
+	public static <@NonNull T> T assertNotNull(@Nullable final T val) {
 		assert val != null;
 		return val;
+	}
+	/**
+	 * Assert that an array is not a nullable array.
+	 * @param <T> the type of the array
+	 * @param arr the array
+	 * @return it, if it's not nullable
+	 */
+	public static <T> T[] assertNotNullArray(final T @Nullable [] arr) {
+		assert arr != null;
+		for (T item : arr) {
+			assert (item != null);
+		}
+		return arr;
 	}
 }

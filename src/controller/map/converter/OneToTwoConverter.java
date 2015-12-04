@@ -16,6 +16,8 @@ import java.util.logging.Logger;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import controller.exploration.TableLoader;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
@@ -226,11 +228,15 @@ public class OneToTwoConverter { // NOPMD
 						RaceFactory.getRace(new Random(idNum))));
 			}
 			final List<TileFixture> fixtures = new LinkedList<>();
-			if (oldMap.getGround(point) != null) {
-				fixtures.add(oldMap.getGround(point));
+			@Nullable
+			Ground ground = oldMap.getGround(point);
+			if (ground != null) {
+				fixtures.add(ground);
 			}
-			if (oldMap.getForest(point) != null) {
-				fixtures.add(oldMap.getForest(point));
+			@Nullable
+			Forest forest = oldMap.getForest(point);
+			if (forest != null) {
+				fixtures.add(forest);
 			}
 			for (final TileFixture fixture : oldMap.getOtherFixtures(point)) {
 				fixtures.add(fixture);

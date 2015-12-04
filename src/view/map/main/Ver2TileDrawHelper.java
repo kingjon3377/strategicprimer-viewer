@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.HasImage;
@@ -29,7 +30,9 @@ import model.map.PointFactory;
 import model.map.River;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
+import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
+import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.viewer.FixtureComparator;
 import model.viewer.ZOrderFilter;
@@ -233,11 +236,15 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	private Iterable<TileFixture> getDrawableFixtures(final IMapNG map,
 			final Point location) {
 		final List<TileFixture> temp = new ArrayList<>();
-		if (map.getGround(location) != null) {
-			temp.add(map.getGround(location));
+		@Nullable
+		Ground ground = map.getGround(location);
+		if (ground != null) {
+			temp.add(ground);
 		}
-		if (map.getForest(location) != null) {
-			temp.add(map.getForest(location));
+		@Nullable
+		Forest forest = map.getForest(location);
+		if (forest != null) {
+			temp.add(forest);
 		}
 		if (map.isMountainous(location)) {
 			temp.add(new Mountain());
@@ -441,9 +448,10 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @param rivers any number of rivers
 	 * @return a set containing them
 	 */
-	private static Set<River> createRiverSet(final River... rivers) {
-		final Set<River> set =
-				NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
+	private static Set<River> createRiverSet(final @NonNull River @NonNull ... rivers) {
+		final Set<@NonNull River> set =
+				EnumSet.noneOf(NullCleaner.assertNotNull(River.class));
+		assert set != null;
 		for (final River river : rivers) {
 			set.add(river);
 		}

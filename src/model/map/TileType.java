@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import util.NullCleaner;
 
 /**
@@ -113,7 +115,7 @@ public enum TileType {
 		final Integer boxedVer = NullCleaner.assertNotNull(Integer.valueOf(ver));
 		synchronized (VALS_BY_VER) {
 			if (!VALS_BY_VER.containsKey(boxedVer)) {
-				final Set<TileType> set = NullCleaner.assertNotNull(EnumSet.noneOf(TileType.class));
+				final Set<@NonNull TileType> set = NullCleaner.assertNotNull(EnumSet.noneOf(TileType.class));
 				for (final TileType type : values()) {
 					if (type.isSupportedByVersion(ver)) {
 						set.add(type);

@@ -6,6 +6,8 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnsupportedPropertyException;
 import controller.map.formatexceptions.UnwantedChildException;
@@ -41,7 +43,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class JobReader implements INodeHandler<Job> {
+public class JobReader implements INodeHandler<@NonNull Job> {
 	/**
 	 * Reader to write skills.
 	 */

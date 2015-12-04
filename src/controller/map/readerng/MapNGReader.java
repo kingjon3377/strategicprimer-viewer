@@ -10,6 +10,7 @@ import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import controller.map.formatexceptions.MissingChildException;
@@ -66,7 +67,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class MapNGReader implements INodeHandler<IMapNG> {
+public class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	/**
 	 * The reader to use to parse players.
 	 */

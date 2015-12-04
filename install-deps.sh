@@ -6,7 +6,7 @@ tar xzf launch4j-3.8-linux.tgz
 wget https://github.com/tofi86/Jarbundler/releases/download/v2.4.0/jarbundler-2.4.0.tar.gz
 tar xzf jarbundler-2.4.0.tar.gz
 mv jarbundler-2.4.0/jarbundler-2.4.0.jar "${HOME}/.ant/lib/"
-wget http://central.maven.org/maven2/org/eclipse/jdt/org.eclipse.jdt.annotation/1.1.0/org.eclipse.jdt.annotation-1.1.0.jar
+wget http://central.maven.org/maven2/org/eclipse/jdt/org.eclipse.jdt.annotation/2.0.0/org.eclipse.jdt.annotation-2.0.0.jar
 wget http://javagraphics.java.net/jars/WindowMenu.jar
 sudo apt-get update -qq
 sudo apt-get install genisoimage

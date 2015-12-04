@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.listeners.MovementCostListener;
@@ -356,7 +357,7 @@ IExplorationModel {
 			if (fixture.equals(fix)) {
 				return true; // NOPMD
 			} else if (fixture instanceof FixtureIterable) {
-				for (final IFixture inner : (FixtureIterable<?>) fixture) {
+				for (final IFixture inner : (FixtureIterable<@NonNull ?>) fixture) {
 					if (fix.equals(inner)) {
 						return true; // NOPMD
 					}
@@ -461,7 +462,7 @@ IExplorationModel {
 				if (fix.equals(item)) {
 					return point; // NOPMD
 				} else if (item instanceof FixtureIterable) {
-					for (final IFixture inner : (FixtureIterable<?>) item) {
+					for (final IFixture inner : (FixtureIterable<@NonNull ?>) item) {
 						if (fix.equals(inner)) {
 							return point; // NOPMD
 						}

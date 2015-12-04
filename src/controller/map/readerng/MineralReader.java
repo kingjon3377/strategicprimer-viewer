@@ -11,6 +11,8 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
@@ -43,7 +45,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class MineralReader implements INodeHandler<MineralVein> {
+public class MineralReader implements INodeHandler<@NonNull MineralVein> {
 	/**
 	 * Parse a Mineral.
 	 *

@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.IFixture;
@@ -43,7 +44,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
+public class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	/**
 	 * Logger.
 	 */
@@ -86,7 +87,7 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 				}
 			}
 		}
-		final IWorker[] workerArray =
+		final IWorker @NonNull [] workerArray =
 				NullCleaner.assertNotNull(workers.toArray(new IWorker[workers
 						.size()]));
 		for (final String job : jobNames) {
@@ -147,7 +148,8 @@ public class ProxyWorker implements IWorker, ProxyFor<IWorker> {
 	 * The iterator over the proxied jobs.
 	 */
 	@Override
-	public Iterator<IJob> iterator() {
+	@NonNull
+	public Iterator<@NonNull IJob> iterator() {
 		return NullCleaner.assertNotNull(proxyJobs.iterator());
 	}
 	/**

@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import controller.map.drivers.AdvancementStart;
@@ -70,11 +71,11 @@ public class AppChooserFrame extends JFrame {
 	 *
 	 * @param params the non-option parameters passed to main().
 	 */
-	public AppChooserFrame(final List<String> params) {
+	public AppChooserFrame(final List<@NonNull String> params) {
 		super("SP App Chooser");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-		final List<String> parameters =
+		final List<@NonNull String> parameters =
 				NullCleaner.assertNotNull(Collections.unmodifiableList(params));
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
 		buttonPanel.add(button("Map Viewer", parameters, ViewerStart.class));

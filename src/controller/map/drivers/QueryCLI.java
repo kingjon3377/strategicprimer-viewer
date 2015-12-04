@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
@@ -360,11 +362,15 @@ public final class QueryCLI implements ISPDriver {
 				CLIHelper.toList(map.getOtherFixtures(location));
 		final List<Ground> ground = new ArrayList<>();
 		final List<Forest> forests = new ArrayList<>();
-		if (map.getGround(location) != null) {
-			ground.add(map.getGround(location));
+		@Nullable
+		Ground locGround = map.getGround(location);
+		if (locGround != null) {
+			ground.add(locGround);
 		}
-		if (map.getForest(location) != null) {
-			forests.add(map.getForest(location));
+		@Nullable
+		Forest forest = map.getForest(location);
+		if (forest != null) {
+			forests.add(forest);
 		}
 		for (final TileFixture fix : fixtures) {
 			if (fix instanceof Ground) {
