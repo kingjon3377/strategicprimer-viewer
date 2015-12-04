@@ -5,7 +5,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
@@ -67,12 +66,10 @@ public final class ReportGenerator {
 	/**
 	 * A simple comparator for fixtures.
 	 */
-	protected static class SimpleComparator implements Comparator<IFixture> {
+	protected static class SimpleComparator implements Comparator<@NonNull IFixture> {
 		@Override
-		public int compare(@Nullable final IFixture one, @Nullable final IFixture two) {
-			if (one == null || two == null) {
-				throw new NullPointerException("asked to compare null Fixtures");
-			} else if (one.equals(two)) {
+		public int compare(final IFixture one, final IFixture two) {
+			if (one.equals(two)) {
 				return 0;
 			} else {
 				return one.hashCode() - two.hashCode();
@@ -89,9 +86,9 @@ public final class ReportGenerator {
 		for (Point location : map.locations()) {
 			for (TileFixture fixture : map.getOtherFixtures(NullCleaner.assertNotNull(location))) {
 				if (fixture instanceof Fortress && ((Fortress) fixture).getOwner().equals(player)) {
-					if (location != null && "HQ".equals(((Fortress) fixture).getName())) {
+					if ("HQ".equals(((Fortress) fixture).getName())) {
 						return location;
-					} else if (location != null && location.row >= 0 && retval.row == -1) {
+					} else if (location.row >= 0 && retval.row == -1) {
 						retval = location;
 					}
 				}
@@ -323,9 +320,6 @@ public final class ReportGenerator {
 				new IntMap<>();
 		final IDFactory idf = IDFactoryFiller.createFactory(map);
 		for (final Point point : map.locations()) {
-			if (point == null) {
-				continue;
-			}
 			// Because neither Forests, Mountains, nor Ground have positive IDs,
 			// we can ignore everything but the "other" fixtures.
 			for (final IFixture fix : getFixtures(map.getOtherFixtures(point))) {

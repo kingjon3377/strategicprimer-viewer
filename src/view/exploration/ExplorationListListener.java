@@ -7,6 +7,7 @@ import java.util.List;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.exploration.IExplorationModel;
@@ -98,7 +99,7 @@ public final class ExplorationListListener implements ListDataListener {
 	 *
 	 * @author Jonathan Lovelace
 	 */
-	private static class IntPair<T> {
+	private static class IntPair<@NonNull T> {
 		/**
 		 * The number in the pair.
 		 */
@@ -114,7 +115,7 @@ public final class ExplorationListListener implements ListDataListener {
 		 * @param <I> the type of object
 		 * @return the pair
 		 */
-		protected static <I> IntPair<I> of(final int number, final I object) {
+		protected static <@NonNull I> IntPair<I> of(final int number, final I object) {
 			return new IntPair<>(number, object);
 		}
 		/**
@@ -165,10 +166,9 @@ public final class ExplorationListListener implements ListDataListener {
 			final List<IntPair<TileFixture>> constants = new ArrayList<>();
 			final List<IntPair<TileFixture>> possibles = new ArrayList<>();
 			for (int i = 0; i < list.getModel().getSize(); i++) {
-				final TileFixture fix = list.getModel().getElementAt(i);
-				if (fix == null) {
-					continue;
-				} else if (SimpleMovement.shouldAlwaysNotice(selUnit, fix)) {
+				// TODO: Write a ListModel->Iterable wrapper
+				final TileFixture fix = NullCleaner.assertNotNull(list.getModel().getElementAt(i));
+				if (SimpleMovement.shouldAlwaysNotice(selUnit, fix)) {
 					constants.add(IntPair.of(i, fix));
 				} else if (SimpleMovement.mightNotice(selUnit, fix)) {
 					possibles.add(IntPair.of(i, fix));

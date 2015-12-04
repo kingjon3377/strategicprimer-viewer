@@ -122,9 +122,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	public void testRiverSerializationOne() throws XMLStreamException,
 			SPFormatException, IOException {
 		for (final River river : River.values()) {
-			if (river == null) {
-				continue;
-			}
+			assert river != null;
 			assertSerialization("River alone", river, River.class);
 		}
 		assertUnwantedChild(encapsulateTileString("<lake><troll /></lake>"),

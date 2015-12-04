@@ -11,6 +11,8 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
@@ -42,7 +44,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class AnimalReader implements INodeHandler<Animal> {
+public class AnimalReader implements INodeHandler<@NonNull Animal> {
 	/**
 	 * @param element the element containing an animal
 	 * @param stream the stream to read more elements from

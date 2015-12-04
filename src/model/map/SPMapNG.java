@@ -97,7 +97,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * The rivers in the map. TODO: populate the map; remember to use EnumSets,
 	 * not RiverFixtures.
 	 */
-	private final Map<Point, EnumSet<River>> rivers = new HashMap<>();
+	private final Map<@NonNull Point, @NonNull EnumSet<@NonNull River>> rivers = new HashMap<>();
 	/**
 	 * Map max version.
 	 */
@@ -122,7 +122,7 @@ public class SPMapNG implements IMutableMapNG {
 			// TODO: We should probably delegate this to the PlayerCollection.
 			boolean retval = true;
 			for (final Player player : obj.players()) {
-				if (player != null && !playerCollection.contains(player)) {
+				if (!playerCollection.contains(player)) {
 					out.append(context);
 					out.append("\tExtra player ");
 					out.append(player.toString());
@@ -134,22 +134,19 @@ public class SPMapNG implements IMutableMapNG {
 			for (final Point point : locations()) {
 				final String ctxt =
 						context + " At " + Objects.toString(point) + ':';
-				if (point == null) {
-					continue;
-				} else
-					if (!getBaseTerrain(point).equals(obj.getBaseTerrain(point))
-							&& !TileType.NotVisible
-							.equals(obj.getBaseTerrain(point))) {
-						out.append(ctxt);
-						if (TileType.NotVisible.equals(getBaseTerrain(point))) {
-							out.append("\tHas terrain information we don't\n");
-						} else {
-							out.append("\tBase terrain differs\n");
-						}
-						retval = false;
-						continue;
-						// return false;
+				if (!getBaseTerrain(point).equals(obj.getBaseTerrain(point))
+						&& !TileType.NotVisible
+						.equals(obj.getBaseTerrain(point))) {
+					out.append(ctxt);
+					if (TileType.NotVisible.equals(getBaseTerrain(point))) {
+						out.append("\tHas terrain information we don't\n");
+					} else {
+						out.append("\tBase terrain differs\n");
 					}
+					retval = false;
+					continue;
+					// return false;
+				}
 				if (obj.isMountainous(point) && !isMountainous(point)) {
 					out.append(ctxt);
 					out.append("\tHas mountains we don't\n");
@@ -216,7 +213,7 @@ public class SPMapNG implements IMutableMapNG {
 				final Iterable<TileFixture> theirFixtures =
 						obj.getOtherFixtures(point);
 				for (final TileFixture fix : theirFixtures) {
-					if (fix == null || ourFixtures.contains(fix)
+					if (ourFixtures.contains(fix)
 							|| shouldSkip(fix)) {
 						continue;
 					} else if ((fix instanceof Ground
@@ -247,7 +244,7 @@ public class SPMapNG implements IMutableMapNG {
 				final Set<River> ourRivers = rivers.get(point);
 				final Iterable<River> theirRivers = obj.getRivers(point);
 				for (final River river : theirRivers) {
-					if (river != null && !ourRivers.contains(river)) {
+					if (!ourRivers.contains(river)) {
 						out.append(ctxt);
 						out.append("\tExtra river\n");
 						retval = false;
@@ -307,7 +304,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * @return the players in the map
 	 */
 	@Override
-	public Iterable<Player> players() {
+	public Iterable<@NonNull Player> players() {
 		return playerCollection;
 	}
 
@@ -315,7 +312,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * @return the locations in the map
 	 */
 	@Override
-	public Iterable<Point> locations() {
+	public Iterable<@NonNull Point> locations() {
 		return new IteratorWrapper<>(
 				new PointIterator(dimensions(), null, true, true));
 	}
@@ -354,7 +351,9 @@ public class SPMapNG implements IMutableMapNG {
 		if (rivers.containsKey(location)) {
 			return NullCleaner.assertNotNull(rivers.get(location)); // NOPMD
 		} else {
-			return NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
+			EnumSet<River> temp = EnumSet.noneOf(River.class);
+			assert temp != null;
+			return temp;
 		}
 	}
 
@@ -431,21 +430,18 @@ public class SPMapNG implements IMutableMapNG {
 				&& getCurrentTurn() == obj.getCurrentTurn()
 				&& getCurrentPlayer().equals(obj.getCurrentPlayer())) {
 			for (final Point point : locations()) {
-				if (point == null) {
-					continue;
-				} else
-					if (!getBaseTerrain(point).equals(obj.getBaseTerrain(point))
-							|| isMountainous(point) != obj.isMountainous(point)
-							|| !iterablesEqual(getRivers(point),
-									obj.getRivers(point))
-							|| !Objects.equals(getForest(point),
-									obj.getForest(point))
-							|| !Objects.equals(getGround(point),
-									obj.getGround(point))
-							|| !iterablesEqual(getOtherFixtures(point),
-									obj.getOtherFixtures(point))) {
-						return false; // NOPMD
-					}
+				if (!getBaseTerrain(point).equals(obj.getBaseTerrain(point))
+						|| isMountainous(point) != obj.isMountainous(point)
+						|| !iterablesEqual(getRivers(point),
+								obj.getRivers(point))
+						|| !Objects.equals(getForest(point),
+								obj.getForest(point))
+						|| !Objects.equals(getGround(point),
+								obj.getGround(point))
+						|| !iterablesEqual(getOtherFixtures(point),
+								obj.getOtherFixtures(point))) {
+					return false; // NOPMD
+				}
 			}
 			return true; // NOPMD
 		} else {
@@ -605,14 +601,14 @@ public class SPMapNG implements IMutableMapNG {
 	 *            rivers to add to that location
 	 */
 	@Override
-	public void addRivers(final Point location, final River ... rvrs) {
+	public void addRivers(final Point location, final River @NonNull ... rvrs) {
 		final EnumSet<@NonNull River> localRivers;
-		final EnumSet<@NonNull River> temp = rivers.get(location);
-		if (temp == null) {
-			localRivers = NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
+		if (!rivers.containsKey(location)) {
+			localRivers = EnumSet.noneOf(River.class);
+			assert localRivers != null;
 			rivers.put(location, localRivers);
 		} else {
-			localRivers = temp;
+			localRivers = rivers.get(location);
 		}
 		for (River river : rvrs) {
 			localRivers.add(river);
@@ -627,8 +623,8 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public void removeRivers(final Point location, final River... rvrs) {
-		final Set<River> localRivers = rivers.get(location);
-		if (localRivers != null) {
+		if (rivers.containsKey(location)) {
+			final Set<River> localRivers = rivers.get(location);
 			for (River river : rvrs) {
 				localRivers.remove(river);
 			}
@@ -673,13 +669,12 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public void addFixture(final Point location, final TileFixture fix) {
-		final Collection<TileFixture> temp = fixtures.get(location);
-		final Collection<TileFixture> local;
-		if (temp == null) {
+		Collection<TileFixture> local;
+		if (fixtures.containsKey(location)) {
+			local = fixtures.get(location);
+		} else {
 			local = new ArraySet<>();
 			fixtures.put(location, local);
-		} else {
-			local = temp;
 		}
 		local.add(fix);
 	}
@@ -692,9 +687,8 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public void removeFixture(final Point location, final TileFixture fix) {
-		final Collection<TileFixture> local = fixtures.get(location);
-		if (local != null) {
-			local.remove(fix);
+		if (fixtures.containsKey(location)) {
+			fixtures.get(location).remove(fix);
 		}
 	}
 
@@ -737,9 +731,6 @@ public class SPMapNG implements IMutableMapNG {
 		SPMapNG retval = new SPMapNG(dimensions(), playerCollection.copy(false),
 				getCurrentTurn());
 		for (Point point : locations()) {
-			if (point == null) {
-				continue;
-			}
 			retval.setBaseTerrain(point, getBaseTerrain(point));
 			Ground grd = getGround(point);
 			if (grd == null) {
@@ -758,9 +749,7 @@ public class SPMapNG implements IMutableMapNG {
 				retval.addRivers(point, river);
 			}
 			for (TileFixture fixture : getOtherFixtures(point)) {
-				if (fixture == null) {
-					continue;
-				} else if (fixture instanceof IEvent) {
+				if (fixture instanceof IEvent) {
 					retval.addFixture(point, fixture.copy(zero));
 				} else {
 					retval.addFixture(point, fixture.copy(false));

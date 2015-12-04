@@ -244,9 +244,7 @@ public class Fortress implements HasImage, ITownFixture,
 			final String ctxt =
 					context + " In fortress " + name + " (ID #" + id + "):";
 			for (final FortressMember unit : fort) {
-				if (unit == null) {
-					continue;
-				} else if (!ours.containsKey(Integer.valueOf(unit.getID()))) {
+				if (!ours.containsKey(Integer.valueOf(unit.getID()))) {
 					ostream.append(ctxt);
 					ostream.append(" Extra unit:\t");
 					ostream.append(unit.toString());

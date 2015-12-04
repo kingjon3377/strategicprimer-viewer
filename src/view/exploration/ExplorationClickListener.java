@@ -178,9 +178,6 @@ public final class ExplorationClickListener implements ActionListener,
 				}
 			}
 			for (CacheFixture cache : caches) {
-				if (cache == null) {
-					continue;
-				}
 				model.getMap().removeFixture(dPoint, cache);
 			}
 		} catch (final TraversalImpossibleException except) {

@@ -139,11 +139,9 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 			final List<String> kinds = model.getUnitKinds(player);
 			int index = 0;
 			for (final String kind : kinds) {
-				if (kind != null) {
-					insert(new KindNode(kind, model.getUnits(player, kind)), // NOPMD
-							index);
-					index++;
-				}
+				insert(new KindNode(kind, model.getUnits(player, kind)), // NOPMD
+						index);
+				index++;
 			}
 		}
 	}
@@ -161,10 +159,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 			super(kind);
 			int index = 0;
 			for (final IUnit unit : units) {
-				if (unit != null) {
-					insert(new UnitNode(unit), index); // NOPMD
-					index++;
-				}
+				insert(new UnitNode(unit), index); // NOPMD
+				index++;
 			}
 		}
 	}
@@ -182,10 +178,8 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 			super(unit);
 			int index = 0;
 			for (final UnitMember member : unit) {
-				if (member != null) {
-					insert(new UnitMemberNode(member), index); // NOPMD
-					index++;
-				}
+				insert(new UnitMemberNode(member), index); // NOPMD
+				index++;
 			}
 		}
 	}
@@ -334,9 +328,6 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 			return (MutableTreeNode) node;
 		} else if (node instanceof WorkerTreeNode && node.getAllowsChildren()) {
 			for (final TreeNode child : (WorkerTreeNode) node) {
-				if (child == null) {
-					continue;
-				}
 				@Nullable final MutableTreeNode result = getNode(child, obj);
 				if (result != null) {
 					return result;

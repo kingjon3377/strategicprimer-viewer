@@ -160,8 +160,6 @@ public class WorkerMgmtFrame extends JFrame {
 		for (Point location : model.getMap().locations()) {
 			if (found) {
 				break;
-			} else if (location == null) {
-				continue;
 			} else {
 				for (TileFixture fix : model.getMap().getOtherFixtures(location)) {
 					if (fix instanceof Fortress && ((Fortress) fix).getOwner().equals(model.getMap().getCurrentPlayer())) {
@@ -586,9 +584,6 @@ public class WorkerMgmtFrame extends JFrame {
 						.append(" [");
 				boolean first = true;
 				for (final UnitMember member : unit) {
-					if (member == null) {
-						continue;
-					}
 					if (first) {
 						first = false;
 					} else {

@@ -65,7 +65,7 @@ public final class FixtureListModel extends DefaultListModel<TileFixture>
 	@Override
 	public void selectedPointChanged(@Nullable final Point old,
 			final Point newPoint) {
-		this.clear();
+		clear();
 		IMapNG map = dmodel.getMap();
 		final TileType base = map.getBaseTerrain(newPoint);
 		if (!TileType.NotVisible.equals(base)) {
@@ -78,9 +78,7 @@ public final class FixtureListModel extends DefaultListModel<TileFixture>
 			} else {
 				RiverFixture rfixt = new RiverFixture();
 				for (River river : rivers) {
-					if (river != null) {
-						rfixt.addRiver(river);
-					}
+					rfixt.addRiver(river);
 				}
 				addElement(rfixt);
 			}
@@ -136,9 +134,7 @@ public final class FixtureListModel extends DefaultListModel<TileFixture>
 		if (list != null) {
 			IMutableMapNG map = dmodel.getMap();
 			for (final TileFixture fix : list) {
-				if (fix == null) {
-					continue;
-				} else if (fix instanceof TileTypeFixture) {
+				if (fix instanceof TileTypeFixture) {
 					map.setBaseTerrain(point, TileType.NotVisible);
 					removeElement(fix);
 				} else if (fix instanceof Ground

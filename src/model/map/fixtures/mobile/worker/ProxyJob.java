@@ -80,9 +80,7 @@ public class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 		for (final IWorker worker : workers) {
 			boolean touched = false;
 			for (final IJob job : worker) {
-				if (job == this || job == null) {
-					continue;
-				} else if (nomen.equals(job.getName())) {
+				if (nomen.equals(job.getName())) {
 					proxiedJobs.add(job);
 					for (final ISkill skill : job) {
 						skillNames.add(skill.getName());

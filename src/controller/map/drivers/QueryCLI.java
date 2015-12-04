@@ -168,9 +168,6 @@ public final class QueryCLI implements ISPDriver {
 		Player player = players.get(playerNum);
 		int count = 0;
 		for (Point loc : map.locations()) {
-			if (loc == null) {
-				continue;
-			}
 			for (TileFixture fix : map.getOtherFixtures(loc)) {
 				if (fix instanceof IUnit
 						&& player.equals(((IUnit) fix).getOwner())) {

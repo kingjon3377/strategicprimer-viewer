@@ -278,9 +278,7 @@ public final class TestMoreFixtureSerialization extends
 			SPFormatException, IOException {
 		final Player owner = new Player(-1, "");
 		for (final TownStatus status : TownStatus.values()) {
-			if (status == null) {
-				continue;
-			}
+			assert status != null;
 			final Village one = new Village(status, "villageOne", 1, owner, // NOPMD
 					"human");
 			assertSerialization("First Village serialization test, " + status,

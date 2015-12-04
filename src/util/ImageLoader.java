@@ -67,9 +67,7 @@ public final class ImageLoader {
 	private ImageLoader() {
 		final TileUIHelper colors = new TileUIHelper();
 		for (final TileType type : TileType.values()) {
-			if (type == null) {
-				continue;
-			}
+			assert type != null;
 			final BufferedImage buf = new BufferedImage(ICON_SIZE, ICON_SIZE, //NOPMD
 					BufferedImage.TYPE_INT_ARGB);
 			final Graphics pen = buf.createGraphics();

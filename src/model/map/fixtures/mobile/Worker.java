@@ -241,9 +241,7 @@ public class Worker implements IWorker {
 						ours.put(job.getName(), job);
 					}
 					for (final IJob job : ((Worker) obj).jobSet) {
-						if (job == null) {
-							continue;
-						} else if (!ours.containsKey(job.getName())) {
+						if (!ours.containsKey(job.getName())) {
 							ostream.append(ctxt);
 							ostream.append("\tExtra Job: ");
 							ostream.append(job.getName());

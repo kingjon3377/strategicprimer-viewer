@@ -69,9 +69,6 @@ public class TODOFixerDriver {
 	 */
 	public void fixUnits() {
 		for (final Point point : map.locations()) {
-			if (point == null) {
-				continue;
-			}
 			final List<String> jobList = getList(point);
 			for (final TileFixture fix : map.getOtherFixtures(point)) {
 				if (fix instanceof Unit && "TODO".equals(((Unit) fix).getKind())) {
@@ -93,9 +90,6 @@ public class TODOFixerDriver {
 		final Random random = new Random(unit.getID());
 		count++;
 		for (final String string : jobList) {
-			if (string == null) {
-				continue;
-			}
 			if (random.nextBoolean()) {
 				System.out.print("Setting unit with ID #");
 				System.out.print(unit.getID());

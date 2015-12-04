@@ -50,9 +50,6 @@ public final class IDFactoryFiller {
 	public static IDFactory createFactory(final IMapNG map) {
 		final IDFactory retval = new IDFactory();
 		for (final Point point : map.locations()) {
-			if (point == null) {
-				continue;
-			}
 			// Ground, Forest, Rivers, and Mountains do not have IDs, so we
 			// can skip them and just test the "other" fixtures
 			for (IFixture fixture : map.getOtherFixtures(point)) {
@@ -79,9 +76,6 @@ public final class IDFactoryFiller {
 		final IDFactory retval = new IDFactory();
 		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
 			for (final Point point : pair.first().locations()) {
-				if (point == null) {
-					continue;
-				}
 				// Ground, Forest, Rivers, and Mountains do not have IDs, so we
 				// can skip them and just test the "other" fixtures
 				for (IFixture fixture : pair.first().getOtherFixtures(point)) {

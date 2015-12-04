@@ -7,6 +7,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -56,7 +58,7 @@ public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	public UnitReportGenerator(final Comparator<Pair<Point, IFixture>> comparator) {
+	public UnitReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator) {
 		super(comparator);
 	}
 	/**

@@ -2,14 +2,14 @@ package model.map;
 
 import java.util.Comparator;
 
-import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jdt.annotation.NonNull;
 
 import util.NullCleaner;
 /**
  * A class to compare Points based on their distance to a specified point (such as a player's HQ)
  * @author Jonathan Lovelace
  */
-public class DistanceComparator implements Comparator<Point> {
+public class DistanceComparator implements Comparator<@NonNull Point> {
 	/**
 	 * The point we want to measure distance from.
 	 */
@@ -26,10 +26,7 @@ public class DistanceComparator implements Comparator<Point> {
 	 * @return the result of the comparison
 	 */
 	@Override
-	public int compare(@Nullable final Point one, @Nullable final Point two) {
-		if (one == null || two == null) {
-			throw new NullPointerException("null parameters to compare()");
-		}
+	public int compare(final Point one, final Point two) {
 		int distOne = distance(one);
 		int distTwo = distance(two);
 		if (distOne == distTwo) {

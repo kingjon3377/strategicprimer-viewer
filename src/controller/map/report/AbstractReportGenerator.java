@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.DistanceComparator;
 import model.map.IFixture;
 import model.map.Player;
@@ -42,7 +44,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	/**
 	 * A comparator for pairs of Points and fixtures.
 	 */
-	protected final Comparator<Pair<Point, IFixture>> pairComparator;
+	protected final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> pairComparator;
 	/**
 	 * A distance calculator (comparator).
 	 */
@@ -50,12 +52,12 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	protected AbstractReportGenerator(final Comparator<Pair<Point, IFixture>> comparator) {
+	protected AbstractReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator) {
 		pairComparator = comparator;
 		if (comparator instanceof PairComparator
-				&& ((PairComparator<Point, IFixture>) comparator)
+				&& ((PairComparator<@NonNull Point, @NonNull IFixture>) comparator)
 				.first() instanceof DistanceComparator) {
-			distCalculator = (DistanceComparator) ((PairComparator<Point, IFixture>) comparator).first();
+			distCalculator = (DistanceComparator) ((PairComparator<@NonNull Point, @NonNull IFixture>) comparator).first();
 		} else {
 			distCalculator = new DistanceComparator(PointFactory.point(-1, -1));
 		}

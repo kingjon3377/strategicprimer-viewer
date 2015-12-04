@@ -204,9 +204,6 @@ public class FindDialog extends JDialog implements ActionListener {
 				map.getMapDimensions(), map.getSelectedPoint(),
 				!backwards.isSelected(), !vertically.isSelected()));
 		for (final Point point : iter) {
-			if (point == null) {
-				continue;
-			}
 			TileFixture ground = map.getMap().getGround(point);
 			TileFixture forest = map.getMap().getForest(point);
 			if ((ground != null && matches(pattern, idNum, ground, csen))
@@ -217,7 +214,7 @@ public class FindDialog extends JDialog implements ActionListener {
 				return;
 			}
 			for (final TileFixture fix : map.getMap().getOtherFixtures(point)) {
-				if (fix != null && matches(pattern, idNum, fix, csen)) {
+				if (matches(pattern, idNum, fix, csen)) {
 					SYS_OUT.print("Found in point");
 					SYS_OUT.println(point);
 					map.setSelection(point);
@@ -241,7 +238,7 @@ public class FindDialog extends JDialog implements ActionListener {
 			return true; // NOPMD
 		} else if (fix instanceof FixtureIterable) {
 			for (final IFixture member : (FixtureIterable<@NonNull ?>) fix) {
-				if (member != null && matches(pattern, idNum, member, csen)) {
+				if (matches(pattern, idNum, member, csen)) {
 					return true; // NOPMD
 				}
 			}
@@ -375,17 +372,15 @@ public class FindDialog extends JDialog implements ActionListener {
 		@Override
 		public void run() {
 			for (final Point point : map.locations()) {
-				if (point != null) {
-					populate(map.getGround(point));
-					populate(map.getForest(point));
-					if (map.isMountainous(point)) {
-						populate(new Mountain());
-					}
-					if (map.getRivers(point).iterator().hasNext()) {
-						populate(new RiverFixture());
-					}
-					populate(map.getOtherFixtures(point));
+				populate(map.getGround(point));
+				populate(map.getForest(point));
+				if (map.isMountainous(point)) {
+					populate(new Mountain());
 				}
+				if (map.getRivers(point).iterator().hasNext()) {
+					populate(new RiverFixture());
+				}
+				populate(map.getOtherFixtures(point));
 			}
 		}
 		/**

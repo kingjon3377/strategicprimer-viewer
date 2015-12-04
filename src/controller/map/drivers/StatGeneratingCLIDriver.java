@@ -205,9 +205,6 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 				break;
 			} else {
 				final IUnit unit = units.get(unitNum);
-				if (unit == null) {
-					continue;
-				}
 				enterStats(model, unit);
 				if (!hasUnstattedWorker(model, unit.getID())) {
 					units.remove(unit);
@@ -249,7 +246,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	private static List<IUnit> removeStattedUnits(final List<IUnit> units) {
 		final List<IUnit> retval = new ArrayList<>();
 		for (final IUnit unit : units) {
-			if (unit != null && hasUnstattedWorker(unit)) {
+			if (hasUnstattedWorker(unit)) {
 				retval.add(unit);
 			}
 		}
@@ -332,14 +329,9 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	@Nullable
 	private static IFixture find(final IMapNG map, final int idNum) {
 		for (final Point point : map.locations()) {
-			if (point == null) {
-				continue;
-			}
 			// TODO: If Ground or Forest ever gets ID, check it here.
 			for (IFixture fixture : map.getOtherFixtures(point)) {
-				if (fixture == null) {
-					continue;
-				} else if (fixture.getID() == idNum) {
+				if (fixture.getID() == idNum) {
 					return fixture;
 				} else if (fixture instanceof FixtureIterable) {
 					final IFixture result =
@@ -418,12 +410,10 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 						"Unit selection: ", false);
 				if (unitNum >= 0 && unitNum < units.size()) {
 					final IUnit unit = units.get(unitNum);
-					if (unit != null) {
-						if (cli.inputBoolean(LOAD_NAMES)) {
-							createWorkersFromFile(model, idf, unit);
-						} else {
-							createWorkers(model, idf, unit);
-						}
+					if (cli.inputBoolean(LOAD_NAMES)) {
+						createWorkersFromFile(model, idf, unit);
+					} else {
+						createWorkers(model, idf, unit);
 					}
 				}
 			} else {
@@ -434,9 +424,6 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 						cli.inputString("Kind of unit: "),
 						cli.inputString("Unit name: "), idf.createID());
 				for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
-					if (pair == null) {
-						continue;
-					}
 					IMutableMapNG submap = pair.first();
 					submap.addFixture(point, unit);
 				}

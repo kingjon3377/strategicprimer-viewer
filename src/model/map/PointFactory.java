@@ -117,9 +117,6 @@ public final class PointFactory {
 						new Coordinate(xCoord, yCoord));
 			}
 			final Coordinate retval = C_CACHE.get(boxedX).get(boxedY);
-			if (retval == null) {
-				throw new IllegalStateException("Cache produced null result");
-			}
 			return retval; // NOPMD
 		} else {
 			return new Coordinate(xCoord, yCoord);

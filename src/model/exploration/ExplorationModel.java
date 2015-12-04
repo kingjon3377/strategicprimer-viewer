@@ -130,9 +130,7 @@ IExplorationModel {
 	public List<IUnit> getUnits(final Player player) {
 		final List<IUnit> retval = new ArrayList<>();
 		for (final Point point : getMap().locations()) {
-			if (point != null) {
-				retval.addAll(getUnits(getMap().getOtherFixtures(point), player));
-			}
+			retval.addAll(getUnits(getMap().getOtherFixtures(point), player));
 		}
 		return retval;
 	}
@@ -198,9 +196,6 @@ IExplorationModel {
 			removeImpl(map, point, unit);
 			map.addFixture(dest, unit);
 			for (final Pair<IMutableMapNG, File> pair : getSubordinateMaps()) {
-				if (pair == null) {
-					continue;
-				}
 				final IMutableMapNG subMap = pair.first();
 				if (!locationHasFixture(subMap, point, unit)) {
 					continue;
@@ -216,9 +211,6 @@ IExplorationModel {
 			return retval;
 		} else {
 			for (final Pair<IMutableMapNG, File> pair : getSubordinateMaps()) {
-				if (pair == null) {
-					continue;
-				}
 				final IMutableMapNG subMap = pair.first();
 				ensureTerrain(subMap, dest, map.getBaseTerrain(dest));
 			}
@@ -245,7 +237,7 @@ IExplorationModel {
 		MapDimensions dims = map.dimensions();
 		final Set<Point> done = new HashSet<>(25);
 		for (final Point point : new SurroundingPointIterable(dest, dims)) {
-			if (point == null || done.contains(point)) {
+			if (done.contains(point)) {
 				continue;
 			} else {
 				done.add(point);
@@ -448,9 +440,6 @@ IExplorationModel {
 	public Point find(final TileFixture fix) {
 		final IMapNG source = getMap();
 		for (final Point point : source.locations()) {
-			if (point == null) {
-				continue;
-			}
 			if ((fix instanceof Mountain && source.isMountainous(point))
 					|| (fix instanceof Forest && fix.equals(source
 							.getForest(point)))

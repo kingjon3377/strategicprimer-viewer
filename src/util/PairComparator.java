@@ -2,6 +2,7 @@ package util;
 
 import java.util.Comparator;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -33,7 +34,9 @@ import org.eclipse.jdt.annotation.Nullable;
  * @param <U>
  *            the second type in the pair
  */
-public class PairComparator<T, U> extends Pair<Comparator<T>, Comparator<U>> implements Comparator<Pair<T, U>> {
+public class PairComparator<@NonNull T, @NonNull U>
+		extends Pair<@NonNull Comparator<@NonNull T>, @NonNull Comparator<@NonNull U>>
+		implements Comparator<@NonNull Pair<@NonNull T, @NonNull U>> {
 	public PairComparator(final Comparator<T> one, final Comparator<U> two) {
 		super(one, two);
 	}

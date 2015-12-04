@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.IFixture;
@@ -159,7 +160,8 @@ public class Unit implements IUnit {
 	 * @return an iterator over the unit's members
 	 */
 	@Override
-	public final Iterator<UnitMember> iterator() {
+	@NonNull
+	public final Iterator<@NonNull UnitMember> iterator() {
 		return NullCleaner.assertNotNull(members.iterator());
 	}
 
@@ -417,9 +419,7 @@ public class Unit implements IUnit {
 							"%s In unit of kind %s named %s (ID #%d):",
 							context, kind, name, Integer.valueOf(id)));
 			for (final UnitMember member : other) {
-				if (member == null) {
-					continue;
-				} else if (!ours.containsKey(Integer.valueOf(member.getID()))) {
+				if (!ours.containsKey(Integer.valueOf(member.getID()))) {
 					ostream.append(ctxt);
 					ostream.append(" Extra member:\t");
 					ostream.append(member.toString());

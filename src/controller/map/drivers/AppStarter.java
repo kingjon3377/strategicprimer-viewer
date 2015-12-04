@@ -149,9 +149,7 @@ public class AppStarter implements ISPDriver {
 		// Pair of it and the AppChooserFrame be the default.
 		Pair<ISPDriver, ISPDriver> drivers = null;
 		for (final String option : options) {
-			if (option == null) {
-				continue;
-			} else if (EqualsAny.equalsAny(option, "-g", "--gui")) {
+			if (EqualsAny.equalsAny(option, "-g", "--gui")) {
 				gui = true;
 			} else if (EqualsAny.equalsAny(option, "-c", "--cli")) {
 				gui = false;

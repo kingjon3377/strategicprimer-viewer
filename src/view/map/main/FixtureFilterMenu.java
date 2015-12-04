@@ -13,6 +13,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.TileFixture;
@@ -80,6 +81,8 @@ public class FixtureFilterMenu extends JMenu implements ZOrderFilter,
 		if (fix == null) {
 			return false; // NOPMD
 		}
+		@NonNull
+		TileFixture localFix = fix;
 		final JCheckBoxMenuItem item; // NOPMD
 		if (fix instanceof TileTypeFixture) {
 			return false;
@@ -87,7 +90,7 @@ public class FixtureFilterMenu extends JMenu implements ZOrderFilter,
 			item = mapping.get(fix.getClass());
 		} else if ("null".equals(fix.shortDesc())) {
 			item = new JCheckBoxMenuItem(fix.plural(), false);
-			mapping.put(NullCleaner.assertNotNull(fix).getClass(), item);
+			mapping.put(localFix.getClass(), item);
 		} else {
 			item = new JCheckBoxMenuItem(fix.plural(), true);
 			mapping.put(NullCleaner.assertNotNull(fix).getClass(), item);

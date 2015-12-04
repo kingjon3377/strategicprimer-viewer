@@ -67,9 +67,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 	public static void filter(final IMutableMapNG map, final Appendable ostream)
 			throws IOException {
 		for (final Point point : map.locations()) {
-			if (point != null) {
-				filter(map, point, ostream);
-			}
+			filter(map, point, ostream);
 		}
 	}
 
@@ -89,9 +87,6 @@ public class DuplicateFixtureRemover implements ISPDriver {
 		final List<TileFixture> toRemove = new ArrayList<>();
 		// We ignore ground and forests because they don't have IDs.
 		for (final TileFixture fix : map.getOtherFixtures(location)) {
-			if (fix == null) {
-				continue;
-			}
 			boolean already = false;
 			for (final TileFixture keptFixture : fixtures) {
 				if (fix instanceof IUnit

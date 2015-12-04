@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.MapDimensions;
 import model.map.Point;
 import util.NullCleaner;
@@ -33,7 +35,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public class SurroundingPointIterable implements Iterable<Point> {
+public class SurroundingPointIterable implements Iterable<@NonNull Point> {
 	/**
 	 * the list of points.
 	 */

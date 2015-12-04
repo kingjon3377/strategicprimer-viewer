@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.HasName;
 import util.EqualsAny;
 import util.IsNumeric;
@@ -101,7 +103,7 @@ public class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public <T extends HasName> int chooseFromList(
-			final List<? extends T> items, final String desc,
+			final List<@NonNull ? extends T> items, final String desc,
 			final String none, final String prompt, final boolean auto)
 			throws IOException {
 		if (items.isEmpty()) {

@@ -260,8 +260,6 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 					} else {
 						return getStatsToolTip(worker);
 					}
-				} else if (proxied == null) {
-					continue;
 				} else {
 					String ttip = getStatsToolTip(proxied);
 					if (ttip != null) {
