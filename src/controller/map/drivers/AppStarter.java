@@ -160,32 +160,26 @@ public class AppStarter implements ISPDriver {
 		final boolean localGui = gui;
 		final Logger lgr = LOGGER;
 		if (drivers == null) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						startChooser(localGui, others);
-					} catch (DriverFailedException e) {
-						final String message =
-								NullCleaner.assertNotNull(e.getMessage());
-						lgr.log(Level.SEVERE, message, e.getCause());
-						ErrorShower.showErrorDialog(null, message);
-					}
+			SwingUtilities.invokeLater(() -> {
+				try {
+					startChooser(localGui, others);
+				} catch (DriverFailedException e) {
+					final String message =
+							NullCleaner.assertNotNull(e.getMessage());
+					lgr.log(Level.SEVERE, message, e.getCause());
+					ErrorShower.showErrorDialog(null, message);
 				}
 			});
 		} else if (gui) {
 			final ISPDriver driver = drivers.second();
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						startChosenDriver(driver, others);
-					} catch (DriverFailedException e) {
-						final String message =
-								NullCleaner.assertNotNull(e.getMessage());
-						lgr.log(Level.SEVERE, message, e.getCause());
-						ErrorShower.showErrorDialog(null, message);
-					}
+			SwingUtilities.invokeLater(() -> {
+				try {
+					startChosenDriver(driver, others);
+				} catch (DriverFailedException e) {
+					final String message =
+							NullCleaner.assertNotNull(e.getMessage());
+					lgr.log(Level.SEVERE, message, e.getCause());
+					ErrorShower.showErrorDialog(null, message);
 				}
 			});
 		} else {

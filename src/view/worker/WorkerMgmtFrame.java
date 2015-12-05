@@ -215,12 +215,7 @@ public class WorkerMgmtFrame extends JFrame {
 					if (point.getRow() > Integer.MIN_VALUE) {
 						final IViewerModel vModel =
 								getViewerModelFor(model, ioHandler);
-						SwingUtilities.invokeLater(new Runnable() {
-							@Override
-							public void run() {
-								vModel.setSelection(point);
-							}
-						});
+						SwingUtilities.invokeLater(() -> vModel.setSelection(point));
 					}
 				}
 			}

@@ -3,8 +3,6 @@ package view.util;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -100,12 +98,9 @@ public class AboutDialog extends JDialog {
 		add(new JLabel(builder.toString()));
 		final JButton close = new JButton("Close");
 		add(close);
-		close.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(@Nullable final ActionEvent e) {
-				setVisible(false);
-				dispose();
-			}
+		close.addActionListener(e -> {
+			setVisible(false);
+			dispose();
 		});
 		pack();
 	}

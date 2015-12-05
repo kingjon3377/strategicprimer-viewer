@@ -3,13 +3,9 @@ package controller.map.drivers;
 import static view.util.SystemOut.SYS_OUT;
 
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.io.File;
 import java.util.Random;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.misc.MapReaderAdapter;
@@ -18,12 +14,10 @@ import model.map.IMutableMapNG;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
-import model.map.TileFixture;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.TileViewSize;
 import model.viewer.ViewerModel;
-import model.viewer.ZOrderFilter;
 import util.NullCleaner;
 import util.Pair;
 import util.Warning;
@@ -384,20 +378,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 		final TileDrawHelper hOne = new CachingTileDrawHelper();
 		final TileDrawHelper hTwo = new DirectTileDrawHelper();
 		final TileDrawHelper hThree = new Ver2TileDrawHelper(
-				new ImageObserver() {
-					@Override
-					public boolean imageUpdate(@Nullable final Image img,
-							final int infoflags, final int xCoord,
-							final int yCoord, final int width,
-							final int height) {
-						return false;
-					}
-				}, new ZOrderFilter() {
-					@Override
-					public boolean shouldDisplay(final TileFixture fix) {
-						return true;
-					}
-				});
+				(img, infoflags, xCoord, yCoord, width, height) -> false, fix -> true);
 		SYS_OUT.println("1. All in one place:");
 		long oneTotal = printStats(CACHING, first(hOne, map, reps, tsize), reps);
 		long twoTotal = printStats(DIRECT, first(hTwo, map, reps, tsize), reps);
