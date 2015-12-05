@@ -18,9 +18,8 @@ import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.ProxyUnit;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
-import model.misc.AbstractMultiMapModel;
 import model.misc.IDriverModel;
-import model.misc.IMultiMapModel;
+import model.misc.SimpleMultiMapModel;
 import util.NullCleaner;
 import util.Pair;
 import view.util.SystemOut;
@@ -48,7 +47,7 @@ import view.util.SystemOut;
  * @author Jonathan Lovelace
  *
  */
-public class WorkerModel extends AbstractMultiMapModel implements IWorkerModel {
+public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	/**
 	 * Constructor.
 	 *
@@ -59,19 +58,14 @@ public class WorkerModel extends AbstractMultiMapModel implements IWorkerModel {
 	 *            saved to
 	 */
 	public WorkerModel(final IMutableMapNG map, final File file) {
-		setMap(map, file);
+		super(map, file);
 	}
 	/**
 	 * Copy constructor.
 	 * @param model a driver model
 	 */
 	public WorkerModel(final IDriverModel model) {
-		setMap(model.getMap(), model.getMapFile());
-		if (model instanceof IMultiMapModel) {
-			for (Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getSubordinateMaps()) {
-				addSubordinateMap(pair.first(), pair.second());
-			}
-		}
+		super(model);
 	}
 	/**
 	 * @param player a player in the map

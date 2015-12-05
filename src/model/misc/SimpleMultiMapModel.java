@@ -36,8 +36,27 @@ import util.SetPairConverter;
  *
  */
 // ESCA-JAVA0011:
-public abstract class AbstractMultiMapModel extends AbstractDriverModel
+public class SimpleMultiMapModel extends AbstractDriverModel
 		implements IMultiMapModel {
+	/**
+	 * @param the map we're wrapping
+	 * @param file the file the map was loaded from or should be saved to
+	 */
+	public SimpleMultiMapModel(final IMutableMapNG map, final File file) {
+		setMap(map, file);
+	}
+	/**
+	 * Copy constructor.]
+	 * @param model a driver model
+	 */
+	public SimpleMultiMapModel(final IDriverModel model) {
+		setMap(model.getMap(), model.getMapFile());
+		if (model instanceof IMultiMapModel) {
+			for (Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getSubordinateMaps()) {
+				addSubordinateMap(pair.first(), pair.second());
+			}
+		}
+	}
 	/**
 	 * The collection of subordinate maps.
 	 */

@@ -31,9 +31,8 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Fortress;
-import model.misc.AbstractMultiMapModel;
 import model.misc.IDriverModel;
-import model.misc.IMultiMapModel;
+import model.misc.SimpleMultiMapModel;
 import util.Pair;
 
 /**
@@ -59,7 +58,7 @@ import util.Pair;
  * @author Jonathan Lovelace
  *
  */
-public class ExplorationModel extends AbstractMultiMapModel implements
+public class ExplorationModel extends SimpleMultiMapModel implements
 IExplorationModel {
 	/**
 	 * The currently selected unit.
@@ -87,19 +86,14 @@ IExplorationModel {
 	 * @param file the name it was loaded from
 	 */
 	public ExplorationModel(final IMutableMapNG map, final File file) {
-		setMap(map, file);
+		super(map, file);
 	}
 	/**
 	 * Copy constructor.
 	 * @param model a driver model
 	 */
 	public ExplorationModel(final IDriverModel model) {
-		setMap(model.getMap(), model.getMapFile());
-		if (model instanceof IMultiMapModel) {
-			for (Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getSubordinateMaps()) {
-				addSubordinateMap(pair.first(), pair.second());
-			}
-		}
+		super(model);
 	}
 	/**
 	 * @return all the players shared by all the maps
