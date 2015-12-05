@@ -268,7 +268,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	@Override
 	public void selectedPointChanged(@Nullable final Point old,
 			final Point newPoint) {
-		SwingUtilities.invokeLater(() -> requestFocusInWindow());
+		SwingUtilities.invokeLater(this::requestFocusInWindow);
 		if (!isSelectionVisible()) {
 			fixVisibility();
 		}
