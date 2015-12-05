@@ -46,9 +46,7 @@ public final class TownComparator implements Comparator<AbstractTown> {
 	 * A comparator for town-sizes.
 	 */
 	private static final Comparator<TownSize> SIZE_CMP = (one, two) -> {
-			if (one == null || two == null) {
-				throw new IllegalArgumentException("Asked to compare null");
-			} else if (one.equals(two)) {
+			if (one.equals(two)) {
 				return 0; // NOPMD
 			} else if (TownSize.Large.equals(one)) {
 				return -1; // NOPMD
@@ -66,9 +64,7 @@ public final class TownComparator implements Comparator<AbstractTown> {
 	 * before ruined ones before burned-out ones.
 	 */
 	private static final Comparator<TownStatus> ST_CMP = (one, two) -> {
-		if (one == null || two == null) {
-			throw new IllegalArgumentException("Asked to compare null");
-		} else if (one.equals(two)) {
+		if (one.equals(two)) {
 			return 0; // NOPMD
 		} else if (TownStatus.Active.equals(one)) {
 			return -1; // NOPMD
@@ -90,9 +86,7 @@ public final class TownComparator implements Comparator<AbstractTown> {
 	 * fortresses before cities before towns before fortifications before villages.
 	 */
 	private static final Comparator<ITownFixture> KIND_CMP = (one, two) -> {
-		if (one == null || two == null) {
-			throw new IllegalArgumentException("Asked to compare null");
-		} else if (one instanceof Fortress) {
+		if (one instanceof Fortress) {
 			if (two instanceof Fortress) {
 				return 0; // NOPMD
 			} else {
