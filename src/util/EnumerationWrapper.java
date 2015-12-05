@@ -4,7 +4,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jdt.annotation.NonNull;
 
 /**
  * A wrapper around an Enumeration to make it fit the Iterable interface.
@@ -29,7 +29,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @param <T> the type parameter
  * @author Jonathan Lovelace
  */
-public final class EnumerationWrapper<T> implements Iterator<T> {
+public final class EnumerationWrapper<@NonNull T> implements Iterator<@NonNull T> {
 	/**
 	 * The object we're wrapping.
 	 */
@@ -38,23 +38,8 @@ public final class EnumerationWrapper<T> implements Iterator<T> {
 	/**
 	 * @param enumer the object we're wrapping.
 	 */
-	public EnumerationWrapper(@Nullable final Enumeration<T> enumer) {
-		if (enumer == null) {
-			wrapped = new Enumeration<T>() {
-				@Override
-				public boolean hasMoreElements() {
-					return false;
-				}
-
-				@Override
-				public T nextElement() {
-					throw new NoSuchElementException(
-							"No elements in empty enumeration (replacing null)");
-				}
-			};
-		} else {
-			wrapped = enumer;
-		}
+	public EnumerationWrapper(final Enumeration<T> enumer) {
+		wrapped = enumer;
 	}
 
 	/**
