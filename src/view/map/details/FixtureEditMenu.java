@@ -4,7 +4,6 @@ import static javax.swing.JOptionPane.YES_NO_OPTION;
 import static javax.swing.JOptionPane.showConfirmDialog;
 import static javax.swing.JOptionPane.showInputDialog;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.HasKind;
 import model.map.HasName;
@@ -57,59 +55,6 @@ public class FixtureEditMenu extends JPopupMenu {
 	 * Listeners to notify about name and kind changes.
 	 */
 	protected final List<IWorkerTreeModel> listeners = new ArrayList<>();
-	/**
-	 * The listener for the name-changing menu item.
-	 *
-	 * @author Jonathan Lovelace
-	 */
-	private final class NameChangeListener implements ActionListener {
-		/**
-		 * The parent component.
-		 */
-		private final FixtureEditMenu outer;
-		/**
-		 * The fixture being edited.
-		 */
-		private final IFixture fixture;
-
-		/**
-		 * Constructor.
-		 *
-		 * @param parent the parent component
-		 * @param fix the fixture being edited.
-		 */
-		protected NameChangeListener(final FixtureEditMenu parent,
-				final IFixture fix) {
-			outer = parent;
-			fixture = fix;
-		}
-
-		/**
-		 * @param event the button press being handled
-		 */
-		@Override
-		public void actionPerformed(@Nullable final ActionEvent event) {
-			final String old = ((HasName) fixture).getName();
-			final String result =
-					(String) showInputDialog(outer, "Fixture's new name:",
-							"Rename Fixture", JOptionPane.PLAIN_MESSAGE, null,
-							null, ((HasName) fixture).getName());
-			if (result != null && !result.equals(old)) {
-				((HasName) fixture).setName(result);
-				for (final IWorkerTreeModel listener : listeners) {
-					listener.renameItem((HasName) fixture);
-				}
-			}
-		}
-		/**
-		 * @return a String representation of the object
-		 */
-		@Override
-		public String toString() {
-			return "NameChangeListener";
-		}
-	}
-
 	/**
 	 * Constructor.
 	 *
