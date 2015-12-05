@@ -12,11 +12,11 @@ import controller.map.drivers.ISPDriver.DriverFailedException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.SPWriter;
-import model.exploration.ExplorationModel;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
+import model.misc.SimpleMultiMapModel;
 import model.viewer.ViewerModel;
 import util.ArraySet;
 import util.NullCleaner;
@@ -122,7 +122,7 @@ public class MapReaderAdapter {
 	public IMultiMapModel readMultiMapModel(final Warning warner, final File master, final File... files) throws DriverFailedException {
 		String current = master.getPath();
 		try {
-			IMultiMapModel retval = new ExplorationModel(readMap(master, warner), master);
+			IMultiMapModel retval = new SimpleMultiMapModel(readMap(master, warner), master);
 			for (File file : files) {
 				current = file.getPath();
 				retval.addSubordinateMap(readMap(file, warner), file);

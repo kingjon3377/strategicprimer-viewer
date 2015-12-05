@@ -12,7 +12,7 @@ import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
-import model.workermgmt.WorkerModel;
+import model.misc.SimpleMultiMapModel;
 import util.NullCleaner;
 import util.Pair;
 import util.Warning;
@@ -82,8 +82,7 @@ public final class SubsetDriver implements ISPDriver {
 		if (dmodel instanceof IMultiMapModel) {
 			model = (IMultiMapModel) dmodel;
 		} else {
-			// FIXME: Create and use a more limited IMultiMapDriver implementation
-			model = new WorkerModel(dmodel);
+			model = new SimpleMultiMapModel(dmodel);
 			LOGGER.warning("Subset checking does nothing with no subordinate maps");
 		}
 		for (Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {

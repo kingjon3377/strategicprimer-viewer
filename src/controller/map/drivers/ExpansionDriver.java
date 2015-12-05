@@ -31,7 +31,7 @@ import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.ITownFixture;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
-import model.workermgmt.WorkerModel;
+import model.misc.SimpleMultiMapModel;
 import util.ArraySet;
 import util.NullCleaner;
 import util.Pair;
@@ -114,9 +114,8 @@ public class ExpansionDriver implements ISPDriver {
 		if (dmodel instanceof IMultiMapModel) {
 			model = (IMultiMapModel) dmodel;
 		} else {
-			// TODO: Make a new, more limited, IMultiMapModel implementation for this and the subset driver
 			LOGGER.warning("Expansion on a master map with no subordinate maps does nothing");
-			model = new WorkerModel(dmodel);
+			model = new SimpleMultiMapModel(dmodel);
 		}
 		for (Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 			expand(model.getMap(), pair.first());
