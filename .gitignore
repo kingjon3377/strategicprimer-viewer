@@ -29,3 +29,5 @@ bin/.gitignore
 paths.local.properties
 compiled/*
 dist/*
+/compiled/
+/dist/
