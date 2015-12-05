@@ -91,9 +91,7 @@ public class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 				NullCleaner.assertNotNull(workers.toArray(new IWorker[workers
 						.size()]));
 		for (final String job : jobNames) {
-			if (job != null) {
-				proxyJobs.add(new ProxyJob(job, parallel, workerArray));
-			}
+			proxyJobs.add(new ProxyJob(job, parallel, workerArray));
 		}
 	}
 	/**
@@ -111,7 +109,7 @@ public class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	/**
 	 * @param proxied workers to proxy for
 	 */
-	public ProxyWorker(final IWorker... proxied) {
+	public ProxyWorker(final @NonNull IWorker @NonNull ... proxied) {
 		parallel = true;
 		for (IWorker worker : proxied) {
 			if (worker == this) {
@@ -123,9 +121,7 @@ public class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 			}
 		}
 		for (String job : jobNames) {
-			if (job != null) {
-				proxyJobs.add(new ProxyJob(job, parallel, proxied));
-			}
+			proxyJobs.add(new ProxyJob(job, parallel, proxied));
 		}
 	}
 	/**

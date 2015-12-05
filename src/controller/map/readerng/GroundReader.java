@@ -73,7 +73,7 @@ public class GroundReader implements INodeHandler<Ground> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("ground");
+		return NullCleaner.assertNotNull(Collections.singletonList("ground"));
 	}
 
 	/**

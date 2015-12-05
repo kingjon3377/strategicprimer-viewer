@@ -239,7 +239,7 @@ public class Fortress implements HasImage, ITownFixture,
 			boolean retval = true;
 			final Map<Integer, FortressMember> ours = new HashMap<>();
 			for (final FortressMember member : this) {
-				ours.put(Integer.valueOf(member.getID()), member);
+				ours.put(NullCleaner.assertNotNull(Integer.valueOf(member.getID())), member);
 			}
 			final String ctxt =
 					context + " In fortress " + name + " (ID #" + id + "):";

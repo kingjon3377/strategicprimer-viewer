@@ -109,9 +109,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 			}
 		}
 		for (final TileFixture fix : toRemove) {
-			if (fix != null) {
-				map.removeFixture(location, fix);
-			}
+			map.removeFixture(location, fix);
 		}
 	}
 	/**

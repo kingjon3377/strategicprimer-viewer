@@ -69,7 +69,7 @@ public class TrollReader implements INodeHandler<Troll> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("troll");
+		return NullCleaner.assertNotNull(Collections.singletonList("troll"));
 	}
 
 	/**

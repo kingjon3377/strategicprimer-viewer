@@ -76,7 +76,7 @@ public class ResourceReader implements INodeHandler<@NonNull ResourcePile> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("resource");
+		return NullCleaner.assertNotNull(Collections.singletonList("resource"));
 	}
 	/**
 	 * @return the class we know how to write

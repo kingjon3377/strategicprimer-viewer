@@ -201,11 +201,12 @@ public class SPMapNG implements IMutableMapNG {
 				// with SubsettableFixture
 				final Map<Integer, IUnit> ourUnits = new HashMap<>();
 				for (TileFixture fix : getOtherFixtures(point)) {
+					Integer idNum = NullCleaner.assertNotNull(Integer.valueOf(fix.getID()));
 					if (fix instanceof SubsettableFixture) {
-						ourSubsettables.put(Integer.valueOf(fix.getID()),
+						ourSubsettables.put(idNum,
 								(SubsettableFixture) fix);
 					} else if (fix instanceof IUnit) {
-						ourUnits.put(Integer.valueOf(fix.getID()), (IUnit) fix);
+						ourUnits.put(idNum, (IUnit) fix);
 					} else {
 						ourFixtures.add(fix);
 					}
@@ -522,13 +523,11 @@ public class SPMapNG implements IMutableMapNG {
 		builder.append(getCurrentTurn());
 		builder.append("\n\nPlayers:\n");
 		for (Player player : players()) {
-			if (player != null) {
-				builder.append(player.toString());
-				if (player.equals(getCurrentPlayer())) {
-					builder.append(" (current)");
-				}
-				builder.append('\n');
+			builder.append(player.toString());
+			if (player.equals(getCurrentPlayer())) {
+				builder.append(" (current)");
 			}
+			builder.append('\n');
 		}
 		builder.append("\nContents:\n");
 		for (Point location : locations()) {
@@ -601,7 +600,7 @@ public class SPMapNG implements IMutableMapNG {
 	 *            rivers to add to that location
 	 */
 	@Override
-	public void addRivers(final Point location, final River @NonNull ... rvrs) {
+	public void addRivers(final Point location, final @NonNull River @NonNull ... rvrs) {
 		final EnumSet<@NonNull River> localRivers;
 		if (!rivers.containsKey(location)) {
 			localRivers = EnumSet.noneOf(River.class);

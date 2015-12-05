@@ -15,6 +15,7 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.resources.CacheFixture;
+import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 
@@ -74,7 +75,7 @@ public class CacheReader implements INodeHandler<CacheFixture> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("cache");
+		return NullCleaner.assertNotNull(Collections.singletonList("cache"));
 	}
 
 	/** @return the class we now ow to write */

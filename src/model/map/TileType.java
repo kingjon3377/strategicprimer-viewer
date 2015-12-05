@@ -125,7 +125,7 @@ public enum TileType {
 				VALS_BY_VER.put(boxedVer, set);
 			}
 		}
-		return unmodifiableSet(VALS_BY_VER.get(boxedVer));
+		return NullCleaner.assertNotNull(unmodifiableSet(VALS_BY_VER.get(boxedVer)));
 	}
 
 	/**

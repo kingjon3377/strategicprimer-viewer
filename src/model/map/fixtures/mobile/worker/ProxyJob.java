@@ -108,9 +108,7 @@ public class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 				NullCleaner.assertNotNull(proxiedJobs
 						.toArray(new IJob[proxiedJobs.size()]));
 		for (final String skill : skillNames) {
-			if (skill != null) {
-				proxied.add(new ProxySkill(skill, parallel, jobsArray));
-			}
+			proxied.add(new ProxySkill(skill, parallel, jobsArray));
 		}
 	}
 	/**

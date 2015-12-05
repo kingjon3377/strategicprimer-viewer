@@ -70,7 +70,7 @@ public class SimurghReader implements INodeHandler<Simurgh> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("simurgh");
+		return NullCleaner.assertNotNull(Collections.singletonList("simurgh"));
 	}
 
 	/**

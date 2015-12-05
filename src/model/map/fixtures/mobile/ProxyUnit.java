@@ -229,15 +229,16 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 				@SuppressWarnings("unchecked")
 				@Nullable
 				ProxyFor<? extends UnitMember> proxy;
-				if (!map.containsKey(Integer.valueOf(member.getID()))) {
+				Integer memberID = NullCleaner.assertNotNull(Integer.valueOf(member.getID()));
+				if (!map.containsKey(memberID)) {
 					if (member instanceof IWorker) {
 						proxy = new ProxyWorker((IWorker) member);
 					} else {
 						proxy = new ProxyMember(member);
 					}
-					map.put(Integer.valueOf(member.getID()), (UnitMember) proxy);
+					map.put(memberID, (UnitMember) proxy);
 				} else {
-					proxy = (ProxyFor<? extends UnitMember>) map.get(Integer.valueOf(member.getID()));
+					proxy = (ProxyFor<? extends UnitMember>) map.get(memberID);
 					if (proxy instanceof ProxyWorker) {
 						if (member instanceof IWorker) {
 							((ProxyWorker) proxy).addProxied((IWorker) member);

@@ -93,7 +93,7 @@ public class MeadowReader implements INodeHandler<Meadow> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Arrays.asList("meadow", "field");
+		return NullCleaner.assertNotNull(Arrays.asList("meadow", "field"));
 	}
 
 	/**

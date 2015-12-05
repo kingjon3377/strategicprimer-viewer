@@ -122,7 +122,7 @@ public final class CompactTerrainReader extends
 			MAP.put(type.getTag(), type);
 			suppTagsTemp.add(type.getTag());
 		}
-		SUPP_TAGS = Collections.unmodifiableSet(suppTagsTemp);
+		SUPP_TAGS = NullCleaner.assertNotNull(Collections.unmodifiableSet(suppTagsTemp));
 	}
 
 	/**

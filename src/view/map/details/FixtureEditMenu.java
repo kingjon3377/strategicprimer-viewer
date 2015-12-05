@@ -15,6 +15,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.HasKind;
@@ -122,7 +123,7 @@ public class FixtureEditMenu extends JPopupMenu {
 	 */
 	public FixtureEditMenu(final IFixture fixture,
 			final Iterable<Player> players,
-			final IWorkerTreeModel... changeListeners) {
+			final @NonNull IWorkerTreeModel @NonNull ... changeListeners) {
 		for (final IWorkerTreeModel listener : changeListeners) {
 			listeners.add(listener);
 		}

@@ -192,6 +192,7 @@ public class WorkerMgmtFrame extends JFrame {
 						((JLabel) retval).setToolTipText(null);
 					}
 				}
+				assert retval != null;
 				return retval;
 			}
 		});

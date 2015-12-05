@@ -287,9 +287,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	private TileFixture getTopFixture(final IMapNG map, final Point location) {
 		final Iterable<TileFixture> iter = getDrawableFixtures(map, location);
 		for (final TileFixture item : iter) {
-			if (item != null) {
-				return item;
-			}
+			return item;
 		}
 		throw new IllegalArgumentException("Tile has no non-null fixtures");
 	}
@@ -585,8 +583,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			} else {
 				while (wrapped.hasNext()) {
 					final TileFixture tempCached = wrapped.next();
-					if (tempCached != null && tempCached != NULL_FIXT
-							&& zof.shouldDisplay(tempCached)) {
+					if (tempCached != NULL_FIXT && zof.shouldDisplay(tempCached)) {
 						cached = tempCached;
 						hasCached = true;
 						return true; // NOPMD

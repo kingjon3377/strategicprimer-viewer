@@ -9,6 +9,8 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 /**
  * A wrapper around {@link XMLEventReader} that makes the Iterator declaration
  * take a type argument. Also contains factory methods so callers don't need to
@@ -34,7 +36,7 @@ import javax.xml.stream.events.XMLEvent;
  * @author Jonathan Lovelace
  *
  */
-public class TypesafeXMLEventReader implements Iterator<XMLEvent> {
+public class TypesafeXMLEventReader implements Iterator<@NonNull XMLEvent> {
 	/**
 	 * The object we wrap.
 	 */

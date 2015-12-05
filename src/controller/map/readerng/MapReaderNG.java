@@ -101,7 +101,7 @@ public class MapReaderNG implements IMapReader, ISPReader {
 		final TypesafeXMLEventReader reader = new TypesafeXMLEventReader(
 				istream);
 		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<>(
-				new IncludingIterator(file, reader));
+				NullCleaner.assertNotNull(new IncludingIterator(file, reader)));
 		final IDFactory idfac = new IDFactory();
 		final PlayerCollection players = new PlayerCollection();
 		for (final XMLEvent event : eventReader) {

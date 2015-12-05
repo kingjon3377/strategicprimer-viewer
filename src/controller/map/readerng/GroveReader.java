@@ -111,7 +111,7 @@ public class GroveReader implements INodeHandler<Grove> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Arrays.asList("grove", "orchard");
+		return NullCleaner.assertNotNull(Arrays.asList("grove", "orchard"));
 	}
 
 	/**

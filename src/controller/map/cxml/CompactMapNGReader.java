@@ -350,9 +350,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		ostream.append(Integer.toString(dim.cols));
 		ostream.append("\">\n");
 		for (Player player : obj.players()) {
-			if (player != null) {
-				CompactPlayerReader.READER.write(ostream, player, indent + 2);
-			}
+			CompactPlayerReader.READER.write(ostream, player, indent + 2);
 		}
 		for (int i = 0; i < dim.rows; i++) {
 			boolean rowEmpty = true;
@@ -388,12 +386,9 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						ostream.append("<mountain />\n");
 					}
 					for (River river : obj.getRivers(point)) {
-						if (river != null) {
-							eolIfNeeded(needeol, ostream);
-							needeol = false;
-							writeRiver(ostream, river,
-									indent + 4);
-						}
+						eolIfNeeded(needeol, ostream);
+						needeol = false;
+						writeRiver(ostream, river, indent + 4);
 					}
 					Ground ground = obj.getGround(point);
 					if (ground != null) {
@@ -408,11 +403,9 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						CompactReaderAdapter.write(ostream, forest, indent + 4);
 					}
 					for (TileFixture fixture : obj.getOtherFixtures(point)) {
-						if (fixture != null) {
-							eolIfNeeded(needeol, ostream);
-							needeol = false;
-							CompactReaderAdapter.write(ostream, fixture, indent + 4);
-						}
+						eolIfNeeded(needeol, ostream);
+						needeol = false;
+						CompactReaderAdapter.write(ostream, fixture, indent + 4);
 					}
 					if (!needeol) {
 						ostream.append(indent(indent + 3));
@@ -502,9 +495,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	public static void writeRivers(final Appendable ostream,
 			final Iterable<River> iter, final int indent) throws IOException {
 		for (final River river : iter) {
-			if (river != null) {
-				writeRiver(ostream, river, indent);
-			}
+			writeRiver(ostream, river, indent);
 		}
 	}
 }

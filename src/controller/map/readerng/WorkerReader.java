@@ -57,7 +57,7 @@ public class WorkerReader implements INodeHandler<@NonNull Worker> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("worker");
+		return NullCleaner.assertNotNull(Collections.singletonList("worker"));
 	}
 
 	/**

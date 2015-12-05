@@ -69,7 +69,7 @@ public class OgreReader implements INodeHandler<Ogre> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("ogre");
+		return NullCleaner.assertNotNull(Collections.singletonList("ogre"));
 	}
 
 	/**

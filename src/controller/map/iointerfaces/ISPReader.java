@@ -9,6 +9,7 @@ import java.util.List;
 import javax.xml.stream.XMLStreamException;
 
 import controller.map.formatexceptions.SPFormatException;
+import util.NullCleaner;
 import util.Warning;
 
 /**
@@ -39,9 +40,9 @@ public interface ISPReader {
 	 * Tags we expect to use in the future; they are skipped for now and we'll
 	 * warn if they're used.
 	 */
-	List<String> FUTURE = Collections.unmodifiableList(Arrays.asList("future",
+	List<String> FUTURE = NullCleaner.assertNotNull(Collections.unmodifiableList(Arrays.asList("future",
 			"explorer", "building", "resource", "changeset", "change", "move",
-			"work", "discover", "submap"));
+			"work", "discover", "submap")));
 
 	/**
 	 * @param <T> A supertype of the object the XML represents

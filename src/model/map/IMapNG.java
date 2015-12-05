@@ -1,5 +1,6 @@
 package model.map;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.fixtures.Ground;
@@ -101,7 +102,7 @@ public interface IMapNG extends Subsettable<IMapNG>, Comparable<IMapNG> {
 	 * @return a view of any fixtures on the map that aren't covered in the
 	 *         other querying methods.
 	 */
-	Iterable<TileFixture> getOtherFixtures(Point location);
+	Iterable<@NonNull TileFixture> getOtherFixtures(Point location);
 
 	/**
 	 * @return the current turn

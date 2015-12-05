@@ -75,8 +75,8 @@ public final class GenerateTileContents {
 	 * maps.
 	 */
 	private static final Map<String, GenerateTileContents> INSTANCES =
-			Collections.synchronizedMap(
-					new HashMap<String, GenerateTileContents>());
+			NullCleaner.assertNotNull(Collections.synchronizedMap(
+					new HashMap<String, GenerateTileContents>()));
 
 	/**
 	 * @param filename
@@ -132,7 +132,7 @@ public final class GenerateTileContents {
 	private void generateTileContents(final Point point, final TileType terrain)
 			throws MissingTableException {
 		final int reps = SingletonRandom.RANDOM.nextInt(4) + 1;
-		final List<TileFixture> empty = Collections.emptyList();
+		final List<TileFixture> empty = NullCleaner.assertNotNull(Collections.emptyList());
 		for (int i = 0; i < reps; i++) {
 			println(runner.recursiveConsultTable("fisher", point,
 					terrain, empty));

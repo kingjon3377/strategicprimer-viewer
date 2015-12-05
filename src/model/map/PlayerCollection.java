@@ -223,9 +223,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	public IMutablePlayerCollection copy(final boolean zero) {
 		final PlayerCollection retval = new PlayerCollection();
 		for (Player player : this) {
-			if (player != null) {
-				retval.add(player);
-			}
+			retval.add(player);
 		}
 		return retval;
 	}

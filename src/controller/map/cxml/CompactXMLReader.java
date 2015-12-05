@@ -8,6 +8,8 @@ import java.io.Reader;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.ISPReader;
@@ -57,7 +59,7 @@ public class CompactXMLReader implements IMapReader, ISPReader {
 	 * @throws SPFormatException on SP XML format error
 	 */
 	@Override
-	public <T> T readXML(final File file, final Reader istream,
+	public <@NonNull T> T readXML(final File file, final Reader istream,
 			final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		final TypesafeXMLEventReader reader = new TypesafeXMLEventReader(

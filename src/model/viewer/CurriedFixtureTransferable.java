@@ -55,9 +55,7 @@ public class CurriedFixtureTransferable implements Transferable {
 	public CurriedFixtureTransferable(final List<TileFixture> list) {
 		final List<Transferable> payloadTemp = new ArrayList<>();
 		for (final TileFixture fix : list) {
-			if (fix != null) {
-				payloadTemp.add(new FixtureTransferable(fix)); // NOPMD
-			}
+			payloadTemp.add(new FixtureTransferable(fix)); // NOPMD
 		}
 		payload =
 				NullCleaner.assertNotNull(Collections

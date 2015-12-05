@@ -16,6 +16,7 @@ import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
 import model.map.TileType;
+import util.NullCleaner;
 
 /**
  * A test case for TestExplorationRunner.
@@ -45,7 +46,7 @@ public final class TestExplorationRunner {
 	/**
 	 * The empty list.
 	 */
-	private static final List<TileFixture> EMPTY = Collections.emptyList();
+	private static final List<TileFixture> EMPTY = NullCleaner.assertNotNull(Collections.emptyList());
 	/**
 	 * Extracted constant, to fix a warning because it occurred three or more
 	 * times.
@@ -229,7 +230,7 @@ public final class TestExplorationRunner {
 		runner.loadTable("referent_two", new ConstantTable(
 				"( #existent_table# )"));
 		runner.loadTable("referent_three", new QuadrantTable(1,
-				Arrays.asList("#referent_one#", "#referent_two#")));
+				NullCleaner.assertNotNull(Arrays.asList("#referent_one#", "#referent_two#"))));
 		assertFalse("recursive case to exercise cache-hits",
 				runner.recursiveCheck("referent_three"));
 		runner.loadTable("false_referent", new ConstantTable("#nonexistent#"));

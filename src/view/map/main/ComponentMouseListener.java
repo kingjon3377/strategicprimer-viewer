@@ -137,7 +137,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 			fixes.add(forest);
 		}
 		final Iterable<TileFixture> iter = new IteratorWrapper<>(
-				map.getOtherFixtures(point).iterator(), fixComp);
+				NullCleaner.assertNotNull(map.getOtherFixtures(point).iterator()), fixComp);
 		final Iterator<TileFixture> iterat = iter.iterator();
 		if (iterat.hasNext()) {
 			fixes.add(iterat.next());

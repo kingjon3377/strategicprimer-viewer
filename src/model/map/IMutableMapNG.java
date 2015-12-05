@@ -48,12 +48,12 @@ public interface IMutableMapNG extends IMapNG {
 	 * @param location a location
 	 * @param rivers rivers to add there
 	 */
-	void addRivers(Point location, River @NonNull ... rivers);
+	void addRivers(Point location, @NonNull River @NonNull ... rivers);
 	/**
 	 * @param location a location
 	 * @param rivers rivers to remove there
 	 */
-	void removeRivers(Point location, River... rivers);
+	void removeRivers(Point location, @NonNull River @NonNull ... rivers);
 
 	/**
 	 * @param location

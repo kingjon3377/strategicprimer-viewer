@@ -74,7 +74,7 @@ public class PlayerReader implements INodeHandler<@NonNull Player> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("player");
+		return NullCleaner.assertNotNull(Collections.singletonList("player"));
 	}
 
 	/**

@@ -69,7 +69,7 @@ public class DjinnReader implements INodeHandler<Djinn> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("djinn");
+		return NullCleaner.assertNotNull(Collections.singletonList("djinn"));
 	}
 
 	/** @return te class we know how to write */

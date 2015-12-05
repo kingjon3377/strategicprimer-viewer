@@ -22,6 +22,7 @@ import model.map.fixtures.ResourcePile;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 import util.NullCleaner;
+import util.TypesafeLogger;
 import util.Warning;
 
 /**
@@ -52,7 +53,7 @@ public class FortressReader implements INodeHandler<Fortress> {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(FortressReader.class.getName());
+	private static final Logger LOGGER = TypesafeLogger.getLogger(FortressReader.class);
 	/**
 	 * Parse a fortress.
 	 *
@@ -114,7 +115,7 @@ public class FortressReader implements INodeHandler<Fortress> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("fortress");
+		return NullCleaner.assertNotNull(Collections.singletonList("fortress"));
 	}
 
 	/**

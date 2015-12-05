@@ -73,7 +73,7 @@ public class ImplementReader implements INodeHandler<@NonNull Implement> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("implement");
+		return NullCleaner.assertNotNull(Collections.singletonList("implement"));
 	}
 	/**
 	 * @return the class we know how to write

@@ -167,7 +167,7 @@ public final class ExplorationClickListener implements ActionListener,
 						continue;
 					} else if (fix instanceof Mountain) {
 						map.setMountainous(dPoint, true);
-					} else if (fix != null && !hasFixture(map, dPoint, fix)) {
+					} else if (!hasFixture(map, dPoint, fix)) {
 						boolean zero = fix instanceof HasOwner && !((HasOwner) fix)
 								.getOwner().equals(player);
 						map.addFixture(dPoint, fix.copy(zero));

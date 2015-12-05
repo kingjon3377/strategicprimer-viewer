@@ -70,7 +70,7 @@ public class SandbarReader implements INodeHandler<Sandbar> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("sandbar");
+		return NullCleaner.assertNotNull(Collections.singletonList("sandbar"));
 	}
 
 	/**

@@ -68,7 +68,7 @@ public class MountainReader implements INodeHandler<Mountain> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("mountain");
+		return NullCleaner.assertNotNull(Collections.singletonList("mountain"));
 	}
 
 	/**

@@ -32,6 +32,7 @@ import model.workermgmt.RaceFactory;
 import util.EqualsAny;
 import util.IteratorWrapper;
 import util.NullCleaner;
+import util.TypesafeLogger;
 import util.Warning;
 
 /**
@@ -61,8 +62,8 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER =
-			Logger.getLogger(CompactTownReader.class.getName());
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(CompactTownReader.class);
 	/**
 	 * Singleton object.
 	 */

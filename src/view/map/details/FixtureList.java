@@ -18,6 +18,7 @@ import javax.swing.JList;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.listeners.SelectionChangeListener;
@@ -53,7 +54,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public class FixtureList extends JList<TileFixture> implements
+public class FixtureList extends JList<@NonNull TileFixture> implements
 		DragGestureListener, SelectionChangeListener {
 	/**
 	 * The list model.

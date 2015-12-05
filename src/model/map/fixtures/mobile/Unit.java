@@ -412,7 +412,7 @@ public class Unit implements IUnit {
 			boolean retval = true;
 			final Map<Integer, UnitMember> ours = new HashMap<>();
 			for (final UnitMember member : this) {
-				ours.put(Integer.valueOf(member.getID()), member);
+				ours.put(NullCleaner.assertNotNull(Integer.valueOf(member.getID())), member);
 			}
 			final String ctxt =
 					NullCleaner.assertNotNull(String.format(

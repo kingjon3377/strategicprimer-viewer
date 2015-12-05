@@ -87,7 +87,7 @@ public class AdventureReader implements INodeHandler<@NonNull AdventureFixture> 
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("adventure");
+		return NullCleaner.assertNotNull(Collections.singletonList("adventure"));
 	}
 
 	/**

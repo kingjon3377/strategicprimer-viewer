@@ -85,7 +85,7 @@ public class CityReader implements INodeHandler<@NonNull City> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("city");
+		return NullCleaner.assertNotNull(Collections.singletonList("city"));
 	}
 
 	/**

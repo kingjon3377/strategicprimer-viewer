@@ -16,6 +16,7 @@ import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
 import model.map.TileType;
+import util.NullCleaner;
 
 /**
  * This is part of the Strategic Primer assistive programs suite developed by
@@ -42,7 +43,7 @@ public final class TestTableLoader {
 	/**
 	 * The empty list.
 	 */
-	private static final List<TileFixture> EMPTY = Collections.emptyList();
+	private static final List<TileFixture> EMPTY = NullCleaner.assertNotNull(Collections.emptyList());
 	/**
 	 * "one".
 	 */

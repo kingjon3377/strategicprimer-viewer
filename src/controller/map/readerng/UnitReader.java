@@ -172,9 +172,7 @@ public class UnitReader implements INodeHandler<Unit> {
 		}
 		retval.addIdAttribute(obj.getID());
 		for (final UnitMember member : obj) {
-			if (member != null) {
-				retval.addChild(ReaderAdapter.ADAPTER.write(member));
-			}
+			retval.addChild(ReaderAdapter.ADAPTER.write(member));
 		}
 		if (!obj.getOrders().trim().isEmpty()) {
 			retval.addAttribute("text-contents", obj.getOrders().trim() + '\n');

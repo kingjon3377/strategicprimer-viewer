@@ -12,6 +12,7 @@ import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
 import util.NullCleaner;
+import util.TypesafeLogger;
 
 /**
  * A class to create exploration results. The initial implementation is a bit
@@ -41,7 +42,7 @@ public class ExplorationRunner { // NOPMD
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = Logger.getLogger(ExplorationRunner.class.getName());
+	private static final Logger LOGGER = TypesafeLogger.getLogger(ExplorationRunner.class);
 	/**
 	 * @param terrain the terrain at the location
 	 * @param fixtures any fixtures at the location
@@ -254,7 +255,7 @@ public class ExplorationRunner { // NOPMD
 	public boolean recursiveCheck() {
 		final Set<String> state = new HashSet<>(); // NOPMD
 		for (final String table : tables.keySet()) {
-			if (table != null && recursiveCheck(table, state)) {
+			if (recursiveCheck(table, state)) {
 				return true; // NOPMD;
 			}
 		}
@@ -270,9 +271,7 @@ public class ExplorationRunner { // NOPMD
 	public void verboseRecursiveCheck(final Appendable ostream) throws IOException {
 		final Set<String> state = new HashSet<>(); // NOPMD
 		for (final String table : tables.keySet()) {
-			if (table != null) {
-				verboseRecursiveCheck(table, ostream, state);
-			}
+			verboseRecursiveCheck(table, ostream, state);
 		}
 	}
 

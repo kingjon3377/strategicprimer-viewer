@@ -70,7 +70,7 @@ public class MinotaurReader implements INodeHandler<Minotaur> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("minotaur");
+		return NullCleaner.assertNotNull(Collections.singletonList("minotaur"));
 	}
 
 	/**

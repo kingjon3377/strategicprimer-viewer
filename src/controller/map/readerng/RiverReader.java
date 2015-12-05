@@ -74,7 +74,7 @@ public class RiverReader implements INodeHandler<@NonNull River> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Arrays.asList("river", "lake");
+		return NullCleaner.assertNotNull(Arrays.asList("river", "lake"));
 	}
 
 	/**

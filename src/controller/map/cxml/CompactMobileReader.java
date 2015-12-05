@@ -9,6 +9,8 @@ import java.util.Set;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.HasImage;
@@ -58,7 +60,7 @@ import util.Warning;
  *
  */
 public final class CompactMobileReader extends
-		AbstractCompactReader<MobileFixture> {
+		AbstractCompactReader<@NonNull MobileFixture> {
 	/**
 	 * Mapping from tags to enum-tags.
 	 */
@@ -168,7 +170,7 @@ public final class CompactMobileReader extends
 			MAP.put(mtype.tag, mtype);
 			suppTagsTemp.add(mtype.tag);
 		}
-		SUPP_TAGS = Collections.unmodifiableSet(suppTagsTemp);
+		SUPP_TAGS = NullCleaner.assertNotNull(Collections.unmodifiableSet(suppTagsTemp));
 		TAG_MAP = new HashMap<>();
 		TAG_MAP.put(Animal.class, "animal");
 		TAG_MAP.put(Centaur.class, "centaur");

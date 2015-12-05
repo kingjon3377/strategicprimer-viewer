@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.swing.DefaultListModel;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.listeners.PlayerChangeListener;
@@ -33,7 +34,7 @@ import model.map.fixtures.mobile.IUnit;
  * @author Jonathan Lovelace
  *
  */
-public class ExplorationUnitListModel extends DefaultListModel<IUnit> implements
+public class ExplorationUnitListModel extends DefaultListModel<@NonNull IUnit> implements
 		PlayerChangeListener {
 	/**
 	 * The exploration model to work from.

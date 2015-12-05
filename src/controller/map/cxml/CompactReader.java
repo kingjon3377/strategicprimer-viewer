@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
@@ -35,7 +37,7 @@ import util.Warning;
  * @author Jonathan Lovelace
  *
  */
-public interface CompactReader<T> {
+public interface CompactReader<@NonNull T> {
 	/**
 	 * @param element the element being parsed
 	 * @param stream to read more elements from

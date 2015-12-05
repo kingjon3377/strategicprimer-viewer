@@ -226,9 +226,7 @@ public class ZeroToOneConverter {
 		final Iterable<Attribute> attrs = new IteratorWrapper<>(// NOPMD
 				element.getAttributes());
 		for (final Attribute attr : attrs) {
-			if (attr != null) {
-				builder.append(printAttribute(attr));
-			}
+			builder.append(printAttribute(attr));
 		}
 		builder.append('>');
 		return NullCleaner.assertNotNull(builder.toString());

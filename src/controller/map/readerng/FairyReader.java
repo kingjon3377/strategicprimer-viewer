@@ -72,7 +72,7 @@ public class FairyReader implements INodeHandler<Fairy> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("fairy");
+		return NullCleaner.assertNotNull(Collections.singletonList("fairy"));
 	}
 
 	/** @return the class we know how to write */

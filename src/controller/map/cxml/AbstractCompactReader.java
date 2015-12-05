@@ -10,6 +10,7 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import controller.map.formatexceptions.DeprecatedPropertyException;
@@ -50,7 +51,7 @@ import util.Warning;
  * @author Jonathan Lovelace
  *
  */
-public abstract class AbstractCompactReader<T> implements CompactReader<T> {
+public abstract class AbstractCompactReader<@NonNull T> implements CompactReader<@NonNull T> {
 	/**
 	 * The string to use instead of the tag in exceptions when the tag is null.
 	 */

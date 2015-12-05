@@ -76,7 +76,7 @@ public class AnimalReader implements INodeHandler<@NonNull Animal> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("animal");
+		return NullCleaner.assertNotNull(Collections.singletonList("animal"));
 	}
 
 	/** @return the class we know how to write */

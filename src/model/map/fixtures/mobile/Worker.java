@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.IFixture;
@@ -78,7 +79,7 @@ public class Worker implements IWorker {
 	 * @param jobs the Jobs the worker is trained in
 	 */
 	public Worker(final String wName, final String workerRace, final int idNum,
-			final Job... jobs) {
+			final @NonNull Job @NonNull ... jobs) {
 		name = wName;
 		id = idNum;
 		race = workerRace;

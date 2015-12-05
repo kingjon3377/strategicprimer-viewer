@@ -9,6 +9,8 @@ import java.util.List;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
@@ -64,14 +66,14 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	 * Singleton.
 	 */
 	private CompactUnitReader() {
-		final List<CompactReader<? extends IFixture>> temp = new ArrayList<>();
+		final List<@NonNull CompactReader<@NonNull ? extends IFixture>> temp = new ArrayList<>();
 		temp.add(CompactMobileReader.READER);
 		temp.add(CompactResourceReader.READER);
 		temp.add(CompactTerrainReader.READER);
 		temp.add(CompactTextReader.READER);
 		temp.add(CompactTownReader.READER);
 		temp.add(CompactWorkerReader.READER);
-		readers = unmodifiableList(temp);
+		readers = NullCleaner.assertNotNull(unmodifiableList(temp));
 	}
 
 	/**
@@ -226,9 +228,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 		if (obj.iterator().hasNext() || !obj.getOrders().trim().isEmpty()) {
 			ostream.append('>').append(obj.getOrders().trim()).append('\n');
 			for (final UnitMember member : obj) {
-				if (member != null) {
-					CompactReaderAdapter.write(ostream, member, indent + 1);
-				}
+				CompactReaderAdapter.write(ostream, member, indent + 1);
 			}
 			ostream.append(indent(indent));
 			ostream.append("</unit>\n");

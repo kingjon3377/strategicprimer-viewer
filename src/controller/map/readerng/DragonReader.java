@@ -72,7 +72,7 @@ public class DragonReader implements INodeHandler<Dragon> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("dragon");
+		return NullCleaner.assertNotNull(Collections.singletonList("dragon"));
 	}
 
 	/** @return the class we know how to write */

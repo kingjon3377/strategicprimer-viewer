@@ -54,7 +54,7 @@ public class SkillReader implements INodeHandler<@NonNull Skill> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("skill");
+		return NullCleaner.assertNotNull(Collections.singletonList("skill"));
 	}
 
 	/**

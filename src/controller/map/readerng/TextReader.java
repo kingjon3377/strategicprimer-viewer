@@ -90,7 +90,7 @@ public class TextReader implements INodeHandler<TextFixture> {
 	 */
 	@Override
 	public List<String> understands() {
-		return Collections.singletonList("text");
+		return NullCleaner.assertNotNull(Collections.singletonList("text"));
 	}
 
 	/**

@@ -3,6 +3,8 @@ package util;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 /**
  * A class to convert a map's Entry set to an iterable of Pairs.
  *
@@ -28,7 +30,7 @@ import java.util.Map;
  * @param <I> the first parameter of the map
  * @param <K> the second parameter of the map.
  */
-public class SetPairConverter<I, K> implements Iterable<Pair<I, K>> {
+public class SetPairConverter<@NonNull I, @NonNull K> implements Iterable<Pair<I, K>> {
 	/**
 	 * The map.
 	 */
@@ -56,7 +58,7 @@ public class SetPairConverter<I, K> implements Iterable<Pair<I, K>> {
 	 * @param <K> the second parameter of the map
 	 * @author Jonathan Lovelace
 	 */
-	private static class IteratorImpl<I, K> implements Iterator<Pair<I, K>> {
+	private static class IteratorImpl<@NonNull I, @NonNull K> implements Iterator<@NonNull Pair<I, K>> {
 		/**
 		 * The object we're a wrapper around.
 		 */

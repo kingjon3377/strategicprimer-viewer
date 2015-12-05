@@ -2,6 +2,8 @@ package model.exploration;
 
 import javax.swing.DefaultListModel;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.listeners.MapChangeListener;
 import model.map.Player;
 
@@ -28,7 +30,7 @@ import model.map.Player;
  * @author Jonathan Lovelace
  *
  */
-public class PlayerListModel extends DefaultListModel<Player> implements
+public class PlayerListModel extends DefaultListModel<@NonNull Player> implements
 		MapChangeListener {
 	/**
 	 * The exploration model.
