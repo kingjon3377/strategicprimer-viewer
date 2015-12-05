@@ -64,7 +64,7 @@ public class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		final HeadedList<String> others = new HtmlList(
+		final HeadedList<@NonNull String> others = new HtmlList(
 				"<h4>Villages you know about:</h4>");
 		final HeadedList<String> own = new HtmlList(
 				"<h4>Villages pledged to your service:</h4>");

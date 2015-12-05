@@ -82,7 +82,7 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, //NOPMD
 			final IMapNG map, final Player player) {
 		// TODO: Use Guava Multimaps to reduce cyclomatic complexity
-		final HeadedList<String> caches = new HtmlList(
+		final HeadedList<@NonNull String> caches = new HtmlList(
 				"<h5>Caches collected by your explorers and workers:</h5>");
 		final HeadedList<String> groves = new HtmlList(
 				"<h5>Groves and orchards</h5>");

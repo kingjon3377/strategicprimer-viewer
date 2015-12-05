@@ -85,7 +85,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 * A list that prints a header in its toString().
 	 * @param <T> the type of thing in the list
 	 */
-	protected interface HeadedList<T> extends List<T> {
+	protected interface HeadedList<@NonNull T> extends List<@NonNull T> {
 		/**
 		 * @return the header text
 		 */
@@ -95,8 +95,8 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 * A list that produces HTML in its toString().
 	 * @author Jonathan Lovelace
 	 */
-	protected static class HtmlList extends ArrayList<String> implements
-	HeadedList<String> {
+	protected static class HtmlList extends ArrayList<@NonNull String>
+			implements HeadedList<@NonNull String> {
 		/**
 		 * Version UID for serialization.
 		 */
