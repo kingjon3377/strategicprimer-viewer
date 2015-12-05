@@ -5,7 +5,6 @@ import static view.util.MenuItemCreator.createHotkey;
 import static view.util.MenuItemCreator.createMenuItem;
 import static view.util.MenuItemCreator.createShiftHotkey;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -16,8 +15,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
-
-import org.eclipse.jdt.annotation.Nullable;
 
 import controller.map.misc.IOHandler;
 import model.map.IMutableMapNG;
@@ -120,18 +117,29 @@ public class SPMenu extends JMenuBar {
 		fileMenu.addSeparator();
 		final JMenuItem openViewerItem = createMenuItem("Open in map viewer",
 				KeyEvent.VK_M, createHotkey(KeyEvent.VK_M),
-				"Open the main map in the map viewer for a broader view",
-				new ViewerOpenerInvoker(model, true, handler));
+				"Open the main map in the map viewer for a broader view", evt -> {
+					invokeLater(() -> new ViewerFrame(
+							new ViewerModel(model.getMap(), model.getMapFile()), handler)
+									.setVisible(true));
+				});
 		fileMenu.add(openViewerItem);
 		if (model instanceof IViewerModel) {
 			openViewerItem.setEnabled(false);
 		}
 		final JMenuItem openSecondaryViewerItem = createMenuItem(
-				"Open secondary map in map viewer",
-				KeyEvent.VK_E,
+				"Open secondary map in map viewer", KeyEvent.VK_E,
 				createHotkey(KeyEvent.VK_E),
 				"Open the first secondary map in the map viewer for a broader view",
-				new ViewerOpenerInvoker(model, false, handler));
+				evt -> {
+					IDriverModel mmodel = model;
+					if (mmodel instanceof IMultiMapModel) {
+						final Pair<IMutableMapNG, File> mapPair = ((IMultiMapModel) mmodel)
+								.getSubordinateMaps().iterator().next();
+						invokeLater(() -> new ViewerFrame(
+								new ViewerModel(mapPair.first(), mapPair.second()),
+								handler).setVisible(true));
+					}
+				});
 		fileMenu.add(openSecondaryViewerItem);
 		if (model instanceof IViewerModel || !(model instanceof IMultiMapModel)) {
 			openSecondaryViewerItem.setEnabled(false);
@@ -286,103 +294,5 @@ public class SPMenu extends JMenuBar {
 		add(menu);
 		menu.setEnabled(false);
 		return menu;
-	}
-	/**
-	 * A class to invoke a ViewerOpener (below).
-	 * @author Jonathan Lovelace
-	 */
-	protected static final class ViewerOpenerInvoker implements ActionListener {
-		/**
-		 * @param model
-		 *            the exploration model
-		 * @param first
-		 *            whether this is to open the main map, or otherwise a
-		 *            subordinate map
-		 * @param ioHandler
-		 *            the I/O handler to use to actually open the file
-		 */
-		protected ViewerOpenerInvoker(final IDriverModel model,
-				final boolean first, final IOHandler ioHandler) {
-			theModel = model;
-			frst = first;
-			ioh = ioHandler;
-		}
-		/**
-		 * The exploration model.
-		 */
-		private final IDriverModel theModel;
-		/**
-		 * Whether we will be opening the main map, rather than a subordinate map.
-		 */
-		private final boolean frst;
-		/**
-		 * The I/O handler to actually open the file.
-		 */
-		private final IOHandler ioh;
-		/**
-		 * Handle the action.
-		 */
-		@Override
-		public void actionPerformed(@Nullable final ActionEvent evt) {
-			if (frst) {
-				invokeLater(new ViewerOpener(theModel.getMap(),
-						theModel.getMapFile(), ioh));
-			} else if (theModel instanceof IMultiMapModel) {
-				final Pair<IMutableMapNG, File> mapPair =
-						((IMultiMapModel) theModel).getSubordinateMaps()
-								.iterator().next();
-				invokeLater(new ViewerOpener(mapPair.first(), mapPair.second(),
-						ioh));
-			}
-		}
-	}
-
-	/**
-	 * A class to open a ViewerFrame.
-	 * @author Jonathan Lovelace
-	 */
-	private static class ViewerOpener implements Runnable {
-		/**
-		 * The map view to open.
-		 */
-		private final IMutableMapNG view;
-		/**
-		 * The file name the map was loaded from.
-		 */
-		private final File file;
-		/**
-		 * The I/O handler to let the menu handle 'open', etc.
-		 */
-		private final IOHandler ioHelper;
-
-		/**
-		 * Constructor.
-		 *
-		 * @param map the map (view) to open
-		 * @param source the filename it was loaded from
-		 * @param ioHandler the I/O handler to let the menu handle 'open', etc.
-		 */
-		protected ViewerOpener(final IMutableMapNG map, final File source,
-				final IOHandler ioHandler) {
-			view = map;
-			file = source;
-			ioHelper = ioHandler;
-		}
-
-		/**
-		 * Run the thread.
-		 */
-		@Override
-		public void run() {
-			new ViewerFrame(new ViewerModel(view, file), ioHelper)
-					.setVisible(true);
-		}
-		/**
-		 * @return a String representation of the object
-		 */
-		@Override
-		public String toString() {
-			return "ViewerOpener";
-		}
 	}
 }

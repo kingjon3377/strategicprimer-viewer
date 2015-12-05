@@ -10,7 +10,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import model.map.IMapNG;
 import model.map.Point;
 import model.map.PointFactory;
-import model.map.TileFixture;
 import model.viewer.ZOrderFilter;
 import view.map.main.TileDrawHelper;
 import view.map.main.TileDrawHelperFactory;
@@ -65,37 +64,7 @@ public class DualTileButton extends JButton {
 	/**
 	 * The ZOrderFilter instance to pass to the factory rather than null.
 	 */
-	private static final ZOrderFilter NULL_ZOF = new NullZOrderFilter();
-
-	/**
-	 * A ZOrderFilter implementation that does nothing, to avoid passing null to
-	 * the factory.
-	 * @author Jonathan Lovelace
-	 */
-	private static final class NullZOrderFilter implements ZOrderFilter {
-		/**
-		 * @return a String representation of the object
-		 */
-		@Override
-		public String toString() {
-			return "NullZOrderFilter";
-		}
-		/**
-		 * Constructor. Only explicit to fix a synthetic-access warning.
-		 */
-		protected NullZOrderFilter() {
-			// Do nothing
-		}
-
-		/**
-		 * @param fix ignored
-		 * @return true
-		 */
-		@Override
-		public boolean shouldDisplay(final TileFixture fix) {
-			return true;
-		}
-	}
+	private static final ZOrderFilter NULL_ZOF = fix -> true;
 
 	/**
 	 * Paint the component.

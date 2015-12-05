@@ -3,8 +3,6 @@ package view.worker;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.FileWriter;
@@ -93,6 +91,11 @@ import view.util.SystemOut;
  *
  */
 public class WorkerMgmtFrame extends JFrame {
+	/**
+	 * The logger.
+	 */
+	private static final Logger LOGGER = TypesafeLogger
+			.getLogger(WorkerMgmtFrame.class);
 	/**
 	 * The header to put above the report.
 	 */
@@ -224,22 +227,40 @@ public class WorkerMgmtFrame extends JFrame {
 		model.addMapChangeListener(reportUpdater);
 		final MemberDetailPanel mdp = new MemberDetailPanel();
 		tree.addUnitMemberListener(mdp);
-		setContentPane(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT,
-				HALF_WAY, HALF_WAY, new SplitWithWeights(
-						JSplitPane.VERTICAL_SPLIT, TWO_THIRDS, TWO_THIRDS,
-						new BorderedPanel(new JScrollPane(tree), plabel, null,
-								null, null),
-						new BorderedPanel(
-								ordersPanel,
-								new ListenedButton("Add New Unit",
-										new WindowShower(newUnitFrame,
-												"Add New Unit")),
+		StrategyExporter strategyExporter = new StrategyExporter(smodel, wtmodel);
+		setContentPane(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT, HALF_WAY,
+				HALF_WAY,
+				new SplitWithWeights(JSplitPane.VERTICAL_SPLIT, TWO_THIRDS, TWO_THIRDS,
+						new BorderedPanel(new JScrollPane(tree), plabel, null, null,
+								null),
+						new BorderedPanel(ordersPanel,
+								new ListenedButton("Add New Unit", evt -> {
+									if (evt != null && "Add New Unit"
+											.equals(evt.getActionCommand())) {
+										newUnitFrame.setVisible(true);
+									}
+								}),
 								new ListenedButton(
 										"Export a proto-strategy from units' orders",
-										new ExportButtonHandler(outer, smodel,
-												wtmodel)), null, null)),
-				new BorderedPanel(new JScrollPane(report), new JLabel(RPT_HDR),
-						mdp, null, null)));
+										evt -> {
+											final JFileChooser chooser = new JFileChooser(
+													".");
+											if (chooser.showSaveDialog(
+													outer) == JFileChooser.APPROVE_OPTION) {
+												try (final FileWriter writer = new FileWriter(
+														chooser.getSelectedFile())) {
+													writer.append(strategyExporter
+																	.createStrategy());
+												} catch (final IOException except) {
+													LOGGER.log(Level.SEVERE,
+															"I/O error exporting strategy",
+															except);
+												}
+											}
+										}),
+								null, null)),
+				new BorderedPanel(new JScrollPane(report), new JLabel(RPT_HDR), mdp, null,
+						null)));
 
 		setJMenuBar(new WorkerMenu(ioHandler, this, pch, model));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -274,51 +295,6 @@ public class WorkerMgmtFrame extends JFrame {
 		frame.setVisible(true);
 		return frame.getModel();
 	}
-	/**
-	 * A listener to show a window on button press.
-	 *
-	 * @author Jonathan Lovelace
-	 *
-	 */
-	private static final class WindowShower implements ActionListener {
-		/**
-		 * The window to show.
-		 */
-		private final JFrame frame;
-		/**
-		 * The button to listen for.
-		 */
-		private final String action;
-
-		/**
-		 * @param window the window to show
-		 * @param buttonText the button to listen for.
-		 */
-		protected WindowShower(final JFrame window, final String buttonText) {
-			frame = window;
-			action = buttonText;
-		}
-
-		/**
-		 * Handle button press.
-		 *
-		 * @param evt the event to handle
-		 */
-		@Override
-		public void actionPerformed(@Nullable final ActionEvent evt) {
-			if (evt != null && action.equals(evt.getActionCommand())) {
-				frame.setVisible(true);
-			}
-		}
-		/**
-		 * @return a String representation of the object
-		 */
-		@Override
-		public String toString() {
-			return "WindowShower";
-		}
-	}
-
 	/**
 	 * A class to update the report when a new map is loaded.
 	 *
@@ -375,68 +351,6 @@ public class WorkerMgmtFrame extends JFrame {
 		@Override
 		public String toString() {
 			return "ReportUpdater";
-		}
-	}
-
-	/**
-	 * Handle the strategy-export button.
-	 *
-	 * @author Jonathan Lovelace
-	 *
-	 */
-	private static final class ExportButtonHandler implements ActionListener {
-		/**
-		 * The surrounding frame.
-		 */
-		private final Component parent;
-		/**
-		 * The logger. FIXME: Should be private static final on the outer class.
-		 */
-		private static final Logger LOGGER = TypesafeLogger
-				.getLogger(WorkerMgmtFrame.class);
-		/**
-		 * The file chooser.
-		 */
-		private final JFileChooser chooser = new JFileChooser(".");
-		/**
-		 * The strategy-exporter.
-		 */
-		private final StrategyExporter exp;
-
-		/**
-		 * @param outer the surrounding frame.
-		 * @param smodel the driver model.
-		 * @param wtmodel the worker-tree model, to get dismissed unit-members from
-		 */
-		protected ExportButtonHandler(final Component outer,
-				final IWorkerModel smodel, final IWorkerTreeModel wtmodel) {
-			parent = outer;
-			exp = new StrategyExporter(smodel, wtmodel);
-		}
-
-		/**
-		 * Handle button press.
-		 *
-		 * @param evt the event to handle.
-		 */
-		@Override
-		public void actionPerformed(@Nullable final ActionEvent evt) {
-			if (chooser.showSaveDialog(parent) == JFileChooser.APPROVE_OPTION) {
-				try (final FileWriter writer = new FileWriter(
-						chooser.getSelectedFile())) {
-					writer.append(exp.createStrategy());
-				} catch (final IOException except) {
-					LOGGER.log(Level.SEVERE, "I/O error exporting strategy",
-							except);
-				}
-			}
-		}
-		/**
-		 * @return a String representation of the object
-		 */
-		@Override
-		public String toString() {
-			return "ExportButtonHandler";
 		}
 	}
 

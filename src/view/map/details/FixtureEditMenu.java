@@ -130,8 +130,18 @@ public class FixtureEditMenu extends JPopupMenu {
 		boolean mutable = false;
 		final FixtureEditMenu outer = this;
 		if (fixture instanceof HasName) {
-			addMenuItem(new JMenuItem("Rename", KeyEvent.VK_N),
-					new NameChangeListener(outer, fixture));
+			addMenuItem(new JMenuItem("Rename", KeyEvent.VK_N), event -> {
+				final String result = (String) showInputDialog(outer,
+						"Fixture's new name:", "Rename Fixture",
+						JOptionPane.PLAIN_MESSAGE, null, null,
+						((HasName) fixture).getName());
+				if (result != null && !result.equals(((HasName) fixture).getName())) {
+					((HasName) fixture).setName(result);
+					for (final IWorkerTreeModel listener : listeners) {
+						listener.renameItem((HasName) fixture);
+					}
+				}
+			});
 			mutable = true;
 		}
 		if (fixture instanceof HasKind) {
