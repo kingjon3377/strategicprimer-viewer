@@ -2,7 +2,7 @@ package controller.map.misc;
 
 import java.util.Comparator;
 
-import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jdt.annotation.NonNull;
 
 import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.City;
@@ -41,7 +41,7 @@ import model.map.fixtures.towns.TownStatus;
  *
  * @author Jonathan Lovelace
  */
-public final class TownComparator implements Comparator<AbstractTown> {
+public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	/**
 	 * A comparator for town-sizes.
 	 */
@@ -136,11 +136,9 @@ public final class TownComparator implements Comparator<AbstractTown> {
 	 *         "greater" than the second.
 	 */
 	@Override
-	public int compare(@Nullable final AbstractTown one,
-			@Nullable final AbstractTown two) {
-		if (one == null || two == null) {
-			throw new IllegalArgumentException("Asked to compare null");
-		} else if (one.status().equals(two.status())) {
+	public int compare(final AbstractTown one,
+			final AbstractTown two) {
+		if (one.status().equals(two.status())) {
 			if (one.size().equals(two.size())) {
 				if (one.getClass().equals(two.getClass())) {
 					return one.getName().compareTo(two.getName()); // NOPMD

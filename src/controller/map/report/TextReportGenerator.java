@@ -3,6 +3,8 @@ package controller.map.report;
 import java.util.Comparator;
 import java.util.Map;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -41,7 +43,7 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	public TextReportGenerator(final Comparator<Pair<Point, IFixture>> comparator) {
+	public TextReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator) {
 		super(comparator);
 	}
 	/**

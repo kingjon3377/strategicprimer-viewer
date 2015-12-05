@@ -11,6 +11,8 @@ import java.util.Map.Entry;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -60,7 +62,7 @@ public class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	public HarvestableReportGenerator(final Comparator<Pair<Point, IFixture>> comparator) {
+	public HarvestableReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator) {
 		super(comparator);
 	}
 

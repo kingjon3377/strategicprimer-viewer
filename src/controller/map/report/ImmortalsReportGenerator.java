@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.IMapNG;
@@ -63,7 +65,7 @@ public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixt
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	public ImmortalsReportGenerator(final Comparator<Pair<Point, IFixture>> comparator) {
+	public ImmortalsReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator) {
 		super(comparator);
 	}
 	/** // $codepro.audit.disable sourceLength

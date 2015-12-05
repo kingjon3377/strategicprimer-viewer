@@ -59,7 +59,7 @@ public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	public FortressReportGenerator(final Comparator<Pair<Point, IFixture>> comparator) {
+	public FortressReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator) {
 		super(comparator);
 	}
 	/**

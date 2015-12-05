@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import controller.map.misc.TownComparator;
 import model.map.IFixture;
 import model.map.IMapNG;
@@ -51,7 +53,7 @@ public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	public TownReportGenerator(final Comparator<Pair<Point, IFixture>> comparator) {
+	public TownReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator) {
 		super(comparator);
 	}
 	/**
