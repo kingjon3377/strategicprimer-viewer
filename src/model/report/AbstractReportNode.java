@@ -5,6 +5,7 @@ import java.util.Iterator;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.Point;
@@ -35,7 +36,7 @@ import util.EnumerationWrapper;
  *
  */
 public abstract class AbstractReportNode extends DefaultMutableTreeNode
-		implements IReportNode, Iterable<AbstractReportNode> {
+		implements IReportNode, Iterable<@NonNull AbstractReportNode> {
 	/**
 	 * The point, if any, in the map that this node represents something on.
 	 */
@@ -112,10 +113,7 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	 * @return the result of the comparison
 	 */
 	@Override
-	public int compareTo(@Nullable final IReportNode obj) {
-		if (obj == null) {
-			throw new IllegalArgumentException("Compared to null node");
-		}
+	public int compareTo(final IReportNode obj) {
 		return produce().compareTo(obj.produce());
 	}
 

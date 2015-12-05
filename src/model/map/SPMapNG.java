@@ -268,7 +268,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * @return the result of a comparison between us and it.
 	 */
 	@Override
-	public int compareTo(@Nullable final IMapNG other) {
+	public int compareTo(final IMapNG other) {
 		if (equals(other)) {
 			return 0; // NOPMD
 		} else {

@@ -97,10 +97,7 @@ public class Player implements Comparable<Player>, HasName {
 	 * @return the result of the comparison
 	 */
 	@Override
-	public int compareTo(@Nullable final Player player) {
-		if (player == null) {
-			throw new IllegalArgumentException("Asked to compare to null player.");
-		}
+	public int compareTo(final Player player) {
 		return player.hashCode() - hashCode();
 	}
 

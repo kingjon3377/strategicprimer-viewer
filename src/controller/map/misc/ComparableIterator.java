@@ -3,6 +3,7 @@ package controller.map.misc;
 import java.util.Iterator;
 import java.util.Objects;
 
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -30,8 +31,8 @@ import org.eclipse.jdt.annotation.Nullable;
  * @param <T>
  *            the type of thing being iterated over
  */
-public class ComparableIterator<T> implements Iterator<T>,
-		Comparable<ComparableIterator<T>> {
+public class ComparableIterator<@NonNull T> implements Iterator<@NonNull T>,
+		Comparable<@NonNull ComparableIterator<@NonNull T>> {
 	/**
 	 * The Iterator we're wrapping.
 	 */
@@ -51,7 +52,7 @@ public class ComparableIterator<T> implements Iterator<T>,
 	 * @return the result of a comparison between them.
 	 */
 	@Override
-	public int compareTo(@Nullable final ComparableIterator<T> obj) {
+	public int compareTo(final ComparableIterator<T> obj) {
 		return Objects.hashCode(obj) - hashCode();
 	}
 

@@ -43,7 +43,7 @@ import model.map.fixtures.terrain.Forest;
  * @author Jonathan Lovelace
  *
  */
-public interface IMapNG extends Subsettable<IMapNG>, Comparable<IMapNG> {
+public interface IMapNG extends Subsettable<@NonNull IMapNG>, Comparable<@NonNull IMapNG> {
 	/**
 	 * @return the map version and dimensions
 	 */

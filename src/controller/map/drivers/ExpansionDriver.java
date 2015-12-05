@@ -11,8 +11,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.misc.MapReaderAdapter;
 import model.exploration.SurroundingPointIterable;
@@ -186,7 +184,7 @@ public class ExpansionDriver implements ISPDriver {
 				throw ise;
 			}
 			@Override
-			public int compareTo(@Nullable final TileFixture o) {
+			public int compareTo(final TileFixture o) {
 				throw ise;
 			}
 			@Override

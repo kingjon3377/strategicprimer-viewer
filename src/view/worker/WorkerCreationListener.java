@@ -167,10 +167,7 @@ public final class WorkerCreationListener implements ActionListener,
 			throw new IllegalStateException("Tried to copy 'null' unit");
 		}
 		@Override
-		public int compareTo(@Nullable final TileFixture fix) {
-			if (fix == null) {
-				throw new IllegalArgumentException("Asked to compare null fixture");
-			}
+		public int compareTo(final TileFixture fix) {
 			return fix.hashCode() - hashCode();
 		}
 	};

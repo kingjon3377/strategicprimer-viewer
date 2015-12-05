@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.IFixture;
@@ -80,7 +82,7 @@ public final class CompactReaderAdapter {
 	 * @return the object encoded by the XML
 	 * @throws SPFormatException on SP format problems
 	 */
-	public static <T> T parse(final Class<T> type, final StartElement element,
+	public static <@NonNull T> T parse(final Class<T> type, final StartElement element,
 			final IteratorWrapper<XMLEvent> stream,
 			final IMutablePlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
@@ -107,7 +109,7 @@ public final class CompactReaderAdapter {
 	 */
 	@SuppressWarnings({ "unchecked" })
 	// We *do* check ... but neither Java nor Eclipse can know that
-	private static <T> CompactReader<T> getReader(final Class<T> type) {
+	private static <@NonNull T> CompactReader<T> getReader(final Class<T> type) {
 		final CompactReader<T> reader; // NOPMD
 		if (IMapNG.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactMapNGReader.READER;

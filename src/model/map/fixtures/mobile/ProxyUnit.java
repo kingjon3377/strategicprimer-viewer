@@ -139,11 +139,8 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 * @return the result of a comparison with it
 	 */
 	@Override
-	public int compareTo(@Nullable final TileFixture fix) {
+	public int compareTo(final TileFixture fix) {
 		LOGGER.warning("compareTo called on ProxyUnit");
-		if (fix == null) {
-			throw new IllegalArgumentException("Compared to null fixture");
-		}
 		return fix.hashCode() - hashCode();
 	}
 	/**

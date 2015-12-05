@@ -1,6 +1,6 @@
 package util;
 
-import org.eclipse.jdt.annotation.Nullable;
+import org.eclipse.jdt.annotation.NonNull;
 
 /**
  * A pair of Comparables.
@@ -29,7 +29,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @param <V> the type of the second item
  */
 public class ComparablePair<K extends Comparable<K>, V extends Comparable<V>>
-		extends Pair<K, V> implements Comparable<ComparablePair<K, V>> {
+		extends Pair<K, V> implements Comparable<@NonNull ComparablePair<K, V>> {
 	/**
 	 * Constructor.
 	 *
@@ -48,10 +48,7 @@ public class ComparablePair<K extends Comparable<K>, V extends Comparable<V>>
 	 * @return the result of the comparison.
 	 */
 	@Override
-	public int compareTo(@Nullable final ComparablePair<K, V> other) {
-		if (other == null) {
-			throw new IllegalArgumentException("Compared to null Pair");
-		}
+	public int compareTo(final ComparablePair<K, V> other) {
 		final int cmp = first().compareTo(other.first());
 		if (cmp == 0) {
 			return second().compareTo(other.second()); // NOPMD
