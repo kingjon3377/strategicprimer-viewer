@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -117,13 +118,34 @@ public class AppStarter implements ISPDriver {
 		addChoice(new MapPopulatorDriver());
 	}
 	/**
-	 * FIXME: Once all DriverModels have copy constructors, implement this properly.
+	 * Since there's no way of choosing which driver programmatically here, we present our choice to the user.
 	 * @param model the driver model
 	 * @throws DriverFailedException always, for the moment
 	 */
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
-		throw new DriverFailedException(new IllegalArgumentException("Because some drivers operate on files, AppStarter can't operate on driver models alone"));
+		if (GraphicsEnvironment.isHeadless()) {
+			final List<ISPDriver> drivers = new ArrayList<>();
+			for (final Pair<ISPDriver, ISPDriver> pair : CACHE.values()) {
+				if (!drivers.contains(pair.first())) {
+					drivers.add(pair.first());
+				}
+			}
+			try {
+				startChosenDriver(NullCleaner.assertNotNull(drivers
+						.get(new CLIHelper().chooseFromList(drivers,
+								"CLI apps available:",
+								"No applications available", "App to start: ",
+								true))), model);
+			} catch (final IOException except) {
+				LOGGER.log(Level.SEVERE,
+						"I/O error prompting user for app to start", except);
+				return;
+			}
+		} else {
+			SwingUtilities.invokeLater(new WindowThread(new AppChooserFrame(
+					model)));
+		}
 	}
 	/**
 	 * Start the driver, and then start the specified other driver.
@@ -232,7 +254,16 @@ public class AppStarter implements ISPDriver {
 		driver.startDriver(NullCleaner.assertNotNull(params
 				.toArray(new String[params.size()])));
 	}
-
+	/**
+	 * Start a driver.
+	 * @param driver the driver to start
+	 * @param model the driver model
+	 * @throws DriverFailedException on fatal error
+	 */
+	protected static void startChosenDriver(final ISPDriver driver,
+			final IDriverModel model) throws DriverFailedException {
+		driver.startDriver(model);
+	}
 	/**
 	 * Logger.
 	 */
