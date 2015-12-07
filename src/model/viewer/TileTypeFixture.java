@@ -1,11 +1,14 @@
 package model.viewer;
 
+import java.util.logging.Logger;
+
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.TileType;
+import util.TypesafeLogger;
 
 /**
  * A fake "TileFixture" to represent the tile's terrain type, so it can be
@@ -33,13 +36,9 @@ import model.map.TileType;
  */
 public class TileTypeFixture implements TileFixture, HasImage {
 	/**
-	 * The name of an image to use for this particular fixture.
-	 *
-	 * FIXME: Maybe don't allow this? It doesn't really make sense for a
-	 * TileTypeFixture.
+	 * A logger.
 	 */
-	private String image = "";
-
+	private static Logger LOGGER = TypesafeLogger.getLogger(TileTypeFixture.class);
 	/**
 	 * The TileType this wraps.
 	 */
@@ -65,9 +64,7 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	@Deprecated
 	@Override
 	public TileTypeFixture copy(final boolean zero) {
-		TileTypeFixture retval = new TileTypeFixture(ttype);
-		retval.setImage(image);
-		return retval;
+		return new TileTypeFixture(ttype);
 	}
 	/**
 	 * @param obj another TileFixture
@@ -168,7 +165,7 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	 */
 	@Override
 	public void setImage(final String img) {
-		image = img;
+		LOGGER.severe("TileTypeFixture#setImage() called");
 	}
 
 	/**
@@ -176,7 +173,8 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	 */
 	@Override
 	public String getImage() {
-		return image;
+		LOGGER.warning("TileTypeFixture#getImage() called");
+		return "";
 	}
 
 	/**
