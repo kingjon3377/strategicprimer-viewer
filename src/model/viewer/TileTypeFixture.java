@@ -64,6 +64,7 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	@Deprecated
 	@Override
 	public TileTypeFixture copy(final boolean zero) {
+		LOGGER.warning("TileTypeFixture#copy() called");
 		return new TileTypeFixture(ttype);
 	}
 	/**
@@ -75,6 +76,7 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	@Deprecated
 	@Override
 	public int compareTo(final TileFixture obj) {
+		LOGGER.warning("TileTypeFixture#compareTo() called");
 		return obj.getZValue() - getZValue();
 	}
 
@@ -86,6 +88,7 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	@Deprecated
 	@Override
 	public int getZValue() {
+		LOGGER.warning("TileTypeFixture#getZValue() called");
 		return Integer.MIN_VALUE;
 	}
 
@@ -97,6 +100,7 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	@Deprecated
 	@Override
 	public int getID() {
+		LOGGER.warning("TileTypeFixture#getID() called");
 		return -1;
 	}
 
@@ -109,6 +113,7 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	@Override
 	@Deprecated
 	public boolean equalsIgnoringID(final IFixture fix) {
+		LOGGER.warning("TileTypeFixture#equalsIgnoringID() called");
 		return equals(fix);
 	}
 
@@ -182,6 +187,7 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	 */
 	@Override
 	public String plural() {
+		LOGGER.warning("TileTypeFixture#plural() called");
 		return "You shouldn't see this text; report this";
 	}
 	/**
@@ -189,6 +195,7 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	 */
 	@Override
 	public String shortDesc() {
+		LOGGER.warning("TileTypeFixture#shortDesc() called");
 		return "You shouldn't see this text; report this";
 	}
 }
