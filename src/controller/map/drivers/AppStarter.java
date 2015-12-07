@@ -165,7 +165,7 @@ public class AppStarter implements ISPDriver {
 			}
 		}
 		// FIXME: We assume no driver uses options.
-		boolean gui = true;
+		boolean gui = !GraphicsEnvironment.isHeadless();
 		// FIXME: To reduce calculated complexity and fix the null-object
 		// pattern here, make a driver class for CLI driver choosing, and make a
 		// Pair of it and the AppChooserFrame be the default.
