@@ -18,7 +18,7 @@ import model.map.TileType;
 import model.misc.IDriverModel;
 
 /**
- * A popup menu to let the user change a tile's terrain type.
+ * A popup menu to let the user change a tile's terrain type, or add a unit.
  *
  * This is part of the Strategic Primer assistive programs suite developed by
  * Jonathan Lovelace.
@@ -72,6 +72,7 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 	 * @param version the version
 	 */
 	private void updateForVersion(final int version) {
+		super.removeAll();
 		for (final TileType type : TileType.valuesForVersion(version)) {
 			final JMenuItem item = new JMenuItem(type.toString()); // NOPMD
 			add(item);
