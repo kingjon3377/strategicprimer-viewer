@@ -178,7 +178,6 @@ public class TileTypeFixture implements TileFixture, HasImage {
 	 */
 	@Override
 	public String getImage() {
-		LOGGER.warning("TileTypeFixture#getImage() called");
 		return "";
 	}
 
