@@ -8,6 +8,7 @@ import javax.swing.JPopupMenu;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import controller.map.misc.IDFactoryFiller;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
 import model.listeners.SelectionChangeSupport;
@@ -16,6 +17,8 @@ import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileType;
 import model.misc.IDriverModel;
+import model.viewer.IViewerModel;
+import view.worker.NewUnitDialog;
 
 /**
  * A popup menu to let the user change a tile's terrain type, or add a unit.
@@ -54,15 +57,30 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 	 * The helper to handle selection-change listeners for us.
 	 */
 	private final SelectionChangeSupport scs = new SelectionChangeSupport();
-
+	/**
+	 * The menu item to allow the user to create a new unit.
+	 */
+	private final JMenuItem newUnitItem = new JMenuItem("Add New Unit");
+	/**
+	 * The window to allow the user to create a new unit.
+	 */
+	private final NewUnitDialog nuDialog;
 	/**
 	 * Constructor.
 	 *
 	 * @param version the map version
 	 * @param dmodel the driver model
 	 */
-	public TerrainChangingMenu(final int version, final IDriverModel dmodel) {
+	public TerrainChangingMenu(final int version, final IViewerModel dmodel) {
 		model = dmodel;
+		nuDialog = new NewUnitDialog(dmodel.getMap().getCurrentPlayer(),
+				IDFactoryFiller.createFactory(dmodel.getMap()));
+		nuDialog.addNewUnitListener(unit -> {
+			dmodel.getMap().addFixture(point, unit);
+			dmodel.setSelection(point);
+			scs.fireChanges(null, point);
+		});
+		newUnitItem.addActionListener(e -> nuDialog.setVisible(true));
 		updateForVersion(version);
 	}
 
@@ -78,6 +96,8 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 			add(item);
 			item.addActionListener(this);
 		}
+		addSeparator();
+		add(newUnitItem);
 	}
 
 	/**
@@ -131,5 +151,10 @@ public class TerrainChangingMenu extends JPopupMenu implements ActionListener,
 	public void selectedPointChanged(@Nullable final Point old,
 			final Point newPoint) {
 		point = newPoint;
+		if (TileType.NotVisible.equals(model.getMap().getBaseTerrain(newPoint))) {
+			newUnitItem.setEnabled(false);
+		} else {
+			newUnitItem.setEnabled(true);
+		}
 	}
 }
