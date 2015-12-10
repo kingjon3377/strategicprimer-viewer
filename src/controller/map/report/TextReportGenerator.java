@@ -1,6 +1,8 @@
 package controller.map.report;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -57,15 +59,19 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
 		final HtmlList list = new HtmlList("<h4>Miscellaneous Notes</h4>");
-		// FIXME: sort the list by turn.
+		final List<Pair<Point, TextFixture>> items = new ArrayList<>();
 		for (final Map.Entry<Integer, Pair<Point, IFixture>> entry : fixtures
 				.entrySet()) {
 			final Pair<Point, IFixture> pair = entry.getValue();
 			if (pair.second() instanceof TextFixture) {
-				list.add(produce(fixtures, map, currentPlayer,
-						(TextFixture) pair.second(), pair.first()));
+				items.add(Pair.of(pair.first(), (TextFixture) pair.second()));
 				fixtures.remove(entry.getKey());
 			}
+		}
+		items.sort((one, two) -> one.second().getTurn() - two.second().getTurn());
+		for (Pair<Point, TextFixture> item : items) {
+			list.add(produce(fixtures, map, currentPlayer,
+					item.second(), item.first()));
 		}
 		if (list.isEmpty()) {
 			return "";
