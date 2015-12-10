@@ -137,7 +137,7 @@ public class ExpansionDriver implements ISPDriver {
 		final File masterFile = new File(args[0]);
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final IMultiMapModel model = reader.readMultiMapModel(Warning.INSTANCE,
-				masterFile, MapReaderAdapter.namesToFiles(args));
+				masterFile, MapReaderAdapter.namesToFiles(true, args));
 		startDriver(model);
 		reader.writeModel(model);
 	}

@@ -2,7 +2,8 @@ package controller.map.misc;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -18,7 +19,6 @@ import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.misc.SimpleMultiMapModel;
 import model.viewer.ViewerModel;
-import util.ArraySet;
 import util.NullCleaner;
 import util.Pair;
 import util.Warning;
@@ -177,14 +177,17 @@ public class MapReaderAdapter {
 		return "MapReaderAdapter";
 	}
 	/**
-	 * This eliminates duplicates.
 	 * @param names some filenames
+	 * @param dropFirst whether to skip the first filename.
 	 * @return an array of equivalent Files
 	 */
-	public static File[] namesToFiles(final String... names) {
-		final Set<File> retval = new ArraySet<>();
+	public static File[] namesToFiles(final boolean dropFirst, final String... names) {
+		final List<File> retval = new ArrayList<>();
 		for (String name : names) {
 			retval.add(new File(name));
+		}
+		if (dropFirst) {
+			retval.remove(0);
 		}
 		return NullCleaner.assertNotNull(retval.toArray(new File[retval.size()]));
 	}

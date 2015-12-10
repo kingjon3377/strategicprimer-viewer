@@ -100,7 +100,7 @@ public final class ViewerStart implements ISPDriver {
 			// start one window for each map, without having to make multiple
 			// calls to the reader.
 			startDriver(new MapReaderAdapter().readMultiMapModel(new Warning(Action.Warn),
-					new File(args[0]), MapReaderAdapter.namesToFiles(args)));
+					new File(args[0]), MapReaderAdapter.namesToFiles(true, args)));
 		}
 	}
 

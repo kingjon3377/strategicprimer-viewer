@@ -82,7 +82,7 @@ public class ExplorationGUI implements ISPDriver {
 		}
 		final ExplorationModel model = new ExplorationModel(
 				new MapReaderAdapter().readMultiMapModel(Warning.INSTANCE,
-						new File(args[0]), MapReaderAdapter.namesToFiles(args)));
+						new File(args[0]), MapReaderAdapter.namesToFiles(true, args)));
 		SwingUtilities.invokeLater(new WindowThread(new ExplorationFrame(
 				model, new IOHandler(model, new FilteredFileChooser(
 						".", new MapFileFilter())))));

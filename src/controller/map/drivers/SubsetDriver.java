@@ -105,7 +105,7 @@ public final class SubsetDriver implements ISPDriver {
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final IMultiMapModel model = reader.readMultiMapModel(new Warning(Action.Ignore),
-				new File(args[0]), MapReaderAdapter.namesToFiles(args));
+				new File(args[0]), MapReaderAdapter.namesToFiles(true, args));
 		startDriver(model);
 	}
 

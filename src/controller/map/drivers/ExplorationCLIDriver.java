@@ -94,7 +94,7 @@ public class ExplorationCLIDriver implements ISPDriver {
 		MapReaderAdapter reader = new MapReaderAdapter();
 		final ExplorationModel model = new ExplorationModel(
 				reader.readMultiMapModel(Warning.INSTANCE, new File(args[0]),
-						MapReaderAdapter.namesToFiles(args)));
+						MapReaderAdapter.namesToFiles(true, args)));
 		startDriver(model);
 		reader.writeModel(model);
 	}

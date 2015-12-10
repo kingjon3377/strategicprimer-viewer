@@ -504,7 +504,7 @@ public class DrawHelperComparator implements ISPDriver { // NOPMD
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		startDriver(new MapReaderAdapter().readMultiMapModel(new Warning(Action.Ignore),
-				new File(args[0]), MapReaderAdapter.namesToFiles(args)));
+				new File(args[0]), MapReaderAdapter.namesToFiles(true, args)));
 	}
 
 	/**

@@ -157,7 +157,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	public void startDriver(final String... args) throws DriverFailedException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final IExplorationModel model = new ExplorationModel(reader.readMultiMapModel(
-				Warning.INSTANCE, new File(args[0]), MapReaderAdapter.namesToFiles(args)));
+				Warning.INSTANCE, new File(args[0]), MapReaderAdapter.namesToFiles(true, args)));
 		startDriver(model);
 		reader.writeModel(model);
 	}

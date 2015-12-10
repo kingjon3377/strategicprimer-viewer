@@ -151,7 +151,7 @@ public class AdvancementCLIDriver implements ISPDriver {
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final WorkerModel model = new WorkerModel(
 				reader.readMultiMapModel(Warning.INSTANCE, new File(args[0]),
-						MapReaderAdapter.namesToFiles(args)));
+						MapReaderAdapter.namesToFiles(true, args)));
 		startDriver(model);
 		reader.writeModel(model);
 	}

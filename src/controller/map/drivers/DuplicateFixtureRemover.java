@@ -146,7 +146,7 @@ public class DuplicateFixtureRemover implements ISPDriver {
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		IMultiMapModel model = reader.readMultiMapModel(Warning.INSTANCE,
-				new File(args[0]), MapReaderAdapter.namesToFiles(args));
+				new File(args[0]), MapReaderAdapter.namesToFiles(true, args));
 		startDriver(model);
 		reader.writeModel(model);
 	}
