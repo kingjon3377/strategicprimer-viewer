@@ -101,7 +101,12 @@ public final class ImageLoader {
 		if (!cache.containsKey(file)) {
 			try (final ResourceInputStream res = new ResourceInputStream(
 					"images/" + file)) {
-				cache.put(file, ImageIO.read(res));
+				BufferedImage image = ImageIO.read(res);
+				if (image == null) {
+					throw new IOException("No reader could read the file");
+				} else {
+					cache.put(file, image);
+				}
 			}
 		}
 		return NullCleaner.assertNotNull(cache.get(file));
