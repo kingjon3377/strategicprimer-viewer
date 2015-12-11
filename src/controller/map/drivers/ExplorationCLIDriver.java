@@ -64,15 +64,16 @@ public class ExplorationCLIDriver implements ISPDriver {
 		final ExplorationCLI cli = new ExplorationCLI(model, new CLIHelper());
 		try {
 			final Player player = cli.choosePlayer();
-			if (player.getPlayerId() < 0) {
+			if (player == null) {
 				return;
 			}
 			final IUnit unit = cli.chooseUnit(player);
-			if (unit.getID() < 0) {
+			if (unit == null) {
 				return;
+			} else {
+				model.selectUnit(unit);
+				cli.moveUntilDone();
 			}
-			model.selectUnit(unit);
-			cli.moveUntilDone();
 		} catch (IOException except) {
 			throw new DriverFailedException("I/O error interacting with user", except);
 		}

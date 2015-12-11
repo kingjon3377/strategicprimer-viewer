@@ -25,7 +25,6 @@ import model.map.fixtures.Ground;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
-import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
@@ -99,6 +98,7 @@ public class ExplorationCLI {
 	 *         choice made.
 	 * @throws IOException on I/O error
 	 */
+	@Nullable
 	public Player choosePlayer() throws IOException {
 		final List<Player> players = model.getPlayerChoices();
 		final int playerNum = helper.chooseFromList(players,
@@ -106,9 +106,9 @@ public class ExplorationCLI {
 				"No players shared by all the maps.",
 				"Please make a selection: ", true);
 		if (playerNum < 0 || playerNum >= players.size()) {
-			return new Player(-1, "abort"); // NOPMD
+			return null;
 		} else {
-			return assertNotNull(players.get(playerNum));
+			return players.get(playerNum);
 		}
 	}
 
@@ -120,16 +120,16 @@ public class ExplorationCLI {
 	 *         selected.
 	 * @throws IOException on I/O error
 	 */
+	@Nullable
 	public IUnit chooseUnit(final Player player) throws IOException {
 		final List<IUnit> units = model.getUnits(player);
 		final int unitNum = helper.chooseFromList(units, "Player's units:",
 				"That player has no units in the master map.",
 				"Please make a selection: ", true);
 		if (unitNum < 0 || unitNum >= units.size()) {
-			// FIXME: Should be a null-object
-			return new Unit(new Player(-1, "abort"), "", "", -1); // NOPMD
+			return null;
 		} else {
-			return assertNotNull(units.get(unitNum));
+			return units.get(unitNum);
 		}
 	}
 
