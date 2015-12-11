@@ -54,6 +54,7 @@ import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
 import model.report.AbstractReportNode;
+import model.report.SimpleReportNode;
 import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
 import model.workermgmt.IWorkerModel;
@@ -148,9 +149,8 @@ public class WorkerMgmtFrame extends JFrame {
 		tree.addTreeSelectionListener(ordersPanel);
 		final Component outer = this;
 		final IWorkerModel smodel = model;
-		final DefaultTreeModel reportModel = new DefaultTreeModel(
-				ReportGenerator.createAbbreviatedReportIR(model.getMap(), model
-						.getMap().getCurrentPlayer()));
+		final DefaultTreeModel reportModel = new DefaultTreeModel(new SimpleReportNode("Please wait, loading report ..."));
+		new ReportGeneratorThread(reportModel, smodel, model.getMap().getCurrentPlayer()).start();
 		final JTree report = new JTree(reportModel);
 		report.setRootVisible(false);
 		report.expandPath(new TreePath(((DefaultMutableTreeNode) reportModel
@@ -329,8 +329,7 @@ public class WorkerMgmtFrame extends JFrame {
 		 */
 		@Override
 		public void mapChanged() {
-			reportModel.setRoot(ReportGenerator.createAbbreviatedReportIR(
-					model.getMap(), model.getMap().getCurrentPlayer()));
+			new ReportGeneratorThread(reportModel, model, model.getMap().getCurrentPlayer()).start();
 		}
 
 		/**
@@ -342,8 +341,7 @@ public class WorkerMgmtFrame extends JFrame {
 		@Override
 		public void playerChanged(@Nullable final Player old,
 				final Player newPlayer) {
-			reportModel.setRoot(ReportGenerator.createAbbreviatedReportIR(
-					model.getMap(), newPlayer));
+			new ReportGeneratorThread(reportModel, model, newPlayer).start();
 		}
 		/**
 		 * @return a String representation of the object
@@ -564,6 +562,26 @@ public class WorkerMgmtFrame extends JFrame {
 		@Override
 		public String toString() {
 			return "StrategyExporter";
+		}
+	}
+	/**
+	 * A thread to generate the report tree in the background.
+	 */
+	protected static class ReportGeneratorThread extends Thread {
+		protected final DefaultTreeModel tmodel;
+		private final IWorkerModel wmodel;
+		private final Player player;
+		protected ReportGeneratorThread(final DefaultTreeModel treeModel, final IWorkerModel workerModel, final Player currentPlayer) {
+			tmodel = treeModel;
+			wmodel = workerModel;
+			player = currentPlayer;
+		}
+		@Override
+		public void run() {
+			System.out.println("About to generate report");
+			final AbstractReportNode report = ReportGenerator.createAbbreviatedReportIR(wmodel.getMap(), player);
+			System.out.println("Finished generating report");
+			SwingUtilities.invokeLater(() -> tmodel.setRoot(report));
 		}
 	}
 }
