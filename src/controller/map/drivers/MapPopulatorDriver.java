@@ -141,10 +141,8 @@ public class MapPopulatorDriver implements ISPDriver {
 		final IDriverModel model = reader.readMapModel(new File(args[0]), new Warning(Action.Warn));
 		populate(model.getMap());
 		reader.writeModel(model);
-		System.out.print(changedCount);
-		System.out.print(" out of ");
-		System.out.print(suitableCount);
-		System.out.println(" suitable locations were changed");
+		System.out.printf("%d out of %d suitable locations were changed",
+				Integer.valueOf(changedCount), Integer.valueOf(suitableCount));
 	}
 	/**
 	 * Add populations to the map.
