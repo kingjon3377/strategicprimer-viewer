@@ -100,10 +100,7 @@ public class WorkerMgmtFrame extends JFrame {
 	/**
 	 * The header to put above the report.
 	 */
-	private static final String RPT_HDR = NullCleaner
-			.assertNotNull(new StringBuilder("A report on everything")
-					.append(" except your units and fortresses,")
-					.append("for reference:").toString());
+	private static final String RPT_HDR = "The contents of the world you know about, for reference:";
 	/**
 	 * A constant for when a split panel should be divided evenly in half.
 	 */
