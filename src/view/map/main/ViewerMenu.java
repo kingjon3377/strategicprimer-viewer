@@ -44,7 +44,7 @@ public class ViewerMenu extends SPMenu {
 			final IViewerModel model) {
 		add(createFileMenu(handler, parent, model));
 		add(createMapMenu(parent, model));
-		addDisabled(createEditMenu(new PlayerChooserHandler(parent, model), handler));
+		addDisabled(createViewMenu(new PlayerChooserHandler(parent, model), handler));
 		add(new WindowMenu(parent));
 	}
 
