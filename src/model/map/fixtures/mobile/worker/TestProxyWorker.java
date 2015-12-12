@@ -159,9 +159,6 @@ public class TestProxyWorker {
 		proxy.addProxied(unitTwo);
 		ProxyWorker meta = new ProxyWorker(proxy);
 		for (IJob job : meta) {
-			if (job.getName().equals("jobTwo")) {
-				System.out.print("");
-			}
 			for (ISkill skill : job) {
 				skill.addHours(10, 100);
 			}
