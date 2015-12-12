@@ -136,7 +136,7 @@ public class WorkerMgmtFrame extends JFrame {
 				new WorkerTree(wtmodel, model.getMap().players(), true);
 		pch.addPlayerChangeListener(wtmodel);
 		newUnitFrame.addNewUnitListener(wtmodel);
-		final PlayerLabel plabel = new PlayerLabel("Units belonging to", model
+		final PlayerLabel plabel = new PlayerLabel("Units belonging to ", model
 				.getMap().getCurrentPlayer(), ":");
 		pch.addPlayerChangeListener(plabel);
 		pch.addPlayerChangeListener(newUnitFrame);
