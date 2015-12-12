@@ -565,6 +565,7 @@ public class WorkerMgmtFrame extends JFrame {
 	 * A thread to generate the report tree in the background.
 	 */
 	protected static class ReportGeneratorThread extends Thread {
+		private static final Logger RGT_LOGGER = TypesafeLogger.getLogger(WorkerMgmtFrame.ReportGeneratorThread.class);
 		protected final DefaultTreeModel tmodel;
 		private final IWorkerModel wmodel;
 		private final Player player;
@@ -575,9 +576,9 @@ public class WorkerMgmtFrame extends JFrame {
 		}
 		@Override
 		public void run() {
-			System.out.println("About to generate report");
+			RGT_LOGGER.info("About to generate report");
 			final AbstractReportNode report = ReportGenerator.createAbbreviatedReportIR(wmodel.getMap(), player);
-			System.out.println("Finished generating report");
+			RGT_LOGGER.info("Finished generating report");
 			SwingUtilities.invokeLater(() -> tmodel.setRoot(report));
 		}
 	}
