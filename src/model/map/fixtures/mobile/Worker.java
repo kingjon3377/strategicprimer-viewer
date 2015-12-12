@@ -63,7 +63,7 @@ public class Worker implements IWorker {
 	 * The worker's stats.
 	 */
 	@Nullable
-	private WorkerStats stats;
+	private WorkerStats stats = null;
 
 	/**
 	 * The name of an image to use for this particular fixture.

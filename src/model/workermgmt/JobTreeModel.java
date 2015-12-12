@@ -60,7 +60,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 * The worker who the Jobs and Skills describe.
 	 */
 	@Nullable
-	private IWorker root; // NOPMD: Claims only initialized in constructor, which
+	private IWorker root = null; // NOPMD: Claims only initialized in constructor, which
 							// is Not True.
 	/**
 	 * The tree's selection model.

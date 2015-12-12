@@ -70,7 +70,7 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 	 * The current selection.
 	 */
 	@Nullable
-	private Object sel;
+	private Object sel = null;
 
 	/**
 	 * The text area in which the user writes the orders.
