@@ -271,11 +271,12 @@ public class SPMenu extends JMenuBar {
 		return retval;
 	}
 	/**
-	 * Create the "edit"menu.
+	 * Create the "edit"menu. TODO: This should really be a "view" menu.
 	 * @param pch the object to notify when the user selects a different player
+	 * @param al the object to expand and collapse rows of the tree when the user says to
 	 * @return the "edit" menu
 	 */
-	protected static JMenu createEditMenu(final PlayerChooserHandler pch) {
+	protected static JMenu createEditMenu(final PlayerChooserHandler pch, final ActionListener al) {
 		final JMenu editMenu = new JMenu("Edit");
 		editMenu.setMnemonic(KeyEvent.VK_E);
 		editMenu.add(MenuItemCreator.createMenuItem(
@@ -285,6 +286,9 @@ public class SPMenu extends JMenuBar {
 		editMenu.add(MenuItemCreator.createMenuItem("Reload tree",
 				KeyEvent.VK_R, MenuItemCreator.createHotkey(KeyEvent.VK_R),
 				"Refresh the view of the workers", e -> pch.reload()));
+		editMenu.add(MenuItemCreator.createMenuItem("Expand All", KeyEvent.VK_X, null, "Expand all nodes in the unit tree", al));
+		editMenu.add(MenuItemCreator.createMenuItem("Expand Unit Kinds", KeyEvent.VK_K, null, "Expand all unit kinds to show the units", al));
+		editMenu.add(MenuItemCreator.createMenuItem("Collapse All", KeyEvent.VK_C, null, "Collapse all nodes in the unit tree", al));
 		return editMenu;
 	}
 	/**

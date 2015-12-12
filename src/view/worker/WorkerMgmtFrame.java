@@ -259,7 +259,7 @@ public class WorkerMgmtFrame extends JFrame {
 				new BorderedPanel(new JScrollPane(report), new JLabel(RPT_HDR), mdp, null,
 						null)));
 
-		setJMenuBar(new WorkerMenu(ioHandler, this, pch, model));
+		setJMenuBar(new WorkerMenu(ioHandler, this, pch, model, new TreeExpansionHandler(tree)));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		for (int i = 0; i < tree.getRowCount(); i++) {
 			tree.expandRow(i);

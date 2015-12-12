@@ -45,7 +45,7 @@ public class ExplorationMenu extends SPMenu {
 			final IExplorationModel model, final JFrame parent) {
 		add(createFileMenu(ioh, parent, model));
 		addDisabled(createMapMenu(parent, model));
-		addDisabled(createEditMenu(new PlayerChooserHandler(parent, model)));
+		addDisabled(createEditMenu(new PlayerChooserHandler(parent, model), ioh));
 		add(new WindowMenu(parent));
 	}
 }

@@ -122,7 +122,7 @@ public class AdvancementFrame extends JFrame {
 			tree.expandRow(i);
 		}
 
-		setJMenuBar(new WorkerMenu(ioHandler, this, pch, source));
+		setJMenuBar(new WorkerMenu(ioHandler, this, pch, source, new TreeExpansionHandler(tree)));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
 	}

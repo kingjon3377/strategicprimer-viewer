@@ -40,12 +40,13 @@ public class WorkerMenu extends SPMenu {
 	 *        "Close".
 	 * @param pch a handler to listen to the 'change player' menu item.
 	 * @param model the current driver model
+	 * @param teh a handler to listen for "expand all" etc.
 	 */
 	public WorkerMenu(final IOHandler handler, final JFrame parent,
-			final PlayerChooserHandler pch, final IDriverModel model) {
+			final PlayerChooserHandler pch, final IDriverModel model, final TreeExpansionHandler teh) {
 		add(createFileMenu(handler, parent, model));
 		addDisabled(createMapMenu(parent, model));
-		add(createEditMenu(pch));
+		add(createEditMenu(pch, teh));
 		add(new WindowMenu(parent));
 	}
 }
