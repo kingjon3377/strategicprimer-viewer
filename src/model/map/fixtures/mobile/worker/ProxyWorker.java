@@ -17,7 +17,6 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.ProxyFor;
-import model.map.fixtures.mobile.Worker;
 import util.NullCleaner;
 
 /**
@@ -192,8 +191,8 @@ public class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 			return;
 		}
 		workers.add(item);
-		final Worker[] workerArray =
-				NullCleaner.assertNotNull(workers.toArray(new Worker[workers
+		final IWorker[] workerArray =
+				NullCleaner.assertNotNull(workers.toArray(new IWorker[workers
 						.size()]));
 		List<IJob> proxyJobsTemp = new ArrayList<>(proxyJobs);
 		for (final IJob job : item) {
