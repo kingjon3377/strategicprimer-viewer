@@ -17,6 +17,7 @@ import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 import util.Warning.Action;
+import view.util.SystemOut;
 
 /**
  * A driver to check whether player maps are subsets of the main map.
@@ -137,8 +138,7 @@ public final class SubsetDriver implements ISPDriver {
 	 */
 	private static Returns doSubsetTest(final IMapNG mainMap, final IMapNG map, final File file) {
 		try {
-			if (mainMap.isSubset(map, NullCleaner.assertNotNull(System.out),
-					"In " + file.getName() + ':')) {
+			if (mainMap.isSubset(map, SystemOut.SYS_OUT, "In " + file.getName() + ':')) {
 				return Returns.OK;
 			} else {
 				System.out.flush();
