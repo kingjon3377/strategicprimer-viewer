@@ -57,7 +57,7 @@ public final class MiningCLI {
 	 */
 	public static void main(final String[] args) {
 		if (args.length < 2) {
-			System.out.println("Usage: MiningCLI output.csv status [seed]");
+			System.err.println("Usage: MiningCLI output.csv status [seed]");
 			System.exit(1);
 			return;
 		}
