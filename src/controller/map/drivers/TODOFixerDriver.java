@@ -19,6 +19,7 @@ import model.map.TileFixture;
 import model.map.fixtures.mobile.Unit;
 import util.NullCleaner;
 import util.Warning;
+import view.util.SystemOut;
 
 /**
  * A hackish class to help fix TODOs (missing content) in the map.
@@ -91,12 +92,9 @@ public class TODOFixerDriver {
 		count++;
 		for (final String string : jobList) {
 			if (random.nextBoolean()) {
-				System.out.print("Setting unit with ID #");
-				System.out.print(unit.getID());
-				System.out.print(" (");
-				System.out.print(count);
-				System.out.print(" / 5328) to kind ");
-				System.out.println(string);
+				SystemOut.SYS_OUT.printf(
+						"Setting unit with ID #%d (%d / 5328) to kind %s%n",
+						Integer.valueOf(unit.getID()), Integer.valueOf(count), string);
 				unit.setKind(string);
 				return;
 			}

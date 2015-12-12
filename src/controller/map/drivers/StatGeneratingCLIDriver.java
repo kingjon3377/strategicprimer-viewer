@@ -569,10 +569,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 	private Worker createWorker(final String name, final IDFactory idf)
 			throws IOException {
 		final String race = RaceFactory.getRace();
-		System.out.print("Worker ");
-		System.out.print(name);
-		System.out.print(" is a ");
-		System.out.println(race);
+		SystemOut.SYS_OUT.printf("Worker %s is a %s%n", name, race);
 		final Worker retval = new Worker(name, race, idf.createID());
 		int levels = 0;
 		for (int i = 0; i < 3; i++) {
@@ -589,9 +586,7 @@ public class StatGeneratingCLIDriver implements ISPDriver {
 				threeDeeSix());
 		retval.setStats(stats);
 		if (levels > 1) {
-			SystemOut.SYS_OUT.print("Worker has ");
-			SystemOut.SYS_OUT.print(levels);
-			SystemOut.SYS_OUT.println(" Job levels.");
+			SystemOut.SYS_OUT.printf("Worker has %d Job levels.%n", Integer.valueOf(levels));
 			SystemOut.SYS_OUT.println("Worker stats:");
 			SystemOut.SYS_OUT.print(stats);
 		} else if (levels == 1) {

@@ -10,6 +10,7 @@ import java.util.Set;
 import model.map.Point;
 import model.map.PointFactory;
 import util.NullCleaner;
+import view.util.SystemOut;
 
 /**
  * A class to model the distribution of a mineral to be mined. Note that the
@@ -99,9 +100,7 @@ public class MiningModel {
 				queue.add(left);
 			}
 		}
-		System.out.print("\nPruned ");
-		System.out.print(pruneCounter);
-		System.out.println(" branches beyond our boundaries");
+		SystemOut.SYS_OUT.printf("%nPruned %d branches beyond our boundaries%n", Long.valueOf(pruneCounter));
 		final int minCol =
 				getMinCol(NullCleaner.assertNotNull(unnormalized.keySet()));
 		for (final Map.Entry<Point, LodeStatus> entry : unnormalized.entrySet()) {

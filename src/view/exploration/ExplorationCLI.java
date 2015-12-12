@@ -31,6 +31,7 @@ import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
 import util.NullCleaner;
 import util.Pair;
+import view.util.SystemOut;
 
 /**
  * A CLI to help running exploration. Now separated from the "driver" bits, to
@@ -215,10 +216,8 @@ public class ExplorationCLI {
 			swearVillages(dPoint);
 			cost += 5;
 		}
-		System.out.print("The explorer comes to ");
-		System.out.print(dPoint.toString());
-		System.out.print(", a tile with terrain ");
-		System.out.println(map.getBaseTerrain(dPoint));
+		SystemOut.SYS_OUT.printf("The explorer comes to %s, a tile with terrain %s%n",
+				dPoint.toString(), map.getBaseTerrain(dPoint).toString());
 		if (allFixtures.isEmpty()) {
 			SYS_OUT.println("The following fixtures were automatically noticed:");
 		} else {
@@ -283,11 +282,8 @@ public class ExplorationCLI {
 			final int totalMP = helper.inputNumber("MP the unit has: ");
 			int movement = totalMP;
 			while (movement > 0) {
-				System.out.print(movement);
-				System.out.print(" MP of ");
-				System.out.print(totalMP);
-				System.out.println(" remaining.");
-				SYS_OUT.println(PROMPT);
+				SYS_OUT.printf("%d MP of %d remaining.%n%s%n", Integer.valueOf(movement),
+						Integer.valueOf(totalMP), PROMPT);
 				movement -= move(selUnit);
 			}
 		}

@@ -34,6 +34,7 @@ import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
 import model.misc.SimpleMultiMapModel;
 import util.Pair;
+import view.util.SystemOut;
 
 /**
  * A model for exploration drivers.
@@ -255,12 +256,9 @@ IExplorationModel {
 			if (fix instanceof HasOwner
 					&& !((HasOwner) fix).getOwner().isIndependent()
 					&& !((HasOwner) fix).getOwner().equals(unit.getOwner())) {
-				System.out.print("Unit's motion to ");
-				System.out.print(dest);
-				System.out.print(" could be observed by ");
-				System.out.print(fix.shortDesc());
-				System.out.print(" at ");
-				System.out.println(point);
+				SystemOut.SYS_OUT.printf(
+						"Unit's motion to %s could be observed by %s at %s%n",
+						dest.toString(), fix.shortDesc(), point.toString());
 			}
 		}
 	}
