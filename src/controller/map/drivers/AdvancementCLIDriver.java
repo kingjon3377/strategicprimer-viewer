@@ -211,10 +211,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 	 * @throws IOException on I/O error getting input from user
 	 */
 	private void advanceSingleWorker(final IWorker worker) throws IOException {
-		List<IJob> jobs = new ArrayList<>();
-		for (IJob job : worker) {
-			jobs.add(job);
-		}
+		final List<IJob> jobs = CLIHelper.toList(worker);
 		final String hdr = "Jobs in worker:";
 		final String none = "No existing jobs.";
 		final String prpt = "Job to advance: ";
@@ -224,9 +221,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 				String jobName = cli.inputString("Name of new Job: ");
 				worker.addJob(new Job(jobName, 0));
 				jobs.clear();
-				for (IJob job : worker) {
-					jobs.add(job);
-				}
+				jobs.addAll(CLIHelper.toList(worker));
 				SYS_OUT.println("Select the new job at the next prompt.");
 				continue;
 			} else {
@@ -243,10 +238,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 	 * @throws IOException on I/O error getting input from user
 	 */
 	private void advanceJob(final IJob job) throws IOException {
-		List<ISkill> skills = new ArrayList<>();
-		for (ISkill skill : job) {
-			skills.add(skill);
-		}
+		List<ISkill> skills = CLIHelper.toList(job);
 		final String hdr = "Jobs in worker:";
 		final String none = "No existing jobs.";
 		final String prpt = "Job to advance: ";
@@ -256,9 +248,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 				String skillName = cli.inputString("Name of new Skill: ");
 				job.addSkill(new Skill(skillName, 0, 0));
 				skills.clear();
-				for (ISkill skill : job) {
-					skills.add(skill);
-				}
+				skills.addAll(CLIHelper.toList(job));
 				SYS_OUT.println("Select the new skill at the next prompt.");
 				continue;
 			} else {
