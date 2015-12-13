@@ -105,14 +105,12 @@ public class ResolutionDecreaseConverter {
 					final Set<River> upperRightRivers = getRivers(old, two);
 					final Set<River> lowerLeftRivers = getRivers(old, three);
 					final Set<River> lowerRightRivers = getRivers(old, four);
-					final RiverFixture combined = new RiverFixture();
 					removeRivers(upperLeftRivers, River.East, River.South);
 					removeRivers(upperRightRivers, River.West, River.South);
 					removeRivers(lowerLeftRivers, River.East, River.North);
 					removeRivers(lowerRightRivers, River.West, River.North);
-					addRivers(combined, upperLeftRivers, upperRightRivers,
-							lowerLeftRivers, lowerRightRivers);
-					for (River river : combined) {
+					for (River river : combineRivers(upperLeftRivers, upperRightRivers,
+							lowerLeftRivers, lowerRightRivers)) {
 						retval.addRivers(point, river);
 					}
 					// FIXME: Rivers
@@ -148,7 +146,20 @@ public class ResolutionDecreaseConverter {
 		}
 		return retval;
 	}
-
+	/**
+	 * @param rivers a series of rivers to combine into one collection
+	 * @return a RiverFixture containing all of them
+	 */
+	@SafeVarargs
+	private static Iterable<River> combineRivers(final Iterable<River>... rivers) {
+		final RiverFixture retval = new RiverFixture();
+		for (final Iterable<River> riverFix : rivers) {
+			for (final River river : riverFix) {
+				retval.addRiver(river);
+			}
+		}
+		return retval;
+	}
 	/**
 	 * @param fix a RiverFixture
 	 * @param rivers a series of rivers to add to it
