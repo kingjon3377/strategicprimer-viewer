@@ -1,6 +1,5 @@
 package controller.map.converter;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
@@ -79,12 +78,7 @@ public class ResolutionDecreaseConverter {
 								old.getBaseTerrain(two),
 								old.getBaseTerrain(three),
 								old.getBaseTerrain(four)));
-				List<Point> oldPoints = new ArrayList<>();
-				oldPoints.add(one);
-				oldPoints.add(two);
-				oldPoints.add(three);
-				oldPoints.add(four);
-				for (Point oldPoint : oldPoints) {
+				for (Point oldPoint : Arrays.asList(one, two, three, four)) {
 					if (old.isMountainous(oldPoint)) {
 						retval.setMountainous(point, true);
 					}
