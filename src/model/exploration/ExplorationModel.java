@@ -174,7 +174,6 @@ IExplorationModel {
 		IMutableMapNG map = getMap();
 		final Point point = selUnitLoc;
 		final Point dest = getDestination(point, direction);
-		// ESCA-JAVA0177:
 		if (SimpleMovement.isLandMovementPossible(map.getBaseTerrain(dest))) {
 			final int retval; // NOPMD
 			if (dest.equals(point)) {

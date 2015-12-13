@@ -77,7 +77,6 @@ public class FixtureFilterMenu extends JMenu implements ZOrderFilter,
 	 */
 	@Override
 	public boolean shouldDisplay(@Nullable final TileFixture fix) {
-		// ESCA-JAVA0177:
 		if (fix == null) {
 			return false; // NOPMD
 		}

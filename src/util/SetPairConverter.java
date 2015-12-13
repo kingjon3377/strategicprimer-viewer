@@ -88,7 +88,6 @@ public final class SetPairConverter<@NonNull I, @NonNull K> implements Iterable<
 			return wrapped.hasNext();
 		}
 
-		// ESCA-JAVA0277:
 		/**
 		 * @return the next pair in line
 		 */

@@ -72,7 +72,6 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Animal) {
 				final Animal animal = (Animal) pair.second();
-				// ESCA-JAVA0177:
 				final String string; // NOPMD
 				if (animal.isTraces()) {
 					string = "tracks or traces of " + animal.getKind();
@@ -81,7 +80,6 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 				} else {
 					string = animal.getKind();
 				}
-				// ESCA-JAVA0177:
 				final List<Point> points; // NOPMD
 				if (items.containsKey(string)) {
 					points = items.get(string);
@@ -128,7 +126,6 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Animal) {
 				final Animal animal = (Animal) pair.second();
-				// ESCA-JAVA0177:
 				final String string = animal.getKind();
 				final AbstractReportNode collection;
 				if (items.containsKey(string)) {

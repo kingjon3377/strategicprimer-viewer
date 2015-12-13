@@ -38,7 +38,6 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-// ESCA-JAVA0137:
 public final class TestTableLoader {
 	/**
 	 * The empty list.
@@ -93,7 +92,6 @@ public final class TestTableLoader {
 				"random\n0 one\n99 two"))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(30, 30);
-			// ESCA-JAVA0076:
 			assertEquals("loading random table", ONE_STRING,
 					result.generateEvent(point, TileType.Tundra, EMPTY));
 		}

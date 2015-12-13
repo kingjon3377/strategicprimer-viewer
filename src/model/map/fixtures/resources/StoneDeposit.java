@@ -154,7 +154,6 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	 */
 	@Override
 	public int getZValue() {
-		// ESCA-JAVA0076:
 		return 40;
 	}
 

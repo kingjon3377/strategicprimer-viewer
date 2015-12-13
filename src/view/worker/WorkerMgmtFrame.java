@@ -413,7 +413,6 @@ public class WorkerMgmtFrame extends JFrame {
 					// users *want* empty units printed.
 					continue;
 				}
-				// ESCA-JAVA0177:
 				final List<IUnit> list; // NOPMD
 				if (unitsByKind.containsKey(unit.getKind())) {
 					list = unitsByKind.get(unit.getKind());

@@ -34,7 +34,6 @@ import model.map.SPMapNG;
  * @author Jonathan Lovelace
  *
  */
-// ESCA-JAVA0011:
 public abstract class AbstractDriverModel implements IDriverModel {
 	/**
 	 * The list of map-change listeners.

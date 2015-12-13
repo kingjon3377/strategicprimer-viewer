@@ -45,7 +45,6 @@ public class Pair<@NonNull L, @NonNull R> {
 		return second;
 	}
 
-	// ESCA-JAVA0029:
 	/**
 	 * Constructor.
 	 *

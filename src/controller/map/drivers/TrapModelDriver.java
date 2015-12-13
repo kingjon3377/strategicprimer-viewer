@@ -247,7 +247,6 @@ public final class TrapModelDriver implements ISPDriver {
 			final boolean fishing) throws IOException {
 		switch (command) {
 		case Check: // TODO: extract method?
-			// ESCA-JAVA0177:
 			final String top = fixtures.remove(0);
 			if (HuntingModel.NOTHING.equals(top)) {
 				ostream.append("Nothing in the trap\n");

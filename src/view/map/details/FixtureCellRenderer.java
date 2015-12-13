@@ -78,7 +78,6 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 	 * @param cellHasFocus whether the tree has the focus
 	 * @return a component representing the cell
 	 */
-	// ESCA-JAVA0138:
 	@Override
 	public Component getListCellRendererComponent(
 			@Nullable final JList<? extends TileFixture> list,
@@ -115,7 +114,6 @@ public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 	 * @return an icon representing it
 	 */
 	private Icon getIcon(final HasImage obj) {
-		// ESCA-JAVA0177:
 		Icon retval;
 		String image = obj.getImage();
 		if (image.isEmpty() || MISSING.contains(image)) {

@@ -69,7 +69,6 @@ public final class EchoDriver implements ISPDriver {
 			throw new DriverFailedException("Wrong number of arguments",
 					new IllegalArgumentException("Need exactly two arguments"));
 		}
-		// ESCA-JAVA0177:
 		final IMapNG map; // NOPMD
 		final File infile = new File(args[0]);
 		try {

@@ -250,7 +250,6 @@ public class ExplorationPanel extends BorderedPanel implements ActionListener,
 		final SelectionChangeSupport secPCS = new SelectionChangeSupport();
 		final Iterator<Pair<IMutableMapNG, File>> subMaps =
 				model.getSubordinateMaps().iterator();
-		// ESCA-JAVA0177:
 		final Iterable<Player> players;
 		if (subMaps.hasNext()) {
 			players = subMaps.next().first().players();

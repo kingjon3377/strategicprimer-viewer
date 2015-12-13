@@ -149,7 +149,6 @@ public interface ISPDriver extends HasName {
 		 * @param driver the Class object referring to the type of driver this
 		 *        describes
 		 */
-		// ESCA-JAVA0138:
 		public DriverUsage(final boolean graph, final String shortOpt,
 				final String longOpt, final ParamCount params,
 				final String shortDesc, final String longDesc,

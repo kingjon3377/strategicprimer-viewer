@@ -54,8 +54,6 @@ public final class EnumerationWrapper<@NonNull T> implements Iterator<@NonNull T
 	 * @return the next element
 	 * @throws NoSuchElementException if no more elements
 	 */
-	// ESCA-JAVA0126:
-	// ESCA-JAVA0277:
 	@Override
 	public T next() throws NoSuchElementException { // NOPMD: throws clause
 													// required by

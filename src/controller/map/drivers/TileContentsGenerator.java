@@ -172,7 +172,6 @@ public final class TileContentsGenerator {
 				System.exit(5);
 			} catch (final MissingTableException e) {
 				logger.log(Level.SEVERE, "Missing table", e);
-				// ESCA-JAVA0076:
 				System.exit(6);
 			}
 		}

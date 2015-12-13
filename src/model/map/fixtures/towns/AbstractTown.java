@@ -31,7 +31,6 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-// ESCA-JAVA0011:
 public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	/**
 	 * The size of the town, fortress, or city.

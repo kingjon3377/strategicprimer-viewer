@@ -117,7 +117,6 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 		final Iterator<T> iter = iterable.iterator();
 		for (int i = 0; i < index; i++) {
 			if (iter.hasNext()) {
-				// ESCA-JAVA0282:
 				iter.next();
 			} else {
 				throw new ArrayIndexOutOfBoundsException(
@@ -146,7 +145,6 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 			assert parent != null : "Impossible null in JobTreeModel";
 			final Iterator<?> iter = ((Iterable<?>) parent).iterator();
 			int count = 0;
-			// ESCA-JAVA0254:
 			while (iter.hasNext()) {
 				count++;
 				iter.next();

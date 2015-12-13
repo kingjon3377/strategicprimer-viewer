@@ -246,7 +246,6 @@ public class SubsetFrame extends JFrame {
 	 */
 	public void test(final File arg) { // NOPMD: this isn't a JUnit test ...
 		printParagraph("Testing " + arg + " ...", "");
-		// ESCA-JAVA0177:
 		try {
 			final IMapNG map = reader.readMap(arg, new Warning(Action.Ignore));
 			try (final Writer out = new HTMLWriter(label.getWriter())) {

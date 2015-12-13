@@ -32,7 +32,6 @@ import util.NullCleaner;
 import util.Warning;
 import util.Warning.Action;
 
-// ESCA-JAVA0011:
 /**
  * An abstract base class for this helper method.
  *
@@ -637,7 +636,6 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	protected static <T> int iteratorSize(final Iterable<T> iter) {
 		int size = 0; // NOPMD
 		final Iterator<T> iterator = iter.iterator();
-		// ESCA-JAVA0254:
 		while (iterator.hasNext()) { // $codepro.audit.disable
 			size++; // NOPMD
 			iterator.next();

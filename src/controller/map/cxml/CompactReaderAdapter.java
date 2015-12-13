@@ -89,7 +89,6 @@ public final class CompactReaderAdapter {
 			final IteratorWrapper<XMLEvent> stream,
 			final IMutablePlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
-		// ESCA-JAVA0177:
 		final CompactReader<T> reader; // NOPMD
 		if (River.class.isAssignableFrom(type)) {
 			// Handle rivers specially.

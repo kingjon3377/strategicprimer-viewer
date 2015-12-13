@@ -51,7 +51,6 @@ public final class LevelListener implements LevelGainListener,
 		public int hashCode() {
 			return -1;
 		}
-		// ESCA-JAVA0025:
 		@Override
 		public void addHours(final int hrs, final int condition) {
 			// Do nothing

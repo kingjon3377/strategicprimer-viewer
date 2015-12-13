@@ -48,7 +48,6 @@ public final class ResourceInputStream extends InputStream {
 	// The resource is *not* leaked; it's closed when this is.
 	public ResourceInputStream(final String filename)
 			throws FileNotFoundException {
-		// ESCA-JAVA0177:
 		InputStream temp;
 		try {
 			temp = new FileInputStream(filename);

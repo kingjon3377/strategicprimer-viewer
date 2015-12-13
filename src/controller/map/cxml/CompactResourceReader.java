@@ -185,7 +185,6 @@ public final class CompactResourceReader extends
 		requireTag(elem, "cache", "grove", "orchard",
 				"field", "meadow", "mine", "mineral", "shrub", "stone");
 		final int idNum = getOrGenerateID(elem, warner, idFactory);
-		// ESCA-JAVA0177:
 		final HarvestableFixture retval; // NOPMD
 		switch (MAP.get(elem.getName().getLocalPart())) {
 		case CacheType:

@@ -68,7 +68,6 @@ public class WorkerStats {
 	 */
 	private int cha;
 
-	// ESCA-JAVA0138:
 	/**
 	 * Constructor.
 	 *

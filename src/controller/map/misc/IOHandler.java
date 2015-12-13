@@ -95,7 +95,6 @@ public final class IOHandler implements ActionListener {
 			if (file == null) {
 				return;
 			}
-			// ESCA-JAVA0166:
 			try {
 				model.setMap(readMap(file, Warning.INSTANCE), file);
 			} catch (IOException | SPFormatException | XMLStreamException e) {
@@ -176,7 +175,6 @@ public final class IOHandler implements ActionListener {
 	 */
 	protected static void handleError(final Exception except,
 			final String filename, @Nullable final Component source) {
-		// ESCA-JAVA0177:
 		String msg;
 		if (except instanceof XMLStreamException) {
 			msg = XML_ERROR_STRING + ' ' + filename;

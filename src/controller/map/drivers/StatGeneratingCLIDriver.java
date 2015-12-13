@@ -512,7 +512,6 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 		final Worker retval = new Worker(name, race, idf.createID());
 		int levels = 0;
 		for (int i = 0; i < 3; i++) {
-			// ESCA-JAVA0076:
 			if (SingletonRandom.RANDOM.nextInt(20) == 0) {
 				levels++;
 			}
@@ -573,7 +572,6 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 		final Worker retval = new Worker(name, race, idf.createID());
 		int levels = 0;
 		for (int i = 0; i < 3; i++) {
-			// ESCA-JAVA0076:
 			if (SingletonRandom.RANDOM.nextInt(20) == 0) {
 				levels++;
 			}

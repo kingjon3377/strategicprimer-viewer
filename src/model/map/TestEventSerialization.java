@@ -70,7 +70,6 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testCaveSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
-		// ESCA-JAVA0076:
 		assertSerialization("First CaveEvent serialization test, reflection",
 				new Cave(10, 0), Cave.class);
 		assertSerialization("Second CaveEvent serialization test, reflection",
@@ -98,12 +97,10 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			assert status != null;
 			for (final TownSize size : TownSize.values()) {
 				assert size != null;
-				// ESCA-JAVA0076:
 				assertSerialization(
 						"First CityEvent serialization test, status " + status
 								+ ", size " + size, new City(status, size, // NOPMD
 								10, "oneCity", 0, owner), City.class);
-				// ESCA-JAVA0076:
 				assertSerialization(
 						"Second CityEvent serialization test, status " + status
 								+ ", size " + size, new City(status, size, // NOPMD

@@ -98,8 +98,6 @@ public class UnitMemberCellRenderer implements TreeCellRenderer {
 	 * @param hasFocus whether the tree has the focus
 	 * @return a component representing the cell
 	 */
-	// ESCA-JAVA0138: We have to have this many params to override the
-	// superclass method.
 	@Override
 	public Component getTreeCellRendererComponent(@Nullable final JTree tree,
 			@Nullable final Object value, final boolean selected,

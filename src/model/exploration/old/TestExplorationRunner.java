@@ -41,7 +41,6 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-// ESCA-JAVA0137:
 public final class TestExplorationRunner {
 	/**
 	 * The empty list.
@@ -75,7 +74,6 @@ public final class TestExplorationRunner {
 	/**
 	 * Set up for the tests.
 	 */
-	// ESCA-JAVA0160:
 	@Before
 	public void setUp() {
 		runner = new ExplorationRunner();

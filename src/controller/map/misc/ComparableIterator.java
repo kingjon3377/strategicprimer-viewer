@@ -64,7 +64,6 @@ public final class ComparableIterator<@NonNull T> implements Iterator<@NonNull T
 		return wrapped.hasNext();
 	}
 
-	// ESCA-JAVA0277:
 	/**
 	 * @return the next element
 	 */

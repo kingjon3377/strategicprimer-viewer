@@ -210,7 +210,6 @@ public final class XMLHelper {
 	public static Player getPlayerOrIndependent(final StartElement element,
 			final Warning warner, final IPlayerCollection players)
 			throws SPFormatException {
-		// ESCA-JAVA0177:
 		final Player retval; // NOPMD
 		if (hasAttribute(element, "owner")) {
 			retval = players.getPlayer(parseInt(getAttribute(element,
@@ -239,7 +238,6 @@ public final class XMLHelper {
 	public static int getOrGenerateID(final StartElement element,
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		// ESCA-JAVA0177:
 		final int retval; // NOPMD
 		if (hasAttribute(element, "id")) {
 			retval = idFactory.register(parseInt(getAttribute(element,

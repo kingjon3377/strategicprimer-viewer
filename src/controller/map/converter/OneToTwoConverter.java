@@ -594,7 +594,6 @@ public final class OneToTwoConverter { // NOPMD
 	 * @param points the subpoints to apply it to
 	 * @param map the map to work in
 	 */
-	// ESCA-JAVA0076:
 	private static void addRiver(final River river,
 			final List<Point> points, final IMutableMapNG map) {
 		if (RES_JUMP != optSubtilesPerTile()) {
@@ -667,7 +666,6 @@ public final class OneToTwoConverter { // NOPMD
 					continue;
 				}
 				final File file = new File(arg);
-				// ESCA-JAVA0177:
 				IMapNG old;
 				try {
 					old = reader.readMap(file, Warning.INSTANCE);

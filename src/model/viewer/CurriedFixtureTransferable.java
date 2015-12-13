@@ -94,7 +94,6 @@ public final class CurriedFixtureTransferable implements Transferable {
 	public List<Transferable> getTransferData(@Nullable final DataFlavor dFlavor)
 			throws UnsupportedFlavorException, IOException {
 		if (isDataFlavorSupported(dFlavor)) {
-			// ESCA-JAVA0259: The collection is unmodifiable.
 			return payload; // NOPMD
 		} else {
 			throw new UnsupportedFlavorException(dFlavor);

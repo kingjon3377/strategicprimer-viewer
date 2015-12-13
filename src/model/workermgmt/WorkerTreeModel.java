@@ -109,7 +109,6 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			final Iterator<UnitMember> iter = ((IUnit) parent).iterator();
 			for (int i = 0; i < index; i++) {
 				if (iter.hasNext()) {
-					// ESCA-JAVA0282:
 					iter.next();
 				} else {
 					throw new ArrayIndexOutOfBoundsException(index);
@@ -136,7 +135,6 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 		} else if (parent instanceof IUnit) {
 			final Iterator<UnitMember> iter = ((IUnit) parent).iterator();
 			int count = 0;
-			// ESCA-JAVA0254:
 			while (iter.hasNext()) {
 				count++;
 				iter.next();

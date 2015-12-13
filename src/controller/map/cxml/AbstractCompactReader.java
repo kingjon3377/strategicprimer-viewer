@@ -24,8 +24,6 @@ import util.EqualsAny;
 import util.NullCleaner;
 import util.Warning;
 
-// ESCA-JAVA0011: Doesn't contain an abstract method
-// because we moved it up to the interface.
 /**
  * A superclass to provide helper methods.
  *

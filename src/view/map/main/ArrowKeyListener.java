@@ -207,7 +207,6 @@ public class ArrowKeyListener {
 	 * A listener to move the cursor up.
 	 * @author Jonathan Lovelace
 	 */
-	// ESCA-JAVA0237:
 	private static class UpListener extends AbstractDirListener {
 		/**
 		 * The listener that handles the motion.
@@ -236,7 +235,6 @@ public class ArrowKeyListener {
 	 * A listener to move the cursor down.
 	 * @author Jonathan Lovelace
 	 */
-	// ESCA-JAVA0237:
 	private static class DownListener extends AbstractDirListener {
 		/**
 		 * The listener that handles the motion.
@@ -265,7 +263,6 @@ public class ArrowKeyListener {
 	 * A listener to move the cursor left.
 	 * @author Jonathan Lovelace
 	 */
-	// ESCA-JAVA0237:
 	private static class LeftListener extends AbstractDirListener {
 		/**
 		 * The listener that handles the motion.
@@ -294,7 +291,6 @@ public class ArrowKeyListener {
 	 * A listener to move the cursor right.
 	 * @author Jonathan Lovelace
 	 */
-	// ESCA-JAVA0237:
 	private static class RightListener extends AbstractDirListener {
 		/**
 		 * The listener that handles the motion.

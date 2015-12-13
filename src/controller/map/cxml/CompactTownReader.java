@@ -112,7 +112,6 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "village", "fortress", "town", "city",
 				"fortification");
-		// ESCA-JAVA0177:
 		final ITownFixture retval; // NOPMD
 		if ("village".equals(element.getName().getLocalPart())) {
 			retval = parseVillage(element, stream, players, warner, idFactory);
@@ -202,7 +201,6 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	private static Player getOwnerOrIndependent(final StartElement element,
 			final Warning warner, final IPlayerCollection players)
 			throws SPFormatException {
-		// ESCA-JAVA0177:
 		final Player retval; // NOPMD
 		if (hasParameter(element, OWNER_PARAM)) {
 			retval = players

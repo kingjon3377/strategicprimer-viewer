@@ -101,7 +101,6 @@ public final class HuntingModel {
 			final List<String> plantList =
 					NullCleaner.assertNotNull(plants.get(point));
 			final int len = plantList.size() - 1;
-			// ESCA-JAVA0177:
 			final int nothings; // NOPMD: TODO: extract method?
 			switch (map.getBaseTerrain(point)) {
 			case Desert:
@@ -127,7 +126,6 @@ public final class HuntingModel {
 	 */
 	private static void addToMap(final Map<Point, List<String>> map,
 			final Point point, final String string) {
-		// ESCA-JAVA0177:
 		final List<String> list; // NOPMD
 		if (map.containsKey(point)) {
 			list = NullCleaner.assertNotNull(map.get(point));

@@ -381,7 +381,6 @@ public final class ImmortalsReportGenerator extends AbstractReportGenerator<Mobi
 	 */
 	private static void separateByKind(final Map<String, List<Point>> mapping,
 			final HasKind item, final Point point) {
-		// ESCA-JAVA0177:
 		final List<Point> points; // NOPMD
 		// For the three classes we deal with here, we don't want just the kind,
 		// we want the full toString, so we use that instead of getKind.

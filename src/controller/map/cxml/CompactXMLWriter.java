@@ -63,7 +63,6 @@ public final class CompactXMLWriter implements SPWriter {
 	 * @param obj the object to write
 	 * @throws IOException on I/O error
 	 */
-	// ESCA-JAVA0173: The filename parameter is *too* used.
 	public static void writeObject(final String filename, final Object obj)
 			throws IOException {
 		writeObject(new File(filename), obj);
@@ -76,7 +75,6 @@ public final class CompactXMLWriter implements SPWriter {
 	 * @param obj the object to write
 	 * @throws IOException on I/O error
 	 */
-	// ESCA-JAVA0173: The filename parameter is *too* used.
 	public static void writeObject(final File file, final Object obj)
 			throws IOException {
 		try (final Writer writer = new FileWriter(file)) {

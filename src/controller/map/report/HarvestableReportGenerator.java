@@ -113,7 +113,7 @@ public final class HarvestableReportGenerator extends AbstractReportGenerator<Ha
 				// TODO: Handle these like shrubs.
 				minerals.add(produce(fixtures, map, player,
 						(MineralVein) item, point));
-			} else if (item instanceof Shrub) { // ESCA-JAVA0177:
+			} else if (item instanceof Shrub) {
 				// TODO: Use a Guava Multimap
 				final List<Point> shrubPoints; // NOPMD
 				if (shrubs.containsKey(((Shrub) item).getKind())) {
@@ -206,7 +206,6 @@ public final class HarvestableReportGenerator extends AbstractReportGenerator<Ha
 					minerals.add(produceRIR(fixtures, map, player, item,
 							loc));
 				} else if (item instanceof Shrub) {
-					// ESCA-JAVA0177:
 					final AbstractReportNode collection; // NOPMD
 					if (shrubs.containsKey(((Shrub) item).getKind())) {
 						collection = shrubs.get(((Shrub) item).getKind());

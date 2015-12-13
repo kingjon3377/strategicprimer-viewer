@@ -60,7 +60,6 @@ public class TileUIHelper {
 	/**
 	 * Constructor.
 	 */
-	// ESCA-JAVA0076:
 	@SuppressWarnings("deprecation")
 	public TileUIHelper() {
 		colors = new HashMap<>(SPMapNG.MAX_VERSION + 1);

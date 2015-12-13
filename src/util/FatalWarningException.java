@@ -23,8 +23,6 @@ package util;
  * @author Jonathan Lovelace
  *
  */
-// ESCA-JAVA0051:
-// ESCA-JAVA0048:
 public final class FatalWarningException extends RuntimeException {
 	/**
 	 * Constructor.

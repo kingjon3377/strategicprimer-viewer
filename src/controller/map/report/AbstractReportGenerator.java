@@ -15,7 +15,6 @@ import util.NullCleaner;
 import util.Pair;
 import util.PairComparator;
 
-// ESCA-JAVA0011: Abstract methods are now moved to interface.
 /**
  * An abstract superclass for classes that generate reports for particular kinds of SP
  * objects. It's mostly interface and helper methods, but contains one bit of shared state.

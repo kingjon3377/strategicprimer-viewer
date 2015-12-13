@@ -404,7 +404,6 @@ public final class TestMoreFixtureSerialization extends
 						"third", DEFAULT_RACE, 5),
 				"<worker name=\"third\" race=\"human\" id=\"5\" />",
 				Worker.class);
-		// ESCA-JAVA0076:
 		assertDeprecatedDeserialization(
 				"'miscellaneous' skill with level should be warned about",
 				new Worker("4th", DEFAULT_RACE, 6, new Job("5th", 0,

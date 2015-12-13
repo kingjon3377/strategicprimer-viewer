@@ -52,7 +52,6 @@ public final class FileOpener {
 	 */
 	public static Reader createReader(final String filename)
 			throws FileNotFoundException {
-		// ESCA-JAVA0177:
 		final Reader istream; // NOPMD
 		if (filename.contains("string:<")) {
 			istream = new StringReader(filename.substring(7));

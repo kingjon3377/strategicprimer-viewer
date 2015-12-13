@@ -216,7 +216,6 @@ public final class ExplorationRunner { // NOPMD
 	 *         exist.
 	 */
 	// $codepro.audit.disable booleanMethodNamingConvention
-	// ESCA-JAVA0049:
 	private boolean recursiveCheck(final String table, final Set<String> state) {
 		if (state.contains(table)) {
 			return false; // NOPMD
@@ -283,7 +282,6 @@ public final class ExplorationRunner { // NOPMD
 	 * @param state to prevent infinite recursion.
 	 * @throws IOException on I/O error writing to the stream
 	 */
-	// ESCA-JAVA0049:
 	private void verboseRecursiveCheck(final String table,
 			final Appendable ostream, final Set<String> state) throws IOException {
 		if (!state.contains(table)) {

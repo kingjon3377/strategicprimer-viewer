@@ -108,7 +108,6 @@ public final class ListReportNode extends AbstractReportNode {
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
 			if (child instanceof AbstractReportNode) {
-				// ESCA-JAVA0076:
 				retval += ((AbstractReportNode) child).size()
 						+ PER_CHILD_BOILERPLATE;
 			}

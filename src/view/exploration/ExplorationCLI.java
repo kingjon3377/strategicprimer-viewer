@@ -172,7 +172,6 @@ public final class ExplorationCLI {
 				assertNotNull(Direction.values()[directionNum]);
 		final Point point = model.getSelectedUnitLocation();
 		final Point dPoint = model.getDestination(point, direction);
-		// ESCA-JAVA0177:
 		int cost; // NOPMD
 		try {
 			cost = model.move(direction);

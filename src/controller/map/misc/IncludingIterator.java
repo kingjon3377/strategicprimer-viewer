@@ -132,7 +132,6 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	 *
 	 * @author Jonathan Lovelace
 	 */
-	// ESCA-JAVA0051:
 	public static final class NoSuchElementBecauseException extends
 			NoSuchElementException {
 		/**

@@ -35,7 +35,6 @@ import util.SetPairConverter;
  * @author Jonathan Lovelace
  *
  */
-// ESCA-JAVA0011:
 public class SimpleMultiMapModel extends AbstractDriverModel
 		implements IMultiMapModel {
 	/**

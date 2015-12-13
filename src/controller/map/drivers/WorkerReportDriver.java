@@ -69,7 +69,6 @@ public final class WorkerReportDriver implements ISPDriver {
 			if (filename == null) {
 				continue;
 			}
-			// ESCA-JAVA0177:
 			final String report; // NOPMD
 			try {
 				report =

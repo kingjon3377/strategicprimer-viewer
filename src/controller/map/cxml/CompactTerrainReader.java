@@ -150,7 +150,6 @@ public final class CompactTerrainReader extends
 			final IMutablePlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "forest", "hill", "mountain", "oasis", "sandbar");
-		// ESCA-JAVA0177:
 		final TerrainFixture retval; // NOPMD
 		switch (MAP.get(element.getName().getLocalPart())) {
 		case ForestType:

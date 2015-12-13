@@ -53,7 +53,6 @@ public class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 * @param position the coordinates of the tile's upper-left corner
 	 * @param dims the width (X) and height (Y) of the tile
 	 */
-	// ESCA-JAVA0138:
 	@Override
 	public void drawTile(final Graphics pen, final IMapNG map,
 			final Point location, final Coordinate position,

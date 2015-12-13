@@ -215,7 +215,6 @@ public final class CompactMobileReader extends
 		requireTag(element, "animal", "centaur", "djinn", "dragon", "fairy",
 				"giant", "griffin", "minotaur", "ogre", "phoenix", "simurgh",
 				"sphinx", "troll", "unit");
-		// ESCA-JAVA0177:
 		final MobileFixture retval; // NOPMD
 		final MobileType type = MAP.get(element.getName().getLocalPart());
 		switch (type) {
