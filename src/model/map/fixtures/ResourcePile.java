@@ -152,7 +152,7 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-			final String context)			throws IOException {
+			final String context) throws IOException {
 		if (obj.getID() != id) {
 			ostream.append(context);
 			ostream.append("\tIDs differ");
