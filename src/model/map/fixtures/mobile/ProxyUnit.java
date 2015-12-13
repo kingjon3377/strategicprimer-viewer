@@ -324,7 +324,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		for (IUnit unit : proxied) {
 			if (orders == null) {
 				orders = unit.getOrders();
-			} else if ("".equals(orders)) {
+			} else if (orders.isEmpty()) {
 				continue;
 			} else if (!orders.equals(unit.getOrders())) {
 				return "";
