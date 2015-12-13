@@ -457,6 +457,13 @@ public class ArrowKeyListener {
 			dsc.jumpUp();
 			dsc.jumpLeft();
 		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "JumpUpLeftListener";
+		}
 	}
 	/**
 	 * A listener to move the cursor to the bottom right corner.
@@ -481,6 +488,13 @@ public class ArrowKeyListener {
 			dsc.jumpDown();
 			dsc.jumpRight();
 		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "JumpDownRightListener";
+		}
 	}
 	/**
 	 * A listener to move the cursor all the way up.
@@ -503,6 +517,13 @@ public class ArrowKeyListener {
 		@Override
 		public void actionPerformed(@Nullable final ActionEvent evt) {
 			dsc.jumpUp();
+		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "JumpUpListener";
 		}
 	}
 	/**
@@ -527,6 +548,13 @@ public class ArrowKeyListener {
 		public void actionPerformed(@Nullable final ActionEvent evt) {
 			dsc.jumpDown();
 		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "JumpDownListener";
+		}
 	}
 	/**
 	 * A listener to move the cursor all the way left.
@@ -550,6 +578,13 @@ public class ArrowKeyListener {
 		public void actionPerformed(@Nullable final ActionEvent evt) {
 			dsc.jumpLeft();
 		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "JumpLeftListener";
+		}
 	}
 	/**
 	 * A listener to move the cursor all the way right.
@@ -572,6 +607,13 @@ public class ArrowKeyListener {
 		@Override
 		public void actionPerformed(@Nullable final ActionEvent evt) {
 			dsc.jumpRight();
+		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "JumpRightListener";
 		}
 	}
 }

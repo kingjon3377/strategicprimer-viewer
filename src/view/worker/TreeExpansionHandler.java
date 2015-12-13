@@ -69,4 +69,11 @@ public class TreeExpansionHandler implements ActionListener {
 		}
 	}
 
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "TreeExpansionHandler";
+	}
 }

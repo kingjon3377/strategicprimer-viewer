@@ -106,6 +106,13 @@ public class StreamingLabel extends JLabel {
 		private void updateText() {
 			control.setText("<html>" + swriter.toString() + "</html>");
 		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "StreamingLabelWriter";
+		}
 	}
 	/**
 	 * @return the writer to "print" to.

@@ -425,5 +425,12 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 		public void removeMember(final UnitMember member) {
 			// Do nothing
 		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "OrdersPanel#ProxyUnit";
+		}
 	}
 }
