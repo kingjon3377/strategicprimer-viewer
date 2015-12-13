@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -18,6 +20,8 @@ import model.map.HasName;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
+import model.map.fixtures.mobile.ProxyFor;
+import model.map.fixtures.mobile.ProxyUnit;
 import model.map.fixtures.mobile.Unit;
 import util.EnumerationWrapper;
 import util.NullCleaner;
@@ -88,12 +92,40 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 				getNode(old.getKind()), oldNode },
 				new int[] { oldNode.getIndex(node) }, new Object[] { node });
 		oldNode.remove(node);
-		old.removeMember(member);
-		newNode.add(node);
-		fireTreeNodesInserted(this,
-				new Object[] { pnode, getNode(newOwner.getKind()), newNode },
-				new int[] { newNode.getIndex(node) }, new Object[] { node });
-		newOwner.addMember(member);
+		boolean fullProxy = false;
+		if (member instanceof ProxyFor && old instanceof ProxyUnit
+				&& newOwner instanceof ProxyUnit
+				&& ((List<IUnit>) ((ProxyUnit) old).getProxied())
+						.size() == ((List<IUnit>) ((ProxyUnit) newOwner).getProxied())
+								.size() && ((List<IUnit>) ((ProxyUnit) old).getProxied())
+								.size() == ((List<? extends UnitMember>) ((ProxyFor<? extends UnitMember>) member).getProxied()).size()) {
+			Queue<UnitMember> members = new LinkedList<>();
+			Queue<IUnit> newList = new LinkedList<>();
+			Iterator<IUnit> oldIter = ((ProxyUnit) old).getProxied().iterator();
+			Iterator<IUnit> newIter = ((ProxyUnit) newOwner).getProxied().iterator();
+			for (UnitMember item : ((ProxyFor<? extends UnitMember>) member).getProxied()) {
+				assert (oldIter.hasNext() && newIter.hasNext());
+				IUnit innerOld = oldIter.next();
+				IUnit innerNew = newIter.next();
+				innerOld.removeMember(item);
+				members.add(item);
+				newList.add(innerNew);
+			}
+			newNode.add(node);
+			fireTreeNodesInserted(this,
+					new Object[] { pnode, getNode(newOwner.getKind()), newNode },
+					new int[] { newNode.getIndex(node) }, new Object[] { node });
+			while (!members.isEmpty() && !newList.isEmpty()) {
+				newList.remove().addMember(members.remove());
+			}
+		} else {
+			old.removeMember(member);
+			newNode.add(node);
+			fireTreeNodesInserted(this,
+					new Object[] { pnode, getNode(newOwner.getKind()), newNode },
+					new int[] { newNode.getIndex(node) }, new Object[] { node });
+			newOwner.addMember(member);
+		}
 	}
 	/**
 	 * A base class for our nodes.
