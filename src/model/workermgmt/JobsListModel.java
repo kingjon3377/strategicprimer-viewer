@@ -12,6 +12,7 @@ import model.listeners.CompletionListener;
 import model.listeners.CompletionSource;
 import model.listeners.UnitMemberListener;
 import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
@@ -43,7 +44,7 @@ public final class JobsListModel extends DefaultListModel<IJob> implements
 	/**
 	 * A non-null "null" worker. Adjusted to prevent modification.
 	 */
-	private static final Worker NULL_WORKER = new Worker("null", "null", -1) {
+	private static final IWorker NULL_WORKER = new Worker("null", "null", -1) {
 		@Override
 		public boolean addJob(final IJob job) {
 			return false;
@@ -52,7 +53,7 @@ public final class JobsListModel extends DefaultListModel<IJob> implements
 	/**
 	 * The current worker.
 	 */
-	private Worker worker = NULL_WORKER;
+	private IWorker worker = NULL_WORKER;
 
 	/**
 	 * @param category what kind of thing is being added; if not a Job we ignore
@@ -80,8 +81,8 @@ public final class JobsListModel extends DefaultListModel<IJob> implements
 			@Nullable final UnitMember selected) {
 		if (!worker.equals(selected)) {
 			clear();
-			if (selected instanceof Worker) {
-				worker = (Worker) selected;
+			if (selected instanceof IWorker) {
+				worker = (IWorker) selected;
 				for (final IJob job : worker) {
 					addElement(job);
 				}
