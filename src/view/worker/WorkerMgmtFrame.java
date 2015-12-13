@@ -3,6 +3,9 @@ package view.worker;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.FileWriter;
@@ -15,12 +18,17 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.WindowConstants;
@@ -136,8 +144,23 @@ public class WorkerMgmtFrame extends JFrame {
 				new WorkerTree(wtmodel, model.getMap().players(), true);
 		pch.addPlayerChangeListener(wtmodel);
 		newUnitFrame.addNewUnitListener(wtmodel);
+		final boolean onMac = System.getProperty("os.name").toLowerCase()
+				.startsWith("mac os x");
+		InputMap inputMap = tree.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap actionMap = tree.getActionMap();
+		assert (inputMap != null && actionMap != null);
+		inputMap.put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_U,
+						onMac ? InputEvent.META_DOWN_MASK : InputEvent.CTRL_DOWN_MASK),
+				"openUnits");
+		actionMap.put("openUnits", new AbstractAction() {
+			@Override
+			public void actionPerformed(@Nullable final ActionEvent evt) {
+				tree.requestFocusInWindow();
+			}
+		});
 		final PlayerLabel plabel = new PlayerLabel("Units belonging to ", model
-				.getMap().getCurrentPlayer(), ":");
+				.getMap().getCurrentPlayer(), onMac? ": (\u2318U)" : ": (Ctrl+U)");
 		pch.addPlayerChangeListener(plabel);
 		pch.addPlayerChangeListener(newUnitFrame);
 		final OrdersPanel ordersPanel = new OrdersPanel(model);
