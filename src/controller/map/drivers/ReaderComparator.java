@@ -118,11 +118,17 @@ public final class ReaderComparator implements ISPDriver {
 			final String contents = readIntoBuffer(arg);
 			final Warning warner = new Warning(Action.Ignore);
 			final long startOne = System.nanoTime();
-			final IMapNG map1 = one.readMap(arg, new StringReader(contents), warner);
+			final IMapNG map1;
+			try (StringReader reader = new StringReader(contents)) {
+				map1 = one.readMap(arg, reader, warner);
+			}
 			final long endOne = System.nanoTime();
 			printElapsed("Old", endOne - startOne);
 			final long startTwo = System.nanoTime();
-			final IMapNG map2 = two.readMap(arg, new StringReader(contents), warner);
+			final IMapNG map2;
+			try (StringReader reader = new StringReader(contents)) {
+				map2 = two.readMap(arg, reader, warner);
+			}
 			final long endTwo = System.nanoTime();
 			printElapsed("New", endTwo - startTwo);
 			if (map1.equals(map2)) {
