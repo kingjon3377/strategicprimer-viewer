@@ -181,6 +181,7 @@ public class MemberDetailPanel extends JPanel implements UnitMemberListener {
 	public void memberSelected(@Nullable final UnitMember old,
 			@Nullable final UnitMember selected) {
 		if (selected instanceof ProxyFor) {
+			@SuppressWarnings("unchecked")
 			Iterator<? extends UnitMember> iter = ((ProxyFor<? extends UnitMember>) selected)
 					.getProxied().iterator();
 			if (iter.hasNext()) {
