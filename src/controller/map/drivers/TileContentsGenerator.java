@@ -54,7 +54,7 @@ import util.Warning;
  * @author Jonathan Lovelace
  *
  */
-public final class GenerateTileContents {
+public final class TileContentsGenerator {
 	/**
 	 * The singleton runner we'll be using.
 	 */
@@ -74,9 +74,9 @@ public final class GenerateTileContents {
 	 * A mapping from filenames containing maps to instances handling those
 	 * maps.
 	 */
-	private static final Map<String, GenerateTileContents> INSTANCES =
+	private static final Map<String, TileContentsGenerator> INSTANCES =
 			NullCleaner.assertNotNull(Collections.synchronizedMap(
-					new HashMap<String, GenerateTileContents>()));
+					new HashMap<String, TileContentsGenerator>()));
 
 	/**
 	 * @param filename
@@ -90,12 +90,12 @@ public final class GenerateTileContents {
 	 * @throws IOException
 	 *             on I/O error reading the file
 	 */
-	public static GenerateTileContents getInstance(final String filename)
+	public static TileContentsGenerator getInstance(final String filename)
 			throws IOException, XMLStreamException, SPFormatException {
 		if (!INSTANCES.containsKey(filename)) {
 			INSTANCES.put(
 					filename,
-					new GenerateTileContents(READER.readMap(new File(filename),
+					new TileContentsGenerator(READER.readMap(new File(filename),
 							Warning.INSTANCE)));
 		}
 		return NullCleaner.assertNotNull(INSTANCES.get(filename));
@@ -106,7 +106,7 @@ public final class GenerateTileContents {
 	 *
 	 * @param theMap the map we'll be consulting.
 	 */
-	private GenerateTileContents(final IMapNG theMap) {
+	private TileContentsGenerator(final IMapNG theMap) {
 		map = theMap;
 		TableLoader.loadAllTables("tables", runner);
 	}
@@ -144,7 +144,7 @@ public final class GenerateTileContents {
 	 */
 	public static void main(final String[] args) {
 		final Logger logger = TypesafeLogger
-				.getLogger(GenerateTileContents.class);
+				.getLogger(TileContentsGenerator.class);
 		if (args.length < 3) {
 			logger.severe("Usage: GenerateTileContents mapname.xml row col");
 		} else {
