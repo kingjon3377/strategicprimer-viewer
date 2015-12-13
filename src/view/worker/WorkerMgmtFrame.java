@@ -146,21 +146,27 @@ public final class WorkerMgmtFrame extends JFrame {
 		newUnitFrame.addNewUnitListener(wtmodel);
 		final boolean onMac = System.getProperty("os.name").toLowerCase()
 				.startsWith("mac os x");
+		final int keyMask;
+		final String keyDesc;
+		if (onMac) {
+			keyMask = InputEvent.META_DOWN_MASK;
+			keyDesc = ": (\u2318U)";
+		} else {
+			keyMask = InputEvent.CTRL_DOWN_MASK;
+			keyDesc = ": (Ctrl+U)";
+		}
 		InputMap inputMap = tree.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap actionMap = tree.getActionMap();
 		assert (inputMap != null && actionMap != null);
-		inputMap.put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_U,
-						onMac ? InputEvent.META_DOWN_MASK : InputEvent.CTRL_DOWN_MASK),
-				"openUnits");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_U, keyMask), "openUnits");
 		actionMap.put("openUnits", new AbstractAction() {
 			@Override
 			public void actionPerformed(@Nullable final ActionEvent evt) {
 				tree.requestFocusInWindow();
 			}
 		});
-		final PlayerLabel plabel = new PlayerLabel("Units belonging to ", model
-				.getMap().getCurrentPlayer(), onMac? ": (\u2318U)" : ": (Ctrl+U)");
+		final PlayerLabel plabel = new PlayerLabel("Units belonging to ",
+				model.getMap().getCurrentPlayer(), keyDesc);
 		pch.addPlayerChangeListener(plabel);
 		pch.addPlayerChangeListener(newUnitFrame);
 		final OrdersPanel ordersPanel = new OrdersPanel(model);

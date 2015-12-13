@@ -95,10 +95,19 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		// 'this' below.
 		final boolean onMac = System.getProperty("os.name").toLowerCase()
 				.startsWith("mac os x");
+		final String prefix;
+		final int keyMask;
+		if (onMac) {
+			prefix = "\u2318";
+			keyMask = InputEvent.META_DOWN_MASK;
+		} else {
+			prefix = "Ctrl+";
+			keyMask = InputEvent.CTRL_DOWN_MASK;
+		}
 		setNorth(
 				new JLabel(
 						"Orders for current selection, if a unit: ("
-								+ (onMac ? "\u2318" : "Ctrl+")
+								+ prefix
 								+ "D)")).setCenter(new JScrollPane(area))
 										.setSouth(new BorderedPanel()
 												.setLineStart(new ListenedButton("Apply",
@@ -106,10 +115,19 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 										.setLineEnd(
 												new ListenedButton("Revert", handler)));
 		area.addKeyListener(new KeyAdapter() {
+			private boolean isModifierPressed(final KeyEvent evt) {
+				if (onMac && evt.isMetaDown()) {
+					return true;
+				} else if (!onMac && evt.isControlDown()) {
+					return true;
+				} else {
+					return false;
+				}
+			}
 			@Override
 			public void keyPressed(@Nullable final KeyEvent evt) {
 				if (evt != null && evt.getKeyCode() == KeyEvent.VK_ENTER
-						&& (onMac ? evt.isMetaDown() : evt.isControlDown())) {
+						&& isModifierPressed(evt)) {
 					apply();
 
 				}
@@ -121,10 +139,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		InputMap inputMap = getInputMap(WHEN_IN_FOCUSED_WINDOW);
 		ActionMap actionMap = getActionMap();
 		assert (inputMap != null && actionMap != null);
-		inputMap.put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_D,
-						onMac ? InputEvent.META_DOWN_MASK : InputEvent.CTRL_DOWN_MASK),
-				"openOrders");
+		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, keyMask), "openOrders");
 		actionMap.put("openOrders", new AbstractAction() {
 			@Override
 			public void actionPerformed(@Nullable final ActionEvent evt) {
