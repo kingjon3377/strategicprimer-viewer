@@ -129,10 +129,12 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 			final String xml, final Class<?> desideratum, final String tag,
 			final boolean warning) throws XMLStreamException, SPFormatException {
 		if (warning) {
-			reader.readXML(FAKE_FILENAME, new StringReader(xml), desideratum,
-					new Warning(Action.Ignore));
-			try {
-				reader.readXML(FAKE_FILENAME, new StringReader(xml),
+			try (StringReader sreader = new StringReader(xml)) {
+				reader.readXML(FAKE_FILENAME, sreader, desideratum,
+						new Warning(Action.Ignore));
+			}
+			try (StringReader sreader = new StringReader(xml)) {
+				reader.readXML(FAKE_FILENAME, sreader,
 						desideratum, new Warning(Action.Die));
 			} catch (final FatalWarningException except) {
 				final Throwable cause = except.getCause();
@@ -143,9 +145,9 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 						((UnsupportedTagException) cause).getTag());
 			}
 		} else {
-			try {
-				reader.readXML(FAKE_FILENAME, new StringReader(xml),
-						desideratum, new Warning(Action.Ignore));
+			try (StringReader sreader = new StringReader(xml)) {
+				reader.readXML(FAKE_FILENAME, sreader, desideratum,
+						new Warning(Action.Ignore));
 				fail("Expected an UnsupportedTagException");
 			} catch (final UnsupportedTagException except) {
 				assertEquals("The tag we expected", tag, except.getTag());
@@ -169,20 +171,22 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 			final String xml, final Class<?> desideratum, final boolean warning)
 			throws XMLStreamException, SPFormatException {
 		if (warning) {
-			reader.readXML(FAKE_FILENAME, new StringReader(xml), desideratum,
-					new Warning(Action.Ignore));
-			try {
-				reader.readXML(FAKE_FILENAME, new StringReader(xml),
-						desideratum, new Warning(Action.Die));
+			try (StringReader sreader = new StringReader(xml)) {
+				reader.readXML(FAKE_FILENAME, sreader, desideratum,
+						new Warning(Action.Ignore));
+			}
+			try (StringReader sreader = new StringReader(xml)) {
+				reader.readXML(FAKE_FILENAME, sreader, desideratum,
+						new Warning(Action.Die));
 				fail("We were expecting an UnwantedChildException");
 			} catch (final FatalWarningException except) {
 				assertTrue("Unwanted child",
 						except.getCause() instanceof UnwantedChildException);
 			}
 		} else {
-			try {
-				reader.readXML(FAKE_FILENAME, new StringReader(xml),
-						desideratum, new Warning(Action.Ignore));
+			try (StringReader sreader = new StringReader(xml)) {
+				reader.readXML(FAKE_FILENAME, sreader, desideratum,
+						new Warning(Action.Ignore));
 				fail("We were expecting an UnwantedChildException");
 			} catch (final UnwantedChildException except) {
 				assertNotNull("Dummy check", except);
@@ -228,11 +232,13 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 			final String property, final boolean warning)
 			throws XMLStreamException, SPFormatException {
 		if (warning) {
-			reader.readXML(FAKE_FILENAME, new StringReader(xml), desideratum,
-					new Warning(Action.Ignore));
-			try {
-				reader.readXML(FAKE_FILENAME, new StringReader(xml),
-						desideratum, new Warning(Action.Die));
+			try (StringReader sreader = new StringReader(xml)) {
+				reader.readXML(FAKE_FILENAME, sreader, desideratum,
+						new Warning(Action.Ignore));
+			}
+			try (StringReader sreader = new StringReader(xml)) {
+				reader.readXML(FAKE_FILENAME, sreader, desideratum,
+						new Warning(Action.Die));
 				fail("We were expecting a MissingParameterException");
 			} catch (final FatalWarningException except) {
 				final Throwable cause = except.getCause();
