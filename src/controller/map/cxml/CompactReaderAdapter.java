@@ -1,6 +1,7 @@
 package controller.map.cxml;
 
 import java.io.IOException;
+import java.util.logging.Level;
 
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -25,6 +26,7 @@ import model.map.fixtures.explorable.AdventureFixture;
 import model.map.fixtures.explorable.ExplorableFixture;
 import model.map.fixtures.explorable.Portal;
 import model.map.fixtures.mobile.MobileFixture;
+import model.map.fixtures.mobile.ProxyFor;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
@@ -34,6 +36,7 @@ import model.map.fixtures.towns.ITownFixture;
 import model.viewer.TileTypeFixture;
 import util.IteratorWrapper;
 import util.NullCleaner;
+import util.TypesafeLogger;
 import util.Warning;
 
 /**
@@ -200,6 +203,16 @@ public final class CompactReaderAdapter {
 		} else if (obj instanceof TileTypeFixture) {
 			// Skip it.
 			return;
+		} else if (obj instanceof ProxyFor) {
+			for (Object proxied : ((ProxyFor<?>) obj).getProxied()) {
+				assert (proxied != null);
+				TypesafeLogger.getLogger(CompactReaderAdapter.class).log(Level.SEVERE,
+						"Wanted to write a proxy",
+						new IllegalArgumentException("Wanted to write a proxy object"));
+				write(ostream, proxied, indent);
+				return;
+			}
+			throw new IllegalStateException("Don't know how to write this type (a proxy not proxying any objects)");
 		} else if (obj instanceof IFixture) {
 			reader =
 					getFixtureReader(NullCleaner.assertNotNull(((IFixture) obj)
