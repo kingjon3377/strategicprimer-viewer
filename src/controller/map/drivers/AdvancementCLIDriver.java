@@ -120,16 +120,15 @@ public final class AdvancementCLIDriver implements ISPDriver {
 		}
 		List<Player> playerList = new ArrayList<>(allPlayers);
 		try {
-			while (true) {
-				int playerNum =
-						cli.chooseFromList(playerList, "Available players:",
-								"No players found.", "Chosen player: ", false);
-				if (playerNum >= 0 && playerNum < playerList.size()) {
-					advanceWorkers(model, NullCleaner
-							.assertNotNull(playerList.remove(playerNum)));
-				} else {
-					break;
-				}
+			final String hdr = "Available players:";
+			final String none = "No players found.";
+			final String prpt = "Chosen player: ";
+			for (int playerNum = cli.chooseFromList(playerList, hdr, none, prpt,
+					false); playerNum >= 0
+							&& playerNum < playerList.size(); playerNum = cli
+									.chooseFromList(playerList, hdr, none, prpt, false)) {
+				advanceWorkers(model,
+						NullCleaner.assertNotNull(playerList.remove(playerNum)));
 			}
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error interacting with user",
@@ -216,12 +215,12 @@ public final class AdvancementCLIDriver implements ISPDriver {
 		for (IJob job : worker) {
 			jobs.add(job);
 		}
-		while (true) {
-			int jobNum = cli.chooseFromList(jobs, "Jobs in worker:",
-					"No existing jobs.", "Job to advance: ", false);
-			if (jobNum > jobs.size()) {
-				break;
-			} else if (jobNum < 0 || jobNum == jobs.size()) {
+		final String hdr = "Jobs in worker:";
+		final String none = "No existing jobs.";
+		final String prpt = "Job to advance: ";
+		for (int jobNum = cli.chooseFromList(jobs, hdr, none, prpt, false); jobNum <= jobs
+				.size(); jobNum = cli.chooseFromList(jobs, hdr, none, prpt, false)) {
+			if (jobNum < 0 || jobNum == jobs.size()) {
 				String jobName = cli.inputString("Name of new Job: ");
 				worker.addJob(new Job(jobName, 0));
 				jobs.clear();
@@ -248,12 +247,12 @@ public final class AdvancementCLIDriver implements ISPDriver {
 		for (ISkill skill : job) {
 			skills.add(skill);
 		}
-		while (true) {
-			int skillNum = cli.chooseFromList(skills, "Skills in Job:",
-					"No existing Skills.", "Skill to advance: ", false);
-			if (skillNum > skills.size()) {
-				break;
-			} else if (skillNum < 0 || skillNum == skills.size()) {
+		final String hdr = "Jobs in worker:";
+		final String none = "No existing jobs.";
+		final String prpt = "Job to advance: ";
+		for (int skillNum = cli.chooseFromList(skills, hdr, none, prpt, false); skillNum <= skills
+				.size(); skillNum = cli.chooseFromList(skills, hdr, none, prpt, false)) {
+			if (skillNum < 0 || skillNum == skills.size()) {
 				String skillName = cli.inputString("Name of new Skill: ");
 				job.addSkill(new Skill(skillName, 0, 0));
 				skills.clear();
