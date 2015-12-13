@@ -101,6 +101,8 @@ public final class MapCheckerFrame extends JFrame {
 	 * If no color is specified, we'll make it white, because the label's
 	 * background color is black.
 	 *
+	 * FIXME: To appease XSS-possibility warnings, make color on enumerated type.
+	 *
 	 * @param string the string to enclose
 	 * @param color the color to make it, or the empty string if none.
 	 */
