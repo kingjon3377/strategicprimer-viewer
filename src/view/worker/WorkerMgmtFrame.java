@@ -593,9 +593,21 @@ public final class WorkerMgmtFrame extends JFrame {
 	 * A thread to generate the report tree in the background.
 	 */
 	protected static final class ReportGeneratorThread extends Thread {
+		/**
+		 * A logger for the thread.
+		 */
 		private static final Logger RGT_LOGGER = TypesafeLogger.getLogger(WorkerMgmtFrame.ReportGeneratorThread.class);
+		/**
+		 * The tree-model to put the report into.
+		 */
 		protected final DefaultTreeModel tmodel;
+		/**
+		 * The worker model to generate the report from.
+		 */
 		private final IWorkerModel wmodel;
+		/**
+		 * The player to generate the report for.
+		 */
 		private final Player player;
 		protected ReportGeneratorThread(final DefaultTreeModel treeModel, final IWorkerModel workerModel, final Player currentPlayer) {
 			tmodel = treeModel;
