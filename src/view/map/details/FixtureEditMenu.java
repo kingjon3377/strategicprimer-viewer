@@ -50,7 +50,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class FixtureEditMenu extends JPopupMenu {
+public final class FixtureEditMenu extends JPopupMenu {
 	/**
 	 * Listeners to notify about name and kind changes.
 	 */

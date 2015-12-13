@@ -43,7 +43,7 @@ import model.map.fixtures.mobile.worker.WorkerStats;
  *
  * @author Jonathan Lovelace
  */
-public class MemberDetailPanel extends JPanel implements UnitMemberListener {
+public final class MemberDetailPanel extends JPanel implements UnitMemberListener {
 	/**
 	 * The currently selected unit member, or null if no selection.
 	 */

@@ -40,7 +40,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class FixtureFilterList extends JList<Class<? extends TileFixture>>
+public final class FixtureFilterList extends JList<Class<? extends TileFixture>>
 		implements ZOrderFilter, ListCellRenderer<Class<? extends TileFixture>> {
 	/**
 	 * The renderer that does most of the work.

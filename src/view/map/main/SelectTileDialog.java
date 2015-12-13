@@ -45,7 +45,7 @@ import view.util.ListenedButton;
  * @author Jonathan Lovelace
  *
  */
-public class SelectTileDialog extends JDialog implements ActionListener {
+public final class SelectTileDialog extends JDialog implements ActionListener {
 	/**
 	 * The first text field.
 	 */

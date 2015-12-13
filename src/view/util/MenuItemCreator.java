@@ -35,7 +35,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class MenuItemCreator {
+public final class MenuItemCreator {
 	/**
 	 * Create a menu item.
 	 *

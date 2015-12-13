@@ -27,7 +27,7 @@ import javax.swing.JButton;
  * @author Jonathan Lovelace
  *
  */
-public class ListenedButton extends JButton {
+public final class ListenedButton extends JButton {
 	/**
 	 * Constructor.
 	 *

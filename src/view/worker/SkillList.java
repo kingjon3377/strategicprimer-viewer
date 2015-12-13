@@ -43,7 +43,7 @@ import model.workermgmt.SkillListModel;
  * @author Jonathan Lovelace
  *
  */
-public class SkillList extends JList<ISkill> implements ListSelectionListener,
+public final class SkillList extends JList<ISkill> implements ListSelectionListener,
 		SkillSelectionSource, LevelGainListener, JobSelectionListener,
 		CompletionListener {
 	/**

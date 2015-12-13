@@ -30,7 +30,7 @@ import model.workermgmt.WorkerTreeModelAlt.KindNode;
  *
  * @author Jonathan Lovelace
  */
-public class TreeExpansionHandler implements ActionListener {
+public final class TreeExpansionHandler implements ActionListener {
 	/**
 	 * The tree we're handling
 	 */

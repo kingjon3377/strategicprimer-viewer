@@ -54,7 +54,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public class FixtureList extends JList<@NonNull TileFixture> implements
+public final class FixtureList extends JList<@NonNull TileFixture> implements
 		DragGestureListener, SelectionChangeListener {
 	/**
 	 * The list model.
@@ -140,7 +140,7 @@ public class FixtureList extends JList<@NonNull TileFixture> implements
 	 * A listener to set up pop-up menus.
 	 * @author Jonathan Lovelace
 	 */
-	private class FixtureMouseListener extends MouseAdapter {
+	private final class FixtureMouseListener extends MouseAdapter {
 		/**
 		 * The collection of players in the map.
 		 */

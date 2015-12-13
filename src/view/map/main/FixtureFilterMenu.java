@@ -44,7 +44,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class FixtureFilterMenu extends JMenu implements ZOrderFilter,
+public final class FixtureFilterMenu extends JMenu implements ZOrderFilter,
 		ActionListener {
 	/**
 	 * Map from fixture classes to menu-items representing them.

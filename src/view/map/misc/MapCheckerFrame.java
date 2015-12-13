@@ -44,7 +44,7 @@ import view.util.StreamingLabel;
  * @author Jonathan Lovelace
  *
  */
-public class MapCheckerFrame extends JFrame {
+public final class MapCheckerFrame extends JFrame {
 	/**
 	 * The color to use for errors.
 	 */

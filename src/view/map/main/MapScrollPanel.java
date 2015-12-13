@@ -28,7 +28,7 @@ import view.util.BorderedPanel;
  * @author Jonathan Lovelace
  *
  */
-public class MapScrollPanel extends BorderedPanel {
+public final class MapScrollPanel extends BorderedPanel {
 	/**
 	 * Constructor.
 	 *

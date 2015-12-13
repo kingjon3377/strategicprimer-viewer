@@ -53,7 +53,7 @@ import util.TypesafeLogger;
  * @author Jonathan Lovelace
  *
  */
-public class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
+public final class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 	/**
 	 * Logger.
 	 */

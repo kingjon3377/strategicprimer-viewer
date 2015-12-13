@@ -52,7 +52,7 @@ import util.TypesafeLogger;
  * @author Jonathan Lovelace
  *
  */
-public class AppChooserFrame extends JFrame {
+public final class AppChooserFrame extends JFrame {
 	/**
 	 * Create a button for a target.
 	 *
@@ -126,7 +126,7 @@ public class AppChooserFrame extends JFrame {
 	 * A class to start the selected app with originally-command-line arguments.
 	 * @author Jonathan Lovelace
 	 */
-	private static class AppChoiceListenerArgs implements ActionListener, Runnable {
+	private static final class AppChoiceListenerArgs implements ActionListener, Runnable {
 		/**
 		 * Logger for the inner class.
 		 */
@@ -207,7 +207,7 @@ public class AppChooserFrame extends JFrame {
 	 * A class to start the selected app with originally-command-line arguments.
 	 * @author Jonathan Lovelace
 	 */
-	private static class AppChoiceListenerDriverModel implements ActionListener, Runnable {
+	private static final class AppChoiceListenerDriverModel implements ActionListener, Runnable {
 		/**
 		 * Logger for the inner class.
 		 */

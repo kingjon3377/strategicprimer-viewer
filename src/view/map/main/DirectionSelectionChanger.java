@@ -32,7 +32,7 @@ import model.viewer.IViewerModel;
  * @author Jonathan Lovelace
  *
  */
-public class DirectionSelectionChanger implements MouseWheelListener {
+public final class DirectionSelectionChanger implements MouseWheelListener {
 	/**
 	 * The map model we'll be referring to.
 	 */

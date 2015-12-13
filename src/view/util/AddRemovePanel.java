@@ -38,7 +38,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class AddRemovePanel extends JPanel implements ActionListener {
+public final class AddRemovePanel extends JPanel implements ActionListener {
 	/**
 	 * The maximum height of the widget.
 	 */

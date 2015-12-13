@@ -32,7 +32,7 @@ import view.worker.PlayerChooserHandler;
  * @author Jonathan Lovelace
  *
  */
-public class ViewerMenu extends SPMenu {
+public final class ViewerMenu extends SPMenu {
 	/**
 	 * Constructor.
 	 *

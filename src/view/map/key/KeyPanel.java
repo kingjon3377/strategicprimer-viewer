@@ -31,7 +31,7 @@ import model.map.TileType;
  * @author Jonathan Lovelace
  *
  */
-public class KeyPanel extends JPanel implements VersionChangeListener {
+public final class KeyPanel extends JPanel implements VersionChangeListener {
 	/**
 	 * Constructor.
 	 *

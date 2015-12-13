@@ -55,7 +55,7 @@ import view.util.ListenedButton;
  * @author Jonathan Lovelace
  *
  */
-public class NewUnitDialog extends JFrame implements ActionListener,
+public final class NewUnitDialog extends JFrame implements ActionListener,
 		NewUnitSource, PlayerChangeListener {
 	/**
 	 * The list of new-unit listeners listening to us.

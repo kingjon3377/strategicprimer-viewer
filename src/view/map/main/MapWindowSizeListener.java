@@ -31,7 +31,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class MapWindowSizeListener extends WindowAdapter {
+public final class MapWindowSizeListener extends WindowAdapter {
 	/**
 	 * The component to remind of its having been resized on these events.
 	 */

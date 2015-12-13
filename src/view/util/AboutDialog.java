@@ -33,7 +33,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class AboutDialog extends JDialog {
+public final class AboutDialog extends JDialog {
 	/**
 	 * This should only be referenced in the constructor and methods called from it.
 	 */

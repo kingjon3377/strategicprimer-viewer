@@ -23,7 +23,7 @@ package view.util;
  * @author Jonathan Lovelace
  *
  */
-public class Coordinate {
+public final class Coordinate {
 	/**
 	 * Constructor.
 	 *

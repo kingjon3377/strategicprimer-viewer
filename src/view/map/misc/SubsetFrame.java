@@ -52,7 +52,7 @@ import view.util.StreamingLabel;
  * @author Jonathan Lovelace
  *
  */
-public class SubsetFrame extends JFrame {
+public final class SubsetFrame extends JFrame {
 	/**
 	 * Logger.
 	 */

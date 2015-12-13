@@ -65,7 +65,7 @@ import view.util.Coordinate;
  * @author Jonathan Lovelace
  *
  */
-public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
+public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * Image cache.
 	 */
@@ -468,7 +468,7 @@ public class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * A filtered iterator. Only returns items that should be displayed.
 	 * @author Jonathan Lovelace
 	 */
-	private static class FilteredIterator implements Iterator<TileFixture> {
+	private static final class FilteredIterator implements Iterator<TileFixture> {
 		/**
 		 * The wrapped iterator.
 		 */

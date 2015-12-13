@@ -48,7 +48,7 @@ import view.util.SplitWithWeights;
  * @author Jonathan Lovelace
  *
  */
-public class AdvancementFrame extends JFrame {
+public final class AdvancementFrame extends JFrame {
 	/**
 	 * The text of the relevant button. Can't be private without causing
 	 * warnings, since it's used in an inner class.

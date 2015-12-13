@@ -28,7 +28,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class ApplyButtonHandler implements ActionListener {
+public final class ApplyButtonHandler implements ActionListener {
 	/**
 	 * The Applyable that does the heavy lifting.
 	 */

@@ -67,7 +67,7 @@ import view.util.ListenedButton;
  *
  * @author Jonathan Lovelace
  */
-public class ExplorationPanel extends BorderedPanel implements ActionListener,
+public final class ExplorationPanel extends BorderedPanel implements ActionListener,
 		SelectionChangeListener, CompletionSource, MovementCostListener {
 	/**
 	 * The label showing the current location of the explorer.

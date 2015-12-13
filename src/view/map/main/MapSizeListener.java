@@ -34,7 +34,7 @@ import model.viewer.VisibleDimensions;
  * @author Jonathan Lovelace
  *
  */
-public class MapSizeListener extends ComponentAdapter {
+public final class MapSizeListener extends ComponentAdapter {
 	/**
 	 * The map model we'll be modifying.
 	 */

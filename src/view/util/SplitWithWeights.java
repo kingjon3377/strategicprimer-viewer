@@ -28,7 +28,7 @@ import javax.swing.JSplitPane;
  * @author Jonathan Lovelace
  *
  */
-public class SplitWithWeights extends JSplitPane {
+public final class SplitWithWeights extends JSplitPane {
 	/**
 	 * Constructor.
 	 *

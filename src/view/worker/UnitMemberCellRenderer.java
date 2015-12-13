@@ -52,7 +52,7 @@ import util.TypesafeLogger;
  *
  * @author Jonathan Lovelace
  */
-public class UnitMemberCellRenderer implements TreeCellRenderer {
+public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	/**
 	 * Logger.
 	 */

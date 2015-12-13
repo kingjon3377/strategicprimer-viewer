@@ -38,7 +38,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class ArrowKeyListener {
+public final class ArrowKeyListener {
 	/**
 	 * Whether this is running on a Mac.
 	 */
@@ -207,7 +207,7 @@ public class ArrowKeyListener {
 	 * A listener to move the cursor up.
 	 * @author Jonathan Lovelace
 	 */
-	private static class UpListener extends AbstractDirListener {
+	private static final class UpListener extends AbstractDirListener {
 		/**
 		 * The listener that handles the motion.
 		 */
@@ -235,7 +235,7 @@ public class ArrowKeyListener {
 	 * A listener to move the cursor down.
 	 * @author Jonathan Lovelace
 	 */
-	private static class DownListener extends AbstractDirListener {
+	private static final class DownListener extends AbstractDirListener {
 		/**
 		 * The listener that handles the motion.
 		 */
@@ -263,7 +263,7 @@ public class ArrowKeyListener {
 	 * A listener to move the cursor left.
 	 * @author Jonathan Lovelace
 	 */
-	private static class LeftListener extends AbstractDirListener {
+	private static final class LeftListener extends AbstractDirListener {
 		/**
 		 * The listener that handles the motion.
 		 */
@@ -291,7 +291,7 @@ public class ArrowKeyListener {
 	 * A listener to move the cursor right.
 	 * @author Jonathan Lovelace
 	 */
-	private static class RightListener extends AbstractDirListener {
+	private static final class RightListener extends AbstractDirListener {
 		/**
 		 * The listener that handles the motion.
 		 */
@@ -318,7 +318,7 @@ public class ArrowKeyListener {
 	 * A listener to move the cursor up and right.
 	 * @author Jonathan Lovelace
 	 */
-	private static class UpRightListener extends AbstractDirListener {
+	private static final class UpRightListener extends AbstractDirListener {
 		/**
 		 * The listener that handles the motion.
 		 */
@@ -348,7 +348,7 @@ public class ArrowKeyListener {
 	 * A listener to move the cursor up and left.
 	 * @author Jonathan Lovelace
 	 */
-	private static class UpLeftListener extends AbstractDirListener {
+	private static final class UpLeftListener extends AbstractDirListener {
 		/**
 		 * The listener that handles the motion.
 		 */
@@ -378,7 +378,7 @@ public class ArrowKeyListener {
 	 * A listener to move the cursor down and right.
 	 * @author Jonathan Lovelace
 	 */
-	private static class DownRightListener extends AbstractDirListener {
+	private static final class DownRightListener extends AbstractDirListener {
 		/**
 		 * The listener that handles the motion.
 		 */
@@ -408,7 +408,7 @@ public class ArrowKeyListener {
 	 * A listener to move the cursor down and left.
 	 * @author Jonathan Lovelace
 	 */
-	private static class DownLeftListener extends AbstractDirListener {
+	private static final class DownLeftListener extends AbstractDirListener {
 		/**
 		 * The listener that handles the motion.
 		 */
@@ -437,7 +437,7 @@ public class ArrowKeyListener {
 	/**
 	 * A listener to move the cursor to the top left corner.
 	 */
-	private static class JumpUpLeftListener extends AbstractAction {
+	private static final class JumpUpLeftListener extends AbstractAction {
 		/**
 		 * The helper that actually performs the cursor movement.
 		 */
@@ -468,7 +468,7 @@ public class ArrowKeyListener {
 	/**
 	 * A listener to move the cursor to the bottom right corner.
 	 */
-	private static class JumpDownRightListener extends AbstractAction {
+	private static final class JumpDownRightListener extends AbstractAction {
 		/**
 		 * The helper that actually performs the cursor movement.
 		 */
@@ -499,7 +499,7 @@ public class ArrowKeyListener {
 	/**
 	 * A listener to move the cursor all the way up.
 	 */
-	private static class JumpUpListener extends AbstractAction {
+	private static final class JumpUpListener extends AbstractAction {
 		/**
 		 * The helper that actually performs the cursor movement.
 		 */
@@ -529,7 +529,7 @@ public class ArrowKeyListener {
 	/**
 	 * A listener to move the cursor all the way down.
 	 */
-	private static class JumpDownListener extends AbstractAction {
+	private static final class JumpDownListener extends AbstractAction {
 		/**
 		 * The helper that actually performs the cursor movement.
 		 */
@@ -559,7 +559,7 @@ public class ArrowKeyListener {
 	/**
 	 * A listener to move the cursor all the way left.
 	 */
-	private static class JumpLeftListener extends AbstractAction {
+	private static final class JumpLeftListener extends AbstractAction {
 		/**
 		 * The helper that actually performs the cursor movement.
 		 */
@@ -589,7 +589,7 @@ public class ArrowKeyListener {
 	/**
 	 * A listener to move the cursor all the way right.
 	 */
-	private static class JumpRightListener extends AbstractAction {
+	private static final class JumpRightListener extends AbstractAction {
 		/**
 		 * The helper that actually performs the cursor movement.
 		 */

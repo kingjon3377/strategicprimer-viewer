@@ -26,7 +26,7 @@ import javax.swing.filechooser.FileFilter;
  * @author Jonathan Lovelace
  *
  */
-public class FilteredFileChooser extends JFileChooser {
+public final class FilteredFileChooser extends JFileChooser {
 	/**
 	 * Constructor.
 	 *

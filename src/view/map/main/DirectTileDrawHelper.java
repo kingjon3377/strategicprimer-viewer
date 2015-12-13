@@ -43,7 +43,7 @@ import view.util.Coordinate;
  * @author Jonathan Lovelace
  *
  */
-public class DirectTileDrawHelper extends AbstractTileDrawHelper {
+public final class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * Draw a tile at the specified coordinates.
 	 *

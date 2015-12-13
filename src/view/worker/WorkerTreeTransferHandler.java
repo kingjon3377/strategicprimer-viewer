@@ -49,7 +49,7 @@ import util.TypesafeLogger;
  * @author helloworld922
  * @author Jonathan Lovelace
  */
-public class WorkerTreeTransferHandler extends TransferHandler {
+public final class WorkerTreeTransferHandler extends TransferHandler {
 	/**
 	 * The tree's selection model.
 	 */

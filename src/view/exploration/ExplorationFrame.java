@@ -37,7 +37,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public class ExplorationFrame extends JFrame {
+public final class ExplorationFrame extends JFrame {
 	/**
 	 * The exploration model.
 	 */
@@ -46,7 +46,7 @@ public class ExplorationFrame extends JFrame {
 	 * A listener to swap the panels when 'completion' is signalled.
 	 * @author Jonathan Lovelace
 	 */
-	private static class SwapCompletionListener implements CompletionListener {
+	private static final class SwapCompletionListener implements CompletionListener {
 		/**
 		 * The layout to tell to swap panels.
 		 */

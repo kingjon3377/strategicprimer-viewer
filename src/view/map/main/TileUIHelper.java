@@ -38,7 +38,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class TileUIHelper {
+public final class TileUIHelper {
 	/**
 	 * Descriptions of the types.
 	 */

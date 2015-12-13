@@ -50,7 +50,7 @@ import view.util.ListenedButton;
  * @author Jonathan Lovelace
  *
  */
-public class SkillAdvancementPanel extends BoxPanel implements ActionListener,
+public final class SkillAdvancementPanel extends BoxPanel implements ActionListener,
 		SkillSelectionListener, LevelGainSource {
 	/**
 	 * Logger.

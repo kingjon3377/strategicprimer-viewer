@@ -60,7 +60,7 @@ import view.util.ListenedButton;
  * @author Jonathan Lovelace
  *
  */
-public class OrdersPanel extends BorderedPanel implements Applyable,
+public final class OrdersPanel extends BorderedPanel implements Applyable,
 		TreeSelectionListener, PlayerChangeListener {
 	/**
 	 * The worker model to get units from if the user selected a kind.
@@ -196,7 +196,7 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 	 *
 	 * FIXME: This should probably be removed in favor of the top-level ProxyUnit class.
 	 */
-	private static class ProxyUnit implements IUnit {
+	private static final class ProxyUnit implements IUnit {
 		/**
 		 * The kind we're interested in.
 		 */

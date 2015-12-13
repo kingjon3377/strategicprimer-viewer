@@ -68,7 +68,7 @@ import view.util.SplitWithWeights;
  * @author Jonathan Lovelace
  *
  */
-public class FindDialog extends JDialog implements ActionListener {
+public final class FindDialog extends JDialog implements ActionListener {
 	/**
 	 * The proportion between the bulk of the dialog and the filter list.
 	 */

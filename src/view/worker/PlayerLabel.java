@@ -30,7 +30,7 @@ import model.map.Player;
  * @author Jonathan Lovelace
  *
  */
-public class PlayerLabel extends JLabel implements PlayerChangeListener {
+public final class PlayerLabel extends JLabel implements PlayerChangeListener {
 	/**
 	 * Text to give before the current player's name.
 	 */

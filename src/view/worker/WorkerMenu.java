@@ -31,7 +31,7 @@ import view.util.SPMenu;
  * @author Jonathan Lovelace
  *
  */
-public class WorkerMenu extends SPMenu {
+public final class WorkerMenu extends SPMenu {
 	/**
 	 * Constructor.
 	 *

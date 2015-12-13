@@ -60,7 +60,7 @@ import view.util.ListenedButton;
  * @author Jonathan Lovelace
  *
  */
-public class WorkerConstructionFrame extends JFrame implements ActionListener,
+public final class WorkerConstructionFrame extends JFrame implements ActionListener,
 		NewWorkerSource {
 	/**
 	 * Logger.

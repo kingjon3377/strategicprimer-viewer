@@ -99,7 +99,7 @@ public final class ExplorationListListener implements ListDataListener {
 	 *
 	 * @author Jonathan Lovelace
 	 */
-	private static class IntPair<@NonNull T> {
+	private static final class IntPair<@NonNull T> {
 		/**
 		 * The number in the pair.
 		 */

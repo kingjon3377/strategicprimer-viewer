@@ -57,7 +57,7 @@ import view.map.details.FixtureEditMenu;
  * @author Jonathan Lovelace
  *
  */
-public class WorkerTree extends JTree implements UnitMemberSelectionSource,
+public final class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		UnitSelectionSource {
 	/**
 	 * The format string for creating the stats tooltip.
@@ -132,7 +132,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 	 * A listener to set up pop-up menus.
 	 * @author Jonathan Lovelace
 	 */
-	private static class TreeMouseListener extends MouseAdapter {
+	private static final class TreeMouseListener extends MouseAdapter {
 		/**
 		 * The collection of players in the map.
 		 */
@@ -283,7 +283,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 	 * A selection listener.
 	 * @author Jonathan Lovelace
 	 */
-	private static class WorkerTreeSelectionListener implements
+	private static final class WorkerTreeSelectionListener implements
 			TreeSelectionListener, UnitMemberSelectionSource,
 			UnitSelectionSource {
 		/**

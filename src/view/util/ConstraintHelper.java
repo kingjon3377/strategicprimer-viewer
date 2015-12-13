@@ -26,7 +26,7 @@ import java.awt.GridBagConstraints;
  * @author Jonathan Lovelace
  *
  */
-public class ConstraintHelper extends GridBagConstraints {
+public final class ConstraintHelper extends GridBagConstraints {
 	/**
 	 * Constructor taking just position.
 	 *

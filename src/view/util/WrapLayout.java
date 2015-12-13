@@ -18,7 +18,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Rob Camick
  */
-public class WrapLayout extends FlowLayout {
+public final class WrapLayout extends FlowLayout {
 	/**
 	 * Constructs a new <code>WrapLayout</code> with a left alignment and a
 	 * default 5-unit horizontal and vertical gap.

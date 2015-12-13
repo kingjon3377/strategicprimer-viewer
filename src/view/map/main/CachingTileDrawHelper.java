@@ -50,7 +50,7 @@ import view.util.Coordinate;
  * @author Jonathan Lovelace
  *
  */
-public class CachingTileDrawHelper extends AbstractTileDrawHelper {
+public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * Approximately zero. @see{floatEquals}.
 	 */

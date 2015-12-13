@@ -49,7 +49,7 @@ import model.viewer.VisibleDimensions;
  * @author Jonathan Lovelace
  *
  */
-public class ScrollListener implements AdjustmentListener, MapChangeListener,
+public final class ScrollListener implements AdjustmentListener, MapChangeListener,
 		SelectionChangeListener, GraphicalParamsListener {
 	/**
 	 * The map model we're working with.

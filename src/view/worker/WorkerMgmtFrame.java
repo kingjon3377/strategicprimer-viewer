@@ -99,7 +99,7 @@ import view.util.SystemOut;
  * @author Jonathan Lovelace
  *
  */
-public class WorkerMgmtFrame extends JFrame {
+public final class WorkerMgmtFrame extends JFrame {
 	/**
 	 * The logger.
 	 */
@@ -376,7 +376,7 @@ public class WorkerMgmtFrame extends JFrame {
 	 * A class to export a "proto-strategy" to file.
 	 * @author Jonathan Lovelace
 	 */
-	public static class StrategyExporter {
+	public static final class StrategyExporter {
 		/**
 		 * The worker model.
 		 */
@@ -586,7 +586,7 @@ public class WorkerMgmtFrame extends JFrame {
 	/**
 	 * A thread to generate the report tree in the background.
 	 */
-	protected static class ReportGeneratorThread extends Thread {
+	protected static final class ReportGeneratorThread extends Thread {
 		private static final Logger RGT_LOGGER = TypesafeLogger.getLogger(WorkerMgmtFrame.ReportGeneratorThread.class);
 		protected final DefaultTreeModel tmodel;
 		private final IWorkerModel wmodel;
