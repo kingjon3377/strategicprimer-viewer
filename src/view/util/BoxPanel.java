@@ -45,9 +45,9 @@ public class BoxPanel extends JPanel {
 	public BoxPanel(final boolean horiz) {
 		horizontal = horiz;
 		if (horizontal) {
-			setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+			super.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		} else {
-			setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+			super.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		}
 	}
 

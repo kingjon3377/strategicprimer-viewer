@@ -42,14 +42,14 @@ public class SimpleMultiMapModel extends AbstractDriverModel
 	 * @param file the file the map was loaded from or should be saved to
 	 */
 	public SimpleMultiMapModel(final IMutableMapNG map, final File file) {
-		setMap(map, file);
+		super.setMap(map, file);
 	}
 	/**
 	 * Copy constructor.]
 	 * @param model a driver model
 	 */
 	public SimpleMultiMapModel(final IDriverModel model) {
-		setMap(model.getMap(), model.getMapFile());
+		super.setMap(model.getMap(), model.getMapFile());
 		if (model instanceof IMultiMapModel) {
 			for (Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getSubordinateMaps()) {
 				addSubordinateMap(pair.first(), pair.second());

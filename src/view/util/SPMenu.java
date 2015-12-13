@@ -296,7 +296,7 @@ public class SPMenu extends JMenuBar {
 	 * @param menu a menu
 	 * @return it
 	 */
-	protected JMenu addDisabled(final JMenu menu) {
+	protected final JMenu addDisabled(final JMenu menu) {
 		add(menu);
 		menu.setEnabled(false);
 		return menu;
