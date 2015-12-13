@@ -55,14 +55,14 @@ public final class MapReaderAdapter {
 	/**
 	 * The map writer implementation we use under the hood.
 	 */
-	private final SPWriter writer;
+	private final SPWriter spWriter;
 
 	/**
 	 * Constructor.
 	 */
 	public MapReaderAdapter() {
 		reader = new CompactXMLReader();
-		writer = new CompactXMLWriter();
+		spWriter = new CompactXMLWriter();
 	}
 
 	/**
@@ -143,7 +143,7 @@ public final class MapReaderAdapter {
 	 * @throws IOException on error opening the file
 	 */
 	public void write(final File file, final IMapNG map) throws IOException {
-		writer.write(file, map);
+		spWriter.write(file, map);
 	}
 	/**
 	 * Because this is intended to be used by implementations of ISPDriver,
@@ -155,14 +155,14 @@ public final class MapReaderAdapter {
 	 */
 	public void writeModel(final IDriverModel model) throws DriverFailedException {
 		try {
-			writer.write(model.getMapFile(), model.getMap());
+			spWriter.write(model.getMapFile(), model.getMap());
 		} catch (IOException except) {
 			throw new DriverFailedException("I/O error writing to " + model.getMapFile(), except);
 		}
 		if (model instanceof IMultiMapModel) {
 			for (Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getSubordinateMaps()) {
 				try {
-					writer.write(pair.second(), pair.first());
+					spWriter.write(pair.second(), pair.first());
 				} catch (IOException except) {
 					throw new DriverFailedException("I/O error writing to " + pair.second(), except);
 				}

@@ -492,7 +492,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * @param indent the indentation level
 	 * @throws IOException on I/O error
 	 */
-	public static void writeRivers(final Appendable ostream,
+	public static void writeAllRivers(final Appendable ostream,
 			final Iterable<River> iter, final int indent) throws IOException {
 		for (final River river : iter) {
 			writeRiver(ostream, river, indent);

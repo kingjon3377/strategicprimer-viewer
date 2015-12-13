@@ -171,7 +171,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 					"No unadvanced units remain.", "Chosen unit: ", false);
 			if (unitNum >= 0 && unitNum < units.size()) {
 				if (proxy) {
-					advanceWorker(new ProxyWorker(
+					advanceSingleWorker(new ProxyWorker(
 							NullCleaner.assertNotNull(units.remove(unitNum))));
 				} else {
 					advanceWorkersInUnit(
@@ -198,7 +198,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 			int workerNum = cli.chooseFromList(workers, "Workers in unit:",
 					"No unadvanced workers remain.", "Chosen worker: ", false);
 			if (workerNum >= 0 && workerNum < workers.size()) {
-				advanceWorker(
+				advanceSingleWorker(
 						NullCleaner.assertNotNull(workers.remove(workerNum)));
 			} else {
 				break;
@@ -210,7 +210,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 	 * @param worker the worker in question
 	 * @throws IOException on I/O error getting input from user
 	 */
-	private void advanceWorker(final IWorker worker) throws IOException {
+	private void advanceSingleWorker(final IWorker worker) throws IOException {
 		List<IJob> jobs = new ArrayList<>();
 		for (IJob job : worker) {
 			jobs.add(job);

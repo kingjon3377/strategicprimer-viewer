@@ -372,7 +372,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 				false); playerNum >= 0
 						&& playerNum < players.size(); playerNum = cli
 								.chooseFromList(players, hdr, none, prpt, false)) {
-			createWorkers(model, idf, NullCleaner.assertNotNull(players.get(playerNum)));
+			createWorkersForPlayer(model, idf, NullCleaner.assertNotNull(players.get(playerNum)));
 		}
 	}
 
@@ -385,7 +385,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 * @param player the player to own the workers
 	 * @throws IOException on I/O error interacting with user
 	 */
-	private void createWorkers(final IExplorationModel model,
+	private void createWorkersForPlayer(final IExplorationModel model,
 			final IDFactory idf, final Player player) throws IOException {
 		boolean again = true;
 		while (again) {
@@ -400,7 +400,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 					if (cli.inputBoolean(LOAD_NAMES)) {
 						createWorkersFromFile(model, idf, unit);
 					} else {
-						createWorkers(model, idf, unit);
+						createWorkersForUnit(model, idf, unit);
 					}
 				}
 			} else {
@@ -417,7 +417,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 				if (cli.inputBoolean(LOAD_NAMES)) {
 					createWorkersFromFile(model, idf, unit);
 				} else {
-					createWorkers(model, idf, unit);
+					createWorkersForUnit(model, idf, unit);
 				}
 			}
 			again = cli
@@ -433,11 +433,11 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 * @param unit the unit to contain them.
 	 * @throws IOException on I/O error interacting with the user
 	 */
-	private void createWorkers(final IExplorationModel model,
+	private void createWorkersForUnit(final IExplorationModel model,
 			final IDFactory idf, final IUnit unit) throws IOException {
 		final int count = cli.inputNumber("How many workers to generate? ");
 		for (int i = 0; i < count; i++) {
-			final Worker worker = createWorker(idf);
+			final Worker worker = createSingleWorker(idf);
 			for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
 				final IFixture fix = find(pair.first(), unit.getID());
 				if (fix instanceof IUnit) {
@@ -469,7 +469,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 						Charset.defaultCharset());
 		for (int i = 0; i < count; i++) {
 			final Worker worker =
-					createWorker(
+					createWorkerFromNameFile(
 							NullCleaner.assertNotNull(names.get(i).trim()), idf);
 			for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
 				final IFixture fix = find(pair.first(), unit.getID());
@@ -492,7 +492,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 * @throws IOException on I/O error interacting with the user
 	 * @return the generated worker
 	 */
-	private Worker createWorker(final IDFactory idf) throws IOException {
+	private Worker createSingleWorker(final IDFactory idf) throws IOException {
 		final String race = RaceFactory.getRace();
 		final String name = cli.inputString("Worker is a " + race
 				+ ". Worker name: ");
@@ -552,7 +552,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 *             on I/O error interacting with the user
 	 * @return the generated worker
 	 */
-	private Worker createWorker(final String name, final IDFactory idf)
+	private Worker createWorkerFromNameFile(final String name, final IDFactory idf)
 			throws IOException {
 		final String race = RaceFactory.getRace();
 		SystemOut.SYS_OUT.printf("Worker %s is a %s%n", name, race);

@@ -189,7 +189,7 @@ public final class CompactReaderAdapter {
 			CompactMapNGReader.writeRiver(ostream, (River) obj, indent);
 			return; // NOPMD
 		} else if (obj instanceof RiverFixture) {
-			CompactMapNGReader.writeRivers(ostream, (RiverFixture) obj, indent);
+			CompactMapNGReader.writeAllRivers(ostream, (RiverFixture) obj, indent);
 			return; // NOPMD
 		} else if (obj instanceof Job) {
 			CompactWorkerReader.writeJob(ostream, (Job) obj, indent);

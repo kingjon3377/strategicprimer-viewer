@@ -68,7 +68,7 @@ public final class TODOFixerDriver {
 	/**
 	 * Search for and fix units with kinds missing.
 	 */
-	public void fixUnits() {
+	public void fixAllUnits() {
 		for (final Point point : map.locations()) {
 			final List<String> jobList = getList(point);
 			for (final TileFixture fix : map.getOtherFixtures(point)) {
@@ -188,7 +188,7 @@ public final class TODOFixerDriver {
 				continue;
 			}
 			final TODOFixerDriver driver = new TODOFixerDriver(map);
-			driver.fixUnits();
+			driver.fixAllUnits();
 			try {
 				reader.write(file, map);
 			} catch (IOException e) {

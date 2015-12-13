@@ -67,7 +67,7 @@ public final class TableDebugger {
 			throws MissingTableException, IOException {
 		runner.verboseRecursiveCheck(ostream);
 		final EncounterTable mainTable = runner.getTable("main");
-		debugTable("", "", mainTable, "main", ostream,
+		debugSingleTable("", "", mainTable, "main", ostream,
 				new HashSet<EncounterTable>());
 	}
 
@@ -86,7 +86,7 @@ public final class TableDebugger {
 	 * @throws MissingTableException if a table is missing
 	 * @throws IOException on I/O error writing to the stream
 	 */
-	private void debugTable(final String before, final String after,
+	private void debugSingleTable(final String before, final String after,
 			final EncounterTable table, final String tableName,
 			final Appendable ostream, final Set<EncounterTable> set)
 			throws MissingTableException, IOException {
@@ -109,7 +109,7 @@ public final class TableDebugger {
 			if (value.contains("#")) {
 				final String[] parsed = value.split("#", 3);
 				final String callee = NullCleaner.assertNotNull(parsed[1]);
-				debugTable(before + parsed[0], parsed[2] + after,
+				debugSingleTable(before + parsed[0], parsed[2] + after,
 						runner.getTable(callee), callee, ostream, set);
 			} else {
 				ostream.append(before);
