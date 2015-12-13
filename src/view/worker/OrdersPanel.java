@@ -1,5 +1,7 @@
 package view.worker;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -7,9 +9,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -87,18 +93,23 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 		final ApplyButtonHandler handler = new ApplyButtonHandler(this);
 		// Can't use the multi-arg constructor, because of the references to
 		// 'this' below.
-		setNorth(new JLabel("Orders for current selection, if a unit:"))
-				.setCenter(new JScrollPane(area)).setSouth(
-						new BorderedPanel().setLineStart(
-								new ListenedButton("Apply", handler))
-								.setLineEnd(
-										new ListenedButton("Revert", handler)));
+		final boolean onMac = System.getProperty("os.name").toLowerCase()
+				.startsWith("mac os x");
+		setNorth(
+				new JLabel(
+						"Orders for current selection, if a unit: ("
+								+ (onMac ? "\u2318" : "Ctrl+")
+								+ "D)")).setCenter(new JScrollPane(area))
+										.setSouth(new BorderedPanel()
+												.setLineStart(new ListenedButton("Apply",
+														handler))
+										.setLineEnd(
+												new ListenedButton("Revert", handler)));
 		area.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(@Nullable final KeyEvent evt) {
 				if (evt != null && evt.getKeyCode() == KeyEvent.VK_ENTER
-						&& (System.getProperty("os.name").toLowerCase().startsWith(
-								"mac os x") ? evt.isMetaDown() : evt.isControlDown())) {
+						&& (onMac ? evt.isMetaDown() : evt.isControlDown())) {
 					apply();
 
 				}
@@ -107,6 +118,19 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 		area.setLineWrap(true);
 		area.setWrapStyleWord(true);
 		model = wmodel;
+		InputMap inputMap = getInputMap(WHEN_IN_FOCUSED_WINDOW);
+		ActionMap actionMap = getActionMap();
+		assert (inputMap != null && actionMap != null);
+		inputMap.put(
+				KeyStroke.getKeyStroke(KeyEvent.VK_D,
+						onMac ? InputEvent.META_DOWN_MASK : InputEvent.CTRL_DOWN_MASK),
+				"openOrders");
+		actionMap.put("openOrders", new AbstractAction() {
+			@Override
+			public void actionPerformed(@Nullable final ActionEvent evt) {
+				area.requestFocusInWindow();
+			}
+		});
 	}
 
 	/**
