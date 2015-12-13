@@ -50,7 +50,7 @@ import util.Warning.Action;
  *
  */
 @SuppressWarnings("deprecation")
-public class ReaderComparator implements ISPDriver {
+public final class ReaderComparator implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */

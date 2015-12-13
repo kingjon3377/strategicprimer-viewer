@@ -34,7 +34,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class PointIterator implements Iterator<@NonNull Point> {
+public final class PointIterator implements Iterator<@NonNull Point> {
 	/**
 	 * Whether we're searching forwards (if true) or backwards (if false).
 	 */

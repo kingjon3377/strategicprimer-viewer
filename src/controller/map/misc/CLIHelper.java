@@ -44,7 +44,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class CLIHelper implements ICLIHelper {
+public final class CLIHelper implements ICLIHelper {
 	/**
 	 * The input stream we'll read from.
 	 */

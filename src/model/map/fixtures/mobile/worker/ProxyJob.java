@@ -36,7 +36,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
+public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	/**
 	 * If false, the worker containing this is representing all the workers in a
 	 * single unit; if true, it is representing corresponding workers in

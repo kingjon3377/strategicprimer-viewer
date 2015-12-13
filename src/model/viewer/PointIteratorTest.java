@@ -35,7 +35,7 @@ import util.IteratorWrapper;
  * @author Jonathan Lovelace
  *
  */
-public class PointIteratorTest {
+public final class PointIteratorTest {
 	/**
 	 * The expectation for each test.
 	 */

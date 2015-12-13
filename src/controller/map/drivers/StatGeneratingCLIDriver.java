@@ -67,7 +67,7 @@ import view.util.SystemOut;
  * @author Jonathan Lovelace
  *
  */
-public class StatGeneratingCLIDriver implements ISPDriver {
+public final class StatGeneratingCLIDriver implements ISPDriver {
 	/**
 	 * The prompt to use to ask the user if he or she wants to load names from
 	 * file and generate new stats.

@@ -55,7 +55,7 @@ import util.Pair;
  *
  * @author Jonathan Lovelace
  */
-public class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
+public final class FortressReportGenerator extends AbstractReportGenerator<Fortress> {
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */

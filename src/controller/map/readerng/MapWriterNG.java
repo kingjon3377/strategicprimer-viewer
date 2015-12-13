@@ -32,7 +32,7 @@ import model.map.IMapNG;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class MapWriterNG implements SPWriter {
+public final class MapWriterNG implements SPWriter {
 	/**
 	 * Write a map.
 	 *

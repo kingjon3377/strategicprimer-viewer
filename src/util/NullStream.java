@@ -28,7 +28,7 @@ import java.io.PrintWriter;
  * @author Jonathan Lovelace
  *
  */
-public class NullStream extends OutputStream {
+public final class NullStream extends OutputStream {
 	/**
 	 * A bit-bucket to send subset output to.
 	 */

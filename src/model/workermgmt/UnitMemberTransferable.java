@@ -33,7 +33,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public class UnitMemberTransferable implements Transferable {
+public final class UnitMemberTransferable implements Transferable {
 	/**
 	 * The object we're transfering.
 	 */
@@ -48,7 +48,7 @@ public class UnitMemberTransferable implements Transferable {
 	 * A pair of a unit member and its containing unit.
 	 * @author Jonathan Lovelace
 	 */
-	public static class UnitMemberPair {
+	public static final class UnitMemberPair {
 		/**
 		 * The unit member.
 		 */

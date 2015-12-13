@@ -36,7 +36,7 @@ import util.Warning;
  *
  * @author Jonathan Lovelace
  */
-public class CompactPortalReader extends AbstractCompactReader<Portal> {
+public final class CompactPortalReader extends AbstractCompactReader<Portal> {
 	/**
 	 * Singleton object.
 	 */

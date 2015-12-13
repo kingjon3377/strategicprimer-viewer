@@ -39,7 +39,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class MountainReader implements INodeHandler<Mountain> {
+public final class MountainReader implements INodeHandler<Mountain> {
 	/**
 	 * Parse a mountain.
 	 *

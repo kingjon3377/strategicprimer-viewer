@@ -25,7 +25,7 @@ package util;
  */
 // ESCA-JAVA0051:
 // ESCA-JAVA0048:
-public class FatalWarningException extends RuntimeException {
+public final class FatalWarningException extends RuntimeException {
 	/**
 	 * Constructor.
 	 *

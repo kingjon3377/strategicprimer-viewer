@@ -46,7 +46,7 @@ import util.Pair;
  * @author Jonathan Lovelace
  *
  */
-public class IncludingIterator implements Iterator<@NonNull XMLEvent> {
+public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	/**
 	 * The stack of iterators we're working with.
 	 */
@@ -133,7 +133,7 @@ public class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	 * @author Jonathan Lovelace
 	 */
 	// ESCA-JAVA0051:
-	public static class NoSuchElementBecauseException extends
+	public static final class NoSuchElementBecauseException extends
 			NoSuchElementException {
 		/**
 		 * Constructor.

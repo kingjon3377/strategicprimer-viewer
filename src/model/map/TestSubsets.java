@@ -45,7 +45,7 @@ import model.map.fixtures.towns.TownStatus;
  * @author Jonathan Lovelace
  *
  */
-public class TestSubsets {
+public final class TestSubsets {
 	/**
 	 * The string "static-method", used in an annotation on each method.
 	 */

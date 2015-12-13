@@ -40,7 +40,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class GriffinReader implements INodeHandler<Griffin> {
+public final class GriffinReader implements INodeHandler<Griffin> {
 	/**
 	 * Parse a griffin.
 	 *

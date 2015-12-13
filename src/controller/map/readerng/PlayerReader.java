@@ -43,7 +43,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class PlayerReader implements INodeHandler<@NonNull Player> {
+public final class PlayerReader implements INodeHandler<@NonNull Player> {
 	/**
 	 * Parse a player from the XML.
 	 *

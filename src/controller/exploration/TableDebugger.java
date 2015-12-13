@@ -35,7 +35,7 @@ import util.TypesafeLogger;
  * @author Jonathan Lovelace
  *
  */
-public class TableDebugger {
+public final class TableDebugger {
 	/**
 	 * Logger.
 	 */

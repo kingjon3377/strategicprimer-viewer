@@ -31,7 +31,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class ComplexReportNode extends AbstractReportNode {
+public final class ComplexReportNode extends AbstractReportNode {
 	/**
 	 * @param text the main text of the node
 	 * @param point the point, if any, in the map that this represents something on

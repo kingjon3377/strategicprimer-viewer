@@ -36,7 +36,7 @@ import util.Warning;
  * @author Jonathan Lovelace
  *
  */
-public class CompactResourcePileReader
+public final class CompactResourcePileReader
 		extends AbstractCompactReader<ResourcePile> {
 	/**
 	 * Singleton object.

@@ -32,7 +32,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class FixtureTransferable implements Transferable {
+public final class FixtureTransferable implements Transferable {
 	/**
 	 * The object we're transfering.
 	 */

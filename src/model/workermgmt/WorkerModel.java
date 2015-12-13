@@ -47,7 +47,7 @@ import view.util.SystemOut;
  * @author Jonathan Lovelace
  *
  */
-public class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
+public final class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	/**
 	 * Constructor.
 	 *

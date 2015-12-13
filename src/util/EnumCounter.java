@@ -27,7 +27,7 @@ import java.util.Map;
  *
  * @param <T> the enumerated type we're counting
  */
-public class EnumCounter<T extends Enum<T>> {
+public final class EnumCounter<T extends Enum<T>> {
 	/**
 	 * The map we use as a backend.
 	 */

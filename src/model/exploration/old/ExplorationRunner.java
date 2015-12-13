@@ -38,7 +38,7 @@ import util.TypesafeLogger;
  * @author Jonathan Lovelace
  *
  */
-public class ExplorationRunner { // NOPMD
+public final class ExplorationRunner { // NOPMD
 	/**
 	 * Logger.
 	 */

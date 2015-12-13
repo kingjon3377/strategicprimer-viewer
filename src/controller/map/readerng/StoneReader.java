@@ -44,7 +44,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class StoneReader implements INodeHandler<@NonNull StoneDeposit> {
+public final class StoneReader implements INodeHandler<@NonNull StoneDeposit> {
 	/**
 	 * Parse a Stone.
 	 *

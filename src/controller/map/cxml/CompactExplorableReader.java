@@ -42,7 +42,7 @@ import util.Warning;
  * @author Jonathan Lovelace
  *
  */
-public class CompactExplorableReader
+public final class CompactExplorableReader
 		extends AbstractCompactReader<ExplorableFixture> {
 	/**
 	 * Singleton object.

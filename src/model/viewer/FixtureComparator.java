@@ -32,7 +32,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class FixtureComparator implements Comparator<@NonNull TileFixture> {
+public final class FixtureComparator implements Comparator<@NonNull TileFixture> {
 	/**
 	 * Compare two fixtures.
 	 *

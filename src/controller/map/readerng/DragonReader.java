@@ -42,7 +42,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class DragonReader implements INodeHandler<Dragon> {
+public final class DragonReader implements INodeHandler<Dragon> {
 	/**
 	 * Parse a dragon.
 	 *

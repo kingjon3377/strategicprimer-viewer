@@ -35,7 +35,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public class SurroundingPointIterable implements Iterable<@NonNull Point> {
+public final class SurroundingPointIterable implements Iterable<@NonNull Point> {
 	/**
 	 * the list of points.
 	 */

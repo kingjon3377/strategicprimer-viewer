@@ -42,7 +42,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class GiantReader implements INodeHandler<Giant> {
+public final class GiantReader implements INodeHandler<Giant> {
 	/**
 	 * Parse a giant.
 	 *

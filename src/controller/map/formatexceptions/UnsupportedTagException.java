@@ -23,7 +23,7 @@ package controller.map.formatexceptions;
  * @author Jonathan Lovelace
  *
  */
-public class UnsupportedTagException extends SPFormatException {
+public final class UnsupportedTagException extends SPFormatException {
 	/**
 	 * The tag.
 	 */

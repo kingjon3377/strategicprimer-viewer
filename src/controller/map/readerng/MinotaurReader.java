@@ -40,7 +40,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class MinotaurReader implements INodeHandler<Minotaur> {
+public final class MinotaurReader implements INodeHandler<Minotaur> {
 	/**
 	 * Parse a minotaur.
 	 *

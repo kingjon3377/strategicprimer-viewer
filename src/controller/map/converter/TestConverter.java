@@ -40,7 +40,7 @@ import model.map.fixtures.towns.Fortress;
  * @author Jonathan Lovelace
  *
  */
-public class TestConverter {
+public final class TestConverter {
 
 	/**
 	 * Test conversion.

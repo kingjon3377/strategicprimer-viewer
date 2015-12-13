@@ -50,7 +50,7 @@ import view.util.ErrorShower;
  * @author Jonathan Lovelace
  *
  */
-public class AppStarter implements ISPDriver {
+public final class AppStarter implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */

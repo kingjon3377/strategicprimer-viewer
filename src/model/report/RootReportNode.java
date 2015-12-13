@@ -27,7 +27,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class RootReportNode extends AbstractReportNode {
+public final class RootReportNode extends AbstractReportNode {
 	/**
 	 * Constructor.
 	 *

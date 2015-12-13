@@ -40,7 +40,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class SkillReader implements INodeHandler<@NonNull Skill> {
+public final class SkillReader implements INodeHandler<@NonNull Skill> {
 	/**
 	 * @return the class this knows how to write
 	 */

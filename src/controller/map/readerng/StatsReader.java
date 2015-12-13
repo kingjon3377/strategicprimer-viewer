@@ -40,7 +40,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class StatsReader implements INodeHandler<@NonNull WorkerStats> {
+public final class StatsReader implements INodeHandler<@NonNull WorkerStats> {
 	/**
 	 * @return the class this knows how to write.
 	 */

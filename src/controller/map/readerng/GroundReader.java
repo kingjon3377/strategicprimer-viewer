@@ -42,7 +42,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class GroundReader implements INodeHandler<Ground> {
+public final class GroundReader implements INodeHandler<Ground> {
 	/**
 	 * Parse ground.
 	 *

@@ -49,7 +49,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class FortressReader implements INodeHandler<Fortress> {
+public final class FortressReader implements INodeHandler<Fortress> {
 	/**
 	 * Logger.
 	 */

@@ -30,7 +30,7 @@ import model.map.TileType;
  * @author Jonathan Lovelace
  *
  */
-public class ConstantTable implements EncounterTable {
+public final class ConstantTable implements EncounterTable {
 	/**
 	 * The value we'll always return.
 	 */

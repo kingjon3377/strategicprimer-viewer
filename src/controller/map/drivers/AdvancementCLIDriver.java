@@ -55,7 +55,7 @@ import util.Warning;
  * @author Jonathan Lovelace
  *
  */
-public class AdvancementCLIDriver implements ISPDriver {
+public final class AdvancementCLIDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */

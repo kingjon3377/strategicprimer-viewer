@@ -40,7 +40,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class SandbarReader implements INodeHandler<Sandbar> {
+public final class SandbarReader implements INodeHandler<Sandbar> {
 	/**
 	 * Parse a sandbar.
 	 *

@@ -51,7 +51,7 @@ import view.util.Coordinate;
  * @author Jonathan Lovelace
  *
  */
-public class DrawHelperComparator implements ISPDriver { // NOPMD
+public final class DrawHelperComparator implements ISPDriver { // NOPMD
 	/**
 	 * The minimum row for the iteration-vs-filtering test.
 	 */

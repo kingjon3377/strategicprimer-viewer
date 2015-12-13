@@ -67,7 +67,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class MapNGReader implements INodeHandler<@NonNull IMapNG> {
+public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	/**
 	 * The reader to use to parse players.
 	 */

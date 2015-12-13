@@ -46,7 +46,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class VillageReader implements INodeHandler<Village> {
+public final class VillageReader implements INodeHandler<Village> {
 	/**
 	 * Parse a village.
 	 *

@@ -40,7 +40,7 @@ import util.Warning.Action;
  * @author Jonathan Lovelace
  *
  */
-public class MapPopulatorDriver implements ISPDriver {
+public final class MapPopulatorDriver implements ISPDriver {
 	/**
 	 * How many tiles we've found suitable so far.
 	 */

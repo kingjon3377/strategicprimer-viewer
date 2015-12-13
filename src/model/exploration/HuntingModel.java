@@ -45,7 +45,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class HuntingModel {
+public final class HuntingModel {
 	/**
 	 * The "nothing" value we insert.
 	 */

@@ -39,7 +39,7 @@ import view.util.FilteredFileChooser;
  *
  * @author Jonathan Lovelace
  */
-public class ExplorationGUI implements ISPDriver {
+public final class ExplorationGUI implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */

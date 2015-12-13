@@ -34,7 +34,7 @@ import org.eclipse.jdt.annotation.NonNull;
  *
  * @param <T> the type of thing returned by the iterator.
  */
-public class IteratorStack<T> implements Iterator<T> {
+public final class IteratorStack<T> implements Iterator<T> {
 	/**
 	 * The queue of iterators.
 	 */

@@ -28,7 +28,7 @@ import view.map.misc.MapCheckerFrame;
  * @author Jonathan Lovelace
  *
  */
-public class MapCheckerGUI implements ISPDriver {
+public final class MapCheckerGUI implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */

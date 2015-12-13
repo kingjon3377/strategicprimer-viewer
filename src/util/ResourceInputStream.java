@@ -31,7 +31,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class ResourceInputStream extends InputStream {
+public final class ResourceInputStream extends InputStream {
 	/**
 	 * The stream we wrap.
 	 */

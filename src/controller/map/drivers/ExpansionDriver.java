@@ -61,7 +61,7 @@ import util.Warning;
  * @author Jonathan Lovelace
  *
  */
-public class ExpansionDriver implements ISPDriver {
+public final class ExpansionDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */

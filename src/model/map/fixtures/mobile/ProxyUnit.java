@@ -39,7 +39,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
+public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	/**
 	 * Logger.
 	 */
@@ -403,7 +403,7 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	/**
 	 * A proxy for non-worker unit members.
 	 */
-	private class ProxyMember implements UnitMember, ProxyFor<UnitMember> {
+	private final class ProxyMember implements UnitMember, ProxyFor<UnitMember> {
 		/**
 		 * The proxied unit members.
 		 */

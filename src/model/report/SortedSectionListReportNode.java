@@ -29,7 +29,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class SortedSectionListReportNode extends SectionListReportNode {
+public final class SortedSectionListReportNode extends SectionListReportNode {
 	/**
 	 * Constructor.
 	 *

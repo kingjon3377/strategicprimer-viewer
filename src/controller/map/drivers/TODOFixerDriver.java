@@ -44,7 +44,7 @@ import view.util.SystemOut;
  * @author Jonathan Lovelace
  *
  */
-public class TODOFixerDriver {
+public final class TODOFixerDriver {
 	/**
 	 * The map we operate on.
 	 */

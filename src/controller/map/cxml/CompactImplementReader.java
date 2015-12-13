@@ -38,7 +38,7 @@ import util.Warning;
  * TODO: Should this also handle (under a different class name) other fortress members?
  *
  */
-public class CompactImplementReader extends AbstractCompactReader<Implement> {
+public final class CompactImplementReader extends AbstractCompactReader<Implement> {
 	/**
 	 * Singleton object.
 	 */

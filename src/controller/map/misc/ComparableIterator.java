@@ -31,7 +31,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @param <T>
  *            the type of thing being iterated over
  */
-public class ComparableIterator<@NonNull T> implements Iterator<@NonNull T>,
+public final class ComparableIterator<@NonNull T> implements Iterator<@NonNull T>,
 		Comparable<@NonNull ComparableIterator<@NonNull T>> {
 	/**
 	 * The Iterator we're wrapping.

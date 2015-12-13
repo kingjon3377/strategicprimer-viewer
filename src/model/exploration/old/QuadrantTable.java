@@ -35,7 +35,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class QuadrantTable implements EncounterTable {
+public final class QuadrantTable implements EncounterTable {
 	/**
 	 * The size of the map in rows. TODO: this should be dynamic.
 	 */

@@ -40,7 +40,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class SphinxReader implements INodeHandler<Sphinx> {
+public final class SphinxReader implements INodeHandler<Sphinx> {
 	/**
 	 * Parse a sphinx.
 	 *

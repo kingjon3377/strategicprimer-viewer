@@ -35,7 +35,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @param <T> the type of the iterator.
  *
  */
-public class IteratorWrapper<@NonNull T> implements Iterable<@NonNull T> {
+public final class IteratorWrapper<@NonNull T> implements Iterable<@NonNull T> {
 	/**
 	 * The iterator we're wrapping.
 	 */

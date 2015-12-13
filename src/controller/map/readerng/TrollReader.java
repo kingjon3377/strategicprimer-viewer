@@ -40,7 +40,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class TrollReader implements INodeHandler<Troll> {
+public final class TrollReader implements INodeHandler<Troll> {
 	/**
 	 * Parse a troll.
 	 *

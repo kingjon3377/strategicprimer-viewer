@@ -24,7 +24,7 @@ package controller.map.formatexceptions;
  * @author Jonathan Lovelace
  *
  */
-public class MissingChildException extends SPFormatException {
+public final class MissingChildException extends SPFormatException {
 	/**
 	 * The current tag.
 	 */

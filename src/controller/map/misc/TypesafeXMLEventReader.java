@@ -36,7 +36,7 @@ import org.eclipse.jdt.annotation.NonNull;
  * @author Jonathan Lovelace
  *
  */
-public class TypesafeXMLEventReader implements Iterator<@NonNull XMLEvent> {
+public final class TypesafeXMLEventReader implements Iterator<@NonNull XMLEvent> {
 	/**
 	 * The object we wrap.
 	 */

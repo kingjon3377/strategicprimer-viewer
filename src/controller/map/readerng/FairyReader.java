@@ -42,7 +42,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class FairyReader implements INodeHandler<Fairy> {
+public final class FairyReader implements INodeHandler<Fairy> {
 	/**
 	 * Parse a fairy.
 	 *

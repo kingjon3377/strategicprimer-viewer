@@ -36,7 +36,7 @@ import util.SingletonRandom;
  * @author Jonathan Lovelace
  *
  */
-public class RandomTable implements EncounterTable {
+public final class RandomTable implements EncounterTable {
 	/**
 	 * A list of items.
 	 */

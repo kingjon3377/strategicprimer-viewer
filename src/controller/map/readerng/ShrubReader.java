@@ -42,7 +42,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class ShrubReader implements INodeHandler<Shrub> {
+public final class ShrubReader implements INodeHandler<Shrub> {
 	/**
 	 * Parse a shrub.
 	 *

@@ -40,7 +40,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class HillReader implements INodeHandler<Hill> {
+public final class HillReader implements INodeHandler<Hill> {
 	/**
 	 * Parse a hill.
 	 *

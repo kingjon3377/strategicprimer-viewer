@@ -38,7 +38,7 @@ import util.Warning.Action;
  * @author Jonathan Lovelace
  *
  */
-public class WorkerReportDriver implements ISPDriver {
+public final class WorkerReportDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */

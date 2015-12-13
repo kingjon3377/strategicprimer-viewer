@@ -43,7 +43,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class RiverReader implements INodeHandler<@NonNull River> {
+public final class RiverReader implements INodeHandler<@NonNull River> {
 	/**
 	 * Parse a river.
 	 *

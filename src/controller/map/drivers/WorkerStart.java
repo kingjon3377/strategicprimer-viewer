@@ -42,7 +42,7 @@ import view.worker.WorkerMgmtFrame;
  * @author Jonathan Lovelace
  *
  */
-public class WorkerStart implements ISPDriver {
+public final class WorkerStart implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */

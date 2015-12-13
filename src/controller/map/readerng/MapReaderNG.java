@@ -47,7 +47,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class MapReaderNG implements IMapReader, ISPReader {
+public final class MapReaderNG implements IMapReader, ISPReader {
 	/**
 	 * @param file
 	 *            a file

@@ -47,7 +47,7 @@ import util.Pair;
  * @author Jonathan Lovelace
  *
  */
-public class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
+public final class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */

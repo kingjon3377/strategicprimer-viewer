@@ -22,7 +22,7 @@ package controller.map.formatexceptions;
  * @author Jonathan Lovelace
  *
  */
-public class SPMalformedInputException extends SPFormatException {
+public final class SPMalformedInputException extends SPFormatException {
 	/**
 	 * Constructor.
 	 * @param line where this occurred

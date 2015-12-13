@@ -24,7 +24,7 @@ import javax.swing.JFrame;
  *
  * @author Jonathan Lovelace
  */
-public class WindowThread implements Runnable {
+public final class WindowThread implements Runnable {
 	/**
 	 * The window to start.
 	 */

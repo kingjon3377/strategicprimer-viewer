@@ -29,7 +29,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class PrefixingPrintWriter extends PrintWriter {
+public final class PrefixingPrintWriter extends PrintWriter {
 	/**
 	 * What the caller wanted each printLine prefixed with.
 	 */

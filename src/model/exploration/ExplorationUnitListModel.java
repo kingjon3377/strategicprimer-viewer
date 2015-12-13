@@ -34,7 +34,7 @@ import model.map.fixtures.mobile.IUnit;
  * @author Jonathan Lovelace
  *
  */
-public class ExplorationUnitListModel extends DefaultListModel<@NonNull IUnit> implements
+public final class ExplorationUnitListModel extends DefaultListModel<@NonNull IUnit> implements
 		PlayerChangeListener {
 	/**
 	 * The exploration model to work from.

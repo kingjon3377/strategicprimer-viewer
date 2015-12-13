@@ -27,7 +27,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class SectionReportNode extends AbstractReportNode {
+public final class SectionReportNode extends AbstractReportNode {
 	/**
 	 * The header level.
 	 */

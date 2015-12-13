@@ -44,7 +44,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class GroveReader implements INodeHandler<Grove> {
+public final class GroveReader implements INodeHandler<Grove> {
 	/**
 	 * The name of the 'cultivated' property.
 	 */

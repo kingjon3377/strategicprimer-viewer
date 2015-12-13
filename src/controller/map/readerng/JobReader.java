@@ -43,7 +43,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class JobReader implements INodeHandler<@NonNull Job> {
+public final class JobReader implements INodeHandler<@NonNull Job> {
 	/**
 	 * Reader to write skills.
 	 */

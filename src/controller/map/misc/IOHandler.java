@@ -54,7 +54,7 @@ import view.util.ErrorShower;
  * @author Jonathan Lovelace
  *
  */
-public class IOHandler implements ActionListener {
+public final class IOHandler implements ActionListener {
 	/**
 	 * Error message fragment when file not found.
 	 */

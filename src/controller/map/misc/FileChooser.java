@@ -35,7 +35,7 @@ import view.util.FilteredFileChooser;
  * @author Jonathan Lovelace
  *
  */
-public class FileChooser {
+public final class FileChooser {
 	/**
 	 * The file we'll return, if valid.
 	 */
@@ -150,7 +150,7 @@ public class FileChooser {
 	 *
 	 * @author Jonathan Lovelace
 	 */
-	public static class ChoiceInterruptedException extends Exception {
+	public static final class ChoiceInterruptedException extends Exception {
 		/**
 		 * @param cause
 		 *            an exception that we caught that interrupted the choice

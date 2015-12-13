@@ -31,7 +31,7 @@ import model.map.fixtures.mobile.ProxyFor;
  * @author Jonathan Lovelace
  *
  */
-public class ProxySkill implements ISkill, ProxyFor<IJob> {
+public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	/**
 	 * If false, the worker containing this is representing all the workers in a
 	 * single unit; if true, it is representing corresponding workers in

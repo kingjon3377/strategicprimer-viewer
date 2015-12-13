@@ -30,7 +30,7 @@ package model.viewer;
  * @author Jonathan Lovelace
  *
  */
-public class TileViewSize {
+public final class TileViewSize {
 	/**
 	 * Scale the specified zoom level for the specified map version.
 	 *

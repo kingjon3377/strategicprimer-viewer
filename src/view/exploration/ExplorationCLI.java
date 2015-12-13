@@ -57,7 +57,7 @@ import view.util.SystemOut;
  * @author Jonathan Lovelace
  *
  */
-public class ExplorationCLI {
+public final class ExplorationCLI {
 	/**
 	 * Logger.
 	 */

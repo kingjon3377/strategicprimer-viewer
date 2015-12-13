@@ -40,7 +40,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class OasisReader implements INodeHandler<Oasis> {
+public final class OasisReader implements INodeHandler<Oasis> {
 	/**
 	 * Parse an oasis.
 	 *

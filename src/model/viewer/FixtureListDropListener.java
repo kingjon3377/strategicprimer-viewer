@@ -46,7 +46,7 @@ import util.TypesafeLogger;
  * @author Jonathan Lovelace
  *
  */
-public class FixtureListDropListener implements DropTargetListener {
+public final class FixtureListDropListener implements DropTargetListener {
 	/**
 	 * A parent component. If it's an ancestor of the drop, it's an
 	 * intra-component drop.

@@ -41,7 +41,7 @@ import util.NullStream;
  *
  */
 @SuppressWarnings("static-method")
-public class TestProxyWorker {
+public final class TestProxyWorker {
 	/**
 	 * Test that the simple case, of a proxy for multiple workers, works properly.
 	 */

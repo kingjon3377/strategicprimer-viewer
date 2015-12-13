@@ -38,7 +38,7 @@ public final class IDFactory {
 	/**
 	 * An exception to warn about duplicate IDs.
 	 */
-	public static class DuplicateIDException extends Exception {
+	public static final class DuplicateIDException extends Exception {
 		/**
 		 * @param idNum the duplicate ID.
 		 */

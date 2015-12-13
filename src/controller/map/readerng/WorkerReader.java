@@ -43,7 +43,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class WorkerReader implements INodeHandler<@NonNull Worker> {
+public final class WorkerReader implements INodeHandler<@NonNull Worker> {
 	/**
 	 * @return the class this knows how to write.
 	 */

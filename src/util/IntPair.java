@@ -23,7 +23,7 @@ package util;
  * @author Jonathan Lovelace
  *
  */
-public class IntPair {
+public final class IntPair {
 	/**
 	 * The first.
 	 */

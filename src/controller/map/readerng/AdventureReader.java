@@ -41,7 +41,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class AdventureReader implements INodeHandler<@NonNull AdventureFixture> {
+public final class AdventureReader implements INodeHandler<@NonNull AdventureFixture> {
 	/**
 	 * Parse an adventure hook.
 	 * @param element the element to read from

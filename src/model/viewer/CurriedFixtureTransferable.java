@@ -36,7 +36,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class CurriedFixtureTransferable implements Transferable {
+public final class CurriedFixtureTransferable implements Transferable {
 	/**
 	 * The data flavor we handle.
 	 */

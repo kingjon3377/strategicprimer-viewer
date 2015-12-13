@@ -36,7 +36,7 @@ import view.map.main.TileDrawHelperFactory;
  *
  * @author Jonathan Lovelace
  */
-public class DualTileButton extends JButton {
+public final class DualTileButton extends JButton {
 	/**
 	 * How much margin to give.
 	 */

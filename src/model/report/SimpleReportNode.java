@@ -26,7 +26,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class SimpleReportNode extends AbstractReportNode {
+public final class SimpleReportNode extends AbstractReportNode {
 	/**
 	 * @param point the point, if any, in the map that this represents something on
 	 * @param texts a number of strings to concatenate and make the text of the

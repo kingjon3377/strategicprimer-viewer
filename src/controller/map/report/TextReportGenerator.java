@@ -41,7 +41,7 @@ import util.Pair;
  *
  * @author Jonathan Lovelace
  */
-public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
+public final class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */

@@ -45,7 +45,7 @@ import util.Warning;
  * @author Jonathan Lovelace
  *
  */
-public class DuplicateFixtureRemover implements ISPDriver {
+public final class DuplicateFixtureRemover implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */

@@ -44,7 +44,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class BattlefieldReader implements INodeHandler<@NonNull Battlefield> {
+public final class BattlefieldReader implements INodeHandler<@NonNull Battlefield> {
 	/**
 	 * Parse a battlefield.
 	 *

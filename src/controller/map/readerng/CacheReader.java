@@ -43,7 +43,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class CacheReader implements INodeHandler<CacheFixture> {
+public final class CacheReader implements INodeHandler<CacheFixture> {
 	/**
 	 * Parse a cache.
 	 *

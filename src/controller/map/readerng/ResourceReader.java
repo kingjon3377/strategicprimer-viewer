@@ -44,7 +44,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class ResourceReader implements INodeHandler<@NonNull ResourcePile> {
+public final class ResourceReader implements INodeHandler<@NonNull ResourcePile> {
 	/**
 	 * Parse a resource pile.
 	 * @param element the element to read from

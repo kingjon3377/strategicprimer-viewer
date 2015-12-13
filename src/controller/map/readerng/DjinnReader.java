@@ -40,7 +40,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class DjinnReader implements INodeHandler<Djinn> {
+public final class DjinnReader implements INodeHandler<Djinn> {
 	/**
 	 * Parse a djinn.
 	 *

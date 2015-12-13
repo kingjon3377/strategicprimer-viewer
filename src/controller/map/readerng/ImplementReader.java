@@ -44,7 +44,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class ImplementReader implements INodeHandler<@NonNull Implement> {
+public final class ImplementReader implements INodeHandler<@NonNull Implement> {
 	/**
 	 * Parse an implement.
 	 * @param element the element to read from

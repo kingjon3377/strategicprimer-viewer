@@ -30,7 +30,7 @@ import model.map.Player;
  * @author Jonathan Lovelace
  *
  */
-public class PlayerListModel extends DefaultListModel<@NonNull Player> implements
+public final class PlayerListModel extends DefaultListModel<@NonNull Player> implements
 		MapChangeListener {
 	/**
 	 * The exploration model.

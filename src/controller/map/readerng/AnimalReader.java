@@ -44,7 +44,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class AnimalReader implements INodeHandler<@NonNull Animal> {
+public final class AnimalReader implements INodeHandler<@NonNull Animal> {
 	/**
 	 * @param element the element containing an animal
 	 * @param stream the stream to read more elements from

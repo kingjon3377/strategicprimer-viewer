@@ -45,7 +45,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class ReaderAdapter implements INodeHandler<Object> {
+public final class ReaderAdapter implements INodeHandler<Object> {
 	/**
 	 * A singleton. Provided for performance; this is, after all, stateless.
 	 */

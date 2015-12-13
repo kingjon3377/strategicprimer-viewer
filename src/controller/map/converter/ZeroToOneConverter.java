@@ -57,7 +57,7 @@ import util.TypesafeLogger;
  * @author Jonathan Lovelace
  *
  */
-public class ZeroToOneConverter {
+public final class ZeroToOneConverter {
 	/**
 	 * Logger.
 	 */

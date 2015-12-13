@@ -59,7 +59,7 @@ import view.util.SystemOut;
  * @author Jonathan Lovelace
  *
  */
-public class ExplorationModel extends SimpleMultiMapModel implements
+public final class ExplorationModel extends SimpleMultiMapModel implements
 IExplorationModel {
 	/**
 	 * The currently selected unit.

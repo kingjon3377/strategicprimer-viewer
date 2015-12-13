@@ -44,7 +44,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class PortalReader implements INodeHandler<@NonNull Portal> {
+public final class PortalReader implements INodeHandler<@NonNull Portal> {
 	/**
 	 * Parse a portal. Parse an adventure hook.
 	 *

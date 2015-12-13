@@ -49,7 +49,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class WorkerTreeModelAlt extends DefaultTreeModel implements
+public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		IWorkerTreeModel {
 	/**
 	 * The driver model.
@@ -178,7 +178,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * A node representing the player.
 	 * @author Jonathan Lovelace
 	 */
-	public static class PlayerNode extends WorkerTreeNode {
+	public static final class PlayerNode extends WorkerTreeNode {
 		/**
 		 * Constructor.
 		 *
@@ -200,7 +200,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * A node representing a kind of unit.
 	 * @author Jonathan Lovelace
 	 */
-	public static class KindNode extends WorkerTreeNode {
+	public static final class KindNode extends WorkerTreeNode {
 		/**
 		 * Constructor.
 		 * @param kind what kind of unit
@@ -219,7 +219,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * A node representing a unit.
 	 * @author Jonathan Lovelace
 	 */
-	public static class UnitNode extends WorkerTreeNode {
+	public static final class UnitNode extends WorkerTreeNode {
 		/**
 		 * Constructor.
 		 *
@@ -239,7 +239,7 @@ public class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * A node representing a unit member.
 	 * @author Jonathan Lovelace
 	 */
-	public static class UnitMemberNode extends WorkerTreeNode {
+	public static final class UnitMemberNode extends WorkerTreeNode {
 		/**
 		 * Constructor.
 		 *

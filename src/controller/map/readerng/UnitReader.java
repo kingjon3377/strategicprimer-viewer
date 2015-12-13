@@ -45,7 +45,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class UnitReader implements INodeHandler<Unit> {
+public final class UnitReader implements INodeHandler<Unit> {
 	/**
 	 * The name of the property telling what kind of unit.
 	 */

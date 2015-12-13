@@ -23,7 +23,7 @@ package controller.map.formatexceptions;
  * @author Jonathan Lovelace
  *
  */
-public class UnwantedChildException extends SPFormatException {
+public final class UnwantedChildException extends SPFormatException {
 
 	/**
 	 * The current tag.

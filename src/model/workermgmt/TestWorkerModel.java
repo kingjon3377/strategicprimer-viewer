@@ -50,7 +50,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class TestWorkerModel {
+public final class TestWorkerModel {
 	/**
 	 * Test for getUnits().
 	 */

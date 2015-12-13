@@ -48,7 +48,7 @@ import util.Pair;
  *
  * @author Jonathan Lovelace
  */
-public class ExplorableReportGenerator extends AbstractReportGenerator<ExplorableFixture> {
+public final class ExplorableReportGenerator extends AbstractReportGenerator<ExplorableFixture> {
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */

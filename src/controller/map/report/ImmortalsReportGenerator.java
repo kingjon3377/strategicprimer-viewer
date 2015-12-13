@@ -61,7 +61,7 @@ import util.Pair;
  * @author Jonathan Lovelace
  *
  */
-public class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixture> {
+public final class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixture> {
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */

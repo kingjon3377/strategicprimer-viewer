@@ -49,7 +49,7 @@ import util.Pair;
  * @author Jonathan Lovelace
  *
  */
-public class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
+public final class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */

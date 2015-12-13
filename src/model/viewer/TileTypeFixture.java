@@ -34,7 +34,7 @@ import util.TypesafeLogger;
  * @author Jonathan Lovelace
  *
  */
-public class TileTypeFixture implements TileFixture, HasImage {
+public final class TileTypeFixture implements TileFixture, HasImage {
 	/**
 	 * A logger.
 	 */

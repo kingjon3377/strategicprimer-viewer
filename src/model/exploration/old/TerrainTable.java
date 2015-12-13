@@ -36,7 +36,7 @@ import util.Pair;
  * @author Jonathan Lovelace
  *
  */
-public class TerrainTable implements EncounterTable {
+public final class TerrainTable implements EncounterTable {
 	/**
 	 * Mapping from terrain type to "events".
 	 */

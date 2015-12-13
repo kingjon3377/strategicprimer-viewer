@@ -58,7 +58,7 @@ import util.Pair;
  * @author Jonathan Lovelace
  *
  */
-public class HarvestableReportGenerator extends AbstractReportGenerator<HarvestableFixture> {
+public final class HarvestableReportGenerator extends AbstractReportGenerator<HarvestableFixture> {
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */

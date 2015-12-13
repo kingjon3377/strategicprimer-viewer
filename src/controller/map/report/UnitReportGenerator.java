@@ -54,7 +54,7 @@ import util.Pair;
  * @author Jonathan Lovelace
  *
  */
-public class UnitReportGenerator extends AbstractReportGenerator<Unit> {
+public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */

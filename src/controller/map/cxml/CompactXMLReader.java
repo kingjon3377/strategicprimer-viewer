@@ -47,7 +47,7 @@ import util.Warning;
  * @author Jonathan Lovelace
  *
  */
-public class CompactXMLReader implements IMapReader, ISPReader {
+public final class CompactXMLReader implements IMapReader, ISPReader {
 	/**
 	 * @param <T> A supertype of the object the XML represents
 	 * @param file the file we're reading from

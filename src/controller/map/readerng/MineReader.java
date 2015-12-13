@@ -44,7 +44,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class MineReader implements INodeHandler<Mine> {
+public final class MineReader implements INodeHandler<Mine> {
 	/**
 	 * Parse a mine.
 	 *

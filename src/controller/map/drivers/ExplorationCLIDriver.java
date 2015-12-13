@@ -38,7 +38,7 @@ import view.exploration.ExplorationCLI;
  * @author Jonathan Lovelace
  *
  */
-public class ExplorationCLIDriver implements ISPDriver {
+public final class ExplorationCLIDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */

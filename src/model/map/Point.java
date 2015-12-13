@@ -26,7 +26,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
-public class Point implements Comparable<@NonNull Point> {
+public final class Point implements Comparable<@NonNull Point> {
 	/**
 	 * The first coordinate.
 	 */

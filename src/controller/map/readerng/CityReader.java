@@ -47,7 +47,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class CityReader implements INodeHandler<@NonNull City> {
+public final class CityReader implements INodeHandler<@NonNull City> {
 	/**
 	 * Parse a city.
 	 *

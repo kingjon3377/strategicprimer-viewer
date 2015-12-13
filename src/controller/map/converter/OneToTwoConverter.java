@@ -80,7 +80,7 @@ import util.Warning;
  * @author Jonathan Lovelace
  *
  */
-public class OneToTwoConverter { // NOPMD
+public final class OneToTwoConverter { // NOPMD
 	/**
 	 * Sixty percent. Our probability for a couple of perturbations.
 	 */

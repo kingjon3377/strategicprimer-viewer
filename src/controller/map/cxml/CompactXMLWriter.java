@@ -31,7 +31,7 @@ import model.map.IMapNG;
  * @author Jonathan Lovelace
  *
  */
-public class CompactXMLWriter implements SPWriter {
+public final class CompactXMLWriter implements SPWriter {
 	/**
 	 * Write a map to file.
 	 *

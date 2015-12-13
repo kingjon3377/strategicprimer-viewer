@@ -47,7 +47,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class FortificationReader implements INodeHandler<@NonNull Fortification> {
+public final class FortificationReader implements INodeHandler<@NonNull Fortification> {
 	/**
 	 * Parse a fortification.
 	 *

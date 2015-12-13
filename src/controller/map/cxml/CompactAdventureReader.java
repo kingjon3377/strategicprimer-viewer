@@ -36,7 +36,7 @@ import util.Warning;
  * @author Jonathan Lovelace
  *
  */
-public class CompactAdventureReader extends
+public final class CompactAdventureReader extends
 		AbstractCompactReader<AdventureFixture> {
 	/**
 	 * Singleton object.

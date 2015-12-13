@@ -41,7 +41,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class ForestReader implements INodeHandler<Forest> {
+public final class ForestReader implements INodeHandler<Forest> {
 	/**
 	 * Parse a forest.
 	 *

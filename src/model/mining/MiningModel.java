@@ -36,7 +36,7 @@ import view.util.SystemOut;
  * @author Jonathan Lovelace
  *
  */
-public class MiningModel {
+public final class MiningModel {
 	/**
 	 * A mapping from positions (normalized so they could be spit out into a
 	 * spreadsheet) to LodeStatuses.

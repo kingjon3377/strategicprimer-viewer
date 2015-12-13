@@ -43,7 +43,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class CaveReader implements INodeHandler<@NonNull Cave> {
+public final class CaveReader implements INodeHandler<@NonNull Cave> {
 	/**
 	 * Parse a cave.
 	 *

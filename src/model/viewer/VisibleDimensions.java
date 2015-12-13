@@ -28,7 +28,7 @@ import util.NullCleaner;
  * @author kingjon
  *
  */
-public class VisibleDimensions {
+public final class VisibleDimensions {
 	/**
 	 * The lowest row we draw.
 	 */

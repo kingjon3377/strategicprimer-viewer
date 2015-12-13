@@ -43,7 +43,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
+public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	/**
 	 * Logger.
 	 */

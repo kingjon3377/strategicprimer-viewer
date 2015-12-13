@@ -25,7 +25,7 @@ package controller.map.formatexceptions;
  * @author Jonathan Lovelace
  *
  */
-public class MissingIncludeException extends SPFormatException {
+public final class MissingIncludeException extends SPFormatException {
 	/**
 	 * Constructor.
 	 *

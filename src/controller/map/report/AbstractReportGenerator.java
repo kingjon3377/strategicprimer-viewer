@@ -95,7 +95,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 * A list that produces HTML in its toString().
 	 * @author Jonathan Lovelace
 	 */
-	protected static class HtmlList extends ArrayList<@NonNull String>
+	protected static final class HtmlList extends ArrayList<@NonNull String>
 			implements HeadedList<@NonNull String> {
 		/**
 		 * Version UID for serialization.

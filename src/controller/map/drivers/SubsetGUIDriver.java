@@ -43,7 +43,7 @@ import view.util.ErrorShower;
  * @author Jonathan Lovelace
  *
  */
-public class SubsetGUIDriver implements ISPDriver {
+public final class SubsetGUIDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */

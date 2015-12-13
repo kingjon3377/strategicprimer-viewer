@@ -40,7 +40,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class SimurghReader implements INodeHandler<Simurgh> {
+public final class SimurghReader implements INodeHandler<Simurgh> {
 	/**
 	 * Parse a simurgh.
 	 *

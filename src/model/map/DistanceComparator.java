@@ -9,7 +9,7 @@ import util.NullCleaner;
  * A class to compare Points based on their distance to a specified point (such as a player's HQ)
  * @author Jonathan Lovelace
  */
-public class DistanceComparator implements Comparator<@NonNull Point> {
+public final class DistanceComparator implements Comparator<@NonNull Point> {
 	/**
 	 * The point we want to measure distance from.
 	 */

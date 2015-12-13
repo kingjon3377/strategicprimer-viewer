@@ -23,7 +23,7 @@ package model.exploration.old;
  * @author Jonathan Lovelace
  *
  */
-public class MissingTableException extends Exception {
+public final class MissingTableException extends Exception {
 	/**
 	 * The missing table.
 	 */

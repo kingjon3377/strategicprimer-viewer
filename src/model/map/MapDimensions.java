@@ -27,7 +27,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class MapDimensions {
+public final class MapDimensions {
 	/**
 	 * The map version.
 	 */

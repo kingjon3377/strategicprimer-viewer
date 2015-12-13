@@ -27,7 +27,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public class ListReportNode extends AbstractReportNode {
+public final class ListReportNode extends AbstractReportNode {
 	/**
 	 * The length of the boilerplate even if we have no text and no children.
 	 */

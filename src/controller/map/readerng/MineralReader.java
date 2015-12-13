@@ -45,7 +45,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class MineralReader implements INodeHandler<@NonNull MineralVein> {
+public final class MineralReader implements INodeHandler<@NonNull MineralVein> {
 	/**
 	 * Parse a Mineral.
 	 *

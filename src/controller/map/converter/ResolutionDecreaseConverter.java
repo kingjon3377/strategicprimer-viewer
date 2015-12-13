@@ -47,7 +47,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  *
  */
-public class ResolutionDecreaseConverter {
+public final class ResolutionDecreaseConverter {
 	/**
 	 * Convert a map. It needs to have an even number of rows and columns.
 	 *

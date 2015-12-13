@@ -28,7 +28,7 @@ import org.eclipse.jdt.annotation.NonNull;
  * @param <K> the type of the first item
  * @param <V> the type of the second item
  */
-public class ComparablePair<K extends Comparable<K>, V extends Comparable<V>>
+public final class ComparablePair<K extends Comparable<K>, V extends Comparable<V>>
 		extends Pair<K, V> implements Comparable<@NonNull ComparablePair<K, V>> {
 	/**
 	 * Constructor.

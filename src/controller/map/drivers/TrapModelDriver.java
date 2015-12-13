@@ -48,7 +48,7 @@ import util.Warning.Action;
  * @author Jonathan Lovelace
  *
  */
-public class TrapModelDriver implements ISPDriver {
+public final class TrapModelDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */

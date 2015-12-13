@@ -31,7 +31,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
-public class Mountain implements TerrainFixture, HasImage {
+public final class Mountain implements TerrainFixture, HasImage {
 	/**
 	 * Even though Mountains have no state other than their image, we still copy
 	 * because they might eventually.

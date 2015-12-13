@@ -42,7 +42,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class CentaurReader implements INodeHandler<Centaur> {
+public final class CentaurReader implements INodeHandler<Centaur> {
 	/**
 	 * Parse a centaur.
 	 *

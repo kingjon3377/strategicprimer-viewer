@@ -44,7 +44,7 @@ import util.Pair;
  * @author Jonathan Lovelace
  *
  */
-public class VillageReportGenerator extends AbstractReportGenerator<Village> {
+public final class VillageReportGenerator extends AbstractReportGenerator<Village> {
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */

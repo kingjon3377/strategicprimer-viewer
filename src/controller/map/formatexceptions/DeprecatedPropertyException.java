@@ -24,7 +24,7 @@ package controller.map.formatexceptions;
  * @author Jonathan Lovelace
  *
  */
-public class DeprecatedPropertyException extends SPFormatException {
+public final class DeprecatedPropertyException extends SPFormatException {
 	/**
 	 * The current tag.
 	 */

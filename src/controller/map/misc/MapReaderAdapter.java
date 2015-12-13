@@ -47,7 +47,7 @@ import util.Warning;
  * @author Jonathan Lovelace
  *
  */
-public class MapReaderAdapter {
+public final class MapReaderAdapter {
 	/**
 	 * The implementation we use under the hood.
 	 */

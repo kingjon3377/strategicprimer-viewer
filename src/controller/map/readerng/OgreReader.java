@@ -40,7 +40,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class OgreReader implements INodeHandler<Ogre> {
+public final class OgreReader implements INodeHandler<Ogre> {
 	/**
 	 * Parse an ogre.
 	 *

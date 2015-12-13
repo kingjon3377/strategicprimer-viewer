@@ -45,7 +45,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class MeadowReader implements INodeHandler<Meadow> {
+public final class MeadowReader implements INodeHandler<Meadow> {
 	/**
 	 * The name of the property giving the status of the field.
 	 */

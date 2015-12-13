@@ -23,7 +23,7 @@ package controller.map.formatexceptions;
  * @author Jonathan Lovelace
  *
  */
-public class UnsupportedPropertyException extends SPFormatException {
+public final class UnsupportedPropertyException extends SPFormatException {
 
 	/**
 	 * The current tag.

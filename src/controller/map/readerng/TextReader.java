@@ -40,7 +40,7 @@ import util.Warning;
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
-public class TextReader implements INodeHandler<TextFixture> {
+public final class TextReader implements INodeHandler<TextFixture> {
 	/**
 	 * Parse a TextFixture.
 	 *
