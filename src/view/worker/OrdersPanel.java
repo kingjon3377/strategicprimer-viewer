@@ -1,5 +1,7 @@
 package view.worker;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -91,6 +93,17 @@ public class OrdersPanel extends BorderedPanel implements Applyable,
 								new ListenedButton("Apply", handler))
 								.setLineEnd(
 										new ListenedButton("Revert", handler)));
+		area.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(@Nullable final KeyEvent evt) {
+				if (evt != null && evt.getKeyCode() == KeyEvent.VK_ENTER
+						&& (System.getProperty("os.name").toLowerCase().startsWith(
+								"mac os x") ? evt.isMetaDown() : evt.isControlDown())) {
+					apply();
+
+				}
+			}
+		});
 		area.setLineWrap(true);
 		area.setWrapStyleWord(true);
 		model = wmodel;
