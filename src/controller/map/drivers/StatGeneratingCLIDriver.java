@@ -170,16 +170,14 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 */
 	private void enterStats(final IExplorationModel model) throws IOException {
 		final List<Player> players = model.getPlayerChoices();
-		while (true) {
-			final int playerNum = cli.chooseFromList(players,
-					"Which player owns the worker in question?",
-					"There are no players shared by all the maps",
-					"Player selection: ", true);
-			if (playerNum < 0 || playerNum >= players.size()) {
-				break;
-			} else {
-				enterStats(model, NullCleaner.assertNotNull(players.get(playerNum)));
-			}
+		final String hdr = "Which player owns the worker in question?";
+		final String none = "There are no players shared by all the maps.";
+		final String prpt = "Player selection: ";
+		for (int playerNum = cli.chooseFromList(players, hdr, none, prpt,
+				true); playerNum >= 0
+						&& playerNum < players.size(); playerNum = cli
+								.chooseFromList(players, hdr, none, prpt, true)) {
+			enterStats(model, NullCleaner.assertNotNull(players.get(playerNum)));
 		}
 	}
 
@@ -194,21 +192,16 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	private void enterStats(final IExplorationModel model, final Player player)
 			throws IOException {
 		final List<IUnit> units = removeStattedUnits(model.getUnits(player));
-		while (true) {
-			final int unitNum = cli
-					.chooseFromList(
-							units,
-							"Which unit contains the worker in question?",
-							"All that player's units are already fully statted",
-							"Unit selection: ", false);
-			if (unitNum < 0 || unitNum >= units.size() || units.isEmpty()) {
-				break;
-			} else {
-				final IUnit unit = units.get(unitNum);
-				enterStats(model, unit);
-				if (!hasUnstattedWorker(model, unit.getID())) {
-					units.remove(unit);
-				}
+		final String hdr = "Which unit contains the worker in question?";
+		final String none = "All that player's units are already fully statted.";
+		final String prpt = "Unit selection: ";
+		for (int unitNum = cli.chooseFromList(units, hdr, none, prpt, false); unitNum >= 0
+				&& unitNum < units.size(); unitNum = cli.chooseFromList(units, hdr, none,
+						prpt, false)) {
+			final IUnit unit = units.get(unitNum);
+			enterStats(model, unit);
+			if (!hasUnstattedWorker(model, unit.getID())) {
+				units.remove(unit);
 			}
 		}
 	}
@@ -270,18 +263,15 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 				workers.add((Worker) member);
 			}
 		}
-		while (true) {
-			final int workerNum = cli.chooseFromList(workers,
-					"Which worker do you want to enter stats for?",
-					"There are no workers without stats in that unit",
-					"Worker to modify: ", false);
-			if (workerNum < 0 || workerNum >= workers.size()
-					|| workers.isEmpty()) {
-				break;
-			} else {
-				enterStats(model, workers.get(workerNum).getID());
-				workers.remove(workerNum);
-			}
+		final String hdr = "Which worker do you want to enter stats for?";
+		final String none = "There are no owkers without stats in that unit.";
+		final String prpt = "Worker to modify: ";
+		for (int workerNum = cli.chooseFromList(workers, hdr, none, prpt,
+				false); workerNum >= 0 && workerNum < workers.size()
+						&& !workers.isEmpty(); workerNum = cli.chooseFromList(workers,
+								hdr, none, prpt, false)) {
+			enterStats(model, workers.get(workerNum).getID());
+			workers.remove(workerNum);
 		}
 	}
 
@@ -375,17 +365,14 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	private void createWorkers(final IExplorationModel model,
 			final IDFactory idf) throws IOException {
 		final List<Player> players = model.getPlayerChoices();
-		while (true) {
-			final int playerNum = cli.chooseFromList(players,
-					"Which player owns the new worker(s)?",
-					"There are no players shared by all the maps",
-					"Player selection: ", true);
-			if (playerNum < 0 || playerNum >= players.size()) {
-				break;
-			} else {
-				createWorkers(model, idf,
-						NullCleaner.assertNotNull(players.get(playerNum)));
-			}
+		final String hdr = "Which player owns the new worker(s)?";
+		final String none = "There are no players shared by all the maps.";
+		final String prpt = "Player selection: ";
+		for (int playerNum = cli.chooseFromList(players, hdr, none, prpt,
+				false); playerNum >= 0
+						&& playerNum < players.size(); playerNum = cli
+								.chooseFromList(players, hdr, none, prpt, false)) {
+			createWorkers(model, idf, NullCleaner.assertNotNull(players.get(playerNum)));
 		}
 	}
 
