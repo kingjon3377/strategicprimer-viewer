@@ -445,7 +445,7 @@ public class ArrowKeyListener {
 		/**
 		 * @param dsch The helper to actually perform the cursor movement
 		 */
-		JumpUpLeftListener(final DirectionSelectionChanger dsch) {
+		protected JumpUpLeftListener(final DirectionSelectionChanger dsch) {
 			dsc = dsch;
 		}
 		/**
@@ -476,7 +476,7 @@ public class ArrowKeyListener {
 		/**
 		 * @param dsch The helper to actually perform the cursor movement
 		 */
-		JumpDownRightListener(final DirectionSelectionChanger dsch) {
+		protected JumpDownRightListener(final DirectionSelectionChanger dsch) {
 			dsc = dsch;
 		}
 		/**
@@ -507,7 +507,7 @@ public class ArrowKeyListener {
 		/**
 		 * @param dsch The helper to actually perform the cursor movement
 		 */
-		JumpUpListener(final DirectionSelectionChanger dsch) {
+		protected JumpUpListener(final DirectionSelectionChanger dsch) {
 			dsc = dsch;
 		}
 		/**
@@ -537,7 +537,7 @@ public class ArrowKeyListener {
 		/**
 		 * @param dsch The helper to actually perform the cursor movement
 		 */
-		JumpDownListener(final DirectionSelectionChanger dsch) {
+		protected JumpDownListener(final DirectionSelectionChanger dsch) {
 			dsc = dsch;
 		}
 		/**
@@ -567,7 +567,7 @@ public class ArrowKeyListener {
 		/**
 		 * @param dsch The helper to actually perform the cursor movement
 		 */
-		JumpLeftListener(final DirectionSelectionChanger dsch) {
+		protected JumpLeftListener(final DirectionSelectionChanger dsch) {
 			dsc = dsch;
 		}
 		/**
@@ -597,7 +597,7 @@ public class ArrowKeyListener {
 		/**
 		 * @param dsch The helper to actually perform the cursor movement
 		 */
-		JumpRightListener(final DirectionSelectionChanger dsch) {
+		protected JumpRightListener(final DirectionSelectionChanger dsch) {
 			dsc = dsch;
 		}
 		/**
