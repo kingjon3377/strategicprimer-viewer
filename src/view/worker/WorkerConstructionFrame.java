@@ -291,12 +291,12 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener,
 	private void createStats() {
 		hpBox.setText("8");
 		maxHP.setText("8");
-		createStat(str);
-		createStat(dex);
-		createStat(con);
-		createStat(intel);
-		createStat(wis);
-		createStat(cha);
+		createSingleStat(str);
+		createSingleStat(dex);
+		createSingleStat(con);
+		createSingleStat(intel);
+		createSingleStat(wis);
+		createSingleStat(cha);
 	}
 
 	/**
@@ -305,7 +305,7 @@ public class WorkerConstructionFrame extends JFrame implements ActionListener,
 	 *
 	 * @param stat the field to fill
 	 */
-	private static void createStat(final JTextField stat) {
+	private static void createSingleStat(final JTextField stat) {
 		final Random rng = SingletonRandom.RANDOM;
 		final int threeDeeSix = rng.nextInt(6) + rng.nextInt(6)
 				+ rng.nextInt(6) + 3;

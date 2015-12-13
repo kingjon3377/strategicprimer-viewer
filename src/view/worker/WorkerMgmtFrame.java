@@ -389,12 +389,12 @@ public class WorkerMgmtFrame extends JFrame {
 		 * Constructor.
 		 *
 		 * @param wmodel the driver model to draw from
-		 * @param wtmodel the tree model to get dismissed unit members from
+		 * @param treeModel the tree model to get dismissed unit members from
 		 */
 		public StrategyExporter(final IWorkerModel wmodel,
-				final IWorkerTreeModel wtmodel) {
+				final IWorkerTreeModel treeModel) {
 			model = wmodel;
-			tmodel = wtmodel;
+			tmodel = treeModel;
 		}
 
 		/**

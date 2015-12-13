@@ -201,7 +201,7 @@ IExplorationModel {
 			selUnitLoc = dest;
 			fireSelectionChange(point, dest);
 			fireMovementCost(retval);
-			checkNearbyWatchers(getMap(), unit, dest);
+			checkAllNearbyWatchers(getMap(), unit, dest);
 			return retval;
 		} else {
 			for (final Pair<IMutableMapNG, File> pair : getSubordinateMaps()) {
@@ -226,7 +226,7 @@ IExplorationModel {
 	 * @param dest
 	 *            the unit's new location
 	 */
-	private static void checkNearbyWatchers(final IMapNG map, final IUnit unit,
+	private static void checkAllNearbyWatchers(final IMapNG map, final IUnit unit,
 			final Point dest) {
 		MapDimensions dims = map.dimensions();
 		final Set<Point> done = new HashSet<>(25);

@@ -289,7 +289,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		/**
 		 * The list of unit-selection listeners listening to us.
 		 */
-		private final List<UnitSelectionListener> usListeners = new ArrayList<>();
+		private final List<UnitSelectionListener> selectionListeners = new ArrayList<>();
 		/**
 		 * The list of listeners to notify of newly selected unit member.
 		 */
@@ -337,14 +337,14 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 				}
 			}
 			if (sel instanceof IUnit) {
-				for (final UnitSelectionListener list : usListeners) {
+				for (final UnitSelectionListener list : selectionListeners) {
 					list.selectUnit((IUnit) sel);
 				}
 				for (final UnitMemberListener list : umListeners) {
 					list.memberSelected(null, new ProxyWorker((IUnit) sel));
 				}
 			} else if (sel == null) {
-				for (final UnitSelectionListener list : usListeners) {
+				for (final UnitSelectionListener list : selectionListeners) {
 					list.selectUnit(null);
 				}
 			}
@@ -354,7 +354,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		 */
 		@Override
 		public void addUnitSelectionListener(final UnitSelectionListener list) {
-			usListeners.add(list);
+			selectionListeners.add(list);
 		}
 
 		/**
@@ -362,7 +362,7 @@ public class WorkerTree extends JTree implements UnitMemberSelectionSource,
 		 */
 		@Override
 		public void removeUnitSelectionListener(final UnitSelectionListener list) {
-			usListeners.remove(list);
+			selectionListeners.remove(list);
 		}
 		/**
 		 * @param list a listener to add
