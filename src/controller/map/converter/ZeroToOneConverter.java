@@ -6,10 +6,11 @@ import java.io.IOException;
 import java.io.Reader;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
-import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -146,7 +147,7 @@ public final class ZeroToOneConverter {
 	private static String convertTile(final StartElement element,
 			final Iterable<Attribute> attrs) {
 		final StringBuilder builder = new StringBuilder();
-		final Stack<Integer> events = new Stack<>();
+		final Deque<Integer> events = new LinkedList<>();
 		builder.append('<');
 		builder.append(element.getName().getLocalPart());
 		for (final Attribute attr : attrs) {
