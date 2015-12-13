@@ -2,6 +2,7 @@ package model.workermgmt;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.swing.DefaultListModel;
 
@@ -13,7 +14,6 @@ import model.listeners.CompletionSource;
 import model.listeners.UnitMemberListener;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IWorker;
-import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
 
@@ -42,18 +42,10 @@ import model.map.fixtures.mobile.worker.Job;
 public final class JobsListModel extends DefaultListModel<IJob> implements
 		UnitMemberListener, CompletionSource, AddRemoveListener {
 	/**
-	 * A non-null "null" worker. Adjusted to prevent modification.
-	 */
-	private static final IWorker NULL_WORKER = new Worker("null", "null", -1) {
-		@Override
-		public boolean addJob(final IJob job) {
-			return false;
-		}
-	};
-	/**
 	 * The current worker.
 	 */
-	private IWorker worker = NULL_WORKER;
+	@Nullable
+	private IWorker worker = null;
 
 	/**
 	 * @param category what kind of thing is being added; if not a Job we ignore
@@ -62,9 +54,10 @@ public final class JobsListModel extends DefaultListModel<IJob> implements
 	 */
 	@Override
 	public void add(final String category, final String addendum) {
-		if ("job".equals(category) && !NULL_WORKER.equals(worker)) {
+		IWorker local = worker;
+		if ("job".equals(category) && local != null) {
 			final Job job = new Job(addendum, 0);
-			worker.addJob(job);
+			local.addJob(job);
 			addElement(job);
 			for (final CompletionListener list : cListeners) {
 				list.stopWaitingOn(true);
@@ -79,7 +72,7 @@ public final class JobsListModel extends DefaultListModel<IJob> implements
 	@Override
 	public void memberSelected(@Nullable final UnitMember old,
 			@Nullable final UnitMember selected) {
-		if (!worker.equals(selected)) {
+		if (!Objects.equals(worker, selected)) {
 			clear();
 			if (selected instanceof IWorker) {
 				worker = (IWorker) selected;
@@ -90,7 +83,7 @@ public final class JobsListModel extends DefaultListModel<IJob> implements
 					list.stopWaitingOn(false);
 				}
 			} else {
-				worker = NULL_WORKER;
+				worker = null;
 			}
 		}
 	}
