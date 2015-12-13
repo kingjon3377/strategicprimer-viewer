@@ -199,10 +199,9 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public boolean inputBoolean(final String prompt) throws IOException {
-		while (true) {
-			final String input =
-					NullCleaner.assertNotNull(inputString(prompt).toLowerCase(
-							Locale.US));
+		for (String input = NullCleaner.assertNotNull(
+				inputString(prompt).toLowerCase(Locale.US));; input = NullCleaner
+						.assertNotNull(inputString(prompt).toLowerCase(Locale.US))) {
 			if (EqualsAny.equalsAny(input, "yes", "true", "y", "t")) {
 				return true; // NOPMD
 			} else if (EqualsAny.equalsAny(input, "no", "false", "n", "f")) {
