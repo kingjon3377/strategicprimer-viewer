@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -15,6 +16,7 @@ import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import util.ArraySet;
 import util.NullCleaner;
+import util.TypesafeLogger;
 
 /**
  * A unit on the map.
@@ -143,6 +145,11 @@ public class Unit implements IUnit {
 	 */
 	@Override
 	public void addMember(final UnitMember member) {
+		if (member instanceof ProxyFor) {
+			TypesafeLogger.getLogger(Unit.class).log(Level.SEVERE,
+					"ProxyWorker added to Unit",
+					new IllegalStateException("ProxyWorker added to Unit"));
+		}
 		members.add(member);
 	}
 
