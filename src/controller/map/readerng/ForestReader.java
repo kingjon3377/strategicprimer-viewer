@@ -76,7 +76,7 @@ public final class ForestReader implements INodeHandler<Forest> {
 
 	/** @return the class we know how to write */
 	@Override
-	public Class<Forest> writes() {
+	public Class<Forest> writtenClass() {
 		return Forest.class;
 	}
 

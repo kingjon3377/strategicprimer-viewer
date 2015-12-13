@@ -76,7 +76,7 @@ public final class HillReader implements INodeHandler<Hill> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<Hill> writes() {
+	public Class<Hill> writtenClass() {
 		return Hill.class;
 	}
 

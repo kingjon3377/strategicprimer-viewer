@@ -93,7 +93,7 @@ public final class TrollReader implements INodeHandler<Troll> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<Troll> writes() {
+	public Class<Troll> writtenClass() {
 		return Troll.class;
 	}
 

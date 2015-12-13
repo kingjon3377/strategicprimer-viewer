@@ -77,7 +77,7 @@ public final class PhoenixReader implements INodeHandler<Phoenix> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<Phoenix> writes() {
+	public Class<Phoenix> writtenClass() {
 		return Phoenix.class;
 	}
 

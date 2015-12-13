@@ -76,7 +76,7 @@ public final class OgreReader implements INodeHandler<Ogre> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<Ogre> writes() {
+	public Class<Ogre> writtenClass() {
 		return Ogre.class;
 	}
 

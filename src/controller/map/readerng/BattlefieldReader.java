@@ -81,7 +81,7 @@ public final class BattlefieldReader implements INodeHandler<@NonNull Battlefiel
 
 	/** @return the class we know how to write */
 	@Override
-	public Class<Battlefield> writes() {
+	public Class<Battlefield> writtenClass() {
 		return Battlefield.class;
 	}
 

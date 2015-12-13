@@ -77,7 +77,7 @@ public final class SimurghReader implements INodeHandler<Simurgh> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<Simurgh> writes() {
+	public Class<Simurgh> writtenClass() {
 		return Simurgh.class;
 	}
 

@@ -77,7 +77,7 @@ public final class CentaurReader implements INodeHandler<Centaur> {
 
 	/** @return the kind we know how to read */
 	@Override
-	public Class<Centaur> writes() {
+	public Class<Centaur> writtenClass() {
 		return Centaur.class;
 	}
 

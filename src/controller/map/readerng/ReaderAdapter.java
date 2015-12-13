@@ -98,7 +98,7 @@ public final class ReaderAdapter implements INodeHandler<Object> {
 		for (final String tag : reader.understands()) {
 			READ_CACHE.put(tag, reader);
 		}
-		WRITERS.put(reader.writes(), reader);
+		WRITERS.put(reader.writtenClass(), reader);
 	}
 
 	/**
@@ -206,7 +206,7 @@ public final class ReaderAdapter implements INodeHandler<Object> {
 	 *         exception.
 	 */
 	@Override
-	public Class<Object> writes() {
+	public Class<Object> writtenClass() {
 		throw new IllegalStateException("This should never be called.");
 	}
 

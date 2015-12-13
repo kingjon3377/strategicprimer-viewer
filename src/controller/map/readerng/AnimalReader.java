@@ -81,7 +81,7 @@ public final class AnimalReader implements INodeHandler<@NonNull Animal> {
 
 	/** @return the class we know how to write */
 	@Override
-	public Class<Animal> writes() {
+	public Class<Animal> writtenClass() {
 		return Animal.class;
 	}
 

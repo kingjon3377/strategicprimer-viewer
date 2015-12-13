@@ -185,7 +185,7 @@ public final class UnitReader implements INodeHandler<Unit> {
 	 * @return The type we know how to write
 	 */
 	@Override
-	public Class<Unit> writes() {
+	public Class<Unit> writtenClass() {
 		return Unit.class;
 	}
 

@@ -87,7 +87,7 @@ public final class MineralReader implements INodeHandler<@NonNull MineralVein> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<MineralVein> writes() {
+	public Class<MineralVein> writtenClass() {
 		return MineralVein.class;
 	}
 

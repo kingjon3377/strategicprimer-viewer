@@ -55,7 +55,7 @@ public final class JobReader implements INodeHandler<@NonNull Job> {
 	 * @return the class this knows how to write
 	 */
 	@Override
-	public Class<Job> writes() {
+	public Class<Job> writtenClass() {
 		return Job.class;
 	}
 

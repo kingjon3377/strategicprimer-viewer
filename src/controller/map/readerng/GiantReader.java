@@ -79,7 +79,7 @@ public final class GiantReader implements INodeHandler<Giant> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<Giant> writes() {
+	public Class<Giant> writtenClass() {
 		return Giant.class;
 	}
 

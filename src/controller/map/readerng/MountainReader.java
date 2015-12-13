@@ -75,7 +75,7 @@ public final class MountainReader implements INodeHandler<Mountain> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<Mountain> writes() {
+	public Class<Mountain> writtenClass() {
 		return Mountain.class;
 	}
 

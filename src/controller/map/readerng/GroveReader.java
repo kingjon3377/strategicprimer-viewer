@@ -118,7 +118,7 @@ public final class GroveReader implements INodeHandler<Grove> {
 	 * @return the kind we know how to parse
 	 */
 	@Override
-	public Class<Grove> writes() {
+	public Class<Grove> writtenClass() {
 		return Grove.class;
 	}
 

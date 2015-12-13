@@ -77,7 +77,7 @@ public final class SandbarReader implements INodeHandler<Sandbar> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<Sandbar> writes() {
+	public Class<Sandbar> writtenClass() {
 		return Sandbar.class;
 	}
 

@@ -442,7 +442,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	 * @return the class this knows how to write
 	 */
 	@Override
-	public Class<IMapNG> writes() {
+	public Class<IMapNG> writtenClass() {
 		return IMapNG.class;
 	}
 	/**

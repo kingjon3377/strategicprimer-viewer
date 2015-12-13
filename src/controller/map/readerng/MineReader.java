@@ -83,7 +83,7 @@ public final class MineReader implements INodeHandler<Mine> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<Mine> writes() {
+	public Class<Mine> writtenClass() {
 		return Mine.class;
 	}
 

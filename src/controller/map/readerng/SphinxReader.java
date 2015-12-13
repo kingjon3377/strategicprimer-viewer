@@ -77,7 +77,7 @@ public final class SphinxReader implements INodeHandler<Sphinx> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<Sphinx> writes() {
+	public Class<Sphinx> writtenClass() {
 		return Sphinx.class;
 	}
 

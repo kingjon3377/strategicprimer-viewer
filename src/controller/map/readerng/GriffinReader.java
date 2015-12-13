@@ -77,7 +77,7 @@ public final class GriffinReader implements INodeHandler<Griffin> {
 	 * @return the kind of class we know how to read.
 	 */
 	@Override
-	public Class<Griffin> writes() {
+	public Class<Griffin> writtenClass() {
 		return Griffin.class;
 	}
 

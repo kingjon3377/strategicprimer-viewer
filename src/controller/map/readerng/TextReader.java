@@ -97,7 +97,7 @@ public final class TextReader implements INodeHandler<TextFixture> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<TextFixture> writes() {
+	public Class<TextFixture> writtenClass() {
 		return TextFixture.class;
 	}
 

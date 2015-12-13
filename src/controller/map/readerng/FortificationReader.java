@@ -92,7 +92,7 @@ public final class FortificationReader implements INodeHandler<@NonNull Fortific
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<Fortification> writes() {
+	public Class<Fortification> writtenClass() {
 		return Fortification.class;
 	}
 

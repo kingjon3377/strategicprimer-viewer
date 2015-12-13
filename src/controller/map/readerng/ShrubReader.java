@@ -80,7 +80,7 @@ public final class ShrubReader implements INodeHandler<Shrub> {
 	 * @return the class we know how to write.
 	 */
 	@Override
-	public Class<Shrub> writes() {
+	public Class<Shrub> writtenClass() {
 		return Shrub.class;
 	}
 

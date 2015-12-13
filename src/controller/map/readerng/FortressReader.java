@@ -122,7 +122,7 @@ public final class FortressReader implements INodeHandler<Fortress> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<Fortress> writes() {
+	public Class<Fortress> writtenClass() {
 		return Fortress.class;
 	}
 

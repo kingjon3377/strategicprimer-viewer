@@ -80,7 +80,7 @@ public final class GroundReader implements INodeHandler<Ground> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<Ground> writes() {
+	public Class<Ground> writtenClass() {
 		return Ground.class;
 	}
 

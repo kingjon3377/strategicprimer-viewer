@@ -80,7 +80,7 @@ public final class CacheReader implements INodeHandler<CacheFixture> {
 
 	/** @return the class we now ow to write */
 	@Override
-	public Class<CacheFixture> writes() {
+	public Class<CacheFixture> writtenClass() {
 		return CacheFixture.class;
 	}
 

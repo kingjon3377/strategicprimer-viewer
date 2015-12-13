@@ -41,7 +41,7 @@ public interface INodeHandler<@NonNull T> {
 	/**
 	 * @return the class this can write to a writer.
 	 */
-	Class<T> writes();
+	Class<T> writtenClass();
 
 	/**
 	 * @return a list of the tags the reader can handle.

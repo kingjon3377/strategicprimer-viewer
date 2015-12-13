@@ -45,7 +45,7 @@ public final class StatsReader implements INodeHandler<@NonNull WorkerStats> {
 	 * @return the class this knows how to write.
 	 */
 	@Override
-	public Class<WorkerStats> writes() {
+	public Class<WorkerStats> writtenClass() {
 		return WorkerStats.class;
 	}
 

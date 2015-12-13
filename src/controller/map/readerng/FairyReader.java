@@ -77,7 +77,7 @@ public final class FairyReader implements INodeHandler<Fairy> {
 
 	/** @return the class we know how to write */
 	@Override
-	public Class<Fairy> writes() {
+	public Class<Fairy> writtenClass() {
 		return Fairy.class;
 	}
 

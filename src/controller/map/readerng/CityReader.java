@@ -92,7 +92,7 @@ public final class CityReader implements INodeHandler<@NonNull City> {
 	 * @return the class we know how to read
 	 */
 	@Override
-	public Class<City> writes() {
+	public Class<City> writtenClass() {
 		return City.class;
 	}
 

@@ -81,7 +81,7 @@ public final class RiverReader implements INodeHandler<@NonNull River> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<River> writes() {
+	public Class<River> writtenClass() {
 		return River.class;
 	}
 

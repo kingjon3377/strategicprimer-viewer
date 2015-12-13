@@ -77,7 +77,7 @@ public final class DragonReader implements INodeHandler<Dragon> {
 
 	/** @return the class we know how to write */
 	@Override
-	public Class<Dragon> writes() {
+	public Class<Dragon> writtenClass() {
 		return Dragon.class;
 	}
 

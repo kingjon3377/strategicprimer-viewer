@@ -100,7 +100,7 @@ public final class MeadowReader implements INodeHandler<Meadow> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<Meadow> writes() {
+	public Class<Meadow> writtenClass() {
 		return Meadow.class;
 	}
 

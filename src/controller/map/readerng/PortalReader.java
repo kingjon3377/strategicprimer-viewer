@@ -85,7 +85,7 @@ public final class PortalReader implements INodeHandler<@NonNull Portal> {
 
 	/** @return the class we know how to write */
 	@Override
-	public Class<Portal> writes() {
+	public Class<Portal> writtenClass() {
 		return Portal.class;
 	}
 

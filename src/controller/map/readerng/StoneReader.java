@@ -86,7 +86,7 @@ public final class StoneReader implements INodeHandler<@NonNull StoneDeposit> {
 	 * @return The class we know how to write.
 	 */
 	@Override
-	public Class<StoneDeposit> writes() {
+	public Class<StoneDeposit> writtenClass() {
 		return StoneDeposit.class;
 	}
 

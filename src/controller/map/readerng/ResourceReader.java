@@ -82,7 +82,7 @@ public final class ResourceReader implements INodeHandler<@NonNull ResourcePile>
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<ResourcePile> writes() {
+	public Class<ResourcePile> writtenClass() {
 		return ResourcePile.class;
 	}
 	/**

@@ -114,7 +114,7 @@ public final class TownReader implements INodeHandler<@NonNull Town> {
 	 * @return the class we can write
 	 */
 	@Override
-	public Class<Town> writes() {
+	public Class<Town> writtenClass() {
 		return Town.class;
 	}
 

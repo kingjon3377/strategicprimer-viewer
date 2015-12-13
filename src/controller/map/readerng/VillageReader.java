@@ -112,7 +112,7 @@ public final class VillageReader implements INodeHandler<Village> {
 	 * @return The class we know how to parse
 	 */
 	@Override
-	public Class<Village> writes() {
+	public Class<Village> writtenClass() {
 		return Village.class;
 	}
 

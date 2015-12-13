@@ -81,7 +81,7 @@ public final class PlayerReader implements INodeHandler<@NonNull Player> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<Player> writes() {
+	public Class<Player> writtenClass() {
 		return Player.class;
 	}
 

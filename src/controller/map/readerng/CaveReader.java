@@ -81,7 +81,7 @@ public final class CaveReader implements INodeHandler<@NonNull Cave> {
 
 	/** @return the class we know how to write */
 	@Override
-	public Class<Cave> writes() {
+	public Class<Cave> writtenClass() {
 		return Cave.class;
 	}
 

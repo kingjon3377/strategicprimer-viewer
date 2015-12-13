@@ -77,7 +77,7 @@ public final class MinotaurReader implements INodeHandler<Minotaur> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<Minotaur> writes() {
+	public Class<Minotaur> writtenClass() {
 		return Minotaur.class;
 	}
 

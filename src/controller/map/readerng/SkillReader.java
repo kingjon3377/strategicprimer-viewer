@@ -45,7 +45,7 @@ public final class SkillReader implements INodeHandler<@NonNull Skill> {
 	 * @return the class this knows how to write
 	 */
 	@Override
-	public Class<Skill> writes() {
+	public Class<Skill> writtenClass() {
 		return Skill.class;
 	}
 

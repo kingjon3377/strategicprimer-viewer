@@ -78,7 +78,7 @@ public final class AdventureReader implements INodeHandler<@NonNull AdventureFix
 
 	/** @return the class we know how to write */
 	@Override
-	public Class<AdventureFixture> writes() {
+	public Class<AdventureFixture> writtenClass() {
 		return AdventureFixture.class;
 	}
 

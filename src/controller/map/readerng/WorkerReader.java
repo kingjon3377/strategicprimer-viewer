@@ -48,7 +48,7 @@ public final class WorkerReader implements INodeHandler<@NonNull Worker> {
 	 * @return the class this knows how to write.
 	 */
 	@Override
-	public Class<Worker> writes() {
+	public Class<Worker> writtenClass() {
 		return Worker.class;
 	}
 

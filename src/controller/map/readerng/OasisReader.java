@@ -76,7 +76,7 @@ public final class OasisReader implements INodeHandler<Oasis> {
 	 * @return the class we know how to write.
 	 */
 	@Override
-	public Class<Oasis> writes() {
+	public Class<Oasis> writtenClass() {
 		return Oasis.class;
 	}
 

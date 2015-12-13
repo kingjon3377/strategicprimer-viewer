@@ -74,7 +74,7 @@ public final class DjinnReader implements INodeHandler<Djinn> {
 
 	/** @return te class we know how to write */
 	@Override
-	public Class<Djinn> writes() {
+	public Class<Djinn> writtenClass() {
 		return Djinn.class;
 	}
 

@@ -79,7 +79,7 @@ public final class ImplementReader implements INodeHandler<@NonNull Implement> {
 	 * @return the class we know how to write
 	 */
 	@Override
-	public Class<Implement> writes() {
+	public Class<Implement> writtenClass() {
 		return Implement.class;
 	}
 	/**
