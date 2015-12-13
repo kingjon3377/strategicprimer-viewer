@@ -247,7 +247,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 				new TreeModelEvent(this, new TreePath(new Object[] { root,
 						newOwner }));
 		for (final TreeModelListener listener : listeners) {
-			// listener.treeNodesInserted(insertedEvent);
+			// TODO: For parallelism, we should call treeNodesInserted with an appropriate event.
 			listener.treeStructureChanged(insertedChEvent);
 		}
 	}
