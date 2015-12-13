@@ -130,6 +130,6 @@ public final class ListReportNode extends AbstractReportNode {
 	 */
 	@Override
 	protected int hashCodeImpl() {
-		return getText().hashCode() /* | children().hashCode() */;
+		return getText().hashCode();
 	}
 }

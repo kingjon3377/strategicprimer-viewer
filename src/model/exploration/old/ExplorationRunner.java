@@ -255,7 +255,7 @@ public final class ExplorationRunner { // NOPMD
 		final Set<String> state = new HashSet<>(); // NOPMD
 		for (final String table : tables.keySet()) {
 			if (recursiveCheck(table, state)) {
-				return true; // NOPMD;
+				return true; // NOPMD
 			}
 		}
 		return false;

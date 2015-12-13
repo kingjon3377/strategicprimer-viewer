@@ -103,6 +103,6 @@ public final class ComplexReportNode extends AbstractReportNode {
 	 */
 	@Override
 	protected int hashCodeImpl() {
-		return getText().hashCode() /* | children().hashCode() */;
+		return getText().hashCode();
 	}
 }

@@ -70,8 +70,6 @@ public final class QuadrantTable implements EncounterTable {
 		int i = 0;
 		for (int row = 0; row < MAP_SIZE_ROWS - rowRemain; row += rowstep) {
 			for (int col = 0; col < MAP_SIZE_COLS - colRemain; col += colstep) {
-				// System.out.println("Adding " + items.get(0) + " at (" + row +
-				// ", " + col +").");
 				quadrants.put(PointFactory.point(row, col), items.get(i));
 				i++;
 			}

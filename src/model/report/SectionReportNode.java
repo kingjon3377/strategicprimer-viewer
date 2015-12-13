@@ -116,6 +116,6 @@ public final class SectionReportNode extends AbstractReportNode {
 	 */
 	@Override
 	protected int hashCodeImpl() {
-		return level + getText().hashCode() /* | children.hashCode() */;
+		return level + getText().hashCode();
 	}
 }

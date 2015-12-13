@@ -62,7 +62,6 @@ public final class MapWindowSizeListener extends WindowAdapter {
 		} else {
 			addend = -1;
 		}
-		// add = !add;
 		add ^= true;
 		component.setSize(component.getWidth() + addend, component.getHeight()
 				+ addend);
@@ -81,7 +80,6 @@ public final class MapWindowSizeListener extends WindowAdapter {
 		} else {
 			addend = -1;
 		}
-		// add = !add;
 		add ^= true;
 		component.setSize(component.getWidth() + addend, component.getHeight()
 				+ addend);

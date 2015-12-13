@@ -160,7 +160,7 @@ public final class SubsetFrame extends JFrame {
 			writer.print(string);
 			writer.println("</p>");
 		}
-		// label.updateText();
+		// At one point we called updateText on the label.
 		label.repaint();
 	}
 	/**

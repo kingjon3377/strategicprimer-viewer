@@ -71,12 +71,10 @@ public final class WorkerReportDriver implements ISPDriver {
 			}
 			final String report; // NOPMD
 			try {
+				// When we developed createReportIR, it was unacceptably slower, so we left this using the original.
 				report =
 						ReportGenerator.createReport(reader.readMap(new File(
 								filename), warner));
-				// report =
-				// ReportGenerator.createReportIR(reader.readMap(filename,
-				// warner)).produce();
 			} catch (final MapVersionException except) {
 				throw new DriverFailedException(filename
 						+ " contained a map format version we can't handle",

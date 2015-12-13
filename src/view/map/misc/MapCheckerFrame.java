@@ -55,7 +55,7 @@ public final class MapCheckerFrame extends JFrame {
 	private final Warning warner = new Warning() {
 		@Override
 		public void warn(final Exception warning) {
-			// super.warn(warning);
+			// At one point we also called the super-implementation.
 			if (warning instanceof SPFormatException) {
 				printParagraph(
 						"SP format warning: "
@@ -117,7 +117,7 @@ public final class MapCheckerFrame extends JFrame {
 			writer.print(string);
 			writer.println("</p>");
 		}
-		// label.updateText();
+		// At one point we called updateText on the label.
 		label.repaint();
 	}
 

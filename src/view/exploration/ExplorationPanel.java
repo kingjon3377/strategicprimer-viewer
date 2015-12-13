@@ -160,8 +160,7 @@ public final class ExplorationPanel extends BorderedPanel implements ActionListe
 		headerPanel.add(locLabel);
 		headerPanel.add(new JLabel("Remaining Movement Points: "));
 		mpField = new JTextField(mpDoc, null, 5);
-		// TODO: store the reference to the document, not the text field, in the
-		// class body.
+		// TODO: store reference to document, not text field, in class body
 		headerPanel.add(mpField);
 		setCenter(new JSplitPane(JSplitPane.VERTICAL_SPLIT, headerPanel,
 				setupTilesGUI(new JPanel(new GridLayout(3, 12, 2, 2)))));
@@ -229,7 +228,7 @@ public final class ExplorationPanel extends BorderedPanel implements ActionListe
 		final DualTileButton dtb =
 				new DualTileButton(model.getMap(), model.getSubordinateMaps()
 						.iterator().next().first());
-		// panel.add(new JScrollPane(dtb));
+		// At some point we tried wrapping the button in a JScrollPane.
 		panel.add(dtb);
 		final ExplorationClickListener ecl = new ExplorationClickListener(
 				model, direction, mainList);

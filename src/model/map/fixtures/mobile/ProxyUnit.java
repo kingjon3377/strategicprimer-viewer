@@ -222,7 +222,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		for (IUnit unit : proxied) {
 			for (UnitMember member : unit) {
 				// Warning suppressed because the type in the map is really
-				// UnitMember&ProxyFor<IWorker|UnitMember>
+				// a UnitMember&ProxyFor<IWorker|UnitMember>
 				@SuppressWarnings("unchecked")
 				@Nullable
 				ProxyFor<? extends UnitMember> proxy;
