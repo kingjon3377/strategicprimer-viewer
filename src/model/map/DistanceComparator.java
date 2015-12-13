@@ -13,7 +13,7 @@ public class DistanceComparator implements Comparator<@NonNull Point> {
 	/**
 	 * The point we want to measure distance from.
 	 */
-	Point base;
+	private Point base;
 	/**
 	 * @param center the point we want to measure distance from
 	 */
