@@ -3,6 +3,7 @@ package view.worker;
 import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
 
 import java.awt.GridLayout;
+import java.util.Iterator;
 
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
@@ -14,6 +15,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import model.listeners.UnitMemberListener;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Animal;
+import model.map.fixtures.mobile.ProxyFor;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
@@ -178,6 +180,14 @@ public class MemberDetailPanel extends JPanel implements UnitMemberListener {
 	@Override
 	public void memberSelected(@Nullable final UnitMember old,
 			@Nullable final UnitMember selected) {
+		if (selected instanceof ProxyFor) {
+			Iterator<? extends UnitMember> iter = ((ProxyFor<? extends UnitMember>) selected)
+					.getProxied().iterator();
+			if (iter.hasNext()) {
+				memberSelected(old, iter.next());
+				return;
+			}
+		}
 		if (selected != current) {
 			current = selected;
 			recache();
