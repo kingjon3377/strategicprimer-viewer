@@ -61,4 +61,11 @@ public class DistanceComparator implements Comparator<@NonNull Point> {
 					String.format("(%.0f tiles from HQ) ", Math.sqrt(dist)));
 		}
 	}
+	/**
+	 * @return a string representation of this class
+	 */
+	@Override
+	public String toString() {
+		return "DistanceComparator";
+	}
 }

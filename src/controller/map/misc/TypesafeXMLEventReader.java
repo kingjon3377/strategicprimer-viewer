@@ -96,4 +96,11 @@ public class TypesafeXMLEventReader implements Iterator<@NonNull XMLEvent> {
 	public void remove() {
 		wrapped.remove();
 	}
+	/**
+	 * @return a string representation of this class
+	 */
+	@Override
+	public String toString() {
+		return "TypesafeXMLEventReader";
+	}
 }

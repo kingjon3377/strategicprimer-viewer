@@ -157,4 +157,11 @@ public class MiningModel {
 		}
 		return PointFactory.point(maxRow, maxCol);
 	}
+	/**
+	 * @return a string representation of this class
+	 */
+	@Override
+	public String toString() {
+		return "MiningModel";
+	}
 }

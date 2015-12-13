@@ -445,4 +445,11 @@ public class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	public Class<IMapNG> writes() {
 		return IMapNG.class;
 	}
+	/**
+	 * @return a string representation of this class
+	 */
+	@Override
+	public String toString() {
+		return "MapNGReader";
+	}
 }

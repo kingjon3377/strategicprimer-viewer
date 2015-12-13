@@ -110,4 +110,11 @@ public class CompactPortalReader extends AbstractCompactReader<Portal> {
 	public boolean isSupportedTag(final String tag) {
 		return "portal".equalsIgnoreCase(tag);
 	}
+	/**
+	 * @return a string representation of this class
+	 */
+	@Override
+	public String toString() {
+		return "CompactPortalReader";
+	}
 }

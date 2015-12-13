@@ -136,4 +136,11 @@ public class CompactExplorableReader
 		ostream.append(imageXML(obj));
 		ostream.append(" />\n");
 	}
+	/**
+	 * @return a string representation of this class
+	 */
+	@Override
+	public String toString() {
+		return "CompactExplorableReader";
+	}
 }

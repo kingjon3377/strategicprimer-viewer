@@ -169,4 +169,11 @@ public class TextReportGenerator extends AbstractReportGenerator<TextFixture> {
 		}
 	}
 
+	/**
+	 * @return a string representation of this class
+	 */
+	@Override
+	public String toString() {
+		return "TextReportGenerator";
+	}
 }

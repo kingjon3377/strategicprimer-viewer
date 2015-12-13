@@ -498,4 +498,11 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			writeRiver(ostream, river, indent);
 		}
 	}
+	/**
+	 * @return a string representation of this class
+	 */
+	@Override
+	public String toString() {
+		return "CompactMapNGReader";
+	}
 }

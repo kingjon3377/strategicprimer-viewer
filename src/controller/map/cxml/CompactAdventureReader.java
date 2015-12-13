@@ -111,5 +111,11 @@ public class CompactAdventureReader extends
 	public boolean isSupportedTag(final String tag) {
 		return "adventure".equalsIgnoreCase(tag);
 	}
-
+	/**
+	 * @return a string representation of this class
+	 */
+	@Override
+	public String toString() {
+		return "CompactAdventureReader";
+	}
 }

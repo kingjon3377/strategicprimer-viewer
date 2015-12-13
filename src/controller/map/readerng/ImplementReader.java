@@ -97,4 +97,11 @@ public class ImplementReader implements INodeHandler<@NonNull Implement> {
 		retval.addImageAttribute(obj);
 		return retval;
 	}
+	/**
+	 * @return a string representation of this class
+	 */
+	@Override
+	public String toString() {
+		return "ImplementReader";
+	}
 }

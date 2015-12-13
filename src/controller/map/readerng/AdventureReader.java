@@ -115,4 +115,11 @@ public class AdventureReader implements INodeHandler<@NonNull AdventureFixture> 
 		return retval;
 	}
 
+	/**
+	 * @return a string representation of this class
+	 */
+	@Override
+	public String toString() {
+		return "AdventureReader";
+	}
 }

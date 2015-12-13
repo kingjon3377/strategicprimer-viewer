@@ -492,4 +492,11 @@ public class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 			return "a proxy for no unit members";
 		}
 	}
+	/**
+	 * @return a string representation of this class
+	 */
+	@Override
+	public String toString() {
+		return NullCleaner.assertNotNull(String.format("ProxyUnit for ID #%d", Integer.valueOf(id)));
+	}
 }

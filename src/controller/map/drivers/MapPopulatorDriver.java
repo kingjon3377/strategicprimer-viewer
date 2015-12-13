@@ -164,4 +164,11 @@ public class MapPopulatorDriver implements ISPDriver {
 	public DriverUsage usage() {
 		return USAGE_OBJ;
 	}
+	/**
+	 * @return a string representation of this class
+	 */
+	@Override
+	public String toString() {
+		return "MapPopulatorDriver";
+	}
 }
