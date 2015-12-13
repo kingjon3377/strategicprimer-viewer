@@ -66,7 +66,7 @@ public final class ResourceReader implements INodeHandler<@NonNull ResourcePile>
 				new ResourcePile(getOrGenerateID(element, warner, idFactory),
 						getAttribute(element, "kind"),
 						getAttribute(element, "contents"),
-						Integer.parseInt(getAttribute(element, "quantity")),
+						XMLHelper.parseInt(getAttribute(element, "quantity"), element.getLocation()),
 						getAttribute(element, "unit", ""));
 		addImage(element, retval);
 		return retval;

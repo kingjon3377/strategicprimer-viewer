@@ -73,7 +73,13 @@ public final class MiningCLI {
 				NullCleaner.assertNotNull(LodeStatus.values()[index]);
 		final long seed;
 		if (args.length >= 3) {
-			seed = Long.parseLong(args[2]);
+			try {
+				seed = Long.parseLong(args[2]);
+			} catch (NumberFormatException except) {
+				LOGGER.log(Level.SEVERE, "non-numeric seed", except);
+				System.exit(2);
+				return;
+			}
 		} else {
 			seed = System.currentTimeMillis();
 		}
