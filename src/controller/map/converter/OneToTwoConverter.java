@@ -169,7 +169,7 @@ public final class OneToTwoConverter { // NOPMD
 	 * @return whether that location in the map is empty (no terrain type, no
 	 *         ground, no forest, no rivers, no fixtures)
 	 */
-	private static boolean empty(final IMapNG map, final Point point) {
+	private static boolean isPointEmpty(final IMapNG map, final Point point) {
 		return TileType.NotVisible.equals(map.getBaseTerrain(point))
 				&& map.getGround(point) == null && map.getForest(point) == null
 				&& !map.getRivers(point).iterator().hasNext()
@@ -187,7 +187,7 @@ public final class OneToTwoConverter { // NOPMD
 	private List<Point> createInitialSubtiles(final Point point,
 			final IMapNG oldMap, final IMutableMapNG newMap, final boolean main) {
 		final List<Point> initial = new LinkedList<>();
-		if (!empty(oldMap, point)) {
+		if (!isPointEmpty(oldMap, point)) {
 			for (int i = 0; i < RES_JUMP; i++) {
 				for (int j = 0; j < RES_JUMP; j++) {
 					final int row = point.row * RES_JUMP + i;
@@ -216,7 +216,7 @@ public final class OneToTwoConverter { // NOPMD
 			final IDFactory idFactory, final Player independentPlayer) {
 		final List<Point> initial = createInitialSubtiles(point,
 				oldMap, newMap, main);
-		if (!empty(oldMap, point)) {
+		if (!isPointEmpty(oldMap, point)) {
 			final int idNum = idFactory.createID();
 			if (oldMap instanceof IMutableMapNG) {
 				((IMutableMapNG) oldMap).addFixture(point, new Village(
