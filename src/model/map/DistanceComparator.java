@@ -58,7 +58,7 @@ public class DistanceComparator implements Comparator<@NonNull Point> {
 			return "(at HQ)";
 		} else {
 			return NullCleaner.assertNotNull(
-					String.format("(%.0f tiles from HQ) ", Math.sqrt(dist)));
+					String.format("(%.0f tiles from HQ) ", Double.valueOf(Math.sqrt(dist))));
 		}
 	}
 	/**
