@@ -340,8 +340,8 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	public void addUnitMember(final IUnit unit, final UnitMember member) {
 		unit.addMember(member);
 		final TreePath path = new TreePath(new Object[] { root, unit });
-		final int[] indices = new int[] { getIndexOfChild(unit, member) };
-		final Object[] children = new Object[] { member };
+		final int[] indices = { getIndexOfChild(unit, member) };
+		final Object[] children = { member };
 		for (final TreeModelListener listener : listeners) {
 			listener.treeNodesInserted(new TreeModelEvent(this, path, // NOPMD
 					indices, children));
