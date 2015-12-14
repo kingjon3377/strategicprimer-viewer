@@ -114,9 +114,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 		}
 		final Set<Player> allPlayers = new HashSet<>();
 		for (Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
-			for (Player player : pair.first().players()) {
-				allPlayers.add(player);
-			}
+			allPlayers.addAll(CLIHelper.toList(pair.first().players()));
 		}
 		final List<Player> playerList = new ArrayList<>(allPlayers);
 		try {
