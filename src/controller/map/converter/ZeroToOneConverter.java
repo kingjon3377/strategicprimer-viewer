@@ -296,9 +296,8 @@ public final class ZeroToOneConverter {
 	public static void main(final String[] args) {
 		for (final String arg : args) {
 			try (final Reader reader = new FileReader(arg)) { // NOPMD
-				System.out.println(convert(new IteratorWrapper<XMLEvent>(//NOPMD
-						XMLInputFactory.newInstance().createXMLEventReader(
-								reader))));
+				System.out.println(
+						convert(new IteratorWrapper<>(XMLInputFactory.newInstance().createXMLEventReader(reader))));
 			} catch (final FileNotFoundException except) {
 				LOGGER.log(Level.SEVERE, "File " + arg + " not found", except);
 				continue;

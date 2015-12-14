@@ -76,7 +76,7 @@ public final class TileContentsGenerator {
 	 */
 	private static final Map<String, TileContentsGenerator> INSTANCES =
 			NullCleaner.assertNotNull(Collections.synchronizedMap(
-					new HashMap<String, TileContentsGenerator>()));
+					new HashMap<>()));
 
 	/**
 	 * @param filename

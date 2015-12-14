@@ -68,7 +68,7 @@ public final class TableDebugger {
 		runner.verboseRecursiveCheck(ostream);
 		final EncounterTable mainTable = runner.getTable("main");
 		debugSingleTable("", "", mainTable, "main", ostream,
-				new HashSet<EncounterTable>());
+				new HashSet<>());
 	}
 
 	/**

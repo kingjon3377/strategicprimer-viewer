@@ -202,7 +202,7 @@ public final class ExplorationRunner { // NOPMD
 	 *         doesn't exist.
 	 */
 	public boolean recursiveCheck(final String table) {
-		return recursiveCheck(table, new HashSet<String>());
+		return recursiveCheck(table, new HashSet<>());
 	}
 
 	/**

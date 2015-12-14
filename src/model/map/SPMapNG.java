@@ -390,7 +390,7 @@ public class SPMapNG implements IMutableMapNG {
 		if (fixtures.containsKey(location)) {
 			return NullCleaner.assertNotNull(fixtures.get(location)); // NOPMD
 		} else {
-			return new IteratorWrapper<>(new EmptyIterator<TileFixture>());
+			return new IteratorWrapper<>(new EmptyIterator<>());
 		}
 	}
 

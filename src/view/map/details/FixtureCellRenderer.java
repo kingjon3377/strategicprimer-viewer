@@ -107,7 +107,7 @@ public final class FixtureCellRenderer implements ListCellRenderer<TileFixture> 
 	 * A cache of icon filenames that aren't available.
 	 */
 	private static final Set<String> MISSING =
-			NullCleaner.assertNotNull(Collections.synchronizedSet(new HashSet<String>()));
+			NullCleaner.assertNotNull(Collections.synchronizedSet(new HashSet<>()));
 
 	/**
 	 * @param obj a HasImage object
