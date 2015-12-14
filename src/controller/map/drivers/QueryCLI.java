@@ -92,7 +92,7 @@ public final class QueryCLI implements ISPDriver {
 		final HuntingModel hmodel = new HuntingModel(model.getMap());
 		try {
 			String input = helper.inputString("Command: ");
-			while (input.length() > 0 && input.charAt(0) != 'q') {
+			while (!input.isEmpty() && input.charAt(0) != 'q') {
 				handleCommand(model, hmodel, ostream, input.charAt(0));
 				input = helper.inputString("Command: ");
 			}
