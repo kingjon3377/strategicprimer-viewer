@@ -3,6 +3,7 @@ package controller.map.report;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -129,11 +130,9 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 			if (isEmpty()) {
 				return ""; // NOPMD
 			} else {
-				int len = header.length() + 15;
-				for (final String item : this) {
-					len += item.length() + 12;
-				}
-				final StringBuilder builder = new StringBuilder(len)
+				final StringBuilder builder = new StringBuilder(header.length() + 15 + stream().collect(
+						Collectors.summingInt(value -> value.length() + 15)));
+				builder
 						.append(header).append('\n').append(OPEN_LIST);
 				for (final String item : this) {
 					builder.append(OPEN_LIST_ITEM).append(item)
