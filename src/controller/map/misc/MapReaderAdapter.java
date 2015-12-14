@@ -132,7 +132,7 @@ public final class MapReaderAdapter {
 			}
 			return retval;
 		} catch (final IOException except) {
-			throw new DriverFailedException("I/O error reading from file" + current, except);
+			throw new DriverFailedException("I/O error reading from file " + current, except);
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("Malformed XML in " + current, except);
 		} catch (final SPFormatException except) {

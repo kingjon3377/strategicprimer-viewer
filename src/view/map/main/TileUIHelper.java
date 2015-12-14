@@ -125,7 +125,7 @@ public final class TileUIHelper {
 				return NullCleaner.assertNotNull(colorMap.get(type));
 			} else {
 				throw new IllegalArgumentException(type
-						+ "is not a terrain type version " + version
+						+ " is not a terrain type version " + version
 						+ " can handle");
 			}
 		} else {
