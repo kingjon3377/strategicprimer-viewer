@@ -208,9 +208,10 @@ public final class WorkerMgmtFrame extends JFrame {
 		report.setCellRenderer(new DefaultTreeCellRenderer() {
 			@SuppressWarnings("hiding")
 			@Override
-			public Component getTreeCellRendererComponent(@Nullable final JTree tree, @Nullable final Object value,
-                    final boolean selected, final boolean expanded,
-                    final boolean leaf, final int row, final boolean hasFocus) {
+			public Component getTreeCellRendererComponent(@Nullable final JTree tree,
+					@Nullable final Object value, final boolean selected,
+					final boolean expanded, final boolean leaf, final int row,
+					final boolean hasFocus) {
 				Component retval = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 				if (value instanceof AbstractReportNode) {
 					final Point point = ((AbstractReportNode) value).getPoint();
