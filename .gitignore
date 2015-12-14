@@ -31,3 +31,4 @@ compiled/*
 dist/*
 /compiled/
 /dist/
+.idea/workspace.xml
