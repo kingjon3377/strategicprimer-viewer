@@ -41,7 +41,7 @@ public final class CompactXMLWriter implements SPWriter {
 	 */
 	@Override
 	public void write(final File file, final IMapNG map) throws IOException {
-		writeObject(file, map);
+		writeSPObject(file, map);
 	}
 	/**
 	 * Write a map to a stream.
@@ -53,7 +53,7 @@ public final class CompactXMLWriter implements SPWriter {
 	@Override
 	public void write(final Appendable ostream, final IMapNG map)
 			throws IOException {
-		writeObject(ostream, map);
+		writeSPObject(ostream, map);
 	}
 
 	/**
@@ -65,7 +65,7 @@ public final class CompactXMLWriter implements SPWriter {
 	 */
 	public static void writeObject(final String filename, final Object obj)
 			throws IOException {
-		writeObject(new File(filename), obj);
+		writeSPObject(new File(filename), obj);
 	}
 
 	/**
@@ -75,10 +75,10 @@ public final class CompactXMLWriter implements SPWriter {
 	 * @param obj the object to write
 	 * @throws IOException on I/O error
 	 */
-	public static void writeObject(final File file, final Object obj)
+	public static void writeSPObject(final File file, final Object obj)
 			throws IOException {
 		try (final Writer writer = new FileWriter(file)) {
-			writeObject(writer, obj);
+			writeSPObject(writer, obj);
 		}
 	}
 	/**
@@ -88,7 +88,7 @@ public final class CompactXMLWriter implements SPWriter {
 	 * @param obj the object to write
 	 * @throws IOException on I/O error
 	 */
-	public static void writeObject(final Appendable ostream, final Object obj)
+	public static void writeSPObject(final Appendable ostream, final Object obj)
 			throws IOException {
 		CompactReaderAdapter.write(ostream, obj, 0);
 	}

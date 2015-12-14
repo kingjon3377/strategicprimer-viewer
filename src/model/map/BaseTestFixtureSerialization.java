@@ -561,7 +561,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 			controller.map.readerng.ReaderAdapter.ADAPTER.write(obj).write(
 					writer, 0);
 		} else {
-			CompactXMLWriter.writeObject(writer, obj);
+			CompactXMLWriter.writeSPObject(writer, obj);
 		}
 		return NullCleaner.assertNotNull(writer.toString());
 	}

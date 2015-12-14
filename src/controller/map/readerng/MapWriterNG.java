@@ -42,7 +42,7 @@ public final class MapWriterNG implements SPWriter {
 	 */
 	@Override
 	public void write(final File file, final IMapNG map) throws IOException {
-		writeObject(file, map);
+		writeSPObject(file, map);
 	}
 	/**
 	 * Write a map.
@@ -54,7 +54,7 @@ public final class MapWriterNG implements SPWriter {
 	@Override
 	public void write(final Appendable ostream, final IMapNG map)
 			throws IOException {
-		writeObject(ostream, map);
+		writeSPObject(ostream, map);
 	}
 	/**
 	 * Write a SP object.
@@ -63,10 +63,10 @@ public final class MapWriterNG implements SPWriter {
 	 * @param obj the object to write.
 	 * @throws IOException on error opening the file
 	 */
-	public static void writeObject(final File file, final Object obj)
+	public static void writeSPObject(final File file, final Object obj)
 			throws IOException {
 		try (final Writer writer = new FileWriter(file)) {
-			writeObject(writer, obj);
+			writeSPObject(writer, obj);
 		}
 	}
 	/**
@@ -76,7 +76,7 @@ public final class MapWriterNG implements SPWriter {
 	 * @param obj the object to write.
 	 * @throws IOException on I/O error in writing
 	 */
-	public static void writeObject(final Appendable ostream, final Object obj)
+	public static void writeSPObject(final Appendable ostream, final Object obj)
 			throws IOException {
 		ReaderAdapter.ADAPTER.write(obj).write(ostream, 0);
 	}
