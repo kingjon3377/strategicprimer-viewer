@@ -123,8 +123,8 @@ public final class ScrollListener implements AdjustmentListener, MapChangeListen
 	public ScrollListener(final IViewerModel map, final JComponent component) {
 		this(map, new JScrollBar(Adjustable.HORIZONTAL), new JScrollBar(
 				Adjustable.VERTICAL));
-		component.add(hbar, BorderLayout.SOUTH);
-		component.add(vbar, BorderLayout.EAST);
+		component.add(hbar, BorderLayout.PAGE_END);
+		component.add(vbar, BorderLayout.LINE_END);
 	}
 
 	/**
