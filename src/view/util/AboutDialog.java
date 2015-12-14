@@ -35,10 +35,6 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public final class AboutDialog extends JDialog {
 	/**
-	 * This should only be referenced in the constructor and methods called from it.
-	 */
-	private final StringBuilder builder = new StringBuilder();
-	/**
 	 * @param parent the parent window
 	 * @param app a string describing what the application is
 	 */
@@ -48,50 +44,51 @@ public final class AboutDialog extends JDialog {
 		setPreferredSize(new Dimension(300, 390));
 		setMinimumSize(new Dimension(300, 390));
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
+		StringBuilder builder = new StringBuilder();
 		builder.append("<html>");
 		if (app.isEmpty()) {
-			paragraph("Assistive Programs Suite");
+			paragraph(builder, "Assistive Programs Suite");
 		} else {
-			paragraph(app);
-			paragraph("Part of the Assistive Programs Suite");
+			paragraph(builder, app);
+			paragraph(builder, "Part of the Assistive Programs Suite");
 		}
 		builder.append("<p>for players and Judges of ");
-		link("https://shinecycle.wordpress.com/archives/strategic-primer",
+		link(builder, "https://shinecycle.wordpress.com/archives/strategic-primer",
 				"Strategic Primer");
 		builder.append("</p>");
-		paragraph("Developed by Jonathan Lovelace");
+		paragraph(builder, "Developed by Jonathan Lovelace");
 		builder.append("<p>Released under the terms of ");
-		link("https://www.gnu.org/licenses/gpl-3.0.en.html",
+		link(builder, "https://www.gnu.org/licenses/gpl-3.0.en.html",
 				"the GNU General Public License version 3");
 		builder.append("</p>");
 		builder.append("<p>Unit image by jreijonen from ");
-		link("http://opengameart.org/content/faction-symbols-allies-axis",
+		link(builder, "http://opengameart.org/content/faction-symbols-allies-axis",
 				"OpenGameArt");
 		builder.append("</p>");
 		builder.append("<p>Cave image by MrBeast from ");
-		link("http://opengameart.org/content/cave-tileset-0", "OpenGameArt");
+		link(builder, "http://opengameart.org/content/cave-tileset-0", "OpenGameArt");
 		builder.append("</p>");
-		paragraph(
+		paragraph(builder,
 				"Minotaur, troll, and ogre images by 'www.36peas.com', licensed under CC-BY");
 		builder.append(
 				"<p>Window menu managed by BSD-licensed code by Jeremy Wood, downloaded from ");
-		link("http://javagraphics.java.net", "javagraphics.java.net");
+		link(builder, "http://javagraphics.java.net", "javagraphics.java.net");
 		builder.append("</p>");
 		builder.append("<p>Pair implementation by Peter Lawrey on ");
-		link("https://stackoverflow.com/a/3646398", "StackOverflow");
+		link(builder, "https://stackoverflow.com/a/3646398", "StackOverflow");
 		builder.append("</p>");
 		builder.append(
 				"<p>Code to resize components given a fixed width adapted from ");
-		link("http://blog.nobel-joergensen.com/2009/01/18/changing-preferred-size-of-a-html-jlabel/",
+		link(builder, "http://blog.nobel-joergensen.com/2009/01/18/changing-preferred-size-of-a-html-jlabel/",
 				"Nobel Joergensen");
 		builder.append("</p>");
 		builder.append(
 				"<p>Drag-and-drop implementation uses code adapted from 'helloworld922' on the ");
-		link("http://www.javaprogrammingforums.com/java-swing-tutorials/3141-drag-drop-jtrees.html",
+		link(builder, "http://www.javaprogrammingforums.com/java-swing-tutorials/3141-drag-drop-jtrees.html",
 				"Java Programming Forums");
 		builder.append("</p>");
 		builder.append("<p>WrapLayout taken from ");
-		link("http://tips4java.wordpress.com/2008/11/06/wrap-layout/",
+		link(builder, "http://tips4java.wordpress.com/2008/11/06/wrap-layout/",
 				"tips4java.wordpress.com");
 		builder.append(", which released code to be used \"without restriction\".</p>");
 		builder.append("</html>");
@@ -106,10 +103,11 @@ public final class AboutDialog extends JDialog {
 	}
 	/**
 	 * Add a link to the string.
+	 * @param builder the StringBuilder to write to.
 	 * @param href the target of the link
 	 * @param text the text of the link
 	 */
-	private void link(final String href, final String text) {
+	private void link(final StringBuilder builder, final String href, final String text) {
 		builder.append("<a href=\"");
 		builder.append(href);
 		builder.append("\">");
@@ -118,9 +116,10 @@ public final class AboutDialog extends JDialog {
 	}
 	/**
 	 * Add a paragraph to the string.
+	 * @param builder the StringBuilder to write to
 	 * @param text the text of the paragraph
 	 */
-	private void paragraph(final String text) {
+	private void paragraph(StringBuilder builder, final String text) {
 		builder.append("<p>");
 		builder.append(text);
 		builder.append("</p>");
