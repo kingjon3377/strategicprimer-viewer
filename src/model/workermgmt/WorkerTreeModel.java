@@ -364,17 +364,19 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			children = singletonObj(item);
 		} else if (item instanceof UnitMember) {
 			IUnit parent = null;
+			boolean found = false;
 			for (final IUnit unit : model.getUnits(root)) {
 				for (final UnitMember member : unit) {
 					if (member == item || item.equals(member)) {
+						found = true;
 						parent = unit;
 					}
 				}
-				if (parent != null) {
+				if (found) {
 					break;
 				}
 			}
-			if (parent == null) {
+			if (!found) {
 				return;
 			}
 			path = new TreePath(new Object[] { root, parent });
