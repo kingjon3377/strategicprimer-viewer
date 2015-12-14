@@ -3,6 +3,7 @@ package view.util;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
@@ -169,8 +170,9 @@ public final class AppChooserFrame extends JFrame {
 		@Override
 		public void actionPerformed(@Nullable final ActionEvent evt) {
 			try {
-				app.newInstance().startDriver(params);
+				app.getConstructor().newInstance().startDriver(params);
 			} catch (final InstantiationException | IllegalAccessException
+					| NoSuchMethodException | InvocationTargetException
 					| DriverFailedException except) {
 				final String msg = except.getMessage();
 				final String message = NullCleaner.valueOrDefault(msg,
@@ -245,8 +247,9 @@ public final class AppChooserFrame extends JFrame {
 		@Override
 		public void actionPerformed(@Nullable final ActionEvent evt) {
 			try {
-				app.newInstance().startDriver(model);
+				app.getConstructor().newInstance().startDriver(model);
 			} catch (final InstantiationException | IllegalAccessException
+				    | NoSuchMethodException | InvocationTargetException
 					| DriverFailedException except) {
 				final String msg = except.getMessage();
 				final String message = NullCleaner.valueOrDefault(msg,
