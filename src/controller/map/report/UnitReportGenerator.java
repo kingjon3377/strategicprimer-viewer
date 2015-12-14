@@ -371,20 +371,18 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 				new SectionListReportNode(5, "Foreign units");
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
-		for (final Pair<Point, IFixture> pair : values) {
-			if (pair.second() instanceof Unit) {
-				final Unit unit = (Unit) pair.second();
-				final AbstractReportNode unitNode = produceRIR(fixtures, map,
-						currentPlayer, unit, pair.first());
-				unitNode.setText(concat(atPoint(pair.first()), unitNode.getText(), " ",
-						distCalculator.distanceString(pair.first())));
-				if (currentPlayer.equals(unit.getOwner())) {
-					ours.add(unitNode);
-				} else {
-					theirs.add(unitNode);
-				}
+		values.stream().filter(pair -> pair.second() instanceof Unit).forEach(pair -> {
+			final Unit unit = (Unit) pair.second();
+			final AbstractReportNode unitNode = produceRIR(fixtures, map,
+					currentPlayer, unit, pair.first());
+			unitNode.setText(concat(atPoint(pair.first()), unitNode.getText(), " ",
+					distCalculator.distanceString(pair.first())));
+			if (currentPlayer.equals(unit.getOwner())) {
+				ours.add(unitNode);
+			} else {
+				theirs.add(unitNode);
 			}
-		}
+		});
 		if (ours.getChildCount() != 0) {
 			retval.add(ours);
 		}

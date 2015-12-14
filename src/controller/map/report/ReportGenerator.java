@@ -173,12 +173,12 @@ public final class ReportGenerator {
 				getFixtures(map);
 		Point hq = findHQ(map, player);
 		Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator = new PairComparator<>(new DistanceComparator(hq), SIMPLE_COMPARATOR);
-		for (final Pair<Point, IFixture> pair : fixtures.values()) {
-			if ((pair.second() instanceof Unit || pair.second() instanceof Fortress)
-					&& player.equals(((HasOwner) pair.second()).getOwner())) {
-				fixtures.remove(Integer.valueOf(pair.second().getID()));
-			}
-		}
+
+		fixtures.values().stream().filter(pair -> (pair.second() instanceof Unit || pair.second() instanceof Fortress)
+				                                          && player.equals(((HasOwner) pair.second()).getOwner()))
+				.forEach(pair -> {
+					fixtures.remove(Integer.valueOf(pair.second().getID()));
+				});
 		fixtures.coalesce();
 		builder.append(new FortressReportGenerator(comparator).produce(fixtures, map,
 				player));
@@ -269,12 +269,12 @@ public final class ReportGenerator {
 				getFixtures(map);
 		Point hq = findHQ(map, player);
 		Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator = new PairComparator<>(new DistanceComparator(hq), SIMPLE_COMPARATOR);
-		for (final Pair<Point, IFixture> pair : fixtures.values()) {
-			if ((pair.second() instanceof Unit || pair.second() instanceof Fortress)
-					&& player.equals(((HasOwner) pair.second()).getOwner())) {
-				fixtures.remove(Integer.valueOf(pair.second().getID()));
-			}
-		}
+
+		fixtures.values().stream().filter(pair -> (pair.second() instanceof Unit || pair.second() instanceof Fortress)
+				                                          && player.equals(((HasOwner) pair.second()).getOwner()))
+				.forEach(pair -> {
+					fixtures.remove(Integer.valueOf(pair.second().getID()));
+				});
 		fixtures.coalesce();
 		retval.add(new FortressReportGenerator(comparator).produceRIR(fixtures, map,
 				player));

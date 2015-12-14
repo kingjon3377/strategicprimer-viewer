@@ -198,12 +198,10 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 		for (final IJob job : item) {
 			String name = job.getName();
 			if (jobNames.contains(name)) {
-				for (IJob proxyJob : proxyJobs) {
-					if (proxyJob.getName().equals(name)) {
-						((ProxyJob) proxyJob).addProxied(job);
-						proxyJobsTemp.remove(proxyJob);
-					}
-				}
+				proxyJobs.stream().filter(proxyJob -> proxyJob.getName().equals(name)).forEach(proxyJob -> {
+					((ProxyJob) proxyJob).addProxied(job);
+					proxyJobsTemp.remove(proxyJob);
+				});
 			} else {
 				jobNames.add(name);
 				proxyJobs.add(new ProxyJob(name, parallel, workerArray));

@@ -140,18 +140,16 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 				"Foreign fortresses in the map:");
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
-		for (final Pair<Point, IFixture> pair : values) {
-			if (pair.second() instanceof Fortress) {
-				final Fortress fort = (Fortress) pair.second();
-				if (currentPlayer.equals(fort.getOwner())) {
-					ours.add(produceRIR(fixtures, map, currentPlayer,
-							(Fortress) pair.second(), pair.first()));
-				} else {
-					foreign.add(produceRIR(fixtures, map, currentPlayer,
-							(Fortress) pair.second(), pair.first()));
-				}
+		values.stream().filter(pair -> pair.second() instanceof Fortress).forEach(pair -> {
+			final Fortress fort = (Fortress) pair.second();
+			if (currentPlayer.equals(fort.getOwner())) {
+				ours.add(produceRIR(fixtures, map, currentPlayer,
+						(Fortress) pair.second(), pair.first()));
+			} else {
+				foreign.add(produceRIR(fixtures, map, currentPlayer,
+						(Fortress) pair.second(), pair.first()));
 			}
-		}
+		});
 		if (ours.getChildCount() != 0) {
 			retval.add(ours);
 		}

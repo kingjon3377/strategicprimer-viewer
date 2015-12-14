@@ -70,19 +70,17 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 				"<h4>Villages pledged to your service:</h4>");
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
-		for (final Pair<Point, IFixture> pair : values) {
-			if (pair.second() instanceof Village) {
-				final Village village = (Village) pair.second();
-				final String product =
-						produce(fixtures, map, currentPlayer, village,
-								pair.first());
-				if (village.getOwner().isCurrent()) {
-					own.add(product);
-				} else {
-					others.add(product);
-				}
+		values.stream().filter(pair -> pair.second() instanceof Village).forEach(pair -> {
+			final Village village = (Village) pair.second();
+			final String product =
+					produce(fixtures, map, currentPlayer, village,
+							pair.first());
+			if (village.getOwner().isCurrent()) {
+				own.add(product);
+			} else {
+				others.add(product);
 			}
-		}
+		});
 		// HtmlLists will return the empty string if they are empty.
 		return own.toString() + others.toString();
 	}
@@ -107,19 +105,17 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 				"Villages pledged to your service:");
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
-		for (final Pair<Point, IFixture> pair : values) {
-			if (pair.second() instanceof Village) {
-				final Village village = (Village) pair.second();
-				final IReportNode product =
-						produceRIR(fixtures, map, currentPlayer, village,
-								pair.first());
-				if (village.getOwner().isCurrent()) {
-					own.add(product);
-				} else {
-					others.add(product);
-				}
+		values.stream().filter(pair -> pair.second() instanceof Village).forEach(pair -> {
+			final Village village = (Village) pair.second();
+			final IReportNode product =
+					produceRIR(fixtures, map, currentPlayer, village,
+							pair.first());
+			if (village.getOwner().isCurrent()) {
+				own.add(product);
+			} else {
+				others.add(product);
 			}
-		}
+		});
 		if (own.getChildCount() != 0) {
 			retval.add(own);
 		}

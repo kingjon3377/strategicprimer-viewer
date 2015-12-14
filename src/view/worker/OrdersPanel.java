@@ -405,11 +405,9 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		 */
 		@Override
 		public void setOrders(final String newOrders) {
-			for (final IUnit unit : units) {
-				if (kind.equals(unit.getKind())) {
-					unit.setOrders(newOrders);
-				}
-			}
+			units.stream().filter(unit -> kind.equals(unit.getKind())).forEach(unit -> {
+				unit.setOrders(newOrders);
+			});
 		}
 		/**
 		 * @return "proxy"

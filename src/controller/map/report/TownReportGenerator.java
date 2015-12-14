@@ -75,11 +75,9 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
 		final Map<AbstractTown, Point> townLocs = new HashMap<>();
-		for (final Pair<Point, IFixture> pair : fixtures.values()) {
-			if (pair.second() instanceof AbstractTown) {
-				townLocs.put((AbstractTown) pair.second(), pair.first());
-			}
-		}
+		fixtures.values().stream().filter(pair -> pair.second() instanceof AbstractTown).forEach(pair -> {
+			townLocs.put((AbstractTown) pair.second(), pair.first());
+		});
 		final List<AbstractTown> sorted = new ArrayList<>(townLocs.keySet());
 		Collections.sort(sorted, new TownComparator());
 		// FIXME: Within any given status, sort by distance from HQ
@@ -121,11 +119,9 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		final AbstractReportNode retval = new SectionListReportNode(4,
 				"Cities, towns, and/or fortifications you know about:");
 		final Map<AbstractTown, Point> townLocs = new HashMap<>();
-		for (final Pair<Point, IFixture> pair : fixtures.values()) {
-			if (pair.second() instanceof AbstractTown) {
-				townLocs.put((AbstractTown) pair.second(), pair.first());
-			}
-		}
+		fixtures.values().stream().filter(pair -> pair.second() instanceof AbstractTown).forEach(pair -> {
+			townLocs.put((AbstractTown) pair.second(), pair.first());
+		});
 		final List<AbstractTown> sorted = new ArrayList<>(townLocs.keySet());
 		Collections.sort(sorted, new TownComparator());
 		// FIXME: Within any given status, sort by distance from HQ
