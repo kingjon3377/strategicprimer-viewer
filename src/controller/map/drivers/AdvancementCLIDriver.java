@@ -138,6 +138,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 	/**
 	 * Run the driver.
 	 * @param args the command-line arguments (map files)
+	 * @throws DriverFailedException if the driver fails to start
 	 */
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {

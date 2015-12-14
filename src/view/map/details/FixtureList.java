@@ -67,7 +67,6 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 	 * @param parent a parent of this list
 	 * @param dmodel the driver model (needed to get at the map for the list model)
 	 * @param players the players in the map
-	 * @author Jonathan Lovelace
 	 */
 	public FixtureList(final JComponent parent, final IDriverModel dmodel,
 			final Iterable<Player> players) {

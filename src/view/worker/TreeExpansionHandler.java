@@ -41,6 +41,10 @@ public final class TreeExpansionHandler implements ActionListener {
 	public TreeExpansionHandler(final JTree theTree) {
 		tree = theTree;
 	}
+	/**
+	 * Handle menu items.
+	 * @param evt the event to handle
+	 */
 	@Override
 	public void actionPerformed(@Nullable final ActionEvent evt) {
 		if (evt == null) {

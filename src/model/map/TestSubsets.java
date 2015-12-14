@@ -206,6 +206,7 @@ public final class TestSubsets {
 	}
 	/**
 	 * Test subsets' interaction with copy().
+	 * @throws IOException on I/O writing to bit bucket
 	 */
 	@Test
 	public void testSubsetsAndCopy() throws IOException {

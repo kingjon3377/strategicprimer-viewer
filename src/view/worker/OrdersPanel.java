@@ -367,6 +367,8 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		 * @param obj ignored
 		 * @param ostream the stream to write the error message to
 		 * @param context the context in which to write the error message
+		 * @throws IOException on error writing to stream
+		 * @return false
 		 */
 		@Override
 		public boolean isSubset(final IFixture obj, final Appendable ostream,

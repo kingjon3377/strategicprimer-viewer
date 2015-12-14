@@ -94,6 +94,7 @@ public final class MapReaderAdapter {
 	 * @param warner
 	 *            the Warning instance to use for warnings
 	 * @return a driver model containing the map described by that file
+	 * @throws DriverFailedException on any error
 	 */
 	public IDriverModel readMapModel(final File file, final Warning warner)
 			throws DriverFailedException {
@@ -113,11 +114,13 @@ public final class MapReaderAdapter {
 	 * which can only throw DriverFailedException, we use that class for all
 	 * errors we generate.
 	 *
+	 * @param master the "master" map file
 	 * @param files
 	 *            the files to open
 	 * @param warner
 	 *            the Warning instance to use for warnings
 	 * @return a driver model containing the maps described by those files
+	 * @throws DriverFailedException on any error
 	 */
 	public IMultiMapModel readMultiMapModel(final Warning warner, final File master, final File... files) throws DriverFailedException {
 		String current = master.getPath();
@@ -151,7 +154,7 @@ public final class MapReaderAdapter {
 	 * errors we generate.
 	 * Write maps from a map model back to file.
 	 * @param model the model to write from
-	 * @throws IOException on error opening or writing to a file
+	 * @throws DriverFailedException on any error
 	 */
 	public void writeModel(final IDriverModel model) throws DriverFailedException {
 		try {

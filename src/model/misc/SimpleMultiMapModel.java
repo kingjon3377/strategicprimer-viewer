@@ -38,7 +38,7 @@ import util.SetPairConverter;
 public class SimpleMultiMapModel extends AbstractDriverModel
 		implements IMultiMapModel {
 	/**
-	 * @param the map we're wrapping
+	 * @param map the map we're wrapping
 	 * @param file the file the map was loaded from or should be saved to
 	 */
 	public SimpleMultiMapModel(final IMutableMapNG map, final File file) {

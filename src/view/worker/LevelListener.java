@@ -102,6 +102,7 @@ public final class LevelListener implements LevelGainListener,
 		 *            a string to print before every line of output, describing
 		 *            the context
 		 * @return false
+		 * @throws IOException never, required by interface
 		 */
 		@Override
 		public boolean isSubset(final IFixture obj, final Appendable ostream,

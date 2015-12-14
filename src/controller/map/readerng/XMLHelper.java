@@ -110,7 +110,6 @@ public final class XMLHelper {
 	 * @return the value of the attribute, gotten from the preferred form if it
 	 *         has it, and from the deprecated form if the preferred form isn't
 	 *         there but it is.
-	 *
 	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
 	public static String getAttributeWithDeprecatedForm(

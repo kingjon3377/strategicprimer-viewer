@@ -85,7 +85,7 @@ public final class QueryCLI implements ISPDriver {
 	private static final int HOURLY_ENCOUNTERS = 4;
 
 	/**
-	 * @param map the map to explore
+	 * @param model the driver model containing the map to explore
 	 * @param ostream the stream to write output to
 	 */
 	private void repl(final IDriverModel model, final Appendable ostream) {
@@ -104,7 +104,7 @@ public final class QueryCLI implements ISPDriver {
 	}
 
 	/**
-	 * @param map the map
+	 * @param model the driver model
 	 * @param hmodel the hunting model
 	 * @param ostream the stream to write to
 	 * @param input the command

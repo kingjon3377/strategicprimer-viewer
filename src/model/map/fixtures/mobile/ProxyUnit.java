@@ -304,6 +304,8 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 * @param obj ignored
 	 * @param ostream the stream to write to
 	 * @param context the context to write before writing our results
+	 * @return false
+	 * @throws IOException never, required by interface
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
@@ -458,6 +460,8 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		 * @param obj ignored
 		 * @param ostream the stream to write to
 		 * @param context the context to write before we write our error
+		 * @return false
+		 * @throws IOException never, required by interface
 		 */
 		@Override
 		public boolean isSubset(final IFixture obj, final Appendable ostream,

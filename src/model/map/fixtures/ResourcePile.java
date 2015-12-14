@@ -149,6 +149,8 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	 *            a fixture
 	 * @return whether it's a subset of (i.e. equal to, except perhaps with
 	 *         different quantity from) this one
+	 * @throws IOException
+	 *             on I/O error writing to ostream
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,

@@ -72,6 +72,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasImage 
 	 * @param context the context to report before errors
 	 * @param obj a fixture
 	 * @return whether it's a subset of (i.e. equal to) this one
+	 * @throws IOException on I/O error writing to ostream
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,

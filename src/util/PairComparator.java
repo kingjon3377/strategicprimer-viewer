@@ -37,9 +37,19 @@ import org.eclipse.jdt.annotation.Nullable;
 public final class PairComparator<@NonNull T, @NonNull U>
 		extends Pair<@NonNull Comparator<@NonNull T>, @NonNull Comparator<@NonNull U>>
 		implements Comparator<@NonNull Pair<@NonNull T, @NonNull U>> {
+	/**
+	 * Constructor.
+	 * @param one the first comparator
+	 * @param two the second comparator
+	 */
 	public PairComparator(final Comparator<T> one, final Comparator<U> two) {
 		super(one, two);
 	}
+	/**
+	 * Compare two pairs.
+	 * @param one the first pair
+	 * @param two the second pair
+	 */
 	@Override
 	public int compare(@Nullable final Pair<T, U> one, @Nullable final Pair<T, U> two) {
 		if (one == null || two == null) {

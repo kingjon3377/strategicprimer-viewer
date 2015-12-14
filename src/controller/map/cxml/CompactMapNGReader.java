@@ -330,6 +330,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * @param obj a map
 	 * @param ostream the stream to write it to
 	 * @param indent how far indented we are already
+	 * @throws IOException on I/O error in writing
 	 */
 	@Override
 	public void write(final Appendable ostream, final IMapNG obj, final int indent)

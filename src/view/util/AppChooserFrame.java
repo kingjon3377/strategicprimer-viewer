@@ -81,6 +81,7 @@ public final class AppChooserFrame extends JFrame {
 	}
 	/**
 	 * Constructor taking a driver model.
+	 * @param model the driver model
 	 */
 	public AppChooserFrame(final IDriverModel model) {
 		super("SP App Chooser");

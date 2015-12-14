@@ -446,7 +446,11 @@ public final class DrawHelperComparator implements ISPDriver { // NOPMD
 	public String toString() {
 		return "DrawHelperComparator";
 	}
-
+	/**
+	 * Start the driver.
+	 * @param model the driver model to run on
+	 * @throws DriverFailedException if the driver fails for some reason
+	 */
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
 		final Random random = new Random();

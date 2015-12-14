@@ -609,11 +609,20 @@ public final class WorkerMgmtFrame extends JFrame {
 		 * The player to generate the report for.
 		 */
 		private final Player player;
+		/**
+		 * Constructor.
+		 * @param treeModel The tree-model to put the report into.
+		 * @param workerModel the driver model to generate the report from
+		 * @param currentPlayer the player to generate the report for
+		 */
 		protected ReportGeneratorThread(final DefaultTreeModel treeModel, final IWorkerModel workerModel, final Player currentPlayer) {
 			tmodel = treeModel;
 			wmodel = workerModel;
 			player = currentPlayer;
 		}
+		/**
+		 * Run the thread.
+		 */
 		@Override
 		public void run() {
 			RGT_LOGGER.info("About to generate report");
