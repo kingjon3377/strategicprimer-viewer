@@ -172,9 +172,7 @@ public final class CompactTerrainReader extends
 			throw new IllegalArgumentException("Shouldn't get here");
 		}
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		if (retval instanceof HasImage) {
-			((HasImage) retval).setImage(getParameter(element, "image", ""));
-		}
+		((HasImage) retval).setImage(getParameter(element, "image", ""));
 		return retval;
 	}
 

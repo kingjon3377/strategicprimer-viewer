@@ -68,12 +68,7 @@ public final class IteratorWrapper<@NonNull T> implements Iterable<@NonNull T> {
 			queue.add(iterator.next());
 		}
 		final Iterator<T> qIterator = queue.iterator();
-		if (qIterator == null) {
-			throw new IllegalStateException(
-					"Somehow the PriorityQueue's iterator was null");
-		} else {
-			iter = qIterator;
-		}
+		iter = qIterator;
 	}
 
 	/**

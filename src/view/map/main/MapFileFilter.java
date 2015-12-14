@@ -58,9 +58,6 @@ public final class MapFileFilter extends FileFilter {
 	 */
 	public static String getExtension(final File file) {
 		final String name = file.getName();
-		if (name == null) {
-			throw new IllegalArgumentException("File with null name");
-		}
 		final int dotPos = name.lastIndexOf('.');
 
 		if (dotPos > 0 && dotPos < name.length() - 1) {

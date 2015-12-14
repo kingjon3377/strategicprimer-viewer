@@ -157,12 +157,7 @@ public final class AppChooserFrame extends JFrame {
 		protected AppChoiceListenerArgs(final Class<? extends ISPDriver> frame,
 				final List<String> parameters, final AppChooserFrame acf) {
 			app = frame;
-			final String[] array = parameters.toArray(new String[parameters.size()]);
-			if (array == null) {
-				throw new IllegalStateException(
-						"Array created for parameters is null");
-			}
-			params = array;
+			params = parameters.toArray(new String[parameters.size()]);
 			outer = acf;
 		}
 
