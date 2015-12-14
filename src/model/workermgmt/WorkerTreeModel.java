@@ -133,11 +133,9 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 		if (parent instanceof Player) {
 			return model.getUnits((Player) parent).size(); // NOPMD
 		} else if (parent instanceof IUnit) {
-			final Iterator<UnitMember> iter = ((IUnit) parent).iterator();
 			int count = 0;
-			while (iter.hasNext()) {
+			for (@SuppressWarnings("unused") UnitMember item : (IUnit) parent) {
 				count++;
-				iter.next();
 			}
 			return count;
 		} else {

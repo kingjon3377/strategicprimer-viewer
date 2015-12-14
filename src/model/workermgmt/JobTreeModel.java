@@ -143,11 +143,9 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	public int getChildCount(@Nullable final Object parent) {
 		if (parent instanceof IWorker || parent instanceof IJob) {
 			assert parent != null : "Impossible null in JobTreeModel";
-			final Iterator<?> iter = ((Iterable<?>) parent).iterator();
 			int count = 0;
-			while (iter.hasNext()) {
+			for (@SuppressWarnings("unused") Object item : (Iterable<?>) parent) {
 				count++;
-				iter.next();
 			}
 			return count; // NOPMD
 		} else if (parent instanceof ISkill) {
