@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -131,10 +132,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	@Override
 	public List<String> getUnitKinds(final Player player) {
 		final Set<String> retval = new HashSet<>();
-		final List<IUnit> units = getUnits(player);
-		for (final IUnit unit : units) {
-			retval.add(unit.getKind());
-		}
+		retval.addAll(getUnits(player).stream().map(IUnit::getKind).collect(Collectors.toList()));
 		return NullCleaner.assertNotNull(Collections
 				.unmodifiableList(new ArrayList<>(retval)));
 	}
@@ -146,14 +144,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 */
 	@Override
 	public List<IUnit> getUnits(final Player player, final String kind) {
-		final List<IUnit> units = getUnits(player);
-		final List<IUnit> retval = new ArrayList<>();
-		for (final IUnit unit : units) {
-			if (kind.equals(unit.getKind())) {
-				retval.add(unit);
-			}
-		}
-		return retval;
+		return getUnits(player).stream().filter(unit -> kind.equals(unit.getKind())).collect(Collectors.toList());
 	}
 	/**
 	 * @param unit the unit to add

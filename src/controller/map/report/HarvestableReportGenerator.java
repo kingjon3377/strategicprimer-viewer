@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
@@ -132,10 +133,8 @@ public final class HarvestableReportGenerator extends AbstractReportGenerator<Ha
 		}
 		final HeadedList<String> shrubsText = new HtmlList(
 				"<h5>Shrubs, small trees, and such</h5>");
-		for (final Entry<String, List<Point>> entry : shrubs.entrySet()) {
-			shrubsText.add(concat(entry.getKey(), ": at ",
-					pointCSL(entry.getValue())));
-		}
+		shrubsText.addAll(shrubs.entrySet().stream().map(entry -> concat(entry.getKey(), ": at ",
+				pointCSL(entry.getValue()))).collect(Collectors.toList()));
 		sortAll(caches, groves, meadows, mines, minerals, stone, shrubsText);
 		if (caches.isEmpty() && groves.isEmpty() && meadows.isEmpty()
 				&& mines.isEmpty() && minerals.isEmpty() && stone.isEmpty()

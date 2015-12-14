@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -237,13 +238,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 * @return a list of the units in the list that have workers without stats
 	 */
 	private static List<IUnit> removeStattedUnits(final List<IUnit> units) {
-		final List<IUnit> retval = new ArrayList<>();
-		for (final IUnit unit : units) {
-			if (hasUnstattedWorker(unit)) {
-				retval.add(unit);
-			}
-		}
-		return retval;
+		return units.stream().filter(unit -> hasUnstattedWorker(unit)).collect(Collectors.toList());
 	}
 
 	/**

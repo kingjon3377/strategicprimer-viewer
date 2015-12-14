@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -107,9 +108,8 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 		final IJob @NonNull [] jobsArray =
 				NullCleaner.assertNotNull(proxiedJobs
 						.toArray(new IJob[proxiedJobs.size()]));
-		for (final String skill : skillNames) {
-			proxied.add(new ProxySkill(skill, parallel, jobsArray));
-		}
+		proxied.addAll(skillNames.stream().map(skill -> new ProxySkill(skill, parallel, jobsArray))
+				               .collect(Collectors.toList()));
 	}
 	/**
 	 * @return a copy of this

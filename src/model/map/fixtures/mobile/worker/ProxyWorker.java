@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -89,9 +90,8 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 		final IWorker @NonNull [] workerArray =
 				NullCleaner.assertNotNull(workers.toArray(new IWorker[workers
 						.size()]));
-		for (final String job : jobNames) {
-			proxyJobs.add(new ProxyJob(job, parallel, workerArray));
-		}
+		proxyJobs.addAll(jobNames.stream().map(job -> new ProxyJob(job, parallel, workerArray))
+				                 .collect(Collectors.toList()));
 	}
 	/**
 	 * @return a copy of this proxy
@@ -119,9 +119,8 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 				jobNames.add(job.getName());
 			}
 		}
-		for (String job : jobNames) {
-			proxyJobs.add(new ProxyJob(job, parallel, proxied));
-		}
+		proxyJobs.addAll(jobNames.stream().map(job -> new ProxyJob(job, parallel, proxied))
+				                 .collect(Collectors.toList()));
 	}
 	/**
 	 * @return -1, since this isn't a valid fixture.

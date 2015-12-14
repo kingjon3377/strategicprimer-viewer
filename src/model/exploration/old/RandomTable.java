@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import model.map.Point;
 import model.map.TileFixture;
@@ -86,11 +87,7 @@ public final class RandomTable implements EncounterTable {
 	 */
 	@Override
 	public Set<String> allEvents() {
-		final Set<String> retval = new HashSet<>();
-		for (final Pair<Integer, String> pair : table) {
-			retval.add(pair.second());
-		}
-		return retval;
+		return table.stream().map(Pair<Integer, String>::second).collect(Collectors.toSet());
 	}
 
 	/**

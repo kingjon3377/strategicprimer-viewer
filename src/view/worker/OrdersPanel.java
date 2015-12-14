@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -241,11 +242,8 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		 */
 		@Override
 		public IUnit copy(final boolean zero) {
-			final List<IUnit> copies = new ArrayList<>();
-			for (IUnit unit : units) {
-				copies.add(unit.copy(zero));
-			}
-			return new ProxyUnit(kind, copies, owner);
+			return new ProxyUnit(kind, units.stream().map(unit -> unit.copy(zero)).collect(Collectors.toList()),
+					                    owner);
 		}
 		/**
 		 * @return a dummy Z-value

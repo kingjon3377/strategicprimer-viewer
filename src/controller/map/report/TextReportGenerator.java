@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -69,10 +70,8 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 			}
 		}
 		items.sort((one, two) -> one.second().getTurn() - two.second().getTurn());
-		for (Pair<Point, TextFixture> item : items) {
-			list.add(produce(fixtures, map, currentPlayer,
-					item.second(), item.first()));
-		}
+		list.addAll(items.stream().map(item -> produce(fixtures, map, currentPlayer,
+				item.second(), item.first())).collect(Collectors.toList()));
 		if (list.isEmpty()) {
 			return "";
 		} else {

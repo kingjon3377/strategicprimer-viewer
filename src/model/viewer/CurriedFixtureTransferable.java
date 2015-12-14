@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -53,13 +54,10 @@ public final class CurriedFixtureTransferable implements Transferable {
 	 * @param list a list of TileFixtures to be transferred
 	 */
 	public CurriedFixtureTransferable(final List<TileFixture> list) {
-		final List<Transferable> payloadTemp = new ArrayList<>();
-		for (final TileFixture fix : list) {
-			payloadTemp.add(new FixtureTransferable(fix)); // NOPMD
-		}
 		payload =
 				NullCleaner.assertNotNull(Collections
-						.unmodifiableList(payloadTemp));
+						                          .unmodifiableList(list.stream().map(FixtureTransferable::new)
+								                                            .collect(Collectors.toList())));
 	}
 
 	/**
