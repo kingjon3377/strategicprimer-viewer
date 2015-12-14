@@ -10,6 +10,7 @@
 		<excludeFolder url="file://$MODULE_DIR$/javadocs"/>
 		<excludeFolder url="file://$MODULE_DIR$/junit"/>
 		<excludeFolder url="file://$MODULE_DIR$/release"/>
+		<excludeFolder url="file://$MODULE_DIR$/src/tables"/>
 	</contentEntry>
 	<levels>
 		<level name="WindowMenu" value="project"/>
