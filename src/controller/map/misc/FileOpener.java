@@ -1,5 +1,6 @@
 package controller.map.misc;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
@@ -54,9 +55,9 @@ public final class FileOpener {
 			throws FileNotFoundException {
 		final Reader istream; // NOPMD
 		if (filename.contains("string:<")) {
-			istream = new StringReader(filename.substring(7));
+			istream = new BufferedReader(new StringReader(filename.substring(7)));
 		} else {
-			istream = new FileReader(filename);
+			istream = new BufferedReader(new FileReader(filename));
 		}
 		return istream;
 	}

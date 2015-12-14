@@ -1,5 +1,6 @@
 package util;
 
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -50,7 +51,7 @@ public final class ResourceInputStream extends InputStream {
 			throws FileNotFoundException {
 		InputStream temp;
 		try {
-			temp = new FileInputStream(filename);
+			temp = new BufferedInputStream(new FileInputStream(filename));
 		} catch (final FileNotFoundException except) {
 			temp = ResourceInputStream.class.getClassLoader()
 					.getResourceAsStream(filename);
