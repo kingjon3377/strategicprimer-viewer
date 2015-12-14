@@ -146,11 +146,8 @@ public final class OneToTwoConverter { // NOPMD
 		final List<Point> converted = new LinkedList<>();
 		for (int row = 0; row < oldDim.rows; row++) {
 			for (int col = 0; col < oldDim.cols; col++) {
-				final Point point = PointFactory.point(row, col);
-				for (final Point newPoint : convertTile(point,
-						old, retval, main, idFactory, independent)) {
-					converted.add(newPoint);
-				}
+				converted.addAll(convertTile(PointFactory.point(row, col), old,
+						retval, main, idFactory, independent));
 			}
 		}
 		final Random random = new Random(MAX_ITERATIONS);
