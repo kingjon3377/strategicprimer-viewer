@@ -283,7 +283,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			writeAbstractTown(ostream, (AbstractTown) obj);
 		} else if (obj instanceof Village) {
 			ostream.append("<village status=\"");
-			ostream.append(((Village) obj).status().toString());
+			ostream.append(obj.status().toString());
 			if (!obj.getName().isEmpty()) {
 				ostream.append("\" name=\"");
 				ostream.append(obj.getName());
@@ -351,7 +351,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 		ostream.append("\" size=\"");
 		ostream.append(obj.size().toString());
 		ostream.append("\" dc=\"");
-		ostream.append(Integer.toString(((IEvent) obj).getDC()));
+		ostream.append(Integer.toString(obj.getDC()));
 		if (!obj.getName().isEmpty()) {
 			ostream.append("\" name=\"");
 			ostream.append(obj.getName());
