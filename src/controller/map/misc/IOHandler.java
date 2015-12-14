@@ -282,13 +282,7 @@ public final class IOHandler implements ActionListener {
 			try {
 				((IMultiMapModel) model).addSubordinateMap(
 						readMap(file, Warning.INSTANCE), file);
-			} catch (final IOException e) {
-				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
-						"a null path"), source);
-			} catch (final SPFormatException e) {
-				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
-						"a null path"), source);
-			} catch (final XMLStreamException e) {
+			} catch (final IOException | SPFormatException | XMLStreamException e) {
 				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
 						"a null path"), source);
 			}
