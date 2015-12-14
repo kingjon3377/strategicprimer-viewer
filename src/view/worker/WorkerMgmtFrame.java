@@ -176,7 +176,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		final Component outer = this;
 		final IWorkerModel smodel = model;
 		final DefaultTreeModel reportModel = new DefaultTreeModel(new SimpleReportNode("Please wait, loading report ..."));
-		new ReportGeneratorThread(reportModel, smodel, model.getMap().getCurrentPlayer()).start();
+		new Thread(new ReportGeneratorThread(reportModel, smodel, model.getMap().getCurrentPlayer())).start();
 		final JTree report = new JTree(reportModel);
 		report.setRootVisible(false);
 		report.expandPath(new TreePath(((DefaultMutableTreeNode) reportModel
@@ -356,7 +356,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		 */
 		@Override
 		public void mapChanged() {
-			new ReportGeneratorThread(reportModel, model, model.getMap().getCurrentPlayer()).start();
+			new Thread(new ReportGeneratorThread(reportModel, model, model.getMap().getCurrentPlayer())).start();
 		}
 
 		/**
@@ -368,7 +368,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		@Override
 		public void playerChanged(@Nullable final Player old,
 				final Player newPlayer) {
-			new ReportGeneratorThread(reportModel, model, newPlayer).start();
+			new Thread(new ReportGeneratorThread(reportModel, model, newPlayer)).start();
 		}
 		/**
 		 * @return a String representation of the object
@@ -593,7 +593,7 @@ public final class WorkerMgmtFrame extends JFrame {
 	/**
 	 * A thread to generate the report tree in the background.
 	 */
-	protected static final class ReportGeneratorThread extends Thread {
+	protected static final class ReportGeneratorThread implements Runnable {
 		/**
 		 * A logger for the thread.
 		 */
