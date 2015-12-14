@@ -139,9 +139,9 @@ public final class TestProxyWorker {
 	 */
 	@Test
 	public void testProxyUnitProxy() throws IOException {
-		Worker one = new Worker("one", "human", 1, new Job("jobOne", 1,
+		final Worker one = new Worker("one", "human", 1, new Job("jobOne", 1,
 				new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
-		Worker two = new Worker("two", "elf", 2, new Job("jobTwo", 1,
+		final Worker two = new Worker("two", "elf", 2, new Job("jobTwo", 1,
 				new Skill("skillThree", 1, 19), new Skill("skillFour", 0, 99)));
 		final Worker oneCopy = one.copy(false);
 		final Worker twoCopy = two.copy(false);
@@ -190,7 +190,7 @@ public final class TestProxyWorker {
 		if (worker.getJob(jobName) != null) {
 			return;
 		}
-		StringBuilder builder = new StringBuilder("Worker should contain job ");
+		final StringBuilder builder = new StringBuilder("Worker should contain job ");
 		builder.append(jobName);
 		builder.append(". Worker contained the following: \n");
 		for (IJob job : worker) {
@@ -210,7 +210,7 @@ public final class TestProxyWorker {
 	 */
 	@Test
 	public void testWorkerCopy() {
-		Worker one = new Worker("one", "human", 1, new Job("jobOne", 1,
+		final Worker one = new Worker("one", "human", 1, new Job("jobOne", 1,
 				new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
 		assertEquals("Worker copy should still be equal", one, one.copy(false));
 	}
