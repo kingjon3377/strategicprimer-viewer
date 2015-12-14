@@ -49,6 +49,6 @@ public final class Coordinate {
 	 */
 	@Override
 	public String toString() {
-		return '[' + Integer.toString(x) + ", " + Integer.toString(y) + ']';
+		return String.format("[%d, %d]", Integer.valueOf(x), Integer.valueOf(y));
 	}
 }
