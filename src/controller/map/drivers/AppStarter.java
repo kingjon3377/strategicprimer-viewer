@@ -126,9 +126,8 @@ public final class AppStarter implements ISPDriver {
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
 		if (GraphicsEnvironment.isHeadless()) {
 			final List<ISPDriver> drivers = new ArrayList<>();
-			CACHE.values().stream().filter(pair -> !drivers.contains(pair.first())).forEach(pair -> {
-				drivers.add(pair.first());
-			});
+			CACHE.values().stream().filter(pair -> !drivers.contains(pair.first()))
+					.forEach(pair -> drivers.add(pair.first()));
 			try {
 				startChosenDriver(NullCleaner.assertNotNull(drivers
 						.get(new CLIHelper().chooseFromList(drivers,
@@ -221,9 +220,8 @@ public final class AppStarter implements ISPDriver {
 					others)));
 		} else {
 			final List<ISPDriver> drivers = new ArrayList<>();
-			CACHE.values().stream().filter(pair -> !drivers.contains(pair.first())).forEach(pair -> {
-				drivers.add(pair.first());
-			});
+			CACHE.values().stream().filter(pair -> !drivers.contains(pair.first()))
+					.forEach(pair -> drivers.add(pair.first()));
 			try {
 				startChosenDriver(NullCleaner.assertNotNull(drivers
 						.get(new CLIHelper().chooseFromList(drivers,

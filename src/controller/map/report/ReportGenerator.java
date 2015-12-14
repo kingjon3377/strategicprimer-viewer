@@ -176,9 +176,7 @@ public final class ReportGenerator {
 
 		fixtures.values().stream().filter(pair -> (pair.second() instanceof Unit || pair.second() instanceof Fortress)
 				                                          && player.equals(((HasOwner) pair.second()).getOwner()))
-				.forEach(pair -> {
-					fixtures.remove(Integer.valueOf(pair.second().getID()));
-				});
+				.forEach(pair -> fixtures.remove(Integer.valueOf(pair.second().getID())));
 		fixtures.coalesce();
 		builder.append(new FortressReportGenerator(comparator).produce(fixtures, map,
 				player));
@@ -272,9 +270,7 @@ public final class ReportGenerator {
 
 		fixtures.values().stream().filter(pair -> (pair.second() instanceof Unit || pair.second() instanceof Fortress)
 				                                          && player.equals(((HasOwner) pair.second()).getOwner()))
-				.forEach(pair -> {
-					fixtures.remove(Integer.valueOf(pair.second().getID()));
-				});
+				.forEach(pair -> fixtures.remove(Integer.valueOf(pair.second().getID())));
 		fixtures.coalesce();
 		retval.add(new FortressReportGenerator(comparator).produceRIR(fixtures, map,
 				player));
