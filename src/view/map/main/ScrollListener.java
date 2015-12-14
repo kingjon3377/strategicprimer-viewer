@@ -49,7 +49,7 @@ import model.viewer.VisibleDimensions;
  * @author Jonathan Lovelace
  *
  */
-public final class ScrollListener implements AdjustmentListener, MapChangeListener,
+public final class ScrollListener implements MapChangeListener,
 		SelectionChangeListener, GraphicalParamsListener {
 	/**
 	 * The map model we're working with.
@@ -94,8 +94,18 @@ public final class ScrollListener implements AdjustmentListener, MapChangeListen
 		vbar.getModel().setRangeProperties(Math.max(selPoint.row, 0), 1, 0,
 				mapDim.rows - map.getDimensions().getHeight(), false);
 		vbar.setInputVerifier(new LocalInputVerifier(mapDim, map, false));
-		hbar.addAdjustmentListener(this);
-		vbar.addAdjustmentListener(this);
+		final AdjustmentListener adjList = evt -> model.setDimensions(new VisibleDimensions(vbar.getValue(), vbar
+				                                                                                                     .getValue() +
+				                                                                                                     dimensions
+						                                                                                                     .getHeight(),
+
+				                                                                                   hbar.getValue(),
+				                                                                                   hbar
+						                                                                                                    .getValue() +
+						                                                                                                    dimensions
+								                                                                                                    .getWidth()));
+		hbar.addAdjustmentListener(adjList);
+		vbar.addAdjustmentListener(adjList);
 	}
 
 	/**
@@ -180,20 +190,6 @@ public final class ScrollListener implements AdjustmentListener, MapChangeListen
 	protected static boolean isInRange(final int min, final int value,
 			final int max) {
 		return value >= min && value <= max;
-	}
-
-	/**
-	 * Handle scroll-bar events.
-	 *
-	 * @param evt the event to handle
-	 */
-	@Override
-	public void adjustmentValueChanged(@Nullable final AdjustmentEvent evt) {
-		if (evt != null && (hbar == evt.getSource() || vbar == evt.getSource())) {
-			model.setDimensions(new VisibleDimensions(vbar.getValue(), vbar
-					.getValue() + dimensions.getHeight(), hbar.getValue(), hbar
-					.getValue() + dimensions.getWidth()));
-		}
 	}
 
 	/**
