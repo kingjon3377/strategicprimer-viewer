@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component inheritJdk="true">
 	<exclude-output/>
-	<contentEntry url="file://$MODULE_DIR$"/>
+	<contentEntry url="file://$MODULE_DIR$">
+		<excludeFolder url="file://$MODULE_DIR$/compiled"/>
+		<excludeFolder url="file://$MODULE_DIR$/dist"/>
+		<excludeFolder url="file://$MODULE_DIR$/javadocs"/>
+		<excludeFolder url="file://$MODULE_DIR$/junit"/>
+		<excludeFolder url="file://$MODULE_DIR$/release"/>
+	</contentEntry>
 	<levels>
 		<level name="WindowMenu" value="project"/>
 		<level name="JDT Annotations (Java 8)" value="project"/>
