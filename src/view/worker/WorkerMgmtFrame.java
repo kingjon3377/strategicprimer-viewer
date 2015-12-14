@@ -159,12 +159,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		final ActionMap actionMap = tree.getActionMap();
 		assert (inputMap != null && actionMap != null);
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_U, keyMask), "openUnits");
-		actionMap.put("openUnits", new AbstractAction() {
-			@Override
-			public void actionPerformed(@Nullable final ActionEvent evt) {
-				tree.requestFocusInWindow();
-			}
-		});
+		actionMap.put("openUnits", new FocusRequester(tree));
 		final PlayerLabel plabel = new PlayerLabel("Units belonging to ",
 				model.getMap().getCurrentPlayer(), keyDesc);
 		pch.addPlayerChangeListener(plabel);
@@ -227,29 +222,7 @@ public final class WorkerMgmtFrame extends JFrame {
 			}
 		});
 		ToolTipManager.sharedInstance().registerComponent(report);
-		report.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(@Nullable final MouseEvent evt) {
-				if (evt == null) {
-					SystemOut.SYS_OUT.println("MouseEvent was null");
-					return;
-				}
-				final TreePath selPath = report.getPathForLocation(evt.getX(), evt.getY());
-				if (selPath == null) {
-					return;
-				}
-				final Object node = selPath.getLastPathComponent();
-				if ((evt.isControlDown() || evt.isMetaDown()) && node instanceof AbstractReportNode) {
-					final Point point = ((AbstractReportNode) node).getPoint();
-					// (-inf, -inf) replaces null
-					if (point.getRow() > Integer.MIN_VALUE) {
-						final IViewerModel vModel =
-								getViewerModelFor(model, ioHandler);
-						SwingUtilities.invokeLater(() -> vModel.setSelection(point));
-					}
-				}
-			}
-		});
+		report.addMouseListener(new reportMouseHandler(report, model, ioHandler));
 		pch.addPlayerChangeListener(reportUpdater);
 		model.addMapChangeListener(reportUpdater);
 		final MemberDetailPanel mdp = new MemberDetailPanel();
@@ -630,6 +603,53 @@ public final class WorkerMgmtFrame extends JFrame {
 			final AbstractReportNode report = ReportGenerator.createAbbreviatedReportIR(wmodel.getMap(), player);
 			RGT_LOGGER.info("Finished generating report");
 			SwingUtilities.invokeLater(() -> tmodel.setRoot(report));
+		}
+	}
+
+	private static class FocusRequester extends AbstractAction {
+		private final JComponent component;
+
+		public FocusRequester(final WorkerTree comp) {
+			component = comp;
+		}
+
+		@Override
+		public void actionPerformed(final @Nullable ActionEvent evt) {
+			component.requestFocusInWindow();
+		}
+	}
+
+	private static class reportMouseHandler extends MouseAdapter {
+		private final JTree report;
+		private final IWorkerModel model;
+		private final IOHandler ioh;
+
+		public reportMouseHandler(final JTree reportTree, final IWorkerModel workerModel, final IOHandler ioHandler) {
+			this.report = reportTree;
+			this.model = workerModel;
+			this.ioh = ioHandler;
+		}
+
+		@Override
+		public void mousePressed(final @Nullable MouseEvent evt) {
+			if (evt == null) {
+				SystemOut.SYS_OUT.println("MouseEvent was null");
+				return;
+			}
+			final TreePath selPath = report.getPathForLocation(evt.getX(), evt.getY());
+			if (selPath == null) {
+				return;
+			}
+			final Object node = selPath.getLastPathComponent();
+			if ((evt.isControlDown() || evt.isMetaDown()) && node instanceof AbstractReportNode) {
+				final Point point = ((AbstractReportNode) node).getPoint();
+				// (-inf, -inf) replaces null
+				if (point.getRow() > Integer.MIN_VALUE) {
+					final IViewerModel vModel =
+							getViewerModelFor(model, ioh);
+					SwingUtilities.invokeLater(() -> vModel.setSelection(point));
+				}
+			}
 		}
 	}
 }
