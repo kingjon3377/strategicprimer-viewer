@@ -238,7 +238,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 * @return a list of the units in the list that have workers without stats
 	 */
 	private static List<IUnit> removeStattedUnits(final List<IUnit> units) {
-		return units.stream().filter(unit -> hasUnstattedWorker(unit)).collect(Collectors.toList());
+		return units.stream().filter(StatGeneratingCLIDriver::hasUnstattedWorker).collect(Collectors.toList());
 	}
 
 	/**
