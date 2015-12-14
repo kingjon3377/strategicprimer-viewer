@@ -10,9 +10,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JOptionPane;
-import javax.swing.ListModel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -62,7 +60,7 @@ import view.map.details.FixtureList;
  * @author Jonathan Lovelace
  *
  */
-public final class ExplorationClickListener implements ActionListener,
+public final class ExplorationClickListener extends AbstractAction implements
 		MovementCostSource, SelectionChangeSource {
 	/**
 	 * Logger.

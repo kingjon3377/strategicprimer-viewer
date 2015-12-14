@@ -236,12 +236,7 @@ public final class ExplorationPanel extends BorderedPanel implements ActionListe
 		final InputMap dtbIMap = dtb.getInputMap(WHEN_IN_FOCUSED_WINDOW);
 		dtbIMap.put(ARROW_KEYS.get(direction), direction.toString());
 		dtbIMap.put(NUM_KPAD.get(direction), direction.toString());
-		dtb.getActionMap().put(direction.toString(), new AbstractAction() {
-			@Override
-			public void actionPerformed(@Nullable final ActionEvent evt) {
-				ecl.actionPerformed(evt);
-			}
-		});
+		dtb.getActionMap().put(direction.toString(), ecl);
 		ecl.addSelectionChangeListener(this);
 		ecl.addMovementCostListener(this);
 		mainList.getModel().addListDataListener(
