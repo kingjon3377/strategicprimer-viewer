@@ -74,7 +74,7 @@ public final class HuntingModel {
 		dims = map.dimensions();
 		final Set<String> fishKinds = new HashSet<>();
 		for (final Point point : map.locations()) {
-			if (Ocean.equals(map.getBaseTerrain(point))) {
+			if (Ocean == map.getBaseTerrain(point)) {
 				for (final TileFixture fix : map.getOtherFixtures(point)) {
 					if (fix instanceof Animal) {
 						fishKinds.add(((Animal) fix).getKind());

@@ -67,7 +67,7 @@ public final class SimpleMovement {
 	 * @return whether it's passable by land movement.
 	 */
 	public static boolean isLandMovementPossible(final TileType terrain) {
-		return !TileType.Ocean.equals(terrain);
+		return TileType.Ocean != terrain;
 	}
 
 	/**
@@ -81,17 +81,17 @@ public final class SimpleMovement {
 	public static int getMovementCost(final TileType terrain,
 			final boolean forest, final boolean mountain, final boolean river,
 			final Iterable<TileFixture> fixtures) {
-		if (TileType.Ocean.equals(terrain)
-				|| TileType.NotVisible.equals(terrain)) {
+		if (TileType.Ocean == terrain
+				|| TileType.NotVisible == terrain) {
 			return Integer.MAX_VALUE; // NOPMD
 		} else if (forest || mountain || isForest(fixtures) || isHill(fixtures)
-				|| TileType.Desert.equals(terrain)) {
+				|| TileType.Desert == terrain) {
 			if (river) {
 				return 2; // NOPMD
 			} else {
 				return 3; // NOPMD
 			}
-		} else if (TileType.Jungle.equals(terrain)) {
+		} else if (TileType.Jungle == terrain) {
 			if (river) {
 				return 4;
 			} else {

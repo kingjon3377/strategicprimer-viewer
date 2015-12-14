@@ -93,7 +93,7 @@ public final class RiverReader implements INodeHandler<@NonNull River> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final River obj) {
-		if (River.Lake.equals(obj)) {
+		if (River.Lake == obj) {
 			return new SPIntermediateRepresentation("lake"); // NOPMD
 		} else {
 			return new SPIntermediateRepresentation("river", Pair.of(

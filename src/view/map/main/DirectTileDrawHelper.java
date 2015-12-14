@@ -63,7 +63,7 @@ public final class DirectTileDrawHelper extends AbstractTileDrawHelper {
 			context.fillRect(position.x, position.y, dims.x, dims.y);
 			context.setColor(Color.black);
 			context.drawRect(position.x, position.y, dims.x, dims.y);
-			if (TileType.NotVisible.equals(map.getBaseTerrain(location))) {
+			if (TileType.NotVisible == map.getBaseTerrain(location)) {
 				return;
 			}
 			context.setColor(Color.blue);

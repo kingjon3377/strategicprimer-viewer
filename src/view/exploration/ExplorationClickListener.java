@@ -124,7 +124,7 @@ public final class ExplorationClickListener implements ActionListener,
 	protected void handleMove() {
 		try {
 			final List<TileFixture> fixtures = getSelectedValuesList(list);
-			if (Direction.Nowhere.equals(direction)) {
+			if (Direction.Nowhere == direction) {
 				final int swearing = JOptionPane.showConfirmDialog(null,
 						"Should the explorer swear any villages on this tile?");
 				switch (swearing) {

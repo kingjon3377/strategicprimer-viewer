@@ -109,7 +109,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof StoneDeposit
-				&& ((StoneDeposit) obj).stone.equals(stone)
+				&& ((StoneDeposit) obj).stone == stone
 				&& ((TileFixture) obj).getID() == id;
 	}
 
@@ -177,8 +177,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return this == fix
-				|| (fix instanceof StoneDeposit && ((StoneDeposit) fix).stone
-						.equals(stone));
+				|| (fix instanceof StoneDeposit && ((StoneDeposit) fix).stone == stone);
 	}
 
 	/**

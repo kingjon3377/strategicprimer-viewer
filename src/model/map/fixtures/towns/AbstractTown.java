@@ -102,14 +102,14 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	public String getText() {
 		final StringBuilder builder = new StringBuilder(56)
 				.append("There is a ");
-		if (TownSize.Medium.equals(size)) {
+		if (TownSize.Medium == size) {
 			builder.append("medium-size");
 		} else {
 			builder.append(size.toString());
 		}
-		if (TownStatus.Burned.equals(status)) {
+		if (TownStatus.Burned == status) {
 			builder.append(" burned-out");
-		} else if (!TownStatus.Active.equals(status)) {
+		} else if (TownStatus.Active != status) {
 			builder.append(' ');
 			builder.append(status.toString());
 		}
@@ -155,8 +155,8 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	 * @return whether it's equal to this one ignoring ID.
 	 */
 	protected final boolean equalsContents(final AbstractTown fix) {
-		return fix.size().equals(size) && fix.getName().equals(name)
-				&& fix.status().equals(status) && fix.owner.equals(owner);
+		return fix.size() == size && fix.getName().equals(name)
+				&& fix.status() == status && fix.owner.equals(owner);
 	}
 
 	/**

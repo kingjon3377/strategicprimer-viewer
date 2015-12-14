@@ -69,7 +69,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 		clear();
 		final IMapNG map = dmodel.getMap();
 		final TileType base = map.getBaseTerrain(newPoint);
-		if (!TileType.NotVisible.equals(base)) {
+		if (TileType.NotVisible != base) {
 			addElement(new TileTypeFixture(base));
 		}
 		final Iterable<River> rivers = map.getRivers(newPoint);
@@ -112,8 +112,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 			map.setForest(point, (Forest) fix);
 			selectedPointChanged(null, point);
 		} else if (fix instanceof TileTypeFixture) {
-			if (!map.getBaseTerrain(point).equals(
-					((TileTypeFixture) fix).getTileType())) {
+			if (map.getBaseTerrain(point) != ((TileTypeFixture) fix).getTileType()) {
 				map.setBaseTerrain(point, ((TileTypeFixture) fix).getTileType());
 				selectedPointChanged(null, point);
 			}

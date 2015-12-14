@@ -59,8 +59,8 @@ public final class ExplorationRunner { // NOPMD
 				.append("The primary rock type here is ");
 		sbuild.append(getPrimaryRock(point, terrain, fixtures));
 		sbuild.append(".\n");
-		if (TileType.BorealForest.equals(terrain)
-				|| TileType.TemperateForest.equals(terrain)) {
+		if (TileType.BorealForest == terrain
+				|| TileType.TemperateForest == terrain) {
 			sbuild.append("The main kind of tree is ");
 			sbuild.append(getPrimaryTree(point, terrain, fixtures));
 			sbuild.append(".\n");
@@ -110,10 +110,10 @@ public final class ExplorationRunner { // NOPMD
 	public String getPrimaryTree(final Point point, final TileType terrain,
 			final Iterable<TileFixture> fixtures)
 			throws MissingTableException {
-		if (TileType.BorealForest.equals(terrain)) {
+		if (TileType.BorealForest == terrain) {
 			return getTable("boreal_major_tree").generateEvent(point,
 					terrain, fixtures); // NOPMD
-		} else if (TileType.TemperateForest.equals(terrain)) {
+		} else if (TileType.TemperateForest == terrain) {
 			return getTable("temperate_major_tree").generateEvent(point,
 					terrain, fixtures);
 		} else {

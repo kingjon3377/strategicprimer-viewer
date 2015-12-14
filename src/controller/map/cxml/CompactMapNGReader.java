@@ -357,7 +357,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			boolean rowEmpty = true;
 			for (int j = 0; j < dim.cols; j++) {
 				Point point = PointFactory.point(i, j);
-				if (!TileType.NotVisible.equals(obj.getBaseTerrain(point))
+				if (TileType.NotVisible != obj.getBaseTerrain(point)
 						|| (obj.isMountainous(point)
 						|| obj.getGround(point) != null
 						|| obj.getForest(point) != null
@@ -374,7 +374,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					ostream.append(Integer.toString(i));
 					ostream.append("\" column=\"");
 					ostream.append(Integer.toString(j));
-					if (!TileType.NotVisible.equals(obj.getBaseTerrain(point))) {
+					if (TileType.NotVisible != obj.getBaseTerrain(point)) {
 						ostream.append("\" kind=\"");
 						ostream.append(obj.getBaseTerrain(point).toXML());
 					}
@@ -476,7 +476,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		for (int i = 0; i < indent; i++) {
 			ostream.append('\t');
 		}
-		if (River.Lake.equals(obj)) {
+		if (River.Lake == obj) {
 			ostream.append("<lake />");
 		} else {
 			ostream.append("<river direction=\"");

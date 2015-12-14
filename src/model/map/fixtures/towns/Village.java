@@ -138,7 +138,7 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof Village
-				&& status.equals(((Village) obj).status)
+				&& status == ((Village) obj).status
 				&& name.equals(((Village) obj).name)
 				&& id == ((Village) obj).id
 				&& owner.equals(((Village) obj).owner)
@@ -183,7 +183,7 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return fix instanceof Village && status.equals(((Village) fix).status)
+		return fix instanceof Village && status == ((Village) fix).status
 				&& name.equals(((Village) fix).name)
 				&& owner.equals(((Village) fix).owner)
 				&& race.equals(((Village) fix).race);
@@ -309,7 +309,7 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 				ostream.append(context);
 				ostream.append("\tIDs differ\n");
 				return false;
-			} else if (!status.equals(village.status)) {
+			} else if (status != village.status) {
 				ostream.append(context);
 				ostream.append(" In village (ID #");
 				ostream.append(Integer.toString(id));

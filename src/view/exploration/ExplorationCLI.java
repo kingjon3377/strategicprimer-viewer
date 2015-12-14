@@ -210,7 +210,7 @@ public final class ExplorationCLI {
 				allFixtures.add(fix);
 			}
 		}
-		if (Direction.Nowhere.equals(direction)
+		if (Direction.Nowhere == direction
 				&& helper.inputBoolean(FEALTY_PROMPT)) {
 			swearVillages(dPoint);
 			cost += 5;

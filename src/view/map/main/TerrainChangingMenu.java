@@ -151,7 +151,7 @@ public final class TerrainChangingMenu extends JPopupMenu implements ActionListe
 	public void selectedPointChanged(@Nullable final Point old,
 			final Point newPoint) {
 		point = newPoint;
-		if (TileType.NotVisible.equals(model.getMap().getBaseTerrain(newPoint))) {
+		if (TileType.NotVisible == model.getMap().getBaseTerrain(newPoint)) {
 			newUnitItem.setEnabled(false);
 		} else {
 			newUnitItem.setEnabled(true);

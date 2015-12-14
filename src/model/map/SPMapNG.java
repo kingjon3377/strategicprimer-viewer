@@ -135,11 +135,10 @@ public class SPMapNG implements IMutableMapNG {
 			for (final Point point : locations()) {
 				final String ctxt =
 						context + " At " + Objects.toString(point) + ':';
-				if (!getBaseTerrain(point).equals(obj.getBaseTerrain(point))
-						&& !TileType.NotVisible
-						.equals(obj.getBaseTerrain(point))) {
+				if (getBaseTerrain(point) != obj.getBaseTerrain(point)
+						&& TileType.NotVisible != obj.getBaseTerrain(point)) {
 					out.append(ctxt);
-					if (TileType.NotVisible.equals(getBaseTerrain(point))) {
+					if (TileType.NotVisible == getBaseTerrain(point)) {
 						out.append("\tHas terrain information we don't\n");
 					} else {
 						out.append("\tBase terrain differs\n");
@@ -432,7 +431,7 @@ public class SPMapNG implements IMutableMapNG {
 				&& getCurrentTurn() == obj.getCurrentTurn()
 				&& getCurrentPlayer().equals(obj.getCurrentPlayer())) {
 			for (final Point point : locations()) {
-				if (!getBaseTerrain(point).equals(obj.getBaseTerrain(point))
+				if (getBaseTerrain(point) != obj.getBaseTerrain(point)
 						|| isMountainous(point) != obj.isMountainous(point)
 						|| !iterablesEqual(getRivers(point),
 								obj.getRivers(point))

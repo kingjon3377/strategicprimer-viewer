@@ -318,7 +318,7 @@ IExplorationModel {
 	 */
 	private static void ensureTerrain(final IMutableMapNG map,
 			final Point point, final TileType terrain) {
-		if (TileType.NotVisible.equals(map.getBaseTerrain(point))) {
+		if (TileType.NotVisible == map.getBaseTerrain(point)) {
 			map.setBaseTerrain(point, terrain);
 		}
 	}

@@ -46,13 +46,13 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	 * A comparator for town-sizes.
 	 */
 	private static final Comparator<TownSize> SIZE_CMP = (one, two) -> {
-			if (one.equals(two)) {
+			if (one == two) {
 				return 0; // NOPMD
-			} else if (TownSize.Large.equals(one)) {
+			} else if (TownSize.Large == one) {
 				return -1; // NOPMD
-			} else if (TownSize.Large.equals(two)) {
+			} else if (TownSize.Large == two) {
 				return 1; // NOPMD
-			} else if (TownSize.Medium.equals(one)) {
+			} else if (TownSize.Medium == one) {
 				return -1; // NOPMD
 			} else {
 				return 1;
@@ -64,17 +64,17 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	 * before ruined ones before burned-out ones.
 	 */
 	private static final Comparator<TownStatus> ST_CMP = (one, two) -> {
-		if (one.equals(two)) {
+		if (one == two) {
 			return 0; // NOPMD
-		} else if (TownStatus.Active.equals(one)) {
+		} else if (TownStatus.Active == one) {
 			return -1; // NOPMD
-		} else if (TownStatus.Active.equals(two)) {
+		} else if (TownStatus.Active == two) {
 			return 1; // NOPMD
-		} else if (TownStatus.Abandoned.equals(one)) {
+		} else if (TownStatus.Abandoned == one) {
 			return -1; // NOPMD
-		} else if (TownStatus.Abandoned.equals(two)) {
+		} else if (TownStatus.Abandoned == two) {
 			return 1; // NOPMD
-		} else if (TownStatus.Ruined.equals(one)) {
+		} else if (TownStatus.Ruined == one) {
 			return -1; // NOPMD
 		} else {
 			return 1;
@@ -138,8 +138,8 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	@Override
 	public int compare(final AbstractTown one,
 			final AbstractTown two) {
-		if (one.status().equals(two.status())) {
-			if (one.size().equals(two.size())) {
+		if (one.status() == two.status()) {
+			if (one.size() == two.size()) {
 				if (one.getClass().equals(two.getClass())) {
 					return one.getName().compareTo(two.getName()); // NOPMD
 				} else {

@@ -63,7 +63,7 @@ public final class MapPopulatorDriver implements ISPDriver {
 			return false;
 		} else if (map.getForest(location) != null) {
 			return false;
-		} else if (TileType.Ocean.equals(terrain)) {
+		} else if (TileType.Ocean == terrain) {
 			return false;
 		} else {
 			suitableCount++;

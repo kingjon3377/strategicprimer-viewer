@@ -151,7 +151,7 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 		pen2d.fill(backgroundShape);
 		pen2d.setColor(Color.BLACK);
 		pen2d.draw(backgroundShape);
-		if (!TileType.NotVisible.equals(map.getBaseTerrain(location))) {
+		if (TileType.NotVisible != map.getBaseTerrain(location)) {
 			pen2d.setColor(Color.BLUE);
 			for (final River river : map.getRivers(location)) {
 				pen2d.fill(rivers.get(river));

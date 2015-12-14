@@ -377,7 +377,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 							assertNotNull(Integer.toString(i))));
 			for (int j = 0; j < dim.cols; j++) {
 				Point point = PointFactory.point(i, j);
-				if (!TileType.NotVisible.equals(obj.getBaseTerrain(point))
+				if (TileType.NotVisible != obj.getBaseTerrain(point)
 						|| obj.isMountainous(point)
 						|| obj.getGround(point) != null
 						|| obj.getForest(point) != null
@@ -406,7 +406,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 				new SPIntermediateRepresentation("tile");
 		retval.addIntegerAttribute("row", point.row);
 		retval.addIntegerAttribute("column", point.col);
-		if (!TileType.NotVisible.equals(map.getBaseTerrain(point))) {
+		if (TileType.NotVisible != map.getBaseTerrain(point)) {
 			retval.addAttribute("kind", map.getBaseTerrain(point).toXML());
 		}
 		if (map.isMountainous(point)) {

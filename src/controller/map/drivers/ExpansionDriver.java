@@ -372,7 +372,7 @@ public final class ExpansionDriver implements ISPDriver {
 		for (final Point neighbor : new SurroundingPointIterable(point,
 				map.dimensions())) {
 			if (!additions.containsKey(neighbor)
-					&& TileType.NotVisible.equals(map.getBaseTerrain(neighbor))) {
+					&& TileType.NotVisible == map.getBaseTerrain(neighbor)) {
 				additions.put(neighbor, master.getBaseTerrain(neighbor));
 				if (master.isMountainous(neighbor)) {
 					map.setMountainous(neighbor, true);

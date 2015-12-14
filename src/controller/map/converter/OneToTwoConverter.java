@@ -170,7 +170,7 @@ public final class OneToTwoConverter { // NOPMD
 	 *         ground, no forest, no rivers, no fixtures)
 	 */
 	private static boolean isPointEmpty(final IMapNG map, final Point point) {
-		return TileType.NotVisible.equals(map.getBaseTerrain(point))
+		return TileType.NotVisible == map.getBaseTerrain(point)
 				&& map.getGround(point) == null && map.getForest(point) == null
 				&& !map.getRivers(point).iterator().hasNext()
 				&& !map.getOtherFixtures(point).iterator().hasNext();
@@ -298,10 +298,10 @@ public final class OneToTwoConverter { // NOPMD
 	private void convertSubtile(final Point point, final IMutableMapNG map,
 			final boolean main) {
 		try {
-			if (TileType.Mountain.equals(map.getBaseTerrain(point))) {
+			if (TileType.Mountain == map.getBaseTerrain(point)) {
 				map.setBaseTerrain(point, TileType.Plains);
 				map.setMountainous(point, true);
-			} else if (TileType.TemperateForest.equals(map.getBaseTerrain(point))) {
+			} else if (TileType.TemperateForest == map.getBaseTerrain(point)) {
 				if (!hasForest(map, point)) {
 					map.setForest(
 							point,
@@ -310,7 +310,7 @@ public final class OneToTwoConverter { // NOPMD
 									map.getOtherFixtures(point)), false));
 				}
 				map.setBaseTerrain(point, TileType.Plains);
-			} else if (TileType.BorealForest.equals(map.getBaseTerrain(point))) {
+			} else if (TileType.BorealForest == map.getBaseTerrain(point)) {
 				if (!hasForest(map, point)) {
 					map.setForest(
 							point,
@@ -398,12 +398,12 @@ public final class OneToTwoConverter { // NOPMD
 	 */
 	private void perturb(final Point point, final IMutableMapNG map,
 			final Random random, final boolean main, final IDFactory idFac) {
-		if (!TileType.Ocean.equals(map.getBaseTerrain(point))) {
+		if (TileType.Ocean != map.getBaseTerrain(point)) {
 			if (isAdjacentToTown(point, map)
 					&& random.nextDouble() < SIXTY_PERCENT) {
 				addFieldOrOrchard(random.nextBoolean(), point, map, main,
 						idFac);
-			} else if (TileType.Desert.equals(map.getBaseTerrain(point))) {
+			} else if (TileType.Desert == map.getBaseTerrain(point)) {
 				final boolean watered = hasAdjacentWater(point, map);
 				waterDesert(map, point, random, watered);
 			} else if (random.nextDouble() < ADD_FOREST_PROB) {
@@ -557,7 +557,7 @@ public final class OneToTwoConverter { // NOPMD
 	private static boolean hasAdjacentWater(final Point point, final IMapNG map) {
 		for (final Point npoint : getNeighbors(point)) {
 			if (map.getRivers(npoint).iterator().hasNext()
-					|| TileType.Ocean.equals(map.getBaseTerrain(npoint))) {
+					|| TileType.Ocean == map.getBaseTerrain(npoint)) {
 				return true; // NOPMD
 			}
 		}
