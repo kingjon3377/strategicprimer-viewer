@@ -89,9 +89,9 @@ public final class TestExplorationRunner {
 	@Test
 	public void testGetPrimaryRock() throws MissingTableException {
 		runner.loadTable("major_rock", new ConstantTable("primary_rock_test"));
-		assertEquals("primary rock test", runner.getPrimaryRock(
-				PointFactory.point(0, 0), TileType.Tundra, EMPTY),
-				"primary_rock_test");
+		assertEquals("primary rock test", "primary_rock_test",
+				runner.getPrimaryRock(
+						PointFactory.point(0, 0), TileType.Tundra, EMPTY));
 	}
 	/**
 	 * Test the getPrimaryTree method.
@@ -109,12 +109,12 @@ public final class TestExplorationRunner {
 				"temperate_major_test"));
 		final Point point = PointFactory.point(0, 0);
 		assertEquals("primary tree test for boreal forest",
-				runner.getPrimaryTree(point, TileType.BorealForest, EMPTY),
-				"boreal_major_test");
+				"boreal_major_test",
+				runner.getPrimaryTree(point, TileType.BorealForest, EMPTY));
 		assertEquals(
 				"primary tree test for temperate forest",
-				runner.getPrimaryTree(point, TileType.TemperateForest, EMPTY),
-				"temperate_major_test");
+				"temperate_major_test",
+				runner.getPrimaryTree(point, TileType.TemperateForest, EMPTY));
 	}
 
 	/**
@@ -142,12 +142,12 @@ public final class TestExplorationRunner {
 		runner.loadTable(TEST_TABLE_TWO, new ConstantTable("test_two"));
 		runner.loadTable(TEST_TABLE_THREE, new ConstantTable(TEST_THREE));
 		final Point point = PointFactory.point(0, 0);
-		assertEquals("first table", runner.consultTable(TEST_TABLE_ONE, point,
-				TileType.Tundra, EMPTY), "test_one");
-		assertEquals("second table", runner.consultTable(TEST_TABLE_TWO, point,
-				TileType.Tundra, EMPTY), "test_two");
-		assertEquals("third table", runner.consultTable(TEST_TABLE_THREE,
-				point, TileType.Tundra, EMPTY), TEST_THREE);
+		assertEquals("first table", "test_one", runner.consultTable(TEST_TABLE_ONE, point,
+				TileType.Tundra, EMPTY));
+		assertEquals("second table", "test_two", runner.consultTable(TEST_TABLE_TWO, point,
+				TileType.Tundra, EMPTY));
+		assertEquals("third table", TEST_THREE, runner.consultTable(TEST_TABLE_THREE,
+				point, TileType.Tundra, EMPTY));
 	}
 
 	/**
@@ -170,20 +170,20 @@ public final class TestExplorationRunner {
 		final Point point = PointFactory.point(0, 0);
 		assertEquals(
 				"two levels of recursion",
-				runner.recursiveConsultTable(TEST_TABLE_ONE, point,
-						TileType.Tundra, EMPTY), "( ( test_three ) )");
+				"( ( test_three ) )", runner.recursiveConsultTable(TEST_TABLE_ONE, point,
+						TileType.Tundra, EMPTY));
 		assertEquals(
 				"one level of recursion",
-				runner.recursiveConsultTable(TEST_TABLE_TWO, point,
-						TileType.Tundra, EMPTY), "( test_three )");
+				"( test_three )", runner.recursiveConsultTable(TEST_TABLE_TWO, point,
+						TileType.Tundra, EMPTY));
 		assertEquals(
 				"no recursion",
-				runner.recursiveConsultTable(TEST_TABLE_THREE, point,
-						TileType.Tundra, EMPTY), TEST_THREE);
+				TEST_THREE, runner.recursiveConsultTable(TEST_TABLE_THREE, point,
+						TileType.Tundra, EMPTY));
 		assertEquals(
 				"one-sided split",
-				runner.recursiveConsultTable("test_table_four", point,
-						TileType.Plains, EMPTY), "_ ( ( test_three ) )");
+				"_ ( ( test_three ) )", runner.recursiveConsultTable("test_table_four", point,
+						TileType.Plains, EMPTY));
 	}
 
 	/**
