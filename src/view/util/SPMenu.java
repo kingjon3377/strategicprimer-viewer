@@ -74,8 +74,8 @@ public class SPMenu extends JMenuBar {
 			final JFrame parent, final IDriverModel model) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
-		final JMenuItem newItem = MenuItemCreator.createMenuItem("New", KeyEvent.VK_N,
-				MenuItemCreator.createHotkey(KeyEvent.VK_N),
+		final JMenuItem newItem = createMenuItem("New", KeyEvent.VK_N,
+				createHotkey(KeyEvent.VK_N),
 				"Create a new, empty map the same size as the current one",
 				handler);
 		fileMenu.add(newItem);
@@ -145,8 +145,8 @@ public class SPMenu extends JMenuBar {
 			openSecondaryViewerItem.setEnabled(false);
 		}
 		fileMenu.addSeparator();
-		fileMenu.add(MenuItemCreator.createMenuItem("Close", KeyEvent.VK_W,
-				MenuItemCreator.createHotkey(KeyEvent.VK_W),
+		fileMenu.add(createMenuItem("Close", KeyEvent.VK_W,
+				createHotkey(KeyEvent.VK_W),
 				"Close this window", evt -> {
 					if (evt != null
 							&& "Close".equals(evt.getActionCommand())) {
@@ -159,8 +159,8 @@ public class SPMenu extends JMenuBar {
 				createHotkey(KeyEvent.VK_B), "Show development credits", handler));
 		fileMenu.addSeparator();
 		if (!System.getProperty("os.name").toLowerCase().startsWith("mac os x")) {
-			fileMenu.add(MenuItemCreator.createMenuItem("Quit", KeyEvent.VK_Q,
-					MenuItemCreator.createHotkey(KeyEvent.VK_Q), "Quit the application",
+			fileMenu.add(createMenuItem("Quit", KeyEvent.VK_Q,
+					createHotkey(KeyEvent.VK_Q), "Quit the application",
 					event -> {
 						if (event != null && "Quit".equals(event.getActionCommand())) {
 							DriverQuit.quit(0);
@@ -183,22 +183,22 @@ public class SPMenu extends JMenuBar {
 		retval.setMnemonic(KeyEvent.VK_M);
 		final JMenuItem gotoTileItem;
 		final int findKey = KeyEvent.VK_F;
-		final KeyStroke findStroke = MenuItemCreator.createHotkey(findKey);
+		final KeyStroke findStroke = createHotkey(findKey);
 		final JMenuItem findItem;
 		final JMenuItem nextItem;
 		final int nextKey = KeyEvent.VK_N;
-		final KeyStroke nextStroke = MenuItemCreator.createHotkey(KeyEvent.VK_G);
+		final KeyStroke nextStroke = createHotkey(KeyEvent.VK_G);
 		final ActionListener zoomListener;
 		if (model instanceof IViewerModel) {
-			gotoTileItem = MenuItemCreator.createMenuItem("Go to tile",
-					KeyEvent.VK_T, MenuItemCreator.createHotkey(KeyEvent.VK_T),
+			gotoTileItem = createMenuItem("Go to tile",
+					KeyEvent.VK_T, createHotkey(KeyEvent.VK_T),
 					"Go to a tile by coordinates", evt -> new SelectTileDialog(parent, (IViewerModel) model)
 							.setVisible(true));
 			final FindDialog finder = new FindDialog(parent, (IViewerModel) model);
-			findItem = MenuItemCreator.createMenuItem("Find a fixture", findKey,
+			findItem = createMenuItem("Find a fixture", findKey,
 					findStroke, "Find a fixture by name, kind, or ID#",
 					evt -> finder.setVisible(true));
-			nextItem = MenuItemCreator.createMenuItem("Find next", nextKey,
+			nextItem = createMenuItem("Find next", nextKey,
 					nextStroke, "Find the next fixture matching the pattern",
 					evt -> finder.search());
 			zoomListener = new ZoomListener((IViewerModel) model);
@@ -206,16 +206,16 @@ public class SPMenu extends JMenuBar {
 			final ActionListener nullAction = evt -> {
 					// do nothing
 				};
-			gotoTileItem = MenuItemCreator.createMenuItem("Go to tile",
-					KeyEvent.VK_T, MenuItemCreator.createHotkey(KeyEvent.VK_T),
+			gotoTileItem = createMenuItem("Go to tile",
+					KeyEvent.VK_T, createHotkey(KeyEvent.VK_T),
 					"Go to a tile by coordinates", nullAction);
 			gotoTileItem.setEnabled(false);
-			findItem = MenuItemCreator.createMenuItem("Find a fixture", findKey,
+			findItem = createMenuItem("Find a fixture", findKey,
 					findStroke, "Find a fixture by name, kind, or ID#",
 					nullAction);
 			findItem.setEnabled(false);
 			nextItem =
-					MenuItemCreator.createMenuItem("Find next", nextKey,
+					createMenuItem("Find next", nextKey,
 							nextStroke,
 							"Find the next fixture matching the pattern",
 							nullAction);
@@ -233,30 +233,30 @@ public class SPMenu extends JMenuBar {
 		// VK_PLUS only works on non-US keyboards, but we leave it as the
 		// primary hotkey because it's the best to *show* in the menu.
 		final KeyStroke plusKey =
-				MenuItemCreator.createHotkey(KeyEvent.VK_PLUS);
+				createHotkey(KeyEvent.VK_PLUS);
 		final JMenuItem zoomInItem =
-				MenuItemCreator.createMenuItem("Zoom in", KeyEvent.VK_I,
+				createMenuItem("Zoom in", KeyEvent.VK_I,
 						plusKey, "Increase the visible size of each tile",
 						zoomListener);
 		final InputMap inputMap =
 				zoomInItem.getInputMap(WHEN_IN_FOCUSED_WINDOW);
-		inputMap.put(MenuItemCreator.createHotkey(KeyEvent.VK_EQUALS),
+		inputMap.put(createHotkey(KeyEvent.VK_EQUALS),
 				inputMap.get(plusKey));
-		inputMap.put(MenuItemCreator.createShiftHotkey(KeyEvent.VK_EQUALS),
+		inputMap.put(createShiftHotkey(KeyEvent.VK_EQUALS),
 				inputMap.get(plusKey));
-		inputMap.put(MenuItemCreator.createHotkey(KeyEvent.VK_ADD),
+		inputMap.put(createHotkey(KeyEvent.VK_ADD),
 				inputMap.get(plusKey));
 		retval.add(zoomInItem);
-		retval.add(MenuItemCreator.createMenuItem("Zoom out", KeyEvent.VK_O,
-				MenuItemCreator.createHotkey(KeyEvent.VK_MINUS),
+		retval.add(createMenuItem("Zoom out", KeyEvent.VK_O,
+				createHotkey(KeyEvent.VK_MINUS),
 				"Decrease the visible size of each tile", zoomListener));
 		retval.addSeparator();
-		retval.add(MenuItemCreator.createMenuItem("Center", KeyEvent.VK_C,
-				MenuItemCreator.createHotkey(KeyEvent.VK_C),
+		retval.add(createMenuItem("Center", KeyEvent.VK_C,
+				createHotkey(KeyEvent.VK_C),
 				"Center the view on the selected tile", zoomListener));
 		retval.addSeparator();
 		final PlayerChooserHandler pch = new PlayerChooserHandler(parent, model);
-		retval.add(MenuItemCreator.createMenuItem(
+		retval.add(createMenuItem(
 				PlayerChooserHandler.MENU_ITEM, KeyEvent.VK_P, null,
 				"Mark a player as the current player in the map", pch));
 		pch.addPlayerChangeListener((old, newPlayer) -> {
@@ -279,16 +279,17 @@ public class SPMenu extends JMenuBar {
 	protected static JMenu createViewMenu(final PlayerChooserHandler pch, final ActionListener al) {
 		final JMenu viewtMenu = new JMenu("View");
 		viewtMenu.setMnemonic(KeyEvent.VK_E);
-		viewtMenu.add(MenuItemCreator.createMenuItem(
+		viewtMenu.add(createMenuItem(
 				PlayerChooserHandler.MENU_ITEM, KeyEvent.VK_P,
-				MenuItemCreator.createHotkey(KeyEvent.VK_P),
+				createHotkey(KeyEvent.VK_P),
 				"Look at a different player's units and workers", pch));
-		viewtMenu.add(MenuItemCreator.createMenuItem("Reload tree",
-				KeyEvent.VK_R, MenuItemCreator.createHotkey(KeyEvent.VK_R),
+		viewtMenu.add(createMenuItem("Reload tree",
+				KeyEvent.VK_R, createHotkey(KeyEvent.VK_R),
 				"Refresh the view of the workers", e -> pch.reload()));
-		viewtMenu.add(MenuItemCreator.createMenuItem("Expand All", KeyEvent.VK_X, null, "Expand all nodes in the unit tree", al));
-		viewtMenu.add(MenuItemCreator.createMenuItem("Expand Unit Kinds", KeyEvent.VK_K, null, "Expand all unit kinds to show the units", al));
-		viewtMenu.add(MenuItemCreator.createMenuItem("Collapse All", KeyEvent.VK_C, null, "Collapse all nodes in the unit tree", al));
+		viewtMenu.add(createMenuItem("Expand All", KeyEvent.VK_X, null, "Expand all nodes in the unit tree", al));
+		viewtMenu.add(
+				createMenuItem("Expand Unit Kinds", KeyEvent.VK_K, null, "Expand all unit kinds to show the units", al));
+		viewtMenu.add(createMenuItem("Collapse All", KeyEvent.VK_C, null, "Collapse all nodes in the unit tree", al));
 		return viewtMenu;
 	}
 	/**

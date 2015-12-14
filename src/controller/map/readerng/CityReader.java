@@ -69,8 +69,8 @@ public final class CityReader implements INodeHandler<@NonNull City> {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final City fix =
 				new City(TownStatus.parseTownStatus(getAttribute(element,
-						"status")), TownSize.parseTownSize(XMLHelper
-						.getAttribute(element, "size")), XMLHelper.parseInt(
+						"status")), TownSize.parseTownSize(
+						getAttribute(element, "size")), XMLHelper.parseInt(
 						getAttribute(element, "dc"),
 						NullCleaner.assertNotNull(element.getLocation())),
 						getAttribute(element, "name", ""), getOrGenerateID(

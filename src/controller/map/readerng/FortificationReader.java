@@ -69,8 +69,8 @@ public final class FortificationReader implements INodeHandler<@NonNull Fortific
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Fortification fix =
 				new Fortification(TownStatus.parseTownStatus(getAttribute(
-						element, "status")), TownSize.parseTownSize(XMLHelper
-						.getAttribute(element, "size")), XMLHelper.parseInt(
+						element, "status")), TownSize.parseTownSize(
+						getAttribute(element, "size")), XMLHelper.parseInt(
 						getAttribute(element, "dc"),
 						NullCleaner.assertNotNull(element.getLocation())),
 						getAttribute(element, "name", ""), getOrGenerateID(

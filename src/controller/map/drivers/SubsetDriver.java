@@ -138,7 +138,7 @@ public final class SubsetDriver implements ISPDriver {
 	 */
 	private static Returns doSubsetTest(final IMapNG mainMap, final IMapNG map, final File file) {
 		try {
-			if (mainMap.isSubset(map, SystemOut.SYS_OUT, "In " + file.getName() + ':')) {
+			if (mainMap.isSubset(map, SYS_OUT, "In " + file.getName() + ':')) {
 				return Returns.OK;
 			} else {
 				System.out.flush();

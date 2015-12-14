@@ -499,7 +499,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 		final Worker retval = new Worker(name, race, idf.createID());
 		int levels = 0;
 		for (int i = 0; i < 3; i++) {
-			if (SingletonRandom.RANDOM.nextInt(20) == 0) {
+			if (RANDOM.nextInt(20) == 0) {
 				levels++;
 			}
 		}
@@ -559,7 +559,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 		final Worker retval = new Worker(name, race, idf.createID());
 		int levels = 0;
 		for (int i = 0; i < 3; i++) {
-			if (SingletonRandom.RANDOM.nextInt(20) == 0) {
+			if (RANDOM.nextInt(20) == 0) {
 				levels++;
 			}
 		}

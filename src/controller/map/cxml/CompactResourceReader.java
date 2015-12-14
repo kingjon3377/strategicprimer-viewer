@@ -208,7 +208,7 @@ public final class CompactResourceReader extends
 			break;
 		case MineralType:
 			retval = new MineralVein(getParamWithDeprecatedForm(elem, KIND_PAR,
-					"mineral", warner), Boolean.parseBoolean(getParameter(elem,
+					"mineral", warner), parseBoolean(getParameter(elem,
 					"exposed")), getDC(elem), idNum);
 			break;
 		case OrchardType:
@@ -261,7 +261,7 @@ public final class CompactResourceReader extends
 					STATUS_PAR, element.getLocation().getLineNumber()));
 		}
 		return new Meadow(getParameter(element, KIND_PAR), field,
-				Boolean.parseBoolean(getParameter(element, CULTIVATED_PARAM)),
+				parseBoolean(getParameter(element, CULTIVATED_PARAM)),
 				idNum, FieldStatus.parse(getParameter(element, STATUS_PAR,
 						FieldStatus.random(idNum).toString())));
 	}

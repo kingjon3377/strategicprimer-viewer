@@ -53,22 +53,22 @@ public final class ArrowKeyListener {
 	public static void setUpListeners(
 			final DirectionSelectionChanger selListener,
 			final InputMap inputMap, final ActionMap actionMap) {
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "up");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "down");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "right");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "left");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_DOWN, 0), "down");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD2, 0), "down");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_RIGHT, 0), "right");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD6, 0), "right");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_UP, 0), "up");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD8, 0), "up");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_KP_LEFT, 0), "left");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD4, 0), "left");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD9, 0), "up-right");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD7, 0), "up-left");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD3, 0), "down-right");
-		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD1, 0), "down-left");
+		inputMap.put(getKeyStroke(KeyEvent.VK_UP, 0), "up");
+		inputMap.put(getKeyStroke(KeyEvent.VK_DOWN, 0), "down");
+		inputMap.put(getKeyStroke(KeyEvent.VK_RIGHT, 0), "right");
+		inputMap.put(getKeyStroke(KeyEvent.VK_LEFT, 0), "left");
+		inputMap.put(getKeyStroke(KeyEvent.VK_KP_DOWN, 0), "down");
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD2, 0), "down");
+		inputMap.put(getKeyStroke(KeyEvent.VK_KP_RIGHT, 0), "right");
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD6, 0), "right");
+		inputMap.put(getKeyStroke(KeyEvent.VK_KP_UP, 0), "up");
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD8, 0), "up");
+		inputMap.put(getKeyStroke(KeyEvent.VK_KP_LEFT, 0), "left");
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD4, 0), "left");
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD9, 0), "up-right");
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD7, 0), "up-left");
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD3, 0), "down-right");
+		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD1, 0), "down-left");
 		actionMap.put("up", new UpListener(selListener, 1));
 		actionMap.put("down", new DownListener(selListener, 1));
 		actionMap.put("left", new LeftListener(selListener, 1));
@@ -81,7 +81,7 @@ public final class ArrowKeyListener {
 		if (ON_MAC) {
 			fiveMask = InputEvent.ALT_DOWN_MASK;
 		} else {
-			fiveMask = InputEvent.CTRL_DOWN_MASK;
+			fiveMask = CTRL_DOWN_MASK;
 		}
 		inputMap.put(getKeyStroke(KeyEvent.VK_UP, fiveMask), "ctrlUp");
 		inputMap.put(getKeyStroke(KeyEvent.VK_DOWN, fiveMask), "ctrlDown");

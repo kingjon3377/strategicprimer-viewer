@@ -171,7 +171,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						|| "river".equalsIgnoreCase(type)) {
 					retval.addRivers(point,
 							parseRiver(current, warner));
-					spinUntilEnd(NullCleaner.assertNotNull(current.getName()),
+					spinUntilEnd(assertNotNull(current.getName()),
 							stream);
 				} else if ("ground".equalsIgnoreCase(type)) {
 					Ground ground =
@@ -298,7 +298,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			final IteratorWrapper<XMLEvent> stream,
 			final IMutablePlayerCollection players, final IDFactory idFactory,
 			final Warning warner) throws SPFormatException {
-		final String name = NullCleaner.assertNotNull(element.getName().getLocalPart());
+		final String name = assertNotNull(element.getName().getLocalPart());
 		for (final CompactReader<? extends TileFixture> item : readers) {
 			if (item.isSupportedTag(name)) {
 				return item.read(element, stream, players, warner, idFactory);

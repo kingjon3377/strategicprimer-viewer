@@ -61,7 +61,7 @@ public final class ExplorationCLI {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(ExplorationCLI.class.getName()));
+	private static final Logger LOGGER = assertNotNull(Logger.getLogger(ExplorationCLI.class.getName()));
 	/**
 	 * The direction prompt.
 	 */
@@ -215,7 +215,7 @@ public final class ExplorationCLI {
 			swearVillages(dPoint);
 			cost += 5;
 		}
-		SystemOut.SYS_OUT.printf("The explorer comes to %s, a tile with terrain %s%n",
+		SYS_OUT.printf("The explorer comes to %s, a tile with terrain %s%n",
 				dPoint.toString(), map.getBaseTerrain(dPoint).toString());
 		if (allFixtures.isEmpty()) {
 			SYS_OUT.println("The following fixtures were automatically noticed:");

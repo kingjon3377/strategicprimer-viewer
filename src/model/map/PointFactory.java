@@ -84,8 +84,8 @@ public final class PointFactory {
 	 */
 	public static Point point(final int row, final int col) {
 		if (useCache) {
-			final Integer boxedRow = NullCleaner.assertNotNull(Integer.valueOf(row));
-			final Integer boxedCol = NullCleaner.assertNotNull(Integer.valueOf(col));
+			final Integer boxedRow = assertNotNull(Integer.valueOf(row));
+			final Integer boxedCol = assertNotNull(Integer.valueOf(col));
 			if (!POINT_CACHE.containsKey(boxedRow)) {
 				POINT_CACHE.put(boxedRow,
 						new ConcurrentHashMap<Integer, Point>());
@@ -107,8 +107,8 @@ public final class PointFactory {
 	 */
 	public static Coordinate coordinate(final int xCoord, final int yCoord) {
 		if (useCache) {
-			final Integer boxedX = NullCleaner.assertNotNull(Integer.valueOf(xCoord));
-			final Integer boxedY = NullCleaner.assertNotNull(Integer.valueOf(yCoord));
+			final Integer boxedX = assertNotNull(Integer.valueOf(xCoord));
+			final Integer boxedY = assertNotNull(Integer.valueOf(yCoord));
 			if (!C_CACHE.containsKey(boxedX)) {
 				C_CACHE.put(boxedX,
 						new ConcurrentHashMap<Integer, Coordinate>());

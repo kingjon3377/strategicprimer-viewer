@@ -129,8 +129,8 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 			final IDFactory factory) throws SPFormatException {
 		final int currentTurn;
 		final StartElement mapTag;
-		final Location outerLoc = NullCleaner.assertNotNull(element.getLocation());
-		final String outerTag = NullCleaner.assertNotNull(element.getName().getLocalPart());
+		final Location outerLoc = assertNotNull(element.getLocation());
+		final String outerTag = assertNotNull(element.getName().getLocalPart());
 		if ("view".equalsIgnoreCase(element.getName().getLocalPart())) {
 			currentTurn = XMLHelper.parseInt(
 					XMLHelper.getAttribute(element, "current_turn"), outerLoc);

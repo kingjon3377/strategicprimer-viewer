@@ -75,7 +75,7 @@ public final class CacheReader implements INodeHandler<CacheFixture> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("cache"));
+		return assertNotNull(Collections.singletonList("cache"));
 	}
 
 	/** @return the class we now ow to write */

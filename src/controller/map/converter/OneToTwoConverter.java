@@ -257,7 +257,7 @@ public final class OneToTwoConverter { // NOPMD
 				while (!fixtures.isEmpty()) {
 					Point subtile = assertNotNull(initial.get(0));
 					newMap.addFixture(subtile,
-							NullCleaner.assertNotNull(fixtures.remove(0)));
+							assertNotNull(fixtures.remove(0)));
 					newMap.addFixture(subtile, new TextFixture(//NOPMD
 							"FIXME: A fixture here was force-added after MAX_ITER",
 							NEXT_TURN));
@@ -522,7 +522,7 @@ public final class OneToTwoConverter { // NOPMD
 	private static Iterable<Point> getNeighbors(final Point point) {
 		final int row = point.row;
 		final int col = point.col;
-		return NullCleaner.assertNotNull(Arrays.asList(
+		return assertNotNull(Arrays.asList(
 				PointFactory.point(row - 1, col - 1),
 				PointFactory.point(row - 1, col),
 				PointFactory.point(row - 1, col + 1),

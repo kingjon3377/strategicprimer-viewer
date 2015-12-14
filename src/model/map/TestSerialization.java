@@ -133,7 +133,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertSerialization("River in tile",
 				encapsulateRivers(point, River.East), IMapNG.class);
 		assertSerialization("Lake in tile",
-				encapsulateRivers(point, River.Lake), IMapNG.class);
+				encapsulateRivers(point, Lake), IMapNG.class);
 		assertSerialization("Another river in tile",
 				encapsulateRivers(point, River.North), IMapNG.class);
 		final Set<River> setOne = EnumSet.noneOf(River.class);
@@ -327,7 +327,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		player.setCurrent(true);
 		one.addPlayer(player);
 		final Point point = point(0, 0);
-		one.setBaseTerrain(point, TileType.Plains);
+		one.setBaseTerrain(point, Plains);
 		assertSerialization("Simple Map serialization", one, IMapNG.class);
 		assertMissingProperty("<map version=\"2\" columns=\"1\" />",
 				IMapNG.class, "rows", false);
@@ -354,7 +354,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		players.add(player);
 		final SPMapNG one = new SPMapNG(new MapDimensions(1, 1, 2), players, 0);
 		final Point point = point(0, 0);
-		one.setBaseTerrain(point, TileType.Plains);
+		one.setBaseTerrain(point, Plains);
 		assertSerialization("Simple Map serialization", one, SPMapNG.class);
 		assertMissingProperty("<map version=\"2\" columns=\"1\" />",
 				SPMapNG.class, "rows", false);
@@ -378,7 +378,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		player.setCurrent(true);
 		one.addPlayer(player);
 		final Point point = point(0, 0);
-		one.setBaseTerrain(point, TileType.Steppe);
+		one.setBaseTerrain(point, Steppe);
 		assertSerialization("SPMapNG serialization", one, IMapNG.class);
 		assertMissingProperty("<view current_turn=\"0\">"
 				+ "<map version=\"2\" rows=\"1\" columns=\"1\" /></view>",
