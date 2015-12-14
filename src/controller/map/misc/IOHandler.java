@@ -123,6 +123,7 @@ public final class IOHandler implements ActionListener {
 			} else if ("New".equals(event.getActionCommand())) {
 				startNewViewerWindow();
 			} else if ("About".equals(event.getActionCommand())) {
+				// FIXME: This should use the title of whatever app it was called from
 				new AboutDialog(source, "Exploration Helper").setVisible(true);
 			} else if ("Load secondary".equalsIgnoreCase(event.getActionCommand())) {
 				handleSecondaryLoadMenu(source);
