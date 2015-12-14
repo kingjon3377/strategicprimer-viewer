@@ -123,7 +123,7 @@ public final class FindDialog extends JDialog implements ActionListener {
 		errorLabel.setText("");
 		errorLabel.setMinimumSize(new Dimension(200, 15));
 		errorLabel.setAlignmentX(CENTER_ALIGNMENT);
-		errorLabel.setAlignmentY(LEFT_ALIGNMENT);
+		errorLabel.setAlignmentY(TOP_ALIGNMENT);
 
 		final BoxPanel contentPane = new BoxPanel(false);
 		contentPane.add(search);

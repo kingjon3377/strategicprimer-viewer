@@ -75,7 +75,7 @@ public final class SelectTileDialog extends JDialog implements ActionListener {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		final JLabel mainLabel = new JLabel("Coordinates of tile to select:");
 		mainLabel.setAlignmentX(CENTER_ALIGNMENT);
-		mainLabel.setAlignmentY(LEFT_ALIGNMENT);
+		mainLabel.setAlignmentY(TOP_ALIGNMENT);
 
 		final BoxPanel contentPane = new BoxPanel(false);
 		contentPane.add(mainLabel);
@@ -96,7 +96,7 @@ public final class SelectTileDialog extends JDialog implements ActionListener {
 		errorLabel.setText("");
 		errorLabel.setMinimumSize(new Dimension(200, 15));
 		errorLabel.setAlignmentX(CENTER_ALIGNMENT);
-		errorLabel.setAlignmentY(LEFT_ALIGNMENT);
+		errorLabel.setAlignmentY(TOP_ALIGNMENT);
 		final BoxPanel buttonPanel = new BoxPanel(true);
 		buttonPanel.addGlue();
 		buttonPanel.add(new ListenedButton("OK", this));
