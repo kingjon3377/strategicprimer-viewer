@@ -89,25 +89,11 @@ public final class ScrollListener implements AdjustmentListener, MapChangeListen
 		final Point selPoint = map.getSelectedPoint();
 		hbar.getModel().setRangeProperties(Math.max(selPoint.col, 0), 1, 0,
 				mapDim.cols - map.getDimensions().getWidth(), false);
-		hbar.setInputVerifier(new InputVerifier() {
-			@Override
-			public boolean verify(@Nullable final JComponent input) {
-				return input instanceof JScrollBar
-						&& isInRange(0, ((JScrollBar) input).getValue(),
-								mapDim.cols - map.getDimensions().getWidth());
-			}
-		});
+		hbar.setInputVerifier(new LocalInputVerifier(mapDim, map, true));
 		vbar = vertBar;
 		vbar.getModel().setRangeProperties(Math.max(selPoint.row, 0), 1, 0,
 				mapDim.rows - map.getDimensions().getHeight(), false);
-		vbar.setInputVerifier(new InputVerifier() {
-			@Override
-			public boolean verify(@Nullable final JComponent input) {
-				return input instanceof JScrollBar
-						&& isInRange(0, ((JScrollBar) input).getValue(),
-								mapDim.rows - map.getDimensions().getHeight());
-			}
-		});
+		vbar.setInputVerifier(new LocalInputVerifier(mapDim, map, false));
 		hbar.addAdjustmentListener(this);
 		vbar.addAdjustmentListener(this);
 	}
@@ -216,5 +202,37 @@ public final class ScrollListener implements AdjustmentListener, MapChangeListen
 	@Override
 	public String toString() {
 		return "ScrollListener";
+	}
+
+	private static class LocalInputVerifier extends InputVerifier {
+		private final MapDimensions dimensions;
+		private final IViewerModel map;
+		private final boolean horiz;
+
+		public LocalInputVerifier(final MapDimensions mapDim, final IViewerModel mapModel, final boolean horizontal) {
+			dimensions = mapDim;
+			map = mapModel;
+			horiz = horizontal;
+		}
+		private int dimension() {
+			if (horiz) {
+				return dimensions.cols;
+			} else {
+				return dimensions.rows;
+			}
+		}
+		private int visibleDimension() {
+			if (horiz) {
+				return map.getDimensions().getWidth();
+			} else {
+				return map.getDimensions().getHeight();
+			}
+		}
+		@Override
+		public boolean verify(@Nullable final JComponent input) {
+			return input instanceof JScrollBar
+					&& isInRange(0, ((JScrollBar) input).getValue(),
+							dimension() - visibleDimension());
+		}
 	}
 }
