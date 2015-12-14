@@ -59,9 +59,9 @@ public final class ZoomListener implements ActionListener {
 		} else if ("zoom out".equalsIgnoreCase(evt.getActionCommand())) {
 			model.zoomOut();
 		} else if ("center".equalsIgnoreCase(evt.getActionCommand())) {
-			Point selection = model.getSelectedPoint();
-			MapDimensions dims = model.getMapDimensions();
-			VisibleDimensions vDims = model.getDimensions();
+			final Point selection = model.getSelectedPoint();
+			final MapDimensions dims = model.getMapDimensions();
+			final VisibleDimensions vDims = model.getDimensions();
 			int topRow;
 			int leftColumn;
 			if ((selection.row - vDims.getHeight() / 2) <= 0) {
@@ -78,7 +78,7 @@ public final class ZoomListener implements ActionListener {
 			} else {
 				leftColumn = selection.col - vDims.getWidth() / 2;
 			}
-			VisibleDimensions next =
+			final VisibleDimensions next = // TODO: inline
 					new VisibleDimensions(topRow, topRow + dims.getRows(),
 							leftColumn, leftColumn + dims.getColumns());
 			model.setDimensions(next);

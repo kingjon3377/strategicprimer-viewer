@@ -92,7 +92,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 				getNode(old.getKind()), oldNode },
 				new int[] { oldNode.getIndex(node) }, new Object[] { node });
 		oldNode.remove(node);
-		boolean fullProxy = false;
+		final boolean fullProxy = false;
 		if (member instanceof ProxyFor && old instanceof ProxyUnit
 				&& newOwner instanceof ProxyUnit) {
 			if (((List<IUnit>) ((ProxyUnit) old).getProxied())
@@ -100,10 +100,10 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 					&& ((List<IUnit>) ((ProxyUnit) old).getProxied())
 							.size() == ((List<? extends UnitMember>) ((ProxyFor<? extends UnitMember>) member)
 									.getProxied()).size()) {
-				Queue<UnitMember> members = new LinkedList<>();
-				Queue<IUnit> newList = new LinkedList<>();
-				Iterator<IUnit> oldIter = ((ProxyUnit) old).getProxied().iterator();
-				Iterator<IUnit> newIter = ((ProxyUnit) newOwner).getProxied().iterator();
+				final Queue<UnitMember> members = new LinkedList<>();
+				final Queue<IUnit> newList = new LinkedList<>();
+				final Iterator<IUnit> oldIter = ((ProxyUnit) old).getProxied().iterator();
+				final Iterator<IUnit> newIter = ((ProxyUnit) newOwner).getProxied().iterator();
 				for (UnitMember item : ((ProxyFor<? extends UnitMember>) member)
 						.getProxied()) {
 					assert (oldIter.hasNext() && newIter.hasNext());
@@ -127,9 +127,9 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 						new Object[] { pnode, getNode(newOwner.getKind()), newNode },
 						new int[] { newNode.getIndex(node) }, new Object[] { node });
 				@SuppressWarnings("unchecked")
-				Iterator<? extends UnitMember> iter = ((ProxyFor<? extends UnitMember>) member).getProxied().iterator();
+				final Iterator<? extends UnitMember> iter = ((ProxyFor<? extends UnitMember>) member).getProxied().iterator();
 				if (iter.hasNext()) {
-					UnitMember item = iter.next();
+					final UnitMember item = iter.next();
 					for (IUnit unit : ((ProxyUnit) newOwner).getProxied()) {
 						unit.addMember(item.copy(false));
 					}

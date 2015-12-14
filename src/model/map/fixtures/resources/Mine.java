@@ -64,7 +64,7 @@ public class Mine implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public Mine copy(final boolean zero) {
-		Mine retval = new Mine(kind, status, id);
+		final Mine retval = new Mine(kind, status, id);
 		retval.setImage(image);
 		return retval;
 	}

@@ -165,7 +165,7 @@ public final class QueryCLI implements ISPDriver {
 		if (playerNum < 0 || playerNum >= players.size()) {
 			return;
 		}
-		Player player = players.get(playerNum);
+		final Player player = players.get(playerNum);
 		int count = 0;
 		for (Point loc : map.locations()) {
 			for (TileFixture fix : map.getOtherFixtures(loc)) {
@@ -360,12 +360,12 @@ public final class QueryCLI implements ISPDriver {
 		final List<Ground> ground = new ArrayList<>();
 		final List<Forest> forests = new ArrayList<>();
 		@Nullable
-		Ground locGround = map.getGround(location);
+		final Ground locGround = map.getGround(location);
 		if (locGround != null) {
 			ground.add(locGround);
 		}
 		@Nullable
-		Forest forest = map.getForest(location);
+		final Forest forest = map.getForest(location);
 		if (forest != null) {
 			forests.add(forest);
 		}

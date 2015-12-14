@@ -128,11 +128,11 @@ public final class ComponentMouseListener extends MouseAdapter implements
 		if (map.isMountainous(point)) {
 			fixes.add(new Mountain());
 		}
-		Ground ground = map.getGround(point);
+		final Ground ground = map.getGround(point);
 		if (ground != null) {
 			fixes.add(ground);
 		}
-		Forest forest = map.getForest(point);
+		final Forest forest = map.getForest(point);
 		if (forest != null) {
 			fixes.add(forest);
 		}

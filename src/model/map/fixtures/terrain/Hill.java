@@ -50,7 +50,7 @@ public class Hill implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public Hill copy(final boolean zero) {
-		Hill retval = new Hill(id);
+		final Hill retval = new Hill(id);
 		retval.setImage(image);
 		return retval;
 	}

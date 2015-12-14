@@ -232,7 +232,7 @@ public final class TestSubsets {
 		one.addFixture(pointTwo, new Animal("animal", true, false, "status", 5));
 		one.addFixture(pointOne, new Fortification(TownStatus.Burned, TownSize.Large, 15, "fortification", 6, new Player(0, "")));
 		assertEquals("Cloned map equals original", one, one.copy(false));
-		IMapNG clone = one.copy(true);
+		final IMapNG clone = one.copy(true);
 		assertTrue("unfilled map is still a subset of zeroed clone", clone.isSubset(zero, DEV_NULL, ""));
 		// DCs, the only thing zeroed out in *map* copy() at the moment, are ignored in equals().
 		for (TileFixture fix : clone.getOtherFixtures(pointOne)) {

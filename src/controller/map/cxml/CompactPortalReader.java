@@ -65,7 +65,7 @@ public final class CompactPortalReader extends AbstractCompactReader<Portal> {
 			final IMutablePlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "portal");
-		Portal retval = new Portal(getParameter(element, "world"),
+		final Portal retval = new Portal(getParameter(element, "world"),
 				PointFactory.point(getIntegerParameter(element, "row"),
 						getIntegerParameter(element, "column")),
 				getOrGenerateID(element, warner, idFactory));

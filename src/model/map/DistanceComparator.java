@@ -13,7 +13,7 @@ public final class DistanceComparator implements Comparator<@NonNull Point> {
 	/**
 	 * The point we want to measure distance from.
 	 */
-	private Point base;
+	private final Point base;
 	/**
 	 * @param center the point we want to measure distance from
 	 */
@@ -27,8 +27,8 @@ public final class DistanceComparator implements Comparator<@NonNull Point> {
 	 */
 	@Override
 	public int compare(final Point one, final Point two) {
-		int distOne = distance(one);
-		int distTwo = distance(two);
+		final int distOne = distance(one);
+		final int distTwo = distance(two);
 		if (distOne == distTwo) {
 			return one.compareTo(two);
 		} else {
@@ -53,7 +53,7 @@ public final class DistanceComparator implements Comparator<@NonNull Point> {
 	 * @return its distance from HQ, formatted for print
 	 */
 	public String distanceString(final Point point) {
-		int dist = distance(point);
+		final int dist = distance(point);
 		if (dist == 0) {
 			return "(at HQ)";
 		} else {

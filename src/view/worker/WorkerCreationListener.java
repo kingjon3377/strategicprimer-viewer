@@ -108,7 +108,7 @@ public final class WorkerCreationListener implements ActionListener,
 	 */
 	@Override
 	public void addNewWorker(final Worker worker) {
-		IUnit local = selUnit;
+		final IUnit local = selUnit;
 		if (local == null) {
 			LOGGER.warning("New worker created when no unit selected");
 			showErrorDialog(null, NO_UNIT_TEXT);

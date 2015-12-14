@@ -51,7 +51,7 @@ public class Griffin implements MobileFixture, HasImage, UnitMember {
 	 */
 	@Override
 	public Griffin copy(final boolean zero) {
-		Griffin retval = new Griffin(id);
+		final Griffin retval = new Griffin(id);
 		retval.setImage(image);
 		return retval;
 	}

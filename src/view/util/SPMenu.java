@@ -74,7 +74,7 @@ public class SPMenu extends JMenuBar {
 			final JFrame parent, final IDriverModel model) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
-		JMenuItem newItem = MenuItemCreator.createMenuItem("New", KeyEvent.VK_N,
+		final JMenuItem newItem = MenuItemCreator.createMenuItem("New", KeyEvent.VK_N,
 				MenuItemCreator.createHotkey(KeyEvent.VK_N),
 				"Create a new, empty map the same size as the current one",
 				handler);

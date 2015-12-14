@@ -71,7 +71,7 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	 */
 	@Override
 	public RiverFixture copy(final boolean zero) {
-		RiverFixture retval = new RiverFixture();
+		final RiverFixture retval = new RiverFixture();
 		for (River river : this) {
 			retval.addRiver(river);
 		}

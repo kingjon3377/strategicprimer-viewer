@@ -37,12 +37,16 @@ public class Portal implements ExplorableFixture {
 	private String image = "";
 	/**
 	 * A string identifying the world the portal connects to.
+	 *
+	 * TODO: Should this be mutable?
 	 */
-	private String destinationWorld;
+	private final String destinationWorld;
 	/**
 	 * The coordinates in that world that the portal connects to. A negative
 	 * coordinate indicates that the coordinate needs to be generated, presumably
 	 * randomly.
+	 *
+	 * TODO: add mutator
 	 */
 	private Point destinationCoordinates;
 	/**

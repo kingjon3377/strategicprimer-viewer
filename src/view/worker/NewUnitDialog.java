@@ -153,7 +153,7 @@ public final class NewUnitDialog extends JFrame implements ActionListener,
 			} else if (kind.isEmpty()) {
 				kindField.requestFocusInWindow();
 			} else {
-				String reqId = NullCleaner.assertNotNull(idField.getText().trim());
+				final String reqId = NullCleaner.assertNotNull(idField.getText().trim());
 				int idNum;
 				if (IsNumeric.isNumeric(reqId)) {
 					try {

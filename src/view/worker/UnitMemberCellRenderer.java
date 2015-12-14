@@ -225,7 +225,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 				return icon;
 			}
 		}
-		Icon icon = getIconForFile(obj.getDefaultImage());
+		final Icon icon = getIconForFile(obj.getDefaultImage());
 		if (icon == null) {
 			return defaultFixtIcon;
 		} else {

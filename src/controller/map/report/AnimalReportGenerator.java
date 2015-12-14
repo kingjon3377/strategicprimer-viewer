@@ -67,7 +67,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
 		final Map<String, List<Point>> items = new HashMap<>();
-		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Animal) {
@@ -121,7 +121,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
 		final Map<String, AbstractReportNode> items = new HashMap<>();
-		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Animal) {

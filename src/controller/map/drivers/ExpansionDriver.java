@@ -154,7 +154,7 @@ public final class ExpansionDriver implements ISPDriver {
 		if (!(map instanceof IMutableMapNG)) {
 			return false;
 		}
-		IMutableMapNG lmap = (IMutableMapNG) map;
+		final IMutableMapNG lmap = (IMutableMapNG) map;
 		final Player player = map.getCurrentPlayer();
 		final Map<Point, TileType> terrainAdditions = new HashMap<>();
 		final Map<Point, Set<TileFixture>> fixAdditions = new HashMap<>();
@@ -352,7 +352,7 @@ public final class ExpansionDriver implements ISPDriver {
 		if (map.containsKey(key)) {
 			return map.get(key);
 		} else {
-			Set<V> retval = new ArraySet<>();
+			final Set<V> retval = new ArraySet<>();
 			map.put(key, retval);
 			return retval;
 		}

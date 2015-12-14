@@ -57,7 +57,7 @@ public final class MapPopulatorDriver implements ISPDriver {
 	 */
 	private static boolean isSuitable(final IMapNG map,
 			final Point location) {
-		TileType terrain = map.getBaseTerrain(location);
+		final TileType terrain = map.getBaseTerrain(location);
 		// Hares won't appear in mountains, forests, or ocean.
 		if (map.isMountainous(location)) {
 			return false;
@@ -137,7 +137,7 @@ public final class MapPopulatorDriver implements ISPDriver {
 			throw new DriverFailedException("Need one argument",
 					new IllegalArgumentException("Need one argument"));
 		}
-		MapReaderAdapter reader = new MapReaderAdapter();
+		final MapReaderAdapter reader = new MapReaderAdapter();
 		final IDriverModel model = reader.readMapModel(new File(args[0]), new Warning(Action.Warn));
 		populate(model.getMap());
 		reader.writeModel(model);
@@ -149,7 +149,7 @@ public final class MapPopulatorDriver implements ISPDriver {
 	 * @param map the map
 	 */
 	private static void populate(final IMutableMapNG map) {
-		IDFactory idf = IDFactoryFiller.createFactory(map);
+		final IDFactory idf = IDFactoryFiller.createFactory(map);
 		for (Point location : map.locations()) {
 			if (isSuitable(map, location)
 					&& SingletonRandom.RANDOM.nextDouble() < chance()) {

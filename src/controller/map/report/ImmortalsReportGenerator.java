@@ -93,7 +93,7 @@ public final class ImmortalsReportGenerator extends AbstractReportGenerator<Mobi
 		final List<Point> simurghs = new ArrayList<>();
 		final List<Point> griffins = new ArrayList<>();
 
-		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			final Point point = pair.first();
@@ -199,7 +199,7 @@ public final class ImmortalsReportGenerator extends AbstractReportGenerator<Mobi
 		final AbstractReportNode phoenixes = new ListReportNode("Phoenixes");
 		final AbstractReportNode simurghs = new ListReportNode("Simurghs");
 		final AbstractReportNode griffins = new ListReportNode("Griffins");
-		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			final Point point = pair.first();
@@ -410,7 +410,7 @@ public final class ImmortalsReportGenerator extends AbstractReportGenerator<Mobi
 		if (mapping.containsKey(item.toString())) {
 			return NullCleaner.assertNotNull(mapping.get(item.toString()));
 		} else {
-			AbstractReportNode retval = new ListReportNode(
+			final AbstractReportNode retval = new ListReportNode(
 					NullCleaner.assertNotNull(item.toString()));
 			mapping.put(item.toString(), retval);
 			return retval;

@@ -54,7 +54,7 @@ public final class JobsListModel extends DefaultListModel<IJob> implements
 	 */
 	@Override
 	public void add(final String category, final String addendum) {
-		IWorker local = worker;
+		final IWorker local = worker;
 		if ("job".equals(category) && local != null) {
 			final Job job = new Job(addendum, 0);
 			local.addJob(job);

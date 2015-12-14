@@ -145,7 +145,7 @@ public final class DuplicateFixtureRemover implements ISPDriver {
 					new IllegalArgumentException("Need at least one argument"));
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		IMultiMapModel model = reader.readMultiMapModel(Warning.INSTANCE,
+		final IMultiMapModel model = reader.readMultiMapModel(Warning.INSTANCE,
 				new File(args[0]), MapReaderAdapter.namesToFiles(true, args));
 		startDriver(model);
 		reader.writeModel(model);

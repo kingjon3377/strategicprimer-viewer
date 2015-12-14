@@ -93,7 +93,7 @@ public final class ExplorableReportGenerator extends AbstractReportGenerator<Exp
 		// I doubt this will ever be over a K either
 		final StringBuilder adventureBuilder = new StringBuilder(1024)
 				.append("<h4>Possible Adventures</h4>").append(OPEN_LIST);
-		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Cave) {
@@ -166,7 +166,7 @@ public final class ExplorableReportGenerator extends AbstractReportGenerator<Exp
 		final AbstractReportNode caves = new ListReportNode("Caves");
 		final AbstractReportNode battles = new ListReportNode("Battlefields");
 		final AbstractReportNode portals = new ListReportNode("Portals");
-		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Cave) {

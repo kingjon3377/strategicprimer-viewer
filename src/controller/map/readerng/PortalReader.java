@@ -69,7 +69,7 @@ public final class PortalReader implements INodeHandler<@NonNull Portal> {
 			final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		Portal retval =
+		final Portal retval =
 				new Portal(
 						XMLHelper.getAttribute(element, "world"),
 						PointFactory.point(XMLHelper.parseInt(XMLHelper
@@ -109,7 +109,7 @@ public final class PortalReader implements INodeHandler<@NonNull Portal> {
 		final SPIntermediateRepresentation retval =
 				new SPIntermediateRepresentation("portal", Pair.of("world",
 						obj.getDestinationWorld()));
-		Point dest = obj.getDestinationCoordinates();
+		final Point dest = obj.getDestinationCoordinates();
 		retval.addIntegerAttribute("row", dest.row);
 		retval.addIntegerAttribute("column", dest.col);
 		retval.addIdAttribute(obj.getID());

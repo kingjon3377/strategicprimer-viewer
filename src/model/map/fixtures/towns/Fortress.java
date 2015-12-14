@@ -86,7 +86,7 @@ public class Fortress implements HasImage, ITownFixture,
 	 */
 	@Override
 	public Fortress copy(final boolean zero) {
-		Fortress retval = new Fortress(owner, name, id);
+		final Fortress retval = new Fortress(owner, name, id);
 		if (!zero) {
 			for (FortressMember unit : this) {
 				retval.addMember(unit.copy(false));

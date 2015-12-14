@@ -171,7 +171,7 @@ IExplorationModel {
 			throw new IllegalStateException(
 					"move() called when no unit selected");
 		}
-		IMutableMapNG map = getMap();
+		final IMutableMapNG map = getMap();
 		final Point point = selUnitLoc;
 		final Point dest = getDestination(point, direction);
 		if (SimpleMovement.isLandMovementPossible(map.getBaseTerrain(dest))) {
@@ -228,7 +228,7 @@ IExplorationModel {
 	 */
 	private static void checkAllNearbyWatchers(final IMapNG map, final IUnit unit,
 			final Point dest) {
-		MapDimensions dims = map.dimensions();
+		final MapDimensions dims = map.dimensions();
 		final Set<Point> done = new HashSet<>(25);
 		for (final Point point : new SurroundingPointIterable(dest, dims)) {
 			if (done.contains(point)) {

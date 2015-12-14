@@ -161,7 +161,7 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 			return false;
 		} else if (obj instanceof ResourcePile) {
 			boolean retval = true;
-			String ctxt = String.format("%s\tIn Resource Pile, ID #%d: ",
+			final String ctxt = String.format("%s\tIn Resource Pile, ID #%d: ",
 					context, Integer.valueOf(id));
 			if (!kind.equals(((ResourcePile) obj).getKind())) {
 				ostream.append(ctxt);

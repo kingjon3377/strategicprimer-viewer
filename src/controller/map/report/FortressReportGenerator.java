@@ -93,7 +93,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 				new StringBuilder(16384)
 				.append("<h4>Foreign fortresses in the map:</h4>\n");
 		boolean anyforts = false;
-		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Fortress) {
@@ -138,7 +138,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 				"Your fortresses in the map:");
 		final AbstractReportNode foreign = new SectionReportNode(4,
 				"Foreign fortresses in the map:");
-		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Fortress) {
@@ -178,7 +178,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 				"Surrounding terrain: ").append(
 						map.getBaseTerrain(point).toXML().replace('_', ' '));
 		boolean hasForest = false;
-		Forest forest = map.getForest(point);
+		final Forest forest = map.getForest(point);
 		if (forest != null) {
 			builder.append(", forested with ").append(forest.getKind());
 			hasForest = true;
@@ -295,7 +295,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			builder.append(riversToString(copy));
 		}
 		if (item.iterator().hasNext()) {
-			List<FortressMember> contents = new ArrayList<>();
+			final List<FortressMember> contents = new ArrayList<>();
 			builder.append(OPEN_LIST_ITEM).append("Units on the tile:\n")
 			.append(OPEN_LIST);
 			for (final FortressMember member : item) {

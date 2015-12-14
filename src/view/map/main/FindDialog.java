@@ -106,7 +106,7 @@ public final class FindDialog extends JDialog implements ActionListener {
 	/**
 	 * The frame that is this frame's parent.
 	 */
-	private Frame parentFrame;
+	private final Frame parentFrame;
 
 	/**
 	 * Constructor.

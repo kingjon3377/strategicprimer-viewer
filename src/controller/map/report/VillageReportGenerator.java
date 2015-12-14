@@ -68,7 +68,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 				"<h4>Villages you know about:</h4>");
 		final HeadedList<String> own = new HtmlList(
 				"<h4>Villages pledged to your service:</h4>");
-		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Village) {
@@ -105,7 +105,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 				"Villages you know about:");
 		final AbstractReportNode own = new SectionListReportNode(5,
 				"Villages pledged to your service:");
-		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Village) {

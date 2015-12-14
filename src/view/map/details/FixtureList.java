@@ -185,7 +185,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		private void handleMouseEvent(@Nullable final MouseEvent event) {
 			if (event != null && event.isPopupTrigger()
 					&& event.getClickCount() == 1) {
-				int index = locationToIndex(event.getPoint());
+				final int index = locationToIndex(event.getPoint());
 				if (index >= 0 && index < getModel().getSize()) {
 					new FixtureEditMenu(getModel().getElementAt(
 							locationToIndex(event.getPoint())), players).show(

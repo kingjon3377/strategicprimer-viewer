@@ -52,7 +52,7 @@ public class Troll implements MobileFixture, HasImage, UnitMember {
 	 */
 	@Override
 	public Troll copy(final boolean zero) {
-		Troll retval = new Troll(id);
+		final Troll retval = new Troll(id);
 		retval.setImage(image);
 		return retval;
 	}

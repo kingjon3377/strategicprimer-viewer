@@ -155,8 +155,8 @@ public final class WorkerMgmtFrame extends JFrame {
 			keyMask = InputEvent.CTRL_DOWN_MASK;
 			keyDesc = ": (Ctrl+U)";
 		}
-		InputMap inputMap = tree.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-		ActionMap actionMap = tree.getActionMap();
+		final InputMap inputMap = tree.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		final ActionMap actionMap = tree.getActionMap();
 		assert (inputMap != null && actionMap != null);
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_U, keyMask), "openUnits");
 		actionMap.put("openUnits", new AbstractAction() {
@@ -212,7 +212,7 @@ public final class WorkerMgmtFrame extends JFrame {
 					@Nullable final Object value, final boolean selected,
 					final boolean expanded, final boolean leaf, final int row,
 					final boolean hasFocus) {
-				Component retval = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+				final Component retval = super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
 				if (value instanceof AbstractReportNode) {
 					final Point point = ((AbstractReportNode) value).getPoint();
 					// (-inf, -inf) replaces null
@@ -234,11 +234,11 @@ public final class WorkerMgmtFrame extends JFrame {
 					SystemOut.SYS_OUT.println("MouseEvent was null");
 					return;
 				}
-				TreePath selPath = report.getPathForLocation(evt.getX(), evt.getY());
+				final TreePath selPath = report.getPathForLocation(evt.getX(), evt.getY());
 				if (selPath == null) {
 					return;
 				}
-				Object node = selPath.getLastPathComponent();
+				final Object node = selPath.getLastPathComponent();
 				if ((evt.isControlDown() || evt.isMetaDown()) && node instanceof AbstractReportNode) {
 					final Point point = ((AbstractReportNode) node).getPoint();
 					// (-inf, -inf) replaces null
@@ -254,7 +254,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		model.addMapChangeListener(reportUpdater);
 		final MemberDetailPanel mdp = new MemberDetailPanel();
 		tree.addUnitMemberListener(mdp);
-		StrategyExporter strategyExporter = new StrategyExporter(smodel, wtmodel);
+		final StrategyExporter strategyExporter = new StrategyExporter(smodel, wtmodel);
 		setContentPane(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT, HALF_WAY,
 				HALF_WAY,
 				new SplitWithWeights(JSplitPane.VERTICAL_SPLIT, TWO_THIRDS, TWO_THIRDS,
@@ -317,7 +317,7 @@ public final class WorkerMgmtFrame extends JFrame {
 				return ((ViewerFrame) frame).getModel();
 			}
 		}
-		ViewerFrame frame = new ViewerFrame(
+		final ViewerFrame frame = new ViewerFrame(
 				new ViewerModel(model.getMap(), model.getMapFile()), ioh);
 		frame.setVisible(true);
 		return frame.getModel();

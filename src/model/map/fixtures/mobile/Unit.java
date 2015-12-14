@@ -101,7 +101,7 @@ public class Unit implements IUnit {
 	 */
 	@Override
 	public Unit copy(final boolean zero) {
-		Unit retval = new Unit(owner, kind, name, id);
+		final Unit retval = new Unit(owner, kind, name, id);
 		if (!zero) {
 			retval.setOrders(orders);
 			for (UnitMember member : this) {

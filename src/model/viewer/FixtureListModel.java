@@ -67,17 +67,17 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	public void selectedPointChanged(@Nullable final Point old,
 			final Point newPoint) {
 		clear();
-		IMapNG map = dmodel.getMap();
+		final IMapNG map = dmodel.getMap();
 		final TileType base = map.getBaseTerrain(newPoint);
 		if (!TileType.NotVisible.equals(base)) {
 			addElement(new TileTypeFixture(base));
 		}
-		Iterable<River> rivers = map.getRivers(newPoint);
+		final Iterable<River> rivers = map.getRivers(newPoint);
 		if (rivers.iterator().hasNext()) {
 			if (rivers instanceof TileFixture) {
 				addElement((TileFixture) rivers);
 			} else {
-				RiverFixture rfixt = new RiverFixture();
+				final RiverFixture rfixt = new RiverFixture();
 				for (River river : rivers) {
 					rfixt.addRiver(river);
 				}
@@ -104,7 +104,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 * @param fix the fixture to add.
 	 */
 	public void addFixture(final TileFixture fix) {
-		IMutableMapNG map = dmodel.getMap();
+		final IMutableMapNG map = dmodel.getMap();
 		if (fix instanceof Ground && map.getGround(point) == null) {
 			map.setGround(point, (Ground) fix);
 			selectedPointChanged(null, point);
@@ -133,7 +133,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 */
 	public void remove(@Nullable final Iterable<TileFixture> list) {
 		if (list != null) {
-			IMutableMapNG map = dmodel.getMap();
+			final IMutableMapNG map = dmodel.getMap();
 			for (final TileFixture fix : list) {
 				if (fix instanceof TileTypeFixture) {
 					map.setBaseTerrain(point, TileType.NotVisible);

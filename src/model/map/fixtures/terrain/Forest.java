@@ -72,7 +72,7 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	 */
 	@Override
 	public Forest copy(final boolean zero) {
-		Forest retval = new Forest(trees, rows);
+		final Forest retval = new Forest(trees, rows);
 		retval.setImage(image);
 		return retval;
 	}

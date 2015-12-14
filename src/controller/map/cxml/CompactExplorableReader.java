@@ -94,7 +94,7 @@ public final class CompactExplorableReader
 		requireTag(elem, "battlefield", "cave");
 		final int idNum = getOrGenerateID(elem, warner, idFactory);
 		final ExplorableFixture retval;
-		String tag = elem.getName().getLocalPart();
+		final String tag = elem.getName().getLocalPart();
 		if ("battlefield".equalsIgnoreCase(tag)) {
 			retval = new Battlefield(getDC(elem), idNum);
 		} else if ("cave".equalsIgnoreCase(tag)) {

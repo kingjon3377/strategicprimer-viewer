@@ -76,7 +76,7 @@ public class AdventureFixture implements ExplorableFixture, HasOwner {
 	 */
 	@Override
 	public AdventureFixture copy(final boolean zero) {
-		AdventureFixture retval = new AdventureFixture(owner, briefDesc, fullDesc, id);
+		final AdventureFixture retval = new AdventureFixture(owner, briefDesc, fullDesc, id);
 		retval.setImage(image);
 		return retval;
 	}

@@ -105,8 +105,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		requireTag(element, "map", "view");
 		final int currentTurn;
 		final StartElement mapTag;
-		Location outerLoc = assertNotNull(element.getLocation());
-		String outerTag = assertNotNull(element.getName().getLocalPart());
+		final Location outerLoc = assertNotNull(element.getLocation());
+		final String outerTag = assertNotNull(element.getName().getLocalPart());
 		final int outerLine = outerLoc.getLineNumber();
 		if ("view".equalsIgnoreCase(outerTag)) {
 			currentTurn = getIntegerParameter(element, "current_turn");
@@ -126,7 +126,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				new MapDimensions(getIntegerParameter(mapTag, "rows"),
 						getIntegerParameter(mapTag, "columns"),
 						getIntegerParameter(mapTag, "version"));
-		SPMapNG retval = new SPMapNG(dimensions, players, currentTurn);
+		final SPMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		final Point nullPoint = PointFactory.point(-1, -1);
 		Point point = nullPoint;
 		for (final XMLEvent event : stream) {
@@ -244,8 +244,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	private static void addFixture(final IMutableMapNG map, final Point point,
 			final TileFixture fix) {
 		if (fix instanceof Ground) {
-			Ground ground = (Ground) fix;
-			Ground oldGround = map.getGround(point);
+			final Ground ground = (Ground) fix;
+			final Ground oldGround = map.getGround(point);
 			if (oldGround == null) {
 				map.setGround(point, ground);
 			} else if (ground.isExposed() && !oldGround.isExposed()) {

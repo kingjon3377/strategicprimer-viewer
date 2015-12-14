@@ -53,7 +53,7 @@ public class Sphinx implements MobileFixture, HasImage, UnitMember {
 	 */
 	@Override
 	public Sphinx copy(final boolean zero) {
-		Sphinx retval = new Sphinx(id);
+		final Sphinx retval = new Sphinx(id);
 		retval.setImage(image);
 		return retval;
 	}

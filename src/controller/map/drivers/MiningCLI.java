@@ -61,7 +61,7 @@ public final class MiningCLI {
 			System.exit(1);
 			return;
 		}
-		int index;
+		final int index;
 		try {
 			index = NumberFormat.getIntegerInstance().parse(args[1]).intValue();
 		} catch (final ParseException e) {

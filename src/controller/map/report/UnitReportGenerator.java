@@ -310,7 +310,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 				new StringBuilder(8192).append("<h5>Foreign units</h5>\n");
 		foreign.append(OPEN_LIST);
 		boolean anyForeign = false;
-		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Unit) {
@@ -369,7 +369,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 				new SectionListReportNode(5, "Your units");
 		final AbstractReportNode theirs =
 				new SectionListReportNode(5, "Foreign units");
-		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Unit) {

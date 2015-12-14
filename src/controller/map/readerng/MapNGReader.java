@@ -89,7 +89,8 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	 */
 	private static List<String> tags;
 	static {
-		List<String> temp = new ArrayList<>();
+		// FIXME: Use Arrays.asList
+		final List<String> temp = new ArrayList<>();
 		temp.add("map");
 		temp.add("view");
 		tags = assertNotNull(Collections.unmodifiableList(temp));
@@ -128,8 +129,8 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 			final IDFactory factory) throws SPFormatException {
 		final int currentTurn;
 		final StartElement mapTag;
-		Location outerLoc = NullCleaner.assertNotNull(element.getLocation());
-		String outerTag = NullCleaner.assertNotNull(element.getName().getLocalPart());
+		final Location outerLoc = NullCleaner.assertNotNull(element.getLocation());
+		final String outerTag = NullCleaner.assertNotNull(element.getName().getLocalPart());
 		if ("view".equalsIgnoreCase(element.getName().getLocalPart())) {
 			currentTurn = XMLHelper.parseInt(
 					XMLHelper.getAttribute(element, "current_turn"), outerLoc);
@@ -146,7 +147,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 			throw new UnwantedChildException("xml", assertNotNull(outerTag),
 					outerLoc.getLineNumber());
 		}
-		Location mapTagLocation = assertNotNull(mapTag.getLocation());
+		final Location mapTagLocation = assertNotNull(mapTag.getLocation());
 		final MapDimensions dimensions = new MapDimensions(
 				XMLHelper.parseInt(XMLHelper.getAttribute(mapTag, "rows"),
 						mapTagLocation),
@@ -154,7 +155,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 						mapTagLocation),
 				XMLHelper.parseInt(XMLHelper.getAttribute(mapTag, "version"),
 						mapTagLocation));
-		SPMapNG retval = new SPMapNG(dimensions, players, currentTurn);
+		final SPMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		final Point nullPoint = PointFactory.point(-1, -1);
 		Point point = nullPoint;
 		for (final XMLEvent event : stream) {
@@ -282,8 +283,8 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	private static void addFixture(final IMutableMapNG map, final Point point,
 			final TileFixture fix) {
 		if (fix instanceof Ground) {
-			Ground ground = (Ground) fix;
-			Ground oldGround = map.getGround(point);
+			final Ground ground = (Ground) fix;
+			final Ground oldGround = map.getGround(point);
 			if (oldGround == null) {
 				map.setGround(point, ground);
 			} else if (ground.isExposed() && !oldGround.isExposed()) {

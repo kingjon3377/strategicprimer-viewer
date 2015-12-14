@@ -92,21 +92,21 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	 * Constructor: lay out, then clear, the panel.
 	 */
 	public MemberDetailPanel() {
-		GroupLayout layout = new GroupLayout(this);
+		final GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
 		layout.setAutoCreateGaps(true);
 		layout.setAutoCreateContainerGaps(true);
-		JLabel header = new JLabel("<html><h2>Unit Member Details:</h2></html>");
-		JLabel typeCaption = new JLabel("<html><b>Member Type:</b></html>");
-		JLabel nameCaption = new JLabel("<html><b>Name:</b></html>");
-		JLabel kindCaption = new JLabel("<html><b>Race or Kind:</b></html>");
-		JLabel strCaption = new JLabel("<html><b>Str:</b></html>");
-		JLabel dexCaption = new JLabel("<html><b>Dex:</b></html>");
-		JLabel conCaption = new JLabel("<html><b>Con:</b></html>");
-		JLabel intCaption = new JLabel("<html><b>Int:</b></html>");
-		JLabel wisCaption = new JLabel("<html><b>Wis:</b></html>");
-		JLabel chaCaption = new JLabel("<html><b>Cha:</b></html>");
-		JLabel jobsCaption = new JLabel("<html><b>Job Levels:</b></html>");
+		final JLabel header = new JLabel("<html><h2>Unit Member Details:</h2></html>");
+		final JLabel typeCaption = new JLabel("<html><b>Member Type:</b></html>");
+		final JLabel nameCaption = new JLabel("<html><b>Name:</b></html>");
+		final JLabel kindCaption = new JLabel("<html><b>Race or Kind:</b></html>");
+		final JLabel strCaption = new JLabel("<html><b>Str:</b></html>");
+		final JLabel dexCaption = new JLabel("<html><b>Dex:</b></html>");
+		final JLabel conCaption = new JLabel("<html><b>Con:</b></html>");
+		final JLabel intCaption = new JLabel("<html><b>Int:</b></html>");
+		final JLabel wisCaption = new JLabel("<html><b>Wis:</b></html>");
+		final JLabel chaCaption = new JLabel("<html><b>Cha:</b></html>");
+		final JLabel jobsCaption = new JLabel("<html><b>Job Levels:</b></html>");
 		layout.setVerticalGroup(layout.createSequentialGroup()
 				.addComponent(header)
 				.addGroup(layout.createParallelGroup().addComponent(typeCaption)
@@ -182,7 +182,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			@Nullable final UnitMember selected) {
 		if (selected instanceof ProxyFor) {
 			@SuppressWarnings("unchecked")
-			Iterator<? extends UnitMember> iter = ((ProxyFor<? extends UnitMember>) selected)
+			final Iterator<? extends UnitMember> iter = ((ProxyFor<? extends UnitMember>) selected)
 					.getProxied().iterator();
 			if (iter.hasNext()) {
 				memberSelected(old, iter.next());
@@ -198,7 +198,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	 * Invalidate and recompute the display.
 	 */
 	private void recache() {
-		UnitMember local = current;
+		final UnitMember local = current;
 		if (local == null) {
 			typeLabel.setText("");
 			nameLabel.setText("");
@@ -214,7 +214,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			typeLabel.setText("Worker");
 			nameLabel.setText(((Worker) local).getName());
 			kindLabel.setText(((Worker) local).getKind());
-			WorkerStats stats = ((Worker) local).getStats();
+			final WorkerStats stats = ((Worker) local).getStats();
 			if (stats == null) {
 				strLabel.setText("");
 				dexLabel.setText("");

@@ -47,28 +47,28 @@ public final class TestProxyWorker {
 	 */
 	@Test
 	public void testProxyWorker() {
-		Worker one = new Worker("one", "human", 1, new Job("jobOne", 1,
+		final Worker one = new Worker("one", "human", 1, new Job("jobOne", 1,
 				new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
-		Worker two = new Worker("two", "elf", 2, new Job("jobTwo", 1,
+		final Worker two = new Worker("two", "elf", 2, new Job("jobTwo", 1,
 				new Skill("skillThree", 1, 19), new Skill("skillFour", 0, 99)));
-		Worker three = new Worker("three", "dwarf", 5);
-		ProxyWorker proxy = new ProxyWorker(one, two, three);
+		final Worker three = new Worker("three", "dwarf", 5);
+		final ProxyWorker proxy = new ProxyWorker(one, two, three);
 		for (IJob job : proxy) {
 			for (ISkill skill : job) {
 				skill.addHours(10, 100);
 			}
 		}
-		Worker oneCopy = new Worker("one", "human", 1,
+		final Worker oneCopy = new Worker("one", "human", 1,
 				new Job("jobOne", 1, new Skill("skillOne", 0, 15),
 						new Skill("skillTwo", 2, 16)),
 				new Job("jobTwo", 0, new Skill("skillThree", 0, 10),
 						new Skill("skillFour", 0, 10)));
-		Worker twoCopy = new Worker("two", "elf", 2,
+		final Worker twoCopy = new Worker("two", "elf", 2,
 				new Job("jobOne", 0, new Skill("skillOne", 0, 10),
 						new Skill("skillTwo", 0, 10)),
 				new Job("jobTwo", 1, new Skill("skillThree", 1, 29),
 						new Skill("skillFour", 1, 0)));
-		Worker threeCopy = new Worker("three", "dwarf", 5,
+		final Worker threeCopy = new Worker("three", "dwarf", 5,
 				new Job("jobOne", 0, new Skill("skillOne", 0, 10),
 						new Skill("skillTwo", 0, 10)),
 				new Job("jobTwo", 0, new Skill("skillThree", 0, 10),
@@ -89,22 +89,22 @@ public final class TestProxyWorker {
 	 */
 	@Test
 	public void testProxyUnit() throws IOException {
-		Worker one = new Worker("one", "human", 1, new Job("jobOne", 1,
+		final Worker one = new Worker("one", "human", 1, new Job("jobOne", 1,
 				new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
-		Worker two = new Worker("two", "elf", 2, new Job("jobTwo", 1,
+		final Worker two = new Worker("two", "elf", 2, new Job("jobTwo", 1,
 				new Skill("skillThree", 1, 19), new Skill("skillFour", 0, 99)));
-		Worker oneCopy = one.copy(false);
-		Worker twoCopy = two.copy(false);
-		Worker oneOrig = one.copy(false);
-		Worker twoOrig = two.copy(false);
+		final Worker oneCopy = one.copy(false);
+		final Worker twoCopy = two.copy(false);
+		final Worker oneOrig = one.copy(false);
+		final Worker twoOrig = two.copy(false);
 		final Player player = new Player(3, "");
-		Unit unitOne = new Unit(player, "unitKInd", "unitName", 4);
-		Unit unitTwo = unitOne.copy(false);
+		final Unit unitOne = new Unit(player, "unitKInd", "unitName", 4);
+		final Unit unitTwo = unitOne.copy(false);
 		unitOne.addMember(one);
 		unitOne.addMember(two);
 		unitTwo.addMember(oneCopy);
 		unitTwo.addMember(twoCopy);
-		ProxyUnit proxy = new ProxyUnit(4);
+		final ProxyUnit proxy = new ProxyUnit(4);
 		proxy.addProxied(unitOne);
 		proxy.addProxied(unitTwo);
 		for (UnitMember member : proxy) {
@@ -143,21 +143,21 @@ public final class TestProxyWorker {
 				new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
 		Worker two = new Worker("two", "elf", 2, new Job("jobTwo", 1,
 				new Skill("skillThree", 1, 19), new Skill("skillFour", 0, 99)));
-		Worker oneCopy = one.copy(false);
-		Worker twoCopy = two.copy(false);
-		Worker oneOrig = one.copy(false);
-		Worker twoOrig = two.copy(false);
+		final Worker oneCopy = one.copy(false);
+		final Worker twoCopy = two.copy(false);
+		final Worker oneOrig = one.copy(false);
+		final Worker twoOrig = two.copy(false);
 		final Player player = new Player(3, "");
-		Unit unitOne = new Unit(player, "unitKInd", "unitName", 4);
-		Unit unitTwo = unitOne.copy(false);
+		final Unit unitOne = new Unit(player, "unitKInd", "unitName", 4);
+		final Unit unitTwo = unitOne.copy(false);
 		unitOne.addMember(one);
 		unitOne.addMember(two);
 		unitTwo.addMember(oneCopy);
 		unitTwo.addMember(twoCopy);
-		ProxyUnit proxy = new ProxyUnit(4);
+		final ProxyUnit proxy = new ProxyUnit(4);
 		proxy.addProxied(unitOne);
 		proxy.addProxied(unitTwo);
-		ProxyWorker meta = new ProxyWorker(proxy);
+		final ProxyWorker meta = new ProxyWorker(proxy);
 		for (IJob job : meta) {
 			for (ISkill skill : job) {
 				skill.addHours(10, 100);

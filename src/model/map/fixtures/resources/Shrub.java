@@ -57,7 +57,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public Shrub copy(final boolean zero) {
-		Shrub retval = new Shrub(description, id);
+		final Shrub retval = new Shrub(description, id);
 		retval.setImage(image);
 		return retval;
 	}

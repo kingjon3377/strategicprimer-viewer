@@ -60,7 +60,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	/**
 	 * The names of skills we're proxying.
 	 */
-	private Set<String> skillNames;
+	private final Set<String> skillNames;
 
 	/**
 	 * @param nomen
@@ -117,7 +117,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	 */
 	@Override
 	public IJob copy(final boolean zero) {
-		ProxyJob retval = new ProxyJob(name, parallel);
+		final ProxyJob retval = new ProxyJob(name, parallel);
 		for (IJob job : proxiedJobs) {
 			retval.addProxied(job.copy(zero));
 		}

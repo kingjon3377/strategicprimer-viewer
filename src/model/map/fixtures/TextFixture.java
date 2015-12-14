@@ -64,7 +64,7 @@ public class TextFixture implements TileFixture, HasImage {
 	 */
 	@Override
 	public TextFixture copy(final boolean zero) {
-		TextFixture retval = new TextFixture(text, turn);
+		final TextFixture retval = new TextFixture(text, turn);
 		retval.setImage(image);
 		return retval;
 	}

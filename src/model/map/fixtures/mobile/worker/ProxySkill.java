@@ -71,7 +71,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	 */
 	@Override
 	public ISkill copy(final boolean zero) {
-		ProxySkill retval = new ProxySkill(name, parallel);
+		final ProxySkill retval = new ProxySkill(name, parallel);
 		for (IJob job : proxied) {
 			retval.addProxied(job.copy(zero));
 		}
@@ -142,7 +142,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	public void addHours(final int hrs, final int condition) {
 		final Random random = new Random(condition);
 		if (parallel) {
-			int seed = condition;
+			final int seed = condition;
 			for (final IJob job : proxied) {
 				boolean touched = false;
 				for (final ISkill skill : job) {

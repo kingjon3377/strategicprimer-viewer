@@ -54,7 +54,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	/**
 	 * The units we're a proxy for.
 	 */
-	private List<IUnit> proxied = new ArrayList<>();
+	private final List<IUnit> proxied = new ArrayList<>();
 	/**
 	 * @param unit a unit to start proxying
 	 */
@@ -74,7 +74,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	@Override
 	public IUnit copy(final boolean zero) {
-		ProxyUnit retval = new ProxyUnit(id);
+		final ProxyUnit retval = new ProxyUnit(id);
 		for (IUnit unit : proxied) {
 			retval.addProxied(unit.copy(zero));
 		}
@@ -218,7 +218,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	@Override
 	public Iterator<UnitMember> iterator() {
-		Map<Integer, UnitMember> map = new TreeMap<>();
+		final Map<Integer, UnitMember> map = new TreeMap<>();
 		for (IUnit unit : proxied) {
 			for (UnitMember member : unit) {
 				// Warning suppressed because the type in the map is really
@@ -409,7 +409,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		/**
 		 * The proxied unit members.
 		 */
-		private List<UnitMember> proxiedMembers = new ArrayList<>();
+		private final List<UnitMember> proxiedMembers = new ArrayList<>();
 		/**
 		 * No-arg no-op constructor for use in copy().
 		 */
@@ -429,7 +429,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		 */
 		@Override
 		public ProxyMember copy(final boolean zero) {
-			ProxyMember retval = new ProxyMember();
+			final ProxyMember retval = new ProxyMember();
 			for (UnitMember member : proxiedMembers) {
 				retval.addProxied(member.copy(zero));
 			}

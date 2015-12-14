@@ -162,7 +162,7 @@ public final class SelectTileDialog extends JDialog implements ActionListener {
 	 */
 	private static State checkNumber(final String text, final int bound) {
 		try {
-			int num = NUM_PARSER.parse(text).intValue();
+			final int num = NUM_PARSER.parse(text).intValue();
 			if (num < 0) {
 				return State.Negative;
 			} else if (num > bound) {

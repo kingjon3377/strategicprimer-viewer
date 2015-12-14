@@ -480,7 +480,7 @@ public final class DrawHelperComparator implements ISPDriver { // NOPMD
 		} else {
 			SYS_OUT.print("Testing using ");
 			SYS_OUT.println(model.getMapFile().getName());
-			IMapNG map = model.getMap();
+			final IMapNG map = model.getMap();
 			PointFactory.clearCache();
 			if (random.nextBoolean()) {
 				PointFactory.shouldUseCache(true);

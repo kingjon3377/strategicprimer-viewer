@@ -342,12 +342,12 @@ public class Worker implements IWorker {
 	@Override
 	public Worker copy(final boolean zero) {
 		if (zero) {
-			Worker retval = new Worker(name, race, id);
+			final Worker retval = new Worker(name, race, id);
 			retval.setImage(image);
 			return retval;
 		} else {
-			Worker retval = new Worker(name, race, id);
-			WorkerStats localStats = stats;
+			final Worker retval = new Worker(name, race, id);
+			final WorkerStats localStats = stats;
 			if (localStats != null) {
 				retval.setStats(localStats.copy(false));
 			}

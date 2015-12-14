@@ -190,7 +190,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		private void handleMouseEvent(@Nullable final MouseEvent event) {
 			if (event != null && event.isPopupTrigger()
 					&& event.getClickCount() == 1) {
-				TreePath path = tree.getClosestPathForLocation(event.getX(),
+				final TreePath path = tree.getClosestPathForLocation(event.getX(),
 										event.getY());
 				if (path == null) {
 					return;

@@ -118,7 +118,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 				allPlayers.add(player);
 			}
 		}
-		List<Player> playerList = new ArrayList<>(allPlayers);
+		final List<Player> playerList = new ArrayList<>(allPlayers);
 		try {
 			final String hdr = "Available players:";
 			final String none = "No players found.";
@@ -163,9 +163,9 @@ public final class AdvancementCLIDriver implements ISPDriver {
 	 */
 	private void advanceWorkers(final IWorkerModel model, final Player player)
 			throws IOException {
-		boolean proxy =
+		final boolean proxy =
 				!cli.inputBoolean("Add experience to workers individually? ");
-		List<IUnit> units = model.getUnits(player);
+		final List<IUnit> units = model.getUnits(player);
 		while (!units.isEmpty()) {
 			int unitNum = cli.chooseFromList(units,
 					player.getName() + "'s units:",
@@ -189,7 +189,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 	 * @throws IOException on I/O error getting input from user
 	 */
 	private void advanceWorkersInUnit(final IUnit unit) throws IOException {
-		List<IWorker> workers = new ArrayList<>();
+		final List<IWorker> workers = new ArrayList<>();
 		for (UnitMember member : unit) {
 			if (member instanceof IWorker) {
 				workers.add((IWorker) member);
@@ -239,7 +239,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 	 * @throws IOException on I/O error getting input from user
 	 */
 	private void advanceJob(final IJob job) throws IOException {
-		List<ISkill> skills = CLIHelper.toList(job);
+		final List<ISkill> skills = CLIHelper.toList(job);
 		final String hdr = "Jobs in worker:";
 		final String none = "No existing jobs.";
 		final String prpt = "Job to advance: ";

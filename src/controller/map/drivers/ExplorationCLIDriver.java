@@ -92,7 +92,7 @@ public final class ExplorationCLIDriver implements ISPDriver {
 			SYS_OUT.println(" master-map [player-map ...]");
 			System.exit(1);
 		}
-		MapReaderAdapter reader = new MapReaderAdapter();
+		final MapReaderAdapter reader = new MapReaderAdapter();
 		final ExplorationModel model = new ExplorationModel(
 				reader.readMultiMapModel(Warning.INSTANCE, new File(args[0]),
 						MapReaderAdapter.namesToFiles(true, args)));

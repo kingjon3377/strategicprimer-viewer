@@ -183,11 +183,11 @@ public final class ExplorationCLI {
 		}
 		final List<TileFixture> allFixtures = new ArrayList<>();
 		final List<TileFixture> constants = new ArrayList<>();
-		IMutableMapNG map = model.getMap();
+		final IMutableMapNG map = model.getMap();
 		if (map.isMountainous(dPoint)) {
 			constants.add(new Mountain());
 		}
-		Ground ground = map.getGround(dPoint);
+		final Ground ground = map.getGround(dPoint);
 		if (ground != null) {
 			if (SimpleMovement.shouldAlwaysNotice(mover, ground)) {
 				constants.add(ground);
@@ -195,7 +195,7 @@ public final class ExplorationCLI {
 				allFixtures.add(ground);
 			}
 		}
-		Forest forest = map.getForest(dPoint);
+		final Forest forest = map.getForest(dPoint);
 		if (forest != null) {
 			if (SimpleMovement.shouldAlwaysNotice(mover, forest)) {
 				constants.add(forest);
@@ -245,7 +245,7 @@ public final class ExplorationCLI {
 			@Nullable final TileFixture fix, final IUnit mover) {
 		if (fix != null) {
 			SYS_OUT.println(fix);
-			boolean zero = fix instanceof HasOwner && !((HasOwner) fix)
+			final boolean zero = fix instanceof HasOwner && !((HasOwner) fix)
 					.getOwner().equals(mover.getOwner());
 			for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 				final IMutableMapNG map = pair.first();

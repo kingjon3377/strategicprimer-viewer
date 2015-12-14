@@ -125,7 +125,7 @@ public final class MapReaderAdapter {
 	public IMultiMapModel readMultiMapModel(final Warning warner, final File master, final File... files) throws DriverFailedException {
 		String current = master.getPath();
 		try {
-			IMultiMapModel retval = new SimpleMultiMapModel(readMap(master, warner), master);
+			final IMultiMapModel retval = new SimpleMultiMapModel(readMap(master, warner), master);
 			for (File file : files) {
 				current = file.getPath();
 				retval.addSubordinateMap(readMap(file, warner), file);

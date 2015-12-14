@@ -71,7 +71,7 @@ public class Grove implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public Grove copy(final boolean zero) {
-		Grove retval = new Grove(orchard, cultivated, kind, id);
+		final Grove retval = new Grove(orchard, cultivated, kind, id);
 		retval.setImage(image);
 		return retval;
 	}

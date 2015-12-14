@@ -136,8 +136,8 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		area.setLineWrap(true);
 		area.setWrapStyleWord(true);
 		model = wmodel;
-		InputMap inputMap = getInputMap(WHEN_IN_FOCUSED_WINDOW);
-		ActionMap actionMap = getActionMap();
+		final InputMap inputMap = getInputMap(WHEN_IN_FOCUSED_WINDOW);
+		final ActionMap actionMap = getActionMap();
 		assert (inputMap != null && actionMap != null);
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, keyMask), "openOrders");
 		actionMap.put("openOrders", new AbstractAction() {
@@ -241,7 +241,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		 */
 		@Override
 		public IUnit copy(final boolean zero) {
-			List<IUnit> copies = new ArrayList<>();
+			final List<IUnit> copies = new ArrayList<>();
 			for (IUnit unit : units) {
 				copies.add(unit.copy(zero));
 			}

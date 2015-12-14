@@ -233,7 +233,8 @@ public abstract class AbstractCompactReader<@NonNull T> implements CompactReader
 				return idFactory.register(NumberFormat.getIntegerInstance()
 						.parse(getParameter(element, "id")).intValue());
 			} catch (final NumberFormatException | ParseException except) {
-				SPFormatException nexcept = new MissingPropertyException(
+				// TODO: Make MissingPropertyException have a constructor taking its cause.
+				final SPFormatException nexcept = new MissingPropertyException(
 						tagOrNull(element.getName().getLocalPart()), "id",
 						element.getLocation().getLineNumber());
 				nexcept.initCause(except);
@@ -397,7 +398,7 @@ public abstract class AbstractCompactReader<@NonNull T> implements CompactReader
 		if (attr == null) {
 			return defaultValue; // NOPMD
 		}
-		String val = attr.getValue();
+		final String val = attr.getValue();
 		if (val == null) {
 			return defaultValue;
 		} else {

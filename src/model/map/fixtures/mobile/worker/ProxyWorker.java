@@ -99,7 +99,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	 */
 	@Override
 	public IWorker copy(final boolean zero) {
-		ProxyWorker retval = new ProxyWorker(parallel);
+		final ProxyWorker retval = new ProxyWorker(parallel);
 		for (IWorker worker : workers) {
 			addProxied(worker.copy(zero));
 		}
@@ -194,7 +194,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 		final IWorker[] workerArray =
 				NullCleaner.assertNotNull(workers.toArray(new IWorker[workers
 						.size()]));
-		List<IJob> proxyJobsTemp = new ArrayList<>(proxyJobs);
+		final List<IJob> proxyJobsTemp = new ArrayList<>(proxyJobs);
 		for (final IJob job : item) {
 			String name = job.getName();
 			if (jobNames.contains(name)) {

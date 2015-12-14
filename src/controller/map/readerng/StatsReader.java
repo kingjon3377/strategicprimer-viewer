@@ -93,7 +93,7 @@ public final class StatsReader implements INodeHandler<@NonNull WorkerStats> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final WorkerStats obj) {
-		SPIntermediateRepresentation retval =
+		final SPIntermediateRepresentation retval =
 				new SPIntermediateRepresentation("stats");
 		retval.addIntegerAttribute("hp", obj.getHitPoints());
 		retval.addIntegerAttribute("max", obj.getMaxHitPoints());

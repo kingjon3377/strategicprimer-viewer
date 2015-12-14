@@ -61,7 +61,7 @@ public class Giant implements MobileFixture, HasImage, HasKind, UnitMember {
 	 */
 	@Override
 	public Giant copy(final boolean zero) {
-		Giant retval = new Giant(kind, id);
+		final Giant retval = new Giant(kind, id);
 		retval.setImage(image);
 		return retval;
 	}

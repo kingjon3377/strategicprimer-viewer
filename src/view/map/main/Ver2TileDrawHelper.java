@@ -237,12 +237,12 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			final Point location) {
 		final List<TileFixture> temp = new ArrayList<>();
 		@Nullable
-		Ground ground = map.getGround(location);
+		final Ground ground = map.getGround(location);
 		if (ground != null) {
 			temp.add(ground);
 		}
 		@Nullable
-		Forest forest = map.getForest(location);
+		final Forest forest = map.getForest(location);
 		if (forest != null) {
 			temp.add(forest);
 		}
@@ -272,7 +272,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		if (rivers instanceof Set<?>) {
 			return getImage(NullCleaner.assertNotNull(riverFiles.get(rivers)));
 		} else {
-			Set<River> riverSet = EnumSet.noneOf(River.class);
+			final Set<River> riverSet = EnumSet.noneOf(River.class);
 			for (River river : rivers) {
 				riverSet.add(river);
 			}

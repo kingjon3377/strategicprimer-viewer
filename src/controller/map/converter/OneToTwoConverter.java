@@ -225,12 +225,12 @@ public final class OneToTwoConverter { // NOPMD
 			}
 			final List<TileFixture> fixtures = new LinkedList<>();
 			@Nullable
-			Ground ground = oldMap.getGround(point);
+			final Ground ground = oldMap.getGround(point);
 			if (ground != null) {
 				fixtures.add(ground);
 			}
 			@Nullable
-			Forest forest = oldMap.getForest(point);
+			final Forest forest = oldMap.getForest(point);
 			if (forest != null) {
 				fixtures.add(forest);
 			}

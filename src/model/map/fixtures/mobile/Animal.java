@@ -306,7 +306,7 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	@Override
 	public Animal copy(final boolean zero) {
 		// TODO: Should we "zero" out any information?
-		Animal retval = new Animal(kind, traces, talking, status, id);
+		final Animal retval = new Animal(kind, traces, talking, status, id);
 		retval.setImage(image);
 		return retval;
 	}

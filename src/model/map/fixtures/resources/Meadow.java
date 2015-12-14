@@ -78,7 +78,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public Meadow copy(final boolean zero) {
-		Meadow retval = new Meadow(kind, field, cultivated, id, status);
+		final Meadow retval = new Meadow(kind, field, cultivated, id, status);
 		retval.setImage(image);
 		return retval;
 	}

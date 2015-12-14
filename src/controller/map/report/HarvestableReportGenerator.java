@@ -94,7 +94,7 @@ public final class HarvestableReportGenerator extends AbstractReportGenerator<Ha
 		final Map<String, List<Point>> shrubs = new HashMap<>();
 		final HeadedList<String> stone = new HtmlList(
 				"<h5>Exposed stone deposits</h5>");
-		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			final IFixture item = pair.second();
@@ -186,7 +186,7 @@ public final class HarvestableReportGenerator extends AbstractReportGenerator<Ha
 		final Map<String, AbstractReportNode> shrubs = new HashMap<>();
 		final AbstractReportNode stone = new SortedSectionListReportNode(5,
 				"Exposed stone deposits");
-		List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
+		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof HarvestableFixture) {
