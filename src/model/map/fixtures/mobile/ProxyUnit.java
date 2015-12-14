@@ -405,7 +405,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	/**
 	 * A proxy for non-worker unit members.
 	 */
-	private final class ProxyMember implements UnitMember, ProxyFor<UnitMember> {
+	private static final class ProxyMember implements UnitMember, ProxyFor<UnitMember> {
 		/**
 		 * The proxied unit members.
 		 */
