@@ -5,7 +5,6 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -105,12 +104,12 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 			prefix = "Ctrl+";
 			keyMask = InputEvent.CTRL_DOWN_MASK;
 		}
-		setNorth(
+		setPageStart(
 				new JLabel(
 						"Orders for current selection, if a unit: ("
 								+ prefix
 								+ "D)")).setCenter(new JScrollPane(area))
-										.setSouth(new BorderedPanel()
+										.setPageEnd(new BorderedPanel()
 												.setLineStart(new ListenedButton("Apply",
 														handler))
 										.setLineEnd(

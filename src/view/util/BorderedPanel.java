@@ -42,30 +42,30 @@ public class BorderedPanel extends JPanel {
 	/**
 	 * Constructor.
 	 *
-	 * @param north the north component. Ignored if null.
-	 * @param south the south component. Ignored if null.
-	 * @param east the east component. Ignored if null.
-	 * @param west the west component. Ignored if null.
+	 * @param pageStart the "page start" (north in U.S.) component. Ignored if null.
+	 * @param pageEnd the "page end" (south in U.S.) component. Ignored if null.
+	 * @param lineEnd the "line end" (east in U.S.) component. Ignored if null.
+	 * @param lineStart the "line start" (west in U.S.) component. Ignored if null.
 	 * @param center the central component. Ignored if null.
 	 */
 	public BorderedPanel(@Nullable final Component center,
-			@Nullable final Component north, @Nullable final Component south,
-			@Nullable final Component east, @Nullable final Component west) {
+			@Nullable final Component pageStart, @Nullable final Component pageEnd,
+			@Nullable final Component lineEnd, @Nullable final Component lineStart) {
 		this();
 		if (center != null) {
 			setCenter(center);
 		}
-		if (north != null) {
-			setNorth(north);
+		if (pageStart != null) {
+			setPageStart(pageStart);
 		}
-		if (south != null) {
-			setSouth(south);
+		if (pageEnd != null) {
+			setPageEnd(pageEnd);
 		}
-		if (east != null) {
-			setEast(east);
+		if (lineEnd != null) {
+			setLineEnd(lineEnd);
 		}
-		if (west != null) {
-			setWest(west);
+		if (lineStart != null) {
+			setLineStart(lineStart);
 		}
 	}
 
@@ -73,8 +73,8 @@ public class BorderedPanel extends JPanel {
 	 * @param component a component to place to the north
 	 * @return this
 	 */
-	public final BorderedPanel setNorth(final Component component) {
-		add(component, BorderLayout.NORTH);
+	public final BorderedPanel setPageStart(final Component component) {
+		add(component, BorderLayout.PAGE_START);
 		return this;
 	}
 
@@ -82,15 +82,17 @@ public class BorderedPanel extends JPanel {
 	 * @param component a component to place to the south
 	 * @return this
 	 */
-	public final BorderedPanel setSouth(final Component component) {
-		add(component, BorderLayout.SOUTH);
+	public final BorderedPanel setPageEnd(final Component component) {
+		add(component, BorderLayout.PAGE_END);
 		return this;
 	}
 
 	/**
 	 * @param component a component to place to the east
 	 * @return this
+	 * @deprecated in favor of setLineEnd
 	 */
+	@Deprecated
 	public final BorderedPanel setEast(final Component component) {
 		add(component, BorderLayout.EAST);
 		return this;
@@ -99,7 +101,9 @@ public class BorderedPanel extends JPanel {
 	/**
 	 * @param component a component to place to the west
 	 * @return this
+	 * @deprecated in favor of setLineStart
 	 */
+	@Deprecated
 	public final BorderedPanel setWest(final Component component) {
 		add(component, BorderLayout.WEST);
 		return this;
