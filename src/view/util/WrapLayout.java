@@ -107,14 +107,13 @@ public final class WrapLayout extends FlowLayout {
 			// container has not yet been calculated so let's ask
 			// for the maximum.
 
-			int targetWidth = target.getSize().width;
 			Container container = target;
 
 			while (container.getSize().width == 0 && container.getParent() != null) {
 				container = container.getParent();
 			}
 
-			targetWidth = container.getSize().width;
+			int targetWidth = container.getSize().width;
 
 			if (targetWidth == 0) {
 				targetWidth = Integer.MAX_VALUE;

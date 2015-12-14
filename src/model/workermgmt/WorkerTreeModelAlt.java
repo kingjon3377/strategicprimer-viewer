@@ -92,7 +92,6 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 				getNode(old.getKind()), oldNode },
 				new int[] { oldNode.getIndex(node) }, new Object[] { node });
 		oldNode.remove(node);
-		final boolean fullProxy = false;
 		if (member instanceof ProxyFor && old instanceof ProxyUnit
 				&& newOwner instanceof ProxyUnit) {
 			if (((List<IUnit>) ((ProxyUnit) old).getProxied())
