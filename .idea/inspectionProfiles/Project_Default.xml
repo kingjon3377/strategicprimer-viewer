@@ -331,9 +331,6 @@
       <option name="annotationNamesString" value="" />
     </inspection_tool>
     <inspection_tool class="InstanceofCatchParameter" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="InstanceofChain" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="ignoreInstanceofOnLibraryClasses" value="false" />
-    </inspection_tool>
     <inspection_tool class="InstanceofIncompatibleInterface" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="InstanceofThis" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="InstantiationOfUtilityClass" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -394,7 +391,6 @@
       <option name="ignoreIterators" value="false" />
     </inspection_tool>
     <inspection_tool class="LoopWithImplicitTerminationCondition" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="MagicCharacter" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="MagicNumber" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoreInitialCapacity" value="true" />
     </inspection_tool>
