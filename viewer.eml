@@ -2,6 +2,9 @@
 <component inheritJdk="true">
 	<exclude-output/>
 	<contentEntry url="file://$MODULE_DIR$">
+		<excludeFolder url="file://$MODULE_DIR$/.codepro"/>
+		<excludeFolder url="file://$MODULE_DIR$/.idea"/>
+		<excludeFolder url="file://$MODULE_DIR$/.settings"/>
 		<excludeFolder url="file://$MODULE_DIR$/compiled"/>
 		<excludeFolder url="file://$MODULE_DIR$/dist"/>
 		<excludeFolder url="file://$MODULE_DIR$/javadocs"/>
