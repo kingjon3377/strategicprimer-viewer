@@ -88,13 +88,11 @@ public final class PlayerReader implements INodeHandler<@NonNull Player> {
 	/**
 	 * Create an intermediate representation to convert to XML.
 	 *
-	 * @param <S> the type of the object---it can be a subclass, to make the
-	 *        adapter work.
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
 	@Override
-	public <S extends Player> SPIntermediateRepresentation write(final S obj) {
+	public SPIntermediateRepresentation write(final Player obj) {
 		return new SPIntermediateRepresentation("player",
 				Pair.of("number", NullCleaner.assertNotNull(Integer
 						.toString(obj.getPlayerId()))), Pair.of("code_name",

@@ -82,13 +82,11 @@ public final class MountainReader implements INodeHandler<Mountain> {
 	/**
 	 * Create an intermediate representation to convert to XML.
 	 *
-	 * @param <S> the type of the object---it can be a subclass, to make the
-	 *        adapter work.
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
 	@Override
-	public <S extends Mountain> SPIntermediateRepresentation write(final S obj) {
+	public SPIntermediateRepresentation write(final Mountain obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 				"mountain");
 		retval.addImageAttribute(obj);
