@@ -657,10 +657,8 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 */
 	protected static <T> int iteratorSize(final Iterable<T> iter) {
 		int size = 0; // NOPMD
-		final Iterator<T> iterator = iter.iterator();
-		while (iterator.hasNext()) { // $codepro.audit.disable
+		for (final T anIter : iter) { // $codepro.audit.disable
 			size++; // NOPMD
-			iterator.next();
 		}
 		return size;
 	}
