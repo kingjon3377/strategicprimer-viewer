@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="JDT Annotations">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.p2/pool/plugins/org.eclipse.jdt.annotation_1.1.100.v20140704-0625.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
