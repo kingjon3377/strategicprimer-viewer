@@ -127,7 +127,7 @@ public final class PlayerChooserHandler implements ActionListener,
 	 * @return the players as an array
 	 */
 	private static Player[] playersAsArray(final Iterable<Player> players) {
-		if (players instanceof IMutablePlayerCollection) {
+		if (players instanceof PlayerCollection) {
 			return ((PlayerCollection) players).asArray(); // NOPMD
 		} else {
 			final List<Player> list = new ArrayList<>();

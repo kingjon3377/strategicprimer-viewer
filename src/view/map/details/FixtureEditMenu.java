@@ -144,7 +144,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 	 * @return it as an array
 	 */
 	protected static Player[] playersAsArray(final Iterable<Player> players) {
-		if (players instanceof IMutablePlayerCollection) {
+		if (players instanceof PlayerCollection) {
 			return ((PlayerCollection) players).asArray(); // NOPMD
 		} else {
 			final List<Player> list = new ArrayList<>();
