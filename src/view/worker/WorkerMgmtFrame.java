@@ -35,6 +35,7 @@ import javax.swing.WindowConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -200,26 +201,20 @@ public final class WorkerMgmtFrame extends JFrame {
 			}
 		}
 		final DistanceComparator distCalculator = new DistanceComparator(hqLoc);
-		report.setCellRenderer(new DefaultTreeCellRenderer() {
-			@SuppressWarnings("hiding")
-			@Override
-			public Component getTreeCellRendererComponent(@Nullable final JTree renderedTree,
-					@Nullable final Object value, final boolean selected,
-					final boolean expanded, final boolean leaf, final int row,
-					final boolean hasFocus) {
-				final Component retval = super.getTreeCellRendererComponent(renderedTree, value, selected, expanded, leaf, row, hasFocus);
-				if (value instanceof AbstractReportNode) {
-					final Point point = ((AbstractReportNode) value).getPoint();
-					// (-inf, -inf) replaces null
-					if (point.getRow() > Integer.MIN_VALUE) {
-						((JLabel) retval).setToolTipText(distCalculator.distanceString(point));
-					} else {
-						((JLabel) retval).setToolTipText(null);
-					}
+		DefaultTreeCellRenderer defRender = new DefaultTreeCellRenderer();
+		report.setCellRenderer((renderedTree, value, selected, expanded, leaf, row, hasFocus) -> {
+			final Component retval = defRender.getTreeCellRendererComponent(renderedTree, value, selected, expanded, leaf, row, hasFocus);
+			if (value instanceof AbstractReportNode) {
+				final Point point = ((AbstractReportNode) value).getPoint();
+				// (-inf, -inf) replaces null
+				if (point.getRow() > Integer.MIN_VALUE) {
+					((JLabel) retval).setToolTipText(distCalculator.distanceString(point));
+				} else {
+					((JLabel) retval).setToolTipText(null);
 				}
-				assert retval != null;
-				return retval;
 			}
+			assert retval != null;
+			return retval;
 		});
 		ToolTipManager.sharedInstance().registerComponent(report);
 		report.addMouseListener(new reportMouseHandler(report, model, ioHandler));
