@@ -6,11 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JSplitPane;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.Document;
@@ -118,24 +114,19 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 				emodel);
 		addPlayerChangeListener(unitListModel);
 		unitList = new JList<>(unitListModel);
-		unitList.setCellRenderer(new DefaultListCellRenderer() {
-			@Override
-			public Component getListCellRendererComponent(
-					@Nullable final JList<?> list,
-					@Nullable final Object value, final int index,
-					final boolean isSelected, final boolean cellHasFocus) {
-				final Component retval =
-						super.getListCellRendererComponent(
-								NullCleaner.assertNotNull(list), value, index,
-								isSelected, cellHasFocus);
-				if (value instanceof IUnit && retval instanceof JLabel) {
-					((JLabel) retval).setText(String.format(
-							"Unit of type %s, named %s",
-							((IUnit) value).getKind(),
-							((IUnit) value).getName()));
-				}
-				return NullCleaner.assertNotNull(retval);
+		final DefaultListCellRenderer defRenderer = new DefaultListCellRenderer();
+		unitList.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+			final Component retval =
+					defRenderer.getListCellRendererComponent(
+							NullCleaner.assertNotNull(list), value, index,
+							isSelected, cellHasFocus);
+			if (value != null && retval instanceof JLabel) {
+				((JLabel) retval).setText(String.format(
+						"Unit of type %s, named %s",
+						value.getKind(),
+						value.getName()));
 			}
+			return NullCleaner.assertNotNull(retval);
 		});
 		setCenter(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT, PROPORTION,
 				PROPORTION, new BorderedPanel(playerList,
