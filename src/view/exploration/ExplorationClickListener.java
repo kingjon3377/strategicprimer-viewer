@@ -123,7 +123,7 @@ public final class ExplorationClickListener implements ActionListener,
 	 */
 	protected void handleMove() {
 		try {
-			final List<TileFixture> fixtures = getSelectedValuesList(list);
+			final List<TileFixture> fixtures = getSelectedValuesList();
 			if (Direction.Nowhere == direction) {
 				final int swearing = JOptionPane.showConfirmDialog(null,
 						"Should the explorer swear any villages on this tile?");
@@ -226,11 +226,9 @@ public final class ExplorationClickListener implements ActionListener,
 	 * A reimplementation of {@link javax.swing.JList#getSelectedValuesList()}
 	 * that's guaranteed not to throw an ArrayIndexOutOfBoundsException.
 	 *
-	 * @param list the list to operate on
-	 * @return a list of its selected members
+	 * @return a list of the list's selected members
 	 */
-	private static List<TileFixture> getSelectedValuesList(
-			final FixtureList list) {
+	private List<TileFixture> getSelectedValuesList() {
 		final int[] selections = list.getSelectedIndices();
 		final ListModel<TileFixture> model = list.getModel();
 		final List<TileFixture> retval = new ArrayList<>();
