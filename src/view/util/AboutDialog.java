@@ -114,8 +114,7 @@ public final class AboutDialog extends JDialog {
 		builder.append(href);
 		builder.append("\">");
 		builder.append(text);
-		builder.append("</a>");
-		builder.append('.');
+		builder.append("</a>.");
 	}
 	/**
 	 * Add a paragraph to the string.
