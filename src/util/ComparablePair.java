@@ -71,4 +71,9 @@ public final class ComparablePair<K extends Comparable<K>, V extends Comparable<
 		return new ComparablePair<>(first, second);
 	}
 
+	@Override
+	public boolean equals(final Object obj) {
+		return this == obj || obj instanceof ComparablePair && first().equals(((ComparablePair) obj).first()) &&
+				                      second().equals(((ComparablePair) obj).second());
+	}
 }

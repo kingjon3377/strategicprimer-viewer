@@ -503,4 +503,10 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	public String toString() {
 		return NullCleaner.assertNotNull(String.format("ProxyUnit for ID #%d", Integer.valueOf(id)));
 	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		return this == obj || obj instanceof ProxyUnit && id == ((ProxyUnit) obj).getID() &&
+				                      proxied.equals(((ProxyUnit) obj).getProxied());
+	}
 }

@@ -443,5 +443,11 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		public String toString() {
 			return "OrdersPanel#ProxyUnit";
 		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			return this == obj || obj instanceof ProxyUnit && kind.equals(((ProxyUnit) obj).getKind()) &&
+					                      units.equals(((ProxyUnit) obj).units);
+		}
 	}
 }
