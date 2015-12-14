@@ -147,7 +147,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasImage 
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return obj instanceof Implement && ((Implement) obj).id == id
+		return this == obj || obj instanceof Implement && ((Implement) obj).id == id
 				&& ((Implement) obj).kind.equals(kind);
 	}
 	/**
