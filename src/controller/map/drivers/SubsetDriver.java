@@ -144,7 +144,7 @@ public final class SubsetDriver implements ISPDriver {
 				System.out.flush();
 				return Returns.Warn;
 			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			Warning.INSTANCE.warn(e);
 			return Returns.Fail;
 		}

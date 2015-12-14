@@ -100,11 +100,11 @@ public final class MapReaderAdapter {
 			throws DriverFailedException {
 		try {
 			return new ViewerModel(readMap(file, warner), file);
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error reading " + file.getPath(), except);
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("Malformed XML in " + file.getPath(), except);
-		} catch (SPFormatException except) {
+		} catch (final SPFormatException except) {
 			throw new DriverFailedException("SP map format error in " + file.getPath(), except);
 		}
 	}
@@ -131,11 +131,11 @@ public final class MapReaderAdapter {
 				retval.addSubordinateMap(readMap(file, warner), file);
 			}
 			return retval;
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error reading from file" + current, except);
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("Malformed XML in " + current, except);
-		} catch (SPFormatException except) {
+		} catch (final SPFormatException except) {
 			throw new DriverFailedException("SP map format error in " + current, except);
 		}
 	}
@@ -159,14 +159,14 @@ public final class MapReaderAdapter {
 	public void writeModel(final IDriverModel model) throws DriverFailedException {
 		try {
 			spWriter.write(model.getMapFile(), model.getMap());
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error writing to " + model.getMapFile(), except);
 		}
 		if (model instanceof IMultiMapModel) {
 			for (Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getSubordinateMaps()) {
 				try {
 					spWriter.write(pair.second(), pair.first());
-				} catch (IOException except) {
+				} catch (final IOException except) {
 					throw new DriverFailedException("I/O error writing to " + pair.second(), except);
 				}
 			}

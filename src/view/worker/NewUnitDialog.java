@@ -160,7 +160,7 @@ public final class NewUnitDialog extends JFrame implements ActionListener,
 						idNum = NumberFormat.getIntegerInstance().parse(reqId)
 								.intValue();
 						idf.register(idNum);
-					} catch (ParseException e) {
+					} catch (final ParseException e) {
 						LOGGER.log(Level.INFO,
 								"Parse error parsing user-specified ID", e);
 						idNum = idf.createID();

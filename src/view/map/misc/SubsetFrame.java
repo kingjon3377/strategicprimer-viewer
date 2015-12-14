@@ -233,7 +233,7 @@ public final class SubsetFrame extends JFrame {
 			} else {
 				printParagraph("WARN", "yellow");
 			}
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error writing to window", e);
 			printParagraph("ERROR: I/O error writing to window", ERROR_COLOR);
 			return;

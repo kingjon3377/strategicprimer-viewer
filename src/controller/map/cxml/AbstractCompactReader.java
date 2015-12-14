@@ -232,7 +232,7 @@ public abstract class AbstractCompactReader<@NonNull T> implements CompactReader
 			try {
 				return idFactory.register(NumberFormat.getIntegerInstance()
 						.parse(getParameter(element, "id")).intValue());
-			} catch (NumberFormatException | ParseException except) {
+			} catch (final NumberFormatException | ParseException except) {
 				SPFormatException nexcept = new MissingPropertyException(
 						tagOrNull(element.getName().getLocalPart()), "id",
 						element.getLocation().getLineNumber());
@@ -357,7 +357,7 @@ public abstract class AbstractCompactReader<@NonNull T> implements CompactReader
 			throws SPFormatException {
 		try {
 			return NUM_PARSER.parse(str).intValue();
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			throw new SPMalformedInputException(line, e);
 		}
 	}

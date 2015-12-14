@@ -144,14 +144,14 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			if (file != null) {
 				try {
 					loader.loadImage(file);
-				} catch (IOException e) {
+				} catch (final IOException e) {
 					logLoadingError(e, file, false);
 				}
 			}
 		}
 		try {
 			fallbackImage = loader.loadImage(FALLBACK_FILE);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			logLoadingError(e, FALLBACK_FILE, true);
 			fallbackImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 		}

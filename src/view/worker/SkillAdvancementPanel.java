@@ -133,7 +133,7 @@ public final class SkillAdvancementPanel extends BoxPanel implements ActionListe
 			try {
 				skl.addHours(NUM_PARSER.parse(hours.getText()).intValue(),
 						SingletonRandom.RANDOM.nextInt(SKILL_DIE));
-			} catch (ParseException e) {
+			} catch (final ParseException e) {
 				LOGGER.log(Level.FINE, "Non-numeric input", e);
 				ErrorShower.showErrorDialog(this, "Hours to add must be a number");
 				return;

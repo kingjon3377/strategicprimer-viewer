@@ -127,7 +127,7 @@ public final class DuplicateFixtureRemover implements ISPDriver {
 			} else {
 				filter(model.getMap(), SYS_OUT);
 			}
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error interacting with user", except);
 		}
 	}

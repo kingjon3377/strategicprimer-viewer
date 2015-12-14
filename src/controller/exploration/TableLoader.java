@@ -142,7 +142,7 @@ public final class TableLoader { // NOPMD
 		final int rows;
 		try {
 			rows = NumberFormat.getIntegerInstance().parse(line).intValue();
-		} catch (NumberFormatException | ParseException except) {
+		} catch (final NumberFormatException | ParseException except) {
 			throw new IOException(
 					"File doesn't start with number of rows of quadrants", except);
 		}
@@ -181,7 +181,7 @@ public final class TableLoader { // NOPMD
 					final Integer leftNum = Integer.valueOf(left);
 					list.add(ComparablePair.of(NullCleaner.assertNotNull(leftNum),
 							NullCleaner.assertNotNull(right)));
-				} catch (NumberFormatException except) {
+				} catch (final NumberFormatException except) {
 					throw new IOException("Non-numeric data", except);
 				}
 			}

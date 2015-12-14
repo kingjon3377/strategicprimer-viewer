@@ -82,7 +82,7 @@ public final class TypesafeXMLEventReader implements Iterator<@NonNull XMLEvent>
 			} else {
 				return retval;
 			}
-		} catch (XMLStreamException except) {
+		} catch (final XMLStreamException except) {
 			final NoSuchElementException nse = new NoSuchElementException(
 					"Malformed XML");
 			nse.initCause(except);

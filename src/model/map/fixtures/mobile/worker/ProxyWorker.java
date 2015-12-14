@@ -140,7 +140,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 				&& proxyJobs.equals(((ProxyWorker) fix).proxyJobs);
 	}
 	/**
-	 * The iterator over the proxied jobs.
+	 * @return The iterator over the proxied jobs.
 	 */
 	@Override
 	@NonNull

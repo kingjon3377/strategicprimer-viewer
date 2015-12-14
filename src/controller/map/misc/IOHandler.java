@@ -97,7 +97,7 @@ public final class IOHandler implements ActionListener {
 			}
 			try {
 				model.setMap(readMap(file, Warning.INSTANCE), file);
-			} catch (IOException | SPFormatException | XMLStreamException e) {
+			} catch (final IOException | SPFormatException | XMLStreamException e) {
 				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
 						"a null path"), source);
 			}

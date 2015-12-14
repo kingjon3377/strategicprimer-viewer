@@ -64,7 +64,7 @@ public final class MiningCLI {
 		int index;
 		try {
 			index = NumberFormat.getIntegerInstance().parse(args[1]).intValue();
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			LOGGER.log(Level.SEVERE, "non-numeric status index", e);
 			System.exit(2);
 			return;
@@ -75,7 +75,7 @@ public final class MiningCLI {
 		if (args.length >= 3) {
 			try {
 				seed = Long.parseLong(args[2]);
-			} catch (NumberFormatException except) {
+			} catch (final NumberFormatException except) {
 				LOGGER.log(Level.SEVERE, "non-numeric seed", except);
 				System.exit(2);
 				return;
@@ -97,7 +97,7 @@ public final class MiningCLI {
 				}
 				ostream.println();
 			}
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error writing to file", except);
 			System.exit(2);
 		}

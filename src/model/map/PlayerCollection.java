@@ -81,7 +81,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 			return this == obj || obj instanceof IPlayerCollection
 					&& isSubset((IPlayerCollection) obj, DEV_NULL, "")
 					&& ((IPlayerCollection) obj).isSubset(this, DEV_NULL, "");
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error from NullStream", e);
 			return false;
 		}

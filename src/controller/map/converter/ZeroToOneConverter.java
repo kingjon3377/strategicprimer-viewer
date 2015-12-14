@@ -156,7 +156,7 @@ public final class ZeroToOneConverter {
 					events.push(NullCleaner.assertNotNull(Integer.valueOf(NumberFormat
 							.getIntegerInstance().parse(attr.getValue())
 							.intValue())));
-				} catch (ParseException e) {
+				} catch (final ParseException e) {
 					LOGGER.log(Level.SEVERE, "Non-numeric 'event'", e);
 				}
 			} else {

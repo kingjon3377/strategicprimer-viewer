@@ -143,7 +143,7 @@ public final class TableDebugger {
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.SEVERE, "Missing table", e);
 			System.exit(1);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error writing to stdout", e);
 			System.exit(2);
 		}

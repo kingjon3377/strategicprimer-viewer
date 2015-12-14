@@ -170,7 +170,7 @@ public final class SelectTileDialog extends JDialog implements ActionListener {
 			} else {
 				return State.Valid;
 			}
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			LOGGER.log(Level.FINE, "Non-numeric input", e);
 			return State.Nonnumeric;
 		}
@@ -231,7 +231,7 @@ public final class SelectTileDialog extends JDialog implements ActionListener {
 				map.setSelection(
 						PointFactory.point(NUM_PARSER.parse(rowText).intValue(),
 						NUM_PARSER.parse(colText).intValue()));
-			} catch (ParseException e) {
+			} catch (final ParseException e) {
 				LOGGER.log(Level.SEVERE,
 						"Parse failure after we checked input was numeric", e);
 			}

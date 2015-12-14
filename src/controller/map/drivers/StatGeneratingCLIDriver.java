@@ -143,7 +143,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 			} else {
 				createWorkers(model, IDFactoryFiller.createFactory(model));
 			}
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error interacting with user", except);
 		}
 	}

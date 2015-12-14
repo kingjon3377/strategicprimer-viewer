@@ -132,7 +132,7 @@ public final class MapCheckerFrame extends JFrame {
 		printParagraph("Starting " + filename, "");
 		try {
 			reader.readMap(new File(filename), warner);
-		} catch (IOException | XMLStreamException | SPFormatException except) {
+		} catch (final IOException | XMLStreamException | SPFormatException except) {
 			printError(except, filename);
 			return;
 		}

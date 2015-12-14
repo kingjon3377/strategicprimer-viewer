@@ -229,7 +229,7 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 							parseInt(maxHP), parseInt(str), parseInt(dex),
 							parseInt(con), parseInt(intel), parseInt(wis),
 							parseInt(cha)));
-				} catch (ParseException e) {
+				} catch (final ParseException e) {
 					LOGGER.log(Level.FINE, "Non-numeric input", e);
 					ErrorShower.showErrorDialog(this, "All stats must be numbers");
 					return;

@@ -259,7 +259,7 @@ public final class XMLHelper {
 			throws SPFormatException {
 		try {
 			return NUM_PARSER.parse(str).intValue();
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			throw new SPMalformedInputException(loc.getLineNumber(), e);
 		}
 	}

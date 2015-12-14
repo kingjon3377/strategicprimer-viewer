@@ -185,7 +185,7 @@ public final class AppStarter implements ISPDriver {
 			SwingUtilities.invokeLater(() -> {
 				try {
 					startChooser(localGui, others);
-				} catch (DriverFailedException e) {
+				} catch (final DriverFailedException e) {
 					final String message =
 							NullCleaner.assertNotNull(e.getMessage());
 					lgr.log(Level.SEVERE, message, e.getCause());
@@ -197,7 +197,7 @@ public final class AppStarter implements ISPDriver {
 			SwingUtilities.invokeLater(() -> {
 				try {
 					startChosenDriver(driver, others);
-				} catch (DriverFailedException e) {
+				} catch (final DriverFailedException e) {
 					final String message =
 							NullCleaner.assertNotNull(e.getMessage());
 					lgr.log(Level.SEVERE, message, e.getCause());
@@ -280,7 +280,7 @@ public final class AppStarter implements ISPDriver {
 		System.setProperty("apple.awt.application.name", "SP Helpers");
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException | InstantiationException
+		} catch (final ClassNotFoundException | InstantiationException
 				| IllegalAccessException | UnsupportedLookAndFeelException except) {
 			LOGGER.log(Level.SEVERE,
 					"Failed to switch to system look-and-feel", except);

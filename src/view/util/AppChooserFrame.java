@@ -175,7 +175,7 @@ public final class AppChooserFrame extends JFrame {
 		public void actionPerformed(@Nullable final ActionEvent evt) {
 			try {
 				app.newInstance().startDriver(params);
-			} catch (InstantiationException | IllegalAccessException
+			} catch (final InstantiationException | IllegalAccessException
 					| DriverFailedException except) {
 				final String msg = except.getMessage();
 				final String message = NullCleaner.valueOrDefault(msg,
@@ -251,7 +251,7 @@ public final class AppChooserFrame extends JFrame {
 		public void actionPerformed(@Nullable final ActionEvent evt) {
 			try {
 				app.newInstance().startDriver(model);
-			} catch (InstantiationException | IllegalAccessException
+			} catch (final InstantiationException | IllegalAccessException
 					| DriverFailedException except) {
 				final String msg = except.getMessage();
 				final String message = NullCleaner.valueOrDefault(msg,

@@ -196,7 +196,7 @@ public final class FindDialog extends JDialog implements ActionListener {
 		if (IsNumeric.isNumeric(pattern)) {
 			try {
 				idNum = NUM_PARSER.parse(pattern).intValue();
-			} catch (ParseException e) {
+			} catch (final ParseException e) {
 				LOGGER.log(Level.SEVERE, "Pattern we detected as numeric wasn't", e);
 			}
 		}

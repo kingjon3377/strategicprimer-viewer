@@ -74,7 +74,7 @@ public final class ExplorationCLIDriver implements ISPDriver {
 				model.selectUnit(unit);
 				cli.moveUntilDone();
 			}
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error interacting with user", except);
 		}
 	}

@@ -285,7 +285,7 @@ public final class ExplorationPanel extends BorderedPanel implements ActionListe
 			int mpoints;
 			try {
 				mpoints = NUM_PARSER.parse(mpText).intValue();
-			} catch (ParseException e) {
+			} catch (final ParseException e) {
 				LOGGER.log(Level.SEVERE,
 						"Non-numeic data in movement-points field", e);
 				return;

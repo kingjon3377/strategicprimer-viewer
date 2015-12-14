@@ -160,7 +160,7 @@ public final class CLIHelper implements ICLIHelper {
 			} else if (IsNumeric.isNumeric(input)) {
 				try {
 					retval = NUM_PARSER.parse(input).intValue();
-				} catch (ParseException e) {
+				} catch (final ParseException e) {
 					NumberFormatException nexcept = new NumberFormatException(
 							"Failed to parse number from input");
 					nexcept.initCause(e);

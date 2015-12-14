@@ -56,7 +56,7 @@ public final class IsNumeric {
 		} catch (final NumberFormatException except) {
 			LOGGER.log(Level.FINE, "Non-numeric input", except);
 			return false;
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			LOGGER.log(Level.FINE, "Non-numeric input", e);
 			return false;
 		}

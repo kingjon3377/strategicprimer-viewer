@@ -669,7 +669,7 @@ public final class OneToTwoConverter { // NOPMD
 				IMapNG old;
 				try {
 					old = reader.readMap(file, Warning.INSTANCE);
-				} catch (IOException | XMLStreamException
+				} catch (final IOException | XMLStreamException
 						| SPFormatException except) {
 					printReadError(except, arg);
 					if (first) {
@@ -682,7 +682,7 @@ public final class OneToTwoConverter { // NOPMD
 				final IMapNG newMap = converter.convert(old, first);
 				try {
 					reader.write(new File(arg + ".converted.xml"), newMap);
-				} catch (IOException except) {
+				} catch (final IOException except) {
 					LOGGER.log(Level.SEVERE, "I/O error writing to " + arg + ".converted.xml", except);
 					if (first) {
 						System.exit(4);

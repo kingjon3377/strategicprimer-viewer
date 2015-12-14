@@ -115,7 +115,7 @@ public final class TODOFixerDriver {
 							+ desc + "? ");
 			unit.setKind(string);
 			jobList.add(string);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			LOGGER.log(Level.FINE, "I/O error interacting with user", e);
 			return;
 		}
@@ -183,7 +183,7 @@ public final class TODOFixerDriver {
 			final File file = new File(arg);
 			try {
 				map = reader.readMap(file, Warning.INSTANCE);
-			} catch (IOException | XMLStreamException | SPFormatException e) {
+			} catch (final IOException | XMLStreamException | SPFormatException e) {
 				e.printStackTrace();
 				continue;
 			}
@@ -191,7 +191,7 @@ public final class TODOFixerDriver {
 			driver.fixAllUnits();
 			try {
 				reader.write(file, map);
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				e.printStackTrace();
 				continue;
 			}
