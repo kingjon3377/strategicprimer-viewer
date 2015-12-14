@@ -7,6 +7,7 @@ import static javax.swing.JOptionPane.showInputDialog;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -69,9 +70,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 	public FixtureEditMenu(final IFixture fixture,
 			final Iterable<Player> players,
 			final @NonNull IWorkerTreeModel @NonNull ... changeListeners) {
-		for (final IWorkerTreeModel listener : changeListeners) {
-			listeners.add(listener);
-		}
+		Collections.addAll(listeners, changeListeners);
 		boolean mutable = false;
 		final FixtureEditMenu outer = this;
 		if (fixture instanceof HasName) {

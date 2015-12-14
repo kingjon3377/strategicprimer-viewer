@@ -1,6 +1,7 @@
 package model.map.fixtures.mobile.worker;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -61,9 +62,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	public ProxySkill(final String nomen, final boolean parall, final @NonNull IJob @NonNull ... jobs) {
 		parallel = parall;
 		name = nomen;
-		for (final IJob job : jobs) {
-			proxied.add(job);
-		}
+		Collections.addAll(proxied, jobs);
 	}
 	/**
 	 * @return a copy of this proxy

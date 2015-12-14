@@ -8,6 +8,7 @@ import java.awt.image.ImageObserver;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -450,9 +451,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		final Set<@NonNull River> set =
 				EnumSet.noneOf(NullCleaner.assertNotNull(River.class));
 		assert set != null;
-		for (final River river : rivers) {
-			set.add(river);
-		}
+		Collections.addAll(set, rivers);
 		return set;
 	}
 

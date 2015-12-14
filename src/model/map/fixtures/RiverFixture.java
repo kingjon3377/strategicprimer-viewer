@@ -1,6 +1,7 @@
 package model.map.fixtures;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -60,9 +61,7 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	 */
 	public RiverFixture(final @NonNull River @NonNull ... initial) {
 		rivers = NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
-		for (final River river : initial) {
-			rivers.add(river);
-		}
+		Collections.addAll(rivers, initial);
 	}
 
 	/**

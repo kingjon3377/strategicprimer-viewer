@@ -3,6 +3,7 @@ package model.map;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -609,9 +610,7 @@ public class SPMapNG implements IMutableMapNG {
 		} else {
 			localRivers = rivers.get(location);
 		}
-		for (River river : rvrs) {
-			localRivers.add(river);
-		}
+		Collections.addAll(localRivers, rvrs);
 	}
 
 	/**
