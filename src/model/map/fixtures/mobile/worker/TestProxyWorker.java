@@ -212,7 +212,7 @@ public final class TestProxyWorker {
 	public void testWorkerCopy() {
 		Worker one = new Worker("one", "human", 1, new Job("jobOne", 1,
 				new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
-		assertEquals(one, one.copy(false));
+		assertEquals("Worker copy should still be equal", one, one.copy(false));
 	}
 	/**
 	 * @return a string representation of this class
