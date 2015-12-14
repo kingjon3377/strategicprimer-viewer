@@ -38,7 +38,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	/**
 	 * A logger.
 	 */
-	private static Logger LOGGER = TypesafeLogger.getLogger(TileTypeFixture.class);
+	private static final Logger LOGGER = TypesafeLogger.getLogger(TileTypeFixture.class);
 	/**
 	 * The TileType this wraps.
 	 */
