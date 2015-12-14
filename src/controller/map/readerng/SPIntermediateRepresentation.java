@@ -222,12 +222,12 @@ public final class SPIntermediateRepresentation {
 	}
 
 	/**
-	 * @param tag a tag
+	 * @param tagName a tag
 	 * @return whether it should always have a separate closing tag, even if it
 	 *         has no children
 	 */
-	private static boolean shouldSeparateClosingTag(final String tag) {
-		return EqualsAny.equalsAny(tag, "tile", "fortress", "text");
+	private static boolean shouldSeparateClosingTag(final String tagName) {
+		return EqualsAny.equalsAny(tagName, "tile", "fortress", "text");
 	}
 
 	/**

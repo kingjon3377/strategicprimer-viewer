@@ -110,13 +110,13 @@ public final class ExplorationListListener implements ListDataListener {
 		private final T object;
 		/**
 		 * Factory method.
-		 * @param number the number in the pair
-		 * @param object the object in the pair
+		 * @param num the number in the pair
+		 * @param obj the object in the pair
 		 * @param <I> the type of object
 		 * @return the pair
 		 */
-		protected static <@NonNull I> IntPair<I> of(final int number, final I object) {
-			return new IntPair<>(number, object);
+		protected static <@NonNull I> IntPair<I> of(final int num, final I obj) {
+			return new IntPair<>(num, obj);
 		}
 		/**
 		 * Constructor. Use the factory method rather than this constructor.

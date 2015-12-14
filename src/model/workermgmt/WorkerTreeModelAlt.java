@@ -182,14 +182,14 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * Constructor.
 		 *
 		 * @param player the player the node represents
-		 * @param model the worker model we're drawing from
+		 * @param workerModel the worker model we're drawing from
 		 */
-		public PlayerNode(final Player player, final IWorkerModel model) {
+		public PlayerNode(final Player player, final IWorkerModel workerModel) {
 			super(player);
-			final List<String> kinds = model.getUnitKinds(player);
+			final List<String> kinds = workerModel.getUnitKinds(player);
 			int index = 0;
 			for (final String kind : kinds) {
-				insert(new KindNode(kind, model.getUnits(player, kind)), // NOPMD
+				insert(new KindNode(kind, workerModel.getUnits(player, kind)), // NOPMD
 						index);
 				index++;
 			}
