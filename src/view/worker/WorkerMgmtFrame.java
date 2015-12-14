@@ -192,7 +192,7 @@ public final class WorkerMgmtFrame extends JFrame {
 			} else {
 				for (TileFixture fix : model.getMap().getOtherFixtures(location)) {
 					if (fix instanceof Fortress && ((Fortress) fix).getOwner().equals(model.getMap().getCurrentPlayer())) {
-						if (((Fortress) fix).getName().equals("HQ")) {
+						if ("HQ".equals(((Fortress) fix).getName())) {
 							hqLoc = location;
 							found = true;
 							break;
