@@ -34,7 +34,7 @@ public final class ConstantTable implements EncounterTable {
 	/**
 	 * The value we'll always return.
 	 */
-	private String value;
+	private final String value;
 
 	/**
 	 * Constructor; defaults to the empty string.

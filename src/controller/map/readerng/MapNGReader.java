@@ -87,7 +87,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	/**
 	 * The tags we know how to deal with.
 	 */
-	private static List<String> tags;
+	private static final List<String> tags;
 	static {
 		// FIXME: Use Arrays.asList
 		final List<String> temp = new ArrayList<>();
