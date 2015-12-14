@@ -210,9 +210,7 @@ public final class ZeroToOneConverter {
 	 * @return its XML representation.
 	 */
 	private static String printEndElementImpl(final String elemStr) {
-		return NullCleaner
-				.assertNotNull(new StringBuilder(elemStr.length() + 5)
-						.append("</").append(elemStr).append('>').toString());
+		return NullCleaner.assertNotNull(String.format("</%s>", elemStr));
 	}
 
 	/**
@@ -238,9 +236,8 @@ public final class ZeroToOneConverter {
 	 * @return its XML representation
 	 */
 	private static String printAttribute(final Attribute attr) {
-		return NullCleaner.assertNotNull(new StringBuilder().append(' ')
-				.append(attr.getName().getLocalPart()).append("=\"")
-				.append(attr.getValue()).append('"').toString());
+		return NullCleaner.assertNotNull(String.format(" %s=\"%s\"",
+				attr.getName().getLocalPart(), attr.getValue()));
 	}
 
 	/**
