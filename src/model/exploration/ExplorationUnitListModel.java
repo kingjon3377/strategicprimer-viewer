@@ -60,8 +60,6 @@ public final class ExplorationUnitListModel extends DefaultListModel<@NonNull IU
 	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		clear();
 		final List<IUnit> units = model.getUnits(newPlayer);
-		for (final IUnit unit : units) {
-			addElement(unit);
-		}
+		units.forEach(this::addElement);
 	}
 }

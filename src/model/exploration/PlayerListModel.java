@@ -42,9 +42,7 @@ public final class PlayerListModel extends DefaultListModel<@NonNull Player> imp
 	 */
 	public PlayerListModel(final ExplorationModel emodel) {
 		model = emodel;
-		for (final Player player : model.getPlayerChoices()) {
-			addElement(player);
-		}
+		model.getPlayerChoices().forEach(this::addElement);
 	}
 
 	/**
@@ -53,9 +51,7 @@ public final class PlayerListModel extends DefaultListModel<@NonNull Player> imp
 	@Override
 	public void mapChanged() {
 		clear();
-		for (final Player player : model.getPlayerChoices()) {
-			addElement(player);
-		}
+		model.getPlayerChoices().forEach(this::addElement);
 	}
 
 }

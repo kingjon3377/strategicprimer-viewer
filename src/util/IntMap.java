@@ -118,9 +118,7 @@ public final class IntMap<V> implements DelayedRemovalMap<@NonNull Integer, V> {
 	@Override
 	public void coalesce() {
 		synchronized (toRemove) {
-			for (final Integer num : toRemove) {
-				backing.remove(num);
-			}
+			toRemove.forEach(backing::remove);
 			toRemove.clear();
 		}
 	}

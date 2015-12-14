@@ -140,9 +140,7 @@ public final class SkillAdvancementPanel extends BoxPanel implements ActionListe
 			}
 			final int newLevel = skl.getLevel();
 			if (newLevel != level) {
-				for (final LevelGainListener list : listeners) {
-					list.level();
-				}
+				listeners.forEach(LevelGainListener::level);
 			}
 		}
 		// Clear if OK and no skill selected, on Cancel, and after

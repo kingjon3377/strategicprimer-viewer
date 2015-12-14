@@ -85,9 +85,7 @@ public final class ExplorationFrame extends JFrame {
 		 */
 		@Override
 		public void stopWaitingOn(final boolean end) {
-			for (final Component component : compList) {
-				component.validate();
-			}
+			compList.forEach(Component::validate);
 			if (first) {
 				layout.next(parent);
 				first = false;

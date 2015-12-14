@@ -264,9 +264,7 @@ public final class ImmortalsReportGenerator extends AbstractReportGenerator<Mobi
 	private static AbstractReportNode coalesce(final String header,
 			final Map<String, AbstractReportNode> mapping) {
 		final AbstractReportNode retval = new ListReportNode(header);
-		for (AbstractReportNode node : mapping.values()) {
-			retval.add(node);
-		}
+		mapping.values().forEach(retval::add);
 		return retval;
 	}
 	/**

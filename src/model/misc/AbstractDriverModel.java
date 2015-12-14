@@ -63,9 +63,7 @@ public abstract class AbstractDriverModel implements IDriverModel {
 		map = newMap;
 		mapDim = newMap.dimensions();
 		file = origin;
-		for (final MapChangeListener list : mcListeners) {
-			list.mapChanged();
-		}
+		mcListeners.forEach(MapChangeListener::mapChanged);
 	}
 
 	/**
