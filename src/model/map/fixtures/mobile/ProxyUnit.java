@@ -227,14 +227,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 				@Nullable
 				ProxyFor<? extends UnitMember> proxy;
 				Integer memberID = NullCleaner.assertNotNull(Integer.valueOf(member.getID()));
-				if (!map.containsKey(memberID)) {
-					if (member instanceof IWorker) {
-						proxy = new ProxyWorker((IWorker) member);
-					} else {
-						proxy = new ProxyMember(member);
-					}
-					map.put(memberID, (UnitMember) proxy);
-				} else {
+				if (map.containsKey(memberID)) {
 					proxy = (ProxyFor<? extends UnitMember>) map.get(memberID);
 					if (proxy instanceof ProxyWorker) {
 						if (member instanceof IWorker) {
@@ -246,6 +239,13 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 					} else {
 						((ProxyMember) proxy).addProxied(member);
 					}
+				} else {
+					if (member instanceof IWorker) {
+						proxy = new ProxyWorker((IWorker) member);
+					} else {
+						proxy = new ProxyMember(member);
+					}
+					map.put(memberID, (UnitMember) proxy);
 				}
 			}
 		}

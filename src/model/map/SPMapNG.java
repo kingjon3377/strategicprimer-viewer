@@ -602,12 +602,12 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public void addRivers(final Point location, final @NonNull River @NonNull ... rvrs) {
 		final EnumSet<@NonNull River> localRivers;
-		if (!rivers.containsKey(location)) {
+		if (rivers.containsKey(location)) {
+			localRivers = rivers.get(location);
+		} else {
 			localRivers = EnumSet.noneOf(River.class);
 			assert localRivers != null;
 			rivers.put(location, localRivers);
-		} else {
-			localRivers = rivers.get(location);
 		}
 		Collections.addAll(localRivers, rvrs);
 	}

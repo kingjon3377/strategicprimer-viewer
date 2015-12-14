@@ -175,15 +175,7 @@ public class Job implements IJob { // NOPMD
 				}
 			}
 			for (final ISkill skill : obj) {
-				if (!ours.containsKey(skill.getName())) {
-					ostream.append(context);
-					ostream.append(" In Job ");
-					ostream.append(name);
-					ostream.append(":\tExtra skill ");
-					ostream.append(skill.getName());
-					ostream.append('\n');
-					retval = false;
-				} else {
+				if (ours.containsKey(skill.getName())) {
 					// TODO: Move this logic into Skill?
 					final Pair<Integer, Integer> pair = ours.get(skill.getName());
 					final int lvl = pair.first().intValue();
@@ -205,6 +197,14 @@ public class Job implements IJob { // NOPMD
 						ostream.append('\n');
 						retval = false;
 					}
+				} else {
+					ostream.append(context);
+					ostream.append(" In Job ");
+					ostream.append(name);
+					ostream.append(":\tExtra skill ");
+					ostream.append(skill.getName());
+					ostream.append('\n');
+					retval = false;
 				}
 			}
 			return retval;
