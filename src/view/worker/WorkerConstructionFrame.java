@@ -207,7 +207,7 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 	 * @param evt the action to handle.
 	 */
 	@Override
-	public final void actionPerformed(@Nullable final ActionEvent evt) {
+	public void actionPerformed(@Nullable final ActionEvent evt) {
 		if (evt == null) {
 			return;
 		} else if ("Add Worker".equalsIgnoreCase(evt.getActionCommand())) {
@@ -313,7 +313,7 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 	 * @param list a listener to add
 	 */
 	@Override
-	public final void addNewWorkerListener(final NewWorkerListener list) {
+	public void addNewWorkerListener(final NewWorkerListener list) {
 		nwListeners.add(list);
 	}
 
@@ -321,7 +321,7 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 	 * @param list a listener to remove
 	 */
 	@Override
-	public final void removeNewWorkerListener(final NewWorkerListener list) {
+	public void removeNewWorkerListener(final NewWorkerListener list) {
 		nwListeners.remove(list);
 	}
 }

@@ -222,7 +222,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 	 */
 	@Override
 	@Nullable
-	public final String getToolTipText(@Nullable final MouseEvent evt) {
+	public String getToolTipText(@Nullable final MouseEvent evt) {
 		if (evt == null || getRowForLocation(evt.getX(), evt.getY()) == -1) {
 			return null; // NOPMD
 		}
@@ -393,28 +393,28 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 	 * @param list the listener to add
 	 */
 	@Override
-	public final void addUnitSelectionListener(final UnitSelectionListener list) {
+	public void addUnitSelectionListener(final UnitSelectionListener list) {
 		tsl.addUnitSelectionListener(list);
 	}
 	/**
 	 * @param list the listener to remove
 	 */
 	@Override
-	public final void removeUnitSelectionListener(final UnitSelectionListener list) {
+	public void removeUnitSelectionListener(final UnitSelectionListener list) {
 		tsl.removeUnitSelectionListener(list);
 	}
 	/**
 	 * @param list the listener to add
 	 */
 	@Override
-	public final void addUnitMemberListener(final UnitMemberListener list) {
+	public void addUnitMemberListener(final UnitMemberListener list) {
 		tsl.addUnitMemberListener(list);
 	}
 	/**
 	 * @param list the listener to remove
 	 */
 	@Override
-	public final void removeUnitMemberListener(final UnitMemberListener list) {
+	public void removeUnitMemberListener(final UnitMemberListener list) {
 		tsl.removeUnitMemberListener(list);
 	}
 }

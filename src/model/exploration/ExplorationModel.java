@@ -483,7 +483,7 @@ IExplorationModel {
 	 * @param list a listener to add
 	 */
 	@Override
-	public final void addSelectionChangeListener(
+	public void addSelectionChangeListener(
 			final SelectionChangeListener list) {
 		scListeners.add(list);
 	}
@@ -492,7 +492,7 @@ IExplorationModel {
 	 * @param list a listener to remove
 	 */
 	@Override
-	public final void removeSelectionChangeListener(
+	public void removeSelectionChangeListener(
 			final SelectionChangeListener list) {
 		scListeners.remove(list);
 	}
@@ -501,7 +501,7 @@ IExplorationModel {
 	 * @param listener the listener to add
 	 */
 	@Override
-	public final void addMovementCostListener(final MovementCostListener listener) {
+	public void addMovementCostListener(final MovementCostListener listener) {
 		mcListeners.add(listener);
 	}
 
@@ -509,7 +509,7 @@ IExplorationModel {
 	 * @param listener the listener to remove
 	 */
 	@Override
-	public final void removeMovementCostListener(
+	public void removeMovementCostListener(
 			final MovementCostListener listener) {
 		mcListeners.remove(listener);
 	}

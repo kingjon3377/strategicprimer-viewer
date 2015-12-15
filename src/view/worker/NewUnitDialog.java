@@ -143,7 +143,7 @@ public final class NewUnitDialog extends JFrame implements ActionListener,
 	 * @param evt the event to handle
 	 */
 	@Override
-	public final void actionPerformed(@Nullable final ActionEvent evt) {
+	public void actionPerformed(@Nullable final ActionEvent evt) {
 		if (evt == null) {
 			return;
 		} else if ("OK".equals(evt.getActionCommand())) {
@@ -194,8 +194,8 @@ public final class NewUnitDialog extends JFrame implements ActionListener,
 	 * @param newPlayer the new current player
 	 */
 	@Override
-	public final void playerChanged(@Nullable final Player old,
-			final Player newPlayer) {
+	public void playerChanged(@Nullable final Player old,
+	                          final Player newPlayer) {
 		owner = newPlayer;
 	}
 
@@ -203,7 +203,7 @@ public final class NewUnitDialog extends JFrame implements ActionListener,
 	 * @param list a listener to add
 	 */
 	@Override
-	public final void addNewUnitListener(final NewUnitListener list) {
+	public void addNewUnitListener(final NewUnitListener list) {
 		nuListeners.add(list);
 	}
 
@@ -211,7 +211,7 @@ public final class NewUnitDialog extends JFrame implements ActionListener,
 	 * @param list a listener to remove
 	 */
 	@Override
-	public final void removeNewUnitListener(final NewUnitListener list) {
+	public void removeNewUnitListener(final NewUnitListener list) {
 		nuListeners.remove(list);
 	}
 }

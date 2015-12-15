@@ -33,7 +33,7 @@ public final class MissingChildException extends SPFormatException {
 	/**
 	 * @return the current tag.
 	 */
-	public final String getTag() {
+	public String getTag() {
 		return context;
 	}
 

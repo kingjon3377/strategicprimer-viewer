@@ -134,7 +134,7 @@ public final class FileChooser {
 	 * @param loc
 	 *            the file to return
 	 */
-	public final void setFile(final File loc) {
+	public void setFile(final File loc) {
 		if (loc.exists()) {
 			file = loc;
 			shouldReturn = true;

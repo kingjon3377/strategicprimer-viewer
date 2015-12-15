@@ -156,7 +156,7 @@ public final class FindDialog extends JDialog implements ActionListener {
 	 * @param event the event to handle
 	 */
 	@Override
-	public final void actionPerformed(@Nullable final ActionEvent event) {
+	public void actionPerformed(@Nullable final ActionEvent event) {
 		if (event != null) {
 			if ("OK".equals(event.getActionCommand())) {
 				search();

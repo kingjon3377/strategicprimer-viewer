@@ -50,14 +50,14 @@ public final class UnwantedChildException extends SPFormatException {
 	/**
 	 * @return the current tag.
 	 */
-	public final String getTag() {
+	public String getTag() {
 		return tag;
 	}
 
 	/**
 	 * @return the unwanted child.
 	 */
-	public final String getChild() {
+	public String getChild() {
 		return chld;
 	}
 }

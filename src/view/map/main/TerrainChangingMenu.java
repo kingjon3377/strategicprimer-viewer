@@ -106,7 +106,7 @@ public final class TerrainChangingMenu extends JPopupMenu implements ActionListe
 	 * @param event the menu-item-selected event we're handling.
 	 */
 	@Override
-	public final void actionPerformed(@Nullable final ActionEvent event) {
+	public void actionPerformed(@Nullable final ActionEvent event) {
 		if (event != null) {
 			final String command = event.getActionCommand();
 			if (command != null) {
@@ -129,7 +129,7 @@ public final class TerrainChangingMenu extends JPopupMenu implements ActionListe
 	 * @param list a listener to add
 	 */
 	@Override
-	public final void addSelectionChangeListener(
+	public void addSelectionChangeListener(
 			final SelectionChangeListener list) {
 		scs.addSelectionChangeListener(list);
 	}
@@ -138,7 +138,7 @@ public final class TerrainChangingMenu extends JPopupMenu implements ActionListe
 	 * @param list a listener to remove
 	 */
 	@Override
-	public final void removeSelectionChangeListener(
+	public void removeSelectionChangeListener(
 			final SelectionChangeListener list) {
 		scs.removeSelectionChangeListener(list);
 	}

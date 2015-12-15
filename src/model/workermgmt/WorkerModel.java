@@ -74,7 +74,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 * @return a list of that player's units
 	 */
 	@Override
-	public final List<IUnit> getUnits(final Player player) {
+	public List<IUnit> getUnits(final Player player) {
 		if (getSubordinateMaps().iterator().hasNext()) {
 			final Map<Integer, IUnit> retval = new TreeMap<>();
 			for (Pair<IMutableMapNG, File> pair : getAllMaps()) {
@@ -151,7 +151,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 * @param unit the unit to add
 	 */
 	@Override
-	public final void addUnit(final IUnit unit) {
+	public void addUnit(final IUnit unit) {
 		for (final Point point : getMap().locations()) {
 			for (final TileFixture fix : getMap().getOtherFixtures(point)) {
 				if (fix instanceof Fortress

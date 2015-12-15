@@ -32,7 +32,7 @@ public final class UnsupportedTagException extends SPFormatException {
 	/**
 	 * @return the tag.
 	 */
-	public final String getTag() {
+	public String getTag() {
 		return tag;
 	}
 

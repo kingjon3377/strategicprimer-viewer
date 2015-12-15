@@ -56,7 +56,7 @@ public final class Player implements Comparable<Player>, HasName {
 	 *
 	 * @return the player's number
 	 */
-	public final int getPlayerId() {
+	public int getPlayerId() {
 		return playerID;
 	}
 
@@ -65,7 +65,7 @@ public final class Player implements Comparable<Player>, HasName {
 	 * @return the player's code name
 	 */
 	@Override
-	public final String getName() {
+	public String getName() {
 		return playerName;
 	}
 
@@ -117,7 +117,7 @@ public final class Player implements Comparable<Player>, HasName {
 	/**
 	 * @param curr whether this is the current player or not
 	 */
-	public final void setCurrent(final boolean curr) {
+	public void setCurrent(final boolean curr) {
 		current = curr;
 	}
 
@@ -125,7 +125,7 @@ public final class Player implements Comparable<Player>, HasName {
 	 *
 	 * @return true iff this is the current player
 	 */
-	public final boolean isCurrent() {
+	public boolean isCurrent() {
 		return current;
 	}
 
@@ -133,7 +133,7 @@ public final class Player implements Comparable<Player>, HasName {
 	 * @return whether this is the (or an) "independent" player---the "owner" of
 	 *         unowned fixtures.
 	 */
-	public final boolean isIndependent() {
+	public boolean isIndependent() {
 		return "independent".equalsIgnoreCase(getName());
 	}
 
@@ -141,7 +141,7 @@ public final class Player implements Comparable<Player>, HasName {
 	 * @param name the player's new name
 	 */
 	@Override
-	public final void setName(final String name) {
+	public void setName(final String name) {
 		playerName = name;
 	}
 }

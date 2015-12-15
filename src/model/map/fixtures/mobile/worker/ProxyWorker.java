@@ -238,7 +238,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override
-	public final void setImage(final String img) {
+	public void setImage(final String img) {
 		LOGGER.log(Level.WARNING, "setImage() called on a ProxyWorker");
 		for (IWorker worker : workers) {
 			worker.setImage(img);

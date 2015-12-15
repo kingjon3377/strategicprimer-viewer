@@ -50,14 +50,14 @@ public final class MissingPropertyException extends SPFormatException {
 	/**
 	 * @return the current tag
 	 */
-	public final String getTag() {
+	public String getTag() {
 		return context;
 	}
 
 	/**
 	 * @return the missing parameter
 	 */
-	public final String getParam() {
+	public String getParam() {
 		return param;
 	}
 }

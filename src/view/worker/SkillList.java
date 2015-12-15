@@ -83,7 +83,7 @@ public final class SkillList extends JList<ISkill> implements ListSelectionListe
 	 * @param list a listener to add
 	 */
 	@Override
-	public final void addSkillSelectionListener(final SkillSelectionListener list) {
+	public void addSkillSelectionListener(final SkillSelectionListener list) {
 		ssListeners.add(list);
 	}
 
@@ -91,7 +91,7 @@ public final class SkillList extends JList<ISkill> implements ListSelectionListe
 	 * @param list a listener to remove
 	 */
 	@Override
-	public final void removeSkillSelectionListener(
+	public void removeSkillSelectionListener(
 			final SkillSelectionListener list) {
 		ssListeners.remove(list);
 	}

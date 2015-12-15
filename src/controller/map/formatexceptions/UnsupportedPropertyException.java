@@ -48,14 +48,14 @@ public final class UnsupportedPropertyException extends SPFormatException {
 	/**
 	 * @return the current tag
 	 */
-	public final String getTag() {
+	public String getTag() {
 		return context;
 	}
 
 	/**
 	 * @return the unsupported parameter
 	 */
-	public final String getParam() {
+	public String getParam() {
 		return param;
 	}
 }

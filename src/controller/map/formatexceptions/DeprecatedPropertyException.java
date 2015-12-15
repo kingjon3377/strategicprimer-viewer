@@ -43,21 +43,21 @@ public final class DeprecatedPropertyException extends SPFormatException {
 	/**
 	 * @return the current tag.
 	 */
-	public final String getTag() {
+	public String getTag() {
 		return context;
 	}
 
 	/**
 	 * @return the old name for the property.
 	 */
-	public final String getOld() {
+	public String getOld() {
 		return old;
 	}
 
 	/**
 	 * @return the preferred orm.
 	 */
-	public final String getPreferred() {
+	public String getPreferred() {
 		return preferred;
 	}
 

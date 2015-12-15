@@ -570,7 +570,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		 * @return whether there is a next item in the iterator
 		 */
 		@Override
-		public final boolean hasNext() {
+		public boolean hasNext() {
 			if (hasCached) {
 				return true; // NOPMD
 			} else {

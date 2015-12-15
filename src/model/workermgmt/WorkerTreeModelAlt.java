@@ -81,8 +81,8 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @param newOwner the new owner
 	 */
 	@Override
-	public final void moveMember(final UnitMember member, final IUnit old,
-			final IUnit newOwner) {
+	public void moveMember(final UnitMember member, final IUnit old,
+	                       final IUnit newOwner) {
 		final PlayerNode pnode = NullCleaner.assertNotNull((PlayerNode) root);
 		final UnitNode oldNode =
 				NullCleaner.assertNotNull((UnitNode) getNode(pnode, old));
@@ -256,7 +256,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @param unit the unit to add
 	 */
 	@Override
-	public final void addUnit(final IUnit unit) {
+	public void addUnit(final IUnit unit) {
 		model.addUnit(unit);
 		final MutableTreeNode node = new UnitNode(unit);
 		final String kind = unit.getKind();
@@ -278,7 +278,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @param unit the unit to add
 	 */
 	@Override
-	public final void addNewUnit(final IUnit unit) {
+	public void addNewUnit(final IUnit unit) {
 		addUnit(unit);
 	}
 
@@ -286,7 +286,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * Handle notification that a new map was loaded.
 	 */
 	@Override
-	public final void mapChanged() {
+	public void mapChanged() {
 		setRoot(new PlayerNode(model.getMap().getCurrentPlayer(),
 				model));
 	}
@@ -296,8 +296,8 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @param newPlayer the new current player
 	 */
 	@Override
-	public final void playerChanged(@Nullable final Player old,
-			final Player newPlayer) {
+	public void playerChanged(@Nullable final Player old,
+	                          final Player newPlayer) {
 		setRoot(new PlayerNode(newPlayer, model));
 	}
 
@@ -307,7 +307,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 *         itself
 	 */
 	@Override
-	public final Object getModelObject(final Object obj) {
+	public Object getModelObject(final Object obj) {
 		if (obj instanceof DefaultMutableTreeNode) {
 			return NullCleaner.assertNotNull(((DefaultMutableTreeNode) obj) // NOPMD
 					.getUserObject());
@@ -323,7 +323,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @param member the member to add to it
 	 */
 	@Override
-	public final void addUnitMember(final IUnit unit, final UnitMember member) {
+	public void addUnitMember(final IUnit unit, final UnitMember member) {
 		final Iterable<TreeNode> pnode = (PlayerNode) root;
 		UnitNode unode = null;
 		for (final TreeNode item : pnode) {
@@ -348,7 +348,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @return a String representation of the object
 	 */
 	@Override
-	public final String toString() {
+	public String toString() {
 		return "WorkerTreeModelAlt";
 	}
 	/**

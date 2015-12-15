@@ -124,7 +124,7 @@ public final class SkillAdvancementPanel extends BoxPanel implements ActionListe
 	 * @param evt the event to handle
 	 */
 	@Override
-	public final void actionPerformed(@Nullable final ActionEvent evt) {
+	public void actionPerformed(@Nullable final ActionEvent evt) {
 		if (evt == null) {
 			return;
 		}
@@ -153,7 +153,7 @@ public final class SkillAdvancementPanel extends BoxPanel implements ActionListe
 	 * @param list the listener to add
 	 */
 	@Override
-	public final void addLevelGainListener(final LevelGainListener list) {
+	public void addLevelGainListener(final LevelGainListener list) {
 		listeners.add(list);
 	}
 

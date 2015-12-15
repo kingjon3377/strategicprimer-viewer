@@ -39,14 +39,14 @@ public final class Point implements Comparable<@NonNull Point> {
 	/**
 	 * @return the first coordinate.
 	 */
-	public final int getRow() {
+	public int getRow() {
 		return row;
 	}
 
 	/**
 	 * @return the second coordinate.
 	 */
-	public final int getCol() {
+	public int getCol() {
 		return col;
 	}
 
@@ -67,7 +67,7 @@ public final class Point implements Comparable<@NonNull Point> {
 	 * @return whether this object equals another.
 	 */
 	@Override
-	public final boolean equals(@Nullable final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof Point && ((Point) obj).row == row
 				&& ((Point) obj).col == col;
 	}
@@ -77,7 +77,7 @@ public final class Point implements Comparable<@NonNull Point> {
 	 * @return a hash code.
 	 */
 	@Override
-	public final int hashCode() {
+	public int hashCode() {
 		return row | col;
 	}
 

@@ -59,21 +59,21 @@ public final class MapDimensions {
 	/**
 	 * @return The number of rows in the map.
 	 */
-	public final int getRows() {
+	public int getRows() {
 		return rows;
 	}
 
 	/**
 	 * @return The number of columns in the map.
 	 */
-	public final int getColumns() {
+	public int getColumns() {
 		return cols;
 	}
 
 	/**
 	 * @return The map version.
 	 */
-	public final int getVersion() {
+	public int getVersion() {
 		return version;
 	}
 
