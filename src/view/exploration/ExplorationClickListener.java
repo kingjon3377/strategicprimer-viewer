@@ -195,7 +195,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	private static boolean hasFixture(final IMapNG map, final Point dPoint,
 			final TileFixture fix) {
 		return StreamSupport.stream(map.getOtherFixtures(dPoint).spliterator(), false)
-				       .anyMatch(item -> fix.equals(item));
+				       .anyMatch(fix::equals);
 	}
 
 	/**

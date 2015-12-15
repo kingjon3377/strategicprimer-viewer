@@ -187,7 +187,7 @@ public final class MapReaderAdapter {
 	 * @return an array of equivalent Files
 	 */
 	public static File[] namesToFiles(final boolean dropFirst, final String... names) {
-		final List<File> retval = Stream.of(names).map(name -> new File(name)).collect(Collectors.toList());
+		final List<File> retval = Stream.of(names).map(File::new).collect(Collectors.toList());
 		if (dropFirst) {
 			retval.remove(0);
 		}

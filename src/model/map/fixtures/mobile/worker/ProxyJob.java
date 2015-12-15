@@ -230,7 +230,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	 */
 	@Override
 	public boolean isEmpty() {
-		return StreamSupport.stream(proxiedJobs.spliterator(), false).allMatch(job -> job.isEmpty());
+		return StreamSupport.stream(proxiedJobs.spliterator(), false).allMatch(IJob::isEmpty);
 	}
 	/**
 	 * TODO: Should we return a new Skill (and add it) instead of null if not present?

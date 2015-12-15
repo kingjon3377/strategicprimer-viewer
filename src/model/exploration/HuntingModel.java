@@ -169,7 +169,7 @@ public final class HuntingModel {
 	public Iterable<String> gather(final Point point, final int items) {
 		final List<String> choices =
 				StreamSupport.stream(new SurroundingPointIterable(point, dims).spliterator(), false)
-						.filter(local -> plants.containsKey(local))
+						.filter(plants::containsKey)
 						.flatMap(local -> StreamSupport.stream(plants.get(local).spliterator(), false))
 						.collect(Collectors.toList());
 		final List<String> retval = new ArrayList<>();
@@ -191,7 +191,7 @@ public final class HuntingModel {
 		final List<String> choices = new ArrayList<>();
 		final Iterable<Point> iter = new SurroundingPointIterable(point, dims);
 		choices.addAll(StreamSupport.stream(new SurroundingPointIterable(point, dims).spliterator(), false)
-				               .filter(local -> chosenMap.containsKey(local))
+				               .filter(chosenMap::containsKey)
 				               .flatMap(local -> StreamSupport.stream(chosenMap.get(local).spliterator(), false))
 				               .collect(Collectors.toList()));
 		final int nothings = choices.size();

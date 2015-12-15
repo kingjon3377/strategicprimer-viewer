@@ -225,7 +225,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			builder.append(OPEN_LIST_ITEM);
 			builder.append("There is a river on the tile, "); // NOPMD
 			builder.append("flowing through the following borders: ");
-			builder.append(StreamSupport.stream(rivers.spliterator(), false).map(river -> river.getDescription())
+			builder.append(StreamSupport.stream(rivers.spliterator(), false).map(River::getDescription)
 					               .collect(Collectors.joining(", ")));
 			builder.append(CLOSE_LIST_ITEM);
 		}
@@ -246,7 +246,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			final StringBuilder builder = new StringBuilder(RIVER_RPT_LEN)
 					.append("There is a river on the tile, ");
 			builder.append("flowing through the following borders: ");
-			builder.append(StreamSupport.stream(rivers.spliterator(), false).map(river -> river.getDescription())
+			builder.append(StreamSupport.stream(rivers.spliterator(), false).map(River::getDescription)
 					               .collect(Collectors.joining(", ")));
 			parent.add(new SimpleReportNode(loc, builder.toString()));
 		}

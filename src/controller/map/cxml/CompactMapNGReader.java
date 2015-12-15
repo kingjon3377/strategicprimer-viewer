@@ -317,7 +317,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	private static StartElement getFirstStartElement(
 			                                                final Iterable<XMLEvent> stream, final int line)
 			throws SPFormatException {
-		return StreamSupport.stream(stream.spliterator(), false).filter(event -> event.isStartElement()).findFirst()
+		return StreamSupport.stream(stream.spliterator(), false).filter(XMLEvent::isStartElement).findFirst()
 				       .orElseThrow(() -> new MissingChildException("map", line)).asStartElement();
 	}
 

@@ -224,7 +224,7 @@ public final class ZeroToOneConverter {
 		final StringBuilder builder = new StringBuilder().append('<');
 		builder.append(element.getName().getLocalPart());
 		StreamSupport.stream(new IteratorWrapper<Attribute>(element.getAttributes()).spliterator(), false)
-				.map(attr -> printAttribute(attr)).forEach(builder::append);
+				.map(ZeroToOneConverter::printAttribute).forEach(builder::append);
 		builder.append('>');
 		return NullCleaner.assertNotNull(builder.toString());
 	}

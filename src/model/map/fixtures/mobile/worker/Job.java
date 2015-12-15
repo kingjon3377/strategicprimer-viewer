@@ -247,7 +247,7 @@ public class Job implements IJob { // NOPMD
 		if (level > 0) {
 			return false;
 		} else {
-			return StreamSupport.stream(spliterator(), false).allMatch(skill -> skill.isEmpty());
+			return StreamSupport.stream(spliterator(), false).allMatch(ISkill::isEmpty);
 		}
 	}
 	/**
