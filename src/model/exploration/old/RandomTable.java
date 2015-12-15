@@ -87,7 +87,7 @@ public final class RandomTable implements EncounterTable {
 	 */
 	@Override
 	public Set<String> allEvents() {
-		return table.stream().map(Pair<Integer, String>::second).collect(Collectors.toSet());
+		return table.stream().map(Pair::second).collect(Collectors.toSet());
 	}
 
 	/**
