@@ -36,17 +36,6 @@ public final class IDFactory {
 	private final BitSet usedIDs = new BitSet();
 
 	/**
-	 * An exception to warn about duplicate IDs.
-	 */
-	public static final class DuplicateIDException extends Exception {
-		/**
-		 * @param idNum the duplicate ID.
-		 */
-		public DuplicateIDException(final int idNum) {
-			super("Duplicate ID #" + idNum);
-		}
-	}
-	/**
 	 * This should probably only be called from the IDFactoryFiller.
 	 * @param idNum an ID number.
 	 * @return whether it's used.
