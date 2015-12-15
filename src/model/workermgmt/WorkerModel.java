@@ -132,10 +132,10 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 */
 	@Override
 	public List<String> getUnitKinds(final Player player) {
-		final Set<String> retval = new HashSet<>();
-		retval.addAll(getUnits(player).stream().map(IUnit::getKind).collect(Collectors.toList()));
 		return NullCleaner.assertNotNull(Collections
-				.unmodifiableList(new ArrayList<>(retval)));
+				                                 .unmodifiableList(
+						                                 new ArrayList<>(getUnits(player).stream().map(IUnit::getKind)
+								                                                 .collect(Collectors.toSet()))));
 	}
 
 	/**
