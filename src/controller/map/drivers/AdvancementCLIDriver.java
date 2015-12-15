@@ -115,7 +115,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 			model = new WorkerModel(dmodel);
 		}
 		final Set<Player> allPlayers = new HashSet<>();
-		for (Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
+		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
 			allPlayers.addAll(CLIHelper.toList(pair.first().players()));
 		}
 		final List<Player> playerList = new ArrayList<>(allPlayers);
@@ -167,7 +167,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 				!cli.inputBoolean("Add experience to workers individually? ");
 		final List<IUnit> units = model.getUnits(player);
 		while (!units.isEmpty()) {
-			int unitNum = cli.chooseFromList(units,
+			final int unitNum = cli.chooseFromList(units,
 					player.getName() + "'s units:",
 					"No unadvanced units remain.", "Chosen unit: ", false);
 			if (unitNum >= 0 && unitNum < units.size()) {
@@ -194,7 +194,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 						.map(p -> (IWorker) p).collect(
 						Collectors.toList());
 		while (!workers.isEmpty()) {
-			int workerNum = cli.chooseFromList(workers, "Workers in unit:",
+			final int workerNum = cli.chooseFromList(workers, "Workers in unit:",
 					"No unadvanced workers remain.", "Chosen worker: ", false);
 			if (workerNum >= 0 && workerNum < workers.size()) {
 				advanceSingleWorker(
@@ -217,8 +217,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 		for (int jobNum = cli.chooseFromList(jobs, hdr, none, prpt, false); jobNum <= jobs
 				.size(); jobNum = cli.chooseFromList(jobs, hdr, none, prpt, false)) {
 			if (jobNum < 0 || jobNum == jobs.size()) {
-				String jobName = cli.inputString("Name of new Job: ");
-				worker.addJob(new Job(jobName, 0));
+				worker.addJob(new Job(cli.inputString("Name of new Job: "), 0));
 				jobs.clear();
 				jobs.addAll(CLIHelper.toList(worker));
 				SYS_OUT.println("Select the new job at the next prompt.");
@@ -244,15 +243,13 @@ public final class AdvancementCLIDriver implements ISPDriver {
 		for (int skillNum = cli.chooseFromList(skills, hdr, none, prpt, false); skillNum <= skills
 				.size(); skillNum = cli.chooseFromList(skills, hdr, none, prpt, false)) {
 			if (skillNum < 0 || skillNum == skills.size()) {
-				String skillName = cli.inputString("Name of new Skill: ");
-				job.addSkill(new Skill(skillName, 0, 0));
+				job.addSkill(new Skill(cli.inputString("Name of new Skill: "), 0, 0));
 				skills.clear();
 				skills.addAll(CLIHelper.toList(job));
 				SYS_OUT.println("Select the new skill at the next prompt.");
 				continue;
 			} else {
-				int hours = cli.inputNumber("Hours of experience to add: ");
-				skills.get(skillNum).addHours(hours,
+				skills.get(skillNum).addHours(cli.inputNumber("Hours of experience to add: "),
 						SingletonRandom.RANDOM.nextInt(100));
 				if (!cli.inputBoolean("Select another Skill in this Job? ")) {
 					break;

@@ -51,7 +51,7 @@ public final class City extends AbstractTown {
 	 */
 	@Override
 	public City copy(final boolean zero) {
-		City retval;
+		final City retval;
 		if (zero) {
 			retval = new City(status(), size(), 0, getName(), id, getOwner());
 		} else {

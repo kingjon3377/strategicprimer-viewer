@@ -44,7 +44,7 @@ public final class AboutDialog extends JDialog {
 		setPreferredSize(new Dimension(300, 390));
 		setMinimumSize(new Dimension(300, 390));
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
-		StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
 		builder.append("<html>");
 		if (app.isEmpty()) {
 			paragraph(builder, "Assistive Programs Suite");
@@ -119,7 +119,7 @@ public final class AboutDialog extends JDialog {
 	 * @param builder the StringBuilder to write to
 	 * @param text the text of the paragraph
 	 */
-	private void paragraph(StringBuilder builder, final String text) {
+	private void paragraph(final StringBuilder builder, final String text) {
 		builder.append("<p>");
 		builder.append(text);
 		builder.append("</p>");

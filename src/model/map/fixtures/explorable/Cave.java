@@ -52,7 +52,7 @@ public final class Cave implements IEvent, ExplorableFixture {
 	 */
 	@Override
 	public Cave copy(final boolean zero) {
-		Cave retval;
+		final Cave retval;
 		if (zero) {
 			retval = new Cave(0, id);
 		} else {

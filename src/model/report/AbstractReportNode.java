@@ -180,7 +180,7 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 			return point;
 		} else {
 			Point locPoint = null;
-			for (AbstractReportNode child : this) {
+			for (final AbstractReportNode child : this) {
 				if (locPoint == null) {
 					locPoint = child.getPoint();
 				} else if (!locPoint.equals(child.getPoint())) {

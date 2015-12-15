@@ -56,7 +56,7 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	 */
 	@Override
 	public Battlefield copy(final boolean zero) {
-		Battlefield retval;
+		final Battlefield retval;
 		if (zero) {
 			retval = new Battlefield(0, id);
 		} else {
