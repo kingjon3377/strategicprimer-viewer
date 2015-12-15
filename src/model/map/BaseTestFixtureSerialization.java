@@ -678,12 +678,11 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	protected <T extends HasImage> void assertImageSerialization(
 			final String message, final T obj, final Class<T> type)
 			throws XMLStreamException, SPFormatException, IOException {
-		final HasImage objInternal = obj;
-		final String origImage = objInternal.getImage();
-		objInternal.setImage("imageForSerialization");
+		final String origImage = obj.getImage();
+		obj.setImage("imageForSerialization");
 		assertImageSerialization(message, obj, type, oldReader);
 		assertImageSerialization(message, obj, type, newReader);
-		objInternal.setImage(origImage);
+		obj.setImage(origImage);
 	}
 
 	/**
@@ -704,16 +703,15 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 			final String message, final T obj, final Class<T> type,
 			final ISPReader reader) throws XMLStreamException,
 			SPFormatException, IOException {
-		final HasImage objInternal = obj;
 		assertEquals(
 				message,
-				objInternal.getImage(),
+				obj.getImage(),
 				reader.readXML(FAKE_FILENAME,
 						new StringReader(createSerializedForm(obj, true)),
 						type, new Warning(Action.Ignore)).getImage());
 		assertEquals(
 				message,
-				objInternal.getImage(),
+				obj.getImage(),
 				reader.readXML(FAKE_FILENAME,
 						new StringReader(createSerializedForm(obj, false)),
 						type, new Warning(Action.Ignore)).getImage());

@@ -170,9 +170,8 @@ public final class WorkerMgmtFrame extends JFrame {
 		ordersPanel.playerChanged(null, model.getMap().getCurrentPlayer());
 		tree.addTreeSelectionListener(ordersPanel);
 		final Component outer = this;
-		final IWorkerModel smodel = model;
 		final DefaultTreeModel reportModel = new DefaultTreeModel(new SimpleReportNode("Please wait, loading report ..."));
-		new Thread(new ReportGeneratorThread(reportModel, smodel, model.getMap().getCurrentPlayer())).start();
+		new Thread(new ReportGeneratorThread(reportModel, model, model.getMap().getCurrentPlayer())).start();
 		final JTree report = new JTree(reportModel);
 		report.setRootVisible(false);
 		report.expandPath(new TreePath(((DefaultMutableTreeNode) reportModel
@@ -222,7 +221,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		model.addMapChangeListener(reportUpdater);
 		final MemberDetailPanel mdp = new MemberDetailPanel();
 		tree.addUnitMemberListener(mdp);
-		final StrategyExporter strategyExporter = new StrategyExporter(smodel, wtmodel);
+		final StrategyExporter strategyExporter = new StrategyExporter(model, wtmodel);
 		setContentPane(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT, HALF_WAY,
 				HALF_WAY,
 				new SplitWithWeights(JSplitPane.VERTICAL_SPLIT, TWO_THIRDS, TWO_THIRDS,

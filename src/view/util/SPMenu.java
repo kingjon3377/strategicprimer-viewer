@@ -129,9 +129,8 @@ public class SPMenu extends JMenuBar {
 				createHotkey(KeyEvent.VK_E),
 				"Open the first secondary map in the map viewer for a broader view",
 				evt -> {
-					IDriverModel mmodel = model;
-					if (mmodel instanceof IMultiMapModel) {
-						final Pair<IMutableMapNG, File> mapPair = ((IMultiMapModel) mmodel)
+					if (model instanceof IMultiMapModel) {
+						final Pair<IMutableMapNG, File> mapPair = ((IMultiMapModel) model)
 								.getSubordinateMaps().iterator().next();
 						invokeLater(() -> new ViewerFrame(
 								new ViewerModel(mapPair.first(), mapPair.second()),

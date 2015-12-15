@@ -67,8 +67,7 @@ public final class IteratorWrapper<@NonNull T> implements Iterable<@NonNull T> {
 		while (iterator.hasNext()) {
 			queue.add(iterator.next());
 		}
-		final Iterator<T> qIterator = queue.iterator();
-		iter = qIterator;
+		iter = queue.iterator();
 	}
 
 	/**

@@ -372,7 +372,6 @@ public final class DrawHelperComparator implements ISPDriver { // NOPMD
 	 *        but gives more precise result)
 	 */
 	public static void runAllTests(final IMapNG map, final int repetitions) {
-		final int reps = repetitions;
 		final int tsize = TileViewSize.scaleZoom(ViewerModel.DEF_ZOOM_LEVEL,
 				map.dimensions().version);
 		final TileDrawHelper hOne = new CachingTileDrawHelper();
@@ -380,42 +379,42 @@ public final class DrawHelperComparator implements ISPDriver { // NOPMD
 		final TileDrawHelper hThree = new Ver2TileDrawHelper(
 				(img, infoflags, xCoord, yCoord, width, height) -> false, fix -> true);
 		SYS_OUT.println("1. All in one place:");
-		long oneTotal = printStats(CACHING, first(hOne, map, reps, tsize), reps);
-		long twoTotal = printStats(DIRECT, first(hTwo, map, reps, tsize), reps);
-		long threeTot = printStats(VER_TWO, first(hThree, map, reps, tsize),
-				reps);
+		long oneTotal = printStats(CACHING, first(hOne, map, repetitions, tsize), repetitions);
+		long twoTotal = printStats(DIRECT, first(hTwo, map, repetitions, tsize), repetitions);
+		long threeTot = printStats(VER_TWO, first(hThree, map, repetitions, tsize),
+				repetitions);
 		SYS_OUT.println("2. Translating:");
-		oneTotal += printStats(CACHING, second(hOne, map, reps, tsize), reps);
-		twoTotal += printStats(DIRECT, second(hTwo, map, reps, tsize), reps);
-		threeTot += printStats(VER_TWO, second(hThree, map, reps, tsize), reps);
+		oneTotal += printStats(CACHING, second(hOne, map, repetitions, tsize), repetitions);
+		twoTotal += printStats(DIRECT, second(hTwo, map, repetitions, tsize), repetitions);
+		threeTot += printStats(VER_TWO, second(hThree, map, repetitions, tsize), repetitions);
 		SYS_OUT.println("3. In-place, reusing Graphics:");
-		oneTotal += printStats(CACHING, third(hOne, map, reps, tsize), reps);
-		twoTotal += printStats(DIRECT, third(hTwo, map, reps, tsize), reps);
-		threeTot += printStats(VER_TWO, third(hThree, map, reps, tsize), reps);
+		oneTotal += printStats(CACHING, third(hOne, map, repetitions, tsize), repetitions);
+		twoTotal += printStats(DIRECT, third(hTwo, map, repetitions, tsize), repetitions);
+		threeTot += printStats(VER_TWO, third(hThree, map, repetitions, tsize), repetitions);
 		SYS_OUT.println("4. Translating, reusing Graphics:");
-		oneTotal += printStats(CACHING, fourth(hOne, map, reps, tsize), reps);
-		twoTotal += printStats(DIRECT, fourth(hTwo, map, reps, tsize), reps);
-		threeTot += printStats(VER_TWO, fourth(hThree, map, reps, tsize), reps);
+		oneTotal += printStats(CACHING, fourth(hOne, map, repetitions, tsize), repetitions);
+		twoTotal += printStats(DIRECT, fourth(hTwo, map, repetitions, tsize), repetitions);
+		threeTot += printStats(VER_TWO, fourth(hThree, map, repetitions, tsize), repetitions);
 		SYS_OUT.println("5. Ordered iteration vs filtering:");
 		SYS_OUT.print("Iteration, ");
-		oneTotal += printStats(CACHING, fifthOne(hOne, map, reps, tsize), reps);
+		oneTotal += printStats(CACHING, fifthOne(hOne, map, repetitions, tsize), repetitions);
 		SYS_OUT.print("Iteration, ");
-		twoTotal += printStats(DIRECT, fifthOne(hTwo, map, reps, tsize), reps);
+		twoTotal += printStats(DIRECT, fifthOne(hTwo, map, repetitions, tsize), repetitions);
 		SYS_OUT.print("Iteration, ");
-		threeTot += printStats(VER_TWO, fifthOne(hThree, map, reps, tsize),
-				reps);
+		threeTot += printStats(VER_TWO, fifthOne(hThree, map, repetitions, tsize),
+				repetitions);
 		SYS_OUT.print("Filtering, ");
-		oneTotal += printStats(CACHING, fifthTwo(hOne, map, reps, tsize), reps);
+		oneTotal += printStats(CACHING, fifthTwo(hOne, map, repetitions, tsize), repetitions);
 		SYS_OUT.print("Filtering, ");
-		twoTotal += printStats(DIRECT, fifthTwo(hTwo, map, reps, tsize), reps);
+		twoTotal += printStats(DIRECT, fifthTwo(hTwo, map, repetitions, tsize), repetitions);
 		SYS_OUT.print("Filtering, ");
-		threeTot += printStats(VER_TWO, fifthTwo(hThree, map, reps, tsize),
-				reps);
+		threeTot += printStats(VER_TWO, fifthTwo(hThree, map, repetitions, tsize),
+				repetitions);
 		SYS_OUT.println("--------------------------------------");
 		SYS_OUT.print("Total:");
-		printStats(CACHING, oneTotal, reps);
-		printStats(DIRECT, twoTotal, reps);
-		printStats(VER_TWO, threeTot, reps);
+		printStats(CACHING, oneTotal, repetitions);
+		printStats(DIRECT, twoTotal, repetitions);
+		printStats(VER_TWO, threeTot, repetitions);
 		SYS_OUT.println();
 	}
 

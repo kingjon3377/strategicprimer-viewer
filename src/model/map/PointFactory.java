@@ -117,8 +117,7 @@ public final class PointFactory {
 				C_CACHE.get(boxedX).put(boxedY,
 						new Coordinate(xCoord, yCoord));
 			}
-			final Coordinate retval = C_CACHE.get(boxedX).get(boxedY);
-			return retval; // NOPMD
+			return C_CACHE.get(boxedX).get(boxedY); // NOPMD
 		} else {
 			return new Coordinate(xCoord, yCoord);
 		}

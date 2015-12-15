@@ -195,8 +195,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	 */
 	@Override
 	public void setKind(final String kind) {
-		final StoneKind skind = StoneKind.parseStoneKind(kind);
-		stone = skind;
+		stone = StoneKind.parseStoneKind(kind);
 	}
 
 	/**

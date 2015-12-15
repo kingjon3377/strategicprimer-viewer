@@ -104,8 +104,7 @@ public final class CompactXMLReader implements IMapReader, ISPReader {
 	@Override
 	public IMutableMapNG readMap(final File file, final Reader istream,
 			final Warning warner) throws XMLStreamException, SPFormatException {
-		final IMutableMapNG retval = readXML(file, istream, SPMapNG.class, warner);
-		return retval;
+		return readXML(file, istream, SPMapNG.class, warner);
 	}
 
 	/**
