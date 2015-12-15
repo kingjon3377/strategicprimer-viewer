@@ -150,8 +150,6 @@ public final class ExpansionDriver implements ISPDriver {
 	 *            the master map
 	 * @param map
 	 *            a player's map, to be expanded
-	 * @return true if the operation succeeded, false if the player's map was
-	 *         immutable
 	 */
 	private static void expand(final IMapNG master, final IMutableMapNG map) {
 		final Player player = map.getCurrentPlayer();
