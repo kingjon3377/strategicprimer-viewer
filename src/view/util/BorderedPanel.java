@@ -88,28 +88,6 @@ public class BorderedPanel extends JPanel {
 	}
 
 	/**
-	 * @param component a component to place to the east
-	 * @return this
-	 * @deprecated in favor of setLineEnd
-	 */
-	@Deprecated
-	public final BorderedPanel setEast(final Component component) {
-		add(component, BorderLayout.EAST);
-		return this;
-	}
-
-	/**
-	 * @param component a component to place to the west
-	 * @return this
-	 * @deprecated in favor of setLineStart
-	 */
-	@Deprecated
-	public final BorderedPanel setWest(final Component component) {
-		add(component, BorderLayout.WEST);
-		return this;
-	}
-
-	/**
 	 * @param component a component to place in the center
 	 * @return this
 	 */
