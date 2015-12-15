@@ -340,8 +340,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		if (fix instanceof HasImage) {
 			String image = ((HasImage) fix).getImage();
 			if (image.isEmpty()) {
-				image = ((HasImage) fix).getDefaultImage();
-				return getImage(image); // NOPMD
+				return getImage(((HasImage) fix).getDefaultImage()); // NOPMD
 			} else if (missingFiles.contains(image)) {
 				return getImage(((HasImage) fix).getDefaultImage()); // NOPMD
 			} else {

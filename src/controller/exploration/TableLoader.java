@@ -134,24 +134,22 @@ public final class TableLoader { // NOPMD
 	 */
 	public static QuadrantTable loadQuadrantTable(final BufferedReader reader)
 			throws IOException {
-		String line = reader.readLine();
-		if (line == null) {
+		String firstLine = reader.readLine();
+		if (firstLine == null) {
 			throw new IOException(
 					"File doesn't start with the number of rows of quadrants");
 		}
 		final int rows;
 		try {
-			rows = NumberFormat.getIntegerInstance().parse(line).intValue();
+			rows = NumberFormat.getIntegerInstance().parse(firstLine).intValue();
 		} catch (final NumberFormatException | ParseException except) {
 			throw new IOException(
 					"File doesn't start with number of rows of quadrants", except);
 		}
 		final List<String> items = new LinkedList<>();
-		line = reader.readLine();
 		try {
-			while (line != null) {
+			for (String line = reader.readLine(); line != null;line = reader.readLine()) {
 				items.add(line);
-				line = reader.readLine();
 			}
 		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, IO_ERR_STRING, except);
