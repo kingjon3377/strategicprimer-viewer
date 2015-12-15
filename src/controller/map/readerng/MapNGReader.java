@@ -337,14 +337,8 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	private static StartElement getFirstStartElement(
 			final Iterable<XMLEvent> stream, final int line)
 			throws SPFormatException {
-		final Optional<XMLEvent>
-				retval =
-				StreamSupport.stream(stream.spliterator(), false).filter(event -> event.isStartElement()).findFirst();
-		if (retval.isPresent()) {
-			return retval.get().asStartElement();
-		} else {
-			throw new MissingChildException("map", line);
-		}
+		return StreamSupport.stream(stream.spliterator(), false).filter(event -> event.isStartElement()).findFirst()
+				       .orElseThrow(() -> new MissingChildException("map", line)).asStartElement();
 	}
 
 	/**
