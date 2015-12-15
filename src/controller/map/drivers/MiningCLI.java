@@ -55,7 +55,7 @@ public final class MiningCLI {
 	 *            values array); Arg 2 (optional) is a value to seed the RNG
 	 *            with.
 	 */
-	public static void main(final String[] args) {
+	public static void main(final String... args) {
 		if (args.length < 2) {
 			System.err.println("Usage: MiningCLI output.csv status [seed]");
 			System.exit(1);

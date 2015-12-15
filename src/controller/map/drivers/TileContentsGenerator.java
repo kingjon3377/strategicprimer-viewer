@@ -142,7 +142,7 @@ public final class TileContentsGenerator {
 	/**
 	 * @param args the map to work from, the row, and the column
 	 */
-	public static void main(final String[] args) {
+	public static void main(final String... args) {
 		final Logger logger = TypesafeLogger
 				.getLogger(TileContentsGenerator.class);
 		if (args.length < 3) {

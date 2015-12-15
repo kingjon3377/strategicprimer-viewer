@@ -78,7 +78,7 @@ public final class ReaderComparator implements ISPDriver {
 	 *
 	 * @param args The list of specified files to compare them on
 	 */
-	public void compareReaders(final String[] args) {
+	public void compareReaders(final String... args) {
 		for (final String arg : args) {
 			if (arg == null) {
 				continue;

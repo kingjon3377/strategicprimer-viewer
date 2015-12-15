@@ -291,7 +291,7 @@ public final class ZeroToOneConverter {
 	 *
 	 * @param args the filenames to try it on. Prints results to stdout.
 	 */
-	public static void main(final String[] args) {
+	public static void main(final String... args) {
 		for (final String arg : args) {
 			try (final Reader reader = new FileReader(arg)) { // NOPMD
 				System.out.println(

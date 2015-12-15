@@ -134,7 +134,7 @@ public final class TableDebugger {
 	 *
 	 * @param args ignored
 	 */
-	public static void main(final String[] args) {
+	public static void main(final String... args) {
 		final ExplorationRunner runner = new ExplorationRunner();
 		TableLoader.loadAllTables("tables", runner);
 		try {

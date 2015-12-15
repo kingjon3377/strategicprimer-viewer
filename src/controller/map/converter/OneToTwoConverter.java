@@ -627,7 +627,7 @@ public final class OneToTwoConverter { // NOPMD
 	/**
 	 * @param args command-line arguments, main map first, then players' maps
 	 */
-	public static void main(final String[] args) {
+	public static void main(final String... args) {
 		if (args.length == 0) {
 			System.err.print("Usage: ");
 			System.err.print(OneToTwoConverter.class.getSimpleName());
