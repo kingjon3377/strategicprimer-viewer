@@ -207,7 +207,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 					builder.append(job.getLevel());
 					builder.append(" levels in ");
 					builder.append(job.getName());
-					builder.append(getSkills((Job) job));
+					builder.append(getSkills(job));
 					builder.append(CLOSE_LIST_ITEM);
 				}
 			}

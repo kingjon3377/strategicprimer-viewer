@@ -88,7 +88,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 				NullCleaner.assertNotNull((UnitNode) getNode(pnode, old));
 		final UnitNode newNode =
 				NullCleaner.assertNotNull((UnitNode) getNode(pnode, newOwner));
-		final MutableTreeNode node = (UnitMemberNode) getNode(pnode, member);
+		final MutableTreeNode node = getNode(pnode, member);
 		fireTreeNodesRemoved(this, new Object[] { pnode,
 				getNode(old.getKind()), oldNode },
 				new int[] { oldNode.getIndex(node) }, new Object[] { node });
