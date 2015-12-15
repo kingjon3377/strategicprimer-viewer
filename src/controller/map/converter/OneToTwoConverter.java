@@ -277,8 +277,7 @@ public final class OneToTwoConverter { // NOPMD
 	private static void separateRivers(final Point point,
 			final List<Point> initial, final IMapNG oldMap,
 			final IMutableMapNG newMap) {
-		final Iterable<River> rivers = oldMap.getRivers(point);
-		for (final River river : rivers) {
+		for (final River river : oldMap.getRivers(point)) {
 			addRiver(river, initial, newMap);
 		}
 	}
