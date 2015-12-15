@@ -253,7 +253,7 @@ public final class OneToTwoConverter { // NOPMD
 				LOGGER.severe("Maximum number of iterations reached on tile ("
 						+ point.row + ", " + point.col + "); forcing ...");
 				while (!fixtures.isEmpty()) {
-					Point subtile = assertNotNull(initial.get(0));
+					final Point subtile = assertNotNull(initial.get(0));
 					newMap.addFixture(subtile,
 							assertNotNull(fixtures.remove(0)));
 					newMap.addFixture(subtile, new TextFixture(//NOPMD
@@ -642,7 +642,7 @@ public final class OneToTwoConverter { // NOPMD
 					continue;
 				}
 				final File file = new File(arg);
-				IMapNG old;
+				final IMapNG old;
 				try {
 					old = reader.readMap(file, Warning.INSTANCE);
 				} catch (final IOException | XMLStreamException

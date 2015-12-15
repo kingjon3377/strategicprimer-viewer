@@ -70,21 +70,21 @@ public final class ResolutionDecreaseConverter {
 		for (int row = 0; row < newRows; row++) {
 			for (int col = 0; col < newCols; col++) {
 				final Point point = PointFactory.point(row, col);
-				Point one = PointFactory.point(row * 2, col * 2);
-				Point two = PointFactory.point(row * 2, col * 2 + 1);
-				Point three = PointFactory.point(row * 2 + 1, col * 2);
-				Point four = PointFactory.point(row * 2 + 1, col * 2 + 1);
+				final Point one = PointFactory.point(row * 2, col * 2);
+				final Point two = PointFactory.point(row * 2, col * 2 + 1);
+				final Point three = PointFactory.point(row * 2 + 1, col * 2);
+				final Point four = PointFactory.point(row * 2 + 1, col * 2 + 1);
 				retval.setBaseTerrain(
 						point,
 						consensus(old.getBaseTerrain(one),
 								old.getBaseTerrain(two),
 								old.getBaseTerrain(three),
 								old.getBaseTerrain(four)));
-				for (Point oldPoint : Arrays.asList(one, two, three, four)) {
+				for (final Point oldPoint : Arrays.asList(one, two, three, four)) {
 					if (old.isMountainous(oldPoint)) {
 						retval.setMountainous(point, true);
 					}
-					Ground ground = old.getGround(oldPoint);
+					final Ground ground = old.getGround(oldPoint);
 					if (ground != null) {
 						if (retval.getGround(point) == null) {
 							retval.setGround(point, ground);
@@ -92,7 +92,7 @@ public final class ResolutionDecreaseConverter {
 							retval.addFixture(point, ground);
 						}
 					}
-					Forest forest = old.getForest(oldPoint);
+					final Forest forest = old.getForest(oldPoint);
 					if (forest != null) {
 						if (retval.getForest(point) == null) {
 							retval.setForest(point, forest);
@@ -100,7 +100,7 @@ public final class ResolutionDecreaseConverter {
 							retval.addFixture(point, forest);
 						}
 					}
-					for (TileFixture fixture : old.getOtherFixtures(oldPoint)) {
+					for (final TileFixture fixture : old.getOtherFixtures(oldPoint)) {
 						retval.addFixture(point, fixture);
 					}
 					final Set<River> upperLeftRivers = getRivers(old, one);
@@ -111,7 +111,7 @@ public final class ResolutionDecreaseConverter {
 					removeRivers(upperRightRivers, River.West, River.South);
 					removeRivers(lowerLeftRivers, River.East, River.North);
 					removeRivers(lowerRightRivers, River.West, River.North);
-					for (River river : combineRivers(upperLeftRivers, upperRightRivers,
+					for (final River river : combineRivers(upperLeftRivers, upperRightRivers,
 							lowerLeftRivers, lowerRightRivers)) {
 						retval.addRivers(point, river);
 					}

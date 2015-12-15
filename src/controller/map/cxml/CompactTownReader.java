@@ -236,7 +236,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 				getOrGenerateID(element, warner, idFactory));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				String memberTag = event.asStartElement().getName()
+				final String memberTag = event.asStartElement().getName()
 						.getLocalPart().toLowerCase();
 				if ("unit".equals(memberTag)) {
 					retval.addMember(CompactUnitReader.READER.read(

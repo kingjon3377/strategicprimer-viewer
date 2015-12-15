@@ -135,7 +135,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
-		IExplorationModel model;
+		final IExplorationModel model;
 		if (dmodel instanceof IExplorationModel) {
 			model = (IExplorationModel) dmodel;
 		} else {
@@ -310,7 +310,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	private static IFixture find(final IMapNG map, final int idNum) {
 		for (final Point point : map.locations()) {
 			// TODO: If Ground or Forest ever gets ID, check it here.
-			for (IFixture fixture : map.getOtherFixtures(point)) {
+			for (final IFixture fixture : map.getOtherFixtures(point)) {
 				if (fixture.getID() == idNum) {
 					return fixture;
 				} else if (fixture instanceof FixtureIterable) {

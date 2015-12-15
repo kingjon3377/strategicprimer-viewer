@@ -88,7 +88,7 @@ public class Fortress implements HasImage, ITownFixture,
 	public Fortress copy(final boolean zero) {
 		final Fortress retval = new Fortress(owner, name, id);
 		if (!zero) {
-			for (FortressMember unit : this) {
+			for (final FortressMember unit : this) {
 				retval.addMember(unit.copy(false));
 			}
 		}
@@ -174,7 +174,7 @@ public class Fortress implements HasImage, ITownFixture,
 		for (final FortressMember member : units) {
 			sbuild.append("\n\t\t\t");
 			if (member instanceof IUnit) {
-				IUnit unit = (IUnit) member;
+				final IUnit unit = (IUnit) member;
 				sbuild.append(unit.getName());
 				if (unit.getOwner().equals(owner)) {
 					sbuild.append(" (");

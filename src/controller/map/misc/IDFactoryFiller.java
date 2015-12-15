@@ -52,7 +52,7 @@ public final class IDFactoryFiller {
 		for (final Point point : map.locations()) {
 			// Ground, Forest, Rivers, and Mountains do not have IDs, so we
 			// can skip them and just test the "other" fixtures
-			for (IFixture fixture : map.getOtherFixtures(point)) {
+			for (final IFixture fixture : map.getOtherFixtures(point)) {
 				final int idNum = fixture.getID();
 				if (!retval.used(idNum)) {
 					// We don't want to set off duplicate-ID warnings for
@@ -78,7 +78,7 @@ public final class IDFactoryFiller {
 			for (final Point point : pair.first().locations()) {
 				// Ground, Forest, Rivers, and Mountains do not have IDs, so we
 				// can skip them and just test the "other" fixtures
-				for (IFixture fixture : pair.first().getOtherFixtures(point)) {
+				for (final IFixture fixture : pair.first().getOtherFixtures(point)) {
 					final int idNum = fixture.getID();
 					if (!retval.used(idNum)) {
 						// We don't want to set off duplicate-ID warnings for

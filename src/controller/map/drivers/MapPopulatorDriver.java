@@ -150,7 +150,7 @@ public final class MapPopulatorDriver implements ISPDriver {
 	 */
 	private static void populate(final IMutableMapNG map) {
 		final IDFactory idf = IDFactoryFiller.createFactory(map);
-		for (Point location : map.locations()) {
+		for (final Point location : map.locations()) {
 			if (isSuitable(map, location)
 					&& SingletonRandom.RANDOM.nextDouble() < chance()) {
 				create(location, map, idf);

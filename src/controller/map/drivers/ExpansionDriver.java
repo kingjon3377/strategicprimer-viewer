@@ -113,14 +113,14 @@ public final class ExpansionDriver implements ISPDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
-		IMultiMapModel model;
+		final IMultiMapModel model;
 		if (dmodel instanceof IMultiMapModel) {
 			model = (IMultiMapModel) dmodel;
 		} else {
 			LOGGER.warning("Expansion on a master map with no subordinate maps does nothing");
 			model = new SimpleMultiMapModel(dmodel);
 		}
-		for (Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
+		for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 			expand(model.getMap(), pair.first());
 		}
 	}
@@ -298,7 +298,7 @@ public final class ExpansionDriver implements ISPDriver {
 			if (entry == null) {
 				continue;
 			}
-			Point point = NullCleaner.assertNotNull(entry.getKey());
+			final Point point = NullCleaner.assertNotNull(entry.getKey());
 			for (final TileFixture fix : entry.getValue()) {
 				if (fix instanceof HasOwner) {
 					map.addFixture(point, fix
@@ -330,8 +330,8 @@ public final class ExpansionDriver implements ISPDriver {
 			final Set<TileFixture> neighborFixtures =
 					getSetFromMap(additions, neighbor);
 			possibilities.clear();
-			Ground ground = master.getGround(neighbor);
-			Forest forest = master.getForest(neighbor);
+			final Ground ground = master.getGround(neighbor);
+			final Forest forest = master.getForest(neighbor);
 			if (ground != null) {
 				possibilities.add(ground);
 			}

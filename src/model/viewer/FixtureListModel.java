@@ -142,7 +142,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 					map.setForest(point, null);
 					removeElement(fix);
 				} else if (fix instanceof RiverFixture) {
-					for (River river : (RiverFixture) fix) {
+					for (final River river : (RiverFixture) fix) {
 						map.removeRivers(point, river);
 					}
 					removeElement(fix);

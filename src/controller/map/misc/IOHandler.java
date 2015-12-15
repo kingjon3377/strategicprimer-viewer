@@ -176,7 +176,7 @@ public final class IOHandler implements ActionListener {
 	 */
 	protected static void handleError(final Exception except,
 			final String filename, @Nullable final Component source) {
-		String msg;
+		final String msg;
 		if (except instanceof XMLStreamException) {
 			msg = XML_ERROR_STRING + ' ' + filename;
 		} else if (except instanceof FileNotFoundException) {

@@ -76,7 +76,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	@Override
 	public IUnit copy(final boolean zero) {
 		final ProxyUnit retval = new ProxyUnit(id);
-		for (IUnit unit : proxied) {
+		for (final IUnit unit : proxied) {
 			retval.addProxied(unit.copy(zero));
 		}
 		return retval;
@@ -150,7 +150,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	@Override
 	public String getDefaultImage() {
-		for (IUnit unit : proxied) {
+		for (final IUnit unit : proxied) {
 			return unit.getDefaultImage();
 		}
 		return "unit.png";
@@ -161,7 +161,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	@Override
 	public void setImage(final String img) {
 		LOGGER.warning("setImage() called on a ProxyUnit");
-		for (IUnit unit : proxied) {
+		for (final IUnit unit : proxied) {
 			unit.setImage(img);
 		}
 	}
@@ -173,7 +173,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	@Override
 	public String getImage() {
 		@Nullable String image = null;
-		for (IUnit unit : proxied) {
+		for (final IUnit unit : proxied) {
 			if (image == null) {
 				image = unit.getImage();
 			} else if (!image.equals(unit.getImage())) {
@@ -192,7 +192,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	@Override
 	public String getKind() {
 		@Nullable String kind = null;
-		for (IUnit unit : proxied) {
+		for (final IUnit unit : proxied) {
 			if (kind == null) {
 				kind = unit.getKind();
 			} else if (!kind.equals(unit.getKind())) {
@@ -210,7 +210,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	@Override
 	public void setKind(final String nKind) {
-		for (IUnit unit : proxied) {
+		for (final IUnit unit : proxied) {
 			unit.setKind(nKind);
 		}
 	}
@@ -220,14 +220,14 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	@Override
 	public Iterator<UnitMember> iterator() {
 		final Map<Integer, UnitMember> map = new TreeMap<>();
-		for (IUnit unit : proxied) {
-			for (UnitMember member : unit) {
+		for (final IUnit unit : proxied) {
+			for (final UnitMember member : unit) {
 				// Warning suppressed because the type in the map is really
 				// a UnitMember&ProxyFor<IWorker|UnitMember>
 				@SuppressWarnings("unchecked")
-				@Nullable
+				@Nullable final
 				ProxyFor<? extends UnitMember> proxy;
-				Integer memberID = NullCleaner.assertNotNull(Integer.valueOf(member.getID()));
+				final Integer memberID = NullCleaner.assertNotNull(Integer.valueOf(member.getID()));
 				if (map.containsKey(memberID)) {
 					proxy = (ProxyFor<? extends UnitMember>) map.get(memberID);
 					if (proxy instanceof ProxyWorker) {
@@ -258,7 +258,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	@Override
 	public String getName() {
 		@Nullable String name = null;
-		for (IUnit unit : proxied) {
+		for (final IUnit unit : proxied) {
 			if (name == null) {
 				name = unit.getName();
 			} else if (!name.equals(unit.getName())) {
@@ -276,7 +276,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	@Override
 	public void setName(final String nomen) {
-		for (IUnit unit : proxied) {
+		for (final IUnit unit : proxied) {
 			unit.setName(nomen);
 		}
 	}
@@ -286,7 +286,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	@Override
 	public Player getOwner() {
-		for (IUnit unit : proxied) {
+		for (final IUnit unit : proxied) {
 			return unit.getOwner();
 		}
 		return new Player(-1, "proxied");
@@ -296,7 +296,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	@Override
 	public void setOwner(final Player player) {
-		for (IUnit unit : proxied) {
+		for (final IUnit unit : proxied) {
 			unit.setOwner(player);
 		}
 	}
@@ -324,7 +324,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	@Override
 	public String getOrders() {
 		@Nullable String orders = null;
-		for (IUnit unit : proxied) {
+		for (final IUnit unit : proxied) {
 			if (orders == null) {
 				orders = unit.getOrders();
 			} else if (orders.isEmpty()) {
@@ -344,7 +344,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	@Override
 	public void setOrders(final String newOrders) {
-		for (IUnit unit : proxied) {
+		for (final IUnit unit : proxied) {
 			unit.setOrders(newOrders);
 		}
 	}
@@ -365,9 +365,9 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	@Override
 	public void addMember(final UnitMember member) {
-		for (IUnit unit : proxied) {
+		for (final IUnit unit : proxied) {
 			boolean shouldAdd = true;
-			for (UnitMember item : unit) {
+			for (final UnitMember item : unit) {
 				if (member.equals(item)) {
 					shouldAdd = false;
 					break;
@@ -387,8 +387,8 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	@Override
 	public void removeMember(final UnitMember member) {
-		for (IUnit unit : proxied) {
-			for (UnitMember item : unit) {
+		for (final IUnit unit : proxied) {
+			for (final UnitMember item : unit) {
 				if (member.equals(item)) {
 					unit.removeMember(item);
 					break;
@@ -431,7 +431,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		@Override
 		public ProxyMember copy(final boolean zero) {
 			final ProxyMember retval = new ProxyMember();
-			for (UnitMember member : proxiedMembers) {
+			for (final UnitMember member : proxiedMembers) {
 				retval.addProxied(member.copy(zero));
 			}
 			return retval;
@@ -442,7 +442,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		 */
 		@Override
 		public int getID() {
-			for (UnitMember member : proxiedMembers) {
+			for (final UnitMember member : proxiedMembers) {
 				return member.getID();
 			}
 			return -1;
@@ -491,7 +491,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		 */
 		@Override
 		public String toString() {
-			for (UnitMember member : proxiedMembers) {
+			for (final UnitMember member : proxiedMembers) {
 				return NullCleaner.assertNotNull(member.toString());
 			}
 			return "a proxy for no unit members";

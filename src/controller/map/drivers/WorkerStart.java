@@ -81,7 +81,7 @@ public final class WorkerStart implements ISPDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
-		IWorkerModel model;
+		final IWorkerModel model;
 		if (dmodel instanceof IWorkerModel) {
 			model = (IWorkerModel) dmodel;
 		} else {

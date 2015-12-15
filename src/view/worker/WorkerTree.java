@@ -256,17 +256,17 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 						getModifierString(stats.getCharisma()));
 			}
 		} else if (localNode instanceof ProxyWorker) {
-			for (IWorker proxied : ((ProxyWorker) localNode).getProxied()) {
+			for (final IWorker proxied : ((ProxyWorker) localNode).getProxied()) {
 				if (proxied instanceof Worker) {
-					Worker worker = (Worker) proxied;
-					WorkerStats stats = worker.getStats();
+					final Worker worker = (Worker) proxied;
+					final WorkerStats stats = worker.getStats();
 					if (stats == null) {
 						continue;
 					} else {
 						return getStatsToolTip(worker);
 					}
 				} else {
-					String ttip = getStatsToolTip(proxied);
+					final String ttip = getStatsToolTip(proxied);
 					if (ttip != null) {
 						return ttip;
 					} else {

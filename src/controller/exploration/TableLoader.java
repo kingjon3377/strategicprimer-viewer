@@ -134,7 +134,7 @@ public final class TableLoader { // NOPMD
 	 */
 	public static QuadrantTable loadQuadrantTable(final BufferedReader reader)
 			throws IOException {
-		String firstLine = reader.readLine();
+		final String firstLine = reader.readLine();
 		if (firstLine == null) {
 			throw new IOException(
 					"File doesn't start with the number of rows of quadrants");

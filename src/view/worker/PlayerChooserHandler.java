@@ -133,7 +133,7 @@ public final class PlayerChooserHandler implements ActionListener,
 		if (players instanceof PlayerCollection) {
 			return ((PlayerCollection) players).asArray(); // NOPMD
 		} else {
-			List<Player> list = StreamSupport.stream(players.spliterator(), false).collect(Collectors.toList());
+			final List<Player> list = StreamSupport.stream(players.spliterator(), false).collect(Collectors.toList());
 			return NullCleaner
 					.assertNotNull(list.toArray(new Player[list.size()]));
 		}

@@ -141,9 +141,9 @@ public final class ExplorationClickListener extends AbstractAction implements
 				}
 			}
 			model.move(direction);
-			Point dPoint = model.getSelectedUnitLocation();
-			Player player = NullCleaner.assertNotNull(model.getSelectedUnit()).getOwner();
-			Collection<CacheFixture> caches = new HashSet<>();
+			final Point dPoint = model.getSelectedUnitLocation();
+			final Player player = NullCleaner.assertNotNull(model.getSelectedUnit()).getOwner();
+			final Collection<CacheFixture> caches = new HashSet<>();
 			for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 				final IMutableMapNG map = pair.first();
 				map.setBaseTerrain(dPoint, model.getMap()
@@ -163,7 +163,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 					} else if (fix instanceof Mountain) {
 						map.setMountainous(dPoint, true);
 					} else if (!hasFixture(map, dPoint, fix)) {
-						boolean zero = fix instanceof HasOwner && !((HasOwner) fix)
+						final boolean zero = fix instanceof HasOwner && !((HasOwner) fix)
 								.getOwner().equals(player);
 						map.addFixture(dPoint, fix.copy(zero));
 						if (fix instanceof CacheFixture) {
@@ -172,7 +172,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 					}
 				}
 			}
-			for (CacheFixture cache : caches) {
+			for (final CacheFixture cache : caches) {
 				model.getMap().removeFixture(dPoint, cache);
 			}
 		} catch (final TraversalImpossibleException except) {
@@ -205,7 +205,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	private void swearVillages() {
 		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
 			final IMutableMapNG map = pair.first();
-			IUnit mover = model.getSelectedUnit();
+			final IUnit mover = model.getSelectedUnit();
 			if (mover != null) {
 				final Player owner = mover.getOwner();
 				for (final TileFixture fix : map.getOtherFixtures(model

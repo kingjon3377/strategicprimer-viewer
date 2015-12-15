@@ -71,7 +71,7 @@ public class Portal implements ExplorableFixture {
 	 */
 	@Override
 	public Portal copy(final boolean zero) {
-		Portal retval;
+		final Portal retval;
 		if (zero) {
 			retval = new Portal(destinationWorld, PointFactory.point(-1,  -1), id);
 		} else {

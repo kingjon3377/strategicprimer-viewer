@@ -231,11 +231,11 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 				chaLabel.setText(getModifierString(stats.getCharisma()));
 			}
 			jobsPanel.removeAll();
-			for (IJob job : (Worker) local) {
-				JLabel label = new JLabel(job.getName() + ' ' + job.getLevel());
-				StringBuilder builder = new StringBuilder();
+			for (final IJob job : (Worker) local) {
+				final JLabel label = new JLabel(job.getName() + ' ' + job.getLevel());
+				final StringBuilder builder = new StringBuilder();
 				boolean first = true;
-				for (ISkill skill : job) {
+				for (final ISkill skill : job) {
 					if (first) {
 						first = false;
 						builder.append("Skills: ");

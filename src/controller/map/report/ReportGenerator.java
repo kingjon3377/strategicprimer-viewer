@@ -81,8 +81,8 @@ public final class ReportGenerator {
 	 */
 	private static Point findHQ(final IMapNG map, final Player player) {
 		Point retval = PointFactory.point(-1, -1);
-		for (Point location : map.locations()) {
-			for (TileFixture fixture : map.getOtherFixtures(NullCleaner.assertNotNull(location))) {
+		for (final Point location : map.locations()) {
+			for (final TileFixture fixture : map.getOtherFixtures(NullCleaner.assertNotNull(location))) {
 				if (fixture instanceof Fortress && ((Fortress) fixture).getOwner().equals(player)) {
 					if ("HQ".equals(((Fortress) fixture).getName())) {
 						return location;
@@ -110,8 +110,7 @@ public final class ReportGenerator {
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
 		final Player player = map.getCurrentPlayer();
-		Point hq = findHQ(map, player);
-		Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator = new PairComparator<>(new DistanceComparator(hq), SIMPLE_COMPARATOR);
+		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator = new PairComparator<>(new DistanceComparator(findHQ(map, player)), SIMPLE_COMPARATOR);
 		builder.append(new FortressReportGenerator(comparator).produce(fixtures, map,
 				player));
 		fixtures.coalesce();
@@ -172,8 +171,7 @@ public final class ReportGenerator {
 		builder.append("<body>");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
-		Point hq = findHQ(map, player);
-		Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator = new PairComparator<>(new DistanceComparator(hq), SIMPLE_COMPARATOR);
+		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator = new PairComparator<>(new DistanceComparator(findHQ(map, player)), SIMPLE_COMPARATOR);
 
 		fixtures.values().stream().filter(pair -> (pair.second() instanceof Unit || pair.second() instanceof Fortress)
 				                                          && player.equals(((HasOwner) pair.second()).getOwner()))
@@ -220,8 +218,7 @@ public final class ReportGenerator {
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
 		final Player player = map.getCurrentPlayer();
-		Point hq = findHQ(map, player);
-		Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator = new PairComparator<>(new DistanceComparator(hq), SIMPLE_COMPARATOR);
+		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator = new PairComparator<>(new DistanceComparator(findHQ(map, player)), SIMPLE_COMPARATOR);
 		retval.add(new FortressReportGenerator(comparator).produceRIR(fixtures, map,
 				player));
 		fixtures.coalesce();
@@ -264,8 +261,7 @@ public final class ReportGenerator {
 			final Player player) {
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
-		Point hq = findHQ(map, player);
-		Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator = new PairComparator<>(new DistanceComparator(hq), SIMPLE_COMPARATOR);
+		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator = new PairComparator<>(new DistanceComparator(findHQ(map, player)), SIMPLE_COMPARATOR);
 
 		fixtures.values().stream().filter(pair -> (pair.second() instanceof Unit || pair.second() instanceof Fortress)
 				                                          && player.equals(((HasOwner) pair.second()).getOwner()))

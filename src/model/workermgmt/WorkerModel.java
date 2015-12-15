@@ -77,12 +77,12 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	public List<IUnit> getUnits(final Player player) {
 		if (getSubordinateMaps().iterator().hasNext()) {
 			final Map<Integer, IUnit> retval = new TreeMap<>();
-			for (Pair<IMutableMapNG, File> pair : getAllMaps()) {
-				IMapNG map = pair.first();
-				for (Point point : map.locations()) {
-					for (IUnit unit : getUnits(map.getOtherFixtures(point),
+			for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
+				final IMapNG map = pair.first();
+				for (final Point point : map.locations()) {
+					for (final IUnit unit : getUnits(map.getOtherFixtures(point),
 							player)) {
-						IUnit proxy;
+						final IUnit proxy;
 						if (retval.containsKey(Integer.valueOf(unit.getID()))) {
 							proxy = retval.get(Integer.valueOf(unit.getID()));
 							((ProxyUnit) proxy).addProxied(unit);

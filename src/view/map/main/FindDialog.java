@@ -205,8 +205,8 @@ public final class FindDialog extends JDialog implements ActionListener {
 				map.getMapDimensions(), map.getSelectedPoint(),
 				!backwards.isSelected(), !vertically.isSelected()));
 		for (final Point point : iter) {
-			TileFixture ground = map.getMap().getGround(point);
-			TileFixture forest = map.getMap().getForest(point);
+			final TileFixture ground = map.getMap().getGround(point);
+			final TileFixture forest = map.getMap().getForest(point);
 			if ((ground != null && matches(pattern, idNum, ground, csen))
 					|| (forest != null && matches(pattern, idNum, forest, csen))) {
 				SYS_OUT.print("Found in point");
@@ -393,7 +393,7 @@ public final class FindDialog extends JDialog implements ActionListener {
 				filter.shouldDisplay((TileFixture) fixture);
 			}
 			if (fixture instanceof Iterable<?>) {
-				for (Object item : (Iterable<?>) fixture) {
+				for (final Object item : (Iterable<?>) fixture) {
 					populate(item);
 				}
 			}

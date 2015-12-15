@@ -55,7 +55,7 @@ public final class ExplorationCLIDriver implements ISPDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
-		ExplorationModel model;
+		final ExplorationModel model;
 		if (dmodel instanceof ExplorationModel) {
 			model = (ExplorationModel) dmodel;
 		} else {

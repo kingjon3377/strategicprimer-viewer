@@ -296,7 +296,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			if (!contents.isEmpty()) {
 				builder.append(OPEN_LIST_ITEM)
 				.append("Other fortress contents:\n").append(OPEN_LIST);
-				for (FortressMember member : contents) {
+				for (final FortressMember member : contents) {
 					// FIXME: Produce and append the proper sub-report
 				}
 				builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);

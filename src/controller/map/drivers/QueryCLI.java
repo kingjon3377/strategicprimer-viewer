@@ -169,14 +169,14 @@ public final class QueryCLI implements ISPDriver {
 		}
 		final Player player = players.get(playerNum);
 		int count = 0;
-		for (Point loc : map.locations()) {
-			for (TileFixture fix : map.getOtherFixtures(loc)) {
+		for (final Point loc : map.locations()) {
+			for (final TileFixture fix : map.getOtherFixtures(loc)) {
 				if (fix instanceof IUnit
 						&& player.equals(((IUnit) fix).getOwner())) {
 					count += StreamSupport.stream(((IUnit) fix).spliterator(), false)
 							         .filter(member -> member instanceof IWorker).count();
 				} else if (fix instanceof Fortress) {
-					for (FortressMember unit : (Fortress) fix) {
+					for (final FortressMember unit : (Fortress) fix) {
 						if (unit instanceof IUnit
 								&& player.equals(((IUnit) unit).getOwner())) {
 							count += StreamSupport.stream(((IUnit) unit).spliterator(), false)

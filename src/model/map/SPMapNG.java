@@ -156,7 +156,7 @@ public class SPMapNG implements IMutableMapNG {
 					retval = false;
 					// return false;
 				}
-				Forest forest = obj.getForest(point);
+				final Forest forest = obj.getForest(point);
 				if (!Objects.equals(getForest(point), forest)
 						&& forest != null) {
 					// There are *far* too many false positives if we don't
@@ -173,7 +173,7 @@ public class SPMapNG implements IMutableMapNG {
 					}
 					// return false;
 				}
-				Ground theirGround = obj.getGround(point);
+				final Ground theirGround = obj.getGround(point);
 				final Ground ourGround = getGround(point);
 				if (!Objects.equals(ourGround, theirGround)
 						&& theirGround != null) {
@@ -203,8 +203,8 @@ public class SPMapNG implements IMutableMapNG {
 				// Because IUnit is Subsettable<IUnit> and thus incompatible
 				// with SubsettableFixture
 				final Map<Integer, IUnit> ourUnits = new HashMap<>();
-				for (TileFixture fix : getOtherFixtures(point)) {
-					Integer idNum = NullCleaner.assertNotNull(Integer.valueOf(fix.getID()));
+				for (final TileFixture fix : getOtherFixtures(point)) {
+					final Integer idNum = NullCleaner.assertNotNull(Integer.valueOf(fix.getID()));
 					if (fix instanceof SubsettableFixture) {
 						ourSubsettables.put(idNum,
 								(SubsettableFixture) fix);
@@ -355,7 +355,7 @@ public class SPMapNG implements IMutableMapNG {
 		if (rivers.containsKey(location)) {
 			return NullCleaner.assertNotNull(rivers.get(location)); // NOPMD
 		} else {
-			EnumSet<River> temp = EnumSet.noneOf(River.class);
+			final EnumSet<River> temp = EnumSet.noneOf(River.class);
 			assert temp != null;
 			return temp;
 		}
@@ -493,7 +493,7 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder("SPMapNG:\n");
+		final StringBuilder builder = new StringBuilder("SPMapNG:\n");
 		builder.append("Map version: ");
 		builder.append(dimensions().version);
 		builder.append("\nRows: ");
@@ -503,7 +503,7 @@ public class SPMapNG implements IMutableMapNG {
 		builder.append("\nCurrent Turn: ");
 		builder.append(getCurrentTurn());
 		builder.append("\n\nPlayers:\n");
-		for (Player player : players()) {
+		for (final Player player : players()) {
 			builder.append(player.toString());
 			if (player.equals(getCurrentPlayer())) {
 				builder.append(" (current)");
@@ -511,7 +511,7 @@ public class SPMapNG implements IMutableMapNG {
 			builder.append('\n');
 		}
 		builder.append("\nContents:\n");
-		for (Point location : locations()) {
+		for (final Point location : locations()) {
 			builder.append("At ");
 			builder.append(location.toString());
 			builder.append(": ");
@@ -523,12 +523,12 @@ public class SPMapNG implements IMutableMapNG {
 			builder.append(", forest: ");
 			builder.append(getForest(location));
 			builder.append(", rivers:");
-			for (River river : getRivers(location)) {
+			for (final River river : getRivers(location)) {
 				builder.append(' ');
 				builder.append(river.toString());
 			}
 			builder.append(", other: ");
-			for (TileFixture fixture : getOtherFixtures(location)) {
+			for (final TileFixture fixture : getOtherFixtures(location)) {
 				builder.append('\n');
 				builder.append(fixture.toString());
 				// builder.append(" (");
@@ -644,7 +644,7 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public void addFixture(final Point location, final TileFixture fix) {
-		Collection<TileFixture> local;
+		final Collection<TileFixture> local;
 		if (fixtures.containsKey(location)) {
 			local = fixtures.get(location);
 		} else {
@@ -703,27 +703,27 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public IMapNG copy(final boolean zero) {
-		IMutableMapNG retval = new SPMapNG(dimensions(), playerCollection.copy(false),
+		final IMutableMapNG retval = new SPMapNG(dimensions(), playerCollection.copy(false),
 				getCurrentTurn());
-		for (Point point : locations()) {
+		for (final Point point : locations()) {
 			retval.setBaseTerrain(point, getBaseTerrain(point));
-			Ground grd = getGround(point);
+			final Ground grd = getGround(point);
 			if (grd == null) {
 				retval.setGround(point, null);
 			} else {
 				retval.setGround(point, grd.copy(false));
 			}
-			Forest frst = getForest(point);
+			final Forest frst = getForest(point);
 			if (frst == null) {
 				retval.setForest(point, null);
 			} else {
 				retval.setForest(point, frst.copy(false));
 			}
 			retval.setMountainous(point, isMountainous(point));
-			for (River river : getRivers(point)) {
+			for (final River river : getRivers(point)) {
 				retval.addRivers(point, river);
 			}
-			for (TileFixture fixture : getOtherFixtures(point)) {
+			for (final TileFixture fixture : getOtherFixtures(point)) {
 				if (fixture instanceof IEvent) {
 					retval.addFixture(point, fixture.copy(zero));
 				} else {

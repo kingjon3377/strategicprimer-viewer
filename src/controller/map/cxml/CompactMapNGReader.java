@@ -345,13 +345,13 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		ostream.append("\" columns=\"");
 		ostream.append(Integer.toString(dim.cols));
 		ostream.append("\">\n");
-		for (Player player : obj.players()) {
+		for (final Player player : obj.players()) {
 			CompactPlayerReader.READER.write(ostream, player, indent + 2);
 		}
 		for (int i = 0; i < dim.rows; i++) {
 			boolean rowEmpty = true;
 			for (int j = 0; j < dim.cols; j++) {
-				Point point = PointFactory.point(i, j);
+				final Point point = PointFactory.point(i, j);
 				if (TileType.NotVisible != obj.getBaseTerrain(point)
 						    || (obj.isMountainous(point)
 								        || obj.getGround(point) != null
@@ -381,24 +381,24 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						ostream.append(indent(indent + 4));
 						ostream.append("<mountain />\n");
 					}
-					for (River river : obj.getRivers(point)) {
+					for (final River river : obj.getRivers(point)) {
 						eolIfNeeded(needeol, ostream);
 						needeol = false;
 						writeRiver(ostream, river, indent + 4);
 					}
-					Ground ground = obj.getGround(point);
+					final Ground ground = obj.getGround(point);
 					if (ground != null) {
 						eolIfNeeded(needeol, ostream);
 						needeol = false;
 						CompactReaderAdapter.write(ostream, ground, indent + 4);
 					}
-					Forest forest = obj.getForest(point);
+					final Forest forest = obj.getForest(point);
 					if (forest != null) {
 						eolIfNeeded(needeol, ostream);
 						needeol = false;
 						CompactReaderAdapter.write(ostream, forest, indent + 4);
 					}
-					for (TileFixture fixture : obj.getOtherFixtures(point)) {
+					for (final TileFixture fixture : obj.getOtherFixtures(point)) {
 						eolIfNeeded(needeol, ostream);
 						needeol = false;
 						CompactReaderAdapter.write(ostream, fixture, indent + 4);

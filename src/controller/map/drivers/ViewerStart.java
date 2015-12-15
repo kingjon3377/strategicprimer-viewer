@@ -66,7 +66,7 @@ public final class ViewerStart implements ISPDriver {
 		if (dmodel instanceof IViewerModel) {
 			model = (IViewerModel) dmodel;
 		} else if (dmodel instanceof IMultiMapModel) {
-			for (Pair<IMutableMapNG, File> pair : ((IMultiMapModel) dmodel).getAllMaps()) {
+			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) dmodel).getAllMaps()) {
 				startDriver(new ViewerModel(pair.first(), pair.second()));
 			}
 			return;

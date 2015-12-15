@@ -177,7 +177,7 @@ public final class TODOFixerDriver {
 	 */
 	public static void main(final String... args) {
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		for (String arg : args) {
+		for (final String arg : args) {
 			if (arg == null) {
 				continue;
 			}

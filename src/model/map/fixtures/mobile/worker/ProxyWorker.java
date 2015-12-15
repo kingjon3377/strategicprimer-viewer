@@ -102,7 +102,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	@Override
 	public IWorker copy(final boolean zero) {
 		final IWorker retval = new ProxyWorker(parallel);
-		for (IWorker worker : workers) {
+		for (final IWorker worker : workers) {
 			addProxied(worker.copy(zero));
 		}
 		return retval;
@@ -112,7 +112,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	 */
 	public ProxyWorker(final @NonNull IWorker @NonNull ... proxied) {
 		parallel = true;
-		for (IWorker worker : proxied) {
+		for (final IWorker worker : proxied) {
 			if (worker == this) {
 				continue;
 			}
@@ -197,7 +197,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 						.size()]));
 		final Collection<IJob> proxyJobsTemp = new ArrayList<>(proxyJobs);
 		for (final IJob job : item) {
-			String name = job.getName();
+			final String name = job.getName();
 			if (jobNames.contains(name)) {
 				proxyJobs.stream().filter(proxyJob -> proxyJob.getName().equals(name)).forEach(proxyJob -> {
 					((ProxyFor<IJob>) proxyJob).addProxied(job);
@@ -209,9 +209,9 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 			}
 			jobNames.add(job.getName());
 		}
-		for (IJob proxyJob : proxyJobs) {
-			String name = proxyJob.getName();
-			IJob job = new Job(name, 0);
+		for (final IJob proxyJob : proxyJobs) {
+			final String name = proxyJob.getName();
+			final IJob job = new Job(name, 0);
 			((ProxyFor<IJob>) proxyJob).addProxied(job);
 		}
 	}
@@ -229,7 +229,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	 */
 	@Override
 	public String getDefaultImage() {
-		for (IWorker worker : workers) {
+		for (final IWorker worker : workers) {
 			return worker.getDefaultImage();
 		}
 		return "worker.png";
@@ -240,7 +240,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	@Override
 	public void setImage(final String img) {
 		LOGGER.log(Level.WARNING, "setImage() called on a ProxyWorker");
-		for (IWorker worker : workers) {
+		for (final IWorker worker : workers) {
 			worker.setImage(img);
 		}
 	}
@@ -251,7 +251,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	@Override
 	public String getImage() {
 		@Nullable String image = null;
-		for (IWorker worker : workers) {
+		for (final IWorker worker : workers) {
 			if (image == null) {
 				image = worker.getImage();
 			} else if (!image.equals(worker.getImage())) {
@@ -270,7 +270,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	@Override
 	public String getKind() {
 		@Nullable String kind = null;
-		for (IWorker worker : workers) {
+		for (final IWorker worker : workers) {
 			if (kind == null) {
 				kind = worker.getKind();
 			} else if (!kind.equals(worker.getKind())) {
@@ -288,7 +288,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	 */
 	@Override
 	public void setKind(final String nKind) {
-		for (IWorker worker : workers) {
+		for (final IWorker worker : workers) {
 			worker.setKind(nKind);
 		}
 	}
@@ -298,7 +298,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	@Override
 	public String getName() {
 		@Nullable String name = null;
-		for (IWorker worker : workers) {
+		for (final IWorker worker : workers) {
 			if (name == null) {
 				name = worker.getName();
 			} else if (!name.equals(worker.getName())) {
@@ -316,7 +316,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	 */
 	@Override
 	public void setName(final String nomen) {
-		for (IWorker worker : workers) {
+		for (final IWorker worker : workers) {
 			worker.setName(nomen);
 		}
 	}
@@ -336,7 +336,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	@Nullable
 	@Override
 	public IJob getJob(final String name) {
-		for (IJob job : proxyJobs) {
+		for (final IJob job : proxyJobs) {
 			if (name.equals(job.getName())) {
 				return job;
 			}

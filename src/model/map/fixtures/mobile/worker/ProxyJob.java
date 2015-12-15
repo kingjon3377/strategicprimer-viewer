@@ -120,7 +120,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	@Override
 	public IJob copy(final boolean zero) {
 		final ProxyJob retval = new ProxyJob(name, parallel);
-		for (IJob job : proxiedJobs) {
+		for (final IJob job : proxiedJobs) {
 			retval.addProxied(job.copy(zero));
 		}
 		return retval;
@@ -202,13 +202,13 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 			return;
 		}
 		proxiedJobs.add(item);
-		for (ISkill skill : proxied) {
+		for (final ISkill skill : proxied) {
 			((ProxyFor<IJob>) skill).addProxied(item);
 		}
 		final IJob[] jobsArray =
 				NullCleaner.assertNotNull(proxiedJobs
 						.toArray(new IJob[proxiedJobs.size()]));
-		for (ISkill skill : item) {
+		for (final ISkill skill : item) {
 			if (!skillNames.contains(skill.getName())) {
 				proxied.add(new ProxySkill(skill.getName(), parallel, jobsArray));
 			}
@@ -241,7 +241,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	@Nullable
 	@Override
 	public ISkill getSkill(final String skillName) {
-		for (ISkill skill : proxied) {
+		for (final ISkill skill : proxied) {
 			if (skillName.equals(skill.getName())) {
 				return skill;
 			}

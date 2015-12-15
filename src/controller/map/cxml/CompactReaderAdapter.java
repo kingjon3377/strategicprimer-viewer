@@ -203,7 +203,7 @@ public final class CompactReaderAdapter {
 			// Skip it.
 			return;
 		} else if (obj instanceof ProxyFor) {
-			for (Object proxied : ((ProxyFor<?>) obj).getProxied()) {
+			for (final Object proxied : ((ProxyFor<?>) obj).getProxied()) {
 				assert (proxied != null);
 				TypesafeLogger.getLogger(CompactReaderAdapter.class).log(Level.SEVERE,
 						"Wanted to write a proxy",

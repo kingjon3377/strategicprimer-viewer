@@ -182,7 +182,7 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 			} else {
 				ostream.append(context);
 				ostream.append(" Extra rivers:\t");
-				for (River river : temp) {
+				for (final River river : temp) {
 					ostream.append(river.toString().toLowerCase());
 				}
 				ostream.append('\n');

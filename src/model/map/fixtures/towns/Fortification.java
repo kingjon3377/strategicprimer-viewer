@@ -53,7 +53,7 @@ public final class Fortification extends AbstractTown {
 	 */
 	@Override
 	public Fortification copy(final boolean zero) {
-		Fortification retval;
+		final Fortification retval;
 		if (zero) {
 			retval = new Fortification(status(), size(), 0, getName(), id, getOwner());
 		} else {

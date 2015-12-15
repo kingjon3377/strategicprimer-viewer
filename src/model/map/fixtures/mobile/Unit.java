@@ -107,7 +107,7 @@ public class Unit implements IUnit {
 		final Unit retval = new Unit(owner, kind, name, id);
 		if (!zero) {
 			retval.setOrders(orders);
-			for (UnitMember member : this) {
+			for (final UnitMember member : this) {
 				retval.addMember(member.copy(false));
 			}
 		}

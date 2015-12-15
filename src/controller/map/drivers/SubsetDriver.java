@@ -80,14 +80,14 @@ public final class SubsetDriver implements ISPDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
-		IMultiMapModel model;
+		final IMultiMapModel model;
 		if (dmodel instanceof IMultiMapModel) {
 			model = (IMultiMapModel) dmodel;
 		} else {
 			model = new SimpleMultiMapModel(dmodel);
 			LOGGER.warning("Subset checking does nothing with no subordinate maps");
 		}
-		for (Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
+		for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 			SYS_OUT.print(pair.second().getName());
 			SYS_OUT.print("\t...\t\t");
 			printReturn(doSubsetTest(model.getMap(), pair.first(), pair.second()));

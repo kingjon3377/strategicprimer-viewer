@@ -62,7 +62,7 @@ public final class ZoomListener implements ActionListener {
 			final Point selection = model.getSelectedPoint();
 			final MapDimensions dims = model.getMapDimensions();
 			final VisibleDimensions vDims = model.getDimensions();
-			int topRow;
+			final int topRow;
 			if ((selection.row - vDims.getHeight() / 2) <= 0) {
 				topRow = 0;
 			} else if ((selection.row + vDims.getHeight() / 2) >= dims.getRows()) {
@@ -70,7 +70,7 @@ public final class ZoomListener implements ActionListener {
 			} else {
 				topRow = selection.row - vDims.getHeight() / 2;
 			}
-			int leftColumn;
+			final int leftColumn;
 			if ((selection.col - vDims.getWidth() / 2) <= 0) {
 				leftColumn = 0;
 			} else if ((selection.col + vDims.getWidth() / 2) >= dims.getColumns()) {

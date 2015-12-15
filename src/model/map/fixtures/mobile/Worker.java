@@ -190,12 +190,12 @@ public class Worker implements IWorker {
 	 * @return whether they are equal, ignoring any "empty" Jobs.
 	 */
 	private static boolean jobSetsEqual(final Collection<IJob> one, final Collection<IJob> two) {
-		for (IJob job : one) {
+		for (final IJob job : one) {
 			if (!job.isEmpty() && !two.contains(job)) {
 				return false;
 			}
 		}
-		for (IJob job : two) {
+		for (final IJob job : two) {
 			if (!job.isEmpty() && !one.contains(job)) {
 				return false;
 			}
@@ -353,7 +353,7 @@ public class Worker implements IWorker {
 				retval.setStats(localStats.copy(false));
 			}
 			retval.setImage(image);
-			for (IJob job : this) {
+			for (final IJob job : this) {
 				if (!job.isEmpty()) {
 					retval.addJob(job.copy(false));
 				}
@@ -370,7 +370,7 @@ public class Worker implements IWorker {
 	@Nullable
 	@Override
 	public IJob getJob(final String jobName) {
-		for (IJob job : this) {
+		for (final IJob job : this) {
 			if (jobName.equals(job.getName())) {
 				return job;
 			}

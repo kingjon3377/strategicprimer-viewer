@@ -192,7 +192,7 @@ public final class ReaderAdapter implements INodeHandler<Object> {
 			return ((INodeHandler<S>) WRITERS.get(obj.getClass()))
 					.write(obj);
 		} else {
-			for (Map.Entry<Class<?>, INodeHandler<@NonNull ?>> entry : WRITERS.entrySet()) {
+			for (final Map.Entry<Class<?>, INodeHandler<@NonNull ?>> entry : WRITERS.entrySet()) {
 				if (entry.getKey().isAssignableFrom(obj.getClass())) {
 					return ((INodeHandler<S>) entry.getValue()).write(obj);
 				}

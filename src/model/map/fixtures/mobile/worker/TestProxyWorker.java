@@ -54,8 +54,8 @@ public final class TestProxyWorker {
 				new Skill("skillThree", 1, 19), new Skill("skillFour", 0, 99)));
 		final Worker three = new Worker("three", "dwarf", 5);
 		final Iterable<IJob> proxy = new ProxyWorker(one, two, three);
-		for (IJob job : proxy) {
-			for (ISkill skill : job) {
+		for (final IJob job : proxy) {
+			for (final ISkill skill : job) {
 				skill.addHours(10, 100);
 			}
 		}
@@ -108,9 +108,9 @@ public final class TestProxyWorker {
 		final ProxyUnit proxy = new ProxyUnit(4);
 		proxy.addProxied(unitOne);
 		proxy.addProxied(unitTwo);
-		for (UnitMember member : proxy) {
-			for (Iterable<ISkill> job : (Iterable<IJob>) member) {
-				for (ISkill skill : job) {
+		for (final UnitMember member : proxy) {
+			for (final Iterable<ISkill> job : (Iterable<IJob>) member) {
+				for (final ISkill skill : job) {
 					skill.addHours(10, 100);
 				}
 			}
@@ -159,8 +159,8 @@ public final class TestProxyWorker {
 		proxy.addProxied(unitOne);
 		proxy.addProxied(unitTwo);
 		final Iterable<IJob> meta = new ProxyWorker(proxy);
-		for (IJob job : meta) {
-			for (ISkill skill : job) {
+		for (final IJob job : meta) {
+			for (final ISkill skill : job) {
 				skill.addHours(10, 100);
 			}
 		}
@@ -194,7 +194,7 @@ public final class TestProxyWorker {
 		final StringBuilder builder = new StringBuilder("Worker should contain job ");
 		builder.append(jobName);
 		builder.append(". Worker contained the following: \n");
-		for (IJob job : worker) {
+		for (final IJob job : worker) {
 			builder.append(job.getName());
 			if (job.isEmpty()) {
 				builder.append(" (empty)");

@@ -117,7 +117,7 @@ public final class TestWorkerModel {
 	private static <T> List<T> filterProxies(final Iterable<T> list) {
 		// FIXME: There ought to be a way of doing this using the Streams API
 		final List<T> retval = new ArrayList<>();
-		for (T item : list) {
+		for (final T item : list) {
 			if (item instanceof ProxyFor<?>) {
 				// this wouldn't work for Skills, but ...
 				((ProxyFor<T>) item).getProxied().forEach(retval::add);

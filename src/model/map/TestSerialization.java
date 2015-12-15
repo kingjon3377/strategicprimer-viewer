@@ -180,7 +180,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final IMutableMapNG retval =
 				new SPMapNG(new MapDimensions(dims.row, dims.col, 2),
 						new PlayerCollection(), -1);
-		for (Pair<Point, TileType> pair : terrain) {
+		for (final Pair<Point, TileType> pair : terrain) {
 			retval.setBaseTerrain(pair.first(), pair.second());
 		}
 		return retval;
@@ -198,11 +198,11 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertSerialization("Simple Tile",
 				createSimpleMap(point(1, 1), Pair.of(point(0, 0), Desert)),
 				IMapNG.class);
-		IMutableMapNG one =
+		final IMutableMapNG one =
 				createSimpleMap(point(2, 2), Pair.of(point(1, 1), Plains));
 		one.addFixture(point(1, 1), new Griffin(1));
 		assertSerialization("Tile with one fixture", one, IMapNG.class);
-		IMutableMapNG two =
+		final IMutableMapNG two =
 				createSimpleMap(point(3, 3), Pair.of(point(2, 2), Steppe));
 		two.addFixture(point(2, 2), new Unit(new Player(1, ""), "unitOne",
 				"firstUnit", 1));
@@ -216,7 +216,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		three.addFixture(point(3, 3), new TextFixture("Random text here", 5));
 		three.addRivers(point(3, 3), Lake);
 		assertSerialization("More complex tile", three, IMapNG.class);
-		IMutableMapNG four =
+		final IMutableMapNG four =
 				createSimpleMap(point(5, 5), Pair.of(point(4, 4), Plains));
 		final String oldKindProperty = "type"; // NOPMD
 		assertDeprecatedDeserialization(

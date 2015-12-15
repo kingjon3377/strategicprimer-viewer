@@ -82,7 +82,7 @@ public final class FortressReader implements INodeHandler<Fortress> {
 		XMLHelper.addImage(element, fort);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				String memberTag = event.asStartElement().getName()
+				final String memberTag = event.asStartElement().getName()
 						.getLocalPart().toLowerCase();
 				if ("unit".equals(memberTag)) {
 					fort.addMember(UNIT_READER.parse(

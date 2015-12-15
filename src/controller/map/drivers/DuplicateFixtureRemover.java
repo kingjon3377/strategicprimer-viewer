@@ -122,7 +122,7 @@ public final class DuplicateFixtureRemover implements ISPDriver {
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
 		try {
 			if (model instanceof IMultiMapModel) {
-				for (Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getAllMaps()) {
+				for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getAllMaps()) {
 					filter(pair.first(), SYS_OUT);
 				}
 			} else {

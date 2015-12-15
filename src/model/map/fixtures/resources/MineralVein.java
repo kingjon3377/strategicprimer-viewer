@@ -72,7 +72,7 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	 */
 	@Override
 	public MineralVein copy(final boolean zero) {
-		MineralVein retval;
+		final MineralVein retval;
 		if (zero) {
 			retval = new MineralVein(mineral, exposed, 0, id);
 		} else {

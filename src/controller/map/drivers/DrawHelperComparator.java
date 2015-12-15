@@ -455,10 +455,10 @@ public final class DrawHelperComparator implements ISPDriver { // NOPMD
 		final Random random = new Random();
 		final int reps = 50; // NOPMD
 		if (model instanceof IMultiMapModel) {
-			for (Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getAllMaps()) {
+			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getAllMaps()) {
 				SYS_OUT.print("Testing using ");
 				SYS_OUT.println(pair.second().getName());
-				IMapNG map = pair.first();
+				final IMapNG map = pair.first();
 				PointFactory.clearCache();
 				if (random.nextBoolean()) {
 					PointFactory.shouldUseCache(true);

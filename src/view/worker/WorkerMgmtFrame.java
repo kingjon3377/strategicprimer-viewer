@@ -181,11 +181,11 @@ public final class WorkerMgmtFrame extends JFrame {
 		@NonNull
 		Point hqLoc = PointFactory.point(-1, -1);
 		boolean found = false;
-		for (Point location : model.getMap().locations()) {
+		for (final Point location : model.getMap().locations()) {
 			if (found) {
 				break;
 			} else {
-				for (TileFixture fix : model.getMap().getOtherFixtures(location)) {
+				for (final TileFixture fix : model.getMap().getOtherFixtures(location)) {
 					if (fix instanceof Fortress && ((Fortress) fix).getOwner().equals(model.getMap().getCurrentPlayer())) {
 						if ("HQ".equals(((Fortress) fix).getName())) {
 							hqLoc = location;
@@ -201,7 +201,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		}
 		final DistanceComparator distCalculator = new DistanceComparator(hqLoc);
 		report.setCellRenderer((renderedTree, value, selected, expanded, leaf, row, hasFocus) -> {
-			DefaultTreeCellRenderer defRender = new DefaultTreeCellRenderer();
+			final DefaultTreeCellRenderer defRender = new DefaultTreeCellRenderer();
 			final Component retval = defRender.getTreeCellRendererComponent(renderedTree, value, selected, expanded, leaf, row, hasFocus);
 			if (value instanceof AbstractReportNode) {
 				final Point point = ((AbstractReportNode) value).getPoint();
@@ -274,7 +274,7 @@ public final class WorkerMgmtFrame extends JFrame {
 	 */
 	protected static IViewerModel getViewerModelFor(final IDriverModel model,
 			final IOHandler ioh) {
-		for (Frame frame : WindowList.getFrames(false, true, true)) {
+		for (final Frame frame : WindowList.getFrames(false, true, true)) {
 			if (frame instanceof ViewerFrame && ((ViewerFrame) frame).getModel()
 					.getMapFile().equals(model.getMapFile())) {
 				frame.toFront();

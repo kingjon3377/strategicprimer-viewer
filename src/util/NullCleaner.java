@@ -63,7 +63,7 @@ public final class NullCleaner {
 	 */
 	public static <T> T[] assertNotNullArray(final T @Nullable [] arr) {
 		assert arr != null;
-		for (T item : arr) {
+		for (final T item : arr) {
 			assert (item != null);
 		}
 		return arr;

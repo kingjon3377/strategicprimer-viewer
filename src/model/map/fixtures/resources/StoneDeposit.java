@@ -51,7 +51,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 	 */
 	@Override
 	public StoneDeposit copy(final boolean zero) {
-		StoneDeposit retval;
+		final StoneDeposit retval;
 		if (zero) {
 			retval = new StoneDeposit(stone, 0, id);
 		} else {

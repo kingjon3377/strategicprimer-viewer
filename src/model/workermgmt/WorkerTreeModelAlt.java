@@ -104,11 +104,11 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 				final Queue<IUnit> newList = new LinkedList<>();
 				final Iterator<IUnit> oldIter = ((ProxyUnit) old).getProxied().iterator();
 				final Iterator<IUnit> newIter = ((ProxyUnit) newOwner).getProxied().iterator();
-				for (UnitMember item : ((ProxyFor<? extends UnitMember>) member)
+				for (final UnitMember item : ((ProxyFor<? extends UnitMember>) member)
 						.getProxied()) {
 					assert (oldIter.hasNext() && newIter.hasNext());
-					IUnit innerOld = oldIter.next();
-					IUnit innerNew = newIter.next();
+					final IUnit innerOld = oldIter.next();
+					final IUnit innerNew = newIter.next();
 					innerOld.removeMember(item);
 					members.add(item);
 					newList.add(innerNew);
@@ -130,7 +130,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 				final Iterator<? extends UnitMember> iter = ((ProxyFor<? extends UnitMember>) member).getProxied().iterator();
 				if (iter.hasNext()) {
 					final UnitMember item = iter.next();
-					for (IUnit unit : ((ProxyUnit) newOwner).getProxied()) {
+					for (final IUnit unit : ((ProxyUnit) newOwner).getProxied()) {
 						unit.addMember(item.copy(false));
 					}
 				} else {

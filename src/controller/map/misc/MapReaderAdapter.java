@@ -128,7 +128,7 @@ public final class MapReaderAdapter {
 		String current = master.getPath();
 		try {
 			final IMultiMapModel retval = new SimpleMultiMapModel(readMap(master, warner), master);
-			for (File file : files) {
+			for (final File file : files) {
 				current = file.getPath();
 				retval.addSubordinateMap(readMap(file, warner), file);
 			}
@@ -165,7 +165,7 @@ public final class MapReaderAdapter {
 			throw new DriverFailedException("I/O error writing to " + model.getMapFile(), except);
 		}
 		if (model instanceof IMultiMapModel) {
-			for (Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getSubordinateMaps()) {
+			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getSubordinateMaps()) {
 				try {
 					spWriter.write(pair.second(), pair.first());
 				} catch (final IOException except) {

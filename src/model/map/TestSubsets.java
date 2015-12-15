@@ -233,7 +233,7 @@ public final class TestSubsets {
 		final IMapNG clone = one.copy(true);
 		assertTrue("unfilled map is still a subset of zeroed clone", clone.isSubset(zero, DEV_NULL, ""));
 		// DCs, the only thing zeroed out in *map* copy() at the moment, are ignored in equals().
-		for (TileFixture fix : clone.getOtherFixtures(pointOne)) {
+		for (final TileFixture fix : clone.getOtherFixtures(pointOne)) {
 			if (fix instanceof AbstractTown) {
 				assertEquals("Copied map didn't copy DCs", 0, ((IEvent) fix).getDC());
 			}

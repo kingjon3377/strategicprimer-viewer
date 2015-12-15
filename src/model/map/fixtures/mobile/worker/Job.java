@@ -75,7 +75,7 @@ public class Job implements IJob { // NOPMD
 			return new Job(name, 0);
 		} else {
 			final IJob retval = new Job(name, level);
-			for (ISkill skill : this) {
+			for (final ISkill skill : this) {
 				retval.addSkill(skill.copy(false));
 			}
 			return retval;
@@ -259,7 +259,7 @@ public class Job implements IJob { // NOPMD
 	@Override
 	@Nullable
 	public ISkill getSkill(final String skillName) {
-		for (ISkill skill : this) {
+		for (final ISkill skill : this) {
 			if (skillName.equals(skill.getName())) {
 				return skill;
 			}

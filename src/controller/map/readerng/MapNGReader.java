@@ -162,9 +162,9 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 		Point point = nullPoint;
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				StartElement current = event.asStartElement();
-				String type = current.getName().getLocalPart();
-				Location currentLoc = assertNotNull(current.getLocation());
+				final StartElement current = event.asStartElement();
+				final String type = current.getName().getLocalPart();
+				final Location currentLoc = assertNotNull(current.getLocation());
 				if (type == null) {
 					continue;
 				} else if ("player".equalsIgnoreCase(type)) {
@@ -208,11 +208,11 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					retval.addRivers(point, RIVER_READER.parse(current, stream,
 							players, warner, factory));
 				} else if ("ground".equalsIgnoreCase(type)) {
-					Ground ground = GROUND_READER.parse(current, stream,
+					final Ground ground = GROUND_READER.parse(current, stream,
 							players, warner, factory);
 					addFixture(retval, point, ground);
 				} else if ("forest".equalsIgnoreCase(type)) {
-					Forest forest = FOREST_READER.parse(current, stream,
+					final Forest forest = FOREST_READER.parse(current, stream,
 							players, warner, factory);
 					addFixture(retval, point, forest);
 				} else if ("mountain".equalsIgnoreCase(type)) {
@@ -258,7 +258,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					point = PointFactory.point(-1, -1);
 				}
 			} else if (event.isCharacters()) {
-				String data =
+				final String data =
 						assertNotNull(event.asCharacters().getData().trim());
 				if (!data.isEmpty()) {
 					retval.addFixture(point, new TextFixture(data, -1));
@@ -314,7 +314,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 			map.setMountainous(point, true);
 		} else if (fix instanceof RiverFixture) {
 			// Similarly
-			for (River river : (RiverFixture) fix) {
+			for (final River river : (RiverFixture) fix) {
 				map.addRivers(point, river);
 			}
 		} else {
@@ -366,7 +366,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 						Pair.of("columns",
 								assertNotNull(Integer.toString(dim.cols))));
 		retval.addChild(mapTag);
-		for (Player player : obj.players()) {
+		for (final Player player : obj.players()) {
 			mapTag.addChild(PLAYER_READER.write(player));
 		}
 		for (int i = 0; i < dim.rows; i++) {
@@ -374,7 +374,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					new SPIntermediateRepresentation("row", Pair.of("index",
 							assertNotNull(Integer.toString(i))));
 			for (int j = 0; j < dim.cols; j++) {
-				Point point = PointFactory.point(i, j);
+				final Point point = PointFactory.point(i, j);
 				if (TileType.NotVisible != obj.getBaseTerrain(point)
 						|| obj.isMountainous(point)
 						|| obj.getGround(point) != null
@@ -410,12 +410,12 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 		if (map.isMountainous(point)) {
 			retval.addChild(new SPIntermediateRepresentation("mountain"));
 		}
-		for (River river : map.getRivers(point)) {
+		for (final River river : map.getRivers(point)) {
 			retval.addChild(RIVER_READER.write(river));
 		}
 		retval.addChild(writeFixture(map.getGround(point)));
 		retval.addChild(writeFixture(map.getForest(point)));
-		for (TileFixture fixture : map.getOtherFixtures(point)) {
+		for (final TileFixture fixture : map.getOtherFixtures(point)) {
 			retval.addChild(writeFixture(fixture));
 		}
 		return retval;

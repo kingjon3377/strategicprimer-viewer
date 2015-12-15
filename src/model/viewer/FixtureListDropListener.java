@@ -205,19 +205,19 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 			throw new UnsupportedFlavorException(new DataFlavor(
 					DataFlavor.class, "null"));
 		} else {
-			for (DataFlavor flavor : dflav) {
+			for (final DataFlavor flavor : dflav) {
 				if (flavor == null) {
 					continue;
 				} else if (flavor.equals(FixtureTransferable.FLAVOR)) {
-					TileFixture transferData = (TileFixture) trans.getTransferData(flavor);
+					final TileFixture transferData = (TileFixture) trans.getTransferData(flavor);
 					if (transferData != null) {
 						model.addFixture(transferData);
 					}
 					return;
 				} else if (flavor.equals(CurriedFixtureTransferable.FLAVOR)) {
-					Iterable<Transferable> curried = (Iterable<Transferable>) trans
+					final Iterable<Transferable> curried = (Iterable<Transferable>) trans
 							.getTransferData(flavor);
-					for (Transferable item : curried) {
+					for (final Transferable item : curried) {
 						handleDrop(item);
 					}
 					return;

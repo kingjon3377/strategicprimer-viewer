@@ -78,7 +78,7 @@ public final class MiningModel {
 			final Point left = PointFactory.point(point.row, point.col - 1);
 			final Point down = PointFactory.point(point.row + 1, point.col);
 			final Point right = PointFactory.point(point.row, point.col + 1);
-			LodeStatus current;
+			final LodeStatus current;
 			if (unnormalized.containsKey(point)) {
 				current = unnormalized.get(point);
 			} else {
@@ -104,7 +104,7 @@ public final class MiningModel {
 		final int minCol =
 				getMinCol(NullCleaner.assertNotNull(unnormalized.keySet()));
 		for (final Map.Entry<Point, LodeStatus> entry : unnormalized.entrySet()) {
-			Point key = entry.getKey();
+			final Point key = entry.getKey();
 			data.put(PointFactory.point(key.row, key.col - minCol),
 					entry.getValue());
 		}

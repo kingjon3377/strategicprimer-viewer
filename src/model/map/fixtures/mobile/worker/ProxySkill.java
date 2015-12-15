@@ -72,7 +72,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	@Override
 	public ISkill copy(final boolean zero) {
 		final ProxySkill retval = new ProxySkill(name, parallel);
-		for (IJob job : proxied) {
+		for (final IJob job : proxied) {
 			retval.addProxied(job.copy(zero));
 		}
 		return retval;
@@ -219,8 +219,8 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	 */
 	@Override
 	public boolean isEmpty() {
-		for (IJob job : proxied) {
-			for (ISkill skill : job) {
+		for (final IJob job : proxied) {
+			for (final ISkill skill : job) {
 				if (skill == this) {
 					continue;
 				} else if (skill.getName().equals(name) && !skill.isEmpty()) {
