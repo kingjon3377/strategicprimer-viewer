@@ -25,6 +25,7 @@ package model.map;
  *
  * @param <T> the type of the iterable.
  */
+@FunctionalInterface
 public interface FixtureIterable<T extends IFixture> extends Iterable<T> {
 	// Nothing new.
 }

@@ -26,6 +26,7 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  *
  */
+@FunctionalInterface
 public interface ZOrderFilter {
 	/**
 	 * @param fix a fixture

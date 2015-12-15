@@ -28,6 +28,7 @@ import model.map.fixtures.mobile.IUnit;
  * @author Jonathan Lovelace
  *
  */
+@FunctionalInterface
 public interface UnitSelectionListener {
 	/**
 	 * @param unit the newly selected Unit. May be null if no selection.

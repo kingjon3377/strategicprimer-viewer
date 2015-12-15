@@ -26,6 +26,7 @@ import java.util.EventListener;
  * @author Jonathan Lovelace
  *
  */
+@FunctionalInterface
 public interface LevelGainListener extends EventListener {
 	/**
 	 * Indicate a level gain.

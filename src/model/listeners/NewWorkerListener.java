@@ -26,6 +26,7 @@ import model.map.fixtures.mobile.Worker;
  *
  * @author Jonathan Lovelace
  */
+@FunctionalInterface
 public interface NewWorkerListener extends EventListener {
 	/**
 	 * Add the new unit.

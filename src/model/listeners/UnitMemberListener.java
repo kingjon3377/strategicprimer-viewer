@@ -30,6 +30,7 @@ import model.map.fixtures.UnitMember;
  * @author Jonathan Lovelace
  *
  */
+@FunctionalInterface
 public interface UnitMemberListener extends EventListener {
 	/**
 	 * @param old the previous selection

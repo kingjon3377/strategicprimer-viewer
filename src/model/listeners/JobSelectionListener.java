@@ -28,6 +28,7 @@ import model.map.fixtures.mobile.worker.IJob;
  * @author Jonathan Lovelace
  *
  */
+@FunctionalInterface
 public interface JobSelectionListener {
 	/**
 	 * @param job the newly selected Job. May be null if no selection.

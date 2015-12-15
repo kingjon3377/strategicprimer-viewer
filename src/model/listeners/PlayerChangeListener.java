@@ -30,6 +30,7 @@ import model.map.Player;
  * @author Jonathan Lovelace
  *
  */
+@FunctionalInterface
 public interface PlayerChangeListener extends EventListener {
 	/**
 	 * Called when the current player changes.

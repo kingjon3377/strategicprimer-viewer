@@ -29,6 +29,7 @@ import java.util.EventListener;
  *
  * @author Jonathan Lovelace
  */
+@FunctionalInterface
 public interface CompletionListener extends EventListener {
 	/**
 	 * Stop waiting for the thing being listened to, because it's finished.

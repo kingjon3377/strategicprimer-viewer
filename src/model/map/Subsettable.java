@@ -27,6 +27,7 @@ import java.io.IOException;
  *
  * @param <T> The type itself.
  */
+@FunctionalInterface
 public interface Subsettable<T> {
 	/**
 	 * @param obj

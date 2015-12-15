@@ -25,6 +25,7 @@ import java.util.EventListener;
  * @author Jonathan Lovelace
  *
  */
+@FunctionalInterface
 public interface MapChangeListener extends EventListener {
 	/**
 	 * Called when a new map is loaded. Since everything that listens for the

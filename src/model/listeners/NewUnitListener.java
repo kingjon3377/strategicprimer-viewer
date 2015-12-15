@@ -26,6 +26,7 @@ import model.map.fixtures.mobile.IUnit;
  *
  * @author Jonathan Lovelace
  */
+@FunctionalInterface
 public interface NewUnitListener extends EventListener {
 	/**
 	 * Add the new unit.

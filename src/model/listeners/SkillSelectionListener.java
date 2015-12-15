@@ -28,6 +28,7 @@ import model.map.fixtures.mobile.worker.ISkill;
  * @author Jonathan Lovelace
  *
  */
+@FunctionalInterface
 public interface SkillSelectionListener {
 	/**
 	 * @param skill the newly selected Skill. May be null if no selection.

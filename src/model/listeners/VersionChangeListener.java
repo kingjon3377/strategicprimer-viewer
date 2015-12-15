@@ -26,6 +26,7 @@ import java.util.EventListener;
  * @author Jonathan Lovelace
  *
  */
+@FunctionalInterface
 public interface VersionChangeListener extends EventListener {
 	/**
 	 * @param old the previous version

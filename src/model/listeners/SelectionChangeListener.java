@@ -29,6 +29,7 @@ import model.map.Point;
  *
  * @author Jonathan Lovelace
  */
+@FunctionalInterface
 public interface SelectionChangeListener extends EventListener {
 	/**
 	 * The selected tile's location changed.

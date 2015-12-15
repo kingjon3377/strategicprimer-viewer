@@ -26,6 +26,7 @@ import java.util.EventListener;
  * @author Jonathan Lovelace
  *
  */
+@FunctionalInterface
 public interface MovementCostListener extends EventListener {
 	/**
 	 * Account for a movement.
