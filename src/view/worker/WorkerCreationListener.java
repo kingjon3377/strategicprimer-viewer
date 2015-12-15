@@ -91,9 +91,7 @@ public final class WorkerCreationListener implements ActionListener,
 	 */
 	@Override
 	public void actionPerformed(@Nullable final ActionEvent evt) {
-		if (evt != null
-				&& AdvancementFrame.NEW_WORKER.equalsIgnoreCase(evt
-						.getActionCommand())) {
+		if (evt != null && evt.getActionCommand().toLowerCase().startsWith("add worker")) {
 			final WorkerConstructionFrame frame = new WorkerConstructionFrame(
 					idf);
 			frame.addNewWorkerListener(this);
