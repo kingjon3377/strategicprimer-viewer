@@ -243,12 +243,11 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			rivers.remove(River.Lake);
 		}
 		if (!rivers.isEmpty()) {
-			final StringBuilder builder = new StringBuilder(RIVER_RPT_LEN)
-					.append("There is a river on the tile, ");
-			builder.append("flowing through the following borders: ");
-			builder.append(StreamSupport.stream(rivers.spliterator(), false).map(River::getDescription)
-					               .collect(Collectors.joining(", ")));
-			parent.add(new SimpleReportNode(loc, builder.toString()));
+			parent.add(
+					new SimpleReportNode(loc, "There is a river on the tile, flowing through the following borders: ",
+							                    StreamSupport.stream(rivers.spliterator(), false)
+									                    .map(River::getDescription)
+									                    .collect(Collectors.joining(", "))));
 		}
 	}
 

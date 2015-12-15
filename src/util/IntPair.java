@@ -57,13 +57,7 @@ public final class IntPair {
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder(15);
-		builder.append('(');
-		builder.append(first);
-		builder.append(", ");
-		builder.append(second);
-		builder.append(')');
-		return NullCleaner.assertNotNull(builder.toString());
+		return String.format("(%d, %d)", Integer.valueOf(first), Integer.valueOf(second));
 	}
 
 }
