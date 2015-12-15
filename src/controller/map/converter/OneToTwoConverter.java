@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -232,9 +234,7 @@ public final class OneToTwoConverter { // NOPMD
 			if (forest != null) {
 				fixtures.add(forest);
 			}
-			for (final TileFixture fixture : oldMap.getOtherFixtures(point)) {
-				fixtures.add(fixture);
-			}
+			oldMap.getOtherFixtures(point).forEach(fixtures::add);
 			separateRivers(point, initial, oldMap, newMap);
 			final Random random = new Random(getSeed(point));
 			Collections.shuffle(initial, random);
@@ -339,12 +339,8 @@ public final class OneToTwoConverter { // NOPMD
 	 * @return whether that location is suitable
 	 */
 	private static boolean isSubtileSuitable(final IMapNG map, final Point point) {
-		for (final TileFixture fix : map.getOtherFixtures(point)) {
-			if (!isBackground(fix)) {
-				return false; // NOPMD
-			}
-		}
-		return true;
+		return StreamSupport.stream(map.getOtherFixtures(point).spliterator(), false)
+				       .anyMatch(OneToTwoConverter::isBackground);
 	}
 
 	/**
@@ -371,12 +367,11 @@ public final class OneToTwoConverter { // NOPMD
 	private static void changeFor(final IMutableMapNG map, final Point point,
 			final TileFixture fix) {
 		if (fix instanceof Village || fix instanceof ITownFixture) {
-			final Collection<TileFixture> forests = new ArrayList<>();
-			for (final TileFixture fixture : map.getOtherFixtures(point)) {
-				if (fixture instanceof Forest) {
-					forests.add(fixture);
-				}
-			}
+			final Collection<TileFixture> forests =
+					StreamSupport.stream(map.getOtherFixtures(point).spliterator(), false)
+							.filter(p -> p instanceof Forest).collect(
+
+							Collectors.toList());
 			for (final TileFixture fixture : forests) {
 				map.removeFixture(point, fixture);
 			}
@@ -537,14 +532,9 @@ public final class OneToTwoConverter { // NOPMD
 	 * @return whether the tile is adjacent to a town.
 	 */
 	private static boolean isAdjacentToTown(final Point point, final IMapNG map) {
-		for (final Point npoint : getNeighbors(point)) {
-			for (final TileFixture fix : map.getOtherFixtures(npoint)) {
-				if (fix instanceof Village || fix instanceof ITownFixture) {
-					return true; // NOPMD
-				}
-			}
-		}
-		return false;
+		return StreamSupport.stream(getNeighbors(point).spliterator(), false)
+				       .flatMap(npoint -> StreamSupport.stream(map.getOtherFixtures(npoint).spliterator(), false))
+				       .anyMatch(fix -> fix instanceof ITownFixture);
 	}
 
 	/**
@@ -553,13 +543,8 @@ public final class OneToTwoConverter { // NOPMD
 	 * @return whether the tile is adjacent to a river or ocean
 	 */
 	private static boolean hasAdjacentWater(final Point point, final IMapNG map) {
-		for (final Point npoint : getNeighbors(point)) {
-			if (map.getRivers(npoint).iterator().hasNext()
-					|| TileType.Ocean == map.getBaseTerrain(npoint)) {
-				return true; // NOPMD
-			}
-		}
-		return false;
+		return StreamSupport.stream(getNeighbors(point).spliterator(), false).anyMatch(
+				npoint -> map.getRivers(npoint).iterator().hasNext() || TileType.Ocean == map.getBaseTerrain(npoint));
 	}
 
 	/**
@@ -568,15 +553,9 @@ public final class OneToTwoConverter { // NOPMD
 	 * @return whether that location already has a forest
 	 */
 	private static boolean hasForest(final IMapNG map, final Point point) {
-		if (map.getForest(point) != null) {
-			return true;
-		}
-		for (final TileFixture fix : map.getOtherFixtures(point)) {
-			if (fix instanceof Forest) {
-				return true; // NOPMD
-			}
-		}
-		return false;
+		return map.getForest(point) != null ||
+				       StreamSupport.stream(map.getOtherFixtures(point).spliterator(), false)
+						       .anyMatch(fix -> fix instanceof Forest);
 	}
 
 	/**
