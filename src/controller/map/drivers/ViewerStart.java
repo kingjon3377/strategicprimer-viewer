@@ -85,7 +85,6 @@ public final class ViewerStart implements ISPDriver {
 	 * @throws DriverFailedException
 	 *             if the driver failed to run.
 	 *
-	 * @see controller.map.drivers.ISPDriver#startDriver(java.lang.String[])
 	 */
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {

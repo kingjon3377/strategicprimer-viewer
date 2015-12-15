@@ -65,8 +65,6 @@ public final class ResourceInputStream extends InputStream {
 	/**
 	 * @return the result of reading from the file
 	 * @throws IOException when thrown by wrapped stream
-	 *
-	 * @see java.io.InputStream#read()
 	 */
 	@Override
 	public int read() throws IOException {
@@ -89,7 +87,6 @@ public final class ResourceInputStream extends InputStream {
 	 * @param len the maximum number of bytes to read
 	 * @return the total number of bytes read into the buffer, or 1 if EOF
 	 * @throws IOException when thrown by wrapped implementation
-	 * @see InputStream#read(byte[], int, int)
 	 */
 	@Override
 	public int read(final byte @Nullable [] buf, final int off, final int len)

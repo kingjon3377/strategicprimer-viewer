@@ -98,7 +98,7 @@ public final class SetPairConverter<@NonNull I, @NonNull K> implements Iterable<
 		}
 
 		/**
-		 * @see java.util.Iterator#remove()
+		 * Remove the current item in the iterator.
 		 */
 		@Override
 		public void remove() {

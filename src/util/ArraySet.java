@@ -136,8 +136,6 @@ public final class ArraySet<T> implements Set<T> {
 	/**
 	 * @param coll a collection
 	 * @return the result of adding all of them
-	 *
-	 * @see java.util.Set#addAll(java.util.Collection)
 	 */
 	@Override
 	public boolean addAll(@Nullable final Collection<? extends T> coll) {
