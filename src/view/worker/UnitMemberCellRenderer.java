@@ -238,7 +238,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	 * @return the image contained in that file, or null on error
 	 */
 	@Nullable
-	private Icon getIconForFile(final String filename) {
+	private static Icon getIconForFile(final String filename) {
 		try {
 			return ImageLoader.getLoader().loadIcon(filename);
 		} catch (final FileNotFoundException except) {

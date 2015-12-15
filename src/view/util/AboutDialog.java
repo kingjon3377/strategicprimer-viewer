@@ -107,7 +107,7 @@ public final class AboutDialog extends JDialog {
 	 * @param href the target of the link
 	 * @param text the text of the link
 	 */
-	private void link(final StringBuilder builder, final String href, final String text) {
+	private static void link(final StringBuilder builder, final String href, final String text) {
 		builder.append("<a href=\"");
 		builder.append(href);
 		builder.append("\">");
@@ -119,7 +119,7 @@ public final class AboutDialog extends JDialog {
 	 * @param builder the StringBuilder to write to
 	 * @param text the text of the paragraph
 	 */
-	private void paragraph(final StringBuilder builder, final String text) {
+	private static void paragraph(final StringBuilder builder, final String text) {
 		builder.append("<p>");
 		builder.append(text);
 		builder.append("</p>");
