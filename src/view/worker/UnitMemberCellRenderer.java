@@ -254,7 +254,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	 * @return the default icon for fixtures.
 	 */
 	private static Icon createDefaultFixtureIcon() {
-		/**
+		/*
 		 * The margin we allow around the chit itself in the default image.
 		 */
 		final int imageSize = 24; // NOPMD
