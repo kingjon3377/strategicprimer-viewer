@@ -5,6 +5,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTargetAdapter;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
@@ -46,7 +47,7 @@ import util.TypesafeLogger;
  * @author Jonathan Lovelace
  *
  */
-public final class FixtureListDropListener implements DropTargetListener {
+public final class FixtureListDropListener extends DropTargetAdapter {
 	/**
 	 * A parent component. If it's an ancestor of the drop, it's an
 	 * intra-component drop.
@@ -148,16 +149,6 @@ public final class FixtureListDropListener implements DropTargetListener {
 				dtde.rejectDrag();
 			}
 		}
-	}
-
-	/**
-	 * The drag is exiting the component.
-	 *
-	 * @param dte ignored
-	 */
-	@Override
-	public void dragExit(@Nullable final DropTargetEvent dte) {
-		// ignored
 	}
 
 	/**
