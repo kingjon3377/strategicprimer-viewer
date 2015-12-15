@@ -187,7 +187,7 @@ public final class TestProxyWorker {
 	 * @param worker the worker to test
 	 * @param jobName the name of the Job.
 	 */
-	public void assertWorkerHasJob(final IWorker worker, final String jobName) {
+	private static void assertWorkerHasJob(final IWorker worker, final String jobName) {
 		if (worker.getJob(jobName) != null) {
 			return;
 		}
