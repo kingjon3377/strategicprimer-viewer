@@ -153,16 +153,12 @@ public final class ExpansionDriver implements ISPDriver {
 	 * @return true if the operation succeeded, false if the player's map was
 	 *         immutable
 	 */
-	private static boolean expand(final IMapNG master, final IMapNG map) {
-		if (!(map instanceof IMutableMapNG)) {
-			return false;
-		}
-		final IMutableMapNG lmap = (IMutableMapNG) map;
+	private static void expand(final IMapNG master, final IMutableMapNG map) {
 		final Player player = map.getCurrentPlayer();
 		final IllegalStateException ise =
 				new IllegalStateException(
 						"Unsupported method called on mock object");
-		final Collection<Point> villagePoints = StreamSupport.stream(lmap.locations().spliterator(), false)
+		final Collection<Point> villagePoints = StreamSupport.stream(map.locations().spliterator(), false)
 				                                        .filter(point -> containsSwornVillage(master, point, player))
 				                                        .collect(
 						                                        Collectors.toSet());
@@ -286,7 +282,7 @@ public final class ExpansionDriver implements ISPDriver {
 		final Map<Point, Set<TileFixture>> fixAdditions = new HashMap<>();
 		final Map<Point, TileType> terrainAdditions = new HashMap<>();
 		for (final Point point : villagePoints) {
-			addSurroundingTerrain(point, master, lmap, terrainAdditions);
+			addSurroundingTerrain(point, master, map, terrainAdditions);
 			addSurroundingFixtures(point, master, fixAdditions, mock);
 		}
 		for (final Map.Entry<Point, TileType> entry : terrainAdditions
@@ -294,7 +290,7 @@ public final class ExpansionDriver implements ISPDriver {
 			if (entry == null) {
 				continue;
 			}
-			lmap.setBaseTerrain(NullCleaner.assertNotNull(entry.getKey()),
+			map.setBaseTerrain(NullCleaner.assertNotNull(entry.getKey()),
 					NullCleaner.assertNotNull(entry.getValue()));
 		}
 		for (final Map.Entry<Point, Set<TileFixture>> entry : fixAdditions
@@ -305,14 +301,13 @@ public final class ExpansionDriver implements ISPDriver {
 			Point point = NullCleaner.assertNotNull(entry.getKey());
 			for (final TileFixture fix : entry.getValue()) {
 				if (fix instanceof HasOwner) {
-					lmap.addFixture(point, fix
+					map.addFixture(point, fix
 							.copy(!((HasOwner) fix).getOwner().equals(player)));
 				} else {
-					lmap.addFixture(point, fix.copy(true));
+					map.addFixture(point, fix.copy(true));
 				}
 			}
 		}
-		return true;
 	}
 
 	/**
