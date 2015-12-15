@@ -201,7 +201,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 		}
 		proxiedJobs.add(item);
 		for (ISkill skill : proxied) {
-			((ProxySkill) skill).addProxied(item);
+			((ProxyFor<IJob>) skill).addProxied(item);
 		}
 		final IJob[] jobsArray =
 				NullCleaner.assertNotNull(proxiedJobs

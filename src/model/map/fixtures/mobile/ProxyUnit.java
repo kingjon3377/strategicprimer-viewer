@@ -237,7 +237,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 							continue;
 						}
 					} else {
-						((ProxyMember) proxy).addProxied(member);
+						((ProxyFor<UnitMember>) proxy).addProxied(member);
 					}
 				} else {
 					if (member instanceof IWorker) {

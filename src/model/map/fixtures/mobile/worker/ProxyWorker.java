@@ -198,7 +198,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 			String name = job.getName();
 			if (jobNames.contains(name)) {
 				proxyJobs.stream().filter(proxyJob -> proxyJob.getName().equals(name)).forEach(proxyJob -> {
-					((ProxyJob) proxyJob).addProxied(job);
+					((ProxyFor<IJob>) proxyJob).addProxied(job);
 					proxyJobsTemp.remove(proxyJob);
 				});
 			} else {
@@ -210,7 +210,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 		for (IJob proxyJob : proxyJobs) {
 			String name = proxyJob.getName();
 			Job job = new Job(name, 0);
-			((ProxyJob) proxyJob).addProxied(job);
+			((ProxyFor<IJob>) proxyJob).addProxied(job);
 		}
 	}
 	/**

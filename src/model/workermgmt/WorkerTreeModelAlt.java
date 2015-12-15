@@ -2,6 +2,7 @@ package model.workermgmt;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -94,10 +95,10 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		oldNode.remove(node);
 		if (member instanceof ProxyFor && old instanceof ProxyUnit
 				&& newOwner instanceof ProxyUnit) {
-			if (((List<IUnit>) ((ProxyUnit) old).getProxied())
-					.size() == ((List<IUnit>) ((ProxyUnit) newOwner).getProxied()).size()
-					&& ((List<IUnit>) ((ProxyUnit) old).getProxied())
-							.size() == ((List<? extends UnitMember>) ((ProxyFor<? extends UnitMember>) member)
+			if (((Collection<IUnit>) ((ProxyUnit) old).getProxied())
+					.size() == ((Collection<IUnit>) ((ProxyUnit) newOwner).getProxied()).size()
+					&& ((Collection<IUnit>) ((ProxyUnit) old).getProxied())
+							.size() == ((Collection<? extends UnitMember>) ((ProxyFor<? extends UnitMember>) member)
 									.getProxied()).size()) {
 				final Queue<UnitMember> members = new LinkedList<>();
 				final Queue<IUnit> newList = new LinkedList<>();
@@ -259,7 +260,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		model.addUnit(unit);
 		final UnitNode node = new UnitNode(unit);
 		final String kind = unit.getKind();
-		for (final TreeNode child : (PlayerNode) root) {
+		for (final TreeNode child : (Iterable<TreeNode>) root) {
 			if (child instanceof KindNode
 					&& kind.equals(((KindNode) child).getUserObject())) {
 				((KindNode) child).add(node);
@@ -434,7 +435,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			final TreeNode[] pathOne = getPathToRoot(node);
 			final int indexOne = getIndexOfChild(pathOne[pathOne.length - 2], node);
 			TreeNode nodeTwo = null;
-			for (final TreeNode child : (PlayerNode) root) {
+			for (final TreeNode child : (Iterable<TreeNode>) root) {
 				if (child instanceof KindNode
 						&& item.getKind().equals(
 								((KindNode) child).getUserObject())) {
@@ -463,7 +464,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 				nodeTwo =
 						new KindNode(item.getKind(), new ArrayList<>(
 								Collections.singletonList((IUnit) item)));
-				((PlayerNode) root).add((MutableTreeNode) nodeTwo);
+				((DefaultMutableTreeNode) root).add((MutableTreeNode) nodeTwo);
 				fireTreeNodesInserted(this, new TreeNode[] { root },
 						new int[] { getIndexOfChild(root, nodeTwo) },
 						new Object[] { nodeTwo });
@@ -492,11 +493,11 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 		final TreeNode[] path = getPathToRoot(node);
 		final int index = getIndexOfChild(path[path.length - 1], node);
-		((UnitNode) parentNode).remove((MutableTreeNode) node);
+		((MutableTreeNode) parentNode).remove((MutableTreeNode) node);
 		fireTreeNodesRemoved(this, path, new int[] { index },
 				new Object[] { node });
 		dismissedMembers.add(member);
-		((Unit) ((UnitNode) parentNode).getUserObject()).removeMember(member);
+		((IUnit) ((DefaultMutableTreeNode) parentNode).getUserObject()).removeMember(member);
 	}
 	/**
 	 * @return an iteration over the unit-members the user has dismissed.

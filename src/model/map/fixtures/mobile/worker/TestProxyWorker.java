@@ -108,7 +108,7 @@ public final class TestProxyWorker {
 		proxy.addProxied(unitOne);
 		proxy.addProxied(unitTwo);
 		for (UnitMember member : proxy) {
-			for (IJob job : (IWorker) member) {
+			for (IJob job : (Iterable<IJob>) member) {
 				for (ISkill skill : job) {
 					skill.addHours(10, 100);
 				}

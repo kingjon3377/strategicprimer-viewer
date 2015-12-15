@@ -208,9 +208,9 @@ public final class WorkerMgmtFrame extends JFrame {
 				final Point point = ((AbstractReportNode) value).getPoint();
 				// (-inf, -inf) replaces null
 				if (point.getRow() > Integer.MIN_VALUE) {
-					((JLabel) retval).setToolTipText(distCalculator.distanceString(point));
+					((JComponent) retval).setToolTipText(distCalculator.distanceString(point));
 				} else {
-					((JLabel) retval).setToolTipText(null);
+					((JComponent) retval).setToolTipText(null);
 				}
 			}
 			assert retval != null;
