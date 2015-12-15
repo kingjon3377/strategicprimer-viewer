@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
@@ -75,11 +76,7 @@ public final class ExplorationFrame extends JFrame {
 				final Container parentComp, final Component... components) {
 			layout = clayout;
 			parent = parentComp;
-			for (final Component component : components) {
-				if (component != null) {
-					compList.add(component);
-				}
-			}
+			Stream.of(components).forEach(compList::add);
 		}
 		/**
 		 * @param end ignored

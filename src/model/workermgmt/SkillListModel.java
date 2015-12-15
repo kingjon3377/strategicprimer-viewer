@@ -104,9 +104,7 @@ public final class SkillListModel extends DefaultListModel<ISkill> implements
 			clear();
 			job = newValue;
 			if (newValue != null) {
-				for (final ISkill skill : newValue) {
-					addElement(skill);
-				}
+				newValue.forEach(this::addElement);
 			}
 			for (final CompletionListener list : cListeners) {
 				list.stopWaitingOn(true);

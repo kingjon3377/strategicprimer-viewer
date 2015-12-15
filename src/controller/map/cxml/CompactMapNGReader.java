@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
@@ -319,12 +321,13 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	private static StartElement getFirstStartElement(
 			final Iterable<XMLEvent> stream, final int line)
 			throws SPFormatException {
-		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
-				return assertNotNull(event.asStartElement());
-			}
+		Optional<XMLEvent>
+				retval = StreamSupport.stream(stream.spliterator(), false).filter(event -> event.isStartElement()).findFirst();
+		if (retval.isPresent()) {
+			return retval.get().asStartElement();
+		} else {
+			throw new MissingChildException("map", line);
 		}
-		throw new MissingChildException("map", line);
 	}
 	/**
 	 * @param obj a map

@@ -12,6 +12,7 @@ import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -651,16 +652,14 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * Determine the size of an iterable. Note that its iterator will have been
 	 * advanced to the end.
 	 *
+	 * FIXME: Can this return long, as stream().count() does?
+	 *
 	 * @param iter an iterable
 	 * @param <T> the type of thing it contains
 	 * @return the number of items in the iterable
 	 */
 	protected static <T> int iteratorSize(final Iterable<T> iter) {
-		int size = 0; // NOPMD
-		for (final T anIter : iter) { // $codepro.audit.disable
-			size++; // NOPMD
-		}
-		return size;
+		return (int) StreamSupport.stream(iter.spliterator(), false).count();
 	}
 
 	/**

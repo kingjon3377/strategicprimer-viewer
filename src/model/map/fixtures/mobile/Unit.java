@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -192,10 +194,7 @@ public class Unit implements IUnit {
 	 * @return whether its "members" are the same as ours
 	 */
 	private boolean equalMembers(final Iterable<UnitMember> obj) {
-		final Collection<UnitMember> theirs = new ArraySet<>();
-		for (final UnitMember member : obj) {
-			theirs.add(member);
-		}
+		final Collection<UnitMember> theirs = StreamSupport.stream(obj.spliterator(), false).collect(Collectors.toSet());
 		return members.containsAll(theirs) && theirs.containsAll(members);
 	}
 	/**

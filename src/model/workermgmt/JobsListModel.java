@@ -77,9 +77,7 @@ public final class JobsListModel extends DefaultListModel<IJob> implements
 			clear();
 			if (selected instanceof IWorker) {
 				worker = (IWorker) selected;
-				for (final IJob job : worker) {
-					addElement(job);
-				}
+				worker.forEach(this::addElement);
 				for (final CompletionListener list : cListeners) {
 					list.stopWaitingOn(false);
 				}

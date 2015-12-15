@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -60,9 +63,7 @@ public final class ResolutionDecreaseConverter {
 		final int newRows = old.dimensions().rows / 2;
 		final int newCols = old.dimensions().cols / 2;
 		final PlayerCollection players = new PlayerCollection();
-		for (final Player player : old.players()) {
-			players.add(player);
-		}
+		old.players().forEach(players::add);
 		final SPMapNG retval =
 				new SPMapNG(new MapDimensions(newRows, newCols, 2), players,
 						old.getCurrentTurn());
@@ -140,12 +141,9 @@ public final class ResolutionDecreaseConverter {
 	 * @return the rivers there, if any
 	 */
 	private static Set<@NonNull River> getRivers(final IMapNG old, final Point point) {
-		final Set<@NonNull River> retval = EnumSet.noneOf(River.class);
-		assert retval != null;
-		for (final River river : old.getRivers(point)) {
-			retval.add(river);
-		}
-		return retval;
+		return
+				StreamSupport.stream(old.getRivers(point).spliterator(), false).collect(
+						Collectors.toSet());
 	}
 	/**
 	 * @param rivers a series of rivers to combine into one collection
@@ -154,11 +152,7 @@ public final class ResolutionDecreaseConverter {
 	@SafeVarargs
 	private static Iterable<River> combineRivers(final Iterable<River>... rivers) {
 		final RiverFixture retval = new RiverFixture();
-		for (final Iterable<River> riverFix : rivers) {
-			for (final River river : riverFix) {
-				retval.addRiver(river);
-			}
-		}
+		addRivers(retval, rivers);
 		return retval;
 	}
 	/**
@@ -168,11 +162,7 @@ public final class ResolutionDecreaseConverter {
 	@SafeVarargs
 	private static void addRivers(final RiverFixture fix,
 			final Iterable<River>... rivers) {
-		for (final Iterable<River> riverFix : rivers) {
-			for (final River river : riverFix) {
-				fix.addRiver(river);
-			}
-		}
+		Stream.of(rivers).flatMap(iter -> StreamSupport.stream(iter.spliterator(), false)).forEach(fix::addRiver);
 	}
 
 	/**
@@ -181,11 +171,7 @@ public final class ResolutionDecreaseConverter {
 	 */
 	private static void removeRivers(final Collection<River> set,
 			final River... rivers) {
-		for (final River river : rivers) {
-			if (river != null) {
-				set.remove(river);
-			}
-		}
+		set.removeAll(Arrays.asList(rivers));
 	}
 
 	/**

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -265,12 +266,7 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 	 * @return true if any of them is nonnumeric
 	 */
 	private static boolean anyNonNumeric(final String... strings) {
-		for (final String string : strings) {
-			if (string == null || !isNumeric(string)) {
-				return true; // NOPMD
-			}
-		}
-		return false;
+		return Stream.of(strings).anyMatch(string -> string == null || !isNumeric(string));
 	}
 
 	/**

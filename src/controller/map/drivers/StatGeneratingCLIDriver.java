@@ -12,6 +12,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import model.misc.IMultiMapModel;
 import org.eclipse.jdt.annotation.NonNull;
@@ -226,13 +227,8 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 * @return whether it contains any workers without stats
 	 */
 	private static boolean hasUnstattedWorker(final Iterable<UnitMember> unit) {
-		for (final UnitMember member : unit) {
-			if (member instanceof Worker
-					&& ((Worker) member).getStats() == null) {
-				return true; // NOPMD
-			}
-		}
-		return false;
+		return StreamSupport.stream(unit.spliterator(), false)
+				       .anyMatch(member -> member instanceof Worker && ((Worker) member).getStats() == null);
 	}
 
 	/**
@@ -253,13 +249,10 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 */
 	private void enterStats(final IExplorationModel model, final Iterable<UnitMember> unit)
 			throws IOException {
-		final List<Worker> workers = new ArrayList<>();
-		for (final UnitMember member : unit) {
-			if (member instanceof Worker
-					&& ((Worker) member).getStats() == null) {
-				workers.add((Worker) member);
-			}
-		}
+		final List<Worker> workers = StreamSupport.stream(unit.spliterator(), false)
+				                             .filter(member -> member instanceof Worker &&
+						                                               ((Worker) member).getStats() == null)
+				                             .map(member -> (Worker) member).collect(Collectors.toList());
 		final String hdr = "Which worker do you want to enter stats for?";
 		final String none = "There are no owkers without stats in that unit.";
 		final String prpt = "Worker to modify: ";

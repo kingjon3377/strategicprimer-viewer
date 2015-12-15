@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -185,10 +187,7 @@ public final class MapReaderAdapter {
 	 * @return an array of equivalent Files
 	 */
 	public static File[] namesToFiles(final boolean dropFirst, final String... names) {
-		final List<File> retval = new ArrayList<>();
-		for (String name : names) {
-			retval.add(new File(name));
-		}
+		final List<File> retval = Stream.of(names).map(name -> new File(name)).collect(Collectors.toList());
 		if (dropFirst) {
 			retval.remove(0);
 		}

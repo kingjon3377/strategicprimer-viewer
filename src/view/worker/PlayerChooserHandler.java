@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import javax.swing.JOptionPane;
 
@@ -131,10 +133,7 @@ public final class PlayerChooserHandler implements ActionListener,
 		if (players instanceof PlayerCollection) {
 			return ((PlayerCollection) players).asArray(); // NOPMD
 		} else {
-			final List<Player> list = new ArrayList<>();
-			for (final Player player : players) {
-				list.add(player);
-			}
+			List<Player> list = StreamSupport.stream(players.spliterator(), false).collect(Collectors.toList());
 			return NullCleaner
 					.assertNotNull(list.toArray(new Player[list.size()]));
 		}

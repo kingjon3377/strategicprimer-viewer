@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -167,11 +169,7 @@ public final class ImmortalsReportGenerator extends AbstractReportGenerator<Mobi
 	 * @return their total size
 	 */
 	private static int collSize(final Collection<?>... collections) {
-		int total = 0;
-		for (final Collection<?> coll : collections) {
-			total += coll.size();
-		}
-		return total;
+		return Stream.of(collections).collect(Collectors.summingInt(Collection::size));
 	}
 	/**
 	 * Produce the sub-report dealing with "immortals".
@@ -273,11 +271,7 @@ public final class ImmortalsReportGenerator extends AbstractReportGenerator<Mobi
 	 */
 	private static void optionallyAdd(final AbstractReportNode parent,
 			final AbstractReportNode... children) {
-		for (AbstractReportNode child : children) {
-			if (child.getChildCount() > 0) {
-				parent.add(child);
-			}
-		}
+		Stream.of(children).filter(child -> child.getChildCount() > 0).forEach(parent::add);
 	}
 	/**
 	 * @param fixtures The set of fixtures

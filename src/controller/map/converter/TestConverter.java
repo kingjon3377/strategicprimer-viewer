@@ -18,6 +18,9 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.towns.Fortress;
 
+import java.util.Objects;
+import java.util.stream.StreamSupport;
+
 /**
  * The test case for map-conversion code paths.
  *
@@ -98,12 +101,7 @@ public final class TestConverter {
 	 */
 	private static <T, U extends T> boolean doesIterableContain(
 			final Iterable<T> iter, final U item) {
-		for (final T each : iter) {
-			if (each.equals(item)) {
-				return true; // NOPMD
-			}
-		}
-		return false;
+		return StreamSupport.stream(iter.spliterator(), false).anyMatch(each -> Objects.equals(each, item));
 	}
 	/**
 	 * @return a String representation of the object

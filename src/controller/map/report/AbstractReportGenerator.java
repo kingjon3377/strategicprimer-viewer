@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -200,14 +201,11 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 * @return them concatenated
 	 */
 	protected static String concat(final String... strings) {
-		int len = 5; // Start with a little cushion, just in case.
-		for (final String string : strings) {
-			len += string.length();
-		}
-		final StringBuilder buf = new StringBuilder(len);
-		for (final String string : strings) {
-			buf.append(string);
-		}
+		// We don't use Collectors.joining() because it appears to use a StringBuilder that isn't initialized to
+		// at least the right size.
+		final StringBuilder buf =
+				new StringBuilder(5 + Stream.of(strings).collect(Collectors.summingInt(String::length)));
+		Stream.of(strings).forEach(buf::append);
 		final String retval = buf.toString();
 		return NullCleaner.valueOrDefault(retval, "");
 	}

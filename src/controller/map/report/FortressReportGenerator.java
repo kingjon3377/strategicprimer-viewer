@@ -7,6 +7,8 @@ import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -223,15 +225,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			builder.append(OPEN_LIST_ITEM);
 			builder.append("There is a river on the tile, "); // NOPMD
 			builder.append("flowing through the following borders: ");
-			boolean first = true;
-			for (final River river : rivers) {
-				if (first) {
-					first = false;
-				} else {
-					builder.append(", ");
-				}
-				builder.append(river.getDescription());
-			}
+			builder.append(StreamSupport.stream(rivers.spliterator(), false).map(river -> river.getDescription())
+					               .collect(Collectors.joining(", ")));
 			builder.append(CLOSE_LIST_ITEM);
 		}
 		return NullCleaner.assertNotNull(builder.toString());
@@ -251,15 +246,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			final StringBuilder builder = new StringBuilder(RIVER_RPT_LEN)
 					.append("There is a river on the tile, ");
 			builder.append("flowing through the following borders: ");
-			boolean first = true;
-			for (final River river : rivers) {
-				if (first) {
-					first = false;
-				} else {
-					builder.append(", ");
-				}
-				builder.append(river.getDescription());
-			}
+			builder.append(StreamSupport.stream(rivers.spliterator(), false).map(river -> river.getDescription())
+					               .collect(Collectors.joining(", ")));
 			parent.add(new SimpleReportNode(loc, builder.toString()));
 		}
 	}
@@ -288,12 +276,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 				.append(CLOSE_LIST_ITEM).append(OPEN_LIST_ITEM);
 		builder.append(getTerrain(map, loc, fixtures)).append(CLOSE_LIST_ITEM);
 		if (map.getRivers(loc).iterator().hasNext()) {
-			final Set<@NonNull River> copy = EnumSet.noneOf(River.class);
-			assert copy != null;
-			for (final River river : map.getRivers(loc)) {
-				copy.add(river);
-			}
-			builder.append(riversToString(copy));
+			builder.append(riversToString(StreamSupport.stream(map.getRivers(loc).spliterator(), false).collect(
+					Collectors.toSet())));
 		}
 		if (item.iterator().hasNext()) {
 			final Collection<FortressMember> contents = new ArrayList<>();
@@ -345,12 +329,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 				distCalculator.distanceString(loc)));
 		retval.add(new SimpleReportNode(loc, getTerrain(map, loc, fixtures)));
 		if (map.getRivers(loc).iterator().hasNext()) {
-			final Set<River> copy = EnumSet.noneOf(River.class);
-			assert copy != null;
-			for (final River river : map.getRivers(loc)) {
-				copy.add(river);
-			}
-			riversToNode(loc, retval, copy);
+			riversToNode(loc, retval,
+					StreamSupport.stream(map.getRivers(loc).spliterator(), false).collect(Collectors.toSet()));
 		}
 		if (item.iterator().hasNext()) {
 			final AbstractReportNode units = new ListReportNode(loc,

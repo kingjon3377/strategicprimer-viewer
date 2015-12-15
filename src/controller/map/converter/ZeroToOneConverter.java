@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -222,11 +223,8 @@ public final class ZeroToOneConverter {
 	private static String printStartElement(final StartElement element) {
 		final StringBuilder builder = new StringBuilder().append('<');
 		builder.append(element.getName().getLocalPart());
-		final Iterable<Attribute> attrs = new IteratorWrapper<>(// NOPMD
-				element.getAttributes());
-		for (final Attribute attr : attrs) {
-			builder.append(printAttribute(attr));
-		}
+		StreamSupport.stream(new IteratorWrapper<Attribute>(element.getAttributes()).spliterator(), false)
+				.map(attr -> printAttribute(attr)).forEach(builder::append);
 		builder.append('>');
 		return NullCleaner.assertNotNull(builder.toString());
 	}

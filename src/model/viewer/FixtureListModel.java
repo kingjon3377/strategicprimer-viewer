@@ -78,9 +78,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 				addElement((TileFixture) rivers);
 			} else {
 				final RiverFixture rfixt = new RiverFixture();
-				for (River river : rivers) {
-					rfixt.addRiver(river);
-				}
+				rivers.forEach(rfixt::addRiver);
 				addElement(rfixt);
 			}
 		}
@@ -92,9 +90,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 		if (forest != null) {
 			addElement(forest);
 		}
-		for (TileFixture fixture : map.getOtherFixtures(newPoint)) {
-			addElement(fixture);
-		}
+		map.getOtherFixtures(newPoint).forEach(this::addElement);
 		point = newPoint;
 	}
 

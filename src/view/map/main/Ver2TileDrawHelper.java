@@ -20,6 +20,8 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -251,9 +253,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		if (map.isMountainous(location)) {
 			temp.add(new Mountain());
 		}
-		for (TileFixture fixture : map.getOtherFixtures(location)) {
-			temp.add(fixture);
-		}
+		map.getOtherFixtures(location).forEach(temp::add);
 		return new IteratorWrapper<>(new FilteredIterator(
 				NullCleaner.assertNotNull(temp.iterator()), zof), fixComp);
 	}
@@ -274,11 +274,8 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		if (rivers instanceof Set<?>) {
 			return getImage(NullCleaner.assertNotNull(riverFiles.get(rivers)));
 		} else {
-			final Set<River> riverSet = EnumSet.noneOf(River.class);
-			for (River river : rivers) {
-				riverSet.add(river);
-			}
-			return getImage(NullCleaner.assertNotNull(riverFiles.get(riverSet)));
+			return getImage(NullCleaner.assertNotNull(riverFiles.get(
+					StreamSupport.stream(rivers.spliterator(), false).collect(Collectors.toSet()))));
 		}
 	}
 	/**
@@ -317,12 +314,8 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return whether there is a terrain fixture there
 	 */
 	private boolean hasTerrainFixture(final IMapNG map, final Point location) {
-		for (final TileFixture fix : getDrawableFixtures(map, location)) {
-			if (fix instanceof TerrainFixture) {
-				return true; // NOPMD
-			}
-		}
-		return false;
+		return StreamSupport.stream(getDrawableFixtures(map, location).spliterator(), false)
+				       .anyMatch(fix -> fix instanceof TerrainFixture);
 	}
 
 	/**

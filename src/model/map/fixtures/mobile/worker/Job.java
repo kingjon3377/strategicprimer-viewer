@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -246,13 +247,8 @@ public class Job implements IJob { // NOPMD
 		if (level > 0) {
 			return false;
 		} else {
-			for (ISkill skill : this) {
-				if (!skill.isEmpty()) {
-					return false;
-				}
-			}
+			return StreamSupport.stream(spliterator(), false).allMatch(skill -> skill.isEmpty());
 		}
-		return true;
 	}
 	/**
 	 * TODO: Should we add and return a new Skill in the not-present case?

@@ -10,6 +10,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -463,32 +466,10 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	private static <T> boolean iterablesEqual(final Iterable<T> one,
 			final Iterable<T> two) {
-		final Collection<T> first;
-		final Collection<T> firstCopy;
-		if (one instanceof Collection) {
-			first = (Collection<T>) one;
-			firstCopy = new ArrayList<>((Collection<T>) one);
-		} else {
-			first = new ArrayList<>();
-			firstCopy = new ArrayList<>();
-			for (final T item : one) {
-				first.add(item);
-				firstCopy.add(item);
-			}
-		}
-		final Collection<T> second;
-		final Collection<T> secondCopy;
-		if (two instanceof Collection) {
-			second = (Collection<T>) two;
-			secondCopy = new ArrayList<>((Collection<T>) two);
-		} else {
-			second = new ArrayList<>();
-			secondCopy = new ArrayList<>();
-			for (final T item : two) {
-				second.add(item);
-				secondCopy.add(item);
-			}
-		}
+		final Collection<T> first = StreamSupport.stream(one.spliterator(), false).collect(Collectors.toList());
+		final Collection<T> firstCopy = StreamSupport.stream(one.spliterator(), false).collect(Collectors.toList());
+		final Collection<T> second = StreamSupport.stream(two.spliterator(), false).collect(Collectors.toList());
+		final Collection<T> secondCopy = StreamSupport.stream(two.spliterator(), false).collect(Collectors.toList());
 		firstCopy.removeAll(second);
 		secondCopy.removeAll(first);
 		return first.containsAll(second) && second.containsAll(first) && secondCopy.isEmpty() && firstCopy.isEmpty();
@@ -621,10 +602,7 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public void removeRivers(final Point location, final River... rvrs) {
 		if (rivers.containsKey(location)) {
-			final Set<River> localRivers = rivers.get(location);
-			for (River river : rvrs) {
-				localRivers.remove(river);
-			}
+			Stream.of(rvrs).forEach(rivers.get(location)::remove);
 		}
 	}
 

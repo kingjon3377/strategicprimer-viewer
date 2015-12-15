@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -148,10 +150,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 		if (players instanceof PlayerCollection) {
 			return ((PlayerCollection) players).asArray(); // NOPMD
 		} else {
-			final List<Player> list = new ArrayList<>();
-			for (final Player player : players) {
-				list.add(player);
-			}
+			final List<Player> list = StreamSupport.stream(players.spliterator(), false).collect(Collectors.toList());
 			return NullCleaner.assertNotNull(list.toArray(new Player[list.size()]));
 		}
 	}

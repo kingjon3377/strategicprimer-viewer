@@ -4,6 +4,8 @@ import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import model.misc.IDriverModel;
 import view.map.misc.MapCheckerFrame;
 
+import java.util.stream.Stream;
+
 /**
  * A driver to check every map file in a list for errors and report the results
  * in a window.
@@ -54,11 +56,7 @@ public final class MapCheckerGUI implements ISPDriver {
 	public void startDriver(final String... args) throws DriverFailedException {
 		final MapCheckerFrame window = new MapCheckerFrame();
 		window.setVisible(true);
-		for (final String filename : args) {
-			if (filename != null) {
-				window.check(filename);
-			}
-		}
+		Stream.of(args).forEach(window::check);
 	}
 
 	/**

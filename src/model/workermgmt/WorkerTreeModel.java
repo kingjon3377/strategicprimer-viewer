@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
 
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
@@ -133,11 +134,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 		if (parent instanceof Player) {
 			return model.getUnits((Player) parent).size(); // NOPMD
 		} else if (parent instanceof IUnit) {
-			int count = 0;
-			for (@SuppressWarnings("unused") UnitMember item : (IUnit) parent) {
-				count++;
-			}
-			return count;
+			return (int) StreamSupport.stream(((IUnit) parent).spliterator(), false).count();
 		} else {
 			throw new IllegalArgumentException(
 					"Not a possible member of the tree");
@@ -182,6 +179,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 		if (parent instanceof Player && parent.equals(root)) {
 			return model.getUnits(root).indexOf(child);
 		} else if (parent instanceof IUnit) {
+			// FIXME: There ought to be a way to do this using the Streams API
 			int index = 0;
 			for (final UnitMember member : (IUnit) parent) {
 				if (member.equals(child)) {

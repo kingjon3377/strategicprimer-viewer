@@ -13,6 +13,8 @@ import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Fortress;
 import util.EqualsAny;
 
+import java.util.stream.StreamSupport;
+
 /**
  * A class encapsulating knowledge about movement costs associated with various
  * tile types. FIXME: This ought to be per-unit-type, rather than one
@@ -114,12 +116,7 @@ public final class SimpleMovement {
 	 * @return whether any of them is a forest
 	 */
 	private static boolean isForest(final Iterable<TileFixture> fixtures) {
-		for (final TileFixture fix : fixtures) {
-			if (fix instanceof Forest) {
-				return true; // NOPMD
-			}
-		}
-		return false;
+		return StreamSupport.stream(fixtures.spliterator(), false).anyMatch(fix -> fix instanceof Forest);
 	}
 
 	/**
@@ -127,12 +124,8 @@ public final class SimpleMovement {
 	 * @return whether any of them is a mountain or a hill
 	 */
 	private static boolean isHill(final Iterable<TileFixture> fixtures) {
-		for (final TileFixture fix : fixtures) {
-			if (fix instanceof Mountain || fix instanceof Hill) {
-				return true; // NOPMD
-			}
-		}
-		return false;
+		return StreamSupport.stream(fixtures.spliterator(), false)
+				       .anyMatch(fix -> fix instanceof Mountain || fix instanceof Hill);
 	}
 
 	/**

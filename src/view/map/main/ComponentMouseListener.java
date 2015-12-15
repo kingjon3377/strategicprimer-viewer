@@ -5,6 +5,8 @@ import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -106,14 +108,9 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	 * @return them concatenated together
 	 */
 	private static String concat(final String... strings) {
-		int len = 0;
-		for (final String string : strings) {
-			len += string.length();
-		}
+		final int len = Stream.of(strings).collect(Collectors.summingInt(String::length));
 		final StringBuilder build = new StringBuilder(len);
-		for (final String string : strings) {
-			build.append(string);
-		}
+		Stream.of(strings).forEach(build::append);
 		return NullCleaner.assertNotNull(build.toString());
 	}
 

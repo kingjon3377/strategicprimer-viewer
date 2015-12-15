@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -172,20 +173,14 @@ public final class QueryCLI implements ISPDriver {
 			for (TileFixture fix : map.getOtherFixtures(loc)) {
 				if (fix instanceof IUnit
 						&& player.equals(((IUnit) fix).getOwner())) {
-					for (UnitMember member : (IUnit) fix) {
-						if (member instanceof IWorker) {
-							count++;
-						}
-					}
+					count += StreamSupport.stream(((IUnit) fix).spliterator(), false)
+							         .filter(member -> member instanceof IWorker).count();
 				} else if (fix instanceof Fortress) {
 					for (FortressMember unit : (Fortress) fix) {
 						if (unit instanceof IUnit
 								&& player.equals(((IUnit) unit).getOwner())) {
-							for (UnitMember member : (IUnit) unit) {
-								if (member instanceof IWorker) {
-									count++;
-								}
-							}
+							count += StreamSupport.stream(((IUnit) unit).spliterator(), false)
+									         .filter(member -> member instanceof IWorker).count();
 						}
 					}
 				}

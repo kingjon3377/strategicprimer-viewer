@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
@@ -152,9 +153,7 @@ public final class HarvestableReportGenerator extends AbstractReportGenerator<Ha
 	 */
 	@SafeVarargs
 	private static void sortAll(final List<String>... collections) {
-		for (final List<String> collection : collections) {
-			Collections.sort(collection);
-		}
+		Stream.of(collections).forEach(Collections::sort);
 	}
 	/**
 	 * Produce the sub-reports dealing with "harvestable" fixtures. All fixtures

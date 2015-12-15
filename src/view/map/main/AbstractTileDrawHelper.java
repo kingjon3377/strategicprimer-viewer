@@ -2,6 +2,7 @@ package view.map.main;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.stream.StreamSupport;
 
 import model.map.IEvent;
 import model.map.IMapNG;
@@ -84,12 +85,8 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * @return whether there are any fortresses at that location
 	 */
 	protected static boolean hasAnyForts(final IMapNG map, final Point location) {
-		for (final TileFixture fix : map.getOtherFixtures(location)) {
-			if (fix instanceof Fortress) {
-				return true; // NOPMD
-			}
-		}
-		return false;
+		return StreamSupport.stream(map.getOtherFixtures(location).spliterator(), false)
+				       .anyMatch(fix -> fix instanceof Fortress);
 	}
 
 	/**
@@ -99,12 +96,8 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * @return whether there are any units at that location
 	 */
 	protected static boolean hasAnyUnits(final IMapNG map, final Point location) {
-		for (final TileFixture fix : map.getOtherFixtures(location)) {
-			if (fix instanceof IUnit) {
-				return true; // NOPMD
-			}
-		}
-		return false;
+		return StreamSupport.stream(map.getOtherFixtures(location).spliterator(), false)
+				       .anyMatch(fix -> fix instanceof IUnit);
 	}
 
 	/**
@@ -114,12 +107,8 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * @return whether there are any 'events' at that location
 	 */
 	protected static boolean hasEvent(final IMapNG map, final Point location) {
-		for (final TileFixture fix : map.getOtherFixtures(location)) {
-			if (fix instanceof IEvent) {
-				return true; // NOPMD
-			}
-		}
-		return false; // NOPMD
+		return StreamSupport.stream(map.getOtherFixtures(location).spliterator(), false)
+				       .anyMatch(fix -> fix instanceof IEvent);
 	}
 
 	/**

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
 
 import javax.swing.*;
 
@@ -193,12 +194,8 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 */
 	private static boolean hasFixture(final IMapNG map, final Point dPoint,
 			final TileFixture fix) {
-		for (TileFixture item : map.getOtherFixtures(dPoint)) {
-			if (fix.equals(item)) {
-				return true;
-			}
-		}
-		return false;
+		return StreamSupport.stream(map.getOtherFixtures(dPoint).spliterator(), false)
+				       .anyMatch(item -> fix.equals(item));
 	}
 
 	/**

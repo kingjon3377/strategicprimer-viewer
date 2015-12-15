@@ -4,6 +4,8 @@ import static java.lang.String.format;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.Attribute;
@@ -109,16 +111,7 @@ public abstract class AbstractCompactReader<@NonNull T> implements CompactReader
 	 */
 	private static StringBuilder
 			csl(final StringBuilder stream, final String... strings) {
-		boolean first = true;
-		for (final String string : strings) {
-			if (first) {
-				first = false;
-			} else {
-				stream.append(", ");
-			}
-			stream.append(string);
-		}
-		return stream;
+		return stream.append(Stream.of(strings).collect(Collectors.joining(", ")));
 	}
 	/**
 	 * Get a parameter from the XML.

@@ -93,9 +93,7 @@ public class SimpleMultiMapModel extends AbstractDriverModel
 	public final Iterable<Pair<IMutableMapNG, File>> getAllMaps() {
 		final Collection<Pair<IMutableMapNG, File>> retval = new ArrayList<>();
 		retval.add(Pair.of(getMap(), getMapFile()));
-		for (final Pair<IMutableMapNG, File> pair : getSubordinateMaps()) {
-			retval.add(pair);
-		}
+		getSubordinateMaps().forEach(retval::add);
 		return retval;
 	}
 

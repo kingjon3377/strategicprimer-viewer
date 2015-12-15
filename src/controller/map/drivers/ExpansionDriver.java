@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.misc.MapReaderAdapter;
@@ -257,12 +259,10 @@ public final class ExpansionDriver implements ISPDriver {
 				throw ise;
 			}
 		};
-		final Collection<Point> villagePoints = new ArraySet<>();
-		for (final Point point : lmap.locations()) {
-			if (containsSwornVillage(master, point, player)) {
-				villagePoints.add(point);
-			}
-		}
+		final Collection<Point> villagePoints = StreamSupport.stream(lmap.locations().spliterator(), false)
+				                                        .filter(point -> containsSwornVillage(master, point, player))
+				                                        .collect(
+						                                        Collectors.toSet());
 		for (final Point point : villagePoints) {
 			addSurroundingTerrain(point, master, lmap, terrainAdditions);
 			addSurroundingFixtures(point, master, fixAdditions, mock);
@@ -393,12 +393,7 @@ public final class ExpansionDriver implements ISPDriver {
 	 */
 	private static boolean containsSwornVillage(final IMapNG map, final Point point,
 			final Player player) {
-		for (final TileFixture fix : map.getOtherFixtures(point)) {
-			if (fix instanceof ITownFixture
-					&& ((HasOwner) fix).getOwner().equals(player)) {
-				return true;
-			}
-		}
-		return false;
+		return StreamSupport.stream(map.getOtherFixtures(point).spliterator(), false)
+				       .anyMatch(fix -> fix instanceof ITownFixture && ((HasOwner) fix).getOwner().equals(player));
 	}
 }

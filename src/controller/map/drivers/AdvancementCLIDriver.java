@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
@@ -187,12 +189,10 @@ public final class AdvancementCLIDriver implements ISPDriver {
 	 * @throws IOException on I/O error getting input from user
 	 */
 	private void advanceWorkersInUnit(final Iterable<UnitMember> unit) throws IOException {
-		final List<IWorker> workers = new ArrayList<>();
-		for (UnitMember member : unit) {
-			if (member instanceof IWorker) {
-				workers.add((IWorker) member);
-			}
-		}
+		final List<IWorker> workers =
+				StreamSupport.stream(unit.spliterator(), false).filter(member -> member instanceof IWorker)
+						.map(p -> (IWorker) p).collect(
+						Collectors.toList());
 		while (!workers.isEmpty()) {
 			int workerNum = cli.chooseFromList(workers, "Workers in unit:",
 					"No unadvanced workers remain.", "Chosen worker: ", false);

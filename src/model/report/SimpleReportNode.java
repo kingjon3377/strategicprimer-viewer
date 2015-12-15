@@ -3,6 +3,9 @@ package model.report;
 import model.map.Point;
 import util.NullCleaner;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * A simple node representing plain text. Any children are ignored!
  *
@@ -48,14 +51,9 @@ public final class SimpleReportNode extends AbstractReportNode {
 	 * @return them all concatenated together
 	 */
 	private static String concat(final String... strings) {
-		int len = 2; // We build in a little tolerance just in case.
-		for (final String string : strings) {
-			len += string.length();
-		}
-		final StringBuilder builder = new StringBuilder(len);
-		for (final String string : strings) {
-			builder.append(string);
-		}
+		final StringBuilder builder =
+				new StringBuilder(2 + Stream.of(strings).collect(Collectors.summingInt(String::length)));
+		Stream.of(strings).forEach(builder::append);
 		return NullCleaner.assertNotNull(builder.toString());
 	}
 

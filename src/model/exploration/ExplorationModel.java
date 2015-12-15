@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -102,18 +104,11 @@ IExplorationModel {
 	 */
 	@Override
 	public List<Player> getPlayerChoices() {
-		final List<Player> retval = new ArrayList<>();
-		for (final Player player : getMap().players()) {
-			retval.add(player);
-		}
-		final Collection<Player> temp = new ArrayList<>();
+		final List<Player> retval =
+				StreamSupport.stream(getMap().players().spliterator(), false).collect(Collectors.toList());
 		for (final Pair<IMutableMapNG, File> pair : getSubordinateMaps()) {
-			final IMapNG map = pair.first();
-			temp.clear();
-			for (final Player player : map.players()) {
-				temp.add(player);
-			}
-			retval.retainAll(temp);
+			retval.retainAll(
+					StreamSupport.stream(pair.first().players().spliterator(), false).collect(Collectors.toList()));
 		}
 		return retval;
 	}
@@ -124,11 +119,9 @@ IExplorationModel {
 	 */
 	@Override
 	public List<IUnit> getUnits(final Player player) {
-		final List<IUnit> retval = new ArrayList<>();
-		for (final Point point : getMap().locations()) {
-			retval.addAll(getUnits(getMap().getOtherFixtures(point), player));
-		}
-		return retval;
+		return StreamSupport.stream(getMap().locations().spliterator(), false).flatMap(
+				point -> StreamSupport.stream(getUnits(getMap().getOtherFixtures(point), player).spliterator(), false))
+				       .collect(Collectors.toList());
 	}
 
 	/**

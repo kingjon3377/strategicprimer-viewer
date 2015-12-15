@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.junit.Test;
 
@@ -51,6 +53,7 @@ public final class PointIteratorTest {
 	public void testFromBeginning() {
 		final Iterable<Point> iter = new IteratorWrapper<>(
 				new PointIterator(new MapDimensions(3, 3, 1), null, true, true));
+		// FIXME: Use Arrays.asList for this, and throughout these tests
 		final Collection<Point> expected = new ArrayList<>();
 		expected.add(PointFactory.point(0, 0));
 		expected.add(PointFactory.point(0, 1));
@@ -61,10 +64,7 @@ public final class PointIteratorTest {
 		expected.add(PointFactory.point(2, 0));
 		expected.add(PointFactory.point(2, 1));
 		expected.add(PointFactory.point(2, 2));
-		final Collection<Point> actual = new ArrayList<>();
-		for (final Point point : iter) {
-			actual.add(point);
-		}
+		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false).collect(Collectors.toList());
 		assertEquals(EXPECTATION, expected, actual);
 	}
 
@@ -87,10 +87,7 @@ public final class PointIteratorTest {
 		expected.add(PointFactory.point(0, 2));
 		expected.add(PointFactory.point(1, 0));
 		expected.add(PointFactory.point(1, 1));
-		final Collection<Point> actual = new ArrayList<>();
-		for (final Point point : iter) {
-			actual.add(point);
-		}
+		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false).collect(Collectors.toList());
 		assertEquals(EXPECTATION, expected, actual);
 	}
 
@@ -114,10 +111,7 @@ public final class PointIteratorTest {
 		expected.add(PointFactory.point(0, 2));
 		expected.add(PointFactory.point(1, 2));
 		expected.add(PointFactory.point(2, 2));
-		final Collection<Point> actual = new ArrayList<>();
-		for (final Point point : iter) {
-			actual.add(point);
-		}
+		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false).collect(Collectors.toList());
 		assertEquals(EXPECTATION, expected, actual);
 	}
 
@@ -139,10 +133,7 @@ public final class PointIteratorTest {
 		expected.add(PointFactory.point(0, 2));
 		expected.add(PointFactory.point(1, 2));
 		expected.add(PointFactory.point(2, 2));
-		final Collection<Point> actual = new ArrayList<>();
-		for (final Point point : iter) {
-			actual.add(point);
-		}
+		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false).collect(Collectors.toList());
 		assertEquals(EXPECTATION, expected, actual);
 	}
 
@@ -164,10 +155,7 @@ public final class PointIteratorTest {
 		expected.add(PointFactory.point(0, 2));
 		expected.add(PointFactory.point(0, 1));
 		expected.add(PointFactory.point(0, 0));
-		final Collection<Point> actual = new ArrayList<>();
-		for (final Point point : iter) {
-			actual.add(point);
-		}
+		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false).collect(Collectors.toList());
 		assertEquals(EXPECTATION, expected, actual);
 	}
 
@@ -190,10 +178,7 @@ public final class PointIteratorTest {
 		expected.add(PointFactory.point(2, 0));
 		expected.add(PointFactory.point(1, 0));
 		expected.add(PointFactory.point(0, 0));
-		final Collection<Point> actual = new ArrayList<>();
-		for (final Point point : iter) {
-			actual.add(point);
-		}
+		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false).collect(Collectors.toList());
 		assertEquals(EXPECTATION, expected, actual);
 	}
 	/**

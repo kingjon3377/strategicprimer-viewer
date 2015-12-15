@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -229,12 +230,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	 */
 	@Override
 	public boolean isEmpty() {
-		for (IJob job : proxiedJobs) {
-			if (!job.isEmpty()) {
-				return false;
-			}
-		}
-		return true;
+		return StreamSupport.stream(proxiedJobs.spliterator(), false).allMatch(job -> job.isEmpty());
 	}
 	/**
 	 * TODO: Should we return a new Skill (and add it) instead of null if not present?

@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -115,13 +118,8 @@ public enum TileType {
 		final Integer boxedVer = NullCleaner.assertNotNull(Integer.valueOf(ver));
 		synchronized (VALS_BY_VER) {
 			if (!VALS_BY_VER.containsKey(boxedVer)) {
-				final Set<@NonNull TileType> set = EnumSet.noneOf(TileType.class);
-				assert set != null;
-				for (final TileType type : values()) {
-					if (type.isSupportedByVersion(ver)) {
-						set.add(type);
-					}
-				}
+				final Set<@NonNull TileType> set = EnumSet.copyOf(Stream.of(values()).filter(type -> type.isSupportedByVersion(ver)).collect(
+						Collectors.toSet()));
 				VALS_BY_VER.put(boxedVer, set);
 			}
 		}

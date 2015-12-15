@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -106,12 +108,8 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 */
 	@Override
 	public Player getCurrentPlayer() {
-		for (final Player player : this) {
-			if (player.isCurrent()) {
-				return player; // NOPMD
-			}
-		}
-		return new Player(-1, "");
+		return StreamSupport.stream(spliterator(), false).filter(player -> player.isCurrent()).findFirst()
+				       .orElse(new Player(-1, ""));
 	}
 
 	/**
@@ -222,9 +220,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	@Override
 	public IMutablePlayerCollection copy(final boolean zero) {
 		final IMutablePlayerCollection retval = new PlayerCollection();
-		for (Player player : this) {
-			retval.add(player);
-		}
+		forEach(retval::add);
 		return retval;
 	}
 }

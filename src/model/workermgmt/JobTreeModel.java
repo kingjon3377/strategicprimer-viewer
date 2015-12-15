@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
 
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
@@ -144,11 +145,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	public int getChildCount(@Nullable final Object parent) {
 		if (parent instanceof IWorker || parent instanceof IJob) {
 			assert parent != null : "Impossible null in JobTreeModel";
-			int count = 0;
-			for (@SuppressWarnings("unused") Object item : (Iterable<?>) parent) {
-				count++;
-			}
-			return count; // NOPMD
+			return (int) StreamSupport.stream(((Iterable<?>) parent).spliterator(), false).count();
 		} else if (parent instanceof ISkill) {
 			return 0; // NOPMD
 		} else {
@@ -194,6 +191,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 		if (parent instanceof IWorker || parent instanceof IJob) {
 			int index = 0;
 			assert parent != null : "Impossible null in JobTreeModel#getIndexOfChild";
+			// TODO: Ought to be able to do this with the Stream API
 			for (final Object item : (Iterable<?>) parent) {
 				if (item.equals(child)) {
 					return index; // NOPMD

@@ -2,6 +2,10 @@ package util;
 
 import org.eclipse.jdt.annotation.Nullable;
 
+import java.util.Objects;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
 /**
  * A class to hold a utility method for comparing a value with a number of other
  * values.
@@ -46,12 +50,7 @@ public final class EqualsAny {
 	@SafeVarargs
 	public static <TYPE> boolean equalsAny(final TYPE against,
 			final TYPE... values) {
-		for (final TYPE value : values) {
-			if (against.equals(value)) {
-				return true; // NOPMD
-			}
-		}
-		return false;
+		return Stream.of(values).anyMatch(val -> Objects.equals(against, val));
 	}
 
 	/**
@@ -69,12 +68,7 @@ public final class EqualsAny {
 		if (values == null) {
 			return false; // NOPMD
 		} else {
-			for (final TYPE value : values) {
-				if (against.equals(value)) {
-					return true; // NOPMD
-				}
-			}
-			return false;
+			return StreamSupport.stream(values.spliterator(), false).anyMatch(val -> Objects.equals(against, val));
 		}
 	}
 }

@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import model.map.IMapNG;
 import model.map.MapDimensions;
@@ -73,16 +75,12 @@ public final class HuntingModel {
 	 */
 	public HuntingModel(final IMapNG map) {
 		dims = map.dimensions();
-		final Collection<String> fishKinds = new HashSet<>();
-		for (final Point point : map.locations()) {
-			if (Ocean == map.getBaseTerrain(point)) {
-				for (final TileFixture fix : map.getOtherFixtures(point)) {
-					if (fix instanceof Animal) {
-						fishKinds.add(((Animal) fix).getKind());
-					}
-				}
-			}
-		}
+		final Collection<String> fishKinds = StreamSupport.stream(map.locations().spliterator(), false)
+				                                     .filter(point -> Ocean == map.getBaseTerrain(point)).flatMap(
+						point -> StreamSupport.stream(map.getOtherFixtures(point).spliterator(), false))
+				                                     .filter(fix -> fix instanceof Animal)
+				                                     .map(fix -> ((Animal) fix).getKind())
+				                                     .collect(Collectors.toSet());
 		for (final Point point : map.locations()) {
 			for (final TileFixture fix : map.getOtherFixtures(point)) {
 				if (fix instanceof Animal && !((Animal) fix).isTalking()
@@ -169,13 +167,11 @@ public final class HuntingModel {
 	 *         from jungle tiles.
 	 */
 	public Iterable<String> gather(final Point point, final int items) {
-		final List<String> choices = new ArrayList<>();
-		final Iterable<Point> iter = new SurroundingPointIterable(point, dims);
-		for (final Point local : iter) {
-			if (plants.containsKey(local)) {
-				choices.addAll(plants.get(local));
-			}
-		}
+		final List<String> choices =
+				StreamSupport.stream(new SurroundingPointIterable(point, dims).spliterator(), false)
+						.filter(local -> plants.containsKey(local))
+						.flatMap(local -> StreamSupport.stream(plants.get(local).spliterator(), false))
+						.collect(Collectors.toList());
 		final List<String> retval = new ArrayList<>();
 		for (int i = 0; i < items; i++) {
 			Collections.shuffle(choices);
@@ -194,11 +190,10 @@ public final class HuntingModel {
 			final Map<Point, List<String>> chosenMap) {
 		final List<String> choices = new ArrayList<>();
 		final Iterable<Point> iter = new SurroundingPointIterable(point, dims);
-		for (final Point local : iter) {
-			if (chosenMap.containsKey(local)) {
-				choices.addAll(chosenMap.get(local));
-			}
-		}
+		choices.addAll(StreamSupport.stream(new SurroundingPointIterable(point, dims).spliterator(), false)
+				               .filter(local -> chosenMap.containsKey(local))
+				               .flatMap(local -> StreamSupport.stream(chosenMap.get(local).spliterator(), false))
+				               .collect(Collectors.toList()));
 		final int nothings = choices.size();
 		for (int i = 0; i < nothings; i++) {
 			choices.add(NOTHING);

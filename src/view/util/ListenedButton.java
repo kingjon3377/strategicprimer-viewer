@@ -1,6 +1,7 @@
 package view.util;
 
 import java.awt.event.ActionListener;
+import java.util.stream.Stream;
 
 import javax.swing.JButton;
 
@@ -36,8 +37,6 @@ public final class ListenedButton extends JButton {
 	 */
 	public ListenedButton(final String text, final ActionListener... listeners) {
 		super(text);
-		for (final ActionListener listener : listeners) {
-			addActionListener(listener);
-		}
+		Stream.of(listeners).forEach(this::addActionListener);
 	}
 }

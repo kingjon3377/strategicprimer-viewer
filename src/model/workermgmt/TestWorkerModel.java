@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.junit.Test;
 
@@ -114,15 +116,12 @@ public final class TestWorkerModel {
 	 *         they proxy
 	 */
 	private static <T> List<T> filterProxies(final Iterable<T> list) {
+		// FIXME: There ought to be a way of doing this using the Streams API
 		final List<T> retval = new ArrayList<>();
 		for (T item : list) {
 			if (item instanceof ProxyFor<?>) {
 				// this wouldn't work for Skills, but ...
-				@SuppressWarnings("unchecked")
-				ProxyFor<T> proxy = (ProxyFor<T>) item;
-				for (T proxied : proxy.getProxied()) {
-					retval.add(proxied);
-				}
+				((ProxyFor<T>) item).getProxied().forEach(retval::add);
 			} else {
 				retval.add(item);
 			}
