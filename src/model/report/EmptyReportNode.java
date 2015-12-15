@@ -77,5 +77,11 @@ public final class EmptyReportNode extends AbstractReportNode {
 	protected int hashCodeImpl() {
 		return 0;
 	}
-
+	/**
+	 * @return true: this is "the empty node."
+	 */
+	@Override
+	protected boolean isEmptyNode() {
+		return true;
+	}
 }

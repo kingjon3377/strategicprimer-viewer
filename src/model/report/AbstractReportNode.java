@@ -161,8 +161,14 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public void add(@Nullable final MutableTreeNode node) {
-		if (node != null && !(node instanceof EmptyReportNode)) {
-			super.add(node);
+		if (node != null) {
+			if (node instanceof AbstractReportNode) {
+				if (!((AbstractReportNode) node).isEmptyNode()) {
+					super.add(node);
+				}
+			} else {
+				super.add(node);
+			}
 		}
 	}
 
@@ -202,5 +208,11 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	@Override
 	public Iterator<AbstractReportNode> iterator() {
 		return new EnumerationWrapper<>(children());
+	}
+	/**
+	 * @return whether this is "the empty node," which should always be ignored.
+	 */
+	protected boolean isEmptyNode() {
+		return false;
 	}
 }
