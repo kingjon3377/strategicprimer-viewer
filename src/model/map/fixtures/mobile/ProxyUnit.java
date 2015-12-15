@@ -420,7 +420,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		/**
 		 * @param member the first member to proxy
 		 */
-		public ProxyMember(final UnitMember member) {
+		protected ProxyMember(final UnitMember member) {
 			proxiedMembers.add(member);
 		}
 

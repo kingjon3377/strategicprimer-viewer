@@ -604,7 +604,7 @@ public final class WorkerMgmtFrame extends JFrame {
 	private static class FocusRequester extends AbstractAction {
 		private final JComponent component;
 
-		public FocusRequester(final WorkerTree comp) {
+		protected FocusRequester(final WorkerTree comp) {
 			component = comp;
 		}
 
@@ -619,7 +619,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		private final IWorkerModel model;
 		private final IOHandler ioh;
 
-		public reportMouseHandler(final JTree reportTree, final IWorkerModel workerModel, final IOHandler ioHandler) {
+		protected reportMouseHandler(final JTree reportTree, final IWorkerModel workerModel, final IOHandler ioHandler) {
 			this.report = reportTree;
 			this.model = workerModel;
 			this.ioh = ioHandler;

@@ -205,7 +205,7 @@ public final class ScrollListener implements MapChangeListener,
 		private final IViewerModel map;
 		private final boolean horiz;
 
-		public LocalInputVerifier(final MapDimensions mapDim, final IViewerModel mapModel, final boolean horizontal) {
+		protected LocalInputVerifier(final MapDimensions mapDim, final IViewerModel mapModel, final boolean horizontal) {
 			dimensions = mapDim;
 			map = mapModel;
 			horiz = horizontal;
