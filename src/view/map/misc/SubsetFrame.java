@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -85,6 +86,7 @@ public final class SubsetFrame extends JFrame {
 	 *
 	 */
 	private static final class HTMLWriter extends FilterWriter {
+		private static final Pattern NEWLINE = Pattern.compile("\n");
 		/**
 		 * Whether we're in the middle of a line.
 		 */
@@ -113,7 +115,7 @@ public final class SubsetFrame extends JFrame {
 			if (!middle) {
 				super.append("<p style=\"color:white\">");
 			}
-			super.append(local.replaceAll("\n", "</p><p style=\"color:white\">"));
+			super.append(NEWLINE.matcher(local).replaceAll("</p><p style=\"color:white\">"));
 			middle = true;
 			return this;
 		}

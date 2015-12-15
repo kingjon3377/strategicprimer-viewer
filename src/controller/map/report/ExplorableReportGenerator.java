@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.jdt.annotation.NonNull;
 
@@ -49,16 +51,19 @@ import util.Pair;
  * @author Jonathan Lovelace
  */
 public final class ExplorableReportGenerator extends AbstractReportGenerator<ExplorableFixture> {
+
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public ExplorableReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator) {
 		super(comparator);
 	}
+
 	/**
 	 * A common string in this class.
 	 */
-	private static final String COLON_COMMA = ": , ";
+	private static final Pattern COLON_COMMA_PATTERN =
+			Pattern.compile(": , ", Pattern.LITERAL);
 
 	/**
 	 * Produce the sub-report on non-town things that can be explored. All
@@ -119,16 +124,16 @@ public final class ExplorableReportGenerator extends AbstractReportGenerator<Exp
 			}
 		}
 		if (anyCaves) {
-			builder.append(caveBuilder.append(CLOSE_LIST_ITEM).toString()
-					.replace(COLON_COMMA, ": "));
+			builder.append(COLON_COMMA_PATTERN.matcher(caveBuilder.append(CLOSE_LIST_ITEM).toString())
+					               .replaceAll(Matcher.quoteReplacement(": ")));
 		}
 		if (anyBattles) {
-			builder.append(battleBuilder.append(CLOSE_LIST_ITEM).toString()
-					.replace(COLON_COMMA, ": "));
+			builder.append(COLON_COMMA_PATTERN.matcher(battleBuilder.append(CLOSE_LIST_ITEM).toString())
+					               .replaceAll(Matcher.quoteReplacement(": ")));
 		}
 		if (anyPortals) {
-			builder.append(portalBuilder.append(CLOSE_LIST_ITEM).toString()
-					.replace(COLON_COMMA, ": "));
+			builder.append(COLON_COMMA_PATTERN.matcher(portalBuilder.append(CLOSE_LIST_ITEM).toString())
+					               .replaceAll(Matcher.quoteReplacement(": ")));
 		}
 		adventureBuilder.append(CLOSE_LIST);
 		builder.append(CLOSE_LIST);

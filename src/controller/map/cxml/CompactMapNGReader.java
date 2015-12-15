@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.StreamSupport;
 
 import javax.xml.stream.Location;
@@ -66,6 +67,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * Singleton instance.
 	 */
 	public static final CompactMapNGReader READER = new CompactMapNGReader();
+	private static final Pattern EXCEPT_PATTERN = Pattern.compile("^Wanted [^ ]*, was [^ " +
+			                                                                                       "]*$");
 	/**
 	 * List of readers we'll try subtags on.
 	 */
@@ -196,8 +199,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 							throw except;
 						}
 					} catch (final IllegalStateException except) {
-						if (except.getMessage().matches(
-								"^Wanted [^ ]*, was [^ ]*$")) {
+						if (EXCEPT_PATTERN.matcher(except.getMessage()).matches()) {
 							final UnwantedChildException nexcept =
 									new UnwantedChildException(mapName, type,
 											                          currentLine);

@@ -15,6 +15,8 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -59,6 +61,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 * Extracted constant.
 	 */
 	private static final String KIND_PROPERTY = "kind";
+	private static final Pattern KIND_PATTERN =
+			Pattern.compile(KIND_PROPERTY, Pattern.LITERAL);
 
 	/**
 	 * Test Player serialization.
@@ -222,12 +226,12 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated tile-type idiom",
 				four,
-				assertNotNull(createSerializedForm(four, true).replace("kind",
-						oldKindProperty)), IMapNG.class, oldKindProperty);
+				assertNotNull(KIND_PATTERN.matcher(createSerializedForm(four, true))
+						              .replaceAll(Matcher.quoteReplacement(oldKindProperty))), IMapNG.class, oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated tile-type idiom", four,
-				assertNotNull(createSerializedForm(four, false)
-						.replace("kind", oldKindProperty)), IMapNG.class,
+				assertNotNull(KIND_PATTERN.matcher(createSerializedForm(four, false))
+						              .replaceAll(Matcher.quoteReplacement(oldKindProperty))), IMapNG.class,
 				oldKindProperty);
 		assertMissingProperty("<map version=\"2\" rows=\"1\" columns=\"1\">"
 				+ "<tile column=\"0\" kind=\"plains\" /></map>", IMapNG.class,

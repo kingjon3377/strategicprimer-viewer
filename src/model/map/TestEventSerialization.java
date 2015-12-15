@@ -1,6 +1,8 @@
 package model.map;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -53,6 +55,11 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 * Extracted constant.
 	 */
 	private static final String KIND_PROPERTY = "kind";
+	/**
+	 * Compiled pattern of it.
+	 */
+	private static final Pattern KIND_PATTERN =
+			Pattern.compile(KIND_PROPERTY, Pattern.LITERAL);
 	/**
 	 * Extracted constant.
 	 */
@@ -192,13 +199,13 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		final String oldKindProperty = "mineral"; // NOPMD
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated Mineral idiom", two,
-				NullCleaner.assertNotNull(createSerializedForm(two, true)
-						.replace(KIND_PROPERTY, oldKindProperty)),
+				NullCleaner.assertNotNull(KIND_PATTERN.matcher(createSerializedForm(two, true)).replaceAll(
+						Matcher.quoteReplacement(oldKindProperty))),
 				MineralVein.class, oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated Mineral idiom", two,
-				NullCleaner.assertNotNull(createSerializedForm(two, false)
-						.replace(KIND_PROPERTY, oldKindProperty)),
+				NullCleaner.assertNotNull(KIND_PATTERN.matcher(createSerializedForm(two, false))
+						                          .replaceAll(Matcher.quoteReplacement(oldKindProperty))),
 				MineralVein.class, oldKindProperty);
 		assertUnwantedChild(
 				"<mineral kind=\"gold\" exposed=\"false\" dc=\"0\">"
@@ -237,13 +244,13 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		final String oldKindProperty = "stone"; // NOPMD
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated stone idiom", three,
-				NullCleaner.assertNotNull(createSerializedForm(three, true)
-						.replace(KIND_PROPERTY, oldKindProperty)),
+				NullCleaner.assertNotNull(KIND_PATTERN.matcher(createSerializedForm(three, true))
+						                          .replaceAll(Matcher.quoteReplacement(oldKindProperty))),
 				StoneDeposit.class, oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated stone idiom", three,
-				NullCleaner.assertNotNull(createSerializedForm(three, false)
-						.replace(KIND_PROPERTY, oldKindProperty)),
+				NullCleaner.assertNotNull(KIND_PATTERN.matcher(createSerializedForm(three, false))
+						                          .replaceAll(Matcher.quoteReplacement(oldKindProperty))),
 				StoneDeposit.class, oldKindProperty);
 		assertUnwantedChild(
 				"<stone kind=\"marble\" dc=\"10\"><troll /></stone>",

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import java.util.stream.StreamSupport;
 
 import javax.xml.stream.Location;
@@ -90,6 +91,9 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	 * The tags we know how to deal with.
 	 */
 	private static final List<String> tags;
+	private static final Pattern EXCEPT_PATTERN = Pattern.compile("^Wanted [^ ]*, was [^ " +
+			                                                                                       "]*$");
+
 	static {
 		// FIXME: Use Arrays.asList
 		final List<String> temp = new ArrayList<>();
@@ -234,8 +238,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 							throw except;
 						}
 					} catch (final IllegalStateException except) {
-						if (except.getMessage().matches(
-								"^Wanted [^ ]*, was [^ ]*$")) {
+						if (EXCEPT_PATTERN.matcher(except.getMessage()).matches()) {
 							final UnwantedChildException nexcept =
 									new UnwantedChildException(
 											assertNotNull(mapTag.getName()

@@ -5,6 +5,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.stream.XMLStreamException;
 
@@ -83,6 +85,8 @@ public final class TestMoreFixtureSerialization extends
 	 * Extracted constant.
 	 */
 	private static final String STATUS_PROPERTY = "status";
+	private static final Pattern KIND_PATTERN =
+			Pattern.compile(KIND_PROPERTY, Pattern.LITERAL);
 
 	/**
 	 * Test serialization of Groves.
@@ -186,12 +190,12 @@ public final class TestMoreFixtureSerialization extends
 				Mine.class);
 		final String oldKindProperty = "product"; // NOPMD
 		assertDeprecatedDeserialization("Deprecated Mine idiom", four,
-				NullCleaner.assertNotNull(createSerializedForm(four, true)
-						.replace(KIND_PROPERTY, oldKindProperty)), Mine.class,
+				NullCleaner.assertNotNull(KIND_PATTERN.matcher(createSerializedForm(four, true)).replaceAll(
+						Matcher.quoteReplacement(oldKindProperty))), Mine.class,
 				oldKindProperty);
 		assertDeprecatedDeserialization("Deprecated Mine idiom", four,
-				NullCleaner.assertNotNull(createSerializedForm(four, false)
-						.replace(KIND_PROPERTY, oldKindProperty)), Mine.class,
+				NullCleaner.assertNotNull(KIND_PATTERN.matcher(createSerializedForm(four, false))
+						                          .replaceAll(Matcher.quoteReplacement(oldKindProperty))), Mine.class,
 				oldKindProperty);
 		assertUnwantedChild(
 				"<mine kind=\"gold\" status=\"active\"><troll /></mine>",
@@ -223,12 +227,12 @@ public final class TestMoreFixtureSerialization extends
 				Shrub.class);
 		final String oldKindProperty = "shrub"; // NOPMD
 		assertDeprecatedDeserialization("Deserialization of mangled shrub",
-				two, NullCleaner.assertNotNull(createSerializedForm(two, true)
-						.replace(KIND_PROPERTY, oldKindProperty)), Shrub.class,
+				two, NullCleaner.assertNotNull(KIND_PATTERN.matcher(createSerializedForm(two, true))
+						                               .replaceAll(Matcher.quoteReplacement(oldKindProperty))), Shrub.class,
 				oldKindProperty);
 		assertDeprecatedDeserialization("Deserialization of mangled shrub",
-				two, NullCleaner.assertNotNull(createSerializedForm(two, false)
-						.replace(KIND_PROPERTY, oldKindProperty)), Shrub.class,
+				two, NullCleaner.assertNotNull(KIND_PATTERN.matcher(createSerializedForm(two, false))
+						                               .replaceAll(Matcher.quoteReplacement(oldKindProperty))), Shrub.class,
 				oldKindProperty);
 		assertUnwantedChild("<shrub kind=\"shrub\"><troll /></shrub>",
 				Shrub.class, false);
@@ -345,13 +349,13 @@ public final class TestMoreFixtureSerialization extends
 		final String oldKindProperty = "type"; // NOPMD
 		assertDeprecatedDeserialization(
 				"Deserialize properly with deprecated use of 'type' for unit kind",
-				one, NullCleaner.assertNotNull(createSerializedForm(one, true)
-						.replace(KIND_PROPERTY, oldKindProperty)), Unit.class,
+				one, NullCleaner.assertNotNull(KIND_PATTERN.matcher(createSerializedForm(one, true))
+						                               .replaceAll(Matcher.quoteReplacement(oldKindProperty))), Unit.class,
 				oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialize properly with deprecated use of 'type' for unit kind",
-				one, NullCleaner.assertNotNull(createSerializedForm(one, false)
-						.replace(KIND_PROPERTY, oldKindProperty)), Unit.class,
+				one, NullCleaner.assertNotNull(KIND_PATTERN.matcher(createSerializedForm(one, false))
+						                               .replaceAll(Matcher.quoteReplacement(oldKindProperty))), Unit.class,
 				oldKindProperty);
 		assertMissingProperty("<unit owner=\"2\" kind=\"unit\" />", Unit.class,
 				NAME_PROPERTY, true);
