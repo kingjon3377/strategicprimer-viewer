@@ -186,7 +186,7 @@ public final class TODOFixerDriver {
 			try {
 				map = reader.readMap(file, Warning.INSTANCE);
 			} catch (final IOException | XMLStreamException | SPFormatException e) {
-				e.printStackTrace();
+				LOGGER.log(Level.SEVERE, "Error reading map " + arg, e);
 				continue;
 			}
 			final TODOFixerDriver driver = new TODOFixerDriver(map);
@@ -194,7 +194,7 @@ public final class TODOFixerDriver {
 			try {
 				reader.write(file, map);
 			} catch (final IOException e) {
-				e.printStackTrace();
+				LOGGER.log(Level.SEVERE, "I/O error writing map to " + arg, e);
 				continue;
 			}
 		}
