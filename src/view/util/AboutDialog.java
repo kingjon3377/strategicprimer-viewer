@@ -44,7 +44,7 @@ public final class AboutDialog extends JDialog {
 		setPreferredSize(new Dimension(300, 390));
 		setMinimumSize(new Dimension(300, 390));
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
-		final StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder(1500 + app.length());
 		builder.append("<html>");
 		if (app.isEmpty()) {
 			paragraph(builder, "Assistive Programs Suite");
@@ -99,6 +99,7 @@ public final class AboutDialog extends JDialog {
 			setVisible(false);
 			dispose();
 		});
+		System.out.println(builder.toString());
 		pack();
 	}
 	/**

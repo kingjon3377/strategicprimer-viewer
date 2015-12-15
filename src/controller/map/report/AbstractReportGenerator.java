@@ -169,7 +169,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		} else if (points.size() == 2) {
 			return points.get(0) + " and " + points.get(1); // NOPMD
 		} else {
-			final StringBuilder builder = new StringBuilder();
+			final StringBuilder builder = new StringBuilder(points.size() * 15);
 			for (int i = 0; i < points.size(); i++) {
 				if (i == points.size() - 1) {
 					builder.append(", and ");

@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -97,7 +98,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 		if (point.row < mapDim.getRows() && point.col < mapDim.getColumns()) {
 			return concat("<html><body>", point.toString(), ": ", model
 					.getMap().getBaseTerrain(point).toString(), "<br />",
-					getTerrainFixturesAndTop(point), "</body></html>");
+					getTerrainFixturesAndTop(point), "<br/></body></html>");
 		} else {
 			return null;
 		}
@@ -145,12 +146,8 @@ public final class ComponentMouseListener extends MouseAdapter implements
 				fixes.add(fix);
 			}
 		}
-		final StringBuilder sbuild = new StringBuilder();
-		for (final TileFixture fix : fixes) {
-			sbuild.append(fix.toString());
-			sbuild.append("<br />");
-		}
-		return NullCleaner.assertNotNull(sbuild.toString());
+		return StreamSupport.stream(fixes.spliterator(), false).map(TileFixture::toString)
+				       .collect(Collectors.joining("<br />"));
 	}
 
 	/**

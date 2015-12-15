@@ -130,7 +130,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder(25 + kind.length());
 		if (field) {
 			if (!cultivated) {
 				builder.append("Wild or abandoned ");

@@ -175,7 +175,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 */
 	private static String workerReport(final Worker worker,
 			final boolean details) {
-		final StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder(2048);
 		builder.append(worker.getName());
 		builder.append(", a ");
 		builder.append(worker.getRace());
@@ -221,7 +221,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * @return a String describing its skills.
 	 */
 	private static String getSkills(final Iterable<ISkill> job) {
-		final StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder(512);
 		if (job.iterator().hasNext()) {
 			boolean first = true;
 			for (final ISkill skill : job) {

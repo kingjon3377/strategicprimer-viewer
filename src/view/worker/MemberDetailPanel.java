@@ -233,7 +233,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			jobsPanel.removeAll();
 			for (final IJob job : (Worker) local) {
 				final JLabel label = new JLabel(job.getName() + ' ' + job.getLevel());
-				final StringBuilder builder = new StringBuilder();
+				final StringBuilder builder = new StringBuilder(2048);
 				boolean first = true;
 				for (final ISkill skill : job) {
 					if (first) {

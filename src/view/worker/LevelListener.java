@@ -142,11 +142,9 @@ public final class LevelListener implements LevelGainListener,
 		final UnitMember wkr = worker;
 		final ISkill skl = skill;
 		if (!NULL_UM.equals(wkr) && !NULL_SKILL.equals(skl)) {
-			final StringBuilder builder = new StringBuilder();
-			builder.append(getName(wkr));
-			builder.append(" gained a level in ");
-			builder.append(getName(skl));
-			SYS_OUT.println(builder.toString());
+			SYS_OUT.append(getName(wkr));
+			SYS_OUT.append(" gained a level in ");
+			SYS_OUT.append(getName(skl));
 		}
 	}
 

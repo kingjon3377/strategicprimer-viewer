@@ -99,7 +99,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 								warner), getParameter(element, "name", ""),
 						getOrGenerateID(element, warner, idFactory));
 		retval.setImage(getParameter(element, "image", ""));
-		final StringBuilder orders = new StringBuilder();
+		final StringBuilder orders = new StringBuilder(512);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				retval.addMember(parseChild(

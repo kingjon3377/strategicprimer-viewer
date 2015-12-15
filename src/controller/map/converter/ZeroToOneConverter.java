@@ -119,7 +119,7 @@ public final class ZeroToOneConverter {
 	 */
 	private static String convertMap(final StartElement element,
 			final Iterable<Attribute> attrs) {
-		final StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder(64);
 		builder.append('<');
 		builder.append(element.getName().getLocalPart());
 		for (final Attribute attr : attrs) {
@@ -147,7 +147,7 @@ public final class ZeroToOneConverter {
 	 */
 	private static String convertTile(final StartElement element,
 			final Iterable<Attribute> attrs) {
-		final StringBuilder builder = new StringBuilder();
+		final StringBuilder builder = new StringBuilder(64);
 		builder.append('<');
 		builder.append(element.getName().getLocalPart());
 		final Deque<Integer> events = new LinkedList<>();
@@ -221,7 +221,7 @@ public final class ZeroToOneConverter {
 	 * @return its XML representation.
 	 */
 	private static String printStartElement(final StartElement element) {
-		final StringBuilder builder = new StringBuilder().append('<');
+		final StringBuilder builder = new StringBuilder(64).append('<');
 		builder.append(element.getName().getLocalPart());
 		StreamSupport.stream(new IteratorWrapper<Attribute>(element.getAttributes()).spliterator(), false)
 				.map(ZeroToOneConverter::printAttribute).forEach(builder::append);
