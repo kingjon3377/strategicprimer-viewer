@@ -354,7 +354,6 @@ public final class QueryCLI implements ISPDriver {
 		final List<TileFixture> fixtures =
 				CLIHelper.toList(map.getOtherFixtures(location));
 		final Collection<Ground> ground = new ArrayList<>();
-		final Collection<Forest> forests = new ArrayList<>();
 		@Nullable
 		final Ground locGround = map.getGround(location);
 		if (locGround != null) {
@@ -362,6 +361,7 @@ public final class QueryCLI implements ISPDriver {
 		}
 		@Nullable
 		final Forest forest = map.getForest(location);
+		final Collection<Forest> forests = new ArrayList<>();
 		if (forest != null) {
 			forests.add(forest);
 		}

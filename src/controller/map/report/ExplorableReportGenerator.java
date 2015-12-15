@@ -77,10 +77,6 @@ public final class ExplorableReportGenerator extends AbstractReportGenerator<Exp
 		// will ever be over one K ... but we'll give it two just in case.
 		final StringBuilder builder = new StringBuilder(2048).append(
 				"<h4>Caves, Battlefields, and Portals</h4>\n").append(OPEN_LIST);
-		boolean anyCaves = false;
-		boolean anyBattles = false;
-		boolean anyPortals = false;
-		boolean anyAdventures = false;
 		// Similarly, I doubt either of these will ever be over half a K, but
 		// we'll give each a whole K just in case.
 		final StringBuilder caveBuilder = new StringBuilder(1024).append(
@@ -95,6 +91,10 @@ public final class ExplorableReportGenerator extends AbstractReportGenerator<Exp
 				.append("<h4>Possible Adventures</h4>").append(OPEN_LIST);
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
+		boolean anyAdventures = false;
+		boolean anyPortals = false;
+		boolean anyBattles = false;
+		boolean anyCaves = false;
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Cave) {
 				anyCaves = true;
@@ -159,15 +159,12 @@ public final class ExplorableReportGenerator extends AbstractReportGenerator<Exp
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		final AbstractReportNode retval = new SectionListReportNode(4,
-				"Caves, Battlefields, and Portals");
-		final AbstractReportNode adventures =
-				new SectionListReportNode(4, "Possible Adventures");
-		final AbstractReportNode caves = new ListReportNode("Caves");
-		final AbstractReportNode battles = new ListReportNode("Battlefields");
-		final AbstractReportNode portals = new ListReportNode("Portals");
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
+		final AbstractReportNode portals = new ListReportNode("Portals");
+		final AbstractReportNode battles = new ListReportNode("Battlefields");
+		final AbstractReportNode caves = new ListReportNode("Caves");
+		final AbstractReportNode adventures = new SectionListReportNode(4, "Possible Adventures");
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Cave) {
 				caves.add(produceRIR(fixtures, map, currentPlayer,
@@ -183,6 +180,8 @@ public final class ExplorableReportGenerator extends AbstractReportGenerator<Exp
 						(ExplorableFixture) pair.second(), pair.first()));
 			}
 		}
+		final AbstractReportNode retval = new SectionListReportNode(4,
+				                                                           "Caves, Battlefields, and Portals");
 		if (caves.getChildCount() > 0) {
 			retval.add(caves);
 		}

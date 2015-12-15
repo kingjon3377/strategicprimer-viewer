@@ -149,8 +149,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				new RiverFixture(River.North, River.South), new RiverFixture(
 						River.South, River.North));
 		final RiverFixture fixOne = new RiverFixture(River.North);
-		final RiverFixture fixTwo = new RiverFixture(River.South);
 		fixOne.addRiver(River.South);
+		final RiverFixture fixTwo = new RiverFixture(River.South);
 		fixTwo.addRiver(River.North);
 		assertEquals("Rivers added separately", fixOne, fixTwo);
 		final Collection<TileFixture> hsetOne = new HashSet<>();
@@ -321,11 +321,10 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertUnwantedChild(
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><hill /></map>",
 				IMapNG.class, false);
-		final IMutableMapNG one =
-				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
-						-1);
 		final Player player = new Player(1, "playerOne");
 		player.setCurrent(true);
+		final IMutableMapNG one = new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
+				                                     -1);
 		one.addPlayer(player);
 		final Point point = point(0, 0);
 		one.setBaseTerrain(point, Plains);
@@ -349,9 +348,9 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertUnwantedChild(
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><hill /></map>",
 				SPMapNG.class, false);
-		final PlayerCollection players = new PlayerCollection();
 		final Player player = new Player(1, "playerOne");
 		player.setCurrent(true);
+		final PlayerCollection players = new PlayerCollection();
 		players.add(player);
 		final SPMapNG one = new SPMapNG(new MapDimensions(1, 1, 2), players, 0);
 		final Point point = point(0, 0);
@@ -372,11 +371,10 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testViewSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
-		final IMutableMapNG one =
-				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
-						0);
 		final Player player = new Player(1, "playerOne");
 		player.setCurrent(true);
+		final IMutableMapNG one = new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
+				                                     0);
 		one.addPlayer(player);
 		final Point point = point(0, 0);
 		one.setBaseTerrain(point, Steppe);

@@ -262,8 +262,6 @@ public final class ReportGenerator {
 	 */
 	public static AbstractReportNode createAbbreviatedReportIR(final IMapNG map,
 			final Player player) {
-		final AbstractReportNode retval = new RootReportNode(
-				"Strategic Primer map summary abbreviated report");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
 		Point hq = findHQ(map, player);
@@ -273,6 +271,8 @@ public final class ReportGenerator {
 				                                          && player.equals(((HasOwner) pair.second()).getOwner()))
 				.forEach(pair -> fixtures.remove(Integer.valueOf(pair.second().getID())));
 		fixtures.coalesce();
+		final AbstractReportNode retval = new RootReportNode(
+				                                                    "Strategic Primer map summary abbreviated report");
 		retval.add(new FortressReportGenerator(comparator).produceRIR(fixtures, map,
 				player));
 		fixtures.coalesce();

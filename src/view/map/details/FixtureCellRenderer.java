@@ -114,7 +114,6 @@ public final class FixtureCellRenderer implements ListCellRenderer<TileFixture> 
 	 * @return an icon representing it
 	 */
 	private Icon getIcon(final HasImage obj) {
-		Icon retval;
 		String image = obj.getImage();
 		if (image.isEmpty() || MISSING.contains(image)) {
 			image = obj.getDefaultImage();
@@ -122,6 +121,7 @@ public final class FixtureCellRenderer implements ListCellRenderer<TileFixture> 
 		if (MISSING.contains(image)) {
 			return defaultFixtIcon;
 		}
+		Icon retval;
 		try {
 			retval = ImageLoader.getLoader().loadIcon(image);
 		} catch (final FileNotFoundException e) {
@@ -144,13 +144,13 @@ public final class FixtureCellRenderer implements ListCellRenderer<TileFixture> 
 		/**
 		 * The margin we allow around the chit itself in the default image.
 		 */
-		final double margin = 0.15; // NOPMD
 		final int imageSize = 24; // NOPMD
 		final BufferedImage temp = new BufferedImage(imageSize, imageSize,
 				BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D pen = temp.createGraphics();
 		final Color saveColor = pen.getColor();
 		pen.setColor(Color.RED);
+		final double margin = 0.15; // NOPMD
 		pen.fillRoundRect((int) Math.round(imageSize * margin) + 1,
 				(int) Math.round(imageSize * margin) + 1,
 				(int) Math.round(imageSize * (1.0 - margin * 2.0)),

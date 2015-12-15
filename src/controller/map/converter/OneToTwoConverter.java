@@ -134,7 +134,6 @@ public final class OneToTwoConverter { // NOPMD
 	 * @return a version-2 equivalent with greater resolution
 	 */
 	public IMapNG convert(final IMapNG old, final boolean main) {
-		final IDFactory idFactory = new IDFactory();
 		final MapDimensions oldDim = old.dimensions();
 		final SPMapNG retval =
 				new SPMapNG(new MapDimensions(oldDim.rows * RES_JUMP,
@@ -147,6 +146,7 @@ public final class OneToTwoConverter { // NOPMD
 			}
 		}
 		final List<Point> converted = new LinkedList<>();
+		final IDFactory idFactory = new IDFactory();
 		for (int row = 0; row < oldDim.rows; row++) {
 			for (int col = 0; col < oldDim.cols; col++) {
 				converted.addAll(convertTile(PointFactory.point(row, col), old,

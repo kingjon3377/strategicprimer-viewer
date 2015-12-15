@@ -62,12 +62,12 @@ public final class TestSubsets {
 	@SuppressWarnings(ST_MET)
 	@Test
 	public void testPlayerCollectionSubset() throws IOException {
-		final PlayerCollection zero = new PlayerCollection();
 		final PlayerCollection one = new PlayerCollection();
-		final PlayerCollection two = new PlayerCollection();
 		one.add(new Player(1, ONE_STR));
+		final PlayerCollection two = new PlayerCollection();
 		two.add(new Player(1, ONE_STR));
 		two.add(new Player(2, "two"));
+		final PlayerCollection zero = new PlayerCollection();
 		assertTrue("Empty is subset of self", zero.isSubset(zero, DEV_NULL, ""));
 		assertTrue("Empty is subset of one", one.isSubset(zero, DEV_NULL, ""));
 		assertTrue("Empty is subset of two", two.isSubset(zero, DEV_NULL, ""));
@@ -89,13 +89,13 @@ public final class TestSubsets {
 	@Test
 	public void testRiverSubset() throws IOException {
 		final RiverFixture zero = new RiverFixture();
-		final RiverFixture one = new RiverFixture(River.Lake, River.South,
-				River.East);
-		final RiverFixture two = new RiverFixture(River.West, River.North);
 		final RiverFixture three = new RiverFixture(River.Lake, River.South,
 				River.East, River.North, River.West);
 		assertTrue("None is a subset of all", three.isSubset(zero, DEV_NULL, ""));
+		final RiverFixture one = new RiverFixture(River.Lake, River.South,
+				                                         River.East);
 		assertTrue("Three are a subset of all", three.isSubset(one, DEV_NULL, ""));
+		final RiverFixture two = new RiverFixture(River.West, River.North);
 		assertTrue("Two are a subset of all", three.isSubset(two, DEV_NULL, ""));
 		assertTrue("All is a subset of all", three.isSubset(three, DEV_NULL, ""));
 		assertTrue("None is a subset of two", two.isSubset(zero, DEV_NULL, ""));
@@ -160,9 +160,6 @@ public final class TestSubsets {
 	@SuppressWarnings(ST_MET)
 	@Test
 	public void testMapSubset() throws IOException {
-		final IMapNG zero =
-				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
-						-1);
 		final IMutableMapNG one =
 				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
 						-1);
@@ -174,6 +171,8 @@ public final class TestSubsets {
 		two.setBaseTerrain(pointOne, TileType.Jungle);
 		final Point pointTwo = PointFactory.point(1, 1);
 		two.setBaseTerrain(pointTwo, TileType.Ocean);
+		final IMapNG zero = new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
+				                               -1);
 		assertTrue("None is a subset of itself",
 				zero.isSubset(zero, DEV_NULL, ""));
 		assertTrue("None is a subset of one", one.isSubset(zero, DEV_NULL, ""));
@@ -210,14 +209,13 @@ public final class TestSubsets {
 	 */
 	@Test
 	public void testSubsetsAndCopy() throws IOException {
-		final IMapNG zero =
-				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
-						-1);
 		final IMutableMapNG one =
 				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
 						-1);
 		final Point pointOne = PointFactory.point(0, 0);
 		one.setBaseTerrain(pointOne, TileType.Jungle);
+		final IMapNG zero = new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
+				                               -1);
 		assertTrue("zero is a subset of one before copy", one.isSubset(zero, DEV_NULL, ""));
 		final IMutableMapNG two =
 				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),

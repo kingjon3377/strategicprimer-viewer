@@ -374,12 +374,12 @@ public final class DrawHelperComparator implements ISPDriver { // NOPMD
 	public static void runAllTests(final IMapNG map, final int repetitions) {
 		final int tsize = TileViewSize.scaleZoom(ViewerModel.DEF_ZOOM_LEVEL,
 				map.dimensions().version);
-		final TileDrawHelper hOne = new CachingTileDrawHelper();
-		final TileDrawHelper hTwo = new DirectTileDrawHelper();
 		final TileDrawHelper hThree = new Ver2TileDrawHelper(
 				(img, infoflags, xCoord, yCoord, width, height) -> false, fix -> true);
 		SYS_OUT.println("1. All in one place:");
+		final TileDrawHelper hOne = new CachingTileDrawHelper();
 		long oneTotal = printStats(CACHING, first(hOne, map, repetitions, tsize), repetitions);
+		final TileDrawHelper hTwo = new DirectTileDrawHelper();
 		long twoTotal = printStats(DIRECT, first(hTwo, map, repetitions, tsize), repetitions);
 		long threeTot = printStats(VER_TWO, first(hThree, map, repetitions, tsize),
 				repetitions);

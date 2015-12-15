@@ -82,21 +82,21 @@ public final class ImmortalsReportGenerator extends AbstractReportGenerator<Mobi
 	public String produce(// $codepro.audit.disable cyclomaticComplexity
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		final Map<String, List<Point>> dragons = new HashMap<>();
-		final Map<String, List<Point>> fairies = new HashMap<>();
-		final List<Point> trolls = new ArrayList<>();
-		final List<Point> djinni = new ArrayList<>();
-		final List<Point> sphinxes = new ArrayList<>();
-		final Map<String, List<Point>> giants = new HashMap<>();
-		final List<Point> minotaurs = new ArrayList<>();
-		final List<Point> ogres = new ArrayList<>();
-		final Map<String, List<Point>> centaurs = new HashMap<>();
-		final List<Point> phoenixes = new ArrayList<>();
-		final List<Point> simurghs = new ArrayList<>();
-		final List<Point> griffins = new ArrayList<>();
 
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
+		final List<Point> griffins = new ArrayList<>();
+		final List<Point> simurghs = new ArrayList<>();
+		final List<Point> phoenixes = new ArrayList<>();
+		final Map<String, List<Point>> centaurs = new HashMap<>();
+		final List<Point> ogres = new ArrayList<>();
+		final List<Point> minotaurs = new ArrayList<>();
+		final Map<String, List<Point>> giants = new HashMap<>();
+		final List<Point> sphinxes = new ArrayList<>();
+		final List<Point> djinni = new ArrayList<>();
+		final List<Point> trolls = new ArrayList<>();
+		final Map<String, List<Point>> fairies = new HashMap<>();
+		final Map<String, List<Point>> dragons = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : values) {
 			final Point point = pair.first();
 			final IFixture immortal = pair.second();
@@ -183,22 +183,20 @@ public final class ImmortalsReportGenerator extends AbstractReportGenerator<Mobi
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		final AbstractReportNode retval = new SectionListReportNode(4,
-				"Immortals");
-		final Map<String, AbstractReportNode> dragons = new HashMap<>();
-		final Map<String, AbstractReportNode> fairies = new HashMap<>();
-		final AbstractReportNode trolls = new ListReportNode("Trolls");
-		final AbstractReportNode djinni = new ListReportNode("Djinni");
-		final AbstractReportNode sphinxes = new ListReportNode("Sphinxes");
-		final Map<String, AbstractReportNode> giants = new HashMap<>();
-		final AbstractReportNode minotaurs = new ListReportNode("Minotaurs");
-		final AbstractReportNode ogres = new ListReportNode("Ogres");
-		final Map<String, AbstractReportNode> centaurs = new HashMap<>();
-		final AbstractReportNode phoenixes = new ListReportNode("Phoenixes");
-		final AbstractReportNode simurghs = new ListReportNode("Simurghs");
-		final AbstractReportNode griffins = new ListReportNode("Griffins");
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
+		final AbstractReportNode griffins = new ListReportNode("Griffins");
+		final AbstractReportNode simurghs = new ListReportNode("Simurghs");
+		final AbstractReportNode phoenixes = new ListReportNode("Phoenixes");
+		final Map<String, AbstractReportNode> centaurs = new HashMap<>();
+		final AbstractReportNode ogres = new ListReportNode("Ogres");
+		final AbstractReportNode minotaurs = new ListReportNode("Minotaurs");
+		final Map<String, AbstractReportNode> giants = new HashMap<>();
+		final AbstractReportNode sphinxes = new ListReportNode("Sphinxes");
+		final AbstractReportNode djinni = new ListReportNode("Djinni");
+		final AbstractReportNode trolls = new ListReportNode("Trolls");
+		final Map<String, AbstractReportNode> fairies = new HashMap<>();
+		final Map<String, AbstractReportNode> dragons = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : values) {
 			final Point point = pair.first();
 			final IFixture immortal = pair.second();
@@ -244,6 +242,8 @@ public final class ImmortalsReportGenerator extends AbstractReportGenerator<Mobi
 						(MobileFixture) immortal, point));
 			}
 		}
+		final AbstractReportNode retval = new SectionListReportNode(4,
+				                                                           "Immortals");
 		optionallyAdd(retval, coalesce("Dragons", dragons),
 				coalesce("Fairies", fairies), trolls, djinni, sphinxes,
 				coalesce("Giants", giants), minotaurs, ogres,

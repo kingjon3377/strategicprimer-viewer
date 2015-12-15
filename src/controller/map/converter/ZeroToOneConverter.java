@@ -148,9 +148,9 @@ public final class ZeroToOneConverter {
 	private static String convertTile(final StartElement element,
 			final Iterable<Attribute> attrs) {
 		final StringBuilder builder = new StringBuilder();
-		final Deque<Integer> events = new LinkedList<>();
 		builder.append('<');
 		builder.append(element.getName().getLocalPart());
+		final Deque<Integer> events = new LinkedList<>();
 		for (final Attribute attr : attrs) {
 			if ("event".equalsIgnoreCase(attr.getName().getLocalPart())) {
 				try {

@@ -64,9 +64,9 @@ public final class LegacyTable implements EncounterTable {
 	 * Constructor.
 	 */
 	public LegacyTable() {
-		final Player player = new Player(-1, "Independent");
 		addData(new Battlefield(0, -1));
 		addData(new Cave(0, -1));
+		final Player player = new Player(-1, "Independent");
 		for (final TownStatus status : TownStatus.values()) {
 			assert status != null;
 			for (final TownSize size : TownSize.values()) {

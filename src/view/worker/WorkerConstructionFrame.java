@@ -132,8 +132,8 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 		addLabeledField(textPanel, "Worker Name:", name);
 		addLabeledField(textPanel, "Worker Race:", race);
 
-		final JPanel statsPanel = new JPanel(new GridLayout(0, 4));
 		createStats();
+		final JPanel statsPanel = new JPanel(new GridLayout(0, 4));
 		addLabeledField(statsPanel, "HP:", hpBox);
 		addLabeledField(statsPanel, "Max HP:", maxHP);
 		addLabeledField(statsPanel, "Strength:", str);

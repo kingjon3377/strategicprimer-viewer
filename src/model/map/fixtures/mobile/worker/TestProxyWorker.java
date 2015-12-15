@@ -64,18 +64,18 @@ public final class TestProxyWorker {
 						new Skill("skillTwo", 2, 16)),
 				new Job("jobTwo", 0, new Skill("skillThree", 0, 10),
 						new Skill("skillFour", 0, 10)));
-		final Worker twoCopy = new Worker("two", "elf", 2,
-				new Job("jobOne", 0, new Skill("skillOne", 0, 10),
-						new Skill("skillTwo", 0, 10)),
-				new Job("jobTwo", 1, new Skill("skillThree", 1, 29),
-						new Skill("skillFour", 1, 0)));
-		final Worker threeCopy = new Worker("three", "dwarf", 5,
-				new Job("jobOne", 0, new Skill("skillOne", 0, 10),
-						new Skill("skillTwo", 0, 10)),
-				new Job("jobTwo", 0, new Skill("skillThree", 0, 10),
-						new Skill("skillFour", 0, 10)));
 		assertEquals("First worker should have appropriate experience", oneCopy, one);
+		final Worker twoCopy = new Worker("two", "elf", 2,
+				                                 new Job("jobOne", 0, new Skill("skillOne", 0, 10),
+						                                        new Skill("skillTwo", 0, 10)),
+				                                 new Job("jobTwo", 1, new Skill("skillThree", 1, 29),
+						                                        new Skill("skillFour", 1, 0)));
 		assertEquals("Second worker should have appropriate experience", twoCopy, two);
+		final Worker threeCopy = new Worker("three", "dwarf", 5,
+				                                   new Job("jobOne", 0, new Skill("skillOne", 0, 10),
+						                                          new Skill("skillTwo", 0, 10)),
+				                                   new Job("jobTwo", 0, new Skill("skillThree", 0, 10),
+						                                          new Skill("skillFour", 0, 10)));
 		assertEquals(
 				"Initially-empty worker should have appropriate experience",
 				threeCopy, three);

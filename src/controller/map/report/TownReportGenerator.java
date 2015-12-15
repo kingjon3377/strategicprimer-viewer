@@ -115,14 +115,15 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		final AbstractReportNode retval = new SectionListReportNode(4,
-				"Cities, towns, and/or fortifications you know about:");
 		final Map<AbstractTown, Point> townLocs = new HashMap<>();
 		fixtures.values().stream().filter(pair -> pair.second() instanceof AbstractTown)
 				.forEach(pair -> townLocs.put((AbstractTown) pair.second(), pair.first()));
 		final List<AbstractTown> sorted = new ArrayList<>(townLocs.keySet());
 		Collections.sort(sorted, new TownComparator());
 		// FIXME: Within any given status, sort by distance from HQ
+		final AbstractReportNode retval = new SectionListReportNode(4,
+				                                                           "Cities, towns, and/or fortifications you " +
+						                                                           "know about:");
 		for (final AbstractTown town : sorted) {
 			retval.add(produceRIR(fixtures, map, currentPlayer, town,
 					townLocs.get(town)));

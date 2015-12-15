@@ -182,13 +182,13 @@ public final class ExplorationCLI {
 			System.out.println("all maps show that at a cost of 1 MP");
 			return 1; // NOPMD
 		}
-		final List<TileFixture> allFixtures = new ArrayList<>();
 		final Collection<TileFixture> constants = new ArrayList<>();
 		final IMutableMapNG map = model.getMap();
 		if (map.isMountainous(dPoint)) {
 			constants.add(new Mountain());
 		}
 		final Ground ground = map.getGround(dPoint);
+		final List<TileFixture> allFixtures = new ArrayList<>();
 		if (ground != null) {
 			if (SimpleMovement.shouldAlwaysNotice(mover, ground)) {
 				constants.add(ground);

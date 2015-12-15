@@ -89,12 +89,12 @@ public final class AdvancementFrame extends JFrame {
 		final WorkerCreationListener nwl = new WorkerCreationListener(wtmodel,
 				IDFactoryFiller.createFactory(source.getMap()));
 		tree.addUnitSelectionListener(nwl);
-		final AddRemovePanel jarp = new AddRemovePanel(false, "job");
-		final AddRemovePanel sarp = new AddRemovePanel(false, "skill");
 		final JobTreeModel jtmodel = new JobTreeModel();
 		final JobsTree jobsTree = new JobsTree(jtmodel);
 		tree.addUnitMemberListener(jtmodel);
+		final AddRemovePanel jarp = new AddRemovePanel(false, "job");
 		jarp.addAddRemoveListener(jtmodel);
+		final AddRemovePanel sarp = new AddRemovePanel(false, "skill");
 		sarp.addAddRemoveListener(jtmodel);
 		final LevelListener llist = new LevelListener();
 		jobsTree.addSkillSelectionListener(llist);

@@ -413,7 +413,6 @@ public class Unit implements IUnit {
 			return false; // NOPMD
 		} else {
 			final Iterable<UnitMember> other = (IUnit) obj;
-			boolean retval = true;
 			final Map<Integer, UnitMember> ours = new HashMap<>();
 			for (final UnitMember member : this) {
 				ours.put(NullCleaner.assertNotNull(Integer.valueOf(member.getID())), member);
@@ -422,6 +421,7 @@ public class Unit implements IUnit {
 					NullCleaner.assertNotNull(String.format(
 							"%s In unit of kind %s named %s (ID #%d):",
 							context, kind, name, Integer.valueOf(id)));
+			boolean retval = true;
 			for (final UnitMember member : other) {
 				if (!ours.containsKey(Integer.valueOf(member.getID()))) {
 					ostream.append(ctxt);

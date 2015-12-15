@@ -237,11 +237,11 @@ public class Worker implements IWorker {
 					ostream.append(":\tstats differ\n");
 					return false;
 				} else {
-					boolean retval = true;
 					final Map<String, IJob> ours = new HashMap<>();
 					for (final IJob job : jobSet) {
 						ours.put(job.getName(), job);
 					}
+					boolean retval = true;
 					for (final IJob job : ((Worker) obj).jobSet) {
 						if (!ours.containsKey(job.getName())) {
 							ostream.append(ctxt);

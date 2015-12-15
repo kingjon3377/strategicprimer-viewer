@@ -65,12 +65,12 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		final Collection<@NonNull String> others = new HtmlList(
-				"<h4>Villages you know about:</h4>");
-		final Collection<String> own = new HtmlList(
-				"<h4>Villages pledged to your service:</h4>");
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
+		final Collection<String> own = new HtmlList(
+				                                           "<h4>Villages pledged to your service:</h4>");
+		final Collection<String> others = new HtmlList(
+				                                              "<h4>Villages you know about:</h4>");
 		values.stream().filter(pair -> pair.second() instanceof Village).forEach(pair -> {
 			final Village village = (Village) pair.second();
 			final String product =
@@ -99,13 +99,12 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		final AbstractReportNode retval = new SectionReportNode(4, "Villages:");
-		final AbstractReportNode others = new SectionListReportNode(5,
-				"Villages you know about:");
-		final AbstractReportNode own = new SectionListReportNode(5,
-				"Villages pledged to your service:");
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
+		final AbstractReportNode own = new SectionListReportNode(5,
+				                                                        "Villages pledged to your service:");
+		final AbstractReportNode others = new SectionListReportNode(5,
+				                                                           "Villages you know about:");
 		values.stream().filter(pair -> pair.second() instanceof Village).forEach(pair -> {
 			final Village village = (Village) pair.second();
 			final IReportNode product =
@@ -117,6 +116,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 				others.add(product);
 			}
 		});
+		final AbstractReportNode retval = new SectionReportNode(4, "Villages:");
 		if (own.getChildCount() != 0) {
 			retval.add(own);
 		}

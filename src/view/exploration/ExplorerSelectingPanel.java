@@ -115,8 +115,8 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 				emodel);
 		addPlayerChangeListener(unitListModel);
 		unitList = new JList<>(unitListModel);
-		final DefaultListCellRenderer defRenderer = new DefaultListCellRenderer();
 		unitList.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
+			final DefaultListCellRenderer defRenderer = new DefaultListCellRenderer();
 			final Component retval =
 					defRenderer.getListCellRendererComponent(
 							NullCleaner.assertNotNull(list), value, index,

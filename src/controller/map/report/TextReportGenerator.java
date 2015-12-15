@@ -59,7 +59,6 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		final HtmlList list = new HtmlList("<h4>Miscellaneous Notes</h4>");
 		final List<Pair<Point, TextFixture>> items = new ArrayList<>();
 		for (final Map.Entry<Integer, Pair<Point, IFixture>> entry : fixtures
 				.entrySet()) {
@@ -70,6 +69,7 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 			}
 		}
 		items.sort((one, two) -> one.second().getTurn() - two.second().getTurn());
+		final HtmlList list = new HtmlList("<h4>Miscellaneous Notes</h4>");
 		list.addAll(items.stream().map(item -> produce(fixtures, map, currentPlayer,
 				item.second(), item.first())).collect(Collectors.toList()));
 		if (list.isEmpty()) {

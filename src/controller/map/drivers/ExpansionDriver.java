@@ -159,110 +159,132 @@ public final class ExpansionDriver implements ISPDriver {
 		}
 		final IMutableMapNG lmap = (IMutableMapNG) map;
 		final Player player = map.getCurrentPlayer();
-		final Map<Point, TileType> terrainAdditions = new HashMap<>();
-		final Map<Point, Set<TileFixture>> fixAdditions = new HashMap<>();
 		final IllegalStateException ise =
 				new IllegalStateException(
 						"Unsupported method called on mock object");
+		final Collection<Point> villagePoints = StreamSupport.stream(lmap.locations().spliterator(), false)
+				                                        .filter(point -> containsSwornVillage(master, point, player))
+				                                        .collect(
+						                                        Collectors.toSet());
 		final IUnit mock = new IUnit() {
 			@Override
 			public int getZValue() {
 				throw ise;
 			}
+
 			@Override
 			public String plural() {
 				throw ise;
 			}
+
 			@Override
 			public String shortDesc() {
 				throw ise;
 			}
+
 			@Override
 			public int getID() {
 				throw ise;
 			}
+
 			@Override
 			public boolean equalsIgnoringID(final IFixture fix) {
 				throw ise;
 			}
+
 			@Override
 			public int compareTo(final TileFixture o) {
 				throw ise;
 			}
+
 			@Override
 			public String getDefaultImage() {
 				throw ise;
 			}
+
 			@Override
 			public void setImage(final String image) {
 				throw ise;
 			}
+
 			@Override
 			public String getImage() {
 				throw ise;
 			}
+
 			@Override
 			public String getKind() {
 				throw ise;
 			}
+
 			@Override
 			public void setKind(final String nKind) {
 				throw ise;
 			}
+
 			@Override
 			public Iterator<UnitMember> iterator() {
 				throw ise;
 			}
+
 			@Override
 			public String getName() {
 				throw ise;
 			}
+
 			@Override
 			public void setName(final String nomen) {
 				throw ise;
 			}
+
 			@Override
 			public Player getOwner() {
 				return player;
 			}
+
 			@Override
 			public void setOwner(final Player playr) {
 				throw ise;
 			}
+
 			@Override
 			public boolean isSubset(final IFixture obj, final Appendable ostream,
-					final String context) throws IOException {
+			                        final String context) throws IOException {
 				throw ise;
 			}
+
 			@Override
 			public String getOrders() {
 				throw ise;
 			}
+
 			@Override
 			public void setOrders(final String newOrders) {
 				throw ise;
 			}
+
 			@Override
 			public String verbose() {
 				throw ise;
 			}
+
 			@Override
 			public void addMember(final UnitMember member) {
 				throw ise;
 			}
+
 			@Override
 			public void removeMember(final UnitMember member) {
 				throw ise;
 			}
+
 			@Override
 			public IUnit copy(final boolean zero) {
 				throw ise;
 			}
 		};
-		final Collection<Point> villagePoints = StreamSupport.stream(lmap.locations().spliterator(), false)
-				                                        .filter(point -> containsSwornVillage(master, point, player))
-				                                        .collect(
-						                                        Collectors.toSet());
+		final Map<Point, Set<TileFixture>> fixAdditions = new HashMap<>();
+		final Map<Point, TileType> terrainAdditions = new HashMap<>();
 		for (final Point point : villagePoints) {
 			addSurroundingTerrain(point, master, lmap, terrainAdditions);
 			addSurroundingFixtures(point, master, fixAdditions, mock);

@@ -93,13 +93,13 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 		// This can get long. We'll give it 16K.
 		final StringBuilder ours = new StringBuilder(16384)
 				.append("<h4>Your fortresses in the map:</h4>\n");
-		boolean anyours = false;
 		final StringBuilder builder =
 				new StringBuilder(16384)
 				.append("<h4>Foreign fortresses in the map:</h4>\n");
-		boolean anyforts = false;
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
+		boolean anyforts = false;
+		boolean anyours = false;
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Fortress) {
 				final Fortress fort = (Fortress) pair.second();
@@ -138,13 +138,12 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	public AbstractReportNode produceRIR(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		final AbstractReportNode retval = new ComplexReportNode("");
-		final AbstractReportNode ours = new SectionReportNode(4,
-				"Your fortresses in the map:");
-		final AbstractReportNode foreign = new SectionReportNode(4,
-				"Foreign fortresses in the map:");
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
+		final AbstractReportNode foreign = new SectionReportNode(4,
+				                                                        "Foreign fortresses in the map:");
+		final AbstractReportNode ours = new SectionReportNode(4,
+				                                                     "Your fortresses in the map:");
 		values.stream().filter(pair -> pair.second() instanceof Fortress).forEach(pair -> {
 			final Fortress fort = (Fortress) pair.second();
 			if (currentPlayer.equals(fort.getOwner())) {
@@ -155,6 +154,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 						(Fortress) pair.second(), pair.first()));
 			}
 		});
+		final AbstractReportNode retval = new ComplexReportNode("");
 		if (ours.getChildCount() != 0) {
 			retval.add(ours);
 		}
@@ -280,9 +280,9 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 					Collectors.toSet())));
 		}
 		if (item.iterator().hasNext()) {
-			final Collection<FortressMember> contents = new ArrayList<>();
 			builder.append(OPEN_LIST_ITEM).append("Units on the tile:\n")
 			.append(OPEN_LIST);
+			final Collection<FortressMember> contents = new ArrayList<>();
 			for (final FortressMember member : item) {
 				if (member instanceof Unit) {
 					builder.append(OPEN_LIST_ITEM)

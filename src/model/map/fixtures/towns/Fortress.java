@@ -236,13 +236,13 @@ public class Fortress implements HasImage, ITownFixture,
 		final Fortress fort = (Fortress) obj;
 		if (name.equals(fort.name)
 				&& fort.owner.getPlayerId() == owner.getPlayerId()) {
-			boolean retval = true;
 			final Map<Integer, FortressMember> ours = new HashMap<>();
 			for (final FortressMember member : this) {
 				ours.put(NullCleaner.assertNotNull(Integer.valueOf(member.getID())), member);
 			}
 			final String ctxt =
 					context + " In fortress " + name + " (ID #" + id + "):";
+			boolean retval = true;
 			for (final FortressMember unit : fort) {
 				if (!ours.containsKey(Integer.valueOf(unit.getID()))) {
 					ostream.append(ctxt);

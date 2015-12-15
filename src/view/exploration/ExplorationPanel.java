@@ -242,7 +242,6 @@ public final class ExplorationPanel extends BorderedPanel implements ActionListe
 		ecl.addMovementCostListener(this);
 		mainList.getModel().addListDataListener(
 				new ExplorationListListener(model, mainList));
-		final SelectionChangeSupport secPCS = new SelectionChangeSupport();
 		final Iterator<Pair<IMutableMapNG, File>> subMaps =
 				model.getSubordinateMaps().iterator();
 		final Iterable<Player> players;
@@ -252,6 +251,7 @@ public final class ExplorationPanel extends BorderedPanel implements ActionListe
 			players = model.getMap().players();
 		}
 		final FixtureList secList = new FixtureList(panel, model, players);
+		final SelectionChangeSupport secPCS = new SelectionChangeSupport();
 		secPCS.addSelectionChangeListener(secList);
 		panel.add(new JScrollPane(secList));
 		mains.put(direction, mainPCS);

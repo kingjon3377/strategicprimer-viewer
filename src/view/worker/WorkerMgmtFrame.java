@@ -200,8 +200,8 @@ public final class WorkerMgmtFrame extends JFrame {
 			}
 		}
 		final DistanceComparator distCalculator = new DistanceComparator(hqLoc);
-		DefaultTreeCellRenderer defRender = new DefaultTreeCellRenderer();
 		report.setCellRenderer((renderedTree, value, selected, expanded, leaf, row, hasFocus) -> {
+			DefaultTreeCellRenderer defRender = new DefaultTreeCellRenderer();
 			final Component retval = defRender.getTreeCellRendererComponent(renderedTree, value, selected, expanded, leaf, row, hasFocus);
 			if (value instanceof AbstractReportNode) {
 				final Point point = ((AbstractReportNode) value).getPoint();

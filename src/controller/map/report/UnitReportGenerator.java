@@ -307,13 +307,13 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		final StringBuilder ours =
 				new StringBuilder(8192).append("<h5>Your units</h5>\n");
 		ours.append(OPEN_LIST);
-		boolean anyOurs = false;
 		final StringBuilder foreign =
 				new StringBuilder(8192).append("<h5>Foreign units</h5>\n");
 		foreign.append(OPEN_LIST);
-		boolean anyForeign = false;
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
+		boolean anyForeign = false;
+		boolean anyOurs = false;
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Unit) {
 				final Unit unit = (Unit) pair.second();
@@ -367,12 +367,10 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 				new SectionReportNode(4, "Units in the map");
 		retval.add(new SimpleReportNode(
 				"(Any units reported above are not described again.)"));
-		final AbstractReportNode ours =
-				new SectionListReportNode(5, "Your units");
-		final AbstractReportNode theirs =
-				new SectionListReportNode(5, "Foreign units");
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
+		final AbstractReportNode theirs = new SectionListReportNode(5, "Foreign units");
+		final AbstractReportNode ours = new SectionListReportNode(5, "Your units");
 		values.stream().filter(pair -> pair.second() instanceof Unit).forEach(pair -> {
 			final Unit unit = (Unit) pair.second();
 			final AbstractReportNode unitNode = produceRIR(fixtures, map,

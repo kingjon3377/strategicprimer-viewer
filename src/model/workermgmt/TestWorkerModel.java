@@ -60,25 +60,22 @@ public final class TestWorkerModel {
 	@SuppressWarnings("static-method")
 	@Test
 	public void testGetUnits() {
-		final SPMapNG map =
-				new SPMapNG(new MapDimensions(3, 3, 2), new PlayerCollection(),
-						-1);
-		final Player playerOne = new Player(0, "player1");
-		final Player playerTwo = new Player(1, "player2");
-		final Player playerThree = new Player(2, "player3");
 		final List<TileFixture> fixtures = new ArrayList<>();
-		final List<IUnit> listOne = new ArrayList<>();
-		final List<IUnit> listTwo = new ArrayList<>();
-		final Collection<IUnit> listThree = new ArrayList<>();
 		fixtures.add(new Mountain());
 		fixtures.add(new Animal("animal", false, false, "wild", 1));
+		final List<IUnit> listOne = new ArrayList<>();
+		final Player playerOne = new Player(0, "player1");
 		addItem(new Unit(playerOne, "one", "unitOne", 2), fixtures,
 				listOne);
+		final List<IUnit> listTwo = new ArrayList<>();
+		final Player playerTwo = new Player(1, "player2");
 		addItem(new Unit(playerTwo, "two", "unitTwo", 3), fixtures,
 				listTwo);
 		final Fortress fort = new Fortress(new Player(3, "player4"), "fort", 4);
+		final Player playerThree = new Player(2, "player3");
 		final IUnit unit = new Unit(playerThree, "three", "unitThree", 5);
 		fort.addMember(unit);
+		final Collection<IUnit> listThree = new ArrayList<>();
 		listThree.add(unit);
 		fixtures.add(fort);
 		fixtures.add(new Forest("forest", false));
@@ -87,6 +84,8 @@ public final class TestWorkerModel {
 				listOne);
 		fixtures.add(new Oasis(8));
 		Collections.shuffle(fixtures);
+		final SPMapNG map = new SPMapNG(new MapDimensions(3, 3, 2), new PlayerCollection(),
+				                               -1);
 		for (final Point point : map.locations()) {
 			map.addFixture(NullCleaner.assertNotNull(point),
 					NullCleaner.assertNotNull(fixtures.remove(0)));

@@ -84,20 +84,21 @@ public final class HarvestableReportGenerator extends AbstractReportGenerator<Ha
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures, //NOPMD
 			final IMapNG map, final Player player) {
 		// TODO: Use Guava Multimaps to reduce cyclomatic complexity
-		final HeadedList<@NonNull String> caches = new HtmlList(
-				"<h5>Caches collected by your explorers and workers:</h5>");
-		final HeadedList<String> groves = new HtmlList(
-				"<h5>Groves and orchards</h5>");
-		final HeadedList<String> meadows = new HtmlList(
-				"<h5>Meadows and fields</h5>");
-		final HeadedList<String> mines = new HtmlList("<h5>Mines</h5>");
-		final HeadedList<String> minerals = new HtmlList(
-				"<h5>Mineral deposits</h5>");
-		final Map<String, List<Point>> shrubs = new HashMap<>();
-		final HeadedList<String> stone = new HtmlList(
-				"<h5>Exposed stone deposits</h5>");
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
+		final HeadedList<String> stone = new HtmlList(
+				                                             "<h5>Exposed stone deposits</h5>");
+		final Map<String, List<Point>> shrubs = new HashMap<>();
+		final HeadedList<String> minerals = new HtmlList(
+				                                                "<h5>Mineral deposits</h5>");
+		final HeadedList<String> mines = new HtmlList("<h5>Mines</h5>");
+		final HeadedList<String> meadows = new HtmlList(
+				                                               "<h5>Meadows and fields</h5>");
+		final HeadedList<String> groves = new HtmlList(
+				                                              "<h5>Groves and orchards</h5>");
+		final HeadedList<String> caches = new HtmlList(
+				                                              "<h5>Caches collected by your explorers and " +
+						                                              "workers:</h5>");
 		for (final Pair<Point, IFixture> pair : values) {
 			final IFixture item = pair.second();
 			final Point point = pair.first();
@@ -169,23 +170,22 @@ public final class HarvestableReportGenerator extends AbstractReportGenerator<Ha
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player player) {
 		//  TODO: Use Guava Multimaps to reduce cyclomatic complexity
-		final AbstractReportNode retval = new SectionReportNode(4,
-				"Resource Sources");
-		final AbstractReportNode caches = new SortedSectionListReportNode(5,
-				"Caches collected by your explorers and workers:");
-		final AbstractReportNode groves = new SortedSectionListReportNode(5,
-				"Groves and orchards");
-		final AbstractReportNode meadows = new SortedSectionListReportNode(5,
-				"Meadows and fields");
-		final AbstractReportNode mines = new SortedSectionListReportNode(5,
-				"Mines");
-		final AbstractReportNode minerals = new SortedSectionListReportNode(5,
-				"Mineral deposits");
-		final Map<String, AbstractReportNode> shrubs = new HashMap<>();
-		final AbstractReportNode stone = new SortedSectionListReportNode(5,
-				"Exposed stone deposits");
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
+		final AbstractReportNode stone = new SortedSectionListReportNode(5,
+				                                                                "Exposed stone deposits");
+		final Map<String, AbstractReportNode> shrubs = new HashMap<>();
+		final AbstractReportNode minerals = new SortedSectionListReportNode(5,
+				                                                                   "Mineral deposits");
+		final AbstractReportNode mines = new SortedSectionListReportNode(5,
+				                                                                "Mines");
+		final AbstractReportNode meadows = new SortedSectionListReportNode(5,
+				                                                                  "Meadows and fields");
+		final AbstractReportNode groves = new SortedSectionListReportNode(5,
+				                                                                 "Groves and orchards");
+		final AbstractReportNode caches = new SortedSectionListReportNode(5,
+				                                                                 "Caches collected by your explorers " +
+						                                                                 "and workers:");
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof HarvestableFixture) {
 				final HarvestableFixture item = (HarvestableFixture) pair
@@ -224,6 +224,8 @@ public final class HarvestableReportGenerator extends AbstractReportGenerator<Ha
 		for (final Entry<String, AbstractReportNode> entry : shrubs.entrySet()) {
 			shrubsNode.add(entry.getValue());
 		}
+		final AbstractReportNode retval = new SectionReportNode(4,
+				                                                       "Resource Sources");
 		if (maybeAdd(retval, caches, groves, meadows, mines, minerals, stone,
 				shrubsNode)) {
 			return retval; // NOPMD
