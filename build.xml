@@ -140,7 +140,7 @@
 	<attribute name="Built-By" value="${scm.builder}" />
 	<attribute name="Built-On" value="${TODAY}" />
 	<attribute name="Built-At" value="${TSTAMP}" />
-	<attribute name="Mercurial-Revision" value="${scm.revision.id}" />
+	<attribute name="Git-Tag" value="${micro-version-number}" />
       </manifest>
       <fileset dir="${project_home}/bin" />
       <zipfileset excludes="META-INF/**/*" src="${windowmenu.jar.path}" />
