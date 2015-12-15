@@ -392,7 +392,7 @@ public abstract class AbstractCompactReader<@NonNull T> implements CompactReader
 			return defaultValue; // NOPMD
 		}
 		final String val = attr.getValue();
-		if (val == null) {
+		if (val == null || val.isEmpty()) {
 			return defaultValue;
 		} else {
 			return parseInt(val, tag.getLocation().getLineNumber());
