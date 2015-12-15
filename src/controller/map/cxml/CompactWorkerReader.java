@@ -144,9 +144,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 			throws SPFormatException {
 		requireTag(element, "job");
 		final Job retval =
-				new Job(getParameter(element, "name"), parseInt(
-						getParameter(element, "level"), element.getLocation()
-								.getLineNumber()));
+				new Job(getParameter(element, "name"), getIntegerParameter(element, "level"));
 		if (hasParameter(element, "hours")) {
 			warner.warn(new UnsupportedPropertyException("job", "hours",
 					element.getLocation().getLineNumber()));
@@ -188,11 +186,8 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 			final Warning warner) throws SPFormatException {
 		requireTag(element, "skill");
 		final Skill retval =
-				new Skill(getParameter(element, "name"), parseInt(
-						getParameter(element, "level"), element.getLocation()
-								.getLineNumber()), parseInt(
-						getParameter(element, "hours"), element.getLocation()
-								.getLineNumber()));
+				new Skill(getParameter(element, "name"), getIntegerParameter(element, "level"),
+						         getIntegerParameter(element, "hours"));
 		if ("miscellaneous".equals(retval.getName()) && retval.getLevel() > 0) {
 			warner.warn(new DeprecatedPropertyException("skill",
 					"miscellaneous", "other", element.getLocation()

@@ -95,10 +95,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 		requireNonEmptyParameter(element, "name", false, warner);
 		requireNonEmptyParameter(element, "owner", false, warner);
 		final Unit retval = new Unit(
-						players.getPlayer(
-								parseInt(ensureNumeric(getParameter(element,
-										"owner", "-1")), element.getLocation()
-										.getLineNumber())), parseKind(element,
+						players.getPlayer(getIntegerParameter(element,"owner",-1)), parseKind(element,
 								warner), getParameter(element, "name", ""),
 						getOrGenerateID(element, warner, idFactory));
 		retval.setImage(getParameter(element, "image", ""));
