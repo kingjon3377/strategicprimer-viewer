@@ -323,7 +323,7 @@ public abstract class AbstractCompactReader<@NonNull T> implements CompactReader
 		if (image.isEmpty() || image.equals(obj.getDefaultImage())) {
 			return ""; // NOPMD
 		} else {
-			return " image=\"" + image + "\"";
+			return " image=\"" + image + '"';
 		}
 	}
 

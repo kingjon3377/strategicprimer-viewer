@@ -230,7 +230,7 @@ public final class SubsetFrame extends JFrame {
 	public void test(final IMapNG map, final File file) {
 		printParagraph("Testing " + file + " ...", "");
 		try (final Writer out = new HTMLWriter(label.getWriter())) {
-			if (mainMap.isSubset(map, out, file.getName() + ":")) {
+			if (mainMap.isSubset(map, out, file.getName() + ':')) {
 				printParagraph("OK", "green");
 			} else {
 				printParagraph("WARN", "yellow");
