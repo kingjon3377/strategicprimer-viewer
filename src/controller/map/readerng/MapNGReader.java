@@ -155,7 +155,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 						mapTagLocation),
 				XMLHelper.parseInt(XMLHelper.getAttribute(mapTag, "version"),
 						mapTagLocation));
-		final SPMapNG retval = new SPMapNG(dimensions, players, currentTurn);
+		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		final Point nullPoint = PointFactory.point(-1, -1);
 		Point point = nullPoint;
 		for (final XMLEvent event : stream) {

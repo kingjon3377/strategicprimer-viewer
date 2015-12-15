@@ -8,6 +8,8 @@ import controller.map.misc.IOHandler;
 import model.misc.IDriverModel;
 import view.util.SPMenu;
 
+import java.awt.event.ActionListener;
+
 /**
  * A set of menus for the worker GUI.
  *
@@ -43,7 +45,7 @@ public final class WorkerMenu extends SPMenu {
 	 * @param teh a handler to listen for "expand all" etc.
 	 */
 	public WorkerMenu(final IOHandler handler, final JFrame parent,
-			final PlayerChooserHandler pch, final IDriverModel model, final TreeExpansionHandler teh) {
+			final PlayerChooserHandler pch, final IDriverModel model, final ActionListener teh) {
 		add(createFileMenu(handler, parent, model));
 		addDisabled(createMapMenu(parent, model));
 		add(createViewMenu(pch, teh));

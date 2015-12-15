@@ -1,6 +1,7 @@
 package controller.map.converter;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
@@ -54,7 +55,7 @@ public final class ResolutionDecreaseConverter {
 	 * @param old the map to convert.
 	 * @return an equivalent MapView.
 	 */
-	public static SPMapNG convert(final IMapNG old) {
+	public static IMapNG convert(final IMapNG old) {
 		checkRequirements(old);
 		final int newRows = old.dimensions().rows / 2;
 		final int newCols = old.dimensions().cols / 2;
@@ -178,7 +179,7 @@ public final class ResolutionDecreaseConverter {
 	 * @param set a set of rivers
 	 * @param rivers a series of rivers to remove from it
 	 */
-	private static void removeRivers(final Set<River> set,
+	private static void removeRivers(final Collection<River> set,
 			final River... rivers) {
 		for (final River river : rivers) {
 			if (river != null) {

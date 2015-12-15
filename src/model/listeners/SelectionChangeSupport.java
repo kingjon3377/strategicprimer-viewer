@@ -1,6 +1,7 @@
 package model.listeners;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -34,7 +35,7 @@ public final class SelectionChangeSupport implements SelectionChangeSource {
 	/**
 	 * The list of listeners to notify.
 	 */
-	private final List<SelectionChangeListener> listeners = new ArrayList<>();
+	private final Collection<SelectionChangeListener> listeners = new ArrayList<>();
 
 	/**
 	 * @param list a listener to add

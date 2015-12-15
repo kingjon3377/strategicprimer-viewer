@@ -2,6 +2,7 @@ package model.map.fixtures.mobile;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -188,7 +189,7 @@ public class Worker implements IWorker {
 	 * @param two a set of Jobs
 	 * @return whether they are equal, ignoring any "empty" Jobs.
 	 */
-	private static boolean jobSetsEqual(final Set<IJob> one, final Set<IJob> two) {
+	private static boolean jobSetsEqual(final Collection<IJob> one, final Collection<IJob> two) {
 		for (IJob job : one) {
 			if (!job.isEmpty() && !two.contains(job)) {
 				return false;

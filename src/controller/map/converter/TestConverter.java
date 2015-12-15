@@ -2,6 +2,7 @@ package controller.map.converter;
 
 import static org.junit.Assert.assertTrue;
 
+import model.map.IMutableMapNG;
 import org.junit.Test;
 
 import model.map.IMapNG;
@@ -48,7 +49,7 @@ public final class TestConverter {
 	@SuppressWarnings("static-method")
 	@Test
 	public void testConversion() {
-		final SPMapNG start =
+		final IMutableMapNG start =
 				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
 						0);
 		final Point pointOne = PointFactory.point(0, 0);

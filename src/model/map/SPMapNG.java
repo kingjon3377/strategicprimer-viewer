@@ -52,7 +52,7 @@ public class SPMapNG implements IMutableMapNG {
 	/**
 	 * The set of mountainous places. TODO: Populate the set.
 	 */
-	private final Set<Point> mountains = new HashSet<>();
+	private final Collection<Point> mountains = new HashSet<>();
 	/**
 	 * The base terrain at points in the map. TODO: Populate the map.
 	 */
@@ -725,7 +725,7 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public IMapNG copy(final boolean zero) {
-		SPMapNG retval = new SPMapNG(dimensions(), playerCollection.copy(false),
+		IMutableMapNG retval = new SPMapNG(dimensions(), playerCollection.copy(false),
 				getCurrentTurn());
 		for (Point point : locations()) {
 			retval.setBaseTerrain(point, getBaseTerrain(point));

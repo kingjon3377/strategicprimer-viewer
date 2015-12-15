@@ -1,6 +1,7 @@
 package model.map.fixtures.mobile.worker;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -48,7 +49,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	/**
 	 * The Jobs we're proxying for.
 	 */
-	private final List<IJob> proxied = new ArrayList<>();
+	private final Collection<IJob> proxied = new ArrayList<>();
 
 	/**
 	 * @param nomen
@@ -153,7 +154,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 					}
 				}
 				if (!touched) {
-					final Skill skill = new Skill(name, 0, 0);
+					final ISkill skill = new Skill(name, 0, 0);
 					skill.addHours(hrs, seed);
 					job.addSkill(skill);
 				}
@@ -170,7 +171,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 					}
 				}
 				if (!touched) {
-					final Skill skill = new Skill(name, 0, 0);
+					final ISkill skill = new Skill(name, 0, 0);
 					job.addSkill(skill);
 					boolean found = false;
 					for (final ISkill temp : job) {

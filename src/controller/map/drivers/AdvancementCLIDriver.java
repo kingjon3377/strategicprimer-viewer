@@ -147,7 +147,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 			System.exit(1);
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		final WorkerModel model = new WorkerModel(
+		final IDriverModel model = new WorkerModel(
 				reader.readMultiMapModel(Warning.INSTANCE, new File(args[0]),
 						MapReaderAdapter.namesToFiles(true, args)));
 		startDriver(model);
@@ -186,7 +186,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 	 * @param unit the unit in question
 	 * @throws IOException on I/O error getting input from user
 	 */
-	private void advanceWorkersInUnit(final IUnit unit) throws IOException {
+	private void advanceWorkersInUnit(final Iterable<UnitMember> unit) throws IOException {
 		final List<IWorker> workers = new ArrayList<>();
 		for (UnitMember member : unit) {
 			if (member instanceof IWorker) {

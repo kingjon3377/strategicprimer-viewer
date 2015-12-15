@@ -1,6 +1,7 @@
 package controller.map.report;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -32,6 +33,8 @@ import model.report.SimpleReportNode;
 import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
+
+import javax.swing.tree.MutableTreeNode;
 
 /**
  * A report generator for fortresses.
@@ -210,7 +213,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 * @param rivers a collection of rivers
 	 * @return an equivalent string.
 	 */
-	private static String riversToString(final Set<River> rivers) {
+	private static String riversToString(final Collection<River> rivers) {
 		final StringBuilder builder = new StringBuilder(64);
 		if (rivers.contains(River.Lake)) {
 			builder.append("<li>There is a nearby lake.</li>\n");
@@ -239,7 +242,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 * @param rivers the collection of rivers
 	 */
 	private static void riversToNode(final Point loc,
-			final AbstractReportNode parent, final Set<River> rivers) {
+			final AbstractReportNode parent, final Collection<River> rivers) {
 		if (rivers.contains(River.Lake)) {
 			parent.add(new SimpleReportNode(loc, "There is a nearby lake."));
 			rivers.remove(River.Lake);
@@ -293,7 +296,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			builder.append(riversToString(copy));
 		}
 		if (item.iterator().hasNext()) {
-			final List<FortressMember> contents = new ArrayList<>();
+			final Collection<FortressMember> contents = new ArrayList<>();
 			builder.append(OPEN_LIST_ITEM).append("Units on the tile:\n")
 			.append(OPEN_LIST);
 			for (final FortressMember member : item) {
@@ -352,7 +355,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 		if (item.iterator().hasNext()) {
 			final AbstractReportNode units = new ListReportNode(loc,
 					"Units on the tile:");
-			final AbstractReportNode contents =
+			final MutableTreeNode contents =
 					new ListReportNode(loc, "Other Contents of Fortress:");
 			for (final FortressMember unit : item) {
 				if (unit instanceof Unit) {

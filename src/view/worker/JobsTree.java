@@ -1,6 +1,7 @@
 package view.worker;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JTree;
@@ -45,7 +46,7 @@ public final class JobsTree extends JTree implements TreeSelectionListener,
 	/**
 	 * The list of completion listeners listening to us.
 	 */
-	private final List<SkillSelectionListener> ssListeners = new ArrayList<>();
+	private final Collection<SkillSelectionListener> ssListeners = new ArrayList<>();
 	/**
 	 * Constructor.
 	 * @param jtmodel the tree model underlying this tree

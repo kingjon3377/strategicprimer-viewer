@@ -1,6 +1,7 @@
 package view.worker;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JList;
@@ -49,7 +50,7 @@ public final class SkillList extends JList<ISkill> implements ListSelectionListe
 	/**
 	 * The list of completion listeners listening to us.
 	 */
-	private final List<SkillSelectionListener> ssListeners = new ArrayList<>();
+	private final Collection<SkillSelectionListener> ssListeners = new ArrayList<>();
 	/**
 	 * The list model.
 	 */

@@ -3,6 +3,7 @@ package model.exploration;
 import static model.map.PointFactory.point;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public final class SurroundingPointIterable implements Iterable<@NonNull Point> 
 	/**
 	 * the list of points.
 	 */
-	private final List<Point> points = new ArrayList<>();
+	private final Collection<Point> points = new ArrayList<>();
 	/**
 	 * Pass the default radius of 2.
 	 *

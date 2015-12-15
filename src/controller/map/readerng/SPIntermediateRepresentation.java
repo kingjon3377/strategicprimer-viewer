@@ -2,6 +2,7 @@ package controller.map.readerng;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -41,7 +42,7 @@ public final class SPIntermediateRepresentation {
 	/**
 	 * The set of child tags.
 	 */
-	private final Set<SPIntermediateRepresentation> children = new LinkedHashSet<>();
+	private final Collection<SPIntermediateRepresentation> children = new LinkedHashSet<>();
 	// private final List<SPIntermediateRepresentation> children = new
 	// LinkedList<SPIntermediateRepresentation>();
 

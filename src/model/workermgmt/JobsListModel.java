@@ -1,6 +1,7 @@
 package model.workermgmt;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -56,7 +57,7 @@ public final class JobsListModel extends DefaultListModel<IJob> implements
 	public void add(final String category, final String addendum) {
 		final IWorker local = worker;
 		if ("job".equals(category) && local != null) {
-			final Job job = new Job(addendum, 0);
+			final IJob job = new Job(addendum, 0);
 			local.addJob(job);
 			addElement(job);
 			for (final CompletionListener list : cListeners) {
@@ -91,7 +92,7 @@ public final class JobsListModel extends DefaultListModel<IJob> implements
 	/**
 	 * The list of completion listeners listening to us.
 	 */
-	private final List<CompletionListener> cListeners = new ArrayList<>();
+	private final Collection<CompletionListener> cListeners = new ArrayList<>();
 
 	/**
 	 * @param list a listener to add

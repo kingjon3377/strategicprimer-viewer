@@ -2,6 +2,7 @@ package model.map.fixtures.mobile.worker;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -48,7 +49,7 @@ public class Job implements IJob { // NOPMD
 	/**
 	 * The worker's level in various skills associated with the job.
 	 */
-	private final Set<ISkill> skillSet = new ArraySet<>();
+	private final Collection<ISkill> skillSet = new ArraySet<>();
 
 	/**
 	 * Constructor.
@@ -72,7 +73,7 @@ public class Job implements IJob { // NOPMD
 		if (zero) {
 			return new Job(name, 0);
 		} else {
-			final Job retval = new Job(name, level);
+			final IJob retval = new Job(name, level);
 			for (ISkill skill : this) {
 				retval.addSkill(skill.copy(false));
 			}

@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -130,7 +131,7 @@ public final class OneToTwoConverter { // NOPMD
 	 *        don't go on players' maps)
 	 * @return a version-2 equivalent with greater resolution
 	 */
-	public SPMapNG convert(final IMapNG old, final boolean main) {
+	public IMapNG convert(final IMapNG old, final boolean main) {
 		final IDFactory idFactory = new IDFactory();
 		final MapDimensions oldDim = old.dimensions();
 		final SPMapNG retval =
@@ -208,9 +209,9 @@ public final class OneToTwoConverter { // NOPMD
 	 * @param independentPlayer the Player to own villages
 	 * @return a list of the points we affected in this pass
 	 */
-	private List<Point> convertTile(final Point point,
-			final IMapNG oldMap, final IMutableMapNG newMap, final boolean main,
-			final IDFactory idFactory, final Player independentPlayer) {
+	private Collection<Point> convertTile(final Point point,
+	                                      final IMapNG oldMap, final IMutableMapNG newMap, final boolean main,
+	                                      final IDFactory idFactory, final Player independentPlayer) {
 		final List<Point> initial = createInitialSubtiles(point,
 				oldMap, newMap, main);
 		if (!isPointEmpty(oldMap, point)) {
@@ -370,7 +371,7 @@ public final class OneToTwoConverter { // NOPMD
 	private static void changeFor(final IMutableMapNG map, final Point point,
 			final TileFixture fix) {
 		if (fix instanceof Village || fix instanceof ITownFixture) {
-			final List<TileFixture> forests = new ArrayList<>();
+			final Collection<TileFixture> forests = new ArrayList<>();
 			for (final TileFixture fixture : map.getOtherFixtures(point)) {
 				if (fixture instanceof Forest) {
 					forests.add(fixture);

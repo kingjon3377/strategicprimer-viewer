@@ -7,6 +7,7 @@ import static javax.swing.JOptionPane.showInputDialog;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 	/**
 	 * Listeners to notify about name and kind changes.
 	 */
-	protected final List<IWorkerTreeModel> listeners = new ArrayList<>();
+	protected final Collection<IWorkerTreeModel> listeners = new ArrayList<>();
 	/**
 	 * Constructor.
 	 *

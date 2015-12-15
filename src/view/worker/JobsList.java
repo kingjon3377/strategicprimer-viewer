@@ -1,6 +1,7 @@
 package view.worker;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JList;
@@ -49,7 +50,7 @@ public final class JobsList extends JList<IJob> implements
 	/**
 	 * The list of completion listeners listening to us.
 	 */
-	private final List<JobSelectionListener> jsListeners = new ArrayList<>();
+	private final Collection<JobSelectionListener> jsListeners = new ArrayList<>();
 	/**
 	 * The list model.
 	 */

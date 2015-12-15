@@ -3,6 +3,7 @@ package controller.map.drivers;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -152,7 +153,7 @@ public final class AppStarter implements ISPDriver {
 	 */
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
-		final List<String> options = new ArrayList<>();
+		final Collection<String> options = new ArrayList<>();
 		final List<String> others = new ArrayList<>();
 		for (final String arg : args) {
 			if (arg.trim().charAt(0) == '-') {

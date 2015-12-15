@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -69,12 +70,12 @@ public final class ExplorationClickListener extends AbstractAction implements
 	/**
 	 * The list of movement-cost listeners.
 	 */
-	private final List<MovementCostListener> mcListeners = new ArrayList<>();
+	private final Collection<MovementCostListener> mcListeners = new ArrayList<>();
 
 	/**
 	 * The list of selection-change listeners.
 	 */
-	private final List<SelectionChangeListener> scListeners = new ArrayList<>();
+	private final Collection<SelectionChangeListener> scListeners = new ArrayList<>();
 
 	/**
 	 * The exploration model.
@@ -141,7 +142,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 			model.move(direction);
 			Point dPoint = model.getSelectedUnitLocation();
 			Player player = NullCleaner.assertNotNull(model.getSelectedUnit()).getOwner();
-			Set<CacheFixture> caches = new HashSet<>();
+			Collection<CacheFixture> caches = new HashSet<>();
 			for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 				final IMutableMapNG map = pair.first();
 				map.setBaseTerrain(dPoint, model.getMap()

@@ -160,7 +160,7 @@ public final class TestSubsets {
 	@SuppressWarnings(ST_MET)
 	@Test
 	public void testMapSubset() throws IOException {
-		final IMutableMapNG zero =
+		final IMapNG zero =
 				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
 						-1);
 		final IMutableMapNG one =
@@ -210,7 +210,7 @@ public final class TestSubsets {
 	 */
 	@Test
 	public void testSubsetsAndCopy() throws IOException {
-		final IMutableMapNG zero =
+		final IMapNG zero =
 				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
 						-1);
 		final IMutableMapNG one =

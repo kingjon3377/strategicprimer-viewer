@@ -2,6 +2,7 @@ package model.map.fixtures.mobile.worker;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -53,7 +54,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	/**
 	 * Proxy-skills.
 	 */
-	private final List<ISkill> proxied = new ArrayList<>();
+	private final Collection<ISkill> proxied = new ArrayList<>();
 	/**
 	 * Jobs we're proxying.
 	 */
@@ -90,7 +91,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 				}
 			}
 			if (!touched) {
-				final Job job = new Job(nomen, 0);
+				final IJob job = new Job(nomen, 0);
 				worker.addJob(job);
 				boolean found = false;
 				for (final IJob temp : worker) {

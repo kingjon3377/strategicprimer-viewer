@@ -8,6 +8,7 @@ import java.io.File;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.List;
@@ -79,7 +80,7 @@ public final class ExplorationPanel extends BorderedPanel implements ActionListe
 	/**
 	 * The list of completion listeners listening to us.
 	 */
-	private final List<CompletionListener> cListeners = new ArrayList<>();
+	private final Collection<CompletionListener> cListeners = new ArrayList<>();
 
 	/**
 	 * The text-field containing the running MP total.

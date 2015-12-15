@@ -1,6 +1,7 @@
 package controller.map.report;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
@@ -332,7 +333,7 @@ public final class ReportGenerator {
 	 * @param iter a source of tile-fixtures
 	 * @return all the tile-fixtures in it, recursively.
 	 */
-	private static List<IFixture> getFixtures(
+	private static Collection<IFixture> getFixtures(
 			final Iterable<? extends IFixture> iter) {
 		final List<IFixture> retval = new ArrayList<>();
 		for (final IFixture fix : iter) {

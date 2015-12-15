@@ -2,6 +2,7 @@ package view.map.main;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -124,7 +125,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	 */
 	private String getTerrainFixturesAndTop(final Point point) {
 		final IMapNG map = model.getMap();
-		final Set<TileFixture> fixes = new ArraySet<>();
+		final Collection<TileFixture> fixes = new ArraySet<>();
 		if (map.isMountainous(point)) {
 			fixes.add(new Mountain());
 		}

@@ -2,6 +2,7 @@ package model.map.fixtures.mobile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +55,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	/**
 	 * The units we're a proxy for.
 	 */
-	private final List<IUnit> proxied = new ArrayList<>();
+	private final Collection<IUnit> proxied = new ArrayList<>();
 	/**
 	 * @param unit a unit to start proxying
 	 */
@@ -409,7 +410,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		/**
 		 * The proxied unit members.
 		 */
-		private final List<UnitMember> proxiedMembers = new ArrayList<>();
+		private final Collection<UnitMember> proxiedMembers = new ArrayList<>();
 		/**
 		 * No-arg no-op constructor for use in copy().
 		 */

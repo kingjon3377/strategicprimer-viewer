@@ -5,6 +5,7 @@ import static view.util.SystemOut.SYS_OUT;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
@@ -83,8 +84,8 @@ public final class DuplicateFixtureRemover implements ISPDriver {
 	 */
 	public static void filter(final IMutableMapNG map, final Point location,
 			final Appendable ostream) throws IOException {
-		final List<TileFixture> fixtures = new ArrayList<>();
-		final List<TileFixture> toRemove = new ArrayList<>();
+		final Collection<TileFixture> fixtures = new ArrayList<>();
+		final Collection<TileFixture> toRemove = new ArrayList<>();
 		// We ignore ground and forests because they don't have IDs.
 		for (final TileFixture fix : map.getOtherFixtures(location)) {
 			boolean already = false;

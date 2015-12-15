@@ -2,6 +2,7 @@ package model.viewer;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import model.listeners.GraphicalParamsListener;
@@ -57,7 +58,7 @@ IViewerModel {
 	/**
 	 * The list of graphical-parameter listeners.
 	 */
-	private final List<GraphicalParamsListener> gpListeners = new ArrayList<>();
+	private final Collection<GraphicalParamsListener> gpListeners = new ArrayList<>();
 
 	/**
 	 * The currently selected point in the main map.

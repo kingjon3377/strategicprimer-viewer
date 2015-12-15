@@ -47,7 +47,7 @@ public final class TerrainTable implements EncounterTable {
 	 *
 	 * @param items the items to add to the list
 	 */
-	public TerrainTable(final List<Pair<TileType, String>> items) {
+	public TerrainTable(final Iterable<Pair<TileType, String>> items) {
 		for (final Pair<TileType, String> item : items) {
 			mapping.put(item.first(), item.second());
 		}

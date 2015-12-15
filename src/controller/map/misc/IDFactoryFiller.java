@@ -111,7 +111,7 @@ public final class IDFactoryFiller {
 	 *        have their IDs marked as used.
 	 */
 	private static void recursiveRegister(final IDFactory idf,
-			final FixtureIterable<@NonNull ?> iter) {
+			final Iterable<@NonNull ? extends IFixture> iter) {
 		for (final IFixture fix : iter) {
 			final int idNum = fix.getID();
 			if (!idf.used(idNum)) {

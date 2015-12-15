@@ -5,6 +5,7 @@ import static view.util.SystemOut.SYS_OUT;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -357,8 +358,8 @@ public final class QueryCLI implements ISPDriver {
 		ostream.append('\n');
 		final List<TileFixture> fixtures =
 				CLIHelper.toList(map.getOtherFixtures(location));
-		final List<Ground> ground = new ArrayList<>();
-		final List<Forest> forests = new ArrayList<>();
+		final Collection<Ground> ground = new ArrayList<>();
+		final Collection<Forest> forests = new ArrayList<>();
 		@Nullable
 		final Ground locGround = map.getGround(location);
 		if (locGround != null) {

@@ -15,6 +15,7 @@ import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
 import controller.map.misc.TypesafeXMLEventReader;
 import model.map.IMutableMapNG;
+import model.map.IMutablePlayerCollection;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
 import util.IteratorWrapper;
@@ -100,10 +101,10 @@ public final class MapReaderNG implements IMapReader, ISPReader {
 			throws XMLStreamException, SPFormatException {
 		final TypesafeXMLEventReader reader = new TypesafeXMLEventReader(
 				istream);
-		final IteratorWrapper<XMLEvent> eventReader = new IteratorWrapper<>(
+		final Iterable<XMLEvent> eventReader = new IteratorWrapper<>(
 				NullCleaner.assertNotNull(new IncludingIterator(file, reader)));
 		final IDFactory idfac = new IDFactory();
-		final PlayerCollection players = new PlayerCollection();
+		final IMutablePlayerCollection players = new PlayerCollection();
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
 				// This is a hack to make it compile under the new two-parameter

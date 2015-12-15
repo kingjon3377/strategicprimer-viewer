@@ -5,6 +5,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,7 +54,7 @@ public final class CurriedFixtureTransferable implements Transferable {
 	 *
 	 * @param list a list of TileFixtures to be transferred
 	 */
-	public CurriedFixtureTransferable(final List<TileFixture> list) {
+	public CurriedFixtureTransferable(final Collection<TileFixture> list) {
 		payload =
 				NullCleaner.assertNotNull(Collections
 						                          .unmodifiableList(list.stream().map(FixtureTransferable::new)

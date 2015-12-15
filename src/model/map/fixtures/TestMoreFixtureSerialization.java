@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import javax.xml.stream.XMLStreamException;
 
+import model.map.TileFixture;
 import org.junit.Test;
 
 import controller.map.formatexceptions.SPFormatException;
@@ -460,7 +461,7 @@ public final class TestMoreFixtureSerialization extends
 	public void testAdventureSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
 		final Player independent = new Player(1, "independent");
-		final AdventureFixture one =
+		final TileFixture one =
 				new AdventureFixture(independent,
 						"first hook brief", "first hook full", 1);
 		final AdventureFixture two =
@@ -477,7 +478,7 @@ public final class TestMoreFixtureSerialization extends
 				SPMapNG.class);
 		assertSerialization("Second adventure hook serialization test", two,
 				AdventureFixture.class);
-		final Portal three = new Portal("portal dest", PointFactory.point(1, 2), 3);
+		final TileFixture three = new Portal("portal dest", PointFactory.point(1, 2), 3);
 		final Portal four =
 				new Portal("portal dest two", PointFactory.point(2, 1), 4);
 		assertFalse("TWo different portals are not equal", three.equals(four));

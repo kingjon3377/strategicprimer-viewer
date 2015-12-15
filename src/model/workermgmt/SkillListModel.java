@@ -1,6 +1,7 @@
 package model.workermgmt;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,7 +46,7 @@ public final class SkillListModel extends DefaultListModel<ISkill> implements
 	/**
 	 * The list of completion listeners listening to us.
 	 */
-	private final List<CompletionListener> cListeners = new ArrayList<>();
+	private final Collection<CompletionListener> cListeners = new ArrayList<>();
 
 	/**
 	 * The current Job.
@@ -76,7 +77,7 @@ public final class SkillListModel extends DefaultListModel<ISkill> implements
 	public void add(final String category, final String addendum) {
 		final IJob local = job;
 		if ("skill".equals(category) && local != null) {
-			final Skill skill = new Skill(addendum, 0, 0);
+			final ISkill skill = new Skill(addendum, 0, 0);
 			local.addSkill(skill);
 			addElement(skill);
 			for (final CompletionListener list : cListeners) {

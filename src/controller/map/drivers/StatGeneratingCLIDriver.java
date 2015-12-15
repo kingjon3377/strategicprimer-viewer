@@ -8,10 +8,12 @@ import java.nio.charset.Charset;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import model.misc.IMultiMapModel;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -157,7 +159,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		final IExplorationModel model = new ExplorationModel(reader.readMultiMapModel(
+		final IDriverModel model = new ExplorationModel(reader.readMultiMapModel(
 				Warning.INSTANCE, new File(args[0]), MapReaderAdapter.namesToFiles(true, args)));
 		startDriver(model);
 		reader.writeModel(model);
@@ -213,7 +215,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 * @return true if the number designates a unit containing an unstatted
 	 *         worker, and false otherwise.
 	 */
-	private static boolean hasUnstattedWorker(final IExplorationModel model,
+	private static boolean hasUnstattedWorker(final IDriverModel model,
 			final int idNum) {
 		final IFixture fix = find(model.getMap(), idNum);
 		return fix instanceof IUnit && hasUnstattedWorker((IUnit) fix);
@@ -223,7 +225,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 * @param unit a unit
 	 * @return whether it contains any workers without stats
 	 */
-	private static boolean hasUnstattedWorker(final IUnit unit) {
+	private static boolean hasUnstattedWorker(final Iterable<UnitMember> unit) {
 		for (final UnitMember member : unit) {
 			if (member instanceof Worker
 					&& ((Worker) member).getStats() == null) {
@@ -237,7 +239,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 * @param units a list of units
 	 * @return a list of the units in the list that have workers without stats
 	 */
-	private static List<IUnit> removeStattedUnits(final List<IUnit> units) {
+	private static List<IUnit> removeStattedUnits(final Collection<IUnit> units) {
 		return units.stream().filter(StatGeneratingCLIDriver::hasUnstattedWorker).collect(Collectors.toList());
 	}
 
@@ -249,7 +251,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 * @param unit the unit containing the worker
 	 * @throws IOException on I/O error interacting with user
 	 */
-	private void enterStats(final IExplorationModel model, final IUnit unit)
+	private void enterStats(final IExplorationModel model, final Iterable<UnitMember> unit)
 			throws IOException {
 		final List<Worker> workers = new ArrayList<>();
 		for (final UnitMember member : unit) {
@@ -277,7 +279,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 * @param idNum the worker's ID.
 	 * @throws IOException on I/O error interacting with user.
 	 */
-	private void enterStats(final IExplorationModel model, final int idNum)
+	private void enterStats(final IMultiMapModel model, final int idNum)
 			throws IOException {
 		final WorkerStats stats = enterStats();
 		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
@@ -336,7 +338,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 * @return the fixture with that ID, or null if not found
 	 */
 	@Nullable
-	private static IFixture find(final FixtureIterable<@NonNull ?> iter, final int idNum) {
+	private static IFixture find(final Iterable<@NonNull ? extends IFixture> iter, final int idNum) {
 		for (final IFixture fix : iter) {
 			if (fix.getID() == idNum) {
 				return fix; // NOPMD
@@ -428,8 +430,8 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 * @param unit the unit to contain them.
 	 * @throws IOException on I/O error interacting with the user
 	 */
-	private void createWorkersForUnit(final IExplorationModel model,
-			final IDFactory idf, final IUnit unit) throws IOException {
+	private void createWorkersForUnit(final IMultiMapModel model,
+			final IDFactory idf, final IFixture unit) throws IOException {
 		final int count = cli.inputNumber("How many workers to generate? ");
 		for (int i = 0; i < count; i++) {
 			final Worker worker = createSingleWorker(idf);
@@ -455,8 +457,8 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 * @throws IOException
 	 *             on I/O error interacting with the user
 	 */
-	private void createWorkersFromFile(final IExplorationModel model,
-			final IDFactory idf, final IUnit unit) throws IOException {
+	private void createWorkersFromFile(final IMultiMapModel model,
+			final IDFactory idf, final IFixture unit) throws IOException {
 		final int count = cli.inputNumber("How many workers to generate? ");
 		final String filename = cli.inputString("Filename to load names from: ");
 		final List<String> names =

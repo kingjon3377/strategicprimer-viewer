@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
+import model.map.fixtures.mobile.IUnit;
 import org.junit.Test;
 
 import junit.framework.AssertionFailedError;
@@ -52,7 +53,7 @@ public final class TestProxyWorker {
 		final Worker two = new Worker("two", "elf", 2, new Job("jobTwo", 1,
 				new Skill("skillThree", 1, 19), new Skill("skillFour", 0, 99)));
 		final Worker three = new Worker("three", "dwarf", 5);
-		final ProxyWorker proxy = new ProxyWorker(one, two, three);
+		final Iterable<IJob> proxy = new ProxyWorker(one, two, three);
 		for (IJob job : proxy) {
 			for (ISkill skill : job) {
 				skill.addHours(10, 100);
@@ -98,8 +99,8 @@ public final class TestProxyWorker {
 		final Worker oneOrig = one.copy(false);
 		final Worker twoOrig = two.copy(false);
 		final Player player = new Player(3, "");
-		final Unit unitOne = new Unit(player, "unitKInd", "unitName", 4);
-		final Unit unitTwo = unitOne.copy(false);
+		final IUnit unitOne = new Unit(player, "unitKInd", "unitName", 4);
+		final IUnit unitTwo = unitOne.copy(false);
 		unitOne.addMember(one);
 		unitOne.addMember(two);
 		unitTwo.addMember(oneCopy);
@@ -108,7 +109,7 @@ public final class TestProxyWorker {
 		proxy.addProxied(unitOne);
 		proxy.addProxied(unitTwo);
 		for (UnitMember member : proxy) {
-			for (IJob job : (Iterable<IJob>) member) {
+			for (Iterable<ISkill> job : (Iterable<IJob>) member) {
 				for (ISkill skill : job) {
 					skill.addHours(10, 100);
 				}
@@ -148,8 +149,8 @@ public final class TestProxyWorker {
 		final Worker oneOrig = one.copy(false);
 		final Worker twoOrig = two.copy(false);
 		final Player player = new Player(3, "");
-		final Unit unitOne = new Unit(player, "unitKInd", "unitName", 4);
-		final Unit unitTwo = unitOne.copy(false);
+		final IUnit unitOne = new Unit(player, "unitKInd", "unitName", 4);
+		final IUnit unitTwo = unitOne.copy(false);
 		unitOne.addMember(one);
 		unitOne.addMember(two);
 		unitTwo.addMember(oneCopy);
@@ -157,7 +158,7 @@ public final class TestProxyWorker {
 		final ProxyUnit proxy = new ProxyUnit(4);
 		proxy.addProxied(unitOne);
 		proxy.addProxied(unitTwo);
-		final ProxyWorker meta = new ProxyWorker(proxy);
+		final Iterable<IJob> meta = new ProxyWorker(proxy);
 		for (IJob job : meta) {
 			for (ISkill skill : job) {
 				skill.addHours(10, 100);
@@ -210,7 +211,7 @@ public final class TestProxyWorker {
 	 */
 	@Test
 	public void testWorkerCopy() {
-		final Worker one = new Worker("one", "human", 1, new Job("jobOne", 1,
+		final IWorker one = new Worker("one", "human", 1, new Job("jobOne", 1,
 				new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
 		assertEquals("Worker copy should still be equal", one, one.copy(false));
 	}

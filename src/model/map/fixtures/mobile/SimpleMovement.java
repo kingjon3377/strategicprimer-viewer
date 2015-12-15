@@ -1,5 +1,6 @@
 package model.map.fixtures.mobile;
 
+import model.map.HasOwner;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.TileFixture;
@@ -156,7 +157,7 @@ public final class SimpleMovement {
 	 * @return whether the unit should always notice it. A null fixture is never
 	 *         noticed
 	 */
-	public static boolean shouldAlwaysNotice(final IUnit unit,
+	public static boolean shouldAlwaysNotice(final HasOwner unit,
 			@Nullable final TileFixture fix) {
 		return fix instanceof Mountain || fix instanceof RiverFixture
 				|| fix instanceof Hill || fix instanceof Forest

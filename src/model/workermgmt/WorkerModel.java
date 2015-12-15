@@ -2,6 +2,7 @@ package model.workermgmt;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -112,8 +113,8 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 * @return a list of the members of the sequence that are units owned by the
 	 *         player
 	 */
-	private static List<IUnit> getUnits(final Iterable<? super Unit> iter,
-			final Player player) {
+	private static Collection<IUnit> getUnits(final Iterable<? super Unit> iter,
+	                                          final Player player) {
 		final List<IUnit> retval = new ArrayList<>();
 		for (final Object obj : iter) {
 			if (obj instanceof IUnit && ((IUnit) obj).getOwner().equals(player)) {

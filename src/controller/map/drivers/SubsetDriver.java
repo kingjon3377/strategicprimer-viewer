@@ -10,6 +10,7 @@ import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
 import controller.map.misc.MapReaderAdapter;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
+import model.map.Subsettable;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.misc.SimpleMultiMapModel;
@@ -136,7 +137,7 @@ public final class SubsetDriver implements ISPDriver {
 	 * @param file the file the subordinate map came from
 	 * @return the result of doing the subset test with those maps
 	 */
-	private static Returns doSubsetTest(final IMapNG mainMap, final IMapNG map, final File file) {
+	private static Returns doSubsetTest(final Subsettable<IMapNG> mainMap, final IMapNG map, final File file) {
 		try {
 			if (mainMap.isSubset(map, SYS_OUT, "In " + file.getName() + ':')) {
 				return Returns.OK;

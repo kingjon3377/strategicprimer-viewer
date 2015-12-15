@@ -463,7 +463,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		 * @param unit a unit
 		 * @return the size of string needed to represent its members
 		 */
-		private static int unitMemberSize(final IUnit unit) {
+		private static int unitMemberSize(final Iterable<UnitMember> unit) {
 			if (unit.iterator().hasNext()) {
 				int size = 3;
 				for (final UnitMember member : unit) {
@@ -479,7 +479,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		 * @param unit a unit
 		 * @return a String representing its members
 		 */
-		private static String unitMembers(final IUnit unit) {
+		private static String unitMembers(final Iterable<UnitMember> unit) {
 			if (unit.iterator().hasNext()) {
 				// Assume at least two K.
 				final StringBuilder builder = new StringBuilder(2048)

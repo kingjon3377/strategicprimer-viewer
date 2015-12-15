@@ -1,6 +1,7 @@
 package model.map.fixtures.mobile;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -69,7 +70,7 @@ public class Unit implements IUnit {
 	/**
 	 * The members of the unit.
 	 */
-	private final Set<UnitMember> members = new ArraySet<>();
+	private final Collection<UnitMember> members = new ArraySet<>();
 
 	/**
 	 * FIXME: We need some more members -- something about stats. What else?
@@ -190,8 +191,8 @@ public class Unit implements IUnit {
 	 * @param obj another unit
 	 * @return whether its "members" are the same as ours
 	 */
-	private boolean equalMembers(final IUnit obj) {
-		final Set<UnitMember> theirs = new ArraySet<>();
+	private boolean equalMembers(final Iterable<UnitMember> obj) {
+		final Collection<UnitMember> theirs = new ArraySet<>();
 		for (final UnitMember member : obj) {
 			theirs.add(member);
 		}
@@ -412,7 +413,7 @@ public class Unit implements IUnit {
 			ostream.append(":\tKinds differ\n");
 			return false; // NOPMD
 		} else {
-			final IUnit other = (IUnit) obj;
+			final Iterable<UnitMember> other = (IUnit) obj;
 			boolean retval = true;
 			final Map<Integer, UnitMember> ours = new HashMap<>();
 			for (final UnitMember member : this) {

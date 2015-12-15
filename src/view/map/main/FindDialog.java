@@ -20,6 +20,7 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
+import model.misc.IDriverModel;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -361,7 +362,7 @@ public final class FindDialog extends JDialog implements ActionListener {
 		 * @param ffm the filter to populate
 		 * @param model the map to populate it from
 		 */
-		protected FilterPopulator(final ZOrderFilter ffm, final IViewerModel model) {
+		protected FilterPopulator(final ZOrderFilter ffm, final IDriverModel model) {
 			filter = ffm;
 			map = model.getMap();
 		}

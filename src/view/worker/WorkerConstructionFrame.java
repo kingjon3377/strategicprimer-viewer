@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -114,7 +115,7 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 	/**
 	 * The list of listeners to notify on worker creation.
 	 */
-	private final List<NewWorkerListener> nwListeners = new ArrayList<>();
+	private final Collection<NewWorkerListener> nwListeners = new ArrayList<>();
 	/**
 	 * Constructor.
 	 *

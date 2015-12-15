@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,7 +60,7 @@ public final class SkillAdvancementPanel extends BoxPanel implements ActionListe
 	/**
 	 * The list of listeners.
 	 */
-	private final List<LevelGainListener> listeners = new ArrayList<>();
+	private final Collection<LevelGainListener> listeners = new ArrayList<>();
 
 	/**
 	 * The "die" we "roll" to see whether skill advancement happens.

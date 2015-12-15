@@ -60,7 +60,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	/**
 	 * A list of unit members that have been dismissed.
 	 */
-	private final List<UnitMember> dismissedMembers = new ArrayList<>();
+	private final Collection<UnitMember> dismissedMembers = new ArrayList<>();
 	/**
 	 * Constructor.
 	 *
@@ -88,7 +88,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 				NullCleaner.assertNotNull((UnitNode) getNode(pnode, old));
 		final UnitNode newNode =
 				NullCleaner.assertNotNull((UnitNode) getNode(pnode, newOwner));
-		final UnitMemberNode node = (UnitMemberNode) getNode(pnode, member);
+		final MutableTreeNode node = (UnitMemberNode) getNode(pnode, member);
 		fireTreeNodesRemoved(this, new Object[] { pnode,
 				getNode(old.getKind()), oldNode },
 				new int[] { oldNode.getIndex(node) }, new Object[] { node });
@@ -206,7 +206,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * @param kind what kind of unit
 		 * @param units the units of this kind
 		 */
-		public KindNode(final String kind, final List<IUnit> units) {
+		public KindNode(final String kind, final Iterable<IUnit> units) {
 			super(kind);
 			int index = 0;
 			for (final IUnit unit : units) {
@@ -225,7 +225,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 *
 		 * @param unit the unit we represent.
 		 */
-		public UnitNode(final IUnit unit) {
+		public UnitNode(final Iterable<UnitMember> unit) {
 			super(unit);
 			int index = 0;
 			for (final UnitMember member : unit) {
@@ -258,7 +258,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	@Override
 	public final void addUnit(final IUnit unit) {
 		model.addUnit(unit);
-		final UnitNode node = new UnitNode(unit);
+		final MutableTreeNode node = new UnitNode(unit);
 		final String kind = unit.getKind();
 		for (final TreeNode child : (Iterable<TreeNode>) root) {
 			if (child instanceof KindNode
@@ -324,7 +324,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 */
 	@Override
 	public final void addUnitMember(final IUnit unit, final UnitMember member) {
-		final PlayerNode pnode = (PlayerNode) root;
+		final Iterable<TreeNode> pnode = (PlayerNode) root;
 		UnitNode unode = null;
 		for (final TreeNode item : pnode) {
 			if (item instanceof UnitNode
@@ -337,7 +337,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			return;
 		}
 		unit.addMember(member);
-		final UnitMemberNode newNode = new UnitMemberNode(member);
+		final MutableTreeNode newNode = new UnitMemberNode(member);
 		unode.add(newNode);
 		fireTreeNodesInserted(this, new Object[] { root, unode },
 				new int[] { unode.getChildCount() - 1 },
@@ -356,7 +356,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @return the node representing it, or null if it isn't in the tree
 	 */
 	@Nullable
-	public MutableTreeNode getNode(final Object obj) {
+	public TreeNode getNode(final Object obj) {
 		final TreeNode localRoot = root;
 		if (localRoot != null) {
 			return getNode(localRoot, obj);

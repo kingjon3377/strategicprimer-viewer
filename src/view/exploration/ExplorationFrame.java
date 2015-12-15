@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -58,7 +59,7 @@ public final class ExplorationFrame extends JFrame {
 		/**
 		 * Things to tell to validate their layout before swapping.
 		 */
-		private final List<Component> compList = new ArrayList<>();
+		private final Collection<Component> compList = new ArrayList<>();
 		/**
 		 * Whether we're *on* the first panel. If we are, we go 'next'; if not,
 		 * we go 'first'.
@@ -124,7 +125,7 @@ public final class ExplorationFrame extends JFrame {
 				esp.getMPDocument());
 		emodel.addMovementCostListener(explorationPanel);
 		emodel.addSelectionChangeListener(explorationPanel);
-		final SwapCompletionListener swapper =
+		final CompletionListener swapper =
 				new SwapCompletionListener(layout,
 						NullCleaner.assertNotNull(getContentPane()),
 						explorationPanel, esp);

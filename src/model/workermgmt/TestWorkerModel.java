@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -66,7 +67,7 @@ public final class TestWorkerModel {
 		final List<TileFixture> fixtures = new ArrayList<>();
 		final List<IUnit> listOne = new ArrayList<>();
 		final List<IUnit> listTwo = new ArrayList<>();
-		final List<IUnit> listThree = new ArrayList<>();
+		final Collection<IUnit> listThree = new ArrayList<>();
 		fixtures.add(new Mountain());
 		fixtures.add(new Animal("animal", false, false, "wild", 1));
 		addItem(new Unit(playerOne, "one", "unitOne", 2), fixtures,
@@ -112,7 +113,7 @@ public final class TestWorkerModel {
 	 * @return the contents of that list, with any proxies replaced by the items
 	 *         they proxy
 	 */
-	private static <T> List<T> filterProxies(final List<T> list) {
+	private static <T> List<T> filterProxies(final Iterable<T> list) {
 		final List<T> retval = new ArrayList<>();
 		for (T item : list) {
 			if (item instanceof ProxyFor<?>) {

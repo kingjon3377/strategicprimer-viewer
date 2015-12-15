@@ -3,6 +3,7 @@ package model.exploration;
 import static model.map.TileType.Ocean;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -72,7 +73,7 @@ public final class HuntingModel {
 	 */
 	public HuntingModel(final IMapNG map) {
 		dims = map.dimensions();
-		final Set<String> fishKinds = new HashSet<>();
+		final Collection<String> fishKinds = new HashSet<>();
 		for (final Point point : map.locations()) {
 			if (Ocean == map.getBaseTerrain(point)) {
 				for (final TileFixture fix : map.getOtherFixtures(point)) {
@@ -167,7 +168,7 @@ public final class HuntingModel {
 	 *         be "nothing," especially from desert and tundra tiles and less
 	 *         from jungle tiles.
 	 */
-	public List<String> gather(final Point point, final int items) {
+	public Iterable<String> gather(final Point point, final int items) {
 		final List<String> choices = new ArrayList<>();
 		final Iterable<Point> iter = new SurroundingPointIterable(point, dims);
 		for (final Point local : iter) {

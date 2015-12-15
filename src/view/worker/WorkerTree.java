@@ -6,6 +6,7 @@ import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JTree;
@@ -289,11 +290,11 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		/**
 		 * The list of unit-selection listeners listening to us.
 		 */
-		private final List<UnitSelectionListener> selectionListeners = new ArrayList<>();
+		private final Collection<UnitSelectionListener> selectionListeners = new ArrayList<>();
 		/**
 		 * The list of listeners to notify of newly selected unit member.
 		 */
-		private final List<UnitMemberListener> umListeners = new ArrayList<>();
+		private final Collection<UnitMemberListener> umListeners = new ArrayList<>();
 
 		/**
 		 * The tree model to refer to.

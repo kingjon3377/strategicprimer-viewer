@@ -131,7 +131,7 @@ public final class MiningModel {
 	 * @param set a set of Points
 	 * @return the lowest column in the set
 	 */
-	private static int getMinCol(final Set<Point> set) {
+	private static int getMinCol(final Iterable<Point> set) {
 		int retval = 0;
 		for (final Point point : set) {
 			if (point.col < retval) {
@@ -144,7 +144,7 @@ public final class MiningModel {
 	 * @param set a set of points
 	 * @return a Point with the highest column and row in the set
 	 */
-	private static Point createMaxPoint(final Set<Point> set) {
+	private static Point createMaxPoint(final Iterable<Point> set) {
 		int maxCol = 0;
 		int maxRow = 0;
 		for (final Point point : set) {

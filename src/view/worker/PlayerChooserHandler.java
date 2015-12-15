@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -51,7 +52,7 @@ public final class PlayerChooserHandler implements ActionListener,
 	/**
 	 * The list of listeners.
 	 */
-	private final List<PlayerChangeListener> listeners = new ArrayList<>();
+	private final Collection<PlayerChangeListener> listeners = new ArrayList<>();
 
 	/**
 	 * The frame to attach the dialog to.

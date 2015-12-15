@@ -6,6 +6,7 @@ import static view.util.SystemOut.SYS_OUT;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
@@ -182,7 +183,7 @@ public final class ExplorationCLI {
 			return 1; // NOPMD
 		}
 		final List<TileFixture> allFixtures = new ArrayList<>();
-		final List<TileFixture> constants = new ArrayList<>();
+		final Collection<TileFixture> constants = new ArrayList<>();
 		final IMutableMapNG map = model.getMap();
 		if (map.isMountainous(dPoint)) {
 			constants.add(new Mountain());
@@ -242,7 +243,7 @@ public final class ExplorationCLI {
 	 *            the current unit (needed for its owner)
 	 */
 	private void printAndTransferFixture(final Point dPoint,
-			@Nullable final TileFixture fix, final IUnit mover) {
+			@Nullable final TileFixture fix, final HasOwner mover) {
 		if (fix != null) {
 			SYS_OUT.println(fix);
 			final boolean zero = fix instanceof HasOwner && !((HasOwner) fix)

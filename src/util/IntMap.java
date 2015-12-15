@@ -43,7 +43,7 @@ public final class IntMap<V> implements DelayedRemovalMap<@NonNull Integer, V> {
 	/**
 	 * The list of items to remove when we're told to remove them.
 	 */
-	private final List<@NonNull Integer> toRemove = new ArrayList<>();
+	private final Collection<@NonNull Integer> toRemove = new ArrayList<>();
 
 	/**
 	 * @return the size of the map

@@ -1,6 +1,7 @@
 package controller.map.report;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -64,9 +65,9 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	public String produce(
 			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 			final IMapNG map, final Player currentPlayer) {
-		final HeadedList<@NonNull String> others = new HtmlList(
+		final Collection<@NonNull String> others = new HtmlList(
 				"<h4>Villages you know about:</h4>");
-		final HeadedList<String> own = new HtmlList(
+		final Collection<String> own = new HtmlList(
 				"<h4>Villages pledged to your service:</h4>");
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);

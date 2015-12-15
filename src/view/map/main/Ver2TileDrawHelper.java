@@ -8,6 +8,7 @@ import java.awt.image.ImageObserver;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -75,7 +76,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * The images we've already determined aren't there.
 	 */
-	private final Set<String> missingFiles = new HashSet<>();
+	private final Collection<String> missingFiles = new HashSet<>();
 	/**
 	 * A mapping from river-sets to filenames.
 	 */
@@ -236,7 +237,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private Iterable<TileFixture> getDrawableFixtures(final IMapNG map,
 			final Point location) {
-		final List<TileFixture> temp = new ArrayList<>();
+		final Collection<TileFixture> temp = new ArrayList<>();
 		@Nullable
 		final Ground ground = map.getGround(location);
 		if (ground != null) {

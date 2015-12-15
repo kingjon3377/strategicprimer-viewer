@@ -3,6 +3,7 @@ package controller.map.drivers;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -256,7 +257,7 @@ public final class ExpansionDriver implements ISPDriver {
 				throw ise;
 			}
 		};
-		final Set<Point> villagePoints = new ArraySet<>();
+		final Collection<Point> villagePoints = new ArraySet<>();
 		for (final Point point : lmap.locations()) {
 			if (containsSwornVillage(master, point, player)) {
 				villagePoints.add(point);

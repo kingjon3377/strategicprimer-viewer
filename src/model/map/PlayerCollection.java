@@ -221,7 +221,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 */
 	@Override
 	public IMutablePlayerCollection copy(final boolean zero) {
-		final PlayerCollection retval = new PlayerCollection();
+		final IMutablePlayerCollection retval = new PlayerCollection();
 		for (Player player : this) {
 			retval.add(player);
 		}

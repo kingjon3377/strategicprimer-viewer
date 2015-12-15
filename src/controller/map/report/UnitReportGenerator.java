@@ -31,6 +31,8 @@ import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
 
+import javax.swing.tree.MutableTreeNode;
+
 /**
  * A report generator for units.
  *
@@ -218,7 +220,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * @param job a Job
 	 * @return a String describing its skills.
 	 */
-	private static String getSkills(final Job job) {
+	private static String getSkills(final Iterable<ISkill> job) {
 		final StringBuilder builder = new StringBuilder();
 		if (job.iterator().hasNext()) {
 			boolean first = true;
@@ -245,9 +247,9 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 *        experience---true only if the current player owns the worker.
 	 * @return a sub-report on that worker.
 	 */
-	private static AbstractReportNode produceWorkerRIR(final Point loc,
-			final Worker worker,
-			final boolean details) {
+	private static MutableTreeNode produceWorkerRIR(final Point loc,
+	                                                final Worker worker,
+	                                                final boolean details) {
 		final AbstractReportNode retval = new ComplexReportNode(loc,
 				worker.getName() + ", a " + worker.getRace() + ". ");
 		final WorkerStats stats = worker.getStats();
@@ -281,7 +283,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * @param job a Job
 	 * @return a sub-report on that Job.
 	 */
-	private static AbstractReportNode produceJobRIR(final Job job, final Point loc) {
+	private static MutableTreeNode produceJobRIR(final Job job, final Point loc) {
 		return new SimpleReportNode(loc, Integer.toString(job.getLevel()),
 				" levels in ", job.getName(), getSkills(job));
 	}

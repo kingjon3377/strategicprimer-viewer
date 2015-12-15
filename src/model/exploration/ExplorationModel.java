@@ -2,6 +2,7 @@ package model.exploration;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -73,12 +74,12 @@ IExplorationModel {
 	/**
 	 * The list of movement-cost listeners.
 	 */
-	private final List<MovementCostListener> mcListeners = new ArrayList<>();
+	private final Collection<MovementCostListener> mcListeners = new ArrayList<>();
 
 	/**
 	 * The list of selection-change-listeners to notify when the unit moves.
 	 */
-	private final List<SelectionChangeListener> scListeners = new ArrayList<>();
+	private final Collection<SelectionChangeListener> scListeners = new ArrayList<>();
 
 	/**
 	 * Constructor.
@@ -105,7 +106,7 @@ IExplorationModel {
 		for (final Player player : getMap().players()) {
 			retval.add(player);
 		}
-		final List<Player> temp = new ArrayList<>();
+		final Collection<Player> temp = new ArrayList<>();
 		for (final Pair<IMutableMapNG, File> pair : getSubordinateMaps()) {
 			final IMapNG map = pair.first();
 			temp.clear();
@@ -136,8 +137,8 @@ IExplorationModel {
 	 * @return a list of the members of the sequence that are units owned by the
 	 *         player
 	 */
-	private static List<IUnit> getUnits(final Iterable<? super Unit> iter,
-			final Player player) {
+	private static Collection<IUnit> getUnits(final Iterable<? super Unit> iter,
+	                                          final Player player) {
 		final List<IUnit> retval = new ArrayList<>();
 		for (final Object obj : iter) {
 			if (obj instanceof IUnit && ((IUnit) obj).getOwner().equals(player)) {
@@ -229,7 +230,7 @@ IExplorationModel {
 	private static void checkAllNearbyWatchers(final IMapNG map, final IUnit unit,
 			final Point dest) {
 		final MapDimensions dims = map.dimensions();
-		final Set<Point> done = new HashSet<>(25);
+		final Collection<Point> done = new HashSet<>(25);
 		for (final Point point : new SurroundingPointIterable(dest, dims)) {
 			if (done.contains(point)) {
 				continue;
@@ -250,7 +251,7 @@ IExplorationModel {
 	 * @param dest where the mover moved to
 	 */
 	private static void checkNearbyWatcher(final Iterable<TileFixture> fixtures,
-			final Point point, final IUnit unit, final Point dest) {
+	                                       final Point point, final HasOwner unit, final Point dest) {
 		for (final TileFixture fix : fixtures) {
 			if (fix instanceof HasOwner
 					&& !((HasOwner) fix).getOwner().isIndependent()

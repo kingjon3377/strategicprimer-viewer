@@ -11,6 +11,7 @@ import static org.junit.Assert.assertEquals;
 import static util.NullCleaner.assertNotNull;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
@@ -88,8 +89,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 * @param rivers the rivers to put on a tile
 	 * @return a map containing them. Declared mutable for the sake of calling code.
 	 */
-	private static IMutableMapNG encapsulateRivers(final Point point,
-			final River... rivers) {
+	private static IMapNG encapsulateRivers(final Point point,
+	                                        final River... rivers) {
 		final IMutableMapNG retval =
 				new SPMapNG(new MapDimensions(point.row + 1, point.col + 1, 2),
 						new PlayerCollection(), -1);
@@ -152,9 +153,9 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		fixOne.addRiver(River.South);
 		fixTwo.addRiver(River.North);
 		assertEquals("Rivers added separately", fixOne, fixTwo);
-		final Set<TileFixture> hsetOne = new HashSet<>();
+		final Collection<TileFixture> hsetOne = new HashSet<>();
 		hsetOne.add(fixOne);
-		final Set<TileFixture> hsetTwo = new HashSet<>();
+		final Collection<TileFixture> hsetTwo = new HashSet<>();
 		hsetTwo.add(fixTwo);
 		assertEquals("Check Set.equals()", hsetOne, hsetTwo);
 		assertEquals("Tile equality with rivers",
@@ -320,7 +321,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertUnwantedChild(
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><hill /></map>",
 				IMapNG.class, false);
-		final SPMapNG one =
+		final IMutableMapNG one =
 				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
 						-1);
 		final Player player = new Player(1, "playerOne");
@@ -371,7 +372,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testViewSerialization() throws XMLStreamException,
 			SPFormatException, IOException {
-		final SPMapNG one =
+		final IMutableMapNG one =
 				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
 						0);
 		final Player player = new Player(1, "playerOne");

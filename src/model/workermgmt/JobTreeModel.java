@@ -1,6 +1,7 @@
 package model.workermgmt;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -54,7 +55,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	/**
 	 * The listeners registered to listen for model changes.
 	 */
-	private final List<TreeModelListener> listeners = new ArrayList<>();
+	private final Collection<TreeModelListener> listeners = new ArrayList<>();
 
 	/**
 	 * The worker who the Jobs and Skills describe.

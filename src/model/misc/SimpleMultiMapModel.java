@@ -2,6 +2,7 @@ package model.misc;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,7 +91,7 @@ public class SimpleMultiMapModel extends AbstractDriverModel
 	 */
 	@Override
 	public final Iterable<Pair<IMutableMapNG, File>> getAllMaps() {
-		final List<Pair<IMutableMapNG, File>> retval = new ArrayList<>();
+		final Collection<Pair<IMutableMapNG, File>> retval = new ArrayList<>();
 		retval.add(Pair.of(getMap(), getMapFile()));
 		for (final Pair<IMutableMapNG, File> pair : getSubordinateMaps()) {
 			retval.add(pair);

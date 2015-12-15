@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,7 +61,7 @@ public final class NewUnitDialog extends JFrame implements ActionListener,
 	/**
 	 * The list of new-unit listeners listening to us.
 	 */
-	private final List<NewUnitListener> nuListeners = new ArrayList<>();
+	private final Collection<NewUnitListener> nuListeners = new ArrayList<>();
 
 	/**
 	 * The player to own created units.

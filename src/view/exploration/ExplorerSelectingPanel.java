@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.*;
@@ -61,7 +62,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	/**
 	 * The list of completion listeners listening to us.
 	 */
-	private final List<CompletionListener> cListeners = new ArrayList<>();
+	private final Collection<CompletionListener> cListeners = new ArrayList<>();
 
 	/**
 	 * The minimum length of the HTML wrapper.
@@ -79,7 +80,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	/**
 	 * The list of player-change listeners.
 	 */
-	private final List<PlayerChangeListener> listeners = new ArrayList<>();
+	private final Collection<PlayerChangeListener> listeners = new ArrayList<>();
 
 	/**
 	 * The text-field containing the running MP total.

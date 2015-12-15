@@ -3,6 +3,7 @@ package controller.map.drivers;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -12,6 +13,7 @@ import javax.xml.stream.XMLStreamException;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
 import controller.map.misc.MapReaderAdapter;
 import model.map.IMutableMapNG;
 import model.map.Point;
@@ -52,7 +54,7 @@ public final class TODOFixerDriver {
 	/**
 	 * A helper to get strings from the user.
 	 */
-	private final CLIHelper helper = new CLIHelper();
+	private final ICLIHelper helper = new CLIHelper();
 	/**
 	 * Logger.
 	 */
@@ -87,7 +89,7 @@ public final class TODOFixerDriver {
 	 * @param unit the unit to fix
 	 * @param jobList a list of possible kinds for its surroundings
 	 */
-	private void fixUnit(final Unit unit, final List<String> jobList) {
+	private void fixUnit(final Unit unit, final Collection<String> jobList) {
 		final Random random = new Random(unit.getID());
 		count++;
 		for (final String string : jobList) {
