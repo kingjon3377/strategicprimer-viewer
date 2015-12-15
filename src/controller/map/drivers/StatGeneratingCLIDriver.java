@@ -408,8 +408,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 						cli.inputString("Kind of unit: "),
 						cli.inputString("Unit name: "), idf.createID());
 				for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
-					IMutableMapNG submap = pair.first();
-					submap.addFixture(point, unit);
+					pair.first().addFixture(point, unit);
 				}
 				if (cli.inputBoolean(LOAD_NAMES)) {
 					createWorkersFromFile(model, idf, unit);
