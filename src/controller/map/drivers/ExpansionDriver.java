@@ -281,6 +281,11 @@ public final class ExpansionDriver implements ISPDriver {
 			public boolean equals(final Object obj) {
 				throw ise;
 			}
+
+			@Override
+			public int hashCode() {
+				throw ise;
+			}
 		};
 		final Map<Point, Set<TileFixture>> fixAdditions = new HashMap<>();
 		final Map<Point, TileType> terrainAdditions = new HashMap<>();
