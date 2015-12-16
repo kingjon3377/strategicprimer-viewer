@@ -1,15 +1,18 @@
 package model.workermgmt;
 
 import java.io.File;
+import java.security.cert.PKIXRevocationChecker.Option;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -22,6 +25,7 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
 import model.misc.SimpleMultiMapModel;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.Pair;
 import view.util.SystemOut;
@@ -163,6 +167,46 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 			}
 		}
 		SystemOut.SYS_OUT.println("No suitable location found");
+	}
+
+	@Override
+	public @Nullable IUnit getUnitByID(Player owner, final int id) {
+		Optional<IUnit> retval = StreamSupport.stream(getUnits(owner).spliterator(), false).filter(unit -> id == unit.getID()).findAny();
+		if (retval.isPresent()) {
+			return retval.get();
+		} else {
+			return null;
+		}
+	}
+
+	private void addUnitAtLocation(IUnit unit, Point location) {
+		if (getSubordinateMaps().iterator().hasNext()) {
+			for (Pair<IMutableMapNG, File> pair : getAllMaps()) {
+				boolean added = false;
+				for (final TileFixture fix : pair.first().getOtherFixtures(location)) {
+					if (fix instanceof Fortress && unit.getOwner().equals(((Fortress) fix).getOwner())) {
+						((Fortress) fix).addMember(unit.copy(false));
+						added = true;
+						break;
+					}
+				}
+				if (!added) {
+					pair.first().addFixture(location, unit.copy(false));
+				}
+			}
+		} else {
+			boolean added = false;
+			for (final TileFixture fix : getMap().getOtherFixtures(location)) {
+				if (fix instanceof Fortress && unit.getOwner().equals(((Fortress) fix).getOwner())) {
+					((Fortress) fix).addMember(unit.copy(false));
+					added = true;
+					break;
+				}
+			}
+			if (!added) {
+				getMap().addFixture(location, unit.copy(false));
+			}
+		}
 	}
 	/**
 	 * @return a String representation of the object

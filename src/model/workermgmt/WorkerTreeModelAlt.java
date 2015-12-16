@@ -258,7 +258,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	@Override
 	public void addUnit(final IUnit unit) {
 		model.addUnit(unit);
-		final MutableTreeNode node = new UnitNode(unit);
+		final MutableTreeNode node = new UnitNode(model.getUnitByID((Player) ((PlayerNode) root).getUserObject(), unit.getID()));
 		final String kind = unit.getKind();
 		for (final TreeNode child : (Iterable<TreeNode>) root) {
 			if (child instanceof KindNode

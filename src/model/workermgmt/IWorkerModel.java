@@ -5,6 +5,7 @@ import java.util.List;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
 import model.misc.IMultiMapModel;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * An interface for a model to underlie the advancement GUI, etc.
@@ -52,4 +53,12 @@ public interface IWorkerModel extends IMultiMapModel {
 	 * @param unit the unit to add.
 	 */
 	void addUnit(IUnit unit);
+	/**
+	 * Get a unit by ID #.
+	 * @param owner the unit's owner
+	 * @param id the ID # to search for
+	 *
+	 * @return the unit with that ID, or null if no unit has that ID.
+	 */
+	@Nullable IUnit getUnitByID(Player owner, int id);
 }
