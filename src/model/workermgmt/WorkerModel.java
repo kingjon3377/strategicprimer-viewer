@@ -161,7 +161,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 				if (fix instanceof Fortress
 						&& unit.getOwner().equals(((Fortress) fix).getOwner())
 						&& "HQ".equals(((Fortress) fix).getName())) {
-					((Fortress) fix).addMember(unit);
+					addUnitAtLocation(unit, point);
 					return;
 				}
 			}
