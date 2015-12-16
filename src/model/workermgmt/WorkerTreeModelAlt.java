@@ -410,7 +410,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 		final TreeNode[] path = getPathToRoot(node);
 		final int index = getIndexOfChild(path[path.length - 2], node);
-		fireTreeNodesChanged(this, path, new int[] { index }, new Object[] { node });
+		fireTreeNodesChanged(this, Arrays.copyOfRange(path, 0, path.length - 1), new int[] { index }, new Object[] { node });
 	}
 	/**
 	 * @param item the item to move to this point in the tree
