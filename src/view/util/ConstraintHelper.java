@@ -33,6 +33,7 @@ public final class ConstraintHelper extends GridBagConstraints {
 	 * @param col the column
 	 * @param row the row
 	 */
+	@SuppressWarnings("AssignmentToSuperclassField")
 	public ConstraintHelper(final int col, final int row) {
 		gridx = col;
 		gridy = row;
@@ -46,8 +47,9 @@ public final class ConstraintHelper extends GridBagConstraints {
 	 * @param width how many columns
 	 * @param height how many rows
 	 */
+	@SuppressWarnings("AssignmentToSuperclassField")
 	public ConstraintHelper(final int col, final int row, final int width,
-			final int height) {
+	                        final int height) {
 		this(col, row);
 		gridwidth = width;
 		gridheight = height;
