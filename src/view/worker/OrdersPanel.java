@@ -362,7 +362,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		 * @param owner ignored
 		 */
 		@Override
-		public void setOwner(final Player owner) {
+		public void setOwner(final Player newOwner) {
 			throw new IllegalStateException("setOwner called on ProxyUnit");
 		}
 		/**

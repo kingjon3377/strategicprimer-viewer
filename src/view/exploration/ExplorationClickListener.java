@@ -226,13 +226,13 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 */
 	private List<TileFixture> getSelectedValuesList() {
 		final int[] selections = list.getSelectedIndices();
-		final ListModel<TileFixture> model = list.getModel();
+		final ListModel<TileFixture> listModel = list.getModel();
 		final List<TileFixture> retval = new ArrayList<>();
 		for (final int sel : selections) {
-			if (sel < model.getSize()) {
-				retval.add(model.getElementAt(sel));
+			if (sel < listModel.getSize()) {
+				retval.add(listModel.getElementAt(sel));
 			} else {
-				retval.add(model.getElementAt(model.getSize() - 1));
+				retval.add(listModel.getElementAt(listModel.getSize() - 1));
 			}
 		}
 		return retval;
