@@ -139,7 +139,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		model = wmodel;
 		final InputMap inputMap = getInputMap(WHEN_IN_FOCUSED_WINDOW);
 		final ActionMap actionMap = getActionMap();
-		assert (inputMap != null && actionMap != null);
+		assert inputMap != null && actionMap != null;
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, keyMask), "openOrders");
 		actionMap.put("openOrders", new AbstractAction() {
 			@Override

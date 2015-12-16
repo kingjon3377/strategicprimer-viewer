@@ -82,8 +82,8 @@ public final class DirectTileDrawHelper extends AbstractTileDrawHelper {
 			}
 			if (hasAnyUnits(map, location)) {
 				context.setColor(UNIT_COLOR);
-				context.fillOval(((int) Math.round(dims.x / FOUR))
-						+ position.x, ((int) Math.round(dims.y / FOUR))
+				context.fillOval((int) Math.round(dims.x / FOUR)
+						+ position.x, (int) Math.round(dims.y / FOUR)
 						+ position.y, (int) Math.round(dims.x / FOUR),
 						(int) Math.round(dims.y / FOUR));
 			} else if (hasEvent(map, location)) {

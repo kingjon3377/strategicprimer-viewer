@@ -160,8 +160,8 @@ public final class FixtureCellRenderer implements ListCellRenderer<TileFixture> 
 				(int) Math.round(imageSize * (margin / 2.0)));
 		pen.setColor(saveColor);
 		pen.fillRoundRect(
-				((int) Math.round(imageSize / 2.0 - imageSize * margin)) + 1,
-				((int) Math.round(imageSize / 2.0 - imageSize * margin)) + 1,
+				(int) Math.round(imageSize / 2.0 - imageSize * margin) + 1,
+				(int) Math.round(imageSize / 2.0 - imageSize * margin) + 1,
 				(int) Math.round(imageSize * margin * 2.0),
 				(int) Math.round(imageSize * margin * 2.0),
 				(int) Math.round(imageSize * margin / 2.0),

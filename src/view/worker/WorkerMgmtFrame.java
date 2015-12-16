@@ -158,7 +158,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		}
 		final InputMap inputMap = tree.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		final ActionMap actionMap = tree.getActionMap();
-		assert (inputMap != null && actionMap != null);
+		assert inputMap != null && actionMap != null;
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_U, keyMask), "openUnits");
 		actionMap.put("openUnits", new FocusRequester(tree));
 		final PlayerLabel plabel = new PlayerLabel("Units belonging to ",

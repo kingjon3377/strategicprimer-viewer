@@ -355,10 +355,10 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			for (int j = 0; j < dim.cols; j++) {
 				final Point point = PointFactory.point(i, j);
 				if (TileType.NotVisible != obj.getBaseTerrain(point)
-						    || (obj.isMountainous(point)
-								        || obj.getGround(point) != null
-								        || obj.getForest(point) != null
-								        || obj.getOtherFixtures(point).iterator().hasNext())) {
+						    || obj.isMountainous(point)
+								       || obj.getGround(point) != null
+								       || obj.getForest(point) != null
+								       || obj.getOtherFixtures(point).iterator().hasNext()) {
 					if (rowEmpty) {
 						rowEmpty = false;
 						ostream.append(indent(indent + 2));

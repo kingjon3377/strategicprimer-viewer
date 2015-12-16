@@ -106,7 +106,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 				final Iterator<IUnit> newIter = ((ProxyUnit) newOwner).getProxied().iterator();
 				for (final UnitMember item : ((ProxyFor<? extends UnitMember>) member)
 						.getProxied()) {
-					assert (oldIter.hasNext() && newIter.hasNext());
+					assert oldIter.hasNext() && newIter.hasNext();
 					final IUnit innerOld = oldIter.next();
 					final IUnit innerNew = newIter.next();
 					innerOld.removeMember(item);

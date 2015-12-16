@@ -235,9 +235,9 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	public int hashCode() {
 		final int prime = 31;
 		return prime * (prime
-				* (prime * (prime * (prime + (contents.hashCode())) + id)
-						+ (kind.hashCode()))
-				+ quantity) + (unit.hashCode());
+				* (prime * (prime * (prime + contents.hashCode()) + id)
+						+ kind.hashCode())
+				+ quantity) + unit.hashCode();
 	}
 	/**
 	 * @param obj an object

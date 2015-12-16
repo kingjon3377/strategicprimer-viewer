@@ -88,7 +88,7 @@ public abstract class AbstractCompactReader<@NonNull T> implements CompactReader
 			throw new IllegalArgumentException(csl(
 					NullCleaner.assertNotNull(new StringBuilder(len)
 							.append(base)), tags).toString());
-		} else if (!(EqualsAny.equalsAny(localName, tags))) {
+		} else if (!EqualsAny.equalsAny(localName, tags)) {
 			final String base = format(
 					"Unexpected tag %s on line %d, expected one of the following: ",
 					localName, Integer.valueOf(line));

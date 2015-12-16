@@ -614,7 +614,7 @@ public final class OneToTwoConverter { // NOPMD
 	 * @return a seed for the RNG for conversion based on the given tile
 	 */
 	private static long getSeed(final Point point) {
-		return (long) (point.col) << 32L + point.row;
+		return (long) point.col << 32L + point.row;
 	}
 
 	/**
