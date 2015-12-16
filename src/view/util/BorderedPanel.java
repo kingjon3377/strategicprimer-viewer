@@ -31,6 +31,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  *
  */
+@SuppressWarnings("ReturnOfThis")
 public class BorderedPanel extends JPanel {
 	/**
 	 * Constructor.
