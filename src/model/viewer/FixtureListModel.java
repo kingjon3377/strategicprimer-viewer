@@ -126,7 +126,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 *
 	 * @param list the list of items to remove. If null, none are removed.
 	 */
-	public void remove(@Nullable final Iterable<TileFixture> list) {
+	public void removeAll(@Nullable final Iterable<TileFixture> list) {
 		if (list != null) {
 			final IMutableMapNG map = dmodel.getMap();
 			for (final TileFixture fix : list) {

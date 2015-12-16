@@ -85,7 +85,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		getActionMap().put("delete", new AbstractAction() {
 			@Override
 			public void actionPerformed(@Nullable final ActionEvent event) {
-				((FixtureListModel) getModel()).remove(getSelectedValuesList());
+				((FixtureListModel) getModel()).removeAll(getSelectedValuesList());
 			}
 		});
 		addMouseListener(new FixtureMouseListener(players));
