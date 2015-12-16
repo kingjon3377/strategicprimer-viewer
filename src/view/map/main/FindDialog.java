@@ -10,6 +10,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
 
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -238,11 +239,8 @@ public final class FindDialog extends JDialog implements ActionListener {
 		if (matchesSimple(pattern, idNum, fix, csen)) {
 			return true; // NOPMD
 		} else if (fix instanceof FixtureIterable) {
-			for (final IFixture member : (FixtureIterable<@NonNull ?>) fix) {
-				if (matches(pattern, idNum, member, csen)) {
-					return true; // NOPMD
-				}
-			}
+			return StreamSupport.stream(((FixtureIterable<@NonNull ?>) fix).spliterator(), false)
+					       .anyMatch((IFixture member) -> matches(pattern, idNum, member, csen));
 		}
 		return false;
 	}
