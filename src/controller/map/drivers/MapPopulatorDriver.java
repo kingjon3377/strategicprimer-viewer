@@ -44,10 +44,12 @@ public final class MapPopulatorDriver implements ISPDriver {
 	/**
 	 * How many tiles we've found suitable so far.
 	 */
+	@SuppressWarnings("StaticNonFinalField")
 	private static int suitableCount = 0;
 	/**
 	 * How many tiles we've changed so far.
 	 */
+	@SuppressWarnings("StaticNonFinalField")
 	private static int changedCount = 0;
 	/**
 	 * Whether the given location is suitable for the kind of fixture we're creating.
