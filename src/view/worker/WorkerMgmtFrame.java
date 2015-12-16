@@ -35,9 +35,11 @@ import javax.swing.WindowConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
+import model.workermgmt.WorkerTreeModelAlt.WorkerTreeNode;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -375,7 +377,15 @@ public final class WorkerMgmtFrame extends JFrame {
 		 * @return the proto-strategy as a String
 		 */
 		public String createStrategy() {
-			final Player currentPlayer = model.getMap().getCurrentPlayer();
+			final Player currentPlayer;
+			final Object treeRoot = tmodel.getRoot();
+			if (treeRoot instanceof WorkerTreeNode && ((WorkerTreeNode) treeRoot).getUserObject() instanceof Player) {
+				currentPlayer = (Player) ((WorkerTreeNode) treeRoot).getUserObject();
+			} else if (treeRoot instanceof Player) {
+				currentPlayer = (Player) treeRoot;
+			} else {
+				currentPlayer = model.getMap().getCurrentPlayer();
+			}
 			final String playerName = currentPlayer.getName();
 			final String turn = Integer.toString(model.getMap().getCurrentTurn());
 			final List<IUnit> units = model.getUnits(currentPlayer);
@@ -521,8 +531,8 @@ public final class WorkerMgmtFrame extends JFrame {
 		 * @return a suitable string for it
 		 */
 		private static String memberString(final UnitMember member) {
-			if (member instanceof Worker) {
-				final Worker worker = (Worker) member;
+			if (member instanceof IWorker) {
+				final IWorker worker = (IWorker) member;
 				// To save calculations, assume a half-K every time.
 				final StringBuilder builder = new StringBuilder(512)
 						.append(worker.getName());
@@ -530,9 +540,6 @@ public final class WorkerMgmtFrame extends JFrame {
 					builder.append(" (");
 					boolean first = true;
 					for (final IJob job : worker) {
-						if (!(job instanceof Job)) {
-							continue;
-						}
 						if (first) {
 							first = false;
 						} else {
