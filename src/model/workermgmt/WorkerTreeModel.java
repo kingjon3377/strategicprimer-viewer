@@ -366,7 +366,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			boolean found = false;
 			for (final IUnit unit : model.getUnits(root)) {
 				for (final UnitMember member : unit) {
-					if (member == item || item.equals(member)) {
+					if (item.equals(member)) {
 						found = true;
 						parent = unit;
 					}
@@ -406,7 +406,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			IUnit parent = null;
 			for (final IUnit unit : model.getUnits(root)) {
 				for (final UnitMember member : unit) {
-					if (member == item || item.equals(member)) {
+					if (item.equals(member)) {
 						parent = unit;
 					}
 				}
@@ -437,7 +437,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	public void dismissUnitMember(final UnitMember member) {
 		for (final IUnit unit : model.getUnits(root)) {
 			for (final UnitMember item : unit) {
-				if (member == item || item.equals(member)) {
+				if (item.equals(member)) {
 					final int index = getIndexOfChild(unit, item);
 					dismissedMembers.add(member);
 					unit.removeMember(member);
