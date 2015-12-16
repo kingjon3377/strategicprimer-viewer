@@ -219,7 +219,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	}
 
 	/**
-	 * A reimplementation of {@link javax.swing.JList#getSelectedValuesList()}
+	 * A reimplementation of {@link JList#getSelectedValuesList()}
 	 * that's guaranteed not to throw an ArrayIndexOutOfBoundsException.
 	 *
 	 * @return a list of the list's selected members

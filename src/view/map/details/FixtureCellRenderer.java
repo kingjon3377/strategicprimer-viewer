@@ -20,6 +20,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
+import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -180,7 +181,7 @@ public final class FixtureCellRenderer implements ListCellRenderer<TileFixture> 
 	private static void setComponentPreferredSize(final JComponent component,
 			final int width) {
 		final View view = (View) component
-				.getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey);
+				.getClientProperty(BasicHTML.propertyKey);
 		view.setSize(width, 0);
 		final int wid = (int) Math.ceil(view.getPreferredSpan(View.X_AXIS));
 		final int height = (int) Math.ceil(view.getPreferredSpan(View.Y_AXIS));

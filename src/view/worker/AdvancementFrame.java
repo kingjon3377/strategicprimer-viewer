@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
+import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
 
 import controller.map.misc.IDFactoryFiller;
@@ -150,7 +151,7 @@ public final class AdvancementFrame extends JFrame {
 	public static Dimension getComponentPreferredSize(
 			final JComponent component, final int width) {
 		final View view = (View) component
-				.getClientProperty(javax.swing.plaf.basic.BasicHTML.propertyKey);
+				.getClientProperty(BasicHTML.propertyKey);
 		final Dimension defDim = component.getPreferredSize();
 		if (view == null) {
 			final int size = width;

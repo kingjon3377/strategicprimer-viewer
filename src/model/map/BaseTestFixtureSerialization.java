@@ -16,6 +16,7 @@ import java.util.stream.StreamSupport;
 
 import javax.xml.stream.XMLStreamException;
 
+import controller.map.readerng.ReaderAdapter;
 import org.eclipse.jdt.annotation.NonNull;
 
 import controller.map.cxml.CompactXMLWriter;
@@ -559,7 +560,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 			final boolean deprecated) throws IOException {
 		final StringWriter writer = new StringWriter();
 		if (deprecated) {
-			controller.map.readerng.ReaderAdapter.ADAPTER.write(obj).write(
+			ReaderAdapter.ADAPTER.write(obj).write(
 					writer, 0);
 		} else {
 			CompactXMLWriter.writeSPObject(writer, obj);
