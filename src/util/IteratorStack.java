@@ -114,8 +114,8 @@ public final class IteratorStack<T> implements Iterator<T> {
 					"No elements left in any of the iterators");
 		} else {
 			queue.peekFirst().remove();
+			removeEmptyIterators();
 		}
-		removeEmptyIterators();
 	}
 
 	/**

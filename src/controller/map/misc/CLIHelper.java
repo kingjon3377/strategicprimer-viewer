@@ -204,10 +204,10 @@ public final class CLIHelper implements ICLIHelper {
 				return true; // NOPMD
 			} else if (EqualsAny.equalsAny(input, "no", "false", "n", "f")) {
 				return false;
+			} else {
+				SYS_OUT.println("Please enter 'yes', 'no', 'true', or 'false',");
+				SYS_OUT.println("or the first character of any of those.");
 			}
-			// else
-			SYS_OUT.println("Please enter 'yes', 'no', 'true', or 'false',");
-			SYS_OUT.println("or the first character of any of those.");
 		}
 	}
 	/**

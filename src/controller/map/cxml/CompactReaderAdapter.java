@@ -89,7 +89,6 @@ public final class CompactReaderAdapter {
 			final IteratorWrapper<XMLEvent> stream,
 			final IMutablePlayerCollection players, final Warning warner,
 			final IDFactory idFactory) throws SPFormatException {
-		final CompactReader<T> reader; // NOPMD
 		if (River.class.isAssignableFrom(type)) {
 			// Handle rivers specially.
 			final T river = (T) CompactMapNGReader.parseRiver(element, warner);
@@ -97,9 +96,8 @@ public final class CompactReaderAdapter {
 					NullCleaner.assertNotNull(element.getName()), stream);
 			return river; // NOPMD
 		} else {
-			reader = getReader(type);
+			return getReader(type).read(element, stream, players, warner, idFactory);
 		}
-		return reader.read(element, stream, players, warner, idFactory);
 	}
 
 	/**
