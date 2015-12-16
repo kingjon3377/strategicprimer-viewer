@@ -86,6 +86,9 @@ public final class TODOFixerDriver {
 	private int count = -1;
 	/**
 	 * Fix a stubbed-out kind for a unit.
+	 *
+	 * FIXME: Fix comparison of object values with ==
+	 *
 	 * @param unit the unit to fix
 	 * @param jobList a list of possible kinds for its surroundings
 	 */
