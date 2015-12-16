@@ -452,7 +452,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 
 		@Override
 		public int hashCode() {
-			for (IUnit unit : units) {
+			for (final IUnit unit : units) {
 				return unit.hashCode();
 			}
 			return -1;

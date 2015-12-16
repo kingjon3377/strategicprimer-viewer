@@ -513,7 +513,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 
 	@Override
 	public int hashCode() {
-		for (IUnit unit : proxied) {
+		for (final IUnit unit : proxied) {
 			return unit.hashCode();
 		}
 		return -1;
