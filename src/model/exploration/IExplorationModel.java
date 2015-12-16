@@ -41,7 +41,7 @@ public interface IExplorationModel extends IMultiMapModel,
 	/**
 	 * An enumeration of directions.
 	 */
-	public enum Direction {
+	enum Direction {
 		/**
 		 * North.
 		 */
