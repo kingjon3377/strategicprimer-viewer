@@ -564,7 +564,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		/**
 		 * A logger for the thread.
 		 */
-		private static final Logger RGT_LOGGER = TypesafeLogger.getLogger(WorkerMgmtFrame.ReportGeneratorThread.class);
+		private static final Logger RGT_LOGGER = TypesafeLogger.getLogger(ReportGeneratorThread.class);
 		/**
 		 * The tree-model to put the report into.
 		 */
