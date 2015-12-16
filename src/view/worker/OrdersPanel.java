@@ -448,5 +448,13 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 			return this == obj || obj instanceof ProxyUnit && kind.equals(((ProxyUnit) obj).getKind()) &&
 					                      units.equals(((ProxyUnit) obj).units);
 		}
+
+		@Override
+		public int hashCode() {
+			for (IUnit unit : units) {
+				return unit.hashCode();
+			}
+			return -1;
+		}
 	}
 }

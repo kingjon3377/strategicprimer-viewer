@@ -510,4 +510,12 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		return this == obj || obj instanceof ProxyUnit && id == ((ProxyUnit) obj).getID() &&
 				                      proxied.equals(((ProxyUnit) obj).getProxied());
 	}
+
+	@Override
+	public int hashCode() {
+		for (IUnit unit : proxied) {
+			return unit.hashCode();
+		}
+		return -1;
+	}
 }
