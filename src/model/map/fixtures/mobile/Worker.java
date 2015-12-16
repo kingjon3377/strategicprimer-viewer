@@ -179,7 +179,7 @@ public class Worker implements IWorker {
 			return fix.name.equals(name) && jobSetsEqual(jobSet, fix.jobSet) // NOPMD
 					&& fix.race.equals(race) && fix.stats == null;
 		} else {
-			return fix.name.equals(name) && Worker.jobSetsEqual(jobSet, fix.jobSet)
+			return fix.name.equals(name) && jobSetsEqual(jobSet, fix.jobSet)
 					&& fix.race.equals(race) && locStats.equals(fix.stats);
 		}
 	}
