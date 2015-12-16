@@ -201,6 +201,15 @@ public final class ArrowKeyListener {
 		public String toString() {
 			return "AbstractDirListener";
 		}
+
+		/**
+		 * @return nothing
+		 * @throws CloneNotSupportedException always
+		 */
+		@Override
+		protected Object clone() throws CloneNotSupportedException {
+			throw new CloneNotSupportedException("Cloning not supported");
+		}
 	}
 
 	/**
@@ -464,6 +473,14 @@ public final class ArrowKeyListener {
 		public String toString() {
 			return "JumpUpLeftListener";
 		}
+		/**
+		 * @return nothing
+		 * @throws CloneNotSupportedException always
+		 */
+		@Override
+		protected Object clone() throws CloneNotSupportedException {
+			throw new CloneNotSupportedException("Cloning not supported");
+		}
 	}
 	/**
 	 * A listener to move the cursor to the bottom right corner.
@@ -525,6 +542,14 @@ public final class ArrowKeyListener {
 		public String toString() {
 			return "JumpUpListener";
 		}
+		/**
+		 * @return nothing
+		 * @throws CloneNotSupportedException always
+		 */
+		@Override
+		protected Object clone() throws CloneNotSupportedException {
+			throw new CloneNotSupportedException("Cloning not supported");
+		}
 	}
 	/**
 	 * A listener to move the cursor all the way down.
@@ -554,6 +579,14 @@ public final class ArrowKeyListener {
 		@Override
 		public String toString() {
 			return "JumpDownListener";
+		}
+		/**
+		 * @return nothing
+		 * @throws CloneNotSupportedException always
+		 */
+		@Override
+		protected Object clone() throws CloneNotSupportedException {
+			throw new CloneNotSupportedException("Cloning not supported");
 		}
 	}
 	/**
@@ -585,6 +618,14 @@ public final class ArrowKeyListener {
 		public String toString() {
 			return "JumpLeftListener";
 		}
+		/**
+		 * @return nothing
+		 * @throws CloneNotSupportedException always
+		 */
+		@Override
+		protected Object clone() throws CloneNotSupportedException {
+			throw new CloneNotSupportedException("Cloning not supported");
+		}
 	}
 	/**
 	 * A listener to move the cursor all the way right.
@@ -614,6 +655,14 @@ public final class ArrowKeyListener {
 		@Override
 		public String toString() {
 			return "JumpRightListener";
+		}
+		/**
+		 * @return nothing
+		 * @throws CloneNotSupportedException always
+		 */
+		@Override
+		protected Object clone() throws CloneNotSupportedException {
+			throw new CloneNotSupportedException("Cloning not supported");
 		}
 	}
 }
