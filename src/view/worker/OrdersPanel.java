@@ -5,6 +5,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -232,7 +233,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		protected ProxyUnit(final String unitKind, final List<IUnit> unitsList,
 				final Player playr) {
 			kind = unitKind;
-			units = unitsList;
+			units = new ArrayList<>(unitsList);
 			owner = playr;
 		}
 		/**
