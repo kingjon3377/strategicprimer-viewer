@@ -355,9 +355,7 @@ public class SPMapNG implements IMutableMapNG {
 		if (rivers.containsKey(location)) {
 			return NullCleaner.assertNotNull(rivers.get(location)); // NOPMD
 		} else {
-			final EnumSet<River> temp = EnumSet.noneOf(River.class);
-			assert temp != null;
-			return temp;
+			return EnumSet.noneOf(River.class);
 		}
 	}
 
@@ -587,7 +585,6 @@ public class SPMapNG implements IMutableMapNG {
 			localRivers = rivers.get(location);
 		} else {
 			localRivers = EnumSet.noneOf(River.class);
-			assert localRivers != null;
 			rivers.put(location, localRivers);
 		}
 		Collections.addAll(localRivers, rvrs);

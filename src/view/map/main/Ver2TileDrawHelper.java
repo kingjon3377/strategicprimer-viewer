@@ -441,7 +441,6 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	private static Set<River> createRiverSet(final @NonNull River @NonNull ... rivers) {
 		final Set<@NonNull River> set =
 				EnumSet.noneOf(NullCleaner.assertNotNull(River.class));
-		assert set != null;
 		Collections.addAll(set, rivers);
 		return set;
 	}

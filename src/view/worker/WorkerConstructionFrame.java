@@ -213,15 +213,13 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 		} else if ("Add Worker".equalsIgnoreCase(evt.getActionCommand())) {
 			final String nameText = name.getText().trim();
 			final String raceText = race.getText().trim();
-			if (nameText == null
-					|| raceText == null
-					|| nameText.isEmpty()
-					|| raceText.isEmpty()
-					|| anyNonNumeric(hpBox.getText().trim(), maxHP.getText()
-							.trim(), str.getText().trim(),
-							dex.getText().trim(), con.getText().trim(), intel
-									.getText().trim(), wis.getText().trim(),
-							cha.getText().trim())) {
+			if (nameText.isEmpty()
+					    || raceText.isEmpty()
+					    || anyNonNumeric(hpBox.getText().trim(), maxHP.getText()
+							                                             .trim(), str.getText().trim(),
+					dex.getText().trim(), con.getText().trim(), intel
+							                                            .getText().trim(), wis.getText().trim(),
+					cha.getText().trim())) {
 				ErrorShower.showErrorDialog(this, getErrorExpl());
 			} else {
 				final Worker retval = new Worker(nameText, raceText,

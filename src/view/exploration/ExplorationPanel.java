@@ -277,7 +277,7 @@ public final class ExplorationPanel extends BorderedPanel implements ActionListe
 	@Override
 	public void deduct(final int cost) {
 		final String mpText = mpField.getText().trim();
-		if (mpText != null && IsNumeric.isNumeric(mpText)) {
+		if (IsNumeric.isNumeric(mpText)) {
 			int mpoints;
 			try {
 				mpoints = NUM_PARSER.parse(mpText).intValue();

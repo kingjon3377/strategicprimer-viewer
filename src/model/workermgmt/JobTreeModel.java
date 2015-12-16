@@ -144,7 +144,6 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	@Override
 	public int getChildCount(@Nullable final Object parent) {
 		if (parent instanceof IWorker || parent instanceof IJob) {
-			assert parent != null : "Impossible null in JobTreeModel";
 			return (int) StreamSupport.stream(((Iterable<?>) parent).spliterator(), false).count();
 		} else if (parent instanceof ISkill) {
 			return 0; // NOPMD
@@ -183,7 +182,6 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	public int getIndexOfChild(@Nullable final Object parent,
 			@Nullable final Object child) {
 		if (parent instanceof IWorker || parent instanceof IJob) {
-			assert parent != null : "Impossible null in JobTreeModel#getIndexOfChild";
 			// TODO: Ought to be able to do this with the Stream API
 			int index = 0;
 			for (final Object item : (Iterable<?>) parent) {
