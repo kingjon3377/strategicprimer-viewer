@@ -264,7 +264,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			if (child instanceof KindNode
 					&& kind.equals(((KindNode) child).getUserObject())) {
 				((KindNode) child).add(node);
-				fireTreeNodesInserted(this, getPathToRoot(child),
+				fireTreeNodesInserted(this, getPathToRoot(node),
 						new int[] { child.getChildCount() - 1 },
 						new Object[] { node });
 				break;
