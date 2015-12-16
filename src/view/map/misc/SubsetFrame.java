@@ -108,6 +108,7 @@ public final class SubsetFrame extends JFrame {
 		 * @throws IOException on I/O error
 		 * @return this
 		 */
+		@SuppressWarnings("ReturnOfThis")
 		@Override
 		public Writer append(@Nullable final CharSequence str) throws IOException {
 			final String local =
