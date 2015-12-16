@@ -192,7 +192,8 @@ public class Fortress implements HasImage, ITownFixture,
 			} else {
 				sbuild.append(member.toString());
 			}
-			if (++count < units.size() - 1) {
+			count++;
+			if (count < units.size() - 1) {
 				sbuild.append(';');
 			}
 		}
