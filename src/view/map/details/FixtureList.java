@@ -88,7 +88,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 				((FixtureListModel) getModel()).removeAll(getSelectedValuesList());
 			}
 		});
-		addMouseListener(new FixtureMouseListener(players));
+		addMouseListener(new FixtureMouseListener(players, this));
 	}
 
 	/**
@@ -139,19 +139,24 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 	 * A listener to set up pop-up menus.
 	 * @author Jonathan Lovelace
 	 */
-	private final class FixtureMouseListener extends MouseAdapter {
+	private static final class FixtureMouseListener extends MouseAdapter {
 		/**
 		 * The collection of players in the map.
 		 */
 		private final Iterable<Player> players;
+		/**
+		 * The list we're listening on.
+		 */
+		private final JList<TileFixture> list;
 
 		/**
 		 * Constructor.
 		 *
 		 * @param playerColl the collection of players in the map
 		 */
-		protected FixtureMouseListener(final Iterable<Player> playerColl) {
+		protected FixtureMouseListener(final Iterable<Player> playerColl, JList<TileFixture> theList) {
 			players = playerColl;
+			list = theList;
 		}
 
 		/**
@@ -185,10 +190,10 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		private void handleMouseEvent(@Nullable final MouseEvent event) {
 			if (event != null && event.isPopupTrigger()
 					&& event.getClickCount() == 1) {
-				final int index = locationToIndex(event.getPoint());
-				if (index >= 0 && index < getModel().getSize()) {
-					new FixtureEditMenu(getModel().getElementAt(
-							locationToIndex(event.getPoint())), players).show(
+				final int index = list.locationToIndex(event.getPoint());
+				if (index >= 0 && index < list.getModel().getSize()) {
+					new FixtureEditMenu(list.getModel().getElementAt(
+							list.locationToIndex(event.getPoint())), players).show(
 									event.getComponent(), event.getX(),
 									event.getY());
 				}
