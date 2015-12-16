@@ -6,7 +6,7 @@ import java.io.File;
 
 import javax.swing.SwingUtilities;
 
-import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
+import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;

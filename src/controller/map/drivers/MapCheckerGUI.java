@@ -1,6 +1,6 @@
 package controller.map.drivers;
 
-import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
+import controller.map.drivers.DriverUsage.ParamCount;
 import model.misc.IDriverModel;
 import view.map.misc.MapCheckerFrame;
 

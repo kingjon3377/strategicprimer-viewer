@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
+import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.MapReaderAdapter;
 import model.exploration.SurroundingPointIterable;
 import model.map.HasOwner;

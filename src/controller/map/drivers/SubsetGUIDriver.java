@@ -6,7 +6,7 @@ import java.io.IOException;
 import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 
-import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
+import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.WindowThread;
 import model.map.IMutableMapNG;

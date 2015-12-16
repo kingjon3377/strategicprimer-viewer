@@ -5,7 +5,7 @@ import static view.util.SystemOut.SYS_OUT;
 import java.io.File;
 import java.io.IOException;
 
-import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
+import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.MapReaderAdapter;
 import model.exploration.ExplorationModel;

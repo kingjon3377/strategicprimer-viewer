@@ -2,7 +2,6 @@ package controller.map.misc;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -11,7 +10,7 @@ import javax.xml.stream.XMLStreamException;
 
 import controller.map.cxml.CompactXMLReader;
 import controller.map.cxml.CompactXMLWriter;
-import controller.map.drivers.ISPDriver.DriverFailedException;
+import controller.map.drivers.DriverFailedException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.SPWriter;

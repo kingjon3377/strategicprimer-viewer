@@ -13,7 +13,7 @@ import java.util.stream.StreamSupport;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
+import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.MapReaderAdapter;
@@ -26,7 +26,6 @@ import model.map.PointFactory;
 import model.map.TileFixture;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.Ground;
-import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.terrain.Forest;

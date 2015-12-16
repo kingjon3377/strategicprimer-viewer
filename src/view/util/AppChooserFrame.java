@@ -22,7 +22,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import controller.map.drivers.AdvancementStart;
 import controller.map.drivers.ExplorationGUI;
 import controller.map.drivers.ISPDriver;
-import controller.map.drivers.ISPDriver.DriverFailedException;
+import controller.map.drivers.DriverFailedException;
 import controller.map.drivers.ViewerStart;
 import controller.map.drivers.WorkerStart;
 import model.misc.IDriverModel;

@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -18,7 +17,7 @@ import model.misc.IMultiMapModel;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
-import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
+import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IDFactory;
@@ -43,7 +42,6 @@ import model.misc.IDriverModel;
 import model.workermgmt.RaceFactory;
 import util.NullCleaner;
 import util.Pair;
-import util.SingletonRandom;
 import util.Warning;
 import view.util.SystemOut;
 

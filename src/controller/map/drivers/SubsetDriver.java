@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import controller.map.drivers.ISPDriver.DriverUsage.ParamCount;
+import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.MapReaderAdapter;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -18,7 +18,6 @@ import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 import util.Warning.Action;
-import view.util.SystemOut;
 
 /**
  * A driver to check whether player maps are subsets of the main map.
