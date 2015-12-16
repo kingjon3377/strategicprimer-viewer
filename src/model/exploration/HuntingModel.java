@@ -189,7 +189,6 @@ public final class HuntingModel {
 	private List<String> chooseFromMap(final Point point, final int items,
 			final Map<Point, List<String>> chosenMap) {
 		final List<String> choices = new ArrayList<>();
-		final Iterable<Point> iter = new SurroundingPointIterable(point, dims);
 		choices.addAll(StreamSupport.stream(new SurroundingPointIterable(point, dims).spliterator(), false)
 				               .filter(chosenMap::containsKey)
 				               .flatMap(local -> StreamSupport.stream(chosenMap.get(local).spliterator(), false))
