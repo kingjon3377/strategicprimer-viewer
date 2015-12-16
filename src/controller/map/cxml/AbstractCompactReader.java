@@ -80,23 +80,15 @@ public abstract class AbstractCompactReader<@NonNull T> implements CompactReader
 		final String localName = element.getName().getLocalPart();
 		final int line = element.getLocation().getLineNumber();
 		if (localName == null) {
-			final String base =
-					format("Null tag on line %d, expected one of the following: ",
-							Integer.valueOf(line));
-			final int len = base.length() + tags.length
-					* MAX_TAG_LEN; // Overestimate just in case
-			throw new IllegalArgumentException(csl(
-					NullCleaner.assertNotNull(new StringBuilder(len)
-							.append(base)), tags).toString());
+			throw new IllegalArgumentException(Stream.concat(
+					Stream.of(format("Null tag on line %d, expected one of the following: ",
+							Integer.valueOf(line))), Stream.of(tags))
+					                                   .collect(Collectors.joining(", ")));
 		} else if (!EqualsAny.equalsAny(localName, tags)) {
-			final String base = format(
+			throw new IllegalArgumentException(Stream.concat(Stream.of(format(
 					"Unexpected tag %s on line %d, expected one of the following: ",
-					localName, Integer.valueOf(line));
-			final int len = base.length() + tags.length
-					* MAX_TAG_LEN; // Overestimate just in case
-			throw new IllegalArgumentException(csl(
-					NullCleaner.assertNotNull(new StringBuilder(len)
-							.append(base)), tags).toString());
+					localName, Integer.valueOf(line))), Stream.of(tags)).collect(Collectors.joining(", "))
+			);
 		}
 	}
 
