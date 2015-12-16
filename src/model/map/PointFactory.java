@@ -35,6 +35,7 @@ public final class PointFactory {
 	/**
 	 * Whether to use the cache.
 	 */
+	@SuppressWarnings("StaticNonFinalField")
 	private static boolean useCache = true;
 
 	/**
