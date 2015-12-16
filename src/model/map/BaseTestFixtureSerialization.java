@@ -57,6 +57,7 @@ import util.Warning.Action;
  * @author Jonathan Lovelace
  *
  */
+@SuppressWarnings("ElementOnlyUsedFromTestCode")
 public abstract class BaseTestFixtureSerialization { // NOPMD
 	/**
 	 * The "filename" to pass to the readers.
