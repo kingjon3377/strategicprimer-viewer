@@ -214,7 +214,7 @@ public final class AppStarter implements ISPDriver {
 	 * @param others the parameters to pass to the chosen driver
 	 * @throws DriverFailedException if the chosen driver fails
 	 */
-	protected static void startChooser(final boolean gui,
+	private static void startChooser(final boolean gui,
 			final List<String> others) throws DriverFailedException {
 		if (gui) {
 			SwingUtilities.invokeLater(new WindowThread(new AppChooserFrame(
@@ -244,7 +244,7 @@ public final class AppStarter implements ISPDriver {
 	 * @param params non-option parameters
 	 * @throws DriverFailedException on fatal error
 	 */
-	protected static void startChosenDriver(final ISPDriver driver, // NOPMD
+	private static void startChosenDriver(final ISPDriver driver, // NOPMD
 			final List<String> params) throws DriverFailedException {
 		driver.startDriver(NullCleaner.assertNotNull(params
 				.toArray(new String[params.size()])));
@@ -255,7 +255,7 @@ public final class AppStarter implements ISPDriver {
 	 * @param model the driver model
 	 * @throws DriverFailedException on fatal error
 	 */
-	protected static void startChosenDriver(final ISPDriver driver,
+	private static void startChosenDriver(final ISPDriver driver,
 			final IDriverModel model) throws DriverFailedException {
 		driver.startDriver(model);
 	}

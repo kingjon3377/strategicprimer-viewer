@@ -105,7 +105,7 @@ public final class DrawHelperComparator implements ISPDriver { // NOPMD
 	 *
 	 * @return how long the test took, in ns.
 	 */
-	public static long first(final TileDrawHelper helper, final IMapNG spmap,
+	private static long first(final TileDrawHelper helper, final IMapNG spmap,
 			final int reps, final int tsize) {
 		final BufferedImage image = new BufferedImage(tsize, tsize,
 				BufferedImage.TYPE_INT_RGB);
@@ -148,8 +148,8 @@ public final class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param tsize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
-	public static long second(final TileDrawHelper helper, final IMapNG map,
-			final int reps, final int tsize) {
+	private static long second(final TileDrawHelper helper, final IMapNG map,
+	                           final int reps, final int tsize) {
 		final MapDimensions dim = map.dimensions();
 		final BufferedImage image = new BufferedImage(tsize * dim.cols, tsize
 				* dim.rows, BufferedImage.TYPE_INT_RGB);
@@ -195,8 +195,8 @@ public final class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param tsize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
-	public static long third(final TileDrawHelper helper, final IMapNG spmap,
-			final int reps, final int tsize) {
+	private static long third(final TileDrawHelper helper, final IMapNG spmap,
+	                          final int reps, final int tsize) {
 		final BufferedImage image = new BufferedImage(tsize, tsize, // NOPMD
 				BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
@@ -235,8 +235,8 @@ public final class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param tsize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
-	public static long fourth(final TileDrawHelper helper, final IMapNG spmap,
-			final int reps, final int tsize) {
+	private static long fourth(final TileDrawHelper helper, final IMapNG spmap,
+	                           final int reps, final int tsize) {
 		final MapDimensions dim = spmap.dimensions();
 		final BufferedImage image = new BufferedImage(tsize * dim.cols, // NOPMD
 				tsize * dim.rows, BufferedImage.TYPE_INT_RGB);
@@ -279,8 +279,8 @@ public final class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param tsize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
-	public static long fifthOne(final TileDrawHelper helper, final IMapNG spmap,
-			final int reps, final int tsize) {
+	private static long fifthOne(final TileDrawHelper helper, final IMapNG spmap,
+	                             final int reps, final int tsize) {
 		final MapDimensions dim = spmap.dimensions();
 		final BufferedImage image = new BufferedImage(tsize * dim.cols, // NOPMD
 				tsize * dim.rows, BufferedImage.TYPE_INT_RGB);
@@ -325,8 +325,8 @@ public final class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param tsize the size to draw each tile
 	 * @return how long the test took, in ns.
 	 */
-	public static long fifthTwo(final TileDrawHelper helper, final IMapNG spmap,
-			final int reps, final int tsize) {
+	private static long fifthTwo(final TileDrawHelper helper, final IMapNG spmap,
+	                             final int reps, final int tsize) {
 		final MapDimensions dim = spmap.dimensions();
 		final BufferedImage image = new BufferedImage(tsize * dim.cols, // NOPMD
 				tsize * dim.rows, BufferedImage.TYPE_INT_RGB);
@@ -371,7 +371,7 @@ public final class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param repetitions how many times to repeat each test (more takes longer,
 	 *        but gives more precise result)
 	 */
-	public static void runAllTests(final IMapNG map, final int repetitions) {
+	private static void runAllTests(final IMapNG map, final int repetitions) {
 		final int tsize = TileViewSize.scaleZoom(ViewerModel.DEF_ZOOM_LEVEL,
 				map.dimensions().version);
 		final TileDrawHelper hThree = new Ver2TileDrawHelper(
@@ -426,8 +426,8 @@ public final class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * @param reps how many times the test ran
 	 * @return that total
 	 */
-	public static long printStats(final String prefix, final long total,
-			final int reps) {
+	private static long printStats(final String prefix, final long total,
+	                               final int reps) {
 		SYS_OUT.print(prefix);
 		SYS_OUT.print('\t');
 		SYS_OUT.print(total);

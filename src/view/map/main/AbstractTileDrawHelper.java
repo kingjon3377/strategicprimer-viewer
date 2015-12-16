@@ -48,7 +48,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	/**
 	 * Mapping from tile types to colors.
 	 */
-	protected static final TileUIHelper COLORS = new TileUIHelper();
+	private static final TileUIHelper COLORS = new TileUIHelper();
 	/**
 	 * The number of sides on the symbol for a miscellaneous event.
 	 */

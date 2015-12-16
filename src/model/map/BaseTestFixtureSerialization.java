@@ -62,7 +62,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	/**
 	 * The "filename" to pass to the readers.
 	 */
-	protected static final File FAKE_FILENAME = new File("");
+	private static final File FAKE_FILENAME = new File("");
 	/**
 	 * An instance of the previous-generation reader to test against.
 	 */

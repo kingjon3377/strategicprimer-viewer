@@ -36,7 +36,7 @@ public final class ComparablePair<K extends Comparable<K>, V extends Comparable<
 	 * @param firstItem The first item in the pair.
 	 * @param secondItem The second item in the pair.
 	 */
-	protected ComparablePair(final K firstItem, final V secondItem) {
+	private ComparablePair(final K firstItem, final V secondItem) {
 		super(firstItem, secondItem);
 	}
 

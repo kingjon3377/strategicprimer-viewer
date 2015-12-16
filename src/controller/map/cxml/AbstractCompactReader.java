@@ -321,7 +321,7 @@ public abstract class AbstractCompactReader<@NonNull T> implements CompactReader
 	 * @return the result of parsing the text
 	 * @throws SPFormatException if the string is nonnumeric or otherwise malformed
 	 */
-	protected static int parseInt(final String str, final int line)
+	private static int parseInt(final String str, final int line)
 			throws SPFormatException {
 		try {
 			return NUM_PARSER.parse(str).intValue();

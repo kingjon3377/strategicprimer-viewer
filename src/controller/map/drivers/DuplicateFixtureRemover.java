@@ -64,7 +64,7 @@ public final class DuplicateFixtureRemover implements ISPDriver {
 	 * @param ostream the stream to report IDs of removed fixtures on.
 	 * @throws IOException on I/O error writing to stream
 	 */
-	public static void filter(final IMutableMapNG map, final Appendable ostream)
+	private static void filter(final IMutableMapNG map, final Appendable ostream)
 			throws IOException {
 		for (final Point point : map.locations()) {
 			filter(map, point, ostream);
@@ -81,8 +81,8 @@ public final class DuplicateFixtureRemover implements ISPDriver {
 	 * @param ostream the stream to report IDs of removed fixtures on.
 	 * @throws IOException on I/O error writing to stream
 	 */
-	public static void filter(final IMutableMapNG map, final Point location,
-			final Appendable ostream) throws IOException {
+	private static void filter(final IMutableMapNG map, final Point location,
+	                           final Appendable ostream) throws IOException {
 		final Collection<TileFixture> fixtures = new ArrayList<>();
 		final Collection<TileFixture> toRemove = new ArrayList<>();
 		// We ignore ground and forests because they don't have IDs.
