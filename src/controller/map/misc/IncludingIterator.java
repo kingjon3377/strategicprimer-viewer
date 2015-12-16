@@ -143,7 +143,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 		public NoSuchElementBecauseException(final String message,
 				final Throwable cause) {
 			super(message);
-			super.initCause(cause);
+			initCause(cause);
 		}
 
 		/**
@@ -152,7 +152,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 		 * @param cause the cause
 		 */
 		public NoSuchElementBecauseException(final Throwable cause) {
-			super.initCause(cause);
+			initCause(cause);
 		}
 	}
 

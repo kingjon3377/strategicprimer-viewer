@@ -51,8 +51,8 @@ public final class PrefixingPrintWriter extends PrintWriter {
 	 */
 	@Override
 	public void println(@Nullable final String str) {
-		super.print(pref);
-		super.println(str);
+		print(pref);
+		println(str);
 	}
 	/**
 	 * @return a String representation of the object

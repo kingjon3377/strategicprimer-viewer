@@ -120,7 +120,7 @@ public final class TestMoreFixtureSerialization extends
 		assertDeprecatedProperty(
 				"<grove wild=\"true\" kind=\"tree\" id=\"0\" />", Grove.class,
 				"wild", true);
-		super.assertEquivalentForms(
+		assertEquivalentForms(
 				"Assert that wild is the inverse of cultivated",
 				"<grove wild=\"true\" kind=\"tree\" id=\"0\" />",
 				"<grove cultivated=\"false\" kind=\"tree\" id=\"0\" />",

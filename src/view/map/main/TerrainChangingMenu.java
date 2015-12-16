@@ -90,7 +90,7 @@ public final class TerrainChangingMenu extends JPopupMenu implements ActionListe
 	 * @param version the version
 	 */
 	private void updateForVersion(final int version) {
-		super.removeAll();
+		removeAll();
 		for (final TileType type : TileType.valuesForVersion(version)) {
 			final JMenuItem item = new JMenuItem(type.toString()); // NOPMD
 			add(item);
