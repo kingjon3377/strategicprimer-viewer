@@ -619,9 +619,9 @@ public final class WorkerMgmtFrame extends JFrame {
 		private final IOHandler ioh;
 
 		protected reportMouseHandler(final JTree reportTree, final IWorkerModel workerModel, final IOHandler ioHandler) {
-			this.report = reportTree;
-			this.model = workerModel;
-			this.ioh = ioHandler;
+			report = reportTree;
+			model = workerModel;
+			ioh = ioHandler;
 		}
 
 		@Override
