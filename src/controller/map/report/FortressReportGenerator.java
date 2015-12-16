@@ -73,12 +73,6 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	private final UnitReportGenerator urg = new UnitReportGenerator(pairComparator);
 
 	/**
-	 * The longest a river report could be.
-	 */
-	private static final int RIVER_RPT_LEN = ("There is a river on the tile, "
-			+ "flowing through the following borders: "
-			+ "north, south, east, west").length();
-	/**
 	 * All fixtures referred to in this report are removed from the collection.
 	 *
 	 * @param fixtures the set of fixtures

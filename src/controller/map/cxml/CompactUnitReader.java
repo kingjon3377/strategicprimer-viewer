@@ -175,18 +175,6 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	}
 
 	/**
-	 * @param string a string which should be numeric or empty
-	 * @return it, or "-1" if it's empty.
-	 */
-	private static String ensureNumeric(final String string) {
-		if (string.isEmpty()) {
-			return "-1"; // NOPMD
-		} else {
-			return string;
-		}
-	}
-
-	/**
 	 * @param tag a tag
 	 * @return whether it's one we can read
 	 */

@@ -56,12 +56,7 @@ public abstract class AbstractCompactReader<@NonNull T> implements CompactReader
 	 * The string to use instead of the tag in exceptions when the tag is null.
 	 */
 	private static final String NULL_TAG = "a null tag";
-	/**
-	 * The amount of buffer memory to allocate for the name of each tag. We're
-	 * aiming to err on the side of overestimation, to avoid resizing the
-	 * buffer.
-	 */
-	private static final int MAX_TAG_LEN = 10;
+
 	/**
 	 * Do not instantiate directly.
 	 */
@@ -92,19 +87,6 @@ public abstract class AbstractCompactReader<@NonNull T> implements CompactReader
 		}
 	}
 
-	/**
-	 * @param strings
-	 *            a series of strings
-	 * @param stream
-	 *            a stream to append them to in a comma-separated list. We use
-	 *            the concrete class rather than the interface to avoid having
-	 *            to declare a checked exception.
-	 * @return the stream
-	 */
-	private static StringBuilder
-			csl(final StringBuilder stream, final String... strings) {
-		return stream.append(Stream.of(strings).collect(Collectors.joining(", ")));
-	}
 	/**
 	 * Get a parameter from the XML.
 	 *

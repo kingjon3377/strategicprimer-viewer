@@ -307,15 +307,6 @@ public final class TrapModelDriver implements ISPDriver {
 				new Warning(Action.Warn)));
 	}
 	/**
-	 * Start this driver from another driver.
-	 * @param map the map to operate on
-	 * @deprecated in favor of the overload taking a DriverModel
-	 */
-	@Deprecated
-	public void startDriver(final IMapNG map) {
-		repl(map, SYS_OUT);
-	}
-	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
