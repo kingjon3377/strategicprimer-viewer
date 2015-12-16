@@ -52,7 +52,7 @@ public final class PrefixingPrintWriter extends PrintWriter {
 	@Override
 	public void println(@Nullable final String str) {
 		print(pref);
-		println(str);
+		super.println(str);
 	}
 	/**
 	 * @return a String representation of the object
