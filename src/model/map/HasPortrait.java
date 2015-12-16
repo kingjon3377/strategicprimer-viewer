@@ -29,4 +29,8 @@ public interface HasPortrait {
 	 * @return the name of the image file containing the portrait.
 	 */
 	String getPortrait();
+	/**
+	 * @param portrait the name of the image file containing the portrait
+	 */
+	void setPortrait(String portrait);
 }
