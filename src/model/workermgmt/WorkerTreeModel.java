@@ -155,9 +155,6 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 *
 	 * @param path a path indicating a node
 	 * @param newValue the new value for that place
-	 *
-	 * @see javax.swing.tree.TreeModel#valueForPathChanged(javax.swing.tree.TreePath,
-	 *      java.lang.Object)
 	 */
 	@Override
 	public void valueForPathChanged(@Nullable final TreePath path,
@@ -169,9 +166,6 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 * @param parent an object presumably in the tree
 	 * @param child something that's presumably one of its children
 	 * @return which child it is, or -1 if preconditions broken
-	 *
-	 * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object,
-	 *      java.lang.Object)
 	 */
 	@Override
 	public int getIndexOfChild(@Nullable final Object parent,

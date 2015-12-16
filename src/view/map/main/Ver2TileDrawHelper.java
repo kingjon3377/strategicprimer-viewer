@@ -96,8 +96,6 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 
 	/**
 	 * @return a hash value forthe object
-	 *
-	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
