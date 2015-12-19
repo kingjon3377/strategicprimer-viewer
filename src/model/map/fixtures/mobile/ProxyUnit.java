@@ -496,6 +496,14 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 			}
 			return "a proxy for no unit members";
 		}
+		/**
+		 * @return Whether this should be considered (if true) a proxy for multiple representations of the same UnitMember, e.g. in
+		 * different maps, or (if false) a proxy for different related UnitMembers.
+		 */
+		@Override
+		public boolean isParallel() {
+			return true;
+		}
 	}
 	/**
 	 * @return a string representation of this class
@@ -517,5 +525,13 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 			return unit.hashCode();
 		}
 		return -1;
+	}
+	/**
+	 * @return Whether this should be considered (if true) a proxy for multiple representations of the same Unit, e.g. in
+	 * different maps, or (if false) a proxy for different related Unitss.
+	 */
+	@Override
+	public boolean isParallel() {
+		return true;
 	}
 }

@@ -350,4 +350,13 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	public String toString() {
 		return "ProxyWorker";
 	}
+
+	/**
+	 * @return Whether this should be considered (if true) a proxy for multiple representations of the same Worker,
+	 * e.g. in different maps, or (if false) a proxy for different related Workers.
+	 */
+	@Override
+	public boolean isParallel() {
+		return parallel;
+	}
 }

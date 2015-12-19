@@ -230,4 +230,13 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 		}
 		return true;
 	}
+	/**
+	 * @return Whether this should be considered (if true) a proxy for multiple representations of the same Job, e.g. in
+	 * different maps, or (if false) a proxy for different related Jobss.
+	 */
+	@Override
+	public boolean isParallel() {
+		// FIXME: Because this is a ProxyFor<IJob>, it should probably return true always ...
+		return parallel;
+	}
 }

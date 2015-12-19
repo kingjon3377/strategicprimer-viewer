@@ -248,4 +248,12 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 		}
 		return null;
 	}
+	/**
+	 * @return Whether this should be considered (if true) a proxy for multiple representations of the same Job, e.g. in
+	 * different maps, or (if false) a proxy for different related Jobs.
+	 */
+	@Override
+	public boolean isParallel() {
+		return parallel;
+	}
 }
