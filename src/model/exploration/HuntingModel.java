@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import model.map.HasKind;
 import model.map.IMapNG;
 import model.map.MapDimensions;
 import model.map.Point;
@@ -79,7 +80,7 @@ public final class HuntingModel {
 				                                     .filter(point -> Ocean == map.getBaseTerrain(point)).flatMap(
 						point -> StreamSupport.stream(map.getOtherFixtures(point).spliterator(), false))
 				                                     .filter(fix -> fix instanceof Animal)
-				                                     .map(fix -> ((Animal) fix).getKind())
+				                                     .map(fix -> ((HasKind) fix).getKind())
 				                                     .collect(Collectors.toSet());
 		for (final Point point : map.locations()) {
 			for (final TileFixture fix : map.getOtherFixtures(point)) {

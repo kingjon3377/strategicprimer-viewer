@@ -20,6 +20,7 @@ import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.IUnit;
+import model.map.fixtures.mobile.ProxyFor;
 import model.map.fixtures.mobile.ProxyUnit;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
@@ -89,10 +90,10 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 						final IUnit proxy;
 						if (retval.containsKey(Integer.valueOf(unit.getID()))) {
 							proxy = retval.get(Integer.valueOf(unit.getID()));
-							((ProxyUnit) proxy).addProxied(unit);
+							((ProxyFor<IUnit>) proxy).addProxied(unit);
 						} else {
 							proxy = new ProxyUnit(unit.getID());
-							((ProxyUnit) proxy).addProxied(unit);
+							((ProxyFor<IUnit>) proxy).addProxied(unit);
 							retval.put(NullCleaner.assertNotNull(Integer.valueOf(unit.getID())), proxy);
 						}
 					}
