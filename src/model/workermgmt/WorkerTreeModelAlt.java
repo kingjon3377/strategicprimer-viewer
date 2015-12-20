@@ -385,9 +385,8 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 */
 	@Override
 	public void addUnitMember(final IUnit unit, final UnitMember member) {
-		final Iterable<TreeNode> pnode = (PlayerNode) root;
 		UnitNode unode = null;
-		for (final TreeNode item : pnode) {
+		for (final TreeNode item : (Iterable<TreeNode>) root) {
 			if (item instanceof UnitNode
 					&& ((UnitNode) item).getUserObject().equals(unit)) {
 				unode = (UnitNode) item;
