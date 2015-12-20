@@ -235,7 +235,6 @@ public final class CLIHelper implements ICLIHelper {
 	/**
 	 * Have the user choose an item from a list.
 	 *
-	 * @param <T> The type of things in the list
 	 * @param items the list of items
 	 * @param desc the description to give before printing the list
 	 * @param none what to print if there are none
