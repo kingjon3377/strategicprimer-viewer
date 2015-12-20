@@ -44,14 +44,14 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	 * @param map the first map
 	 * @param file the file it was loaded from
 	 */
-	public ResourceManagementDriver(IMutableMapNG map, File file) {
+	public ResourceManagementDriver(final IMutableMapNG map, final File file) {
 		super(map, file);
 	}
 
 	/**
 	 * @param dmodel a driver model to take our state from
 	 */
-	public ResourceManagementDriver(IDriverModel dmodel) {
+	public ResourceManagementDriver(final IDriverModel dmodel) {
 		super(dmodel);
 	}
 	/**
@@ -67,10 +67,10 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	 * @param resource the resource to add
 	 * @param player the player to add it for
 	 */
-	public void addResource(FortressMember resource, Player player) {
-		for (Pair<IMutableMapNG, File> pair : getAllMaps()) {
-			IMutableMapNG map = pair.first();
-			Player currP = map.getCurrentPlayer();
+	public void addResource(final FortressMember resource, final Player player) {
+		for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
+			final IMutableMapNG map = pair.first();
+			final Player currP = map.getCurrentPlayer();
 			if (currP.isIndependent() || currP.getPlayerId() < 0 || currP.getPlayerId() == player.getPlayerId()) {
 				addResourceToMap(resource.copy(false), map, player);
 			}
@@ -82,9 +82,9 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	 * @param map the map to add it in
 	 * @param player the player to add it for
 	 */
-	public void addResourceToMap(FortressMember resource, IMutableMapNG map, Player player) {
-		for (Point location : map.locations()) {
-			for (TileFixture fixture : map.getOtherFixtures(location)) {
+	public void addResourceToMap(final FortressMember resource, final IMutableMapNG map, final Player player) {
+		for (final Point location : map.locations()) {
+			for (final TileFixture fixture : map.getOtherFixtures(location)) {
 				if (fixture instanceof Fortress &&
 						    ((Fortress) fixture).getOwner().getPlayerId() == player.getPlayerId() &&
 						    "HQ".equals(((Fortress) fixture).getName())) {

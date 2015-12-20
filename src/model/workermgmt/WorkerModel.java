@@ -171,8 +171,8 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	}
 
 	@Override
-	public @Nullable IUnit getUnitByID(Player owner, final int id) {
-		Optional<IUnit> retval = StreamSupport.stream(getUnits(owner).spliterator(), false).filter(unit -> id == unit.getID()).findAny();
+	public @Nullable IUnit getUnitByID(final Player owner, final int id) {
+		final Optional<IUnit> retval = StreamSupport.stream(getUnits(owner).spliterator(), false).filter(unit -> id == unit.getID()).findAny();
 		if (retval.isPresent()) {
 			return retval.get();
 		} else {
@@ -180,9 +180,9 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 		}
 	}
 
-	private void addUnitAtLocation(IUnit unit, Point location) {
+	private void addUnitAtLocation(final IUnit unit, final Point location) {
 		if (getSubordinateMaps().iterator().hasNext()) {
-			for (Pair<IMutableMapNG, File> pair : getAllMaps()) {
+			for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
 				boolean added = false;
 				for (final TileFixture fix : pair.first().getOtherFixtures(location)) {
 					if (fix instanceof Fortress && unit.getOwner().equals(((Fortress) fix).getOwner())) {

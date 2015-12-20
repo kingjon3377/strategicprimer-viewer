@@ -198,7 +198,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 
 		@Override
 		public Player getUserObject() {
-			Object obj = super.getUserObject();
+			final Object obj = super.getUserObject();
 			assert obj instanceof Player;
 			return (Player) obj;
 		}
@@ -232,7 +232,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 		@Override
 		public String getUserObject() {
-			Object obj = super.getUserObject();
+			final Object obj = super.getUserObject();
 			assert obj instanceof String;
 			return (String) obj;
 		}
@@ -266,7 +266,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 		@Override
 		public IUnit getUserObject() {
-			Object obj = super.getUserObject();
+			final Object obj = super.getUserObject();
 			assert obj instanceof IUnit;
 			return (IUnit) obj;
 		}
@@ -296,7 +296,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 		@Override
 		public UnitMember getUserObject() {
-			Object obj = super.getUserObject();
+			final Object obj = super.getUserObject();
 			assert obj instanceof UnitMember;
 			return (UnitMember) obj;
 		}

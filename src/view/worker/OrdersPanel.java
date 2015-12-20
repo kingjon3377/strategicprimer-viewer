@@ -144,7 +144,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		actionMap.put("openOrders", new AbstractAction() {
 			@Override
 			public void actionPerformed(@Nullable final ActionEvent evt) {
-				boolean focused = area.isFocusOwner();
+				final boolean focused = area.isFocusOwner();
 				area.requestFocusInWindow();
 				if (!focused) {
 					area.selectAll();
