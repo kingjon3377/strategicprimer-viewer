@@ -39,6 +39,7 @@ public final class SetPairConverter<@NonNull I, @NonNull K> implements Iterable<
 	/**
 	 * @param map the set we're wrapping.
 	 */
+	@SuppressWarnings("AssignmentToCollectionOrArrayFieldFromParameter")
 	public SetPairConverter(final Map<I, K> map) {
 		theMap = map;
 	}
