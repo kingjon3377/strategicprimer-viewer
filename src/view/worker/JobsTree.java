@@ -100,6 +100,7 @@ public final class JobsTree extends JTree implements TreeSelectionListener,
 	 *
 	 * @param evt the selection event to handle
 	 */
+	@SuppressWarnings("AssignmentToNull")
 	@Override
 	public void valueChanged(@Nullable final TreeSelectionEvent evt) {
 		if (evt != null) {
