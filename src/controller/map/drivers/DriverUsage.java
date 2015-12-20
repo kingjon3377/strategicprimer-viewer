@@ -51,7 +51,7 @@ public class DriverUsage { // $codepro.audit.disable
 		/**
 		 * At least two.
 		 */
-		Many;
+		Many
 	}
 
 	/**

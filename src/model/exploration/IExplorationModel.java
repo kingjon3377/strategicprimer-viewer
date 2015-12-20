@@ -77,7 +77,7 @@ public interface IExplorationModel extends IMultiMapModel,
 		/**
 		 * Stay still.
 		 */
-		Nowhere;
+		Nowheres
 	}
 
 	/**

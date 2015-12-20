@@ -55,7 +55,7 @@ public class Warning {
 		/**
 		 * Treat warnings as errors: Throw them as runtime exceptions.
 		 */
-		Die;
+		Die
 	}
 
 	/**

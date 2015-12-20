@@ -70,7 +70,7 @@ public final class SubsetDriver implements ISPDriver {
 		/**
 		 * The map failed to load.
 		 */
-		Fail;
+		Fail
 	}
 	/**
 	 * Run the driver.

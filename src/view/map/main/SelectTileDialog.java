@@ -148,7 +148,7 @@ public final class SelectTileDialog extends JDialog implements ActionListener {
 		/**
 		 * Too large.
 		 */
-		Overflow;
+		Overflow
 	}
 	/**
 	 * The parser to use for checking nnumbers.
