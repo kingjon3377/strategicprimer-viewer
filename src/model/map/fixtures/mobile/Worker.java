@@ -176,10 +176,10 @@ public class Worker implements IWorker {
 	private boolean equalsIgIDImpl(final Worker fix) {
 		final WorkerStats locStats = stats;
 		if (locStats == null) {
-			return fix.name.equals(name) && jobSetsEqual(jobSet, fix.jobSet) // NOPMD
+			return fix.name.equals(name) && areJobSetsEqual(jobSet, fix.jobSet) // NOPMD
 					&& fix.race.equals(race) && fix.stats == null;
 		} else {
-			return fix.name.equals(name) && jobSetsEqual(jobSet, fix.jobSet)
+			return fix.name.equals(name) && areJobSetsEqual(jobSet, fix.jobSet)
 					&& fix.race.equals(race) && locStats.equals(fix.stats);
 		}
 	}
@@ -189,7 +189,7 @@ public class Worker implements IWorker {
 	 * @param two a set of Jobs
 	 * @return whether they are equal, ignoring any "empty" Jobs.
 	 */
-	private static boolean jobSetsEqual(final Collection<IJob> one, final Collection<IJob> two) {
+	private static boolean areJobSetsEqual(final Collection<IJob> one, final Collection<IJob> two) {
 		for (final IJob job : one) {
 			if (!job.isEmpty() && !two.contains(job)) {
 				return false;

@@ -137,14 +137,14 @@ public class AdventureFixture implements ExplorableFixture, HasOwner {
 	 * @return whether it's equal to this one
 	 */
 	private boolean equalsImpl(final AdventureFixture obj) {
-		return equalOwner(obj.owner) && briefDesc.equals(obj.briefDesc)
+		return isOwnerEqual(obj.owner) && briefDesc.equals(obj.briefDesc)
 				&& fullDesc.equals(obj.fullDesc);
 	}
 	/**
 	 * @param player a player
 	 * @return whether it's the same as the adventure's owner
 	 */
-	private boolean equalOwner(final Player player) {
+	private boolean isOwnerEqual(final Player player) {
 		if (owner.isIndependent()) {
 			return player.isIndependent();
 		} else {

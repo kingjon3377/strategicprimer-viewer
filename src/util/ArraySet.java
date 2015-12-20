@@ -212,14 +212,14 @@ public final class ArraySet<T> implements Set<T> {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof Set
-				&& equalSets(this, (Set<?>) obj);
+				&& areSetsEqual(this, (Set<?>) obj);
 	}
 	/**
 	 * @param one one set
 	 * @param two another set
 	 * @return whether they are equal according to the Set contract.
 	 */
-	private static boolean equalSets(final Set<?> one, final Set<?> two) {
+	private static boolean areSetsEqual(final Set<?> one, final Set<?> two) {
 		return one.containsAll(two) && two.containsAll(one);
 	}
 	/**

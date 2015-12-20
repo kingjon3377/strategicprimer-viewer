@@ -23,7 +23,6 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.ProxyFor;
 import model.map.fixtures.mobile.ProxyUnit;
-import model.map.fixtures.mobile.Unit;
 import util.EnumerationWrapper;
 import util.NullCleaner;
 
@@ -435,7 +434,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 */
 	@Nullable
 	private static MutableTreeNode getNode(final TreeNode node, final Object obj) {
-		if (node instanceof MutableTreeNode && objectEquals(node, obj)) {
+		if (node instanceof MutableTreeNode && areTreeObjectsEqual(node, obj)) {
 			return (MutableTreeNode) node;
 		} else if (node instanceof WorkerTreeNode && node.getAllowsChildren()) {
 			for (final TreeNode child : (WorkerTreeNode<?>) node) {
@@ -454,7 +453,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @param obj an object
 	 * @return whether the object is or equals the node's user-object
 	 */
-	private static boolean objectEquals(final TreeNode node, final Object obj) {
+	private static boolean areTreeObjectsEqual(final TreeNode node, final Object obj) {
 		return node instanceof DefaultMutableTreeNode
 				&& (obj == ((DefaultMutableTreeNode) node).getUserObject() || obj
 						.equals(((DefaultMutableTreeNode) node).getUserObject()));

@@ -184,7 +184,7 @@ IExplorationModel {
 			map.addFixture(dest, unit);
 			for (final Pair<IMutableMapNG, File> pair : getSubordinateMaps()) {
 				final IMutableMapNG subMap = pair.first();
-				if (!locationHasFixture(subMap, point, unit)) {
+				if (!doesLocationHaveFixture(subMap, point, unit)) {
 					continue;
 				}
 				ensureTerrain(subMap, dest, map.getBaseTerrain(dest));
@@ -322,8 +322,8 @@ IExplorationModel {
 	 * @param fix a fixture
 	 * @return whether the map contains that fixture at that location
 	 */
-	private static boolean locationHasFixture(final IMapNG map, final Point point,
-			final TileFixture fix) {
+	private static boolean doesLocationHaveFixture(final IMapNG map, final Point point,
+	                                               final TileFixture fix) {
 		if ((fix instanceof Forest && fix.equals(map.getForest(point)))
 				|| (fix instanceof Ground && fix.equals(map.getGround(point)))
 				|| (fix instanceof Mountain && map.isMountainous(point))) {

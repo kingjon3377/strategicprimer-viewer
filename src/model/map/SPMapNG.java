@@ -428,19 +428,19 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	private boolean equalsImpl(final IMapNG obj) {
 		if (dimensions().equals(obj.dimensions())
-				&& iterablesEqual(players(), obj.players())
+				&& areIterablesEqual(players(), obj.players())
 				&& getCurrentTurn() == obj.getCurrentTurn()
 				&& getCurrentPlayer().equals(obj.getCurrentPlayer())) {
 			for (final Point point : locations()) {
 				if (getBaseTerrain(point) != obj.getBaseTerrain(point)
 						|| isMountainous(point) != obj.isMountainous(point)
-						|| !iterablesEqual(getRivers(point),
+						|| !areIterablesEqual(getRivers(point),
 								obj.getRivers(point))
 						|| !Objects.equals(getForest(point),
 								obj.getForest(point))
 						|| !Objects.equals(getGround(point),
 								obj.getGround(point))
-						|| !iterablesEqual(getOtherFixtures(point),
+						|| !areIterablesEqual(getOtherFixtures(point),
 								obj.getOtherFixtures(point))) {
 					return false; // NOPMD
 				}
@@ -462,8 +462,8 @@ public class SPMapNG implements IMutableMapNG {
 	 *            the type of thing they contain
 	 * @return whether they contain the same elements.
 	 */
-	private static <T> boolean iterablesEqual(final Iterable<T> one,
-			final Iterable<T> two) {
+	private static <T> boolean areIterablesEqual(final Iterable<T> one,
+	                                             final Iterable<T> two) {
 		final Collection<T> first = StreamSupport.stream(one.spliterator(), false).collect(Collectors.toList());
 		final Collection<T> firstCopy = StreamSupport.stream(one.spliterator(), false).collect(Collectors.toList());
 		final Collection<T> second = StreamSupport.stream(two.spliterator(), false).collect(Collectors.toList());

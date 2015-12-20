@@ -185,14 +185,14 @@ public class Unit implements IUnit {
 				&& ((IUnit) obj).getOwner().getPlayerId() == owner.getPlayerId()
 				&& ((IUnit) obj).getKind().equals(kind)
 				&& ((IUnit) obj).getName().equals(name)
-				&& equalMembers((IUnit) obj)
+				&& areMembersEqual((IUnit) obj)
 				&& ((IUnit) obj).getID() == id;
 	}
 	/**
 	 * @param obj another unit
 	 * @return whether its "members" are the same as ours
 	 */
-	private boolean equalMembers(final Iterable<UnitMember> obj) {
+	private boolean areMembersEqual(final Iterable<UnitMember> obj) {
 		final Collection<UnitMember> theirs = StreamSupport.stream(obj.spliterator(), false).collect(Collectors.toSet());
 		return members.containsAll(theirs) && theirs.containsAll(members);
 	}
