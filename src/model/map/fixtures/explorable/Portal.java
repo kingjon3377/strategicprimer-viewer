@@ -188,4 +188,10 @@ public class Portal implements ExplorableFixture {
 				&& destinationCoordinates
 						.equals(((Portal) obj).destinationCoordinates);
 	}
+	/**
+	 * @param destination the new destination coordinates
+	 */
+	public void setDestinationCoordinates(Point destination) {
+		destinationCoordinates = destination;
+	}
 }
