@@ -72,7 +72,7 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 			IMutableMapNG map = pair.first();
 			Player currP = map.getCurrentPlayer();
 			if (currP.isIndependent() || currP.getPlayerId() < 0 || currP.getPlayerId() == player.getPlayerId()) {
-				addResourceToMap(resource, map, player);
+				addResourceToMap(resource.copy(false), map, player);
 			}
 		}
 	}
