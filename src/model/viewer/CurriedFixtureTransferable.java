@@ -100,15 +100,6 @@ public final class CurriedFixtureTransferable implements Transferable {
 	}
 
 	/**
-	 * A typesafe replacement for getTransferData.
-	 *
-	 * @return our payload
-	 */
-	public List<Transferable> getPayload() {
-		return payload;
-	}
-
-	/**
 	 * @return a String representation of the object
 	 */
 	@Override
