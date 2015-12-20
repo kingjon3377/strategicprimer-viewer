@@ -61,6 +61,7 @@ public final class NullCleaner {
 	 * @param arr the array
 	 * @return it, if it's not nullable
 	 */
+	@SafeVarargs
 	public static <T> T[] assertNotNullArray(final T @Nullable ... arr) {
 		assert arr != null;
 		for (final T item : arr) {
