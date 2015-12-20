@@ -71,6 +71,7 @@ public final class ComparablePair<K extends Comparable<K>, V extends Comparable<
 		return new ComparablePair<>(first, second);
 	}
 
+	@SuppressWarnings("RawUseOfParameterized")
 	@Override
 	public boolean equals(final Object obj) {
 		return this == obj || obj instanceof ComparablePair && first().equals(((ComparablePair) obj).first()) &&
