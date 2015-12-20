@@ -17,6 +17,7 @@ import javax.swing.text.NumberFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.HashSet;
@@ -47,17 +48,13 @@ public class ResourceAddingFrame extends JFrame {
 	private Player current;
 	private final JLabel resourceLabel;
 	private final JLabel implementLabel;
-	private final JComboBox<String> resKindBox = new JComboBox<>();
-	private final Set<String> resKindSet = new HashSet<>();
+	private final UpdatedComboBox resKindBox = new UpdatedComboBox();
 	private final JTextField resPrefixField = new JTextField();
-	private final JComboBox<String> resourceBox = new JComboBox<>();
-	private final Set<String> resourceSet = new HashSet<>();
+	private final UpdatedComboBox resourceBox = new UpdatedComboBox();
 	private final NumberFormat nf = NumberFormat.getIntegerInstance();
 	private final JFormattedTextField resQtyField = new JFormattedTextField(nf);
-	private final JComboBox<String> resUnitsBox = new JComboBox<>();
-	private final Set<String> resUnitsSet = new HashSet<>();
-	private final JComboBox<String> implKindBox = new JComboBox<>();
-	private final Set<String> implKindSet = new HashSet<>();
+	private final UpdatedComboBox resUnitsBox = new UpdatedComboBox();
+	private final UpdatedComboBox implKindBox = new UpdatedComboBox();
 
 	public ResourceAddingFrame(ResourceManagementDriver dmodel, IOHandler ioh) {
 		super("Resource Entry");
@@ -86,10 +83,6 @@ public class ResourceAddingFrame extends JFrame {
 		addPair(panel, new JLabel("Specific Resource"), resourceBox);
 		addPair(panel, new JLabel("Quantity"), resQtyField);
 		addPair(panel, new JLabel("Units"), resUnitsBox);
-		resKindBox.setEditable(true);
-		resourceBox.setEditable(true);
-		resUnitsBox.setEditable(true);
-		implKindBox.setEditable(true);
 		JButton resourceButton = new JButton("Add Resource");
 		addPair(panel, new JLabel(""), resourceButton);
 		Component outer = this;
@@ -102,23 +95,11 @@ public class ResourceAddingFrame extends JFrame {
 				model.addResource(new ResourcePile(idf.createID(), kind, prefixed,
 						                                  nf.parse(resQtyField.getText().trim()).intValue(), units),
 						current);
-				if (!resKindSet.contains(kind)) {
-					resKindSet.add(kind);
-					resKindBox.addItem(kind);
-				}
-				resKindBox.setSelectedItem(null);
+				resKindBox.checkAndClear();
 				resPrefixField.setText("");
-				if (!resourceSet.contains(resource)) {
-					resourceSet.add(resource);
-					resourceBox.addItem(resource);
-				}
-				resourceBox.setSelectedItem(null);
+				resourceBox.checkAndClear();
 				resQtyField.setText("");
-				if (!resUnitsSet.contains(units)) {
-					resUnitsSet.add(units);
-					resUnitsBox.addItem(units);
-				}
-				resUnitsBox.setSelectedItem(null);
+				resUnitsBox.checkAndClear();
 				resKindBox.requestFocusInWindow();
 			} catch (ParseException except) {
 				ErrorShower.showErrorDialog(outer, "Quantity must be numeric");
@@ -134,10 +115,7 @@ public class ResourceAddingFrame extends JFrame {
 		implButton.addActionListener(evt -> {
 			String kind = implKindBox.getSelectedItem().toString().trim();
 			model.addResource(new Implement(idf.createID(), kind), current);
-			if (!implKindSet.contains(kind)) {
-				implKindSet.add(kind);
-				implKindBox.addItem(kind);
-			}
+			implKindBox.checkAndClear();
 			implKindBox.requestFocusInWindow();
 		});
 		secondPanel.add(implButton);
@@ -155,5 +133,47 @@ public class ResourceAddingFrame extends JFrame {
 		panel.add(two);
 		panel.add(Box.createVerticalGlue());
 		container.add(panel);
+	}
+	private static class UpdatedComboBox extends JComboBox<String> {
+		protected UpdatedComboBox() {
+			setEditable(true);
+		}
+		/**
+		 * From http://stackoverflow.com/a/24336768
+		 * @param evt the event to process
+		 */
+		@Override
+		public void processKeyEvent(KeyEvent evt) {
+			if ( evt.getID() != KeyEvent.KEY_PRESSED
+					     || evt.getKeyCode() != KeyEvent.VK_TAB) {
+				super.processKeyEvent(evt);
+				return;
+			}
+
+			if (isPopupVisible()) {
+				assert evt.getSource() instanceof Component;
+				KeyEvent fakeEnterKeyEvent = new KeyEvent((Component) evt.getSource(),
+						                                         evt.getID(),
+						                                         evt.getWhen(),
+						                                         0,                   // No modifiers.
+						                                         KeyEvent.VK_ENTER,   // Enter key.
+						                                         KeyEvent.CHAR_UNDEFINED);
+				super.processKeyEvent(fakeEnterKeyEvent);
+			}
+			if ( evt.getModifiers() == 0) {
+				transferFocus();
+			} else if ( evt.getModifiers() == KeyEvent.SHIFT_MASK) {
+				transferFocusBackward();
+			}
+		}
+		private Set<String> values = new HashSet<>();
+		public void checkAndClear() {
+			String item = getSelectedItem().toString().trim();
+			if (!values.contains(item)) {
+				values.add(item);
+				addItem(item);
+			}
+			setSelectedItem(null);
+		}
 	}
 }

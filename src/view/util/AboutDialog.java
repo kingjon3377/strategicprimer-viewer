@@ -91,6 +91,9 @@ public final class AboutDialog extends JDialog {
 		link(builder, "http://tips4java.wordpress.com/2008/11/06/wrap-layout/",
 				"tips4java.wordpress.com");
 		builder.append(", which released code to be used \"without restriction\".</p>");
+		builder.append("<p>Code to make Tab work properly in combo boxes adapted from ");
+		link(builder, "http://stackoverflow.com/a/24336768", "StackOverflow user Joshua Goldberg");
+		builder.append("</p>");
 		builder.append("</html>");
 		add(new JLabel(builder.toString()));
 		final JButton close = new JButton("Close");
