@@ -243,7 +243,7 @@ public final class SPIntermediateRepresentation {
 	 *             if I/O error in writing
 	 */
 	private void writeIfTagNotEmpty(final Appendable writer,
-			final String string) throws IOException {
+	                                @SuppressWarnings("TypeMayBeWeakened") final String string) throws IOException {
 		if (!tag.isEmpty()) {
 			writer.append(string);
 		}

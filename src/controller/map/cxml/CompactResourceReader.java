@@ -376,6 +376,7 @@ public final class CompactResourceReader extends
 	 * @param meadow a meadow or field
 	 * @return the proper tag for it
 	 */
+	@SuppressWarnings("TypeMayBeWeakened")
 	private static String getMeadowTag(final Meadow meadow) {
 		if (meadow.isField()) {
 			return "field"; // NOPMD
@@ -388,6 +389,7 @@ public final class CompactResourceReader extends
 	 * @param grove a grove or orchard
 	 * @return the proper tag for it
 	 */
+	@SuppressWarnings("TypeMayBeWeakened")
 	private static String getGroveTag(final Grove grove) {
 		if (grove.isOrchard()) {
 			return "orchard"; // NOPMD

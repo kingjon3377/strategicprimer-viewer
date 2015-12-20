@@ -217,6 +217,7 @@ public final class TrapModelDriver implements ISPDriver {
 	 * @param minutes a number of minutes
 	 * @return a String representation, including the number of hours
 	 */
+	@SuppressWarnings("TypeMayBeWeakened")
 	private static String inHours(final int minutes) {
 		if (minutes < MINS_PER_HOUR) {
 			return Integer.toString(minutes) + " minutes"; // NOPMD

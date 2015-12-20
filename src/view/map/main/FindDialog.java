@@ -310,8 +310,8 @@ public final class FindDialog extends JDialog implements ActionListener {
 	 * @param csen whether to search case-sensitively
 	 * @return whether the fixture has a 'kind' that matches the pattern
 	 */
-	private static boolean matchesKind(final String pattern,
-			final IFixture fix, final boolean csen) {
+	private static boolean matchesKind(@SuppressWarnings("TypeMayBeWeakened") final String pattern,
+	                                   final IFixture fix, final boolean csen) {
 		if (csen) {
 			return fix instanceof HasKind && ((HasKind) fix).getKind()
 					.contains(pattern);
@@ -328,8 +328,8 @@ public final class FindDialog extends JDialog implements ActionListener {
 	 * @param csen whether to search case-sensitively
 	 * @return whether the fixture has a name that matches the pattern
 	 */
-	private static boolean matchesName(final String pattern,
-			final IFixture fix, final boolean csen) {
+	private static boolean matchesName(@SuppressWarnings("TypeMayBeWeakened") final String pattern,
+	                                   final IFixture fix, final boolean csen) {
 		if (csen) {
 			return fix instanceof HasName
 					&& ((HasName) fix).getName().contains(pattern);

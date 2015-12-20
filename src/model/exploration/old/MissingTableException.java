@@ -42,6 +42,7 @@ public final class MissingTableException extends Exception {
 	/**
 	 * @return the name of the missing table
 	 */
+	@SuppressWarnings("TypeMayBeWeakened")
 	public String getTable() {
 		return missingTable;
 	}

@@ -163,6 +163,7 @@ public final class LevelListener implements LevelGainListener,
 	 * @return its name if it has one, "null" if null, or its toString
 	 *         otherwise.
 	 */
+	@SuppressWarnings("TypeMayBeWeakened")
 	private static String getName(final Object named) {
 		if (named instanceof HasName) {
 			return ((HasName) named).getName(); // NOPMD

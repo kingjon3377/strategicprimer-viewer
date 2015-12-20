@@ -280,6 +280,7 @@ public abstract class AbstractCompactReader<@NonNull T> implements CompactReader
 	 * @return that many tabs
 	 * TODO: This should probably take Appendable and write the tabs directly.
 	 */
+	@SuppressWarnings("TypeMayBeWeakened")
 	protected static String indent(final int tabs) {
 		final StringBuilder buf = new StringBuilder(tabs);
 		for (int i = 0; i < tabs; i++) {
@@ -292,6 +293,7 @@ public abstract class AbstractCompactReader<@NonNull T> implements CompactReader
 	 * @param obj an object being written out that might have a custom image
 	 * @return the XML for the image if it does, or the empty string if not
 	 */
+	@SuppressWarnings("TypeMayBeWeakened")
 	protected static String imageXML(final HasImage obj) {
 		final String image = obj.getImage();
 		if (image.isEmpty() || image.equals(obj.getDefaultImage())) {

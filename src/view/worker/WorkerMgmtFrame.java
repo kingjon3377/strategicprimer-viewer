@@ -376,6 +376,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		/**
 		 * @return the proto-strategy as a String
 		 */
+		@SuppressWarnings("TypeMayBeWeakened")
 		public String createStrategy() {
 			final Player currentPlayer;
 			final Object treeRoot = tmodel.getRoot();

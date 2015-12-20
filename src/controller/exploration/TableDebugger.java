@@ -87,8 +87,8 @@ public final class TableDebugger {
 	 * @throws IOException on I/O error writing to the stream
 	 */
 	private void debugSingleTable(final String before, final String after,
-			final EncounterTable table, final String tableName,
-			final Appendable ostream, final Set<EncounterTable> set)
+	                              final EncounterTable table, @SuppressWarnings("TypeMayBeWeakened") final String tableName,
+	                              final Appendable ostream, final Set<EncounterTable> set)
 			throws MissingTableException, IOException {
 		if (set.contains(table)) {
 			ostream.append("table ");
