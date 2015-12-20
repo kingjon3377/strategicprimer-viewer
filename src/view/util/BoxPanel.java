@@ -42,6 +42,7 @@ public class BoxPanel extends JPanel {
 	 * @param horiz If true, the panel is laid out on the line axis; if false,
 	 *        on the page axis.
 	 */
+	@SuppressWarnings("UnnecessarySuperQualifier")
 	public BoxPanel(final boolean horiz) {
 		horizontal = horiz;
 		if (horizontal) {

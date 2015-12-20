@@ -42,6 +42,7 @@ public class SimpleMultiMapModel extends AbstractDriverModel
 	 * @param map the map we're wrapping
 	 * @param file the file the map was loaded from or should be saved to
 	 */
+	@SuppressWarnings("UnnecessarySuperQualifier")
 	public SimpleMultiMapModel(final IMutableMapNG map, final File file) {
 		super.setMap(map, file);
 	}
@@ -49,6 +50,7 @@ public class SimpleMultiMapModel extends AbstractDriverModel
 	 * Copy constructor.]
 	 * @param model a driver model
 	 */
+	@SuppressWarnings("UnnecessarySuperQualifier")
 	public SimpleMultiMapModel(final IDriverModel model) {
 		super.setMap(model.getMap(), model.getMapFile());
 		if (model instanceof IMultiMapModel) {
