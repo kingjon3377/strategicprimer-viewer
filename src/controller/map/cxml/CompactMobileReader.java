@@ -91,7 +91,7 @@ public final class CompactMobileReader extends
 	/**
 	 * Enumeration of the types we know how to handle.
 	 */
-	private static enum MobileType {
+	private enum MobileType {
 		/**
 		 * Animal.
 		 */
@@ -159,7 +159,7 @@ public final class CompactMobileReader extends
 		 *
 		 * @param tagString The tag.
 		 */
-		private MobileType(final String tagString) {
+		MobileType(final String tagString) {
 			tag = tagString;
 		}
 	}

@@ -95,7 +95,7 @@ public final class TrapModelDriver implements ISPDriver {
 	/**
 	 * The possible commands.
 	 */
-	private static enum TrapperCommand implements HasName {
+	private enum TrapperCommand implements HasName {
 		/**
 		 * Set or reset a trap.
 		 */
@@ -126,7 +126,7 @@ public final class TrapModelDriver implements ISPDriver {
 		 *
 		 * @param cName the "name" of the command
 		 */
-		private TrapperCommand(final String cName) {
+		TrapperCommand(final String cName) {
 			name = cName;
 		}
 

@@ -73,7 +73,7 @@ public final class CompactTerrainReader extends
 	/**
 	 * Enumeration of the types we know how to handle.
 	 */
-	private static enum TerrainFixtureType {
+	private enum TerrainFixtureType {
 		/**
 		 * Forest.
 		 */
@@ -104,7 +104,7 @@ public final class CompactTerrainReader extends
 		 *
 		 * @param tagString The tag.
 		 */
-		private TerrainFixtureType(final String tagString) {
+		TerrainFixtureType(final String tagString) {
 			tag = tagString;
 		}
 

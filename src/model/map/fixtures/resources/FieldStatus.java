@@ -61,7 +61,7 @@ public enum FieldStatus {
 	 *
 	 * @param string a string representing the status.
 	 */
-	private FieldStatus(final String string) {
+	FieldStatus(final String string) {
 		str = string;
 	}
 

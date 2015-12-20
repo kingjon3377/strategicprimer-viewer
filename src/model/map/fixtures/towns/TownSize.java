@@ -54,7 +54,7 @@ public enum TownSize {
 	 *
 	 * @param str a string representing the size.
 	 */
-	private TownSize(final String str) {
+	TownSize(final String str) {
 		sizeStr = str;
 	}
 

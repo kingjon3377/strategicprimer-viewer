@@ -65,7 +65,7 @@ public enum MineralKind {
 	 *
 	 * @param string A string representing the MineralKind.
 	 */
-	private MineralKind(final String string) {
+	MineralKind(final String string) {
 		str = string;
 	}
 

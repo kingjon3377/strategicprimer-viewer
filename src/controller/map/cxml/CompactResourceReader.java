@@ -96,7 +96,7 @@ public final class CompactResourceReader extends
 	/**
 	 * Enumeration of the types we know how to handle.
 	 */
-	private static enum HarvestableType {
+	private enum HarvestableType {
 		/**
 		 * Cache.
 		 */
@@ -143,7 +143,7 @@ public final class CompactResourceReader extends
 		 *
 		 * @param tagString The tag.
 		 */
-		private HarvestableType(final String tagString) {
+		HarvestableType(final String tagString) {
 			tag = tagString;
 		}
 	}

@@ -57,7 +57,7 @@ public enum River {
 	 *
 	 * @param string a descriptive string representing the direction
 	 */
-	private River(final String string) {
+	River(final String string) {
 		desc = string;
 	}
 

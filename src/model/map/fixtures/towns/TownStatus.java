@@ -58,7 +58,7 @@ public enum TownStatus {
 	 *
 	 * @param string a string representing the status.
 	 */
-	private TownStatus(final String string) {
+	TownStatus(final String string) {
 		str = string;
 	}
 

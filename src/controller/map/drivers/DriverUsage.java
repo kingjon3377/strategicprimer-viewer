@@ -39,7 +39,7 @@ public class DriverUsage { // $codepro.audit.disable
 	/**
 	 * Possible numbers of (non-option?) parameters a driver might want.
 	 */
-	public static enum ParamCount {
+	public enum ParamCount {
 		/**
 		 * None at all.
 		 */

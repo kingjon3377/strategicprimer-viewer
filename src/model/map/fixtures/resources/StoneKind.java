@@ -93,7 +93,7 @@ public enum StoneKind {
 	 *
 	 * @param string A string representing the StoneKind.
 	 */
-	private StoneKind(final String string) {
+	StoneKind(final String string) {
 		str = string;
 	}
 

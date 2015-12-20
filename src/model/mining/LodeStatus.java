@@ -64,7 +64,7 @@ public enum LodeStatus {
 	/**
 	 * @param qty the number of parts of other rock per part of ore
 	 */
-	private LodeStatus(final int qty) {
+	LodeStatus(final int qty) {
 		ratio = qty;
 	}
 	/**
