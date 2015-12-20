@@ -90,7 +90,7 @@ public final class CurriedFixtureTransferable implements Transferable {
 	 * @throws IOException required by spec but not thrown
 	 */
 	@Override
-	public List<Transferable> getTransferData(@Nullable final DataFlavor dFlavor)
+	public Iterable<Transferable> getTransferData(@Nullable final DataFlavor dFlavor)
 			throws UnsupportedFlavorException, IOException {
 		if (isDataFlavorSupported(dFlavor)) {
 			return payload; // NOPMD
