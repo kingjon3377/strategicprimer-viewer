@@ -76,11 +76,12 @@ public class ResourceAddingCLIDriver implements ISPDriver {
 					playerNum >= 0 && playerNum < players.size();
 					playerNum = cli.chooseFromList(players, desc, none, prpt, false)) {
 				Player player = players.get(playerNum);
-				while (cli.inputBoolean("Keep going? "))
-				if (cli.inputBoolean("Enter a (quantified) resource? ")) {
-					enterResource(idf, dmodel, cli, player);
-				} else if (cli.inputBoolean("Enter equipment etc.? ")) {
-					enterImplement(idf, dmodel, cli, player);
+				while (cli.inputBoolean("Keep going? ")) {
+					if (cli.inputBoolean("Enter a (quantified) resource? ")) {
+						enterResource(idf, dmodel, cli, player);
+					} else if (cli.inputBoolean("Enter equipment etc.? ")) {
+						enterImplement(idf, dmodel, cli, player);
+					}
 				}
 			}
 		} catch (final IOException except) {
