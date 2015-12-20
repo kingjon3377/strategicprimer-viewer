@@ -48,6 +48,19 @@ public interface ICLIHelper {
 			boolean auto) throws IOException;
 
 	/**
+	 * Have the user choose an item from a list.
+	 *
+	 * @param items the list of items
+	 * @param desc the description to give before printing the list
+	 * @param none what to print if there are none
+	 * @param prompt what to prompt the user with
+	 * @param auto whether to automatically choose if there's only one choice
+	 * @return the user's selection, or -1 if there are none
+	 * @throws IOException on I/O error getting the user's input
+	 */
+	int chooseStringFromList(List<String> items, String desc, String none,
+	       String prompt, boolean auto) throws IOException;
+	/**
 	 * Read input from stdin repeatedly until a nonnegative integer is entered,
 	 * and return it.
 	 *

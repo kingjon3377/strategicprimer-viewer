@@ -217,4 +217,50 @@ public final class CLIHelper implements ICLIHelper {
 	public String toString() {
 		return "CLIHelper";
 	}
+	/**
+	 * Print a list of things by name and number.
+	 *
+	 * @param ostream the stream to write to
+	 * @param list the list to print.
+	 * @throws IOException on I/O error writing to stream
+	 */
+	private static void printStringList(final Appendable ostream,
+	        final List<String> list) throws IOException {
+		for (int i = 0; i < list.size(); i++) {
+			ostream.append(Integer.toString(i));
+			ostream.append(": ");
+			ostream.append(list.get(i));
+			ostream.append('\n');
+		}
+	}
+	/**
+	 * Have the user choose an item from a list.
+	 *
+	 * @param <T> The type of things in the list
+	 * @param items the list of items
+	 * @param desc the description to give before printing the list
+	 * @param none what to print if there are none
+	 * @param prompt what to prompt the user with
+	 * @param auto whether to automatically choose if there's only one choice
+	 * @return the user's selection, or -1 if there are none
+	 * @throws IOException on I/O error getting the user's input
+	 */
+	@Override
+	public int chooseStringFromList(final List<String> items, final String desc,
+	        final String none, final String prompt, final boolean auto)
+			throws IOException {
+		if (items.isEmpty()) {
+			SYS_OUT.println(none);
+			return -1; // NOPMD
+		}
+		SYS_OUT.println(desc);
+		if (auto && items.size() == 1) {
+			SYS_OUT.print("Automatically choosing only item, ");
+			SYS_OUT.println(items.get(0));
+			return 0; // NOPMD
+		} else {
+			printStringList(SYS_OUT, items);
+			return inputNumber(prompt);
+		}
+	}
 }
