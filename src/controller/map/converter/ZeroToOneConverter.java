@@ -223,6 +223,7 @@ public final class ZeroToOneConverter {
 	private static String printStartElement(final StartElement element) {
 		final StringBuilder builder = new StringBuilder(64).append('<');
 		builder.append(element.getName().getLocalPart());
+		//noinspection Convert2Diamond // getAttributes() isn't actually genericized, so diamond causes compile error
 		StreamSupport.stream(new IteratorWrapper<Attribute>(element.getAttributes()).spliterator(), false)
 				.map(ZeroToOneConverter::printAttribute).forEach(builder::append);
 		builder.append('>');
