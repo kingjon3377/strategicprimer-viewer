@@ -821,7 +821,7 @@
       <option name="ignoreInlineLinkToSuper" value="false" />
     </inspection_tool>
     <inspection_tool class="UnnecessaryParentheses" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="ignoreClarifyingParentheses" value="false" />
+      <option name="ignoreClarifyingParentheses" value="true" />
       <option name="ignoreParenthesesOnConditionals" value="false" />
       <option name="ignoreParenthesesOnLambdaParameter" value="false" />
     </inspection_tool>
