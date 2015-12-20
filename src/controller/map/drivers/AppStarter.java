@@ -117,8 +117,7 @@ public final class AppStarter implements ISPDriver {
 		addChoice(new ExpansionDriver());
 		// TODO: Add a GUI equivalent of the MapPopulatorDriver
 		addChoice(new MapPopulatorDriver());
-		// TODO: Add a GUI equivalent of the ResourceAddingCLIDriver
-		addChoice(new ResourceAddingCLIDriver());
+		addChoice(new ResourceAddingCLIDriver(), new ResourceAddingGUIDriver());
 	}
 	/**
 	 * Since there's no way of choosing which driver programmatically here, we present our choice to the user.
