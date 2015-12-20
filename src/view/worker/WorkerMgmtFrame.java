@@ -37,6 +37,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import model.workermgmt.WorkerTreeModelAlt.PlayerNode;
 import model.workermgmt.WorkerTreeModelAlt.WorkerTreeNode;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -377,8 +378,8 @@ public final class WorkerMgmtFrame extends JFrame {
 		public String createStrategy() {
 			final Player currentPlayer;
 			final Object treeRoot = tmodel.getRoot();
-			if (treeRoot instanceof WorkerTreeNode && ((WorkerTreeNode) treeRoot).getUserObject() instanceof Player) {
-				currentPlayer = (Player) ((WorkerTreeNode) treeRoot).getUserObject();
+			if (treeRoot instanceof PlayerNode) {
+				currentPlayer = ((PlayerNode) treeRoot).getUserObject();
 			} else if (treeRoot instanceof Player) {
 				currentPlayer = (Player) treeRoot;
 			} else {
