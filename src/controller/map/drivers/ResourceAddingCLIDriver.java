@@ -52,7 +52,7 @@ public class ResourceAddingCLIDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-d",
+	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-d",
 			"--add-resource", ParamCount.Many, "Add resources to maps",
 			"Add resources for players to maps", ResourceAddingCLIDriver.class);
 
