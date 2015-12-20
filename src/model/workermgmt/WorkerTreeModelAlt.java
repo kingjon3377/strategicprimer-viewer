@@ -149,13 +149,13 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	/**
 	 * A base class for our nodes.
 	 */
-	public static class WorkerTreeNode extends
+	public static class WorkerTreeNode<T> extends
 			DefaultMutableTreeNode implements Iterable<TreeNode> {
 		/**
 		 * @param userObj the user object the node wraps
 		 * @param permitsChildren whether to allow children
 		 */
-		protected WorkerTreeNode(final Object userObj,
+		protected WorkerTreeNode(final T userObj,
 				final boolean permitsChildren) {
 			super(userObj, permitsChildren);
 		}
@@ -163,7 +163,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * Allows children without having to pass that to us.
 		 * @param userObj the user object the node wraps.
 		 */
-		protected WorkerTreeNode(final Object userObj) {
+		protected WorkerTreeNode(final T userObj) {
 			super(userObj, true);
 		}
 		/**
@@ -178,7 +178,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * A node representing the player.
 	 * @author Jonathan Lovelace
 	 */
-	public static final class PlayerNode extends WorkerTreeNode {
+	public static final class PlayerNode extends WorkerTreeNode<Player> {
 		/**
 		 * Constructor.
 		 *
@@ -195,12 +195,28 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 				index++;
 			}
 		}
+
+		@Override
+		public Player getUserObject() {
+			Object obj = super.getUserObject();
+			assert obj instanceof Player;
+			return (Player) obj;
+		}
+
+		@Override
+		public void setUserObject(final Object userObject) {
+			if (userObject instanceof Player) {
+				super.setUserObject(userObject);
+			} else {
+				throw new IllegalArgumentException("PlayerNode can only contain a Player");
+			}
+		}
 	}
 	/**
 	 * A node representing a kind of unit.
 	 * @author Jonathan Lovelace
 	 */
-	public static final class KindNode extends WorkerTreeNode {
+	public static final class KindNode extends WorkerTreeNode<String> {
 		/**
 		 * Constructor.
 		 * @param kind what kind of unit
@@ -214,23 +230,53 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 				index++;
 			}
 		}
+		@Override
+		public String getUserObject() {
+			Object obj = super.getUserObject();
+			assert obj instanceof String;
+			return (String) obj;
+		}
+
+		@Override
+		public void setUserObject(final Object userObject) {
+			if (userObject instanceof String) {
+				super.setUserObject(userObject);
+			} else {
+				throw new IllegalArgumentException("PlayerNode can only contain a Player");
+			}
+		}
 	}
 	/**
 	 * A node representing a unit.
 	 * @author Jonathan Lovelace
 	 */
-	public static final class UnitNode extends WorkerTreeNode {
+	public static final class UnitNode extends WorkerTreeNode<IUnit> {
 		/**
 		 * Constructor.
 		 *
 		 * @param unit the unit we represent.
 		 */
-		public UnitNode(final Iterable<UnitMember> unit) {
+		public UnitNode(final IUnit unit) {
 			super(unit);
 			int index = 0;
 			for (final UnitMember member : unit) {
 				insert(new UnitMemberNode(member), index); // NOPMD
 				index++;
+			}
+		}
+		@Override
+		public IUnit getUserObject() {
+			Object obj = super.getUserObject();
+			assert obj instanceof IUnit;
+			return (IUnit) obj;
+		}
+
+		@Override
+		public void setUserObject(final Object userObject) {
+			if (userObject instanceof IUnit) {
+				super.setUserObject(userObject);
+			} else {
+				throw new IllegalArgumentException("PlayerNode can only contain a Player");
 			}
 		}
 	}
@@ -239,7 +285,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * A node representing a unit member.
 	 * @author Jonathan Lovelace
 	 */
-	public static final class UnitMemberNode extends WorkerTreeNode {
+	public static final class UnitMemberNode extends WorkerTreeNode<UnitMember> {
 		/**
 		 * Constructor.
 		 *
@@ -247,6 +293,21 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 */
 		public UnitMemberNode(final UnitMember member) {
 			super(member, false);
+		}
+		@Override
+		public UnitMember getUserObject() {
+			Object obj = super.getUserObject();
+			assert obj instanceof UnitMember;
+			return (UnitMember) obj;
+		}
+
+		@Override
+		public void setUserObject(final Object userObject) {
+			if (userObject instanceof UnitMember) {
+				super.setUserObject(userObject);
+			} else {
+				throw new IllegalArgumentException("PlayerNode can only contain a Player");
+			}
 		}
 	}
 
@@ -258,7 +319,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	@Override
 	public void addUnit(final IUnit unit) {
 		model.addUnit(unit);
-		final MutableTreeNode node = new UnitNode(model.getUnitByID((Player) ((PlayerNode) root).getUserObject(), unit.getID()));
+		final MutableTreeNode node = new UnitNode(model.getUnitByID(((PlayerNode) root).getUserObject(), unit.getID()));
 		final String kind = unit.getKind();
 		for (final TreeNode child : (Iterable<TreeNode>) root) {
 			if (child instanceof KindNode
@@ -378,7 +439,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		if (node instanceof MutableTreeNode && objectEquals(node, obj)) {
 			return (MutableTreeNode) node;
 		} else if (node instanceof WorkerTreeNode && node.getAllowsChildren()) {
-			for (final TreeNode child : (WorkerTreeNode) node) {
+			for (final TreeNode child : (WorkerTreeNode<?>) node) {
 				@Nullable final MutableTreeNode result = getNode(child, obj);
 				if (result != null) {
 					return result;
