@@ -5,7 +5,6 @@ import static util.NullCleaner.assertNotNull;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import util.NullCleaner;
 import view.util.Coordinate;
 
 /**

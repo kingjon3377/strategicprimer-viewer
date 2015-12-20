@@ -24,7 +24,6 @@ import model.map.HasKind;
 import model.map.HasName;
 import model.map.HasOwner;
 import model.map.IFixture;
-import model.map.IMutablePlayerCollection;
 import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.fixtures.UnitMember;

@@ -15,7 +15,6 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.resources.CacheFixture;
-import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 

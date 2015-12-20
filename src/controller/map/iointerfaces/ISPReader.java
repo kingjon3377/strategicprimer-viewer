@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.Reader;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 

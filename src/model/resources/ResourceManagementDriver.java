@@ -5,10 +5,8 @@ import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.FortressMember;
-import model.map.fixtures.ResourcePile;
 import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
-import model.misc.IMultiMapModel;
 import model.misc.SimpleMultiMapModel;
 import util.Pair;
 

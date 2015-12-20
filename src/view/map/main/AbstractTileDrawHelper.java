@@ -7,7 +7,6 @@ import java.util.stream.StreamSupport;
 import model.map.IEvent;
 import model.map.IMapNG;
 import model.map.Point;
-import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.towns.Fortress;

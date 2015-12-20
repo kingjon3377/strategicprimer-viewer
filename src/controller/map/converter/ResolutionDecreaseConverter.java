@@ -14,7 +14,6 @@ import org.eclipse.jdt.annotation.NonNull;
 
 import model.map.IMapNG;
 import model.map.MapDimensions;
-import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.Point;
 import model.map.PointFactory;

@@ -5,7 +5,6 @@ import static util.NullCleaner.assertNotNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.StreamSupport;
 
@@ -40,7 +39,6 @@ import model.map.fixtures.TextFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import util.EqualsAny;
-import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 

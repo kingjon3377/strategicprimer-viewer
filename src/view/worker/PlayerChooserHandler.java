@@ -15,7 +15,6 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import model.listeners.PlayerChangeListener;
 import model.listeners.PlayerChangeSource;
-import model.map.IMutablePlayerCollection;
 import model.map.Player;
 import model.map.PlayerCollection;
 import model.misc.IDriverModel;

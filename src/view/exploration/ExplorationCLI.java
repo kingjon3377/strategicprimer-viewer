@@ -30,9 +30,7 @@ import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
-import util.NullCleaner;
 import util.Pair;
-import view.util.SystemOut;
 
 /**
  * A CLI to help running exploration. Now separated from the "driver" bits, to

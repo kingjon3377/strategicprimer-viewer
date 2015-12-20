@@ -35,8 +35,6 @@ import javax.swing.WindowConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
 import model.workermgmt.WorkerTreeModelAlt.WorkerTreeNode;
@@ -61,7 +59,6 @@ import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
-import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
 import model.report.AbstractReportNode;

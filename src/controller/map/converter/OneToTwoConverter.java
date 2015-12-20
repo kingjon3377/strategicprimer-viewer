@@ -5,7 +5,6 @@ import static util.NullCleaner.assertNotNull;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -53,7 +52,6 @@ import model.map.fixtures.towns.ITownFixture;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
 import model.workermgmt.RaceFactory;
-import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 

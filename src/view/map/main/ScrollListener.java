@@ -2,7 +2,6 @@ package view.map.main;
 
 import java.awt.Adjustable;
 import java.awt.BorderLayout;
-import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 
 import javax.swing.InputVerifier;
