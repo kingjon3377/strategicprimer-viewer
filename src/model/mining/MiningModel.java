@@ -82,7 +82,7 @@ public final class MiningModel {
 			if (unnormalized.containsKey(point)) {
 				current = unnormalized.get(point);
 			} else {
-				current = null;
+				current = LodeStatus.None;
 			}
 			if (current == null || LodeStatus.None == current) {
 				continue;
