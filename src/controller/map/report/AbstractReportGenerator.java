@@ -132,7 +132,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 				return ""; // NOPMD
 			} else {
 				final StringBuilder builder = new StringBuilder(header.length() + 15 + stream().collect(
-						Collectors.summingInt(value -> value.length() + 15)));
+						Collectors.summingInt(value -> value.length() + 15)).intValue());
 				builder
 						.append(header).append('\n').append(OPEN_LIST);
 				for (final String item : this) {
@@ -204,7 +204,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		// We don't use Collectors.joining() because it appears to use a StringBuilder that isn't initialized to
 		// at least the right size.
 		final StringBuilder buf =
-				new StringBuilder(5 + Stream.of(strings).collect(Collectors.summingInt(String::length)));
+				new StringBuilder(5 + Stream.of(strings).collect(Collectors.summingInt(String::length)).intValue());
 		Stream.of(strings).forEach(buf::append);
 		final String retval = buf.toString();
 		return NullCleaner.valueOrDefault(retval, "");

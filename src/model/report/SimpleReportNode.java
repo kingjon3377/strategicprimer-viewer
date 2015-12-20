@@ -52,7 +52,7 @@ public final class SimpleReportNode extends AbstractReportNode {
 	 */
 	private static String concat(final String... strings) {
 		final StringBuilder builder =
-				new StringBuilder(2 + Stream.of(strings).collect(Collectors.summingInt(String::length)));
+				new StringBuilder(2 + Stream.of(strings).collect(Collectors.summingInt(String::length)).intValue());
 		Stream.of(strings).forEach(builder::append);
 		return NullCleaner.assertNotNull(builder.toString());
 	}

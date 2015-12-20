@@ -169,7 +169,7 @@ public final class ImmortalsReportGenerator extends AbstractReportGenerator<Mobi
 	 * @return their total size
 	 */
 	private static int collSize(final Collection<?>... collections) {
-		return Stream.of(collections).collect(Collectors.summingInt(Collection::size));
+		return Stream.of(collections).collect(Collectors.summingInt(Collection::size)).intValue();
 	}
 	/**
 	 * Produce the sub-report dealing with "immortals".
