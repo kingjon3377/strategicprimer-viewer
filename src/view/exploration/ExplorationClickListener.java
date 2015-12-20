@@ -12,7 +12,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.ListModel;
+import javax.swing.SwingUtilities;
 
 import org.eclipse.jdt.annotation.Nullable;
 
