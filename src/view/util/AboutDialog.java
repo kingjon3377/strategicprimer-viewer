@@ -38,6 +38,7 @@ public final class AboutDialog extends JDialog {
 	 * @param parent the parent window
 	 * @param app a string describing what the application is
 	 */
+	@SuppressWarnings("ConditionalExpression")
 	public AboutDialog(@Nullable final Component parent, final String app) {
 		super(parent instanceof Frame ? (Frame) parent : null, "About");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
