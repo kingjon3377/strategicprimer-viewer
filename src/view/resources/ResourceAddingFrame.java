@@ -134,6 +134,10 @@ public class ResourceAddingFrame extends JFrame {
 		panel.add(Box.createVerticalGlue());
 		container.add(panel);
 	}
+
+	/**
+	 * TODO: The central functionality of this should be a top-level class in view.util
+	 */
 	private static class UpdatedComboBox extends JComboBox<String> {
 		protected UpdatedComboBox() {
 			setEditable(true);
