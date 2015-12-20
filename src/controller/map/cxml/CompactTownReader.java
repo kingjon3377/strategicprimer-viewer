@@ -313,10 +313,10 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 								indent + 1);
 					} else if (unit instanceof Implement) {
 						CompactImplementReader.READER.write(ostream,
-								(Implement) unit, indent);
+								(Implement) unit, indent + 1);
 					} else if (unit instanceof ResourcePile) {
 						CompactResourcePileReader.READER.write(ostream,
-								(ResourcePile) unit, indent);
+								(ResourcePile) unit, indent + 1);
 					} else {
 						LOGGER.severe("Unhandled FortressMember class "
 								+ unit.getClass().getName());
