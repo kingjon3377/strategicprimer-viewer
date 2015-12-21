@@ -1,12 +1,5 @@
 package controller.map.cxml;
 
-import java.io.IOException;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnsupportedPropertyException;
@@ -19,9 +12,14 @@ import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.mobile.worker.WorkerStats;
+import org.eclipse.jdt.annotation.Nullable;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
+
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import java.io.IOException;
 
 /**
  * A reader for Workers.
