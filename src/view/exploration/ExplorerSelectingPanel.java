@@ -1,18 +1,5 @@
 package view.exploration;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.text.Document;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.exploration.ExplorationModel;
 import model.exploration.ExplorationUnitListModel;
 import model.exploration.PlayerListModel;
@@ -22,10 +9,21 @@ import model.listeners.PlayerChangeListener;
 import model.listeners.PlayerChangeSource;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.text.Document;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * The panel that lets the user select the unit to explore with.

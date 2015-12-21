@@ -3,7 +3,6 @@ package controller.map.report;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.List;
 
 import org.eclipse.jdt.annotation.NonNull;
 
