@@ -19,7 +19,6 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.event.InputEvent;
@@ -55,9 +54,9 @@ public class ResourceAddingFrame extends JFrame {
 	private final JLabel resourceLabel;
 	private final JLabel implementLabel;
 	private final UpdatedComboBox resKindBox = new UpdatedComboBox();
-	private final JTextField resPrefixField = new JTextField();
-	private final UpdatedComboBox resourceBox = new UpdatedComboBox();
 	private final NumberFormat nf = NumberFormat.getIntegerInstance();
+	private final JFormattedTextField resCreatedField = new JFormattedTextField(nf);
+	private final UpdatedComboBox resourceBox = new UpdatedComboBox();
 	private final JFormattedTextField resQtyField = new JFormattedTextField(nf);
 	private final UpdatedComboBox resUnitsBox = new UpdatedComboBox();
 	private final UpdatedComboBox implKindBox = new UpdatedComboBox();
@@ -85,7 +84,7 @@ public class ResourceAddingFrame extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
 		addPair(panel, new JLabel("General Category"), resKindBox);
-		addPair(panel, new JLabel("Prefix (e.g. age)"), resPrefixField);
+		addPair(panel, new JLabel("Turn created"), resCreatedField);
 		addPair(panel, new JLabel("Specific Resource"), resourceBox);
 		addPair(panel, new JLabel("Quantity"), resQtyField);
 		addPair(panel, new JLabel("Units"), resUnitsBox);
@@ -97,12 +96,13 @@ public class ResourceAddingFrame extends JFrame {
 				String kind = resKindBox.getSelectedItem().toString().trim();
 				String resource = resourceBox.getSelectedItem().toString().trim();
 				String units = resUnitsBox.getSelectedItem().toString().trim();
-				String prefixed = String.format("%s %s", resPrefixField.getText().trim(), resource).trim();
-				model.addResource(new ResourcePile(idf.createID(), kind, prefixed,
-						                                  nf.parse(resQtyField.getText().trim()).intValue(), units),
-						current);
+				ResourcePile pile = new ResourcePile(idf.createID(), kind, resource,
+						                                    nf.parse(resQtyField.getText().trim()).intValue(),
+						                                    units);
+				pile.setCreated(nf.parse(resCreatedField.getText().trim()).intValue());
+				model.addResource(pile, current);
 				resKindBox.checkAndClear();
-				resPrefixField.setText("");
+				resCreatedField.setText("");
 				resourceBox.checkAndClear();
 				resQtyField.setText("");
 				resUnitsBox.checkAndClear();
