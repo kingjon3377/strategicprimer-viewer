@@ -2,15 +2,12 @@ package view.util;
 
 import java.awt.CardLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import model.listeners.AddRemoveListener;
-import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 /**
  * A panel to be the GUI to add or remove items from a list.
@@ -34,7 +31,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public final class AddRemovePanel extends JPanel implements ActionListener {
+public final class AddRemovePanel extends JPanel {
 	/**
 	 * The maximum height of the widget.
 	 */
@@ -70,19 +67,37 @@ public final class AddRemovePanel extends JPanel implements ActionListener {
 		setLayout(layout);
 		setPanelSizes(this);
 		final BoxPanel first = new BoxPanel(true);
-		first.add(new ListenedButton("+", this));
+		first.add(new ListenedButton("+", evt -> {
+			layout.next(this);
+			field.requestFocusInWindow();
+		}));
 		if (removalPossible) {
-			first.add(new ListenedButton("-", this));
+			first.add(new ListenedButton("-", evt -> {
+				for (final AddRemoveListener listener : arListeners) {
+					listener.remove(what);
+				}
+			}));
 		}
 		setPanelSizes(first);
 		add(first);
 		final BoxPanel second = new BoxPanel(false);
 		second.add(field);
-		field.addActionListener(this);
+		ActionListener okListener = evt -> {
+			final String text = field.getText();
+			for (final AddRemoveListener listener : arListeners) {
+				listener.add(category, text);
+			}
+			layout.first(this);
+			field.setText("");
+		};
+		field.addActionListener(okListener);
 		field.setActionCommand("OK");
 		final BoxPanel okPanel = new BoxPanel(true);
-		okPanel.add(new ListenedButton("OK", this));
-		okPanel.add(new ListenedButton("Cancel", this));
+		okPanel.add(new ListenedButton("OK", okListener));
+		okPanel.add(new ListenedButton("Cancel", evt -> {
+			layout.first(this);
+			field.setText("");
+		}));
 		second.add(okPanel);
 		setPanelSizes(second);
 		add(second);
@@ -97,33 +112,6 @@ public final class AddRemovePanel extends JPanel implements ActionListener {
 		panel.setMinimumSize(new Dimension(60, 40));
 		panel.setPreferredSize(new Dimension(80, MAX_HEIGHT));
 		panel.setMaximumSize(new Dimension(90, MAX_HEIGHT));
-	}
-
-	/**
-	 * @param evt the event to handle
-	 */
-	@Override
-	public void actionPerformed(@Nullable final ActionEvent evt) {
-		if (evt == null) {
-			return;
-		} else if ("+".equals(evt.getActionCommand())) {
-			layout.next(this);
-			field.requestFocusInWindow();
-		} else if ("-".equals(evt.getActionCommand())) {
-			for (final AddRemoveListener list : arListeners) {
-				list.remove(category);
-			}
-		} else if ("OK".equals(evt.getActionCommand())) {
-			final String text = field.getText();
-			for (final AddRemoveListener list : arListeners) {
-				list.add(category, NullCleaner.valueOrDefault(text, "null"));
-			}
-			layout.first(this);
-			field.setText("");
-		} else if ("Cancel".equals(evt.getActionCommand())) {
-			layout.first(this);
-			field.setText("");
-		}
 	}
 
 	/**
