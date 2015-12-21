@@ -520,13 +520,13 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 					new Object[] { node });
 			}
 			if (nodeTwo == null) {
-				nodeTwo =
+				MutableTreeNode kindNode =
 						new KindNode(item.getKind(), new ArrayList<>(
 								Collections.singletonList((IUnit) item)));
-				((DefaultMutableTreeNode) root).add((MutableTreeNode) nodeTwo);
+				((DefaultMutableTreeNode) root).add(kindNode);
 				fireTreeNodesInserted(this, new TreeNode[] { root },
-						new int[] { getIndexOfChild(root, nodeTwo) },
-						new Object[] { nodeTwo });
+						new int[] { getIndexOfChild(root, kindNode) },
+						new Object[] { kindNode });
 			} else {
 				final int indexTwo = nodeTwo.getChildCount();
 				((MutableTreeNode) nodeTwo).insert((MutableTreeNode) node,
