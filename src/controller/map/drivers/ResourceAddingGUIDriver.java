@@ -16,7 +16,7 @@ import view.resources.ResourceAddingFrame;
 import view.util.FilteredFileChooser;
 import view.worker.WorkerMgmtFrame;
 
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 import java.io.File;
 
 /**
