@@ -121,6 +121,10 @@ public final class CompactReaderAdapter {
 			reader = (CompactReader<T>) getFixtureReader(fixType);
 		} else if (Worker.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactWorkerReader.READER;
+		} else if (ResourcePile.class.isAssignableFrom(type)) {
+			reader = (CompactReader<T>) CompactResourcePileReader.READER;
+		} else if (Implement.class.isAssignableFrom(type)) {
+			reader = (CompactReader<T>) CompactImplementReader.READER;
 		} else {
 			throw new IllegalStateException("Unhandled type " + type.getName());
 		}
