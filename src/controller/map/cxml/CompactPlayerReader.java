@@ -40,7 +40,7 @@ public final class CompactPlayerReader extends AbstractCompactReader<Player> {
 	/**
 	 * Singleton object.
 	 */
-	public static final CompactPlayerReader READER = new CompactPlayerReader();
+	public static final CompactReader<Player> READER = new CompactPlayerReader();
 	/**
 	 * Singleton.
 	 */

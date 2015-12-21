@@ -49,7 +49,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	/**
 	 * Singleton object.
 	 */
-	public static final CompactWorkerReader READER = new CompactWorkerReader();
+	public static final CompactReader<Worker> READER = new CompactWorkerReader();
 
 	/**
 	 * Singleton.

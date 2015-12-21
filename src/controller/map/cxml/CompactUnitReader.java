@@ -60,7 +60,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	/**
 	 * Singleton object.
 	 */
-	public static final CompactUnitReader READER = new CompactUnitReader();
+	public static final CompactReader<Unit> READER = new CompactUnitReader();
 
 	/**
 	 * Singleton.

@@ -41,7 +41,7 @@ public final class CompactResourcePileReader
 	/**
 	 * Singleton object.
 	 */
-	public static final CompactResourcePileReader READER =
+	public static final CompactReader<ResourcePile> READER =
 			new CompactResourcePileReader();
 
 	/**
