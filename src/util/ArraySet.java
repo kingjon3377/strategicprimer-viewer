@@ -219,6 +219,7 @@ public final class ArraySet<T> implements Set<T> {
 	 * @param secondSet another set
 	 * @return whether they are equal according to the Set contract.
 	 */
+	@SuppressWarnings("TypeMayBeWeakened")
 	private static boolean areSetsEqual(final Set<?> firstSet, final Set<?> secondSet) {
 		return firstSet.containsAll(secondSet) && secondSet.containsAll(firstSet);
 	}
