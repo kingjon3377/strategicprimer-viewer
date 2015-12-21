@@ -206,7 +206,7 @@ public final class CompactReaderAdapter {
 			// Skip it.
 			return;
 		} else if (obj instanceof ProxyFor) {
-			Iterator<?> iter = ((ProxyFor) obj).getProxied().iterator();
+			Iterator<?> iter = ((ProxyFor<?>) obj).getProxied().iterator();
 			if (iter.hasNext()) {
 				Object proxied = iter.next();
 				assert proxied != null;
