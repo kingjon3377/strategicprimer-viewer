@@ -74,7 +74,7 @@ public final class FindDialog extends JDialog implements ActionListener {
 	/**
 	 * The proportion between the bulk of the dialog and the filter list.
 	 */
-	private static final double FILTER_PROPORTION = .6;
+	private static final double FILTER_PROPORTION = 0.6;
 	/**
 	 * The text field holding the search string.
 	 */

@@ -84,67 +84,67 @@ public enum LodeStatus {
 		case None:
 			return None;
 		case Minimal:
-			if (rand < .4) {
+			if (rand < 0.4) {
 				return None;
-			} else if (rand < .8) {
+			} else if (rand < 0.8) {
 				return Minimal;
 			} else {
 				return VeryPoor;
 			}
 		case VeryPoor:
-			if (rand < .2) {
+			if (rand < 0.2) {
 				return None;
-			} else if (rand < .5) {
+			} else if (rand < 0.5) {
 				return Minimal;
-			} else if (rand < .8) {
+			} else if (rand < 0.8) {
 				return VeryPoor;
 			} else {
 				return Poor;
 			}
 		case Poor:
-			if (rand < .2) {
+			if (rand < 0.2) {
 				return None;
-			} else if (rand < .5) {
+			} else if (rand < 0.5) {
 				return VeryPoor;
-			} else if (rand < .8) {
+			} else if (rand < 0.8) {
 				return Poor;
 			} else {
 				return Fair;
 			}
 		case Fair:
-			if (rand < .2) {
+			if (rand < 0.2) {
 				return None;
-			} else if (rand < .5) {
+			} else if (rand < 0.5) {
 				return Poor;
-			} else if (rand < .8) {
+			} else if (rand < 0.8) {
 				return Fair;
 			} else {
 				return Good;
 			}
 		case Good:
-			if (rand < .2) {
+			if (rand < 0.2) {
 				return None;
-			} else if (rand < .5) {
+			} else if (rand < 0.5) {
 				return Fair;
-			} else if (rand < .8) {
+			} else if (rand < 0.8) {
 				return Good;
 			} else {
 				return VeryGood;
 			}
 		case VeryGood:
-			if (rand < .2) {
+			if (rand < 0.2) {
 				return None;
-			} else if (rand < .5) {
+			} else if (rand < 0.5) {
 				return Good;
-			} else if (rand < .8) {
+			} else if (rand < 0.8) {
 				return VeryGood;
 			} else {
 				return MotherLode;
 			}
 		case MotherLode:
-			if (rand < .2) {
+			if (rand < 0.2) {
 				return None;
-			} else if (rand < .7) {
+			} else if (rand < 0.7) {
 				return VeryGood;
 			} else {
 				return MotherLode;

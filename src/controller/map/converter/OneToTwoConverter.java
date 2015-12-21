@@ -85,7 +85,7 @@ public final class OneToTwoConverter { // NOPMD
 	/**
 	 * Sixty percent. Our probability for a couple of perturbations.
 	 */
-	private static final double SIXTY_PERCENT = .6;
+	private static final double SIXTY_PERCENT = 0.6;
 	/**
 	 * The next turn. Use for TextFixtures to replace with generated encounters
 	 * later.
@@ -113,11 +113,11 @@ public final class OneToTwoConverter { // NOPMD
 	/**
 	 * The probability of turning a watered desert to plains.
 	 */
-	private static final double DESERT_TO_PLAINS = .4;
+	private static final double DESERT_TO_PLAINS = 0.4;
 	/**
 	 * The probability of adding a forest to a tile.
 	 */
-	private static final double ADD_FOREST_PROB = .1;
+	private static final double ADD_FOREST_PROB = 0.1;
 	/**
 	 * Constructor.
 	 */

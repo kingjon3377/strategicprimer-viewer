@@ -76,7 +76,7 @@ public final class MapPopulatorDriver implements ISPDriver {
 	 * @return The probability of adding to any given tile.
 	 */
 	private static double chance() {
-		return .05;
+		return 0.05;
 	}
 
 	/**

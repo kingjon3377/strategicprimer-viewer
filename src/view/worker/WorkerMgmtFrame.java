@@ -112,7 +112,7 @@ public final class WorkerMgmtFrame extends JFrame {
 	/**
 	 * A constant for when a split panel should be divided evenly in half.
 	 */
-	private static final double HALF_WAY = .5;
+	private static final double HALF_WAY = 0.5;
 	/**
 	 * A constant for when a split panel should be divided not quite evenly.
 	 */

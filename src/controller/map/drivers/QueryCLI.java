@@ -247,7 +247,7 @@ public final class QueryCLI implements ISPDriver {
 			poultry = false;
 		} else if (helper.inputBoolean("Are these chickens?\t")) {
 			// TODO: Support other poultry
-			rate = .75;
+			rate = 0.75;
 			time = 12;
 			poultry = true;
 		} else {
