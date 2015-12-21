@@ -290,13 +290,13 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 */
 	private WorkerStats enterStats() throws IOException {
 		final int maxHP = cli.inputNumber("Max HP: ");
-		final int str = cli.inputNumber("Str: ");
+		final int strength = cli.inputNumber("Str: ");
 		final int dex = cli.inputNumber("Dex: ");
 		final int con = cli.inputNumber("Con: ");
 		final int intel = cli.inputNumber("Int: ");
 		final int wis = cli.inputNumber("Wis: ");
 		final int cha = cli.inputNumber("Cha: ");
-		return new WorkerStats(maxHP, maxHP, str, dex, con, intel, wis, cha);
+		return new WorkerStats(maxHP, maxHP, strength, dex, con, intel, wis, cha);
 	}
 
 	/**

@@ -46,7 +46,7 @@ public class WorkerStats {
 	/**
 	 * The worker's strength.
 	 */
-	private int str;
+	private int strength;
 	/**
 	 * The worker's dexterity.
 	 */
@@ -85,7 +85,7 @@ public class WorkerStats {
 			final int intelligence, final int wisdom, final int charisma) {
 		hp = hitPoints;
 		maxHP = maxHitPoints;
-		str = strength;
+		this.strength = strength;
 		dex = dexterity;
 		con = constitution;
 		intel = intelligence;
@@ -97,7 +97,7 @@ public class WorkerStats {
 	 * @param zero ignored, as all our information is "essential"
 	 */
 	public WorkerStats copy(final boolean zero) {
-		return new WorkerStats(hp, maxHP, str, dex, con, intel, wis, cha);
+		return new WorkerStats(hp, maxHP, strength, dex, con, intel, wis, cha);
 	}
 	/**
 	 * @return the worker's health
@@ -131,14 +131,14 @@ public class WorkerStats {
 	 * @return the worker's strength
 	 */
 	public int getStrength() {
-		return str;
+		return strength;
 	}
 
 	/**
 	 * @param strength the worker's strength
 	 */
 	public void setStrength(final int strength) {
-		str = strength;
+		this.strength = strength;
 	}
 
 	/**
@@ -225,7 +225,7 @@ public class WorkerStats {
 	 * @return whether it's equal to this.
 	 */
 	private boolean equalsImpl(final WorkerStats obj) {
-		return hp == obj.hp && maxHP == obj.maxHP && str == obj.str
+		return hp == obj.hp && maxHP == obj.maxHP && strength == obj.strength
 				&& dex == obj.dex && con == obj.con && intel == obj.intel
 				&& wis == obj.wis && cha == obj.cha;
 	}
@@ -235,7 +235,7 @@ public class WorkerStats {
 	 */
 	@Override
 	public int hashCode() {
-		return str + (dex << 3) + (con << 6) + (intel << 9)
+		return strength + (dex << 3) + (con << 6) + (intel << 9)
 				       + (wis << 12) + (cha << 15) + (hp << 18) + (maxHP << 22);
 	}
 
@@ -263,7 +263,7 @@ public class WorkerStats {
 		builder.append(" / ");
 		builder.append(maxHP);
 		builder.append("\nStr: ");
-		builder.append(str);
+		builder.append(strength);
 		builder.append("\nDex: ");
 		builder.append(dex);
 		builder.append("\nCon: ");

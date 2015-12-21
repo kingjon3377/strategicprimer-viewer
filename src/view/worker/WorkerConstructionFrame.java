@@ -91,7 +91,7 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 	/**
 	 * The text box representing the worker's strength.
 	 */
-	private final JTextField str = new JTextField();
+	private final JTextField strength = new JTextField();
 	/**
 	 * The text box representing the worker's dexterity.
 	 */
@@ -135,7 +135,7 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 		final JPanel statsPanel = new JPanel(new GridLayout(0, 4));
 		addLabeledField(statsPanel, "HP:", hpBox);
 		addLabeledField(statsPanel, "Max HP:", maxHP);
-		addLabeledField(statsPanel, "Strength:", str);
+		addLabeledField(statsPanel, "Strength:", strength);
 		addLabeledField(statsPanel, "Intelligence:", intel);
 		addLabeledField(statsPanel, "Dexterity:", dex);
 		addLabeledField(statsPanel, "Wisdom:", wis);
@@ -172,7 +172,7 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 		}
 		builder.append(numericExpl(Pair.of(getBoxText(hpBox), "HP"),
 				Pair.of(getBoxText(maxHP), "Max HP"),
-				Pair.of(getBoxText(str), "Strength"),
+				Pair.of(getBoxText(strength), "Strength"),
 				Pair.of(getBoxText(dex), "Dexterity"),
 				Pair.of(getBoxText(con), "Constitution"),
 				Pair.of(getBoxText(intel), "Intelligence"),
@@ -215,7 +215,7 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 			if (nameText.isEmpty()
 					    || raceText.isEmpty()
 					    || anyNonNumeric(hpBox.getText().trim(), maxHP.getText()
-							                                             .trim(), str.getText().trim(),
+							                                             .trim(), strength.getText().trim(),
 					dex.getText().trim(), con.getText().trim(), intel
 							                                            .getText().trim(), wis.getText().trim(),
 					cha.getText().trim())) {
@@ -225,7 +225,7 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 						idf.createID());
 				try {
 					retval.setStats(new WorkerStats(parseInt(hpBox),
-							parseInt(maxHP), parseInt(str), parseInt(dex),
+							parseInt(maxHP), parseInt(strength), parseInt(dex),
 							parseInt(con), parseInt(intel), parseInt(wis),
 							parseInt(cha)));
 				} catch (final ParseException e) {
@@ -286,7 +286,7 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 	private void createStats() {
 		hpBox.setText("8");
 		maxHP.setText("8");
-		createSingleStat(str);
+		createSingleStat(strength);
 		createSingleStat(dex);
 		createSingleStat(con);
 		createSingleStat(intel);
