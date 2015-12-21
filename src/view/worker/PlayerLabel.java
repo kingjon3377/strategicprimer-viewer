@@ -60,8 +60,8 @@ public final class PlayerLabel extends JLabel implements PlayerChangeListener {
 	 *        delimiting space, since the first character after the name might
 	 *        be punctuation instead.
 	 */
-	public PlayerLabel(final String prefix, final Player player,
-			final String postfix) {
+	public PlayerLabel(final String prefix, @SuppressWarnings("TypeMayBeWeakened") final Player player,
+	                   final String postfix) {
 		super(htmlize(prefix + ' ' + player.getName() + postfix));
 		before = prefix;
 		after = postfix;
