@@ -139,7 +139,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 		final AbstractReportNode ours = new SectionReportNode(4,
 				                                                     "Your fortresses in the map:");
 		values.stream().filter(pair -> pair.second() instanceof Fortress).forEach(pair -> {
-			final HasOwner fort = (Fortress) pair.second();
+			final HasOwner fort = (HasOwner) pair.second();
 			if (currentPlayer.equals(fort.getOwner())) {
 				ours.add(produceRIR(fixtures, map, currentPlayer,
 						(Fortress) pair.second(), pair.first()));
