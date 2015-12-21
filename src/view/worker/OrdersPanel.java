@@ -359,7 +359,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 			return owner;
 		}
 		/**
-		 * @param owner ignored
+		 * @param newOwner ignored
 		 */
 		@Override
 		public void setOwner(final Player newOwner) {
