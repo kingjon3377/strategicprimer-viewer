@@ -1,16 +1,5 @@
 package model.exploration;
 
-import static model.map.TileType.Ocean;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
 import model.map.HasKind;
 import model.map.IMapNG;
 import model.map.MapDimensions;
@@ -21,6 +10,17 @@ import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
 import model.map.fixtures.resources.Shrub;
 import util.NullCleaner;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static model.map.TileType.Ocean;
 
 /**
  * A class to facilitate a better hunting/fishing driver.
@@ -187,8 +187,7 @@ public final class HuntingModel {
 	 */
 	private List<String> chooseFromMap(final Point point, final int items,
 			final Map<Point, List<String>> chosenMap) {
-		final List<String> choices = new ArrayList<>();
-		choices.addAll(StreamSupport.stream(new SurroundingPointIterable(point, dims).spliterator(), false)
+		final List<String> choices = new ArrayList<>(StreamSupport.stream(new SurroundingPointIterable(point, dims).spliterator(), false)
 				               .filter(chosenMap::containsKey)
 				               .flatMap(local -> StreamSupport.stream(chosenMap.get(local).spliterator(), false))
 				               .collect(Collectors.toList()));
