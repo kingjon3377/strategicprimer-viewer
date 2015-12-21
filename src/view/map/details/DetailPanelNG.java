@@ -1,6 +1,8 @@
 package view.map.details;
 
-import javax.swing.*;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import model.listeners.SelectionChangeListener;
 import model.listeners.VersionChangeListener;
 import model.map.Point;

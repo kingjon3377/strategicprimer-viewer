@@ -1,7 +1,8 @@
 package view.map.key;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import javax.swing.JPanel;
 import model.listeners.VersionChangeListener;
 import model.map.TileType;
 

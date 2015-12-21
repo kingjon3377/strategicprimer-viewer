@@ -2,7 +2,7 @@ package view.map.main;
 
 import com.bric.window.WindowMenu;
 import controller.map.misc.IOHandler;
-import javax.swing.*;
+import javax.swing.JFrame;
 import model.viewer.IViewerModel;
 import view.util.SPMenu;
 import view.worker.PlayerChooserHandler;

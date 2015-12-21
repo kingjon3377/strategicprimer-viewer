@@ -1,6 +1,6 @@
 package controller.map.misc;
 
-import javax.swing.*;
+import javax.swing.JFrame;
 
 /**
  * A thread to run a window.

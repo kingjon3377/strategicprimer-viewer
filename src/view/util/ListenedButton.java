@@ -2,7 +2,7 @@ package view.util;
 
 import java.awt.event.ActionListener;
 import java.util.stream.Stream;
-import javax.swing.*;
+import javax.swing.JButton;
 
 /**
  * A button that takes its listeners as constructor parameters.

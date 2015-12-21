@@ -5,7 +5,7 @@ import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;
 import java.io.File;
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 import model.exploration.ExplorationModel;
 import model.misc.IDriverModel;
 import util.Warning;

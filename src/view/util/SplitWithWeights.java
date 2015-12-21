@@ -1,7 +1,7 @@
 package view.util;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Component;
+import javax.swing.JSplitPane;
 
 /**
  * A version of JSplitPane that takes the divider location and resize weight, as well as

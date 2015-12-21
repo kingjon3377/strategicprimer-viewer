@@ -1,8 +1,11 @@
 package view.worker;
 
-import java.awt.*;
+import java.awt.GridLayout;
 import java.util.Iterator;
-import javax.swing.*;
+import javax.swing.GroupLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import model.listeners.UnitMemberListener;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Animal;

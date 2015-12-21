@@ -2,7 +2,7 @@ package model.viewer;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
+import javax.swing.AbstractListModel;
 import model.map.TileFixture;
 import util.NullCleaner;
 

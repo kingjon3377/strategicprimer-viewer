@@ -3,7 +3,9 @@ package view.map.main;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import org.eclipse.jdt.annotation.Nullable;
 
 import static java.awt.event.InputEvent.CTRL_DOWN_MASK;

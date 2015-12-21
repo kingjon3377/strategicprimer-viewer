@@ -1,6 +1,7 @@
 package view.map.main;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.stream.StreamSupport;
 import model.map.IEvent;
 import model.map.IMapNG;

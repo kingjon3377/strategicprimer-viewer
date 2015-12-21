@@ -3,7 +3,7 @@ package model.workermgmt;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
-import javax.swing.*;
+import javax.swing.DefaultListModel;
 import model.listeners.AddRemoveListener;
 import model.listeners.CompletionListener;
 import model.listeners.CompletionSource;

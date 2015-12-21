@@ -2,7 +2,7 @@ package controller.map.misc;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 import util.NullCleaner;
 import view.map.main.MapFileFilter;
 import view.util.FilteredFileChooser;

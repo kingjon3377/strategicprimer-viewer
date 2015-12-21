@@ -3,7 +3,7 @@ package view.worker;
 import com.bric.window.WindowMenu;
 import controller.map.misc.IOHandler;
 import java.awt.event.ActionListener;
-import javax.swing.*;
+import javax.swing.JFrame;
 import model.misc.IDriverModel;
 import view.util.SPMenu;
 

@@ -1,9 +1,9 @@
 package view.util;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import javax.swing.*;
+import javax.swing.JLabel;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**

@@ -1,6 +1,6 @@
 package view.worker;
 
-import javax.swing.*;
+import javax.swing.JLabel;
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
 import org.eclipse.jdt.annotation.Nullable;

@@ -1,7 +1,8 @@
 package view.util;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import javax.swing.JPanel;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**

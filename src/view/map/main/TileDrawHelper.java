@@ -1,6 +1,6 @@
 package view.map.main;
 
-import java.awt.*;
+import java.awt.Graphics;
 import model.map.IMapNG;
 import model.map.Point;
 import view.util.Coordinate;

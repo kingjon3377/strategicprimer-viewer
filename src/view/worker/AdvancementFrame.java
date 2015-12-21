@@ -2,8 +2,12 @@ package view.worker;
 
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Dimension;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.WindowConstants;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
 import model.map.Player;

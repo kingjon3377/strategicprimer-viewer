@@ -1,6 +1,6 @@
 package model.viewer;
 
-import javax.swing.*;
+import javax.swing.DefaultListModel;
 import model.listeners.SelectionChangeListener;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;

@@ -1,6 +1,6 @@
 package view.map.main;
 
-import javax.swing.*;
+import javax.swing.JComponent;
 import model.viewer.IViewerModel;
 import view.util.BorderedPanel;
 

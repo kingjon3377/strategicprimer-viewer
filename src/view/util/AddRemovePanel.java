@@ -1,11 +1,13 @@
 package view.util;
 
-import java.awt.*;
+import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import model.listeners.AddRemoveListener;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;

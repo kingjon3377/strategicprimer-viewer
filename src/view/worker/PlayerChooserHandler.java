@@ -1,6 +1,6 @@
 package view.worker;
 
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import javax.swing.*;
+import javax.swing.JOptionPane;
 import model.listeners.PlayerChangeListener;
 import model.listeners.PlayerChangeSource;
 import model.map.Player;

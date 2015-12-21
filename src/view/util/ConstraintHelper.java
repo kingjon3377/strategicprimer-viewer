@@ -1,6 +1,6 @@
 package view.util;
 
-import java.awt.*;
+import java.awt.GridBagConstraints;
 
 /**
  * A helper class so we can specify arguments inline rather than having to build each

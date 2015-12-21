@@ -1,7 +1,10 @@
 package view.map.key;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import model.map.TileType;
 import model.viewer.TileViewSize;
 import org.eclipse.jdt.annotation.Nullable;

@@ -1,6 +1,6 @@
 package view.util;
 
-import javax.swing.*;
+import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
 /**

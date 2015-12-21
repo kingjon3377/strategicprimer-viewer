@@ -1,7 +1,7 @@
 package model.exploration;
 
 import java.util.List;
-import javax.swing.*;
+import javax.swing.DefaultListModel;
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;

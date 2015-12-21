@@ -1,6 +1,7 @@
 package view.map.main; // NOPMD
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
 import model.map.IMapNG;
 import model.map.Point;
 import model.map.PointFactory;

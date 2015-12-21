@@ -1,7 +1,7 @@
 package view.util;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Component;
+import javax.swing.JOptionPane;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**

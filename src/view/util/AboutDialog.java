@@ -1,7 +1,12 @@
 package view.util;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Frame;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**

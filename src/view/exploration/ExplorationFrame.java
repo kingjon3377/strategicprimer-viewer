@@ -1,11 +1,15 @@
 package view.exploration;
 
 import controller.map.misc.IOHandler;
-import java.awt.*;
+import java.awt.CardLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Stream;
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 import model.exploration.ExplorationModel;
 import model.listeners.CompletionListener;
 import util.NullCleaner;

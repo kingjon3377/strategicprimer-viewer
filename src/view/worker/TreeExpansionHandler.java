@@ -2,7 +2,7 @@ package view.worker;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
+import javax.swing.JTree;
 import javax.swing.tree.TreePath;
 import model.workermgmt.WorkerTreeModelAlt.KindNode;
 import org.eclipse.jdt.annotation.Nullable;

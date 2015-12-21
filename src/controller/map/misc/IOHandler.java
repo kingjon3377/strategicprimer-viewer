@@ -1,7 +1,7 @@
 package controller.map.misc;
 
 import controller.map.formatexceptions.SPFormatException;
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -9,7 +9,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
+import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
