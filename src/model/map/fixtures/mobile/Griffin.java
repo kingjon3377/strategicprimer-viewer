@@ -84,8 +84,8 @@ public class Griffin implements MobileFixture, HasImage, UnitMember {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Griffin
-				                      && id == ((TileFixture) obj).getID();
+		return (this == obj) || ((obj instanceof Griffin)
+				                         && (id == ((TileFixture) obj).getID()));
 	}
 
 	/**

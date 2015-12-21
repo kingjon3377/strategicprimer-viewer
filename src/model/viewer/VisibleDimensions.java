@@ -107,8 +107,8 @@ public final class VisibleDimensions {
 	 * @return whether it's the same size as this one.
 	 */
 	public boolean isSameSize(final VisibleDimensions other) {
-		return maxCol - minCol == other.maxCol - other.minCol
-				       && maxRow - minRow == other.maxRow - other.minRow;
+		return ((maxCol - minCol) == (other.maxCol - other.minCol))
+				       && ((maxRow - minRow) == (other.maxRow - other.minRow));
 	}
 
 	/**

@@ -53,7 +53,7 @@ public final class PairComparator<@NonNull T, @NonNull U>
 	@Override
 	public int compare(@Nullable final Pair<T, U> firstPair,
 	                   @Nullable final Pair<T, U> secondPair) {
-		if (firstPair == null || secondPair == null) {
+		if ((firstPair == null) || (secondPair == null)) {
 			throw new NullPointerException("asked to compare null Pair");
 		}
 		final int firstResult = first().compare(firstPair.first(), secondPair.first());

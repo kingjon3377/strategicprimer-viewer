@@ -68,9 +68,9 @@ public final class ResolutionDecreaseConverter {
 			for (int col = 0; col < newCols; col++) {
 				final Point point = PointFactory.point(row, col);
 				final Point firstSub = PointFactory.point(row * 2, col * 2);
-				final Point secondSub = PointFactory.point(row * 2, col * 2 + 1);
-				final Point thirdSub = PointFactory.point(row * 2 + 1, col * 2);
-				final Point fourthSub = PointFactory.point(row * 2 + 1, col * 2 + 1);
+				final Point secondSub = PointFactory.point(row * 2, (col * 2) + 1);
+				final Point thirdSub = PointFactory.point((row * 2) + 1, col * 2);
+				final Point fourthSub = PointFactory.point((row * 2) + 1, (col * 2) + 1);
 				retval.setBaseTerrain(
 						point,
 						consensus(old.getBaseTerrain(firstSub),
@@ -127,8 +127,8 @@ public final class ResolutionDecreaseConverter {
 	 * @param map the map to check.
 	 */
 	private static void checkRequirements(final IMapNG map) {
-		if (map.dimensions().rows % 2 != 0
-				    || map.dimensions().cols % 2 != 0) {
+		if (((map.dimensions().rows % 2) != 0)
+				    || ((map.dimensions().cols % 2) != 0)) {
 			throw new IllegalArgumentException(
 					                                  "Can only convert maps with even " +
 							                                  "numbers of rows and " +

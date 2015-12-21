@@ -95,10 +95,10 @@ public class Skill implements ISkill {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Skill
-				                      && name.equals(((Skill) obj).name)
-				                      && level == ((Skill) obj).level &&
-				                      hours == ((Skill) obj).hours;
+		return (this == obj) || ((obj instanceof Skill)
+				                         && name.equals(((Skill) obj).name)
+				                         && (level == ((Skill) obj).level) &&
+				                         (hours == ((Skill) obj).hours));
 	}
 
 	/**
@@ -149,7 +149,7 @@ public class Skill implements ISkill {
 	 */
 	@Override
 	public boolean isEmpty() {
-		return level == 0 && hours == 0;
+		return (level == 0) && (hours == 0);
 	}
 
 }

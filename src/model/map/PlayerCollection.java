@@ -78,11 +78,12 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		try {
-			return this == obj || obj instanceof IPlayerCollection
-					                      &&
-					                      isSubset((IPlayerCollection) obj, DEV_NULL, "")
-					                      && ((IPlayerCollection) obj)
-							                         .isSubset(this, DEV_NULL, "");
+			return (this == obj) || ((obj instanceof IPlayerCollection)
+					                         &&
+					                         isSubset((IPlayerCollection) obj, DEV_NULL,
+							                         "")
+					                         && ((IPlayerCollection) obj)
+							                            .isSubset(this, DEV_NULL, ""));
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error from NullStream", e);
 			return false;

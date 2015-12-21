@@ -136,7 +136,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	                                          final Player player) {
 		final Collection<IUnit> retval = new ArrayList<>();
 		for (final Object obj : iter) {
-			if (obj instanceof IUnit && ((IUnit) obj).getOwner().equals(player)) {
+			if ((obj instanceof IUnit) && ((IUnit) obj).getOwner().equals(player)) {
 				retval.add((IUnit) obj);
 			} else if (obj instanceof Fortress) {
 				retval.addAll(getUnits((Fortress) obj, player));
@@ -246,7 +246,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	                                       final Point point, final HasOwner unit,
 	                                       final Point dest) {
 		for (final TileFixture fix : fixtures) {
-			if (fix instanceof HasOwner
+			if ((fix instanceof HasOwner)
 					    && !((HasOwner) fix).getOwner().isIndependent()
 					    && !((HasOwner) fix).getOwner().equals(unit.getOwner())) {
 				SystemOut.SYS_OUT.printf(
@@ -328,9 +328,9 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	private static boolean doesLocationHaveFixture(final IMapNG map, final Point point,
 	                                               final TileFixture fix) {
-		if ((fix instanceof Forest && fix.equals(map.getForest(point)))
-				    || (fix instanceof Ground && fix.equals(map.getGround(point)))
-				    || (fix instanceof Mountain && map.isMountainous(point))) {
+		if (((fix instanceof Forest) && fix.equals(map.getForest(point)))
+				    || ((fix instanceof Ground) && fix.equals(map.getGround(point)))
+				    || ((fix instanceof Mountain) && map.isMountainous(point))) {
 			return true;
 		}
 		for (final TileFixture fixture : map.getOtherFixtures(point)) {
@@ -395,7 +395,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @return either num + 1, if max or lower, or 0.
 	 */
 	public static int increment(final int num, final int max) {
-		if (num >= max - 1) {
+		if (num >= (max - 1)) {
 			return 0; // NOPMD
 		} else {
 			return num + 1;
@@ -428,13 +428,13 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	public Point find(final TileFixture fix) {
 		final IMapNG source = getMap();
 		for (final Point point : source.locations()) {
-			if ((fix instanceof Mountain && source.isMountainous(point))
-					    || (fix instanceof Forest && fix.equals(source
-							                                            .getForest(
-									                                            point)))
-					    || (fix instanceof Ground && fix.equals(source
-							                                            .getGround(
-									                                            point))
+			if (((fix instanceof Mountain) && source.isMountainous(point))
+					    || ((fix instanceof Forest) && fix.equals(source
+							                                              .getForest(
+									                                              point)))
+					    || ((fix instanceof Ground) && fix.equals(source
+							                                              .getGround(
+									                                              point))
 			)) {
 				return point;
 			}

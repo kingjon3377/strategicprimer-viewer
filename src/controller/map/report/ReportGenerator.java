@@ -86,11 +86,11 @@ public final class ReportGenerator {
 		for (final Point location : map.locations()) {
 			for (final TileFixture fixture : map.getOtherFixtures(
 					NullCleaner.assertNotNull(location))) {
-				if (fixture instanceof Fortress &&
+				if ((fixture instanceof Fortress) &&
 						    ((Fortress) fixture).getOwner().equals(player)) {
 					if ("HQ".equals(((Fortress) fixture).getName())) {
 						return location;
-					} else if (location.row >= 0 && retval.row == -1) {
+					} else if ((location.row >= 0) && (retval.row == -1)) {
 						retval = location;
 					}
 				}
@@ -147,8 +147,8 @@ public final class ReportGenerator {
 		builder.append("</body>\n</html>\n");
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			final IFixture fix = pair.second();
-			if (fix instanceof Hill || fix instanceof Sandbar
-					    || fix instanceof Oasis) {
+			if ((fix instanceof Hill) || (fix instanceof Sandbar)
+					    || (fix instanceof Oasis)) {
 				fixtures.remove(Integer.valueOf(fix.getID()));
 				continue;
 			}
@@ -180,9 +180,9 @@ public final class ReportGenerator {
 				new PairComparator<>(new DistanceComparator(findHQ(map, player)),
 						                    SIMPLE_COMPARATOR);
 
-		fixtures.values().stream().filter(pair -> (pair.second() instanceof Unit ||
-				                                           pair.second() instanceof
-						                                           Fortress)
+		fixtures.values().stream().filter(pair -> ((pair.second() instanceof Unit) ||
+				                                           (pair.second() instanceof
+						                                            Fortress))
 				                                          && player.equals(
 				((HasOwner) pair.second()).getOwner()))
 				.forEach(pair -> fixtures.remove(Integer.valueOf(pair.second().getID()
@@ -279,9 +279,9 @@ public final class ReportGenerator {
 				new PairComparator<>(new DistanceComparator(findHQ(map, player)),
 						                    SIMPLE_COMPARATOR);
 
-		fixtures.values().stream().filter(pair -> (pair.second() instanceof Unit ||
-				                                           pair.second() instanceof
-						                                           Fortress)
+		fixtures.values().stream().filter(pair -> ((pair.second() instanceof Unit) ||
+				                                           (pair.second() instanceof
+						                                            Fortress))
 				                                          && player.equals(
 				((HasOwner) pair.second()).getOwner()))
 				.forEach(pair -> fixtures.remove(Integer.valueOf(pair.second().getID()

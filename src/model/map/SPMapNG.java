@@ -135,8 +135,8 @@ public class SPMapNG implements IMutableMapNG {
 			for (final Point point : locations()) {
 				final String ctxt =
 						context + " At " + Objects.toString(point) + ':';
-				if (getBaseTerrain(point) != obj.getBaseTerrain(point)
-						    && TileType.NotVisible != obj.getBaseTerrain(point)) {
+				if ((getBaseTerrain(point) != obj.getBaseTerrain(point))
+						    && (TileType.NotVisible != obj.getBaseTerrain(point))) {
 					out.append(ctxt);
 					if (TileType.NotVisible == getBaseTerrain(point)) {
 						out.append("\tHas terrain information we don't\n");
@@ -155,7 +155,7 @@ public class SPMapNG implements IMutableMapNG {
 				}
 				final Forest forest = obj.getForest(point);
 				if (!Objects.equals(getForest(point), forest)
-						    && forest != null) {
+						    && (forest != null)) {
 					// There are *far* too many false positives if we don't
 					// check the "other fixtures," because of the way we
 					// represent this in the XML. If we ever start a new
@@ -173,20 +173,24 @@ public class SPMapNG implements IMutableMapNG {
 				final Ground theirGround = obj.getGround(point);
 				final Ground ourGround = getGround(point);
 				if (!Objects.equals(ourGround, theirGround)
-						    && theirGround != null) {
+						    && (theirGround != null)) {
 					// There are *far* too many false positives if we don't
 					// check the "other fixtures," because of the way we
 					// represent this in the XML. If we ever start a new
 					// campaign with a different data representation---perhaps a
 					// database---we should remove this
 					// check. Except for the 'exposed' bit.
-					if (ourGround != null
+					if ((ourGround != null)
 							    && ourGround.getKind().equals(theirGround.getKind())
 							    && ourGround.isExposed()) {
 						// They just don't have the exposed bit set; carry on
 						// ...
-					} else if (ourGround == null
-							           || !fixtures.get(point).contains(theirGround)) {
+					} else if ((ourGround == null)
+							           ||
+							           !fixtures.get(
+									           point)
+									            .contains(
+											            theirGround)) {
 						out.append(ctxt);
 						out.append(
 								"\tHas different primary ground, or ground we don't\n");
@@ -218,23 +222,32 @@ public class SPMapNG implements IMutableMapNG {
 					if (ourFixtures.contains(fix)
 							    || shouldSkip(fix)) {
 						continue;
-					} else if ((fix instanceof Ground
-							            && Objects.equals(fix, getGround(point)))
-							           || (fix instanceof Forest
-									               && Objects.equals(fix,
-							getForest(point)))) {
+					} else if (((fix instanceof Ground)
+							            &&
+							            Objects.equals(
+									            fix,
+									            getGround(
+											            point)))
+							           ||
+							           ((fix instanceof Forest)
+									            &&
+									            Objects.equals(
+											            fix,
+											            getForest(
+													            point)))) {
 						continue;
-					} else if (fix instanceof IUnit && ourUnits
-							                                   .containsKey(
-									                                   Integer.valueOf(
-											                                   fix.getID
-													                                       ()))) {
+					} else if ((fix instanceof IUnit) && ourUnits
+							                                     .containsKey(
+									                                     Integer.valueOf(
+											                                     fix
+													                                     .getID
+													                                         ()))) {
 						retval &= ourUnits.get(Integer.valueOf(fix.getID()))
 								          .isSubset(fix, out, ctxt);
-					} else if (fix instanceof SubsettableFixture && ourSubsettables
-							                                                .containsKey(
-									                                                Integer.valueOf(
-											                                                fix.getID()))) {
+					} else if ((fix instanceof SubsettableFixture) && ourSubsettables
+							                                                  .containsKey(
+									                                                  Integer.valueOf(
+											                                                  fix.getID()))) {
 						retval &= ourSubsettables
 								          .get(Integer.valueOf(fix.getID()))
 								          .isSubset(fix, out, ctxt);
@@ -411,7 +424,7 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return obj == this || obj instanceof IMapNG && equalsImpl((IMapNG) obj);
+		return (obj == this) || ((obj instanceof IMapNG) && equalsImpl((IMapNG) obj));
 	}
 
 	/**
@@ -421,11 +434,11 @@ public class SPMapNG implements IMutableMapNG {
 	private boolean equalsImpl(final IMapNG obj) {
 		if (dimensions().equals(obj.dimensions())
 				    && areIterablesEqual(players(), obj.players())
-				    && getCurrentTurn() == obj.getCurrentTurn()
+				    && (getCurrentTurn() == obj.getCurrentTurn())
 				    && getCurrentPlayer().equals(obj.getCurrentPlayer())) {
 			for (final Point point : locations()) {
-				if (getBaseTerrain(point) != obj.getBaseTerrain(point)
-						    || isMountainous(point) != obj.isMountainous(point)
+				if ((getBaseTerrain(point) != obj.getBaseTerrain(point))
+						    || (isMountainous(point) != obj.isMountainous(point))
 						    || !areIterablesEqual(getRivers(point),
 						obj.getRivers(point))
 						    || !Objects.equals(getForest(point),
@@ -667,8 +680,8 @@ public class SPMapNG implements IMutableMapNG {
 	 * @return whether strict-subset calculations should skip it.
 	 */
 	public static boolean shouldSkip(final TileFixture fix) {
-		return fix instanceof CacheFixture || fix instanceof TextFixture
-				       || fix instanceof Animal && ((Animal) fix).isTraces();
+		return (fix instanceof CacheFixture) || (fix instanceof TextFixture)
+				       || ((fix instanceof Animal) && ((Animal) fix).isTraces());
 	}
 
 	/**

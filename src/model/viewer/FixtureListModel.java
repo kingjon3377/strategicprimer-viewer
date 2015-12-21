@@ -101,10 +101,10 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 */
 	public void addFixture(final TileFixture fix) {
 		final IMutableMapNG map = dmodel.getMap();
-		if (fix instanceof Ground && map.getGround(point) == null) {
+		if ((fix instanceof Ground) && (map.getGround(point) == null)) {
 			map.setGround(point, (Ground) fix);
 			selectedPointChanged(null, point);
-		} else if (fix instanceof Forest && map.getForest(point) == null) {
+		} else if ((fix instanceof Forest) && (map.getForest(point) == null)) {
 			map.setForest(point, (Forest) fix);
 			selectedPointChanged(null, point);
 		} else if (fix instanceof TileTypeFixture) {
@@ -133,12 +133,18 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 				if (fix instanceof TileTypeFixture) {
 					map.setBaseTerrain(point, TileType.NotVisible);
 					removeElement(fix);
-				} else if (fix instanceof Ground
-						           && fix.equals(map.getGround(point))) {
+				} else if ((fix instanceof Ground)
+						           &&
+						           fix.equals(
+								           map.getGround(
+										           point))) {
 					map.setGround(point, null);
 					removeElement(fix);
-				} else if (fix instanceof Forest
-						           && fix.equals(map.getForest(point))) {
+				} else if ((fix instanceof Forest)
+						           &&
+						           fix.equals(
+								           map.getForest(
+										           point))) {
 					map.setForest(point, null);
 					removeElement(fix);
 				} else if (fix instanceof RiverFixture) {
@@ -164,9 +170,10 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof FixtureListModel
-				                      && ((FixtureListModel) obj).dmodel.equals(dmodel)
-				                      && ((FixtureListModel) obj).point.equals(point);
+		return (this == obj) || ((obj instanceof FixtureListModel)
+				                         && ((FixtureListModel) obj).dmodel.equals
+						                                                            (dmodel)
+				                         && ((FixtureListModel) obj).point.equals(point));
 	}
 
 	/**

@@ -75,7 +75,7 @@ public final class TODOFixerDriver {
 		for (final Point point : map.locations()) {
 			final List<String> jobList = getList(point);
 			for (final TileFixture fix : map.getOtherFixtures(point)) {
-				if (fix instanceof Unit && "TODO".equals(((Unit) fix).getKind())) {
+				if ((fix instanceof Unit) && "TODO".equals(((Unit) fix).getKind())) {
 					fixUnit((Unit) fix, jobList);
 				}
 			}

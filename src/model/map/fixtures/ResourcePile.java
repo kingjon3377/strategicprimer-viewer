@@ -146,10 +146,10 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return fix instanceof ResourcePile
+		return (fix instanceof ResourcePile)
 				       && kind.equals(((ResourcePile) fix).getKind())
 				       && contents.equals(((ResourcePile) fix).getContents())
-				       && quantity == ((ResourcePile) fix).getQuantity()
+				       && (quantity == ((ResourcePile) fix).getQuantity())
 				       && unit.equals(((ResourcePile) fix).getUnits());
 	}
 
@@ -187,8 +187,8 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 				ostream.append("Units differ\n");
 				retval = false;
 			}
-			if (quantity != ((ResourcePile) obj).quantity
-					    && 0 != ((ResourcePile) obj).quantity) {
+			if ((quantity != ((ResourcePile) obj).quantity)
+					    && (0 != ((ResourcePile) obj).quantity)) {
 				ostream.append(ctxt);
 				ostream.append("Quantities differ\n");
 				retval = false;
@@ -252,10 +252,11 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		return prime * (prime
-				                * (prime * (prime * (prime + contents.hashCode()) + id)
-						                   + kind.hashCode())
-				                + quantity) + unit.hashCode();
+		return (prime * ((prime
+				                  * ((prime * ((prime * (prime + contents.hashCode())) +
+						                               id))
+						                     + kind.hashCode()))
+				                 + quantity)) + unit.hashCode();
 	}
 
 	/**
@@ -264,13 +265,14 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj
-				       || obj instanceof ResourcePile && id == ((ResourcePile) obj).id
-						          && quantity == ((ResourcePile) obj).quantity
-						          && contents.equals(((ResourcePile) obj).contents)
-						          && kind.equals(((ResourcePile) obj).kind)
-						          && unit.equals(((ResourcePile) obj).unit) &&
-						          created == ((ResourcePile) obj).created;
+		return (this == obj)
+				       ||
+				       ((obj instanceof ResourcePile) && (id == ((ResourcePile) obj).id)
+						        && (quantity == ((ResourcePile) obj).quantity)
+						        && contents.equals(((ResourcePile) obj).contents)
+						        && kind.equals(((ResourcePile) obj).kind)
+						        && unit.equals(((ResourcePile) obj).unit) &&
+						        (created == ((ResourcePile) obj).created));
 	}
 
 	/**

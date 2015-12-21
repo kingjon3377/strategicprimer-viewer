@@ -84,8 +84,8 @@ public class Simurgh implements MobileFixture, HasImage, UnitMember {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Simurgh
-				                      && ((TileFixture) obj).getID() == id;
+		return (this == obj) || ((obj instanceof Simurgh)
+				                         && (((TileFixture) obj).getID() == id));
 	}
 
 	/**

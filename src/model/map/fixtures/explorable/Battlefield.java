@@ -92,8 +92,8 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Battlefield
-				                      && ((TileFixture) obj).getID() == id;
+		return (this == obj) || ((obj instanceof Battlefield)
+				                         && (((TileFixture) obj).getID() == id));
 	}
 
 	/**

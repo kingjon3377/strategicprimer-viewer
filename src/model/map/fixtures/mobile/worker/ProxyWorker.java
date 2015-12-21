@@ -143,7 +143,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return fix instanceof ProxyWorker
+		return (fix instanceof ProxyWorker)
 				       && proxyJobs.equals(((ProxyWorker) fix).proxyJobs);
 	}
 

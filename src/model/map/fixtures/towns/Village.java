@@ -136,12 +136,12 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Village
-				                      && status == ((Village) obj).status
-				                      && name.equals(((Village) obj).name)
-				                      && id == ((Village) obj).id
-				                      && owner.equals(((Village) obj).owner)
-				                      && race.equals(((Village) obj).race);
+		return (this == obj) || ((obj instanceof Village)
+				                         && (status == ((Village) obj).status)
+				                         && name.equals(((Village) obj).name)
+				                         && (id == ((Village) obj).id)
+				                         && owner.equals(((Village) obj).owner)
+				                         && race.equals(((Village) obj).race));
 	}
 
 	/**
@@ -180,7 +180,7 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return fix instanceof Village && status == ((Village) fix).status
+		return (fix instanceof Village) && (status == ((Village) fix).status)
 				       && name.equals(((Village) fix).name)
 				       && owner.equals(((Village) fix).owner)
 				       && race.equals(((Village) fix).race);

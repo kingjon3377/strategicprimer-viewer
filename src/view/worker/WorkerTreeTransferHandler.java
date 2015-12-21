@@ -97,12 +97,12 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 				                    .getLastPathComponent();
 		final Object parentPath = path.getPathComponent(path
 				                                                .getPathCount() - 2);
-		if (last == null || parentPath == null) {
+		if ((last == null) || (parentPath == null)) {
 			return null; // NOPMD
 		}
 		final Object selection = model.getModelObject(last);
 		final Object parent = model.getModelObject(parentPath);
-		if (selection instanceof UnitMember && parent instanceof IUnit) {
+		if ((selection instanceof UnitMember) && (parent instanceof IUnit)) {
 			return new UnitMemberTransferable((UnitMember) selection, // NOPMD
 					                                 (IUnit) parent);
 		} else {
@@ -116,7 +116,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	 */
 	@Override
 	public boolean canImport(@Nullable final TransferSupport support) {
-		if (support != null
+		if ((support != null)
 				    && support.isDataFlavorSupported(UnitMemberTransferable.FLAVOR)) {
 			final DropLocation dloc = support.getDropLocation();
 			if (!(dloc instanceof JTree.DropLocation)) {
@@ -127,8 +127,8 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 				return false; // NOPMD
 			} else {
 				final Object pathLast = path.getLastPathComponent();
-				return pathLast != null // NOPMD
-						       && model.getModelObject(pathLast) instanceof IUnit;
+				return (pathLast != null) // NOPMD
+						       && (model.getModelObject(pathLast) instanceof IUnit);
 			}
 		} else {
 			return false;
@@ -141,7 +141,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	 */
 	@Override
 	public boolean importData(@Nullable final TransferSupport support) {
-		if (support != null && canImport(support)) {
+		if ((support != null) && canImport(support)) {
 			final DropLocation dloc = support.getDropLocation();
 			if (!(dloc instanceof JTree.DropLocation)) {
 				return false; // NOPMD

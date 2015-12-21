@@ -98,7 +98,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Shrub && equalsImpl((Shrub) obj);
+		return (this == obj) || ((obj instanceof Shrub) && equalsImpl((Shrub) obj));
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	 * @return whether it's equal to this one
 	 */
 	private boolean equalsImpl(final Shrub obj) {
-		return description.equals(obj.description) && id == obj.getID();
+		return description.equals(obj.description) && (id == obj.getID());
 	}
 
 	/**
@@ -145,7 +145,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return fix instanceof Shrub
+		return (fix instanceof Shrub)
 				       && description.equals(((Shrub) fix).description);
 	}
 

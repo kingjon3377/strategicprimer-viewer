@@ -217,8 +217,8 @@ public class WorkerStats {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return obj == this || obj instanceof WorkerStats
-				                      && equalsImpl((WorkerStats) obj);
+		return (obj == this) || ((obj instanceof WorkerStats)
+				                         && equalsImpl((WorkerStats) obj));
 	}
 
 	/**
@@ -226,9 +226,9 @@ public class WorkerStats {
 	 * @return whether it's equal to this.
 	 */
 	private boolean equalsImpl(final WorkerStats obj) {
-		return hp == obj.hp && maxHP == obj.maxHP && strength == obj.strength
-				       && dex == obj.dex && con == obj.con && intel == obj.intel
-				       && wis == obj.wis && cha == obj.cha;
+		return (hp == obj.hp) && (maxHP == obj.maxHP) && (strength == obj.strength)
+				       && (dex == obj.dex) && (con == obj.con) && (intel == obj.intel)
+				       && (wis == obj.wis) && (cha == obj.cha);
 	}
 
 	/**

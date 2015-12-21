@@ -145,7 +145,7 @@ public final class ImmortalsReportGenerator
 		final int totalSize = collSize(dragons.keySet(), griffins,
 				fairies.keySet(), giants.keySet(), centaurs.keySet(), trolls,
 				djinni, sphinxes, minotaurs, ogres, phoenixes, simurghs);
-		final int len = 36 + 512 * totalSize;
+		final int len = 36 + (512 * totalSize);
 		final StringBuilder builder = new StringBuilder(len);
 		builder.append("<h4>Immortals</h4>\n").append(OPEN_LIST);
 		optionallyPrintMap(dragons, "(s) at ", builder);
@@ -302,12 +302,12 @@ public final class ImmortalsReportGenerator
 	                      final IMapNG map, final Player currentPlayer,
 	                      final MobileFixture item, final Point loc) {
 		//  TODO: Create Immortal marker interface
-		if (item instanceof Dragon || item instanceof Fairy
-				    || item instanceof Troll || item instanceof Djinn
-				    || item instanceof Sphinx || item instanceof Giant
-				    || item instanceof Minotaur || item instanceof Ogre
-				    || item instanceof Centaur || item instanceof Phoenix
-				    || item instanceof Simurgh || item instanceof Griffin) {
+		if ((item instanceof Dragon) || (item instanceof Fairy)
+				    || (item instanceof Troll) || (item instanceof Djinn)
+				    || (item instanceof Sphinx) || (item instanceof Giant)
+				    || (item instanceof Minotaur) || (item instanceof Ogre)
+				    || (item instanceof Centaur) || (item instanceof Phoenix)
+				    || (item instanceof Simurgh) || (item instanceof Griffin)) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat(atPoint(loc), "A(n) ", item.toString(), " ",
 					distCalculator.distanceString(loc));
@@ -334,12 +334,12 @@ public final class ImmortalsReportGenerator
 			                                    final MobileFixture item,
 			                                    final Point loc) {
 		// TODO: Create Immortal marker interface
-		if (item instanceof Dragon || item instanceof Fairy
-				    || item instanceof Troll || item instanceof Djinn
-				    || item instanceof Sphinx || item instanceof Giant
-				    || item instanceof Minotaur || item instanceof Ogre
-				    || item instanceof Centaur || item instanceof Phoenix
-				    || item instanceof Simurgh || item instanceof Griffin) {
+		if ((item instanceof Dragon) || (item instanceof Fairy)
+				    || (item instanceof Troll) || (item instanceof Djinn)
+				    || (item instanceof Sphinx) || (item instanceof Giant)
+				    || (item instanceof Minotaur) || (item instanceof Ogre)
+				    || (item instanceof Centaur) || (item instanceof Phoenix)
+				    || (item instanceof Simurgh) || (item instanceof Griffin)) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, atPoint(loc), "A(n) ", item.toString(), " ",
 					                           distCalculator.distanceString(loc));

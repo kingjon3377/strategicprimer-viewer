@@ -163,8 +163,9 @@ public final class OneToTwoConverter { // NOPMD
 	 * forest, no rivers, no fixtures)
 	 */
 	private static boolean isPointEmpty(final IMapNG map, final Point point) {
-		return TileType.NotVisible == map.getBaseTerrain(point)
-				       && map.getGround(point) == null && map.getForest(point) == null
+		return (TileType.NotVisible == map.getBaseTerrain(point))
+				       && (map.getGround(point) == null) && (map.getForest(point) ==
+						                                             null)
 				       && !map.getRivers(point).iterator().hasNext()
 				       && !map.getOtherFixtures(point).iterator().hasNext();
 	}
@@ -186,8 +187,8 @@ public final class OneToTwoConverter { // NOPMD
 		if (!isPointEmpty(oldMap, point)) {
 			for (int i = 0; i < RES_JUMP; i++) {
 				for (int j = 0; j < RES_JUMP; j++) {
-					final int row = point.row * RES_JUMP + i;
-					final int col = point.col * RES_JUMP + j;
+					final int row = (point.row * RES_JUMP) + i;
+					final int col = (point.col * RES_JUMP) + j;
 					final Point subpoint = PointFactory.point(row, col);
 					newMap.setBaseTerrain(subpoint, oldMap.getBaseTerrain(point));
 					initial.add(subpoint);
@@ -244,7 +245,7 @@ public final class OneToTwoConverter { // NOPMD
 			Collections.shuffle(initial, random);
 			Collections.shuffle(fixtures, random);
 			int iterations;
-			for (iterations = 0; iterations < MAX_ITERATIONS
+			for (iterations = 0; (iterations < MAX_ITERATIONS)
 					                     && !fixtures.isEmpty(); iterations++) {
 				if (isSubtileSuitable(newMap, assertNotNull(initial.get(0)))) {
 					final TileFixture fix = assertNotNull(fixtures.remove(0));
@@ -353,10 +354,10 @@ public final class OneToTwoConverter { // NOPMD
 	 * fixtures, false otherwise.
 	 */
 	private static boolean isBackground(final TileFixture fix) {
-		return fix instanceof Forest || fix instanceof Mountain
-				       || fix instanceof Ground || fix instanceof Sandbar
-				       || fix instanceof Shrub || fix instanceof Meadow
-				       || fix instanceof Hill;
+		return (fix instanceof Forest) || (fix instanceof Mountain)
+				       || (fix instanceof Ground) || (fix instanceof Sandbar)
+				       || (fix instanceof Shrub) || (fix instanceof Meadow)
+				       || (fix instanceof Hill);
 	}
 
 	/**
@@ -369,7 +370,7 @@ public final class OneToTwoConverter { // NOPMD
 	 */
 	private static void changeFor(final IMutableMapNG map, final Point point,
 	                              final TileFixture fix) {
-		if (fix instanceof Village || fix instanceof ITownFixture) {
+		if ((fix instanceof Village) || (fix instanceof ITownFixture)) {
 			final Collection<TileFixture> forests =
 					StreamSupport.stream(map.getOtherFixtures(point).spliterator(),
 							false)
@@ -398,7 +399,7 @@ public final class OneToTwoConverter { // NOPMD
 			                                                              idFac) {
 		if (TileType.Ocean != map.getBaseTerrain(point)) {
 			if (isAdjacentToTown(point, map)
-					    && random.nextDouble() < SIXTY_PERCENT) {
+					    && (random.nextDouble() < SIXTY_PERCENT)) {
 				addFieldOrOrchard(random.nextBoolean(), point, map, main,
 						idFac);
 			} else if (TileType.Desert == map.getBaseTerrain(point)) {
@@ -420,10 +421,12 @@ public final class OneToTwoConverter { // NOPMD
 	 */
 	private static void waterDesert(final IMutableMapNG map, final Point point,
 	                                final Random random, final boolean watered) {
-		if (watered && random.nextDouble() < DESERT_TO_PLAINS) {
+		if (watered && (random.nextDouble() < DESERT_TO_PLAINS)) {
 			map.setBaseTerrain(point, TileType.Plains);
 		} else if (!map.getRivers(point).iterator().hasNext()
-				           && random.nextDouble() < SIXTY_PERCENT) {
+				           &&
+				           (random.nextDouble() <
+						            SIXTY_PERCENT)) {
 			map.setBaseTerrain(point, TileType.Plains);
 		}
 	}
@@ -500,9 +503,9 @@ public final class OneToTwoConverter { // NOPMD
 	private static void addFixture(final IMutableMapNG map, final Point point,
 	                               final TileFixture fix, final boolean main) {
 		if (main) {
-			if (fix instanceof Ground && map.getGround(point) == null) {
+			if ((fix instanceof Ground) && (map.getGround(point) == null)) {
 				map.setGround(point, (Ground) fix);
-			} else if (fix instanceof Forest && map.getForest(point) == null) {
+			} else if ((fix instanceof Forest) && (map.getForest(point) == null)) {
 				map.setForest(point, (Forest) fix);
 			} else {
 				map.addFixture(point, fix);
@@ -554,7 +557,7 @@ public final class OneToTwoConverter { // NOPMD
 	private static boolean hasAdjacentWater(final Point point, final IMapNG map) {
 		return StreamSupport.stream(getNeighbors(point).spliterator(), false).anyMatch(
 				npoint -> map.getRivers(npoint).iterator().hasNext() ||
-						          TileType.Ocean == map.getBaseTerrain(npoint));
+						          (TileType.Ocean == map.getBaseTerrain(npoint)));
 	}
 
 	/**
@@ -563,7 +566,7 @@ public final class OneToTwoConverter { // NOPMD
 	 * @return whether that location already has a forest
 	 */
 	private static boolean hasForest(final IMapNG map, final Point point) {
-		return map.getForest(point) != null ||
+		return (map.getForest(point) != null) ||
 				       StreamSupport.stream(map.getOtherFixtures(point).spliterator(),
 						       false)
 						       .anyMatch(fix -> fix instanceof Forest);
@@ -626,7 +629,7 @@ public final class OneToTwoConverter { // NOPMD
 	 * @return a seed for the RNG for conversion based on the given tile
 	 */
 	private static long getSeed(final Point point) {
-		return (long) point.col << 32L + point.row;
+		return (long) point.col << (32L + point.row);
 	}
 
 	/**

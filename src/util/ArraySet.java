@@ -119,7 +119,7 @@ public final class ArraySet<T> implements Set<T> {
 	@Override
 	public boolean remove(@Nullable final Object obj) {
 		final boolean retval = impl.remove(obj);
-		if (retval && obj != null) {
+		if (retval && (obj != null)) {
 			hash -= obj.hashCode();
 		}
 		return retval;
@@ -214,8 +214,8 @@ public final class ArraySet<T> implements Set<T> {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Set
-				                      && areSetsEqual(this, (Set<?>) obj);
+		return (this == obj) || ((obj instanceof Set)
+				                         && areSetsEqual(this, (Set<?>) obj));
 	}
 
 	/**

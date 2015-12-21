@@ -86,8 +86,8 @@ public class Ogre implements MobileFixture, HasImage, UnitMember { // NOPMD
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Ogre
-				                      && id == ((TileFixture) obj).getID();
+		return (this == obj) || ((obj instanceof Ogre)
+				                         && (id == ((TileFixture) obj).getID()));
 	}
 
 	/**

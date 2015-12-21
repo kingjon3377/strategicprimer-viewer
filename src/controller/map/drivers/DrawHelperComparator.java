@@ -375,8 +375,8 @@ public final class DrawHelperComparator implements ISPDriver { // NOPMD
 	                                 final int tsize) {
 		final Coordinate dimensions = PointFactory.coordinate(tsize, tsize);
 		for (final Point point : spmap.locations()) {
-			if (point.row >= TEST_MIN_ROW && point.row < TEST_MAX_ROW
-					    && point.col >= TEST_MIN_COL && point.col < TEST_MAX_COL) {
+			if ((point.row >= TEST_MIN_ROW) && (point.row < TEST_MAX_ROW)
+					    && (point.col >= TEST_MIN_COL) && (point.col < TEST_MAX_COL)) {
 				helper.drawTile(
 						pen,
 						spmap, point,

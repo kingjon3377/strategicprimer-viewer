@@ -184,8 +184,8 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 		final String none = "There are no players shared by all the maps.";
 		final String prpt = "Player selection: ";
 		for (int playerNum = cli.chooseFromList(players, hdr, none, prpt,
-				true); playerNum >= 0
-						       && playerNum < players.size(); playerNum = cli
+				true); (playerNum >= 0)
+						       && (playerNum < players.size()); playerNum = cli
 								                                                  .chooseFromList(
 										                                                  players,
 										                                                  hdr,
@@ -210,11 +210,12 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 		final String hdr = "Which unit contains the worker in question?";
 		final String none = "All that player's units are already fully statted.";
 		final String prpt = "Unit selection: ";
-		for (int unitNum = cli.chooseFromList(units, hdr, none, prpt, false); unitNum
-				                                                                      >= 0
+		for (int unitNum = cli.chooseFromList(units, hdr, none, prpt, false); (unitNum
+				                                                                       >=
+				                                                                       0)
 				                                                                      &&
-				                                                                      unitNum <
-						                                                                      units.size();
+				                                                                      (unitNum <
+						                                                                       units.size());
 				unitNum = cli.chooseFromList(units, hdr, none,
 						prpt, false)) {
 			final IUnit unit = units.get(unitNum);
@@ -234,7 +235,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	private static boolean hasUnstattedWorker(final IDriverModel model,
 	                                          final int idNum) {
 		final IFixture fix = find(model.getMap(), idNum);
-		return fix instanceof IUnit && hasUnstattedWorker((IUnit) fix);
+		return (fix instanceof IUnit) && hasUnstattedWorker((IUnit) fix);
 	}
 
 	/**
@@ -243,8 +244,8 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 */
 	private static boolean hasUnstattedWorker(final Iterable<UnitMember> unit) {
 		return StreamSupport.stream(unit.spliterator(), false)
-				       .anyMatch(member -> member instanceof Worker &&
-						                           ((Worker) member).getStats() == null);
+				       .anyMatch(member -> (member instanceof Worker) &&
+						                           (((Worker) member).getStats() == null));
 	}
 
 	/**
@@ -267,19 +268,19 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	private void enterStats(final IMultiMapModel model, final Iterable<UnitMember> unit)
 			throws IOException {
 		final List<Worker> workers = StreamSupport.stream(unit.spliterator(), false)
-				                             .filter(member -> member instanceof
-						                                               Worker &&
-						                                               ((Worker) member)
-								                                               .getStats
-										                                                () ==
-								                                               null)
+				                             .filter(member -> (member instanceof
+						                                                Worker) &&
+						                                               (((Worker) member)
+								                                                .getStats
+										                                                 () ==
+								                                                null))
 				                             .map(member -> (Worker) member)
 				                             .collect(Collectors.toList());
 		final String hdr = "Which worker do you want to enter stats for?";
 		final String none = "There are no owkers without stats in that unit.";
 		final String prpt = "Worker to modify: ";
 		for (int workerNum = cli.chooseFromList(workers, hdr, none, prpt,
-				false); workerNum >= 0 && workerNum < workers.size()
+				false); (workerNum >= 0) && (workerNum < workers.size())
 						        && !workers.isEmpty();
 				workerNum = cli.chooseFromList(workers,
 						hdr, none, prpt, false)) {
@@ -301,7 +302,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
 			final IMapNG map = pair.first();
 			final IFixture fix = find(map, idNum);
-			if (fix instanceof Worker && ((Worker) fix).getStats() == null) {
+			if ((fix instanceof Worker) && (((Worker) fix).getStats() == null)) {
 				((Worker) fix).setStats(stats);
 			}
 		}
@@ -383,8 +384,8 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 		final String none = "There are no players shared by all the maps.";
 		final String prpt = "Player selection: ";
 		for (int playerNum = cli.chooseFromList(players, hdr, none, prpt,
-				false); playerNum >= 0
-						        && playerNum < players.size(); playerNum = cli
+				false); (playerNum >= 0)
+						        && (playerNum < players.size()); playerNum = cli
 								                                                   .chooseFromList(
 										                                                   players,
 										                                                   hdr,
@@ -416,7 +417,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 						"Which unit contains the worker in question?",
 						"There are no units owned by that player",
 						"Unit selection: ", false);
-				if (unitNum >= 0 && unitNum < units.size()) {
+				if ((unitNum >= 0) && (unitNum < units.size())) {
 					final IUnit unit = units.get(unitNum);
 					if (cli.inputBoolean(LOAD_NAMES)) {
 						createWorkersFromFile(model, idf, unit);

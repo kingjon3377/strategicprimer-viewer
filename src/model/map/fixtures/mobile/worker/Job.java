@@ -123,10 +123,10 @@ public class Job implements IJob { // NOPMD
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Job
-				                      && name.equals(((Job) obj).name) &&
-				                      level == ((Job) obj).level
-				                      && skillSet.equals(((Job) obj).skillSet);
+		return (this == obj) || ((obj instanceof Job)
+				                         && name.equals(((Job) obj).name) &&
+				                         (level == ((Job) obj).level)
+				                         && skillSet.equals(((Job) obj).skillSet));
 	}
 
 	/**
@@ -191,7 +191,7 @@ public class Job implements IJob { // NOPMD
 						ostream.append(skill.getName());
 						ostream.append('\n');
 						retval = false;
-					} else if (skill.getLevel() == lvl && skill.getHours() > hours) {
+					} else if ((skill.getLevel() == lvl) && (skill.getHours() > hours)) {
 						ostream.append(context);
 						ostream.append(" In Job ");
 						ostream.append(name);

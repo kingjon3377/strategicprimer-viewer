@@ -81,7 +81,7 @@ public class ResourceAddingCLIDriver implements ISPDriver {
 			final String none = "No players found.";
 			final String prpt = "Player to add resources for: ";
 			for (int playerNum = cli.chooseFromList(players, desc, none, prpt, false);
-					playerNum >= 0 && playerNum < players.size();
+					(playerNum >= 0) && (playerNum < players.size());
 					playerNum = cli.chooseFromList(players, desc, none, prpt, false)) {
 				final Player player = players.get(playerNum);
 				while (cli.inputBoolean("Keep going? ")) {
@@ -139,7 +139,7 @@ public class ResourceAddingCLIDriver implements ISPDriver {
 		final List<String> list = new ArrayList<>(resourceKinds);
 		final int num = cli.chooseStringFromList(list, "Possible kinds of resources:",
 				"No resource kinds entered yet", "Chosen kind: ", false);
-		if (num >= 0 && num < list.size()) {
+		if ((num >= 0) && (num < list.size())) {
 			return list.get(num);
 		} else {
 			final String retval = cli.inputString("Resource kind to use: ");
@@ -163,7 +163,7 @@ public class ResourceAddingCLIDriver implements ISPDriver {
 		final int num = cli.chooseStringFromList(list,
 				String.format("Possible resources in the %s category:", kind),
 				"No resources entered yet", "Choose resource: ", false);
-		if (num >= 0 && num < list.size()) {
+		if ((num >= 0) && (num < list.size())) {
 			return list.get(num);
 		} else {
 			final String retval = cli.inputString("Resource to use: ");

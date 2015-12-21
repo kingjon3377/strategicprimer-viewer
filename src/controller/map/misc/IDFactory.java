@@ -41,7 +41,7 @@ public final class IDFactory {
 	 * @return whether it's used.
 	 */
 	public boolean used(final int idNum) {
-		return idNum < 0 || usedIDs.get(idNum);
+		return (idNum < 0) || usedIDs.get(idNum);
 	}
 
 	/**

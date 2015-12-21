@@ -82,8 +82,8 @@ public class Oasis implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Oasis
-				                      && id == ((TileFixture) obj).getID();
+		return (this == obj) || ((obj instanceof Oasis)
+				                         && (id == ((TileFixture) obj).getID()));
 	}
 
 	/**

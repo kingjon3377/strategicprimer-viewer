@@ -97,10 +97,10 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	@Override
 	public HasName getChild(@Nullable final Object parent, final int index) {
 		final IWorker currRoot = root;
-		if (index >= 0 && currRoot != null && parent instanceof IWorker
+		if ((index >= 0) && (currRoot != null) && (parent instanceof IWorker)
 				    && parent.equals(currRoot)) {
 			return getFromIter(currRoot, index); // NOPMD
-		} else if (index >= 0 && parent instanceof IJob) {
+		} else if ((index >= 0) && (parent instanceof IJob)) {
 			return getFromIter((IJob) parent, index); // NOPMD
 		} else {
 			throw new ArrayIndexOutOfBoundsException(
@@ -146,7 +146,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 */
 	@Override
 	public int getChildCount(@Nullable final Object parent) {
-		if (parent instanceof IWorker || parent instanceof IJob) {
+		if ((parent instanceof IWorker) || (parent instanceof IJob)) {
 			return (int) StreamSupport.stream(((Iterable<?>) parent).spliterator(),
 					false)
 					             .count();
@@ -186,7 +186,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	@Override
 	public int getIndexOfChild(@Nullable final Object parent,
 	                           @Nullable final Object child) {
-		if (parent instanceof IWorker || parent instanceof IJob) {
+		if ((parent instanceof IWorker) || (parent instanceof IJob)) {
 			// TODO: Ought to be able to do this with the Stream API
 			int index = 0;
 			for (final Object item : (Iterable<?>) parent) {
@@ -226,7 +226,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	@Override
 	public void add(final String category, final String addendum) {
 		final IWorker currRoot = root;
-		if ("job".equals(category) && currRoot != null) {
+		if ("job".equals(category) && (currRoot != null)) {
 			final IJob job = new Job(addendum, 0);
 			final int childCount = getChildCount(currRoot);
 			currRoot.addJob(job);
@@ -236,8 +236,8 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 					                                        arrayOfObj(job)));
 		} else if ("skill".equals(category)) {
 			final TreePath selPath = tsm.getSelectionPath();
-			if (selPath != null
-					    && selPath.getLastPathComponent() instanceof IJob) {
+			if ((selPath != null)
+					    && (selPath.getLastPathComponent() instanceof IJob)) {
 				final IJob job = (IJob) selPath.getLastPathComponent();
 				final ISkill skill = new Skill(addendum, 0, 0);
 				final int childCount = getChildCount(job);

@@ -159,7 +159,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Meadow && equalsImpl((Meadow) obj);
+		return (this == obj) || ((obj instanceof Meadow) && equalsImpl((Meadow) obj));
 	}
 
 	/**
@@ -167,8 +167,8 @@ public class Meadow implements HarvestableFixture, HasKind {
 	 * @return whether it equals this one
 	 */
 	private boolean equalsImpl(final Meadow obj) {
-		return kind.equals(obj.kind) && field == obj.field
-				       && cultivated == obj.cultivated && id == obj.id;
+		return kind.equals(obj.kind) && (field == obj.field)
+				       && (cultivated == obj.cultivated) && (id == obj.id);
 	}
 
 	/**
@@ -207,10 +207,10 @@ public class Meadow implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return fix instanceof Meadow && kind.equals(((Meadow) fix).kind)
-				       && field == ((Meadow) fix).field
-				       && cultivated == ((Meadow) fix).cultivated
-				       && status == ((Meadow) fix).status;
+		return (fix instanceof Meadow) && kind.equals(((Meadow) fix).kind)
+				       && (field == ((Meadow) fix).field)
+				       && (cultivated == ((Meadow) fix).cultivated)
+				       && (status == ((Meadow) fix).status);
 	}
 
 	/**

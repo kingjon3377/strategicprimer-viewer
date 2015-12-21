@@ -272,7 +272,7 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 	@SuppressWarnings("QuestionableName")
 	private static boolean anyNonNumeric(final String... strings) {
 		return Stream.of(strings)
-				       .anyMatch(string -> string == null || !isNumeric(string));
+				       .anyMatch(string -> (string == null) || !isNumeric(string));
 	}
 
 	/**

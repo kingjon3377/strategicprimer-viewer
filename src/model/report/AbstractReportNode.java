@@ -120,8 +120,8 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof IReportNode
-				                      && equalsImpl((IReportNode) obj);
+		return (this == obj) || ((obj instanceof IReportNode)
+				                         && equalsImpl((IReportNode) obj));
 	}
 
 	/**

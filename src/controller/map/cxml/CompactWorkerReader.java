@@ -216,7 +216,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 				new Skill(getParameter(element, "name"),
 						         getIntegerParameter(element, "level"),
 						         getIntegerParameter(element, "hours"));
-		if ("miscellaneous".equals(retval.getName()) && retval.getLevel() > 0) {
+		if ("miscellaneous".equals(retval.getName()) && (retval.getLevel() > 0)) {
 			warner.warn(new DeprecatedPropertyException("skill",
 					                                           "miscellaneous", "other",
 					                                           element.getLocation()
@@ -248,7 +248,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 		ostream.append(Integer.toString(obj.getID()));
 		ostream.append('"');
 		ostream.append(imageXML(obj));
-		if (obj.iterator().hasNext() || obj.getStats() != null) {
+		if (obj.iterator().hasNext() || (obj.getStats() != null)) {
 			ostream.append(">\n");
 			writeStats(ostream, obj.getStats(), indent + 1);
 			for (final IJob job : obj) {
@@ -306,7 +306,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 */
 	public static void writeJob(final Appendable ostream, final Job obj,
 	                            final int indent) throws IOException {
-		if (obj.getLevel() <= 0 && !obj.iterator().hasNext()) {
+		if ((obj.getLevel() <= 0) && !obj.iterator().hasNext()) {
 			return;
 		}
 		ostream.append(indent(indent));

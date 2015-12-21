@@ -129,8 +129,8 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof TileTypeFixture
-				                      && ((TileTypeFixture) obj).ttype == ttype;
+		return (this == obj) || ((obj instanceof TileTypeFixture)
+				                         && (((TileTypeFixture) obj).ttype == ttype));
 	}
 
 	/**

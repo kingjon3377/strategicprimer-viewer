@@ -121,8 +121,8 @@ public class TextFixture implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof TextFixture
-				                      && equalsImpl((TextFixture) obj);
+		return (this == obj) || ((obj instanceof TextFixture)
+				                         && equalsImpl((TextFixture) obj));
 	}
 
 	/**
@@ -130,7 +130,7 @@ public class TextFixture implements TileFixture, HasImage {
 	 * @return whether it's equal to this one
 	 */
 	private boolean equalsImpl(final TextFixture obj) {
-		return text.equals(obj.text) && turn == obj.turn;
+		return text.equals(obj.text) && (turn == obj.turn);
 	}
 
 	/**

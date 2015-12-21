@@ -117,7 +117,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 					defRenderer.getListCellRendererComponent(
 							NullCleaner.assertNotNull(list), value, index,
 							isSelected, cellHasFocus);
-			if (value != null && retval instanceof JLabel) {
+			if ((value != null) && (retval instanceof JLabel)) {
 				((JLabel) retval).setText(String.format(
 						"Unit of type %s, named %s",
 						value.getKind(),
@@ -210,7 +210,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 		// Eclipse claims getSelectedValue can never return null; the
 		// documentation contradicts this, but it returns null when
 		// isSelectionEmpty is true, which we do check.
-		if (event != null
+		if ((event != null)
 				    && BUTTON_TEXT.equalsIgnoreCase(event.getActionCommand())
 				    && !unitList.isSelectionEmpty()) {
 			model.selectUnit(selectedValue);

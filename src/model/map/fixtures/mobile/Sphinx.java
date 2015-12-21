@@ -86,8 +86,8 @@ public class Sphinx implements MobileFixture, HasImage, UnitMember {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Sphinx
-				                      && ((TileFixture) obj).getID() == id;
+		return (this == obj) || ((obj instanceof Sphinx)
+				                         && (((TileFixture) obj).getID() == id));
 	}
 
 	/**

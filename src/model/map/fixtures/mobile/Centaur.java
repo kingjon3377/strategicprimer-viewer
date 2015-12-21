@@ -102,9 +102,9 @@ public class Centaur implements MobileFixture, HasImage, HasKind, UnitMember {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Centaur
-				                      && ((Centaur) obj).kind.equals(kind)
-				                      && ((Centaur) obj).getID() == id;
+		return (this == obj) || ((obj instanceof Centaur)
+				                         && ((Centaur) obj).kind.equals(kind)
+				                         && (((Centaur) obj).getID() == id));
 	}
 
 	/**
@@ -143,7 +143,7 @@ public class Centaur implements MobileFixture, HasImage, HasKind, UnitMember {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return fix instanceof Centaur && ((Centaur) fix).kind.equals(kind);
+		return (fix instanceof Centaur) && ((Centaur) fix).kind.equals(kind);
 	}
 
 	/**

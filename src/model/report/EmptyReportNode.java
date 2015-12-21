@@ -66,7 +66,7 @@ public final class EmptyReportNode extends AbstractReportNode {
 	 */
 	@Override
 	protected boolean equalsImpl(final IReportNode obj) {
-		return this == obj || obj instanceof EmptyReportNode;
+		return (this == obj) || (obj instanceof EmptyReportNode);
 	}
 
 	/**

@@ -146,8 +146,8 @@ public final class AdvancementCLIDriver implements ISPDriver {
 			final String none = "No players found.";
 			final String prpt = "Chosen player: ";
 			for (int playerNum = cli.chooseFromList(playerList, hdr, none, prpt,
-					false); playerNum >= 0
-							        && playerNum < playerList.size(); playerNum = cli
+					false); (playerNum >= 0)
+							        && (playerNum < playerList.size()); playerNum = cli
 									                                                      .chooseFromList(
 											                                                      playerList,
 											                                                      hdr,
@@ -206,7 +206,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 			final int unitNum = cli.chooseFromList(units,
 					player.getName() + "'s units:",
 					"No unadvanced units remain.", "Chosen unit: ", false);
-			if (unitNum >= 0 && unitNum < units.size()) {
+			if ((unitNum >= 0) && (unitNum < units.size())) {
 				if (proxy) {
 					advanceSingleWorker(new ProxyWorker(
 							                                   NullCleaner.assertNotNull(
@@ -239,7 +239,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 		while (!workers.isEmpty()) {
 			final int workerNum = cli.chooseFromList(workers, "Workers in unit:",
 					"No unadvanced workers remain.", "Chosen worker: ", false);
-			if (workerNum >= 0 && workerNum < workers.size()) {
+			if ((workerNum >= 0) && (workerNum < workers.size())) {
 				advanceSingleWorker(
 						NullCleaner.assertNotNull(workers.remove(workerNum)));
 			} else {
@@ -263,7 +263,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 				                                                                    jobs
 				                                                                              .size();
 				jobNum = cli.chooseFromList(jobs, hdr, none, prpt, false)) {
-			if (jobNum < 0 || jobNum == jobs.size()) {
+			if ((jobNum < 0) || (jobNum == jobs.size())) {
 				worker.addJob(new Job(cli.inputString("Name of new Job: "), 0));
 				jobs.clear();
 				jobs.addAll(CLIHelper.toList(worker));
@@ -293,7 +293,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 				skillNum <= skills
 						            .size();
 				skillNum = cli.chooseFromList(skills, hdr, none, prpt, false)) {
-			if (skillNum < 0 || skillNum == skills.size()) {
+			if ((skillNum < 0) || (skillNum == skills.size())) {
 				job.addSkill(new Skill(cli.inputString("Name of new Skill: "), 0, 0));
 				skills.clear();
 				skills.addAll(CLIHelper.toList(job));

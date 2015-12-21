@@ -59,9 +59,9 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 			                                                                @NonNull
 					                                                                IFixture>> comparator) {
 		pairComparator = comparator;
-		if (comparator instanceof PairComparator
-				    && ((PairComparator<@NonNull Point, @NonNull IFixture>) comparator)
-						       .first() instanceof DistanceComparator) {
+		if ((comparator instanceof PairComparator)
+				    && (((PairComparator<@NonNull Point, @NonNull IFixture>) comparator)
+						        .first() instanceof DistanceComparator)) {
 			distCalculator =
 					(DistanceComparator) ((PairComparator<@NonNull Point, @NonNull
 							                                                      IFixture>) comparator)
@@ -187,7 +187,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		} else {
 			final StringBuilder builder = new StringBuilder(points.size() * 15);
 			for (int i = 0; i < points.size(); i++) {
-				if (i == points.size() - 1) {
+				if (i == (points.size() - 1)) {
 					builder.append(", and ");
 				} else if (i != 0) {
 					builder.append(", ");

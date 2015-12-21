@@ -160,8 +160,8 @@ public class ResourceAddingFrame extends JFrame {
 		 */
 		@Override
 		public void processKeyEvent(final KeyEvent evt) {
-			if (evt.getID() != KeyEvent.KEY_PRESSED
-					    || evt.getKeyCode() != KeyEvent.VK_TAB) {
+			if ((evt.getID() != KeyEvent.KEY_PRESSED)
+					    || (evt.getKeyCode() != KeyEvent.VK_TAB)) {
 				super.processKeyEvent(evt);
 				return;
 			}

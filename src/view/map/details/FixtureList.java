@@ -116,8 +116,8 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof JList
-				                      && getModel().equals(((JList) obj).getModel());
+		return (this == obj) || ((obj instanceof JList)
+				                         && getModel().equals(((JList) obj).getModel()));
 	}
 
 	/**
@@ -184,10 +184,10 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		 *              the null-event case once.
 		 */
 		private void handleMouseEvent(@Nullable final MouseEvent event) {
-			if (event != null && event.isPopupTrigger()
-					    && event.getClickCount() == 1) {
+			if ((event != null) && event.isPopupTrigger()
+					    && (event.getClickCount() == 1)) {
 				final int index = list.locationToIndex(event.getPoint());
-				if (index >= 0 && index < list.getModel().getSize()) {
+				if ((index >= 0) && (index < list.getModel().getSize())) {
 					new FixtureEditMenu(list.getModel().getElementAt(
 							list.locationToIndex(event.getPoint())), players).show(
 							event.getComponent(), event.getX(),

@@ -168,7 +168,7 @@ public final class MapPopulatorDriver implements ISPDriver {
 		final IDFactory idf = IDFactoryFiller.createFactory(map);
 		for (final Point location : map.locations()) {
 			if (isSuitable(map, location)
-					    && SingletonRandom.RANDOM.nextDouble() < chance()) {
+					    && (SingletonRandom.RANDOM.nextDouble() < chance())) {
 				create(location, map, idf);
 			}
 		}

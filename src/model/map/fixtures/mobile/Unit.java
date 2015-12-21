@@ -176,13 +176,13 @@ public class Unit implements IUnit {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof IUnit
-				                      && ((IUnit) obj).getOwner().getPlayerId() ==
-						                         owner.getPlayerId()
-				                      && ((IUnit) obj).getKind().equals(kind)
-				                      && ((IUnit) obj).getName().equals(name)
-				                      && areMembersEqual((IUnit) obj)
-				                      && ((IUnit) obj).getID() == id;
+		return (this == obj) || ((obj instanceof IUnit)
+				                         && (((IUnit) obj).getOwner().getPlayerId() ==
+						                             owner.getPlayerId())
+				                         && ((IUnit) obj).getKind().equals(kind)
+				                         && ((IUnit) obj).getName().equals(name)
+				                         && areMembersEqual((IUnit) obj)
+				                         && (((IUnit) obj).getID() == id));
 	}
 
 	/**
@@ -235,7 +235,7 @@ public class Unit implements IUnit {
 	public String verbose() {
 		// Assume each member is half a K.
 		final String orig = toString();
-		final int len = orig.length() + members.size() * 512;
+		final int len = orig.length() + (members.size() * 512);
 		final StringBuilder builder = new StringBuilder(len).append(orig);
 		builder.append(", consisting of:");
 		for (final UnitMember member : members) {
@@ -290,11 +290,11 @@ public class Unit implements IUnit {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return this == fix || fix instanceof IUnit
-				                      && ((IUnit) fix).getOwner().getPlayerId() ==
-						                         owner.getPlayerId()
-				                      && ((IUnit) fix).getKind().equals(kind)
-				                      && ((IUnit) fix).getName().equals(name);
+		return (this == fix) || ((fix instanceof IUnit)
+				                         && (((IUnit) fix).getOwner().getPlayerId() ==
+						                             owner.getPlayerId())
+				                         && ((IUnit) fix).getKind().equals(kind)
+				                         && ((IUnit) fix).getName().equals(name));
 	}
 
 	/**

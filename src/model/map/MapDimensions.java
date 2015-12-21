@@ -81,8 +81,8 @@ public final class MapDimensions {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return obj == this || obj instanceof MapDimensions
-				                      && equalsImpl((MapDimensions) obj);
+		return (obj == this) || ((obj instanceof MapDimensions)
+				                         && equalsImpl((MapDimensions) obj));
 	}
 
 	/**
@@ -90,7 +90,7 @@ public final class MapDimensions {
 	 * @return whether it equals this
 	 */
 	private boolean equalsImpl(final MapDimensions obj) {
-		return obj.rows == rows && obj.cols == cols && obj.version == version;
+		return (obj.rows == rows) && (obj.cols == cols) && (obj.version == version);
 	}
 
 	/**
@@ -98,7 +98,7 @@ public final class MapDimensions {
 	 */
 	@Override
 	public int hashCode() {
-		return rows + cols << 2;
+		return (rows + cols) << 2;
 	}
 
 	/**

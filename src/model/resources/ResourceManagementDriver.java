@@ -75,8 +75,8 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 		for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
 			final IMutableMapNG map = pair.first();
 			final Player currP = map.getCurrentPlayer();
-			if (currP.isIndependent() || currP.getPlayerId() < 0 ||
-					    currP.getPlayerId() == player.getPlayerId()) {
+			if (currP.isIndependent() || (currP.getPlayerId() < 0) ||
+					    (currP.getPlayerId() == player.getPlayerId())) {
 				addResourceToMap(resource.copy(false), map, player);
 			}
 		}
@@ -93,9 +93,9 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	                             final Player player) {
 		for (final Point location : map.locations()) {
 			for (final TileFixture fixture : map.getOtherFixtures(location)) {
-				if (fixture instanceof Fortress &&
-						    ((Fortress) fixture).getOwner().getPlayerId() ==
-								    player.getPlayerId() &&
+				if ((fixture instanceof Fortress) &&
+						    (((Fortress) fixture).getOwner().getPlayerId() ==
+								     player.getPlayerId()) &&
 						    "HQ".equals(((Fortress) fixture).getName())) {
 					((Fortress) fixture).addMember(resource);
 				}

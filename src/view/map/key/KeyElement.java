@@ -76,7 +76,7 @@ public final class KeyElement extends BoxPanel {
 		addGlue();
 		final Dimension lsize = label.getMinimumSize();
 		setMinimumSize(new Dimension(Math.max(MIN_SIZE.width, lsize.width)
-				                             + HORIZ_BUF * 2,
+				                             + (HORIZ_BUF * 2),
 				                            MIN_SIZE.height + lsize.height + 12));
 	}
 

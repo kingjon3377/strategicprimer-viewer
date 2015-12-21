@@ -55,7 +55,7 @@ public final class QuadrantTable implements EncounterTable {
 	 * @param items the items to allocate by quadrant
 	 */
 	public QuadrantTable(final int rows, final List<String> items) {
-		if (items.size() % rows != 0) {
+		if ((items.size() % rows) != 0) {
 			throw new IllegalArgumentException(Integer.toString(items.size())
 					                                   +
 					                                   " items won't divide evenly into "
@@ -68,8 +68,8 @@ public final class QuadrantTable implements EncounterTable {
 		final int colRemain = MAP_SIZE_COLS % cols;
 		quadrants = new HashMap<>();
 		int i = 0;
-		for (int row = 0; row < MAP_SIZE_ROWS - rowRemain; row += rowstep) {
-			for (int col = 0; col < MAP_SIZE_COLS - colRemain; col += colstep) {
+		for (int row = 0; row < (MAP_SIZE_ROWS - rowRemain); row += rowstep) {
+			for (int col = 0; col < (MAP_SIZE_COLS - colRemain); col += colstep) {
 				quadrants.put(PointFactory.point(row, col), items.get(i));
 				i++;
 			}
@@ -84,8 +84,8 @@ public final class QuadrantTable implements EncounterTable {
 	public String getQuadrantValue(final int row, final int col) {
 		Point bestKey = PointFactory.point(-1, -1);
 		for (final Point iter : quadrants.keySet()) {
-			if (iter.row <= row && iter.row > bestKey.row
-					    && iter.col <= col && iter.col > bestKey.col) {
+			if ((iter.row <= row) && (iter.row > bestKey.row)
+					    && (iter.col <= col) && (iter.col > bestKey.col)) {
 				bestKey = iter;
 			}
 		}

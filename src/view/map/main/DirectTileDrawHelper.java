@@ -65,9 +65,9 @@ public final class DirectTileDrawHelper extends AbstractTileDrawHelper {
 			}
 			if (hasAnyForts(map, location)) {
 				context.setColor(FORT_COLOR);
-				context.fillRect((int) Math.round(dims.x * TWO_THIRDS)
-						                 - 1 + position.x,
-						(int) Math.round(dims.y * TWO_THIRDS) - 1
+				context.fillRect(((int) Math.round(dims.x * TWO_THIRDS)
+						                  - 1) + position.x,
+						((int) Math.round(dims.y * TWO_THIRDS) - 1)
 								+ position.y,
 						(int) Math.round(dims.x / THREE),
 						(int) Math.round(dims.y / THREE));

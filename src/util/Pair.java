@@ -74,7 +74,7 @@ public class Pair<@NonNull L, @NonNull R> {
 	 */
 	@Override
 	public int hashCode() {
-		return 31 * first.hashCode() + second.hashCode();
+		return (31 * first.hashCode()) + second.hashCode();
 	}
 
 	/**
@@ -84,9 +84,9 @@ public class Pair<@NonNull L, @NonNull R> {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Pair
-				                      && Objects.equals(first, ((Pair) obj).first)
-				                      && Objects.equals(second, ((Pair) obj).second);
+		return (this == obj) || ((obj instanceof Pair)
+				                         && Objects.equals(first, ((Pair) obj).first)
+				                         && Objects.equals(second, ((Pair) obj).second));
 	}
 
 	/**

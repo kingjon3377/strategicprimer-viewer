@@ -70,7 +70,7 @@ public final class XMLHelper {
 	                                  final String attribute) throws SPFormatException {
 		final Attribute attr = startElement.getAttributeByName(new QName(
 				                                                                attribute));
-		if (attr == null || attr.getValue() == null) {
+		if ((attr == null) || (attr.getValue() == null)) {
 			throw new MissingPropertyException(
 					                                  NullCleaner.assertNotNull(
 							                                  startElement.getName()
@@ -124,7 +124,7 @@ public final class XMLHelper {
 				                                                               preferred));
 		final Attribute deprAttr = element.getAttributeByName(new QName(
 				                                                               deprecated));
-		if (prefAttr == null && deprAttr == null) {
+		if ((prefAttr == null) && (deprAttr == null)) {
 			throw new MissingPropertyException(
 					                                  NullCleaner.assertNotNull(
 							                                  element.getName()

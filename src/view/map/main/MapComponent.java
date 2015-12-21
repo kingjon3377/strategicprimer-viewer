@@ -146,9 +146,9 @@ public final class MapComponent extends JComponent implements MapGUI,
 					mapDim.getVersion());
 			drawMapPortion(context, (int) Math.round(bounds.getMinX() / tsize),
 					(int) Math.round(bounds.getMinY() / tsize), Math.min(
-							(int) Math.round(bounds.getMaxX() / tsize + 1),
+							(int) Math.round((bounds.getMaxX() / tsize) + 1),
 							mapDim.cols), Math.min(
-							(int) Math.round(bounds.getMaxY() / tsize + 1),
+							(int) Math.round((bounds.getMaxY() / tsize) + 1),
 							mapDim.rows));
 		} finally {
 			context.dispose();
@@ -170,8 +170,8 @@ public final class MapComponent extends JComponent implements MapGUI,
 		final int maxRow = getMapModel().getDimensions().getMaximumRow();
 		final int minCol = getMapModel().getDimensions().getMinimumCol(); // NOPMD
 		final int maxCol = getMapModel().getDimensions().getMaximumCol(); // NOPMD
-		for (int i = minY; i < maxY && i + minRow < maxRow + 1; i++) {
-			for (int j = minX; j < maxX && j + minCol < maxCol + 1; j++) {
+		for (int i = minY; (i < maxY) && ((i + minRow) < (maxRow + 1)); i++) {
+			for (int j = minX; (j < maxX) && ((j + minCol) < (maxCol + 1)); j++) {
 				final Point location = PointFactory.point(i + minRow, j
 						                                                      + minCol);
 				paintTile(pen, location, i, j,
@@ -222,7 +222,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 			final Graphics context = pen.create();
 			try {
 				context.setColor(Color.black);
-				context.drawRect(col * tsize + 1, row * tsize + 1, tsize - 2,
+				context.drawRect((col * tsize) + 1, (row * tsize) + 1, tsize - 2,
 						tsize - 2);
 			} finally {
 				context.dispose();
@@ -299,10 +299,10 @@ public final class MapComponent extends JComponent implements MapGUI,
 		final int minCol = getMapModel().getDimensions().getMinimumCol();
 		final int maxCol = getMapModel().getDimensions().getMaximumCol();
 		final MapDimensions mapDim = getMapModel().getMapDimensions();
-		return (selRow < 0 || selRow >= minRow)
-				       && (selRow >= mapDim.rows || selRow <= maxRow)
-				       && (selCol < 0 || selCol >= minCol)
-				       && (selCol >= mapDim.cols || selCol <= maxCol);
+		return ((selRow < 0) || (selRow >= minRow))
+				       && ((selRow >= mapDim.rows) || (selRow <= maxRow))
+				       && ((selCol < 0) || (selCol >= minCol))
+				       && ((selCol >= mapDim.cols) || (selCol <= maxCol));
 	}
 
 	/**

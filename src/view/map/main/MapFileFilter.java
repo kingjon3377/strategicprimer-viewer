@@ -56,7 +56,7 @@ public final class MapFileFilter extends FileFilter {
 		final String name = file.getName();
 		final int dotPos = name.lastIndexOf('.');
 
-		if (dotPos > 0 && dotPos < name.length() - 1) {
+		if ((dotPos > 0) && (dotPos < (name.length() - 1))) {
 			return assertNotNull(name.substring(dotPos + 1).toLowerCase()); // NOPMD
 		} else {
 			return "";

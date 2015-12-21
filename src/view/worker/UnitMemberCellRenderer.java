@@ -105,7 +105,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	                                              final boolean expanded,
 	                                              final boolean leaf, final int row,
 	                                              final boolean hasFocus) {
-		assert tree != null && value != null :
+		assert (tree != null) && (value != null) :
 				"UnitMemberCellRenderer passed a null tree or value";
 		final Component component =
 				NullCleaner.assertNotNull(DFLT.getTreeCellRendererComponent(
@@ -146,7 +146,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 				((DefaultTreeCellRenderer) component)
 						.setBackgroundNonSelectionColor(Color.YELLOW);
 			}
-		} else if (warn && value instanceof KindNode) {
+		} else if (warn && (value instanceof KindNode)) {
 			boolean shouldWarn = false;
 			boolean shouldErr = false;
 			for (final TreeNode node : (KindNode) value) {
@@ -275,18 +275,18 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 		final double margin = 0.15; // NOPMD
 		pen.fillRoundRect((int) Math.round(imageSize * margin) + 1,
 				(int) Math.round(imageSize * margin) + 1,
-				(int) Math.round(imageSize * (1.0 - margin * 2.0)),
-				(int) Math.round(imageSize * (1.0 - margin * 2.0)),
+				(int) Math.round(imageSize * (1.0 - (margin * 2.0))),
+				(int) Math.round(imageSize * (1.0 - (margin * 2.0))),
 				(int) Math.round(imageSize * (margin / 2.0)),
 				(int) Math.round(imageSize * (margin / 2.0)));
 		pen.setColor(saveColor);
 		pen.fillRoundRect(
-				(int) Math.round(imageSize / 2.0 - imageSize * margin) + 1,
-				(int) Math.round(imageSize / 2.0 - imageSize * margin) + 1,
+				(int) Math.round((imageSize / 2.0) - (imageSize * margin)) + 1,
+				(int) Math.round((imageSize / 2.0) - (imageSize * margin)) + 1,
 				(int) Math.round(imageSize * margin * 2.0),
 				(int) Math.round(imageSize * margin * 2.0),
-				(int) Math.round(imageSize * margin / 2.0),
-				(int) Math.round(imageSize * margin / 2.0));
+				(int) Math.round((imageSize * margin) / 2.0),
+				(int) Math.round((imageSize * margin) / 2.0));
 		return new ImageIcon(temp);
 
 	}

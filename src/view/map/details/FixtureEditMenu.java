@@ -72,7 +72,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 						"Fixture's new name:", "Rename Fixture",
 						JOptionPane.PLAIN_MESSAGE, null, null,
 						((HasName) fixture).getName());
-				if (result != null && !result.equals(((HasName) fixture).getName())) {
+				if ((result != null) && !result.equals(((HasName) fixture).getName())) {
 					((HasName) fixture).setName(result);
 					for (final IWorkerTreeModel listener : listeners) {
 						listener.renameItem((HasName) fixture);
@@ -90,7 +90,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 								"Change Fixture Kind",
 								JOptionPane.PLAIN_MESSAGE, null, null,
 								((HasKind) fixture).getKind());
-						if (result != null && !old.equals(result)) {
+						if ((result != null) && !old.equals(result)) {
 							((HasKind) fixture).setKind(result);
 							for (final IWorkerTreeModel listener : listeners) {
 								listener.moveItem((HasKind) fixture);

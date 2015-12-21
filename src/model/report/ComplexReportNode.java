@@ -92,7 +92,7 @@ public final class ComplexReportNode extends AbstractReportNode {
 	 */
 	@Override
 	protected boolean equalsImpl(final IReportNode obj) {
-		return obj instanceof ComplexReportNode
+		return (obj instanceof ComplexReportNode)
 				       && getText().equals(obj.getText())
 				       && children().equals(obj.children());
 	}

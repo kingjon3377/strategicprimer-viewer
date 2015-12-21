@@ -114,9 +114,9 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 					                                                 * SEVEN_SIXTEENTHS,
 					                                             width / TWO,
 					                                             height / EIGHT));
-			fort = new Rectangle2D.Double(width * TWO_THIRDS - 1.0, height
-					                                                        *
-					                                                        TWO_THIRDS -
+			fort = new Rectangle2D.Double((width * TWO_THIRDS) - 1.0, (height
+					                                                         *
+					                                                         TWO_THIRDS) -
 					                                                        1.0,
 					                             width / THREE, height / THREE);
 			unit = new Ellipse2D.Double(width / FOUR, height / FOUR, width

@@ -269,7 +269,7 @@ public final class TableLoader { // NOPMD
 		final String[] children = dir.list();
 		if (children != null) {
 			for (final String table : children) {
-				if ('.' == table.charAt(0) || table.contains("/.")) {
+				if (('.' == table.charAt(0)) || table.contains("/.")) {
 					LOGGER.info(table
 							            + " looks like a hidden file, skipping ...");
 					continue;

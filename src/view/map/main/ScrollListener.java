@@ -183,7 +183,7 @@ public final class ScrollListener implements MapChangeListener,
 	 */
 	protected static boolean isInRange(final int min, final int value,
 	                                   final int max) {
-		return value >= min && value <= max;
+		return (value >= min) && (value <= max);
 	}
 
 	/**
@@ -225,7 +225,7 @@ public final class ScrollListener implements MapChangeListener,
 
 		@Override
 		public boolean verify(@Nullable final JComponent input) {
-			return input instanceof JScrollBar
+			return (input instanceof JScrollBar)
 					       && isInRange(0, ((JScrollBar) input).getValue(),
 					dimension() - visibleDimension());
 		}

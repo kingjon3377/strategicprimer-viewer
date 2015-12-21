@@ -103,7 +103,7 @@ public final class ExplorationCLI {
 				"The players shared by all the maps:",
 				"No players shared by all the maps.",
 				"Please make a selection: ", true);
-		if (playerNum < 0 || playerNum >= players.size()) {
+		if ((playerNum < 0) || (playerNum >= players.size())) {
 			return null;
 		} else {
 			return players.get(playerNum);
@@ -123,7 +123,7 @@ public final class ExplorationCLI {
 		final int unitNum = helper.chooseFromList(units, "Player's units:",
 				"That player has no units in the master map.",
 				"Please make a selection: ", true);
-		if (unitNum < 0 || unitNum >= units.size()) {
+		if ((unitNum < 0) || (unitNum >= units.size())) {
 			return null;
 		} else {
 			return units.get(unitNum);
@@ -208,7 +208,7 @@ public final class ExplorationCLI {
 				allFixtures.add(fix);
 			}
 		}
-		if (Direction.Nowhere == direction
+		if ((Direction.Nowhere == direction)
 				    && helper.inputBoolean(FEALTY_PROMPT)) {
 			swearVillages(dPoint);
 			cost += 5;
@@ -243,15 +243,15 @@ public final class ExplorationCLI {
 	                                     final HasOwner mover) {
 		if (fix != null) {
 			SYS_OUT.println(fix);
-			final boolean zero = fix instanceof HasOwner && !((HasOwner) fix)
-					                                                 .getOwner()
-					                                                 .equals(mover
-							                                                         .getOwner());
+			final boolean zero = (fix instanceof HasOwner) && !((HasOwner) fix)
+					                                                   .getOwner()
+					                                                   .equals(mover
+							                                                           .getOwner());
 			for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 				final IMutableMapNG map = pair.first();
-				if (fix instanceof Ground && map.getGround(dPoint) == null) {
+				if ((fix instanceof Ground) && (map.getGround(dPoint) == null)) {
 					map.setGround(dPoint, ((Ground) fix).copy(false));
-				} else if (fix instanceof Forest && map.getForest(dPoint) == null) {
+				} else if ((fix instanceof Forest) && (map.getForest(dPoint) == null)) {
 					map.setForest(dPoint, ((Forest) fix).copy(false));
 				} else if (fix instanceof Mountain) {
 					map.setMountainous(dPoint, true);

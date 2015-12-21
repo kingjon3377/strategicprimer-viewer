@@ -85,15 +85,16 @@ public final class HuntingModel {
 						.collect(Collectors.toSet());
 		for (final Point point : map.locations()) {
 			for (final TileFixture fix : map.getOtherFixtures(point)) {
-				if (fix instanceof Animal && !((Animal) fix).isTalking()
+				if ((fix instanceof Animal) && !((Animal) fix).isTalking()
 						    && !((Animal) fix).isTraces()) {
 					if (fishKinds.contains(((Animal) fix).getKind())) {
 						addToMap(waterAnimals, point, ((Animal) fix).getKind());
 					} else {
 						addToMap(animals, point, ((Animal) fix).getKind());
 					}
-				} else if (fix instanceof Grove || fix instanceof Meadow
-						           || fix instanceof Shrub) {
+				} else if ((fix instanceof Grove) || (fix instanceof Meadow)
+						           ||
+						           (fix instanceof Shrub)) {
 					addToMap(plants, point,
 							NullCleaner.assertNotNull(fix.toString()));
 				}

@@ -59,8 +59,8 @@ public final class ExplorationRunner { // NOPMD
 				                             .append("The primary rock type here is ");
 		sbuild.append(getPrimaryRock(point, terrain, fixtures));
 		sbuild.append(".\n");
-		if (TileType.BorealForest == terrain
-				    || TileType.TemperateForest == terrain) {
+		if ((TileType.BorealForest == terrain)
+				    || (TileType.TemperateForest == terrain)) {
 			sbuild.append("The main kind of tree is ");
 			sbuild.append(getPrimaryTree(point, terrain, fixtures));
 			sbuild.append(".\n");
@@ -220,7 +220,7 @@ public final class ExplorationRunner { // NOPMD
 					for (final String value : getTable(table).allEvents()) {
 						if (value.contains("#")) {
 							final String splitVal = value.split("#", 3)[1];
-							if (splitVal != null
+							if ((splitVal != null)
 									    && recursiveCheck(splitVal, state)) {
 								return true; // NOPMD
 							}

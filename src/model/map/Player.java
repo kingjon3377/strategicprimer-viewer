@@ -72,9 +72,9 @@ public final class Player implements Comparable<Player>, HasName {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Player
-				                      && playerID == ((Player) obj).getPlayerId()
-				                      && playerName.equals(((Player) obj).getName());
+		return (this == obj) || ((obj instanceof Player)
+				                         && (playerID == ((Player) obj).getPlayerId())
+				                         && playerName.equals(((Player) obj).getName()));
 	}
 
 	/**

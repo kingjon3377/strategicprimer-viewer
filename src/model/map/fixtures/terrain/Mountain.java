@@ -78,7 +78,7 @@ public final class Mountain implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Mountain;
+		return (this == obj) || (obj instanceof Mountain);
 	}
 
 	/**

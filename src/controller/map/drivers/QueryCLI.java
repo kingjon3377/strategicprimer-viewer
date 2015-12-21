@@ -100,7 +100,7 @@ public final class QueryCLI implements ISPDriver {
 		final HuntingModel hmodel = new HuntingModel(model.getMap());
 		try {
 			String input = helper.inputString("Command: ");
-			while (!input.isEmpty() && input.charAt(0) != 'q') {
+			while (!input.isEmpty() && (input.charAt(0) != 'q')) {
 				handleCommand(model, hmodel, ostream, input.charAt(0));
 				input = helper.inputString("Command: ");
 			}
@@ -172,21 +172,21 @@ public final class QueryCLI implements ISPDriver {
 		final int playerNum = helper.chooseFromList(players,
 				"Players in the map:", "Map contains no players",
 				"Owner of workers to count: ", true);
-		if (playerNum < 0 || playerNum >= players.size()) {
+		if ((playerNum < 0) || (playerNum >= players.size())) {
 			return;
 		}
 		final Player player = players.get(playerNum);
 		int count = 0;
 		for (final Point loc : map.locations()) {
 			for (final TileFixture fix : map.getOtherFixtures(loc)) {
-				if (fix instanceof IUnit
+				if ((fix instanceof IUnit)
 						    && player.equals(((IUnit) fix).getOwner())) {
 					count += StreamSupport.stream(((IUnit) fix).spliterator(), false)
 							         .filter(member -> member instanceof IWorker)
 							         .count();
 				} else if (fix instanceof Fortress) {
 					for (final FortressMember unit : (Fortress) fix) {
-						if (unit instanceof IUnit
+						if ((unit instanceof IUnit)
 								    && player.equals(((IUnit) unit).getOwner())) {
 							count += StreamSupport
 									         .stream(((IUnit) unit).spliterator(), false)
@@ -233,9 +233,9 @@ public final class QueryCLI implements ISPDriver {
 			ydiff = dims.cols - rawYdiff;
 		}
 		ostream.append("Distance (as the crow flies, in tiles):\t");
-		ostream.append(Long.toString(Math.round(Math.sqrt(xdiff
-				                                                  * xdiff +
-				                                                  ydiff * ydiff))));
+		ostream.append(Long.toString(Math.round(Math.sqrt((xdiff
+				                                                   * xdiff) +
+				                                                  (ydiff * ydiff)))));
 	}
 
 	/**
@@ -279,7 +279,7 @@ public final class QueryCLI implements ISPDriver {
 			ostream.append("Can't herd with no herders.\n");
 			return; // NOPMD
 		}
-		final int animalsPerHerder = (count + herders - 1) / herders;
+		final int animalsPerHerder = ((count + herders) - 1) / herders;
 		if (poultry) {
 			ostream.append("Gathering eggs takes ");
 			ostream.append(Integer.toString(animalsPerHerder * 2));

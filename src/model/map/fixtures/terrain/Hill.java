@@ -83,8 +83,8 @@ public class Hill implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Hill
-				                      && id == ((TileFixture) obj).getID();
+		return (this == obj) || ((obj instanceof Hill)
+				                         && (id == ((TileFixture) obj).getID()));
 	}
 
 	/**

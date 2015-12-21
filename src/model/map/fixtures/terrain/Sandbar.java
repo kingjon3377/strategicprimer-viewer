@@ -71,8 +71,8 @@ public class Sandbar implements TerrainFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Sandbar
-				                      && id == ((TileFixture) obj).getID();
+		return (this == obj) || ((obj instanceof Sandbar)
+				                         && (id == ((TileFixture) obj).getID()));
 	}
 
 	/**

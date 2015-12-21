@@ -205,7 +205,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	 */
 	@Override
 	public void addProxied(final IJob item) {
-		if (item == this || !name.equals(item.getName())) {
+		if ((item == this) || !name.equals(item.getName())) {
 			return;
 		}
 		proxiedJobs.add(item);

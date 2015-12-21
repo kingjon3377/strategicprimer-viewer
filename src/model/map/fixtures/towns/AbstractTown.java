@@ -127,9 +127,9 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof AbstractTown
-				                      && getID() == ((TileFixture) obj).getID()
-				                      && equalsContents((AbstractTown) obj);
+		return (this == obj) || ((obj instanceof AbstractTown)
+				                         && (getID() == ((TileFixture) obj).getID())
+				                         && equalsContents((AbstractTown) obj));
 	}
 
 	/**
@@ -138,9 +138,10 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return this == fix
+		return (this == fix)
 				       ||
-				       fix instanceof AbstractTown && equalsContents((AbstractTown) fix);
+				       ((fix instanceof AbstractTown) &&
+						        equalsContents((AbstractTown) fix));
 	}
 
 	/**
@@ -151,8 +152,8 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	 * @return whether it's equal to this one ignoring ID.
 	 */
 	protected final boolean equalsContents(final AbstractTown fix) {
-		return fix.size() == size && fix.getName().equals(name)
-				       && fix.status() == status && fix.owner.equals(owner);
+		return (fix.size() == size) && fix.getName().equals(name)
+				       && (fix.status() == status) && fix.owner.equals(owner);
 	}
 
 	/**

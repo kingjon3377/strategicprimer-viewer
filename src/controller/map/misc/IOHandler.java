@@ -281,9 +281,9 @@ public final class IOHandler implements ActionListener {
 	 * @param source the component to attach the dialog box to. May be null.
 	 */
 	private void handleSecondaryLoadMenu(@Nullable final Component source) {
-		if (model instanceof IMultiMapModel && chooser
-				                                       .showOpenDialog(source) ==
-				                                       JFileChooser.APPROVE_OPTION) {
+		if ((model instanceof IMultiMapModel) && (chooser
+				                                          .showOpenDialog(source) ==
+				                                          JFileChooser.APPROVE_OPTION)) {
 			final File file = chooser.getSelectedFile();
 			if (file == null) {
 				return;

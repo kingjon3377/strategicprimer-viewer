@@ -68,7 +68,7 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasImage 
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return fix instanceof Implement && kind.equals(((Implement) fix).getKind());
+		return (fix instanceof Implement) && kind.equals(((Implement) fix).getKind());
 	}
 
 	/**
@@ -158,8 +158,9 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasImage 
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Implement && ((Implement) obj).id == id
-				                      && ((Implement) obj).kind.equals(kind);
+		return (this == obj) ||
+				       ((obj instanceof Implement) && (((Implement) obj).id == id)
+						        && ((Implement) obj).kind.equals(kind));
 	}
 
 	/**

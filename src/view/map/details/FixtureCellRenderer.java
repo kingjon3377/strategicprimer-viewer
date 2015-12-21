@@ -148,18 +148,18 @@ public final class FixtureCellRenderer implements ListCellRenderer<TileFixture> 
 		final double margin = 0.15; // NOPMD
 		pen.fillRoundRect((int) Math.round(imageSize * margin) + 1,
 				(int) Math.round(imageSize * margin) + 1,
-				(int) Math.round(imageSize * (1.0 - margin * 2.0)),
-				(int) Math.round(imageSize * (1.0 - margin * 2.0)),
+				(int) Math.round(imageSize * (1.0 - (margin * 2.0))),
+				(int) Math.round(imageSize * (1.0 - (margin * 2.0))),
 				(int) Math.round(imageSize * (margin / 2.0)),
 				(int) Math.round(imageSize * (margin / 2.0)));
 		pen.setColor(saveColor);
 		pen.fillRoundRect(
-				(int) Math.round(imageSize / 2.0 - imageSize * margin) + 1,
-				(int) Math.round(imageSize / 2.0 - imageSize * margin) + 1,
+				(int) Math.round((imageSize / 2.0) - (imageSize * margin)) + 1,
+				(int) Math.round((imageSize / 2.0) - (imageSize * margin)) + 1,
 				(int) Math.round(imageSize * margin * 2.0),
 				(int) Math.round(imageSize * margin * 2.0),
-				(int) Math.round(imageSize * margin / 2.0),
-				(int) Math.round(imageSize * margin / 2.0));
+				(int) Math.round((imageSize * margin) / 2.0),
+				(int) Math.round((imageSize * margin) / 2.0));
 		return new ImageIcon(temp);
 
 	}

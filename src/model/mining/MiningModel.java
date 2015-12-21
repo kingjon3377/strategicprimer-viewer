@@ -62,9 +62,9 @@ public final class MiningModel {
 		while (!queue.isEmpty()) {
 			final Point point = queue.remove();
 			counter++;
-			if (counter % 100000 == 0) {
+			if ((counter % 100000) == 0) {
 				System.out.println(point);
-			} else if (counter % 1000 == 0) {
+			} else if ((counter % 1000) == 0) {
 				System.out.append('.');
 			}
 			// Limit the size of the output spreadsheet
@@ -84,7 +84,7 @@ public final class MiningModel {
 			} else {
 				current = LodeStatus.None;
 			}
-			if (current == null || LodeStatus.None == current) {
+			if ((current == null) || (LodeStatus.None == current)) {
 				continue;
 			}
 			if (!unnormalized.containsKey(right)) {

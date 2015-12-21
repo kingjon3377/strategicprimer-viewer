@@ -138,8 +138,8 @@ public class Worker implements IWorker {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Worker && ((Worker) obj).id == id
-				                      && equalsIgIDImpl((Worker) obj);
+		return (this == obj) || ((obj instanceof Worker) && (((Worker) obj).id == id)
+				                         && equalsIgIDImpl((Worker) obj));
 	}
 
 	/**
@@ -164,8 +164,8 @@ public class Worker implements IWorker {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return this == fix || fix instanceof Worker
-				                      && equalsIgIDImpl((Worker) fix);
+		return (this == fix) || ((fix instanceof Worker)
+				                         && equalsIgIDImpl((Worker) fix));
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class Worker implements IWorker {
 		final WorkerStats locStats = stats;
 		if (locStats == null) {
 			return fix.name.equals(name) && areJobSetsEqual(jobSet, fix.jobSet) // NOPMD
-					       && fix.race.equals(race) && fix.stats == null;
+					       && fix.race.equals(race) && (fix.stats == null);
 		} else {
 			return fix.name.equals(name) && areJobSetsEqual(jobSet, fix.jobSet)
 					       && fix.race.equals(race) && locStats.equals(fix.stats);

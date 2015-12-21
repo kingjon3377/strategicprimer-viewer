@@ -34,7 +34,7 @@ public final class AboutDialog extends JDialog {
 	 */
 	@SuppressWarnings("ConditionalExpression")
 	public AboutDialog(@Nullable final Component parent, final String app) {
-		super(parent instanceof Frame ? (Frame) parent : null, "About");
+		super((parent instanceof Frame) ? (Frame) parent : null, "About");
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setPreferredSize(new Dimension(300, 390));
 		setMinimumSize(new Dimension(300, 390));

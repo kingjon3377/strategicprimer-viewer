@@ -153,8 +153,10 @@ public final class UnitMemberTransferable implements Transferable {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof UnitMemberTransferable
-				                      && data.equals(((UnitMemberTransferable) obj).data);
+		return (this == obj) || ((obj instanceof UnitMemberTransferable)
+				                         &&
+				                         data.equals(
+						                         ((UnitMemberTransferable) obj).data));
 	}
 
 	/**

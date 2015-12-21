@@ -66,8 +66,8 @@ public final class Point implements Comparable<@NonNull Point> {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Point && ((Point) obj).row == row
-				                      && ((Point) obj).col == col;
+		return (this == obj) || ((obj instanceof Point) && (((Point) obj).row == row)
+				                         && (((Point) obj).col == col));
 	}
 
 	/**
@@ -84,7 +84,7 @@ public final class Point implements Comparable<@NonNull Point> {
 	 */
 	@Override
 	public int compareTo(final Point point) {
-		return (point.getRow() - getRow() << 7) + point.getCol() - getCol();
+		return (((point.getRow() - getRow()) << 7) + point.getCol()) - getCol();
 	}
 
 	/**

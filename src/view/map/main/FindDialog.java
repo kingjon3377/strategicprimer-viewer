@@ -215,8 +215,8 @@ public final class FindDialog extends JDialog implements ActionListener {
 		for (final Point point : iter) {
 			final TileFixture ground = map.getMap().getGround(point);
 			final TileFixture forest = map.getMap().getForest(point);
-			if ((ground != null && matches(pattern, idNum, ground, csen))
-					    || (forest != null && matches(pattern, idNum, forest, csen))) {
+			if (((ground != null) && matches(pattern, idNum, ground, csen))
+					    || ((forest != null) && matches(pattern, idNum, forest, csen))) {
 				SYS_OUT.print("Found in point");
 				SYS_OUT.println(point);
 				map.setSelection(point);
@@ -268,7 +268,7 @@ public final class FindDialog extends JDialog implements ActionListener {
 				       && (!(fix instanceof TileFixture) || ffl
 						                                            .shouldDisplay(
 								                                            (TileFixture) fix))
-				       && (fix.getID() == idNum || matchesName(pattern, fix, csen)
+				       && ((fix.getID() == idNum) || matchesName(pattern, fix, csen)
 						           || matchesKind(pattern, fix, csen) ||
 						           matchesOwner(pattern,
 								           idNum, fix, csen));
@@ -291,7 +291,7 @@ public final class FindDialog extends JDialog implements ActionListener {
 			} else {
 				ownerName = owner.getName().toLowerCase();
 			}
-			return owner.getPlayerId() == idNum || ownerName.contains(pattern)
+			return (owner.getPlayerId() == idNum) || ownerName.contains(pattern)
 					       || matchesOwnerSpecials(pattern, owner);
 		} else {
 			return false;
@@ -307,10 +307,10 @@ public final class FindDialog extends JDialog implements ActionListener {
 	 */
 	private static boolean matchesOwnerSpecials(final String pattern,
 	                                            final Player player) {
-		return "me".equalsIgnoreCase(pattern.trim())
-				       && player.isCurrent()
-				       || "none".equalsIgnoreCase(pattern.trim())
-						          && player.isIndependent();
+		return ("me".equalsIgnoreCase(pattern.trim())
+				        && player.isCurrent())
+				       || ("none".equalsIgnoreCase(pattern.trim())
+						           && player.isIndependent());
 	}
 
 	/**
@@ -323,10 +323,10 @@ public final class FindDialog extends JDialog implements ActionListener {
 	                                   String pattern,
 	                                   final IFixture fix, final boolean csen) {
 		if (csen) {
-			return fix instanceof HasKind && ((HasKind) fix).getKind()
-					                                 .contains(pattern);
+			return (fix instanceof HasKind) && ((HasKind) fix).getKind()
+					                                   .contains(pattern);
 		} else {
-			return fix instanceof HasKind
+			return (fix instanceof HasKind)
 					       && ((HasKind) fix).getKind().toLowerCase()
 							          .contains(pattern);
 		}
@@ -342,10 +342,10 @@ public final class FindDialog extends JDialog implements ActionListener {
 	                                   String pattern,
 	                                   final IFixture fix, final boolean csen) {
 		if (csen) {
-			return fix instanceof HasName
+			return (fix instanceof HasName)
 					       && ((HasName) fix).getName().contains(pattern);
 		} else {
-			return fix instanceof HasName
+			return (fix instanceof HasName)
 					       && ((HasName) fix).getName().toLowerCase()
 							          .contains(pattern);
 		}

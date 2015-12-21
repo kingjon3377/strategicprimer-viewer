@@ -92,12 +92,22 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	public Object getChild(@Nullable final Object parent, final int index) {
 		if (index < 0) {
 			throw new ArrayIndexOutOfBoundsException(index);
-		} else if (parent instanceof Player && parent.equals(root)
-				           && index < model.getUnitKinds(root).size()) {
+		} else if ((parent instanceof Player) && parent.equals(root)
+				           && (index < model.getUnitKinds(root)
+						                       .size())) {
 			return NullCleaner.assertNotNull(model.getUnitKinds(root).get(index));
-		} else if (parent instanceof String
-				           && model.getUnitKinds(root).contains(parent)
-				           && index < model.getUnits(root, (String) parent).size()) {
+		} else if ((parent instanceof String)
+				           &&
+				           model.getUnitKinds(
+						           root)
+						           .contains(
+								           parent)
+				           &&
+				           (index <
+						            model.getUnits(
+								            root,
+								            (String) parent)
+								            .size())) {
 			// A String here is a unit's kind.
 			return NullCleaner.assertNotNull(model.getUnits(root, // NOPMD
 					(String) parent).get(index));
@@ -166,7 +176,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	@Override
 	public int getIndexOfChild(@Nullable final Object parent,
 	                           @Nullable final Object child) {
-		if (parent instanceof Player && parent.equals(root)) {
+		if ((parent instanceof Player) && parent.equals(root)) {
 			return model.getUnits(root).indexOf(child);
 		} else if (parent instanceof IUnit) {
 			// FIXME: There ought to be a way to do this using the Streams API

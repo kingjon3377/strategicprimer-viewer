@@ -193,8 +193,8 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		 *              the null-event case once.
 		 */
 		private void handleMouseEvent(@Nullable final MouseEvent event) {
-			if (event != null && event.isPopupTrigger()
-					    && event.getClickCount() == 1) {
+			if ((event != null) && event.isPopupTrigger()
+					    && (event.getClickCount() == 1)) {
 				final TreePath path = tree.getClosestPathForLocation(event.getX(),
 						event.getY());
 				if (path == null) {
@@ -228,7 +228,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 	@Override
 	@Nullable
 	public String getToolTipText(@Nullable final MouseEvent evt) {
-		if (evt == null || getRowForLocation(evt.getX(), evt.getY()) == -1) {
+		if ((evt == null) || (getRowForLocation(evt.getX(), evt.getY()) == -1)) {
 			return null; // NOPMD
 		}
 		final Object path = getPathForLocation(evt.getX(), evt.getY())
@@ -341,7 +341,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		 * @param sel the new selection. Might be null.
 		 */
 		private void handleSelection(@Nullable final Object sel) {
-			if (sel instanceof UnitMember || sel == null) {
+			if ((sel instanceof UnitMember) || (sel == null)) {
 				for (final UnitMemberListener list : umListeners) {
 					list.memberSelected(null, (UnitMember) sel);
 				}

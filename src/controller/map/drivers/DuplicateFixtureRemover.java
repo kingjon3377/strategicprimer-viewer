@@ -97,9 +97,9 @@ public final class DuplicateFixtureRemover implements ISPDriver {
 		for (final TileFixture fix : map.getOtherFixtures(location)) {
 			boolean already = false;
 			for (final TileFixture keptFixture : fixtures) {
-				if (fix instanceof IUnit
-						    && ((IUnit) fix).getKind().contains("TODO")
-						    || fix instanceof CacheFixture) {
+				if (((fix instanceof IUnit)
+						     && ((IUnit) fix).getKind().contains("TODO"))
+						    || (fix instanceof CacheFixture)) {
 					break;
 				} else if (keptFixture.equalsIgnoringID(fix)) {
 					already = true;

@@ -217,7 +217,7 @@ public final class ExplorationPanel extends BorderedPanel implements ActionListe
 	 */
 	@Override
 	public void actionPerformed(@Nullable final ActionEvent evt) {
-		if (evt != null && BACK_TEXT.equalsIgnoreCase(evt.getActionCommand())) {
+		if ((evt != null) && BACK_TEXT.equalsIgnoreCase(evt.getActionCommand())) {
 			for (final CompletionListener list : cListeners) {
 				list.stopWaitingOn(true);
 			}

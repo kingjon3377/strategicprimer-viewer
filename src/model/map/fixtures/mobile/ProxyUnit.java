@@ -490,7 +490,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		 */
 		@Override
 		public boolean equalsIgnoringID(final IFixture fix) {
-			return fix instanceof ProxyMember
+			return (fix instanceof ProxyMember)
 					       && ((ProxyMember) fix).proxiedMembers
 							          .equals(proxiedMembers);
 		}
@@ -563,9 +563,10 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 
 	@Override
 	public boolean equals(final Object obj) {
-		return this == obj || obj instanceof ProxyUnit && id == ((ProxyUnit) obj).getID
-				                                                                          () &&
-				                      proxied.equals(((ProxyUnit) obj).getProxied());
+		return (this == obj) ||
+				       ((obj instanceof ProxyUnit) && (id == ((ProxyUnit) obj).getID
+						                                                               ()) &&
+						        proxied.equals(((ProxyUnit) obj).getProxied()));
 	}
 
 	@Override

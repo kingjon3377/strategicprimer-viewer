@@ -84,8 +84,8 @@ public class Phoenix implements MobileFixture, HasImage, UnitMember {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Phoenix
-				                      && id == ((TileFixture) obj).getID();
+		return (this == obj) || ((obj instanceof Phoenix)
+				                         && (id == ((TileFixture) obj).getID()));
 	}
 
 	/**

@@ -128,7 +128,7 @@ public final class SkillAdvancementPanel extends BoxPanel implements ActionListe
 		if (evt == null) {
 			return;
 		}
-		if ("OK".equalsIgnoreCase(evt.getActionCommand()) && skill != null) {
+		if ("OK".equalsIgnoreCase(evt.getActionCommand()) && (skill != null)) {
 			final ISkill skl = skill;
 			final int level = skl.getLevel();
 			try {

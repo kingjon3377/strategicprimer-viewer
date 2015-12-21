@@ -142,11 +142,11 @@ public class Grove implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Grove
-				                      && kind.equals(((Grove) obj).kind)
-				                      && orchard == ((Grove) obj).orchard
-				                      && cultivated == ((Grove) obj).cultivated
-				                      && id == ((Grove) obj).id;
+		return (this == obj) || ((obj instanceof Grove)
+				                         && kind.equals(((Grove) obj).kind)
+				                         && (orchard == ((Grove) obj).orchard)
+				                         && (cultivated == ((Grove) obj).cultivated)
+				                         && (id == ((Grove) obj).id));
 	}
 
 	/**
@@ -185,9 +185,9 @@ public class Grove implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return fix instanceof Grove && kind.equals(((Grove) fix).kind)
-				       && orchard == ((Grove) fix).orchard
-				       && cultivated == ((Grove) fix).cultivated;
+		return (fix instanceof Grove) && kind.equals(((Grove) fix).kind)
+				       && (orchard == ((Grove) fix).orchard)
+				       && (cultivated == ((Grove) fix).cultivated);
 	}
 
 	/**

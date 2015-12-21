@@ -128,8 +128,8 @@ public class Portal implements ExplorableFixture {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Portal && id == ((Portal) obj).id
-				                      && equalsIgnoringID((Portal) obj);
+		return (this == obj) || ((obj instanceof Portal) && (id == ((Portal) obj).id)
+				                         && equalsIgnoringID((Portal) obj));
 	}
 
 	/**
@@ -195,7 +195,7 @@ public class Portal implements ExplorableFixture {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture obj) {
-		return obj instanceof Portal
+		return (obj instanceof Portal)
 				       && destinationWorld.equals(((Portal) obj).destinationWorld)
 				       && destinationCoordinates
 						          .equals(((Portal) obj).destinationCoordinates);

@@ -84,11 +84,13 @@ public final class SimpleMovement {
 	                                  final boolean forest, final boolean mountain,
 	                                  final boolean river,
 	                                  final Iterable<TileFixture> fixtures) {
-		if (TileType.Ocean == terrain
-				    || TileType.NotVisible == terrain) {
+		if ((TileType.Ocean == terrain)
+				    || (TileType.NotVisible == terrain)) {
 			return Integer.MAX_VALUE; // NOPMD
 		} else if (forest || mountain || isForest(fixtures) || isHill(fixtures)
-				           || TileType.Desert == terrain) {
+				           ||
+				           (TileType.Desert ==
+						            terrain)) {
 			if (river) {
 				return 2; // NOPMD
 			} else {
@@ -127,7 +129,8 @@ public final class SimpleMovement {
 	 */
 	private static boolean isHill(final Iterable<TileFixture> fixtures) {
 		return StreamSupport.stream(fixtures.spliterator(), false)
-				       .anyMatch(fix -> fix instanceof Mountain || fix instanceof Hill);
+				       .anyMatch(fix -> (fix instanceof Mountain) ||
+						                        (fix instanceof Hill));
 	}
 
 	/**
@@ -140,8 +143,8 @@ public final class SimpleMovement {
 	 */
 	public static boolean mightNotice(final IUnit unit,
 	                                  @Nullable final TileFixture fix) {
-		return fix instanceof Ground && ((Ground) fix).isExposed()
-				       || !(fix instanceof Ground || unit.equals(fix));
+		return ((fix instanceof Ground) && ((Ground) fix).isExposed())
+				       || !((fix instanceof Ground) || unit.equals(fix));
 	}
 
 	/**
@@ -151,9 +154,10 @@ public final class SimpleMovement {
 	 */
 	public static boolean shouldAlwaysNotice(final HasOwner unit,
 	                                         @Nullable final TileFixture fix) {
-		return fix instanceof Mountain || fix instanceof RiverFixture
-				       || fix instanceof Hill || fix instanceof Forest
-				       || fix instanceof Fortress
-						          && ((Fortress) fix).getOwner().equals(unit.getOwner());
+		return (fix instanceof Mountain) || (fix instanceof RiverFixture)
+				       || (fix instanceof Hill) || (fix instanceof Forest)
+				       || ((fix instanceof Fortress)
+						           &&
+						           ((Fortress) fix).getOwner().equals(unit.getOwner()));
 	}
 }

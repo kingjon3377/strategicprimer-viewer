@@ -74,7 +74,7 @@ public final class SkillListModel extends DefaultListModel<ISkill> implements
 	@Override
 	public void add(final String category, final String addendum) {
 		final IJob local = job;
-		if ("skill".equals(category) && local != null) {
+		if ("skill".equals(category) && (local != null)) {
 			final ISkill skill = new Skill(addendum, 0, 0);
 			local.addSkill(skill);
 			addElement(skill);

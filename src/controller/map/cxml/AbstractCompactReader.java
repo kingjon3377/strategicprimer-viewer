@@ -267,7 +267,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 				                                                                       preferred,
 				                                                                       element.getLocation()
 						                                                                       .getLineNumber());
-		if (prefProp == null && deprProp == null) {
+		if ((prefProp == null) && (deprProp == null)) {
 			throw exception;
 		} else if (prefProp == null) {
 			warner.warn(new DeprecatedPropertyException(local, deprecated,
@@ -394,7 +394,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 			return defaultValue; // NOPMD
 		}
 		final String val = attr.getValue();
-		if (val == null || val.isEmpty()) {
+		if ((val == null) || val.isEmpty()) {
 			return defaultValue;
 		} else {
 			return parseInt(val, tag.getLocation().getLineNumber());

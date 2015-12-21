@@ -95,9 +95,10 @@ public final class ComparableIterator<@NonNull T> implements Iterator<@NonNull T
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof ComparableIterator
-				                      &&
-				                      wrapped.equals(((ComparableIterator) obj).wrapped);
+		return (this == obj) || ((obj instanceof ComparableIterator)
+				                         &&
+				                         wrapped.equals(
+						                         ((ComparableIterator) obj).wrapped));
 	}
 
 	/**

@@ -88,11 +88,11 @@ public final class ComponentMouseListener extends MouseAdapter implements
 		final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(),
 				mapDim.getVersion());
 		final VisibleDimensions dimensions = model.getDimensions();
-		final Point point = PointFactory.point(eventPoint.y / tileSize
+		final Point point = PointFactory.point((eventPoint.y / tileSize)
 				                                       + dimensions.getMinimumRow(),
-				eventPoint.x / tileSize
+				(eventPoint.x / tileSize)
 						+ dimensions.getMinimumCol());
-		if (point.row < mapDim.getRows() && point.col < mapDim.getColumns()) {
+		if ((point.row < mapDim.getRows()) && (point.col < mapDim.getColumns())) {
 			return concat("<html><body>", point.toString(), ": ", model
 					                                                      .getMap()
 					                                                      .getBaseTerrain(
@@ -173,11 +173,11 @@ public final class ComponentMouseListener extends MouseAdapter implements
 			final MapDimensions mapDim = model.getMapDimensions();
 			final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(),
 					mapDim.getVersion());
-			final Point point = PointFactory.point(eventPoint.y / tileSize
+			final Point point = PointFactory.point((eventPoint.y / tileSize)
 					                                       + dimensions.getMinimumRow(),
-					eventPoint.x / tileSize
+					(eventPoint.x / tileSize)
 							+ dimensions.getMinimumCol());
-			if (point.row < mapDim.getRows() && point.col < mapDim.getColumns()) {
+			if ((point.row < mapDim.getRows()) && (point.col < mapDim.getColumns())) {
 				model.setSelection(point);
 				if (event.isPopupTrigger()) {
 					menu.show(event.getComponent(), event.getX(), event.getY());
@@ -193,7 +193,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	 */
 	@Override
 	public void mousePressed(@Nullable final MouseEvent event) {
-		if (event != null && event.isPopupTrigger()) {
+		if ((event != null) && event.isPopupTrigger()) {
 			menu.show(event.getComponent(), event.getX(), event.getY());
 		}
 	}
@@ -205,7 +205,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	 */
 	@Override
 	public void mouseReleased(@Nullable final MouseEvent event) {
-		if (event != null && event.isPopupTrigger()) {
+		if ((event != null) && event.isPopupTrigger()) {
 			menu.show(event.getComponent(), event.getX(), event.getY());
 		}
 	}

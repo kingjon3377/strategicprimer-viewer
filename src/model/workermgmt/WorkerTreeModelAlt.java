@@ -89,16 +89,17 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 						getNode(old.getKind()), oldNode},
 				new int[]{oldNode.getIndex(node)}, new Object[]{node});
 		oldNode.remove(node);
-		if (member instanceof ProxyFor && old instanceof ProxyUnit
-				    && newOwner instanceof ProxyUnit) {
-			if (((Collection<IUnit>) ((ProxyUnit) old).getProxied())
-					    .size() ==
-					    ((Collection<IUnit>) ((ProxyUnit) newOwner).getProxied()).size()
-					    && ((Collection<IUnit>) ((ProxyUnit) old).getProxied())
-							       .size() ==
-							       ((Collection<? extends UnitMember>) ((ProxyFor<? extends UnitMember>) member)
-									                                           .getProxied())
-									       .size()) {
+		if ((member instanceof ProxyFor) && (old instanceof ProxyUnit)
+				    && (newOwner instanceof ProxyUnit)) {
+			if ((((Collection<IUnit>) ((ProxyUnit) old).getProxied())
+					     .size() ==
+					     ((Collection<IUnit>) ((ProxyUnit) newOwner).getProxied())
+							     .size())
+					    && (((Collection<IUnit>) ((ProxyUnit) old).getProxied())
+							        .size() ==
+							        ((Collection<? extends UnitMember>) ((ProxyFor<? extends UnitMember>) member)
+									                                            .getProxied())
+									        .size())) {
 				final Queue<UnitMember> members = new LinkedList<>();
 				final Queue<IUnit> newList = new LinkedList<>();
 				final Iterator<IUnit> oldIter = ((ProxyUnit) old).getProxied()
@@ -346,7 +347,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 						unit.getID()));
 		final String kind = unit.getKind();
 		for (final TreeNode child : (Iterable<TreeNode>) root) {
-			if (child instanceof KindNode
+			if ((child instanceof KindNode)
 					    && kind.equals(((KindNode) child).getUserObject())) {
 				((KindNode) child).add(node);
 				fireTreeNodesInserted(this, getPathToRoot(node),
@@ -410,7 +411,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	public void addUnitMember(final IUnit unit, final UnitMember member) {
 		UnitNode unode = null;
 		for (final TreeNode item : (Iterable<TreeNode>) root) {
-			if (item instanceof UnitNode
+			if ((item instanceof UnitNode)
 					    && ((UnitNode) item).getUserObject().equals(unit)) {
 				unode = (UnitNode) item;
 				break;
@@ -459,9 +460,9 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 */
 	@Nullable
 	private static MutableTreeNode getNode(final TreeNode node, final Object obj) {
-		if (node instanceof MutableTreeNode && areTreeObjectsEqual(node, obj)) {
+		if ((node instanceof MutableTreeNode) && areTreeObjectsEqual(node, obj)) {
 			return (MutableTreeNode) node;
-		} else if (node instanceof WorkerTreeNode && node.getAllowsChildren()) {
+		} else if ((node instanceof WorkerTreeNode) && node.getAllowsChildren()) {
 			for (final TreeNode child : (WorkerTreeNode<?>) node) {
 				@Nullable final MutableTreeNode result = getNode(child, obj);
 				if (result != null) {
@@ -480,10 +481,11 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @return whether the object is or equals the node's user-object
 	 */
 	private static boolean areTreeObjectsEqual(final TreeNode node, final Object obj) {
-		return node instanceof DefaultMutableTreeNode
-				       && (obj == ((DefaultMutableTreeNode) node).getUserObject() || obj
-						                                                                     .equals(((DefaultMutableTreeNode) node)
-								                                                                             .getUserObject()));
+		return (node instanceof DefaultMutableTreeNode)
+				       && ((obj == ((DefaultMutableTreeNode) node).getUserObject()) ||
+						           obj
+						                                                                       .equals(((DefaultMutableTreeNode) node)
+								                                                                               .getUserObject()));
 	}
 
 	/**
@@ -526,7 +528,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			final int indexOne = getIndexOfChild(pathOne[pathOne.length - 2], node);
 			TreeNode nodeTwo = null;
 			for (final TreeNode child : (Iterable<TreeNode>) root) {
-				if (child instanceof KindNode
+				if ((child instanceof KindNode)
 						    && item.getKind().equals(
 						((KindNode) child).getUserObject())) {
 					nodeTwo = child;

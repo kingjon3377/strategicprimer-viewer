@@ -118,7 +118,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	                                          final Player player) {
 		final Collection<IUnit> retval = new ArrayList<>();
 		for (final Object obj : iter) {
-			if (obj instanceof IUnit && ((IUnit) obj).getOwner().equals(player)) {
+			if ((obj instanceof IUnit) && ((IUnit) obj).getOwner().equals(player)) {
 				retval.add((IUnit) obj);
 			} else if (obj instanceof Fortress) {
 				retval.addAll(getUnits((Fortress) obj, player));
@@ -163,7 +163,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	public void addUnit(final IUnit unit) {
 		for (final Point point : getMap().locations()) {
 			for (final TileFixture fix : getMap().getOtherFixtures(point)) {
-				if (fix instanceof Fortress
+				if ((fix instanceof Fortress)
 						    && unit.getOwner().equals(((Fortress) fix).getOwner())
 						    && "HQ".equals(((Fortress) fix).getName())) {
 					addUnitAtLocation(unit, point);
@@ -191,7 +191,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 			for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
 				boolean added = false;
 				for (final TileFixture fix : pair.first().getOtherFixtures(location)) {
-					if (fix instanceof Fortress &&
+					if ((fix instanceof Fortress) &&
 							    unit.getOwner().equals(((Fortress) fix).getOwner())) {
 						((Fortress) fix).addMember(unit.copy(false));
 						added = true;
@@ -205,7 +205,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 		} else {
 			boolean added = false;
 			for (final TileFixture fix : getMap().getOtherFixtures(location)) {
-				if (fix instanceof Fortress &&
+				if ((fix instanceof Fortress) &&
 						    unit.getOwner().equals(((Fortress) fix).getOwner())) {
 					((Fortress) fix).addMember(unit.copy(false));
 					added = true;

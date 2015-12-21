@@ -79,7 +79,7 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	@Override
 	public void dragEnter(@Nullable final DropTargetDragEvent dtde) {
 		if (dtde != null) {
-			if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
+			if (((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0)
 					    && (dtde.getCurrentDataFlavorsAsList().contains(
 					FixtureTransferable.FLAVOR)
 							        || dtde.getCurrentDataFlavorsAsList()
@@ -103,7 +103,7 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	 * etc. problems return true.
 	 */
 	private boolean isIntraComponentXfr(final DropTargetEvent dtde) {
-		return dtde.getSource() instanceof Component
+		return (dtde.getSource() instanceof Component)
 				       && parentComponent.isAncestorOf((Component) dtde.getSource());
 	}
 
@@ -115,7 +115,7 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	@Override
 	public void dragOver(@Nullable final DropTargetDragEvent dtde) {
 		if (dtde != null) {
-			if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
+			if (((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0)
 					    && (dtde.getCurrentDataFlavorsAsList().contains(
 					FixtureTransferable.FLAVOR)
 							        || dtde.getCurrentDataFlavorsAsList()
@@ -138,7 +138,7 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	@Override
 	public void dropActionChanged(@Nullable final DropTargetDragEvent dtde) {
 		if (dtde != null) {
-			if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
+			if (((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0)
 					    && (dtde.getCurrentDataFlavorsAsList().contains(
 					FixtureTransferable.FLAVOR)
 							        || dtde.getCurrentDataFlavorsAsList()
@@ -167,7 +167,7 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 			return; // NOPMD
 		} // else
 		for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
-			if (flavor != null
+			if ((flavor != null)
 					    && EqualsAny.equalsAny(flavor, FixtureTransferable.FLAVOR,
 					CurriedFixtureTransferable.FLAVOR)) {
 				try {

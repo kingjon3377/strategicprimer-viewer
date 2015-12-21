@@ -118,7 +118,7 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Forest && equalsImpl((Forest) obj);
+		return (this == obj) || ((obj instanceof Forest) && equalsImpl((Forest) obj));
 	}
 
 	/**
@@ -126,7 +126,7 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	 * @return whether it's equal to this one
 	 */
 	private boolean equalsImpl(final Forest obj) {
-		return trees.equals(obj.trees) && rows == obj.rows;
+		return trees.equals(obj.trees) && (rows == obj.rows);
 	}
 
 	/**

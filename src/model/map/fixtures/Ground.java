@@ -109,9 +109,9 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Ground
-				                      && kind.equals(((Ground) obj).kind)
-				                      && exposed == ((Ground) obj).exposed;
+		return (this == obj) || ((obj instanceof Ground)
+				                         && kind.equals(((Ground) obj).kind)
+				                         && (exposed == ((Ground) obj).exposed));
 	}
 
 	/**

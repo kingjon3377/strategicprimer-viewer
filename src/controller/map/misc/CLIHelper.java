@@ -116,7 +116,7 @@ public final class CLIHelper implements ICLIHelper {
 			return -1; // NOPMD
 		}
 		SYS_OUT.println(desc);
-		if (auto && items.size() == 1) {
+		if (auto && (items.size() == 1)) {
 			SYS_OUT.print("Automatically choosing only item, ");
 			SYS_OUT.println(items.get(0));
 			return 0; // NOPMD
@@ -264,7 +264,7 @@ public final class CLIHelper implements ICLIHelper {
 			return -1; // NOPMD
 		}
 		SYS_OUT.println(desc);
-		if (auto && items.size() == 1) {
+		if (auto && (items.size() == 1)) {
 			SYS_OUT.print("Automatically choosing only item, ");
 			SYS_OUT.println(items.get(0));
 			return 0; // NOPMD

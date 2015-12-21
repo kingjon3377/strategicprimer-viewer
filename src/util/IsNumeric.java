@@ -73,6 +73,6 @@ public final class IsNumeric {
 	 */
 	public static boolean isBetween(final int value, final int lower,
 	                                final int upper) {
-		return value >= lower && value < upper;
+		return (value >= lower) && (value < upper);
 	}
 }

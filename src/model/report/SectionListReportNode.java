@@ -149,8 +149,8 @@ public class SectionListReportNode extends AbstractReportNode {
 	 */
 	@Override
 	protected boolean equalsImpl(final IReportNode obj) {
-		return obj instanceof SectionListReportNode
-				       && ((SectionListReportNode) obj).getHeaderLevel() == level
+		return (obj instanceof SectionListReportNode)
+				       && (((SectionListReportNode) obj).getHeaderLevel() == level)
 				       && getText().equals(obj.getText())
 				       && children().equals(obj.children());
 	}

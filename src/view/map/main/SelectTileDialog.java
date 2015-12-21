@@ -229,7 +229,7 @@ public final class SelectTileDialog extends JDialog implements ActionListener {
 			row.setText("-1");
 			row.selectAll();
 		}
-		if (rowState == State.Valid && colState == State.Valid) {
+		if ((rowState == State.Valid) && (colState == State.Valid)) {
 			try {
 				map.setSelection(
 						PointFactory.point(NUM_PARSER.parse(rowText).intValue(),

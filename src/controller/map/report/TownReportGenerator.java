@@ -83,7 +83,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		final List<AbstractTown> sorted = new ArrayList<>(townLocs.keySet());
 		Collections.sort(sorted, new TownComparator());
 		// FIXME: Within any given status, sort by distance from HQ
-		final int len = 80 + sorted.size() * 512;
+		final int len = 80 + (sorted.size() * 512);
 		final StringBuilder builder = new StringBuilder(len)
 				                              .append("<h4>Cities, towns, and/or " +
 						                                      "fortifications ")

@@ -161,12 +161,12 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Animal
-				                      && kind.equals(((Animal) obj).kind)
-				                      && ((Animal) obj).traces == traces
-				                      && ((Animal) obj).talking == talking
-				                      && status.equals(((Animal) obj).status)
-				                      && ((Animal) obj).id == id;
+		return (this == obj) || ((obj instanceof Animal)
+				                         && kind.equals(((Animal) obj).kind)
+				                         && (((Animal) obj).traces == traces)
+				                         && (((Animal) obj).talking == talking)
+				                         && status.equals(((Animal) obj).status)
+				                         && (((Animal) obj).id == id));
 	}
 
 	/**
@@ -250,10 +250,10 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return fix instanceof Animal && ((Animal) fix).kind.equals(kind)
-				       && ((Animal) fix).traces == traces
+		return (fix instanceof Animal) && ((Animal) fix).kind.equals(kind)
+				       && (((Animal) fix).traces == traces)
 				       && ((Animal) fix).status.equals(status)
-				       && ((Animal) fix).talking == talking;
+				       && (((Animal) fix).talking == talking);
 	}
 
 	/**

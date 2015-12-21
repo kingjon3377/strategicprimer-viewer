@@ -111,8 +111,8 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof RiverFixture
-				                      && ((RiverFixture) obj).rivers.equals(rivers);
+		return (this == obj) || ((obj instanceof RiverFixture)
+				                         && ((RiverFixture) obj).rivers.equals(rivers));
 	}
 
 	/**
@@ -147,8 +147,8 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	@Override
 	public String toString() {
 		final StringBuilder sbuild = new StringBuilder(BASE_STRING.length()
-				                                               + MAX_RIVER_SIZE *
-						                                                 rivers.size())
+				                                               + (MAX_RIVER_SIZE *
+						                                                  rivers.size()))
 				                             .append(BASE_STRING);
 		for (final River river : rivers) {
 			sbuild.append(river.toString());

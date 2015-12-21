@@ -88,8 +88,8 @@ public class Troll implements MobileFixture, HasImage, UnitMember {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Troll
-				                      && ((TileFixture) obj).getID() == id;
+		return (this == obj) || ((obj instanceof Troll)
+				                         && (((TileFixture) obj).getID() == id));
 	}
 
 	/**

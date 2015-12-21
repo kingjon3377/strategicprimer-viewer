@@ -147,24 +147,34 @@ public final class ExplorationClickListener extends AbstractAction implements
 				map.setBaseTerrain(dPoint, model.getMap()
 						                           .getBaseTerrain(dPoint));
 				for (final TileFixture fix : fixtures) {
-					if (fix instanceof Ground && map.getGround(dPoint) == null) {
+					if ((fix instanceof Ground) && (map.getGround(dPoint) == null)) {
 						map.setGround(dPoint, ((Ground) fix).copy(false));
-					} else if (fix instanceof Ground
-							           && fix.equals(map.getGround(dPoint))) {
+					} else if ((fix instanceof Ground)
+							           &&
+							           fix.equals(
+									           map.getGround(
+											           dPoint))) {
 						continue;
-					} else if (fix instanceof Forest
-							           && map.getForest(dPoint) == null) {
+					} else if ((fix instanceof Forest)
+							           &&
+							           (map.getForest(
+									           dPoint) ==
+									            null)) {
 						map.setForest(dPoint, ((Forest) fix).copy(false));
-					} else if (fix instanceof Forest
-							           && fix.equals(map.getForest(dPoint))) {
+					} else if ((fix instanceof Forest)
+							           &&
+							           fix.equals(
+									           map.getForest(
+											           dPoint))) {
 						continue;
 					} else if (fix instanceof Mountain) {
 						map.setMountainous(dPoint, true);
 					} else if (!hasFixture(map, dPoint, fix)) {
-						final boolean zero = fix instanceof HasOwner && !((HasOwner) fix)
-								                                                 .getOwner()
-								                                                 .equals
-										                                                  (player);
+						final boolean zero =
+								(fix instanceof HasOwner) && !((HasOwner) fix)
+										                              .getOwner()
+										                              .equals
+												                               (player);
 						map.addFixture(dPoint, fix.copy(zero));
 						if (fix instanceof CacheFixture) {
 							caches.add((CacheFixture) fix);

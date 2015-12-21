@@ -100,7 +100,9 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 				if (skill == this) {
 					continue;
 				} else if (skill.getName().equals(name)
-						           && skill.getLevel() < level) {
+						           &&
+						           (skill.getLevel() <
+								            level)) {
 					level = skill.getLevel();
 				}
 			}
@@ -123,7 +125,9 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 				if (skill == this) {
 					continue;
 				} else if (skill.getName().equals(name)
-						           && skill.getHours() > hours) {
+						           &&
+						           (skill.getHours() >
+								            hours)) {
 					hours = skill.getHours();
 				}
 			}

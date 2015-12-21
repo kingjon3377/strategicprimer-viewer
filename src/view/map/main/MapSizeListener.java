@@ -55,7 +55,7 @@ public final class MapSizeListener extends ComponentAdapter {
 	@SuppressWarnings("ReuseOfLocalVariable")
 	@Override
 	public void componentResized(@Nullable final ComponentEvent event) {
-		if (event != null && event.getComponent() instanceof MapGUI) {
+		if ((event != null) && (event.getComponent() instanceof MapGUI)) {
 			synchronized (model) {
 				final int tsize = TileViewSize.scaleZoom(model.getZoomLevel(),
 						model.getMapDimensions().getVersion());
@@ -69,25 +69,25 @@ public final class MapSizeListener extends ComponentAdapter {
 				final MapDimensions mapDim = model.getMapDimensions();
 				final int totalRows = mapDim.rows;
 				final int totalCols = mapDim.cols;
-				if (visibleCols != maxCol - minCol
-						    || visibleRows != maxRow - minRow) {
+				if ((visibleCols != (maxCol - minCol))
+						    || (visibleRows != (maxRow - minRow))) {
 					if (visibleCols >= totalCols) {
 						minCol = 0;
 						maxCol = totalCols - 1;
-					} else if (minCol + visibleCols >= totalCols) {
+					} else if ((minCol + visibleCols) >= totalCols) {
 						maxCol = totalCols - 1;
 						minCol = totalCols - visibleCols - 2;
 					} else {
-						maxCol = minCol + visibleCols - 1;
+						maxCol = (minCol + visibleCols) - 1;
 					}
 					if (visibleRows >= totalRows) {
 						minRow = 0;
 						maxRow = totalRows - 1;
-					} else if (minRow + visibleRows >= totalRows) {
+					} else if ((minRow + visibleRows) >= totalRows) {
 						maxRow = totalRows - 1;
 						minRow = totalRows - visibleRows - 2;
 					} else {
-						maxRow = minRow + visibleRows - 1;
+						maxRow = (minRow + visibleRows) - 1;
 					}
 					model.setDimensions(new VisibleDimensions(minRow, maxRow,
 							                                         minCol, maxCol));

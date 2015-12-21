@@ -121,7 +121,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 
 			@Override
 			public void keyPressed(@Nullable final KeyEvent evt) {
-				if (evt != null && evt.getKeyCode() == KeyEvent.VK_ENTER
+				if ((evt != null) && (evt.getKeyCode() == KeyEvent.VK_ENTER)
 						    && isModifierPressed(evt)) {
 					apply();
 
@@ -133,7 +133,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		model = wmodel;
 		final InputMap inputMap = getInputMap(WHEN_IN_FOCUSED_WINDOW);
 		final ActionMap actionMap = getActionMap();
-		assert inputMap != null && actionMap != null;
+		assert (inputMap != null) && (actionMap != null);
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, keyMask), "openOrders");
 		actionMap.put("openOrders", new AbstractAction() {
 			@Override
@@ -465,10 +465,12 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 
 		@Override
 		public boolean equals(final Object obj) {
-			return this == obj || obj instanceof ProxyUnit && kind.equals(((ProxyUnit)
-					                                                               obj)
-					                                                              .getKind()) &&
-					                      units.equals(((ProxyUnit) obj).units);
+			return (this == obj) ||
+					       ((obj instanceof ProxyUnit) && kind.equals(((ProxyUnit)
+							                                                   obj)
+							                                                  .getKind()
+					       ) &&
+							        units.equals(((ProxyUnit) obj).units));
 		}
 
 		@Override

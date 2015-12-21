@@ -138,14 +138,14 @@ public class SPMenu extends JMenuBar {
 					}
 				});
 		fileMenu.add(openSecondaryViewerItem);
-		if (model instanceof IViewerModel || !(model instanceof IMultiMapModel)) {
+		if ((model instanceof IViewerModel) || !(model instanceof IMultiMapModel)) {
 			openSecondaryViewerItem.setEnabled(false);
 		}
 		fileMenu.addSeparator();
 		fileMenu.add(createMenuItem("Close", KeyEvent.VK_W,
 				createHotkey(KeyEvent.VK_W),
 				"Close this window", evt -> {
-					if (evt != null
+					if ((evt != null)
 							    && "Close".equals(evt.getActionCommand())) {
 						parent.setVisible(false);
 						parent.dispose();
@@ -159,7 +159,7 @@ public class SPMenu extends JMenuBar {
 			fileMenu.add(createMenuItem("Quit", KeyEvent.VK_Q,
 					createHotkey(KeyEvent.VK_Q), "Quit the application",
 					event -> {
-						if (event != null && "Quit".equals(event.getActionCommand())) {
+						if ((event != null) && "Quit".equals(event.getActionCommand())) {
 							DriverQuit.quit(0);
 						}
 					}));

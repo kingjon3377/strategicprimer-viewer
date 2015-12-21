@@ -100,7 +100,7 @@ public final class PlayerChooserHandler implements ActionListener,
 	 */
 	@Override
 	public void actionPerformed(@Nullable final ActionEvent evt) {
-		if (evt != null && MENU_ITEM.equals(evt.getActionCommand())) {
+		if ((evt != null) && MENU_ITEM.equals(evt.getActionCommand())) {
 			final Player retval = (Player) JOptionPane.showInputDialog(parent,
 					"Player to view:", "Choose New Player",
 					JOptionPane.PLAIN_MESSAGE, null, playersAsArray(model

@@ -155,7 +155,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	@Override
 	public boolean hasNext() {
 		if (started) {
-			return row != startRow || col != startCol; // NOPMD
+			return (row != startRow) || (col != startCol); // NOPMD
 		} else {
 			return true; // NOPMD
 		}

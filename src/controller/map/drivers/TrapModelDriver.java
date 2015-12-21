@@ -199,7 +199,7 @@ public final class TrapModelDriver implements ISPDriver {
 				fixtures = hmodel.hunt(point, minutes);
 			}
 			int input = -1;
-			while (minutes > 0 && input < TrapperCommand.values().length) {
+			while ((minutes > 0) && (input < TrapperCommand.values().length)) {
 				if (input >= 0) {
 					final TrapperCommand command =
 							NullCleaner

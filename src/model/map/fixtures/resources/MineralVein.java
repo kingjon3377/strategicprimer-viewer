@@ -134,10 +134,10 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof MineralVein
-				                      && mineral.equals(((MineralVein) obj).mineral)
-				                      && exposed == ((MineralVein) obj).exposed
-				                      && id == ((MineralVein) obj).id;
+		return (this == obj) || ((obj instanceof MineralVein)
+				                         && mineral.equals(((MineralVein) obj).mineral)
+				                         && (exposed == ((MineralVein) obj).exposed)
+				                         && (id == ((MineralVein) obj).id));
 	}
 
 	/**
@@ -212,8 +212,8 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return this == fix || fix instanceof MineralVein
-				                      && equalsContents((MineralVein) fix);
+		return (this == fix) || ((fix instanceof MineralVein)
+				                         && equalsContents((MineralVein) fix));
 	}
 
 	/**
@@ -221,7 +221,7 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	 * @return whether its contents equal ours
 	 */
 	private boolean equalsContents(final MineralVein fix) {
-		return fix.mineral.equals(mineral) && fix.exposed == exposed;
+		return fix.mineral.equals(mineral) && (fix.exposed == exposed);
 	}
 
 	/**

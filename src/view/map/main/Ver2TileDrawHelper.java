@@ -103,9 +103,10 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof Ver2TileDrawHelper
-				                      &&
-				                      fixComp.equals(((Ver2TileDrawHelper) obj).fixComp);
+		return (this == obj) || ((obj instanceof Ver2TileDrawHelper)
+				                         &&
+				                         fixComp.equals(
+						                         ((Ver2TileDrawHelper) obj).fixComp));
 	}
 
 	/**
@@ -501,11 +502,11 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		 */
 		@Override
 		public boolean equals(@Nullable final Object obj) {
-			return this == obj || obj instanceof FilteredIterator
-					                      &&
-					                      wrapped.equals(((FilteredIterator) obj)
-							                                     .wrapped)
-					                      && zof.equals(((FilteredIterator) obj).zof);
+			return (this == obj) || ((obj instanceof FilteredIterator)
+					                         &&
+					                         wrapped.equals(((FilteredIterator) obj)
+							                                        .wrapped)
+					                         && zof.equals(((FilteredIterator) obj).zof));
 		}
 
 		/**
@@ -590,7 +591,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			} else {
 				while (wrapped.hasNext()) {
 					final TileFixture tempCached = wrapped.next();
-					if (tempCached != NULL_FIXT && zof.shouldDisplay(tempCached)) {
+					if ((tempCached != NULL_FIXT) && zof.shouldDisplay(tempCached)) {
 						cached = tempCached;
 						hasCached = true;
 						return true; // NOPMD

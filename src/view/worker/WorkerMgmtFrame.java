@@ -138,7 +138,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		}
 		final InputMap inputMap = tree.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		final ActionMap actionMap = tree.getActionMap();
-		assert inputMap != null && actionMap != null;
+		assert (inputMap != null) && (actionMap != null);
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_U, keyMask), "openUnits");
 		actionMap.put("openUnits", new FocusRequester(tree));
 		final PlayerLabel plabel = new PlayerLabel("Units belonging to ",
@@ -173,14 +173,14 @@ public final class WorkerMgmtFrame extends JFrame {
 				break;
 			} else {
 				for (final TileFixture fix : model.getMap().getOtherFixtures(location)) {
-					if (fix instanceof Fortress && ((Fortress) fix).getOwner()
-							                               .equals(model.getMap()
-									                                       .getCurrentPlayer())) {
+					if ((fix instanceof Fortress) && ((Fortress) fix).getOwner()
+							                                 .equals(model.getMap()
+									                                         .getCurrentPlayer())) {
 						if ("HQ".equals(((Fortress) fix).getName())) {
 							hqLoc = location;
 							found = true;
 							break;
-						} else if (hqLoc.row < 0 && location.row >= 0) {
+						} else if ((hqLoc.row < 0) && (location.row >= 0)) {
 							hqLoc = location;
 							break;
 						}
@@ -232,8 +232,8 @@ public final class WorkerMgmtFrame extends JFrame {
 								                                                       BorderedPanel(ordersPanel,
 								                                                                        new ListenedButton("Add New Unit",
 										                                                                                          evt -> {
-											                                                                                          if (evt !=
-													                                                                                              null &&
+											                                                                                          if ((evt !=
+													                                                                                               null) &&
 													                                                                                              "Add New Unit"
 															                                                                                              .equals(evt.getActionCommand())) {
 												                                                                                          newUnitFrame
@@ -291,9 +291,9 @@ public final class WorkerMgmtFrame extends JFrame {
 	protected static IViewerModel getViewerModelFor(final IDriverModel model,
 	                                                final IOHandler ioh) {
 		for (final Frame frame : WindowList.getFrames(false, true, true)) {
-			if (frame instanceof ViewerFrame && ((ViewerFrame) frame).getModel()
-					                                    .getMapFile()
-					                                    .equals(model.getMapFile())) {
+			if ((frame instanceof ViewerFrame) && ((ViewerFrame) frame).getModel()
+					                                      .getMapFile()
+					                                      .equals(model.getMapFile())) {
 				frame.toFront();
 				if (frame.getExtendedState() == Frame.ICONIFIED) {
 					frame.setExtendedState(Frame.NORMAL);
@@ -682,7 +682,7 @@ public final class WorkerMgmtFrame extends JFrame {
 			}
 			final Object node = selPath.getLastPathComponent();
 			if ((evt.isControlDown() || evt.isMetaDown()) &&
-					    node instanceof AbstractReportNode) {
+					    (node instanceof AbstractReportNode)) {
 				final Point point = ((AbstractReportNode) node).getPoint();
 				// (-inf, -inf) replaces null
 				if (point.getRow() > Integer.MIN_VALUE) {

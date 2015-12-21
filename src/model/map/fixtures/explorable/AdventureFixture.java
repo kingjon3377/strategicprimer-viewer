@@ -131,9 +131,9 @@ public class AdventureFixture implements ExplorableFixture, HasOwner {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return this == obj || obj instanceof AdventureFixture
-				                      && id == ((AdventureFixture) obj).id
-				                      && equalsImpl((AdventureFixture) obj);
+		return (this == obj) || ((obj instanceof AdventureFixture)
+				                         && (id == ((AdventureFixture) obj).id)
+				                         && equalsImpl((AdventureFixture) obj));
 	}
 
 	/**
@@ -236,6 +236,6 @@ public class AdventureFixture implements ExplorableFixture, HasOwner {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return fix instanceof AdventureFixture && equalsImpl((AdventureFixture) fix);
+		return (fix instanceof AdventureFixture) && equalsImpl((AdventureFixture) fix);
 	}
 }

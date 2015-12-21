@@ -63,13 +63,13 @@ public final class TreeExpansionHandler implements ActionListener {
 				i--;
 			}
 		} else if ("Expand Unit Kinds".equals(evt.getActionCommand()) &&
-				           tree instanceof WorkerTree) {
+				           (tree instanceof WorkerTree)) {
 			for (int i = 0; i < tree.getRowCount(); i++) {
 				final TreePath path = tree.getPathForRow(i);
 				if (path == null) {
 					continue;
-				} else if (path.getLastPathComponent() instanceof String ||
-						           path.getLastPathComponent() instanceof KindNode) {
+				} else if ((path.getLastPathComponent() instanceof String) ||
+						           (path.getLastPathComponent() instanceof KindNode)) {
 					tree.expandRow(i);
 				}
 			}

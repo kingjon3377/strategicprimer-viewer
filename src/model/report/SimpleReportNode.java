@@ -87,7 +87,7 @@ public final class SimpleReportNode extends AbstractReportNode {
 	 */
 	@Override
 	protected boolean equalsImpl(final IReportNode obj) {
-		return obj instanceof SimpleReportNode
+		return (obj instanceof SimpleReportNode)
 				       && getText().equals(obj.getText());
 	}
 
