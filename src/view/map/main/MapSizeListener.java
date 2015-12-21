@@ -55,6 +55,7 @@ public final class MapSizeListener extends ComponentAdapter {
 	 *
 	 * @param event the resize event
 	 */
+	@SuppressWarnings("ReuseOfLocalVariable")
 	@Override
 	public void componentResized(@Nullable final ComponentEvent event) {
 		if (event != null && event.getComponent() instanceof MapGUI) {
