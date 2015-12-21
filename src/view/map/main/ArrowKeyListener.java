@@ -1,57 +1,56 @@
 package view.map.main;
 
-import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
-import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
-import static javax.swing.KeyStroke.getKeyStroke;
+import org.eclipse.jdt.annotation.Nullable;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-
-import org.eclipse.jdt.annotation.Nullable;
+import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
+import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
+import static javax.swing.KeyStroke.getKeyStroke;
 
 /**
  * A class to handle setting up listeners for the arrow keys.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class ArrowKeyListener {
 	/**
 	 * Whether this is running on a Mac.
 	 */
-	private static final boolean ON_MAC = System.getProperty("os.name").toLowerCase().startsWith("mac os x");
+	private static final boolean ON_MAC =
+			System.getProperty("os.name").toLowerCase().startsWith("mac os x");
+
 	/**
 	 * Set up listeners.
 	 *
 	 * @param selListener The actual listener whose methods have to be attached.
-	 * @param inputMap An input map to set up the keybindings.
-	 * @param actionMap The action map we'll be putting the glue listeners into.
+	 * @param inputMap    An input map to set up the keybindings.
+	 * @param actionMap   The action map we'll be putting the glue listeners into.
 	 */
 	public static void setUpListeners(
-			final DirectionSelectionChanger selListener,
-			final InputMap inputMap, final ActionMap actionMap) {
+			                                 final DirectionSelectionChanger selListener,
+			                                 final InputMap inputMap,
+			                                 final ActionMap actionMap) {
 		inputMap.put(getKeyStroke(KeyEvent.VK_UP, 0), "up");
 		inputMap.put(getKeyStroke(KeyEvent.VK_DOWN, 0), "down");
 		inputMap.put(getKeyStroke(KeyEvent.VK_RIGHT, 0), "right");
@@ -116,20 +115,34 @@ public final class ArrowKeyListener {
 		actionMap.put("ctrl-down-right", new DownRightListener(selListener, 5));
 		actionMap.put("ctrl-down-left", new DownLeftListener(selListener, 5));
 		if (ON_MAC) {
-			inputMap.put(getKeyStroke(KeyEvent.VK_HOME, InputEvent.META_DOWN_MASK), "ctrl-home");
-			inputMap.put(getKeyStroke(KeyEvent.VK_END, InputEvent.META_DOWN_MASK), "ctrl-end");
-			inputMap.put(getKeyStroke(KeyEvent.VK_UP, InputEvent.META_DOWN_MASK), "home");
-			inputMap.put(getKeyStroke(KeyEvent.VK_KP_UP, InputEvent.META_DOWN_MASK), "home");
-			inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD8, InputEvent.META_DOWN_MASK), "home");
-			inputMap.put(getKeyStroke(KeyEvent.VK_DOWN, InputEvent.META_DOWN_MASK), "end");
-			inputMap.put(getKeyStroke(KeyEvent.VK_KP_DOWN, InputEvent.META_DOWN_MASK), "end");
-			inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD2, InputEvent.META_DOWN_MASK), "end");
-			inputMap.put(getKeyStroke(KeyEvent.VK_LEFT, InputEvent.META_DOWN_MASK), "caret");
-			inputMap.put(getKeyStroke(KeyEvent.VK_KP_LEFT, InputEvent.META_DOWN_MASK), "caret");
-			inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD4, InputEvent.META_DOWN_MASK), "caret");
-			inputMap.put(getKeyStroke(KeyEvent.VK_KP_RIGHT, InputEvent.META_DOWN_MASK), "dollar");
-			inputMap.put(getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.META_DOWN_MASK), "dollar");
-			inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD6, InputEvent.META_DOWN_MASK), "dollar");
+			inputMap.put(getKeyStroke(KeyEvent.VK_HOME, InputEvent.META_DOWN_MASK),
+					"ctrl-home");
+			inputMap.put(getKeyStroke(KeyEvent.VK_END, InputEvent.META_DOWN_MASK),
+					"ctrl-end");
+			inputMap.put(getKeyStroke(KeyEvent.VK_UP, InputEvent.META_DOWN_MASK),
+					"home");
+			inputMap.put(getKeyStroke(KeyEvent.VK_KP_UP, InputEvent.META_DOWN_MASK),
+					"home");
+			inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD8, InputEvent.META_DOWN_MASK),
+					"home");
+			inputMap.put(getKeyStroke(KeyEvent.VK_DOWN, InputEvent.META_DOWN_MASK),
+					"end");
+			inputMap.put(getKeyStroke(KeyEvent.VK_KP_DOWN, InputEvent.META_DOWN_MASK),
+					"end");
+			inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD2, InputEvent.META_DOWN_MASK),
+					"end");
+			inputMap.put(getKeyStroke(KeyEvent.VK_LEFT, InputEvent.META_DOWN_MASK),
+					"caret");
+			inputMap.put(getKeyStroke(KeyEvent.VK_KP_LEFT, InputEvent.META_DOWN_MASK),
+					"caret");
+			inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD4, InputEvent.META_DOWN_MASK),
+					"caret");
+			inputMap.put(getKeyStroke(KeyEvent.VK_KP_RIGHT, InputEvent.META_DOWN_MASK),
+					"dollar");
+			inputMap.put(getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.META_DOWN_MASK),
+					"dollar");
+			inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD6, InputEvent.META_DOWN_MASK),
+					"dollar");
 		} else {
 			inputMap.put(getKeyStroke(KeyEvent.VK_HOME, CTRL_DOWN_MASK), "ctrl-home");
 			inputMap.put(getKeyStroke(KeyEvent.VK_END, CTRL_DOWN_MASK), "ctrl-end");
@@ -154,7 +167,6 @@ public final class ArrowKeyListener {
 	}
 
 	/**
-	 *
 	 * @return a String representation of the object.
 	 */
 	@Override
@@ -164,6 +176,7 @@ public final class ArrowKeyListener {
 
 	/**
 	 * A listener to move the cursor in a direction.
+	 *
 	 * @author Jonathan Lovelace
 	 */
 	private abstract static class AbstractDirListener extends AbstractAction {
@@ -171,10 +184,12 @@ public final class ArrowKeyListener {
 		 * How many times to repeat the motion on each user action.
 		 */
 		private final int count;
+
 		/**
 		 * Do the actual motion.
 		 */
 		protected abstract void move();
+
 		/**
 		 * @param countNum how many times to move on each user action
 		 */
@@ -193,6 +208,7 @@ public final class ArrowKeyListener {
 				move();
 			}
 		}
+
 		/**
 		 * @return a String representation of the object
 		 */
@@ -213,6 +229,7 @@ public final class ArrowKeyListener {
 
 	/**
 	 * A listener to move the cursor up.
+	 *
 	 * @author Jonathan Lovelace
 	 */
 	private static final class UpListener extends AbstractDirListener {
@@ -220,12 +237,13 @@ public final class ArrowKeyListener {
 		 * The listener that handles the motion.
 		 */
 		private final DirectionSelectionChanger dsc;
+
 		/**
 		 * @param selListener the listener that handles the motion
-		 * @param countNum how many times to move on each user action
+		 * @param countNum    how many times to move on each user action
 		 */
 		protected UpListener(final DirectionSelectionChanger selListener,
-				final int countNum) {
+		                     final int countNum) {
 			super(countNum);
 			dsc = selListener;
 		}
@@ -241,6 +259,7 @@ public final class ArrowKeyListener {
 
 	/**
 	 * A listener to move the cursor down.
+	 *
 	 * @author Jonathan Lovelace
 	 */
 	private static final class DownListener extends AbstractDirListener {
@@ -248,12 +267,13 @@ public final class ArrowKeyListener {
 		 * The listener that handles the motion.
 		 */
 		private final DirectionSelectionChanger dsc;
+
 		/**
 		 * @param selListener the listener that handles the motion
-		 * @param countNum how many times to move on each user action
+		 * @param countNum    how many times to move on each user action
 		 */
 		protected DownListener(final DirectionSelectionChanger selListener,
-				final int countNum) {
+		                       final int countNum) {
 			super(countNum);
 			dsc = selListener;
 		}
@@ -269,6 +289,7 @@ public final class ArrowKeyListener {
 
 	/**
 	 * A listener to move the cursor left.
+	 *
 	 * @author Jonathan Lovelace
 	 */
 	private static final class LeftListener extends AbstractDirListener {
@@ -276,12 +297,13 @@ public final class ArrowKeyListener {
 		 * The listener that handles the motion.
 		 */
 		private final DirectionSelectionChanger dsc;
+
 		/**
 		 * @param selListener the listener that handles the motion
-		 * @param countNum how many times to move on each user action
+		 * @param countNum    how many times to move on each user action
 		 */
 		protected LeftListener(final DirectionSelectionChanger selListener,
-				final int countNum) {
+		                       final int countNum) {
 			super(countNum);
 			dsc = selListener;
 		}
@@ -297,6 +319,7 @@ public final class ArrowKeyListener {
 
 	/**
 	 * A listener to move the cursor right.
+	 *
 	 * @author Jonathan Lovelace
 	 */
 	private static final class RightListener extends AbstractDirListener {
@@ -304,12 +327,13 @@ public final class ArrowKeyListener {
 		 * The listener that handles the motion.
 		 */
 		private final DirectionSelectionChanger dsc;
+
 		/**
 		 * @param selListener the listener that handles the motion
-		 * @param countNum how many times to move on each user action
+		 * @param countNum    how many times to move on each user action
 		 */
 		protected RightListener(final DirectionSelectionChanger selListener,
-				final int countNum) {
+		                        final int countNum) {
 			super(countNum);
 			dsc = selListener;
 		}
@@ -322,8 +346,10 @@ public final class ArrowKeyListener {
 			dsc.right();
 		}
 	}
+
 	/**
 	 * A listener to move the cursor up and right.
+	 *
 	 * @author Jonathan Lovelace
 	 */
 	private static final class UpRightListener extends AbstractDirListener {
@@ -331,12 +357,13 @@ public final class ArrowKeyListener {
 		 * The listener that handles the motion.
 		 */
 		private final DirectionSelectionChanger dsc;
+
 		/**
 		 * @param selListener the listener that handles the motion
-		 * @param countNum how many times to move on each user action
+		 * @param countNum    how many times to move on each user action
 		 */
 		protected UpRightListener(final DirectionSelectionChanger selListener,
-				final int countNum) {
+		                          final int countNum) {
 			super(countNum);
 			dsc = selListener;
 		}
@@ -352,8 +379,10 @@ public final class ArrowKeyListener {
 			dsc.right();
 		}
 	}
+
 	/**
 	 * A listener to move the cursor up and left.
+	 *
 	 * @author Jonathan Lovelace
 	 */
 	private static final class UpLeftListener extends AbstractDirListener {
@@ -361,12 +390,13 @@ public final class ArrowKeyListener {
 		 * The listener that handles the motion.
 		 */
 		private final DirectionSelectionChanger dsc;
+
 		/**
 		 * @param selListener the listener that handles the motion
-		 * @param countNum how many times to move on each user action
+		 * @param countNum    how many times to move on each user action
 		 */
 		protected UpLeftListener(final DirectionSelectionChanger selListener,
-				final int countNum) {
+		                         final int countNum) {
 			super(countNum);
 			dsc = selListener;
 		}
@@ -382,8 +412,10 @@ public final class ArrowKeyListener {
 			dsc.left();
 		}
 	}
+
 	/**
 	 * A listener to move the cursor down and right.
+	 *
 	 * @author Jonathan Lovelace
 	 */
 	private static final class DownRightListener extends AbstractDirListener {
@@ -391,12 +423,13 @@ public final class ArrowKeyListener {
 		 * The listener that handles the motion.
 		 */
 		private final DirectionSelectionChanger dsc;
+
 		/**
 		 * @param selListener the listener that handles the motion
-		 * @param countNum how many times to move on each user action
+		 * @param countNum    how many times to move on each user action
 		 */
 		protected DownRightListener(final DirectionSelectionChanger selListener,
-				final int countNum) {
+		                            final int countNum) {
 			super(countNum);
 			dsc = selListener;
 		}
@@ -412,8 +445,10 @@ public final class ArrowKeyListener {
 			dsc.right();
 		}
 	}
+
 	/**
 	 * A listener to move the cursor down and left.
+	 *
 	 * @author Jonathan Lovelace
 	 */
 	private static final class DownLeftListener extends AbstractDirListener {
@@ -421,12 +456,13 @@ public final class ArrowKeyListener {
 		 * The listener that handles the motion.
 		 */
 		private final DirectionSelectionChanger dsc;
+
 		/**
 		 * @param selListener the listener that handles the motion
-		 * @param countNum how many times to move on each user action
+		 * @param countNum    how many times to move on each user action
 		 */
 		protected DownLeftListener(final DirectionSelectionChanger selListener,
-				final int countNum) {
+		                           final int countNum) {
 			super(countNum);
 			dsc = selListener;
 		}
@@ -442,6 +478,7 @@ public final class ArrowKeyListener {
 			dsc.left();
 		}
 	}
+
 	/**
 	 * A listener to move the cursor to the top left corner.
 	 */
@@ -450,14 +487,17 @@ public final class ArrowKeyListener {
 		 * The helper that actually performs the cursor movement.
 		 */
 		private final DirectionSelectionChanger dsc;
+
 		/**
 		 * @param dsch The helper to actually perform the cursor movement
 		 */
 		protected JumpUpLeftListener(final DirectionSelectionChanger dsch) {
 			dsc = dsch;
 		}
+
 		/**
 		 * Handle a key-press.
+		 *
 		 * @param evt the event to handle.
 		 */
 		@Override
@@ -465,6 +505,7 @@ public final class ArrowKeyListener {
 			dsc.jumpUp();
 			dsc.jumpLeft();
 		}
+
 		/**
 		 * @return a String representation of the object
 		 */
@@ -472,6 +513,7 @@ public final class ArrowKeyListener {
 		public String toString() {
 			return "JumpUpLeftListener";
 		}
+
 		/**
 		 * @return nothing
 		 * @throws CloneNotSupportedException always
@@ -481,6 +523,7 @@ public final class ArrowKeyListener {
 			throw new CloneNotSupportedException("Cloning not supported");
 		}
 	}
+
 	/**
 	 * A listener to move the cursor to the bottom right corner.
 	 */
@@ -489,14 +532,17 @@ public final class ArrowKeyListener {
 		 * The helper that actually performs the cursor movement.
 		 */
 		private final DirectionSelectionChanger dsc;
+
 		/**
 		 * @param dsch The helper to actually perform the cursor movement
 		 */
 		protected JumpDownRightListener(final DirectionSelectionChanger dsch) {
 			dsc = dsch;
 		}
+
 		/**
 		 * Handle a key-press.
+		 *
 		 * @param evt the event to handle.
 		 */
 		@Override
@@ -504,6 +550,7 @@ public final class ArrowKeyListener {
 			dsc.jumpDown();
 			dsc.jumpRight();
 		}
+
 		/**
 		 * @return a String representation of the object
 		 */
@@ -512,6 +559,7 @@ public final class ArrowKeyListener {
 			return "JumpDownRightListener";
 		}
 	}
+
 	/**
 	 * A listener to move the cursor all the way up.
 	 */
@@ -520,20 +568,24 @@ public final class ArrowKeyListener {
 		 * The helper that actually performs the cursor movement.
 		 */
 		private final DirectionSelectionChanger dsc;
+
 		/**
 		 * @param dsch The helper to actually perform the cursor movement
 		 */
 		protected JumpUpListener(final DirectionSelectionChanger dsch) {
 			dsc = dsch;
 		}
+
 		/**
 		 * Handle a key-press.
+		 *
 		 * @param evt the event to handle.
 		 */
 		@Override
 		public void actionPerformed(@Nullable final ActionEvent evt) {
 			dsc.jumpUp();
 		}
+
 		/**
 		 * @return a String representation of the object
 		 */
@@ -541,6 +593,7 @@ public final class ArrowKeyListener {
 		public String toString() {
 			return "JumpUpListener";
 		}
+
 		/**
 		 * @return nothing
 		 * @throws CloneNotSupportedException always
@@ -550,6 +603,7 @@ public final class ArrowKeyListener {
 			throw new CloneNotSupportedException("Cloning not supported");
 		}
 	}
+
 	/**
 	 * A listener to move the cursor all the way down.
 	 */
@@ -558,20 +612,24 @@ public final class ArrowKeyListener {
 		 * The helper that actually performs the cursor movement.
 		 */
 		private final DirectionSelectionChanger dsc;
+
 		/**
 		 * @param dsch The helper to actually perform the cursor movement
 		 */
 		protected JumpDownListener(final DirectionSelectionChanger dsch) {
 			dsc = dsch;
 		}
+
 		/**
 		 * Handle a key-press.
+		 *
 		 * @param evt the event to handle.
 		 */
 		@Override
 		public void actionPerformed(@Nullable final ActionEvent evt) {
 			dsc.jumpDown();
 		}
+
 		/**
 		 * @return a String representation of the object
 		 */
@@ -579,6 +637,7 @@ public final class ArrowKeyListener {
 		public String toString() {
 			return "JumpDownListener";
 		}
+
 		/**
 		 * @return nothing
 		 * @throws CloneNotSupportedException always
@@ -588,6 +647,7 @@ public final class ArrowKeyListener {
 			throw new CloneNotSupportedException("Cloning not supported");
 		}
 	}
+
 	/**
 	 * A listener to move the cursor all the way left.
 	 */
@@ -596,20 +656,24 @@ public final class ArrowKeyListener {
 		 * The helper that actually performs the cursor movement.
 		 */
 		private final DirectionSelectionChanger dsc;
+
 		/**
 		 * @param dsch The helper to actually perform the cursor movement
 		 */
 		protected JumpLeftListener(final DirectionSelectionChanger dsch) {
 			dsc = dsch;
 		}
+
 		/**
 		 * Handle a key-press.
+		 *
 		 * @param evt the event to handle.
 		 */
 		@Override
 		public void actionPerformed(@Nullable final ActionEvent evt) {
 			dsc.jumpLeft();
 		}
+
 		/**
 		 * @return a String representation of the object
 		 */
@@ -617,6 +681,7 @@ public final class ArrowKeyListener {
 		public String toString() {
 			return "JumpLeftListener";
 		}
+
 		/**
 		 * @return nothing
 		 * @throws CloneNotSupportedException always
@@ -626,6 +691,7 @@ public final class ArrowKeyListener {
 			throw new CloneNotSupportedException("Cloning not supported");
 		}
 	}
+
 	/**
 	 * A listener to move the cursor all the way right.
 	 */
@@ -634,20 +700,24 @@ public final class ArrowKeyListener {
 		 * The helper that actually performs the cursor movement.
 		 */
 		private final DirectionSelectionChanger dsc;
+
 		/**
 		 * @param dsch The helper to actually perform the cursor movement
 		 */
 		protected JumpRightListener(final DirectionSelectionChanger dsch) {
 			dsc = dsch;
 		}
+
 		/**
 		 * Handle a key-press.
+		 *
 		 * @param evt the event to handle.
 		 */
 		@Override
 		public void actionPerformed(@Nullable final ActionEvent evt) {
 			dsc.jumpRight();
 		}
+
 		/**
 		 * @return a String representation of the object
 		 */
@@ -655,6 +725,7 @@ public final class ArrowKeyListener {
 		public String toString() {
 			return "JumpRightListener";
 		}
+
 		/**
 		 * @return nothing
 		 * @throws CloneNotSupportedException always

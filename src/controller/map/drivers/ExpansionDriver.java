@@ -1,19 +1,5 @@
 package controller.map.drivers;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.MapReaderAdapter;
 import model.exploration.SurroundingPointIterable;
@@ -40,42 +26,63 @@ import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 /**
- * A driver to update a player's map to include a certain minimum distance
- * around allied villages.
+ * A driver to update a player's map to include a certain minimum distance around allied
+ * villages.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2014-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class ExpansionDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-n",
-			"--expand", ParamCount.Many, "Expand a player's map.",
-			"Ensure a player's map covers all terrain allied villages can see.",
-			ExpansionDriver.class);
+			                                                            "--expand",
+			                                                            ParamCount.Many,
+			                                                            "Expand a " +
+					                                                            "player's map.",
+
+			                                                            "Ensure a " +
+					                                                            "player's map covers all terrain allied villages can see.",
+			                                                            ExpansionDriver
+					                                                            .class);
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(ExpansionDriver.class.getName()));
+	private static final Logger LOGGER =
+			NullCleaner.assertNotNull(Logger.getLogger(ExpansionDriver.class.getName()));
+
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
@@ -99,6 +106,7 @@ public final class ExpansionDriver implements ISPDriver {
 	public void setName(final String nomen) {
 		throw new IllegalStateException("Can't rename a driver");
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */
@@ -106,8 +114,10 @@ public final class ExpansionDriver implements ISPDriver {
 	public String toString() {
 		return "ExpansionDriver";
 	}
+
 	/**
 	 * Run the driver.
+	 *
 	 * @param dmodel the driver model
 	 * @throws DriverFailedException on error
 	 */
@@ -117,13 +127,15 @@ public final class ExpansionDriver implements ISPDriver {
 		if (dmodel instanceof IMultiMapModel) {
 			model = (IMultiMapModel) dmodel;
 		} else {
-			LOGGER.warning("Expansion on a master map with no subordinate maps does nothing");
+			LOGGER.warning(
+					"Expansion on a master map with no subordinate maps does nothing");
 			model = new SimpleMultiMapModel(dmodel);
 		}
 		for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 			expand(model.getMap(), pair.first());
 		}
 	}
+
 	/**
 	 * Run the driver.
 	 *
@@ -135,7 +147,8 @@ public final class ExpansionDriver implements ISPDriver {
 		if (args.length < 2) {
 			System.err.println("Usage: ExpansionDriver master player [player ...]");
 			throw new DriverFailedException("Not enough arguments",
-					new IllegalArgumentException("Need at least two arguments"));
+					                               new IllegalArgumentException("Need at" +
+							                                                            " least two arguments"));
 		}
 		final File masterFile = new File(args[0]);
 		final MapReaderAdapter reader = new MapReaderAdapter();
@@ -146,20 +159,20 @@ public final class ExpansionDriver implements ISPDriver {
 	}
 
 	/**
-	 * @param master
-	 *            the master map
-	 * @param map
-	 *            a player's map, to be expanded
+	 * @param master the master map
+	 * @param map    a player's map, to be expanded
 	 */
 	private static void expand(final IMapNG master, final IMutableMapNG map) {
 		final Player player = map.getCurrentPlayer();
 		final IllegalStateException ise =
 				new IllegalStateException(
-						"Unsupported method called on mock object");
-		final Collection<Point> villagePoints = StreamSupport.stream(map.locations().spliterator(), false)
-				                                        .filter(point -> containsSwornVillage(master, point, player))
-				                                        .collect(
-						                                        Collectors.toSet());
+						                         "Unsupported method called on mock " +
+								                         "object");
+		final Collection<Point> villagePoints =
+				StreamSupport.stream(map.locations().spliterator(), false)
+						.filter(point -> containsSwornVillage(master, point, player))
+						.collect(
+								Collectors.toSet());
 		final IUnit mock = new IUnit() {
 			@Override
 			public int getZValue() {
@@ -294,7 +307,7 @@ public final class ExpansionDriver implements ISPDriver {
 			addSurroundingFixtures(point, master, fixAdditions, mock);
 		}
 		for (final Map.Entry<Point, TileType> entry : terrainAdditions
-				.entrySet()) {
+				                                              .entrySet()) {
 			if (entry == null) {
 				continue;
 			}
@@ -302,7 +315,7 @@ public final class ExpansionDriver implements ISPDriver {
 					NullCleaner.assertNotNull(entry.getValue()));
 		}
 		for (final Map.Entry<Point, Set<TileFixture>> entry : fixAdditions
-				.entrySet()) {
+				                                                      .entrySet()) {
 			if (entry == null) {
 				continue;
 			}
@@ -310,7 +323,8 @@ public final class ExpansionDriver implements ISPDriver {
 			for (final TileFixture fix : entry.getValue()) {
 				if (fix instanceof HasOwner) {
 					map.addFixture(point, fix
-							.copy(!((HasOwner) fix).getOwner().equals(player)));
+							                      .copy(!((HasOwner) fix).getOwner()
+									                             .equals(player)));
 				} else {
 					map.addFixture(point, fix.copy(true));
 				}
@@ -319,22 +333,21 @@ public final class ExpansionDriver implements ISPDriver {
 	}
 
 	/**
-	 * @param point
-	 *            a location
-	 * @param master
-	 *            the master map
-	 * @param additions
-	 *            a collection of additions to make (by which they are returned)
-	 * @param owned
-	 *            a "unit" (probably a mock-object) indicating the player we're
-	 *            concerned with.
+	 * @param point     a location
+	 * @param master    the master map
+	 * @param additions a collection of additions to make (by which they are returned)
+	 * @param owned     a "unit" (probably a mock-object) indicating the player we're
+	 *                  concerned with.
 	 */
 	private static void addSurroundingFixtures(final Point point,
-			final IMapNG master, final Map<Point, Set<TileFixture>> additions,
-			final IUnit owned) {
+	                                           final IMapNG master,
+	                                           final Map<Point, Set<TileFixture>>
+			                                           additions,
+	                                           final IUnit owned) {
 		final List<TileFixture> possibilities = new ArrayList<>();
 		for (final Point neighbor : new SurroundingPointIterable(point,
-				master.dimensions())) {
+				                                                        master
+						                                                        .dimensions())) {
 			final Set<TileFixture> neighborFixtures =
 					getSetFromMap(additions, neighbor);
 			possibilities.clear();
@@ -352,7 +365,7 @@ public final class ExpansionDriver implements ISPDriver {
 				} else if (SimpleMovement.shouldAlwaysNotice(owned, fix)) {
 					neighborFixtures.add(fix);
 				} else if (SimpleMovement.mightNotice(owned, fix)
-						&& !(fix instanceof CacheFixture)) {
+						           && !(fix instanceof CacheFixture)) {
 					possibilities.add(fix);
 				}
 			}
@@ -364,17 +377,15 @@ public final class ExpansionDriver implements ISPDriver {
 	}
 
 	/**
-	 * @param map
-	 *            a mapping from a key to a set of values
-	 * @param key
-	 *            the key to query the map for
-	 * @return the value at the key, or a new ArraySet (which is added) if there
-	 *         is no value there yet.
+	 * @param map a mapping from a key to a set of values
+	 * @param key the key to query the map for
 	 * @param <K> the type of the key
 	 * @param <V> the type of members of the set
+	 * @return the value at the key, or a new ArraySet (which is added) if there is no
+	 * value there yet.
 	 */
 	private static <K, V> Set<V> getSetFromMap(final Map<K, Set<V>> map,
-			final K key) {
+	                                           final K key) {
 		if (map.containsKey(key)) {
 			return map.get(key);
 		} else {
@@ -383,22 +394,20 @@ public final class ExpansionDriver implements ISPDriver {
 			return retval;
 		}
 	}
+
 	/**
-	 * @param point
-	 *            a location
-	 * @param master
-	 *            the master map
-	 * @param map
-	 *            a player's map
-	 * @param additions
-	 *            a collection of additions to make (by which they are returned)
+	 * @param point     a location
+	 * @param master    the master map
+	 * @param map       a player's map
+	 * @param additions a collection of additions to make (by which they are returned)
 	 */
 	private static void addSurroundingTerrain(final Point point, final IMapNG master,
-			final IMutableMapNG map, final Map<Point, TileType> additions) {
+	                                          final IMutableMapNG map,
+	                                          final Map<Point, TileType> additions) {
 		for (final Point neighbor : new SurroundingPointIterable(point,
-				map.dimensions())) {
+				                                                        map.dimensions())) {
 			if (!additions.containsKey(neighbor)
-					&& TileType.NotVisible == map.getBaseTerrain(neighbor)) {
+					    && TileType.NotVisible == map.getBaseTerrain(neighbor)) {
 				additions.put(neighbor, master.getBaseTerrain(neighbor));
 				if (master.isMountainous(neighbor)) {
 					map.setMountainous(neighbor, true);
@@ -406,19 +415,19 @@ public final class ExpansionDriver implements ISPDriver {
 			}
 		}
 	}
+
 	/**
-	 * @param map
-	 *            a map
-	 * @param point
-	 *            a point in the map
-	 * @param player
-	 *            a player
-	 * @return whether there is a village or town at that location that belongs
-	 *         to that player
+	 * @param map    a map
+	 * @param point  a point in the map
+	 * @param player a player
+	 * @return whether there is a village or town at that location that belongs to that
+	 * player
 	 */
 	private static boolean containsSwornVillage(final IMapNG map, final Point point,
-			final Player player) {
+	                                            final Player player) {
 		return StreamSupport.stream(map.getOtherFixtures(point).spliterator(), false)
-				       .anyMatch(fix -> fix instanceof ITownFixture && ((HasOwner) fix).getOwner().equals(player));
+				       .anyMatch(fix -> fix instanceof ITownFixture &&
+						                        ((HasOwner) fix).getOwner()
+								                        .equals(player));
 	}
 }

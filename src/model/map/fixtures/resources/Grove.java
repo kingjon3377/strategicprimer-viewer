@@ -1,34 +1,32 @@
 package model.map.fixtures.resources;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**
  * An orchard (fruit trees) or grove (other trees) on the map.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public class Grove implements HarvestableFixture, HasKind {
 	/**
@@ -52,13 +50,13 @@ public class Grove implements HarvestableFixture, HasKind {
 	/**
 	 * Constructor.
 	 *
-	 * @param fruit whether the trees are fruit trees
+	 * @param fruit           whether the trees are fruit trees
 	 * @param cultivatedGrove whether the trees are cultivated
-	 * @param tree what kind of trees are in the grove
-	 * @param idNum the ID number.
+	 * @param tree            what kind of trees are in the grove
+	 * @param idNum           the ID number.
 	 */
 	public Grove(final boolean fruit, final boolean cultivatedGrove,
-			final String tree, final int idNum) {
+	             final String tree, final int idNum) {
 		orchard = fruit;
 		cultivated = cultivatedGrove;
 		kind = tree;
@@ -66,8 +64,8 @@ public class Grove implements HarvestableFixture, HasKind {
 	}
 
 	/**
-	 * @return a copy of this grove
 	 * @param zero ignored, as a grove has no sensitive information
+	 * @return a copy of this grove
 	 */
 	@Override
 	public Grove copy(final boolean zero) {
@@ -75,6 +73,7 @@ public class Grove implements HarvestableFixture, HasKind {
 		retval.setImage(image);
 		return retval;
 	}
+
 	/**
 	 * @return true if this is an orchard, false otherwise
 	 */
@@ -83,8 +82,7 @@ public class Grove implements HarvestableFixture, HasKind {
 	}
 
 	/**
-	 * @return if this is a cultivated grove or orchard, false if it's a wild
-	 *         one
+	 * @return if this is a cultivated grove or orchard, false if it's a wild one
 	 */
 	public boolean isCultivated() {
 		return cultivated;
@@ -145,10 +143,10 @@ public class Grove implements HarvestableFixture, HasKind {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof Grove
-				&& kind.equals(((Grove) obj).kind)
-				&& orchard == ((Grove) obj).orchard
-				&& cultivated == ((Grove) obj).cultivated
-				&& id == ((Grove) obj).id;
+				                      && kind.equals(((Grove) obj).kind)
+				                      && orchard == ((Grove) obj).orchard
+				                      && cultivated == ((Grove) obj).cultivated
+				                      && id == ((Grove) obj).id;
 	}
 
 	/**
@@ -161,7 +159,6 @@ public class Grove implements HarvestableFixture, HasKind {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -189,8 +186,8 @@ public class Grove implements HarvestableFixture, HasKind {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Grove && kind.equals(((Grove) fix).kind)
-				&& orchard == ((Grove) fix).orchard
-				&& cultivated == ((Grove) fix).cultivated;
+				       && orchard == ((Grove) fix).orchard
+				       && cultivated == ((Grove) fix).cultivated;
 	}
 
 	/**
@@ -224,6 +221,7 @@ public class Grove implements HarvestableFixture, HasKind {
 	public String plural() {
 		return "Groves and orchards";
 	}
+
 	/**
 	 * @return a short description of the fixture
 	 */

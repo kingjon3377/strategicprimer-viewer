@@ -1,35 +1,33 @@
 package model.map.fixtures.resources;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**
- * A field or meadow. If in forest, should increase a unit's vision slightly
- * when the unit is on it.
+ * A field or meadow. If in forest, should increase a unit's vision slightly when the unit
+ * is on it.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public class Meadow implements HarvestableFixture, HasKind {
 	/**
@@ -58,13 +56,13 @@ public class Meadow implements HarvestableFixture, HasKind {
 	 * Constructor.
 	 *
 	 * @param grain the kind of grass or grain growing in the field or meadow
-	 * @param fld whether this is a field (as opposed to a meadow)
-	 * @param cult whether it's under cultivation
+	 * @param fld   whether this is a field (as opposed to a meadow)
+	 * @param cult  whether it's under cultivation
 	 * @param idNum the ID number.
-	 * @param stat the status of the field, i.e. what season it's in
+	 * @param stat  the status of the field, i.e. what season it's in
 	 */
 	public Meadow(final String grain, final boolean fld, final boolean cult,
-			final int idNum, final FieldStatus stat) {
+	              final int idNum, final FieldStatus stat) {
 		kind = grain;
 		field = fld;
 		cultivated = cult;
@@ -73,8 +71,8 @@ public class Meadow implements HarvestableFixture, HasKind {
 	}
 
 	/**
-	 * @return a copy of this meadow
 	 * @param zero ignored; there's no sensitive information
+	 * @return a copy of this meadow
 	 */
 	@Override
 	public Meadow copy(final boolean zero) {
@@ -82,6 +80,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 		retval.setImage(image);
 		return retval;
 	}
+
 	/**
 	 * @return the kind of grass or grain growing in the meadow or field
 	 */
@@ -162,14 +161,16 @@ public class Meadow implements HarvestableFixture, HasKind {
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof Meadow && equalsImpl((Meadow) obj);
 	}
+
 	/**
 	 * @param obj a Meadow
 	 * @return whether it equals this one
 	 */
 	private boolean equalsImpl(final Meadow obj) {
 		return kind.equals(obj.kind) && field == obj.field
-				&& cultivated == obj.cultivated && id == obj.id;
+				       && cultivated == obj.cultivated && id == obj.id;
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -180,7 +181,6 @@ public class Meadow implements HarvestableFixture, HasKind {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -208,9 +208,9 @@ public class Meadow implements HarvestableFixture, HasKind {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Meadow && kind.equals(((Meadow) fix).kind)
-				&& field == ((Meadow) fix).field
-				&& cultivated == ((Meadow) fix).cultivated
-				&& status == ((Meadow) fix).status;
+				       && field == ((Meadow) fix).field
+				       && cultivated == ((Meadow) fix).cultivated
+				       && status == ((Meadow) fix).status;
 	}
 
 	/**
@@ -244,6 +244,7 @@ public class Meadow implements HarvestableFixture, HasKind {
 	public String plural() {
 		return "Fields and meadows";
 	}
+
 	/**
 	 * @return a short description of the fixture
 	 */

@@ -1,11 +1,5 @@
 package controller.map.report;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
 import model.map.DistanceComparator;
@@ -25,36 +19,40 @@ import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.Fortress;
 import model.report.AbstractReportNode;
 import model.report.RootReportNode;
+import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
 import util.IntMap;
 import util.NullCleaner;
 import util.Pair;
 import util.PairComparator;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+
 /**
  * A class to produce a report based on a map for a player.
  *
  * TODO: Use an IR for lists, producing "" if empty, to simplify these methods!
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class ReportGenerator {
 	/**
@@ -63,26 +61,33 @@ public final class ReportGenerator {
 	private ReportGenerator() {
 		// So don't instantiate.
 	}
+
 	/**
 	 * A simple comparator for fixtures.
 	 */
-	private static final Comparator<@NonNull IFixture> SIMPLE_COMPARATOR = (firstFixture, secondFixture) -> {
-		if (firstFixture.equals(secondFixture)) {
-			return 0;
-		} else {
-			return firstFixture.hashCode() - secondFixture.hashCode();
-		}
-	};
+	private static final Comparator<@NonNull IFixture> SIMPLE_COMPARATOR =
+			(firstFixture, secondFixture) -> {
+				if (firstFixture.equals(secondFixture)) {
+					return 0;
+				} else {
+					return firstFixture.hashCode() - secondFixture.hashCode();
+				}
+			};
+
 	/**
-	 * @param map a map
+	 * @param map    a map
 	 * @param player a player
-	 * @return the location of that player's HQ, or another of that player's fortresses if not found, (-1, -1) if none found
+	 * @return the location of that player's HQ, or another of that player's
+	 * fortresses if
+	 * not found, (-1, -1) if none found
 	 */
 	private static Point findHQ(final IMapNG map, final Player player) {
 		Point retval = PointFactory.point(-1, -1);
 		for (final Point location : map.locations()) {
-			for (final TileFixture fixture : map.getOtherFixtures(NullCleaner.assertNotNull(location))) {
-				if (fixture instanceof Fortress && ((Fortress) fixture).getOwner().equals(player)) {
+			for (final TileFixture fixture : map.getOtherFixtures(
+					NullCleaner.assertNotNull(location))) {
+				if (fixture instanceof Fortress &&
+						    ((Fortress) fixture).getOwner().equals(player)) {
 					if ("HQ".equals(((Fortress) fixture).getName())) {
 						return location;
 					} else if (location.row >= 0 && retval.row == -1) {
@@ -102,14 +107,16 @@ public final class ReportGenerator {
 		// The full report for the world map, as of turn 11, is 8 megs. So we
 		// make a 10 meg buffer.
 		final StringBuilder builder = new StringBuilder(10485760)
-				.append("<html>\n");
+				                              .append("<html>\n");
 		builder.append("<head><title>Strategic Primer map ").append(
 				"summary report</title></head>\n");
 		builder.append("<body>");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
 		final Player player = map.getCurrentPlayer();
-		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator = new PairComparator<>(new DistanceComparator(findHQ(map, player)), SIMPLE_COMPARATOR);
+		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator =
+				new PairComparator<>(new DistanceComparator(findHQ(map, player)),
+						                    SIMPLE_COMPARATOR);
 		builder.append(new FortressReportGenerator(comparator).produce(fixtures, map,
 				player));
 		fixtures.coalesce();
@@ -141,7 +148,7 @@ public final class ReportGenerator {
 		for (final Pair<Point, IFixture> pair : fixtures.values()) {
 			final IFixture fix = pair.second();
 			if (fix instanceof Hill || fix instanceof Sandbar
-					|| fix instanceof Oasis) {
+					    || fix instanceof Oasis) {
 				fixtures.remove(Integer.valueOf(fix.getID()));
 				continue;
 			}
@@ -152,29 +159,34 @@ public final class ReportGenerator {
 	}
 
 	/**
-	 * Creates a slightly abbreviated report, omitting the player's fortresses
-	 * and units.
+	 * Creates a slightly abbreviated report, omitting the player's fortresses and units.
 	 *
-	 * @param map the map to base the report on
-	 * @return the report, in HTML, as a string.
+	 * @param map    the map to base the report on
 	 * @param player the player to report on
+	 * @return the report, in HTML, as a string.
 	 */
 	public static String createAbbreviatedReport(final IMapNG map,
-			final Player player) {
+	                                             final Player player) {
 		// The full report for the world map, as of turn 11, is 8 megs. So we
 		// make a 10 meg buffer.
 		final StringBuilder builder = new StringBuilder(10485760)
-				.append("<html>\n<head>");
+				                              .append("<html>\n<head>");
 		builder.append("<title>Strategic Primer map summary ").append(
 				"abridged report</title></head>\n");
 		builder.append("<body>");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
-		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator = new PairComparator<>(new DistanceComparator(findHQ(map, player)), SIMPLE_COMPARATOR);
+		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator =
+				new PairComparator<>(new DistanceComparator(findHQ(map, player)),
+						                    SIMPLE_COMPARATOR);
 
-		fixtures.values().stream().filter(pair -> (pair.second() instanceof Unit || pair.second() instanceof Fortress)
-				                                          && player.equals(((HasOwner) pair.second()).getOwner()))
-				.forEach(pair -> fixtures.remove(Integer.valueOf(pair.second().getID())));
+		fixtures.values().stream().filter(pair -> (pair.second() instanceof Unit ||
+				                                           pair.second() instanceof
+						                                           Fortress)
+				                                          && player.equals(
+				((HasOwner) pair.second()).getOwner()))
+				.forEach(pair -> fixtures.remove(Integer.valueOf(pair.second().getID()
+				)));
 		fixtures.coalesce();
 		builder.append(new FortressReportGenerator(comparator).produce(fixtures, map,
 				player));
@@ -213,22 +225,26 @@ public final class ReportGenerator {
 	 */
 	public static AbstractReportNode createReportIR(final IMapNG map) {
 		final AbstractReportNode retval = new RootReportNode(
-				"Strategic Primer map summary report");
+				                                                    "Strategic Primer " +
+						                                                    "map summary" +
+						                                                    " report");
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
 		final Player player = map.getCurrentPlayer();
-		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator = new PairComparator<>(new DistanceComparator(findHQ(map, player)), SIMPLE_COMPARATOR);
+		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator =
+				new PairComparator<>(new DistanceComparator(findHQ(map, player)),
+						                    SIMPLE_COMPARATOR);
 		retval.add(new FortressReportGenerator(comparator).produceRIR(fixtures, map,
 				player));
 		fixtures.coalesce();
 		retval.add(new UnitReportGenerator(comparator)
-				.produceRIR(fixtures, map, player));
+				           .produceRIR(fixtures, map, player));
 		fixtures.coalesce();
 		retval.add(new TextReportGenerator(comparator)
-				.produceRIR(fixtures, map, player));
+				           .produceRIR(fixtures, map, player));
 		fixtures.coalesce();
 		retval.add(new TownReportGenerator(comparator)
-				.produceRIR(fixtures, map, player));
+				           .produceRIR(fixtures, map, player));
 		fixtures.coalesce();
 		retval.add(new ExplorableReportGenerator(comparator).produceRIR(fixtures, map,
 				player));
@@ -249,36 +265,43 @@ public final class ReportGenerator {
 	}
 
 	/**
-	 * Creates a slightly abbreviated report, omitting the player's fortresses
-	 * and units.
+	 * Creates a slightly abbreviated report, omitting the player's fortresses and units.
 	 *
-	 * @param map the map to base the report on
-	 * @return the report, in HTML, as a string.
+	 * @param map    the map to base the report on
 	 * @param player the player to report on
+	 * @return the report, in HTML, as a string.
 	 */
 	public static AbstractReportNode createAbbreviatedReportIR(final IMapNG map,
-			final Player player) {
+	                                                           final Player player) {
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
-		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator = new PairComparator<>(new DistanceComparator(findHQ(map, player)), SIMPLE_COMPARATOR);
+		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator =
+				new PairComparator<>(new DistanceComparator(findHQ(map, player)),
+						                    SIMPLE_COMPARATOR);
 
-		fixtures.values().stream().filter(pair -> (pair.second() instanceof Unit || pair.second() instanceof Fortress)
-				                                          && player.equals(((HasOwner) pair.second()).getOwner()))
-				.forEach(pair -> fixtures.remove(Integer.valueOf(pair.second().getID())));
+		fixtures.values().stream().filter(pair -> (pair.second() instanceof Unit ||
+				                                           pair.second() instanceof
+						                                           Fortress)
+				                                          && player.equals(
+				((HasOwner) pair.second()).getOwner()))
+				.forEach(pair -> fixtures.remove(Integer.valueOf(pair.second().getID()
+				)));
 		fixtures.coalesce();
 		final AbstractReportNode retval = new RootReportNode(
-				                                                    "Strategic Primer map summary abbreviated report");
+				                                                    "Strategic Primer " +
+						                                                    "map summary" +
+						                                                    " abbreviated report");
 		retval.add(new FortressReportGenerator(comparator).produceRIR(fixtures, map,
 				player));
 		fixtures.coalesce();
 		retval.add(new UnitReportGenerator(comparator)
-				.produceRIR(fixtures, map, player));
+				           .produceRIR(fixtures, map, player));
 		fixtures.coalesce();
 		retval.add(new TextReportGenerator(comparator)
-				.produceRIR(fixtures, map, player));
+				           .produceRIR(fixtures, map, player));
 		fixtures.coalesce();
 		retval.add(new TownReportGenerator(comparator)
-				.produceRIR(fixtures, map, player));
+				           .produceRIR(fixtures, map, player));
 		fixtures.coalesce();
 		retval.add(new ExplorableReportGenerator(comparator).produceRIR(fixtures, map,
 				player));
@@ -300,11 +323,11 @@ public final class ReportGenerator {
 
 	/**
 	 * @param map a map
-	 * @return the fixtures in it, a mapping from their ID to a Pair of the
-	 *         fixture's location and the fixture itself.
+	 * @return the fixtures in it, a mapping from their ID to a Pair of the fixture's
+	 * location and the fixture itself.
 	 */
 	private static DelayedRemovalMap<Integer, Pair<Point, IFixture>> getFixtures(
-			final IMapNG map) {
+			                                                                            final IMapNG map) {
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> retval =
 				new IntMap<>();
 		final IDFactory idf = IDFactoryFiller.createFactory(map);
@@ -314,7 +337,8 @@ public final class ReportGenerator {
 			for (final IFixture fix : getFixtures(map.getOtherFixtures(point))) {
 				if (fix.getID() >= 0) {
 					retval.put(NullCleaner.assertNotNull(Integer
-							.valueOf(fix.getID())), Pair.of(point, fix));
+							                                     .valueOf(fix.getID())),
+							Pair.of(point, fix));
 				} else if (fix instanceof TextFixture) {
 					retval.put(NullCleaner.assertNotNull(Integer.valueOf(idf.createID())),
 							Pair.of(point, fix));
@@ -329,7 +353,7 @@ public final class ReportGenerator {
 	 * @return all the tile-fixtures in it, recursively.
 	 */
 	private static Collection<IFixture> getFixtures(
-			final Iterable<? extends IFixture> iter) {
+			                                               final Iterable<? extends IFixture> iter) {
 		final Collection<IFixture> retval = new ArrayList<>();
 		for (final IFixture fix : iter) {
 			retval.add(fix);

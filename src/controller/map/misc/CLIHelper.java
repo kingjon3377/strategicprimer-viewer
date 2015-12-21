@@ -1,6 +1,10 @@
 package controller.map.misc;
 
-import static view.util.SystemOut.SYS_OUT;
+import model.map.HasName;
+import org.eclipse.jdt.annotation.NonNull;
+import util.EqualsAny;
+import util.IsNumeric;
+import util.NullCleaner;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,37 +17,31 @@ import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.eclipse.jdt.annotation.NonNull;
-
-import model.map.HasName;
-import util.EqualsAny;
-import util.IsNumeric;
-import util.NullCleaner;
+import static view.util.SystemOut.SYS_OUT;
 
 /**
  * A helper class to let help CLIs interact with the user.
  *
  * TODO: Write tests (using string streams).
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class CLIHelper implements ICLIHelper {
 	/**
@@ -54,7 +52,8 @@ public final class CLIHelper implements ICLIHelper {
 	 * A parser for numbers.
 	 */
 	private static final NumberFormat NUM_PARSER = NullCleaner
-			.assertNotNull(NumberFormat.getIntegerInstance());
+			                                               .assertNotNull(NumberFormat
+					                                                              .getIntegerInstance());
 
 	/**
 	 * No-arg constructor.
@@ -77,11 +76,12 @@ public final class CLIHelper implements ICLIHelper {
 	 * Print a list of things by name and number.
 	 *
 	 * @param ostream the stream to write to
-	 * @param list the list to print.
+	 * @param list    the list to print.
 	 * @throws IOException on I/O error writing to stream
 	 */
 	private static void printList(final Appendable ostream,
-			final List<? extends HasName> list) throws IOException {
+	                              final List<? extends HasName> list) throws
+			IOException {
 		for (int i = 0; i < list.size(); i++) {
 			ostream.append(Integer.toString(i));
 			ostream.append(": ");
@@ -93,19 +93,23 @@ public final class CLIHelper implements ICLIHelper {
 	/**
 	 * Have the user choose an item from a list.
 	 *
-	 * @param <T> The type of things in the list
-	 * @param items the list of items
-	 * @param desc the description to give before printing the list
-	 * @param none what to print if there are none
+	 * @param <T>    The type of things in the list
+	 * @param items  the list of items
+	 * @param desc   the description to give before printing the list
+	 * @param none   what to print if there are none
 	 * @param prompt what to prompt the user with
-	 * @param auto whether to automatically choose if there's only one choice
+	 * @param auto   whether to automatically choose if there's only one choice
 	 * @return the user's selection, or -1 if there are none
 	 * @throws IOException on I/O error getting the user's input
 	 */
 	@Override
 	public <T extends HasName> int chooseFromList(
-			final List<@NonNull ? extends T> items, final String desc,
-			final String none, final String prompt, final boolean auto)
+			                                             final List<@NonNull ? extends
+					                                                        T> items,
+			                                             final String desc,
+			                                             final String none,
+			                                             final String prompt,
+			                                             final boolean auto)
 			throws IOException {
 		if (items.isEmpty()) {
 			SYS_OUT.println(none);
@@ -123,24 +127,25 @@ public final class CLIHelper implements ICLIHelper {
 	}
 
 	/**
-	 * Turn an Iterable into a List. This is, of course, an eager
-	 * implementation; make sure not to use on anything with an infinite
-	 * iterator!
+	 * Turn an Iterable into a List. This is, of course, an eager implementation; make
+	 * sure not to use on anything with an infinite iterator!
 	 *
-	 * FIXME: This is probably more generally useful and should be moved
-	 * elsewhere, if it's not already somewhere I forgot about.
+	 * FIXME: This is probably more generally useful and should be moved elsewhere, if
+	 * it's not already somewhere I forgot about.
 	 *
-	 * @param <T> the type contained in the iterable.
+	 * @param <T>  the type contained in the iterable.
 	 * @param iter the thing to iterate over
 	 * @return a List representing the same data.
 	 */
 	public static <T> List<T> toList(final Iterable<T> iter) {
-		return StreamSupport.stream(iter.spliterator(), false).collect(Collectors.toList());
+		return StreamSupport.stream(iter.spliterator(), false)
+				       .collect(Collectors.toList());
 	}
 
 	/**
-	 * Read input from stdin repeatedly until a nonnegative integer is entered,
-	 * and return it.
+	 * Read input from stdin repeatedly until a nonnegative integer is entered, and
+	 * return
+	 * it.
 	 *
 	 * @param prompt The prompt to prompt the user with
 	 * @return the number entered
@@ -159,7 +164,7 @@ public final class CLIHelper implements ICLIHelper {
 					retval = NUM_PARSER.parse(input).intValue();
 				} catch (final ParseException e) {
 					final NumberFormatException nexcept = new NumberFormatException(
-							"Failed to parse number from input");
+							                                                               "Failed to parse number from input");
 					nexcept.initCause(e);
 					throw nexcept;
 				}
@@ -169,8 +174,7 @@ public final class CLIHelper implements ICLIHelper {
 	}
 
 	/**
-	 * Read input from stdin. (The input is trimmed of leading and trailing
-	 * whitespace.)
+	 * Read input from stdin. (The input is trimmed of leading and trailing whitespace.)
 	 *
 	 * @param prompt The prompt to prompt the user with
 	 * @return the string entered.
@@ -197,8 +201,12 @@ public final class CLIHelper implements ICLIHelper {
 	@Override
 	public boolean inputBoolean(final String prompt) throws IOException {
 		for (String input = NullCleaner.assertNotNull(
-				inputString(prompt).toLowerCase(Locale.US));; input = NullCleaner
-						.assertNotNull(inputString(prompt).toLowerCase(Locale.US))) {
+				inputString(prompt).toLowerCase(Locale.US)); ; input = NullCleaner
+						                                                       .assertNotNull(
+								                                                       inputString(
+										                                                       prompt)
+										                                                       .toLowerCase(
+												                                                       Locale.US))) {
 			if (EqualsAny.equalsAny(input, "yes", "true", "y", "t")) {
 				return true; // NOPMD
 			} else if (EqualsAny.equalsAny(input, "no", "false", "n", "f")) {
@@ -209,6 +217,7 @@ public final class CLIHelper implements ICLIHelper {
 			}
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */
@@ -216,15 +225,16 @@ public final class CLIHelper implements ICLIHelper {
 	public String toString() {
 		return "CLIHelper";
 	}
+
 	/**
 	 * Print a list of things by name and number.
 	 *
 	 * @param ostream the stream to write to
-	 * @param list the list to print.
+	 * @param list    the list to print.
 	 * @throws IOException on I/O error writing to stream
 	 */
 	private static void printStringList(final Appendable ostream,
-	        final List<String> list) throws IOException {
+	                                    final List<String> list) throws IOException {
 		for (int i = 0; i < list.size(); i++) {
 			ostream.append(Integer.toString(i));
 			ostream.append(": ");
@@ -232,20 +242,22 @@ public final class CLIHelper implements ICLIHelper {
 			ostream.append('\n');
 		}
 	}
+
 	/**
 	 * Have the user choose an item from a list.
 	 *
-	 * @param items the list of items
-	 * @param desc the description to give before printing the list
-	 * @param none what to print if there are none
+	 * @param items  the list of items
+	 * @param desc   the description to give before printing the list
+	 * @param none   what to print if there are none
 	 * @param prompt what to prompt the user with
-	 * @param auto whether to automatically choose if there's only one choice
+	 * @param auto   whether to automatically choose if there's only one choice
 	 * @return the user's selection, or -1 if there are none
 	 * @throws IOException on I/O error getting the user's input
 	 */
 	@Override
 	public int chooseStringFromList(final List<String> items, final String desc,
-	        final String none, final String prompt, final boolean auto)
+	                                final String none, final String prompt,
+	                                final boolean auto)
 			throws IOException {
 		if (items.isEmpty()) {
 			SYS_OUT.println(none);

@@ -1,38 +1,36 @@
 package model.viewer;
 
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * An view of locations on the map in order, starting at a given point.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class PointIterator implements Iterator<@NonNull Point> {
 	/**
@@ -71,6 +69,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	 * Whether we've started iterating.
 	 */
 	private boolean started = false;
+
 	/**
 	 * @return a String representation of the object
 	 */
@@ -105,7 +104,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	}
 
 	/**
-	 * @param val a value
+	 * @param val  a value
 	 * @param wrap another
 	 * @return the first, unless it's negative, in which case the second
 	 */
@@ -120,15 +119,16 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	/**
 	 * Constructor.
 	 *
-	 * @param dims the dimensions of the map we're helping to go through
-	 * @param sel the selected point; we start from 0, 0 if null
-	 * @param searchForwards Whether we should search forwards (if true) or
-	 *        backwards (if false)
-	 * @param searchHoriz Whether we should search horizontally (if true) or
-	 *        vertically (if false)
+	 * @param dims           the dimensions of the map we're helping to go through
+	 * @param sel            the selected point; we start from 0, 0 if null
+	 * @param searchForwards Whether we should search forwards (if true) or backwards (if
+	 *                       false)
+	 * @param searchHoriz    Whether we should search horizontally (if true) or
+	 *                          vertically
+	 *                       (if false)
 	 */
 	public PointIterator(final MapDimensions dims, @Nullable final Point sel,
-			final boolean searchForwards, final boolean searchHoriz) {
+	                     final boolean searchForwards, final boolean searchHoriz) {
 		horiz = searchHoriz;
 		forwards = searchForwards;
 		maxRow = dims.getRows() - 1;
@@ -260,6 +260,6 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	@Override
 	public void remove() {
 		throw new UnsupportedOperationException(
-				"Can't remove a Point from a map.");
+				                                       "Can't remove a Point from a map.");
 	}
 }

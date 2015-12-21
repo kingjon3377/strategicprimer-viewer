@@ -1,36 +1,34 @@
 package util;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 /**
- * Basically a FileInputStream, but the file could be on disk or in the
- * classpath.
+ * Basically a FileInputStream, but the file could be on disk or in the classpath.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class ResourceInputStream extends InputStream {
 	/**
@@ -42,8 +40,7 @@ public final class ResourceInputStream extends InputStream {
 	 * Constructor.
 	 *
 	 * @param filename the name of the file to read
-	 * @throws FileNotFoundException if it's not found on disk or in the
-	 *         classpath
+	 * @throws FileNotFoundException if it's not found on disk or in the classpath
 	 */
 	@SuppressWarnings("resource")
 	// The resource is *not* leaked; it's closed when this is.
@@ -54,7 +51,7 @@ public final class ResourceInputStream extends InputStream {
 			temp = new BufferedInputStream(new FileInputStream(filename));
 		} catch (final FileNotFoundException except) {
 			temp = ResourceInputStream.class.getClassLoader()
-					.getResourceAsStream(filename);
+					       .getResourceAsStream(filename);
 			if (temp == null) {
 				throw except;
 			}
@@ -105,8 +102,8 @@ public final class ResourceInputStream extends InputStream {
 	}
 
 	/**
-	 * @return an estimate of the number of bytes that can be read or skipped
-	 *         over in the stream without blocking
+	 * @return an estimate of the number of bytes that can be read or skipped over in the
+	 * stream without blocking
 	 * @throws IOException if thrown by wrapped implementation
 	 */
 	@Override
@@ -121,6 +118,7 @@ public final class ResourceInputStream extends InputStream {
 	public void close() throws IOException {
 		wrapped.close();
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

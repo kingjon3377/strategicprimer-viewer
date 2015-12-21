@@ -1,10 +1,5 @@
 package model.viewer;
 
-import javax.swing.DefaultListModel;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.listeners.SelectionChangeListener;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -17,31 +12,34 @@ import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.terrain.Forest;
 import model.misc.IDriverModel;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
+import javax.swing.*;
 
 /**
  * A model for a FixtureList.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * TODO: tests
  *
  * @author Jonathan Lovelace
- *
  */
 public final class FixtureListModel extends DefaultListModel<@NonNull TileFixture>
 		implements SelectionChangeListener {
@@ -53,19 +51,21 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 * The current point.
 	 */
 	private Point point = PointFactory.point(-1, -1);
+
 	/**
 	 * @param model the driver model to use
 	 */
 	public FixtureListModel(final IDriverModel model) {
 		dmodel = model;
 	}
+
 	/**
-	 * @param old the formerly selected location
+	 * @param old      the formerly selected location
 	 * @param newPoint the newly selected location
 	 */
 	@Override
 	public void selectedPointChanged(@Nullable final Point old,
-			final Point newPoint) {
+	                                 final Point newPoint) {
 		clear();
 		final IMapNG map = dmodel.getMap();
 		final TileType base = map.getBaseTerrain(newPoint);
@@ -134,11 +134,11 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 					map.setBaseTerrain(point, TileType.NotVisible);
 					removeElement(fix);
 				} else if (fix instanceof Ground
-						&& fix.equals(map.getGround(point))) {
+						           && fix.equals(map.getGround(point))) {
 					map.setGround(point, null);
 					removeElement(fix);
 				} else if (fix instanceof Forest
-						&& fix.equals(map.getForest(point))) {
+						           && fix.equals(map.getForest(point))) {
 					map.setForest(point, null);
 					removeElement(fix);
 				} else if (fix instanceof RiverFixture) {
@@ -156,8 +156,8 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	}
 
 	/**
-	 * A FixtureListModel is equal only to another FixtureListModel representing
-	 * the same location in the same map.
+	 * A FixtureListModel is equal only to another FixtureListModel representing the same
+	 * location in the same map.
 	 *
 	 * @param obj an object
 	 * @return whether we're equal to it
@@ -165,8 +165,8 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof FixtureListModel
-				&& ((FixtureListModel) obj).dmodel.equals(dmodel)
-				&& ((FixtureListModel) obj).point.equals(point);
+				                      && ((FixtureListModel) obj).dmodel.equals(dmodel)
+				                      && ((FixtureListModel) obj).point.equals(point);
 	}
 
 	/**

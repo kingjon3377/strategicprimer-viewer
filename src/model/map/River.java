@@ -1,30 +1,29 @@
 package model.map;
 
 /**
- * If a tile has a river, it could be in any one of several directions. This
- * class enumerates those. Tiles should have a <em>set</em> of these.
+ * If a tile has a river, it could be in any one of several directions. This class
+ * enumerates those. Tiles should have a <em>set</em> of these.
  *
  * At present we'll just cover the four cardinal directions.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2013 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public enum River {
 	/**
@@ -67,7 +66,6 @@ public enum River {
 	 * TODO: improve testing of this
 	 *
 	 * @param description a string giving the direction
-	 *
 	 * @return the river direction
 	 */
 	public static River getRiver(final String description) {
@@ -77,7 +75,7 @@ public enum River {
 			}
 		}
 		throw new IllegalArgumentException(
-				"Unrecognized river direction string");
+				                                  "Unrecognized river direction string");
 	}
 
 	/**

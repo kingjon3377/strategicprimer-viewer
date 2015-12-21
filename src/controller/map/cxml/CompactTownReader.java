@@ -1,12 +1,5 @@
 package controller.map.cxml;
 
-import java.io.IOException;
-import java.util.Random;
-import java.util.logging.Logger;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
@@ -34,35 +27,40 @@ import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import java.io.IOException;
+import java.util.Random;
+import java.util.logging.Logger;
+
 /**
  * A reader for tiles, including rivers.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class CompactTownReader extends AbstractCompactReader<ITownFixture> {
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(CompactTownReader.class);
+			                                     .getLogger(CompactTownReader.class);
 	/**
 	 * Singleton object.
 	 */
@@ -95,20 +93,20 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	}
 
 	/**
-	 *
-	 * @param element the XML element to parse
-	 * @param stream the stream to read more elements from
-	 * @param players the collection of players
-	 * @param warner the Warning instance to use for warnings
+	 * @param element   the XML element to parse
+	 * @param stream    the stream to read more elements from
+	 * @param players   the collection of players
+	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @return the parsed town
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
 	public ITownFixture read(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream,
-			final IMutablePlayerCollection players, final Warning warner,
-			final IDFactory idFactory) throws SPFormatException {
+	                         final IteratorWrapper<XMLEvent> stream,
+	                         final IMutablePlayerCollection players, final Warning
+			                                                                 warner,
+	                         final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "village", "fortress", "town", "city",
 				"fortification");
 		final ITownFixture retval; // NOPMD
@@ -125,27 +123,34 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	/**
 	 * Parse a village.
 	 *
-	 * @param element the XML element to parse
-	 * @param stream the stream to read more elements from
-	 * @param players the collection of players in the map
-	 * @param warner the Warning instance to use for warnings
+	 * @param element   the XML element to parse
+	 * @param stream    the stream to read more elements from
+	 * @param players   the collection of players in the map
+	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @return the parsed village
 	 * @throws SPFormatException on SP format problems
 	 */
 	private static ITownFixture parseVillage(final StartElement element,
 	                                         final Iterable<XMLEvent> stream,
-	                                         final IPlayerCollection players, final Warning warner,
-	                                         final IDFactory idFactory) throws SPFormatException {
+	                                         final IPlayerCollection players,
+	                                         final Warning warner,
+	                                         final IDFactory idFactory)
+			throws SPFormatException {
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final int idNum = getOrGenerateID(element, warner, idFactory);
 		final Village retval = new Village(
-				TownStatus.parseTownStatus(getParameter(element, "status")),
-				getParameter(element, NAME_PARAM, ""), idNum,
-				getOwnerOrIndependent(element, warner, players),
-				getParameter(element, "race",
-						RaceFactory.getRace(new Random(idNum))));
+				                                  TownStatus.parseTownStatus(
+						                                  getParameter(element,
+								                                  "status")),
+				                                  getParameter(element, NAME_PARAM, ""),
+				                                  idNum,
+				                                  getOwnerOrIndependent(element, warner,
+						                                  players),
+				                                  getParameter(element, "race",
+						                                  RaceFactory.getRace(
+								                                  new Random(idNum))));
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}
@@ -153,18 +158,20 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	/**
 	 * Parse a town, city, or fortification.
 	 *
-	 * @param element the XML element to parse
-	 * @param stream the stream to read more elements from
-	 * @param players the collection of players in the map
-	 * @param warner the Warning instance to use for warnings
+	 * @param element   the XML element to parse
+	 * @param stream    the stream to read more elements from
+	 * @param players   the collection of players in the map
+	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @return the parsed town
 	 * @throws SPFormatException on SP format problems
 	 */
 	private static ITownFixture parseTown(final StartElement element,
 	                                      final Iterable<XMLEvent> stream,
-	                                      final IPlayerCollection players, final Warning warner,
-	                                      final IDFactory idFactory) throws SPFormatException {
+	                                      final IPlayerCollection players,
+	                                      final Warning warner,
+	                                      final IDFactory idFactory)
+			throws SPFormatException {
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
 		final String name = getParameter(element, NAME_PARAM, "");
 		final TownStatus status = TownStatus.parseTownStatus(getParameter(
@@ -188,26 +195,31 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	}
 
 	/**
-	 * If the tag has an "owner" parameter, return the player it indicates;
-	 * otherwise, trigger a warning and return the "independent" player.
+	 * If the tag has an "owner" parameter, return the player it indicates; otherwise,
+	 * trigger a warning and return the "independent" player.
 	 *
 	 * @param element the tag being parsed
-	 * @param warner the Warning instance to send the warning on
+	 * @param warner  the Warning instance to send the warning on
 	 * @param players the collection of players to refer to
 	 * @return the indicated player, or the independent player if none
 	 * @throws SPFormatException on SP format error reading the parameter.
 	 */
 	private static Player getOwnerOrIndependent(final StartElement element,
-			final Warning warner, final IPlayerCollection players)
+	                                            final Warning warner,
+	                                            final IPlayerCollection players)
 			throws SPFormatException {
 		final Player retval; // NOPMD
 		if (hasParameter(element, OWNER_PARAM)) {
 			retval = players
-					.getPlayer(getIntegerParameter(element, OWNER_PARAM));
+					         .getPlayer(getIntegerParameter(element, OWNER_PARAM));
 		} else {
 			warner.warn(new MissingPropertyException(NullCleaner
-					.assertNotNull(element.getName().getLocalPart()),
-					OWNER_PARAM, element.getLocation().getLineNumber()));
+					                                         .assertNotNull(
+							                                         element.getName()
+									                                         .getLocalPart()),
+					                                        OWNER_PARAM,
+					                                        element.getLocation()
+							                                        .getLineNumber()));
 			retval = players.getIndependent();
 		}
 		return retval;
@@ -216,27 +228,30 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	/**
 	 * Parse a fortress.
 	 *
-	 * @param element the XML element to parse
-	 * @param stream the stream to read more elements from
-	 * @param players the collection of players
-	 * @param warner the Warning instance to use for warnings
+	 * @param element   the XML element to parse
+	 * @param stream    the stream to read more elements from
+	 * @param players   the collection of players
+	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @return the parsed town
 	 * @throws SPFormatException on SP format problems
 	 */
 	private static ITownFixture parseFortress(final StartElement element,
 	                                          final IteratorWrapper<XMLEvent> stream,
-	                                          final IMutablePlayerCollection players, final Warning warner,
-	                                          final IDFactory idFactory) throws SPFormatException {
+	                                          final IMutablePlayerCollection players,
+	                                          final Warning warner,
+	                                          final IDFactory idFactory)
+			throws SPFormatException {
 		requireNonEmptyParameter(element, OWNER_PARAM, false, warner);
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
 		final Fortress retval = new Fortress(getOwnerOrIndependent(element,
 				warner, players), getParameter(element, NAME_PARAM, ""),
-				getOrGenerateID(element, warner, idFactory));
+				                                    getOrGenerateID(element, warner,
+						                                    idFactory));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final String memberTag = event.asStartElement().getName()
-						.getLocalPart().toLowerCase();
+						                         .getLocalPart().toLowerCase();
 				if ("unit".equals(memberTag)) {
 					retval.addMember(CompactUnitReader.READER.read(
 							NullCleaner.assertNotNull(event.asStartElement()),
@@ -251,14 +266,21 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 							stream, players, warner, idFactory));
 				} else {
 					throw new UnwantedChildException(
-							NullCleaner.assertNotNull(element.getName()
-									.getLocalPart()),
-							NullCleaner.assertNotNull(event.asStartElement()
-									.getName().getLocalPart()), event.getLocation()
-									.getLineNumber());
+							                                NullCleaner.assertNotNull(
+									                                element.getName()
+											                                .getLocalPart()),
+							                                NullCleaner.assertNotNull(
+									                                event
+											                                .asStartElement()
+											                                .getName()
+											                                .getLocalPart()),
+							                                event.getLocation()
+									                                .getLineNumber());
 				}
 			} else if (event.isEndElement()
-					&& element.getName().equals(event.asEndElement().getName())) {
+					           &&
+					           element.getName().equals(event.asEndElement().getName()
+					           )) {
 				break;
 			}
 		}
@@ -270,13 +292,13 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	 * Write an object to a stream.
 	 *
 	 * @param ostream The stream to write to.
-	 * @param obj The object to write.
-	 * @param indent The current indentation level.
+	 * @param obj     The object to write.
+	 * @param indent  The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
 	public void write(final Appendable ostream, final ITownFixture obj,
-			final int indent) throws IOException {
+	                  final int indent) throws IOException {
 		ostream.append(indent(indent));
 		if (obj instanceof AbstractTown) {
 			writeAbstractTown(ostream, (AbstractTown) obj);
@@ -318,7 +340,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 								(ResourcePile) unit, indent + 1);
 					} else {
 						LOGGER.severe("Unhandled FortressMember class "
-								+ unit.getClass().getName());
+								              + unit.getClass().getName());
 					}
 				}
 				ostream.append(indent(indent));
@@ -331,11 +353,11 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 
 	/**
 	 * @param ostream the stream to write to
-	 * @param obj the AbstractTownEvent to write
+	 * @param obj     the AbstractTownEvent to write
 	 * @throws IOException on I/O error
 	 */
 	private static void writeAbstractTown(final Appendable ostream,
-			final AbstractTown obj) throws IOException {
+	                                      final AbstractTown obj) throws IOException {
 		if (obj instanceof Fortification) {
 			ostream.append("<fortification ");
 		} else if (obj instanceof Town) {
@@ -361,6 +383,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 		ostream.append(Integer.toString(obj.getOwner().getPlayerId()));
 		ostream.append('"').append(imageXML(obj)).append(" />\n");
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

@@ -1,5 +1,25 @@
 package view.worker;
 
+import model.listeners.PlayerChangeListener;
+import model.map.IFixture;
+import model.map.Player;
+import model.map.TileFixture;
+import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.IUnit;
+import model.workermgmt.IWorkerModel;
+import org.eclipse.jdt.annotation.Nullable;
+import util.EmptyIterator;
+import util.NullCleaner;
+import view.util.ApplyButtonHandler;
+import view.util.Applyable;
+import view.util.BorderedPanel;
+import view.util.ListenedButton;
+
+import javax.swing.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
@@ -10,59 +30,31 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import model.listeners.PlayerChangeListener;
-import model.map.IFixture;
-import model.map.Player;
-import model.map.TileFixture;
-import model.map.fixtures.UnitMember;
-import model.map.fixtures.mobile.IUnit;
-import model.workermgmt.IWorkerModel;
-import util.EmptyIterator;
-import util.NullCleaner;
-import view.util.ApplyButtonHandler;
-import view.util.Applyable;
-import view.util.BorderedPanel;
-import view.util.ListenedButton;
-
 /**
  * A panel for the user to enter a unit's orders.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class OrdersPanel extends BorderedPanel implements Applyable,
-		TreeSelectionListener, PlayerChangeListener {
+		                                                                TreeSelectionListener,
+		                                                                PlayerChangeListener {
 	/**
 	 * The worker model to get units from if the user selected a kind.
 	 */
@@ -88,6 +80,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 
 	/**
 	 * Constructor.
+	 *
 	 * @param wmodel the worker model
 	 */
 	public OrdersPanel(final IWorkerModel wmodel) {
@@ -95,7 +88,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		// Can't use the multi-arg constructor, because of the references to
 		// 'this' below.
 		final boolean onMac = System.getProperty("os.name").toLowerCase()
-				.startsWith("mac os x");
+				                      .startsWith("mac os x");
 		final String prefix;
 		final int keyMask;
 		if (onMac) {
@@ -107,14 +100,14 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		}
 		setPageStart(
 				new JLabel(
-						"Orders for current selection, if a unit: ("
-								+ prefix
-								+ "D)")).setCenter(new JScrollPane(area))
-										.setPageEnd(new BorderedPanel()
-												.setLineStart(new ListenedButton("Apply",
-														handler))
-										.setLineEnd(
-												new ListenedButton("Revert", handler)));
+						          "Orders for current selection, if a unit: ("
+								          + prefix
+								          + "D)")).setCenter(new JScrollPane(area))
+				.setPageEnd(new BorderedPanel()
+						            .setLineStart(new ListenedButton("Apply",
+								                                            handler))
+						            .setLineEnd(
+								            new ListenedButton("Revert", handler)));
 		area.addKeyListener(new KeyAdapter() {
 			private boolean isModifierPressed(final KeyEvent evt) {
 				if (onMac && evt.isMetaDown()) {
@@ -125,10 +118,11 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 					return false;
 				}
 			}
+
 			@Override
 			public void keyPressed(@Nullable final KeyEvent evt) {
 				if (evt != null && evt.getKeyCode() == KeyEvent.VK_ENTER
-						&& isModifierPressed(evt)) {
+						    && isModifierPressed(evt)) {
 					apply();
 
 				}
@@ -161,14 +155,15 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		if (sel instanceof IUnit) {
 			final IUnit selection = (IUnit) sel;
 			selection.setOrders(NullCleaner
-					.assertNotNull(area.getText().trim()));
+					                    .assertNotNull(area.getText().trim()));
 			getParent().getParent().repaint();
 		}
 	}
 
 	/**
 	 * Change the text in the area to either the current orders, if a unit is
-	 * selected, or the empty string, if one is not.
+	 * selected, or
+	 * the empty string, if one is not.
 	 */
 	@Override
 	public void revert() {
@@ -196,13 +191,14 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 			if (sel instanceof String) {
 				sel =
 						new ProxyUnit(NullCleaner.assertNotNull((String) sel),
-								model.getUnits(player), player);
+								             model.getUnits(player), player);
 			}
 			revert();
 		}
 	}
+
 	/**
-	 * @param old the previously selected player
+	 * @param old       the previously selected player
 	 * @param newPlayer the newly selected player
 	 */
 	@Override
@@ -211,8 +207,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 	}
 
 	/**
-	 * A "unit" that serves as the proxy, for orders purposes, for all units of
-	 * a kind.
+	 * A "unit" that serves as the proxy, for orders purposes, for all units of a kind.
 	 *
 	 * FIXME: This should probably be removed in favor of the top-level ProxyUnit class.
 	 */
@@ -229,26 +224,30 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		 * The owner of the units.
 		 */
 		private final Player owner;
+
 		/**
-		 * @param unitKind the kind of unit to proxy for
+		 * @param unitKind  the kind of unit to proxy for
 		 * @param unitsList the units among which to proxy
-		 * @param playr the current player
+		 * @param playr     the current player
 		 */
 		protected ProxyUnit(final String unitKind, final List<IUnit> unitsList,
-				final Player playr) {
+		                    final Player playr) {
 			kind = unitKind;
 			units = new ArrayList<>(unitsList);
 			owner = playr;
 		}
+
 		/**
-		 * @return a copy of this proxy
 		 * @param zero whether to "zero out" sensitive information
+		 * @return a copy of this proxy
 		 */
 		@Override
 		public IUnit copy(final boolean zero) {
-			return new ProxyUnit(kind, units.stream().map(unit -> unit.copy(zero)).collect(Collectors.toList()),
+			return new ProxyUnit(kind, units.stream().map(unit -> unit.copy(zero))
+					                           .collect(Collectors.toList()),
 					                    owner);
 		}
+
 		/**
 		 * @return a dummy Z-value
 		 */
@@ -256,6 +255,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		public int getZValue() {
 			return 0;
 		}
+
 		/**
 		 * @return "proxies"
 		 */
@@ -263,6 +263,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		public String plural() {
 			return "proxies";
 		}
+
 		/**
 		 * @return "proxy"
 		 */
@@ -270,9 +271,9 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		public String shortDesc() {
 			return "proxy";
 		}
+
 		/**
 		 * @param fix A TileFixture to compare to
-		 *
 		 * @return the result of the comparison
 		 */
 		@Override
@@ -287,6 +288,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		public int getID() {
 			return -1;
 		}
+
 		/**
 		 * @param fix a fixture
 		 * @return whether it is this instance
@@ -295,6 +297,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		public boolean equalsIgnoringID(final IFixture fix) {
 			return this == fix;
 		}
+
 		/**
 		 * @return a dummy image filename
 		 */
@@ -302,6 +305,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		public String getDefaultImage() {
 			return "proxy.png";
 		}
+
 		/**
 		 * @param image ignored
 		 */
@@ -309,6 +313,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		public void setImage(final String image) {
 			throw new IllegalStateException("setImage called on ProxyImage");
 		}
+
 		/**
 		 * @return the same dummy image filename
 		 */
@@ -316,6 +321,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		public String getImage() {
 			return "proxy.png";
 		}
+
 		/**
 		 * @return the specified kind
 		 */
@@ -323,6 +329,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		public String getKind() {
 			return kind;
 		}
+
 		/**
 		 * @param nKind ignored
 		 */
@@ -330,6 +337,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		public void setKind(final String nKind) {
 			throw new IllegalStateException("setKind called on ProxyImage");
 		}
+
 		/**
 		 * @return an empty iterator
 		 */
@@ -337,6 +345,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		public Iterator<UnitMember> iterator() {
 			return new EmptyIterator<>();
 		}
+
 		/**
 		 * @return a dummy name
 		 */
@@ -344,6 +353,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		public String getName() {
 			return "proxy";
 		}
+
 		/**
 		 * @param nomen ignored
 		 */
@@ -351,6 +361,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		public void setName(final String nomen) {
 			throw new IllegalStateException("setName called on ProxyUnit");
 		}
+
 		/**
 		 * @return the specified owner
 		 */
@@ -358,6 +369,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		public Player getOwner() {
 			return owner;
 		}
+
 		/**
 		 * @param newOwner ignored
 		 */
@@ -365,24 +377,25 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		public void setOwner(final Player newOwner) {
 			throw new IllegalStateException("setOwner called on ProxyUnit");
 		}
+
 		/**
-		 * @param obj ignored
+		 * @param obj     ignored
 		 * @param ostream the stream to write the error message to
 		 * @param context the context in which to write the error message
-		 * @throws IOException on error writing to stream
 		 * @return false
+		 * @throws IOException on error writing to stream
 		 */
 		@Override
 		public boolean isSubset(final IFixture obj, final Appendable ostream,
-				final String context) throws IOException {
+		                        final String context) throws IOException {
 			ostream.append(context);
 			ostream.append("\tisSubset called on ProxyUnit\n");
 			return false;
 		}
 
 		/**
-		 * @return the orders that every unit of this kind shares, or the empty
-		 *         string if not all share the same orders.
+		 * @return the orders that every unit of this kind shares, or the empty string if
+		 * not all share the same orders.
 		 */
 		@Override
 		public String getOrders() {
@@ -402,13 +415,16 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 				return retval;
 			}
 		}
+
 		/**
 		 * @param newOrders orders to set on every unit with this kind.
 		 */
 		@Override
 		public void setOrders(final String newOrders) {
-			units.stream().filter(unit -> kind.equals(unit.getKind())).forEach(unit -> unit.setOrders(newOrders));
+			units.stream().filter(unit -> kind.equals(unit.getKind()))
+					.forEach(unit -> unit.setOrders(newOrders));
 		}
+
 		/**
 		 * @return "proxy"
 		 */
@@ -418,11 +434,10 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		}
 
 		/**
-		 * TODO: We should probably throw, or at least log, an exception when
-		 * this is called.
+		 * TODO: We should probably throw, or at least log, an exception when this is
+		 * called.
 		 *
-		 * @param member
-		 *            ignored
+		 * @param member ignored
 		 */
 		@Override
 		public void addMember(final UnitMember member) {
@@ -430,16 +445,16 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		}
 
 		/**
-		 * TODO: We should probably throw, or at least log, an exception when
-		 * this is called.
+		 * TODO: We should probably throw, or at least log, an exception when this is
+		 * called.
 		 *
-		 * @param member
-		 *            ignored
+		 * @param member ignored
 		 */
 		@Override
 		public void removeMember(final UnitMember member) {
 			// Do nothing
 		}
+
 		/**
 		 * @return a String representation of the object
 		 */
@@ -450,7 +465,9 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 
 		@Override
 		public boolean equals(final Object obj) {
-			return this == obj || obj instanceof ProxyUnit && kind.equals(((ProxyUnit) obj).getKind()) &&
+			return this == obj || obj instanceof ProxyUnit && kind.equals(((ProxyUnit)
+					                                                               obj)
+					                                                              .getKind()) &&
 					                      units.equals(((ProxyUnit) obj).units);
 		}
 

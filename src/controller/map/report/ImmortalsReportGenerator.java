@@ -1,18 +1,5 @@
 package controller.map.report;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.IMapNG;
@@ -36,52 +23,69 @@ import model.report.EmptyReportNode;
 import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
+import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * A report generator for "immortals"---dragons, fairies, centaurs, and such.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
-public final class ImmortalsReportGenerator extends AbstractReportGenerator<MobileFixture> {
+public final class ImmortalsReportGenerator
+		extends AbstractReportGenerator<MobileFixture> {
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	public ImmortalsReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator) {
+	public ImmortalsReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
+			                                                              @NonNull
+					                                                              IFixture>> comparator) {
 		super(comparator);
 	}
-	/** // $codepro.audit.disable sourceLength
-	 * Produce the sub-report dealing with "immortals".
+
+	/**
+	 * // $codepro.audit.disable sourceLength Produce the sub-report dealing with
+	 * "immortals".
 	 *
-	 * @param fixtures the set of fixtures
-	 * @param map ignored
+	 * @param fixtures      the set of fixtures
+	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report listing "immortals"
 	 */
 	@Override
 	public String produce(// $codepro.audit.disable cyclomaticComplexity
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final IMapNG map, final Player currentPlayer) {
+	                      final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+			                      fixtures,
+	                      final IMapNG map, final Player currentPlayer) {
 
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
@@ -169,20 +173,24 @@ public final class ImmortalsReportGenerator extends AbstractReportGenerator<Mobi
 	 * @return their total size
 	 */
 	private static int collSize(final Collection<?>... collections) {
-		return Stream.of(collections).collect(Collectors.summingInt(Collection::size)).intValue();
+		return Stream.of(collections).collect(Collectors.summingInt(Collection::size))
+				       .intValue();
 	}
+
 	/**
 	 * Produce the sub-report dealing with "immortals".
 	 *
-	 * @param fixtures the set of fixtures
-	 * @param map ignored
+	 * @param fixtures      the set of fixtures
+	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report listing "immortals"
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final IMapNG map, final Player currentPlayer) {
+			                                    final DelayedRemovalMap<Integer,
+					                                                           Pair<Point, IFixture>> fixtures,
+			                                    final IMapNG map,
+			                                    final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final AbstractReportNode griffins = new ListReportNode("Griffins");
@@ -202,12 +210,12 @@ public final class ImmortalsReportGenerator extends AbstractReportGenerator<Mobi
 			final IFixture immortal = pair.second();
 			if (immortal instanceof Dragon) {
 				separateByKindRIR(dragons, (Dragon) immortal)
-				.add(produceRIR(fixtures, map, currentPlayer,
-						(MobileFixture) immortal, point));
+						.add(produceRIR(fixtures, map, currentPlayer,
+								(MobileFixture) immortal, point));
 			} else if (immortal instanceof Fairy) {
 				separateByKindRIR(fairies, (Fairy) immortal)
-				.add(produceRIR(fixtures, map, currentPlayer,
-						(MobileFixture) immortal, point));
+						.add(produceRIR(fixtures, map, currentPlayer,
+								(MobileFixture) immortal, point));
 			} else if (immortal instanceof Troll) {
 				trolls.add(produceRIR(fixtures, map, currentPlayer,
 						(MobileFixture) immortal, point));
@@ -219,8 +227,8 @@ public final class ImmortalsReportGenerator extends AbstractReportGenerator<Mobi
 						(MobileFixture) immortal, point));
 			} else if (immortal instanceof Giant) {
 				separateByKindRIR(giants, (Giant) immortal)
-				.add(produceRIR(fixtures, map, currentPlayer,
-						(MobileFixture) immortal, point));
+						.add(produceRIR(fixtures, map, currentPlayer,
+								(MobileFixture) immortal, point));
 			} else if (immortal instanceof Minotaur) {
 				minotaurs.add(produceRIR(fixtures, map, currentPlayer,
 						(MobileFixture) immortal, point));
@@ -229,8 +237,8 @@ public final class ImmortalsReportGenerator extends AbstractReportGenerator<Mobi
 						(MobileFixture) immortal, point));
 			} else if (immortal instanceof Centaur) {
 				separateByKindRIR(centaurs, (Centaur) immortal)
-				.add(produceRIR(fixtures, map, currentPlayer,
-						(MobileFixture) immortal, point));
+						.add(produceRIR(fixtures, map, currentPlayer,
+								(MobileFixture) immortal, point));
 			} else if (immortal instanceof Phoenix) {
 				phoenixes.add(produceRIR(fixtures, map, currentPlayer,
 						(MobileFixture) immortal, point));
@@ -254,125 +262,138 @@ public final class ImmortalsReportGenerator extends AbstractReportGenerator<Mobi
 			return retval;
 		}
 	}
+
 	/**
-	 * @param header the heading to put above the children
+	 * @param header  the heading to put above the children
 	 * @param mapping a mapping from kinds to nodes
 	 * @return a node with all of the nodes as children
 	 */
 	private static AbstractReportNode coalesce(final String header,
-			final Map<String, AbstractReportNode> mapping) {
+	                                           final Map<String, AbstractReportNode>
+			                                           mapping) {
 		final AbstractReportNode retval = new ListReportNode(header);
 		mapping.values().forEach(retval::add);
 		return retval;
 	}
+
 	/**
-	 * @param parent a node
+	 * @param parent   a node
 	 * @param children possible children to add, if they have children of their own
 	 */
 	private static void optionallyAdd(final AbstractReportNode parent,
-			final AbstractReportNode... children) {
-		Stream.of(children).filter(child -> child.getChildCount() > 0).forEach(parent::add);
+	                                  final AbstractReportNode... children) {
+		Stream.of(children).filter(child -> child.getChildCount() > 0)
+				.forEach(parent::add);
 	}
+
 	/**
-	 * @param fixtures The set of fixtures
-	 * @param map ignored
+	 * @param fixtures      The set of fixtures
+	 * @param map           ignored
 	 * @param currentPlayer the current player
-	 * @param item a fixture
-	 * @param loc its location
-	 * @return a sub-sub-report on just that fixture, or the empty string if
-	 *         it's not one we handle here.
+	 * @param item          a fixture
+	 * @param loc           its location
+	 * @return a sub-sub-report on just that fixture, or the empty string if it's not one
+	 * we handle here.
 	 */
 	@Override
 	public String produce(// $codepro.audit.disable cyclomaticComplexity
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final IMapNG map, final Player currentPlayer,
-			final MobileFixture item, final Point loc) {
+	                      final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+			                      fixtures,
+	                      final IMapNG map, final Player currentPlayer,
+	                      final MobileFixture item, final Point loc) {
 		//  TODO: Create Immortal marker interface
 		if (item instanceof Dragon || item instanceof Fairy
-				|| item instanceof Troll || item instanceof Djinn
-				|| item instanceof Sphinx || item instanceof Giant
-				|| item instanceof Minotaur || item instanceof Ogre
-				|| item instanceof Centaur || item instanceof Phoenix
-				|| item instanceof Simurgh || item instanceof Griffin) {
+				    || item instanceof Troll || item instanceof Djinn
+				    || item instanceof Sphinx || item instanceof Giant
+				    || item instanceof Minotaur || item instanceof Ogre
+				    || item instanceof Centaur || item instanceof Phoenix
+				    || item instanceof Simurgh || item instanceof Griffin) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat(atPoint(loc), "A(n) ", item.toString(), " ", distCalculator.distanceString(loc));
+			return concat(atPoint(loc), "A(n) ", item.toString(), " ",
+					distCalculator.distanceString(loc));
 		} else {
 			return "";
 		}
 	}
 
 	/**
-	 * @param fixtures The set of fixtures
-	 * @param map ignored
+	 * @param fixtures      The set of fixtures
+	 * @param map           ignored
 	 * @param currentPlayer the current player
-	 * @param item a fixture
-	 * @param loc its location
-	 * @return a sub-sub-report on just that fixture, or null if it's not one we
-	 *         handle here.
+	 * @param item          a fixture
+	 * @param loc           its location
+	 * @return a sub-sub-report on just that fixture, or null if it's not one we handle
+	 * here.
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final IMapNG map, final Player currentPlayer,
-			final MobileFixture item, final Point loc) {
+			                                    final DelayedRemovalMap<Integer,
+					                                                           Pair<Point, IFixture>> fixtures,
+			                                    final IMapNG map,
+			                                    final Player currentPlayer,
+			                                    final MobileFixture item,
+			                                    final Point loc) {
 		// TODO: Create Immortal marker interface
 		if (item instanceof Dragon || item instanceof Fairy
-				|| item instanceof Troll || item instanceof Djinn
-				|| item instanceof Sphinx || item instanceof Giant
-				|| item instanceof Minotaur || item instanceof Ogre
-				|| item instanceof Centaur || item instanceof Phoenix
-				|| item instanceof Simurgh || item instanceof Griffin) {
+				    || item instanceof Troll || item instanceof Djinn
+				    || item instanceof Sphinx || item instanceof Giant
+				    || item instanceof Minotaur || item instanceof Ogre
+				    || item instanceof Centaur || item instanceof Phoenix
+				    || item instanceof Simurgh || item instanceof Griffin) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(loc, atPoint(loc), "A(n) ", item.toString(), " ", distCalculator.distanceString(loc));
+			return new SimpleReportNode(loc, atPoint(loc), "A(n) ", item.toString(), " ",
+					                           distCalculator.distanceString(loc));
 		} else {
 			return EmptyReportNode.NULL_NODE;
 		}
 	}
 
 	/**
-	 * Prints (to the builder) nothing if the map is empty, or for each entry in
-	 * the entry set a list item beginning with the key, followed by the infix,
-	 * followed by a comma-separated list of the points.
+	 * Prints (to the builder) nothing if the map is empty, or for each entry in the
+	 * entry
+	 * set a list item beginning with the key, followed by the infix, followed by a
+	 * comma-separated list of the points.
 	 *
 	 * @param mapping the mapping from kinds (or whatever) to lists of points
-	 * @param infix what to print in the middle of each item
+	 * @param infix   what to print in the middle of each item
 	 * @param builder the builder to print to
 	 */
 	private static void optionallyPrintMap(final Map<String, List<Point>> mapping,
-			final String infix, final StringBuilder builder) {
+	                                       final String infix,
+	                                       final StringBuilder builder) {
 		for (final Entry<String, List<Point>> entry : mapping.entrySet()) {
 			builder.append(OPEN_LIST_ITEM).append(entry.getKey()).append(infix)
-			.append(pointCSL(entry.getValue())).append(CLOSE_LIST_ITEM);
+					.append(pointCSL(entry.getValue())).append(CLOSE_LIST_ITEM);
 		}
 	}
 
 	/**
-	 * Prints (to the builder) nothing if the list is empty, or the prefix
-	 * followed by a comma-separated list of the points, all enclosed in a list
-	 * item.
+	 * Prints (to the builder) nothing if the list is empty, or the prefix followed by a
+	 * comma-separated list of the points, all enclosed in a list item.
 	 *
-	 * @param points a list of points
-	 * @param prefix what to prepend to it if non-empty
+	 * @param points  a list of points
+	 * @param prefix  what to prepend to it if non-empty
 	 * @param builder the builder to print to
 	 */
 	private static void optionallyPrintList(final List<Point> points,
-			final String prefix, final StringBuilder builder) {
+	                                        final String prefix,
+	                                        final StringBuilder builder) {
 		if (!points.isEmpty()) {
 			builder.append(OPEN_LIST_ITEM).append(prefix)
-			.append(pointCSL(points)).append(CLOSE_LIST_ITEM);
+					.append(pointCSL(points)).append(CLOSE_LIST_ITEM);
 		}
 	}
 
 	/**
-	 * If there's an entry in the map for the thing's kind already, add the
-	 * point to its list; if not, create such an entry and add the point to it.
+	 * If there's an entry in the map for the thing's kind already, add the point to its
+	 * list; if not, create such an entry and add the point to it.
 	 *
 	 * @param mapping the mapping we're dealing with
-	 * @param item the item under consideration
-	 * @param point its location in the map
+	 * @param item    the item under consideration
+	 * @param point   its location in the map
 	 */
 	private static void separateByKind(final Map<String, List<Point>> mapping,
-			final HasKind item, final Point point) {
+	                                   final HasKind item, final Point point) {
 		final List<Point> points; // NOPMD
 		// For the three classes we deal with here, we don't want just the kind,
 		// we want the full toString, so we use that instead of getKind.
@@ -384,26 +405,27 @@ public final class ImmortalsReportGenerator extends AbstractReportGenerator<Mobi
 		}
 		points.add(point);
 	}
+
 	/**
-	 * If there's an entry in the map for the thing's kind already, return that
-	 * entry; if not, create one, add it to the map, and return it..
+	 * If there's an entry in the map for the thing's kind already, return that entry; if
+	 * not, create one, add it to the map, and return it..
 	 *
-	 * @param mapping
-	 *            the mapping we're dealing with
-	 * @param item
-	 *            the item under consideration
+	 * @param mapping the mapping we're dealing with
+	 * @param item    the item under consideration
 	 * @return the entry in the map for the item's kind
 	 */
 	private static AbstractReportNode separateByKindRIR(
-			final Map<String, AbstractReportNode> mapping,
-			final HasKind item) {
+			                                                   final Map<String, AbstractReportNode> mapping,
+			                                                   final HasKind item) {
 		// For the three classes we deal with here, we don't want just the kind,
 		// we want the full toString, so we use that instead of getKind.
 		if (mapping.containsKey(item.toString())) {
 			return NullCleaner.assertNotNull(mapping.get(item.toString()));
 		} else {
 			final AbstractReportNode retval = new ListReportNode(
-					NullCleaner.assertNotNull(item.toString()));
+					                                                    NullCleaner
+							                                                    .assertNotNull(
+									                                                    item.toString()));
 			mapping.put(item.toString(), retval);
 			return retval;
 		}

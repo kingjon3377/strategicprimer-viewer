@@ -1,23 +1,5 @@
 package view.worker;
 
-import static java.lang.String.format;
-import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.swing.JTree;
-import javax.swing.ToolTipManager;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.TreePath;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.listeners.UnitMemberListener;
 import model.listeners.UnitMemberSelectionSource;
 import model.listeners.UnitSelectionListener;
@@ -31,34 +13,48 @@ import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.ProxyWorker;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import model.workermgmt.IWorkerTreeModel;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import view.map.details.FixtureEditMenu;
+
+import javax.swing.*;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreePath;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+
+import static java.lang.String.format;
+import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
 
 /**
  * A tree of a player's units.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class WorkerTree extends JTree implements UnitMemberSelectionSource,
-		UnitSelectionSource {
+		                                                       UnitSelectionSource {
 	/**
 	 * The format string for creating the stats tooltip.
 	 */
@@ -70,13 +66,13 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 	private final WorkerTreeSelectionListener tsl;
 
 	/**
-	 * @param wtModel the tree model
-	 * @param players the players in the map
-	 * @param orderCheck whether we should visually warn if orders contain
-	 *        "todo" or "fixme" or if a unit named "unassigned" is nonempty
+	 * @param wtModel    the tree model
+	 * @param players    the players in the map
+	 * @param orderCheck whether we should visually warn if orders contain "todo" or
+	 *                   "fixme" or if a unit named "unassigned" is nonempty
 	 */
 	public WorkerTree(final IWorkerTreeModel wtModel,
-			final Iterable<Player> players, final boolean orderCheck) {
+	                  final Iterable<Player> players, final boolean orderCheck) {
 		setModel(wtModel);
 		final JTree tree = this;
 		wtModel.addTreeModelListener(new TreeModelListener() {
@@ -91,10 +87,12 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 				}
 				updateUI();
 			}
+
 			@Override
 			public void treeNodesRemoved(@Nullable final TreeModelEvent e) {
 				updateUI();
 			}
+
 			@Override
 			public void treeNodesInserted(@Nullable final TreeModelEvent e) {
 				if (e == null) {
@@ -104,6 +102,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 				tree.expandPath(e.getTreePath().getParentPath());
 				updateUI();
 			}
+
 			@Override
 			public void treeNodesChanged(@Nullable final TreeModelEvent e) {
 				if (e == null) {
@@ -117,7 +116,11 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		setDragEnabled(true);
 		setShowsRootHandles(true);
 		setTransferHandler(new WorkerTreeTransferHandler(
-				NullCleaner.assertNotNull(getSelectionModel()), wtModel));
+				                                                NullCleaner
+						                                                .assertNotNull(
+						                                                getSelectionModel()),
+
+				                                                wtModel));
 		setCellRenderer(new UnitMemberCellRenderer(orderCheck));
 		addMouseListener(new TreeMouseListener(players, wtModel, this));
 		ToolTipManager.sharedInstance().registerComponent(this);
@@ -130,6 +133,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 
 	/**
 	 * A listener to set up pop-up menus.
+	 *
 	 * @author Jonathan Lovelace
 	 */
 	private static final class TreeMouseListener extends MouseAdapter {
@@ -145,15 +149,16 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		 * The tree we're watching.
 		 */
 		private final JTree tree;
+
 		/**
 		 * Constructor.
 		 *
 		 * @param playerColl the collection of players in the map
-		 * @param tmodel the tree model backing the tree
-		 * @param jtree the tree we're watching
+		 * @param tmodel     the tree model backing the tree
+		 * @param jtree      the tree we're watching
 		 */
 		protected TreeMouseListener(final Iterable<Player> playerColl,
-				final IWorkerTreeModel tmodel, final JTree jtree) {
+		                            final IWorkerTreeModel tmodel, final JTree jtree) {
 			players = playerColl;
 			model = tmodel;
 			tree = jtree;
@@ -184,19 +189,19 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		}
 
 		/**
-		 * @param event the event to handle. Marked @Nullable so we only have to
-		 *        handle the null-event case once.
+		 * @param event the event to handle. Marked @Nullable so we only have to handle
+		 *              the null-event case once.
 		 */
 		private void handleMouseEvent(@Nullable final MouseEvent event) {
 			if (event != null && event.isPopupTrigger()
-					&& event.getClickCount() == 1) {
+					    && event.getClickCount() == 1) {
 				final TreePath path = tree.getClosestPathForLocation(event.getX(),
-										event.getY());
+						event.getY());
 				if (path == null) {
 					return;
 				}
 				final Object pathEnd = path.getLastPathComponent();
-				if (pathEnd ==  null) {
+				if (pathEnd == null) {
 					return;
 				}
 				final Object obj = model.getModelObject(pathEnd);
@@ -206,6 +211,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 				}
 			}
 		}
+
 		/**
 		 * @return a String representation of the object
 		 */
@@ -226,7 +232,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 			return null; // NOPMD
 		}
 		final Object path = getPathForLocation(evt.getX(), evt.getY())
-				.getLastPathComponent();
+				                    .getLastPathComponent();
 		if (path == null) {
 			return null; // NOPMD
 		}
@@ -240,7 +246,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 	@Nullable
 	private String getStatsToolTip(final Object node) {
 		final Object localNode = ((IWorkerTreeModel) getModel())
-				.getModelObject(node);
+				                         .getModelObject(node);
 		if (localNode instanceof Worker) {
 			final WorkerStats stats = ((Worker) localNode).getStats();
 			if (stats == null) {
@@ -281,15 +287,17 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 
 	/**
 	 * A selection listener.
+	 *
 	 * @author Jonathan Lovelace
 	 */
 	private static final class WorkerTreeSelectionListener implements
 			TreeSelectionListener, UnitMemberSelectionSource,
-			UnitSelectionSource {
+					UnitSelectionSource {
 		/**
 		 * The list of unit-selection listeners listening to us.
 		 */
-		private final Collection<UnitSelectionListener> selectionListeners = new ArrayList<>();
+		private final Collection<UnitSelectionListener> selectionListeners =
+				new ArrayList<>();
 		/**
 		 * The list of listeners to notify of newly selected unit member.
 		 */
@@ -299,8 +307,10 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		 * The tree model to refer to.
 		 */
 		protected final IWorkerTreeModel model;
+
 		/**
 		 * Constructor.
+		 *
 		 * @param tmodel the tree model to refer to
 		 */
 		protected WorkerTreeSelectionListener(final IWorkerTreeModel tmodel) {
@@ -318,7 +328,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 					return;
 				}
 				final Object pathLast = path
-						.getLastPathComponent();
+						                        .getLastPathComponent();
 				if (pathLast != null) {
 					handleSelection(model.getModelObject(pathLast));
 				}
@@ -349,6 +359,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 				}
 			}
 		}
+
 		/**
 		 * @param list a listener to add
 		 */
@@ -364,6 +375,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		public void removeUnitSelectionListener(final UnitSelectionListener list) {
 			selectionListeners.remove(list);
 		}
+
 		/**
 		 * @param list a listener to add
 		 */
@@ -388,6 +400,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 			return "WorkerTreeSelectionListener";
 		}
 	}
+
 	/**
 	 * @param list the listener to add
 	 */
@@ -395,6 +408,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 	public void addUnitSelectionListener(final UnitSelectionListener list) {
 		tsl.addUnitSelectionListener(list);
 	}
+
 	/**
 	 * @param list the listener to remove
 	 */
@@ -402,6 +416,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 	public void removeUnitSelectionListener(final UnitSelectionListener list) {
 		tsl.removeUnitSelectionListener(list);
 	}
+
 	/**
 	 * @param list the listener to add
 	 */
@@ -409,6 +424,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 	public void addUnitMemberListener(final UnitMemberListener list) {
 		tsl.addUnitMemberListener(list);
 	}
+
 	/**
 	 * @param list the listener to remove
 	 */

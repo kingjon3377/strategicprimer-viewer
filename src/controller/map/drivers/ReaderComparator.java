@@ -1,18 +1,5 @@
 package controller.map.drivers;
 
-import static view.util.SystemOut.SYS_OUT;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.StringReader;
-import java.nio.CharBuffer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.xml.stream.XMLStreamException;
-
 import controller.map.cxml.CompactXMLReader;
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.formatexceptions.MapVersionException;
@@ -26,28 +13,39 @@ import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
 
+import javax.xml.stream.XMLStreamException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.StringReader;
+import java.nio.CharBuffer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static view.util.SystemOut.SYS_OUT;
+
 /**
  * A driver for comparing map readers.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 @SuppressWarnings("deprecation")
 public final class ReaderComparator implements ISPDriver {
@@ -55,16 +53,23 @@ public final class ReaderComparator implements ISPDriver {
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-t",
-			"--test", ParamCount.One, "Test map readers",
-			"Test the two map-reading implementations by "
-					+ "comparing their results on the same file.",
-					ReaderComparator.class);
+			                                                            "--test",
+			                                                            ParamCount.One,
+			                                                            "Test map " +
+					                                                            "readers",
+
+			                                                            "Test the two " +
+					                                                            "map-reading implementations by "
+					                                                            +
+					                                                            "comparing their results on the same file.",
+			                                                            ReaderComparator
+					                                                            .class);
 
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(ReaderComparator.class);
+			                                     .getLogger(ReaderComparator.class);
 	/**
 	 * The first reader.
 	 */
@@ -73,6 +78,7 @@ public final class ReaderComparator implements ISPDriver {
 	 * The second reader.
 	 */
 	private final IMapReader newReader = new CompactXMLReader();
+
 	/**
 	 * Compare the two readers.
 	 *
@@ -108,10 +114,10 @@ public final class ReaderComparator implements ISPDriver {
 	 *
 	 * @param arg the file to have each read.
 	 * @throws XMLStreamException if either reader claims badly formed input
-	 * @throws SPFormatException if either reader claims invalid data
+	 * @throws SPFormatException  if either reader claims invalid data
 	 */
 	public void compareReaders(final File arg) throws XMLStreamException,
-	SPFormatException {
+			                                                  SPFormatException {
 		SYS_OUT.print(arg);
 		SYS_OUT.println(':');
 		try {
@@ -162,9 +168,9 @@ public final class ReaderComparator implements ISPDriver {
 	/**
 	 * @param file a file
 	 * @return a string containing its contents, so reading from it won't be
-	 *         confounded by disk I/O.
-	 * @throws IOException if file not found, or on other I/O error reading from
-	 *         file
+	 * confounded by
+	 * disk I/O.
+	 * @throws IOException if file not found, or on other I/O error reading from file
 	 */
 	private static String readIntoBuffer(final File file)
 			throws IOException {
@@ -177,21 +183,25 @@ public final class ReaderComparator implements ISPDriver {
 	}
 
 	/**
-	 *
 	 * @return a String representation of this object
 	 */
 	@Override
 	public String toString() {
 		return "ReaderComparator";
 	}
+
 	/**
-	 * @throws DriverFailedException always; this is meaningless on a driver-model.
 	 * @param model ignored
+	 * @throws DriverFailedException always; this is meaningless on a driver-model.
 	 */
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
-		throw new DriverFailedException(new IllegalStateException("ReaderComparator is meaningless for a driver model"));
+		throw new DriverFailedException(new IllegalStateException("ReaderComparator is " +
+				                                                          "meaningless " +
+				                                                          "for a driver " +
+				                                                          "model"));
 	}
+
 	/**
 	 * Run the driver, comparing the readers' performance.
 	 *

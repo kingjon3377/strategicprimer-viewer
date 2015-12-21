@@ -1,5 +1,15 @@
 package model.map.fixtures.mobile;
 
+import model.map.IFixture;
+import model.map.Player;
+import model.map.TileFixture;
+import model.map.fixtures.UnitMember;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+import util.ArraySet;
+import util.NullCleaner;
+import util.TypesafeLogger;
+
 import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,39 +19,27 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
-import model.map.IFixture;
-import model.map.Player;
-import model.map.TileFixture;
-import model.map.fixtures.UnitMember;
-import util.ArraySet;
-import util.NullCleaner;
-import util.TypesafeLogger;
-
 /**
  * A unit on the map.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public class Unit implements IUnit {
 	/**
@@ -50,8 +48,9 @@ public class Unit implements IUnit {
 	private String image = "";
 
 	/**
-	 * The unit's orders. This is serialized to and from XML, but does not
-	 * affect equality or hashing, and is not printed in toString.
+	 * The unit's orders. This is serialized to and from XML, but does not affect
+	 * equality
+	 * or hashing, and is not printed in toString.
 	 */
 	private String orders;
 
@@ -79,12 +78,12 @@ public class Unit implements IUnit {
 	 * Constructor.
 	 *
 	 * @param unitOwner the player that owns the unit
-	 * @param unitType the type of unit
-	 * @param unitName the name of this unit
-	 * @param idNum the ID number.
+	 * @param unitType  the type of unit
+	 * @param unitName  the name of this unit
+	 * @param idNum     the ID number.
 	 */
 	public Unit(final Player unitOwner, final String unitType,
-			final String unitName, final int idNum) {
+	            final String unitName, final int idNum) {
 		owner = unitOwner;
 		kind = unitType;
 		name = unitName;
@@ -94,12 +93,11 @@ public class Unit implements IUnit {
 
 	/**
 	 * TODO: There should be some way to convey the unit's *size* without the
-	 * *details* of its contents. Or maybe we should give the contents but not
-	 * *their* details?
+	 * *details* of
+	 * its contents. Or maybe we should give the contents but not *their* details?
 	 *
+	 * @param zero whether to omit its contents and orders
 	 * @return a copy of this unit
-	 * @param zero
-	 *            whether to omit its contents and orders
 	 */
 	@Override
 	public Unit copy(final boolean zero) {
@@ -113,8 +111,8 @@ public class Unit implements IUnit {
 		retval.setImage(image);
 		return retval;
 	}
+
 	/**
-	 *
 	 * @return the player that owns the unit
 	 */
 	@Override
@@ -123,7 +121,6 @@ public class Unit implements IUnit {
 	}
 
 	/**
-	 *
 	 * @return the kind of unit
 	 */
 	@Override
@@ -132,7 +129,6 @@ public class Unit implements IUnit {
 	}
 
 	/**
-	 *
 	 * @return the name of the unit
 	 */
 	@Override
@@ -176,28 +172,31 @@ public class Unit implements IUnit {
 
 	/**
 	 * @param obj an object
-	 *
 	 * @return whether it's an identical Unit.
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof IUnit
-				&& ((IUnit) obj).getOwner().getPlayerId() == owner.getPlayerId()
-				&& ((IUnit) obj).getKind().equals(kind)
-				&& ((IUnit) obj).getName().equals(name)
-				&& areMembersEqual((IUnit) obj)
-				&& ((IUnit) obj).getID() == id;
+				                      && ((IUnit) obj).getOwner().getPlayerId() ==
+						                         owner.getPlayerId()
+				                      && ((IUnit) obj).getKind().equals(kind)
+				                      && ((IUnit) obj).getName().equals(name)
+				                      && areMembersEqual((IUnit) obj)
+				                      && ((IUnit) obj).getID() == id;
 	}
+
 	/**
 	 * @param obj another unit
 	 * @return whether its "members" are the same as ours
 	 */
 	private boolean areMembersEqual(final Iterable<UnitMember> obj) {
-		final Collection<UnitMember> theirs = StreamSupport.stream(obj.spliterator(), false).collect(Collectors.toSet());
+		final Collection<UnitMember> theirs =
+				StreamSupport.stream(obj.spliterator(), false)
+						.collect(Collectors.toSet());
 		return members.containsAll(theirs) && theirs.containsAll(members);
 	}
+
 	/**
-	 *
 	 * @return a hash-code for the object
 	 */
 	@Override
@@ -207,7 +206,6 @@ public class Unit implements IUnit {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -226,7 +224,7 @@ public class Unit implements IUnit {
 			return "Independent unit of type " + kind + ", named " + name; // NOPMD
 		} else {
 			return "Unit of type " + kind + ", belonging to " + owner
-					+ ", named " + name;
+					       + ", named " + name;
 		}
 	}
 
@@ -250,8 +248,9 @@ public class Unit implements IUnit {
 	/**
 	 * TODO: Should be per-unit-type ...
 	 *
-	 * This image from OpenGameArt.org, uploaded by jreijonen,
-	 * http://opengameart.org/content/faction-symbols-allies-axis .
+	 * This image from OpenGameArt.org, uploaded by jreijonen, http://opengameart
+	 * .org/content/faction-symbols-allies-axis
+	 * .
 	 *
 	 * @return the name of an image to represent the unit.
 	 */
@@ -285,15 +284,17 @@ public class Unit implements IUnit {
 
 	/**
 	 * FIXME: Should this look at unit members?
+	 *
 	 * @param fix a fixture
 	 * @return whether it's an identical-except-ID unit.
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return this == fix || fix instanceof IUnit
-				&& ((IUnit) fix).getOwner().getPlayerId() == owner.getPlayerId()
-				&& ((IUnit) fix).getKind().equals(kind)
-				&& ((IUnit) fix).getName().equals(name);
+				                      && ((IUnit) fix).getOwner().getPlayerId() ==
+						                         owner.getPlayerId()
+				                      && ((IUnit) fix).getKind().equals(kind)
+				                      && ((IUnit) fix).getName().equals(name);
 	}
 
 	/**
@@ -359,6 +360,7 @@ public class Unit implements IUnit {
 	public String plural() {
 		return "Units";
 	}
+
 	/**
 	 * @return a short description of the fixture
 	 */
@@ -370,18 +372,18 @@ public class Unit implements IUnit {
 			return "a(n) " + kind + " unit belonging to " + owner.getName();
 		}
 	}
+
 	/**
-	 * @param obj another unit
+	 * @param obj     another unit
 	 * @param ostream the stream to report results on
+	 * @param context a string to print before every line of output, describing the
+	 *                context
 	 * @return whether the unit is a strict subset of this one.
-	 * @param context
-	 *            a string to print before every line of output, describing the
-	 *            context
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-			final String context) throws IOException {
+	                        final String context) throws IOException {
 		if (obj.getID() != id) {
 			ostream.append(context);
 			ostream.append("\tFixtures have different IDs\n");
@@ -414,7 +416,8 @@ public class Unit implements IUnit {
 			final Iterable<UnitMember> other = (IUnit) obj;
 			final Map<Integer, UnitMember> ours = new HashMap<>();
 			for (final UnitMember member : this) {
-				ours.put(NullCleaner.assertNotNull(Integer.valueOf(member.getID())), member);
+				ours.put(NullCleaner.assertNotNull(Integer.valueOf(member.getID())),
+						member);
 			}
 			final String ctxt =
 					NullCleaner.assertNotNull(String.format(

@@ -1,23 +1,5 @@
 package view.exploration;
 
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.StreamSupport;
-
-import javax.swing.AbstractAction;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.ListModel;
-import javax.swing.SwingUtilities;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
 import model.listeners.MovementCostListener;
@@ -37,33 +19,44 @@ import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
 import view.map.details.FixtureList;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
+
 /**
  * The listener for clicks on tile buttons indicating movement.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class ExplorationClickListener extends AbstractAction implements
 		MovementCostSource, SelectionChangeSource {
@@ -98,12 +91,12 @@ public final class ExplorationClickListener extends AbstractAction implements
 	/**
 	 * Constructor.
 	 *
-	 * @param emodel the exploration model
-	 * @param direct what direction this button is from the center.
+	 * @param emodel   the exploration model
+	 * @param direct   what direction this button is from the center.
 	 * @param mainList the list of fixtures on this tile in the main map.
 	 */
 	public ExplorationClickListener(final IExplorationModel emodel,
-			final Direction direct, final FixtureList mainList) {
+	                                final Direction direct, final FixtureList mainList) {
 		model = emodel;
 		direction = direct;
 		list = mainList;
@@ -118,10 +111,10 @@ public final class ExplorationClickListener extends AbstractAction implements
 	}
 
 	/**
-	 * Handle a button press. This was refactored out of the actionPerformed
-	 * method because it has to be run on the EDT to prevent concurrency issues,
-	 * and putting this code in the Runnable means accessing private members
-	 * from that inner class ...
+	 * Handle a button press. This was refactored out of the actionPerformed method
+	 * because it has to be run on the EDT to prevent concurrency issues, and putting
+	 * this
+	 * code in the Runnable means accessing private members from that inner class ...
 	 *
 	 * TODO: Remove caches from main map.
 	 */
@@ -146,29 +139,32 @@ public final class ExplorationClickListener extends AbstractAction implements
 			}
 			model.move(direction);
 			final Point dPoint = model.getSelectedUnitLocation();
-			final Player player = NullCleaner.assertNotNull(model.getSelectedUnit()).getOwner();
+			final Player player =
+					NullCleaner.assertNotNull(model.getSelectedUnit()).getOwner();
 			final Collection<CacheFixture> caches = new HashSet<>();
 			for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 				final IMutableMapNG map = pair.first();
 				map.setBaseTerrain(dPoint, model.getMap()
-						.getBaseTerrain(dPoint));
+						                           .getBaseTerrain(dPoint));
 				for (final TileFixture fix : fixtures) {
 					if (fix instanceof Ground && map.getGround(dPoint) == null) {
 						map.setGround(dPoint, ((Ground) fix).copy(false));
 					} else if (fix instanceof Ground
-							&& fix.equals(map.getGround(dPoint))) {
+							           && fix.equals(map.getGround(dPoint))) {
 						continue;
 					} else if (fix instanceof Forest
-							&& map.getForest(dPoint) == null) {
+							           && map.getForest(dPoint) == null) {
 						map.setForest(dPoint, ((Forest) fix).copy(false));
 					} else if (fix instanceof Forest
-							&& fix.equals(map.getForest(dPoint))) {
+							           && fix.equals(map.getForest(dPoint))) {
 						continue;
 					} else if (fix instanceof Mountain) {
 						map.setMountainous(dPoint, true);
 					} else if (!hasFixture(map, dPoint, fix)) {
 						final boolean zero = fix instanceof HasOwner && !((HasOwner) fix)
-								.getOwner().equals(player);
+								                                                 .getOwner()
+								                                                 .equals
+										                                                  (player);
 						map.addFixture(dPoint, fix.copy(zero));
 						if (fix instanceof CacheFixture) {
 							caches.add((CacheFixture) fix);
@@ -180,7 +176,8 @@ public final class ExplorationClickListener extends AbstractAction implements
 				model.getMap().removeFixture(dPoint, cache);
 			}
 		} catch (final TraversalImpossibleException except) {
-			LOGGER.log(Level.FINEST, "Attempted movement to impassable destination", except);
+			LOGGER.log(Level.FINEST, "Attempted movement to impassable destination",
+					except);
 			final Point sel = model.getSelectedUnitLocation();
 			for (final SelectionChangeListener listener : scListeners) {
 				listener.selectedPointChanged(null, sel);
@@ -190,21 +187,22 @@ public final class ExplorationClickListener extends AbstractAction implements
 			}
 		}
 	}
+
 	/**
-	 * @param map a map
+	 * @param map    a map
 	 * @param dPoint a point
-	 * @param fix a fixture
+	 * @param fix    a fixture
 	 * @return whether the map has that fixture there
 	 */
 	private static boolean hasFixture(final IMapNG map, final Point dPoint,
-			final TileFixture fix) {
+	                                  final TileFixture fix) {
 		return StreamSupport.stream(map.getOtherFixtures(dPoint).spliterator(), false)
 				       .anyMatch(fix::equals);
 	}
 
 	/**
-	 * Change the allegiance of any villages on the current tile to the moving
-	 * unit's owner.
+	 * Change the allegiance of any villages on the current tile to the moving unit's
+	 * owner.
 	 */
 	private void swearVillages() {
 		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
@@ -213,7 +211,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 			if (mover != null) {
 				final Player owner = mover.getOwner();
 				for (final TileFixture fix : map.getOtherFixtures(model
-						.getSelectedUnitLocation())) {
+						                                                  .getSelectedUnitLocation())) {
 					if (fix instanceof Village) {
 						((Village) fix).setOwner(owner);
 					}
@@ -223,8 +221,8 @@ public final class ExplorationClickListener extends AbstractAction implements
 	}
 
 	/**
-	 * A reimplementation of {@link JList#getSelectedValuesList()}
-	 * that's guaranteed not to throw an ArrayIndexOutOfBoundsException.
+	 * A reimplementation of {@link JList#getSelectedValuesList()} that's guaranteed not
+	 * to throw an ArrayIndexOutOfBoundsException.
 	 *
 	 * @return a list of the list's selected members
 	 */
@@ -247,7 +245,8 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 */
 	@Override
 	public void addSelectionChangeListener(
-			final SelectionChangeListener listener) {
+			                                      final SelectionChangeListener
+					                                      listener) {
 		scListeners.add(listener);
 	}
 
@@ -256,7 +255,8 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 */
 	@Override
 	public void removeSelectionChangeListener(
-			final SelectionChangeListener listener) {
+			                                         final SelectionChangeListener
+					                                         listener) {
 		scListeners.remove(listener);
 	}
 
@@ -275,6 +275,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	public void removeMovementCostListener(final MovementCostListener listener) {
 		mcListeners.remove(listener);
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

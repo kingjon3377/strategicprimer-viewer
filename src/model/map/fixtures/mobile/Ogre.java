@@ -1,36 +1,34 @@
 package model.map.fixtures.mobile;
 
-import java.io.IOException;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
+import org.eclipse.jdt.annotation.Nullable;
+
+import java.io.IOException;
 
 /**
  * An ogre. TODO: should probably be a unit, or something.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public class Ogre implements MobileFixture, HasImage, UnitMember { // NOPMD
 	/**
@@ -46,8 +44,8 @@ public class Ogre implements MobileFixture, HasImage, UnitMember { // NOPMD
 	}
 
 	/**
-	 * @return a copy of this ogre
 	 * @param zero ignored, as an ogre has no sensitive information
+	 * @return a copy of this ogre
 	 */
 	@Override
 	public Ogre copy(final boolean zero) {
@@ -55,6 +53,7 @@ public class Ogre implements MobileFixture, HasImage, UnitMember { // NOPMD
 		retval.setImage(image);
 		return retval;
 	}
+
 	/**
 	 * @return a String representation of the ogre
 	 */
@@ -88,7 +87,7 @@ public class Ogre implements MobileFixture, HasImage, UnitMember { // NOPMD
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof Ogre
-				&& id == ((TileFixture) obj).getID();
+				                      && id == ((TileFixture) obj).getID();
 	}
 
 	/**
@@ -101,7 +100,6 @@ public class Ogre implements MobileFixture, HasImage, UnitMember { // NOPMD
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -132,17 +130,16 @@ public class Ogre implements MobileFixture, HasImage, UnitMember { // NOPMD
 	}
 
 	/**
-	 * @param obj another UnitMember
+	 * @param obj     another UnitMember
 	 * @param ostream a stream to report an explanation on
+	 * @param context a string to print before every line of output, describing the
+	 *                context
 	 * @return whether that member equals this one
-	 * @param context
-	 *            a string to print before every line of output, describing the
-	 *            context
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-			final String context) throws IOException {
+	                        final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Ogre) {
 				return true;
@@ -163,6 +160,7 @@ public class Ogre implements MobileFixture, HasImage, UnitMember { // NOPMD
 			return false;
 		}
 	}
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -186,6 +184,7 @@ public class Ogre implements MobileFixture, HasImage, UnitMember { // NOPMD
 	public String plural() {
 		return "Ogres";
 	}
+
 	/**
 	 * @return a short description of the fixture
 	 */

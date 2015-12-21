@@ -1,38 +1,36 @@
 package view.map.main;
 
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.MapDimensions;
 import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
+import org.eclipse.jdt.annotation.Nullable;
+
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 /**
- * A listener to adjust the number of displayed tiles based on the area to
- * display them in.
+ * A listener to adjust the number of displayed tiles based on the area to display them
+ * in.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class MapSizeListener extends ComponentAdapter {
 	/**
@@ -50,8 +48,7 @@ public final class MapSizeListener extends ComponentAdapter {
 	}
 
 	/**
-	 * Adjust the visible size of the map based on the map component being
-	 * resized.
+	 * Adjust the visible size of the map based on the map component being resized.
 	 *
 	 * @param event the resize event
 	 */
@@ -64,7 +61,7 @@ public final class MapSizeListener extends ComponentAdapter {
 						model.getMapDimensions().getVersion());
 				final int visibleCols = event.getComponent().getWidth() / tsize;
 				final int visibleRows = event.getComponent().getHeight()
-						/ tsize;
+						                        / tsize;
 				int minCol = model.getDimensions().getMinimumCol();
 				int maxCol = model.getDimensions().getMaximumCol();
 				int minRow = model.getDimensions().getMinimumRow();
@@ -73,7 +70,7 @@ public final class MapSizeListener extends ComponentAdapter {
 				final int totalRows = mapDim.rows;
 				final int totalCols = mapDim.cols;
 				if (visibleCols != maxCol - minCol
-						|| visibleRows != maxRow - minRow) {
+						    || visibleRows != maxRow - minRow) {
 					if (visibleCols >= totalCols) {
 						minCol = 0;
 						maxCol = totalCols - 1;
@@ -93,7 +90,7 @@ public final class MapSizeListener extends ComponentAdapter {
 						maxRow = minRow + visibleRows - 1;
 					}
 					model.setDimensions(new VisibleDimensions(minRow, maxRow,
-							minCol, maxCol));
+							                                         minCol, maxCol));
 				}
 			}
 		}

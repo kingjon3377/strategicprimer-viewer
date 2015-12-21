@@ -1,19 +1,5 @@
 package view.exploration;
 
-import static util.NullCleaner.assertNotNull;
-import static view.util.SystemOut.SYS_OUT;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.map.misc.ICLIHelper;
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
@@ -30,42 +16,56 @@ import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
+import org.eclipse.jdt.annotation.Nullable;
 import util.Pair;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static util.NullCleaner.assertNotNull;
+import static view.util.SystemOut.SYS_OUT;
+
 /**
- * A CLI to help running exploration. Now separated from the "driver" bits, to
- * simplify things.
+ * A CLI to help running exploration. Now separated from the "driver" bits, to simplify
+ * things.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class ExplorationCLI {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = assertNotNull(Logger.getLogger(ExplorationCLI.class.getName()));
+	private static final Logger LOGGER =
+			assertNotNull(Logger.getLogger(ExplorationCLI.class.getName()));
 	/**
 	 * The direction prompt.
 	 */
 	private static final String PROMPT =
-			"0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, 6 = W, 7 = NW, 8 = Stay Here, 9 = Quit.";
+			"0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, 6 = W, 7 = NW, 8 = Stay Here, " +
+					"9 = Quit.";
 	/**
 	 * The prompt to use when the user tells the unit to go nowhere.
 	 */
@@ -79,12 +79,13 @@ public final class ExplorationCLI {
 	 * The helper to handle user I/O.
 	 */
 	private final ICLIHelper helper;
+
 	/**
-	 * @param emodel the exploration model to use
+	 * @param emodel  the exploration model to use
 	 * @param mhelper the helper to handle user I/O
 	 */
 	public ExplorationCLI(final IExplorationModel emodel,
-			final ICLIHelper mhelper) {
+	                      final ICLIHelper mhelper) {
 		model = emodel;
 		helper = mhelper;
 	}
@@ -92,8 +93,7 @@ public final class ExplorationCLI {
 	/**
 	 * Have the user choose a player.
 	 *
-	 * @return the chosen player, or a player with a negative number if no
-	 *         choice made.
+	 * @return the chosen player, or a player with a negative number if no choice made.
 	 * @throws IOException on I/O error
 	 */
 	@Nullable
@@ -114,8 +114,7 @@ public final class ExplorationCLI {
 	 * Have the player choose a unit.
 	 *
 	 * @param player the player to whom the unit must belong
-	 * @return the chosen unit, or a unit with a negative ID number if none
-	 *         selected.
+	 * @return the chosen unit, or a unit with a negative ID number if none selected.
 	 * @throws IOException on I/O error
 	 */
 	@Nullable
@@ -132,8 +131,8 @@ public final class ExplorationCLI {
 	}
 
 	/**
-	 * Change the owner of all the villages on the specified tile in all the
-	 * maps to the owner of the currently selected unit.
+	 * Change the owner of all the villages on the specified tile in all the maps to the
+	 * owner of the currently selected unit.
 	 *
 	 * @param point the location of the tile in question
 	 */
@@ -154,10 +153,11 @@ public final class ExplorationCLI {
 	/**
 	 * Have the player move the selected unit. Throws an exception if no unit is
 	 * selected.
+	 *
 	 * @param mover the selected unit
-	 * @return the cost of the specified movement, 1 if not possible (in which
-	 *         case we update subordinate maps with that tile's tile type but no
-	 *         fixtures), or MAX_INT if "exit".
+	 * @return the cost of the specified movement, 1 if not possible (in which case we
+	 * update subordinate maps with that tile's tile type but no fixtures), or MAX_INT if
+	 * "exit".
 	 * @throws IOException on I/O error
 	 */
 	public int move(final IUnit mover) throws IOException {
@@ -173,7 +173,8 @@ public final class ExplorationCLI {
 		try {
 			cost = model.move(direction);
 		} catch (final TraversalImpossibleException except) {
-			LOGGER.log(Level.FINEST, "Attempted movement to impassable destination", except);
+			LOGGER.log(Level.FINEST, "Attempted movement to impassable destination",
+					except);
 			System.out.print("That direction is impassable; we've made sure ");
 			System.out.println("all maps show that at a cost of 1 MP");
 			return 1; // NOPMD
@@ -208,7 +209,7 @@ public final class ExplorationCLI {
 			}
 		}
 		if (Direction.Nowhere == direction
-				&& helper.inputBoolean(FEALTY_PROMPT)) {
+				    && helper.inputBoolean(FEALTY_PROMPT)) {
 			swearVillages(dPoint);
 			cost += 5;
 		}
@@ -230,20 +231,22 @@ public final class ExplorationCLI {
 
 	/**
 	 * TODO: Remove caches from master map.
-	 * @param dPoint
-	 *            the current location
-	 * @param fix
-	 *            the fixture to copy to subordinate maps. May be null, to
-	 *            simplify the caller.
-	 * @param mover
-	 *            the current unit (needed for its owner)
+	 *
+	 * @param dPoint the current location
+	 * @param fix    the fixture to copy to subordinate maps. May be null, to simplify
+	 *                  the
+	 *               caller.
+	 * @param mover  the current unit (needed for its owner)
 	 */
 	private void printAndTransferFixture(final Point dPoint,
-			@Nullable final TileFixture fix, final HasOwner mover) {
+	                                     @Nullable final TileFixture fix,
+	                                     final HasOwner mover) {
 		if (fix != null) {
 			SYS_OUT.println(fix);
 			final boolean zero = fix instanceof HasOwner && !((HasOwner) fix)
-					.getOwner().equals(mover.getOwner());
+					                                                 .getOwner()
+					                                                 .equals(mover
+							                                                         .getOwner());
 			for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 				final IMutableMapNG map = pair.first();
 				if (fix instanceof Ground && map.getGround(dPoint) == null) {
@@ -263,8 +266,8 @@ public final class ExplorationCLI {
 	}
 
 	/**
-	 * Ask the user for directions the unit should move until it runs out of MP
-	 * or the user decides to quit.
+	 * Ask the user for directions the unit should move until it runs out of MP or the
+	 * user decides to quit.
 	 *
 	 * @throws IOException on I/O error.
 	 */
@@ -284,6 +287,7 @@ public final class ExplorationCLI {
 			}
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

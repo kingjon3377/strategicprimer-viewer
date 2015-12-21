@@ -1,46 +1,43 @@
 package model.map.fixtures;
 
+import model.map.IFixture;
+import model.map.River;
+import model.map.SubsettableFixture;
+import model.map.TileFixture;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
+
 import java.io.IOException;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
-import model.map.IFixture;
-import model.map.River;
-import model.map.SubsettableFixture;
-import model.map.TileFixture;
-import util.NullCleaner;
-
 /**
- * A Fixture to encapsulate the rivers on a tile, so we can show a chit for
- * rivers.
+ * A Fixture to encapsulate the rivers on a tile, so we can show a chit for rivers.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class RiverFixture implements TileFixture, Iterable<@NonNull River>,
-		SubsettableFixture {
+		                                           SubsettableFixture {
 	/**
 	 * The maximum size of a river's equivalent string, plus a space.
 	 */
@@ -65,8 +62,8 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	}
 
 	/**
-	 * @return a copy of this fixture
 	 * @param zero ignored, as this fixture has no sensitive information
+	 * @return a copy of this fixture
 	 */
 	@Override
 	public RiverFixture copy(final boolean zero) {
@@ -74,6 +71,7 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 		forEach(retval::addRiver);
 		return retval;
 	}
+
 	/**
 	 * Add a river.
 	 *
@@ -114,12 +112,12 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof RiverFixture
-				&& ((RiverFixture) obj).rivers.equals(rivers);
+				                      && ((RiverFixture) obj).rivers.equals(rivers);
 	}
 
 	/**
-	 * @return a hash value for the object Because of Java bug #6579200, this
-	 *         has to return a constant.
+	 * @return a hash value for the object Because of Java bug #6579200, this has to
+	 * return a constant.
 	 */
 	@Override
 	public int hashCode() {
@@ -128,7 +126,6 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -143,13 +140,16 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	public int getZValue() {
 		return 30;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */
 	@Override
 	public String toString() {
 		final StringBuilder sbuild = new StringBuilder(BASE_STRING.length()
-				+ MAX_RIVER_SIZE * rivers.size()).append(BASE_STRING);
+				                                               + MAX_RIVER_SIZE *
+						                                                 rivers.size())
+				                             .append(BASE_STRING);
 		for (final River river : rivers) {
 			sbuild.append(river.toString());
 			sbuild.append(' ');
@@ -158,22 +158,17 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	}
 
 	/**
-	 * @param obj
-	 *            another RiverFixture
-	 * @return whether it's a strict subset of this one, containing no rivers
-	 *         that this doesn't
-	 * @param context
-	 *            a string to print before every line of output, describing the
-	 *            context
-	 * @param ostream
-	 *            a stream to print any error messages on, or which rivers are
-	 *            extra
-	 * @throws IOException
-	 *             on I/O error writing error messages
+	 * @param obj     another RiverFixture
+	 * @param context a string to print before every line of output, describing the
+	 *                context
+	 * @param ostream a stream to print any error messages on, or which rivers are extra
+	 * @return whether it's a strict subset of this one, containing no rivers that this
+	 * doesn't
+	 * @throws IOException on I/O error writing error messages
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-			final String context) throws IOException {
+	                        final String context) throws IOException {
 		if (obj instanceof RiverFixture) {
 			final Set<River> temp = EnumSet.copyOf(((RiverFixture) obj).rivers);
 			temp.removeAll(rivers);
@@ -200,9 +195,9 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	 *
 	 * TODO: investigate how FreeCol does it.
 	 *
-	 * @return an ID for the fixture. This is constant because it's really a
-	 *         container for a collection of rivers.
-	 *
+	 * @return an ID for the fixture. This is constant because it's really a container
+	 * for
+	 * a collection of rivers.
 	 */
 	@Override
 	public int getID() {
@@ -225,6 +220,7 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	public String plural() {
 		return "Rivers";
 	}
+
 	/**
 	 * @return a short description of the fixture
 	 */

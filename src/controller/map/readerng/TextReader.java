@@ -1,13 +1,5 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.getAttribute;
-
-import java.util.Collections;
-import java.util.List;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
@@ -16,25 +8,32 @@ import model.map.fixtures.TextFixture;
 import util.NullCleaner;
 import util.Warning;
 
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import java.util.Collections;
+import java.util.List;
+
+import static controller.map.readerng.XMLHelper.getAttribute;
+
 /**
  * A reader for text elements.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  * @deprecated ReaderNG is deprecated
@@ -44,20 +43,21 @@ public final class TextReader implements INodeHandler<TextFixture> {
 	/**
 	 * Parse a TextFixture.
 	 *
-	 * @param element the element to parse
-	 * @param stream the stream to get more elements (in this case, the text)
-	 *        from
-	 * @param players ignored
-	 * @param warner the Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate
-	 *        new ones as needed
+	 * @param element   the element to parse
+	 * @param stream    the stream to get more elements (in this case, the text) from
+	 * @param players   ignored
+	 * @param warner    the Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new
+	 *                     ones as
+	 *                  needed
 	 * @return the TextFixture
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
 	public TextFixture parse(final StartElement element,
-			final Iterable<XMLEvent> stream, final IMutablePlayerCollection players,
-			final Warning warner, final IDFactory idFactory)
+	                         final Iterable<XMLEvent> stream,
+	                         final IMutablePlayerCollection players,
+	                         final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		// Of all our uses of StringBuilder, here we can't know how much size
 		// we're going to need beforehand. But cases where we'll need more than
@@ -66,21 +66,28 @@ public final class TextReader implements INodeHandler<TextFixture> {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException("text",
-						NullCleaner.assertNotNull(event.asStartElement()
-								.getName().getLocalPart()), event.getLocation()
-								.getLineNumber());
+						                                NullCleaner.assertNotNull(
+								                                event.asStartElement()
+										                                .getName()
+										                                .getLocalPart()),
+						                                event.getLocation()
+								                                .getLineNumber());
 			} else if (event.isCharacters()) {
 				sbuild.append(event.asCharacters().getData());
 			} else if (event.isEndElement()
-					&& element.getName().equals(event.asEndElement().getName())) {
+					           &&
+					           element.getName().equals(event.asEndElement().getName()
+					           )) {
 				break;
 			}
 		}
 		final TextFixture fix =
 				new TextFixture(NullCleaner.assertNotNull(sbuild.toString()
-						.trim()), XMLHelper.parseInt(
-						getAttribute(element, "turn", "-1"),
-						NullCleaner.assertNotNull(element.getLocation())));
+						                                          .trim()),
+						               XMLHelper.parseInt(
+								               getAttribute(element, "turn", "-1"),
+								               NullCleaner.assertNotNull(
+										               element.getLocation())));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}
@@ -104,16 +111,16 @@ public final class TextReader implements INodeHandler<TextFixture> {
 	/**
 	 * Create an intermediate representation to convert to XML.
 	 *
-	 * @param <S> the type of the object---it can be a subclass, to make the
-	 *        adapter work.
+	 * @param <S> the type of the object---it can be a subclass, to make the adapter
+	 *            work.
 	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
 	@Override
 	public <S extends TextFixture> SPIntermediateRepresentation write(
-			final S obj) {
+			                                                                 final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				"text");
+				                                                                            "text");
 		if (obj.getTurn() != -1) {
 			retval.addIntegerAttribute("turn", obj.getTurn());
 		}

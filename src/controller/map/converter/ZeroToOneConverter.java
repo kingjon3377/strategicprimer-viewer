@@ -1,5 +1,16 @@
 package controller.map.converter;
 
+import org.eclipse.jdt.annotation.Nullable;
+import util.IteratorWrapper;
+import util.NullCleaner;
+import util.TypesafeLogger;
+
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.EndElement;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -15,56 +26,41 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.EndElement;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import util.IteratorWrapper;
-import util.NullCleaner;
-import util.TypesafeLogger;
-
 /**
- * A class to convert a version-0 map to a version-1 map. As no reader currently
- * in the tree supports reading version 0 files, we have to handle that
- * ourselves, but fortunately not much requires changing.
+ * A class to convert a version-0 map to a version-1 map. As no reader currently in the
+ * tree supports reading version 0 files, we have to handle that ourselves, but
+ * fortunately not much requires changing.
  *
  * We ignore namespaces, as I'm not sure quite how to handle them.
  *
- * TODO: Write tests. FIXME: This class instantiates too many StringBuilders.
- * Methods should probably take Appendable and be passed *one* StringBuilder per
- * run.
+ * TODO: Write tests. FIXME: This class instantiates too many StringBuilders. Methods
+ * should probably take Appendable and be passed *one* StringBuilder per run.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class ZeroToOneConverter {
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(ZeroToOneConverter.class);
+			                                     .getLogger(ZeroToOneConverter.class);
 
 	/**
 	 * A mapping from numeric events to XML representations of their version-1
@@ -83,11 +79,11 @@ public final class ZeroToOneConverter {
 				final StartElement selement =
 						NullCleaner.assertNotNull(event.asStartElement());
 				if ("tile".equalsIgnoreCase(selement.getName()
-						.getLocalPart())) {
+						                            .getLocalPart())) {
 					builder.append(convertTile(selement,
 							iFactory(selement.getAttributes())));
 				} else if ("map".equalsIgnoreCase(selement
-						.getName().getLocalPart())) {
+						                                  .getName().getLocalPart())) {
 					builder.append(convertMap(selement,
 							iFactory(selement.getAttributes())));
 				} else {
@@ -98,7 +94,7 @@ public final class ZeroToOneConverter {
 				builder.append(event.asCharacters().getData().trim());
 			} else if (event.isEndElement()) {
 				builder.append(printEndElement(NullCleaner.assertNotNull(event
-						.asEndElement())));
+						                                                         .asEndElement())));
 			} else if (event.isStartDocument()) {
 				builder.append("<?xml version=\"1.0\"?>\n");
 			} else if (event.isEndDocument()) {
@@ -114,11 +110,11 @@ public final class ZeroToOneConverter {
 	 * Convert the version attribute of the map.
 	 *
 	 * @param element the map element
-	 * @param attrs its attributes
+	 * @param attrs   its attributes
 	 * @return the converted tag, in XML representation.
 	 */
 	private static String convertMap(final StartElement element,
-			final Iterable<Attribute> attrs) {
+	                                 final Iterable<Attribute> attrs) {
 		final StringBuilder builder = new StringBuilder(64);
 		builder.append('<');
 		builder.append(element.getName().getLocalPart());
@@ -134,19 +130,16 @@ public final class ZeroToOneConverter {
 	}
 
 	/**
-	 * Used to throw ParseException if a tile has a nonnumeric 'event'; now
-	 * merely logs that, I think.
+	 * Used to throw ParseException if a tile has a nonnumeric 'event'; now merely logs
+	 * that, I think.
 	 *
-	 * @param element
-	 *            the current element
-	 * @param attrs
-	 *            its attributes.
+	 * @param element the current element
+	 * @param attrs   its attributes.
 	 * @return the converted tile, in XML representation
-	 * @throws NumberFormatException
-	 *             if a tile has a non-numeric 'event'
+	 * @throws NumberFormatException if a tile has a non-numeric 'event'
 	 */
 	private static String convertTile(final StartElement element,
-			final Iterable<Attribute> attrs) {
+	                                  final Iterable<Attribute> attrs) {
 		final StringBuilder builder = new StringBuilder(64);
 		builder.append('<');
 		builder.append(element.getName().getLocalPart());
@@ -155,8 +148,11 @@ public final class ZeroToOneConverter {
 			if ("event".equalsIgnoreCase(attr.getName().getLocalPart())) {
 				try {
 					events.push(NullCleaner.assertNotNull(Integer.valueOf(NumberFormat
-							.getIntegerInstance().parse(attr.getValue())
-							.intValue())));
+							                                                      .getIntegerInstance()
+							                                                      .parse
+									                                                       (attr.getValue())
+
+							                                                      .intValue())));
 				} catch (final ParseException e) {
 					LOGGER.log(Level.SEVERE, "Non-numeric 'event'", e);
 				}
@@ -177,7 +173,8 @@ public final class ZeroToOneConverter {
 	 * @return a wrapper
 	 */
 	private static Iterable<Attribute> iFactory(
-			@Nullable final Iterator<Attribute> iter) {
+			                                           @Nullable
+			                                           final Iterator<Attribute> iter) {
 		return new IteratorWrapper<>(iter);
 	}
 
@@ -201,7 +198,7 @@ public final class ZeroToOneConverter {
 	 */
 	private static String printEndElement(final EndElement element) {
 		return printEndElementImpl(NullCleaner.assertNotNull(element.getName()
-				.getLocalPart()));
+				                                                     .getLocalPart()));
 	}
 
 	/**
@@ -223,8 +220,10 @@ public final class ZeroToOneConverter {
 	private static String printStartElement(final StartElement element) {
 		final StringBuilder builder = new StringBuilder(64).append('<');
 		builder.append(element.getName().getLocalPart());
-		//noinspection Convert2Diamond // getAttributes() isn't actually genericized, so diamond causes compile error
-		StreamSupport.stream(new IteratorWrapper<Attribute>(element.getAttributes()).spliterator(), false)
+		//noinspection Convert2Diamond // getAttributes() isn't actually genericized, so
+		// diamond causes compile error
+		StreamSupport.stream(new IteratorWrapper<Attribute>(element.getAttributes())
+				                     .spliterator(), false)
 				.map(ZeroToOneConverter::printAttribute).forEach(builder::append);
 		builder.append('>');
 		return NullCleaner.assertNotNull(builder.toString());
@@ -242,7 +241,7 @@ public final class ZeroToOneConverter {
 	/**
 	 * Add XML for the specified numbers.
 	 *
-	 * @param xml the XML to add
+	 * @param xml  the XML to add
 	 * @param nums the numbers to add it for
 	 */
 	private static void addXML(final String xml, final int... nums) {
@@ -296,7 +295,9 @@ public final class ZeroToOneConverter {
 		for (final String arg : args) {
 			try (final Reader reader = new FileReader(arg)) { // NOPMD
 				System.out.println(
-						convert(new IteratorWrapper<>(XMLInputFactory.newInstance().createXMLEventReader(reader))));
+						convert(new IteratorWrapper<>(XMLInputFactory.newInstance()
+								                              .createXMLEventReader(
+										                              reader))));
 			} catch (final FileNotFoundException except) {
 				LOGGER.log(Level.SEVERE, "File " + arg + " not found", except);
 				continue;

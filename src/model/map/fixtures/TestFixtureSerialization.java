@@ -1,11 +1,5 @@
 package model.map.fixtures; // NOPMD
 
-import java.io.IOException;
-
-import javax.xml.stream.XMLStreamException;
-
-import org.junit.Test;
-
 import controller.map.formatexceptions.SPFormatException;
 import model.map.BaseTestFixtureSerialization;
 import model.map.MapDimensions;
@@ -36,26 +30,30 @@ import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.Fortress;
+import org.junit.Test;
+
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
 
 /**
  * A class to test serialization of TileFixtures.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  */
@@ -69,19 +67,34 @@ public final class TestFixtureSerialization extends
 	/**
 	 * Test the serialization of Animal, including catching format errors.
 	 *
-	 * @throws SPFormatException on XML format error
+	 * @throws SPFormatException  on XML format error
 	 * @throws XMLStreamException on XML reader error
-	 * @throws IOException on I/O error creating serialized form
+	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
 	public void testAnimalSerialization() throws XMLStreamException,
-			SPFormatException, IOException {
+			                                             SPFormatException, IOException {
 		assertSerialization("First test of Animal serialization", new Animal(
-				"animalOne", false, false, "wild", 0), Animal.class);
+				                                                                    "animalOne",
+				                                                                    false,
+				                                                                    false,
+				                                                                    "wild",
+				                                                                    0),
+				Animal.class);
 		assertSerialization("Second test of Animal serialization", new Animal(
-				"animalTwo", false, true, "semi-domesticated", 1), Animal.class);
+				                                                                     "animalTwo",
+				                                                                     false,
+				                                                                     true,
+				                                                                     "semi-domesticated",
+				                                                                     1),
+				Animal.class);
 		assertSerialization("Third test of Animal serialization", new Animal(
-				"animalThree", true, false, "domesticated", 2), Animal.class);
+				                                                                    "animalThree",
+				                                                                    true,
+				                                                                    false,
+				                                                                    "domesticated",
+				                                                                    2),
+				Animal.class);
 		final Animal fourthAnimal = new Animal("animalFour", true, true, "status", 3);
 		assertSerialization("Fourth test of Animal serialization", fourthAnimal,
 				Animal.class);
@@ -90,7 +103,11 @@ public final class TestFixtureSerialization extends
 		assertMissingProperty("<animal />", Animal.class, KIND_PROPERTY, false);
 		assertForwardDeserialization(
 				"Forward-looking XML in re talking, reflection", new Animal(
-						"animalFive", false, false, "wild", 3),
+						                                                           "animalFive",
+						                                                           false,
+						                                                           false,
+						                                                           "wild",
+						                                                           3),
 				"<animal kind=\"animalFive\" talking=\"false\" id=\"3\" />",
 				Animal.class);
 		assertMissingProperty("<animal kind=\"animalSix\" talking=\"true\" />",
@@ -106,13 +123,13 @@ public final class TestFixtureSerialization extends
 	/**
 	 * Test the serialization of CacheFixture, including catching format errors.
 	 *
-	 * @throws SPFormatException on XML format error
+	 * @throws SPFormatException  on XML format error
 	 * @throws XMLStreamException on XML reader error
-	 * @throws IOException on I/O error creating serialized form
+	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
 	public void testCacheSerialization() throws XMLStreamException,
-			SPFormatException, IOException {
+			                                            SPFormatException, IOException {
 		assertSerialization("First test of Cache serialization",
 				new CacheFixture("kindOne", "contentsOne", 1),
 				CacheFixture.class);
@@ -136,15 +153,18 @@ public final class TestFixtureSerialization extends
 	/**
 	 * Test the serialization of Centaurs, including catching format errors.
 	 *
-	 * @throws SPFormatException on XML format error
+	 * @throws SPFormatException  on XML format error
 	 * @throws XMLStreamException on XML reader error
-	 * @throws IOException on I/O error creating serialized form
+	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
 	public void testCentaurSerialization() throws XMLStreamException,
-			SPFormatException, IOException {
+			                                              SPFormatException,
+			                                                  IOException {
 		assertSerialization("First test of Centaur serialization", new Centaur(
-				"firstCentaur", 0), Centaur.class);
+				                                                                      "firstCentaur",
+				                                                                      0),
+				Centaur.class);
 		assertSerialization("Second test of Centaur serialization",
 				new Centaur("secondCentaur", 1), Centaur.class);
 		assertUnwantedChild("<centaur kind=\"forest\"><troll /></centaur>",
@@ -160,17 +180,21 @@ public final class TestFixtureSerialization extends
 	/**
 	 * Test the serialization of Dragons.
 	 *
-	 * @throws SPFormatException on XML format error
+	 * @throws SPFormatException  on XML format error
 	 * @throws XMLStreamException on XML reader error
-	 * @throws IOException on I/O error creating serialized form
+	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
 	public void testDragonSerialization() throws XMLStreamException,
-			SPFormatException, IOException {
+			                                             SPFormatException, IOException {
 		assertSerialization("First test of Dragon serialization", new Dragon(
-				"", 1), Dragon.class);
+				                                                                    "",
+				                                                                    1),
+				Dragon.class);
 		assertSerialization("Second test of Dragon serialization", new Dragon(
-				"secondDragon", 2), Dragon.class);
+				                                                                     "secondDragon",
+				                                                                     2),
+				Dragon.class);
 		assertUnwantedChild("<dragon kind=\"ice\"><hill /></dragon>",
 				Dragon.class, false);
 		assertMissingProperty("<dragon />", Dragon.class, KIND_PROPERTY, false);
@@ -183,17 +207,21 @@ public final class TestFixtureSerialization extends
 	/**
 	 * Test the serialization of Fairies.
 	 *
-	 * @throws SPFormatException on XML format error
+	 * @throws SPFormatException  on XML format error
 	 * @throws XMLStreamException on XML reader error
-	 * @throws IOException on I/O error creating serialized form
+	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
 	public void testFairySerialization() throws XMLStreamException,
-			SPFormatException, IOException {
+			                                            SPFormatException, IOException {
 		assertSerialization("First test of Fairy serialization", new Fairy(
-				"oneFairy", 1), Fairy.class);
+				                                                                  "oneFairy",
+				                                                                  1),
+				Fairy.class);
 		assertSerialization("Second test of Fairy serialization", new Fairy(
-				"twoFairy", 2), Fairy.class);
+				                                                                   "twoFairy",
+				                                                                   2),
+				Fairy.class);
 		assertUnwantedChild("<fairy kind=\"great\"><hill /></fairy>",
 				Fairy.class, false);
 		assertMissingProperty("<fairy />", Fairy.class, KIND_PROPERTY, false);
@@ -206,17 +234,21 @@ public final class TestFixtureSerialization extends
 	/**
 	 * Test the serialization of Forests.
 	 *
-	 * @throws SPFormatException on XML format error
+	 * @throws SPFormatException  on XML format error
 	 * @throws XMLStreamException on XML reader error
-	 * @throws IOException on I/O error creating serialized form
+	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
 	public void testForestSerialization() throws XMLStreamException,
-			SPFormatException, IOException {
+			                                             SPFormatException, IOException {
 		assertSerialization("First test of Forest serialization", new Forest(
-				"firstForest", false), Forest.class);
+				                                                                    "firstForest",
+				                                                                    false),
+				Forest.class);
 		assertSerialization("Second test of Forest serialization", new Forest(
-				"secondForest", true), Forest.class);
+				                                                                     "secondForest",
+				                                                                     true),
+				Forest.class);
 		assertUnwantedChild("<forest kind=\"trees\"><hill /></forest>",
 				Forest.class, false);
 		assertMissingProperty("<forest />", Forest.class, KIND_PROPERTY, false);
@@ -227,13 +259,14 @@ public final class TestFixtureSerialization extends
 	/**
 	 * Test the serialization of Fortresses.
 	 *
-	 * @throws SPFormatException on XML format error
+	 * @throws SPFormatException  on XML format error
 	 * @throws XMLStreamException on XML reader error
-	 * @throws IOException on I/O error creating serialized form
+	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
 	public void testFortressSerialization() throws XMLStreamException,
-			SPFormatException, IOException {
+			                                               SPFormatException,
+			                                               IOException {
 		// Can't give player names because our test environment doesn't let us
 		// pass a set of players in
 		final Player firstPlayer = new Player(1, "");
@@ -264,17 +297,21 @@ public final class TestFixtureSerialization extends
 	/**
 	 * Test the serialization of Giants.
 	 *
-	 * @throws SPFormatException on XML format error
+	 * @throws SPFormatException  on XML format error
 	 * @throws XMLStreamException on XML reader error
-	 * @throws IOException on I/O error creating serialized form
+	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
 	public void testGiantSerialization() throws XMLStreamException,
-			SPFormatException, IOException {
+			                                            SPFormatException, IOException {
 		assertSerialization("First test of Giant serialization", new Giant(
-				"one", 1), Giant.class);
+				                                                                  "one",
+				                                                                  1),
+				Giant.class);
 		assertSerialization("Second test of Giant serialization", new Giant(
-				"two", 2), Giant.class);
+				                                                                   "two",
+				                                                                   2),
+				Giant.class);
 		assertUnwantedChild("<giant kind=\"hill\"><hill /></giant>",
 				Giant.class, false);
 		assertMissingProperty("<giant />", Giant.class, KIND_PROPERTY, false);
@@ -287,23 +324,29 @@ public final class TestFixtureSerialization extends
 	/**
 	 * Test the serialization of Ground Fixtures.
 	 *
-	 * @throws SPFormatException on XML format error
+	 * @throws SPFormatException  on XML format error
 	 * @throws XMLStreamException on XML reader error
-	 * @throws IOException on I/O error creating serialized form
+	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
 	public void testGroundSerialization() throws XMLStreamException,
-			SPFormatException, IOException {
+			                                             SPFormatException, IOException {
 		assertSerialization("First test of Ground serialization", new Ground(
-				"one", true), Ground.class);
+				                                                                    "one",
+				                                                                    true),
+				Ground.class);
 		assertSerialization("Second test of Ground serialization", new Ground(
-				"two", true), Ground.class);
+				                                                                     "two",
+				                                                                     true),
+				Ground.class);
 		assertSerialization("Third test of Ground serialization", new Ground(
-				"three", false), Ground.class);
+				                                                                    "three",
+				                                                                    false),
+				Ground.class);
 		final Point point = PointFactory.point(0, 0);
 		final SPMapNG map =
 				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
-						-1);
+						           -1);
 		map.setBaseTerrain(point, TileType.Plains);
 		map.setGround(point, new Ground("four", true));
 		assertSerialization("Test that reader handles ground as a fixture",
@@ -320,14 +363,16 @@ public final class TestFixtureSerialization extends
 		assertImageSerialization("Ground image property is preserved",
 				new Ground("five", true), Ground.class);
 	}
+
 	/**
 	 * Test that simple (no-parameter-except-ID) fixtures shouldn't have children.
-	 * @throws SPFormatException on XML format error
+	 *
+	 * @throws SPFormatException  on XML format error
 	 * @throws XMLStreamException on XML reader error
 	 */
 	@Test
 	public void testSimpleSerializationNoChildren() throws XMLStreamException,
-			SPFormatException {
+			                                                       SPFormatException {
 		assertUnwantedChild("<djinn><troll /></djinn>", Djinn.class, false);
 		assertUnwantedChild("<griffin><djinn /></griffin>", Griffin.class,
 				false);
@@ -352,16 +397,14 @@ public final class TestFixtureSerialization extends
 	 * Test that serialization of simple (no-parameter) fixtures preserves image
 	 * property.
 	 *
-	 * @throws SPFormatException
-	 *             on XML format error
-	 * @throws XMLStreamException
-	 *             on XML reader error
-	 * @throws IOException
-	 *             on I/O error creating serialized form
+	 * @throws SPFormatException  on XML format error
+	 * @throws XMLStreamException on XML reader error
+	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
 	public void testSimpleImageSerialization() throws XMLStreamException,
-			SPFormatException, IOException {
+			                                                  SPFormatException,
+			                                                  IOException {
 		assertImageSerialization("Djinn image property is preserved",
 				new Djinn(3), Djinn.class);
 		assertImageSerialization("Griffin image property is preserved",
@@ -387,17 +430,17 @@ public final class TestFixtureSerialization extends
 		assertImageSerialization("Troll image property is preserved",
 				new Troll(3), Troll.class);
 	}
+
 	/**
-	 * Test the serialization of simple (no-parameter) fixtures, including
-	 * format errors.
+	 * Test the serialization of simple (no-parameter) fixtures, including format errors.
 	 *
-	 * @throws SPFormatException on XML format error
+	 * @throws SPFormatException  on XML format error
 	 * @throws XMLStreamException on XML reader error
-	 * @throws IOException on I/O error creating serialized form
+	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
 	public void testSimpleSerialization() throws XMLStreamException, // NOPMD
-			SPFormatException, IOException {
+			                                             SPFormatException, IOException {
 		assertSerialization("Djinn serialization", new Djinn(1), Djinn.class);
 		assertSerialization("Djinn serialization", new Djinn(2), Djinn.class);
 		assertMissingProperty("<djinn />", Djinn.class, "id", true);

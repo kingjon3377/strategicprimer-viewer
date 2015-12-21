@@ -1,16 +1,5 @@
 package controller.map.drivers;
 
-import static model.map.PointFactory.point;
-import static view.util.SystemOut.SYS_OUT;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
@@ -25,37 +14,54 @@ import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static model.map.PointFactory.point;
+import static view.util.SystemOut.SYS_OUT;
+
 /**
  * A driver to run a player's trapping activity.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class TrapModelDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-r",
-			"--trap", ParamCount.One, "Run a player's trapping",
-			"Determine the results a player's trapper finds.",
-			TrapModelDriver.class);
+			                                                            "--trap",
+			                                                            ParamCount.One,
+			                                                            "Run a player's " +
+					                                                            "trapping",
+
+			                                                            "Determine the " +
+					                                                            "results" +
+					                                                            " a player's trapper finds.",
+			                                                            TrapModelDriver
+					                                                            .class);
 	/**
 	 * A somewhat lengthy prompt.
 	 */
@@ -65,7 +71,7 @@ public final class TrapModelDriver implements ISPDriver {
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(TrapModelDriver.class);
+			                                     .getLogger(TrapModelDriver.class);
 
 	/**
 	 * The number of minutes in an hour.
@@ -89,8 +95,10 @@ public final class TrapModelDriver implements ISPDriver {
 	/**
 	 * List of commands.
 	 */
-	private static final List<TrapperCommand> COMMANDS = NullCleaner.assertNotNull(Collections
-			.unmodifiableList(Arrays.asList(TrapperCommand.values())));
+	private static final List<TrapperCommand> COMMANDS =
+			NullCleaner.assertNotNull(Collections
+					                          .unmodifiableList(Arrays.asList(
+							                          TrapperCommand.values())));
 
 	/**
 	 * The possible commands.
@@ -164,7 +172,7 @@ public final class TrapModelDriver implements ISPDriver {
 	}
 
 	/**
-	 * @param map the map to explore
+	 * @param map     the map to explore
 	 * @param ostream the stream to write output to
 	 */
 	private void repl(final IMapNG map, final Appendable ostream) {
@@ -178,10 +186,10 @@ public final class TrapModelDriver implements ISPDriver {
 				name = "trapper";
 			}
 			int minutes = helper.inputNumber("How many hours will the " + name
-					+ " work? ")
-					* MINS_PER_HOUR;
+					                                 + " work? ")
+					              * MINS_PER_HOUR;
 			final int row = helper.inputNumber("Row of the tile where the "
-					+ name + " is working: ");
+					                                   + name + " is working: ");
 			final int col = helper.inputNumber("Column of that tile: ");
 			final Point point = point(row, col);
 			final List<String> fixtures; // NOPMD
@@ -195,7 +203,7 @@ public final class TrapModelDriver implements ISPDriver {
 				if (input >= 0) {
 					final TrapperCommand command =
 							NullCleaner
-							.assertNotNull(TrapperCommand.values()[input]);
+									.assertNotNull(TrapperCommand.values()[input]);
 					minutes -= handleCommand(fixtures, ostream,
 							command, fishing);
 					ostream.append(inHours(minutes));
@@ -205,7 +213,8 @@ public final class TrapModelDriver implements ISPDriver {
 					}
 				}
 				input = helper.chooseFromList(COMMANDS, "What should the "
-						+ name + " do next?", "Oops! No commands",
+						                                        + name + " do next?",
+						"Oops! No commands",
 						"Next action: ", false);
 			}
 		} catch (final IOException except) {
@@ -223,29 +232,25 @@ public final class TrapModelDriver implements ISPDriver {
 			return Integer.toString(minutes) + " minutes"; // NOPMD
 		} else {
 			return Integer.toString(minutes / MINS_PER_HOUR) + " hours, "
-					+ Integer.toString(minutes % MINS_PER_HOUR)
-					+ " minutes";
+					       + Integer.toString(minutes % MINS_PER_HOUR)
+					       + " minutes";
 		}
 	}
+
 	/**
 	 * Handle a command.
 	 *
-	 * @param fixtures
-	 *            the animals generated from the tile and surrounding tiles.
-	 * @param ostream
-	 *            the output stream to write to
-	 * @param command
-	 *            the command to handle
-	 * @param fishing
-	 *            whether we're dealing with *fish* traps .. which take
-	 *            different amounts of time
+	 * @param fixtures the animals generated from the tile and surrounding tiles.
+	 * @param ostream  the output stream to write to
+	 * @param command  the command to handle
+	 * @param fishing  whether we're dealing with *fish* traps .. which take different
+	 *                 amounts of time
 	 * @return how many minutes it took to execute the command
-	 * @throws IOException
-	 *             on I/O error interacting with user
+	 * @throws IOException on I/O error interacting with user
 	 */
 	private int handleCommand(final List<String> fixtures,
-			final Appendable ostream, final TrapperCommand command,
-			final boolean fishing) throws IOException {
+	                          final Appendable ostream, final TrapperCommand command,
+	                          final boolean fishing) throws IOException {
 		switch (command) {
 		case Check: // TODO: extract method?
 			final String top = fixtures.remove(0);
@@ -261,7 +266,7 @@ public final class TrapModelDriver implements ISPDriver {
 				ostream.append(top);
 				ostream.append(" or evidence of it escaping.\n");
 				return helper//NOPMD
-						.inputNumber("How long to check and deal with animal? ");
+						       .inputNumber("How long to check and deal with animal? ");
 			}
 		case EasyReset:
 			if (fishing) {
@@ -283,8 +288,10 @@ public final class TrapModelDriver implements ISPDriver {
 			throw new IllegalArgumentException("Unhandled case");
 		}
 	}
+
 	/**
 	 * Start the driver.
+	 *
 	 * @param model the driver model to operate on
 	 * @throws DriverFailedException never?
 	 */
@@ -292,6 +299,7 @@ public final class TrapModelDriver implements ISPDriver {
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
 		repl(model.getMap(), SYS_OUT);
 	}
+
 	/**
 	 * Run the driver.
 	 *
@@ -302,11 +310,12 @@ public final class TrapModelDriver implements ISPDriver {
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 0) {
 			throw new DriverFailedException("Need one argument",
-					new IllegalArgumentException("Need one argument"));
+					                               new IllegalArgumentException("Need one argument"));
 		}
 		startDriver(new MapReaderAdapter().readMapModel(new File(args[0]),
 				new Warning(Action.Warn)));
 	}
+
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */

@@ -1,20 +1,5 @@
 package controller.map.misc;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.swing.JFileChooser;
-import javax.swing.SwingUtilities;
-import javax.xml.stream.XMLStreamException;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.map.formatexceptions.SPFormatException;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -23,6 +8,7 @@ import model.map.SPMapNG;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.ViewerModel;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
@@ -31,28 +17,38 @@ import view.map.main.ViewerFrame;
 import view.util.AboutDialog;
 import view.util.ErrorShower;
 
+import javax.swing.*;
+import javax.xml.stream.XMLStreamException;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * An ActionListener to dispatch file I/O.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class IOHandler implements ActionListener {
 	/**
@@ -71,23 +67,24 @@ public final class IOHandler implements ActionListener {
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(IOHandler.class);
+			                                     .getLogger(IOHandler.class);
 	/**
 	 * File chooser.
 	 */
 	protected final JFileChooser chooser;
 
 	/**
-	 * The map model, which needs to be told about newly loaded maps and holds
-	 * maps to be saved.
+	 * The map model, which needs to be told about newly loaded maps and holds maps to be
+	 * saved.
 	 */
 	private final IDriverModel model;
 
 	/**
 	 * Handle the "load" menu item.
 	 *
-	 * @param source the source of the event. May be null, since JFileChooser
-	 *        doesn't seem to care
+	 * @param source the source of the event. May be null, since JFileChooser doesn't
+	 *                  seem
+	 *               to care
 	 */
 	private void handleLoadMenu(@Nullable final Component source) {
 		if (chooser.showOpenDialog(source) == JFileChooser.APPROVE_OPTION) {
@@ -112,7 +109,7 @@ public final class IOHandler implements ActionListener {
 	@Override
 	public void actionPerformed(@Nullable final ActionEvent event) {
 		if (event != null) { // it wouldn't be @Nullable except that the JDK
-								// isn't annotated
+			// isn't annotated
 			final Component source = eventSource(event.getSource());
 			if ("Load".equals(event.getActionCommand())) {
 				handleLoadMenu(source);
@@ -132,6 +129,7 @@ public final class IOHandler implements ActionListener {
 			}
 		}
 	}
+
 	/**
 	 * @param obj an object
 	 * @return it if it's a component, or null
@@ -144,21 +142,29 @@ public final class IOHandler implements ActionListener {
 			return null;
 		}
 	}
+
 	/**
-	 * Start a new viewer window with a blank map of the same size as the
-	 * model's current map.
+	 * Start a new viewer window with a blank map of the same size as the model's current
+	 * map.
 	 */
 	private void startNewViewerWindow() {
 		SwingUtilities.invokeLater(new WindowThread(
-				new ViewerFrame(new ViewerModel(new SPMapNG(model
-						.getMapDimensions(), new PlayerCollection(), model
-						.getMap().getCurrentTurn()), new File("")), this)));
+				                                           new ViewerFrame(new
+						                                                           ViewerModel(new SPMapNG(model
+						                                                                                       .getMapDimensions(),
+						                                                                                      new PlayerCollection(),
+						                                                                                      model
+								                                                                                      .getMap()
+								                                                                                      .getCurrentTurn()),
+
+								                                                                      new File("")),
+						                                                          this)));
 	}
 
 	/**
 	 * Constructor.
 	 *
-	 * @param map the map model
+	 * @param map      the map model
 	 * @param fchooser the file chooser
 	 */
 	public IOHandler(final IDriverModel map, final JFileChooser fchooser) {
@@ -169,13 +175,14 @@ public final class IOHandler implements ActionListener {
 	/**
 	 * Display an appropriate error message.
 	 *
-	 * @param except an Exception
+	 * @param except   an Exception
 	 * @param filename the file we were trying to process
-	 * @param source the component to use as the parent of the error dialog. May
-	 *        be null.
+	 * @param source   the component to use as the parent of the error dialog. May be
+	 *                 null.
 	 */
 	protected static void handleError(final Exception except,
-			final String filename, @Nullable final Component source) {
+	                                  final String filename,
+	                                  @Nullable final Component source) {
 		final String msg;
 		if (except instanceof XMLStreamException) {
 			msg = XML_ERROR_STRING + ' ' + filename;
@@ -195,15 +202,16 @@ public final class IOHandler implements ActionListener {
 	/**
 	 * Save a map to the filename it was loaded from.
 	 *
-	 * @param source the source of the event that triggered this. May be null if
-	 *        it wasn't a Component.
+	 * @param source the source of the event that triggered this. May be null if it
+	 *                  wasn't
+	 *               a Component.
 	 */
 	private void saveMap(@Nullable final Component source) {
 		try {
 			new MapReaderAdapter().write(model.getMapFile(), model.getMap());
 		} catch (final IOException e) {
 			ErrorShower.showErrorDialog(source, "I/O error writing to file "
-					+ model.getMapFile().getPath());
+					                                    + model.getMapFile().getPath());
 			LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 		}
 	}
@@ -211,9 +219,9 @@ public final class IOHandler implements ActionListener {
 	/**
 	 * Save a map.
 	 *
-	 * @param map the map to save.
+	 * @param map    the map to save.
 	 * @param source the source of the event. May be null if the source wasn't a
-	 *        component.
+	 *               component.
 	 */
 	private void saveMapAs(final IMapNG map, @Nullable final Component source) {
 		if (chooser.showSaveDialog(source) == JFileChooser.APPROVE_OPTION) {
@@ -233,12 +241,12 @@ public final class IOHandler implements ActionListener {
 	}
 
 	/**
-	 * @param file a file to load a map from
+	 * @param file   a file to load a map from
 	 * @param warner the Warning instance to use for warnings.
 	 * @return the map in that file
-	 * @throws IOException on other I/O error
+	 * @throws IOException        on other I/O error
 	 * @throws XMLStreamException if the XML isn't well-formed
-	 * @throws SPFormatException if the file contains invalid data
+	 * @throws SPFormatException  if the file contains invalid data
 	 */
 	protected static IMutableMapNG readMap(final File file, final Warning warner)
 			throws IOException, XMLStreamException, SPFormatException {
@@ -248,14 +256,14 @@ public final class IOHandler implements ActionListener {
 	/**
 	 * Save all maps to the filenames they were loaded from.
 	 *
-	 * @param source the source of the event that triggered this. May be null if
-	 *        it was not a component.
+	 * @param source the source of the event that triggered this. May be null if it was
+	 *               not a component.
 	 */
 	private void saveAll(@Nullable final Component source) {
 		if (model instanceof IMultiMapModel) {
 			final MapReaderAdapter adapter = new MapReaderAdapter();
 			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model)
-					.getAllMaps()) {
+					                                            .getAllMaps()) {
 				try {
 					adapter.write(pair.second(), pair.first());
 				} catch (final IOException e) {
@@ -274,7 +282,8 @@ public final class IOHandler implements ActionListener {
 	 */
 	private void handleSecondaryLoadMenu(@Nullable final Component source) {
 		if (model instanceof IMultiMapModel && chooser
-				.showOpenDialog(source) == JFileChooser.APPROVE_OPTION) {
+				                                       .showOpenDialog(source) ==
+				                                       JFileChooser.APPROVE_OPTION) {
 			final File file = chooser.getSelectedFile();
 			if (file == null) {
 				return;
@@ -288,8 +297,8 @@ public final class IOHandler implements ActionListener {
 			}
 		}
 	}
+
 	/**
-	 *
 	 * @return a String representation of the object.
 	 */
 	@Override

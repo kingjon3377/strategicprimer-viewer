@@ -1,53 +1,53 @@
 package view.worker;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import model.listeners.SkillSelectionListener;
+import model.listeners.SkillSelectionSource;
+import model.map.fixtures.mobile.worker.ISkill;
+import model.workermgmt.JobTreeModel;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
 
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import model.listeners.SkillSelectionListener;
-import model.listeners.SkillSelectionSource;
-import model.map.fixtures.mobile.worker.ISkill;
-import model.workermgmt.JobTreeModel;
-import util.NullCleaner;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * A tree representing a worker's Jobs and Skills.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  */
 public final class JobsTree extends JTree implements TreeSelectionListener,
-		SkillSelectionSource {
+		                                                     SkillSelectionSource {
 	/**
 	 * The list of completion listeners listening to us.
 	 */
 	private final Collection<SkillSelectionListener> ssListeners = new ArrayList<>();
+
 	/**
 	 * Constructor.
+	 *
 	 * @param jtmodel the tree model underlying this tree
 	 */
 	public JobsTree(final JobTreeModel jtmodel) {
@@ -65,10 +65,12 @@ public final class JobsTree extends JTree implements TreeSelectionListener,
 					expandRow(i);
 				}
 			}
+
 			@Override
 			public void treeNodesRemoved(@Nullable final TreeModelEvent e) {
 				// Ignored
 			}
+
 			@Override
 			public void treeNodesInserted(@Nullable final TreeModelEvent e) {
 				if (e == null) {
@@ -77,6 +79,7 @@ public final class JobsTree extends JTree implements TreeSelectionListener,
 				tree.expandPath(e.getTreePath());
 				tree.expandPath(e.getTreePath().getParentPath());
 			}
+
 			@Override
 			public void treeNodesChanged(@Nullable final TreeModelEvent e) {
 				if (e == null) {
@@ -94,8 +97,8 @@ public final class JobsTree extends JTree implements TreeSelectionListener,
 	}
 
 	/**
-	 * Fire the 'skill' property with the current selection if it's a Skill, or
-	 * null if not.
+	 * Fire the 'skill' property with the current selection if it's a Skill, or null if
+	 * not.
 	 *
 	 * @param evt the selection event to handle
 	 */

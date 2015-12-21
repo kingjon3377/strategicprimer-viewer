@@ -1,40 +1,35 @@
 package view.exploration;
 
-import java.awt.CardLayout;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.stream.Stream;
-
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
-
 import controller.map.misc.IOHandler;
 import model.exploration.ExplorationModel;
 import model.listeners.CompletionListener;
 import util.NullCleaner;
 
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.stream.Stream;
+
 /**
  * The main window for the exploration GUI.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  */
@@ -43,8 +38,10 @@ public final class ExplorationFrame extends JFrame {
 	 * The exploration model.
 	 */
 	protected final ExplorationModel model;
+
 	/**
 	 * A listener to swap the panels when 'completion' is signalled.
+	 *
 	 * @author Jonathan Lovelace
 	 */
 	private static final class SwapCompletionListener implements CompletionListener {
@@ -61,22 +58,26 @@ public final class ExplorationFrame extends JFrame {
 		 */
 		private final Collection<Component> compList = new ArrayList<>();
 		/**
-		 * Whether we're *on* the first panel. If we are, we go 'next'; if not,
-		 * we go 'first'.
+		 * Whether we're *on* the first panel. If we are, we go 'next'; if not, we go
+		 * 'first'.
 		 */
 		private boolean first = true;
+
 		/**
 		 * Constructor.
-		 * @param clayout the layout to tell to swap panels
+		 *
+		 * @param clayout    the layout to tell to swap panels
 		 * @param parentComp the component it's laying out
 		 * @param components things to tell to validate their layout before swapping
 		 */
 		protected SwapCompletionListener(final CardLayout clayout,
-				final Container parentComp, final Component... components) {
+		                                 final Container parentComp,
+		                                 final Component... components) {
 			layout = clayout;
 			parent = parentComp;
 			Stream.of(components).forEach(compList::add);
 		}
+
 		/**
 		 * @param end ignored
 		 */
@@ -91,6 +92,7 @@ public final class ExplorationFrame extends JFrame {
 				first = true;
 			}
 		}
+
 		/**
 		 * @return a String representation of the object
 		 */
@@ -99,12 +101,13 @@ public final class ExplorationFrame extends JFrame {
 			return "SwapCompletionListener";
 		}
 	}
+
 	/**
-	 * @param emodel the exploration model
+	 * @param emodel    the exploration model
 	 * @param ioHandler Passed to menu constructor
 	 */
 	public ExplorationFrame(final ExplorationModel emodel,
-			final IOHandler ioHandler) {
+	                        final IOHandler ioHandler) {
 		super("Exploration");
 		if (emodel.getMapFile().exists()) {
 			setTitle(emodel.getMapFile().getName() + " | Exploration");
@@ -118,13 +121,15 @@ public final class ExplorationFrame extends JFrame {
 		setLayout(layout);
 		final ExplorerSelectingPanel esp = new ExplorerSelectingPanel(emodel);
 		final ExplorationPanel explorationPanel = new ExplorationPanel(emodel,
-				esp.getMPDocument());
+				                                                              esp
+						                                                              .getMPDocument());
 		emodel.addMovementCostListener(explorationPanel);
 		emodel.addSelectionChangeListener(explorationPanel);
 		final CompletionListener swapper =
 				new SwapCompletionListener(layout,
-						NullCleaner.assertNotNull(getContentPane()),
-						explorationPanel, esp);
+						                          NullCleaner.assertNotNull(
+								                          getContentPane()),
+						                          explorationPanel, esp);
 		esp.addCompletionListener(swapper);
 		explorationPanel.addCompletionListener(swapper);
 		add(esp);

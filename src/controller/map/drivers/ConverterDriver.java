@@ -1,15 +1,5 @@
 package controller.map.drivers;
 
-import static view.util.SystemOut.SYS_OUT;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.xml.stream.XMLStreamException;
-
 import controller.map.converter.ResolutionDecreaseConverter;
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.formatexceptions.MapVersionException;
@@ -20,55 +10,75 @@ import model.misc.IDriverModel;
 import util.TypesafeLogger;
 import util.Warning;
 
+import javax.xml.stream.XMLStreamException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static view.util.SystemOut.SYS_OUT;
+
 /**
  * A driver to convert maps to the new format.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class ConverterDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-v",
-			"--convert", ParamCount.One, "Convert a map's format",
-			"Convert a map. At present, this means reducing its resolution.",
-			ConverterDriver.class);
+			                                                            "--convert",
+			                                                            ParamCount.One,
+			                                                            "Convert a map's" +
+					                                                            " format",
+
+			                                                            "Convert a map. " +
+					                                                            "At present, this means reducing its resolution.",
+			                                                            ConverterDriver
+					                                                            .class);
 
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(ConverterDriver.class);
+			                                     .getLogger(ConverterDriver.class);
 	/**
 	 * The map reader we'll use.
 	 */
 	private static final MapReaderAdapter READER = new MapReaderAdapter();
+
 	/**
-	 * @throws DriverFailedException always: this driver doesn't hold a map in memory any longer than it has to
 	 * @param model ignored
+	 * @throws DriverFailedException always: this driver doesn't hold a map in memory any
+	 *                               longer than it has to
 	 */
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
-		throw new DriverFailedException(new IllegalStateException("ConverterDriver can't operate on a driver model"));
+		throw new DriverFailedException(new IllegalStateException("ConverterDriver can't" +
+				                                                          " operate on a" +
+				                                                          " driver " +
+				                                                          "model"));
 	}
+
 	/**
 	 * Run the driver.
 	 *
@@ -80,7 +90,7 @@ public final class ConverterDriver implements ISPDriver {
 		if (args.length < 1) {
 			SYS_OUT.println("Usage: ConverterDriver filename [filename ...]");
 			throw new DriverFailedException("Need files to convert",
-					new IllegalArgumentException("Not enough arguments"));
+					                               new IllegalArgumentException("Not enough arguments"));
 		}
 		for (final String filename : args) {
 			if (filename == null) {
@@ -101,7 +111,7 @@ public final class ConverterDriver implements ISPDriver {
 				new MapReaderAdapter().write(newFile, map); //NOPMD
 			} catch (final MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename
-						+ " not acceptable to reader", e);
+						                         + " not acceptable to reader", e);
 				continue;
 			} catch (final FileNotFoundException e) {
 				LOGGER.log(Level.SEVERE, filename + " not found", e);
@@ -114,7 +124,7 @@ public final class ConverterDriver implements ISPDriver {
 				continue;
 			} catch (final SPFormatException e) {
 				LOGGER.log(Level.SEVERE, "SP map format error reading "
-						+ filename, e);
+						                         + filename, e);
 				continue;
 			}
 		}
@@ -143,6 +153,7 @@ public final class ConverterDriver implements ISPDriver {
 	public void setName(final String nomen) {
 		throw new IllegalStateException("Can't rename a driver");
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

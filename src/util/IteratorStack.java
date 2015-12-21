@@ -1,38 +1,37 @@
 package util;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 /**
- * A stack of iterators. Useful for when we have several collections of things
- * we need to do the same thing to. The order in which the iterators are
- * processed (despite "stack" in the name of this class) is unspecified and
- * implementation-specific; don't rely on it.
+ * A stack of iterators. Useful for when we have several collections of things we need to
+ * do the same thing to. The order in which the iterators are processed (despite "stack"
+ * in the name of this class) is unspecified and implementation-specific; don't rely on
+ * it.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2013 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
- *
- * @author Jonathan Lovelace
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @param <T> the type of thing returned by the iterator.
+ * @author Jonathan Lovelace
  */
 public final class IteratorStack<T> implements Iterator<T> {
 	/**
@@ -95,7 +94,8 @@ public final class IteratorStack<T> implements Iterator<T> {
 		removeEmptyIterators();
 		if (queue.isEmpty()) {
 			throw new NoSuchElementException(
-					"No elements left in any of the iterators");
+					                                "No elements left in any of the " +
+							                                "iterators");
 		} else {
 			final T retval = queue.peekFirst().next();
 			removeEmptyIterators();
@@ -111,7 +111,8 @@ public final class IteratorStack<T> implements Iterator<T> {
 		removeEmptyIterators();
 		if (queue.isEmpty()) {
 			throw new NoSuchElementException(
-					"No elements left in any of the iterators");
+					                                "No elements left in any of the " +
+							                                "iterators");
 		} else {
 			queue.peekFirst().remove();
 			removeEmptyIterators();

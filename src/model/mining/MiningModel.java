@@ -1,54 +1,55 @@
 package model.mining;
 
+import model.map.Point;
+import model.map.PointFactory;
+import util.NullCleaner;
+import view.util.SystemOut;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Random;
 
-import model.map.Point;
-import model.map.PointFactory;
-import util.NullCleaner;
-import view.util.SystemOut;
-
 /**
- * A class to model the distribution of a mineral to be mined. Note that the
- * constructor can be *very* computationally expensive!
+ * A class to model the distribution of a mineral to be mined. Note that the constructor
+ * can be *very* computationally expensive!
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2014-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class MiningModel {
 	/**
-	 * A mapping from positions (normalized so they could be spit out into a
-	 * spreadsheet) to LodeStatuses.
+	 * A mapping from positions (normalized so they could be spit out into a spreadsheet)
+	 * to LodeStatuses.
 	 */
 	private final Map<Point, LodeStatus> data = new HashMap<>();
 	/**
 	 * The max row and col we get to.
 	 */
 	private final Point maxPoint;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param initial the status to give to the mine's starting point
-	 * @param seed a number to seed the RNG
+	 * @param seed    a number to seed the RNG
 	 */
 	public MiningModel(final LodeStatus initial, final long seed) {
 		final Map<Point, LodeStatus> unnormalized = new HashMap<>();
@@ -99,7 +100,8 @@ public final class MiningModel {
 				queue.add(left);
 			}
 		}
-		SystemOut.SYS_OUT.printf("%nPruned %d branches beyond our boundaries%n", Long.valueOf(pruneCounter));
+		SystemOut.SYS_OUT.printf("%nPruned %d branches beyond our boundaries%n",
+				Long.valueOf(pruneCounter));
 		final int minCol =
 				getMinCol(NullCleaner.assertNotNull(unnormalized.keySet()));
 		for (final Map.Entry<Point, LodeStatus> entry : unnormalized.entrySet()) {
@@ -109,12 +111,14 @@ public final class MiningModel {
 		}
 		maxPoint = createMaxPoint(NullCleaner.assertNotNull(data.keySet()));
 	}
+
 	/**
 	 * @return the bottom-right corner
 	 */
 	public Point getMaxPoint() {
 		return maxPoint;
 	}
+
 	/**
 	 * @param point a point
 	 * @return what's there
@@ -126,6 +130,7 @@ public final class MiningModel {
 			return LodeStatus.None;
 		}
 	}
+
 	/**
 	 * @param set a set of Points
 	 * @return the lowest column in the set
@@ -139,6 +144,7 @@ public final class MiningModel {
 		}
 		return retval;
 	}
+
 	/**
 	 * @param set a set of points
 	 * @return a Point with the highest column and row in the set
@@ -156,6 +162,7 @@ public final class MiningModel {
 		}
 		return PointFactory.point(maxRow, maxCol);
 	}
+
 	/**
 	 * @return a string representation of this class
 	 */

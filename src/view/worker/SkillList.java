@@ -1,15 +1,5 @@
 package view.worker;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.swing.JList;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.listeners.CompletionListener;
 import model.listeners.JobSelectionListener;
 import model.listeners.LevelGainListener;
@@ -18,34 +8,41 @@ import model.listeners.SkillSelectionSource;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
 import model.workermgmt.SkillListModel;
+import org.eclipse.jdt.annotation.Nullable;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
- * A visual list of a job's skills. Also handles listening for selection
- * changes.
+ * A visual list of a job's skills. Also handles listening for selection changes.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class SkillList extends JList<ISkill> implements ListSelectionListener,
-		SkillSelectionSource, LevelGainListener, JobSelectionListener,
-		CompletionListener {
+		                                                              SkillSelectionSource,
+		                                                              LevelGainListener,
+		                                                              JobSelectionListener,
+		                                                              CompletionListener {
 	/**
 	 * The list of completion listeners listening to us.
 	 */
@@ -91,18 +88,20 @@ public final class SkillList extends JList<ISkill> implements ListSelectionListe
 	 */
 	@Override
 	public void removeSkillSelectionListener(
-			final SkillSelectionListener list) {
+			                                        final SkillSelectionListener list) {
 		ssListeners.remove(list);
 	}
 
 	/**
 	 * We just pass the event on to the list model, which is the object *really*
-	 * concerned about level events.
+	 * concerned
+	 * about level events.
 	 */
 	@Override
 	public void level() {
 		lmodel.level();
 	}
+
 	/**
 	 * @param job passed on to list model
 	 */
@@ -110,8 +109,10 @@ public final class SkillList extends JList<ISkill> implements ListSelectionListe
 	public void selectJob(@Nullable final IJob job) {
 		lmodel.selectJob(job);
 	}
+
 	/**
 	 * Handle the model's notification that it's finished setting up.
+	 *
 	 * @param end whether to skip to the end
 	 */
 	@Override

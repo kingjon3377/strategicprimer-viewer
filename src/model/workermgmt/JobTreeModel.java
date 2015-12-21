@@ -1,20 +1,5 @@
 package model.workermgmt;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.logging.Logger;
-import java.util.stream.StreamSupport;
-
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
-import javax.swing.tree.DefaultTreeSelectionModel;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.listeners.AddRemoveListener;
 import model.listeners.UnitMemberListener;
 import model.map.HasName;
@@ -24,34 +9,46 @@ import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.TypesafeLogger;
+
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.DefaultTreeSelectionModel;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
 
 /**
  * A model for a tree of a worker's Jobs and Skills.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class JobTreeModel implements TreeModel, UnitMemberListener,
-		AddRemoveListener {
+		                                           AddRemoveListener {
 	/**
 	 * The listeners registered to listen for model changes.
 	 */
@@ -62,7 +59,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 */
 	@Nullable
 	private IWorker root = null; // NOPMD: Claims only initialized in constructor, which
-							// is Not True.
+	// is Not True.
 	/**
 	 * The tree's selection model.
 	 */
@@ -72,14 +69,17 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(WorkerTreeModel.class);
+			                                     .getLogger(WorkerTreeModel.class);
+
 	/**
 	 * Set the selection model for the tree we're the model for.
+	 *
 	 * @param smodel the selection model
 	 */
 	public void setSelectionModel(final TreeSelectionModel smodel) {
 		tsm = smodel;
 	}
+
 	/**
 	 * @return the root of the tree, the worker.
 	 */
@@ -91,27 +91,28 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 
 	/**
 	 * @param parent an object in the tree
-	 * @param index the index of the child we want
+	 * @param index  the index of the child we want
 	 * @return the specified child
 	 */
 	@Override
 	public HasName getChild(@Nullable final Object parent, final int index) {
 		final IWorker currRoot = root;
 		if (index >= 0 && currRoot != null && parent instanceof IWorker
-				&& parent.equals(currRoot)) {
+				    && parent.equals(currRoot)) {
 			return getFromIter(currRoot, index); // NOPMD
 		} else if (index >= 0 && parent instanceof IJob) {
 			return getFromIter((IJob) parent, index); // NOPMD
 		} else {
 			throw new ArrayIndexOutOfBoundsException(
-					"Parent does not have that child.");
+					                                        "Parent does not have that " +
+							                                        "child.");
 		}
 	}
 
 	/**
-	 * @param <T> the type of thing we want to get
+	 * @param <T>      the type of thing we want to get
 	 * @param iterable an iterable
-	 * @param index the index of the item we want to return
+	 * @param index    the index of the item we want to return
 	 * @return that item
 	 */
 	private static <T> T getFromIter(final Iterable<T> iterable, final int index) {
@@ -121,7 +122,9 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 				iter.next();
 			} else {
 				throw new ArrayIndexOutOfBoundsException(
-						"Parent does not have that many children");
+						                                        "Parent does not have " +
+								                                        "that many " +
+								                                        "children");
 			}
 		}
 		if (iter.hasNext()) {
@@ -132,7 +135,8 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 			return retval; // NOPMD
 		} else {
 			throw new ArrayIndexOutOfBoundsException(
-					"Parent does not have that many children");
+					                                        "Parent does not have that " +
+							                                        "many children");
 		}
 	}
 
@@ -143,12 +147,15 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	@Override
 	public int getChildCount(@Nullable final Object parent) {
 		if (parent instanceof IWorker || parent instanceof IJob) {
-			return (int) StreamSupport.stream(((Iterable<?>) parent).spliterator(), false).count();
+			return (int) StreamSupport.stream(((Iterable<?>) parent).spliterator(),
+					false)
+					             .count();
 		} else if (parent instanceof ISkill) {
 			return 0; // NOPMD
 		} else {
 			throw new IllegalArgumentException(
-					"Not a possible member of the tree");
+					                                  "Not a possible member of the " +
+							                                  "tree");
 		}
 	}
 
@@ -162,24 +169,23 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	}
 
 	/**
-	 *
-	 * @param path a path indicating a node
+	 * @param path     a path indicating a node
 	 * @param newValue the new value for that place
 	 */
 	@Override
 	public void valueForPathChanged(@Nullable final TreePath path,
-			@Nullable final Object newValue) {
+	                                @Nullable final Object newValue) {
 		LOGGER.severe("valueForPathChanged needs to be implemented");
 	}
 
 	/**
 	 * @param parent an object presumably in the tree
-	 * @param child something that's presumably one of its children
+	 * @param child  something that's presumably one of its children
 	 * @return which child it is, or -1 if preconditions broken
 	 */
 	@Override
 	public int getIndexOfChild(@Nullable final Object parent,
-			@Nullable final Object child) {
+	                           @Nullable final Object child) {
 		if (parent instanceof IWorker || parent instanceof IJob) {
 			// TODO: Ought to be able to do this with the Stream API
 			int index = 0;
@@ -206,8 +212,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	}
 
 	/**
-	 * @param list something that doesn't want to listen for tree model changes
-	 *        anymore
+	 * @param list something that doesn't want to listen for tree model changes anymore
 	 */
 	@Override
 	public void removeTreeModelListener(@Nullable final TreeModelListener list) {
@@ -215,8 +220,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	}
 
 	/**
-	 * @param category what kind of thing is being added; if not a Job we ignore
-	 *        it
+	 * @param category what kind of thing is being added; if not a Job we ignore it
 	 * @param addendum a description of what to add
 	 */
 	@Override
@@ -227,29 +231,36 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 			final int childCount = getChildCount(currRoot);
 			currRoot.addJob(job);
 			fireTreeNodesInserted(new TreeModelEvent(this, new TreePath(
-					currRoot), arrayOfInt(childCount), arrayOfObj(job)));
+					                                                           currRoot),
+					                                        arrayOfInt(childCount),
+					                                        arrayOfObj(job)));
 		} else if ("skill".equals(category)) {
 			final TreePath selPath = tsm.getSelectionPath();
 			if (selPath != null
-					&& selPath.getLastPathComponent() instanceof IJob) {
+					    && selPath.getLastPathComponent() instanceof IJob) {
 				final IJob job = (IJob) selPath.getLastPathComponent();
 				final ISkill skill = new Skill(addendum, 0, 0);
 				final int childCount = getChildCount(job);
 				job.addSkill(skill);
 				fireTreeNodesInserted(new TreeModelEvent(this, new TreePath(
-						new Object[] { root, job }), arrayOfInt(childCount),
-						arrayOfObj(skill)));
+						                                                           new
+								                                                           Object[]{
+								                                                           root,
+								                                                           job}),
+
+						                                        arrayOfInt(childCount),
+						                                        arrayOfObj(skill)));
 			}
 		}
 	}
 
 	/**
-	 * @param old the previously selected member
+	 * @param old      the previously selected member
 	 * @param selected the newly selected unit member
 	 */
 	@Override
 	public void memberSelected(@Nullable final UnitMember old,
-			@Nullable final UnitMember selected) {
+	                           @Nullable final UnitMember selected) {
 		if (selected instanceof IWorker) {
 			root = (IWorker) selected;
 		} else {
@@ -263,7 +274,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 * @return an array containing it
 	 */
 	private static int[] arrayOfInt(final int integer) {
-		return new int[] { integer };
+		return new int[]{integer};
 	}
 
 	/**
@@ -271,7 +282,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 * @return an array containing it
 	 */
 	private static Object[] arrayOfObj(final Object obj) {
-		return new Object[] { obj };
+		return new Object[]{obj};
 	}
 
 	/**
@@ -303,6 +314,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	public void remove(final String category) {
 		// Not implemented
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

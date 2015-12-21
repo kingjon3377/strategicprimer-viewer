@@ -4,4 +4,4 @@
 @NonNullByDefault
 package model.map.fixtures.towns;
 
-import org.eclipse.jdt.annotation.NonNullByDefault; // NOPMD
+import org.eclipse.jdt.annotation.NonNullByDefault;

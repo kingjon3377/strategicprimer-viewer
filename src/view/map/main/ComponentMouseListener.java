@@ -1,15 +1,5 @@
 package view.map.main;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
 import model.map.IMapNG;
@@ -25,33 +15,40 @@ import model.viewer.FixtureComparator;
 import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
+import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
 import util.IteratorWrapper;
 import util.NullCleaner;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
 /**
- * A mouse listener for the MapComponent, to show the terrain-changing menu as
- * needed.
+ * A mouse listener for the MapComponent, to show the terrain-changing menu as needed.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class ComponentMouseListener extends MouseAdapter implements
 		SelectionChangeSource {
@@ -92,11 +89,16 @@ public final class ComponentMouseListener extends MouseAdapter implements
 				mapDim.getVersion());
 		final VisibleDimensions dimensions = model.getDimensions();
 		final Point point = PointFactory.point(eventPoint.y / tileSize
-				+ dimensions.getMinimumRow(), eventPoint.x / tileSize
-				+ dimensions.getMinimumCol());
+				                                       + dimensions.getMinimumRow(),
+				eventPoint.x / tileSize
+						+ dimensions.getMinimumCol());
 		if (point.row < mapDim.getRows() && point.col < mapDim.getColumns()) {
 			return concat("<html><body>", point.toString(), ": ", model
-					.getMap().getBaseTerrain(point).toString(), "<br />",
+					                                                      .getMap()
+					                                                      .getBaseTerrain(
+							                                                      point)
+					                                                      .toString(),
+					"<br />",
 					getTerrainFixturesAndTop(point), "<br/></body></html>");
 		} else {
 			return null;
@@ -109,16 +111,18 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	 */
 	private static String concat(final String... strings) {
 		final StringBuilder build =
-				new StringBuilder(Stream.of(strings).collect(Collectors.summingInt(String::length)).intValue());
+				new StringBuilder(Stream.of(strings)
+						                  .collect(Collectors.summingInt(String::length))
+						                  .intValue());
 		Stream.of(strings).forEach(build::append);
 		return NullCleaner.assertNotNull(build.toString());
 	}
 
 	/**
 	 * @param point a point
-	 * @return a HTML-ized String (including final newline entity) representing
-	 *         the TerrainFixtures at that point, and the fixture the user can see as
-	 *         its top fixture.
+	 * @return a HTML-ized String (including final newline entity) representing the
+	 * TerrainFixtures at that point, and the fixture the user can see as its top
+	 * fixture.
 	 */
 	private String getTerrainFixturesAndTop(final Point point) {
 		final IMapNG map = model.getMap();
@@ -135,7 +139,12 @@ public final class ComponentMouseListener extends MouseAdapter implements
 			fixes.add(forest);
 		}
 		final Iterable<TileFixture> iter = new IteratorWrapper<>(
-				NullCleaner.assertNotNull(map.getOtherFixtures(point).iterator()), fixComp);
+				                                                        NullCleaner
+						                                                        .assertNotNull(
+								                                                        map.getOtherFixtures(
+										                                                        point)
+										                                                        .iterator()),
+				                                                        fixComp);
 		final Iterator<TileFixture> iterat = iter.iterator();
 		if (iterat.hasNext()) {
 			fixes.add(iterat.next());
@@ -145,7 +154,8 @@ public final class ComponentMouseListener extends MouseAdapter implements
 				fixes.add(fix);
 			}
 		}
-		return StreamSupport.stream(fixes.spliterator(), false).map(TileFixture::toString)
+		return StreamSupport.stream(fixes.spliterator(), false).map
+				                                                        (TileFixture::toString)
 				       .collect(Collectors.joining("<br />"));
 	}
 
@@ -164,8 +174,9 @@ public final class ComponentMouseListener extends MouseAdapter implements
 			final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(),
 					mapDim.getVersion());
 			final Point point = PointFactory.point(eventPoint.y / tileSize
-					+ dimensions.getMinimumRow(), eventPoint.x / tileSize
-					+ dimensions.getMinimumCol());
+					                                       + dimensions.getMinimumRow(),
+					eventPoint.x / tileSize
+							+ dimensions.getMinimumCol());
 			if (point.row < mapDim.getRows() && point.col < mapDim.getColumns()) {
 				model.setSelection(point);
 				if (event.isPopupTrigger()) {
@@ -200,7 +211,6 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	}
 
 	/**
-	 *
 	 * @return a String representation of the object.
 	 */
 	@Override
@@ -209,9 +219,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	}
 
 	/**
-	 * @param list
-	 *            Something to listen for changes to the tile type of the
-	 *            selected tile
+	 * @param list Something to listen for changes to the tile type of the selected tile
 	 */
 	@Override
 	public void addSelectionChangeListener(final SelectionChangeListener list) {
@@ -219,8 +227,8 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	}
 
 	/**
-	 * @param list something that no longer wants to listen for changes to the
-	 *        tile type of the selected tile
+	 * @param list something that no longer wants to listen for changes to the tile type
+	 *             of the selected tile
 	 */
 	@Override
 	public void removeSelectionChangeListener(final SelectionChangeListener list) {

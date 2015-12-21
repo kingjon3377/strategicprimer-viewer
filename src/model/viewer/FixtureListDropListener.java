@@ -1,6 +1,12 @@
 package model.viewer;
 
-import java.awt.Component;
+import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
+import util.EqualsAny;
+import util.TypesafeLogger;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -13,42 +19,32 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JComponent;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import model.map.TileFixture;
-import util.EqualsAny;
-import util.TypesafeLogger;
-
 /**
- * The details of inter-FixtureList drag-and-drop, extracted to reduce the
- * number of methods in the class.
+ * The details of inter-FixtureList drag-and-drop, extracted to reduce the number of
+ * methods in the class.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class FixtureListDropListener extends DropTargetAdapter {
 	/**
-	 * A parent component. If it's an ancestor of the drop, it's an
-	 * intra-component drop.
+	 * A parent component. If it's an ancestor of the drop, it's an intra-component drop.
 	 */
 	private final JComponent parentComponent;
 
@@ -56,7 +52,8 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(FixtureListDropListener.class);
+			                                     .getLogger(
+					                                     FixtureListDropListener.class);
 	/**
 	 * The List's model.
 	 */
@@ -66,10 +63,10 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	 * Constructor.
 	 *
 	 * @param listModel the List's model
-	 * @param parent a parent of the list.
+	 * @param parent    a parent of the list.
 	 */
 	public FixtureListDropListener(final JComponent parent,
-			final FixtureListModel listModel) {
+	                               final FixtureListModel listModel) {
 		model = listModel;
 		parentComponent = parent;
 	}
@@ -83,11 +80,13 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	public void dragEnter(@Nullable final DropTargetDragEvent dtde) {
 		if (dtde != null) {
 			if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
-					&& (dtde.getCurrentDataFlavorsAsList().contains(
-							FixtureTransferable.FLAVOR)
-					|| dtde.getCurrentDataFlavorsAsList()
-							.contains(CurriedFixtureTransferable.FLAVOR))
-					&& !isIntraComponentXfr(dtde)) {
+					    && (dtde.getCurrentDataFlavorsAsList().contains(
+					FixtureTransferable.FLAVOR)
+							        || dtde.getCurrentDataFlavorsAsList()
+									           .contains(
+											           CurriedFixtureTransferable
+													           .FLAVOR))
+					    && !isIntraComponentXfr(dtde)) {
 				dtde.acceptDrag(dtde.getDropAction());
 			} else {
 				dtde.rejectDrag();
@@ -99,12 +98,13 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	 * TODO: Figure out how to skip all this (return false) on non-local drags.
 	 *
 	 * @param dtde an event
-	 * @return whether the data it holds come from are (probably) from this
-	 *         component. I/O etc. problems return true.
+	 * @return whether the data it holds come from are (probably) from this component.
+	 * I/O
+	 * etc. problems return true.
 	 */
 	private boolean isIntraComponentXfr(final DropTargetEvent dtde) {
 		return dtde.getSource() instanceof Component
-				&& parentComponent.isAncestorOf((Component) dtde.getSource());
+				       && parentComponent.isAncestorOf((Component) dtde.getSource());
 	}
 
 	/**
@@ -116,11 +116,13 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	public void dragOver(@Nullable final DropTargetDragEvent dtde) {
 		if (dtde != null) {
 			if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
-					&& (dtde.getCurrentDataFlavorsAsList().contains(
-							FixtureTransferable.FLAVOR)
-					|| dtde.getCurrentDataFlavorsAsList()
-							.contains(CurriedFixtureTransferable.FLAVOR))
-					&& !isIntraComponentXfr(dtde)) {
+					    && (dtde.getCurrentDataFlavorsAsList().contains(
+					FixtureTransferable.FLAVOR)
+							        || dtde.getCurrentDataFlavorsAsList()
+									           .contains(
+											           CurriedFixtureTransferable
+													           .FLAVOR))
+					    && !isIntraComponentXfr(dtde)) {
 				dtde.acceptDrag(dtde.getDropAction());
 			} else {
 				dtde.rejectDrag();
@@ -137,11 +139,13 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	public void dropActionChanged(@Nullable final DropTargetDragEvent dtde) {
 		if (dtde != null) {
 			if ((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0
-					&& (dtde.getCurrentDataFlavorsAsList().contains(
-							FixtureTransferable.FLAVOR)
-					|| dtde.getCurrentDataFlavorsAsList()
-							.contains(CurriedFixtureTransferable.FLAVOR))
-					&& !isIntraComponentXfr(dtde)) {
+					    && (dtde.getCurrentDataFlavorsAsList().contains(
+					FixtureTransferable.FLAVOR)
+							        || dtde.getCurrentDataFlavorsAsList()
+									           .contains(
+											           CurriedFixtureTransferable
+													           .FLAVOR))
+					    && !isIntraComponentXfr(dtde)) {
 				dtde.acceptDrag(dtde.getDropAction());
 			} else {
 				dtde.rejectDrag();
@@ -164,8 +168,8 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 		} // else
 		for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
 			if (flavor != null
-					&& EqualsAny.equalsAny(flavor, FixtureTransferable.FLAVOR,
-							CurriedFixtureTransferable.FLAVOR)) {
+					    && EqualsAny.equalsAny(flavor, FixtureTransferable.FLAVOR,
+					CurriedFixtureTransferable.FLAVOR)) {
 				try {
 					dtde.acceptDrop(dtde.getDropAction());
 					final Transferable trans = dtde.getTransferable();
@@ -192,29 +196,31 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	 * Handle a drop.
 	 *
 	 * @param trans the transferable containing the dragged data.
-	 * @throws IOException on I/O error getting the data
-	 * @throws UnsupportedFlavorException if the data flavor isn't actually
-	 *         supported
+	 * @throws IOException                on I/O error getting the data
+	 * @throws UnsupportedFlavorException if the data flavor isn't actually supported
 	 */
 	private void handleDrop(final Transferable trans)
 			throws UnsupportedFlavorException, IOException {
 		final DataFlavor[] dflav = trans.getTransferDataFlavors();
 		if (dflav == null) {
 			throw new UnsupportedFlavorException(new DataFlavor(
-					DataFlavor.class, "null"));
+					                                                   DataFlavor.class,
+					                                                   "null"));
 		} else {
 			for (final DataFlavor flavor : dflav) {
 				if (flavor == null) {
 					continue;
 				} else if (flavor.equals(FixtureTransferable.FLAVOR)) {
-					final TileFixture transferData = (TileFixture) trans.getTransferData(flavor);
+					final TileFixture transferData =
+							(TileFixture) trans.getTransferData(flavor);
 					if (transferData != null) {
 						model.addFixture(transferData);
 					}
 					return;
 				} else if (flavor.equals(CurriedFixtureTransferable.FLAVOR)) {
 					final Iterable<Transferable> curried = (Iterable<Transferable>) trans
-							.getTransferData(flavor);
+							                                                                .getTransferData(
+									                                                                flavor);
 					for (final Transferable item : curried) {
 						handleDrop(item);
 					}

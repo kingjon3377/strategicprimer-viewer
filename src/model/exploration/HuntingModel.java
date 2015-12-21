@@ -27,25 +27,24 @@ import static model.map.TileType.Ocean;
  *
  * TODO: Use MultiMaps once we add the Guava dependency.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class HuntingModel {
 	/**
@@ -68,29 +67,33 @@ public final class HuntingModel {
 	 * The size of the map.
 	 */
 	protected final MapDimensions dims;
+
 	/**
 	 * Constructor.
+	 *
 	 * @param map the map to hunt in
 	 */
 	public HuntingModel(final IMapNG map) {
 		dims = map.dimensions();
-		final Collection<String> fishKinds = StreamSupport.stream(map.locations().spliterator(), false)
-				                                     .filter(point -> Ocean == map.getBaseTerrain(point)).flatMap(
-						point -> StreamSupport.stream(map.getOtherFixtures(point).spliterator(), false))
-				                                     .filter(fix -> fix instanceof Animal)
-				                                     .map(fix -> ((HasKind) fix).getKind())
-				                                     .collect(Collectors.toSet());
+		final Collection<String> fishKinds =
+				StreamSupport.stream(map.locations().spliterator(), false)
+						.filter(point -> Ocean == map.getBaseTerrain(point)).flatMap(
+						point -> StreamSupport.stream(map.getOtherFixtures(point)
+								                              .spliterator(), false))
+						.filter(fix -> fix instanceof Animal)
+						.map(fix -> ((HasKind) fix).getKind())
+						.collect(Collectors.toSet());
 		for (final Point point : map.locations()) {
 			for (final TileFixture fix : map.getOtherFixtures(point)) {
 				if (fix instanceof Animal && !((Animal) fix).isTalking()
-						&& !((Animal) fix).isTraces()) {
+						    && !((Animal) fix).isTraces()) {
 					if (fishKinds.contains(((Animal) fix).getKind())) {
 						addToMap(waterAnimals, point, ((Animal) fix).getKind());
 					} else {
 						addToMap(animals, point, ((Animal) fix).getKind());
 					}
 				} else if (fix instanceof Grove || fix instanceof Meadow
-						|| fix instanceof Shrub) {
+						           || fix instanceof Shrub) {
 					addToMap(plants, point,
 							NullCleaner.assertNotNull(fix.toString()));
 				}
@@ -117,13 +120,14 @@ public final class HuntingModel {
 			}
 		}
 	}
+
 	/**
-	 * @param map one of the mappings
+	 * @param map   one of the mappings
 	 * @param point a point
 	 * @param value a string to put in the map at that point.
 	 */
 	private static void addToMap(final Map<Point, List<String>> map,
-			final Point point, final String value) {
+	                             final Point point, final String value) {
 		final List<String> list; // NOPMD
 		if (map.containsKey(point)) {
 			list = NullCleaner.assertNotNull(map.get(point));
@@ -135,24 +139,20 @@ public final class HuntingModel {
 	}
 
 	/**
-	 * @param point
-	 *            a point
-	 * @param items
-	 *            how many items to limit the list to
-	 * @return a list of hunting results from the surrounding area. About half
-	 *         will be "nothing"
+	 * @param point a point
+	 * @param items how many items to limit the list to
+	 * @return a list of hunting results from the surrounding area. About half will be
+	 * "nothing"
 	 */
 	public List<String> hunt(final Point point, final int items) {
 		return chooseFromMap(point, items, animals);
 	}
 
 	/**
-	 * @param point
-	 *            a point
-	 * @param items
-	 *            how many items to limit the list to
-	 * @return a list of fishing results from the surrounding area. About half
-	 *         will be "nothing"
+	 * @param point a point
+	 * @param items how many items to limit the list to
+	 * @return a list of fishing results from the surrounding area. About half will be
+	 * "nothing"
 	 */
 	public List<String> fish(final Point point, final int items) {
 		return chooseFromMap(point, items, waterAnimals);
@@ -161,15 +161,19 @@ public final class HuntingModel {
 	/**
 	 * @param point a point
 	 * @param items how many items to limit the list to
-	 * @return a list of gathering results from the surrounding area. Many will
-	 *         be "nothing," especially from desert and tundra tiles and less
-	 *         from jungle tiles.
+	 * @return a list of gathering results from the surrounding area. Many will be
+	 * "nothing," especially from desert and tundra tiles and less from jungle tiles.
 	 */
 	public Iterable<String> gather(final Point point, final int items) {
 		final List<String> choices =
-				StreamSupport.stream(new SurroundingPointIterable(point, dims).spliterator(), false)
+				StreamSupport
+						.stream(new SurroundingPointIterable(point, dims).spliterator(),
+								false)
 						.filter(plants::containsKey)
-						.flatMap(local -> StreamSupport.stream(plants.get(local).spliterator(), false))
+						.flatMap(local -> StreamSupport
+								                  .stream(plants.get(local)
+										                          .spliterator(),
+										                  false))
 						.collect(Collectors.toList());
 		final Collection<String> retval = new ArrayList<>();
 		for (int i = 0; i < items; i++) {
@@ -178,19 +182,34 @@ public final class HuntingModel {
 		}
 		return retval;
 	}
+
 	/**
 	 * A helper method for hunting or fishing.
-	 * @param point what point to look around
-	 * @param items how many items to limit the results to
+	 *
+	 * @param point     what point to look around
+	 * @param items     how many items to limit the results to
 	 * @param chosenMap which map to look in
 	 * @return a list of results, about one eighth of which will be "nothing."
 	 */
 	private List<String> chooseFromMap(final Point point, final int items,
-			final Map<Point, List<String>> chosenMap) {
-		final List<String> choices = new ArrayList<>(StreamSupport.stream(new SurroundingPointIterable(point, dims).spliterator(), false)
-				               .filter(chosenMap::containsKey)
-				               .flatMap(local -> StreamSupport.stream(chosenMap.get(local).spliterator(), false))
-				               .collect(Collectors.toList()));
+	                                   final Map<Point, List<String>> chosenMap) {
+		final List<String> choices = new ArrayList<>(StreamSupport
+				                                             .stream(new
+						                                                     SurroundingPointIterable(point,
+						                                                                                 dims)
+						                                                     .spliterator(),
+						                                             false)
+				                                             .filter
+						                                              (chosenMap::containsKey)
+				                                             .flatMap(
+						                                             local ->
+								                                             StreamSupport
+								                                                      .stream(chosenMap
+										                                                              .get(local)
+										                                                              .spliterator(),
+										                                                      false))
+				                                             .collect(Collectors
+						                                                      .toList()));
 		final int nothings = choices.size();
 		for (int i = 0; i < nothings; i++) {
 			choices.add(NOTHING);

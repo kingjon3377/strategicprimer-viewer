@@ -5,25 +5,24 @@ import org.eclipse.jdt.annotation.Nullable;
 /**
  * A skill a worker has experience or training in.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public class Skill implements ISkill {
 	/**
@@ -42,19 +41,20 @@ public class Skill implements ISkill {
 	/**
 	 * Constructor.
 	 *
-	 * @param skillName the name of the skill
+	 * @param skillName  the name of the skill
 	 * @param skillLevel how many levels the worker has in the skill
-	 * @param time how many hours of training or experience the worker has
-	 *        gained since last gaining a level.
+	 * @param time       how many hours of training or experience the worker has gained
+	 *                   since last gaining a level.
 	 */
 	public Skill(final String skillName, final int skillLevel, final int time) {
 		name = skillName;
 		level = skillLevel;
 		hours = time;
 	}
+
 	/**
-	 * @return a copy of this skill
 	 * @param zero whether to "zero out" sensitive information
+	 * @return a copy of this skill
 	 */
 	@Override
 	public Skill copy(final boolean zero) {
@@ -64,6 +64,7 @@ public class Skill implements ISkill {
 			return new Skill(name, level, hours);
 		}
 	}
+
 	/**
 	 * @return the name of the skill
 	 */
@@ -95,8 +96,9 @@ public class Skill implements ISkill {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof Skill
-				&& name.equals(((Skill) obj).name)
-				&& level == ((Skill) obj).level && hours == ((Skill) obj).hours;
+				                      && name.equals(((Skill) obj).name)
+				                      && level == ((Skill) obj).level &&
+				                      hours == ((Skill) obj).hours;
 	}
 
 	/**
@@ -110,9 +112,9 @@ public class Skill implements ISkill {
 	/**
 	 * Add hours of training or experience.
 	 *
-	 * @param hrs the number of hours to add
-	 * @param condition If less than or equal to the number of hours after the
-	 *        addition, level up and zero the hours instead.
+	 * @param hrs       the number of hours to add
+	 * @param condition If less than or equal to the number of hours after the addition,
+	 *                  level up and zero the hours instead.
 	 */
 	@Override
 	public void addHours(final int hrs, final int condition) {
@@ -140,8 +142,8 @@ public class Skill implements ISkill {
 	}
 
 	/**
-	 * A Skill is "empty" if the worker has no levels in it and no hours of
-	 * experience in it.
+	 * A Skill is "empty" if the worker has no levels in it and no hours of experience in
+	 * it.
 	 *
 	 * @return whether this skill is "empty"
 	 */

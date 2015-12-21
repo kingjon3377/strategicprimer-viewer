@@ -1,15 +1,5 @@
 package view.worker;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.swing.JList;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.listeners.AddRemoveListener;
 import model.listeners.CompletionListener;
 import model.listeners.JobSelectionListener;
@@ -18,34 +8,39 @@ import model.listeners.UnitMemberListener;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.IJob;
 import model.workermgmt.JobsListModel;
+import org.eclipse.jdt.annotation.Nullable;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
- * A visual list of a worker's Jobs. We also handle listening for selection
- * changes.
+ * A visual list of a worker's Jobs. We also handle listening for selection changes.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class JobsList extends JList<IJob> implements
 		ListSelectionListener, JobSelectionSource, AddRemoveListener,
-		UnitMemberListener, CompletionListener {
+				UnitMemberListener, CompletionListener {
 	/**
 	 * The list of completion listeners listening to us.
 	 */
@@ -93,6 +88,7 @@ public final class JobsList extends JList<IJob> implements
 	public void removeJobSelectionListener(final JobSelectionListener list) {
 		jsListeners.remove(list);
 	}
+
 	/**
 	 * @param category passed to list model
 	 * @param addendum passed to list model
@@ -101,6 +97,7 @@ public final class JobsList extends JList<IJob> implements
 	public void add(final String category, final String addendum) {
 		lmodel.add(category, addendum);
 	}
+
 	/**
 	 * @param category passed to list model
 	 */
@@ -108,15 +105,17 @@ public final class JobsList extends JList<IJob> implements
 	public void remove(final String category) {
 		lmodel.remove(category);
 	}
+
 	/**
-	 * @param old passed to list model
+	 * @param old      passed to list model
 	 * @param selected passed to list model
 	 */
 	@Override
 	public void memberSelected(@Nullable final UnitMember old,
-			@Nullable final UnitMember selected) {
+	                           @Nullable final UnitMember selected) {
 		lmodel.memberSelected(old, selected);
 	}
+
 	/**
 	 * @param end whether to slip to the end
 	 */

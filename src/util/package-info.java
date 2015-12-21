@@ -4,4 +4,4 @@
 @NonNullByDefault
 package util;
 
-import org.eclipse.jdt.annotation.NonNullByDefault; // NOPMD
+import org.eclipse.jdt.annotation.NonNullByDefault;

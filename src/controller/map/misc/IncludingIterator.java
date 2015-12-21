@@ -1,7 +1,16 @@
 package controller.map.misc;
 
-import static controller.map.misc.FileOpener.createReader;
+import controller.map.formatexceptions.MissingPropertyException;
+import controller.map.formatexceptions.SPFormatException;
+import org.eclipse.jdt.annotation.NonNull;
+import util.NullCleaner;
+import util.Pair;
 
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Deque;
@@ -9,42 +18,30 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
-import org.eclipse.jdt.annotation.NonNull;
-
-import controller.map.formatexceptions.MissingPropertyException;
-import controller.map.formatexceptions.SPFormatException;
-import util.NullCleaner;
-import util.Pair;
+import static controller.map.misc.FileOpener.createReader;
 
 /**
  * An extension to the IteratorWrapper we previously used in MapReaderNG that
  * automatically handles "include" tags.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	/**
@@ -53,17 +50,16 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	private final Deque<Pair<String, ComparableIterator<XMLEvent>>> stack;
 
 	/**
-	 * FIXME: We should use Files "all the way down" if we can. But we can't yet
-	 * because we rely on the magic string: file.
+	 * FIXME: We should use Files "all the way down" if we can. But we can't yet because
+	 * we rely on the magic string: file.
 	 *
-	 * @param file
-	 *            the name of the file we're reading
-	 * @param iter
-	 *            the iterator we'll start with.
+	 * @param file the name of the file we're reading
+	 * @param iter the iterator we'll start with.
 	 */
 	public IncludingIterator(final File file, final Iterator<XMLEvent> iter) {
 		this(NullCleaner.assertNotNull(file.getPath()), iter);
 	}
+
 	/**
 	 * Constructor.
 	 *
@@ -76,8 +72,8 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	}
 
 	/**
-	 * Note that this method removes any empty iterators from the top of the
-	 * stack before returning.
+	 * Note that this method removes any empty iterators from the top of the stack before
+	 * returning.
 	 *
 	 * @return whether there are any events left.
 	 */
@@ -97,12 +93,12 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	}
 
 	/**
-	 * Return the next item in the topmost iterator. We always make sure that
-	 * there *is* a next item in the topmost iterator. If the next item would be
-	 * an "include" tag, we open the file it specifies and push an iterator of
-	 * its elements onto the stack. On error in that process, we throw a
-	 * NoSuchElementException, as that's the only thing we *can* throw other
-	 * than unchecked exceptions.
+	 * Return the next item in the topmost iterator. We always make sure that there
+	 * *is* a
+	 * next item in the topmost iterator. If the next item would be an "include" tag, we
+	 * open the file it specifies and push an iterator of its elements onto the stack. On
+	 * error in that process, we throw a NoSuchElementException, as that's the only thing
+	 * we *can* throw other than unchecked exceptions.
 	 *
 	 * @return the next item in the topmost iterator.
 	 */
@@ -114,8 +110,8 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 		}
 		XMLEvent retval = stack.peekFirst().second().next();
 		while (retval.isStartElement()
-				&& "include".equals(retval.asStartElement().getName()
-						.getLocalPart())) {
+				       && "include".equals(retval.asStartElement().getName()
+						                           .getLocalPart())) {
 			handleInclude(NullCleaner.assertNotNull(retval.asStartElement()));
 			removeEmptyIterators();
 			if (stack.isEmpty()) {
@@ -127,8 +123,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	}
 
 	/**
-	 * A NoSuchElementException that takes a custom cause, unlike its
-	 * superclass.
+	 * A NoSuchElementException that takes a custom cause, unlike its superclass.
 	 *
 	 * @author Jonathan Lovelace
 	 */
@@ -138,10 +133,10 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 		 * Constructor.
 		 *
 		 * @param message the message
-		 * @param cause the cause
+		 * @param cause   the cause
 		 */
 		public NoSuchElementBecauseException(final String message,
-				final Throwable cause) {
+		                                     final Throwable cause) {
 			super(message);
 			initCause(cause);
 		}
@@ -157,8 +152,8 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	}
 
 	/**
-	 * Handle an "include" tag by adding an iterator for the contents of the
-	 * file it references to the top of the stack.
+	 * Handle an "include" tag by adding an iterator for the contents of the file it
+	 * references to the top of the stack.
 	 *
 	 * @param tag the tag.
 	 */
@@ -166,23 +161,33 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 		try {
 			final String file = getAttribute(tag, "file");
 			stack.addFirst(Pair.of(file, new ComparableIterator<>(
-					new TypesafeXMLEventReader(createReader(file)))));
+					                                                     new
+							                                                     TypesafeXMLEventReader(createReader(
+							                                                     file))
+			)));
 		} catch (final FileNotFoundException e) {
 			throw new NoSuchElementBecauseException(
-					"File referenced by <include> not found", e);
+					                                       "File referenced by <include>" +
+							                                       " not found",
+					                                       e);
 		} catch (final XMLStreamException e) {
 			throw new NoSuchElementBecauseException(
-					"XML stream error parsing <include> tag or opening file", e);
+					                                       "XML stream error parsing " +
+							                                       "<include> tag or " +
+							                                       "opening file",
+					                                       e);
 		} catch (final SPFormatException e) {
 			throw new NoSuchElementBecauseException(
-					"SP format problem in <include>", e);
+					                                       "SP format problem in " +
+							                                       "<include>",
+					                                       e);
 		}
 	}
 
 	/**
-	 * Remove the next item from the topmost iterator on the stack; this method
-	 * makes sure that no empty iterator is on the top of the stack both before
-	 * and after doing so.
+	 * Remove the next item from the topmost iterator on the stack; this method makes
+	 * sure
+	 * that no empty iterator is on the top of the stack both before and after doing so.
 	 */
 	@Override
 	public void remove() {
@@ -215,25 +220,28 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 
 	/**
 	 * @param startElement a tag
-	 * @param attribute the attribute we want
-	 *
+	 * @param attribute    the attribute we want
 	 * @return the value of that attribute.
 	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
 	private static String getAttribute(final StartElement startElement,
-			final String attribute) throws SPFormatException {
+	                                   final String attribute) throws SPFormatException {
 		final Attribute attr = startElement.getAttributeByName(new QName(
-				attribute));
+				                                                                attribute));
 		if (attr == null) {
 			throw new MissingPropertyException(NullCleaner.valueOrDefault(
 					startElement.getName().getLocalPart(), "a null tag"),
-					attribute, startElement.getLocation().getLineNumber());
+					                                  attribute,
+					                                  startElement.getLocation()
+							                                  .getLineNumber());
 		}
 		final String value = attr.getValue();
 		if (value == null) {
 			throw new MissingPropertyException(NullCleaner.valueOrDefault(
 					startElement.getName().getLocalPart(), "a null tag"),
-					attribute, startElement.getLocation().getLineNumber());
+					                                  attribute,
+					                                  startElement.getLocation()
+							                                  .getLineNumber());
 		} else {
 			return value;
 		}

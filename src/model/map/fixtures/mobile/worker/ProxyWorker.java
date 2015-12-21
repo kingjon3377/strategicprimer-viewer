@@ -1,5 +1,14 @@
 package model.map.fixtures.mobile.worker;
 
+import model.map.HasName;
+import model.map.IFixture;
+import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.IWorker;
+import model.map.fixtures.mobile.ProxyFor;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,49 +19,38 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import model.map.HasName;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
-import model.map.IFixture;
-import model.map.fixtures.UnitMember;
-import model.map.fixtures.mobile.IWorker;
-import model.map.fixtures.mobile.ProxyFor;
-import util.NullCleaner;
-
 /**
- * An IWorker implementation to make the UI able to operate on all of a unit's
- * workers at once.
+ * An IWorker implementation to make the UI able to operate on all of a unit's workers at
+ * once.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2014-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(ProxyWorker.class.getName()));
+	private static final Logger LOGGER =
+			NullCleaner.assertNotNull(Logger.getLogger(ProxyWorker.class.getName()));
 	/**
-	 * If false, this is representing all the workers in a single unit; if true,
-	 * it is representing corresponding workers in corresponding units in
-	 * different maps.
+	 * If false, this is representing all the workers in a single unit; if true, it is
+	 * representing corresponding workers in corresponding units in different maps.
 	 */
 	private final boolean parallel;
 	/**
@@ -67,13 +65,16 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	 * The workers being proxied.
 	 */
 	private final List<IWorker> workers = new ArrayList<>();
+
 	/**
 	 * No-op constructor for use by copy().
+	 *
 	 * @param paral whether this is a "parallel" or "serial" proxy
 	 */
 	private ProxyWorker(final boolean paral) {
 		parallel = paral;
 	}
+
 	/**
 	 * @param unit the unit to proxy for
 	 */
@@ -89,13 +90,15 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 		}
 		final IWorker @NonNull [] workerArray =
 				NullCleaner.assertNotNull(workers.toArray(new IWorker[workers
-						.size()]));
-		proxyJobs.addAll(jobNames.stream().map(job -> new ProxyJob(job, parallel, workerArray))
+						                                                      .size()]));
+		proxyJobs.addAll(jobNames.stream()
+				                 .map(job -> new ProxyJob(job, parallel, workerArray))
 				                 .collect(Collectors.toList()));
 	}
+
 	/**
-	 * @return a copy of this proxy
 	 * @param zero whether to "zero out" sensitive information
+	 * @return a copy of this proxy
 	 */
 	@Override
 	public IWorker copy(final boolean zero) {
@@ -105,6 +108,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 		}
 		return retval;
 	}
+
 	/**
 	 * @param proxied workers to proxy for
 	 */
@@ -119,9 +123,12 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 				jobNames.add(job.getName());
 			}
 		}
-		proxyJobs.addAll(jobNames.stream().map(job -> new ProxyJob(job, parallel, proxied))
-				                 .collect(Collectors.toList()));
+		proxyJobs
+				.addAll(jobNames.stream().map(job -> new ProxyJob(job, parallel,
+						                                                 proxied))
+						        .collect(Collectors.toList()));
 	}
+
 	/**
 	 * @return -1, since this isn't a valid fixture.
 	 */
@@ -129,6 +136,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	public int getID() {
 		return -1;
 	}
+
 	/**
 	 * @param fix a fixture
 	 * @return whether it's equal to this one
@@ -136,8 +144,9 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof ProxyWorker
-				&& proxyJobs.equals(((ProxyWorker) fix).proxyJobs);
+				       && proxyJobs.equals(((ProxyWorker) fix).proxyJobs);
 	}
+
 	/**
 	 * @return The iterator over the proxied jobs.
 	 */
@@ -146,6 +155,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	public Iterator<@NonNull IJob> iterator() {
 		return NullCleaner.assertNotNull(proxyJobs.iterator());
 	}
+
 	/**
 	 * @param job the job to add
 	 * @return true if we weren't already proxying for it
@@ -157,31 +167,35 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 		} else {
 			final IJob proxy =
 					new ProxyJob(job.getName(), parallel,
-							NullCleaner.assertNotNull(workers
-									.toArray(new IWorker[workers.size()])));
+							            NullCleaner.assertNotNull(workers
+									                                      .toArray(
+											                                      new
+													                                      IWorker[workers.size()])));
 			jobNames.add(proxy.getName());
 			proxyJobs.add(proxy);
 			return true;
 		}
 	}
+
 	/**
-	 * @param obj ignored
+	 * @param obj     ignored
 	 * @param ostream a stream to report the call on
-	 * @param context
-	 *            a string to print before every line of output, describing the
-	 *            context
+	 * @param context a string to print before every line of output, describing the
+	 *                context
 	 * @return false
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-			final String context) throws IOException {
+	                        final String context) throws IOException {
 		ostream.append(context);
 		ostream.append("\tisSubset called on ProxyWorker\n");
 		return false;
 	}
+
 	/**
 	 * Proxy an additional worker.
+	 *
 	 * @param item the worker to proxy
 	 */
 	@Override
@@ -192,15 +206,16 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 		workers.add(item);
 		final IWorker[] workerArray =
 				NullCleaner.assertNotNull(workers.toArray(new IWorker[workers
-						.size()]));
+						                                                      .size()]));
 		final Collection<IJob> proxyJobsTemp = new ArrayList<>(proxyJobs);
 		for (final IJob job : item) {
 			final String name = job.getName();
 			if (jobNames.contains(name)) {
-				proxyJobs.stream().filter(proxyJob -> proxyJob.getName().equals(name)).forEach(proxyJob -> {
-					((ProxyFor<IJob>) proxyJob).addProxied(job);
-					proxyJobsTemp.remove(proxyJob);
-				});
+				proxyJobs.stream().filter(proxyJob -> proxyJob.getName().equals(name))
+						.forEach(proxyJob -> {
+							((ProxyFor<IJob>) proxyJob).addProxied(job);
+							proxyJobsTemp.remove(proxyJob);
+						});
 			} else {
 				jobNames.add(name);
 				proxyJobs.add(new ProxyJob(name, parallel, workerArray));
@@ -213,6 +228,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 			((ProxyFor<IJob>) proxyJob).addProxied(job);
 		}
 	}
+
 	/**
 	 * @return the proxied Workers.
 	 */
@@ -223,6 +239,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 
 	/**
 	 * TODO: pass through to proxied workers.
+	 *
 	 * @return the name of an image to represent the worker
 	 */
 	@Override
@@ -232,6 +249,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 		}
 		return "worker.png";
 	}
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -262,6 +280,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 			return image;
 		}
 	}
+
 	/**
 	 * @return the race of the workers
 	 */
@@ -281,6 +300,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 			return kind;
 		}
 	}
+
 	/**
 	 * @param nKind the new race of the proxied workers
 	 */
@@ -290,6 +310,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 			worker.setKind(nKind);
 		}
 	}
+
 	/**
 	 * @return the name of the workers (or "proxied" if they don't agree)
 	 */
@@ -309,6 +330,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 			return name;
 		}
 	}
+
 	/**
 	 * @param nomen the new name for the workers
 	 */
@@ -318,6 +340,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 			worker.setName(nomen);
 		}
 	}
+
 	/**
 	 * @return the race of the proxied workers
 	 */
@@ -325,6 +348,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	public String getRace() {
 		return getKind();
 	}
+
 	/**
 	 * TODO: Should we add and return a new Job instead of null if not present?
 	 *
@@ -341,6 +365,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 		}
 		return null;
 	}
+
 	/**
 	 * @return a string representation of this class
 	 */
@@ -350,8 +375,9 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
-	 * @return Whether this should be considered (if true) a proxy for multiple representations of the same Worker,
-	 * e.g. in different maps, or (if false) a proxy for different related Workers.
+	 * @return Whether this should be considered (if true) a proxy for multiple
+	 * representations of the same Worker, e.g. in different maps, or (if false) a proxy
+	 * for different related Workers.
 	 */
 	@Override
 	public boolean isParallel() {

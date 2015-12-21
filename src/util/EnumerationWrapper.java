@@ -1,30 +1,30 @@
 package util;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 /**
  * A wrapper around an Enumeration to make it fit the Iterable interface.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2015-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @param <T> the type parameter
  * @author Jonathan Lovelace
@@ -55,7 +55,8 @@ public final class EnumerationWrapper<@NonNull T> implements Iterator<@NonNull T
 	 * @throws NoSuchElementException if no more elements
 	 */
 	@Override
-	public T next() throws NoSuchElementException { // NOPMD: @throws required by superclass
+	public T next()
+			throws NoSuchElementException { // NOPMD: @throws required by superclass
 		return wrapped.nextElement();
 	}
 
@@ -65,8 +66,9 @@ public final class EnumerationWrapper<@NonNull T> implements Iterator<@NonNull T
 	@Override
 	public void remove() {
 		throw new UnsupportedOperationException(
-				"Not supported by Enumeration");
+				                                       "Not supported by Enumeration");
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

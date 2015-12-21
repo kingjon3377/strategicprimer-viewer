@@ -1,9 +1,5 @@
 package controller.map.drivers;
 
-import java.io.File;
-
-import javax.swing.SwingUtilities;
-
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.FileChooser;
 import controller.map.misc.FileChooser.ChoiceInterruptedException;
@@ -20,42 +16,64 @@ import view.map.main.MapFileFilter;
 import view.util.FilteredFileChooser;
 import view.worker.AdvancementFrame;
 
+import javax.swing.*;
+import java.io.File;
+
 /**
  * A class to start the worker management GUI. TODO: Merge with ViewerStart.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class AdvancementStart implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-a",
-			"--adv", ParamCount.Many,
-			"View a player's workers and manage their advancement",
-			"View a player's units, the workers in those units, each worker's Jobs, "
-					+ "and his or her level in each Skill in each Job.",
-					AdvancementStart.class);
+			                                                            "--adv",
+			                                                            ParamCount.Many,
+			                                                            "View a player's" +
+					                                                            " workers and manage their advancement",
+
+			                                                            "View a player's" +
+					                                                            " units," +
+					                                                            " the " +
+					                                                            "workers" +
+					                                                            " in " +
+					                                                            "those " +
+					                                                            "units, " +
+					                                                            "each " +
+					                                                            "worker's Jobs, "
+					                                                            +
+					                                                            "and his" +
+					                                                            " or her" +
+					                                                            " level " +
+					                                                            "in each" +
+					                                                            " Skill " +
+					                                                            "in each" +
+					                                                            " Job.",
+			                                                            AdvancementStart
+					                                                            .class);
 
 	/**
 	 * Run the driver
+	 *
 	 * @param dmodel the driver model
 	 * @throws DriverFailedException on error
 	 */
@@ -69,14 +87,16 @@ public final class AdvancementStart implements ISPDriver {
 		}
 		SwingUtilities.invokeLater(
 				new WindowThread(new AdvancementFrame(model, new IOHandler(model,
-						new FilteredFileChooser(".", new MapFileFilter())))));
+						                                                          new
+								                                                          FilteredFileChooser(".",
+								                                                                                 new MapFileFilter())))));
 	}
+
 	/**
 	 * Run the driver.
 	 *
 	 * @param args Command-line arguments.
 	 * @throws DriverFailedException if the driver failed to run.
-	 *
 	 */
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
@@ -90,13 +110,23 @@ public final class AdvancementStart implements ISPDriver {
 								args[0], ""))).getFile();
 			}
 			final IWorkerModel model = new WorkerModel(
-					new MapReaderAdapter().readMultiMapModel(new Warning(Action.Warn),
-							file, MapReaderAdapter.namesToFiles(true, args)));
+					                                          new MapReaderAdapter()
+							                                          .readMultiMapModel(
+									                                          new
+											                                          Warning(Action.Warn),
+									                                          file,
+									                                          MapReaderAdapter
+											                                          .namesToFiles(
+													                                          true,
+													                                          args)));
 			SwingUtilities.invokeLater(new WindowThread(new AdvancementFrame(
-					model, new IOHandler(model, new FilteredFileChooser(".",
-							new MapFileFilter())))));
+					                                                                model,
+					                                                                new IOHandler(model,
+							                                                                             new FilteredFileChooser(".",
+									                                                                                                    new MapFileFilter())))));
 		} catch (final ChoiceInterruptedException except) {
-			throw new DriverFailedException("File choice was interrupted or user didn't choose", except);
+			throw new DriverFailedException("File choice was interrupted or user didn't choose",
+					                               except);
 		}
 	}
 
@@ -123,6 +153,7 @@ public final class AdvancementStart implements ISPDriver {
 	public void setName(final String nomen) {
 		throw new IllegalStateException("Can't rename a driver");
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

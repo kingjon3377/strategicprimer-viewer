@@ -1,16 +1,5 @@
 package controller.map.cxml;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.HasImage;
@@ -31,33 +20,41 @@ import model.map.fixtures.mobile.Simurgh;
 import model.map.fixtures.mobile.Sphinx;
 import model.map.fixtures.mobile.Troll;
 import model.map.fixtures.mobile.Unit;
+import org.eclipse.jdt.annotation.NonNull;
 import util.ArraySet;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
 
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * A reader for tiles, including rivers.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class CompactMobileReader extends
 		AbstractCompactReader<@NonNull MobileFixture> {
@@ -65,7 +62,8 @@ public final class CompactMobileReader extends
 	 * Mapping from tags to enum-tags.
 	 */
 	private static final Map<String, MobileType> MAP = new HashMap<>(
-			MobileType.values().length);
+			                                                                MobileType
+					                                                                .values().length);
 	/**
 	 * List of supported tags.
 	 */
@@ -79,7 +77,8 @@ public final class CompactMobileReader extends
 	/**
 	 * Singleton object.
 	 */
-	public static final AbstractCompactReader<@NonNull MobileFixture> READER = new CompactMobileReader();
+	public static final AbstractCompactReader<@NonNull MobileFixture> READER =
+			new CompactMobileReader();
 
 	/**
 	 * Singleton.
@@ -145,8 +144,8 @@ public final class CompactMobileReader extends
 		 */
 		TrollType("troll"),
 		/**
-		 * Unit. (Handled by a different reader, but might get directed here by
-		 * mistake, so we 'handle' it anyway.
+		 * Unit. (Handled by a different reader, but might get directed here by mistake,
+		 * so we 'handle' it anyway.
 		 */
 		UnitType("unit");
 		/**
@@ -198,20 +197,20 @@ public final class CompactMobileReader extends
 	}
 
 	/**
-	 *
-	 * @param element the XML element to parse
-	 * @param stream the stream to read more elements from
-	 * @param players the collection of players
-	 * @param warner the Warning instance to use for warnings
+	 * @param element   the XML element to parse
+	 * @param stream    the stream to read more elements from
+	 * @param players   the collection of players
+	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @return the parsed tile
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
 	public MobileFixture read(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream,
-			final IMutablePlayerCollection players, final Warning warner,
-			final IDFactory idFactory) throws SPFormatException {
+	                          final IteratorWrapper<XMLEvent> stream,
+	                          final IMutablePlayerCollection players,
+	                          final Warning warner,
+	                          final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "animal", "centaur", "djinn", "dragon", "fairy",
 				"giant", "griffin", "minotaur", "ogre", "phoenix", "simurgh",
 				"sphinx", "troll", "unit");
@@ -256,8 +255,7 @@ public final class CompactMobileReader extends
 	/**
 	 * @param element the current tag
 	 * @return the value of its 'kind' parameter
-	 * @throws SPFormatException on SP format error---if the parameter is
-	 *         missing, e.g.
+	 * @throws SPFormatException on SP format error---if the parameter is missing, e.g.
 	 */
 	private static String getKind(final StartElement element)
 			throws SPFormatException {
@@ -268,30 +266,31 @@ public final class CompactMobileReader extends
 	 * Create an animal.
 	 *
 	 * @param element the tag we're reading
-	 * @param idNum the ID number to give it
+	 * @param idNum   the ID number to give it
 	 * @return the parsed animal
 	 * @throws SPFormatException on SP format error
 	 */
 	private static MobileFixture createAnimal(final StartElement element,
 	                                          final int idNum) throws SPFormatException {
 		return new Animal(
-				getKind(element),
-				hasParameter(element, "traces"),
-				Boolean.parseBoolean(getParameter(element, "talking", "false")),
-				getParameter(element, "status", "wild"), idNum);
+				                 getKind(element),
+				                 hasParameter(element, "traces"),
+				                 Boolean.parseBoolean(
+						                 getParameter(element, "talking", "false")),
+				                 getParameter(element, "status", "wild"), idNum);
 	}
 
 	/**
 	 * Write an object to a stream.
 	 *
 	 * @param ostream The stream to write to.
-	 * @param obj The object to write.
-	 * @param indent The current indentation level.
+	 * @param obj     The object to write.
+	 * @param indent  The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
 	public void write(final Appendable ostream, final MobileFixture obj,
-			final int indent) throws IOException {
+	                  final int indent) throws IOException {
 		if (obj instanceof Unit) {
 			CompactUnitReader.READER.write(ostream, (Unit) obj, indent);
 		} else if (obj instanceof Animal) {
@@ -331,10 +330,10 @@ public final class CompactMobileReader extends
 	}
 
 	/**
-	 * This is part of the switch statement in read() split off to reduce
-	 * calculated complexity.
+	 * This is part of the switch statement in read() split off to reduce calculated
+	 * complexity.
 	 *
-	 * @param type the type being read
+	 * @param type  the type being read
 	 * @param idNum the ID # to give it.
 	 * @return the thing being read.
 	 */
@@ -370,6 +369,7 @@ public final class CompactMobileReader extends
 		}
 		return retval;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

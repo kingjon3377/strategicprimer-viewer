@@ -1,37 +1,37 @@
 package controller.map.readerng;
 
+import model.map.HasImage;
+import util.EqualsAny;
+import util.NullCleaner;
+import util.Pair;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import model.map.HasImage;
-import util.EqualsAny;
-import util.NullCleaner;
-import util.Pair;
-
 /**
- * An intermediate representation between SP objects and XML; this lets us add
- * in the 'row' and 'include' tags, which will then get handled properly when
- * writing the XML out.
+ * An intermediate representation between SP objects and XML; this lets us add in the
+ * 'row' and 'include' tags, which will then get handled properly when writing the XML
+ * out.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  * @deprecated ReaderNG is deprecated
@@ -41,7 +41,8 @@ public final class SPIntermediateRepresentation {
 	/**
 	 * The set of child tags.
 	 */
-	private final Collection<SPIntermediateRepresentation> children = new LinkedHashSet<>();
+	private final Collection<SPIntermediateRepresentation> children =
+			new LinkedHashSet<>();
 	// private final List<SPIntermediateRepresentation> children = new
 	// LinkedList<SPIntermediateRepresentation>();
 
@@ -59,6 +60,7 @@ public final class SPIntermediateRepresentation {
 	 * The list of attribute values.
 	 */
 	private final List<String> vals = new ArrayList<>();
+
 	/**
 	 * Constructor.
 	 *
@@ -71,21 +73,23 @@ public final class SPIntermediateRepresentation {
 	/**
 	 * Secondary constructor.
 	 *
-	 * @param name the tag this represents
+	 * @param name       the tag this represents
 	 * @param attributes a list of attributes to add.
 	 */
 	@SafeVarargs
 	public SPIntermediateRepresentation(final String name,
-			final Pair<String, String>... attributes) {
+	                                    final Pair<String, String>... attributes) {
 		this(name);
 		for (final Pair<String, String> attr : attributes) {
 			addAttribute(attr.first(), attr.second());
 			// attrs.add(attr);
 		}
 	}
+
 	/**
 	 * Add an attribute with an integer value.
-	 * @param name the name of the attribute
+	 *
+	 * @param name  the name of the attribute
 	 * @param value its value
 	 */
 	public void addIntegerAttribute(final String name, final int value) {
@@ -95,7 +99,7 @@ public final class SPIntermediateRepresentation {
 	/**
 	 * Add an attribute.
 	 *
-	 * @param name the name of the attribute
+	 * @param name  the name of the attribute
 	 * @param value its value
 	 */
 	public void addAttribute(final String name, final String value) {
@@ -149,10 +153,11 @@ public final class SPIntermediateRepresentation {
 	/**
 	 * Write to a Writer, or (if this is an 'include' tag) to its own.
 	 *
-	 * @param writer the writer to write to
-	 * @param indentationLevel how many tabs to indent---normally callers set to
-	 *        0, and we increment in recursive calls (except for inclusion,
-	 *        where we reset it to 0 again)
+	 * @param writer           the writer to write to
+	 * @param indentationLevel how many tabs to indent---normally callers set to 0,
+	 *                            and we
+	 *                         increment in recursive calls (except for inclusion, where
+	 *                         we reset it to 0 again)
 	 * @throws IOException on I/O error while writing
 	 */
 	public void write(final Appendable writer, final int indentationLevel)
@@ -207,10 +212,10 @@ public final class SPIntermediateRepresentation {
 	}
 
 	/**
-	 * Write an 'include' tag to the Writer, and if we're doing inclusion its
-	 * contents to its own.
+	 * Write an 'include' tag to the Writer, and if we're doing inclusion its contents to
+	 * its own.
 	 *
-	 * @param writer the writer
+	 * @param writer           the writer
 	 * @param indentationLevel how many tabs to indent if inclusion is disabled
 	 * @throws IOException on I/O error while writing
 	 */
@@ -223,8 +228,8 @@ public final class SPIntermediateRepresentation {
 
 	/**
 	 * @param tagName a tag
-	 * @return whether it should always have a separate closing tag, even if it
-	 *         has no children
+	 * @return whether it should always have a separate closing tag, even if it has no
+	 * children
 	 */
 	private static boolean shouldSeparateClosingTag(final String tagName) {
 		return EqualsAny.equalsAny(tagName, "tile", "fortress", "text");
@@ -233,16 +238,13 @@ public final class SPIntermediateRepresentation {
 	/**
 	 * Write only if the tag isn't the empty string.
 	 *
-	 * @param writer
-	 *            the Writer to write to
-	 * @param text
-	 *            the string to write. May be null, in which case nothing is
-	 *            written.
-	 * @throws IOException
-	 *             if I/O error in writing
+	 * @param writer the Writer to write to
+	 * @param text   the string to write. May be null, in which case nothing is written.
+	 * @throws IOException if I/O error in writing
 	 */
 	private void writeIfTagNotEmpty(final Appendable writer,
-	                                @SuppressWarnings("TypeMayBeWeakened") final String text) throws IOException {
+	                                @SuppressWarnings("TypeMayBeWeakened") final String
+			                                text) throws IOException {
 		if (!tag.isEmpty()) {
 			writer.append(text);
 		}
@@ -257,8 +259,9 @@ public final class SPIntermediateRepresentation {
 	}
 
 	/**
-	 * If the object's image attribute is the default, null, or empty, do
-	 * nothing; if not, add the image attribute to this representation.
+	 * If the object's image attribute is the default, null, or empty, do nothing; if
+	 * not,
+	 * add the image attribute to this representation.
 	 *
 	 * @param obj the object to consider.
 	 */
@@ -268,9 +271,11 @@ public final class SPIntermediateRepresentation {
 			addAttribute("image", image);
 		}
 	}
+
 	/**
-	 * Add an ID attribute. This is so we only have to assert that
-	 * Integer.toString doesn't return null in one place.
+	 * Add an ID attribute. This is so we only have to assert that Integer.toString
+	 * doesn't return null in one place.
+	 *
 	 * @param idNum the ID to add
 	 */
 	public void addIdAttribute(final int idNum) {

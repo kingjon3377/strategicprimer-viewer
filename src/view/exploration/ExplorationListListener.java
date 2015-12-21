@@ -1,50 +1,46 @@
 package view.exploration;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.exploration.IExplorationModel;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import view.map.details.FixtureList;
 
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
- * A list-data-listener to select a random but suitable set of fixtures to be
- * 'discovered' if the tile is explored.
+ * A list-data-listener to select a random but suitable set of fixtures to be 'discovered'
+ * if the tile is explored.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class ExplorationListListener implements ListDataListener {
 	/**
-	 * The exploration model, which tells us the currently selected unit and
-	 * tile.
+	 * The exploration model, which tells us the currently selected unit and tile.
 	 */
 	private final IExplorationModel model;
 	/**
@@ -56,10 +52,10 @@ public final class ExplorationListListener implements ListDataListener {
 	 * Constructor.
 	 *
 	 * @param mainList the list this is attached to
-	 * @param emodel the exploration model
+	 * @param emodel   the exploration model
 	 */
 	public ExplorationListListener(final IExplorationModel emodel,
-			final FixtureList mainList) {
+	                               final FixtureList mainList) {
 		model = emodel;
 		list = mainList;
 	}
@@ -89,14 +85,14 @@ public final class ExplorationListListener implements ListDataListener {
 	}
 
 	/**
-	 * Like a Pair<Integer, T>, but without the headaches induced by boxing an
-	 * int into Integer.
+	 * Like a Pair<Integer, T>, but without the headaches induced by boxing an int into
+	 * Integer.
 	 *
 	 * TODO: If we start using Guava, use of this class should be replaced by
-	 * Multiset, or something?
+	 * Multiset, or
+	 * something?
 	 *
 	 * @param <T> the type in question.
-	 *
 	 * @author Jonathan Lovelace
 	 */
 	private static final class IntPair<@NonNull T> {
@@ -108,8 +104,10 @@ public final class ExplorationListListener implements ListDataListener {
 		 * The object in the pair.
 		 */
 		private final T object;
+
 		/**
 		 * Factory method.
+		 *
 		 * @param num the number in the pair
 		 * @param obj the object in the pair
 		 * @param <I> the type of object
@@ -118,8 +116,10 @@ public final class ExplorationListListener implements ListDataListener {
 		protected static <@NonNull I> IntPair<I> of(final int num, final I obj) {
 			return new IntPair<>(num, obj);
 		}
+
 		/**
 		 * Constructor. Use the factory method rather than this constructor.
+		 *
 		 * @param num the number in the pair
 		 * @param obj the object in the pair
 		 */
@@ -127,12 +127,14 @@ public final class ExplorationListListener implements ListDataListener {
 			number = num;
 			object = obj;
 		}
+
 		/**
 		 * @return the number in the pair
 		 */
 		public int first() {
 			return number;
 		}
+
 		/**
 		 * @return the object in the pair
 		 */
@@ -140,6 +142,7 @@ public final class ExplorationListListener implements ListDataListener {
 		public T second() {
 			return object;
 		}
+
 		/**
 		 * @return a String representation of the object
 		 */
@@ -155,9 +158,10 @@ public final class ExplorationListListener implements ListDataListener {
 			return NullCleaner.assertNotNull(builder.toString());
 		}
 	}
+
 	/**
-	 * Select a suitable but randomized selection of fixtures. Do nothing if
-	 * there is no selected unit.
+	 * Select a suitable but randomized selection of fixtures. Do nothing if there is no
+	 * selected unit.
 	 */
 	private void randomizeSelection() {
 		final IUnit selUnit = model.getSelectedUnit();
@@ -167,7 +171,8 @@ public final class ExplorationListListener implements ListDataListener {
 			final List<IntPair<TileFixture>> possibles = new ArrayList<>();
 			for (int i = 0; i < list.getModel().getSize(); i++) {
 				// TODO: Write a ListModel->Iterable wrapper
-				final TileFixture fix = NullCleaner.assertNotNull(list.getModel().getElementAt(i));
+				final TileFixture fix =
+						NullCleaner.assertNotNull(list.getModel().getElementAt(i));
 				if (SimpleMovement.shouldAlwaysNotice(selUnit, fix)) {
 					constants.add(IntPair.of(i, fix));
 				} else if (SimpleMovement.mightNotice(selUnit, fix)) {
@@ -185,6 +190,7 @@ public final class ExplorationListListener implements ListDataListener {
 			list.setSelectedIndices(indices);
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

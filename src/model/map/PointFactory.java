@@ -1,34 +1,33 @@
 package model.map;
 
-import static util.NullCleaner.assertNotNull;
+import view.util.Coordinate;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import view.util.Coordinate;
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A cache for Points.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class PointFactory {
 	/**
@@ -70,16 +69,15 @@ public final class PointFactory {
 	}
 
 	/**
-	 * Factory method. I considered replacing the cache with simply a
-	 * constructor call, but after some performance testing it looks like the
-	 * cache is faster as the map gets more complicated, so we'll leave it.
-	 * (Note, however, that the testing was with the DrawHelperComparator and
-	 * then with the EchoDriver, so not a realistic model of the application.
-	 * Sigh.)
+	 * Factory method. I considered replacing the cache with simply a constructor call,
+	 * but after some performance testing it looks like the cache is faster as the map
+	 * gets more complicated, so we'll leave it. (Note, however, that the testing was
+	 * with
+	 * the DrawHelperComparator and then with the EchoDriver, so not a realistic model of
+	 * the application. Sigh.)
 	 *
 	 * @param row a row
 	 * @param col a column
-	 *
 	 * @return a Point representing this point.
 	 */
 	public static Point point(final int row, final int col) {
@@ -102,7 +100,6 @@ public final class PointFactory {
 	/**
 	 * @param xCoord an X coordinate or extent
 	 * @param yCoord a Y coordinate or extent
-	 *
 	 * @return a Coordinate representing those coordinates.
 	 */
 	public static Coordinate coordinate(final int xCoord, final int yCoord) {

@@ -1,38 +1,38 @@
 package util;
 
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.jdt.annotation.Nullable;
-
 /**
- * A simplified Map using Integers as keys and delaying removal of items
- * remove()d until a subsequent method is called.
+ * A simplified Map using Integers as keys and delaying removal of items remove()d until a
+ * subsequent method is called.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @author Jonathan Lovelace
  * @param <V> the kind of thing stored in the map.
+ * @author Jonathan Lovelace
  */
 public final class IntMap<V> implements DelayedRemovalMap<@NonNull Integer, V> { // NOPMD
 	/**
@@ -88,7 +88,7 @@ public final class IntMap<V> implements DelayedRemovalMap<@NonNull Integer, V> {
 	}
 
 	/**
-	 * @param key a key
+	 * @param key   a key
 	 * @param value a value
 	 * @return the result of putting the value into the map at the key
 	 */
@@ -166,6 +166,7 @@ public final class IntMap<V> implements DelayedRemovalMap<@NonNull Integer, V> {
 	public Set<Map.Entry<@NonNull Integer, V>> entrySet() {
 		return backing.entrySet();
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

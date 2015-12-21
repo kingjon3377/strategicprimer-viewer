@@ -1,14 +1,5 @@
 package controller.map.cxml;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.HasImage;
@@ -24,28 +15,35 @@ import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
 
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * A reader for TerrainFixtures.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class CompactTerrainReader extends
 		AbstractCompactReader<TerrainFixture> {
@@ -58,11 +56,13 @@ public final class CompactTerrainReader extends
 	 * Mapping from tags to enum-tags.
 	 */
 	private static final Map<String, TerrainFixtureType> MAP = new HashMap<>(
-			TerrainFixtureType.values().length);
+			                                                                        TerrainFixtureType
+					                                                                        .values().length);
 	/**
 	 * List of supported tags.
 	 */
 	private static final Set<String> SUPP_TAGS;
+
 	/**
 	 * Singleton.
 	 */
@@ -135,20 +135,20 @@ public final class CompactTerrainReader extends
 	}
 
 	/**
-	 *
-	 * @param element the XML element to parse
-	 * @param stream the stream to read more elements from
-	 * @param players the collection of players
-	 * @param warner the Warning instance to use for warnings
+	 * @param element   the XML element to parse
+	 * @param stream    the stream to read more elements from
+	 * @param players   the collection of players
+	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @return the parsed tile
 	 * @throws SPFormatException on SP format problem
 	 */
 	@Override
 	public TerrainFixture read(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream,
-			final IMutablePlayerCollection players, final Warning warner,
-			final IDFactory idFactory) throws SPFormatException {
+	                           final IteratorWrapper<XMLEvent> stream,
+	                           final IMutablePlayerCollection players,
+	                           final Warning warner,
+	                           final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "forest", "hill", "mountain", "oasis", "sandbar");
 		final TerrainFixture retval; // NOPMD
 		switch (MAP.get(element.getName().getLocalPart())) {
@@ -180,13 +180,13 @@ public final class CompactTerrainReader extends
 	 * Write an object to a stream.
 	 *
 	 * @param ostream The stream to write to.
-	 * @param obj The object to write.
-	 * @param indent The current indentation level.
+	 * @param obj     The object to write.
+	 * @param indent  The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
 	public void write(final Appendable ostream, final TerrainFixture obj,
-			final int indent) throws IOException {
+	                  final int indent) throws IOException {
 		ostream.append(indent(indent));
 		if (obj instanceof Mountain) {
 			ostream.append("<mountain").append(imageXML((Mountain) obj))
@@ -216,6 +216,7 @@ public final class CompactTerrainReader extends
 		ostream.append(Integer.toString(obj.getID()));
 		ostream.append("\" />\n");
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

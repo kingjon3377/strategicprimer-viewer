@@ -1,6 +1,22 @@
 package view.map.misc;
 
-import java.awt.Dimension;
+import controller.map.formatexceptions.MapVersionException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.MapReaderAdapter;
+import model.map.IMapNG;
+import model.map.MapDimensions;
+import model.map.PlayerCollection;
+import model.map.SPMapNG;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
+import util.TypesafeLogger;
+import util.Warning;
+import util.Warning.Action;
+import view.util.StreamingLabel;
+
+import javax.swing.*;
+import javax.xml.stream.XMLStreamException;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilterWriter;
@@ -11,54 +27,34 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.xml.stream.XMLStreamException;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import controller.map.formatexceptions.MapVersionException;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.MapReaderAdapter;
-import model.map.IMapNG;
-import model.map.MapDimensions;
-import model.map.PlayerCollection;
-import model.map.SPMapNG;
-import util.NullCleaner;
-import util.TypesafeLogger;
-import util.Warning;
-import util.Warning.Action;
-import view.util.StreamingLabel;
-
 /**
  * A window to show the result of running subset tests.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class SubsetFrame extends JFrame {
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(MapCheckerFrame.class);
+			                                     .getLogger(MapCheckerFrame.class);
 	/**
 	 * The map reader we'll use.
 	 */
@@ -76,14 +72,12 @@ public final class SubsetFrame extends JFrame {
 	 * The main map.
 	 */
 	private IMapNG mainMap = new SPMapNG(new MapDimensions(0, 0, 2),
-			new PlayerCollection(), -1);
+			                                    new PlayerCollection(), -1);
 
 	/**
-	 * A writer to put each line into an HTML paragraph, coloring them
-	 * appropriately.
+	 * A writer to put each line into an HTML paragraph, coloring them appropriately.
 	 *
 	 * @author Jonathan Lovelace
-	 *
 	 */
 	private static final class HTMLWriter extends FilterWriter {
 		private static final Pattern NEWLINE = Pattern.compile("\n");
@@ -105,8 +99,8 @@ public final class SubsetFrame extends JFrame {
 		 * Start or continue a line.
 		 *
 		 * @param str the string to print
-		 * @throws IOException on I/O error
 		 * @return this
+		 * @throws IOException on I/O error
 		 */
 		@SuppressWarnings({"ReturnOfThis", "StandardVariableNames"})
 		@Override
@@ -116,7 +110,8 @@ public final class SubsetFrame extends JFrame {
 			if (!middle) {
 				super.append("<p style=\"color:white\">");
 			}
-			super.append(NEWLINE.matcher(local).replaceAll("</p><p style=\"color:white\">"));
+			super.append(
+					NEWLINE.matcher(local).replaceAll("</p><p style=\"color:white\">"));
 			middle = true;
 			return this;
 		}
@@ -141,16 +136,16 @@ public final class SubsetFrame extends JFrame {
 	}
 
 	/**
-	 * Enclose a string in HTML paragraph indicators, optionally with a color.
-	 * And repaint the label so it shows up. This is "package-private" because,
-	 * since the anonymous inner class below needs it, we can't make it private.
-	 * If no color is specified, we'll make it white, because the label's
-	 * background color is black.
+	 * Enclose a string in HTML paragraph indicators, optionally with a color. And
+	 * repaint
+	 * the label so it shows up. This is "package-private" because, since the anonymous
+	 * inner class below needs it, we can't make it private. If no color is specified,
+	 * we'll make it white, because the label's background color is black.
 	 *
 	 * FIXME: To appease XSS-possibility warnings, make color on enumerated type.
 	 *
 	 * @param paragraph the string to enclose
-	 * @param color the color to make it, or the empty string if none.
+	 * @param color     the color to make it, or the empty string if none.
 	 */
 	protected void printParagraph(final String paragraph, final String color) {
 		try (final PrintWriter writer = label.getWriter()) {
@@ -168,16 +163,17 @@ public final class SubsetFrame extends JFrame {
 		// At one point we called updateText on the label.
 		label.repaint();
 	}
+
 	/**
 	 * Load a new map as the main map, which the others should be subsets of.
 	 *
 	 * @param arg the filename to load it from
-	 * @throws SPFormatException on bad SP map format in the file
+	 * @throws SPFormatException  on bad SP map format in the file
 	 * @throws XMLStreamException on malformed XML
-	 * @throws IOException on other I/O error
+	 * @throws IOException        on other I/O error
 	 */
 	public void loadMain(final File arg) throws SPFormatException,
-			XMLStreamException, IOException {
+			                                            XMLStreamException, IOException {
 		try {
 			mainMap = reader.readMap(arg, new Warning(Action.Ignore));
 		} catch (final FileNotFoundException except) {
@@ -185,11 +181,12 @@ public final class SubsetFrame extends JFrame {
 			throw except;
 		} catch (final MapVersionException except) {
 			printParagraph("ERROR: Map version of main map " + arg.getPath()
-					+ " not acceptable to reader", ERROR_COLOR);
+					               + " not acceptable to reader", ERROR_COLOR);
 			throw except;
 		} catch (final XMLStreamException except) {
 			printParagraph("ERROR: Malformed XML in file " + arg.getPath()
-					+ "; see following error message for details", ERROR_COLOR);
+					               + "; see following error message for details",
+					ERROR_COLOR);
 			printParagraph(
 					NullCleaner.assertNotNull(except.getLocalizedMessage()),
 					ERROR_COLOR);
@@ -216,16 +213,21 @@ public final class SubsetFrame extends JFrame {
 						+ "<span style=\"color:red\">FAIL</span> if "
 						+ "error in reading", "");
 	}
+
 	/**
-	 * Load a new, but already-read-from-file, map as the main map, which all the others should be subsets of.
+	 * Load a new, but already-read-from-file, map as the main map, which all the others
+	 * should be subsets of.
+	 *
 	 * @param map the map to load.
 	 */
 	public void loadMain(final IMapNG map) {
 		mainMap = map;
 	}
+
 	/**
 	 * Test a map against the main map, to see if it's a strict subset of it.
-	 * @param map the map to test
+	 *
+	 * @param map  the map to test
 	 * @param file the file from which it was loaded
 	 */
 	public void test(final IMapNG map, final File file) {
@@ -242,10 +244,10 @@ public final class SubsetFrame extends JFrame {
 			return;
 		}
 	}
+
 	/**
-	 * Test a map against the main map, to see if it's a strict subset of it.
-	 * This method "eats" (but logs) all (anticipated) errors in reading the
-	 * file.
+	 * Test a map against the main map, to see if it's a strict subset of it. This method
+	 * "eats" (but logs) all (anticipated) errors in reading the file.
 	 *
 	 * @param arg the file from which to load the possible subset.
 	 */
@@ -262,7 +264,7 @@ public final class SubsetFrame extends JFrame {
 			}
 		} catch (final MapVersionException except) {
 			LOGGER.log(Level.SEVERE, "Map version in " + arg.getPath()
-					+ " not acceptable to reader", except);
+					                         + " not acceptable to reader", except);
 			printParagraph("ERROR: Map version not acceptable to reader",
 					ERROR_COLOR);
 			return; // NOPMD
@@ -278,7 +280,8 @@ public final class SubsetFrame extends JFrame {
 			LOGGER.log(Level.SEVERE, "Malformed XML in file " + arg.getPath(),
 					except);
 			printParagraph("FAIL: Malformed XML in the file; "
-					+ "see following error message for details", ERROR_COLOR);
+					               + "see following error message for details",
+					ERROR_COLOR);
 			printParagraph(
 					NullCleaner.assertNotNull(except.getLocalizedMessage()),
 					ERROR_COLOR);

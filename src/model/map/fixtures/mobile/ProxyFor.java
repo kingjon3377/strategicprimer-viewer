@@ -1,42 +1,47 @@
 package model.map.fixtures.mobile;
+
 /**
  * An interface for 'proxy' implementations.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2015-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
- *
- * @author Jonathan Lovelace
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @param <T> the type being proxied
+ * @author Jonathan Lovelace
  */
 public interface ProxyFor<T> /* extends T */ {
 	/**
 	 * Add another object to be proxied.
+	 *
 	 * @param item the object to be proxied.
 	 */
 	void addProxied(T item);
+
 	/**
 	 * This should probably only ever be used in tests.
+	 *
 	 * @return the proxied items.
 	 */
 	Iterable<T> getProxied();
+
 	/**
-	 * @return Whether this should be considered (if true) a proxy for multiple representations of the same T, e.g. in
-	 * different maps, or (if false) a proxy for different related Ts.
+	 * @return Whether this should be considered (if true) a proxy for multiple
+	 * representations of the same T, e.g. in different maps, or (if false) a proxy for
+	 * different related Ts.
 	 */
 	boolean isParallel();
 }

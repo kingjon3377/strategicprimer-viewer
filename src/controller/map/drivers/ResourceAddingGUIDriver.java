@@ -13,39 +13,48 @@ import view.map.main.MapFileFilter;
 import view.resources.ResourceAddingFrame;
 import view.util.FilteredFileChooser;
 
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import java.io.File;
 
 /**
  * A class to start the resource-entry app.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public class ResourceAddingGUIDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-d",
-			"--add-resource", ParamCount.Many, "Add resources to maps",
-			"Add resources for players to maps", ResourceAddingCLIDriver.class);
+			                                                            "--add-resource",
+			                                                            ParamCount.Many,
+			                                                            "Add resources " +
+					                                                            "to maps",
+
+			                                                            "Add resources " +
+					                                                            "for " +
+					                                                            "players" +
+					                                                            " to " +
+					                                                            "maps",
+			                                                            ResourceAddingCLIDriver.class);
+
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
@@ -71,7 +80,9 @@ public class ResourceAddingGUIDriver implements ISPDriver {
 	}
 
 	/**
-	 * Run the driver. This form is, at the moment, primarily for use in test code, but that may change.
+	 * Run the driver. This form is, at the moment, primarily for use in test code, but
+	 * that may change.
+	 *
 	 * @param dmodel the driver-model that should be used by the app
 	 * @throws DriverFailedException if the driver fails for some reason
 	 */
@@ -84,14 +95,17 @@ public class ResourceAddingGUIDriver implements ISPDriver {
 			model = new ResourceManagementDriver(dmodel);
 		}
 		SwingUtilities.invokeLater(new WindowThread(new ResourceAddingFrame(model,
-				new IOHandler(model, new FilteredFileChooser(".", new MapFileFilter())))));
+				                                                                   new
+						                                                                   IOHandler(model,
+						                                                                                new FilteredFileChooser(".",
+								                                                                                                       new MapFileFilter())))));
 	}
+
 	/**
 	 * Run the driver.
 	 *
 	 * @param args Command-line arguments.
 	 * @throws DriverFailedException if the driver failed to run.
-	 *
 	 */
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
@@ -103,15 +117,25 @@ public class ResourceAddingGUIDriver implements ISPDriver {
 				file = new FileChooser(new File(args[0])).getFile();
 			}
 		} catch (final ChoiceInterruptedException except) {
-			throw new DriverFailedException("File choice was interrupted or user didn't choose", except);
+			throw new DriverFailedException("File choice was interrupted or user didn't " +
+					                                "choose",
+					                               except);
 		}
 		final ResourceManagementDriver model = new ResourceManagementDriver(
-				                                          new MapReaderAdapter().readMultiMapModel(new Warning(Warning.Action.Warn), file,
-						                                          MapReaderAdapter.namesToFiles(true, args)));
+				                                                                   new MapReaderAdapter()
+						                                                                   .readMultiMapModel(
+								                                                                   new Warning(Warning.Action.Warn),
+								                                                                   file,
+								                                                                   MapReaderAdapter
+										                                                                   .namesToFiles(
+												                                                                   true,
+												                                                                   args)));
 		SwingUtilities.invokeLater(
 				new WindowThread(new ResourceAddingFrame(model, new IOHandler(model,
-					new FilteredFileChooser(".", new MapFileFilter())))));
+						                                                             new FilteredFileChooser(".",
+								                                                                                    new MapFileFilter())))));
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

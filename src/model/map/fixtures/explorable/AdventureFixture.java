@@ -1,34 +1,32 @@
 package model.map.fixtures.explorable;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A Fixture representing an adventure hook.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2015-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public class AdventureFixture implements ExplorableFixture, HasOwner {
 	/**
@@ -51,47 +49,50 @@ public class AdventureFixture implements ExplorableFixture, HasOwner {
 	 * A unique ID # for the fixture.
 	 */
 	private final int id;
+
 	/**
 	 * Constructor.
 	 *
-	 * @param player
-	 *            the player who has undertaken the adventure, or the
-	 *            independent player if none
-	 * @param brief
-	 *            a brief description of the adventure
-	 * @param full
-	 *            a fuller description of the adventure
-	 * @param idNum an ID number for the fixture
+	 * @param player the player who has undertaken the adventure, or the independent
+	 *               player if none
+	 * @param brief  a brief description of the adventure
+	 * @param full   a fuller description of the adventure
+	 * @param idNum  an ID number for the fixture
 	 */
 	public AdventureFixture(final Player player, final String brief,
-			final String full, final int idNum) {
+	                        final String full, final int idNum) {
 		owner = player;
 		briefDesc = brief;
 		fullDesc = full;
 		id = idNum;
 	}
+
 	/**
-	 * @return a copy of this fixture
 	 * @param zero ignored, as there is no sensitive information that is not essential
+	 * @return a copy of this fixture
 	 */
 	@Override
 	public AdventureFixture copy(final boolean zero) {
-		final AdventureFixture retval = new AdventureFixture(owner, briefDesc, fullDesc, id);
+		final AdventureFixture retval =
+				new AdventureFixture(owner, briefDesc, fullDesc, id);
 		retval.setImage(image);
 		return retval;
 	}
+
 	/**
 	 * @return a brief description of the adventure
 	 */
 	public String getBriefDescription() {
 		return briefDesc;
 	}
+
 	/**
 	 * @return a fuller description of the adventure
 	 */
 	public String getFullDescription() {
 		return fullDesc;
 	}
+
 	/**
 	 * @return a String representation of the fixture
 	 */
@@ -115,6 +116,7 @@ public class AdventureFixture implements ExplorableFixture, HasOwner {
 	public String getDefaultImage() {
 		return "adventure.png";
 	}
+
 	/**
 	 * @return a z-value for use in ordering tile icons on a tile
 	 */
@@ -122,6 +124,7 @@ public class AdventureFixture implements ExplorableFixture, HasOwner {
 	public int getZValue() {
 		return 25;
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
@@ -129,17 +132,19 @@ public class AdventureFixture implements ExplorableFixture, HasOwner {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof AdventureFixture
-				&& id == ((AdventureFixture) obj).id
-				&& equalsImpl((AdventureFixture) obj);
+				                      && id == ((AdventureFixture) obj).id
+				                      && equalsImpl((AdventureFixture) obj);
 	}
+
 	/**
 	 * @param obj an adventure fixture
 	 * @return whether it's equal to this one
 	 */
 	private boolean equalsImpl(final AdventureFixture obj) {
 		return isOwnerEqual(obj.owner) && briefDesc.equals(obj.briefDesc)
-				&& fullDesc.equals(obj.fullDesc);
+				       && fullDesc.equals(obj.fullDesc);
 	}
+
 	/**
 	 * @param player a player
 	 * @return whether it's the same as the adventure's owner
@@ -151,6 +156,7 @@ public class AdventureFixture implements ExplorableFixture, HasOwner {
 			return owner.getPlayerId() == player.getPlayerId();
 		}
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -158,9 +164,9 @@ public class AdventureFixture implements ExplorableFixture, HasOwner {
 	public int hashCode() {
 		return briefDesc.hashCode() | (fullDesc.hashCode() << owner.getPlayerId());
 	}
+
 	/**
 	 * @param fix A TileFixture to compare to
-	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -175,6 +181,7 @@ public class AdventureFixture implements ExplorableFixture, HasOwner {
 	public Player getOwner() {
 		return owner;
 	}
+
 	/**
 	 * @param player the player who has now taken on the adventure
 	 */
@@ -182,6 +189,7 @@ public class AdventureFixture implements ExplorableFixture, HasOwner {
 	public void setOwner(final Player player) {
 		owner = player;
 	}
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -197,6 +205,7 @@ public class AdventureFixture implements ExplorableFixture, HasOwner {
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all text fixtures as a class
 	 */
@@ -204,6 +213,7 @@ public class AdventureFixture implements ExplorableFixture, HasOwner {
 	public String plural() {
 		return "Adventures";
 	}
+
 	/**
 	 * @return a short description of the fixture
 	 */
@@ -211,6 +221,7 @@ public class AdventureFixture implements ExplorableFixture, HasOwner {
 	public String shortDesc() {
 		return briefDesc;
 	}
+
 	/**
 	 * @return the ID number of the adventure.
 	 */
@@ -218,6 +229,7 @@ public class AdventureFixture implements ExplorableFixture, HasOwner {
 	public int getID() {
 		return id;
 	}
+
 	/**
 	 * @param fix a fixture
 	 * @return whether it's equal to this one except for its ID number

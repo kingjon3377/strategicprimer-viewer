@@ -1,16 +1,5 @@
 package controller.map.drivers;
 
-import static view.util.SystemOut.SYS_OUT;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
@@ -33,44 +22,73 @@ import util.Pair;
 import util.SingletonRandom;
 import util.Warning;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static view.util.SystemOut.SYS_OUT;
+
 /**
- * A driver to let the user add hours of experience to a player's workers from
- * the command line.
+ * A driver to let the user add hours of experience to a player's workers from the command
+ * line.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2015-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class AdvancementCLIDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-a",
-			"--adv", ParamCount.One,
-			"View a player's workers and manage their advancement",
-			"View a player's units, the workers in those units, each worker's Jobs, "
-					+ "and his or her level in each Skill in each Job.",
-					AdvancementCLIDriver.class);
+			                                                            "--adv",
+			                                                            ParamCount.One,
+			                                                            "View a player's" +
+					                                                            " workers and manage their advancement",
+
+			                                                            "View a player's" +
+					                                                            " units," +
+					                                                            " the " +
+					                                                            "workers" +
+					                                                            " in " +
+					                                                            "those " +
+					                                                            "units, " +
+					                                                            "each " +
+					                                                            "worker's Jobs, "
+					                                                            +
+					                                                            "and his" +
+					                                                            " or her" +
+					                                                            " level " +
+					                                                            "in each" +
+					                                                            " Skill " +
+					                                                            "in each" +
+					                                                            " Job.",
+			                                                            AdvancementCLIDriver.class);
 	/**
 	 * The CLI helper.
 	 */
 	private final ICLIHelper cli = new CLIHelper();
+
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
@@ -94,6 +112,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 	public void setName(final String nomen) {
 		throw new IllegalStateException("Can't rename a driver");
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */
@@ -101,8 +120,11 @@ public final class AdvancementCLIDriver implements ISPDriver {
 	public String toString() {
 		return "AdvancementCLIDriver";
 	}
+
 	/**
-	 * Run the driver. This form is, at the moment, primarily for use in test code, but that may change.
+	 * Run the driver. This form is, at the moment, primarily for use in test code, but
+	 * that may change.
+	 *
 	 * @param dmodel the driver-model that should be used by the app
 	 * @throws DriverFailedException if the driver fails for some reason
 	 */
@@ -125,18 +147,25 @@ public final class AdvancementCLIDriver implements ISPDriver {
 			final String prpt = "Chosen player: ";
 			for (int playerNum = cli.chooseFromList(playerList, hdr, none, prpt,
 					false); playerNum >= 0
-							&& playerNum < playerList.size(); playerNum = cli
-									.chooseFromList(playerList, hdr, none, prpt, false)) {
+							        && playerNum < playerList.size(); playerNum = cli
+									                                                      .chooseFromList(
+											                                                      playerList,
+											                                                      hdr,
+											                                                      none,
+											                                                      prpt,
+											                                                      false)) {
 				advanceWorkers(model,
 						NullCleaner.assertNotNull(playerList.remove(playerNum)));
 			}
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error interacting with user",
-					except);
+					                               except);
 		}
 	}
+
 	/**
 	 * Run the driver.
+	 *
 	 * @param args the command-line arguments (map files)
 	 * @throws DriverFailedException if the driver fails to start
 	 */
@@ -150,14 +179,21 @@ public final class AdvancementCLIDriver implements ISPDriver {
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final IDriverModel model = new WorkerModel(
-				reader.readMultiMapModel(Warning.INSTANCE, new File(args[0]),
-						MapReaderAdapter.namesToFiles(true, args)));
+				                                          reader.readMultiMapModel(
+						                                          Warning.INSTANCE,
+						                                          new File(args[0]),
+						                                          MapReaderAdapter
+								                                          .namesToFiles(
+										                                          true,
+										                                          args)));
 		startDriver(model);
 		reader.writeModel(model);
 	}
+
 	/**
 	 * Let the user add experience to a player's workers.
-	 * @param model the driver model
+	 *
+	 * @param model  the driver model
 	 * @param player the player whose workers we're interested in
 	 * @throws IOException on I/O error getting input from user
 	 */
@@ -173,7 +209,10 @@ public final class AdvancementCLIDriver implements ISPDriver {
 			if (unitNum >= 0 && unitNum < units.size()) {
 				if (proxy) {
 					advanceSingleWorker(new ProxyWorker(
-							NullCleaner.assertNotNull(units.remove(unitNum))));
+							                                   NullCleaner.assertNotNull(
+									                                   units.remove(
+											                                   unitNum)
+							                                   )));
 				} else {
 					advanceWorkersInUnit(
 							NullCleaner.assertNotNull(units.remove(unitNum)));
@@ -183,14 +222,18 @@ public final class AdvancementCLIDriver implements ISPDriver {
 			}
 		}
 	}
+
 	/**
 	 * Let the user add experience to a worker or workers in a unit.
+	 *
 	 * @param unit the unit in question
 	 * @throws IOException on I/O error getting input from user
 	 */
-	private void advanceWorkersInUnit(final Iterable<UnitMember> unit) throws IOException {
+	private void advanceWorkersInUnit(final Iterable<UnitMember> unit) throws
+			IOException {
 		final List<IWorker> workers =
-				StreamSupport.stream(unit.spliterator(), false).filter(member -> member instanceof IWorker)
+				StreamSupport.stream(unit.spliterator(), false)
+						.filter(member -> member instanceof IWorker)
 						.map(p -> (IWorker) p).collect(
 						Collectors.toList());
 		while (!workers.isEmpty()) {
@@ -204,8 +247,10 @@ public final class AdvancementCLIDriver implements ISPDriver {
 			}
 		}
 	}
+
 	/**
 	 * Let the user add experience to a worker.
+	 *
 	 * @param worker the worker in question
 	 * @throws IOException on I/O error getting input from user
 	 */
@@ -214,8 +259,10 @@ public final class AdvancementCLIDriver implements ISPDriver {
 		final String hdr = "Jobs in worker:";
 		final String none = "No existing jobs.";
 		final String prpt = "Job to advance: ";
-		for (int jobNum = cli.chooseFromList(jobs, hdr, none, prpt, false); jobNum <= jobs
-				.size(); jobNum = cli.chooseFromList(jobs, hdr, none, prpt, false)) {
+		for (int jobNum = cli.chooseFromList(jobs, hdr, none, prpt, false); jobNum <=
+				                                                                    jobs
+				                                                                              .size();
+				jobNum = cli.chooseFromList(jobs, hdr, none, prpt, false)) {
 			if (jobNum < 0 || jobNum == jobs.size()) {
 				worker.addJob(new Job(cli.inputString("Name of new Job: "), 0));
 				jobs.clear();
@@ -230,8 +277,10 @@ public final class AdvancementCLIDriver implements ISPDriver {
 			}
 		}
 	}
+
 	/**
 	 * Let the user add hours to a skill or skills in a Job.
+	 *
 	 * @param job the job in question
 	 * @throws IOException on I/O error getting input from user
 	 */
@@ -240,8 +289,10 @@ public final class AdvancementCLIDriver implements ISPDriver {
 		final String hdr = "Jobs in worker:";
 		final String none = "No existing jobs.";
 		final String prpt = "Job to advance: ";
-		for (int skillNum = cli.chooseFromList(skills, hdr, none, prpt, false); skillNum <= skills
-				.size(); skillNum = cli.chooseFromList(skills, hdr, none, prpt, false)) {
+		for (int skillNum = cli.chooseFromList(skills, hdr, none, prpt, false);
+				skillNum <= skills
+						            .size();
+				skillNum = cli.chooseFromList(skills, hdr, none, prpt, false)) {
 			if (skillNum < 0 || skillNum == skills.size()) {
 				job.addSkill(new Skill(cli.inputString("Name of new Skill: "), 0, 0));
 				skills.clear();
@@ -249,8 +300,9 @@ public final class AdvancementCLIDriver implements ISPDriver {
 				SYS_OUT.println("Select the new skill at the next prompt.");
 				continue;
 			} else {
-				skills.get(skillNum).addHours(cli.inputNumber("Hours of experience to add: "),
-						SingletonRandom.RANDOM.nextInt(100));
+				skills.get(skillNum)
+						.addHours(cli.inputNumber("Hours of experience to add: "),
+								SingletonRandom.RANDOM.nextInt(100));
 				if (!cli.inputBoolean("Select another Skill in this Job? ")) {
 					break;
 				}

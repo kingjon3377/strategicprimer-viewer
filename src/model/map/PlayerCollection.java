@@ -1,6 +1,7 @@
 package model.map;
 
-import static util.NullStream.DEV_NULL;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -10,33 +11,30 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 
-import org.eclipse.jdt.annotation.Nullable;
-
-import util.NullCleaner;
+import static util.NullStream.DEV_NULL;
 
 /**
- * A collection of players. Using a simple List doesn't work when -1 is the
- * default index if one isn't given in the XML.
+ * A collection of players. Using a simple List doesn't work when -1 is the default index
+ * if one isn't given in the XML.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class PlayerCollection implements IMutablePlayerCollection {
 	/**
@@ -46,12 +44,14 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(PlayerCollection.class.getName()));
+	private static final Logger LOGGER =
+			NullCleaner.assertNotNull(Logger.getLogger(PlayerCollection.class.getName
+					                                                                  ()));
+
 	/**
 	 * @param player a player-id
-	 *
-	 * @return the player with that ID, or a new Player with that number if we
-	 *         don't have it.
+	 * @return the player with that ID, or a new Player with that number if we don't have
+	 * it.
 	 */
 	@Override
 	public Player getPlayer(final int player) {
@@ -73,15 +73,16 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 
 	/**
 	 * @param obj an object
-	 *
 	 * @return whether it is another identical PlayerCollection or not
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		try {
 			return this == obj || obj instanceof IPlayerCollection
-					&& isSubset((IPlayerCollection) obj, DEV_NULL, "")
-					&& ((IPlayerCollection) obj).isSubset(this, DEV_NULL, "");
+					                      &&
+					                      isSubset((IPlayerCollection) obj, DEV_NULL, "")
+					                      && ((IPlayerCollection) obj)
+							                         .isSubset(this, DEV_NULL, "");
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error from NullStream", e);
 			return false;
@@ -89,7 +90,6 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	}
 
 	/**
-	 *
 	 * @return a hash value for this collection.
 	 */
 	@Override
@@ -98,21 +98,20 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	}
 
 	/**
-	 * Note that this method currently iterates through all the players to find
-	 * the one marked current.
+	 * Note that this method currently iterates through all the players to find the one
+	 * marked current.
 	 *
-	 *
-	 * @return the current player, or a new player with a negative number and
-	 *         the empty string for a name.
+	 * @return the current player, or a new player with a negative number and the empty
+	 * string for a name.
 	 */
 	@Override
 	public Player getCurrentPlayer() {
-		return StreamSupport.stream(spliterator(), false).filter(Player::isCurrent).findFirst()
+		return StreamSupport.stream(spliterator(), false).filter(Player::isCurrent)
+				       .findFirst()
 				       .orElse(new Player(-1, ""));
 	}
 
 	/**
-	 *
 	 * @return a String representation of the class
 	 */
 	@Override
@@ -121,17 +120,17 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	}
 
 	/**
-	 * @param obj another PlayerCollection
-	 * @return whether it's a strict subset of this one
+	 * @param obj     another PlayerCollection
 	 * @param ostream the stream to write details of the differences to
-	 * @param context
-	 *            a string to print before every line of output, describing the
-	 *            context
+	 * @param context a string to print before every line of output, describing the
+	 *                context
+	 * @return whether it's a strict subset of this one
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
 	public boolean isSubset(final IPlayerCollection obj,
-			final Appendable ostream, final String context) throws IOException {
+	                        final Appendable ostream, final String context)
+			throws IOException {
 		for (final Player player : obj) {
 			if (!players.containsValue(player)) {
 				ostream.append(context);
@@ -166,7 +165,8 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 		}
 		final boolean retval = !players.containsValue(player);
 		players.put(NullCleaner
-				.assertNotNull(Integer.valueOf(player.getPlayerId())), player);
+				            .assertNotNull(Integer.valueOf(player.getPlayerId())),
+				player);
 		return retval;
 	}
 

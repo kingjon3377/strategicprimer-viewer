@@ -1,16 +1,5 @@
 package controller.map.cxml;
 
-import static java.lang.Boolean.parseBoolean;
-
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -33,28 +22,37 @@ import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
 
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import static java.lang.Boolean.parseBoolean;
+
 /**
  * A reader for resource-bearing TileFixtures.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class CompactResourceReader extends
 		AbstractCompactReader<HarvestableFixture> {
@@ -72,8 +70,7 @@ public final class CompactResourceReader extends
 	 */
 	private static final String KIND_PAR = "kind";
 	/**
-	 * The parameter saying whether a grove or field or orchard or meadow is
-	 * cultivated.
+	 * The parameter saying whether a grove or field or orchard or meadow is cultivated.
 	 */
 	private static final String CULTIVATED_PARAM = "cultivated";
 
@@ -81,11 +78,13 @@ public final class CompactResourceReader extends
 	 * Mapping from tags to enum-tags.
 	 */
 	private static final Map<String, HarvestableType> MAP = new HashMap<>(
-			HarvestableType.values().length);
+			                                                                     HarvestableType
+					                                                                     .values().length);
 	/**
 	 * List of supported tags.
 	 */
 	private static final Set<String> SUPP_TAGS;
+
 	/**
 	 * Singleton.
 	 */
@@ -156,7 +155,7 @@ public final class CompactResourceReader extends
 		}
 		SUPP_TAGS =
 				NullCleaner.assertNotNull(Collections
-						.unmodifiableSet(suppTagsTemp));
+						                          .unmodifiableSet(suppTagsTemp));
 	}
 
 	/**
@@ -169,19 +168,21 @@ public final class CompactResourceReader extends
 	}
 
 	/**
-	 * @param elem the XML element to parse
-	 * @param stream the stream to read more elements from
-	 * @param players the collection of players
-	 * @param warner the Warning instance to use for warnings
+	 * @param elem      the XML element to parse
+	 * @param stream    the stream to read more elements from
+	 * @param players   the collection of players
+	 * @param warner    the Warning instance to use for warnings
 	 * @param idFactory the ID factory to use to generate IDs
 	 * @return the parsed resource
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
 	public HarvestableFixture read(// $codepro.audit.disable cyclomaticComplexity
-			final StartElement elem, final IteratorWrapper<XMLEvent> stream,
-			final IMutablePlayerCollection players, final Warning warner,
-			final IDFactory idFactory) throws SPFormatException {
+	                               final StartElement elem,
+	                               final IteratorWrapper<XMLEvent> stream,
+	                               final IMutablePlayerCollection players,
+	                               final Warning warner,
+	                               final IDFactory idFactory) throws SPFormatException {
 		requireTag(elem, "cache", "grove", "orchard",
 				"field", "meadow", "mine", "mineral", "shrub", "stone");
 		final int idNum = getOrGenerateID(elem, warner, idFactory);
@@ -189,7 +190,7 @@ public final class CompactResourceReader extends
 		switch (MAP.get(elem.getName().getLocalPart())) {
 		case CacheType:
 			retval = new CacheFixture(getParameter(elem, KIND_PAR),
-					getParameter(elem, "contents"), idNum);
+					                         getParameter(elem, "contents"), idNum);
 			break;
 		case FieldType:
 			retval = createMeadow(elem, true, idNum, warner);
@@ -203,8 +204,9 @@ public final class CompactResourceReader extends
 		case MineType:
 			retval = new Mine(getParamWithDeprecatedForm(elem, KIND_PAR,
 					"product", warner),
-					TownStatus.parseTownStatus(getParameter(elem, STATUS_PAR)),
-					idNum);
+					                 TownStatus.parseTownStatus(
+							                 getParameter(elem, STATUS_PAR)),
+					                 idNum);
 			break;
 		case MineralType:
 			retval = new MineralVein(getParamWithDeprecatedForm(elem, KIND_PAR,
@@ -220,8 +222,10 @@ public final class CompactResourceReader extends
 			break;
 		case StoneType:
 			retval = new StoneDeposit(
-					StoneKind.parseStoneKind(getParamWithDeprecatedForm(elem,
-							KIND_PAR, "stone", warner)), getDC(elem), idNum);
+					                         StoneKind.parseStoneKind(
+							                         getParamWithDeprecatedForm(elem,
+									                         KIND_PAR, "stone", warner)),
+					                         getDC(elem), idNum);
 			break;
 		default:
 			throw new IllegalArgumentException("Shouldn't get here");
@@ -242,69 +246,80 @@ public final class CompactResourceReader extends
 	}
 
 	/**
-	 * Create a Meadow, to reduce code duplication between 'field' and 'meadow'
-	 * cases.
+	 * Create a Meadow, to reduce code duplication between 'field' and 'meadow' cases.
 	 *
 	 * @param element the tag we're parsing
-	 * @param field whether this is a field (meadow otherwise)
-	 * @param idNum the ID number parsed or generated
-	 * @param warner the Warning instance to use for warnings
+	 * @param field   whether this is a field (meadow otherwise)
+	 * @param idNum   the ID number parsed or generated
+	 * @param warner  the Warning instance to use for warnings
 	 * @return the parsed Meadow object.
 	 * @throws SPFormatException on SP format problems
 	 */
 	private static HarvestableFixture createMeadow(final StartElement element,
-	                                               final boolean field, final int idNum, final Warning warner)
+	                                               final boolean field, final int idNum,
+	                                               final Warning warner)
 			throws SPFormatException {
 		if (!hasParameter(element, STATUS_PAR)) {
 			warner.warn(new MissingPropertyException(NullCleaner
-					.assertNotNull(element.getName().getLocalPart()),
-					STATUS_PAR, element.getLocation().getLineNumber()));
+					                                         .assertNotNull(
+							                                         element.getName()
+									                                         .getLocalPart()),
+					                                        STATUS_PAR,
+					                                        element.getLocation()
+							                                        .getLineNumber()));
 		}
 		return new Meadow(getParameter(element, KIND_PAR), field,
-				parseBoolean(getParameter(element, CULTIVATED_PARAM)),
-				idNum, FieldStatus.parse(getParameter(element, STATUS_PAR,
-						FieldStatus.random(idNum).toString())));
+				                 parseBoolean(getParameter(element, CULTIVATED_PARAM)),
+				                 idNum,
+				                 FieldStatus.parse(getParameter(element, STATUS_PAR,
+						                 FieldStatus.random(idNum).toString())));
 	}
 
 	/**
-	 * Create a Grove, to reduce code duplication between 'grove' and 'orchard'
-	 * cases.
+	 * Create a Grove, to reduce code duplication between 'grove' and 'orchard' cases.
 	 *
 	 * @param element the tag we're parsing
 	 * @param orchard whether this is an orchard, a grove otherwise
-	 * @param idNum the ID number parsed or generated
-	 * @param warner the Warning instance to use for warnings
+	 * @param idNum   the ID number parsed or generated
+	 * @param warner  the Warning instance to use for warnings
 	 * @return the parsed Grove object
 	 * @throws SPFormatException on SP format problems
 	 */
 	private static HarvestableFixture createGrove(final StartElement element,
-	                                              final boolean orchard, final int idNum, final Warning warner)
+	                                              final boolean orchard, final int
+			                                                                     idNum,
+	                                              final Warning warner)
 			throws SPFormatException {
 		return new Grove(orchard, isCultivated(element, warner),
-				getParamWithDeprecatedForm(element, KIND_PAR, "tree", warner),
-				idNum);
+				                getParamWithDeprecatedForm(element, KIND_PAR, "tree",
+						                warner),
+				                idNum);
 	}
 
 	/**
 	 * @param element a tag representing a grove or orchard
-	 * @param warner the Warning instance to use
+	 * @param warner  the Warning instance to use
 	 * @return whether the grove or orchard is cultivated
-	 * @throws SPFormatException on SP format problems: use of 'wild' if
-	 *         warnings are fatal, or if both properties are missing.
+	 * @throws SPFormatException on SP format problems: use of 'wild' if warnings are
+	 *                           fatal, or if both properties are missing.
 	 */
 	private static boolean isCultivated(final StartElement element,
-			final Warning warner) throws SPFormatException {
+	                                    final Warning warner) throws SPFormatException {
 		if (hasParameter(element, CULTIVATED_PARAM)) {
 			return parseBoolean(getParameter(element, CULTIVATED_PARAM)); // NOPMD
 		} else {
-			final String local = NullCleaner.assertNotNull(element.getName().getLocalPart());
+			final String local =
+					NullCleaner.assertNotNull(element.getName().getLocalPart());
 			if (hasParameter(element, "wild")) {
 				warner.warn(new DeprecatedPropertyException(local, "wild",
-						CULTIVATED_PARAM, element.getLocation().getLineNumber()));
+						                                           CULTIVATED_PARAM,
+						                                           element.getLocation()
+								                                           .getLineNumber()));
 				return !parseBoolean(getParameter(element, "wild"));
 			} else {
 				throw new MissingPropertyException(local, CULTIVATED_PARAM,
-						element.getLocation().getLineNumber());
+						                                  element.getLocation()
+								                                  .getLineNumber());
 			}
 		}
 	}
@@ -313,13 +328,13 @@ public final class CompactResourceReader extends
 	 * Write an object to a stream. TODO: Some way of simplifying this?
 	 *
 	 * @param ostream The stream to write to.
-	 * @param obj The object to write.
-	 * @param indent The current indentation level.
+	 * @param obj     The object to write.
+	 * @param indent  The current indentation level.
 	 * @throws IOException on I/O error
 	 */
 	@Override
 	public void write(final Appendable ostream, final HarvestableFixture obj,
-			final int indent) throws IOException {
+	                  final int indent) throws IOException {
 		ostream.append(indent(indent));
 		if (obj instanceof CacheFixture) {
 			ostream.append("<cache kind=\"");

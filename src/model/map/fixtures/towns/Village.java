@@ -1,38 +1,36 @@
 package model.map.fixtures.towns;
 
-import java.io.IOException;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.SubsettableFixture;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
+
+import java.io.IOException;
 
 /**
  * A village on the map.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public class Village implements ITownFixture, HasImage, SubsettableFixture {
 	/**
@@ -63,13 +61,13 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 	 * Constructor.
 	 *
 	 * @param vstatus the status of the village.
-	 * @param vName the name of the village
-	 * @param idNum the ID number.
-	 * @param player the owner of the village
-	 * @param vRace the dominant race of the village
+	 * @param vName   the name of the village
+	 * @param idNum   the ID number.
+	 * @param player  the owner of the village
+	 * @param vRace   the dominant race of the village
 	 */
 	public Village(final TownStatus vstatus, final String vName,
-			final int idNum, final Player player, final String vRace) {
+	               final int idNum, final Player player, final String vRace) {
 		status = vstatus;
 		name = vName;
 		id = idNum;
@@ -78,10 +76,9 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 	}
 
 	/**
+	 * @param zero ignored, as a village has no sensitive information that is not
+	 *             essential
 	 * @return a copy of this village
-	 * @param zero
-	 *            ignored, as a village has no sensitive information that is not
-	 *            essential
 	 */
 	@Override
 	public Village copy(final boolean zero) {
@@ -96,7 +93,9 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder(52 + name.length()
-				+ owner.getName().length());
+				                                                +
+				                                                owner.getName().length
+						                                                                ());
 		if (owner.isIndependent()) {
 			builder.append("Independent ");
 		}
@@ -138,11 +137,11 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof Village
-				&& status == ((Village) obj).status
-				&& name.equals(((Village) obj).name)
-				&& id == ((Village) obj).id
-				&& owner.equals(((Village) obj).owner)
-				&& race.equals(((Village) obj).race);
+				                      && status == ((Village) obj).status
+				                      && name.equals(((Village) obj).name)
+				                      && id == ((Village) obj).id
+				                      && owner.equals(((Village) obj).owner)
+				                      && race.equals(((Village) obj).race);
 	}
 
 	/**
@@ -155,7 +154,6 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -177,16 +175,15 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 	}
 
 	/**
-	 *
 	 * @param fix a fixture
 	 * @return whether it's an identical-but-for-ID village.
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Village && status == ((Village) fix).status
-				&& name.equals(((Village) fix).name)
-				&& owner.equals(((Village) fix).owner)
-				&& race.equals(((Village) fix).race);
+				       && name.equals(((Village) fix).name)
+				       && owner.equals(((Village) fix).owner)
+				       && race.equals(((Village) fix).race);
 	}
 
 	/**
@@ -216,8 +213,7 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 	}
 
 	/**
-	 * @return the "owner" of the village---the player it's pledged to serve and
-	 *         support
+	 * @return the "owner" of the village---the player it's pledged to serve and support
 	 */
 	@Override
 	public final Player getOwner() {
@@ -277,6 +273,7 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 	public String plural() {
 		return "Villages";
 	}
+
 	/**
 	 * @return a short description of the fixture
 	 */
@@ -287,22 +284,20 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 
 	/**
 	 * A village is a "subset" of another if they are identical, or if the only
-	 * difference is that the "subset" is independent and the "superset" owes
-	 * allegiance to some player.
+	 * difference
+	 * is that the "subset" is independent and the "superset" owes allegiance to some
+	 * player.
 	 *
-	 * @param obj
-	 *            a fixture
-	 * @param ostream
-	 *            a stream to write explanation to
-	 * @param context
-	 *            a string to print before every line of output, describing the
-	 *            context
+	 * @param obj     a fixture
+	 * @param ostream a stream to write explanation to
+	 * @param context a string to print before every line of output, describing the
+	 *                context
 	 * @return whether the fixture is a "subset" of this
 	 * @throws IOException on I/O error writing to stream
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-			final String context) throws IOException {
+	                        final String context) throws IOException {
 		if (obj instanceof Village) {
 			final Village village = (Village) obj;
 			if (village.id != id) {

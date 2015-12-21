@@ -1,31 +1,30 @@
 package model.report;
 
-import javax.swing.tree.TreeNode;
-
 import util.NullCleaner;
+
+import javax.swing.tree.TreeNode;
 
 /**
  * The root of a node hierarchy.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class RootReportNode extends AbstractReportNode {
 	/**
@@ -43,7 +42,7 @@ public final class RootReportNode extends AbstractReportNode {
 	@Override
 	public String produce() {
 		return NullCleaner.assertNotNull(produce(new StringBuilder(size()))
-				.toString());
+				                                 .toString());
 	}
 
 	/**
@@ -65,8 +64,7 @@ public final class RootReportNode extends AbstractReportNode {
 	}
 
 	/**
-	 * @return approximately how long the HTML representation of this node will
-	 *         be.
+	 * @return approximately how long the HTML representation of this node will be.
 	 */
 	@Override
 	public int size() {
@@ -87,7 +85,7 @@ public final class RootReportNode extends AbstractReportNode {
 	@Override
 	protected boolean equalsImpl(final IReportNode obj) {
 		return obj instanceof RootReportNode && getText().equals(obj.getText())
-				&& children().equals(obj.children());
+				       && children().equals(obj.children());
 	}
 
 	/**

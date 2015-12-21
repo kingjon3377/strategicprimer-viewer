@@ -1,5 +1,7 @@
 package util;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -9,31 +11,28 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 /**
  * A Set implementation that's just an ArrayList with Set semantics.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
- *
- * @author Jonathan Lovelace
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @param <T> the type of thing stored in the set
+ * @author Jonathan Lovelace
  */
 public final class ArraySet<T> implements Set<T> {
 	/**
@@ -44,6 +43,7 @@ public final class ArraySet<T> implements Set<T> {
 	 * The running total of the hash code.
 	 */
 	private int hash = 0;
+
 	/**
 	 * @return the size of the set
 	 */
@@ -87,13 +87,14 @@ public final class ArraySet<T> implements Set<T> {
 
 	/**
 	 * @param <TYPE> the type
-	 * @param array an array of that type
+	 * @param array  an array of that type
 	 * @return the contents of the set in that array
 	 */
 	@Override
 	public <TYPE> TYPE[] toArray(final TYPE @Nullable [] array) {
 		return NullCleaner.assertNotNullArray(impl.toArray(NullCleaner
-				.assertNotNull(array)));
+				                                                   .assertNotNull(
+						                                                   array)));
 	}
 
 	/**
@@ -158,7 +159,8 @@ public final class ArraySet<T> implements Set<T> {
 	public boolean retainAll(@Nullable final Collection<?> coll) {
 		final boolean retval = impl.retainAll(coll);
 		if (retval) {
-			hash = StreamSupport.stream(coll.spliterator(), false).collect(Collectors.summingInt(Object::hashCode))
+			hash = StreamSupport.stream(coll.spliterator(), false)
+					       .collect(Collectors.summingInt(Object::hashCode))
 					       .intValue();
 		}
 		return retval;
@@ -172,7 +174,8 @@ public final class ArraySet<T> implements Set<T> {
 	public boolean removeAll(@Nullable final Collection<?> coll) {
 		final boolean retval = impl.removeAll(coll);
 		if (retval) {
-			hash = StreamSupport.stream(coll.spliterator(), false).collect(Collectors.summingInt(Object::hashCode))
+			hash = StreamSupport.stream(coll.spliterator(), false)
+					       .collect(Collectors.summingInt(Object::hashCode))
 					       .intValue();
 		}
 		return retval;
@@ -188,12 +191,12 @@ public final class ArraySet<T> implements Set<T> {
 	}
 
 	/**
-	 * Note that since this is a cached value, computed by adding to the cached
-	 * value whenever something is added to the set and subtracting whenever
-	 * something is removed, and only recomputed on removeAll and retainAll
-	 * operations, if a member's hash value changes after it is added, this will
-	 * no longer be correct according to the Set contract. But having a hash
-	 * code that changes is usually going to cause bugs with a Set anyway.
+	 * Note that since this is a cached value, computed by adding to the cached value
+	 * whenever something is added to the set and subtracting whenever something is
+	 * removed, and only recomputed on removeAll and retainAll operations, if a member's
+	 * hash value changes after it is added, this will no longer be correct according to
+	 * the Set contract. But having a hash code that changes is usually going to cause
+	 * bugs with a Set anyway.
 	 *
 	 * @return a hash-value for the set.
 	 */
@@ -212,10 +215,11 @@ public final class ArraySet<T> implements Set<T> {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof Set
-				&& areSetsEqual(this, (Set<?>) obj);
+				                      && areSetsEqual(this, (Set<?>) obj);
 	}
+
 	/**
-	 * @param firstSet one set
+	 * @param firstSet  one set
 	 * @param secondSet another set
 	 * @return whether they are equal according to the Set contract.
 	 */
@@ -223,6 +227,7 @@ public final class ArraySet<T> implements Set<T> {
 	private static boolean areSetsEqual(final Set<?> firstSet, final Set<?> secondSet) {
 		return firstSet.containsAll(secondSet) && secondSet.containsAll(firstSet);
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

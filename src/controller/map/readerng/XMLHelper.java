@@ -1,14 +1,5 @@
 package controller.map.readerng;
 
-import java.text.NumberFormat;
-import java.text.ParseException;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.Location;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -22,28 +13,35 @@ import model.map.Player;
 import util.NullCleaner;
 import util.Warning;
 
+import javax.xml.namespace.QName;
+import javax.xml.stream.Location;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import java.text.NumberFormat;
+import java.text.ParseException;
+
 /**
  * A class for helper methods.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  * @deprecated ReaderNG is deprecated
  */
 @Deprecated
@@ -52,7 +50,9 @@ public final class XMLHelper {
 	 * Parser for numeric input.
 	 */
 	private static final NumberFormat NUM_PARSER = NullCleaner
-			.assertNotNull(NumberFormat.getIntegerInstance());
+			                                               .assertNotNull(NumberFormat
+					                                                              .getIntegerInstance());
+
 	/**
 	 * Do not instantiate.
 	 */
@@ -62,37 +62,39 @@ public final class XMLHelper {
 
 	/**
 	 * @param startElement a tag
-	 * @param attribute the attribute we want
-	 *
+	 * @param attribute    the attribute we want
 	 * @return the value of that attribute.
 	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
 	public static String getAttribute(final StartElement startElement,
-			final String attribute) throws SPFormatException {
+	                                  final String attribute) throws SPFormatException {
 		final Attribute attr = startElement.getAttributeByName(new QName(
-				attribute));
+				                                                                attribute));
 		if (attr == null || attr.getValue() == null) {
 			throw new MissingPropertyException(
-					NullCleaner.assertNotNull(startElement.getName()
-							.getLocalPart()), attribute, startElement
-							.getLocation().getLineNumber());
+					                                  NullCleaner.assertNotNull(
+							                                  startElement.getName()
+									                                  .getLocalPart()),
+					                                  attribute, startElement
+							                                             .getLocation()
+							                                             .getLineNumber
+									                                              ());
 		}
 		return NullCleaner.assertNotNull(attr.getValue());
 	}
 
 	/**
 	 * A variant of getAttribute() that returns a specified default value if the
-	 * attribute is missing, instead of throwing an exception.
+	 * attribute
+	 * is missing, instead of throwing an exception.
 	 *
-	 * @param elem the element
-	 * @param attr the attribute we want
-	 * @param defaultValue the default value if the element doesn't have the
-	 *        attribute
-	 *
+	 * @param elem         the element
+	 * @param attr         the attribute we want
+	 * @param defaultValue the default value if the element doesn't have the attribute
 	 * @return the value of attribute if it exists, or the default
 	 */
 	public static String getAttribute(final StartElement elem,
-			final String attr, final String defaultValue) {
+	                                  final String attr, final String defaultValue) {
 		final Attribute value = elem.getAttributeByName(new QName(attr));
 		if (value == null) {
 			return defaultValue; // NOPMD
@@ -102,33 +104,43 @@ public final class XMLHelper {
 	}
 
 	/**
-	 * @param element the element
-	 * @param preferred the preferred name of the attribute
-	 * @param deprecated the deprecated name of the attribute * @throws
-	 *        SPFormatException if the element doesn't have that attribute
-	 * @param warner the warning instance to use
-	 * @return the value of the attribute, gotten from the preferred form if it
-	 *         has it, and from the deprecated form if the preferred form isn't
-	 *         there but it is.
+	 * @param element    the element
+	 * @param preferred  the preferred name of the attribute
+	 * @param deprecated the deprecated name of the attribute * @throws SPFormatException
+	 *                   if the element doesn't have that attribute
+	 * @param warner     the warning instance to use
+	 * @return the value of the attribute, gotten from the preferred form if it has it,
+	 * and from the deprecated form if the preferred form isn't there but it is.
 	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
 	public static String getAttributeWithDeprecatedForm(
-			final StartElement element, final String preferred,
-			final String deprecated, final Warning warner)
+			                                                   final StartElement
+					                                                   element,
+			                                                   final String preferred,
+			                                                   final String deprecated,
+			                                                   final Warning warner)
 			throws SPFormatException {
 		final Attribute prefAttr = element.getAttributeByName(new QName(
-				preferred));
+				                                                               preferred));
 		final Attribute deprAttr = element.getAttributeByName(new QName(
-				deprecated));
+				                                                               deprecated));
 		if (prefAttr == null && deprAttr == null) {
 			throw new MissingPropertyException(
-					NullCleaner.assertNotNull(element.getName().getLocalPart()),
-					preferred, element.getLocation().getLineNumber());
+					                                  NullCleaner.assertNotNull(
+							                                  element.getName()
+									                                  .getLocalPart()),
+					                                  preferred, element.getLocation()
+							                                             .getLineNumber
+									                                              ());
 		} else if (prefAttr == null) {
 			warner.warn(new DeprecatedPropertyException(NullCleaner
-					.assertNotNull(element.getName().getLocalPart()),
-					deprecated, preferred, element.getLocation()
-							.getLineNumber()));
+					                                            .assertNotNull(
+							                                            element.getName()
+									                                            .getLocalPart()),
+					                                           deprecated, preferred,
+					                                           element.getLocation()
+							                                           .getLineNumber
+									                                            ()));
 			return NullCleaner.assertNotNull(deprAttr.getValue()); // NOPMD
 		} else {
 			return NullCleaner.assertNotNull(prefAttr.getValue());
@@ -141,52 +153,62 @@ public final class XMLHelper {
 	 * @return whether the element has that attribute
 	 */
 	public static boolean hasAttribute(final StartElement elem,
-			final String attr) {
+	                                   final String attr) {
 		return elem.getAttributeByName(new QName(attr)) != null;
 	}
 
 	/**
-	 * Move along the stream until we hit an end element, but object to any
-	 * start elements.
+	 * Move along the stream until we hit an end element, but object to any start
+	 * elements.
 	 *
-	 * @param tag what kind of tag we're in (for the error message)
+	 * @param tag    what kind of tag we're in (for the error message)
 	 * @param reader the XML stream we're reading from
 	 * @throws SPFormatException on unwanted child
 	 */
 	public static void spinUntilEnd(final QName tag,
-			final Iterable<XMLEvent> reader) throws SPFormatException {
+	                                final Iterable<XMLEvent> reader)
+			throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException(NullCleaner.assertNotNull(tag
-						.getLocalPart()), NullCleaner.assertNotNull(event
-						.asStartElement().getName().getLocalPart()), event
-						.getLocation().getLineNumber());
+						                                                           .getLocalPart()),
+						                                NullCleaner.assertNotNull(event
+								                                                          .asStartElement()
+								                                                          .getName()
+								                                                          .getLocalPart()),
+						                                event
+								                                .getLocation()
+								                                .getLineNumber());
 			} else if (event.isEndElement()
-					&& tag.equals(event.asEndElement().getName())) {
+					           && tag.equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
 	}
 
 	/**
-	 * Throw an exception (or warn) if the specified parameter is missing or
-	 * empty.
+	 * Throw an exception (or warn) if the specified parameter is missing or empty.
 	 *
-	 * @param element the current element
+	 * @param element   the current element
 	 * @param parameter the parameter to check
 	 * @param mandatory whether we should throw or just warn
-	 * @param warner the Warning instance to use if not mandatory
+	 * @param warner    the Warning instance to use if not mandatory
 	 * @throws SPFormatException if the parameter is mandatory and missing
 	 */
 	public static void requireNonEmptyParameter(final StartElement element,
-			final String parameter, final boolean mandatory,
-			final Warning warner) throws SPFormatException {
+	                                            final String parameter,
+	                                            final boolean mandatory,
+	                                            final Warning warner)
+			throws SPFormatException {
 		if (getAttribute(element, parameter, "").isEmpty()) {
 			final SPFormatException except =
 					new MissingPropertyException(
-							NullCleaner.assertNotNull(element.getName()
-									.getLocalPart()), parameter, element
-									.getLocation().getLineNumber());
+							                            NullCleaner.assertNotNull(
+									                            element.getName()
+											                            .getLocalPart()),
+							                            parameter, element
+									                                       .getLocation()
+									                                       .getLineNumber());
 			if (mandatory) {
 				throw except;
 			} else {
@@ -196,18 +218,19 @@ public final class XMLHelper {
 	}
 
 	/**
-	 * If the specified tag has an "owner" property, return the player it
-	 * indicates; otherwise warn about its absence and return the "independent"
-	 * player from the player collection.
+	 * If the specified tag has an "owner" property, return the player it indicates;
+	 * otherwise warn about its absence and return the "independent" player from the
+	 * player collection.
 	 *
 	 * @param element the tag we're working with
-	 * @param warner the Warning instance to send the warning on
+	 * @param warner  the Warning instance to send the warning on
 	 * @param players the collection of players to refer to
 	 * @return a suitable player
 	 * @throws SPFormatException on SP format problems reading the attribute.
 	 */
 	public static Player getPlayerOrIndependent(final StartElement element,
-			final Warning warner, final IPlayerCollection players)
+	                                            final Warning warner,
+	                                            final IPlayerCollection players)
 			throws SPFormatException {
 		final Player retval; // NOPMD
 		if (hasAttribute(element, "owner")) {
@@ -215,27 +238,30 @@ public final class XMLHelper {
 					"owner"), NullCleaner.assertNotNull(element.getLocation())));
 		} else {
 			warner.warn(new MissingPropertyException(NullCleaner
-					.assertNotNull(element.getName().getLocalPart()), "owner",
-					element.getLocation().getLineNumber()));
+					                                         .assertNotNull(
+							                                         element.getName()
+									                                         .getLocalPart()),
+					                                        "owner",
+					                                        element.getLocation()
+							                                        .getLineNumber()));
 			retval = players.getIndependent();
 		}
 		return retval;
 	}
 
 	/**
-	 * If the specified tag has an ID as a property, return it; otherwise warn
-	 * about its absence and generate one.
+	 * If the specified tag has an ID as a property, return it; otherwise warn about its
+	 * absence and generate one.
 	 *
-	 * @param element the tag we're working with
-	 * @param warner the Warning instance to send the warning on if the tag
-	 *        doesn't specify an ID
-	 * @param idFactory the factory to register an existing ID with or get a new
-	 *        one from
+	 * @param element   the tag we're working with
+	 * @param warner    the Warning instance to send the warning on if the tag doesn't
+	 *                  specify an ID
+	 * @param idFactory the factory to register an existing ID with or get a new one from
 	 * @return the ID the tag has if it has one, or otherwise a generated one.
 	 * @throws SPFormatException on SP format problems reading the attribute
 	 */
 	public static int getOrGenerateID(final StartElement element,
-			final Warning warner, final IDFactory idFactory)
+	                                  final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		final int retval; // NOPMD
 		if (hasAttribute(element, "id")) {
@@ -243,12 +269,17 @@ public final class XMLHelper {
 					"id"), NullCleaner.assertNotNull(element.getLocation())));
 		} else {
 			warner.warn(new MissingPropertyException(NullCleaner
-					.assertNotNull(element.getName().getLocalPart()), "id",
-					element.getLocation().getLineNumber()));
+					                                         .assertNotNull(
+							                                         element.getName()
+									                                         .getLocalPart()),
+					                                        "id",
+					                                        element.getLocation()
+							                                        .getLineNumber()));
 			retval = idFactory.createID();
 		}
 		return retval;
 	}
+
 	/**
 	 * @param loc the current location in the XML
 	 * @param str a string
@@ -263,10 +294,11 @@ public final class XMLHelper {
 			throw new SPMalformedInputException(loc.getLineNumber(), e);
 		}
 	}
+
 	/**
 	 * @param stream a source of XMLEvents
-	 * @return the file currently being read from if it's an
-	 *         {@link IncludingIterator}, or the empty string otherwise.
+	 * @return the file currently being read from if it's an {@link IncludingIterator}, or
+	 * the empty string otherwise.
 	 */
 	public static String getFile(final Iterable<XMLEvent> stream) {
 		if (stream.iterator() instanceof IncludingIterator) {
@@ -277,11 +309,11 @@ public final class XMLHelper {
 	}
 
 	/**
-	 * If there is an image attribute on the element, add that to the object
-	 * being constructed. If not, do nothing.
+	 * If there is an image attribute on the element, add that to the object being
+	 * constructed. If not, do nothing.
 	 *
 	 * @param element the XML element being read
-	 * @param obj the object being constructed.
+	 * @param obj     the object being constructed.
 	 * @throws SPFormatException on SP format error
 	 */
 	public static void addImage(final StartElement element, final HasImage obj)

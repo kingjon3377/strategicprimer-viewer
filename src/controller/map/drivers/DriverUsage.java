@@ -1,8 +1,8 @@
 package controller.map.drivers;
 
 /**
- * A class to represent usage information for drivers, for use in the
- * AppStarter and in help text.
+ * A class to represent usage information for drivers, for use in the AppStarter and in
+ * help text.
  *
  * @author Jonathan Lovelace
  */
@@ -57,16 +57,14 @@ public class DriverUsage { // $codepro.audit.disable
 	/**
 	 * Constructor.
 	 *
-	 * @param graph whether this driver is graphical or not
-	 * @param shortOpt the short (generally one character) option to give to
-	 *        AppStarter to get this driver
-	 * @param longOpt the long option to give to AppStarter to get this
-	 *        driver
-	 * @param params how many parameters the driver wants
+	 * @param graph     whether this driver is graphical or not
+	 * @param shortOpt  the short (generally one character) option to give to AppStarter
+	 *                  to get this driver
+	 * @param longOpt   the long option to give to AppStarter to get this driver
+	 * @param params    how many parameters the driver wants
 	 * @param shortDesc a short description of the driver
-	 * @param longDesc a longer description of the driver.
-	 * @param driver the Class object referring to the type of driver this
-	 *        describes
+	 * @param longDesc  a longer description of the driver.
+	 * @param driver    the Class object referring to the type of driver this describes
 	 */
 	public DriverUsage(final boolean graph, final String shortOpt,
 	                   final String longOpt, final ParamCount params,

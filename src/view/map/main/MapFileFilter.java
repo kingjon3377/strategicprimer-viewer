@@ -1,42 +1,39 @@
 package view.map.main;
 
-import static util.NullCleaner.assertNotNull;
-
-import java.io.File;
+import org.eclipse.jdt.annotation.Nullable;
 
 import javax.swing.filechooser.FileFilter;
+import java.io.File;
 
-import org.eclipse.jdt.annotation.Nullable;
+import static util.NullCleaner.assertNotNull;
 
 /**
  * Filter out extraneous files when we're opening a map.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class MapFileFilter extends FileFilter {
 	/**
 	 * Accept .xml and .map.
 	 *
 	 * @param file a file to consider
-	 *
 	 * @return true if its extension is .xml or .map
 	 */
 	@Override
@@ -53,7 +50,6 @@ public final class MapFileFilter extends FileFilter {
 
 	/**
 	 * @param file A file
-	 *
 	 * @return The extension of that file
 	 */
 	public static String getExtension(final File file) {
@@ -68,7 +64,6 @@ public final class MapFileFilter extends FileFilter {
 	}
 
 	/**
-	 *
 	 * @return A description of the filter.
 	 */
 	@Override
@@ -77,7 +72,6 @@ public final class MapFileFilter extends FileFilter {
 	}
 
 	/**
-	 *
 	 * @return a String representation of the object.
 	 */
 	@Override

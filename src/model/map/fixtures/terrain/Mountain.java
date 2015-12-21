@@ -1,44 +1,40 @@
 package model.map.fixtures.terrain;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
- * A mountain on the map---or at least a fixture representing mountainous
- * terrain.
+ * A mountain on the map---or at least a fixture representing mountainous terrain.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class Mountain implements TerrainFixture, HasImage {
 	/**
-	 * Even though Mountains have no state other than their image, we still copy
-	 * because they might eventually.
+	 * Even though Mountains have no state other than their image, we still copy because
+	 * they might eventually.
 	 *
+	 * @param zero ignored, as a mountain has no state (other than its image)
 	 * @return a copy of this mountain
-	 * @param zero
-	 *            ignored, as a mountain has no state (other than its image)
 	 */
 	@Override
 	public Mountain copy(final boolean zero) {
@@ -46,6 +42,7 @@ public final class Mountain implements TerrainFixture, HasImage {
 		retval.setImage(image);
 		return retval;
 	}
+
 	/**
 	 * @return a String representation of the forest.
 	 */
@@ -61,10 +58,12 @@ public final class Mountain implements TerrainFixture, HasImage {
 	public String getDefaultImage() {
 		return "mountain.png";
 	}
+
 	/**
 	 * The z-value given to a mountain.
 	 */
 	private static final int Z_VALUE = 10;
+
 	/**
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
@@ -92,7 +91,6 @@ public final class Mountain implements TerrainFixture, HasImage {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -147,6 +145,7 @@ public final class Mountain implements TerrainFixture, HasImage {
 	public String plural() {
 		return "Mountain";
 	}
+
 	/**
 	 * @return a short description of the fixture
 	 */

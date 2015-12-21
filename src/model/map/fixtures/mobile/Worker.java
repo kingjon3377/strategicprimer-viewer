@@ -1,5 +1,14 @@
 package model.map.fixtures.mobile;
 
+import model.map.IFixture;
+import model.map.fixtures.mobile.worker.IJob;
+import model.map.fixtures.mobile.worker.Job;
+import model.map.fixtures.mobile.worker.WorkerStats;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+import util.ArraySet;
+import util.NullCleaner;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -8,41 +17,30 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
-import model.map.IFixture;
-import model.map.fixtures.mobile.worker.IJob;
-import model.map.fixtures.mobile.worker.Job;
-import model.map.fixtures.mobile.worker.WorkerStats;
-import util.ArraySet;
-import util.NullCleaner;
-
 /**
- * A worker (or soldier) in a unit. This is deliberately not a TileFixture:
- * these should only be part of a unit, not as a top-level tag.
+ * A worker (or soldier) in a unit. This is deliberately not a TileFixture: these should
+ * only be part of a unit, not as a top-level tag.
  *
  * And TODO: some of the other MobileFixtures should be similarly converted.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public class Worker implements IWorker {
 	/**
@@ -73,13 +71,13 @@ public class Worker implements IWorker {
 	/**
 	 * Constructor.
 	 *
-	 * @param wName the worker's name
+	 * @param wName      the worker's name
 	 * @param workerRace the worker's race
-	 * @param idNum the ID number of the worker
-	 * @param jobs the Jobs the worker is trained in
+	 * @param idNum      the ID number of the worker
+	 * @param jobs       the Jobs the worker is trained in
 	 */
 	public Worker(final String wName, final String workerRace, final int idNum,
-			final @NonNull Job @NonNull ... jobs) {
+	              final @NonNull Job @NonNull ... jobs) {
 		name = wName;
 		id = idNum;
 		race = workerRace;
@@ -141,8 +139,9 @@ public class Worker implements IWorker {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof Worker && ((Worker) obj).id == id
-				&& equalsIgIDImpl((Worker) obj);
+				                      && equalsIgIDImpl((Worker) obj);
 	}
+
 	/**
 	 * @return a hash code for the object
 	 */
@@ -166,8 +165,9 @@ public class Worker implements IWorker {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return this == fix || fix instanceof Worker
-				&& equalsIgIDImpl((Worker) fix);
+				                      && equalsIgIDImpl((Worker) fix);
 	}
+
 	/**
 	 * @param fix a worker
 	 * @return whether it equals this one except for ID.
@@ -176,19 +176,22 @@ public class Worker implements IWorker {
 		final WorkerStats locStats = stats;
 		if (locStats == null) {
 			return fix.name.equals(name) && areJobSetsEqual(jobSet, fix.jobSet) // NOPMD
-					&& fix.race.equals(race) && fix.stats == null;
+					       && fix.race.equals(race) && fix.stats == null;
 		} else {
 			return fix.name.equals(name) && areJobSetsEqual(jobSet, fix.jobSet)
-					&& fix.race.equals(race) && locStats.equals(fix.stats);
+					       && fix.race.equals(race) && locStats.equals(fix.stats);
 		}
 	}
+
 	/**
 	 * TODO: Improve performance.
-	 * @param firstSet a set of Jobs
+	 *
+	 * @param firstSet  a set of Jobs
 	 * @param secondSet a set of Jobs
 	 * @return whether they are equal, ignoring any "empty" Jobs.
 	 */
-	private static boolean areJobSetsEqual(final Collection<IJob> firstSet, final Collection<IJob> secondSet) {
+	private static boolean areJobSetsEqual(final Collection<IJob> firstSet, final
+	Collection<IJob> secondSet) {
 		for (final IJob job : firstSet) {
 			if (!job.isEmpty() && !secondSet.contains(job)) {
 				return false;
@@ -201,21 +204,18 @@ public class Worker implements IWorker {
 		}
 		return true;
 	}
+
 	/**
-	 * @param obj
-	 *            another UnitMember
-	 * @param ostream
-	 *            a stream to report an explanation on
-	 * @param context
-	 *            a string to print before every line of output, describing the
-	 *            context
+	 * @param obj     another UnitMember
+	 * @param ostream a stream to report an explanation on
+	 * @param context a string to print before every line of output, describing the
+	 *                context
 	 * @return whether that member equals this one
-	 * @throws IOException
-	 *             on I/O error writing output to the stream
+	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-			final String context) throws IOException {
+	                        final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Worker) {
 				final String ctxt =
@@ -270,6 +270,7 @@ public class Worker implements IWorker {
 			return false;
 		}
 	}
+
 	/**
 	 * @return the worker's "kind" (i.e. race, i.e elf, dwarf, human, etc.)
 	 */
@@ -310,8 +311,8 @@ public class Worker implements IWorker {
 	}
 
 	/**
-	 * This is just for icons in lists and such, not for the map, since this
-	 * isn't a TileFixture.
+	 * This is just for icons in lists and such, not for the map, since this isn't a
+	 * TileFixture.
 	 *
 	 * @return the filename of the image representing a worker.
 	 */
@@ -335,9 +336,10 @@ public class Worker implements IWorker {
 	public String getImage() {
 		return image;
 	}
+
 	/**
-	 * @return a copy of this worker
 	 * @param zero whether to "zero out" the worker
+	 * @return a copy of this worker
 	 */
 	@Override
 	public Worker copy(final boolean zero) {
@@ -360,6 +362,7 @@ public class Worker implements IWorker {
 			return retval;
 		}
 	}
+
 	/**
 	 * TODO: Should we add and return a new Job instead of null if not present?
 	 *

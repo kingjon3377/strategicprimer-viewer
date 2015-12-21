@@ -5,25 +5,24 @@ import org.eclipse.jdt.annotation.Nullable;
 /**
  * A representation of a player in the game.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author jsl7
- *
  */
 public final class Player implements Comparable<Player>, HasName {
 	/**
@@ -44,7 +43,7 @@ public final class Player implements Comparable<Player>, HasName {
 	 * Constructor.
 	 *
 	 * @param idNum the player's number
-	 * @param name the player's code name
+	 * @param name  the player's code name
 	 */
 	public Player(final int idNum, final String name) {
 		playerID = idNum;
@@ -53,7 +52,6 @@ public final class Player implements Comparable<Player>, HasName {
 	}
 
 	/**
-	 *
 	 * @return the player's number
 	 */
 	public int getPlayerId() {
@@ -61,7 +59,6 @@ public final class Player implements Comparable<Player>, HasName {
 	}
 
 	/**
-	 *
 	 * @return the player's code name
 	 */
 	@Override
@@ -71,18 +68,16 @@ public final class Player implements Comparable<Player>, HasName {
 
 	/**
 	 * @param obj an object
-	 *
 	 * @return whether it's an identical Player
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof Player
-				&& playerID == ((Player) obj).getPlayerId()
-				&& playerName.equals(((Player) obj).getName());
+				                      && playerID == ((Player) obj).getPlayerId()
+				                      && playerName.equals(((Player) obj).getName());
 	}
 
 	/**
-	 *
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -102,7 +97,6 @@ public final class Player implements Comparable<Player>, HasName {
 	}
 
 	/**
-	 *
 	 * @return a String representation of the Player
 	 */
 	@Override
@@ -122,7 +116,6 @@ public final class Player implements Comparable<Player>, HasName {
 	}
 
 	/**
-	 *
 	 * @return true iff this is the current player
 	 */
 	public boolean isCurrent() {
@@ -130,8 +123,8 @@ public final class Player implements Comparable<Player>, HasName {
 	}
 
 	/**
-	 * @return whether this is the (or an) "independent" player---the "owner" of
-	 *         unowned fixtures.
+	 * @return whether this is the (or an) "independent" player---the "owner" of unowned
+	 * fixtures.
 	 */
 	public boolean isIndependent() {
 		return "independent".equalsIgnoreCase(getName());

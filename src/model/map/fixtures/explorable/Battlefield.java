@@ -1,30 +1,29 @@
 package model.map.fixtures.explorable;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.IEvent;
 import model.map.IFixture;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * "There are the signs of a long-ago battle here".
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2015-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  */
@@ -43,7 +42,7 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	 * Constructor.
 	 *
 	 * @param discdc the DC to discover the battlefield.
-	 * @param idNum the ID number for the event.
+	 * @param idNum  the ID number for the event.
 	 */
 	public Battlefield(final int discdc, final int idNum) {
 		dc = discdc;
@@ -51,8 +50,8 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	}
 
 	/**
-	 * @return a copy of this battlefield
 	 * @param zero whether to zero out the DC
+	 * @return a copy of this battlefield
 	 */
 	@Override
 	public Battlefield copy(final boolean zero) {
@@ -65,14 +64,13 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 		retval.setImage(image);
 		return retval;
 	}
+
 	/**
 	 * The DC to discover the battlefield. TODO: Should perhaps be mutable.
 	 */
 	private final int dc; // NOPMD
 
 	/**
-	 *
-	 *
 	 * @return the DC to discover the event.
 	 */
 	@Override
@@ -81,7 +79,6 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	}
 
 	/**
-	 *
 	 * @return exploration-result text for the event.
 	 */
 	@Override
@@ -91,17 +88,15 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 
 	/**
 	 * @param obj an object
-	 *
 	 * @return whether it's an identical BattlefieldEvent.
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof Battlefield
-				&& ((TileFixture) obj).getID() == id;
+				                      && ((TileFixture) obj).getID() == id;
 	}
 
 	/**
-	 *
 	 * @return a hash value for the event.
 	 */
 	@Override
@@ -110,7 +105,6 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	}
 
 	/**
-	 *
 	 * @return a string representation of the event
 	 */
 	@Override
@@ -128,7 +122,6 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -184,6 +177,7 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	public String plural() {
 		return "Battlefields";
 	}
+
 	/**
 	 * @return a short description of the fixture
 	 */

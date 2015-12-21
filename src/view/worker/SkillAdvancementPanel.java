@@ -1,7 +1,19 @@
 package view.worker;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import model.listeners.LevelGainListener;
+import model.listeners.LevelGainSource;
+import model.listeners.SkillSelectionListener;
+import model.map.fixtures.mobile.worker.ISkill;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
+import util.SingletonRandom;
+import util.TypesafeLogger;
+import view.util.BoxPanel;
+import view.util.ErrorShower;
+import view.util.ListenedButton;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
@@ -11,48 +23,31 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import model.listeners.LevelGainListener;
-import model.listeners.LevelGainSource;
-import model.listeners.SkillSelectionListener;
-import model.map.fixtures.mobile.worker.ISkill;
-import util.NullCleaner;
-import util.SingletonRandom;
-import util.TypesafeLogger;
-import view.util.BoxPanel;
-import view.util.ErrorShower;
-import view.util.ListenedButton;
-
 /**
  * A panel to let a user add hours to a skill.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class SkillAdvancementPanel extends BoxPanel implements ActionListener,
-		SkillSelectionListener, LevelGainSource {
+		                                                                     SkillSelectionListener,
+		                                                                     LevelGainSource {
 	/**
 	 * Logger.
 	 */
@@ -87,6 +82,7 @@ public final class SkillAdvancementPanel extends BoxPanel implements ActionListe
 			hours.requestFocusInWindow();
 		}
 	}
+
 	/**
 	 * Text box.
 	 */
@@ -114,11 +110,14 @@ public final class SkillAdvancementPanel extends BoxPanel implements ActionListe
 		setPreferredSize(new Dimension(220, MAX_PANEL_HEIGHT));
 		setMaximumSize(new Dimension(240, MAX_PANEL_HEIGHT));
 	}
+
 	/**
 	 * Parser for hours field.
 	 */
 	private static final NumberFormat NUM_PARSER = NullCleaner
-			.assertNotNull(NumberFormat.getIntegerInstance());
+			                                               .assertNotNull(NumberFormat
+					                                                              .getIntegerInstance());
+
 	/**
 	 * Handle a button press.
 	 *

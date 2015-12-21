@@ -1,31 +1,29 @@
 package model.map;
 
 import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 
 /**
  * An encapsulation of a map's dimensions (and its map version as well).
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class MapDimensions {
 	/**
@@ -48,7 +46,7 @@ public final class MapDimensions {
 	 *
 	 * @param numRows the number of rows
 	 * @param numCols the number of columns
-	 * @param ver the map version number
+	 * @param ver     the map version number
 	 */
 	public MapDimensions(final int numRows, final int numCols, final int ver) {
 		rows = numRows;
@@ -84,8 +82,9 @@ public final class MapDimensions {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return obj == this || obj instanceof MapDimensions
-				&& equalsImpl((MapDimensions) obj);
+				                      && equalsImpl((MapDimensions) obj);
 	}
+
 	/**
 	 * @param obj a map-dimensions object
 	 * @return whether it equals this
@@ -93,6 +92,7 @@ public final class MapDimensions {
 	private boolean equalsImpl(final MapDimensions obj) {
 		return obj.rows == rows && obj.cols == cols && obj.version == version;
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -100,6 +100,7 @@ public final class MapDimensions {
 	public int hashCode() {
 		return rows + cols << 2;
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

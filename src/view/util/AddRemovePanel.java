@@ -1,42 +1,37 @@
 package view.util;
 
-import java.awt.CardLayout;
-import java.awt.Dimension;
+import model.listeners.AddRemoveListener;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import model.listeners.AddRemoveListener;
-import util.NullCleaner;
-
 /**
  * A panel to be the GUI to add or remove items from a list.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class AddRemovePanel extends JPanel implements ActionListener {
 	/**
@@ -66,7 +61,7 @@ public final class AddRemovePanel extends JPanel implements ActionListener {
 	 * Constructor.
 	 *
 	 * @param removalPossible whether we should put in a "remove" button.
-	 * @param what what we're adding or removing
+	 * @param what            what we're adding or removing
 	 */
 	public AddRemovePanel(final boolean removalPossible, final String what) {
 		layout = new CardLayout();

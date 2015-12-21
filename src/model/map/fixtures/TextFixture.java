@@ -1,35 +1,33 @@
 package model.map.fixtures;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
- * A Fixture to encapsulate arbitrary text associated with a tile, so we can
- * improve the interface, have more than one set of text per tile, and be clear
- * on <em>which turn</em> encounters happened.
+ * A Fixture to encapsulate arbitrary text associated with a tile, so we can improve the
+ * interface, have more than one set of text per tile, and be clear on <em>which turn</em>
+ * encounters happened.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public class TextFixture implements TileFixture, HasImage {
 	/**
@@ -57,10 +55,9 @@ public class TextFixture implements TileFixture, HasImage {
 	}
 
 	/**
+	 * @param zero ignored, as a text fixture without its sensitive information is
+	 *             meaningless
 	 * @return a copy of this fixture
-	 * @param zero
-	 *            ignored, as a text fixture without its sensitive information
-	 *            is meaningless
 	 */
 	@Override
 	public TextFixture copy(final boolean zero) {
@@ -125,8 +122,9 @@ public class TextFixture implements TileFixture, HasImage {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof TextFixture
-				&& equalsImpl((TextFixture) obj);
+				                      && equalsImpl((TextFixture) obj);
 	}
+
 	/**
 	 * @param obj a text-fixture
 	 * @return whether it's equal to this one
@@ -134,6 +132,7 @@ public class TextFixture implements TileFixture, HasImage {
 	private boolean equalsImpl(final TextFixture obj) {
 		return text.equals(obj.text) && turn == obj.turn;
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -144,7 +143,6 @@ public class TextFixture implements TileFixture, HasImage {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -153,8 +151,8 @@ public class TextFixture implements TileFixture, HasImage {
 	}
 
 	/**
-	 * TextFixtures deliberately don't have a UID---unlike Forests, Mountains,
-	 * or Ground, which lack one because there are so many in the world map.
+	 * TextFixtures deliberately don't have a UID---unlike Forests, Mountains, or Ground,
+	 * which lack one because there are so many in the world map.
 	 *
 	 * @return a UID for the fixture.
 	 */
@@ -195,6 +193,7 @@ public class TextFixture implements TileFixture, HasImage {
 	public String plural() {
 		return "Arbitrary-text notes";
 	}
+
 	/**
 	 * @return a short description of the fixture
 	 */

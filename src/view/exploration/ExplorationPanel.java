@@ -1,6 +1,27 @@
 package view.exploration;
 
-import java.awt.GridLayout;
+import model.exploration.IExplorationModel;
+import model.exploration.IExplorationModel.Direction;
+import model.listeners.CompletionListener;
+import model.listeners.CompletionSource;
+import model.listeners.MovementCostListener;
+import model.listeners.SelectionChangeListener;
+import model.listeners.SelectionChangeSupport;
+import model.map.IMutableMapNG;
+import model.map.Player;
+import model.map.Point;
+import org.eclipse.jdt.annotation.Nullable;
+import util.IsNumeric;
+import util.NullCleaner;
+import util.Pair;
+import view.map.details.FixtureList;
+import view.util.BorderedPanel;
+import view.util.BoxPanel;
+import view.util.ListenedButton;
+
+import javax.swing.*;
+import javax.swing.text.Document;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -15,66 +36,44 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.InputMap;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
-import javax.swing.text.Document;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import model.exploration.IExplorationModel;
-import model.exploration.IExplorationModel.Direction;
-import model.listeners.CompletionListener;
-import model.listeners.CompletionSource;
-import model.listeners.MovementCostListener;
-import model.listeners.SelectionChangeListener;
-import model.listeners.SelectionChangeSupport;
-import model.map.IMutableMapNG;
-import model.map.Player;
-import model.map.Point;
-import util.IsNumeric;
-import util.NullCleaner;
-import util.Pair;
-import view.map.details.FixtureList;
-import view.util.BorderedPanel;
-import view.util.BoxPanel;
-import view.util.ListenedButton;
-
 /**
  * A panel to let the user explore using a unit.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  */
 public final class ExplorationPanel extends BorderedPanel implements ActionListener,
-		SelectionChangeListener, CompletionSource, MovementCostListener {
+		                                                                     SelectionChangeListener,
+		                                                                     CompletionSource,
+		                                                                     MovementCostListener {
 	/**
 	 * The label showing the current location of the explorer.
 	 */
 	private final JLabel locLabel = new JLabel(
-			"<html><body>Currently exploring (-1, -1); click a tile to explore it. "
-					+ "Selected fixtures in its left-hand list will be 'discovered'."
-					+ "</body></html>");
+			                                          "<html><body>Currently exploring " +
+					                                          "(-1, -1); click a tile to" +
+					                                          " explore it. "
+					                                          +
+					                                          "Selected fixtures in its " +
+					                                          "left-hand list will be " +
+					                                          "'discovered'."
+					                                          + "</body></html>");
 	/**
 	 * The list of completion listeners listening to us.
 	 */
@@ -88,55 +87,70 @@ public final class ExplorationPanel extends BorderedPanel implements ActionListe
 	 * The collection of proxies for main-map tile-fixture-lists.
 	 */
 	private final Map<Direction, SelectionChangeSupport> mains = new EnumMap<>(
-			Direction.class);
+			                                                                          Direction.class);
 	/**
 	 * The collection of proxies for secondary-map tile-fixture lists.
 	 */
 	private final Map<Direction, SelectionChangeSupport> seconds = new EnumMap<>(
-			Direction.class);
+			                                                                            Direction.class);
 	/**
 	 * The collection of dual-tile-buttons.
 	 */
 	private final Map<Direction, DualTileButton> buttons = new EnumMap<>(
-			Direction.class);
+			                                                                    Direction.class);
 	/**
 	 * Key-bindings for dual-tile buttons: arrow keys.
 	 */
 	private static final Map<Direction, KeyStroke> ARROW_KEYS = new EnumMap<>(
-			Direction.class);
+			                                                                         Direction.class);
 	/**
 	 * Key bindings for dual-tile buttons: numeric keypad.
 	 */
 	private static final Map<Direction, KeyStroke> NUM_KPAD = new EnumMap<>(
-			Direction.class);
+			                                                                       Direction.class);
+
 	static {
 		ARROW_KEYS.put(Direction.North, NullCleaner
-				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0)));
+				                                .assertNotNull(KeyStroke.getKeyStroke(
+						                                KeyEvent.VK_UP, 0)));
 		ARROW_KEYS.put(Direction.South, NullCleaner
-				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0)));
+				                                .assertNotNull(KeyStroke.getKeyStroke(
+						                                KeyEvent.VK_DOWN, 0)));
 		ARROW_KEYS.put(Direction.West, NullCleaner
-				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0)));
+				                               .assertNotNull(KeyStroke.getKeyStroke(
+						                               KeyEvent.VK_LEFT, 0)));
 		ARROW_KEYS.put(Direction.East, NullCleaner
-				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0)));
+				                               .assertNotNull(KeyStroke.getKeyStroke(
+						                               KeyEvent.VK_RIGHT, 0)));
 		NUM_KPAD.put(Direction.North, NullCleaner
-				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD8, 0)));
+				                              .assertNotNull(KeyStroke.getKeyStroke(
+						                              KeyEvent.VK_NUMPAD8, 0)));
 		NUM_KPAD.put(Direction.South, NullCleaner
-				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD2, 0)));
+				                              .assertNotNull(KeyStroke.getKeyStroke(
+						                              KeyEvent.VK_NUMPAD2, 0)));
 		NUM_KPAD.put(Direction.West, NullCleaner
-				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD4, 0)));
+				                             .assertNotNull(KeyStroke.getKeyStroke(
+						                             KeyEvent.VK_NUMPAD4, 0)));
 		NUM_KPAD.put(Direction.East, NullCleaner
-				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD6, 0)));
+				                             .assertNotNull(KeyStroke.getKeyStroke(
+						                             KeyEvent.VK_NUMPAD6, 0)));
 		NUM_KPAD.put(Direction.Northeast, NullCleaner
-				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD9, 0)));
+				                                  .assertNotNull(KeyStroke.getKeyStroke(
+						                                  KeyEvent.VK_NUMPAD9, 0)));
 		NUM_KPAD.put(Direction.Northwest, NullCleaner
-				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD7, 0)));
+				                                  .assertNotNull(KeyStroke.getKeyStroke(
+						                                  KeyEvent.VK_NUMPAD7, 0)));
 		NUM_KPAD.put(Direction.Southeast, NullCleaner
-				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD3, 0)));
+				                                  .assertNotNull(KeyStroke.getKeyStroke(
+						                                  KeyEvent.VK_NUMPAD3, 0)));
 		NUM_KPAD.put(Direction.Southwest, NullCleaner
-				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD1, 0)));
+				                                  .assertNotNull(KeyStroke.getKeyStroke(
+						                                  KeyEvent.VK_NUMPAD1, 0)));
 		NUM_KPAD.put(Direction.Nowhere, NullCleaner
-				.assertNotNull(KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD5, 0)));
+				                                .assertNotNull(KeyStroke.getKeyStroke(
+						                                KeyEvent.VK_NUMPAD5, 0)));
 	}
+
 	/**
 	 * The exploration model.
 	 */
@@ -150,7 +164,7 @@ public final class ExplorationPanel extends BorderedPanel implements ActionListe
 	 * Constructor.
 	 *
 	 * @param emodel the exploration model.
-	 * @param mpDoc the model underlying the remaining-MP text boxes.
+	 * @param mpDoc  the model underlying the remaining-MP text boxes.
 	 */
 	public ExplorationPanel(final IExplorationModel emodel, final Document mpDoc) {
 		model = emodel;
@@ -162,7 +176,8 @@ public final class ExplorationPanel extends BorderedPanel implements ActionListe
 		// TODO: store reference to document, not text field, in class body
 		headerPanel.add(mpField);
 		setCenter(new JSplitPane(JSplitPane.VERTICAL_SPLIT, headerPanel,
-				setupTilesGUI(new JPanel(new GridLayout(3, 12, 2, 2)))));
+				                        setupTilesGUI(new JPanel(new GridLayout(3, 12, 2,
+						                                                               2)))));
 	}
 
 	/**
@@ -181,12 +196,12 @@ public final class ExplorationPanel extends BorderedPanel implements ActionListe
 	/**
 	 * Set up the GUI for multiple tiles.
 	 *
-	 * @param panel the panel to add them all to.
+	 * @param panel      the panel to add them all to.
 	 * @param directions the directions to create GUIs for
 	 * @return the panel
 	 */
 	private JPanel setupTilesGUIImpl(final JPanel panel,
-			final Direction... directions) {
+	                                 final Direction... directions) {
 		for (final Direction direction : directions) {
 			if (direction != null) {
 				addTileGUI(panel, direction);
@@ -210,27 +225,29 @@ public final class ExplorationPanel extends BorderedPanel implements ActionListe
 	}
 
 	/**
-	 * Set up the GUI representation of a tile---a list of its contents in the
-	 * main map, a visual representation, and a list of its contents in a
-	 * secondary map.
+	 * Set up the GUI representation of a tile---a list of its contents in the main
+	 * map, a
+	 * visual representation, and a list of its contents in a secondary map.
 	 *
-	 * @param panel the panel to add them to
-	 * @param direction which direction from the currently selected tile this
-	 *        GUI represents.
+	 * @param panel     the panel to add them to
+	 * @param direction which direction from the currently selected tile this GUI
+	 *                  represents.
 	 */
 	private void addTileGUI(final JPanel panel, final Direction direction) {
 		final SelectionChangeSupport mainPCS = new SelectionChangeSupport();
 		final FixtureList mainList = new FixtureList(panel, model, model.getMap()
-				.players());
+				                                                           .players());
 		mainPCS.addSelectionChangeListener(mainList);
 		panel.add(new JScrollPane(mainList));
 		final DualTileButton dtb =
 				new DualTileButton(model.getMap(), model.getSubordinateMaps()
-						.iterator().next().first());
+						                                   .iterator().next().first());
 		// At some point we tried wrapping the button in a JScrollPane.
 		panel.add(dtb);
 		final ExplorationClickListener ecl = new ExplorationClickListener(
-				model, direction, mainList);
+				                                                                 model,
+				                                                                 direction,
+				                                                                 mainList);
 		dtb.addActionListener(ecl);
 		final InputMap dtbIMap = dtb.getInputMap(WHEN_IN_FOCUSED_WINDOW);
 		dtbIMap.put(ARROW_KEYS.get(direction), direction.toString());
@@ -256,16 +273,20 @@ public final class ExplorationPanel extends BorderedPanel implements ActionListe
 		buttons.put(direction, dtb);
 		seconds.put(direction, secPCS);
 	}
+
 	/**
 	 * A parser for numeric input.
 	 */
 	private static final NumberFormat NUM_PARSER = NullCleaner
-			.assertNotNull(NumberFormat.getIntegerInstance());
+			                                               .assertNotNull(NumberFormat
+					                                                              .getIntegerInstance());
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger
-			.getLogger(ExplorationPanel.class.getName()));
+			                                                               .getLogger(
+					                                                               ExplorationPanel.class
+							                                                               .getName()));
 
 	/**
 	 * Account for a movement cost.
@@ -290,12 +311,12 @@ public final class ExplorationPanel extends BorderedPanel implements ActionListe
 	}
 
 	/**
-	 * @param old the previously selected location
+	 * @param old      the previously selected location
 	 * @param newPoint the newly selected location
 	 */
 	@Override
 	public void selectedPointChanged(@Nullable final Point old,
-			final Point newPoint) {
+	                                 final Point newPoint) {
 		final Point selPoint = model.getSelectedUnitLocation();
 		for (final Direction dir : Direction.values()) {
 			assert dir != null;
@@ -306,10 +327,10 @@ public final class ExplorationPanel extends BorderedPanel implements ActionListe
 			buttons.get(dir).repaint();
 		}
 		locLabel.setText("<html><body>Currently exploring "
-				+ model.getSelectedUnitLocation()
-				+ "; click a tile to explore it. "
-				+ "Selected fixtures in its left-hand list "
-				+ "will be 'discovered'.</body></html>");
+				                 + model.getSelectedUnitLocation()
+				                 + "; click a tile to explore it. "
+				                 + "Selected fixtures in its left-hand list "
+				                 + "will be 'discovered'.</body></html>");
 	}
 
 	/**

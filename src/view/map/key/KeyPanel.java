@@ -1,35 +1,32 @@
 package view.map.key;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
-
-import javax.swing.JPanel;
-
 import model.listeners.VersionChangeListener;
 import model.map.TileType;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Provides a visual "key" to the various terrain types.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2013 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class KeyPanel extends JPanel implements VersionChangeListener {
 	/**
@@ -41,8 +38,9 @@ public final class KeyPanel extends JPanel implements VersionChangeListener {
 		super(new GridLayout(0, 4));
 		updateForVersion(version);
 		setMinimumSize(new Dimension(new KeyElement(version,
-				TileType.NotVisible).getMinimumSize().width * 4,
-				getMinimumSize().height));
+				                                           TileType.NotVisible)
+				                             .getMinimumSize().width * 4,
+				                            getMinimumSize().height));
 		setPreferredSize(getMinimumSize());
 	}
 
@@ -59,7 +57,7 @@ public final class KeyPanel extends JPanel implements VersionChangeListener {
 	}
 
 	/**
-	 * @param old the previous map version
+	 * @param old        the previous map version
 	 * @param newVersion the new map version
 	 */
 	@Override

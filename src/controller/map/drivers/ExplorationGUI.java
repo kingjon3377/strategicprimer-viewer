@@ -1,11 +1,5 @@
 package controller.map.drivers;
 
-import static view.util.SystemOut.SYS_OUT;
-
-import java.io.File;
-
-import javax.swing.SwingUtilities;
-
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
@@ -17,25 +11,30 @@ import view.exploration.ExplorationFrame;
 import view.map.main.MapFileFilter;
 import view.util.FilteredFileChooser;
 
+import javax.swing.*;
+import java.io.File;
+
+import static view.util.SystemOut.SYS_OUT;
+
 /**
  * A class to start the exploration GUI.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  */
@@ -44,13 +43,22 @@ public final class ExplorationGUI implements ISPDriver {
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-x",
-			"--explore", ParamCount.Many, "Run exploration.",
-			"Move a unit around the map, "
-					+ "updating the player's map with what it sees.",
-					ExplorationGUI.class);
+			                                                            "--explore",
+			                                                            ParamCount.Many,
+			                                                            "Run exploration.",
+			                                                            "Move a unit " +
+					                                                            "around " +
+					                                                            "the " +
+					                                                            "map, "
+					                                                            +
+					                                                            "updating the player's map with what it sees.",
+
+			                                                            ExplorationGUI
+					                                                            .class);
 
 	/**
 	 * Run the driver.
+	 *
 	 * @param dmodel the driver model
 	 * @throws DriverFailedException on error
 	 */
@@ -64,8 +72,11 @@ public final class ExplorationGUI implements ISPDriver {
 		}
 		SwingUtilities.invokeLater(
 				new WindowThread(new ExplorationFrame(model, new IOHandler(model,
-						new FilteredFileChooser(".", new MapFileFilter())))));
+						                                                          new
+								                                                          FilteredFileChooser(".",
+								                                                                                 new MapFileFilter())))));
 	}
+
 	/**
 	 * Run the driver.
 	 *
@@ -81,11 +92,20 @@ public final class ExplorationGUI implements ISPDriver {
 			System.exit(1);
 		}
 		final ExplorationModel model = new ExplorationModel(
-				new MapReaderAdapter().readMultiMapModel(Warning.INSTANCE,
-						new File(args[0]), MapReaderAdapter.namesToFiles(true, args)));
+				                                                   new MapReaderAdapter()
+						                                                   .readMultiMapModel(
+								                                                   Warning.INSTANCE,
+								                                                   new File(args[0]),
+								                                                   MapReaderAdapter
+										                                                   .namesToFiles(
+												                                                   true,
+												                                                   args)));
 		SwingUtilities.invokeLater(new WindowThread(new ExplorationFrame(
-				model, new IOHandler(model, new FilteredFileChooser(
-						".", new MapFileFilter())))));
+				                                                                model,
+				                                                                new IOHandler(model,
+						                                                                             new FilteredFileChooser(
+								                                                                                                    ".",
+								                                                                                                    new MapFileFilter())))));
 	}
 
 	/**
@@ -111,6 +131,7 @@ public final class ExplorationGUI implements ISPDriver {
 	public void setName(final String nomen) {
 		throw new IllegalStateException("Can't rename a driver");
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

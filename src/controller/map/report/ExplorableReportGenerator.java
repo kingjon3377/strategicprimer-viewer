@@ -1,14 +1,5 @@
 package controller.map.report;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -24,38 +15,49 @@ import model.report.EmptyReportNode;
 import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
+import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * A report generator for caves and battlefields.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  */
-public final class ExplorableReportGenerator extends AbstractReportGenerator<ExplorableFixture> {
+public final class ExplorableReportGenerator
+		extends AbstractReportGenerator<ExplorableFixture> {
 
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	public ExplorableReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator) {
+	public ExplorableReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
+			                                                               @NonNull
+					                                                               IFixture>> comparator) {
 		super(comparator);
 	}
 
@@ -66,18 +68,19 @@ public final class ExplorableReportGenerator extends AbstractReportGenerator<Exp
 			Pattern.compile(": , ", Pattern.LITERAL);
 
 	/**
-	 * Produce the sub-report on non-town things that can be explored. All
-	 * fixtures referred to in this report are removed from the collection.
+	 * Produce the sub-report on non-town things that can be explored. All fixtures
+	 * referred to in this report are removed from the collection.
 	 *
-	 * @param fixtures the set of fixtures
-	 * @param map ignored
+	 * @param fixtures      the set of fixtures
+	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report listing things that can be explored.
 	 */
 	@Override
 	public String produce(
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final IMapNG map, final Player currentPlayer) {
+			                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+					                     fixtures,
+			                     final IMapNG map, final Player currentPlayer) {
 		// At only three (albeit potentially rather long) list items, I doubt this
 		// will ever be over one K ... but we'll give it two just in case.
 		final StringBuilder builder = new StringBuilder(2048).append(
@@ -88,12 +91,15 @@ public final class ExplorableReportGenerator extends AbstractReportGenerator<Exp
 				OPEN_LIST_ITEM).append("Caves beneath the following tiles: ");
 		final StringBuilder battleBuilder = new StringBuilder(1024).append(
 				OPEN_LIST_ITEM).append(
-						"Signs of long-ago battles on the following tiles: ");
+				"Signs of long-ago battles on the following tiles: ");
 		final StringBuilder portalBuilder = new StringBuilder(1024)
-				.append(OPEN_LIST_ITEM).append("Portals to other worlds: ");
+				                                    .append(OPEN_LIST_ITEM)
+				                                    .append("Portals to other worlds: ");
 		// I doubt this will ever be over a K either
 		final StringBuilder adventureBuilder = new StringBuilder(1024)
-				.append("<h4>Possible Adventures</h4>").append(OPEN_LIST);
+				                                       .append("<h4>Possible " +
+						                                               "Adventures</h4>")
+				                                       .append(OPEN_LIST);
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		boolean anyAdventures = false;
@@ -112,10 +118,10 @@ public final class ExplorableReportGenerator extends AbstractReportGenerator<Exp
 			} else if (pair.second() instanceof AdventureFixture) {
 				anyAdventures = true;
 				adventureBuilder.append(OPEN_LIST_ITEM)
-				.append(produce(fixtures, map, currentPlayer,
-						(ExplorableFixture) pair.second(),
-						pair.first()))
-				.append(CLOSE_LIST_ITEM);
+						.append(produce(fixtures, map, currentPlayer,
+								(ExplorableFixture) pair.second(),
+								pair.first()))
+						.append(CLOSE_LIST_ITEM);
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			} else if (pair.second() instanceof Portal) {
 				anyPortals = true;
@@ -124,15 +130,18 @@ public final class ExplorableReportGenerator extends AbstractReportGenerator<Exp
 			}
 		}
 		if (anyCaves) {
-			builder.append(COLON_COMMA_PATTERN.matcher(caveBuilder.append(CLOSE_LIST_ITEM).toString())
+			builder.append(COLON_COMMA_PATTERN.matcher(
+					caveBuilder.append(CLOSE_LIST_ITEM).toString())
 					               .replaceAll(Matcher.quoteReplacement(": ")));
 		}
 		if (anyBattles) {
-			builder.append(COLON_COMMA_PATTERN.matcher(battleBuilder.append(CLOSE_LIST_ITEM).toString())
+			builder.append(COLON_COMMA_PATTERN.matcher(
+					battleBuilder.append(CLOSE_LIST_ITEM).toString())
 					               .replaceAll(Matcher.quoteReplacement(": ")));
 		}
 		if (anyPortals) {
-			builder.append(COLON_COMMA_PATTERN.matcher(portalBuilder.append(CLOSE_LIST_ITEM).toString())
+			builder.append(COLON_COMMA_PATTERN.matcher(
+					portalBuilder.append(CLOSE_LIST_ITEM).toString())
 					               .replaceAll(Matcher.quoteReplacement(": ")));
 		}
 		adventureBuilder.append(CLOSE_LIST);
@@ -152,24 +161,27 @@ public final class ExplorableReportGenerator extends AbstractReportGenerator<Exp
 	}
 
 	/**
-	 * Produce the sub-report on non-town things that can be explored. All
-	 * fixtures referred to in this report are removed from the collection.
+	 * Produce the sub-report on non-town things that can be explored. All fixtures
+	 * referred to in this report are removed from the collection.
 	 *
-	 * @param fixtures the set of fixtures
-	 * @param map ignored
+	 * @param fixtures      the set of fixtures
+	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report listing things that can be explored.
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final IMapNG map, final Player currentPlayer) {
+			                                    final DelayedRemovalMap<Integer,
+					                                                           Pair<Point, IFixture>> fixtures,
+			                                    final IMapNG map,
+			                                    final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final AbstractReportNode portals = new ListReportNode("Portals");
 		final AbstractReportNode battles = new ListReportNode("Battlefields");
 		final AbstractReportNode caves = new ListReportNode("Caves");
-		final AbstractReportNode adventures = new SectionListReportNode(4, "Possible Adventures");
+		final AbstractReportNode adventures =
+				new SectionListReportNode(4, "Possible Adventures");
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Cave) {
 				caves.add(produceRIR(fixtures, map, currentPlayer,
@@ -186,7 +198,8 @@ public final class ExplorableReportGenerator extends AbstractReportGenerator<Exp
 			}
 		}
 		final AbstractReportNode retval = new SectionListReportNode(4,
-				                                                           "Caves, Battlefields, and Portals");
+				                                                           "Caves, " +
+						                                                           "Battlefields, and Portals");
 		if (caves.getChildCount() > 0) {
 			retval.add(caves);
 		}
@@ -215,49 +228,52 @@ public final class ExplorableReportGenerator extends AbstractReportGenerator<Exp
 	/**
 	 * Produces a more verbose sub-report on a cave or battlefield.
 	 *
-	 * @param fixtures
-	 *            the set of fixtures.
-	 * @param map
-	 *            ignored
-	 * @param item
-	 *            the item to report on
-	 * @param loc
-	 *            its location
-	 * @param currentPlayer
-	 *            the player for whom the report is being produced
-	 * @return a sub-report (more verbose than the bulk produce() above reports,
-	 *         for caves and battlefields) on the item
+	 * @param fixtures      the set of fixtures.
+	 * @param map           ignored
+	 * @param item          the item to report on
+	 * @param loc           its location
+	 * @param currentPlayer the player for whom the report is being produced
+	 * @return a sub-report (more verbose than the bulk produce() above reports, for
+	 * caves
+	 * and battlefields) on the item
 	 */
 	@Override
 	public String produce(
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final IMapNG map, final Player currentPlayer,
-			final ExplorableFixture item, final Point loc) {
+			                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+					                     fixtures,
+			                     final IMapNG map, final Player currentPlayer,
+			                     final ExplorableFixture item, final Point loc) {
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat("Caves beneath ", loc.toString(), " ", distCalculator.distanceString(loc)); // NOPMD
+			return concat("Caves beneath ", loc.toString(), " ",
+					distCalculator.distanceString(loc)); // NOPMD
 		} else if (item instanceof Battlefield) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat("Signs of a long-ago battle on ", loc.toString(), " ", distCalculator.distanceString(loc)); // NOPMD
+			return concat("Signs of a long-ago battle on ", loc.toString(), " ",
+					distCalculator.distanceString(loc)); // NOPMD
 		} else if (item instanceof AdventureFixture) {
 			if (((AdventureFixture) item).getOwner().isIndependent()) {
 				return concat(((AdventureFixture) item).getBriefDescription(),
 						" at ", loc.toString(), ": ",
-						((AdventureFixture) item).getFullDescription(), " ", distCalculator.distanceString(loc));
+						((AdventureFixture) item).getFullDescription(), " ",
+						distCalculator.distanceString(loc));
 			} else if (currentPlayer.equals(((AdventureFixture) item).getOwner())) {
 				return concat(((AdventureFixture) item).getBriefDescription(),
 						" at ", loc.toString(), ": ",
-						((AdventureFixture) item).getFullDescription(), " ", distCalculator.distanceString(loc),
+						((AdventureFixture) item).getFullDescription(), " ",
+						distCalculator.distanceString(loc),
 						" (already investigated by you)");
 			} else {
 				return concat(((AdventureFixture) item).getBriefDescription(),
 						" at ", loc.toString(), ": ",
-						((AdventureFixture) item).getFullDescription(), " ", distCalculator.distanceString(loc),
+						((AdventureFixture) item).getFullDescription(), " ",
+						distCalculator.distanceString(loc),
 						" (already investigated by another player)");
 			}
 		} else if (item instanceof Portal) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat("A portal to another world at ", loc.toString(), " ", distCalculator.distanceString(loc));
+			return concat("A portal to another world at ", loc.toString(), " ",
+					distCalculator.distanceString(loc));
 		} else {
 			throw new IllegalArgumentException("Unexpected ExplorableFixture type");
 		}
@@ -266,51 +282,69 @@ public final class ExplorableReportGenerator extends AbstractReportGenerator<Exp
 	/**
 	 * Produces a more verbose sub-report on a cave or battlefield.
 	 *
-	 * @param fixtures the set of fixtures.
-	 * @param map ignored
-	 * @param item the item to report on
-	 * @param loc its location
+	 * @param fixtures      the set of fixtures.
+	 * @param map           ignored
+	 * @param item          the item to report on
+	 * @param loc           its location
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @return a sub-report (more verbose than the bulk produce() above reports)
-	 *         on the item
+	 * @return a sub-report (more verbose than the bulk produce() above reports) on the
+	 * item
 	 */
 	@Override
 	public SimpleReportNode produceRIR(
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final IMapNG map, final Player currentPlayer,
-			final ExplorableFixture item, final Point loc) {
+			                                  final DelayedRemovalMap<Integer,
+					                                                         Pair<Point,
+							                                                             IFixture>> fixtures,
+			                                  final IMapNG map,
+			                                  final Player currentPlayer,
+			                                  final ExplorableFixture item,
+			                                  final Point loc) {
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, "Caves beneath ", loc.toString(), " ",
-					distCalculator.distanceString(loc));
+					                           distCalculator.distanceString(loc));
 		} else if (item instanceof Battlefield) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, "Signs of a long-ago battle on ",
-					loc.toString(), " ", distCalculator.distanceString(loc));
+					                           loc.toString(), " ",
+					                           distCalculator.distanceString(loc));
 		} else if (item instanceof AdventureFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			if (((AdventureFixture) item).getOwner().isIndependent()) {
 				return new SimpleReportNode(loc,
-						((AdventureFixture) item).getBriefDescription(), " at ",
-						loc.toString(), ((AdventureFixture) item).getFullDescription(),
-						" ", distCalculator.distanceString(loc));
+						                           ((AdventureFixture) item)
+								                           .getBriefDescription(), " at ",
+						                           loc.toString(),
+						                           ((AdventureFixture) item)
+								                           .getFullDescription(),
+						                           " ",
+						                           distCalculator.distanceString(loc));
 			} else if (currentPlayer.equals(((AdventureFixture) item).getOwner())) {
 				return new SimpleReportNode(loc,
-						((AdventureFixture) item).getBriefDescription(), " at ",
-						loc.toString(), ((AdventureFixture) item).getFullDescription(),
-						" ", distCalculator.distanceString(loc),
-						" (already investigated by you)");
+						                           ((AdventureFixture) item)
+								                           .getBriefDescription(), " at ",
+						                           loc.toString(),
+						                           ((AdventureFixture) item)
+								                           .getFullDescription(),
+						                           " ",
+						                           distCalculator.distanceString(loc),
+						                           " (already investigated by you)");
 			} else {
 				return new SimpleReportNode(loc,
-						((AdventureFixture) item).getBriefDescription(), " at ",
-						loc.toString(), ((AdventureFixture) item).getFullDescription(),
-						" ", distCalculator.distanceString(loc),
-						" (already investigated by another player)");
+						                           ((AdventureFixture) item)
+								                           .getBriefDescription(), " at ",
+						                           loc.toString(),
+						                           ((AdventureFixture) item)
+								                           .getFullDescription(),
+						                           " ",
+						                           distCalculator.distanceString(loc),
+						                           " (already investigated by another player)");
 			}
 		} else if (item instanceof Portal) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, "A portal to another world at ",
-					loc.toString(), " ", distCalculator.distanceString(loc));
+					                           loc.toString(), " ",
+					                           distCalculator.distanceString(loc));
 		} else {
 			throw new IllegalArgumentException("Unexpected ExplorableFixture type");
 		}

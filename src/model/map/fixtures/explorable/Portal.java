@@ -1,34 +1,32 @@
 package model.map.fixtures.explorable;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.IFixture;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A fixture representing a portal to another world.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2015-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public class Portal implements ExplorableFixture {
 	/**
@@ -42,9 +40,8 @@ public class Portal implements ExplorableFixture {
 	 */
 	private final String destinationWorld;
 	/**
-	 * The coordinates in that world that the portal connects to. A negative
-	 * coordinate indicates that the coordinate needs to be generated, presumably
-	 * randomly.
+	 * The coordinates in that world that the portal connects to. A negative coordinate
+	 * indicates that the coordinate needs to be generated, presumably randomly.
 	 *
 	 * TODO: add mutator
 	 */
@@ -53,45 +50,52 @@ public class Portal implements ExplorableFixture {
 	 * A unique ID # for the fixture.
 	 */
 	private final int id;
+
 	/**
 	 * Constructor.
-	 * @param dest a string identifying the world the portal connects to
+	 *
+	 * @param dest       a string identifying the world the portal connects to
 	 * @param destCoords the coordinates in that world that the portal connects to
-	 * @param idNum the ID # for the portal
+	 * @param idNum      the ID # for the portal
 	 */
 	public Portal(final String dest, final Point destCoords, final int idNum) {
 		destinationWorld = dest;
 		destinationCoordinates = destCoords;
 		id = idNum;
 	}
+
 	/**
 	 * TODO: Should we "zero out" (to "unknown") the destination world?
-	 * @return a copy of this portal
+	 *
 	 * @param zero whether to "zero out" the destination coordinates
+	 * @return a copy of this portal
 	 */
 	@Override
 	public Portal copy(final boolean zero) {
 		final Portal retval;
 		if (zero) {
-			retval = new Portal(destinationWorld, PointFactory.point(-1,  -1), id);
+			retval = new Portal(destinationWorld, PointFactory.point(-1, -1), id);
 		} else {
 			retval = new Portal(destinationWorld, destinationCoordinates, id);
 		}
 		retval.setImage(image);
 		return retval;
 	}
+
 	/**
 	 * @return a string identifying the world the portal connects to
 	 */
 	public String getDestinationWorld() {
 		return destinationWorld;
 	}
+
 	/**
 	 * @return the location in that world the portal connects to
 	 */
 	public Point getDestinationCoordinates() {
 		return destinationCoordinates;
 	}
+
 	/**
 	 * @return a String represntation of the fixture
 	 */
@@ -101,13 +105,15 @@ public class Portal implements ExplorableFixture {
 	}
 
 	/**
-	 * @return the name of an image to represent the fixture if no
-	 *         instance-specific image has been specified
+	 * @return the name of an image to represent the fixture if no instance-specific
+	 * image
+	 * has been specified
 	 */
 	@Override
 	public String getDefaultImage() {
 		return "portal.png";
 	}
+
 	/**
 	 * @return a Z-value for use in ordering tile icons on a tile
 	 */
@@ -115,6 +121,7 @@ public class Portal implements ExplorableFixture {
 	public int getZValue() {
 		return 25;
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
@@ -122,8 +129,9 @@ public class Portal implements ExplorableFixture {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof Portal && id == ((Portal) obj).id
-				&& equalsIgnoringID((Portal) obj);
+				                      && equalsIgnoringID((Portal) obj);
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -131,9 +139,9 @@ public class Portal implements ExplorableFixture {
 	public int hashCode() {
 		return id;
 	}
+
 	/**
 	 * @param fix A TileFixture to compare to
-	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -156,6 +164,7 @@ public class Portal implements ExplorableFixture {
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a string describing all portals as a class
 	 */
@@ -163,6 +172,7 @@ public class Portal implements ExplorableFixture {
 	public String plural() {
 		return "Portals";
 	}
+
 	/**
 	 * @return a short description of the fixture
 	 */
@@ -170,6 +180,7 @@ public class Portal implements ExplorableFixture {
 	public String shortDesc() {
 		return "A portal to another world";
 	}
+
 	/**
 	 * @return an ID # for the fixture
 	 */
@@ -177,6 +188,7 @@ public class Portal implements ExplorableFixture {
 	public int getID() {
 		return id;
 	}
+
 	/**
 	 * @param obj a fixture
 	 * @return whether it would be equal to this one if its ID # were not considered
@@ -184,10 +196,11 @@ public class Portal implements ExplorableFixture {
 	@Override
 	public boolean equalsIgnoringID(final IFixture obj) {
 		return obj instanceof Portal
-				&& destinationWorld.equals(((Portal) obj).destinationWorld)
-				&& destinationCoordinates
-						.equals(((Portal) obj).destinationCoordinates);
+				       && destinationWorld.equals(((Portal) obj).destinationWorld)
+				       && destinationCoordinates
+						          .equals(((Portal) obj).destinationCoordinates);
 	}
+
 	/**
 	 * @param destination the new destination coordinates
 	 */

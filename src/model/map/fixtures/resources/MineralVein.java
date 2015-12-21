@@ -1,38 +1,36 @@
 package model.map.fixtures.resources;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasKind;
 import model.map.IEvent;
 import model.map.IFixture;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**
  * A vein of a mineral.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class MineralVein implements IEvent, HarvestableFixture,
-		HasKind {
+		                                          HasKind {
 	/**
 	 * Whether the vein is exposed.
 	 *
@@ -54,12 +52,12 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	 * Constructor.
 	 *
 	 * @param minkind what kind of mineral this is
-	 * @param exp whether the vein is exposed
-	 * @param discdc the dc to discover the vein
-	 * @param idNum the ID number.
+	 * @param exp     whether the vein is exposed
+	 * @param discdc  the dc to discover the vein
+	 * @param idNum   the ID number.
 	 */
 	public MineralVein(final String minkind, final boolean exp,
-			final int discdc, final int idNum) {
+	                   final int discdc, final int idNum) {
 		mineral = minkind;
 		exposed = exp;
 		dc = discdc;
@@ -67,8 +65,8 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	}
 
 	/**
-	 * @return a copy of this vein
 	 * @param zero whether to zero out the DC
+	 * @return a copy of this vein
 	 */
 	@Override
 	public MineralVein copy(final boolean zero) {
@@ -81,8 +79,8 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 		retval.setImage(image);
 		return retval;
 	}
+
 	/**
-	 *
 	 * @return what kind of mineral this is
 	 */
 	public String mineral() {
@@ -90,7 +88,6 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	}
 
 	/**
-	 *
 	 * @return whether the vein is exposed
 	 */
 	public boolean isExposed() {
@@ -103,7 +100,6 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	private final int dc; // NOPMD
 
 	/**
-	 *
 	 * @return the DC to discover the event.
 	 */
 	@Override
@@ -112,13 +108,12 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	}
 
 	/**
-	 *
 	 * @return exploration-result text for the event.
 	 */
 	@Override
 	public String getText() {
 		final StringBuilder build = new StringBuilder(48 + mineral.length())
-				.append("There is a");
+				                            .append("There is a");
 		if (exposed) {
 			build.append("n exposed");
 		}
@@ -135,19 +130,17 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 
 	/**
 	 * @param obj an object
-	 *
 	 * @return whether it's an identical event
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof MineralVein
-				&& mineral.equals(((MineralVein) obj).mineral)
-				&& exposed == ((MineralVein) obj).exposed
-				&& id == ((MineralVein) obj).id;
+				                      && mineral.equals(((MineralVein) obj).mineral)
+				                      && exposed == ((MineralVein) obj).exposed
+				                      && id == ((MineralVein) obj).id;
 	}
 
 	/**
-	 *
 	 * @return a hash value for the event
 	 */
 	@Override
@@ -157,7 +150,6 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -166,7 +158,6 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	}
 
 	/**
-	 *
 	 * @return a string representation of the event
 	 */
 	@Override
@@ -222,7 +213,7 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return this == fix || fix instanceof MineralVein
-				&& equalsContents((MineralVein) fix);
+				                      && equalsContents((MineralVein) fix);
 	}
 
 	/**
@@ -264,6 +255,7 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	public String plural() {
 		return "Mineral veins";
 	}
+
 	/**
 	 * @return a short description of the fixture
 	 */

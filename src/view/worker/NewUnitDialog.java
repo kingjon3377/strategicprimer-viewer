@@ -1,7 +1,19 @@
 package view.worker;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import controller.map.misc.IDFactory;
+import model.listeners.NewUnitListener;
+import model.listeners.NewUnitSource;
+import model.listeners.PlayerChangeListener;
+import model.map.Player;
+import model.map.fixtures.mobile.IUnit;
+import model.map.fixtures.mobile.Unit;
+import org.eclipse.jdt.annotation.Nullable;
+import util.IsNumeric;
+import util.NullCleaner;
+import view.util.ListenedButton;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
@@ -11,52 +23,33 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import controller.map.misc.IDFactory;
-import model.listeners.NewUnitListener;
-import model.listeners.NewUnitSource;
-import model.listeners.PlayerChangeListener;
-import model.map.Player;
-import model.map.fixtures.mobile.IUnit;
-import model.map.fixtures.mobile.Unit;
-import util.IsNumeric;
-import util.NullCleaner;
-import view.util.ListenedButton;
-
 /**
- * A panel to let the user add a new unit. We fire the "add" property with the
- * value of the unit if OK is pressed and both fields are nonempty, then clear
- * them. As this is a dialog, we do *not* extend ApplicationFrame.
+ * A panel to let the user add a new unit. We fire the "add" property with the value of
+ * the unit if OK is pressed and both fields are nonempty, then clear them. As this is a
+ * dialog, we do *not* extend ApplicationFrame.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class NewUnitDialog extends JFrame implements ActionListener,
-		NewUnitSource, PlayerChangeListener {
+		                                                           NewUnitSource,
+		                                                           PlayerChangeListener {
 	/**
 	 * The list of new-unit listeners listening to us.
 	 */
@@ -82,7 +75,8 @@ public final class NewUnitDialog extends JFrame implements ActionListener,
 	 * The field to let the user specify the unit's ID #.
 	 */
 	private final JFormattedTextField idField = new JFormattedTextField(
-			NumberFormat.getIntegerInstance());
+			                                                                   NumberFormat
+					                                                                   .getIntegerInstance());
 	/**
 	 * Maximum and preferred height for the dialog.
 	 */
@@ -91,12 +85,13 @@ public final class NewUnitDialog extends JFrame implements ActionListener,
 	 * Logger.
 	 */
 	private static final Logger LOGGER = NullCleaner
-			.assertNotNull(Logger.getLogger(NewUnitDialog.class.getName()));
+			                                     .assertNotNull(Logger.getLogger(
+					                                     NewUnitDialog.class.getName()));
 
 	/**
 	 * Constructor.
 	 *
-	 * @param player the player to own the units
+	 * @param player    the player to own the units
 	 * @param idFactory a factory to generate ID numbers
 	 */
 	public NewUnitDialog(final Player player, final IDFactory idFactory) {
@@ -158,7 +153,7 @@ public final class NewUnitDialog extends JFrame implements ActionListener,
 				if (IsNumeric.isNumeric(reqId)) {
 					try {
 						idNum = NumberFormat.getIntegerInstance().parse(reqId)
-								.intValue();
+								        .intValue();
 						idf.register(idNum);
 					} catch (final ParseException e) {
 						LOGGER.log(Level.INFO,
@@ -169,7 +164,7 @@ public final class NewUnitDialog extends JFrame implements ActionListener,
 					idNum = idf.createID();
 				}
 				final IUnit unit = new Unit(owner, kind,
-						name, idNum);
+						                           name, idNum);
 				for (final NewUnitListener list : nuListeners) {
 					list.addNewUnit(unit);
 				}
@@ -189,7 +184,7 @@ public final class NewUnitDialog extends JFrame implements ActionListener,
 	/**
 	 * To change the owner of subsequent units.
 	 *
-	 * @param old the previous current player
+	 * @param old       the previous current player
 	 * @param newPlayer the new current player
 	 */
 	@Override

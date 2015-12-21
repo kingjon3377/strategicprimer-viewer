@@ -1,9 +1,5 @@
 package model.viewer;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-
 import model.listeners.GraphicalParamsListener;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSupport;
@@ -13,34 +9,36 @@ import model.map.PointFactory;
 import model.misc.AbstractDriverModel;
 import model.misc.IDriverModel;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
- * A class to encapsulate the various model-type things views need to do with
- * maps.
+ * A class to encapsulate the various model-type things views need to do with maps.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * TODO: tests
  *
  * @author Jonathan Lovelace
- *
  */
 public final class ViewerModel extends AbstractDriverModel implements
-IViewerModel {
+		IViewerModel {
 	/**
 	 * The current zoom level.
 	 */
@@ -73,23 +71,24 @@ IViewerModel {
 	 * The object to handle notifying selection-change listeners.
 	 */
 	private final SelectionChangeSupport scs = new SelectionChangeSupport();
+
 	/**
 	 * Constructor.
 	 *
-	 * @param firstMap
-	 *            the initial map
-	 * @param file
-	 *            the name the map was loaded from or should be saved to
+	 * @param firstMap the initial map
+	 * @param file     the name the map was loaded from or should be saved to
 	 */
 	public ViewerModel(final IMutableMapNG firstMap, final File file) {
 		dimensions = new VisibleDimensions(0,
-				firstMap.dimensions().rows - 1, 0,
-				firstMap.dimensions().cols - 1);
+				                                  firstMap.dimensions().rows - 1, 0,
+				                                  firstMap.dimensions().cols - 1);
 		selPoint = PointFactory.point(-1, -1);
 		setMap(firstMap, file);
 	}
+
 	/**
 	 * Copy constructor.
+	 *
 	 * @param model a driver model
 	 */
 	public ViewerModel(final IDriverModel model) {
@@ -98,7 +97,7 @@ IViewerModel {
 			selPoint = ((IViewerModel) model).getSelectedPoint();
 		} else {
 			dimensions = new VisibleDimensions(0, model.getMapDimensions().rows - 1, 0,
-					model.getMapDimensions().cols - 1);
+					                                  model.getMapDimensions().cols - 1);
 			selPoint = PointFactory.point(-1, -1);
 		}
 		setMap(model.getMap(), model.getMapFile());
@@ -106,16 +105,17 @@ IViewerModel {
 
 	/**
 	 * @param newMap the new map
-	 * @param file the file the map was loaded from or should be saved to
+	 * @param file   the file the map was loaded from or should be saved to
 	 */
 	@Override
 	public void setMap(final IMutableMapNG newMap, final File file) {
 		super.setMap(newMap, file);
 		clearSelection();
 		setDimensions(new VisibleDimensions(0, newMap.dimensions().rows - 1,
-				0, newMap.dimensions().cols - 1));
+				                                   0, newMap.dimensions().cols - 1));
 		resetZoom();
 	}
+
 	/**
 	 * Set the new selected tiles, given coordinates.
 	 *
@@ -149,7 +149,6 @@ IViewerModel {
 	}
 
 	/**
-	 *
 	 * @return the visible dimensions of the map
 	 */
 	@Override
@@ -158,7 +157,6 @@ IViewerModel {
 	}
 
 	/**
-	 *
 	 * @return a String representation of the class
 	 */
 	@Override
@@ -235,6 +233,7 @@ IViewerModel {
 	public void removeSelectionChangeListener(final SelectionChangeListener list) {
 		scs.removeSelectionChangeListener(list);
 	}
+
 	/**
 	 * @param list a listener to add
 	 */

@@ -38,22 +38,22 @@ import java.io.IOException;
 import java.util.logging.Level;
 
 /**
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  */
@@ -73,20 +73,22 @@ public final class CompactReaderAdapter {
 	/**
 	 * Parse an object from XML.
 	 *
-	 * @param <T> the type the caller expects
-	 * @param type the type the caller expects
-	 * @param element the element we're immediately dealing with
-	 * @param stream the stream from which to read more elements
-	 * @param players the PlayerCollecton to use when needed
-	 * @param warner the Warning instance if warnings need to be issued
+	 * @param <T>       the type the caller expects
+	 * @param type      the type the caller expects
+	 * @param element   the element we're immediately dealing with
+	 * @param stream    the stream from which to read more elements
+	 * @param players   the PlayerCollecton to use when needed
+	 * @param warner    the Warning instance if warnings need to be issued
 	 * @param idFactory the ID factory to get IDs from
 	 * @return the object encoded by the XML
 	 * @throws SPFormatException on SP format problems
 	 */
 	public static <@NonNull T> T parse(final Class<T> type, final StartElement element,
-			final IteratorWrapper<XMLEvent> stream,
-			final IMutablePlayerCollection players, final Warning warner,
-			final IDFactory idFactory) throws SPFormatException {
+	                                   final IteratorWrapper<XMLEvent> stream,
+	                                   final IMutablePlayerCollection players,
+	                                   final Warning warner,
+	                                   final IDFactory idFactory)
+			throws SPFormatException {
 		if (River.class.isAssignableFrom(type)) {
 			// Handle rivers specially.
 			final T river = (T) CompactMapNGReader.parseRiver(element, warner);
@@ -101,7 +103,7 @@ public final class CompactReaderAdapter {
 	/**
 	 * Get a reader for the specified type.
 	 *
-	 * @param <T> the type
+	 * @param <T>  the type
 	 * @param type the type
 	 * @return a reader for the type
 	 */
@@ -130,13 +132,14 @@ public final class CompactReaderAdapter {
 	}
 
 	/**
-	 * @param <T> the type
+	 * @param <T>  the type
 	 * @param type the type
 	 * @return a reader for that type
 	 */
 	@SuppressWarnings("unchecked")
 	private static <T extends IFixture> CompactReader<T> getFixtureReader(
-			final Class<T> type) {
+			                                                                     final
+			                                                                     Class<T> type) {
 		final CompactReader<T> reader; // NOPMD
 		if (TerrainFixture.class.isAssignableFrom(type)) {
 			reader = (CompactReader<T>) CompactTerrainReader.READER;
@@ -174,13 +177,13 @@ public final class CompactReaderAdapter {
 	 * Write an object to XML.
 	 *
 	 * @param ostream The stream to write to.
-	 * @param obj The object to write.
-	 * @param indent the current indentation level.
+	 * @param obj     The object to write.
+	 * @param indent  the current indentation level.
 	 * @throws IOException on I/O problems
 	 */
 	@SuppressWarnings("unchecked")
 	public static void write(final Appendable ostream, final Object obj,
-			final int indent) throws IOException {
+	                         final int indent) throws IOException {
 		@SuppressWarnings("rawtypes") // NOPMD
 		final CompactReader reader; // NOPMD
 		if (obj instanceof IMapNG) {
@@ -211,16 +214,18 @@ public final class CompactReaderAdapter {
 				write(ostream, proxied, indent);
 				return;
 			}
-			throw new IllegalStateException("Don't know how to write this type (a proxy not proxying any objects)");
+			throw new IllegalStateException("Don't know how to write this type (a proxy " +
+					                                "not proxying any objects)");
 		} else if (obj instanceof IFixture) {
 			reader =
 					getFixtureReader(NullCleaner.assertNotNull(((IFixture) obj)
-							.getClass()));
+							                                           .getClass()));
 		} else {
 			throw new IllegalStateException("Don't know how to write this type");
 		}
 		reader.write(ostream, obj, indent);
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

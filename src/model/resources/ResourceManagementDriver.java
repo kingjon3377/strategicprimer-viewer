@@ -18,29 +18,28 @@ import java.util.stream.StreamSupport;
 /**
  * A driver model for resource-entering drivers.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public class ResourceManagementDriver extends SimpleMultiMapModel {
 	/**
-	 * @param map the first map
+	 * @param map  the first map
 	 * @param file the file it was loaded from
 	 */
 	public ResourceManagementDriver(final IMutableMapNG map, final File file) {
@@ -53,39 +52,50 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	public ResourceManagementDriver(final IDriverModel dmodel) {
 		super(dmodel);
 	}
+
 	/**
 	 * @return the players to choose from
 	 */
 	public Iterable<Player> getPlayers() {
 		return StreamSupport.stream(getAllMaps().spliterator(), false)
-				       .flatMap(pair -> StreamSupport.stream(pair.first().players().spliterator(), false)).collect(
+				       .flatMap(pair -> StreamSupport.stream(pair.first().players()
+						                                             .spliterator(),
+						       false)).collect(
 						Collectors.toSet());
 	}
+
 	/**
 	 * Add a resource to a player's HQ.
+	 *
 	 * @param resource the resource to add
-	 * @param player the player to add it for
+	 * @param player   the player to add it for
 	 */
-	public void addResource(@SuppressWarnings("TypeMayBeWeakened") final FortressMember resource, final Player player) {
+	public void addResource(@SuppressWarnings("TypeMayBeWeakened")
+	                        final FortressMember resource, final Player player) {
 		for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
 			final IMutableMapNG map = pair.first();
 			final Player currP = map.getCurrentPlayer();
-			if (currP.isIndependent() || currP.getPlayerId() < 0 || currP.getPlayerId() == player.getPlayerId()) {
+			if (currP.isIndependent() || currP.getPlayerId() < 0 ||
+					    currP.getPlayerId() == player.getPlayerId()) {
 				addResourceToMap(resource.copy(false), map, player);
 			}
 		}
 	}
+
 	/**
 	 * Add a resource to a player's HQ.
+	 *
 	 * @param resource the resource to add
-	 * @param map the map to add it in
-	 * @param player the player to add it for
+	 * @param map      the map to add it in
+	 * @param player   the player to add it for
 	 */
-	public void addResourceToMap(final FortressMember resource, final IMapNG map, final Player player) {
+	public void addResourceToMap(final FortressMember resource, final IMapNG map,
+	                             final Player player) {
 		for (final Point location : map.locations()) {
 			for (final TileFixture fixture : map.getOtherFixtures(location)) {
 				if (fixture instanceof Fortress &&
-						    ((Fortress) fixture).getOwner().getPlayerId() == player.getPlayerId() &&
+						    ((Fortress) fixture).getOwner().getPlayerId() ==
+								    player.getPlayerId() &&
 						    "HQ".equals(((Fortress) fixture).getName())) {
 					((Fortress) fixture).addMember(resource);
 				}

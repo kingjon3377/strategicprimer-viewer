@@ -1,16 +1,5 @@
 package controller.map.drivers;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.xml.stream.XMLStreamException;
-
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
@@ -23,28 +12,37 @@ import util.NullCleaner;
 import util.Warning;
 import view.util.SystemOut;
 
+import javax.xml.stream.XMLStreamException;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * A hackish class to help fix TODOs (missing content) in the map.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2014-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class TODOFixerDriver {
 	/**
@@ -59,7 +57,9 @@ public final class TODOFixerDriver {
 	 * Logger.
 	 */
 	private static final Logger LOGGER = NullCleaner
-			.assertNotNull(Logger.getLogger(TODOFixerDriver.class.getName()));
+			                                     .assertNotNull(Logger.getLogger(
+					                                     TODOFixerDriver.class
+							                                     .getName()));
 
 	/**
 	 * @param operand the map we operate on
@@ -67,6 +67,7 @@ public final class TODOFixerDriver {
 	public TODOFixerDriver(final IMutableMapNG operand) {
 		map = operand;
 	}
+
 	/**
 	 * Search for and fix units with kinds missing.
 	 */
@@ -80,16 +81,18 @@ public final class TODOFixerDriver {
 			}
 		}
 	}
+
 	/**
 	 * How many units we've fixed.
 	 */
 	private int count = -1;
+
 	/**
 	 * Fix a stubbed-out kind for a unit.
 	 *
 	 * FIXME: Fix comparison of object values with ==
 	 *
-	 * @param unit the unit to fix
+	 * @param unit    the unit to fix
 	 * @param jobList a list of possible kinds for its surroundings
 	 */
 	private void fixUnit(final Unit unit, final Collection<String> jobList) {
@@ -117,7 +120,7 @@ public final class TODOFixerDriver {
 		try {
 			final String kind =
 					helper.inputString("What's the next possible kind for "
-							+ desc + "? ");
+							                   + desc + "? ");
 			unit.setKind(kind);
 			jobList.add(kind);
 		} catch (final IOException e) {
@@ -125,6 +128,7 @@ public final class TODOFixerDriver {
 			return;
 		}
 	}
+
 	/**
 	 * A list of unit kinds (jobs) for plains etc.
 	 */
@@ -137,6 +141,7 @@ public final class TODOFixerDriver {
 	 * A list of unit kinds (jobs) for ocean.
 	 */
 	private final List<String> oceanList = new ArrayList<>();
+
 	/**
 	 * @param location a location in the map
 	 * @return a List of unit kinds (jobs) for the terrain there
@@ -174,8 +179,10 @@ public final class TODOFixerDriver {
 			return plainsList; // Should never get here, but ...
 		}
 	}
+
 	/**
 	 * Run the driver.
+	 *
 	 * @param args maps to run on
 	 */
 	public static void main(final String... args) {
@@ -202,6 +209,7 @@ public final class TODOFixerDriver {
 			}
 		}
 	}
+
 	/**
 	 * @return a string representation of this class
 	 */

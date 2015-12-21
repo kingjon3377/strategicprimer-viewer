@@ -1,39 +1,38 @@
 package model.exploration.old;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
 import model.map.TileType;
 import util.NullCleaner;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * A class for things where results are by quadrant rather than randomly.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class QuadrantTable implements EncounterTable {
 	/**
@@ -52,14 +51,15 @@ public final class QuadrantTable implements EncounterTable {
 	/**
 	 * Constructor.
 	 *
-	 * @param rows the number of rows of quadrants
+	 * @param rows  the number of rows of quadrants
 	 * @param items the items to allocate by quadrant
 	 */
 	public QuadrantTable(final int rows, final List<String> items) {
 		if (items.size() % rows != 0) {
 			throw new IllegalArgumentException(Integer.toString(items.size())
-					+ " items won't divide evenly into "
-					+ Integer.toString(rows));
+					                                   +
+					                                   " items won't divide evenly into "
+					                                   + Integer.toString(rows));
 		}
 		final int cols = items.size() / rows;
 		final int rowstep = MAP_SIZE_ROWS / rows;
@@ -79,14 +79,13 @@ public final class QuadrantTable implements EncounterTable {
 	/**
 	 * @param row the row of a tile
 	 * @param col the column of a tile
-	 *
 	 * @return the result from the quadrant containing that tile.
 	 */
 	public String getQuadrantValue(final int row, final int col) {
 		Point bestKey = PointFactory.point(-1, -1);
 		for (final Point iter : quadrants.keySet()) {
 			if (iter.row <= row && iter.row > bestKey.row
-					&& iter.col <= col && iter.col > bestKey.col) {
+					    && iter.col <= col && iter.col > bestKey.col) {
 				bestKey = iter;
 			}
 		}
@@ -94,14 +93,14 @@ public final class QuadrantTable implements EncounterTable {
 	}
 
 	/**
-	 * @param terrain ignored
+	 * @param terrain  ignored
 	 * @param fixtures ignored
-	 * @param point the location of the tile
+	 * @param point    the location of the tile
 	 * @return what the table has for that tile
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-			final Iterable<TileFixture> fixtures) {
+	                            final Iterable<TileFixture> fixtures) {
 		return getQuadrantValue(point.row, point.col);
 	}
 
@@ -114,7 +113,6 @@ public final class QuadrantTable implements EncounterTable {
 	}
 
 	/**
-	 *
 	 * @return a String representation of the object
 	 */
 	@Override

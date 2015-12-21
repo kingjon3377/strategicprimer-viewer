@@ -1,33 +1,32 @@
 package model.report;
 
-import javax.swing.tree.TreeNode;
-
 import model.map.Point;
 import util.NullCleaner;
 
+import javax.swing.tree.TreeNode;
+
 /**
- * A node for a section consisting only of a list. This is a common case, and
- * we'd otherwise end up with a section node containing only a list.
+ * A node for a section consisting only of a list. This is a common case, and we'd
+ * otherwise end up with a section node containing only a list.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public class SectionListReportNode extends AbstractReportNode {
 	/**
@@ -37,16 +36,17 @@ public class SectionListReportNode extends AbstractReportNode {
 
 	/**
 	 * An optional sub-header. Since this only comes up once at present, we only
-	 * expose it in the constructor.
+	 * expose it
+	 * in the constructor.
 	 */
 	private final String subheader;
 
 	/**
-	 * The size of the boilerplate text we have even before we add the size of
-	 * the children and the header.
+	 * The size of the boilerplate text we have even before we add the size of the
+	 * children and the header.
 	 */
 	private static final int MIN_BOILERPLATE = "<h1></h1>\n<p></p>\n<ul>\n</ul>\n"
-			.length();
+			                                           .length();
 	/**
 	 * The size of the boilerplate text we have to add for each child.
 	 */
@@ -55,12 +55,12 @@ public class SectionListReportNode extends AbstractReportNode {
 	/**
 	 * Constructor.
 	 *
-	 * @param point the point, if any, in the map that this represents something on
-	 * @param lvl the header level
+	 * @param point  the point, if any, in the map that this represents something on
+	 * @param lvl    the header level
 	 * @param header the header text
 	 */
 	public SectionListReportNode(final Point point, final int lvl,
-			final String header) {
+	                             final String header) {
 		super(point, header);
 		setLevel(lvl);
 		subheader = "";
@@ -69,7 +69,7 @@ public class SectionListReportNode extends AbstractReportNode {
 	/**
 	 * Constructor.
 	 *
-	 * @param lvl the header level
+	 * @param lvl    the header level
 	 * @param header the header text
 	 */
 	public SectionListReportNode(final int lvl, final String header) {
@@ -77,13 +77,14 @@ public class SectionListReportNode extends AbstractReportNode {
 		setLevel(lvl);
 		subheader = "";
 	}
+
 	/**
 	 * @return the HTML representation of the node
 	 */
 	@Override
 	public String produce() {
 		return NullCleaner.assertNotNull(produce(new StringBuilder(size()))
-				.toString());
+				                                 .toString());
 	}
 
 	/**
@@ -113,8 +114,7 @@ public class SectionListReportNode extends AbstractReportNode {
 	}
 
 	/**
-	 * @return approximately how long the HTML representation of this node will
-	 *         be.
+	 * @return approximately how long the HTML representation of this node will be.
 	 */
 	@Override
 	public int size() {
@@ -123,7 +123,7 @@ public class SectionListReportNode extends AbstractReportNode {
 			final TreeNode child = getChildAt(i);
 			if (child instanceof AbstractReportNode) {
 				retval += ((AbstractReportNode) child).size()
-						+ PER_CHILD_BPLATE;
+						          + PER_CHILD_BPLATE;
 			}
 		}
 		return retval;
@@ -150,9 +150,9 @@ public class SectionListReportNode extends AbstractReportNode {
 	@Override
 	protected boolean equalsImpl(final IReportNode obj) {
 		return obj instanceof SectionListReportNode
-				&& ((SectionListReportNode) obj).getHeaderLevel() == level
-				&& getText().equals(obj.getText())
-				&& children().equals(obj.children());
+				       && ((SectionListReportNode) obj).getHeaderLevel() == level
+				       && getText().equals(obj.getText())
+				       && children().equals(obj.children());
 	}
 
 	/**

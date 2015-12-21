@@ -1,20 +1,5 @@
 package controller.map.readerng;
 
-import static util.NullCleaner.assertNotNull;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.regex.Pattern;
-import java.util.stream.StreamSupport;
-
-import javax.xml.stream.Location;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -38,31 +23,44 @@ import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
 import util.Pair;
 import util.Warning;
+
+import javax.xml.stream.Location;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.StreamSupport;
+
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A reader to read new-API maps from XML and turn them into XML.
  *
  * TODO: changesets
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2015-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  * @deprecated ReaderNG is deprecated
@@ -89,8 +87,9 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	 * The tags we know how to deal with.
 	 */
 	private static final List<String> tags;
-	private static final Pattern EXCEPT_PATTERN = Pattern.compile("^Wanted [^ ]*, was [^ " +
-			                                                                                       "]*$");
+	private static final Pattern EXCEPT_PATTERN =
+			Pattern.compile("^Wanted [^ ]*, was [^ " +
+					                "]*$");
 
 	static {
 		// FIXME: Use Arrays.asList
@@ -111,26 +110,20 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	/**
 	 * Parse a map (which might be a 'map' or a 'view' tag) from XML.
 	 *
-	 * @param element
-	 *            the element to start parsing with
-	 * @param stream
-	 *            the XML tags we haven't gotten to yet
-	 * @param players
-	 *            the collection of players
-	 * @param warner
-	 *            the Warning instance to use for warnings
-	 * @param factory
-	 *            the factory to use to register ID numbers and generate new
-	 *            ones
+	 * @param element the element to start parsing with
+	 * @param stream  the XML tags we haven't gotten to yet
+	 * @param players the collection of players
+	 * @param warner  the Warning instance to use for warnings
+	 * @param factory the factory to use to register ID numbers and generate new ones
 	 * @return the produced map
-	 * @throws SPFormatException
-	 *             on format problems
+	 * @throws SPFormatException on format problems
 	 */
 	@Override
 	public IMutableMapNG parse(final StartElement element,
-			final Iterable<XMLEvent> stream,
-			final IMutablePlayerCollection players, final Warning warner,
-			final IDFactory factory) throws SPFormatException {
+	                           final Iterable<XMLEvent> stream,
+	                           final IMutablePlayerCollection players,
+	                           final Warning warner,
+	                           final IDFactory factory) throws SPFormatException {
 		final int currentTurn;
 		final StartElement mapTag;
 		final Location outerLoc = assertNotNull(element.getLocation());
@@ -141,24 +134,39 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 			mapTag = getFirstStartElement(stream, outerLoc.getLineNumber());
 			if (!"map".equals(mapTag.getName().getLocalPart())) {
 				throw new UnwantedChildException(outerTag, assertNotNull(mapTag
-						.getName().getLocalPart()), mapTag.getLocation()
-						.getLineNumber());
+						                                                         .getName()
+						                                                         .getLocalPart()),
+						                                mapTag.getLocation()
+								                                .getLineNumber());
 			}
 		} else if ("map".equalsIgnoreCase(outerTag)) {
 			currentTurn = 0;
 			mapTag = element;
 		} else {
 			throw new UnwantedChildException("xml", assertNotNull(outerTag),
-					outerLoc.getLineNumber());
+					                                outerLoc.getLineNumber());
 		}
 		final Location mapTagLocation = assertNotNull(mapTag.getLocation());
 		final MapDimensions dimensions = new MapDimensions(
-				XMLHelper.parseInt(XMLHelper.getAttribute(mapTag, "rows"),
-						mapTagLocation),
-				XMLHelper.parseInt(XMLHelper.getAttribute(mapTag, "columns"),
-						mapTagLocation),
-				XMLHelper.parseInt(XMLHelper.getAttribute(mapTag, "version"),
-						mapTagLocation));
+				                                                  XMLHelper.parseInt(
+						                                                  XMLHelper
+								                                                  .getAttribute(
+										                                                  mapTag,
+										                                                  "rows"),
+
+						                                                  mapTagLocation),
+				                                                  XMLHelper.parseInt(
+						                                                  XMLHelper
+								                                                  .getAttribute(
+										                                                  mapTag,
+										                                                  "columns"),
+						                                                  mapTagLocation),
+				                                                  XMLHelper.parseInt(
+						                                                  XMLHelper
+								                                                  .getAttribute(
+										                                                  mapTag,
+										                                                  "version"),
+						                                                  mapTagLocation));
 		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		final Point nullPoint = PointFactory.point(-1, -1);
 		Point point = nullPoint;
@@ -178,7 +186,9 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 				} else if ("tile".equalsIgnoreCase(type)) {
 					if (!nullPoint.equals(point)) {
 						throw new UnwantedChildException("tile", type,
-								currentLoc.getLineNumber());
+								                                currentLoc
+										                                .getLineNumber
+												                                 ());
 					}
 					point = PointFactory.point(XMLHelper.parseInt(
 							XMLHelper.getAttribute(current, "row"), currentLoc),
@@ -189,24 +199,28 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					// "kind" and then fail to load, let's be liberal in what we
 					// accept here, since we can.
 					if (XMLHelper.hasAttribute(current, "kind")
-							|| XMLHelper.hasAttribute(current, "type")) {
+							    || XMLHelper.hasAttribute(current, "type")) {
 						retval.setBaseTerrain(point,
 								TileType.getTileType(XMLHelper
-										.getAttributeWithDeprecatedForm(current,
-												"kind", "type", warner)));
+										                     .getAttributeWithDeprecatedForm(
+												                     current,
+												                     "kind", "type",
+												                     warner)));
 					} else {
 						warner.warn(new MissingPropertyException(type, "kind",
-								currentLoc.getLineNumber()));
+								                                        currentLoc
+										                                        .getLineNumber()));
 					}
 				} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) {
 					warner.warn(new UnsupportedTagException(type, currentLoc
-							.getLineNumber()));
+							                                              .getLineNumber
+									                                               ()));
 				} else if (nullPoint.equals(point)) {
 					// fixture outside tile
 					throw new UnwantedChildException("map", type,
-							currentLoc.getLineNumber());
+							                                currentLoc.getLineNumber());
 				} else if ("lake".equalsIgnoreCase(type)
-						|| "river".equalsIgnoreCase(type)) {
+						           || "river".equalsIgnoreCase(type)) {
 					retval.addRivers(point, RIVER_READER.parse(current, stream,
 							players, warner, factory));
 				} else if ("ground".equalsIgnoreCase(type)) {
@@ -228,10 +242,13 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					} catch (final UnwantedChildException except) {
 						if ("unknown".equals(except.getTag())) {
 							throw new UnwantedChildException(
-									assertNotNull(mapTag.getName()
-											.getLocalPart()),
-									except.getChild(),
-									currentLoc.getLineNumber());
+									                                assertNotNull(
+											                                mapTag
+													                                .getName()
+													                                .getLocalPart()),
+									                                except.getChild(),
+									                                currentLoc
+											                                .getLineNumber());
 						} else {
 							throw except;
 						}
@@ -239,11 +256,16 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 						if (EXCEPT_PATTERN.matcher(except.getMessage()).matches()) {
 							final UnwantedChildException nexcept =
 									new UnwantedChildException(
-											assertNotNull(mapTag.getName()
-													.getLocalPart()),
-											assertNotNull(current.getName()
-													.getLocalPart()),
-											currentLoc.getLineNumber());
+											                          assertNotNull(
+													                          mapTag
+															                          .getName()
+															                          .getLocalPart()),
+											                          assertNotNull(
+													                          current
+															                          .getName()
+															                          .getLocalPart()),
+											                          currentLoc
+													                          .getLineNumber());
 							nexcept.initCause(except);
 							throw nexcept;
 						} else {
@@ -255,7 +277,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 				if (element.getName().equals(event.asEndElement().getName())) {
 					break;
 				} else if ("tile".equalsIgnoreCase(event.asEndElement()
-						.getName().getLocalPart())) {
+						                                   .getName().getLocalPart())) {
 					point = PointFactory.point(-1, -1);
 				}
 			} else if (event.isCharacters()) {
@@ -277,14 +299,16 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 		}
 		return retval;
 	}
+
 	/**
 	 * Add a fixture to a point in a map, accounting for the special cases.
-	 * @param map the map
+	 *
+	 * @param map   the map
 	 * @param point where to add the fixture
-	 * @param fix the fixture to add
+	 * @param fix   the fixture to add
 	 */
 	private static void addFixture(final IMutableMapNG map, final Point point,
-			final TileFixture fix) {
+	                               final TileFixture fix) {
 		if (fix instanceof Ground) {
 			final Ground ground = (Ground) fix;
 			final Ground oldGround = map.getGround(point);
@@ -327,19 +351,20 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	}
 
 	/**
-	 * @param stream
-	 *            a stream of XMLEvents
-	 * @param line
-	 *            the line the parent tag is on
-	 * @throws SPFormatException
-	 *             if no start element in stream
+	 * @param stream a stream of XMLEvents
+	 * @param line   the line the parent tag is on
 	 * @return the first start-element in the stream
+	 * @throws SPFormatException if no start element in stream
 	 */
 	private static StartElement getFirstStartElement(
-			final Iterable<XMLEvent> stream, final int line)
+			                                                final Iterable<XMLEvent>
+					                                                stream,
+			                                                final int line)
 			throws SPFormatException {
-		return StreamSupport.stream(stream.spliterator(), false).filter(XMLEvent::isStartElement).findFirst()
-				       .orElseThrow(() -> new MissingChildException("map", line)).asStartElement();
+		return StreamSupport.stream(stream.spliterator(), false)
+				       .filter(XMLEvent::isStartElement).findFirst()
+				       .orElseThrow(() -> new MissingChildException("map", line))
+				       .asStartElement();
 	}
 
 	/**
@@ -347,8 +372,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	 *
 	 * TODO: changesets
 	 *
-	 * @param obj
-	 *            the object to write
+	 * @param obj the object to write
 	 * @return an intermediate representation
 	 */
 	@Override
@@ -356,16 +380,23 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 		final SPIntermediateRepresentation retval =
 				new SPIntermediateRepresentation("view", Pair.of(
 						"current_player", assertNotNull(Integer.toString(obj
-								.getCurrentPlayer().getPlayerId()))), Pair.of(
-						"current_turn",
-						assertNotNull(Integer.toString(obj.getCurrentTurn()))));
+								                                                 .getCurrentPlayer()
+								                                                 .getPlayerId()))),
+						                                Pair.of(
+								                                "current_turn",
+								                                assertNotNull(
+										                                Integer.toString(
+												                                obj
+														                                .getCurrentTurn()))));
 		final MapDimensions dim = obj.dimensions();
 		final SPIntermediateRepresentation mapTag =
 				new SPIntermediateRepresentation("map", Pair.of("version",
 						assertNotNull(Integer.toString(dim.version))), Pair.of(
 						"rows", assertNotNull(Integer.toString(dim.rows))),
-						Pair.of("columns",
-								assertNotNull(Integer.toString(dim.cols))));
+						                                Pair.of("columns",
+								                                assertNotNull(
+										                                Integer.toString(
+												                                dim.cols))));
 		retval.addChild(mapTag);
 		for (final Player player : obj.players()) {
 			mapTag.addChild(PLAYER_READER.write(player));
@@ -377,10 +408,10 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 			for (int j = 0; j < dim.cols; j++) {
 				final Point point = PointFactory.point(i, j);
 				if (TileType.NotVisible != obj.getBaseTerrain(point)
-						|| obj.isMountainous(point)
-						|| obj.getGround(point) != null
-						|| obj.getForest(point) != null
-						|| obj.getOtherFixtures(point).iterator().hasNext()) {
+						    || obj.isMountainous(point)
+						    || obj.getGround(point) != null
+						    || obj.getForest(point) != null
+						    || obj.getOtherFixtures(point).iterator().hasNext()) {
 					mapTag.addChild(row);
 					row.addChild(writeTile(obj, point));
 				}
@@ -392,14 +423,12 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	/**
 	 * Create an intermediate representation of a tile to write to a writer.
 	 *
-	 * @param map
-	 *            the map to write from
-	 * @param point
-	 *            the point to write about
+	 * @param map   the map to write from
+	 * @param point the point to write about
 	 * @return an intermediate representation
 	 */
 	private static SPIntermediateRepresentation writeTile(final IMapNG map,
-			final Point point) {
+	                                                      final Point point) {
 		// We can safely assume that an empty retval is not called for.
 		final SPIntermediateRepresentation retval =
 				new SPIntermediateRepresentation("tile");
@@ -425,19 +454,20 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	/**
 	 * "Write" a TileFixture by creating its SPIR.
 	 *
-	 * @param fixture
-	 *            the fixture to write. Nullable to simplify writing a tile's
-	 *            ground and forest.
+	 * @param fixture the fixture to write. Nullable to simplify writing a tile's ground
+	 *                and forest.
 	 * @return an intermediate representation of it
 	 */
 	private static SPIntermediateRepresentation writeFixture(
-			@Nullable final TileFixture fixture) {
+			                                                        @Nullable
+			                                                        final TileFixture fixture) {
 		if (fixture == null) {
 			return new SPIntermediateRepresentation("");
 		} else {
 			return ReaderAdapter.ADAPTER.write(fixture);
 		}
 	}
+
 	/**
 	 * @return the class this knows how to write
 	 */
@@ -445,6 +475,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	public Class<IMapNG> writtenClass() {
 		return IMapNG.class;
 	}
+
 	/**
 	 * @return a string representation of this class
 	 */

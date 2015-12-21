@@ -1,17 +1,5 @@
 package controller.map.converter;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.IMapNG;
 import model.map.MapDimensions;
 import model.map.PlayerCollection;
@@ -24,31 +12,41 @@ import model.map.TileType;
 import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.terrain.Forest;
+import org.eclipse.jdt.annotation.NonNull;
 import util.EnumCounter;
 import util.NullCleaner;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * A class to convert a map to an equivalent half-resolution one.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class ResolutionDecreaseConverter {
 	/**
@@ -65,7 +63,7 @@ public final class ResolutionDecreaseConverter {
 		old.players().forEach(players::add);
 		final SPMapNG retval =
 				new SPMapNG(new MapDimensions(newRows, newCols, 2), players,
-						old.getCurrentTurn());
+						           old.getCurrentTurn());
 		for (int row = 0; row < newRows; row++) {
 			for (int col = 0; col < newCols; col++) {
 				final Point point = PointFactory.point(row, col);
@@ -79,7 +77,8 @@ public final class ResolutionDecreaseConverter {
 								old.getBaseTerrain(secondSub),
 								old.getBaseTerrain(thirdSub),
 								old.getBaseTerrain(fourthSub)));
-				for (final Point oldPoint : Arrays.asList(firstSub, secondSub, thirdSub, fourthSub)) {
+				for (final Point oldPoint : Arrays.asList(firstSub, secondSub, thirdSub,
+						fourthSub)) {
 					if (old.isMountainous(oldPoint)) {
 						retval.setMountainous(point, true);
 					}
@@ -110,7 +109,8 @@ public final class ResolutionDecreaseConverter {
 					removeRivers(upperRightRivers, River.West, River.South);
 					removeRivers(lowerLeftRivers, River.East, River.North);
 					removeRivers(lowerRightRivers, River.West, River.North);
-					for (final River river : combineRivers(upperLeftRivers, upperRightRivers,
+					for (final River river : combineRivers(upperLeftRivers,
+							upperRightRivers,
 							lowerLeftRivers, lowerRightRivers)) {
 						retval.addRivers(point, river);
 					}
@@ -128,14 +128,16 @@ public final class ResolutionDecreaseConverter {
 	 */
 	private static void checkRequirements(final IMapNG map) {
 		if (map.dimensions().rows % 2 != 0
-				|| map.dimensions().cols % 2 != 0) {
+				    || map.dimensions().cols % 2 != 0) {
 			throw new IllegalArgumentException(
-					"Can only convert maps with even numbers of rows and columns.");
+					                                  "Can only convert maps with even " +
+							                                  "numbers of rows and " +
+							                                  "columns.");
 		}
 	}
 
 	/**
-	 * @param old a map
+	 * @param old   a map
 	 * @param point a point
 	 * @return the rivers there, if any
 	 */
@@ -144,6 +146,7 @@ public final class ResolutionDecreaseConverter {
 				StreamSupport.stream(old.getRivers(point).spliterator(), false).collect(
 						Collectors.toSet());
 	}
+
 	/**
 	 * @param rivers a series of rivers to combine into one collection
 	 * @return a RiverFixture containing all of them
@@ -154,35 +157,40 @@ public final class ResolutionDecreaseConverter {
 		addRivers(retval, rivers);
 		return retval;
 	}
+
 	/**
-	 * @param fix a RiverFixture
+	 * @param fix    a RiverFixture
 	 * @param rivers a series of rivers to add to it
 	 */
 	@SafeVarargs
 	private static void addRivers(final RiverFixture fix,
-			final Iterable<River>... rivers) {
-		Stream.of(rivers).flatMap(iter -> StreamSupport.stream(iter.spliterator(), false)).forEach(fix::addRiver);
+	                              final Iterable<River>... rivers) {
+		Stream.of(rivers).flatMap(iter -> StreamSupport.stream(iter.spliterator(),
+				false))
+				.forEach(fix::addRiver);
 	}
 
 	/**
-	 * @param set a set of rivers
+	 * @param set    a set of rivers
 	 * @param rivers a series of rivers to remove from it
 	 */
 	private static void removeRivers(final Collection<River> set,
-			final River... rivers) {
+	                                 final River... rivers) {
 		set.removeAll(Arrays.asList(rivers));
 	}
 
 	/**
-	 * @param firstType one tile-type
+	 * @param firstType  one tile-type
 	 * @param secondType a second tile-type
-	 * @param thirdtype a third tile-type
+	 * @param thirdtype  a third tile-type
 	 * @param fourthType a fourth tile-type
-	 * @return the most common tile of them, or if there are two or four with
-	 *         equal representation one selected from among them at random.
+	 * @return the most common tile of them, or if there are two or four with equal
+	 * representation one selected from among them at random.
 	 */
-	private static TileType consensus(final TileType firstType, final TileType secondType,
-			final TileType thirdtype, final TileType fourthType) {
+	private static TileType consensus(final TileType firstType, final TileType
+			                                                            secondType,
+	                                  final TileType thirdtype,
+	                                  final TileType fourthType) {
 		final EnumCounter<TileType> counter = new EnumCounter<>(TileType.class);
 		counter.countMany(firstType, secondType, thirdtype, fourthType);
 		final Set<TileType> twos = EnumSet.noneOf(TileType.class);
@@ -205,7 +213,8 @@ public final class ResolutionDecreaseConverter {
 		if (twos.size() == 1) {
 			return NullCleaner.assertNotNull(twos.iterator().next()); // NOPMD
 		} else {
-			final List<TileType> list = Arrays.asList(firstType, secondType, thirdtype, fourthType);
+			final List<TileType> list =
+					Arrays.asList(firstType, secondType, thirdtype, fourthType);
 			Collections.shuffle(list);
 			return NullCleaner.assertNotNull(list.get(0));
 		}

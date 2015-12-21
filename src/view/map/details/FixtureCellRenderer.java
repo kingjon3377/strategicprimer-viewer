@@ -1,9 +1,16 @@
 package view.map.details;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+import model.map.HasImage;
+import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
+import util.ImageLoader;
+import util.NullCleaner;
+import util.TypesafeLogger;
+
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicHTML;
+import javax.swing.text.View;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -13,53 +20,34 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
-import javax.swing.plaf.basic.BasicHTML;
-import javax.swing.text.View;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import model.map.HasImage;
-import model.map.TileFixture;
-import util.ImageLoader;
-import util.NullCleaner;
-import util.TypesafeLogger;
-
 /**
  * A cell renderer for tile-details GUIs.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(FixtureCellRenderer.class);
+			                                     .getLogger(FixtureCellRenderer.class);
 	/**
 	 * the default fixture icon.
 	 */
@@ -72,18 +60,22 @@ public final class FixtureCellRenderer implements ListCellRenderer<TileFixture> 
 			new DefaultListCellRenderer();
 
 	/**
-	 * @param list the list being rendered
-	 * @param value the object in the list that's being rendered
-	 * @param index the index of the item that's being rendered
-	 * @param isSelected whether the node is selected
+	 * @param list         the list being rendered
+	 * @param value        the object in the list that's being rendered
+	 * @param index        the index of the item that's being rendered
+	 * @param isSelected   whether the node is selected
 	 * @param cellHasFocus whether the tree has the focus
 	 * @return a component representing the cell
 	 */
 	@Override
 	public Component getListCellRendererComponent(
-			@Nullable final JList<? extends TileFixture> list,
-			@Nullable final TileFixture value, final int index,
-			final boolean isSelected, final boolean cellHasFocus) {
+			                                             @Nullable
+			                                             final JList<? extends TileFixture> list,
+			                                             @Nullable
+			                                             final TileFixture value,
+			                                             final int index,
+			                                             final boolean isSelected,
+			                                             final boolean cellHasFocus) {
 		if (list == null) {
 			throw new IllegalArgumentException("Asked to render a null list");
 		} else if (value == null) {
@@ -92,18 +84,20 @@ public final class FixtureCellRenderer implements ListCellRenderer<TileFixture> 
 		final Component component = LIST_DEFAULT.getListCellRendererComponent(
 				list, value, index, isSelected, cellHasFocus);
 		((JLabel) component).setText("<html><p>" + value.toString()
-				+ "</p></html>");
+				                             + "</p></html>");
 		if (value instanceof HasImage) {
 			((JLabel) component).setIcon(getIcon((HasImage) value));
 		} else {
 			((JLabel) component).setIcon(defaultFixtIcon);
 		}
 		component.setMaximumSize(new Dimension(
-				component.getMaximumSize().width,
-				component.getMaximumSize().height * 2));
+				                                      component.getMaximumSize().width,
+				                                      component.getMaximumSize().height *
+						                                      2));
 		setComponentPreferredSize((JComponent) component, list.getWidth());
 		return component;
 	}
+
 	/**
 	 * A cache of icon filenames that aren't available.
 	 */
@@ -127,7 +121,7 @@ public final class FixtureCellRenderer implements ListCellRenderer<TileFixture> 
 			retval = ImageLoader.getLoader().loadIcon(image);
 		} catch (final FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE, "image file images/" + image
-					+ " not found");
+					                         + " not found");
 			LOGGER.log(Level.FINEST, "With stack trace", e);
 			MISSING.add(image);
 			retval = defaultFixtIcon;
@@ -147,7 +141,7 @@ public final class FixtureCellRenderer implements ListCellRenderer<TileFixture> 
 		 */
 		final int imageSize = 24; // NOPMD
 		final BufferedImage temp = new BufferedImage(imageSize, imageSize,
-				BufferedImage.TYPE_INT_ARGB);
+				                                            BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D pen = temp.createGraphics();
 		final Color saveColor = pen.getColor();
 		pen.setColor(Color.RED);
@@ -171,17 +165,16 @@ public final class FixtureCellRenderer implements ListCellRenderer<TileFixture> 
 	}
 
 	/**
-	 * Set a component's height given a fixed width. Adapted from
-	 * http://blog.nobel
+	 * Set a component's height given a fixed width. Adapted from http://blog.nobel
 	 * -joergensen.com/2009/01/18/changing-preferred-size-of-a-html-jlabel/
 	 *
 	 * @param component the component we're laying out
-	 * @param width the width we're working within
+	 * @param width     the width we're working within
 	 */
 	private static void setComponentPreferredSize(final JComponent component,
-			final int width) {
+	                                              final int width) {
 		final View view = (View) component
-				.getClientProperty(BasicHTML.propertyKey);
+				                         .getClientProperty(BasicHTML.propertyKey);
 		view.setSize(width, 0);
 		final int wid = (int) Math.ceil(view.getPreferredSpan(View.X_AXIS));
 		final int height = (int) Math.ceil(view.getPreferredSpan(View.Y_AXIS));

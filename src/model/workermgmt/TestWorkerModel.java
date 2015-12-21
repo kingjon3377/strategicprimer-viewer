@@ -1,15 +1,5 @@
 package model.workermgmt;
 
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import org.junit.Test;
-
 import model.map.MapDimensions;
 import model.map.Player;
 import model.map.PlayerCollection;
@@ -25,31 +15,38 @@ import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.towns.Fortress;
+import org.junit.Test;
 import util.NullCleaner;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
+
 /**
- * A class to test MapHelper methods (starting with ones that don't involve
- * I/O).
+ * A class to test MapHelper methods (starting with ones that don't involve I/O).
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class TestWorkerModel {
 	/**
@@ -82,8 +79,9 @@ public final class TestWorkerModel {
 				listOne);
 		fixtures.add(new Oasis(8));
 		Collections.shuffle(fixtures);
-		final SPMapNG map = new SPMapNG(new MapDimensions(3, 3, 2), new PlayerCollection(),
-				                               -1);
+		final SPMapNG map =
+				new SPMapNG(new MapDimensions(3, 3, 2), new PlayerCollection(),
+						           -1);
 		for (final Point point : map.locations()) {
 			map.addFixture(NullCleaner.assertNotNull(point),
 					NullCleaner.assertNotNull(fixtures.remove(0)));
@@ -105,12 +103,10 @@ public final class TestWorkerModel {
 	}
 
 	/**
-	 * @param list
-	 *            a list
-	 * @param <T>
-	 *            the type of the list
-	 * @return the contents of that list, with any proxies replaced by the items
-	 *         they proxy
+	 * @param list a list
+	 * @param <T>  the type of the list
+	 * @return the contents of that list, with any proxies replaced by the items they
+	 * proxy
 	 */
 	private static <T> List<T> filterProxies(final Iterable<T> list) {
 		// FIXME: There ought to be a way of doing this using the Streams API
@@ -125,20 +121,22 @@ public final class TestWorkerModel {
 		}
 		return retval;
 	}
+
 	/**
 	 * Add to multiple lists.
 	 *
-	 * @param <T> the type of the item
-	 * @param item the item to add
+	 * @param <T>   the type of the item
+	 * @param item  the item to add
 	 * @param lists the lists to add to
 	 */
 	@SafeVarargs
 	private static <T> void addItem(final T item,
-			final List<? super T>... lists) {
+	                                final List<? super T>... lists) {
 		for (final List<? super T> list : lists) {
 			list.add(item);
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

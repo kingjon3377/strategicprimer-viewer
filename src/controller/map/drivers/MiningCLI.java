@@ -1,5 +1,11 @@
 package controller.map.drivers;
 
+import model.map.Point;
+import model.map.PointFactory;
+import model.mining.LodeStatus;
+import model.mining.MiningModel;
+import util.NullCleaner;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -8,34 +14,27 @@ import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import model.map.Point;
-import model.map.PointFactory;
-import model.mining.LodeStatus;
-import model.mining.MiningModel;
-import util.NullCleaner;
-
 /**
  * A driver to create a spreadsheet model of a mine.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2014-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class MiningCLI {
 	/**
@@ -44,16 +43,17 @@ public final class MiningCLI {
 	private MiningCLI() {
 		// Do nothing
 	}
+
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(MiningCLI.class.getName()));
+	private static final Logger LOGGER =
+			NullCleaner.assertNotNull(Logger.getLogger(MiningCLI.class.getName()));
+
 	/**
-	 * @param args
-	 *            Arg 0 is the name of a file to write the CSV to; Arg 1 is the
-	 *            value of the top center (as an index into the LodeStatus
-	 *            values array); Arg 2 (optional) is a value to seed the RNG
-	 *            with.
+	 * @param args Arg 0 is the name of a file to write the CSV to; Arg 1 is the value of
+	 *             the top center (as an index into the LodeStatus values array); Arg 2
+	 *             (optional) is a value to seed the RNG with.
 	 */
 	public static void main(final String... args) {
 		if (args.length < 2) {
@@ -92,7 +92,7 @@ public final class MiningCLI {
 			for (int row = 0; row < maxRow; row++) {
 				for (int col = 0; col < maxCol; col++) {
 					ostream.print(model.statusAt(PointFactory.point(row, col))
-							.getRatio());
+							              .getRatio());
 					ostream.print(',');
 				}
 				ostream.println();

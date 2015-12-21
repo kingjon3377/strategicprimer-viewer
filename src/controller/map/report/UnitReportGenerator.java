@@ -1,14 +1,5 @@
 package controller.map.report;
 
-import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -27,42 +18,50 @@ import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
+import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
 
 import javax.swing.tree.MutableTreeNode;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
 
 /**
  * A report generator for units.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	public UnitReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator) {
+	public UnitReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull
+			                                                                          IFixture>> comparator) {
 		super(comparator);
 	}
+
 	/**
 	 * A string to indicate a worker has training or experience.
 	 */
@@ -72,23 +71,25 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	/**
 	 * We assume we're already in the middle of a paragraph or bullet point.
 	 *
-	 * @param fixtures the set of fixtures, so we can remove the unit and its
-	 *        members from it.
-	 * @param map ignored
-	 * @param unit a unit
-	 * @param loc the unit's location
+	 * @param fixtures      the set of fixtures, so we can remove the unit and its
+	 *                         members
+	 *                      from it.
+	 * @param map           ignored
+	 * @param unit          a unit
+	 * @param loc           the unit's location
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return a sub-report on the unit
 	 */
 	@Override
 	public String produce(
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final IMapNG map, final Player currentPlayer,
-			final Unit unit, final Point loc) {
+			                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+					                     fixtures,
+			                     final IMapNG map, final Player currentPlayer,
+			                     final Unit unit, final Point loc) {
 		final StringBuilder builder =
 				new StringBuilder(52 + unit.getKind().length()
-						+ unit.getName().length()
-						+ unit.getOwner().getName().length());
+						                  + unit.getName().length()
+						                  + unit.getOwner().getName().length());
 		builder.append("Unit of type ");
 		builder.append(unit.getKind());
 		builder.append(", named ");
@@ -125,19 +126,22 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	/**
 	 * We assume we're already in the middle of a paragraph or bullet point.
 	 *
-	 * @param fixtures the set of fixtures, so we can remove the unit and its
-	 *        members from it.
-	 * @param map ignored
-	 * @param unit a unit
-	 * @param loc the unit's location
+	 * @param fixtures      the set of fixtures, so we can remove the unit and its
+	 *                         members
+	 *                      from it.
+	 * @param map           ignored
+	 * @param unit          a unit
+	 * @param loc           the unit's location
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return a sub-report on the unit
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final IMapNG map, final Player currentPlayer,
-			final Unit unit, final Point loc) {
+			                                    final DelayedRemovalMap<Integer,
+					                                                           Pair<Point, IFixture>> fixtures,
+			                                    final IMapNG map,
+			                                    final Player currentPlayer,
+			                                    final Unit unit, final Point loc) {
 		final String simple; // NOPMD
 		if (unit.getOwner().isIndependent()) {
 			simple = concat("Unit of type ", unit.getKind(), ", named ",
@@ -150,7 +154,8 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		fixtures.remove(Integer.valueOf(unit.getID()));
 		if (unit.iterator().hasNext()) {
 			final AbstractReportNode retval = new ListReportNode(loc,
-					concat(simple, ". Members of the unit:"));
+					                                                    concat(simple,
+							                                                    ". Members of the unit:"));
 			for (final UnitMember member : unit) {
 				if (member instanceof Worker) {
 					retval.add(produceWorkerRIR(loc, (Worker) member,
@@ -168,13 +173,13 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	}
 
 	/**
-	 * @param worker a Worker.
+	 * @param worker  a Worker.
 	 * @param details whether we should give details of the worker's stats and
-	 *        experience---true only if the current player owns the worker.
+	 *                experience---true only if the current player owns the worker.
 	 * @return a sub-report on that worker.
 	 */
 	private static String workerReport(final Worker worker,
-			final boolean details) {
+	                                   final boolean details) {
 		final StringBuilder builder = new StringBuilder(2048);
 		builder.append(worker.getName());
 		builder.append(", a ");
@@ -184,7 +189,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		if (stats != null && details) {
 			builder.append("<p>He or she has the following stats: ");
 			builder.append(stats.getHitPoints()).append(" / ")
-			.append(stats.getMaxHitPoints()).append(" Hit Points");
+					.append(stats.getMaxHitPoints()).append(" Hit Points");
 			builder.append(", Strength ").append(
 					getModifierString(stats.getStrength()));
 			builder.append(", Dexterity ").append(
@@ -241,31 +246,49 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	}
 
 	/**
-	 * @param loc the location of the worker in the map
-	 * @param worker a Worker.
+	 * @param loc     the location of the worker in the map
+	 * @param worker  a Worker.
 	 * @param details whether we should give details of the worker's stats and
-	 *        experience---true only if the current player owns the worker.
+	 *                experience---true only if the current player owns the worker.
 	 * @return a sub-report on that worker.
 	 */
 	private static MutableTreeNode produceWorkerRIR(final Point loc,
 	                                                final Worker worker,
 	                                                final boolean details) {
 		final AbstractReportNode retval = new ComplexReportNode(loc,
-				worker.getName() + ", a " + worker.getRace() + ". ");
+				                                                       worker.getName() +
+						                                                       ", a " +
+						                                                       worker
+								                                                       .getRace() +
+						                                                       ". ");
 		final WorkerStats stats = worker.getStats();
 		if (stats != null && details) {
 			retval.add(new SimpleReportNode(loc,
-					"He or she has the following stats: ", Integer
-					.toString(stats.getHitPoints()), " / ", Integer
-					.toString(stats.getMaxHitPoints()),
-					" Hit Points, Strength ", getModifierString(stats
-							.getStrength()), ", Dexterity ",
-					getModifierString(stats.getDexterity()), ", Constitution ",
-					getModifierString(stats.getConstitution()),
-					", Intelligence ", getModifierString(stats
-							.getIntelligence()), ", Wisdom ",
-					getModifierString(stats.getWisdom()), ", Charisma ",
-					getModifierString(stats.getCharisma())));
+					                               "He or she has the following stats: ",
+					                               Integer
+							                               .toString(
+									                               stats.getHitPoints()),
+					                               " / ", Integer
+							                                      .toString(
+									                                      stats
+											                                      .getMaxHitPoints()),
+					                               " Hit Points, Strength ",
+					                               getModifierString(stats
+							                                                 .getStrength()),
+					                               ", Dexterity ",
+					                               getModifierString(
+							                               stats.getDexterity()),
+					                               ", Constitution ",
+					                               getModifierString(
+							                               stats.getConstitution()),
+					                               ", Intelligence ",
+					                               getModifierString(stats
+							                                                 .getIntelligence()),
+					                               ", Wisdom ",
+					                               getModifierString(stats.getWisdom()),
+					                               ", Charisma ",
+					                               getModifierString(
+							                               stats.getCharisma())));
 		}
 		if (worker.iterator().hasNext() && details) {
 			final AbstractReportNode jobs = new ListReportNode(loc, HAS_TRAINING);
@@ -278,6 +301,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		}
 		return retval;
 	}
+
 	/**
 	 * @param loc the location of the worker in the map
 	 * @param job a Job
@@ -285,24 +309,25 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 */
 	private static MutableTreeNode produceJobRIR(final Job job, final Point loc) {
 		return new SimpleReportNode(loc, Integer.toString(job.getLevel()),
-				" levels in ", job.getName(), getSkills(job));
+				                           " levels in ", job.getName(), getSkills(job));
 	}
 
 	/**
 	 * All fixtures referred to in this report are removed from the collection.
 	 *
-	 * @param fixtures the set of fixtures
-	 * @param map ignored
+	 * @param fixtures      the set of fixtures
+	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report dealing with units
 	 */
 	@Override
 	public String produce(
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final IMapNG map, final Player currentPlayer) {
+			                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+					                     fixtures,
+			                     final IMapNG map, final Player currentPlayer) {
 		// This can get big; we'll say 8K.
 		final StringBuilder builder = new StringBuilder(8192)
-				.append("<h4>Units in the map</h4>\n");
+				                              .append("<h4>Units in the map</h4>\n");
 		builder.append("<p>(Any units listed above are not described again.)</p>\n");
 		final StringBuilder ours =
 				new StringBuilder(8192).append("<h5>Your units</h5>\n");
@@ -320,19 +345,21 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 				if (currentPlayer.equals(unit.getOwner())) {
 					anyOurs = true;
 					ours.append(OPEN_LIST_ITEM)
-					.append(atPoint(pair.first()))
-					.append(' ').append(distCalculator.distanceString(pair.first()))
-					.append(produce(fixtures, map, currentPlayer,
-							unit, pair.first()))
-					.append(CLOSE_LIST_ITEM);
+							.append(atPoint(pair.first()))
+							.append(' ')
+							.append(distCalculator.distanceString(pair.first()))
+							.append(produce(fixtures, map, currentPlayer,
+									unit, pair.first()))
+							.append(CLOSE_LIST_ITEM);
 				} else {
 					anyForeign = true;
 					foreign.append(OPEN_LIST_ITEM)
-					.append(atPoint(pair.first()))
-					.append(' ').append(distCalculator.distanceString(pair.first()))
-					.append(produce(fixtures, map, currentPlayer,
-							unit, pair.first()))
-					.append(CLOSE_LIST_ITEM);
+							.append(atPoint(pair.first()))
+							.append(' ')
+							.append(distCalculator.distanceString(pair.first()))
+							.append(produce(fixtures, map, currentPlayer,
+									unit, pair.first()))
+							.append(CLOSE_LIST_ITEM);
 				}
 			}
 		}
@@ -354,19 +381,20 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	/**
 	 * All fixtures referred to in this report are removed from the collection.
 	 *
-	 * @param fixtures the set of fixtures
-	 * @param map ignored
+	 * @param fixtures      the set of fixtures
+	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the part of the report dealing with units
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final IMapNG map, final Player currentPlayer) {
+			                                    final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+			                                    final IMapNG map,
+			                                    final Player currentPlayer) {
 		final AbstractReportNode retval =
 				new SectionReportNode(4, "Units in the map");
 		retval.add(new SimpleReportNode(
-				"(Any units reported above are not described again.)"));
+				                               "(Any units reported above are not described again.)"));
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final AbstractReportNode theirs = new SectionListReportNode(5, "Foreign units");

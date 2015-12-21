@@ -1,35 +1,33 @@
 package model.map.fixtures.terrain;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A forest on a tile.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public class Forest implements TerrainFixture, HasImage, HasKind {
 	/**
@@ -58,7 +56,7 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	/**
 	 * Constructor.
 	 *
-	 * @param kind what kind of trees dominate.
+	 * @param kind  what kind of trees dominate.
 	 * @param rowed whether the trees are in rows
 	 */
 	public Forest(final String kind, final boolean rowed) {
@@ -67,8 +65,8 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	}
 
 	/**
-	 * @return a copy of this forest
 	 * @param zero ignored, as there's no sensitive data
+	 * @return a copy of this forest
 	 */
 	@Override
 	public Forest copy(final boolean zero) {
@@ -76,6 +74,7 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 		retval.setImage(image);
 		return retval;
 	}
+
 	/**
 	 * @return a String representation of the forest.
 	 */
@@ -121,6 +120,7 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof Forest && equalsImpl((Forest) obj);
 	}
+
 	/**
 	 * @param obj a forest
 	 * @return whether it's equal to this one
@@ -128,6 +128,7 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	private boolean equalsImpl(final Forest obj) {
 		return trees.equals(obj.trees) && rows == obj.rows;
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -142,7 +143,6 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -200,6 +200,7 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 	public String plural() {
 		return "Forests";
 	}
+
 	/**
 	 * @return a short description of the fixture
 	 */

@@ -1,38 +1,35 @@
 package view.exploration;
 
-import java.awt.Graphics;
-import java.awt.Polygon;
-
-import javax.swing.JButton;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.IMapNG;
 import model.map.Point;
 import model.map.PointFactory;
 import model.viewer.ZOrderFilter;
+import org.eclipse.jdt.annotation.Nullable;
 import view.map.main.TileDrawHelper;
 import view.map.main.TileDrawHelperFactory;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * A button that represents a tile in two maps.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  */
@@ -49,14 +46,16 @@ public final class DualTileButton extends JButton {
 	 * The subordinate map.
 	 */
 	private final IMapNG mapTwo;
+
 	/**
-	 * @param master the first map
+	 * @param master      the first map
 	 * @param subordinate the second map
 	 */
 	public DualTileButton(final IMapNG master, final IMapNG subordinate) {
 		mapOne = master;
 		mapTwo = subordinate;
 	}
+
 	/**
 	 * The currently selected point.
 	 */
@@ -80,16 +79,20 @@ public final class DualTileButton extends JButton {
 		final TileDrawHelper helper = TileDrawHelperFactory.INSTANCE.factory(2,
 				this, NULL_ZOF);
 		pen.setClip(new Polygon(
-				new int[] { getWidth() - MARGIN, MARGIN, MARGIN }, new int[] {
-						MARGIN, getHeight() - MARGIN, MARGIN }, 3));
+				                       new int[]{getWidth() - MARGIN, MARGIN, MARGIN},
+				                       new int[]{
+						                       MARGIN, getHeight() - MARGIN, MARGIN},
+				                       3));
 		helper.drawTileTranslated(pen, mapOne, point, getWidth(), getHeight());
-		pen.setClip(new Polygon(new int[] { getWidth() - MARGIN,
-				getWidth() - MARGIN, MARGIN }, new int[] { MARGIN,
-				getHeight() - MARGIN, getHeight() - MARGIN }, 3));
+		pen.setClip(new Polygon(new int[]{getWidth() - MARGIN,
+				getWidth() - MARGIN, MARGIN}, new int[]{MARGIN,
+				getHeight() - MARGIN, getHeight() - MARGIN}, 3));
 		helper.drawTileTranslated(pen, mapTwo, point, getWidth(), getHeight());
 	}
+
 	/**
 	 * Set the currently selected point.
+	 *
 	 * @param newPoint the newly selected point
 	 */
 	public void setPoint(final Point newPoint) {

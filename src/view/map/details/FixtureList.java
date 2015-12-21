@@ -1,5 +1,19 @@
 package view.map.details;
 
+import model.listeners.SelectionChangeListener;
+import model.map.Player;
+import model.map.Point;
+import model.map.TileFixture;
+import model.misc.IDriverModel;
+import model.viewer.CurriedFixtureTransferable;
+import model.viewer.FixtureListDropListener;
+import model.viewer.FixtureListModel;
+import model.viewer.FixtureTransferable;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
+
+import javax.swing.*;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
@@ -11,46 +25,25 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-import javax.swing.AbstractAction;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.JList;
-import javax.swing.KeyStroke;
-import javax.swing.ListSelectionModel;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
-import model.listeners.SelectionChangeListener;
-import model.map.Player;
-import model.map.Point;
-import model.map.TileFixture;
-import model.misc.IDriverModel;
-import model.viewer.CurriedFixtureTransferable;
-import model.viewer.FixtureListDropListener;
-import model.viewer.FixtureListModel;
-import model.viewer.FixtureTransferable;
-import util.NullCleaner;
-
 /**
  * A visual list-based representation of the contents of a tile.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  */
@@ -64,12 +57,12 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 	/**
 	 * Constructor.
 	 *
-	 * @param parent a parent of this list
-	 * @param dmodel the driver model (needed to get at the map for the list model)
+	 * @param parent  a parent of this list
+	 * @param dmodel  the driver model (needed to get at the map for the list model)
 	 * @param players the players in the map
 	 */
 	public FixtureList(final JComponent parent, final IDriverModel dmodel,
-			final Iterable<Player> players) {
+	                   final Iterable<Player> players) {
 		flm = new FixtureListModel(dmodel);
 		setModel(flm);
 		setCellRenderer(new FixtureCellRenderer());
@@ -77,7 +70,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
 				this, DnDConstants.ACTION_COPY, this);
 		setDropTarget(new DropTarget(this, new FixtureListDropListener(parent,
-				flm)));
+				                                                              flm)));
 		final InputMap inputMap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "delete");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0),
@@ -104,7 +97,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 				return;
 			}
 			final TileFixture firstElement = NullCleaner
-					.assertNotNull(selection.get(0));
+					                                 .assertNotNull(selection.get(0));
 			if (selection.size() == 1) {
 				dge.startDrag(null, new FixtureTransferable(firstElement));
 			} else {
@@ -114,8 +107,8 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 	}
 
 	/**
-	 * A FixtureList is equal to only another JList with the same model. If obj
-	 * is a DropTarget, we compare to its Component.
+	 * A FixtureList is equal to only another JList with the same model. If obj is a
+	 * DropTarget, we compare to its Component.
 	 *
 	 * @param obj another object
 	 * @return whether it's equal to this one
@@ -124,7 +117,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof JList
-				&& getModel().equals(((JList) obj).getModel());
+				                      && getModel().equals(((JList) obj).getModel());
 	}
 
 	/**
@@ -137,6 +130,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 
 	/**
 	 * A listener to set up pop-up menus.
+	 *
 	 * @author Jonathan Lovelace
 	 */
 	private static final class FixtureMouseListener extends MouseAdapter {
@@ -154,7 +148,8 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		 *
 		 * @param playerColl the collection of players in the map
 		 */
-		protected FixtureMouseListener(final Iterable<Player> playerColl, final JList<TileFixture> theList) {
+		protected FixtureMouseListener(final Iterable<Player> playerColl, final
+		JList<TileFixture> theList) {
 			players = playerColl;
 			list = theList;
 		}
@@ -184,21 +179,23 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		}
 
 		/**
-		 * @param event the event to handle. Marked as @Nullable so we only have
-		 *        to handle the null-event case once.
+		 * @param event the event to handle. Marked as @Nullable so we only have to
+		 *                    handle
+		 *              the null-event case once.
 		 */
 		private void handleMouseEvent(@Nullable final MouseEvent event) {
 			if (event != null && event.isPopupTrigger()
-					&& event.getClickCount() == 1) {
+					    && event.getClickCount() == 1) {
 				final int index = list.locationToIndex(event.getPoint());
 				if (index >= 0 && index < list.getModel().getSize()) {
 					new FixtureEditMenu(list.getModel().getElementAt(
 							list.locationToIndex(event.getPoint())), players).show(
-									event.getComponent(), event.getX(),
-									event.getY());
+							event.getComponent(), event.getX(),
+							event.getY());
 				}
 			}
 		}
+
 		/**
 		 * @return a String representation of the object
 		 */
@@ -207,13 +204,14 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 			return "FixtureMouseListener";
 		}
 	}
+
 	/**
-	 * @param old passed to the list model
+	 * @param old      passed to the list model
 	 * @param newPoint passed to the list model
 	 */
 	@Override
 	public void selectedPointChanged(@Nullable final Point old,
-			final Point newPoint) {
+	                                 final Point newPoint) {
 		flm.selectedPointChanged(old, newPoint);
 	}
 }

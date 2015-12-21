@@ -1,39 +1,36 @@
 package model.report;
 
-import java.util.Iterator;
+import model.map.Point;
+import model.map.PointFactory;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+import util.EnumerationWrapper;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
-import model.map.Point;
-import model.map.PointFactory;
-import util.EnumerationWrapper;
+import java.util.Iterator;
 
 /**
  * A superclass for report-nodes.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public abstract class AbstractReportNode extends DefaultMutableTreeNode
 		implements IReportNode, Iterable<@NonNull AbstractReportNode> {
@@ -50,7 +47,7 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	/**
 	 * Constructor.
 	 *
-	 * @param pt the point in the map that this node represents something on
+	 * @param pt  the point in the map that this node represents something on
 	 * @param txt the (header) text.
 	 */
 	protected AbstractReportNode(final Point pt, final String txt) {
@@ -71,6 +68,7 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 		setText(txt);
 		point = null;
 	}
+
 	/**
 	 * @return the HTML representation of the node.
 	 */
@@ -85,8 +83,7 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	public abstract StringBuilder produce(final StringBuilder builder);
 
 	/**
-	 * @return an approximation of how large the HTML produced by this node will
-	 *         be.
+	 * @return an approximation of how large the HTML produced by this node will be.
 	 */
 	@Override
 	public abstract int size();
@@ -124,7 +121,7 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof IReportNode
-				&& equalsImpl((IReportNode) obj);
+				                      && equalsImpl((IReportNode) obj);
 	}
 
 	/**
@@ -202,6 +199,7 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	public final void setPoint(final Point pt) {
 		point = pt;
 	}
+
 	/**
 	 * @return an iterator over the children
 	 */
@@ -209,6 +207,7 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	public Iterator<AbstractReportNode> iterator() {
 		return new EnumerationWrapper<>(children());
 	}
+
 	/**
 	 * @return whether this is "the empty node," which should always be ignored.
 	 */

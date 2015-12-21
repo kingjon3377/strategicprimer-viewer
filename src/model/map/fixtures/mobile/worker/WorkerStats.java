@@ -1,7 +1,6 @@
 package model.map.fixtures.mobile.worker;
 
 import org.eclipse.jdt.annotation.Nullable;
-
 import util.NullCleaner;
 
 /**
@@ -9,30 +8,29 @@ import util.NullCleaner;
  *
  * TODO: Should this really be mutable?
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public class WorkerStats {
 	/**
-	 * The basis of stats: every two points more than this is worth +1, and
-	 * every two points less is worth -1.
+	 * The basis of stats: every two points more than this is worth +1, and every two
+	 * points less is worth -1.
 	 */
 	private static final int STAT_BASIS = 10;
 	/**
@@ -71,18 +69,18 @@ public class WorkerStats {
 	/**
 	 * Constructor.
 	 *
-	 * @param hitPoints the worker's health
+	 * @param hitPoints    the worker's health
 	 * @param maxHitPoints the worker's max health
-	 * @param strength the worker's strength
-	 * @param dexterity the worker's dexterity
+	 * @param strength     the worker's strength
+	 * @param dexterity    the worker's dexterity
 	 * @param constitution the worker's constitution
 	 * @param intelligence the worker's intelligence
-	 * @param wisdom the worker's wisdom
-	 * @param charisma th worker's charisma
+	 * @param wisdom       the worker's wisdom
+	 * @param charisma     th worker's charisma
 	 */
 	public WorkerStats(final int hitPoints, final int maxHitPoints,
-			final int strength, final int dexterity, final int constitution,
-			final int intelligence, final int wisdom, final int charisma) {
+	                   final int strength, final int dexterity, final int constitution,
+	                   final int intelligence, final int wisdom, final int charisma) {
 		hp = hitPoints;
 		maxHP = maxHitPoints;
 		this.strength = strength;
@@ -92,13 +90,15 @@ public class WorkerStats {
 		wis = wisdom;
 		cha = charisma;
 	}
+
 	/**
-	 * @return a copy of this
 	 * @param zero ignored, as all our information is "essential"
+	 * @return a copy of this
 	 */
 	public WorkerStats copy(final boolean zero) {
 		return new WorkerStats(hp, maxHP, strength, dex, con, intel, wis, cha);
 	}
+
 	/**
 	 * @return the worker's health
 	 */
@@ -218,16 +218,17 @@ public class WorkerStats {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return obj == this || obj instanceof WorkerStats
-				&& equalsImpl((WorkerStats) obj);
+				                      && equalsImpl((WorkerStats) obj);
 	}
+
 	/**
 	 * @param obj another stats object
 	 * @return whether it's equal to this.
 	 */
 	private boolean equalsImpl(final WorkerStats obj) {
 		return hp == obj.hp && maxHP == obj.maxHP && strength == obj.strength
-				&& dex == obj.dex && con == obj.con && intel == obj.intel
-				&& wis == obj.wis && cha == obj.cha;
+				       && dex == obj.dex && con == obj.con && intel == obj.intel
+				       && wis == obj.wis && cha == obj.cha;
 	}
 
 	/**
@@ -252,6 +253,7 @@ public class WorkerStats {
 			return modStr;
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

@@ -1,19 +1,5 @@
 package controller.map.cxml;
 
-import static java.util.Collections.unmodifiableList;
-import static util.NullCleaner.assertNotNull;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Pattern;
-import java.util.stream.StreamSupport;
-
-import javax.xml.stream.Location;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -41,22 +27,38 @@ import util.EqualsAny;
 import util.IteratorWrapper;
 import util.Warning;
 
+import javax.xml.stream.Location;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.StreamSupport;
+
+import static java.util.Collections.unmodifiableList;
+import static util.NullCleaner.assertNotNull;
+
 /**
  * A reader for new-API maps.
  *
- * This is part of the Strategic Primer assistive programs suite developed by Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2015-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of version 3 of the GNU
- * General Public License as published by the Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program. If not, see <a
- * href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  */
@@ -65,8 +67,9 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * Singleton instance.
 	 */
 	public static final CompactReader<IMapNG> READER = new CompactMapNGReader();
-	private static final Pattern EXCEPT_PATTERN = Pattern.compile("^Wanted [^ ]*, was [^ " +
-			                                                                                       "]*$");
+	private static final Pattern EXCEPT_PATTERN =
+			Pattern.compile("^Wanted [^ ]*, was [^ " +
+					                "]*$");
 	/**
 	 * List of readers we'll try subtags on.
 	 */
@@ -101,7 +104,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	@Override
 	public IMutableMapNG read(final StartElement element,
 	                          final IteratorWrapper<XMLEvent> stream,
-	                          final IMutablePlayerCollection players, final Warning warner,
+	                          final IMutablePlayerCollection players,
+	                          final Warning warner,
 	                          final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "map", "view");
 		final int currentTurn;
@@ -114,7 +118,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			mapTag = getFirstStartElement(stream, outerLine);
 			if (!"map".equalsIgnoreCase(mapTag.getName().getLocalPart())) {
 				throw new UnwantedChildException(outerTag, assertNotNull(mapTag
-						                                                         .getName().getLocalPart()),
+						                                                         .getName()
+						                                                         .getLocalPart()),
 						                                mapTag.getLocation()
 								                                .getLineNumber());
 			}
@@ -158,8 +163,12 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					if (hasParameter(current, "kind")
 							    || hasParameter(current, "type")) {
 						retval.setBaseTerrain(point, TileType
-								                             .getTileType(getParamWithDeprecatedForm(
-										                             current, "kind", "type", warner)));
+								                             .getTileType(
+										                             getParamWithDeprecatedForm(
+												                             current,
+												                             "kind",
+												                             "type",
+												                             warner)));
 					} else {
 						warner.warn(new MissingPropertyException(type, "kind",
 								                                        currentLine));
@@ -176,8 +185,9 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					spinUntilEnd(assertNotNull(current.getName()),
 							stream);
 				} else if ("ground".equalsIgnoreCase(type)) {
-					addFixture(retval, point, CompactGroundReader.READER.read(current, stream, players,
-							warner, idFactory));
+					addFixture(retval, point,
+							CompactGroundReader.READER.read(current, stream, players,
+									warner, idFactory));
 				} else if ("forest".equalsIgnoreCase(type)) {
 					addFixture(retval, point, CompactTerrainReader.READER.read(current,
 							stream, players, warner, idFactory));
@@ -192,7 +202,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					} catch (final UnwantedChildException except) {
 						if ("unknown".equals(except.getTag())) {
 							throw new UnwantedChildException(mapName,
-									                                except.getChild(), currentLine);
+									                                except.getChild(),
+									                                currentLine);
 						} else {
 							throw except;
 						}
@@ -225,10 +236,12 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		}
 		if (hasParameter(mapTag, "current_player")) {
 			retval.setCurrentPlayer(players
-					                        .getPlayer(getIntegerParameter(mapTag, "current_player")));
+					                        .getPlayer(getIntegerParameter(mapTag,
+							                        "current_player")));
 		} else if (hasParameter(element, "current_player")) {
 			retval.setCurrentPlayer(players
-					                        .getPlayer(getIntegerParameter(element, "current_player")));
+					                        .getPlayer(getIntegerParameter(element,
+							                        "current_player")));
 		}
 		return retval;
 	}
@@ -296,7 +309,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 */
 	private TileFixture parseFixture(final StartElement element,
 	                                 final IteratorWrapper<XMLEvent> stream,
-	                                 final IMutablePlayerCollection players, final IDFactory idFactory,
+	                                 final IMutablePlayerCollection players,
+	                                 final IDFactory idFactory,
 	                                 final Warning warner) throws SPFormatException {
 		final String name = assertNotNull(element.getName().getLocalPart());
 		for (final CompactReader<? extends TileFixture> item : readers) {
@@ -315,10 +329,14 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * @throws SPFormatException if no start element in stream
 	 */
 	private static StartElement getFirstStartElement(
-			                                                final Iterable<XMLEvent> stream, final int line)
+			                                                final Iterable<XMLEvent>
+					                                                stream,
+			                                                final int line)
 			throws SPFormatException {
-		return StreamSupport.stream(stream.spliterator(), false).filter(XMLEvent::isStartElement).findFirst()
-				       .orElseThrow(() -> new MissingChildException("map", line)).asStartElement();
+		return StreamSupport.stream(stream.spliterator(), false)
+				       .filter(XMLEvent::isStartElement).findFirst()
+				       .orElseThrow(() -> new MissingChildException("map", line))
+				       .asStartElement();
 	}
 
 	/**
@@ -354,9 +372,9 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				final Point point = PointFactory.point(i, j);
 				if (TileType.NotVisible != obj.getBaseTerrain(point)
 						    || obj.isMountainous(point)
-								       || obj.getGround(point) != null
-								       || obj.getForest(point) != null
-								       || obj.getOtherFixtures(point).iterator().hasNext()) {
+						    || obj.getGround(point) != null
+						    || obj.getForest(point) != null
+						    || obj.getOtherFixtures(point).iterator().hasNext()) {
 					if (rowEmpty) {
 						rowEmpty = false;
 						ostream.append(indent(indent + 2));
@@ -444,7 +462,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	}
 
 	/**
-	 * Parse a river from XML. The caller is now responsible for getting past the closing tag.
+	 * Parse a river from XML. The caller is now responsible for getting past the closing
+	 * tag.
 	 *
 	 * @param element the element to parse
 	 * @param warner  the Warning instance to use as needed
@@ -494,7 +513,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * @throws IOException on I/O error
 	 */
 	public static void writeAllRivers(final Appendable ostream,
-	                                  final Iterable<River> iter, final int indent) throws IOException {
+	                                  final Iterable<River> iter, final int indent)
+			throws IOException {
 		for (final River river : iter) {
 			writeRiver(ostream, river, indent);
 		}

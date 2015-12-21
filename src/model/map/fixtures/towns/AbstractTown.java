@@ -1,33 +1,32 @@
 package model.map.fixtures.towns;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import model.map.IEvent;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**
  * An abstract superclass for towns etc.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  */
@@ -56,13 +55,13 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	/**
 	 * Constructor.
 	 *
-	 * @param tSize the size of the town, fortress, or city
+	 * @param tSize   the size of the town, fortress, or city
 	 * @param tStatus the status of the town, fortress, or city
-	 * @param tName the name of the town, fortress, or city
-	 * @param player the owner of the town, fortress, or city
+	 * @param tName   the name of the town, fortress, or city
+	 * @param player  the owner of the town, fortress, or city
 	 */
 	protected AbstractTown(final TownStatus tStatus, final TownSize tSize,
-			final String tName, final Player player) {
+	                       final String tName, final Player player) {
 		status = tStatus;
 		size = tSize;
 		name = tName;
@@ -78,7 +77,6 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	}
 
 	/**
-	 *
 	 * @return the status of the town, fortress, or city
 	 */
 	@Override
@@ -87,7 +85,6 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	}
 
 	/**
-	 *
 	 * @return the size of the town, fortress, or city
 	 */
 	@Override
@@ -101,7 +98,7 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	@Override
 	public String getText() {
 		final StringBuilder builder = new StringBuilder(56)
-				.append("There is a ");
+				                              .append("There is a ");
 		if (TownSize.Medium == size) {
 			builder.append("medium-size");
 		} else {
@@ -126,14 +123,13 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 
 	/**
 	 * @param obj an object
-	 *
 	 * @return whether it's an identical event
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof AbstractTown
-				&& getID() == ((TileFixture) obj).getID()
-				&& equalsContents((AbstractTown) obj);
+				                      && getID() == ((TileFixture) obj).getID()
+				                      && equalsContents((AbstractTown) obj);
 	}
 
 	/**
@@ -143,24 +139,23 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return this == fix
-				|| fix instanceof AbstractTown && equalsContents((AbstractTown) fix);
+				       ||
+				       fix instanceof AbstractTown && equalsContents((AbstractTown) fix);
 	}
 
 	/**
-	 * This should be used in subclasses' equals() and equalsIgnoringID(), where
-	 * all that is needed is a check of the type of the object in question.
+	 * This should be used in subclasses' equals() and equalsIgnoringID(), where all that
+	 * is needed is a check of the type of the object in question.
 	 *
-	 * @param fix
-	 *            a town-event
+	 * @param fix a town-event
 	 * @return whether it's equal to this one ignoring ID.
 	 */
 	protected final boolean equalsContents(final AbstractTown fix) {
 		return fix.size() == size && fix.getName().equals(name)
-				&& fix.status() == status && fix.owner.equals(owner);
+				       && fix.status() == status && fix.owner.equals(owner);
 	}
 
 	/**
-	 *
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -169,13 +164,14 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	}
 
 	/**
-	 *
 	 * @return a string representation of the event
 	 */
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder(80 + name.length()
-				+ owner.getName().length());
+				                                                +
+				                                                owner.getName().length
+						                                                                ());
 		if (owner.isIndependent()) {
 			builder.append("An independent ");
 		} else {
@@ -204,7 +200,6 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	}
 
 	/**
-	 *
 	 * @return a description of what kind of 'town' this is.
 	 */
 	public abstract String kind();
@@ -266,13 +261,16 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @return a short description of the fixture
 	 */
 	@Override
 	public String shortDesc() {
 		final StringBuilder builder = new StringBuilder(78 + name.length()
-				+ owner.getName().length());
+				                                                +
+				                                                owner.getName().length
+						                                                                ());
 		if (owner.isIndependent()) {
 			builder.append("An independent ");
 		} else {
@@ -297,9 +295,9 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 		}
 		return NullCleaner.assertNotNull(builder.toString());
 	}
+
 	/**
 	 * @param fix A TileFixture to compare to
-	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -307,4 +305,4 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 		return fix.hashCode() - hashCode();
 	}
 
-	}
+}

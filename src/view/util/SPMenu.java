@@ -1,21 +1,5 @@
 package view.util;
 
-import static javax.swing.SwingUtilities.invokeLater;
-import static view.util.MenuItemCreator.createHotkey;
-import static view.util.MenuItemCreator.createMenuItem;
-import static view.util.MenuItemCreator.createShiftHotkey;
-
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.io.File;
-
-import javax.swing.InputMap;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
-
 import controller.map.misc.IOHandler;
 import model.map.IMutableMapNG;
 import model.map.Player;
@@ -30,48 +14,53 @@ import view.map.main.ViewerFrame;
 import view.map.main.ZoomListener;
 import view.worker.PlayerChooserHandler;
 
+import javax.swing.*;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.io.File;
+
+import static javax.swing.SwingUtilities.invokeLater;
+import static view.util.MenuItemCreator.*;
+
 /**
  * A common superclass for application-specific menu bars.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2015-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public class SPMenu extends JMenuBar {
 	/**
 	 * Create the file menu.
 	 *
-	 * FIXME: Any menu items not handled by the IOHandler should be handled
-	 * there.
+	 * FIXME: Any menu items not handled by the IOHandler should be handled there.
 	 *
-	 * @param handler
-	 *            the class to handle I/O related menu items
-	 * @param parent
-	 *            the menu-bar's parent window, which should be the window
-	 *            closed when the user selects "close"
-	 * @param model
-	 *            the current driver model; only its type is used, to determine
-	 *            which menu items to disable.
+	 * @param handler the class to handle I/O related menu items
+	 * @param parent  the menu-bar's parent window, which should be the window closed
+	 *                   when
+	 *                the user selects "close"
+	 * @param model   the current driver model; only its type is used, to determine which
+	 *                menu items to disable.
 	 * @return the file menu
 	 */
 	protected static JMenu createFileMenu(final IOHandler handler,
-			final JFrame parent, final IDriverModel model) {
+	                                      final JFrame parent, final IDriverModel
+			                                                           model) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		final JMenuItem newItem = createMenuItem("New", KeyEvent.VK_N,
@@ -117,9 +106,14 @@ public class SPMenu extends JMenuBar {
 		fileMenu.addSeparator();
 		final JMenuItem openViewerItem = createMenuItem("Open in map viewer",
 				KeyEvent.VK_M, createHotkey(KeyEvent.VK_M),
-				"Open the main map in the map viewer for a broader view", evt -> invokeLater(() -> new ViewerFrame(
-						new ViewerModel(model.getMap(), model.getMapFile()), handler)
-								.setVisible(true)));
+				"Open the main map in the map viewer for a broader view",
+				evt -> invokeLater(() -> new ViewerFrame(
+						                                        new ViewerModel(model
+								                                                        .getMap(),
+								                                                       model.getMapFile()),
+
+						                                        handler)
+						                         .setVisible(true)));
 		fileMenu.add(openViewerItem);
 		if (model instanceof IViewerModel) {
 			openViewerItem.setEnabled(false);
@@ -130,11 +124,17 @@ public class SPMenu extends JMenuBar {
 				"Open the first secondary map in the map viewer for a broader view",
 				evt -> {
 					if (model instanceof IMultiMapModel) {
-						final Pair<IMutableMapNG, File> mapPair = ((IMultiMapModel) model)
-								.getSubordinateMaps().iterator().next();
+						final Pair<IMutableMapNG, File> mapPair = ((IMultiMapModel)
+								                                           model)
+								                                          .getSubordinateMaps()
+								                                          .iterator()
+								                                          .next();
 						invokeLater(() -> new ViewerFrame(
-								new ViewerModel(mapPair.first(), mapPair.second()),
-								handler).setVisible(true));
+								                                 new ViewerModel(mapPair
+										                                                 .first(),
+										                                                mapPair.second()),
+								                                 handler)
+								                  .setVisible(true));
 					}
 				});
 		fileMenu.add(openSecondaryViewerItem);
@@ -146,7 +146,7 @@ public class SPMenu extends JMenuBar {
 				createHotkey(KeyEvent.VK_W),
 				"Close this window", evt -> {
 					if (evt != null
-							&& "Close".equals(evt.getActionCommand())) {
+							    && "Close".equals(evt.getActionCommand())) {
 						parent.setVisible(false);
 						parent.dispose();
 					}
@@ -166,16 +166,18 @@ public class SPMenu extends JMenuBar {
 		}
 		return fileMenu;
 	}
+
 	/**
-	 * Create the "map" menu, including go-to-tile, find, and zooming functions. This
-	 * now takes any IDriverModel, because it's expected that apps where none of that
-	 * makes sense will show but disable the menu.
+	 * Create the "map" menu, including go-to-tile, find, and zooming functions. This now
+	 * takes any IDriverModel, because it's expected that apps where none of that makes
+	 * sense will show but disable the menu.
+	 *
 	 * @param parent the menu-bar's parent window
-	 * @param model the driver model
+	 * @param model  the driver model
 	 * @return the menu created
 	 */
 	protected static JMenu createMapMenu(final JFrame parent,
-			final IDriverModel model) {
+	                                     final IDriverModel model) {
 		final JMenu retval = new JMenu("Map");
 		retval.setMnemonic(KeyEvent.VK_M);
 		final JMenuItem gotoTileItem;
@@ -189,8 +191,9 @@ public class SPMenu extends JMenuBar {
 		if (model instanceof IViewerModel) {
 			gotoTileItem = createMenuItem("Go to tile",
 					KeyEvent.VK_T, createHotkey(KeyEvent.VK_T),
-					"Go to a tile by coordinates", evt -> new SelectTileDialog(parent, (IViewerModel) model)
-							.setVisible(true));
+					"Go to a tile by coordinates",
+					evt -> new SelectTileDialog(parent, (IViewerModel) model)
+							       .setVisible(true));
 			final FindDialog finder = new FindDialog(parent, (IViewerModel) model);
 			findItem = createMenuItem("Find a fixture", findKey,
 					findStroke, "Find a fixture by name, kind, or ID#",
@@ -201,8 +204,8 @@ public class SPMenu extends JMenuBar {
 			zoomListener = new ZoomListener((IViewerModel) model);
 		} else {
 			final ActionListener nullAction = evt -> {
-					// do nothing
-				};
+				// do nothing
+			};
 			gotoTileItem = createMenuItem("Go to tile",
 					KeyEvent.VK_T, createHotkey(KeyEvent.VK_T),
 					"Go to a tile by coordinates", nullAction);
@@ -267,13 +270,17 @@ public class SPMenu extends JMenuBar {
 		});
 		return retval;
 	}
+
 	/**
 	 * Create the "view" menu.
+	 *
 	 * @param pch the object to notify when the user selects a different player
-	 * @param al the object to expand and collapse rows of the tree when the user says to
+	 * @param al  the object to expand and collapse rows of the tree when the user says
+	 *            to
 	 * @return the "edit" menu
 	 */
-	protected static JMenu createViewMenu(final PlayerChooserHandler pch, final ActionListener al) {
+	protected static JMenu createViewMenu(final PlayerChooserHandler pch,
+	                                      final ActionListener al) {
 		final JMenu viewtMenu = new JMenu("View");
 		viewtMenu.setMnemonic(KeyEvent.VK_E);
 		viewtMenu.add(createMenuItem(
@@ -283,14 +290,19 @@ public class SPMenu extends JMenuBar {
 		viewtMenu.add(createMenuItem("Reload tree",
 				KeyEvent.VK_R, createHotkey(KeyEvent.VK_R),
 				"Refresh the view of the workers", e -> pch.reload()));
-		viewtMenu.add(createMenuItem("Expand All", KeyEvent.VK_X, null, "Expand all nodes in the unit tree", al));
+		viewtMenu.add(createMenuItem("Expand All", KeyEvent.VK_X, null,
+				"Expand all nodes in the unit tree", al));
 		viewtMenu.add(
-				createMenuItem("Expand Unit Kinds", KeyEvent.VK_K, null, "Expand all unit kinds to show the units", al));
-		viewtMenu.add(createMenuItem("Collapse All", KeyEvent.VK_C, null, "Collapse all nodes in the unit tree", al));
+				createMenuItem("Expand Unit Kinds", KeyEvent.VK_K, null,
+						"Expand all unit kinds to show the units", al));
+		viewtMenu.add(createMenuItem("Collapse All", KeyEvent.VK_C, null,
+				"Collapse all nodes in the unit tree", al));
 		return viewtMenu;
 	}
+
 	/**
 	 * Add a menu, but set it to disabled.
+	 *
 	 * @param menu a menu
 	 * @return it
 	 */

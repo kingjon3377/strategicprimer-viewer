@@ -11,16 +11,8 @@ import view.util.ErrorShower;
 import view.worker.PlayerChooserHandler;
 import view.worker.WorkerMenu;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import java.awt.Component;
-import java.awt.Container;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.text.NumberFormat;
@@ -30,21 +22,25 @@ import java.util.HashSet;
 import java.util.stream.StreamSupport;
 
 /**
- * A window to let the user enter resources etc. Note that this is not a dialog to enter one resource and close.
+ * A window to let the user enter resources etc. Note that this is not a dialog to enter
+ * one resource and close.
  *
- * This is part of the Strategic Primer assistive programs suite developed by Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under the terms of version 3 of the GNU
- * General Public License as published by the Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program. If not, see <a
- * href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  */
@@ -65,10 +61,13 @@ public class ResourceAddingFrame extends JFrame {
 		super("Resource Entry");
 		model = dmodel;
 		IDFactory idf = IDFactoryFiller.createFactory(model);
-		current = StreamSupport.stream(dmodel.getPlayers().spliterator(), false).filter(player -> player.isCurrent())
+		current = StreamSupport.stream(dmodel.getPlayers().spliterator(), false)
+				          .filter(player -> player.isCurrent())
 				          .findAny().orElse(new Player(-1, ""));
-		resourceLabel = new JLabel(String.format("Add resource for %s:", current.getName()));
-		implementLabel = new JLabel(String.format("Add equipment for %s:", current.getName()));
+		resourceLabel =
+				new JLabel(String.format("Add resource for %s:", current.getName()));
+		implementLabel =
+				new JLabel(String.format("Add equipment for %s:", current.getName()));
 		final PlayerChooserHandler pch = new PlayerChooserHandler(this, model);
 		pch.addPlayerChangeListener((old, newPlayer) -> {
 			if (newPlayer == null) {
@@ -76,8 +75,10 @@ public class ResourceAddingFrame extends JFrame {
 			} else {
 				current = newPlayer;
 			}
-			resourceLabel.setText(String.format("Add resource for %s:", current.getName()));
-			implementLabel.setText(String.format("Add equipment for %s:", current.getName()));
+			resourceLabel
+					.setText(String.format("Add resource for %s:", current.getName()));
+			implementLabel
+					.setText(String.format("Add equipment for %s:", current.getName()));
 		});
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 		add(resourceLabel);
@@ -97,7 +98,10 @@ public class ResourceAddingFrame extends JFrame {
 				String resource = resourceBox.getSelectedItem().toString().trim();
 				String units = resUnitsBox.getSelectedItem().toString().trim();
 				ResourcePile pile = new ResourcePile(idf.createID(), kind, resource,
-						                                    nf.parse(resQtyField.getText().trim()).intValue(),
+						                                    nf.parse(resQtyField
+								                                             .getText()
+								                                             .trim())
+								                                    .intValue(),
 						                                    units);
 				pile.setCreated(nf.parse(resCreatedField.getText().trim()).intValue());
 				model.addResource(pile, current);
@@ -130,7 +134,9 @@ public class ResourceAddingFrame extends JFrame {
 		setJMenuBar(new WorkerMenu(ioh, this, pch, model, ioh));
 		pack();
 	}
-	private static void addPair(Container container, Component firstComponent, Component secondComponent) {
+
+	private static void addPair(Container container, Component firstComponent,
+	                            Component secondComponent) {
 		final JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 		panel.add(Box.createVerticalGlue());
@@ -148,14 +154,16 @@ public class ResourceAddingFrame extends JFrame {
 		protected UpdatedComboBox() {
 			setEditable(true);
 		}
+
 		/**
 		 * From http://stackoverflow.com/a/24336768
+		 *
 		 * @param evt the event to process
 		 */
 		@Override
 		public void processKeyEvent(KeyEvent evt) {
-			if ( evt.getID() != KeyEvent.KEY_PRESSED
-					     || evt.getKeyCode() != KeyEvent.VK_TAB) {
+			if (evt.getID() != KeyEvent.KEY_PRESSED
+					    || evt.getKeyCode() != KeyEvent.VK_TAB) {
 				super.processKeyEvent(evt);
 				return;
 			}
@@ -165,18 +173,23 @@ public class ResourceAddingFrame extends JFrame {
 				KeyEvent fakeEnterKeyEvent = new KeyEvent((Component) evt.getSource(),
 						                                         evt.getID(),
 						                                         evt.getWhen(),
-						                                         0,                   // No modifiers.
-						                                         KeyEvent.VK_ENTER,   // Enter key.
-						                                         KeyEvent.CHAR_UNDEFINED);
+						                                         0,
+						                                         // No modifiers.
+						                                         KeyEvent.VK_ENTER,
+						                                         // Enter key.
+						                                         KeyEvent
+								                                         .CHAR_UNDEFINED);
 				super.processKeyEvent(fakeEnterKeyEvent);
 			}
-			if ( evt.getModifiers() == 0) {
+			if (evt.getModifiers() == 0) {
 				transferFocus();
-			} else if ( evt.getModifiers() == InputEvent.SHIFT_MASK) {
+			} else if (evt.getModifiers() == InputEvent.SHIFT_MASK) {
 				transferFocusBackward();
 			}
 		}
+
 		private final Collection<String> values = new HashSet<>();
+
 		public void checkAndClear() {
 			String item = getSelectedItem().toString().trim();
 			if (!values.contains(item)) {

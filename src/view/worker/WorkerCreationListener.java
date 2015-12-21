@@ -1,46 +1,46 @@
 package view.worker;
 
-import static view.util.ErrorShower.showErrorDialog;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.logging.Logger;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.map.misc.IDFactory;
 import model.listeners.NewWorkerListener;
 import model.listeners.UnitSelectionListener;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Worker;
 import model.workermgmt.IWorkerTreeModel;
+import org.eclipse.jdt.annotation.Nullable;
 import util.TypesafeLogger;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.logging.Logger;
+
+import static view.util.ErrorShower.showErrorDialog;
+
 /**
- * A listener to keep track of the currently selected unit and listen for
- * new-worker notifications, then pass this information on to the tree model.
+ * A listener to keep track of the currently selected unit and listen for new-worker
+ * notifications, then pass this information on to the tree model.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  */
 public final class WorkerCreationListener implements ActionListener,
-		UnitSelectionListener, NewWorkerListener {
+		                                                     UnitSelectionListener,
+		                                                     NewWorkerListener {
 	/**
 	 * What to say to the user when a worker is created but no unit is selected.
 	 */
@@ -54,7 +54,8 @@ public final class WorkerCreationListener implements ActionListener,
 	 * The logger to use for logging.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(WorkerCreationListener.class);
+			                                     .getLogger(WorkerCreationListener
+					                                                .class);
 	/**
 	 * The current unit. May be null, if nothing is selected.
 	 */
@@ -69,10 +70,10 @@ public final class WorkerCreationListener implements ActionListener,
 	 * Constructor.
 	 *
 	 * @param treeModel the tree model
-	 * @param idFac the ID factory to pass to the worker-creation window.
+	 * @param idFac     the ID factory to pass to the worker-creation window.
 	 */
 	public WorkerCreationListener(final IWorkerTreeModel treeModel,
-			final IDFactory idFac) {
+	                              final IDFactory idFac) {
 		tmodel = treeModel;
 		idf = idFac;
 	}
@@ -84,6 +85,7 @@ public final class WorkerCreationListener implements ActionListener,
 	public void selectUnit(@Nullable final IUnit unit) {
 		selUnit = unit;
 	}
+
 	/**
 	 * Handle button press.
 	 *
@@ -91,9 +93,10 @@ public final class WorkerCreationListener implements ActionListener,
 	 */
 	@Override
 	public void actionPerformed(@Nullable final ActionEvent evt) {
-		if (evt != null && evt.getActionCommand().toLowerCase().startsWith("add worker")) {
+		if (evt != null &&
+				    evt.getActionCommand().toLowerCase().startsWith("add worker")) {
 			final WorkerConstructionFrame frame = new WorkerConstructionFrame(
-					idf);
+					                                                                 idf);
 			frame.addNewWorkerListener(this);
 			frame.setVisible(true);
 		}
@@ -114,6 +117,7 @@ public final class WorkerCreationListener implements ActionListener,
 			tmodel.addUnitMember(local, worker);
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

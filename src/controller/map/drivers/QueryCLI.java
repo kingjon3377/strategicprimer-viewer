@@ -1,18 +1,5 @@
 package controller.map.drivers;
 
-import static view.util.SystemOut.SYS_OUT;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.StreamSupport;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
@@ -31,29 +18,41 @@ import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
+import org.eclipse.jdt.annotation.Nullable;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
+
+import static view.util.SystemOut.SYS_OUT;
+
 /**
  * A driver for running exploration results, etc., using the new model.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  */
@@ -62,15 +61,23 @@ public final class QueryCLI implements ISPDriver {
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-m",
-			"--map", ParamCount.One, "Answer questions about a map.",
-			"Look at tiles on a map. Or run hunting, gathering, or fishing.",
-			QueryCLI.class);
+			                                                            "--map",
+			                                                            ParamCount.One,
+			                                                            "Answer " +
+					                                                            "questions about a map.",
+
+			                                                            "Look at tiles " +
+					                                                            "on a " +
+					                                                            "map. Or" +
+					                                                            " run " +
+					                                                            "hunting, gathering, or fishing.",
+			                                                            QueryCLI.class);
 
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(QueryCLI.class);
+			                                     .getLogger(QueryCLI.class);
 	/**
 	 * Helper to get numbers from the user, etc.
 	 */
@@ -86,7 +93,7 @@ public final class QueryCLI implements ISPDriver {
 	private static final int HOURLY_ENCOUNTERS = 4;
 
 	/**
-	 * @param model the driver model containing the map to explore
+	 * @param model   the driver model containing the map to explore
 	 * @param ostream the stream to write output to
 	 */
 	private void repl(final IDriverModel model, final Appendable ostream) {
@@ -105,16 +112,16 @@ public final class QueryCLI implements ISPDriver {
 	}
 
 	/**
-	 * @param model the driver model
-	 * @param hmodel the hunting model
+	 * @param model   the driver model
+	 * @param hmodel  the hunting model
 	 * @param ostream the stream to write to
-	 * @param input the command
-	 *
-	 * @throws IOException on I/O error
+	 * @param input   the command
+	 * @throws IOException           on I/O error
 	 * @throws DriverFailedException on error (in the trap model driver)
 	 */
 	public void handleCommand(final IDriverModel model, final HuntingModel hmodel,
-			final Appendable ostream, final char input) throws IOException, DriverFailedException {
+	                          final Appendable ostream, final char input)
+			throws IOException, DriverFailedException {
 		switch (input) {
 		case '?':
 			usage(ostream);
@@ -124,15 +131,15 @@ public final class QueryCLI implements ISPDriver {
 			break;
 		case 'h':
 			hunt(hmodel, selectPoint(), true, ostream, HUNTER_HOURS
-					* HOURLY_ENCOUNTERS);
+					                                           * HOURLY_ENCOUNTERS);
 			break;
 		case 'i':
 			hunt(hmodel, selectPoint(), false, ostream, HUNTER_HOURS
-					* HOURLY_ENCOUNTERS);
+					                                            * HOURLY_ENCOUNTERS);
 			break;
 		case 'g':
 			gather(hmodel, selectPoint(), ostream, HUNTER_HOURS
-					* HOURLY_ENCOUNTERS);
+					                                       * HOURLY_ENCOUNTERS);
 			break;
 		case 'e':
 			herd(ostream);
@@ -151,15 +158,17 @@ public final class QueryCLI implements ISPDriver {
 			break;
 		}
 	}
+
 	/**
 	 * Count the workers belonging to a player.
-	 * @param map the map
+	 *
+	 * @param map     the map
 	 * @param players the list of players in the map
 	 * @param ostream the stream to write results to
 	 * @throws IOException on I/O error interacting with user
 	 */
 	private void count(final IMapNG map, final List<Player> players,
-			final Appendable ostream) throws IOException {
+	                   final Appendable ostream) throws IOException {
 		final int playerNum = helper.chooseFromList(players,
 				"Players in the map:", "Map contains no players",
 				"Owner of workers to count: ", true);
@@ -171,15 +180,18 @@ public final class QueryCLI implements ISPDriver {
 		for (final Point loc : map.locations()) {
 			for (final TileFixture fix : map.getOtherFixtures(loc)) {
 				if (fix instanceof IUnit
-						&& player.equals(((IUnit) fix).getOwner())) {
+						    && player.equals(((IUnit) fix).getOwner())) {
 					count += StreamSupport.stream(((IUnit) fix).spliterator(), false)
-							         .filter(member -> member instanceof IWorker).count();
+							         .filter(member -> member instanceof IWorker)
+							         .count();
 				} else if (fix instanceof Fortress) {
 					for (final FortressMember unit : (Fortress) fix) {
 						if (unit instanceof IUnit
-								&& player.equals(((IUnit) unit).getOwner())) {
-							count += StreamSupport.stream(((IUnit) unit).spliterator(), false)
-									         .filter(member -> member instanceof IWorker).count();
+								    && player.equals(((IUnit) unit).getOwner())) {
+							count += StreamSupport
+									         .stream(((IUnit) unit).spliterator(), false)
+									         .filter(member -> member instanceof IWorker)
+									         .count();
 						}
 					}
 				}
@@ -196,9 +208,8 @@ public final class QueryCLI implements ISPDriver {
 	 *
 	 * TODO: use some sort of pathfinding
 	 *
-	 * @param dims the dimensions of the map
-	 * @param ostream
-	 *            the stream to write to
+	 * @param dims    the dimensions of the map
+	 * @param ostream the stream to write to
 	 * @throws IOException on I/O error dealing with user input
 	 */
 	private void distance(final MapDimensions dims, final Appendable ostream)
@@ -223,14 +234,14 @@ public final class QueryCLI implements ISPDriver {
 		}
 		ostream.append("Distance (as the crow flies, in tiles):\t");
 		ostream.append(Long.toString(Math.round(Math.sqrt(xdiff
-				* xdiff + ydiff * ydiff))));
+				                                                  * xdiff +
+				                                                  ydiff * ydiff))));
 	}
+
 	/**
-	 * Run herding. TODO: Move the logic here into the HuntingModel or a similar
-	 * class.
+	 * Run herding. TODO: Move the logic here into the HuntingModel or a similar class.
 	 *
-	 * @param ostream
-	 *            the stream to write to
+	 * @param ostream the stream to write to
 	 * @throws IOException on I/O error dealing with user input
 	 */
 	private void herd(final Appendable ostream) throws IOException {
@@ -274,7 +285,8 @@ public final class QueryCLI implements ISPDriver {
 			ostream.append(Integer.toString(animalsPerHerder * 2));
 			ostream.append(" minutes; cleaning up after them,\n");
 			ostream.append(String.format(
-					"which should be done every third turn at least, takes %.1f hours.%n",
+					"which should be done every third turn at least, takes %.1f hours" +
+							".%n",
 					Double.valueOf(animalsPerHerder * 0.5)));
 			ostream.append(String.format(
 					"This produces %.0f eggs, totaling %.1f oz.%n",
@@ -293,19 +305,21 @@ public final class QueryCLI implements ISPDriver {
 					Double.valueOf(rate * 8.6 * count)));
 		}
 	}
+
 	/**
 	 * Run hunting, fishing, or trapping.
 	 *
-	 * @param hmodel the hunting model
-	 * @param point where to hunt or fish
-	 * @param land true if this is hunting, false if fishing
-	 * @param ostream the stream to write to
+	 * @param hmodel     the hunting model
+	 * @param point      where to hunt or fish
+	 * @param land       true if this is hunting, false if fishing
+	 * @param ostream    the stream to write to
 	 * @param encounters how many encounters to show
 	 * @throws IOException on I/O error writing to stream
 	 */
 	private static void hunt(final HuntingModel hmodel, final Point point,
-			final boolean land, final Appendable ostream, final int encounters)
-					throws IOException {
+	                         final boolean land, final Appendable ostream,
+	                         final int encounters)
+			throws IOException {
 		if (land) {
 			for (final String item : hmodel.hunt(point, encounters)) {
 				ostream.append(item);
@@ -322,14 +336,15 @@ public final class QueryCLI implements ISPDriver {
 	/**
 	 * Run food-gathering.
 	 *
-	 * @param hmodel the hunting model to get results from
-	 * @param point around where to gather
-	 * @param ostream the stream to write to
+	 * @param hmodel     the hunting model to get results from
+	 * @param point      around where to gather
+	 * @param ostream    the stream to write to
 	 * @param encounters how many encounters to show
 	 * @throws IOException on I/O error writing to stream
 	 */
 	private static void gather(final HuntingModel hmodel, final Point point,
-			final Appendable ostream, final int encounters) throws IOException {
+	                           final Appendable ostream, final int encounters)
+			throws IOException {
 		for (final String item : hmodel.gather(point, encounters)) {
 			ostream.append(item);
 			ostream.append('\n');
@@ -337,16 +352,16 @@ public final class QueryCLI implements ISPDriver {
 	}
 
 	/**
-	 * Give the data the player automatically knows about a user-specified tile
-	 * if he has a fortress on it.
+	 * Give the data the player automatically knows about a user-specified tile if he has
+	 * a fortress on it.
 	 *
-	 * @param map the map
+	 * @param map      the map
 	 * @param location the selected location
-	 * @param ostream the stream to print results to
+	 * @param ostream  the stream to print results to
 	 * @throws IOException on I/O error writing to stream
 	 */
 	private static void fortressInfo(final IMapNG map, final Point location,
-			final Appendable ostream) throws IOException {
+	                                 final Appendable ostream) throws IOException {
 		ostream.append("Terrain is ");
 		ostream.append(map.getBaseTerrain(location).toString());
 		ostream.append('\n');
@@ -397,7 +412,6 @@ public final class QueryCLI implements ISPDriver {
 	}
 
 	/**
-	 *
 	 * @return a String representation of the object.
 	 */
 	@Override
@@ -432,8 +446,10 @@ public final class QueryCLI implements ISPDriver {
 		ostream.append("Count: Count how many workers belong to a player.\n");
 		ostream.append("Quit: Exit the program.\n");
 	}
+
 	/**
 	 * Run the driver.
+	 *
 	 * @param model the driver model
 	 * @throws DriverFailedException on error
 	 */
@@ -441,6 +457,7 @@ public final class QueryCLI implements ISPDriver {
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
 		repl(model, SYS_OUT);
 	}
+
 	/**
 	 * Run the driver.
 	 *
@@ -451,7 +468,7 @@ public final class QueryCLI implements ISPDriver {
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 0) {
 			throw new DriverFailedException("Need one argument",
-					new IllegalArgumentException("Need one argument"));
+					                               new IllegalArgumentException("Need one argument"));
 		}
 		startDriver(new MapReaderAdapter().readMapModel(new File(args[0]),
 				new Warning(Action.Warn)));

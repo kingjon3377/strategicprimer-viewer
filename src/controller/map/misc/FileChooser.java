@@ -1,39 +1,37 @@
 package controller.map.misc;
 
-import static javax.swing.JFileChooser.APPROVE_OPTION;
-import static util.NullCleaner.assertNotNull;
-
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-
-import javax.swing.SwingUtilities;
-
 import util.NullCleaner;
 import view.map.main.MapFileFilter;
 import view.util.FilteredFileChooser;
 
+import javax.swing.*;
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+
+import static javax.swing.JFileChooser.APPROVE_OPTION;
+import static util.NullCleaner.assertNotNull;
+
 /**
  * A class to hide the details of choosing a file from the caller.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class FileChooser {
 	/**
@@ -41,21 +39,23 @@ public final class FileChooser {
 	 */
 	private File file;
 	/**
-	 * Whether we should return the filename (if not, we'll show the dialog,
-	 * then throw an exception if that fails).
+	 * Whether we should return the filename (if not, we'll show the dialog, then
+	 * throw an
+	 * exception if that fails).
 	 */
 	private boolean shouldReturn;
 	/**
 	 * A file chooser.
 	 */
 	private final FilteredFileChooser chooser = new FilteredFileChooser(".",
-			new MapFileFilter());
+			                                                                   new
+					                                                                   MapFileFilter());
+
 	/**
-	 * Constructor. When the filename is asked for, if the given value is valid,
-	 * we'll return it instead of showing a dialog.
+	 * Constructor. When the filename is asked for, if the given value is valid, we'll
+	 * return it instead of showing a dialog.
 	 *
-	 * @param loc
-	 *            the file to return.
+	 * @param loc the file to return.
 	 */
 	public FileChooser(final File loc) {
 		file = new File("");
@@ -63,21 +63,20 @@ public final class FileChooser {
 	}
 
 	/**
-	 * No-arg constructor. We'll show a dialog unconditionally when the filename
-	 * is asked for.
+	 * No-arg constructor. We'll show a dialog unconditionally when the filename is asked
+	 * for.
 	 */
 	public FileChooser() {
 		this(new File(""));
 	}
 
 	/**
-	 * If no valid filename was passed in, show a dialog for the user to select
-	 * one; return the filename passed in or the filename the user selected.
+	 * If no valid filename was passed in, show a dialog for the user to select one;
+	 * return the filename passed in or the filename the user selected.
 	 *
 	 * @return the file the caller or the user chose
-	 * @throws ChoiceInterruptedException
-	 *             when the choice is interrupted or the user declines to choose
-	 *             a file.
+	 * @throws ChoiceInterruptedException when the choice is interrupted or the user
+	 *                                    declines to choose a file.
 	 */
 	public File getFile() throws ChoiceInterruptedException {
 		if (!shouldReturn) {
@@ -90,9 +89,9 @@ public final class FileChooser {
 				invoke(() -> {
 					if (fileChooser.showOpenDialog(null) == APPROVE_OPTION) {
 						setFile(NullCleaner
-								.valueOrDefault(
-										fileChooser.getSelectedFile(),
-										new File("")));
+								        .valueOrDefault(
+										        fileChooser.getSelectedFile(),
+										        new File("")));
 					}
 				});
 			}
@@ -106,12 +105,11 @@ public final class FileChooser {
 
 	/**
 	 * invokeAndWait(), and throw a ChoiceInterruptedException if interrupted or
-	 * otherwise failing.
+	 * otherwise
+	 * failing.
 	 *
-	 * @param runnable
-	 *            the runnable to run.
-	 * @throws ChoiceInterruptedException
-	 *             on error
+	 * @param runnable the runnable to run.
+	 * @throws ChoiceInterruptedException on error
 	 */
 	private static void invoke(final Runnable runnable)
 			throws ChoiceInterruptedException {
@@ -128,11 +126,11 @@ public final class FileChooser {
 			throw new ChoiceInterruptedException(except);
 		}
 	}
+
 	/**
 	 * (Re-)set the file to return.
 	 *
-	 * @param loc
-	 *            the file to return
+	 * @param loc the file to return
 	 */
 	public void setFile(final File loc) {
 		if (loc.exists()) {
@@ -145,15 +143,15 @@ public final class FileChooser {
 	}
 
 	/**
-	 * An exception to throw when no selection was made or selection was
-	 * interrupted by an exception.
+	 * An exception to throw when no selection was made or selection was interrupted
+	 * by an
+	 * exception.
 	 *
 	 * @author Jonathan Lovelace
 	 */
 	public static final class ChoiceInterruptedException extends Exception {
 		/**
-		 * @param cause
-		 *            an exception that we caught that interrupted the choice
+		 * @param cause an exception that we caught that interrupted the choice
 		 */
 		public ChoiceInterruptedException(final Throwable cause) {
 			super("Choice of a file was interrupted by an exception:", cause);

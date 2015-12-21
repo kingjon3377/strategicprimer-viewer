@@ -1,46 +1,45 @@
 package controller.exploration;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import model.exploration.old.EncounterTable;
 import model.exploration.old.ExplorationRunner;
 import model.exploration.old.MissingTableException;
 import util.NullCleaner;
 import util.TypesafeLogger;
 
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * A driver to help debug exploration tables.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class TableDebugger {
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(TableDebugger.class);
+			                                     .getLogger(TableDebugger.class);
 	/**
 	 * The exploration runner.
 	 */
@@ -49,8 +48,7 @@ public final class TableDebugger {
 	/**
 	 * Constructor.
 	 *
-	 * @param explRunner an exploration runner loaded with all the tables we
-	 *        want.
+	 * @param explRunner an exploration runner loaded with all the tables we want.
 	 */
 	protected TableDebugger(final ExplorationRunner explRunner) {
 		runner = explRunner;
@@ -61,7 +59,7 @@ public final class TableDebugger {
 	 *
 	 * @param ostream the stream to print to.
 	 * @throws MissingTableException if a referenced table isn't there
-	 * @throws IOException on error writing to the stream
+	 * @throws IOException           on error writing to the stream
 	 */
 	private void debugTables(final Appendable ostream)
 			throws MissingTableException, IOException {
@@ -74,21 +72,22 @@ public final class TableDebugger {
 	/**
 	 * Print all possible results from a table.
 	 *
-	 * @param before the string to print before each result (from the calling
-	 *        table)
-	 * @param after the string to print after each result (from the calling
-	 *        table)
-	 * @param table the table to debug
+	 * @param before    the string to print before each result (from the calling table)
+	 * @param after     the string to print after each result (from the calling table)
+	 * @param table     the table to debug
 	 * @param tableName the name of the table
-	 * @param ostream the stream to print to
-	 * @param set the set of tables already on the stack, to prevent infinite
-	 *        recursion
+	 * @param ostream   the stream to print to
+	 * @param set       the set of tables already on the stack, to prevent infinite
+	 *                  recursion
 	 * @throws MissingTableException if a table is missing
-	 * @throws IOException on I/O error writing to the stream
+	 * @throws IOException           on I/O error writing to the stream
 	 */
 	private void debugSingleTable(final String before, final String after,
-	                              final EncounterTable table, @SuppressWarnings("TypeMayBeWeakened") final String tableName,
-	                              final Appendable ostream, final Set<EncounterTable> set)
+	                              final EncounterTable table,
+	                              @SuppressWarnings("TypeMayBeWeakened")
+	                              final String tableName,
+	                              final Appendable ostream, final Set<EncounterTable>
+			                                                        set)
 			throws MissingTableException, IOException {
 		if (set.contains(table)) {
 			ostream.append("table ");
@@ -127,10 +126,12 @@ public final class TableDebugger {
 	public String toString() {
 		return "TableDebugger";
 	}
+
 	/**
 	 * A utility driver method that loads all files in tables/ under the current
-	 * directory, then checks to see whether any references a nonexistent table,
-	 * then does further tests for debugging purposes.
+	 * directory, then checks to see whether any references a nonexistent table, then
+	 * does
+	 * further tests for debugging purposes.
 	 *
 	 * @param args ignored
 	 */
@@ -139,7 +140,7 @@ public final class TableDebugger {
 		TableLoader.loadAllTables("tables", runner);
 		try {
 			new TableDebugger(runner).debugTables(NullCleaner
-					.assertNotNull(System.out));
+					                                      .assertNotNull(System.out));
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.SEVERE, "Missing table", e);
 			System.exit(1);

@@ -1,36 +1,34 @@
 package view.map.main;
 
+import model.map.PointFactory;
+import model.viewer.IViewerModel;
+import org.eclipse.jdt.annotation.Nullable;
+
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-import org.eclipse.jdt.annotation.Nullable;
-
-import model.map.PointFactory;
-import model.viewer.IViewerModel;
-
 /**
- * A class for moving the cursor around the single-component map UI, including
- * scrolling using the mouse wheel.
+ * A class for moving the cursor around the single-component map UI, including scrolling
+ * using the mouse wheel.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class DirectionSelectionChanger implements MouseWheelListener {
 	/**
@@ -88,6 +86,7 @@ public final class DirectionSelectionChanger implements MouseWheelListener {
 					model.getSelectedPoint().col + 1));
 		}
 	}
+
 	/**
 	 * Move the cursor all the way to the top.
 	 */
@@ -97,6 +96,7 @@ public final class DirectionSelectionChanger implements MouseWheelListener {
 					PointFactory.point(0, model.getSelectedPoint().col));
 		}
 	}
+
 	/**
 	 * Move the cursor all the way to the bottom.
 	 */
@@ -107,6 +107,7 @@ public final class DirectionSelectionChanger implements MouseWheelListener {
 							model.getSelectedPoint().col));
 		}
 	}
+
 	/**
 	 * Move the cursor all the way to the left.
 	 */
@@ -116,6 +117,7 @@ public final class DirectionSelectionChanger implements MouseWheelListener {
 					PointFactory.point(model.getSelectedPoint().row, 0));
 		}
 	}
+
 	/**
 	 * Move the cursor all the way to the right.
 	 */
@@ -125,8 +127,8 @@ public final class DirectionSelectionChanger implements MouseWheelListener {
 					model.getMapDimensions().rows - 1));
 		}
 	}
+
 	/**
-	 *
 	 * @return a String representation of the object.
 	 */
 	@Override
@@ -137,12 +139,12 @@ public final class DirectionSelectionChanger implements MouseWheelListener {
 	/**
 	 * Scroll.
 	 *
-	 * @param horiz whether to scroll horizontally.
+	 * @param horiz   whether to scroll horizontally.
 	 * @param forward whether to scroll forward (down or right)
-	 * @param count how many times to scroll
+	 * @param count   how many times to scroll
 	 */
 	private void scroll(final boolean horiz, final boolean forward,
-			final int count) {
+	                    final int count) {
 		if (horiz && forward) {
 			for (int i = 0; i < count; i++) {
 				right();

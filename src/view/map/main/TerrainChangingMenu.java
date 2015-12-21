@@ -1,13 +1,5 @@
 package view.map.main;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.map.misc.IDFactoryFiller;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
@@ -18,32 +10,39 @@ import model.map.PointFactory;
 import model.map.TileType;
 import model.misc.IDriverModel;
 import model.viewer.IViewerModel;
+import org.eclipse.jdt.annotation.Nullable;
 import view.worker.NewUnitDialog;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * A popup menu to let the user change a tile's terrain type, or add a unit.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  */
 public final class TerrainChangingMenu extends JPopupMenu implements ActionListener,
-		VersionChangeListener, SelectionChangeSource, SelectionChangeListener {
+		                                                                     VersionChangeListener,
+		                                                                     SelectionChangeSource,
+		                                                                     SelectionChangeListener {
 	/**
 	 * The driver model.
 	 */
@@ -65,16 +64,18 @@ public final class TerrainChangingMenu extends JPopupMenu implements ActionListe
 	 * The window to allow the user to create a new unit.
 	 */
 	private final NewUnitDialog nuDialog;
+
 	/**
 	 * Constructor.
 	 *
 	 * @param version the map version
-	 * @param dmodel the driver model
+	 * @param dmodel  the driver model
 	 */
 	public TerrainChangingMenu(final int version, final IViewerModel dmodel) {
 		model = dmodel;
 		nuDialog = new NewUnitDialog(dmodel.getMap().getCurrentPlayer(),
-				IDFactoryFiller.createFactory(dmodel.getMap()));
+				                            IDFactoryFiller
+						                            .createFactory(dmodel.getMap()));
 		nuDialog.addNewUnitListener(unit -> {
 			dmodel.getMap().addFixture(point, unit);
 			dmodel.setSelection(point);
@@ -117,7 +118,7 @@ public final class TerrainChangingMenu extends JPopupMenu implements ActionListe
 	}
 
 	/**
-	 * @param old the previously selected version
+	 * @param old        the previously selected version
 	 * @param newVersion the newly selected version
 	 */
 	@Override
@@ -130,7 +131,7 @@ public final class TerrainChangingMenu extends JPopupMenu implements ActionListe
 	 */
 	@Override
 	public void addSelectionChangeListener(
-			final SelectionChangeListener list) {
+			                                      final SelectionChangeListener list) {
 		scs.addSelectionChangeListener(list);
 	}
 
@@ -139,17 +140,18 @@ public final class TerrainChangingMenu extends JPopupMenu implements ActionListe
 	 */
 	@Override
 	public void removeSelectionChangeListener(
-			final SelectionChangeListener list) {
+			                                         final SelectionChangeListener
+					                                         list) {
 		scs.removeSelectionChangeListener(list);
 	}
 
 	/**
-	 * @param old ignored
+	 * @param old      ignored
 	 * @param newPoint ignored
 	 */
 	@Override
 	public void selectedPointChanged(@Nullable final Point old,
-			final Point newPoint) {
+	                                 final Point newPoint) {
 		point = newPoint;
 		if (TileType.NotVisible == model.getMap().getBaseTerrain(newPoint)) {
 			newUnitItem.setEnabled(false);

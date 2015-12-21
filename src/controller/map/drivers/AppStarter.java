@@ -1,20 +1,5 @@
 package controller.map.drivers;
 
-import java.awt.GraphicsEnvironment;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.WindowThread;
@@ -26,39 +11,57 @@ import util.TypesafeLogger;
 import view.util.AppChooserFrame;
 import view.util.ErrorShower;
 
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * A driver to start other drivers. At first it just starts one.
  *
  * TODO: make it possible to start multiple specified drivers.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class AppStarter implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-p",
-			"--app-starter", ParamCount.Many, "App Chooser",
-			"Let the user choose an app to start, or handle options.",
-			AppStarter.class);
+			                                                            "--app-starter",
+			                                                            ParamCount.Many,
+			                                                            "App Chooser",
+			                                                            "Let the user " +
+					                                                            "choose " +
+					                                                            "an app " +
+					                                                            "to start, or handle options.",
+
+			                                                            AppStarter
+					                                                            .class);
 
 	/**
 	 * A map from options to the drivers they represent.
@@ -77,8 +80,8 @@ public final class AppStarter implements ISPDriver {
 	}
 
 	/**
-	 * If the two drivers don't have the same short and long options, or if both
-	 * are or neither is graphical, logs a warning.
+	 * If the two drivers don't have the same short and long options, or if both are or
+	 * neither is graphical, logs a warning.
 	 *
 	 * @param cliDriver a first driver
 	 * @param guiDriver a second driver
@@ -89,7 +92,8 @@ public final class AppStarter implements ISPDriver {
 		if (cliUsage.isGraphical() || !guiUsage.isGraphical()) {
 			LOGGER.warning("Two-arg addChoice expects non-GUI / GUI pair");
 		} else if (!cliUsage.getShortOption().equals(guiUsage.getShortOption())
-				|| !cliUsage.getLongOption().equals(guiUsage.getLongOption())) {
+				           ||
+				           !cliUsage.getLongOption().equals(guiUsage.getLongOption())) {
 			LOGGER.warning("In two-arg addChoice, args' options should match");
 		}
 		final Pair<ISPDriver, ISPDriver> pair = Pair.of(cliDriver, guiDriver);
@@ -119,8 +123,12 @@ public final class AppStarter implements ISPDriver {
 		addChoice(new MapPopulatorDriver());
 		addChoice(new ResourceAddingCLIDriver(), new ResourceAddingGUIDriver());
 	}
+
 	/**
-	 * Since there's no way of choosing which driver programmatically here, we present our choice to the user.
+	 * Since there's no way of choosing which driver programmatically here, we present
+	 * our
+	 * choice to the user.
+	 *
 	 * @param model the driver model
 	 * @throws DriverFailedException always, for the moment
 	 */
@@ -132,10 +140,14 @@ public final class AppStarter implements ISPDriver {
 					.forEach(pair -> drivers.add(pair.first()));
 			try {
 				startChosenDriver(NullCleaner.assertNotNull(drivers
-						.get(new CLIHelper().chooseFromList(drivers,
-								"CLI apps available:",
-								"No applications available", "App to start: ",
-								true))), model);
+						                                            .get(new CLIHelper()
+								                                                 .chooseFromList(
+										                                                 drivers,
+										                                                 "CLI apps available:",
+										                                                 "No applications available",
+										                                                 "App to start: ",
+										                                                 true))),
+						model);
 			} catch (final IOException except) {
 				LOGGER.log(Level.SEVERE,
 						"I/O error prompting user for app to start", except);
@@ -143,9 +155,10 @@ public final class AppStarter implements ISPDriver {
 			}
 		} else {
 			SwingUtilities.invokeLater(new WindowThread(new AppChooserFrame(
-					model)));
+					                                                               model)));
 		}
 	}
+
 	/**
 	 * Start the driver, and then start the specified other driver.
 	 *
@@ -211,25 +224,30 @@ public final class AppStarter implements ISPDriver {
 	/**
 	 * Start the app-chooser window.
 	 *
-	 * @param gui whether to show the GUI chooser (or a CLI list)
+	 * @param gui    whether to show the GUI chooser (or a CLI list)
 	 * @param others the parameters to pass to the chosen driver
 	 * @throws DriverFailedException if the chosen driver fails
 	 */
 	private static void startChooser(final boolean gui,
-			final List<String> others) throws DriverFailedException {
+	                                 final List<String> others)
+			throws DriverFailedException {
 		if (gui) {
 			SwingUtilities.invokeLater(new WindowThread(new AppChooserFrame(
-					others)));
+					                                                               others)));
 		} else {
 			final List<ISPDriver> drivers = new ArrayList<>();
 			CACHE.values().stream().filter(pair -> !drivers.contains(pair.first()))
 					.forEach(pair -> drivers.add(pair.first()));
 			try {
 				startChosenDriver(NullCleaner.assertNotNull(drivers
-						.get(new CLIHelper().chooseFromList(drivers,
-								"CLI apps available:",
-								"No applications available", "App to start: ",
-								true))), others);
+						                                            .get(new CLIHelper()
+								                                                 .chooseFromList(
+										                                                 drivers,
+										                                                 "CLI apps available:",
+										                                                 "No applications available",
+										                                                 "App to start: ",
+										                                                 true))),
+						others);
 			} catch (final IOException except) {
 				LOGGER.log(Level.SEVERE,
 						"I/O error prompting user for app to start", except);
@@ -246,25 +264,32 @@ public final class AppStarter implements ISPDriver {
 	 * @throws DriverFailedException on fatal error
 	 */
 	private static void startChosenDriver(final ISPDriver driver, // NOPMD
-			final List<String> params) throws DriverFailedException {
+	                                      final List<String> params)
+			throws DriverFailedException {
 		driver.startDriver(NullCleaner.assertNotNull(params
-				.toArray(new String[params.size()])));
+				                                             .toArray(
+						                                             new String[params
+								                                                        .size()])));
 	}
+
 	/**
 	 * Start a driver.
+	 *
 	 * @param driver the driver to start
-	 * @param model the driver model
+	 * @param model  the driver model
 	 * @throws DriverFailedException on fatal error
 	 */
 	private static void startChosenDriver(final ISPDriver driver,
-			final IDriverModel model) throws DriverFailedException {
+	                                      final IDriverModel model)
+			throws DriverFailedException {
 		driver.startDriver(model);
 	}
+
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(AppStarter.class);
+			                                     .getLogger(AppStarter.class);
 
 	/**
 	 * Entry point: start the driver.
@@ -272,12 +297,13 @@ public final class AppStarter implements ISPDriver {
 	 * @param args command-line arguments
 	 */
 	public static void main(final String... args) {
-		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "SP Helpers");
+		System.setProperty("com.apple.mrj.application.apple.menu.about.name",
+				"SP Helpers");
 		System.setProperty("apple.awt.application.name", "SP Helpers");
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (final ClassNotFoundException | InstantiationException
-				| IllegalAccessException | UnsupportedLookAndFeelException except) {
+				               | IllegalAccessException | UnsupportedLookAndFeelException except) {
 			LOGGER.log(Level.SEVERE,
 					"Failed to switch to system look-and-feel", except);
 		}
@@ -313,6 +339,7 @@ public final class AppStarter implements ISPDriver {
 	public void setName(final String nomen) {
 		throw new IllegalStateException("Can't rename a driver");
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

@@ -1,20 +1,5 @@
 package view.map.main;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.listeners.GraphicalParamsListener;
 import model.listeners.MapChangeListener;
 import model.listeners.SelectionChangeListener;
@@ -25,37 +10,46 @@ import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
 import model.viewer.ZOrderFilter;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+
 /**
- * A component to display the map, even a large one, without the performance
- * problems the previous solutions had. (I hope.)
+ * A component to display the map, even a large one, without the performance problems the
+ * previous solutions had. (I hope.)
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class MapComponent extends JComponent implements MapGUI,
-		MapChangeListener, SelectionChangeListener, GraphicalParamsListener {
+		                                                              MapChangeListener,
+		                                                              SelectionChangeListener,
+		                                                              GraphicalParamsListener {
 	/**
-	 * The map model encapsulating the map this represents, the secondary map,
-	 * and the selected tile.
+	 * The map model encapsulating the map this represents, the secondary map, and the
+	 * selected tile.
 	 */
 	private final IViewerModel model;
 	/**
@@ -87,7 +81,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 		cml.addSelectionChangeListener(this);
 		addMouseListener(cml);
 		final DirectionSelectionChanger dsl = new DirectionSelectionChanger(
-				model);
+				                                                                   model);
 		addMouseWheelListener(dsl);
 		requestFocusInWindow();
 		final ActionMap actionMap = getActionMap();
@@ -164,14 +158,14 @@ public final class MapComponent extends JComponent implements MapGUI,
 	/**
 	 * Draw a subset of the map.
 	 *
-	 * @param pen the graphics context
+	 * @param pen  the graphics context
 	 * @param minX the minimum X (row?) to draw
 	 * @param minY the minimum Y (col?) to draw
 	 * @param maxX the maximum X (row?) to draw
 	 * @param maxY the maximum Y (col?) to draw
 	 */
 	private void drawMapPortion(final Graphics pen, final int minX,
-			final int minY, final int maxX, final int maxY) {
+	                            final int minY, final int maxX, final int maxY) {
 		final int minRow = getMapModel().getDimensions().getMinimumRow();
 		final int maxRow = getMapModel().getDimensions().getMaximumRow();
 		final int minCol = getMapModel().getDimensions().getMinimumCol(); // NOPMD
@@ -179,7 +173,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 		for (int i = minY; i < maxY && i + minRow < maxRow + 1; i++) {
 			for (int j = minX; j < maxX && j + minCol < maxCol + 1; j++) {
 				final Point location = PointFactory.point(i + minRow, j
-						+ minCol);
+						                                                      + minCol);
 				paintTile(pen, location, i, j,
 						getMapModel().getSelectedPoint().equals(location));
 			}
@@ -188,7 +182,6 @@ public final class MapComponent extends JComponent implements MapGUI,
 
 	/**
 	 * @param rect a bounding rectangle
-	 *
 	 * @return it, or a rectangle surrounding the whole map if it's null
 	 */
 	private Rectangle bounds(@Nullable final Rectangle rect) {
@@ -196,21 +189,30 @@ public final class MapComponent extends JComponent implements MapGUI,
 				getMapModel().getMapDimensions().getVersion());
 		final VisibleDimensions dim = getMapModel().getDimensions();
 		return NullCleaner.valueOrDefault(rect, new Rectangle(0, 0,
-				(dim.getMaximumCol() - dim.getMinimumCol()) * tsize,
-				(dim.getMaximumRow() - dim.getMinimumRow()) * tsize));
+				                                                     (dim.getMaximumCol
+						                                                          () -
+						                                                      dim
+								                                                      .getMinimumCol()) *
+
+						                                                     tsize,
+				                                                     (dim.getMaximumRow
+						                                                          () -
+						                                                      dim
+								                                                      .getMinimumRow()) *
+						                                                     tsize));
 	}
 
 	/**
 	 * Paint a tile.
 	 *
-	 * @param pen the graphics context
-	 * @param point the point being drawn
-	 * @param row which row this is
-	 * @param col which column this is
+	 * @param pen      the graphics context
+	 * @param point    the point being drawn
+	 * @param row      which row this is
+	 * @param col      which column this is
 	 * @param selected whether the tile is the selected tile
 	 */
 	private void paintTile(final Graphics pen, final Point point, final int row,
-			final int col, final boolean selected) {
+	                       final int col, final boolean selected) {
 		final int tsize = TileViewSize.scaleZoom(getMapModel().getZoomLevel(),
 				getMapModel().getMapDimensions().getVersion());
 		helper.drawTile(pen, model.getMap(), point,
@@ -229,7 +231,6 @@ public final class MapComponent extends JComponent implements MapGUI,
 	}
 
 	/**
-	 *
 	 * @return the map model
 	 */
 	@Override
@@ -243,7 +244,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 */
 	@Override
 	public void dimensionsChanged(final VisibleDimensions oldDim,
-			final VisibleDimensions newDim) {
+	                              final VisibleDimensions newDim) {
 		repaint();
 	}
 
@@ -254,7 +255,8 @@ public final class MapComponent extends JComponent implements MapGUI,
 	@Override
 	public void tsizeChanged(final int oldSize, final int newSize) {
 		final ComponentEvent evt = new ComponentEvent(this,
-				ComponentEvent.COMPONENT_RESIZED);
+				                                             ComponentEvent
+						                                             .COMPONENT_RESIZED);
 		for (final ComponentListener list : getComponentListeners()) {
 			list.componentResized(evt);
 		}
@@ -262,12 +264,12 @@ public final class MapComponent extends JComponent implements MapGUI,
 	}
 
 	/**
-	 * @param old ignored
+	 * @param old      ignored
 	 * @param newPoint ignored
 	 */
 	@Override
 	public void selectedPointChanged(@Nullable final Point old,
-			final Point newPoint) {
+	                                 final Point newPoint) {
 		SwingUtilities.invokeLater(this::requestFocusInWindow);
 		if (!isSelectionVisible()) {
 			fixVisibility();
@@ -286,8 +288,8 @@ public final class MapComponent extends JComponent implements MapGUI,
 	}
 
 	/**
-	 * @return whether the selected tile is either not in the map or visible in
-	 *         the current bounds.
+	 * @return whether the selected tile is either not in the map or visible in the
+	 * current bounds.
 	 */
 	private boolean isSelectionVisible() {
 		final int selRow = getMapModel().getSelectedPoint().row;
@@ -298,9 +300,9 @@ public final class MapComponent extends JComponent implements MapGUI,
 		final int maxCol = getMapModel().getDimensions().getMaximumCol();
 		final MapDimensions mapDim = getMapModel().getMapDimensions();
 		return (selRow < 0 || selRow >= minRow)
-				&& (selRow >= mapDim.rows || selRow <= maxRow)
-				&& (selCol < 0 || selCol >= minCol)
-				&& (selCol >= mapDim.cols || selCol <= maxCol);
+				       && (selRow >= mapDim.rows || selRow <= maxRow)
+				       && (selCol < 0 || selCol >= minCol)
+				       && (selCol >= mapDim.cols || selCol <= maxCol);
 	}
 
 	/**

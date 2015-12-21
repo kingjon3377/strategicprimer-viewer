@@ -1,9 +1,5 @@
 package model.misc;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-
 import model.listeners.MapChangeListener;
 import model.listeners.VersionChangeListener;
 import model.map.IMutableMapNG;
@@ -11,28 +7,31 @@ import model.map.MapDimensions;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * A superclass for driver-models, to handle the common details.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public abstract class AbstractDriverModel implements IDriverModel {
 	/**
@@ -51,6 +50,7 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	 * The name from which the map was loaded.
 	 */
 	private File file = new File("");
+
 	/**
 	 * @param newMap the new map
 	 * @param origin the file from which the map was loaded
@@ -67,7 +67,6 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	}
 
 	/**
-	 *
 	 * @return the main map
 	 */
 	@Override
@@ -82,6 +81,7 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	public final MapDimensions getMapDimensions() {
 		return mapDim;
 	}
+
 	/**
 	 * @return the file from which the map was loaded
 	 */
@@ -89,6 +89,7 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	public final File getMapFile() {
 		return file;
 	}
+
 	/**
 	 * Add a MapChangeListener.
 	 *
@@ -131,7 +132,7 @@ public abstract class AbstractDriverModel implements IDriverModel {
 	 */
 	@Override
 	public final void removeVersionChangeListener(
-			final VersionChangeListener list) {
+			                                             final VersionChangeListener list) {
 		vcListeners.remove(list);
 	}
 }

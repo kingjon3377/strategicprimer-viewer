@@ -1,46 +1,42 @@
 package model.map.fixtures.mobile.worker;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-
-import model.map.IFixture;
-import model.map.fixtures.mobile.IUnit;
-import org.junit.Test;
-
 import junit.framework.AssertionFailedError;
+import model.map.IFixture;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.ProxyUnit;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
+import org.junit.Test;
 import util.NullStream;
+
+import java.io.IOException;
+
+import static org.junit.Assert.*;
 
 /**
  * A class to test that the proxy classes work as expected.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 @SuppressWarnings("static-method")
 public final class TestProxyWorker {
@@ -50,51 +46,106 @@ public final class TestProxyWorker {
 	@Test
 	public void testProxyWorker() {
 		final Worker firstWorker = new Worker("one", "human", 1, new Job("jobOne", 1,
-				new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
+				                                                                new
+						                                                                Skill("skillOne",
+						                                                                         0,
+						                                                                         5),
+
+				                                                                new
+						                                                                Skill("skillTwo",
+						                                                                         2,
+						                                                                         6)));
 		final Worker secondWorker = new Worker("two", "elf", 2, new Job("jobTwo", 1,
-				new Skill("skillThree", 1, 19), new Skill("skillFour", 0, 99)));
+				                                                               new Skill
+						                                                               ("skillThree",
+						                                                                        1,
+						                                                                        19),
+				                                                               new Skill
+						                                                               ("skillFour",
+						                                                                        0,
+						                                                                        99)));
 		final Worker thirdWorker = new Worker("three", "dwarf", 5);
-		final Iterable<IJob> proxy = new ProxyWorker(firstWorker, secondWorker, thirdWorker);
+		final Iterable<IJob> proxy =
+				new ProxyWorker(firstWorker, secondWorker, thirdWorker);
 		for (final IJob job : proxy) {
 			for (final ISkill skill : job) {
 				skill.addHours(10, 100);
 			}
 		}
 		final Worker oneCopy = new Worker("one", "human", 1,
-				new Job("jobOne", 1, new Skill("skillOne", 0, 15),
-						new Skill("skillTwo", 2, 16)),
-				new Job("jobTwo", 0, new Skill("skillThree", 0, 10),
-						new Skill("skillFour", 0, 10)));
-		assertEquals("First worker should have appropriate experience", oneCopy, firstWorker);
+				                                 new Job("jobOne", 1,
+						                                        new Skill("skillOne", 0,
+								                                                 15),
+						                                        new Skill("skillTwo", 2,
+								                                                 16)),
+				                                 new Job("jobTwo", 0,
+						                                        new Skill
+								                                        ("skillThree", 0,
+								                                                 10),
+						                                        new Skill("skillFour", 0,
+								                                                 10)));
+		assertEquals("First worker should have appropriate experience", oneCopy,
+				firstWorker);
 		final Worker twoCopy = new Worker("two", "elf", 2,
-				                                 new Job("jobOne", 0, new Skill("skillOne", 0, 10),
-						                                        new Skill("skillTwo", 0, 10)),
-				                                 new Job("jobTwo", 1, new Skill("skillThree", 1, 29),
-						                                        new Skill("skillFour", 1, 0)));
-		assertEquals("Second worker should have appropriate experience", twoCopy, secondWorker);
+				                                 new Job("jobOne", 0,
+						                                        new Skill("skillOne", 0,
+								                                                 10),
+						                                        new Skill("skillTwo", 0,
+								                                                 10)),
+				                                 new Job("jobTwo", 1,
+						                                        new Skill
+								                                        ("skillThree", 1,
+								                                                 29),
+						                                        new Skill("skillFour", 1,
+								                                                 0)));
+		assertEquals("Second worker should have appropriate experience", twoCopy,
+				secondWorker);
 		final Worker threeCopy = new Worker("three", "dwarf", 5,
-				                                   new Job("jobOne", 0, new Skill("skillOne", 0, 10),
-						                                          new Skill("skillTwo", 0, 10)),
-				                                   new Job("jobTwo", 0, new Skill("skillThree", 0, 10),
-						                                          new Skill("skillFour", 0, 10)));
+				                                   new Job("jobOne", 0,
+						                                          new Skill
+								                                          ("skillOne", 0,
+								                                                   10),
+						                                          new Skill
+								                                          ("skillTwo", 0,
+								                                                   10)),
+				                                   new Job("jobTwo", 0,
+						                                          new Skill("skillThree",
+								                                                   0,
+								                                                   10),
+						                                          new Skill("skillFour",
+								                                                   0,
+								                                                   10)));
 		assertEquals(
 				"Initially-empty worker should have appropriate experience",
 				threeCopy, thirdWorker);
 	}
 
 	/**
-	 * Test that the next simplest case, of a proxy for the workers in a unit,
-	 * works properly.
+	 * Test that the next simplest case, of a proxy for the workers in a unit, works
+	 * properly.
 	 *
-	 * @throws IOException
-	 *             never; required to be declared by our use of isSubset().
+	 * @throws IOException never; required to be declared by our use of isSubset().
 	 */
 	@Test
 	public void testProxyUnit() throws IOException {
 		final Worker firstWorker = new Worker("one", "human", 1, new Job("jobOne", 1,
-				new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
+				                                                                new
+						                                                                Skill("skillOne",
+						                                                                         0,
+						                                                                         5),
+				                                                                new
+						                                                                Skill("skillTwo",
+						                                                                         2,
+						                                                                         6)));
 		final Worker secondWorker = new Worker("two", "elf", 2, new Job("jobTwo", 1,
-				new Skill("skillThree", 1, 19), new Skill("skillFour", 0, 99)));
+				                                                               new Skill
+						                                                               ("skillThree",
+						                                                                        1,
+						                                                                        19),
+				                                                               new Skill
+						                                                               ("skillFour",
+						                                                                        0,
+						                                                                        99)));
 		final Worker oneCopy = firstWorker.copy(false);
 		final Worker twoCopy = secondWorker.copy(false);
 		final Worker oneOrig = firstWorker.copy(false);
@@ -134,17 +185,28 @@ public final class TestProxyWorker {
 	}
 
 	/**
-	 * Test that the complex case, of a proxy for the workers in a unit, which
-	 * is itself a proxy for parallel units in multiple maps, works properly.
+	 * Test that the complex case, of a proxy for the workers in a unit, which is
+	 * itself a
+	 * proxy for parallel units in multiple maps, works properly.
 	 *
 	 * @throws IOException never; required to be declared by our use of isSubset().
 	 */
 	@Test
 	public void testProxyUnitProxy() throws IOException {
 		final Worker firstWorker = new Worker("one", "human", 1, new Job("jobOne", 1,
-				new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
+				                                                                new Skill("skillOne",
+						                                                                         0,
+						                                                                         5),
+				                                                                new Skill("skillTwo",
+						                                                                         2,
+						                                                                         6)));
 		final Worker secondWorker = new Worker("two", "elf", 2, new Job("jobTwo", 1,
-				new Skill("skillThree", 1, 19), new Skill("skillFour", 0, 99)));
+				                                                               new Skill("skillThree",
+						                                                                        1,
+						                                                                        19),
+				                                                               new Skill("skillFour",
+						                                                                        0,
+						                                                                        99)));
 		final Worker oneCopy = firstWorker.copy(false);
 		final Worker twoCopy = secondWorker.copy(false);
 		final Worker oneOrig = firstWorker.copy(false);
@@ -183,9 +245,11 @@ public final class TestProxyWorker {
 				"But second worker original should be a subset of second worker now",
 				secondWorker.isSubset(twoOrig, NullStream.DEV_NULL, ""));
 	}
+
 	/**
 	 * Assert that a worker contains a Job and that this Job is not empty.
-	 * @param worker the worker to test
+	 *
+	 * @param worker  the worker to test
 	 * @param jobName the name of the Job.
 	 */
 	private static void assertWorkerHasJob(final IWorker worker, final String jobName) {
@@ -207,15 +271,22 @@ public final class TestProxyWorker {
 		}
 		throw new AssertionFailedError(builder.toString());
 	}
+
 	/**
 	 * Test that the copy() method of Worker works properly.
 	 */
 	@Test
 	public void testWorkerCopy() {
 		final IFixture worker = new Worker("one", "human", 1, new Job("jobOne", 1,
-				new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
+				                                                             new Skill("skillOne",
+						                                                                      0,
+						                                                                      5),
+				                                                             new Skill("skillTwo",
+						                                                                      2,
+						                                                                      6)));
 		assertEquals("Worker copy should still be equal", worker, worker.copy(false));
 	}
+
 	/**
 	 * @return a string representation of this class
 	 */

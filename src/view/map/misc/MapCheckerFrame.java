@@ -1,18 +1,5 @@
 package view.map.misc;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.xml.stream.XMLStreamException;
-
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
@@ -21,28 +8,37 @@ import util.TypesafeLogger;
 import util.Warning;
 import view.util.StreamingLabel;
 
+import javax.swing.*;
+import javax.xml.stream.XMLStreamException;
+import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * A window to show the results of checking maps for errors.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class MapCheckerFrame extends JFrame {
 	/**
@@ -72,7 +68,7 @@ public final class MapCheckerFrame extends JFrame {
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(MapCheckerFrame.class);
+			                                     .getLogger(MapCheckerFrame.class);
 	/**
 	 * The map reader we'll use.
 	 */
@@ -95,16 +91,16 @@ public final class MapCheckerFrame extends JFrame {
 	}
 
 	/**
-	 * Enclose a string in HTML paragraph indicators, optionally with a color.
-	 * And repaint the label so it shows up. This is "package-private" because,
-	 * since the anonymous inner class below needs it, we can't make it private.
-	 * If no color is specified, we'll make it white, because the label's
-	 * background color is black.
+	 * Enclose a string in HTML paragraph indicators, optionally with a color. And
+	 * repaint
+	 * the label so it shows up. This is "package-private" because, since the anonymous
+	 * inner class below needs it, we can't make it private. If no color is specified,
+	 * we'll make it white, because the label's background color is black.
 	 *
 	 * FIXME: To appease XSS-possibility warnings, make color on enumerated type.
 	 *
 	 * @param paragraph the string to enclose
-	 * @param color the color to make it, or the empty string if none.
+	 * @param color     the color to make it, or the empty string if none.
 	 */
 	protected void printParagraph(final String paragraph, final String color) {
 		try (final PrintWriter writer = label.getWriter()) {
@@ -138,15 +134,17 @@ public final class MapCheckerFrame extends JFrame {
 		}
 		printParagraph("No errors in " + filename, "green");
 	}
+
 	/**
 	 * Tell the user about, and log, an exception.
-	 * @param except the exception in question
+	 *
+	 * @param except   the exception in question
 	 * @param filename what file was being read
 	 */
 	private void printError(final Exception except, final String filename) {
 		if (except instanceof MapVersionException) {
 			LOGGER.log(Level.SEVERE, "Map version in " + filename
-					+ " not acceptable to reader", except);
+					                         + " not acceptable to reader", except);
 			printParagraph("ERROR: Map version not acceptable to reader",
 					ERROR_COLOR);
 		} else if (except instanceof FileNotFoundException) {
@@ -157,7 +155,8 @@ public final class MapCheckerFrame extends JFrame {
 			LOGGER.log(Level.SEVERE, "I/O error reading " + filename, except);
 		} else if (except instanceof XMLStreamException) {
 			printParagraph("ERROR: Malformed XML in the file"
-					+ "; see following error message for details", ERROR_COLOR);
+					               + "; see following error message for details",
+					ERROR_COLOR);
 			final String message = NullCleaner.valueOrDefault(
 					except.getLocalizedMessage(), "(message was null)");
 			printParagraph(message, ERROR_COLOR);
@@ -165,8 +164,9 @@ public final class MapCheckerFrame extends JFrame {
 					except);
 		} else if (except instanceof SPFormatException) {
 			printParagraph("ERROR: SP map format error at line "
-					+ ((SPFormatException) except).getLine()
-					+ "; see following error message for details", ERROR_COLOR);
+					               + ((SPFormatException) except).getLine()
+					               + "; see following error message for details",
+					ERROR_COLOR);
 			final String message = NullCleaner.valueOrDefault(
 					except.getLocalizedMessage(), "(message was null)");
 			printParagraph(message, ERROR_COLOR);

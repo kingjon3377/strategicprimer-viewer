@@ -1,33 +1,31 @@
 package model.map.fixtures.resources;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A TileFixture to represent shrubs, or their aquatic equivalents, on a tile.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public class Shrub implements HarvestableFixture, HasKind {
 	/**
@@ -43,7 +41,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	/**
 	 * Constructor.
 	 *
-	 * @param desc a description of the shrub.
+	 * @param desc  a description of the shrub.
 	 * @param idNum the ID number.
 	 */
 	public Shrub(final String desc, final int idNum) {
@@ -52,8 +50,8 @@ public class Shrub implements HarvestableFixture, HasKind {
 	}
 
 	/**
-	 * @return a copy of this shrub
 	 * @param zero ignored, as there's no sensitive data
+	 * @return a copy of this shrub
 	 */
 	@Override
 	public Shrub copy(final boolean zero) {
@@ -61,6 +59,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 		retval.setImage(image);
 		return retval;
 	}
+
 	/**
 	 * @return a description of the shrub
 	 */
@@ -101,6 +100,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof Shrub && equalsImpl((Shrub) obj);
 	}
+
 	/**
 	 * @param obj a shrub
 	 * @return whether it's equal to this one
@@ -108,6 +108,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	private boolean equalsImpl(final Shrub obj) {
 		return description.equals(obj.description) && id == obj.getID();
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -118,7 +119,6 @@ public class Shrub implements HarvestableFixture, HasKind {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -126,7 +126,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 		return fix.hashCode() - hashCode();
 	}
 
-		/**
+	/**
 	 * ID number.
 	 */
 	private final int id; // NOPMD
@@ -146,7 +146,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof Shrub
-				&& description.equals(((Shrub) fix).description);
+				       && description.equals(((Shrub) fix).description);
 	}
 
 	/**
@@ -180,6 +180,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	public String plural() {
 		return "Shrubs";
 	}
+
 	/**
 	 * @return a short description of the fixture
 	 */

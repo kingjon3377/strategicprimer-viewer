@@ -1,50 +1,44 @@
 package view.worker;
 
+import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.IUnit;
+import model.workermgmt.IWorkerTreeModel;
+import model.workermgmt.UnitMemberTransferable;
+import model.workermgmt.UnitMemberTransferable.UnitMemberPair;
+import org.eclipse.jdt.annotation.Nullable;
+import util.TypesafeLogger;
+
+import javax.swing.*;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JComponent;
-import javax.swing.JTree;
-import javax.swing.TransferHandler;
-import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import model.map.fixtures.UnitMember;
-import model.map.fixtures.mobile.IUnit;
-import model.workermgmt.IWorkerTreeModel;
-import model.workermgmt.UnitMemberTransferable;
-import model.workermgmt.UnitMemberTransferable.UnitMemberPair;
-import util.TypesafeLogger;
-
 /**
  * A replacement transfer handler to make drag-and-drop work properly.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
- * Based on the tutorial found at
- * http://www.javaprogrammingforums.com/java-swing
+ * Based on the tutorial found at http://www.javaprogrammingforums.com/java-swing
  * -tutorials/3141-drag-drop-jtrees.html
  *
  * Copyright (C) 2013-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
- *
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author helloworld922
  * @author Jonathan Lovelace
@@ -63,16 +57,18 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			.getLogger(WorkerTreeTransferHandler.class);
+			                                     .getLogger(
+					                                     WorkerTreeTransferHandler
+							                                     .class);
 
 	/**
 	 * Constructor.
 	 *
 	 * @param selmodel the tree's selection model
-	 * @param tmodel the tree's data model
+	 * @param tmodel   the tree's data model
 	 */
 	protected WorkerTreeTransferHandler(final TreeSelectionModel selmodel,
-			final IWorkerTreeModel tmodel) {
+	                                    final IWorkerTreeModel tmodel) {
 		smodel = selmodel;
 		model = tmodel;
 	}
@@ -88,18 +84,19 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 
 	/**
 	 * @param component the component being dragged from? In any case, ignored.
-	 * @return a Transferable representing the selected node, or null if none
-	 *         selected
+	 * @return a Transferable representing the selected node, or null if none selected
 	 */
 	@Override
 	@Nullable
 	protected UnitMemberTransferable createTransferable(
-			@Nullable final JComponent component) {
+			                                                   @Nullable
+			                                                   final JComponent
+					                                                   component) {
 		final TreePath path = smodel.getSelectionPath();
 		final Object last = path
-				.getLastPathComponent();
+				                    .getLastPathComponent();
 		final Object parentPath = path.getPathComponent(path
-				.getPathCount() - 2);
+				                                                .getPathCount() - 2);
 		if (last == null || parentPath == null) {
 			return null; // NOPMD
 		}
@@ -107,7 +104,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 		final Object parent = model.getModelObject(parentPath);
 		if (selection instanceof UnitMember && parent instanceof IUnit) {
 			return new UnitMemberTransferable((UnitMember) selection, // NOPMD
-					(IUnit) parent);
+					                                 (IUnit) parent);
 		} else {
 			return null;
 		}
@@ -120,7 +117,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	@Override
 	public boolean canImport(@Nullable final TransferSupport support) {
 		if (support != null
-				&& support.isDataFlavorSupported(UnitMemberTransferable.FLAVOR)) {
+				    && support.isDataFlavorSupported(UnitMemberTransferable.FLAVOR)) {
 			final DropLocation dloc = support.getDropLocation();
 			if (!(dloc instanceof JTree.DropLocation)) {
 				return false; // NOPMD
@@ -131,7 +128,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 			} else {
 				final Object pathLast = path.getLastPathComponent();
 				return pathLast != null // NOPMD
-						&& model.getModelObject(pathLast) instanceof IUnit;
+						       && model.getModelObject(pathLast) instanceof IUnit;
 			}
 		} else {
 			return false;
@@ -160,7 +157,9 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 					final Transferable trans = support.getTransferable();
 					final UnitMemberTransferable.UnitMemberPair pair =
 							(UnitMemberPair) trans
-									.getTransferData(UnitMemberTransferable.FLAVOR);
+									                 .getTransferData(
+											                 UnitMemberTransferable
+													                 .FLAVOR);
 					model.moveMember(pair.member, pair.unit, (IUnit) tempTarget);
 					return true; // NOPMD
 				} catch (final UnsupportedFlavorException except) {
@@ -181,6 +180,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 			return false;
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

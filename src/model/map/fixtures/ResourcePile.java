@@ -11,26 +11,26 @@ import java.io.IOException;
 /**
  * A quantity of some kind of resource.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  *
- * TODO: more members
+ *         TODO: more members
  */
 public class ResourcePile implements UnitMember, FortressMember, HasKind, HasImage {
 	/**
@@ -61,21 +61,23 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	 * The turn on which the resource was created.
 	 */
 	private int created = -1;
+
 	/**
-	 * @param idNum an ID number for the fixture
-	 * @param resKind the general kind of resource
+	 * @param idNum       an ID number for the fixture
+	 * @param resKind     the general kind of resource
 	 * @param resContents the specific kind of resource
-	 * @param qty how much of the resource is in the pile
-	 * @param qtyUnit what units the quantity is measured in
+	 * @param qty         how much of the resource is in the pile
+	 * @param qtyUnit     what units the quantity is measured in
 	 */
 	public ResourcePile(final int idNum, final String resKind,
-			final String resContents, final int qty, final String qtyUnit) {
+	                    final String resContents, final int qty, final String qtyUnit) {
 		id = idNum;
 		kind = resKind;
 		contents = resContents;
 		quantity = qty;
 		unit = qtyUnit;
 	}
+
 	/**
 	 * @return the ID # of the resource pile
 	 */
@@ -83,6 +85,7 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	public int getID() {
 		return id;
 	}
+
 	/**
 	 * @return the general kind of resource this is
 	 */
@@ -90,6 +93,7 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	public String getKind() {
 		return kind;
 	}
+
 	/**
 	 * @param nKind the new value for the general kind of resource this is
 	 */
@@ -97,18 +101,21 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	public void setKind(final String nKind) {
 		kind = nKind;
 	}
+
 	/**
 	 * @return the specific kind of resource this is
 	 */
 	public String getContents() {
 		return contents;
 	}
+
 	/**
 	 * @param nContents the new value of the specific kind of resource this is
 	 */
 	public void setContents(final String nContents) {
 		contents = nContents;
 	}
+
 	/**
 	 * @return the filename of an image to use for implements by default
 	 */
@@ -116,6 +123,7 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	public String getDefaultImage() {
 		return "resource.png";
 	}
+
 	/**
 	 * @param img the filename of an image to use for this implement
 	 */
@@ -123,6 +131,7 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	public void setImage(final String img) {
 		image = img;
 	}
+
 	/**
 	 * @return the filename of an image to use for this implement
 	 */
@@ -130,6 +139,7 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	public String getImage() {
 		return image;
 	}
+
 	/**
 	 * @param fix a fixture
 	 * @return whether it equals this one except for ID
@@ -137,27 +147,23 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof ResourcePile
-				&& kind.equals(((ResourcePile) fix).getKind())
-				&& contents.equals(((ResourcePile) fix).getContents())
-				&& quantity == ((ResourcePile) fix).getQuantity()
-				&& unit.equals(((ResourcePile) fix).getUnits());
+				       && kind.equals(((ResourcePile) fix).getKind())
+				       && contents.equals(((ResourcePile) fix).getContents())
+				       && quantity == ((ResourcePile) fix).getQuantity()
+				       && unit.equals(((ResourcePile) fix).getUnits());
 	}
 
 	/**
-	 * @param ostream
-	 *            the stream to report errors to
-	 * @param context
-	 *            the context to report before errors
-	 * @param obj
-	 *            a fixture
-	 * @return whether it's a subset of (i.e. equal to, except perhaps with
-	 *         different quantity from) this one
-	 * @throws IOException
-	 *             on I/O error writing to ostream
+	 * @param ostream the stream to report errors to
+	 * @param context the context to report before errors
+	 * @param obj     a fixture
+	 * @return whether it's a subset of (i.e. equal to, except perhaps with different
+	 * quantity from) this one
+	 * @throws IOException on I/O error writing to ostream
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-			final String context) throws IOException {
+	                        final String context) throws IOException {
 		if (obj.getID() != id) {
 			ostream.append(context);
 			ostream.append("\tIDs differ");
@@ -182,7 +188,7 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 				retval = false;
 			}
 			if (quantity != ((ResourcePile) obj).quantity
-					&& 0 != ((ResourcePile) obj).quantity) {
+					    && 0 != ((ResourcePile) obj).quantity) {
 				ostream.append(ctxt);
 				ostream.append("Quantities differ\n");
 				retval = false;
@@ -195,9 +201,10 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 			return false;
 		}
 	}
+
 	/**
-	 * @return a copy of this Implement
 	 * @param zero whether to "zero out" sensitive information
+	 * @return a copy of this Implement
 	 */
 	@Override
 	public ResourcePile copy(final boolean zero) {
@@ -207,24 +214,28 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 		}
 		return retval;
 	}
+
 	/**
 	 * @return the quantity of resource in the pile
 	 */
 	public int getQuantity() {
 		return quantity;
 	}
+
 	/**
 	 * @param qty the new quantity of resource in the pile
 	 */
 	public void setQuantity(final int qty) {
 		quantity = qty;
 	}
+
 	/**
 	 * @return the unit in which the quantity is measured
 	 */
 	public String getUnits() {
 		return unit;
 	}
+
 	/**
 	 * @param newUnit the unit in which the quantity is measured
 	 */
@@ -233,8 +244,8 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	}
 
 	/**
-	 * This hash code function is modified, I think without changing the
-	 * algorithm, from the auto-generated one.
+	 * This hash code function is modified, I think without changing the algorithm, from
+	 * the auto-generated one.
 	 *
 	 * @return a hash code for the object.
 	 */
@@ -242,10 +253,11 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	public int hashCode() {
 		final int prime = 31;
 		return prime * (prime
-				* (prime * (prime * (prime + contents.hashCode()) + id)
-						+ kind.hashCode())
-				+ quantity) + unit.hashCode();
+				                * (prime * (prime * (prime + contents.hashCode()) + id)
+						                   + kind.hashCode())
+				                + quantity) + unit.hashCode();
 	}
+
 	/**
 	 * @param obj an object
 	 * @return whether it equals this one
@@ -253,12 +265,14 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj
-				|| obj instanceof ResourcePile && id == ((ResourcePile) obj).id
-						&& quantity == ((ResourcePile) obj).quantity
-						&& contents.equals(((ResourcePile) obj).contents)
-						&& kind.equals(((ResourcePile) obj).kind)
-						&& unit.equals(((ResourcePile) obj).unit) && created == ((ResourcePile) obj).created;
+				       || obj instanceof ResourcePile && id == ((ResourcePile) obj).id
+						          && quantity == ((ResourcePile) obj).quantity
+						          && contents.equals(((ResourcePile) obj).contents)
+						          && kind.equals(((ResourcePile) obj).kind)
+						          && unit.equals(((ResourcePile) obj).unit) &&
+						          created == ((ResourcePile) obj).created;
 	}
+
 	/**
 	 * @return a String representation of the resource pile
 	 */
@@ -272,14 +286,16 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 		}
 		if (unit.isEmpty()) {
 			return NullCleaner
-					.assertNotNull(String.format("A pile of %d %s (%s)%s",
-							Integer.valueOf(quantity), contents, kind, age));
+					       .assertNotNull(String.format("A pile of %d %s (%s)%s",
+							       Integer.valueOf(quantity), contents, kind, age));
 		} else {
 			return NullCleaner
-					.assertNotNull(String.format("A pile of %d %s of %s (%s)%s",
-							Integer.valueOf(quantity), unit, contents, kind, age));
+					       .assertNotNull(String.format("A pile of %d %s of %s (%s)%s",
+							       Integer.valueOf(quantity), unit, contents, kind,
+							       age));
 		}
 	}
+
 	/**
 	 * @param createdTurn the turn on which the resource was created
 	 */
@@ -290,6 +306,7 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 			created = createdTurn;
 		}
 	}
+
 	/**
 	 * @return the turn on which the resource was created
 	 */

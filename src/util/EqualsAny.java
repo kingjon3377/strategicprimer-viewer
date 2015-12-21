@@ -7,28 +7,26 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 /**
- * A class to hold a utility method for comparing a value with a number of other
- * values.
+ * A class to hold a utility method for comparing a value with a number of other values.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2013 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class EqualsAny {
 	/**
@@ -41,34 +39,33 @@ public final class EqualsAny {
 	/**
 	 * Compare a value with a number of other (generally constant) values.
 	 *
-	 * @param <TYPE> the type of objects we'll be comparing
+	 * @param <TYPE>  the type of objects we'll be comparing
 	 * @param against the value to compare the others to
-	 * @param values the values to compare to it
-	 *
+	 * @param values  the values to compare to it
 	 * @return true if any of theme equal it, false otherwise.
 	 */
 	@SafeVarargs
 	public static <TYPE> boolean equalsAny(final TYPE against,
-			final TYPE... values) {
+	                                       final TYPE... values) {
 		return Stream.of(values).anyMatch(val -> Objects.equals(against, val));
 	}
 
 	/**
 	 * Compare a value with a collection of other (generally constant) values.
 	 *
-	 * @param <TYPE> the type of objects we'll be comparing
+	 * @param <TYPE>  the type of objects we'll be comparing
 	 * @param against the value to compare the others to
-	 * @param values the values to compare to it. May be null, in which case we
-	 *        return false.
-	 *
+	 * @param values  the values to compare to it. May be null, in which case we return
+	 *                false.
 	 * @return true if any of theme equal it, false otherwise.
 	 */
 	public static <TYPE> boolean equalsAny(final TYPE against,
-			@Nullable final Iterable<TYPE> values) {
+	                                       @Nullable final Iterable<TYPE> values) {
 		if (values == null) {
 			return false; // NOPMD
 		} else {
-			return StreamSupport.stream(values.spliterator(), false).anyMatch(val -> Objects.equals(against, val));
+			return StreamSupport.stream(values.spliterator(), false)
+					       .anyMatch(val -> Objects.equals(against, val));
 		}
 	}
 }

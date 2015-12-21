@@ -1,34 +1,32 @@
 package model.map.fixtures.resources;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**
  * A cache (of vegetables, or a hidden treasure, or ...) on a tile.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public class CacheFixture implements HarvestableFixture, HasKind {
 	/**
@@ -43,8 +41,8 @@ public class CacheFixture implements HarvestableFixture, HasKind {
 	 */
 	private String kind;
 	/**
-	 * The contents of this cache. TODO: Should be turned into objects
-	 * (serialized as children) as part of the general Resource framework.
+	 * The contents of this cache. TODO: Should be turned into objects (serialized as
+	 * children) as part of the general Resource framework.
 	 */
 	private final String contents;
 
@@ -52,19 +50,19 @@ public class CacheFixture implements HarvestableFixture, HasKind {
 	 * Constructor.
 	 *
 	 * @param category what kind of things this is a cache of
-	 * @param cont what this cache contains
-	 * @param idNum the ID number.
+	 * @param cont     what this cache contains
+	 * @param idNum    the ID number.
 	 */
 	public CacheFixture(final String category, final String cont,
-			final int idNum) {
+	                    final int idNum) {
 		kind = category;
 		contents = cont;
 		id = idNum;
 	}
 
 	/**
-	 * @return a copy of this cache
 	 * @param zero ignored, as there's no sensitive data
+	 * @return a copy of this cache
 	 */
 	@Override
 	public CacheFixture copy(final boolean zero) {
@@ -72,6 +70,7 @@ public class CacheFixture implements HarvestableFixture, HasKind {
 		retval.setImage(image);
 		return retval;
 	}
+
 	/**
 	 * @return what kind of things this is a cache of
 	 */
@@ -103,8 +102,10 @@ public class CacheFixture implements HarvestableFixture, HasKind {
 	@Override
 	public String toString() {
 		return NullCleaner.assertNotNull(new StringBuilder(24 + kind.length()
-				+ contents.length()).append("a cache of ").append(kind)
-				.append(" containing ").append(contents).toString());
+				                                                   + contents.length())
+				                                 .append("a cache of ").append(kind)
+				                                 .append(" containing ").append(contents)
+				                                 .toString());
 	}
 
 	/**
@@ -122,16 +123,18 @@ public class CacheFixture implements HarvestableFixture, HasKind {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof CacheFixture
-				&& equalsImpl((CacheFixture) obj);
+				                      && equalsImpl((CacheFixture) obj);
 	}
+
 	/**
 	 * @param obj a cache-fixture
 	 * @return whether it's equal to this one
 	 */
 	private boolean equalsImpl(final CacheFixture obj) {
 		return kind.equals(obj.kind) && contents.equals(obj.contents)
-				&& id == obj.getID();
+				       && id == obj.getID();
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -142,7 +145,6 @@ public class CacheFixture implements HarvestableFixture, HasKind {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -150,7 +152,7 @@ public class CacheFixture implements HarvestableFixture, HasKind {
 		return fix.hashCode() - hashCode();
 	}
 
-		/**
+	/**
 	 * ID number.
 	 */
 	private final int id; // NOPMD
@@ -170,8 +172,8 @@ public class CacheFixture implements HarvestableFixture, HasKind {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return fix instanceof CacheFixture
-				&& kind.equals(((CacheFixture) fix).kind)
-				&& contents.equals(((CacheFixture) fix).contents);
+				       && kind.equals(((CacheFixture) fix).kind)
+				       && contents.equals(((CacheFixture) fix).contents);
 	}
 
 	/**
@@ -205,6 +207,7 @@ public class CacheFixture implements HarvestableFixture, HasKind {
 	public String plural() {
 		return "Caches";
 	}
+
 	/**
 	 * @return a short description of the fixture
 	 */

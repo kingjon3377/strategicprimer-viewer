@@ -1,39 +1,35 @@
 package view.map.main;
 
-import java.awt.Dimension;
-import java.awt.event.WindowAdapter;
-
-import javax.swing.JFrame;
-import javax.swing.JSplitPane;
-import javax.swing.WindowConstants;
-
 import controller.map.misc.IOHandler;
 import model.viewer.IViewerModel;
 import view.map.details.DetailPanelNG;
 import view.util.SplitWithWeights;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+
 /**
  * The main driver class for the map viewer app.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class ViewerFrame extends JFrame {
 	/**
@@ -52,11 +48,11 @@ public final class ViewerFrame extends JFrame {
 	 * The driver model.
 	 */
 	private final IViewerModel model;
+
 	/**
-	 * Initialize size to the specified dimensions. Not that this actually works
-	 * ...
+	 * Initialize size to the specified dimensions. Not that this actually works ...
 	 *
-	 * @param width the specified width
+	 * @param width  the specified width
 	 * @param height the specified height
 	 */
 	private void initializeDimensions(final int width, final int height) {
@@ -68,9 +64,8 @@ public final class ViewerFrame extends JFrame {
 	/**
 	 * Constructor.
 	 *
-	 * @param map The map model.
-	 * @param ioHandler the I/O handler, so we can handle 'open' and 'save' menu
-	 *        items.
+	 * @param map       The map model.
+	 * @param ioHandler the I/O handler, so we can handle 'open' and 'save' menu items.
 	 */
 	public ViewerFrame(final IViewerModel map, final IOHandler ioHandler) {
 		super("Map Viewer");
@@ -86,12 +81,17 @@ public final class ViewerFrame extends JFrame {
 		map.addMapChangeListener(mapPanel);
 		map.addSelectionChangeListener(mapPanel);
 		final DetailPanelNG detailPanel = new DetailPanelNG(
-				map.getMapDimensions().version, map);
+				                                                   map.getMapDimensions
+						                                                       ()
+						                                                   .version,
+				                                                   map);
 		map.addVersionChangeListener(detailPanel);
 		map.addSelectionChangeListener(detailPanel);
 		setContentPane(new SplitWithWeights(JSplitPane.VERTICAL_SPLIT,
-				MAP_PROPORTION, MAP_PROPORTION, new MapScrollPanel(map,
-						mapPanel), detailPanel));
+				                                   MAP_PROPORTION, MAP_PROPORTION,
+				                                   new MapScrollPanel(map,
+						                                                     mapPanel),
+				                                   detailPanel));
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		pack();
 		mapPanel.requestFocusInWindow();
@@ -103,6 +103,7 @@ public final class ViewerFrame extends JFrame {
 		getJMenuBar().add(ffmenu);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
+
 	/**
 	 * @return the map model
 	 */

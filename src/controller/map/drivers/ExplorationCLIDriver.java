@@ -1,10 +1,5 @@
 package controller.map.drivers;
 
-import static view.util.SystemOut.SYS_OUT;
-
-import java.io.File;
-import java.io.IOException;
-
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.MapReaderAdapter;
@@ -15,41 +10,53 @@ import model.misc.IDriverModel;
 import util.Warning;
 import view.exploration.ExplorationCLI;
 
+import java.io.File;
+import java.io.IOException;
+
+import static view.util.SystemOut.SYS_OUT;
+
 /**
  * A CLI to help running exploration.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class ExplorationCLIDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-x",
-			"--explore", ParamCount.Many, "Run exploration.",
-			"Move a unit around the map, "
-					+ "updating the player's map with what it sees.",
-					ExplorationCLIDriver.class);
+			                                                            "--explore",
+			                                                            ParamCount.Many,
+			                                                            "Run exploration.",
+			                                                            "Move a unit " +
+					                                                            "around " +
+					                                                            "the " +
+					                                                            "map, "
+					                                                            +
+					                                                            "updating the player's map with what it sees.",
+
+			                                                            ExplorationCLIDriver.class);
 
 	/**
 	 * Run the driver.
+	 *
 	 * @param dmodel the driver model
 	 * @throws DriverFailedException on error
 	 */
@@ -78,6 +85,7 @@ public final class ExplorationCLIDriver implements ISPDriver {
 			throw new DriverFailedException("I/O error interacting with user", except);
 		}
 	}
+
 	/**
 	 * Run the driver.
 	 *
@@ -94,8 +102,13 @@ public final class ExplorationCLIDriver implements ISPDriver {
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final IDriverModel model = new ExplorationModel(
-				reader.readMultiMapModel(Warning.INSTANCE, new File(args[0]),
-						MapReaderAdapter.namesToFiles(true, args)));
+				                                               reader.readMultiMapModel(
+						                                               Warning.INSTANCE,
+						                                               new File(args[0]),
+						                                               MapReaderAdapter
+								                                               .namesToFiles(
+										                                               true,
+										                                               args)));
 		startDriver(model);
 		reader.writeModel(model);
 	}
@@ -123,6 +136,7 @@ public final class ExplorationCLIDriver implements ISPDriver {
 	public void setName(final String nomen) {
 		throw new IllegalStateException("Can't rename a driver");
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

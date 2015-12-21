@@ -1,20 +1,5 @@
 package controller.map.drivers;
 
-import static view.util.SystemOut.SYS_OUT;
-
-import java.io.File;
-import java.io.IOException;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.xml.stream.XMLStreamException;
-
 import controller.exploration.TableLoader;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
@@ -31,28 +16,41 @@ import util.SingletonRandom;
 import util.TypesafeLogger;
 import util.Warning;
 
+import javax.xml.stream.XMLStreamException;
+import java.io.File;
+import java.io.IOException;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static view.util.SystemOut.SYS_OUT;
+
 /**
  * A class to non-interactively generate a tile's contents.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class TileContentsGenerator {
 	/**
@@ -71,24 +69,19 @@ public final class TileContentsGenerator {
 	private static final MapReaderAdapter READER = new MapReaderAdapter();
 
 	/**
-	 * A mapping from filenames containing maps to instances handling those
-	 * maps.
+	 * A mapping from filenames containing maps to instances handling those maps.
 	 */
 	private static final Map<String, TileContentsGenerator> INSTANCES =
 			NullCleaner.assertNotNull(Collections.synchronizedMap(
 					new HashMap<>()));
 
 	/**
-	 * @param filename
-	 *            the name of a map
+	 * @param filename the name of a map
 	 * @return an instance to generate the contents of a tile on it
-	 * @throws SPFormatException
-	 *             if the reader doesn't support the specified map version or on
-	 *             other SP format error in the map file
-	 * @throws XMLStreamException
-	 *             on XML error in the map file
-	 * @throws IOException
-	 *             on I/O error reading the file
+	 * @throws SPFormatException  if the reader doesn't support the specified map version
+	 *                            or on other SP format error in the map file
+	 * @throws XMLStreamException on XML error in the map file
+	 * @throws IOException        on I/O error reading the file
 	 */
 	public static TileContentsGenerator getInstance(final String filename)
 			throws IOException, XMLStreamException, SPFormatException {
@@ -126,13 +119,14 @@ public final class TileContentsGenerator {
 	 * Generate the contents of a tile.
 	 *
 	 * @param terrain its tile type
-	 * @param point the location of the tile
+	 * @param point   the location of the tile
 	 * @throws MissingTableException if a missing table is referenced
 	 */
 	private void generateTileContents(final Point point, final TileType terrain)
 			throws MissingTableException {
 		final int reps = SingletonRandom.RANDOM.nextInt(4) + 1;
-		final List<TileFixture> empty = NullCleaner.assertNotNull(Collections.emptyList());
+		final List<TileFixture> empty =
+				NullCleaner.assertNotNull(Collections.emptyList());
 		for (int i = 0; i < reps; i++) {
 			println(runner.recursiveConsultTable("fisher", point,
 					terrain, empty));
@@ -144,7 +138,7 @@ public final class TileContentsGenerator {
 	 */
 	public static void main(final String... args) {
 		final Logger logger = TypesafeLogger
-				.getLogger(TileContentsGenerator.class);
+				                      .getLogger(TileContentsGenerator.class);
 		if (args.length < 3) {
 			logger.severe("Usage: GenerateTileContents mapname.xml row col");
 		} else {
@@ -153,8 +147,9 @@ public final class TileContentsGenerator {
 				getInstance(NullCleaner.assertNotNull(args[0]))
 						.generateTileContents(
 								PointFactory.point(numParser.parse(args[1])
-										.intValue(), numParser.parse(args[2])
-										.intValue()));
+										                   .intValue(),
+										numParser.parse(args[2])
+												.intValue()));
 			} catch (final NumberFormatException | ParseException e) {
 				logger.log(Level.SEVERE, "Non-numeric row or column", e);
 				System.exit(1);

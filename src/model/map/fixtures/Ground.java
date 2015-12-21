@@ -1,34 +1,32 @@
 package model.map.fixtures;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A TileFixture to represent the basic rock beneath the tile, possibly exposed.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public class Ground implements TileFixture, HasImage, HasKind {
 	/**
@@ -49,16 +47,17 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	 * Constructor.
 	 *
 	 * @param desc a description of the ground (the type of rock)
-	 * @param exp whether it's exposed. (If not, the tile should also include a
-	 *        grass or forest Fixture ...)
+	 * @param exp  whether it's exposed. (If not, the tile should also include a grass or
+	 *             forest Fixture ...)
 	 */
 	public Ground(final String desc, final boolean exp) {
 		kind = desc;
 		exposed = exp;
 	}
+
 	/**
-	 * @return a copy of this ground
 	 * @param zero ignored, as there's no sensitive data
+	 * @return a copy of this ground
 	 */
 	@Override
 	public Ground copy(final boolean zero) {
@@ -111,9 +110,10 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof Ground
-				&& kind.equals(((Ground) obj).kind)
-				&& exposed == ((Ground) obj).exposed;
+				                      && kind.equals(((Ground) obj).kind)
+				                      && exposed == ((Ground) obj).exposed;
 	}
+
 	/**
 	 * @return a hash value for the object
 	 */
@@ -128,7 +128,6 @@ public class Ground implements TileFixture, HasImage, HasKind {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -198,6 +197,7 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	public String plural() {
 		return "Ground";
 	}
+
 	/**
 	 * @return a short description of the fixture
 	 */

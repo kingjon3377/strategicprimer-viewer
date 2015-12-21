@@ -1,15 +1,5 @@
 package controller.map.report;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -20,52 +10,63 @@ import model.report.EmptyReportNode;
 import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
+import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 /**
  * A report generator for sightings of animals.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class AnimalReportGenerator extends AbstractReportGenerator<Animal> {
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	public AnimalReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator) {
+	public AnimalReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull
+			                                                                            IFixture>> comparator) {
 		super(comparator);
 	}
+
 	/**
 	 * Produce the sub-report on sightings of animals.
 	 *
-	 * @param fixtures the set of fixtures
-	 * @param map ignored
+	 * @param fixtures      the set of fixtures
+	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the report
 	 */
 	@Override
 	public String produce(
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final IMapNG map, final Player currentPlayer) {
+			                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+					                     fixtures,
+			                     final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final Map<String, List<Point>> items = new HashMap<>();
@@ -97,29 +98,31 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 			// We doubt this list will ever be over 16K.
 			final StringBuilder builder = new StringBuilder(16384).append(
 					"<h4>Animal sightings or encounters</h4>\n").append(
-							OPEN_LIST);
+					OPEN_LIST);
 			for (final Entry<String, List<Point>> entry : items.entrySet()) {
 				builder.append(OPEN_LIST_ITEM).append(entry.getKey())
-				.append(": at ").append(pointCSL(entry.getValue()))
-				.append(CLOSE_LIST_ITEM);
+						.append(": at ").append(pointCSL(entry.getValue()))
+						.append(CLOSE_LIST_ITEM);
 			}
 			return NullCleaner.assertNotNull(builder.append(CLOSE_LIST)
-					.toString()); // NOPMD
+					                                 .toString()); // NOPMD
 		}
 	}
 
 	/**
 	 * Produce the sub-report on sightings of animals.
 	 *
-	 * @param fixtures the set of fixtures
-	 * @param map ignored
+	 * @param fixtures      the set of fixtures
+	 * @param map           ignored
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the report
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final IMapNG map, final Player currentPlayer) {
+			                                    final DelayedRemovalMap<Integer,
+					                                                           Pair<Point, IFixture>> fixtures,
+			                                    final IMapNG map,
+			                                    final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final Map<String, AbstractReportNode> items = new HashMap<>();
@@ -143,7 +146,8 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 			return EmptyReportNode.NULL_NODE; // NOPMD
 		} else {
 			final AbstractReportNode retval = new SectionListReportNode(4,
-					"Animal sightings or encounters");
+					                                                           "Animal " +
+							                                                           "sightings or encounters");
 			for (final Entry<String, AbstractReportNode> entry : items.entrySet()) {
 				retval.add(entry.getValue());
 			}
@@ -152,18 +156,19 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	}
 
 	/**
-	 * @param fixtures the set of fixtures
+	 * @param fixtures      the set of fixtures
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @param map ignored
-	 * @param item an animal
-	 * @param loc its location
+	 * @param map           ignored
+	 * @param item          an animal
+	 * @param loc           its location
 	 * @return a sub-report on the animal
 	 */
 	@Override
 	public String produce(
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final IMapNG map, final Player currentPlayer,
-			final Animal item, final Point loc) {
+			                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+					                     fixtures,
+			                     final IMapNG map, final Player currentPlayer,
+			                     final Animal item, final Point loc) {
 		final String tracesOrTalking; // NOPMD
 		if (item.isTraces()) {
 			tracesOrTalking = "tracks or traces of ";
@@ -177,18 +182,21 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	}
 
 	/**
-	 * @param fixtures the set of fixtures
+	 * @param fixtures      the set of fixtures
 	 * @param currentPlayer the player for whom the report is being produced
-	 * @param map ignored
-	 * @param item an animal
-	 * @param loc its location
+	 * @param map           ignored
+	 * @param item          an animal
+	 * @param loc           its location
 	 * @return a sub-report on the animal
 	 */
 	@Override
 	public SimpleReportNode produceRIR(
-			final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			final IMapNG map, final Player currentPlayer,
-			final Animal item, final Point loc) {
+			                                  final DelayedRemovalMap<Integer,
+					                                                         Pair<Point,
+							                                                             IFixture>> fixtures,
+			                                  final IMapNG map,
+			                                  final Player currentPlayer,
+			                                  final Animal item, final Point loc) {
 		final String tracesOrTalking; // NOPMD
 		if (item.isTraces()) {
 			tracesOrTalking = "tracks or traces of ";
@@ -198,7 +206,8 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 			tracesOrTalking = "";
 		}
 		return new SimpleReportNode(loc, atPoint(loc), tracesOrTalking,
-				item.getKind(), " ", distCalculator.distanceString(loc));
+				                           item.getKind(), " ",
+				                           distCalculator.distanceString(loc));
 	}
 
 	/**

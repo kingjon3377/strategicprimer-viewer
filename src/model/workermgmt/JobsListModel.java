@@ -1,13 +1,5 @@
 package model.workermgmt;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Objects;
-
-import javax.swing.DefaultListModel;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.listeners.AddRemoveListener;
 import model.listeners.CompletionListener;
 import model.listeners.CompletionSource;
@@ -16,26 +8,32 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
+import org.eclipse.jdt.annotation.Nullable;
+
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Objects;
 
 /**
  * A list model for a list of a worker's jobs.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  */
@@ -48,8 +46,7 @@ public final class JobsListModel extends DefaultListModel<IJob> implements
 	private IWorker worker = null;
 
 	/**
-	 * @param category what kind of thing is being added; if not a Job we ignore
-	 *        it
+	 * @param category what kind of thing is being added; if not a Job we ignore it
 	 * @param addendum a description of what to add
 	 */
 	@Override
@@ -66,12 +63,12 @@ public final class JobsListModel extends DefaultListModel<IJob> implements
 	}
 
 	/**
-	 * @param old the previously selected member
+	 * @param old      the previously selected member
 	 * @param selected the newly selected unit member
 	 */
 	@Override
 	public void memberSelected(@Nullable final UnitMember old,
-			@Nullable final UnitMember selected) {
+	                           @Nullable final UnitMember selected) {
 		if (!Objects.equals(worker, selected)) {
 			clear();
 			if (selected instanceof IWorker) {

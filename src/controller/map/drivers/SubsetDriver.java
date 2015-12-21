@@ -1,11 +1,5 @@
 package controller.map.drivers;
 
-import static view.util.SystemOut.SYS_OUT;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Logger;
-
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.MapReaderAdapter;
 import model.map.IMapNG;
@@ -19,42 +13,65 @@ import util.Pair;
 import util.Warning;
 import util.Warning.Action;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Logger;
+
+import static view.util.SystemOut.SYS_OUT;
+
 /**
  * A driver to check whether player maps are subsets of the main map.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class SubsetDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-s",
-			"--subset", ParamCount.Many, "Check players' maps against master",
-			"Check that subordinate maps are subsets of the main map, containing "
-					+ "nothing that it does not contain in the same place",
-					SubsetDriver.class);
+			                                                            "--subset",
+			                                                            ParamCount.Many,
+			                                                            "Check players' " +
+					                                                            "maps " +
+					                                                            "against" +
+					                                                            " master",
+
+			                                                            "Check that " +
+					                                                            "subordinate maps are subsets of the main map, containing "
+					                                                            +
+					                                                            "nothing" +
+					                                                            " that " +
+					                                                            "it does" +
+					                                                            " not " +
+					                                                            "contain" +
+					                                                            " in the" +
+					                                                            " same " +
+					                                                            "place",
+			                                                            SubsetDriver
+					                                                            .class);
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(SubsetDriver.class.getName()));
+	private static final Logger LOGGER =
+			NullCleaner.assertNotNull(Logger.getLogger(SubsetDriver.class.getName()));
+
 	/**
 	 * Possible return values for sub-maps.
 	 */
@@ -72,8 +89,10 @@ public final class SubsetDriver implements ISPDriver {
 		 */
 		Fail
 	}
+
 	/**
 	 * Run the driver.
+	 *
 	 * @param dmodel the driver model
 	 * @throws DriverFailedException on error
 	 */
@@ -92,6 +111,7 @@ public final class SubsetDriver implements ISPDriver {
 			printReturn(doSubsetTest(model.getMap(), pair.first(), pair.second()));
 		}
 	}
+
 	/**
 	 * Run the driver.
 	 *
@@ -130,13 +150,16 @@ public final class SubsetDriver implements ISPDriver {
 			throw new IllegalStateException("Can't get here");
 		}
 	}
+
 	/**
 	 * @param mainMap the main map
-	 * @param map a subordinate map
-	 * @param file the file the subordinate map came from
+	 * @param map     a subordinate map
+	 * @param file    the file the subordinate map came from
 	 * @return the result of doing the subset test with those maps
 	 */
-	private static Returns doSubsetTest(final Subsettable<IMapNG> mainMap, final IMapNG map, final File file) {
+	private static Returns doSubsetTest(final Subsettable<IMapNG> mainMap, final IMapNG
+			                                                                       map,
+	                                    final File file) {
 		try {
 			if (mainMap.isSubset(map, SYS_OUT, "In " + file.getName() + ':')) {
 				return Returns.OK;
@@ -149,6 +172,7 @@ public final class SubsetDriver implements ISPDriver {
 			return Returns.Fail;
 		}
 	}
+
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
@@ -172,6 +196,7 @@ public final class SubsetDriver implements ISPDriver {
 	public void setName(final String nomen) {
 		throw new IllegalStateException("Can't rename a driver");
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

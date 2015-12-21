@@ -1,5 +1,11 @@
 package model.map.fixtures.mobile.worker;
 
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+import util.ArraySet;
+import util.NullCleaner;
+import util.Pair;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -8,32 +14,25 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.stream.StreamSupport;
 
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
-import util.ArraySet;
-import util.NullCleaner;
-import util.Pair;
-
 /**
  * A Job a worker can work at.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  */
@@ -55,18 +54,19 @@ public class Job implements IJob { // NOPMD
 	 * Constructor.
 	 *
 	 * @param jobName the name of the Job
-	 * @param levels how many levels the worker has in the Job.
-	 * @param skills the worker's level in the various skills associated with
-	 *        the job.
+	 * @param levels  how many levels the worker has in the Job.
+	 * @param skills  the worker's level in the various skills associated with the job.
 	 */
-	public Job(final String jobName, final int levels, final @NonNull ISkill @NonNull ... skills) {
+	public Job(final String jobName, final int levels,
+	           final @NonNull ISkill @NonNull ... skills) {
 		name = jobName;
 		level = levels;
 		skillSet.addAll(Arrays.asList(skills));
 	}
+
 	/**
-	 * @return a copy of this
 	 * @param zero whether to "zero out" sensitive information
+	 * @return a copy of this
 	 */
 	@Override
 	public IJob copy(final boolean zero) {
@@ -109,8 +109,8 @@ public class Job implements IJob { // NOPMD
 	}
 
 	/**
-	 * @return an iterator over the worker's level in the various skills
-	 *         associated with the job
+	 * @return an iterator over the worker's level in the various skills associated with
+	 * the job
 	 */
 	@Override
 	public final Iterator<ISkill> iterator() {
@@ -124,28 +124,26 @@ public class Job implements IJob { // NOPMD
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof Job
-				&& name.equals(((Job) obj).name) && level == ((Job) obj).level
-				&& skillSet.equals(((Job) obj).skillSet);
+				                      && name.equals(((Job) obj).name) &&
+				                      level == ((Job) obj).level
+				                      && skillSet.equals(((Job) obj).skillSet);
 	}
 
 	/**
-	 * If this returns false, the caller should append an indication of context,
-	 * since Jobs don't have ID #s.
+	 * If this returns false, the caller should append an indication of context, since
+	 * Jobs don't have ID #s.
 	 *
-	 * @param obj
-	 *            a Job
-	 * @param ostream
-	 *            a stream to explain our results on
-	 * @param context
-	 *            a string to print before every line of output, describing the
-	 *            context
-	 * @return whether the Job is a "subset" of this---same name, equal or lower
-	 *         level, with no extra or higher-level or extra-experienced Skills.
+	 * @param obj     a Job
+	 * @param ostream a stream to explain our results on
+	 * @param context a string to print before every line of output, describing the
+	 *                context
+	 * @return whether the Job is a "subset" of this---same name, equal or lower level,
+	 * with no extra or higher-level or extra-experienced Skills.
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
 	public boolean isSubset(final IJob obj, final Appendable ostream,
-			final String context) throws IOException {
+	                        final String context) throws IOException {
 		if (!name.equals(obj.getName())) {
 			ostream.append(context);
 			ostream.append("\tPassed Jobs with different names\n");
@@ -170,9 +168,13 @@ public class Job implements IJob { // NOPMD
 					retval = false;
 				} else {
 					ours.put(skill.getName(), Pair.of(NullCleaner
-							.assertNotNull(Integer.valueOf(skill.getLevel())),
+							                                  .assertNotNull(
+									                                  Integer.valueOf(
+											                                  skill
+													                                  .getLevel())),
 							NullCleaner.assertNotNull(Integer.valueOf(skill
-									.getHours()))));
+									                                          .getHours
+											                                           ()))));
 				}
 			}
 			for (final ISkill skill : obj) {
@@ -211,6 +213,7 @@ public class Job implements IJob { // NOPMD
 			return retval;
 		}
 	}
+
 	/**
 	 * @return a hash value for the Job.
 	 */
@@ -236,8 +239,8 @@ public class Job implements IJob { // NOPMD
 	}
 
 	/**
-	 * A Job is "empty" if the worker has no levels in it and no experience in
-	 * any skills it contains.
+	 * A Job is "empty" if the worker has no levels in it and no experience in any skills
+	 * it contains.
 	 *
 	 * @return whether this Job is "empty"
 	 */
@@ -249,6 +252,7 @@ public class Job implements IJob { // NOPMD
 			return StreamSupport.stream(spliterator(), false).allMatch(ISkill::isEmpty);
 		}
 	}
+
 	/**
 	 * TODO: Should we add and return a new Skill in the not-present case?
 	 *

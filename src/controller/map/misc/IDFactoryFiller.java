@@ -1,37 +1,36 @@
 package controller.map.misc;
 
-import java.io.File;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.FixtureIterable;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Point;
 import model.misc.IMultiMapModel;
+import org.eclipse.jdt.annotation.NonNull;
 import util.Pair;
 
+import java.io.File;
+
 /**
- * A class to create an IDFactory with all IDs in a map, or in a collection of
- * fixtures, already registered as used.
+ * A class to create an IDFactory with all IDs in a map, or in a collection of fixtures,
+ * already registered as used.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  */
@@ -69,8 +68,7 @@ public final class IDFactoryFiller {
 
 	/**
 	 * @param model a collection of maps
-	 * @return an ID factory that won't generate an ID any of the maps already
-	 *         uses.
+	 * @return an ID factory that won't generate an ID any of the maps already uses.
 	 */
 	public static IDFactory createFactory(final IMultiMapModel model) {
 		final IDFactory retval = new IDFactory();
@@ -96,22 +94,23 @@ public final class IDFactoryFiller {
 
 	/**
 	 * @param iter a collection of fixtures
-	 * @return an ID factory that won't generate an ID already used in the
-	 *         collection
+	 * @return an ID factory that won't generate an ID already used in the collection
 	 */
-	public static IDFactory createFactory(final Iterable<@NonNull ? extends IFixture> iter) {
+	public static IDFactory createFactory(final Iterable<@NonNull ? extends IFixture>
+			                                      iter) {
 		final IDFactory retval = new IDFactory();
 		recursiveRegister(retval, iter);
 		return retval;
 	}
 
 	/**
-	 * @param idf an IDFactory instance
-	 * @param iter a collection of fixtures, all of which (recursively) should
-	 *        have their IDs marked as used.
+	 * @param idf  an IDFactory instance
+	 * @param iter a collection of fixtures, all of which (recursively) should have their
+	 *             IDs marked as used.
 	 */
 	private static void recursiveRegister(final IDFactory idf,
-			final Iterable<@NonNull ? extends IFixture> iter) {
+	                                      final Iterable<@NonNull ? extends IFixture>
+			                                      iter) {
 		for (final IFixture fix : iter) {
 			final int idNum = fix.getID();
 			if (!idf.used(idNum)) {

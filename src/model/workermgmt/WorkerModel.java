@@ -1,16 +1,5 @@
 package model.workermgmt;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
@@ -28,49 +17,59 @@ import util.NullCleaner;
 import util.Pair;
 import view.util.SystemOut;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 /**
  * A model to underlie the advancement GUI, etc.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class WorkerModel extends SimpleMultiMapModel implements IWorkerModel {
 	/**
 	 * Constructor.
 	 *
-	 * @param map
-	 *            the map we're wrapping.
-	 * @param file
-	 *            the file the map was loaded from or should be
-	 *            saved to
+	 * @param map  the map we're wrapping.
+	 * @param file the file the map was loaded from or should be saved to
 	 */
 	public WorkerModel(final IMutableMapNG map, final File file) {
 		super(map, file);
 	}
+
 	/**
 	 * Copy constructor.
+	 *
 	 * @param model a driver model
 	 */
 	public WorkerModel(final IDriverModel model) {
 		super(model);
 	}
+
 	/**
 	 * @param player a player in the map
 	 * @return a list of that player's units
@@ -91,7 +90,8 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 						} else {
 							proxy = new ProxyUnit(unit.getID());
 							((ProxyFor<IUnit>) proxy).addProxied(unit);
-							retval.put(NullCleaner.assertNotNull(Integer.valueOf(unit.getID())), proxy);
+							retval.put(NullCleaner.assertNotNull(
+									Integer.valueOf(unit.getID())), proxy);
 						}
 					}
 				}
@@ -110,10 +110,9 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	}
 
 	/**
-	 * @param iter a sequence of members of that type
+	 * @param iter   a sequence of members of that type
 	 * @param player a player
-	 * @return a list of the members of the sequence that are units owned by the
-	 *         player
+	 * @return a list of the members of the sequence that are units owned by the player
 	 */
 	private static Collection<IUnit> getUnits(final Iterable<? super Unit> iter,
 	                                          final Player player) {
@@ -136,19 +135,27 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	public List<String> getUnitKinds(final Player player) {
 		return NullCleaner.assertNotNull(Collections
 				                                 .unmodifiableList(
-						                                 new ArrayList<>(getUnits(player).stream().map(IUnit::getKind)
-								                                                 .collect(Collectors.toSet()))));
+						                                 new ArrayList<>(getUnits(player)
+								                                                 .stream()
+								                                                 .map
+										                                                  (IUnit::getKind)
+
+								                                                 .collect(
+										                                                 Collectors
+												                                                 .toSet()))));
 	}
 
 	/**
 	 * @param player a player in the map
-	 * @param kind a "kind" of unit.
+	 * @param kind   a "kind" of unit.
 	 * @return a list of the units of that kind in the map belonging to that player
 	 */
 	@Override
 	public List<IUnit> getUnits(final Player player, final String kind) {
-		return getUnits(player).stream().filter(unit -> kind.equals(unit.getKind())).collect(Collectors.toList());
+		return getUnits(player).stream().filter(unit -> kind.equals(unit.getKind()))
+				       .collect(Collectors.toList());
 	}
+
 	/**
 	 * @param unit the unit to add
 	 */
@@ -157,8 +164,8 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 		for (final Point point : getMap().locations()) {
 			for (final TileFixture fix : getMap().getOtherFixtures(point)) {
 				if (fix instanceof Fortress
-						&& unit.getOwner().equals(((Fortress) fix).getOwner())
-						&& "HQ".equals(((Fortress) fix).getName())) {
+						    && unit.getOwner().equals(((Fortress) fix).getOwner())
+						    && "HQ".equals(((Fortress) fix).getName())) {
 					addUnitAtLocation(unit, point);
 					return;
 				}
@@ -169,7 +176,9 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 
 	@Override
 	public @Nullable IUnit getUnitByID(final Player owner, final int id) {
-		final Optional<IUnit> retval = StreamSupport.stream(getUnits(owner).spliterator(), false).filter(unit -> id == unit.getID()).findAny();
+		final Optional<IUnit> retval =
+				StreamSupport.stream(getUnits(owner).spliterator(), false)
+						.filter(unit -> id == unit.getID()).findAny();
 		if (retval.isPresent()) {
 			return retval.get();
 		} else {
@@ -182,7 +191,8 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 			for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
 				boolean added = false;
 				for (final TileFixture fix : pair.first().getOtherFixtures(location)) {
-					if (fix instanceof Fortress && unit.getOwner().equals(((Fortress) fix).getOwner())) {
+					if (fix instanceof Fortress &&
+							    unit.getOwner().equals(((Fortress) fix).getOwner())) {
 						((Fortress) fix).addMember(unit.copy(false));
 						added = true;
 						break;
@@ -195,7 +205,8 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 		} else {
 			boolean added = false;
 			for (final TileFixture fix : getMap().getOtherFixtures(location)) {
-				if (fix instanceof Fortress && unit.getOwner().equals(((Fortress) fix).getOwner())) {
+				if (fix instanceof Fortress &&
+						    unit.getOwner().equals(((Fortress) fix).getOwner())) {
 					((Fortress) fix).addMember(unit.copy(false));
 					added = true;
 					break;
@@ -206,6 +217,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 			}
 		}
 	}
+
 	/**
 	 * @return a String representation of the object
 	 */

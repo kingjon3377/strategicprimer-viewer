@@ -6,27 +6,26 @@ import util.NullCleaner;
 /**
  * The minimum and maximum rows and columns drawn.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * TODO: tests
  *
  * @author kingjon
- *
  */
 public final class VisibleDimensions {
 	/**
@@ -55,7 +54,7 @@ public final class VisibleDimensions {
 	 * @param maximumCol the maximum column
 	 */
 	public VisibleDimensions(final int minimumRow, final int maximumRow,
-			final int minimumCol, final int maximumCol) {
+	                         final int minimumCol, final int maximumCol) {
 		minRow = minimumRow;
 		maxRow = maximumRow;
 		minCol = minimumCol;
@@ -63,7 +62,6 @@ public final class VisibleDimensions {
 	}
 
 	/**
-	 *
 	 * @return the minimum visible row
 	 */
 	public int getMinimumRow() {
@@ -71,7 +69,6 @@ public final class VisibleDimensions {
 	}
 
 	/**
-	 *
 	 * @return the maximum visible row
 	 */
 	public int getMaximumRow() {
@@ -79,7 +76,6 @@ public final class VisibleDimensions {
 	}
 
 	/**
-	 *
 	 * @return the minimum visible column
 	 */
 	public int getMinimumCol() {
@@ -87,7 +83,6 @@ public final class VisibleDimensions {
 	}
 
 	/**
-	 *
 	 * @return the maximum visible column
 	 */
 	public int getMaximumCol() {
@@ -95,15 +90,16 @@ public final class VisibleDimensions {
 	}
 
 	/**
-	 *
 	 * @return a String representation of the object.
 	 */
 	@Override
 	public String toString() {
 		return NullCleaner.assertNotNull(new StringBuilder(256)
-				.append("VisibleDimensions: (").append(minRow).append(", ")
-				.append(minCol).append(") to (").append(maxRow).append(", ")
-				.append(maxCol).append(')').toString());
+				                                 .append("VisibleDimensions: (")
+				                                 .append(minRow).append(", ")
+				                                 .append(minCol).append(") to (")
+				                                 .append(maxRow).append(", ")
+				                                 .append(maxCol).append(')').toString());
 	}
 
 	/**
@@ -112,7 +108,7 @@ public final class VisibleDimensions {
 	 */
 	public boolean isSameSize(final VisibleDimensions other) {
 		return maxCol - minCol == other.maxCol - other.minCol
-				&& maxRow - minRow == other.maxRow - other.minRow;
+				       && maxRow - minRow == other.maxRow - other.minRow;
 	}
 
 	/**

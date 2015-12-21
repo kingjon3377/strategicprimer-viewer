@@ -1,9 +1,22 @@
 package view.worker;
 
-import static util.IsNumeric.isNumeric;
+import controller.map.misc.IDFactory;
+import model.listeners.NewWorkerListener;
+import model.listeners.NewWorkerSource;
+import model.map.fixtures.mobile.Worker;
+import model.map.fixtures.mobile.worker.WorkerStats;
+import model.workermgmt.RaceFactory;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
+import util.Pair;
+import util.SingletonRandom;
+import util.TypesafeLogger;
+import view.util.BorderedPanel;
+import view.util.ErrorShower;
+import view.util.ListenedButton;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
@@ -15,55 +28,33 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import controller.map.misc.IDFactory;
-import model.listeners.NewWorkerListener;
-import model.listeners.NewWorkerSource;
-import model.map.fixtures.mobile.Worker;
-import model.map.fixtures.mobile.worker.WorkerStats;
-import model.workermgmt.RaceFactory;
-import util.NullCleaner;
-import util.Pair;
-import util.SingletonRandom;
-import util.TypesafeLogger;
-import view.util.BorderedPanel;
-import view.util.ErrorShower;
-import view.util.ListenedButton;
+import static util.IsNumeric.isNumeric;
 
 /**
- * A window to let the user add a new worker. As this is a dialog, we do *not*
- * extend ApplicationFrame.
+ * A window to let the user add a new worker. As this is a dialog, we do *not* extend
+ * ApplicationFrame.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class WorkerConstructionFrame extends JFrame implements ActionListener,
-		NewWorkerSource {
+		                                                                     NewWorkerSource {
 	/**
 	 * Logger.
 	 */
@@ -118,6 +109,7 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 	 * The list of listeners to notify on worker creation.
 	 */
 	private final Collection<NewWorkerListener> nwListeners = new ArrayList<>();
+
 	/**
 	 * Constructor.
 	 *
@@ -148,11 +140,12 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 		buttonPanel.add(new ListenedButton("Add Worker", this));
 		buttonPanel.add(new ListenedButton("Cancel", this));
 		setContentPane(new BorderedPanel(statsPanel, textPanel, buttonPanel,
-				null, null));
+				                                null, null));
 		setMinimumSize(new Dimension(320, 240));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
 	}
+
 	/**
 	 * @param box a text box
 	 * @return its contents, asserted to not be null
@@ -161,6 +154,7 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 		final String text = box.getText();
 		return NullCleaner.assertNotNull(text);
 	}
+
 	/**
 	 * @return an explanation of what's wrong with the user's input.
 	 */
@@ -184,9 +178,9 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 	}
 
 	/**
-	 * @param numbers a sequence of Pairs of supposedly-numeric Strings and what
-	 *        they represent. If any is nonnumeric, the return String includes
-	 *        "such-and-such must be a number."
+	 * @param numbers a sequence of Pairs of supposedly-numeric Strings and what they
+	 *                represent. If any is nonnumeric, the return String includes
+	 *                "such-and-such must be a number."
 	 * @return such an explanation
 	 */
 	@SafeVarargs
@@ -217,19 +211,27 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 			if (nameText.isEmpty()
 					    || raceText.isEmpty()
 					    || anyNonNumeric(hpBox.getText().trim(), maxHP.getText()
-							                                             .trim(), strength.getText().trim(),
+							                                             .trim(),
+					strength.getText().trim(),
 					dex.getText().trim(), con.getText().trim(), intel
-							                                            .getText().trim(), wis.getText().trim(),
+							                                            .getText()
+							                                            .trim(),
+					wis.getText().trim(),
 					cha.getText().trim())) {
 				ErrorShower.showErrorDialog(this, getErrorExpl());
 			} else {
 				final Worker retval = new Worker(nameText, raceText,
-						idf.createID());
+						                                idf.createID());
 				try {
 					retval.setStats(new WorkerStats(parseInt(hpBox),
-							parseInt(maxHP), parseInt(strength), parseInt(dex),
-							parseInt(con), parseInt(intel), parseInt(wis),
-							parseInt(cha)));
+							                               parseInt(maxHP),
+							                               parseInt(strength),
+							                               parseInt(dex),
+							                               parseInt(con), parseInt
+									                                              (intel),
+
+							                               parseInt(wis),
+							                               parseInt(cha)));
 				} catch (final ParseException e) {
 					LOGGER.log(Level.FINE, "Non-numeric input", e);
 					ErrorShower.showErrorDialog(this, "All stats must be numbers");
@@ -246,11 +248,14 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 			dispose();
 		}
 	}
+
 	/**
 	 * Number parser.
 	 */
 	private static final NumberFormat NUM_PARSER = NullCleaner
-			.assertNotNull(NumberFormat.getIntegerInstance());
+			                                               .assertNotNull(NumberFormat
+					                                                              .getIntegerInstance());
+
 	/**
 	 * @param box a text field
 	 * @return the integer value of its text
@@ -266,18 +271,19 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 	 */
 	@SuppressWarnings("QuestionableName")
 	private static boolean anyNonNumeric(final String... strings) {
-		return Stream.of(strings).anyMatch(string -> string == null || !isNumeric(string));
+		return Stream.of(strings)
+				       .anyMatch(string -> string == null || !isNumeric(string));
 	}
 
 	/**
 	 * Add a label and a field to a panel.
 	 *
 	 * @param panel the panel to hold them
-	 * @param text the text to put on the label
+	 * @param text  the text to put on the label
 	 * @param field the text field, or similar, to add
 	 */
 	private static void addLabeledField(final JPanel panel, final String text,
-			final JComponent field) {
+	                                    final JComponent field) {
 		panel.add(new JLabel(text));
 		panel.add(field);
 	}
@@ -297,15 +303,15 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 	}
 
 	/**
-	 * Fill a stat's text box with an appropriate randomly-generated one.
-	 * Doesn't take race into account.
+	 * Fill a stat's text box with an appropriate randomly-generated one. Doesn't take
+	 * race into account.
 	 *
 	 * @param stat the field to fill
 	 */
 	private static void createSingleStat(final JTextField stat) {
 		final Random rng = SingletonRandom.RANDOM;
 		final int threeDeeSix = rng.nextInt(6) + rng.nextInt(6)
-				+ rng.nextInt(6) + 3;
+				                        + rng.nextInt(6) + 3;
 		stat.setText(Integer.toString(threeDeeSix));
 	}
 

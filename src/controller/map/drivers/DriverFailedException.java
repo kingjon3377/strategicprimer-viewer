@@ -1,9 +1,10 @@
 package controller.map.drivers;
 
 /**
- * An exception to throw when the driver fails ... such as if the map is
- * improperly formatted, etc. This means we don't have to declare a long
- * list of possible exceptional circumstances.
+ * An exception to throw when the driver fails ... such as if the map is improperly
+ * formatted, etc. This means we don't have to declare a long list of possible exceptional
+ * circumstances.
+ *
  * @author Jonathan Lovelace
  */
 public class DriverFailedException extends Exception { // $codepro.audit.disable
@@ -20,7 +21,7 @@ public class DriverFailedException extends Exception { // $codepro.audit.disable
 	 * Constructor.
 	 *
 	 * @param message a custom error string
-	 * @param cause the cause. Should not be null.
+	 * @param cause   the cause. Should not be null.
 	 */
 	public DriverFailedException(final String message, final Throwable cause) {
 		super(message, cause);

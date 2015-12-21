@@ -1,44 +1,37 @@
 package view.map.main;
 
-import java.awt.Component;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
-import javax.swing.ListSelectionModel;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.TileFixture;
 import model.viewer.FixtureFilterListModel;
 import model.viewer.ZOrderFilter;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A list to let the user select which fixtures ought to be searched.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2013-2014 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class FixtureFilterList extends JList<Class<? extends TileFixture>>
 		implements ZOrderFilter, ListCellRenderer<Class<? extends TileFixture>> {
@@ -93,19 +86,23 @@ public final class FixtureFilterList extends JList<Class<? extends TileFixture>>
 	}
 
 	/**
-	 *
-	 * @param list this
-	 * @param value the value being rendered
-	 * @param index its index
-	 * @param isSelected whether or not it's selected
+	 * @param list         this
+	 * @param value        the value being rendered
+	 * @param index        its index
+	 * @param isSelected   whether or not it's selected
 	 * @param cellHasFocus whether or not it has the focus
 	 * @return the rendered widget
 	 */
 	@Override
 	public Component getListCellRendererComponent(
-			@Nullable final JList<? extends Class<? extends TileFixture>> list,
-			final Class<? extends TileFixture> value, final int index,
-			final boolean isSelected, final boolean cellHasFocus) {
+			                                             @Nullable
+			                                             final JList<? extends Class<? extends TileFixture>> list,
+			                                             final Class<? extends
+					                                                         TileFixture> value,
+
+			                                             final int index,
+			                                             final boolean isSelected,
+			                                             final boolean cellHasFocus) {
 		if (list == null) {
 			throw new IllegalArgumentException("Asked to render null list");
 		}

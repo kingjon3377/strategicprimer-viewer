@@ -1,36 +1,34 @@
 package model.map.fixtures.mobile;
 
-import java.io.IOException;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
+import org.eclipse.jdt.annotation.Nullable;
+
+import java.io.IOException;
 
 /**
  * A simurgh. TODO: should probably be a unit, or something.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public class Simurgh implements MobileFixture, HasImage, UnitMember {
 	/**
@@ -46,8 +44,8 @@ public class Simurgh implements MobileFixture, HasImage, UnitMember {
 	}
 
 	/**
-	 * @return a copy of this simurgh
 	 * @param zero ignored, as a simurgh has no sensitive information
+	 * @return a copy of this simurgh
 	 */
 	@Override
 	public Simurgh copy(final boolean zero) {
@@ -55,6 +53,7 @@ public class Simurgh implements MobileFixture, HasImage, UnitMember {
 		retval.setImage(image);
 		return retval;
 	}
+
 	/**
 	 * @return a String representation of the djinn
 	 */
@@ -86,7 +85,7 @@ public class Simurgh implements MobileFixture, HasImage, UnitMember {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof Simurgh
-				&& ((TileFixture) obj).getID() == id;
+				                      && ((TileFixture) obj).getID() == id;
 	}
 
 	/**
@@ -99,7 +98,6 @@ public class Simurgh implements MobileFixture, HasImage, UnitMember {
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -130,17 +128,16 @@ public class Simurgh implements MobileFixture, HasImage, UnitMember {
 	}
 
 	/**
-	 * @param obj another UnitMember
+	 * @param obj     another UnitMember
 	 * @param ostream a stream to report an explanation on
-	 * @param context
-	 *            a string to print before every line of output, describing the
-	 *            context
+	 * @param context a string to print before every line of output, describing the
+	 *                context
 	 * @return whether that member equals this one
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-			final String context) throws IOException {
+	                        final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Simurgh) {
 				return true;
@@ -161,6 +158,7 @@ public class Simurgh implements MobileFixture, HasImage, UnitMember {
 			return false;
 		}
 	}
+
 	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
@@ -184,6 +182,7 @@ public class Simurgh implements MobileFixture, HasImage, UnitMember {
 	public String plural() {
 		return "Simurghs";
 	}
+
 	/**
 	 * @return a short description of the fixture
 	 */

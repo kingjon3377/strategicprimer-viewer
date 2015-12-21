@@ -1,17 +1,5 @@
 package view.worker;
 
-import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
-
-import java.awt.GridLayout;
-import java.util.Iterator;
-
-import javax.swing.GroupLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.listeners.UnitMemberListener;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Animal;
@@ -20,26 +8,33 @@ import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.WorkerStats;
+import org.eclipse.jdt.annotation.Nullable;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.Iterator;
+
+import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
+
 /**
  * A panel to show the details of the currently selected unit-member.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2015-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
- *
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
  */
@@ -47,7 +42,8 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	/**
 	 * The currently selected unit member, or null if no selection.
 	 */
-	@Nullable private UnitMember current = null;
+	@Nullable
+	private UnitMember current = null;
 	/**
 	 * The label to say what kind of unit member this is.
 	 */
@@ -88,6 +84,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	 * The subpanel to show a worker's Job experience or training.
 	 */
 	private final JPanel jobsPanel = new JPanel(new GridLayout(0, 1));
+
 	/**
 	 * Constructor: lay out, then clear, the panel.
 	 */
@@ -108,56 +105,96 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		final JLabel chaCaption = new JLabel("<html><b>Cha:</b></html>");
 		final JLabel jobsCaption = new JLabel("<html><b>Job Levels:</b></html>");
 		layout.setVerticalGroup(layout.createSequentialGroup()
-				.addComponent(header)
-				.addGroup(layout.createParallelGroup().addComponent(typeCaption)
-						.addComponent(typeLabel))
-				.addGroup(layout.createParallelGroup().addComponent(nameCaption)
-						.addComponent(nameLabel))
-				.addGroup(layout.createParallelGroup().addComponent(kindCaption)
-						.addComponent(kindLabel))
-				.addGroup(layout.createParallelGroup().addComponent(strCaption)
-						.addComponent(strLabel).addComponent(intCaption)
-						.addComponent(intLabel))
-				.addGroup(layout.createParallelGroup().addComponent(dexCaption)
-						.addComponent(dexLabel).addComponent(wisCaption)
-						.addComponent(wisLabel))
-				.addGroup(layout.createParallelGroup().addComponent(conCaption)
-						.addComponent(conLabel).addComponent(chaCaption)
-						.addComponent(chaLabel))
-				.addGroup(layout.createParallelGroup().addComponent(jobsCaption)
-						.addComponent(jobsPanel)));
+				                        .addComponent(header)
+				                        .addGroup(layout.createParallelGroup()
+						                                  .addComponent(typeCaption)
+						                                  .addComponent(typeLabel))
+				                        .addGroup(layout.createParallelGroup()
+						                                  .addComponent(nameCaption)
+						                                  .addComponent(nameLabel))
+				                        .addGroup(layout.createParallelGroup()
+						                                  .addComponent(kindCaption)
+						                                  .addComponent(kindLabel))
+				                        .addGroup(layout.createParallelGroup()
+						                                  .addComponent(strCaption)
+						                                  .addComponent(strLabel)
+						                                  .addComponent(intCaption)
+						                                  .addComponent(intLabel))
+				                        .addGroup(layout.createParallelGroup()
+						                                  .addComponent(dexCaption)
+						                                  .addComponent(dexLabel)
+						                                  .addComponent(wisCaption)
+						                                  .addComponent(wisLabel))
+				                        .addGroup(layout.createParallelGroup()
+						                                  .addComponent(conCaption)
+						                                  .addComponent(conLabel)
+						                                  .addComponent(chaCaption)
+						                                  .addComponent(chaLabel))
+				                        .addGroup(layout.createParallelGroup()
+						                                  .addComponent(jobsCaption)
+						                                  .addComponent(jobsPanel)));
 		layout.setHorizontalGroup(layout.createParallelGroup()
-				.addComponent(header)
-				.addGroup(layout.createSequentialGroup()
-						.addGroup(layout.createParallelGroup()
-								.addComponent(typeCaption)
-								.addComponent(nameCaption)
-								.addComponent(kindCaption)
-								.addGroup(layout.createSequentialGroup()
-										.addComponent(strCaption)
-										.addComponent(strLabel))
-								.addGroup(layout.createSequentialGroup()
-										.addComponent(dexCaption)
-										.addComponent(dexLabel))
-								.addGroup(layout.createSequentialGroup()
-										.addComponent(conCaption)
-										.addComponent(conLabel))
-								.addComponent(jobsCaption))
-						.addGroup(layout.createParallelGroup()
-								.addComponent(typeLabel)
-								.addComponent(nameLabel)
-								.addComponent(kindLabel)
-								.addGroup(layout.createSequentialGroup()
-										.addComponent(intCaption)
-										.addComponent(intLabel))
-								.addGroup(layout.createSequentialGroup()
-										.addComponent(wisCaption)
-										.addComponent(wisLabel))
-								.addGroup(layout.createSequentialGroup()
-										.addComponent(chaCaption)
-										.addComponent(chaLabel))
-								.addComponent(jobsPanel)
-						)));
+				                          .addComponent(header)
+				                          .addGroup(layout.createSequentialGroup()
+						                                    .addGroup(
+								                                    layout
+										                                    .createParallelGroup()
+										                                    .addComponent(
+												                                    typeCaption)
+										                                    .addComponent(
+												                                    nameCaption)
+										                                    .addComponent(
+												                                    kindCaption)
+										                                    .addGroup(
+												                                    layout.createSequentialGroup()
+														                                    .addComponent(
+																                                    strCaption)
+														                                    .addComponent(
+																                                    strLabel))
+										                                    .addGroup(
+												                                    layout.createSequentialGroup()
+														                                    .addComponent(
+																                                    dexCaption)
+														                                    .addComponent(
+																                                    dexLabel))
+										                                    .addGroup(
+												                                    layout.createSequentialGroup()
+														                                    .addComponent(
+																                                    conCaption)
+														                                    .addComponent(
+																                                    conLabel))
+										                                    .addComponent(
+												                                    jobsCaption))
+						                                    .addGroup(
+								                                    layout
+										                                    .createParallelGroup()
+										                                    .addComponent(
+												                                    typeLabel)
+										                                    .addComponent(
+												                                    nameLabel)
+										                                    .addComponent(
+												                                    kindLabel)
+										                                    .addGroup(
+												                                    layout.createSequentialGroup()
+														                                    .addComponent(
+																                                    intCaption)
+														                                    .addComponent(
+																                                    intLabel))
+										                                    .addGroup(
+												                                    layout.createSequentialGroup()
+														                                    .addComponent(
+																                                    wisCaption)
+														                                    .addComponent(
+																                                    wisLabel))
+										                                    .addGroup(
+												                                    layout.createSequentialGroup()
+														                                    .addComponent(
+																                                    chaCaption)
+														                                    .addComponent(
+																                                    chaLabel))
+										                                    .addComponent(
+												                                    jobsPanel)
+						                                    )));
 		layout.linkSize(SwingConstants.HORIZONTAL, typeCaption, nameCaption,
 				kindCaption, jobsCaption);
 		layout.linkSize(SwingConstants.HORIZONTAL, typeLabel, nameLabel,
@@ -172,19 +209,21 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	}
 
 	/**
-	 * Handle a member-selection event. Only trigger an invalidation of the
-	 * content if it's a different member than before.
-	 * @param old what the caller thinks was the previously selected member
+	 * Handle a member-selection event. Only trigger an invalidation of the content if
+	 * it's a different member than before.
+	 *
+	 * @param old      what the caller thinks was the previously selected member
 	 * @param selected the newly selected unit member
 	 */
 	@Override
 	public void memberSelected(@Nullable final UnitMember old,
-			@Nullable final UnitMember selected) {
+	                           @Nullable final UnitMember selected) {
 		if (selected instanceof ProxyFor) {
 			if (((ProxyFor<?>) selected).isParallel()) {
 				@SuppressWarnings("unchecked")
-				final Iterator<? extends UnitMember> iter = ((ProxyFor<? extends UnitMember>) selected)
-						                                            .getProxied().iterator();
+				final Iterator<? extends UnitMember> iter =
+						((ProxyFor<? extends UnitMember>) selected)
+								.getProxied().iterator();
 				if (iter.hasNext()) {
 					memberSelected(old, iter.next());
 					return;
@@ -199,6 +238,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			recache();
 		}
 	}
+
 	/**
 	 * Invalidate and recompute the display.
 	 */

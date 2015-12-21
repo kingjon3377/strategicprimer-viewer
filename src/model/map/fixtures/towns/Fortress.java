@@ -1,14 +1,5 @@
 package model.map.fixtures.towns;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.FixtureIterable;
 import model.map.HasImage;
 import model.map.IFixture;
@@ -17,36 +8,44 @@ import model.map.SubsettableFixture;
 import model.map.TileFixture;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.mobile.IUnit;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 /**
- * A fortress on the map. A player can only have one fortress per tile, but
- * multiple players may have fortresses on the same tile.
+ * A fortress on the map. A player can only have one fortress per tile, but multiple
+ * players may have fortresses on the same tile.
  *
  * FIXME: We need something about resources and buildings yet
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2012-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public class Fortress implements HasImage, ITownFixture,
-		FixtureIterable<FortressMember>, SubsettableFixture {
+		                                 FixtureIterable<FortressMember>,
+		                                 SubsettableFixture {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -69,20 +68,22 @@ public class Fortress implements HasImage, ITownFixture,
 	 * Constructor.
 	 *
 	 * @param fortOwner the player that owns the fortress
-	 * @param fortName the name of the fortress
-	 * @param idNum the ID number.
+	 * @param fortName  the name of the fortress
+	 * @param idNum     the ID number.
 	 */
 	public Fortress(final Player fortOwner, final String fortName,
-			final int idNum) {
+	                final int idNum) {
 		owner = fortOwner;
 		name = fortName;
 		units = new ArrayList<>();
 		id = idNum;
 	}
+
 	/**
 	 * TODO: Should we omit its name?
-	 * @return a copy of this fortress
+	 *
 	 * @param zero whether to omit the fortress's contents
+	 * @return a copy of this fortress
 	 */
 	@Override
 	public Fortress copy(final boolean zero) {
@@ -95,8 +96,8 @@ public class Fortress implements HasImage, ITownFixture,
 		retval.setImage(image);
 		return retval;
 	}
+
 	/**
-	 *
 	 * @return the units in the fortress.
 	 */
 	@Override
@@ -123,7 +124,6 @@ public class Fortress implements HasImage, ITownFixture,
 	}
 
 	/**
-	 *
 	 * @return the player that owns the fortress
 	 */
 	@Override
@@ -133,21 +133,20 @@ public class Fortress implements HasImage, ITownFixture,
 
 	/**
 	 * @param obj an object
-	 *
 	 * @return whether it is an identical fortress
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return this == obj || obj instanceof Fortress
-				&& name.equals(((Fortress) obj).name)
-				&& ((Fortress) obj).owner.getPlayerId() == owner.getPlayerId()
-				&& ((Fortress) obj).units.containsAll(units)
-				&& units.containsAll(((Fortress) obj).units)
-				&& ((Fortress) obj).id == id;
+				                      && name.equals(((Fortress) obj).name)
+				                      && ((Fortress) obj).owner.getPlayerId() ==
+						                         owner.getPlayerId()
+				                      && ((Fortress) obj).units.containsAll(units)
+				                      && units.containsAll(((Fortress) obj).units)
+				                      && ((Fortress) obj).id == id;
 	}
 
 	/**
-	 *
 	 * @return a hash value for the object
 	 */
 	@Override
@@ -156,7 +155,6 @@ public class Fortress implements HasImage, ITownFixture,
 	}
 
 	/**
-	 *
 	 * @return a String representation of the object.
 	 */
 	@Override
@@ -164,7 +162,7 @@ public class Fortress implements HasImage, ITownFixture,
 		final String ownerStr = owner.toString();
 		// Assume each unit is at least half a K.
 		final int len = 40 + name.length() + ownerStr.length() + units.size()
-				* 512;
+				                                                         * 512;
 		final StringBuilder sbuild = new StringBuilder(len).append("Fortress ");
 		sbuild.append(name);
 		sbuild.append(", owned by player ");
@@ -219,27 +217,27 @@ public class Fortress implements HasImage, ITownFixture,
 	}
 
 	/**
-	 * @param obj another Fortress
-	 * @return whether it's a strict subset of this one
+	 * @param obj     another Fortress
 	 * @param ostream a stream to write details to
-	 * @param context
-	 *            a string to print before every line of output, describing the
-	 *            context
+	 * @param context a string to print before every line of output, describing the
+	 *                context
+	 * @return whether it's a strict subset of this one
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-			final String context) throws IOException {
+	                        final String context) throws IOException {
 		if (!(obj instanceof Fortress)) {
 			ostream.append("Incompatible types");
 			return false;
 		}
 		final Fortress fort = (Fortress) obj;
 		if (name.equals(fort.name)
-				&& fort.owner.getPlayerId() == owner.getPlayerId()) {
+				    && fort.owner.getPlayerId() == owner.getPlayerId()) {
 			final Map<Integer, FortressMember> ours = new HashMap<>();
 			for (final FortressMember member : this) {
-				ours.put(NullCleaner.assertNotNull(Integer.valueOf(member.getID())), member);
+				ours.put(NullCleaner.assertNotNull(Integer.valueOf(member.getID())),
+						member);
 			}
 			final String ctxt =
 					context + " In fortress " + name + " (ID #" + id + "):";
@@ -266,7 +264,6 @@ public class Fortress implements HasImage, ITownFixture,
 
 	/**
 	 * @param fix A TileFixture to compare to
-	 *
 	 * @return the result of the comparison
 	 */
 	@Override
@@ -294,10 +291,11 @@ public class Fortress implements HasImage, ITownFixture,
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return this == fix || fix instanceof Fortress
-				&& name.equals(((Fortress) fix).name)
-				&& ((Fortress) fix).owner.getPlayerId() == owner.getPlayerId()
-				&& ((Fortress) fix).units.containsAll(units)
-				&& units.containsAll(((Fortress) fix).units);
+				                      && name.equals(((Fortress) fix).name)
+				                      && ((Fortress) fix).owner.getPlayerId() ==
+						                         owner.getPlayerId()
+				                      && ((Fortress) fix).units.containsAll(units)
+				                      && units.containsAll(((Fortress) fix).units);
 	}
 
 	/**
@@ -309,8 +307,7 @@ public class Fortress implements HasImage, ITownFixture,
 	}
 
 	/**
-	 * TODO: Add support for having a different status (but leave 'active' the
-	 * default).
+	 * TODO: Add support for having a different status (but leave 'active' the default).
 	 *
 	 * @return the status of the fortress
 	 */
@@ -368,6 +365,7 @@ public class Fortress implements HasImage, ITownFixture,
 	public String plural() {
 		return "Fortresses";
 	}
+
 	/**
 	 * @return a short description of the fixture
 	 */

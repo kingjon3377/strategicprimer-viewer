@@ -1,10 +1,5 @@
 package view.map.main;
 
-import java.awt.Color;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
-
 import model.map.SPMapNG;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -15,40 +10,45 @@ import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
 import util.NullCleaner;
 
+import java.awt.*;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * A class enapsulating the mapping from tile-types to colors.
  *
- * This is part of the Strategic Primer assistive programs suite developed by
- * Jonathan Lovelace.
+ * This is part of the Strategic Primer assistive programs suite developed by Jonathan
+ * Lovelace.
  *
  * Copyright (C) 2011-2015 Jonathan Lovelace
  *
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of version 3 of the GNU General Public License as published by the
- * Free Software Foundation.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of version 3 of the GNU General Public License as published by the Free Software
+ * Foundation.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see
+ * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
- *
  */
 public final class TileUIHelper {
 	/**
 	 * Descriptions of the types.
 	 */
 	private final Map<TileType, String> descriptions = new EnumMap<>(
-			TileType.class);
+			                                                                TileType
+					                                                                .class);
 
 	/**
-	 * A map from classes of features to the colors they can make the tile be.
-	 * Used to show that a tile is mountainous or forested even when those are
-	 * represented by icons and there's a higher icon on the tile.
+	 * A map from classes of features to the colors they can make the tile be. Used to
+	 * show that a tile is mountainous or forested even when those are represented by
+	 * icons and there's a higher icon on the tile.
 	 */
 	private final Map<Class<? extends TileFixture>, Color> featureColors;
 
@@ -102,19 +102,20 @@ public final class TileUIHelper {
 		featureColors.put(Sandbar.class, new Color(249, 233, 28));
 		featureColors.put(Hill.class, new Color(141, 182, 0));
 	}
+
 	/**
 	 * @param version a map version
-	 * @param type a tile type
+	 * @param type    a tile type
 	 * @return whether that map version supports that tile type
 	 */
 	public boolean supportsType(final int version, final TileType type) {
 		final Integer ver = Integer.valueOf(version);
 		return colors.containsKey(ver) && colors.get(ver).containsKey(type);
 	}
+
 	/**
 	 * @param version what version the map is
-	 * @param type a tile type
-	 *
+	 * @param type    a tile type
 	 * @return the tile's color, if any, under that map version
 	 */
 	public Color get(final int version, final TileType type) {
@@ -125,8 +126,11 @@ public final class TileUIHelper {
 				return NullCleaner.assertNotNull(colorMap.get(type));
 			} else {
 				throw new IllegalArgumentException(type
-						+ " is not a terrain type version " + version
-						+ " can handle");
+						                                   +
+						                                   " is not a terrain type " +
+						                                   "version " +
+						                                   version
+						                                   + " can handle");
 			}
 		} else {
 			throw new IllegalArgumentException("Not a version we can handle");
@@ -134,7 +138,6 @@ public final class TileUIHelper {
 	}
 
 	/**
-	 *
 	 * @return a String representation of the object.
 	 */
 	@Override
@@ -144,7 +147,6 @@ public final class TileUIHelper {
 
 	/**
 	 * @param type a terrain type
-	 *
 	 * @return a String representation of that terrain type
 	 */
 	public String getDescription(final TileType type) { // NOPMD
@@ -165,7 +167,7 @@ public final class TileUIHelper {
 			return NullCleaner.assertNotNull(featureColors.get(cls));
 		} else {
 			throw new IllegalArgumentException(
-					"Not a kind of fixture we can handle");
+					                                  "Not a kind of fixture we can handle");
 		}
 	}
 }
