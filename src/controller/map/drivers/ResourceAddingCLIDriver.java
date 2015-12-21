@@ -63,14 +63,14 @@ public class ResourceAddingCLIDriver implements ISPDriver {
 		} else {
 			dmodel = new ResourceManagementDriver(model);
 		}
-		final ICLIHelper cli = new CLIHelper();
 		final List<Player> players = StreamSupport.stream(dmodel.getPlayers().spliterator(), false).collect(
 				Collectors.toList());
-		final String desc = "Players in the maps:";
-		final String none = "No players found.";
-		final String prpt = "Player to add resources for: ";
 		final IDFactory idf = IDFactoryFiller.createFactory(dmodel);
 		try {
+			final ICLIHelper cli = new CLIHelper();
+			final String desc = "Players in the maps:";
+			final String none = "No players found.";
+			final String prpt = "Player to add resources for: ";
 			for (int playerNum = cli.chooseFromList(players, desc, none, prpt, false);
 					playerNum >= 0 && playerNum < players.size();
 					playerNum = cli.chooseFromList(players, desc, none, prpt, false)) {
