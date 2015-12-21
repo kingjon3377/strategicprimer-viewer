@@ -62,7 +62,7 @@ public final class FairyReader implements INodeHandler<Fairy> {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Fairy fix = new Fairy(getAttribute(element, "kind"),
 				                           getOrGenerateID(element, warner, idFactory));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

@@ -63,7 +63,7 @@ public final class GroundReader implements INodeHandler<Ground> {
 		final Ground fix = new Ground(getAttributeWithDeprecatedForm(element,
 				"kind", "ground", warner), Boolean.parseBoolean(getAttribute(
 				element, "exposed")));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

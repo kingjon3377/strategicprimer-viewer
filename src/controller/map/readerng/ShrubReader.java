@@ -63,7 +63,7 @@ public final class ShrubReader implements INodeHandler<Shrub> {
 		final Shrub fix = new Shrub(getAttributeWithDeprecatedForm(element,
 				"kind", "shrub", warner), getOrGenerateID(element, warner,
 				idFactory));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

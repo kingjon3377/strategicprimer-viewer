@@ -61,7 +61,7 @@ public final class ForestReader implements INodeHandler<Forest> {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Forest fix = new Forest(getAttribute(element, "kind"),
 				                             hasAttribute(element, "rows"));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

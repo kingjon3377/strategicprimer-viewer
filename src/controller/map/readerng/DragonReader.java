@@ -63,7 +63,7 @@ public final class DragonReader implements INodeHandler<Dragon> {
 		final Dragon fix = new Dragon(getAttribute(element, "kind"),
 				                             getOrGenerateID(element, warner,
 						                             idFactory));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

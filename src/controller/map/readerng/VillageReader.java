@@ -73,7 +73,7 @@ public final class VillageReader implements INodeHandler<Village> {
 				                               getAttribute(element, "race",
 						                               RaceFactory.getRace(
 								                               new Random(idNum))));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

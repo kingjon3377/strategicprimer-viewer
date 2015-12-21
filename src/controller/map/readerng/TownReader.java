@@ -66,13 +66,13 @@ public final class TownReader implements INodeHandler<@NonNull Town> {
 		final Town fix =
 				new Town(TownStatus.parseTownStatus(getAttribute(element,
 						"status")), TownSize.parseTownSize(
-						getAttribute(element, "size")), XMLHelper.parseInt(
+						getAttribute(element, "size")), parseInt(
 						getAttribute(element, "dc"),
 						NullCleaner.assertNotNull(element.getLocation())),
 						        getAttribute(element, "name", ""), getOrGenerateID(
 						element, warner, idFactory),
 						        getPlayerOrIndependent(element, warner, players));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

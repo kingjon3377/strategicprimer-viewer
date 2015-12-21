@@ -92,7 +92,7 @@ public final class MeadowReader implements INodeHandler<Meadow> {
 								              .parse(getAttribute(element, STATUS_ATTR,
 										              FieldStatus.random(id)
 												              .toString())));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

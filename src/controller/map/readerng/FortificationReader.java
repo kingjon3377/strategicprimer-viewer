@@ -66,7 +66,7 @@ public final class FortificationReader implements INodeHandler<@NonNull Fortific
 		final Fortification fix =
 				new Fortification(TownStatus.parseTownStatus(getAttribute(
 						element, "status")), TownSize.parseTownSize(
-						getAttribute(element, "size")), XMLHelper.parseInt(
+						getAttribute(element, "size")), parseInt(
 						getAttribute(element, "dc"),
 						NullCleaner.assertNotNull(element.getLocation())),
 						                 getAttribute(element, "name", ""),
@@ -74,7 +74,7 @@ public final class FortificationReader implements INodeHandler<@NonNull Fortific
 								                 element, warner, idFactory),
 						                 getPlayerOrIndependent(element, warner,
 								                 players));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

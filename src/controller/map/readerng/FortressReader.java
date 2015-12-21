@@ -78,7 +78,7 @@ public final class FortressReader implements INodeHandler<Fortress> {
 						NullCleaner.assertNotNull(element.getLocation()))),
 						            getAttribute(element, "name", ""), getOrGenerateID(
 						element, warner, idFactory));
-		XMLHelper.addImage(element, fort);
+		addImage(element, fort);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final String memberTag = event.asStartElement().getName()

@@ -66,7 +66,7 @@ public final class CacheReader implements INodeHandler<CacheFixture> {
 						                                         "contents"),
 				                                         getOrGenerateID(element,
 						                                         warner, idFactory));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

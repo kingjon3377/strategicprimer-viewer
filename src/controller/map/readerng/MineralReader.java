@@ -64,11 +64,11 @@ public final class MineralReader implements INodeHandler<@NonNull MineralVein> {
 		final MineralVein fix =
 				new MineralVein(getAttributeWithDeprecatedForm(element, "kind",
 						"mineral", warner), Boolean.parseBoolean(getAttribute(
-						element, "exposed")), XMLHelper.parseInt(
+						element, "exposed")), parseInt(
 						getAttribute(element, "dc"),
 						NullCleaner.assertNotNull(element.getLocation())),
 						               getOrGenerateID(element, warner, idFactory));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

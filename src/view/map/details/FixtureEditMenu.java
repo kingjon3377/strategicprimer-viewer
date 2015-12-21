@@ -70,7 +70,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 			addMenuItem(new JMenuItem("Rename", KeyEvent.VK_N), event -> {
 				final String result = (String) showInputDialog(outer,
 						"Fixture's new name:", "Rename Fixture",
-						JOptionPane.PLAIN_MESSAGE, null, null,
+						PLAIN_MESSAGE, null, null,
 						((HasName) fixture).getName());
 				if ((result != null) && !result.equals(((HasName) fixture).getName())) {
 					((HasName) fixture).setName(result);
@@ -88,7 +88,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 						final String result = (String) showInputDialog(
 								outer, "Fixture's new kind:",
 								"Change Fixture Kind",
-								JOptionPane.PLAIN_MESSAGE, null, null,
+								PLAIN_MESSAGE, null, null,
 								((HasKind) fixture).getKind());
 						if ((result != null) && !old.equals(result)) {
 							((HasKind) fixture).setKind(result);
@@ -106,7 +106,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 								(Player) showInputDialog(outer,
 										"Fixture's new owner:",
 										"Change Fixture Owner",
-										JOptionPane.PLAIN_MESSAGE, null,
+										PLAIN_MESSAGE, null,
 										playersAsArray(players),
 										((HasOwner) fixture).getOwner());
 						if (result != null) {
@@ -121,7 +121,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 						final int reply = showConfirmDialog(
 								outer, "Are you sure you want to dismiss this?",
 								"Confirm Dismissal", YES_NO_OPTION);
-						if (JOptionPane.YES_OPTION == reply) {
+						if (YES_OPTION == reply) {
 							for (final IWorkerTreeModel listener : listeners) {
 								listener.dismissUnitMember((UnitMember) fixture);
 							}

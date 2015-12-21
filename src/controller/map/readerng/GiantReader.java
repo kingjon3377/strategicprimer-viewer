@@ -62,7 +62,7 @@ public final class GiantReader implements INodeHandler<Giant> {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Giant fix = new Giant(getAttribute(element, "kind"),
 				                           getOrGenerateID(element, warner, idFactory));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

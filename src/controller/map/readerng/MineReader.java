@@ -66,7 +66,7 @@ public final class MineReader implements INodeHandler<Mine> {
 				                         TownStatus.parseTownStatus(
 						                         getAttribute(element, "status")),
 				                         getOrGenerateID(element, warner, idFactory));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

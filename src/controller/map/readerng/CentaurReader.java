@@ -63,7 +63,7 @@ public final class CentaurReader implements INodeHandler<Centaur> {
 		final Centaur fix = new Centaur(getAttribute(element, "kind"),
 				                               getOrGenerateID(element, warner,
 						                               idFactory));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

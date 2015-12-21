@@ -67,7 +67,7 @@ public final class AnimalReader implements INodeHandler<@NonNull Animal> {
 				                             getAttribute(element, "status", "wild"),
 				                             getOrGenerateID(
 						                             element, warner, idFactory));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

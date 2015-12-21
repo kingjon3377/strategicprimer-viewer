@@ -69,13 +69,13 @@ public final class UnitReader implements INodeHandler<Unit> {
 		requireNonEmptyParameter(element, "owner", false, warner);
 		requireNonEmptyParameter(element, "name", false, warner);
 		final Unit fix =
-				new Unit(players.getPlayer(XMLHelper.parseInt(
+				new Unit(players.getPlayer(parseInt(
 						ensureNumeric(getAttribute(element, "owner", "-1")),
 						NullCleaner.assertNotNull(element.getLocation()))),
 						        parseKind(element, warner), getAttribute(element,
 						"name", ""), getOrGenerateID(element, warner,
 						idFactory));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		final StringBuilder orders = new StringBuilder(512);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
