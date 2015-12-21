@@ -39,6 +39,7 @@ import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
 import util.NullCleaner;
 import util.Pair;
+import util.TypesafeLogger;
 import view.map.details.FixtureList;
 
 /**
@@ -69,7 +70,8 @@ public final class ExplorationClickListener extends AbstractAction implements
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(ExplorationClickListener.class.getName()));
+	private static final Logger LOGGER =
+			TypesafeLogger.getLogger(ExplorationClickListener.class);
 	/**
 	 * The list of movement-cost listeners.
 	 */

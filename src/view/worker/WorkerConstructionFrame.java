@@ -33,6 +33,7 @@ import model.workermgmt.RaceFactory;
 import util.NullCleaner;
 import util.Pair;
 import util.SingletonRandom;
+import util.TypesafeLogger;
 import view.util.BorderedPanel;
 import view.util.ErrorShower;
 import view.util.ListenedButton;
@@ -66,7 +67,8 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(WorkerConstructionFrame.class.getName()));
+	private static final Logger LOGGER =
+			TypesafeLogger.getLogger(WorkerConstructionFrame.class);
 	/**
 	 * The ID factory to use to generate IDs.
 	 */

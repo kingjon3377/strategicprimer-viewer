@@ -23,6 +23,7 @@ import model.listeners.SkillSelectionListener;
 import model.map.fixtures.mobile.worker.ISkill;
 import util.NullCleaner;
 import util.SingletonRandom;
+import util.TypesafeLogger;
 import view.util.BoxPanel;
 import view.util.ErrorShower;
 import view.util.ListenedButton;
@@ -55,7 +56,8 @@ public final class SkillAdvancementPanel extends BoxPanel implements ActionListe
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(SkillAdvancementPanel.class.getName()));
+	private static final Logger LOGGER =
+			TypesafeLogger.getLogger(SkillAdvancementPanel.class);
 	/**
 	 * The list of listeners.
 	 */
