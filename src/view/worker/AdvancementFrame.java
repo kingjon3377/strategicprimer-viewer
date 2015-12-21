@@ -58,11 +58,11 @@ public final class AdvancementFrame extends JFrame {
 	/**
 	 * Dividers start at half-way.
 	 */
-	private static final double HALF_WAY = 0.5;
+	private static final double HALF_WAY = .5;
 	/**
 	 * The resize weight for the main division.
 	 */
-	private static final double RES_WEIGHT = 0.3;
+	private static final double RES_WEIGHT = .3;
 	/**
 	 * Constructor.
 	 *
@@ -154,7 +154,7 @@ public final class AdvancementFrame extends JFrame {
 				.getClientProperty(BasicHTML.propertyKey);
 		final Dimension defDim = component.getPreferredSize();
 		if (view == null) {
-			final int size = width;
+			@SuppressWarnings("UnnecessaryLocalVariable") final int size = width;
 			return NullCleaner.valueOrDefault(defDim, new Dimension(size, // NOPMD
 					size));
 		} else {
