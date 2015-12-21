@@ -156,8 +156,8 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 	 * @return its contents, asserted to not be null
 	 */
 	private static String getBoxText(final JTextField box) {
-		final String string = box.getText();
-		return NullCleaner.assertNotNull(string);
+		final String text = box.getText();
+		return NullCleaner.assertNotNull(text);
 	}
 	/**
 	 * @return an explanation of what's wrong with the user's input.

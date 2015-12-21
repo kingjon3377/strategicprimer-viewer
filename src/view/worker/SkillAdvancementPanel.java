@@ -95,19 +95,19 @@ public final class SkillAdvancementPanel extends BoxPanel implements ActionListe
 	 */
 	public SkillAdvancementPanel() {
 		super(false);
-		final JPanel one = new JPanel();
-		one.setLayout(new FlowLayout());
-		one.add(new JLabel("Add "));
-		one.add(hours);
-		one.add(new JLabel(" hours to skill?"));
-		add(one);
-		final JPanel two = new JPanel();
-		two.setLayout(new FlowLayout());
-		two.add(new ListenedButton("OK", this));
+		final JPanel firstPanel = new JPanel();
+		firstPanel.setLayout(new FlowLayout());
+		firstPanel.add(new JLabel("Add "));
+		firstPanel.add(hours);
+		firstPanel.add(new JLabel(" hours to skill?"));
+		add(firstPanel);
+		final JPanel secondPanel = new JPanel();
+		secondPanel.setLayout(new FlowLayout());
+		secondPanel.add(new ListenedButton("OK", this));
 		hours.setActionCommand("OK");
 		hours.addActionListener(this);
-		two.add(new ListenedButton("Cancel", this));
-		add(two);
+		secondPanel.add(new ListenedButton("Cancel", this));
+		add(secondPanel);
 		setMinimumSize(new Dimension(200, 40));
 		setPreferredSize(new Dimension(220, MAX_PANEL_HEIGHT));
 		setMaximumSize(new Dimension(240, MAX_PANEL_HEIGHT));

@@ -129,13 +129,13 @@ public class ResourceAddingFrame extends JFrame {
 		setJMenuBar(new WorkerMenu(ioh, this, pch, model, ioh));
 		pack();
 	}
-	private static void addPair(Container container, Component one, Component two) {
+	private static void addPair(Container container, Component firstComponent, Component secondComponent) {
 		final JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 		panel.add(Box.createVerticalGlue());
-		panel.add(one);
+		panel.add(firstComponent);
 		panel.add(Box.createVerticalGlue());
-		panel.add(two);
+		panel.add(secondComponent);
 		panel.add(Box.createVerticalGlue());
 		container.add(panel);
 	}
