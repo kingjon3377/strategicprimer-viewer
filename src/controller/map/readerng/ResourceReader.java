@@ -1,24 +1,19 @@
 package controller.map.readerng;
 
-import static controller.map.readerng.XMLHelper.addImage;
-import static controller.map.readerng.XMLHelper.getAttribute;
-import static controller.map.readerng.XMLHelper.getOrGenerateID;
-import static controller.map.readerng.XMLHelper.spinUntilEnd;
-
-import java.util.Collections;
-import java.util.List;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.ResourcePile;
+import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
 import util.Warning;
+
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import java.util.Collections;
+import java.util.List;
+
+import static controller.map.readerng.XMLHelper.*;
 
 /**
  * A reader for Resource Piles.
@@ -68,6 +63,9 @@ public final class ResourceReader implements INodeHandler<@NonNull ResourcePile>
 						getAttribute(element, "contents"),
 						XMLHelper.parseInt(getAttribute(element, "quantity"), element.getLocation()),
 						getAttribute(element, "unit", ""));
+		if (hasAttribute(element, "created")) {
+			retval.setCreated(parseInt(getAttribute(element, "created"), element.getLocation()));
+		}
 		addImage(element, retval);
 		return retval;
 	}
@@ -100,6 +98,9 @@ public final class ResourceReader implements INodeHandler<@NonNull ResourcePile>
 		retval.addAttribute("contents", obj.getContents());
 		retval.addIntegerAttribute("quantity", obj.getQuantity());
 		retval.addAttribute("unit", obj.getUnits());
+		if (obj.getCreated() >= 0) {
+			retval.addIntegerAttribute("created", obj.getCreated());
+		}
 		retval.addImageAttribute(obj);
 		return retval;
 	}

@@ -1,13 +1,12 @@
 package model.map.fixtures;
 
-import java.io.IOException;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
+
+import java.io.IOException;
 
 /**
  * A quantity of some kind of resource.
@@ -58,6 +57,10 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	 * The image to use for the resource.
 	 */
 	private String image = "";
+	/**
+	 * The turn on which the resource was created.
+	 */
+	private int created = -1;
 	/**
 	 * @param idNum an ID number for the fixture
 	 * @param resKind the general kind of resource
@@ -250,21 +253,43 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 						&& quantity == ((ResourcePile) obj).quantity
 						&& contents.equals(((ResourcePile) obj).contents)
 						&& kind.equals(((ResourcePile) obj).kind)
-						&& unit.equals(((ResourcePile) obj).unit);
+						&& unit.equals(((ResourcePile) obj).unit) && created == ((ResourcePile) obj).created;
 	}
 	/**
 	 * @return a String representation of the resource pile
 	 */
 	@Override
 	public String toString() {
+		final String age;
+		if (created < 0) {
+			age = "";
+		} else {
+			age = " from turn " + created;
+		}
 		if (unit.isEmpty()) {
 			return NullCleaner
-					.assertNotNull(String.format("A pile of %d %s (%s)",
-							Integer.valueOf(quantity), contents, kind));
+					.assertNotNull(String.format("A pile of %d %s (%s)%s",
+							Integer.valueOf(quantity), contents, kind, age));
 		} else {
 			return NullCleaner
-					.assertNotNull(String.format("A pile of %d %s of %s (%s)",
-							Integer.valueOf(quantity), unit, contents, kind));
+					.assertNotNull(String.format("A pile of %d %s of %s (%s)%s",
+							Integer.valueOf(quantity), unit, contents, kind, age));
 		}
+	}
+	/**
+	 * @param createdTurn the turn on which the resource was created
+	 */
+	public void setCreated(final int createdTurn) {
+		if (createdTurn < 0) {
+			created = -1;
+		} else {
+			created = createdTurn;
+		}
+	}
+	/**
+	 * @return the turn on which the resource was created
+	 */
+	public int getCreated() {
+		return created;
 	}
 }

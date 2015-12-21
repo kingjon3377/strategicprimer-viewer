@@ -1,18 +1,5 @@
 package model.map.fixtures;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.xml.stream.XMLStreamException;
-
-import model.map.TileFixture;
-import org.junit.Test;
-
 import controller.map.formatexceptions.SPFormatException;
 import model.map.BaseTestFixtureSerialization;
 import model.map.MapDimensions;
@@ -20,6 +7,7 @@ import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.PointFactory;
 import model.map.SPMapNG;
+import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.explorable.AdventureFixture;
 import model.map.fixtures.explorable.Portal;
@@ -37,9 +25,17 @@ import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
+import org.junit.Test;
 import util.NullCleaner;
 import util.Warning;
 import util.Warning.Action;
+
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.junit.Assert.*;
 
 /**
  * Another class to test serialization of TileFixtures.
@@ -515,5 +511,8 @@ public final class TestMoreFixtureSerialization extends
 				new ResourcePile(3, "generalKind", "specificKind", 10, "each"));
 		assertSerialization("Fortress can have a Resource Pile as a member",
 				firstFort, Fortress.class);
+		ResourcePile resource = new ResourcePile(4, "generalKind", "specificKind", 15, "pounds");
+		resource.setCreated(5);
+		assertSerialization("Resource pile can know what turn it was created", resource, ResourcePile.class);
 	}
 }

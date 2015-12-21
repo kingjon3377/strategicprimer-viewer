@@ -1,10 +1,5 @@
 package controller.map.cxml;
 
-import java.io.IOException;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
@@ -12,6 +7,10 @@ import model.map.fixtures.ResourcePile;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
+
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import java.io.IOException;
 
 /**
  * A reader for resource piles.
@@ -72,6 +71,9 @@ public final class CompactResourcePileReader
 						getParameter(element, "contents"),
 						getIntegerParameter(element, "quantity"),
 						getParameter(element, "unit", ""));
+		if (hasParameter(element, "created")) {
+			retval.setCreated(getIntegerParameter(element, "created"));
+		}
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
@@ -107,6 +109,10 @@ public final class CompactResourcePileReader
 		ostream.append(Integer.toString(obj.getQuantity()));
 		ostream.append("\" unit=\"");
 		ostream.append(obj.getUnits());
+		if (obj.getCreated() >= 0) {
+			ostream.append("\" created=\"");
+			ostream.append(Integer.toString(obj.getCreated()));
+		}
 		ostream.append('"').append(imageXML(obj)).append(" />\n");
 	}
 	/**
