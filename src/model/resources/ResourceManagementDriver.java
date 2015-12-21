@@ -66,7 +66,7 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	 * @param resource the resource to add
 	 * @param player the player to add it for
 	 */
-	public void addResource(final FortressMember resource, final Player player) {
+	public void addResource(@SuppressWarnings("TypeMayBeWeakened") final FortressMember resource, final Player player) {
 		for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
 			final IMutableMapNG map = pair.first();
 			final Player currP = map.getCurrentPlayer();
