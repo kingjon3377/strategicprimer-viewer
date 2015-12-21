@@ -1,13 +1,5 @@
 package controller.map.cxml;
 
-import java.io.IOException;
-import java.util.logging.Level;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.IFixture;
@@ -34,10 +26,16 @@ import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.resources.HarvestableFixture;
 import model.map.fixtures.towns.ITownFixture;
 import model.viewer.TileTypeFixture;
+import org.eclipse.jdt.annotation.NonNull;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
+
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import java.io.IOException;
+import java.util.logging.Level;
 
 /**
  * This is part of the Strategic Primer assistive programs suite developed by
