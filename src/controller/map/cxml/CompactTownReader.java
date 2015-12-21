@@ -133,10 +133,10 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	 * @return the parsed village
 	 * @throws SPFormatException on SP format problems
 	 */
-	private static Village parseVillage(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream,
-			final IPlayerCollection players, final Warning warner,
-			final IDFactory idFactory) throws SPFormatException {
+	private static ITownFixture parseVillage(final StartElement element,
+	                                         final Iterable<XMLEvent> stream,
+	                                         final IPlayerCollection players, final Warning warner,
+	                                         final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final int idNum = getOrGenerateID(element, warner, idFactory);
@@ -161,10 +161,10 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	 * @return the parsed town
 	 * @throws SPFormatException on SP format problems
 	 */
-	private static AbstractTown parseTown(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream,
-			final IPlayerCollection players, final Warning warner,
-			final IDFactory idFactory) throws SPFormatException {
+	private static ITownFixture parseTown(final StartElement element,
+	                                      final Iterable<XMLEvent> stream,
+	                                      final IPlayerCollection players, final Warning warner,
+	                                      final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
 		final String name = getParameter(element, NAME_PARAM, "");
 		final TownStatus status = TownStatus.parseTownStatus(getParameter(
@@ -224,10 +224,10 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	 * @return the parsed town
 	 * @throws SPFormatException on SP format problems
 	 */
-	private static Fortress parseFortress(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream,
-			final IMutablePlayerCollection players, final Warning warner,
-			final IDFactory idFactory) throws SPFormatException {
+	private static ITownFixture parseFortress(final StartElement element,
+	                                          final IteratorWrapper<XMLEvent> stream,
+	                                          final IMutablePlayerCollection players, final Warning warner,
+	                                          final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, OWNER_PARAM, false, warner);
 		requireNonEmptyParameter(element, NAME_PARAM, false, warner);
 		final Fortress retval = new Fortress(getOwnerOrIndependent(element,

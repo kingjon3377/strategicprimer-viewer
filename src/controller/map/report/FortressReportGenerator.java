@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import model.map.HasOwner;
+import model.map.fixtures.towns.ITownFixture;
 import org.eclipse.jdt.annotation.NonNull;
 
 import model.map.IFixture;
@@ -68,7 +70,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	/**
 	 * Instance we use.
 	 */
-	private final UnitReportGenerator urg = new UnitReportGenerator(pairComparator);
+	private final IReportGenerator urg = new UnitReportGenerator(pairComparator);
 
 	/**
 	 * All fixtures referred to in this report are removed from the collection.
@@ -137,7 +139,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 		final AbstractReportNode ours = new SectionReportNode(4,
 				                                                     "Your fortresses in the map:");
 		values.stream().filter(pair -> pair.second() instanceof Fortress).forEach(pair -> {
-			final Fortress fort = (Fortress) pair.second();
+			final HasOwner fort = (Fortress) pair.second();
 			if (currentPlayer.equals(fort.getOwner())) {
 				ours.add(produceRIR(fixtures, map, currentPlayer,
 						(Fortress) pair.second(), pair.first()));

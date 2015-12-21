@@ -128,7 +128,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				new MapDimensions(getIntegerParameter(mapTag, "rows"),
 						                 getIntegerParameter(mapTag, "columns"),
 						                 getIntegerParameter(mapTag, "version"));
-		final SPMapNG retval = new SPMapNG(dimensions, players, currentTurn);
+		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		final Point nullPoint = PointFactory.point(-1, -1);
 		Point point = nullPoint;
 		for (final XMLEvent event : stream) {

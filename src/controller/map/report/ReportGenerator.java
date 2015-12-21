@@ -331,7 +331,7 @@ public final class ReportGenerator {
 	 */
 	private static Collection<IFixture> getFixtures(
 			final Iterable<? extends IFixture> iter) {
-		final List<IFixture> retval = new ArrayList<>();
+		final Collection<IFixture> retval = new ArrayList<>();
 		for (final IFixture fix : iter) {
 			retval.add(fix);
 			if (fix instanceof FixtureIterable) {

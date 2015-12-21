@@ -171,7 +171,7 @@ public final class HuntingModel {
 						.filter(plants::containsKey)
 						.flatMap(local -> StreamSupport.stream(plants.get(local).spliterator(), false))
 						.collect(Collectors.toList());
-		final List<String> retval = new ArrayList<>();
+		final Collection<String> retval = new ArrayList<>();
 		for (int i = 0; i < items; i++) {
 			Collections.shuffle(choices);
 			retval.add(choices.get(0));

@@ -272,8 +272,8 @@ public final class CompactMobileReader extends
 	 * @return the parsed animal
 	 * @throws SPFormatException on SP format error
 	 */
-	private static Animal createAnimal(final StartElement element,
-			final int idNum) throws SPFormatException {
+	private static MobileFixture createAnimal(final StartElement element,
+	                                          final int idNum) throws SPFormatException {
 		return new Animal(
 				getKind(element),
 				hasParameter(element, "traces"),

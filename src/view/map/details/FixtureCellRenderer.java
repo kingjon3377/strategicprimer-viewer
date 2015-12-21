@@ -68,7 +68,7 @@ public final class FixtureCellRenderer implements ListCellRenderer<TileFixture> 
 	/**
 	 * Default list renderer, for cases we don't know how to handle.
 	 */
-	private static final DefaultListCellRenderer LIST_DEFAULT =
+	private static final ListCellRenderer<Object> LIST_DEFAULT =
 			new DefaultListCellRenderer();
 
 	/**

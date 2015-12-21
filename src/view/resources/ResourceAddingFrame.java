@@ -25,6 +25,7 @@ import java.awt.Container;
 import java.awt.event.KeyEvent;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.StreamSupport;
@@ -175,7 +176,7 @@ public class ResourceAddingFrame extends JFrame {
 				transferFocusBackward();
 			}
 		}
-		private Set<String> values = new HashSet<>();
+		private final Collection<String> values = new HashSet<>();
 		public void checkAndClear() {
 			String item = getSelectedItem().toString().trim();
 			if (!values.contains(item)) {

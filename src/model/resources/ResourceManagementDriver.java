@@ -1,5 +1,6 @@
 package model.resources;
 
+import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
@@ -80,7 +81,7 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	 * @param map the map to add it in
 	 * @param player the player to add it for
 	 */
-	public void addResourceToMap(final FortressMember resource, final IMutableMapNG map, final Player player) {
+	public void addResourceToMap(final FortressMember resource, final IMapNG map, final Player player) {
 		for (final Point location : map.locations()) {
 			for (final TileFixture fixture : map.getOtherFixtures(location)) {
 				if (fixture instanceof Fortress &&

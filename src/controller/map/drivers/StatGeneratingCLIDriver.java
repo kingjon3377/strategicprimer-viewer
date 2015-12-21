@@ -13,6 +13,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import model.map.TileFixture;
 import model.misc.IMultiMapModel;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -245,7 +246,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 * @param unit the unit containing the worker
 	 * @throws IOException on I/O error interacting with user
 	 */
-	private void enterStats(final IExplorationModel model, final Iterable<UnitMember> unit)
+	private void enterStats(final IMultiMapModel model, final Iterable<UnitMember> unit)
 			throws IOException {
 		final List<Worker> workers = StreamSupport.stream(unit.spliterator(), false)
 				                             .filter(member -> member instanceof Worker &&
@@ -395,7 +396,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 				final Point point = PointFactory.point(
 						cli.inputNumber("Row to put new unit: "),
 						cli.inputNumber("Column to put new unit: "));
-				final IUnit unit = new Unit(player, // NOPMD
+				final TileFixture unit = new Unit(player, // NOPMD
 						cli.inputString("Kind of unit: "),
 						cli.inputString("Unit name: "), idf.createID());
 				for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {

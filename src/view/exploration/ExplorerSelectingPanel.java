@@ -6,11 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JSplitPane;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.text.Document;
@@ -119,7 +115,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 		addPlayerChangeListener(unitListModel);
 		unitList = new JList<>(unitListModel);
 		unitList.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
-			final DefaultListCellRenderer defRenderer = new DefaultListCellRenderer();
+			final ListCellRenderer<Object> defRenderer = new DefaultListCellRenderer();
 			final Component retval =
 					defRenderer.getListCellRendererComponent(
 							NullCleaner.assertNotNull(list), value, index,

@@ -131,7 +131,7 @@ IExplorationModel {
 	 */
 	private static Collection<IUnit> getUnits(final Iterable<? super Unit> iter,
 	                                          final Player player) {
-		final List<IUnit> retval = new ArrayList<>();
+		final Collection<IUnit> retval = new ArrayList<>();
 		for (final Object obj : iter) {
 			if (obj instanceof IUnit && ((IUnit) obj).getOwner().equals(player)) {
 				retval.add((IUnit) obj);
@@ -219,7 +219,7 @@ IExplorationModel {
 	 * @param dest
 	 *            the unit's new location
 	 */
-	private static void checkAllNearbyWatchers(final IMapNG map, final IUnit unit,
+	private static void checkAllNearbyWatchers(final IMapNG map, final HasOwner unit,
 			final Point dest) {
 		final MapDimensions dims = map.dimensions();
 		final Collection<Point> done = new HashSet<>(25);

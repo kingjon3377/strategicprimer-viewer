@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
+import model.map.IFixture;
 import model.map.fixtures.mobile.IUnit;
 import org.junit.Test;
 
@@ -211,7 +212,7 @@ public final class TestProxyWorker {
 	 */
 	@Test
 	public void testWorkerCopy() {
-		final IWorker worker = new Worker("one", "human", 1, new Job("jobOne", 1,
+		final IFixture worker = new Worker("one", "human", 1, new Job("jobOne", 1,
 				new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
 		assertEquals("Worker copy should still be equal", worker, worker.copy(false));
 	}

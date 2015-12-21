@@ -91,7 +91,7 @@ public class ResourceAddingCLIDriver implements ISPDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		final ResourceManagementDriver model = new ResourceManagementDriver(reader.readMultiMapModel(Warning.INSTANCE, new File(args[0]), MapReaderAdapter.namesToFiles(true, args)));
+		final IDriverModel model = new ResourceManagementDriver(reader.readMultiMapModel(Warning.INSTANCE, new File(args[0]), MapReaderAdapter.namesToFiles(true, args)));
 		startDriver(model);
 		reader.writeModel(model);
 	}

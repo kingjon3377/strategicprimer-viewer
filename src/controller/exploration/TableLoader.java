@@ -132,7 +132,7 @@ public final class TableLoader { // NOPMD
 	 * @return the quadrant table the file describes.
 	 * @throws IOException on I/O error reading the number of rows
 	 */
-	public static QuadrantTable loadQuadrantTable(final BufferedReader reader)
+	public static EncounterTable loadQuadrantTable(final BufferedReader reader)
 			throws IOException {
 		final String firstLine = reader.readLine();
 		if (firstLine == null) {
@@ -164,7 +164,7 @@ public final class TableLoader { // NOPMD
 	 * @return the random-table the file describes.
 	 * @throws IOException on I/O error
 	 */
-	public static RandomTable loadRandomTable(final BufferedReader reader)
+	public static EncounterTable loadRandomTable(final BufferedReader reader)
 			throws IOException {
 		String line = reader.readLine();
 		final List<ComparablePair<Integer, String>> list = new ArrayList<>();
@@ -195,7 +195,7 @@ public final class TableLoader { // NOPMD
 	 * @return the terrain-table the file describes.
 	 * @throws IOException on I/O error.
 	 */
-	public static TerrainTable loadTerrainTable(final BufferedReader reader)
+	public static EncounterTable loadTerrainTable(final BufferedReader reader)
 			throws IOException {
 		String line = reader.readLine();
 		final List<Pair<TileType, String>> list = new ArrayList<>();
@@ -220,7 +220,7 @@ public final class TableLoader { // NOPMD
 	 * @return the terrain-table the file describes.
 	 * @throws IOException on I/O error.
 	 */
-	public static ConstantTable loadConstantTable(final BufferedReader reader)
+	public static EncounterTable loadConstantTable(final BufferedReader reader)
 			throws IOException {
 		final String line = reader.readLine();
 		if (line == null) {
@@ -235,7 +235,7 @@ public final class TableLoader { // NOPMD
 	 *
 	 * @return the table the file describes.
 	 */
-	public static LegacyTable loadLegacyTable() {
+	public static EncounterTable loadLegacyTable() {
 		return new LegacyTable();
 	}
 

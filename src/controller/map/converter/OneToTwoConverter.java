@@ -133,7 +133,7 @@ public final class OneToTwoConverter { // NOPMD
 	 */
 	public IMapNG convert(final IMapNG old, final boolean main) {
 		final MapDimensions oldDim = old.dimensions();
-		final SPMapNG retval =
+		final IMutableMapNG retval =
 				new SPMapNG(new MapDimensions(oldDim.rows * RES_JUMP,
 						oldDim.cols * RES_JUMP, 2), new PlayerCollection(), -1);
 		Player independent = new Player(-1, "independent");

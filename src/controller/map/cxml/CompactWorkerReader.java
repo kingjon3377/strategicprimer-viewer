@@ -115,7 +115,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * @throws SPFormatException on SP format problem
 	 */
 	private static WorkerStats parseStats(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream) throws SPFormatException {
+			final Iterable<XMLEvent> stream) throws SPFormatException {
 		requireTag(element, "stats");
 		final WorkerStats retval =
 				new WorkerStats(getIntegerParameter(element, "hp"),
@@ -139,11 +139,11 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * @return the parsed job
 	 * @throws SPFormatException on SP format problem
 	 */
-	public static Job parseJob(final StartElement element,
-			final IteratorWrapper<XMLEvent> stream, final Warning warner)
+	public static IJob parseJob(final StartElement element,
+	                            final Iterable<XMLEvent> stream, final Warning warner)
 			throws SPFormatException {
 		requireTag(element, "job");
-		final Job retval =
+		final IJob retval =
 				new Job(getParameter(element, "name"), getIntegerParameter(element, "level"));
 		if (hasParameter(element, "hours")) {
 			warner.warn(new UnsupportedPropertyException("job", "hours",
@@ -182,10 +182,10 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * @return the parsed skill
 	 * @throws SPFormatException on SP format problem
 	 */
-	public static Skill parseSkill(final StartElement element,
-			final Warning warner) throws SPFormatException {
+	public static ISkill parseSkill(final StartElement element,
+	                                final Warning warner) throws SPFormatException {
 		requireTag(element, "skill");
-		final Skill retval =
+		final ISkill retval =
 				new Skill(getParameter(element, "name"), getIntegerParameter(element, "level"),
 						         getIntegerParameter(element, "hours"));
 		if ("miscellaneous".equals(retval.getName()) && retval.getLevel() > 0) {
@@ -307,7 +307,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * @param indent The current indentation level.
 	 * @throws IOException on I/O error
 	 */
-	public static void writeSkill(final Appendable ostream, final Skill obj,
+	public static void writeSkill(final Appendable ostream, final ISkill obj,
 			final int indent) throws IOException {
 		ostream.append(indent(indent));
 		ostream.append("<skill name=\"");

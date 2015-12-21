@@ -252,8 +252,8 @@ public final class CompactResourceReader extends
 	 * @return the parsed Meadow object.
 	 * @throws SPFormatException on SP format problems
 	 */
-	private static Meadow createMeadow(final StartElement element,
-			final boolean field, final int idNum, final Warning warner)
+	private static HarvestableFixture createMeadow(final StartElement element,
+	                                               final boolean field, final int idNum, final Warning warner)
 			throws SPFormatException {
 		if (!hasParameter(element, STATUS_PAR)) {
 			warner.warn(new MissingPropertyException(NullCleaner
@@ -277,8 +277,8 @@ public final class CompactResourceReader extends
 	 * @return the parsed Grove object
 	 * @throws SPFormatException on SP format problems
 	 */
-	private static Grove createGrove(final StartElement element,
-			final boolean orchard, final int idNum, final Warning warner)
+	private static HarvestableFixture createGrove(final StartElement element,
+	                                              final boolean orchard, final int idNum, final Warning warner)
 			throws SPFormatException {
 		return new Grove(orchard, isCultivated(element, warner),
 				getParamWithDeprecatedForm(element, KIND_PAR, "tree", warner),

@@ -99,7 +99,7 @@ public final class IDFactoryFiller {
 	 * @return an ID factory that won't generate an ID already used in the
 	 *         collection
 	 */
-	public static IDFactory createFactory(final FixtureIterable<@NonNull ?> iter) {
+	public static IDFactory createFactory(final Iterable<@NonNull ? extends IFixture> iter) {
 		final IDFactory retval = new IDFactory();
 		recursiveRegister(retval, iter);
 		return retval;

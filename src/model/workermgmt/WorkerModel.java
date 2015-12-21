@@ -117,7 +117,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 */
 	private static Collection<IUnit> getUnits(final Iterable<? super Unit> iter,
 	                                          final Player player) {
-		final List<IUnit> retval = new ArrayList<>();
+		final Collection<IUnit> retval = new ArrayList<>();
 		for (final Object obj : iter) {
 			if (obj instanceof IUnit && ((IUnit) obj).getOwner().equals(player)) {
 				retval.add((IUnit) obj);

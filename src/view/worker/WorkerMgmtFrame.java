@@ -35,6 +35,7 @@ import javax.swing.WindowConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
 import model.workermgmt.WorkerTreeModelAlt.PlayerNode;
@@ -200,7 +201,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		}
 		final DistanceComparator distCalculator = new DistanceComparator(hqLoc);
 		report.setCellRenderer((renderedTree, value, selected, expanded, leaf, row, hasFocus) -> {
-			final DefaultTreeCellRenderer defRender = new DefaultTreeCellRenderer();
+			final TreeCellRenderer defRender = new DefaultTreeCellRenderer();
 			final Component retval = defRender.getTreeCellRendererComponent(renderedTree, value, selected, expanded, leaf, row, hasFocus);
 			if (value instanceof AbstractReportNode) {
 				final Point point = ((AbstractReportNode) value).getPoint();

@@ -58,7 +58,7 @@ public class Worker implements IWorker {
 	/**
 	 * The set of jobs the worker is trained or experienced in.
 	 */
-	private final Set<IJob> jobSet = new ArraySet<>();
+	private final Collection<IJob> jobSet = new ArraySet<>();
 
 	/**
 	 * The worker's stats.
