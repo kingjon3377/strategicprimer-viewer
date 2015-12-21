@@ -162,10 +162,12 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	@Override
 	public String getDefaultImage() {
-		for (final IUnit unit : proxied) {
-			return unit.getDefaultImage();
+		final Iterator<IUnit> iter = proxied.iterator();
+		if (iter.hasNext()) {
+			return iter.next().getDefaultImage();
+		} else {
+			return "unit.png";
 		}
-		return "unit.png";
 	}
 
 	/**
@@ -309,10 +311,12 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	@Override
 	public Player getOwner() {
-		for (final IUnit unit : proxied) {
-			return unit.getOwner();
+		final Iterator<IUnit> iter = proxied.iterator();
+		if (iter.hasNext()) {
+			return iter.next().getOwner();
+		} else {
+			return new Player(-1, "proxied");
 		}
-		return new Player(-1, "proxied");
 	}
 
 	/**
@@ -478,10 +482,12 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		 */
 		@Override
 		public int getID() {
-			for (final UnitMember member : proxiedMembers) {
-				return member.getID();
+			final Iterator<UnitMember> iter = proxiedMembers.iterator();
+			if (iter.hasNext()) {
+				return iter.next().getID();
+			} else {
+				return -1;
 			}
-			return -1;
 		}
 
 		/**
@@ -533,10 +539,12 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		 */
 		@Override
 		public String toString() {
-			for (final UnitMember member : proxiedMembers) {
-				return NullCleaner.assertNotNull(member.toString());
+			final Iterator<UnitMember> iter = proxiedMembers.iterator();
+			if (iter.hasNext()) {
+				return iter.next().toString();
+			} else {
+				return "a proxy for no unit members";
 			}
-			return "a proxy for no unit members";
 		}
 
 		/**
@@ -571,10 +579,12 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 
 	@Override
 	public int hashCode() {
-		for (final IUnit unit : proxied) {
-			return unit.hashCode();
+		final Iterator<IUnit> iter = proxied.iterator();
+		if (iter.hasNext()) {
+			return iter.next().hashCode();
+		} else {
+			return -1;
 		}
-		return -1;
 	}
 
 	/**

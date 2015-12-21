@@ -244,10 +244,12 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	 */
 	@Override
 	public String getDefaultImage() {
-		for (final IWorker worker : workers) {
-			return worker.getDefaultImage();
+		final Iterator<IWorker> iter = workers.iterator();
+		if (iter.hasNext()) {
+			return iter.next().getDefaultImage();
+		} else {
+			return "worker.png";
 		}
-		return "worker.png";
 	}
 
 	/**

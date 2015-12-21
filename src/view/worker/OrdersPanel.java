@@ -475,10 +475,12 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 
 		@Override
 		public int hashCode() {
-			for (final IUnit unit : units) {
-				return unit.hashCode();
+			Iterator<IUnit> iter = units.iterator();
+			if (iter.hasNext()) {
+				return iter.next().hashCode();
+			} else {
+				return -1;
 			}
-			return -1;
 		}
 	}
 }

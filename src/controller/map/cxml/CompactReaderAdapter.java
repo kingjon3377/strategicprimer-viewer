@@ -35,6 +35,7 @@ import util.Warning;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.logging.Level;
 
 /**
@@ -206,16 +207,20 @@ public final class CompactReaderAdapter {
 			// Skip it.
 			return;
 		} else if (obj instanceof ProxyFor) {
-			for (final Object proxied : ((ProxyFor<?>) obj).getProxied()) {
+			Iterator<?> iter = ((ProxyFor) obj).getProxied().iterator();
+			if (iter.hasNext()) {
+				Object proxied = iter.next();
 				assert proxied != null;
 				TypesafeLogger.getLogger(CompactReaderAdapter.class).log(Level.SEVERE,
 						"Wanted to write a proxy",
 						new IllegalArgumentException("Wanted to write a proxy object"));
 				write(ostream, proxied, indent);
 				return;
+			} else {
+				throw new IllegalStateException("Don't know how to write this type (a proxy " +
+
+						                                "not proxying any objects)");
 			}
-			throw new IllegalStateException("Don't know how to write this type (a proxy " +
-					                                "not proxying any objects)");
 		} else if (obj instanceof IFixture) {
 			reader =
 					getFixtureReader(NullCleaner.assertNotNull(((IFixture) obj)
