@@ -203,9 +203,9 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 
 		@Override
-		public void setUserObject(final Object userObject) {
-			if (userObject instanceof Player) {
-				super.setUserObject(userObject);
+		public void setUserObject(final Object userObj) {
+			if (userObj instanceof Player) {
+				super.setUserObject(userObj);
 			} else {
 				throw new IllegalArgumentException("PlayerNode can only contain a Player");
 			}
@@ -237,9 +237,9 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 
 		@Override
-		public void setUserObject(final Object userObject) {
-			if (userObject instanceof String) {
-				super.setUserObject(userObject);
+		public void setUserObject(final Object userObj) {
+			if (userObj instanceof String) {
+				super.setUserObject(userObj);
 			} else {
 				throw new IllegalArgumentException("PlayerNode can only contain a Player");
 			}
@@ -271,9 +271,9 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 
 		@Override
-		public void setUserObject(final Object userObject) {
-			if (userObject instanceof IUnit) {
-				super.setUserObject(userObject);
+		public void setUserObject(final Object userObj) {
+			if (userObj instanceof IUnit) {
+				super.setUserObject(userObj);
 			} else {
 				throw new IllegalArgumentException("PlayerNode can only contain a Player");
 			}
@@ -301,9 +301,9 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 
 		@Override
-		public void setUserObject(final Object userObject) {
-			if (userObject instanceof UnitMember) {
-				super.setUserObject(userObject);
+		public void setUserObject(final Object userObj) {
+			if (userObj instanceof UnitMember) {
+				super.setUserObject(userObj);
 			} else {
 				throw new IllegalArgumentException("PlayerNode can only contain a Player");
 			}
