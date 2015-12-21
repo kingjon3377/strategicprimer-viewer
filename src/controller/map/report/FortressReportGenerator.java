@@ -1,17 +1,6 @@
 package controller.map.report;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
 import model.map.HasOwner;
-import model.map.fixtures.towns.ITownFixture;
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -32,11 +21,19 @@ import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
+import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
 
 import javax.swing.tree.MutableTreeNode;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * A report generator for fortresses.
@@ -70,7 +67,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	/**
 	 * Instance we use.
 	 */
-	private final IReportGenerator urg = new UnitReportGenerator(pairComparator);
+	private final IReportGenerator<Unit> urg = new UnitReportGenerator(pairComparator);
 
 	/**
 	 * All fixtures referred to in this report are removed from the collection.
