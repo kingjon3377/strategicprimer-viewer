@@ -208,7 +208,7 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	 */
 	@Override
 	public ResourcePile copy(final boolean zero) {
-		ResourcePile retval = new ResourcePile(id, kind, contents, quantity, unit);
+		final ResourcePile retval = new ResourcePile(id, kind, contents, quantity, unit);
 		if (!zero) {
 			retval.setCreated(created);
 		}

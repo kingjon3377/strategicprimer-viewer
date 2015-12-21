@@ -57,10 +57,10 @@ public class ResourceAddingFrame extends JFrame {
 	private final UpdatedComboBox resUnitsBox = new UpdatedComboBox();
 	private final UpdatedComboBox implKindBox = new UpdatedComboBox();
 
-	public ResourceAddingFrame(ResourceManagementDriver dmodel, IOHandler ioh) {
+	public ResourceAddingFrame(final ResourceManagementDriver dmodel, final IOHandler ioh) {
 		super("Resource Entry");
 		model = dmodel;
-		IDFactory idf = IDFactoryFiller.createFactory(model);
+		final IDFactory idf = IDFactoryFiller.createFactory(model);
 		current = StreamSupport.stream(dmodel.getPlayers().spliterator(), false)
 				          .filter(player -> player.isCurrent())
 				          .findAny().orElse(new Player(-1, ""));
@@ -82,22 +82,22 @@ public class ResourceAddingFrame extends JFrame {
 		});
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 		add(resourceLabel);
-		JPanel panel = new JPanel();
+		final JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
 		addPair(panel, new JLabel("General Category"), resKindBox);
 		addPair(panel, new JLabel("Turn created"), resCreatedField);
 		addPair(panel, new JLabel("Specific Resource"), resourceBox);
 		addPair(panel, new JLabel("Quantity"), resQtyField);
 		addPair(panel, new JLabel("Units"), resUnitsBox);
-		JButton resourceButton = new JButton("Add Resource");
+		final JButton resourceButton = new JButton("Add Resource");
 		addPair(panel, new JLabel(""), resourceButton);
-		Component outer = this;
+		final Component outer = this;
 		resourceButton.addActionListener(evt -> {
 			try {
-				String kind = resKindBox.getSelectedItem().toString().trim();
-				String resource = resourceBox.getSelectedItem().toString().trim();
-				String units = resUnitsBox.getSelectedItem().toString().trim();
-				ResourcePile pile = new ResourcePile(idf.createID(), kind, resource,
+				final String kind = resKindBox.getSelectedItem().toString().trim();
+				final String resource = resourceBox.getSelectedItem().toString().trim();
+				final String units = resUnitsBox.getSelectedItem().toString().trim();
+				final ResourcePile pile = new ResourcePile(idf.createID(), kind, resource,
 						                                    nf.parse(resQtyField
 								                                             .getText()
 								                                             .trim())
@@ -111,19 +111,19 @@ public class ResourceAddingFrame extends JFrame {
 				resQtyField.setText("");
 				resUnitsBox.checkAndClear();
 				resKindBox.requestFocusInWindow();
-			} catch (ParseException except) {
+			} catch (final ParseException except) {
 				ErrorShower.showErrorDialog(outer, "Quantity must be numeric");
 			}
 		});
 		add(panel);
 		add(Box.createVerticalGlue());
 		add(implementLabel);
-		JPanel secondPanel = new JPanel();
+		final JPanel secondPanel = new JPanel();
 		secondPanel.setLayout(new BoxLayout(secondPanel, BoxLayout.LINE_AXIS));
 		secondPanel.add(implKindBox);
-		JButton implButton = new JButton("Add Equipment");
+		final JButton implButton = new JButton("Add Equipment");
 		implButton.addActionListener(evt -> {
-			String kind = implKindBox.getSelectedItem().toString().trim();
+			final String kind = implKindBox.getSelectedItem().toString().trim();
 			model.addResource(new Implement(idf.createID(), kind), current);
 			implKindBox.checkAndClear();
 			implKindBox.requestFocusInWindow();
@@ -135,8 +135,8 @@ public class ResourceAddingFrame extends JFrame {
 		pack();
 	}
 
-	private static void addPair(Container container, Component firstComponent,
-	                            Component secondComponent) {
+	private static void addPair(final Container container, final Component firstComponent,
+	                            final Component secondComponent) {
 		final JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 		panel.add(Box.createVerticalGlue());
@@ -161,7 +161,7 @@ public class ResourceAddingFrame extends JFrame {
 		 * @param evt the event to process
 		 */
 		@Override
-		public void processKeyEvent(KeyEvent evt) {
+		public void processKeyEvent(final KeyEvent evt) {
 			if (evt.getID() != KeyEvent.KEY_PRESSED
 					    || evt.getKeyCode() != KeyEvent.VK_TAB) {
 				super.processKeyEvent(evt);
@@ -170,7 +170,7 @@ public class ResourceAddingFrame extends JFrame {
 
 			if (isPopupVisible()) {
 				assert evt.getSource() instanceof Component;
-				KeyEvent fakeEnterKeyEvent = new KeyEvent((Component) evt.getSource(),
+				final KeyEvent fakeEnterKeyEvent = new KeyEvent((Component) evt.getSource(),
 						                                         evt.getID(),
 						                                         evt.getWhen(),
 						                                         0,
@@ -191,7 +191,7 @@ public class ResourceAddingFrame extends JFrame {
 		private final Collection<String> values = new HashSet<>();
 
 		public void checkAndClear() {
-			String item = getSelectedItem().toString().trim();
+			final String item = getSelectedItem().toString().trim();
 			if (!values.contains(item)) {
 				values.add(item);
 				addItem(item);

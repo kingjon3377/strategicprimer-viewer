@@ -577,7 +577,7 @@ public final class TestMoreFixtureSerialization extends
 				new ResourcePile(3, "generalKind", "specificKind", 10, "each"));
 		assertSerialization("Fortress can have a Resource Pile as a member",
 				firstFort, Fortress.class);
-		ResourcePile resource =
+		final ResourcePile resource =
 				new ResourcePile(4, "generalKind", "specificKind", 15, "pounds");
 		resource.setCreated(5);
 		assertSerialization("Resource pile can know what turn it was created", resource,

@@ -551,7 +551,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 						new Object[]{node});
 			}
 			if (nodeTwo == null) {
-				MutableTreeNode kindNode =
+				final MutableTreeNode kindNode =
 						new KindNode(item.getKind(), new ArrayList<>(
 								                                            Collections
 										                                            .singletonList(

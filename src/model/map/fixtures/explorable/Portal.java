@@ -204,7 +204,7 @@ public class Portal implements ExplorableFixture {
 	/**
 	 * @param destination the new destination coordinates
 	 */
-	public void setDestinationCoordinates(Point destination) {
+	public void setDestinationCoordinates(final Point destination) {
 		destinationCoordinates = destination;
 	}
 }
