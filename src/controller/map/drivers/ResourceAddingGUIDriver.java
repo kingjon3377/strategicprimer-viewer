@@ -8,13 +8,10 @@ import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;
 import model.misc.IDriverModel;
 import model.resources.ResourceManagementDriver;
-import model.workermgmt.IWorkerModel;
-import model.workermgmt.WorkerModel;
 import util.Warning;
 import view.map.main.MapFileFilter;
 import view.resources.ResourceAddingFrame;
 import view.util.FilteredFileChooser;
-import view.worker.WorkerMgmtFrame;
 
 import javax.swing.SwingUtilities;
 import java.io.File;
