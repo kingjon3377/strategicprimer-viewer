@@ -287,7 +287,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 			ostream.append(">\n");
 			for (final ISkill skill : obj) {
 				if (skill instanceof Skill) {
-					writeSkill(ostream, (Skill) skill, indent + 1);
+					writeSkill(ostream, skill, indent + 1);
 				}
 			}
 			ostream.append(indent(indent));
