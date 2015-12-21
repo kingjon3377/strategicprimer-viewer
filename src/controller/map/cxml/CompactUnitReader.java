@@ -4,6 +4,11 @@ import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IFixture;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.UnitMember;
@@ -12,12 +17,6 @@ import org.eclipse.jdt.annotation.NonNull;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import static java.util.Collections.unmodifiableList;
 

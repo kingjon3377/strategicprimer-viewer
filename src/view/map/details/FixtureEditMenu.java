@@ -1,5 +1,14 @@
 package view.map.details;
 
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import javax.swing.*;
 import model.map.HasKind;
 import model.map.HasName;
 import model.map.HasOwner;
@@ -11,17 +20,11 @@ import model.workermgmt.IWorkerTreeModel;
 import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
 
-import javax.swing.*;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static javax.swing.JOptionPane.*;
+import static javax.swing.JOptionPane.PLAIN_MESSAGE;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
+import static javax.swing.JOptionPane.showConfirmDialog;
+import static javax.swing.JOptionPane.showInputDialog;
 
 /**
  * A pop-up menu to let the user edit a fixture.

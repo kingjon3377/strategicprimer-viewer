@@ -1,9 +1,8 @@
 package util;
 
+import java.util.Comparator;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-
-import java.util.Comparator;
 
 /**
  * A comparator for Pairs, that uses provided comparators to compare first the first item

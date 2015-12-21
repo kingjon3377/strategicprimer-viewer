@@ -1,6 +1,14 @@
 package model.map;
 
 import controller.map.formatexceptions.SPFormatException;
+import java.io.IOException;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.xml.stream.XMLStreamException;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Griffin;
@@ -12,18 +20,13 @@ import org.junit.Test;
 import util.Pair;
 import util.Warning.Action;
 
-import javax.xml.stream.XMLStreamException;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import static model.map.PointFactory.point;
 import static model.map.River.Lake;
-import static model.map.TileType.*;
+import static model.map.TileType.Desert;
+import static model.map.TileType.Jungle;
+import static model.map.TileType.NotVisible;
+import static model.map.TileType.Plains;
+import static model.map.TileType.Steppe;
 import static org.junit.Assert.assertEquals;
 import static util.NullCleaner.assertNotNull;
 

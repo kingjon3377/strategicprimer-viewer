@@ -1,9 +1,8 @@
 package util;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import java.io.PrintWriter;
 import java.io.Writer;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A PrintWriter that prefixes every line printed via printLine() with a specified

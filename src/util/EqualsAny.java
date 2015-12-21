@@ -1,10 +1,9 @@
 package util;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import java.util.Objects;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A class to hold a utility method for comparing a value with a number of other values.

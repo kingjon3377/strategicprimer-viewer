@@ -1,15 +1,14 @@
 package model.misc;
 
-import model.map.IMapNG;
-import model.map.IMutableMapNG;
-import util.Pair;
-import util.SetPairConverter;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import model.map.IMapNG;
+import model.map.IMutableMapNG;
+import util.Pair;
+import util.SetPairConverter;
 
 /**
  * A superclass for implementations of interfaces inheriting from IMultiMapModel.

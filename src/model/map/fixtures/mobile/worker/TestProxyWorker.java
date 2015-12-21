@@ -1,5 +1,6 @@
 package model.map.fixtures.mobile.worker;
 
+import java.io.IOException;
 import junit.framework.AssertionFailedError;
 import model.map.IFixture;
 import model.map.Player;
@@ -12,9 +13,9 @@ import model.map.fixtures.mobile.Worker;
 import org.junit.Test;
 import util.NullStream;
 
-import java.io.IOException;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * A class to test that the proxy classes work as expected.

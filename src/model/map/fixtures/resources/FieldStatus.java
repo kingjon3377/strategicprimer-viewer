@@ -1,10 +1,9 @@
 package model.map.fixtures.resources;
 
-import util.NullCleaner;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import util.NullCleaner;
 
 /**
  * Possible status of fields (and meadows, and orchards ...) Fields should rotate between

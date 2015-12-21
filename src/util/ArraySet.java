@@ -1,7 +1,5 @@
 package util;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -10,6 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A Set implementation that's just an ArrayList with Set semantics.

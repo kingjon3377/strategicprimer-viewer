@@ -1,9 +1,8 @@
 package controller.map.iointerfaces;
 
-import model.map.IMapNG;
-
 import java.io.File;
 import java.io.IOException;
+import model.map.IMapNG;
 
 /**
  * An interface for map (and other SP XML) writers.

@@ -1,10 +1,9 @@
 package controller.map.misc;
 
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import java.util.Iterator;
 import java.util.Objects;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A wrapper around Iterator implementing Comparable, so we can put it in a

@@ -6,14 +6,6 @@ import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.readerng.MapReaderNG;
-import model.map.IMapNG;
-import model.misc.IDriverModel;
-import util.NullCleaner;
-import util.TypesafeLogger;
-import util.Warning;
-import util.Warning.Action;
-
-import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -22,6 +14,13 @@ import java.io.StringReader;
 import java.nio.CharBuffer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.stream.XMLStreamException;
+import model.map.IMapNG;
+import model.misc.IDriverModel;
+import util.NullCleaner;
+import util.TypesafeLogger;
+import util.Warning;
+import util.Warning.Action;
 
 import static view.util.SystemOut.SYS_OUT;
 

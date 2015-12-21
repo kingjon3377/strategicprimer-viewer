@@ -1,15 +1,14 @@
 package model.exploration.old;
 
+import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
 import util.NullCleaner;
 import util.Pair;
-
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * A table that gives its result based on the terrain type of the tile in question.

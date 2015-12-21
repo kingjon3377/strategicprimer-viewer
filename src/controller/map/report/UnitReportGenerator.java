@@ -1,5 +1,10 @@
 package controller.map.report;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import javax.swing.tree.MutableTreeNode;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -22,12 +27,6 @@ import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
-
-import javax.swing.tree.MutableTreeNode;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
 

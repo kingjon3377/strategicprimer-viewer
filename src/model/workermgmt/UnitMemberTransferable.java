@@ -1,14 +1,13 @@
 package model.workermgmt;
 
-import model.map.fixtures.UnitMember;
-import model.map.fixtures.mobile.IUnit;
-import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
-
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.IUnit;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
 
 /**
  * A class to transfer a UnitMember.

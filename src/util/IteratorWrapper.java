@@ -1,11 +1,10 @@
 package util;
 
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.PriorityQueue;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A wrapper around an iterator to let it be used in for-each loops. XML parsing in

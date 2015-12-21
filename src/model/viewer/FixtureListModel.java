@@ -1,5 +1,6 @@
 package model.viewer;
 
+import javax.swing.*;
 import model.listeners.SelectionChangeListener;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -14,8 +15,6 @@ import model.map.fixtures.terrain.Forest;
 import model.misc.IDriverModel;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-
-import javax.swing.*;
 
 /**
  * A model for a FixtureList.

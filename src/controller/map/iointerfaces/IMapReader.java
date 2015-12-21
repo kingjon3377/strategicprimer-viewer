@@ -1,13 +1,12 @@
 package controller.map.iointerfaces;
 
 import controller.map.formatexceptions.SPFormatException;
-import model.map.IMutableMapNG;
-import util.Warning;
-
-import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
+import javax.xml.stream.XMLStreamException;
+import model.map.IMutableMapNG;
+import util.Warning;
 
 /**
  * An interface for map readers.

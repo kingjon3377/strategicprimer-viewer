@@ -1,5 +1,7 @@
 package controller.map.converter;
 
+import java.util.Objects;
+import java.util.stream.StreamSupport;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.MapDimensions;
@@ -14,9 +16,6 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.towns.Fortress;
 import org.junit.Test;
-
-import java.util.Objects;
-import java.util.stream.StreamSupport;
 
 import static org.junit.Assert.assertTrue;
 

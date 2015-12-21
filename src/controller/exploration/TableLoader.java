@@ -1,5 +1,17 @@
 package controller.exploration;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.exploration.old.ConstantTable;
 import model.exploration.old.EncounterTable;
 import model.exploration.old.ExplorationRunner;
@@ -13,19 +25,6 @@ import util.NullCleaner;
 import util.Pair;
 import util.ResourceInputStream;
 import util.TypesafeLogger;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A class to load encounter tables from file.

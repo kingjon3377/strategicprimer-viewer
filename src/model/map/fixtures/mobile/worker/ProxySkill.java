@@ -1,12 +1,11 @@
 package model.map.fixtures.mobile.worker;
 
-import model.map.fixtures.mobile.ProxyFor;
-import org.eclipse.jdt.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
+import model.map.fixtures.mobile.ProxyFor;
+import org.eclipse.jdt.annotation.NonNull;
 
 /**
  * An implementation of ISkill whose operations act on multiple workers at once.

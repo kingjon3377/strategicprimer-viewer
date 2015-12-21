@@ -1,9 +1,8 @@
 package view.util;
 
-import org.eclipse.jdt.annotation.Nullable;
-
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A utility class to show error messages.

@@ -1,5 +1,13 @@
 package view.worker;
 
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.*;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.workermgmt.IWorkerTreeModel;
@@ -7,15 +15,6 @@ import model.workermgmt.UnitMemberTransferable;
 import model.workermgmt.UnitMemberTransferable.UnitMemberPair;
 import org.eclipse.jdt.annotation.Nullable;
 import util.TypesafeLogger;
-
-import javax.swing.*;
-import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
-import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A replacement transfer handler to make drag-and-drop work properly.

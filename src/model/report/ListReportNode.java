@@ -1,9 +1,8 @@
 package model.report;
 
+import javax.swing.tree.TreeNode;
 import model.map.Point;
 import util.NullCleaner;
-
-import javax.swing.tree.TreeNode;
 
 /**
  * A node representing a list.

@@ -3,13 +3,6 @@ package view.map.misc;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
-import util.NullCleaner;
-import util.TypesafeLogger;
-import util.Warning;
-import view.util.StreamingLabel;
-
-import javax.swing.*;
-import javax.xml.stream.XMLStreamException;
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,6 +10,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.*;
+import javax.xml.stream.XMLStreamException;
+import util.NullCleaner;
+import util.TypesafeLogger;
+import util.Warning;
+import view.util.StreamingLabel;
 
 /**
  * A window to show the results of checking maps for errors.

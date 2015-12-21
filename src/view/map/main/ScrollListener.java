@@ -1,5 +1,8 @@
 package view.map.main;
 
+import java.awt.*;
+import java.awt.event.AdjustmentListener;
+import javax.swing.*;
 import model.listeners.GraphicalParamsListener;
 import model.listeners.MapChangeListener;
 import model.listeners.SelectionChangeListener;
@@ -8,10 +11,6 @@ import model.map.Point;
 import model.viewer.IViewerModel;
 import model.viewer.VisibleDimensions;
 import org.eclipse.jdt.annotation.Nullable;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.AdjustmentListener;
 
 /**
  * A class to change the visible area of the map based on the user's use of the

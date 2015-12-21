@@ -1,15 +1,14 @@
 package view.util;
 
-import model.listeners.AddRemoveListener;
-import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.swing.*;
+import model.listeners.AddRemoveListener;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
 
 /**
  * A panel to be the GUI to add or remove items from a list.

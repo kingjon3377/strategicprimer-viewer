@@ -1,13 +1,12 @@
 package view.map.main;
 
 import controller.map.misc.IOHandler;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import javax.swing.*;
 import model.viewer.IViewerModel;
 import view.map.details.DetailPanelNG;
 import view.util.SplitWithWeights;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.WindowAdapter;
 
 /**
  * The main driver class for the map viewer app.

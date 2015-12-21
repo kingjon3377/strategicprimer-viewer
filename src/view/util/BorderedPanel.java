@@ -1,9 +1,8 @@
 package view.util;
 
-import org.eclipse.jdt.annotation.Nullable;
-
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A panel laid out by a BorderLayout, with helper methods to assign components to its

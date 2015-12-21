@@ -3,15 +3,6 @@ package controller.map.drivers;
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.WindowThread;
-import model.misc.IDriverModel;
-import util.EqualsAny;
-import util.NullCleaner;
-import util.Pair;
-import util.TypesafeLogger;
-import view.util.AppChooserFrame;
-import view.util.ErrorShower;
-
-import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,6 +13,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.*;
+import model.misc.IDriverModel;
+import util.EqualsAny;
+import util.NullCleaner;
+import util.Pair;
+import util.TypesafeLogger;
+import view.util.AppChooserFrame;
+import view.util.ErrorShower;
 
 /**
  * A driver to start other drivers. At first it just starts one.

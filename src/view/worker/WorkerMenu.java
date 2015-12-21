@@ -2,11 +2,10 @@ package view.worker;
 
 import com.bric.window.WindowMenu;
 import controller.map.misc.IOHandler;
+import java.awt.event.ActionListener;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import view.util.SPMenu;
-
-import javax.swing.*;
-import java.awt.event.ActionListener;
 
 /**
  * A set of menus for the worker GUI.

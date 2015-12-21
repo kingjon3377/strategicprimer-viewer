@@ -6,6 +6,8 @@ import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;
+import java.io.File;
+import javax.swing.*;
 import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
@@ -17,9 +19,6 @@ import util.Warning.Action;
 import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
 import view.util.FilteredFileChooser;
-
-import javax.swing.*;
-import java.io.File;
 
 /**
  * A class to start the viewer, to reduce circular dependencies between packages.

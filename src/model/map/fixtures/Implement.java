@@ -1,11 +1,10 @@
 package model.map.fixtures;
 
+import java.io.IOException;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
-
-import java.io.IOException;
 
 /**
  * A piece of equipment.

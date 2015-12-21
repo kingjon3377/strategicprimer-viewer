@@ -1,10 +1,9 @@
 package model.listeners;
 
-import model.map.Point;
-import org.eclipse.jdt.annotation.Nullable;
-
 import java.util.ArrayList;
 import java.util.Collection;
+import model.map.Point;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A helper class to proxy selection-changing calls.

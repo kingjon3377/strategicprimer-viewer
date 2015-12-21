@@ -3,19 +3,6 @@ package view.map.misc;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
-import model.map.IMapNG;
-import model.map.MapDimensions;
-import model.map.PlayerCollection;
-import model.map.SPMapNG;
-import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
-import util.TypesafeLogger;
-import util.Warning;
-import util.Warning.Action;
-import view.util.StreamingLabel;
-
-import javax.swing.*;
-import javax.xml.stream.XMLStreamException;
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -26,6 +13,18 @@ import java.io.Writer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import javax.swing.*;
+import javax.xml.stream.XMLStreamException;
+import model.map.IMapNG;
+import model.map.MapDimensions;
+import model.map.PlayerCollection;
+import model.map.SPMapNG;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
+import util.TypesafeLogger;
+import util.Warning;
+import util.Warning.Action;
+import view.util.StreamingLabel;
 
 /**
  * A window to show the result of running subset tests.

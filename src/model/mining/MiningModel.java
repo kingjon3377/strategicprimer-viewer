@@ -1,15 +1,14 @@
 package model.mining;
 
-import model.map.Point;
-import model.map.PointFactory;
-import util.NullCleaner;
-import view.util.SystemOut;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Random;
+import model.map.Point;
+import model.map.PointFactory;
+import util.NullCleaner;
+import view.util.SystemOut;
 
 /**
  * A class to model the distribution of a mineral to be mined. Note that the constructor

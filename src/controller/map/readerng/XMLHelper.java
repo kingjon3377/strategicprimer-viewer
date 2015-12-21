@@ -7,19 +7,18 @@ import controller.map.formatexceptions.SPMalformedInputException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
-import model.map.HasImage;
-import model.map.IPlayerCollection;
-import model.map.Player;
-import util.NullCleaner;
-import util.Warning;
-
+import java.text.NumberFormat;
+import java.text.ParseException;
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import java.text.NumberFormat;
-import java.text.ParseException;
+import model.map.HasImage;
+import model.map.IPlayerCollection;
+import model.map.Player;
+import util.NullCleaner;
+import util.Warning;
 
 /**
  * A class for helper methods.

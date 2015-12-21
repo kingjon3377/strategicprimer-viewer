@@ -1,11 +1,10 @@
 package util;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import org.eclipse.jdt.annotation.NonNull;
 
 /**
  * A stack of iterators. Useful for when we have several collections of things we need to

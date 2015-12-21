@@ -6,13 +6,6 @@ import controller.map.misc.ICLIHelper;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.MapReaderAdapter;
-import model.map.Player;
-import model.map.fixtures.Implement;
-import model.map.fixtures.ResourcePile;
-import model.misc.IDriverModel;
-import model.resources.ResourceManagementDriver;
-import util.Warning;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +16,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import model.map.Player;
+import model.map.fixtures.Implement;
+import model.map.fixtures.ResourcePile;
+import model.misc.IDriverModel;
+import model.resources.ResourceManagementDriver;
+import util.Warning;
 
 /**
  * A driver to let the user enter resources etc.

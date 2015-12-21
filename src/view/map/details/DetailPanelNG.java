@@ -1,5 +1,6 @@
 package view.map.details;
 
+import javax.swing.*;
 import model.listeners.SelectionChangeListener;
 import model.listeners.VersionChangeListener;
 import model.map.Point;
@@ -7,8 +8,6 @@ import model.misc.IDriverModel;
 import org.eclipse.jdt.annotation.Nullable;
 import view.map.key.KeyPanel;
 import view.util.BorderedPanel;
-
-import javax.swing.*;
 
 /**
  * A panel to show the details of a tile, using a tree rather than subpanels with chits

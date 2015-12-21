@@ -1,9 +1,8 @@
 package model.listeners;
 
+import java.util.EventListener;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.Nullable;
-
-import java.util.EventListener;
 
 /**
  * An interface for objects that want to know when a new unit member (usually a worker) is

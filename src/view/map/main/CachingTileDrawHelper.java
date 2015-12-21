@@ -1,19 +1,24 @@
 package view.map.main; // NOPMD
 
-import model.map.IMapNG;
-import model.map.Point;
-import model.map.River;
-import model.map.TileType;
-import view.util.Coordinate;
-
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.util.EnumMap;
 import java.util.Map;
+import model.map.IMapNG;
+import model.map.Point;
+import model.map.River;
+import model.map.TileType;
+import view.util.Coordinate;
 
-import static view.util.DrawingNumericConstants.*;
+import static view.util.DrawingNumericConstants.EIGHT;
+import static view.util.DrawingNumericConstants.FOUR;
+import static view.util.DrawingNumericConstants.SEVEN_SIXTEENTHS;
+import static view.util.DrawingNumericConstants.THREE;
+import static view.util.DrawingNumericConstants.THREE_QUARTERS;
+import static view.util.DrawingNumericConstants.TWO;
+import static view.util.DrawingNumericConstants.TWO_THIRDS;
 
 /**
  * A class to do the drawing of a tile, whether on a GUITile or on a single-component

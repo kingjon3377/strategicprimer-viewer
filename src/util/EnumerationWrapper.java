@@ -1,10 +1,9 @@
 package util;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import org.eclipse.jdt.annotation.NonNull;
 
 /**
  * A wrapper around an Enumeration to make it fit the Iterable interface.

@@ -1,5 +1,13 @@
 package model.workermgmt;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.TreePath;
 import model.map.HasKind;
 import model.map.HasName;
 import model.map.Player;
@@ -8,15 +16,6 @@ import model.map.fixtures.mobile.IUnit;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.TypesafeLogger;
-
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
-import javax.swing.tree.TreePath;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.logging.Logger;
-import java.util.stream.StreamSupport;
 
 /**
  * A TreeModel implementation for a player's units and workers.

@@ -1,11 +1,5 @@
 package model.map.fixtures.mobile.worker;
 
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-import util.ArraySet;
-import util.NullCleaner;
-import util.Pair;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
@@ -13,6 +7,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.stream.StreamSupport;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+import util.ArraySet;
+import util.NullCleaner;
+import util.Pair;
 
 /**
  * A Job a worker can work at.

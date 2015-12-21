@@ -1,10 +1,9 @@
 package model.exploration.old;
 
+import java.util.Set;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
-
-import java.util.Set;
 
 /**
  * An interface for encounter tables, both quadrant and random-event tables. At present we

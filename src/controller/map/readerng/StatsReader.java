@@ -2,17 +2,16 @@ package controller.map.readerng;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
+import java.util.Collections;
+import java.util.List;
+import javax.xml.stream.Location;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
 import util.Warning;
-
-import javax.xml.stream.Location;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * A reader for workers' stats.

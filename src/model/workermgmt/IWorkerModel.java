@@ -1,11 +1,10 @@
 package model.workermgmt;
 
+import java.util.List;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
 import model.misc.IMultiMapModel;
 import org.eclipse.jdt.annotation.Nullable;
-
-import java.util.List;
 
 /**
  * An interface for a model to underlie the advancement GUI, etc.

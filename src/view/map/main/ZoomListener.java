@@ -1,13 +1,12 @@
 package view.map.main;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.viewer.IViewerModel;
 import model.viewer.VisibleDimensions;
 import org.eclipse.jdt.annotation.Nullable;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * A class to listen for zoom menu events.

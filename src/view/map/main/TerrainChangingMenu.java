@@ -1,6 +1,9 @@
 package view.map.main;
 
 import controller.map.misc.IDFactoryFiller;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.*;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
 import model.listeners.SelectionChangeSupport;
@@ -12,10 +15,6 @@ import model.misc.IDriverModel;
 import model.viewer.IViewerModel;
 import org.eclipse.jdt.annotation.Nullable;
 import view.worker.NewUnitDialog;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * A popup menu to let the user change a tile's terrain type, or add a unit.

@@ -1,10 +1,9 @@
 package view.map.main;
 
-import org.eclipse.jdt.annotation.Nullable;
-
-import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.*;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A listener to help {@link MapSizeListener} adjust the number of displayed tiles when

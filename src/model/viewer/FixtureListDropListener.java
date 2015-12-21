@@ -1,11 +1,5 @@
 package model.viewer;
 
-import model.map.TileFixture;
-import org.eclipse.jdt.annotation.Nullable;
-import util.EqualsAny;
-import util.TypesafeLogger;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -18,6 +12,11 @@ import java.awt.dnd.DropTargetEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.*;
+import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
+import util.EqualsAny;
+import util.TypesafeLogger;
 
 /**
  * The details of inter-FixtureList drag-and-drop, extracted to reduce the number of

@@ -1,5 +1,11 @@
 package model.map.fixtures.towns;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import model.map.FixtureIterable;
 import model.map.HasImage;
 import model.map.IFixture;
@@ -10,13 +16,6 @@ import model.map.fixtures.FortressMember;
 import model.map.fixtures.mobile.IUnit;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * A fortress on the map. A player can only have one fortress per tile, but multiple

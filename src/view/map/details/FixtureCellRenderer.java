@@ -1,15 +1,5 @@
 package view.map.details;
 
-import model.map.HasImage;
-import model.map.TileFixture;
-import org.eclipse.jdt.annotation.Nullable;
-import util.ImageLoader;
-import util.NullCleaner;
-import util.TypesafeLogger;
-
-import javax.swing.*;
-import javax.swing.plaf.basic.BasicHTML;
-import javax.swing.text.View;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
@@ -19,6 +9,15 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicHTML;
+import javax.swing.text.View;
+import model.map.HasImage;
+import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
+import util.ImageLoader;
+import util.NullCleaner;
+import util.TypesafeLogger;
 
 /**
  * A cell renderer for tile-details GUIs.

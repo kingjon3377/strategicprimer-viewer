@@ -1,5 +1,10 @@
 package model.workermgmt;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import model.map.MapDimensions;
 import model.map.Player;
 import model.map.PlayerCollection;
@@ -17,12 +22,6 @@ import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.towns.Fortress;
 import org.junit.Test;
 import util.NullCleaner;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 

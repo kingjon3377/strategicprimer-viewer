@@ -1,11 +1,5 @@
 package controller.map.misc;
 
-import model.map.HasName;
-import org.eclipse.jdt.annotation.NonNull;
-import util.EqualsAny;
-import util.IsNumeric;
-import util.NullCleaner;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +10,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import model.map.HasName;
+import org.eclipse.jdt.annotation.NonNull;
+import util.EqualsAny;
+import util.IsNumeric;
+import util.NullCleaner;
 
 import static view.util.SystemOut.SYS_OUT;
 

@@ -1,14 +1,13 @@
 package model.viewer;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
-
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
  * An view of locations on the map in order, starting at a given point.

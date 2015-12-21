@@ -1,8 +1,5 @@
 package model.map;
 
-import org.eclipse.jdt.annotation.NonNull;
-import util.NullCleaner;
-
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -11,6 +8,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.eclipse.jdt.annotation.NonNull;
+import util.NullCleaner;
 
 import static java.util.Collections.unmodifiableSet;
 

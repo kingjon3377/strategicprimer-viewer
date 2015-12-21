@@ -4,6 +4,13 @@ import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.resources.CacheFixture;
@@ -21,14 +28,6 @@ import util.ArraySet;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 import static java.lang.Boolean.parseBoolean;
 

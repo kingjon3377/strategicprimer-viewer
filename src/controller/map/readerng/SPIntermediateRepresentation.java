@@ -1,15 +1,14 @@
 package controller.map.readerng;
 
-import model.map.HasImage;
-import util.EqualsAny;
-import util.NullCleaner;
-import util.Pair;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
+import model.map.HasImage;
+import util.EqualsAny;
+import util.NullCleaner;
+import util.Pair;
 
 /**
  * An intermediate representation between SP objects and XML; this lets us add in the

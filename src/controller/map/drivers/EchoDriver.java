@@ -4,14 +4,13 @@ import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
+import java.io.File;
+import java.io.IOException;
+import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
 import model.misc.IDriverModel;
 import util.Warning;
 import util.Warning.Action;
-
-import javax.xml.stream.XMLStreamException;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * A driver that reads in maps and then writes them out again---this is primarily to make

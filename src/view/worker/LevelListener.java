@@ -1,5 +1,6 @@
 package view.worker;
 
+import java.io.IOException;
 import model.listeners.LevelGainListener;
 import model.listeners.SkillSelectionListener;
 import model.listeners.UnitMemberListener;
@@ -9,8 +10,6 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.ISkill;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
-
-import java.io.IOException;
 
 import static view.util.SystemOut.SYS_OUT;
 

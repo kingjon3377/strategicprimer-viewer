@@ -2,6 +2,10 @@ package controller.map.drivers;
 
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.MapReaderAdapter;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.Random;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.MapDimensions;
@@ -20,11 +24,6 @@ import view.map.main.DirectTileDrawHelper;
 import view.map.main.TileDrawHelper;
 import view.map.main.Ver2TileDrawHelper;
 import view.util.Coordinate;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.Random;
 
 import static view.util.SystemOut.SYS_OUT;
 

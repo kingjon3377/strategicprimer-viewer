@@ -1,9 +1,8 @@
 package util;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import java.util.Iterator;
 import java.util.Map;
+import org.eclipse.jdt.annotation.NonNull;
 
 /**
  * A class to convert a map's Entry set to an iterable of Pairs.

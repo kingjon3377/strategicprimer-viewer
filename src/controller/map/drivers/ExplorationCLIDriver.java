@@ -3,15 +3,14 @@ package controller.map.drivers;
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.MapReaderAdapter;
+import java.io.File;
+import java.io.IOException;
 import model.exploration.ExplorationModel;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
 import model.misc.IDriverModel;
 import util.Warning;
 import view.exploration.ExplorationCLI;
-
-import java.io.File;
-import java.io.IOException;
 
 import static view.util.SystemOut.SYS_OUT;
 

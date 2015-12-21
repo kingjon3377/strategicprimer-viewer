@@ -1,5 +1,12 @@
 package view.map.main;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
 import model.map.IMapNG;
@@ -19,14 +26,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
 import util.IteratorWrapper;
 import util.NullCleaner;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 /**
  * A mouse listener for the MapComponent, to show the terrain-changing menu as needed.

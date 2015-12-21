@@ -1,14 +1,5 @@
 package view.map.main;
 
-import model.map.MapDimensions;
-import model.map.PointFactory;
-import model.viewer.IViewerModel;
-import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
-import view.util.BoxPanel;
-import view.util.ListenedButton;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +7,14 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.*;
+import model.map.MapDimensions;
+import model.map.PointFactory;
+import model.viewer.IViewerModel;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
+import view.util.BoxPanel;
+import view.util.ListenedButton;
 
 /**
  * A dialog to let the user select a tile by coordinates.

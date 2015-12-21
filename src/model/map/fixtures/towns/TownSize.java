@@ -1,9 +1,8 @@
 package model.map.fixtures.towns;
 
-import util.NullCleaner;
-
 import java.util.HashMap;
 import java.util.Map;
+import util.NullCleaner;
 
 /**
  * Sizes of towns, fortifications, and cities.

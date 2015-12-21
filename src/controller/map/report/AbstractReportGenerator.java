@@ -1,5 +1,10 @@
 package controller.map.report;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import model.map.DistanceComparator;
 import model.map.IFixture;
 import model.map.Player;
@@ -9,12 +14,6 @@ import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
 import util.Pair;
 import util.PairComparator;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * An abstract superclass for classes that generate reports for particular kinds of SP

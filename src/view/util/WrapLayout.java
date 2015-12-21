@@ -1,9 +1,8 @@
 package view.util;
 
-import org.eclipse.jdt.annotation.Nullable;
-
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * FlowLayout subclass that fully supports wrapping of components. From

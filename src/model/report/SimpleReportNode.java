@@ -1,10 +1,9 @@
 package model.report;
 
-import model.map.Point;
-import util.NullCleaner;
-
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import model.map.Point;
+import util.NullCleaner;
 
 /**
  * A simple node representing plain text. Any children are ignored!

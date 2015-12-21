@@ -1,9 +1,8 @@
 package model.report;
 
-import org.eclipse.jdt.annotation.Nullable;
-
-import javax.swing.tree.MutableTreeNode;
 import java.util.Collections;
+import javax.swing.tree.MutableTreeNode;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A node that sorts itself after every addition.

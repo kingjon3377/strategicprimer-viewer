@@ -1,11 +1,5 @@
 package model.exploration.old;
 
-import model.map.Point;
-import model.map.TileFixture;
-import model.map.TileType;
-import util.NullCleaner;
-import util.TypesafeLogger;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,6 +7,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.map.Point;
+import model.map.TileFixture;
+import model.map.TileType;
+import util.NullCleaner;
+import util.TypesafeLogger;
 
 /**
  * A class to create exploration results. The initial implementation is a bit hackish, and

@@ -1,6 +1,9 @@
 package view.worker;
 
 import controller.map.misc.IDFactory;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.logging.Logger;
 import model.listeners.NewWorkerListener;
 import model.listeners.UnitSelectionListener;
 import model.map.fixtures.mobile.IUnit;
@@ -8,10 +11,6 @@ import model.map.fixtures.mobile.Worker;
 import model.workermgmt.IWorkerTreeModel;
 import org.eclipse.jdt.annotation.Nullable;
 import util.TypesafeLogger;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.logging.Logger;
 
 import static view.util.ErrorShower.showErrorDialog;
 

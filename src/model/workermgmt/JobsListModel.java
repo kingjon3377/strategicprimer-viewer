@@ -1,5 +1,9 @@
 package model.workermgmt;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Objects;
+import javax.swing.*;
 import model.listeners.AddRemoveListener;
 import model.listeners.CompletionListener;
 import model.listeners.CompletionSource;
@@ -9,11 +13,6 @@ import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
 import org.eclipse.jdt.annotation.Nullable;
-
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Objects;
 
 /**
  * A list model for a list of a worker's jobs.

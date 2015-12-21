@@ -2,11 +2,10 @@ package view.map.main;
 
 import com.bric.window.WindowMenu;
 import controller.map.misc.IOHandler;
+import javax.swing.*;
 import model.viewer.IViewerModel;
 import view.util.SPMenu;
 import view.worker.PlayerChooserHandler;
-
-import javax.swing.*;
 
 /**
  * A class encapsulating the menus.

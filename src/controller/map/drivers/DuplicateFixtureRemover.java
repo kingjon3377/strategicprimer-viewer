@@ -2,6 +2,10 @@ package controller.map.drivers;
 
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.MapReaderAdapter;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import model.map.IMutableMapNG;
 import model.map.Point;
 import model.map.TileFixture;
@@ -11,11 +15,6 @@ import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import util.Pair;
 import util.Warning;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 
 import static view.util.SystemOut.SYS_OUT;
 

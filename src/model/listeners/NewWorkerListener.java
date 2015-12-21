@@ -1,8 +1,7 @@
 package model.listeners;
 
-import model.map.fixtures.mobile.Worker;
-
 import java.util.EventListener;
+import model.map.fixtures.mobile.Worker;
 
 /**
  * An interface for things that want to accept a new user-created worker.

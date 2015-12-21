@@ -1,12 +1,11 @@
 package model.viewer;
 
-import model.map.TileFixture;
-import org.eclipse.jdt.annotation.Nullable;
-
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A class to transfer a TileFixture.

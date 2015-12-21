@@ -1,5 +1,15 @@
 package view.exploration;
 
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
+import javax.swing.*;
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
 import model.listeners.MovementCostListener;
@@ -24,17 +34,6 @@ import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
 import view.map.details.FixtureList;
-
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.StreamSupport;
 
 /**
  * The listener for clicks on tile buttons indicating movement.

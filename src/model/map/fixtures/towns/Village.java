@@ -1,5 +1,6 @@
 package model.map.fixtures.towns;
 
+import java.io.IOException;
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.Player;
@@ -7,8 +8,6 @@ import model.map.SubsettableFixture;
 import model.map.TileFixture;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
-
-import java.io.IOException;
 
 /**
  * A village on the map.

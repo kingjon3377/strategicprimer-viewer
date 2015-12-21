@@ -1,8 +1,7 @@
 package model.report;
 
-import util.NullCleaner;
-
 import javax.swing.tree.TreeNode;
+import util.NullCleaner;
 
 /**
  * A node representing a section, with a header.

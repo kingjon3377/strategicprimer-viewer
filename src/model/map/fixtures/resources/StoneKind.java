@@ -1,9 +1,8 @@
 package model.map.fixtures.resources;
 
-import util.NullCleaner;
-
 import java.util.HashMap;
 import java.util.Map;
+import util.NullCleaner;
 
 /**
  * The kinds of stone we know about (for purposes of this event).

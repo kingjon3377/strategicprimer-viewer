@@ -1,9 +1,8 @@
 package model.listeners;
 
+import java.util.EventListener;
 import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
-
-import java.util.EventListener;
 
 /**
  * An interface for objects that want to know when the selected tile, or its location,

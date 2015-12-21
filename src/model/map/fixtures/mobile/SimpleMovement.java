@@ -1,5 +1,6 @@
 package model.map.fixtures.mobile;
 
+import java.util.stream.StreamSupport;
 import model.map.HasOwner;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -11,8 +12,6 @@ import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Fortress;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
-
-import java.util.stream.StreamSupport;
 
 /**
  * A class encapsulating knowledge about movement costs associated with various tile

@@ -1,9 +1,8 @@
 package view.map.main;
 
+import javax.swing.*;
 import model.viewer.IViewerModel;
 import view.util.BorderedPanel;
-
-import javax.swing.*;
 
 /**
  * A panel to contain the map GUI and add scrollbars to it.

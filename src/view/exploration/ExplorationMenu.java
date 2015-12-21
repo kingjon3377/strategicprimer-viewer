@@ -2,11 +2,10 @@ package view.exploration;
 
 import com.bric.window.WindowMenu;
 import controller.map.misc.IOHandler;
+import javax.swing.*;
 import model.exploration.IExplorationModel;
 import view.util.SPMenu;
 import view.worker.PlayerChooserHandler;
-
-import javax.swing.*;
 
 /**
  * Menus for the exploration GUI.

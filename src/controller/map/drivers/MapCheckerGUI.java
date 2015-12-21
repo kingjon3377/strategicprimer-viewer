@@ -1,10 +1,9 @@
 package controller.map.drivers;
 
 import controller.map.drivers.DriverUsage.ParamCount;
+import java.util.stream.Stream;
 import model.misc.IDriverModel;
 import view.map.misc.MapCheckerFrame;
-
-import java.util.stream.Stream;
 
 /**
  * A driver to check every map file in a list for errors and report the results in a

@@ -1,13 +1,12 @@
 package model.viewer;
 
+import java.util.logging.Logger;
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.TileType;
 import org.eclipse.jdt.annotation.Nullable;
 import util.TypesafeLogger;
-
-import java.util.logging.Logger;
 
 /**
  * A fake "TileFixture" to represent the tile's terrain type, so it can be copied via

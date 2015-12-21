@@ -1,8 +1,7 @@
 package view.util;
 
-import util.NullCleaner;
-
 import java.io.PrintStream;
+import util.NullCleaner;
 
 /**
  * A class to get around Eclipse's insistence that System.out might be null. (FIXME:

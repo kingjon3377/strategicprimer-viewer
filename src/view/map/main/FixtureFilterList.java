@@ -1,15 +1,14 @@
 package view.map.main;
 
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.*;
 import model.map.TileFixture;
 import model.viewer.FixtureFilterListModel;
 import model.viewer.ZOrderFilter;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A list to let the user select which fixtures ought to be searched.

@@ -1,5 +1,8 @@
 package model.exploration.old;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
@@ -8,11 +11,10 @@ import org.junit.Before;
 import org.junit.Test;
 import util.NullCleaner;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * A test case for TestExplorationRunner.

@@ -1,5 +1,9 @@
 package model.exploration.old;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import model.map.IEvent;
 import model.map.Player;
 import model.map.Point;
@@ -16,11 +20,6 @@ import model.map.fixtures.towns.Fortification;
 import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * A table for legacy "events".

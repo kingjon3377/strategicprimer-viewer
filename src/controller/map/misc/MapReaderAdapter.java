@@ -6,6 +6,12 @@ import controller.map.drivers.DriverFailedException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.SPWriter;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
@@ -15,13 +21,6 @@ import model.viewer.ViewerModel;
 import util.NullCleaner;
 import util.Pair;
 import util.Warning;
-
-import javax.xml.stream.XMLStreamException;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * An adapter, so that classes using map readers and writers don't have to change whenever

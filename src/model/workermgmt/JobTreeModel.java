@@ -1,5 +1,16 @@
 package model.workermgmt;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.DefaultTreeSelectionModel;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 import model.listeners.AddRemoveListener;
 import model.listeners.UnitMemberListener;
 import model.map.HasName;
@@ -12,18 +23,6 @@ import model.map.fixtures.mobile.worker.Skill;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.TypesafeLogger;
-
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
-import javax.swing.tree.DefaultTreeSelectionModel;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeSelectionModel;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.logging.Logger;
-import java.util.stream.StreamSupport;
 
 /**
  * A model for a tree of a worker's Jobs and Skills.

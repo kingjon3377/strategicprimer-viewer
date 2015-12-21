@@ -2,6 +2,11 @@ package controller.map.cxml;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.logging.Level;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.IMutablePlayerCollection;
@@ -31,12 +36,6 @@ import util.IteratorWrapper;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.logging.Level;
 
 /**
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan

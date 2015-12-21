@@ -1,14 +1,13 @@
 package controller.map.iointerfaces;
 
 import controller.map.formatexceptions.SPFormatException;
-import util.NullCleaner;
-import util.Warning;
-
-import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.Reader;
 import java.util.Arrays;
 import java.util.Collections;
+import javax.xml.stream.XMLStreamException;
+import util.NullCleaner;
+import util.Warning;
 
 /**
  * An interface for readers of any SP model type.

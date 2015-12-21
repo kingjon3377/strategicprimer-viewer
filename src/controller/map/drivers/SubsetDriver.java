@@ -2,6 +2,9 @@ package controller.map.drivers;
 
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.MapReaderAdapter;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Logger;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Subsettable;
@@ -12,10 +15,6 @@ import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 import util.Warning.Action;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Logger;
 
 import static view.util.SystemOut.SYS_OUT;
 

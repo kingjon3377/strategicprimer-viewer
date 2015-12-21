@@ -6,15 +6,14 @@ import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;
+import java.io.File;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.resources.ResourceManagementDriver;
 import util.Warning;
 import view.map.main.MapFileFilter;
 import view.resources.ResourceAddingFrame;
 import view.util.FilteredFileChooser;
-
-import javax.swing.*;
-import java.io.File;
 
 /**
  * A class to start the resource-entry app.

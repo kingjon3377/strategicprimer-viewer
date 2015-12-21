@@ -1,5 +1,8 @@
 package model.resources;
 
+import java.io.File;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
@@ -10,10 +13,6 @@ import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
 import model.misc.SimpleMultiMapModel;
 import util.Pair;
-
-import java.io.File;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * A driver model for resource-entering drivers.

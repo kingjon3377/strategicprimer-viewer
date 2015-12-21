@@ -4,15 +4,14 @@ import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;
+import java.io.File;
+import javax.swing.*;
 import model.exploration.ExplorationModel;
 import model.misc.IDriverModel;
 import util.Warning;
 import view.exploration.ExplorationFrame;
 import view.map.main.MapFileFilter;
 import view.util.FilteredFileChooser;
-
-import javax.swing.*;
-import java.io.File;
 
 import static view.util.SystemOut.SYS_OUT;
 

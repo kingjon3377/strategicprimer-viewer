@@ -1,5 +1,10 @@
 package view.worker;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import model.listeners.AddRemoveListener;
 import model.listeners.CompletionListener;
 import model.listeners.JobSelectionListener;
@@ -9,12 +14,6 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.IJob;
 import model.workermgmt.JobsListModel;
 import org.eclipse.jdt.annotation.Nullable;
-
-import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * A visual list of a worker's Jobs. We also handle listening for selection changes.

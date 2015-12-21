@@ -5,6 +5,9 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnsupportedPropertyException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
+import java.io.IOException;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
@@ -16,10 +19,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import java.io.IOException;
 
 /**
  * A reader for Workers.

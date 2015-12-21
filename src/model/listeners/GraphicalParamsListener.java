@@ -1,8 +1,7 @@
 package model.listeners;
 
-import model.viewer.VisibleDimensions;
-
 import java.util.EventListener;
+import model.viewer.VisibleDimensions;
 
 /**
  * An interface for objects that want to keep abreast of visible dimensions and zoom

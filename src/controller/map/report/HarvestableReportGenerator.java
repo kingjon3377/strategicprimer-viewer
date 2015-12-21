@@ -1,5 +1,16 @@
 package controller.map.report;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -21,18 +32,6 @@ import model.report.SortedSectionListReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
 import util.Pair;
-
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.MutableTreeNode;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * A report generator for harvestable fixtures (other than caves and battlefields, which

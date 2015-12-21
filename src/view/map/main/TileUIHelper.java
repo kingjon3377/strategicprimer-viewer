@@ -1,5 +1,9 @@
 package view.map.main;
 
+import java.awt.*;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 import model.map.SPMapNG;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -9,11 +13,6 @@ import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
 import util.NullCleaner;
-
-import java.awt.*;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A class enapsulating the mapping from tile-types to colors.

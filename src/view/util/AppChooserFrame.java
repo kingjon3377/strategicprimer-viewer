@@ -6,13 +6,6 @@ import controller.map.drivers.ExplorationGUI;
 import controller.map.drivers.ISPDriver;
 import controller.map.drivers.ViewerStart;
 import controller.map.drivers.WorkerStart;
-import model.misc.IDriverModel;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
-import util.TypesafeLogger;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +14,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.*;
+import model.misc.IDriverModel;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
+import util.TypesafeLogger;
 
 /**
  * A GUI to let the user choose which GUI to use. We do *not* make this extend

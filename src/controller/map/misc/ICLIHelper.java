@@ -1,9 +1,8 @@
 package controller.map.misc;
 
-import model.map.HasName;
-
 import java.io.IOException;
 import java.util.List;
+import model.map.HasName;
 
 /**
  * An interface for the "CLI helper", to make automated testing of exploration possible.

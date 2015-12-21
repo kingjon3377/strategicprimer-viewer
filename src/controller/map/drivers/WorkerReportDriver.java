@@ -5,14 +5,13 @@ import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.report.ReportGenerator;
-import model.misc.IDriverModel;
-import util.Warning;
-import util.Warning.Action;
-
-import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import javax.xml.stream.XMLStreamException;
+import model.misc.IDriverModel;
+import util.Warning;
+import util.Warning.Action;
 
 /**
  * A driver to produce a report of the units in a map.

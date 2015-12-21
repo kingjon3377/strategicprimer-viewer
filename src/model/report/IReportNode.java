@@ -1,8 +1,7 @@
 package model.report;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 import javax.swing.tree.MutableTreeNode;
+import org.eclipse.jdt.annotation.NonNull;
 
 /**
  * An interface for report nodes.

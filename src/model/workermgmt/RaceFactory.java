@@ -1,11 +1,10 @@
 package model.workermgmt;
 
-import util.NullCleaner;
-import util.SingletonRandom;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import util.NullCleaner;
+import util.SingletonRandom;
 
 /**
  * A class to select a race at "random".

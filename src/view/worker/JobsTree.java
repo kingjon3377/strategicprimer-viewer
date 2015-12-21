@@ -1,20 +1,19 @@
 package view.worker;
 
-import model.listeners.SkillSelectionListener;
-import model.listeners.SkillSelectionSource;
-import model.map.fixtures.mobile.worker.ISkill;
-import model.workermgmt.JobTreeModel;
-import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
-
+import java.util.ArrayList;
+import java.util.Collection;
 import javax.swing.*;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
-import java.util.ArrayList;
-import java.util.Collection;
+import model.listeners.SkillSelectionListener;
+import model.listeners.SkillSelectionSource;
+import model.map.fixtures.mobile.worker.ISkill;
+import model.workermgmt.JobTreeModel;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
 
 /**
  * A tree representing a worker's Jobs and Skills.

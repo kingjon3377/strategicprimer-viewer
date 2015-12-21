@@ -4,17 +4,16 @@ package controller.map.readerng;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
-import model.map.IMutablePlayerCollection;
-import org.eclipse.jdt.annotation.NonNull;
-import util.NullCleaner;
-import util.Warning;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import model.map.IMutablePlayerCollection;
+import org.eclipse.jdt.annotation.NonNull;
+import util.NullCleaner;
+import util.Warning;
 
 /**
  * An alternative approach, to hopefully replace the ReaderFactory---instead of asking for

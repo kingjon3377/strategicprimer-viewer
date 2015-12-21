@@ -1,15 +1,14 @@
 package model.viewer;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import model.map.MapDimensions;
 import model.map.Point;
 import model.map.PointFactory;
 import org.junit.Test;
 import util.IteratorWrapper;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.junit.Assert.assertEquals;
 

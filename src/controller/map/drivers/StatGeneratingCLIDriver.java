@@ -6,6 +6,16 @@ import controller.map.misc.ICLIHelper;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.MapReaderAdapter;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.util.Collection;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import model.exploration.ExplorationModel;
 import model.exploration.IExplorationModel;
 import model.map.FixtureIterable;
@@ -31,17 +41,6 @@ import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 import view.util.SystemOut;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static util.SingletonRandom.RANDOM;
 

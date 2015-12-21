@@ -1,13 +1,12 @@
 package model.exploration;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import model.map.MapDimensions;
 import model.map.Point;
 import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 
 import static model.map.PointFactory.point;
 

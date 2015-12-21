@@ -6,6 +6,8 @@ import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;
+import java.io.File;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
@@ -14,9 +16,6 @@ import util.Warning.Action;
 import view.map.main.MapFileFilter;
 import view.util.FilteredFileChooser;
 import view.worker.WorkerMgmtFrame;
-
-import javax.swing.*;
-import java.io.File;
 
 /**
  * A class to start the user worker management GUI.

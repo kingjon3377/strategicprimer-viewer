@@ -1,6 +1,10 @@
 package model.map.fixtures;
 
 import controller.map.formatexceptions.SPFormatException;
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.xml.stream.XMLStreamException;
 import model.map.BaseTestFixtureSerialization;
 import model.map.MapDimensions;
 import model.map.Player;
@@ -30,12 +34,9 @@ import util.NullCleaner;
 import util.Warning;
 import util.Warning.Action;
 
-import javax.xml.stream.XMLStreamException;
-import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Another class to test serialization of TileFixtures.

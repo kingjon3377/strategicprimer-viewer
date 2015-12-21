@@ -1,6 +1,10 @@
 package model.map;
 
 import controller.map.formatexceptions.SPFormatException;
+import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.xml.stream.XMLStreamException;
 import model.map.fixtures.explorable.Battlefield;
 import model.map.fixtures.explorable.Cave;
 import model.map.fixtures.resources.MineralVein;
@@ -15,11 +19,6 @@ import org.junit.Test;
 import util.NullCleaner;
 import util.Warning;
 import util.Warning.Action;
-
-import javax.xml.stream.XMLStreamException;
-import java.io.IOException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * A class to test the serialization of Events.

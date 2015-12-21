@@ -3,6 +3,11 @@ package controller.map.cxml;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnsupportedTagException;
 import controller.map.misc.IDFactory;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Set;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.explorable.Battlefield;
 import model.map.fixtures.explorable.Cave;
@@ -11,12 +16,6 @@ import util.ArraySet;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Set;
 
 /**
  * A reader for Caves and Battlefields.

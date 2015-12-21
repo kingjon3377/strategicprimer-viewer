@@ -1,5 +1,6 @@
 package controller.map.misc;
 
+import java.util.Comparator;
 import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.City;
 import model.map.fixtures.towns.Fortification;
@@ -9,8 +10,6 @@ import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 import org.eclipse.jdt.annotation.NonNull;
-
-import java.util.Comparator;
 
 /**
  * A comparator for towns, to put active ones before abandoned ones before ruined ones

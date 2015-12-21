@@ -1,5 +1,6 @@
 package controller.map.misc;
 
+import java.io.File;
 import model.map.FixtureIterable;
 import model.map.IFixture;
 import model.map.IMapNG;
@@ -8,8 +9,6 @@ import model.map.Point;
 import model.misc.IMultiMapModel;
 import org.eclipse.jdt.annotation.NonNull;
 import util.Pair;
-
-import java.io.File;
 
 /**
  * A class to create an IDFactory with all IDs in a map, or in a collection of fixtures,

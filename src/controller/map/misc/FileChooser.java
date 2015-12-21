@@ -1,12 +1,11 @@
 package controller.map.misc;
 
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import javax.swing.*;
 import util.NullCleaner;
 import view.map.main.MapFileFilter;
 import view.util.FilteredFileChooser;
-
-import javax.swing.*;
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 
 import static javax.swing.JFileChooser.APPROVE_OPTION;
 import static util.NullCleaner.assertNotNull;

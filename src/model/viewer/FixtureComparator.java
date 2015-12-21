@@ -1,9 +1,8 @@
 package model.viewer;
 
+import java.util.Comparator;
 import model.map.TileFixture;
 import org.eclipse.jdt.annotation.NonNull;
-
-import java.util.Comparator;
 
 /**
  * A Comparator for TileFixtures. In the new map version, only the upper-most of a tile's

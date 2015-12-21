@@ -2,7 +2,6 @@ package util;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.DuplicateIDException;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

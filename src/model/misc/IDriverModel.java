@@ -1,11 +1,10 @@
 package model.misc;
 
+import java.io.File;
 import model.listeners.MapChangeSource;
 import model.listeners.VersionChangeSource;
 import model.map.IMutableMapNG;
 import model.map.MapDimensions;
-
-import java.io.File;
 
 /**
  * An interface for driver-model objects that hold a mutable map. Interfaces deriving from

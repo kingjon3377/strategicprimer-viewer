@@ -1,12 +1,11 @@
 package controller.map.cxml;
 
 import controller.map.iointerfaces.SPWriter;
-import model.map.IMapNG;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
+import model.map.IMapNG;
 
 /**
  * CompactXML's Writer implementation.

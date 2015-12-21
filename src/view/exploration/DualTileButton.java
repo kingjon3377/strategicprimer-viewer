@@ -1,5 +1,7 @@
 package view.exploration;
 
+import java.awt.*;
+import javax.swing.*;
 import model.map.IMapNG;
 import model.map.Point;
 import model.map.PointFactory;
@@ -7,9 +9,6 @@ import model.viewer.ZOrderFilter;
 import org.eclipse.jdt.annotation.Nullable;
 import view.map.main.TileDrawHelper;
 import view.map.main.TileDrawHelperFactory;
-
-import javax.swing.*;
-import java.awt.*;
 
 /**
  * A button that represents a tile in two maps.

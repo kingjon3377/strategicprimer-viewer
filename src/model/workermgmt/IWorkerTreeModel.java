@@ -1,5 +1,6 @@
 package model.workermgmt;
 
+import javax.swing.tree.TreeModel;
 import model.listeners.MapChangeListener;
 import model.listeners.NewUnitListener;
 import model.listeners.PlayerChangeListener;
@@ -7,8 +8,6 @@ import model.map.HasKind;
 import model.map.HasName;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
-
-import javax.swing.tree.TreeModel;
 
 /**
  * An interface to add the moveMember method to the TreeModel interface.

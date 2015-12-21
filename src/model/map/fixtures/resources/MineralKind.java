@@ -1,9 +1,8 @@
 package model.map.fixtures.resources;
 
-import util.NullCleaner;
-
 import java.util.HashMap;
 import java.util.Map;
+import util.NullCleaner;
 
 /**
  * Kinds of minerals whose events the program knows about.

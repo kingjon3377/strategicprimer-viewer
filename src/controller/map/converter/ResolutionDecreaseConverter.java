@@ -1,5 +1,14 @@
 package controller.map.converter;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import model.map.IMapNG;
 import model.map.MapDimensions;
 import model.map.PlayerCollection;
@@ -15,16 +24,6 @@ import model.map.fixtures.terrain.Forest;
 import org.eclipse.jdt.annotation.NonNull;
 import util.EnumCounter;
 import util.NullCleaner;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 /**
  * A class to convert a map to an equivalent half-resolution one.

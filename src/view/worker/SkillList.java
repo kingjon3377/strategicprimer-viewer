@@ -1,5 +1,10 @@
 package view.worker;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import model.listeners.CompletionListener;
 import model.listeners.JobSelectionListener;
 import model.listeners.LevelGainListener;
@@ -9,12 +14,6 @@ import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
 import model.workermgmt.SkillListModel;
 import org.eclipse.jdt.annotation.Nullable;
-
-import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * A visual list of a job's skills. Also handles listening for selection changes.

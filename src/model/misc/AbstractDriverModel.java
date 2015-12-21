@@ -1,15 +1,14 @@
 package model.misc;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import model.listeners.MapChangeListener;
 import model.listeners.VersionChangeListener;
 import model.map.IMutableMapNG;
 import model.map.MapDimensions;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * A superclass for driver-models, to handle the common details.

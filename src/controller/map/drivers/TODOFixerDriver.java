@@ -4,15 +4,6 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.MapReaderAdapter;
-import model.map.IMutableMapNG;
-import model.map.Point;
-import model.map.TileFixture;
-import model.map.fixtures.mobile.Unit;
-import util.NullCleaner;
-import util.Warning;
-import view.util.SystemOut;
-
-import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,6 +12,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.stream.XMLStreamException;
+import model.map.IMutableMapNG;
+import model.map.Point;
+import model.map.TileFixture;
+import model.map.fixtures.mobile.Unit;
+import util.NullCleaner;
+import util.Warning;
+import view.util.SystemOut;
 
 /**
  * A hackish class to help fix TODOs (missing content) in the map.

@@ -1,11 +1,10 @@
 package view.map.main;
 
-import model.viewer.ZOrderFilter;
-import util.NullCleaner;
-
 import java.awt.image.ImageObserver;
 import java.util.HashMap;
 import java.util.Map;
+import model.viewer.ZOrderFilter;
+import util.NullCleaner;
 
 /**
  * A factory for TileDrawHelpers.

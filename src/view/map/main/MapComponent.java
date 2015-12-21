@@ -1,5 +1,11 @@
 package view.map.main;
 
+import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import javax.swing.*;
 import model.listeners.GraphicalParamsListener;
 import model.listeners.MapChangeListener;
 import model.listeners.SelectionChangeListener;
@@ -12,13 +18,6 @@ import model.viewer.VisibleDimensions;
 import model.viewer.ZOrderFilter;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 
 /**
  * A component to display the map, even a large one, without the performance problems the

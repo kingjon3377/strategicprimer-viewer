@@ -1,7 +1,7 @@
 package view.util;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 /**
  * A JPanel laid out by a BoxLayout, with helper methods.

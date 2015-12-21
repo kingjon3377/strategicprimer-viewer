@@ -1,8 +1,5 @@
 package model.map;
 
-import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,6 +7,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
 
 import static util.NullStream.DEV_NULL;
 

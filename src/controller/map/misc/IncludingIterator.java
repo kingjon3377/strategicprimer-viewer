@@ -2,21 +2,20 @@ package controller.map.misc;
 
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
-import org.eclipse.jdt.annotation.NonNull;
-import util.NullCleaner;
-import util.Pair;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import org.eclipse.jdt.annotation.NonNull;
+import util.NullCleaner;
+import util.Pair;
 
 import static controller.map.misc.FileOpener.createReader;
 

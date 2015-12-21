@@ -1,8 +1,7 @@
 package model.report;
 
-import util.NullCleaner;
-
 import javax.swing.tree.TreeNode;
+import util.NullCleaner;
 
 /**
  * The root of a node hierarchy.

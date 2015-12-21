@@ -2,6 +2,11 @@ package controller.map.readerng;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
@@ -9,13 +14,12 @@ import model.workermgmt.RaceFactory;
 import util.NullCleaner;
 import util.Warning;
 
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
-import static controller.map.readerng.XMLHelper.*;
+import static controller.map.readerng.XMLHelper.addImage;
+import static controller.map.readerng.XMLHelper.getAttribute;
+import static controller.map.readerng.XMLHelper.getOrGenerateID;
+import static controller.map.readerng.XMLHelper.getPlayerOrIndependent;
+import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
+import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
 /**
  * A reader for Villages.

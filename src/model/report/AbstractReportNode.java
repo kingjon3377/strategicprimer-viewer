@@ -1,14 +1,13 @@
 package model.report;
 
+import java.util.Iterator;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
 import model.map.Point;
 import model.map.PointFactory;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EnumerationWrapper;
-
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.MutableTreeNode;
-import java.util.Iterator;
 
 /**
  * A superclass for report-nodes.

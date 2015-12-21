@@ -7,6 +7,14 @@ import controller.map.formatexceptions.UnsupportedTagException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.StreamSupport;
+import javax.xml.stream.Location;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.IMutablePlayerCollection;
@@ -28,15 +36,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
 import util.Pair;
 import util.Warning;
-
-import javax.xml.stream.Location;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.regex.Pattern;
-import java.util.stream.StreamSupport;
 
 import static util.NullCleaner.assertNotNull;
 

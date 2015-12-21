@@ -11,14 +11,6 @@ import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.iointerfaces.TestReaderFactory;
 import controller.map.readerng.ReaderAdapter;
-import org.eclipse.jdt.annotation.NonNull;
-import util.FatalWarningException;
-import util.NullCleaner;
-import util.TypesafeLogger;
-import util.Warning;
-import util.Warning.Action;
-
-import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -26,8 +18,18 @@ import java.io.StringWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
+import javax.xml.stream.XMLStreamException;
+import org.eclipse.jdt.annotation.NonNull;
+import util.FatalWarningException;
+import util.NullCleaner;
+import util.TypesafeLogger;
+import util.Warning;
+import util.Warning.Action;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * An abstract base class for this helper method.

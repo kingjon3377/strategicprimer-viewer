@@ -1,17 +1,16 @@
 package model.exploration.old;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
 import util.ComparablePair;
 import util.Pair;
 import util.SingletonRandom;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * A table where the event is selected at random.

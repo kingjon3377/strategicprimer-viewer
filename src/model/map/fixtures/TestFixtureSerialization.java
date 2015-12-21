@@ -1,6 +1,8 @@
 package model.map.fixtures; // NOPMD
 
 import controller.map.formatexceptions.SPFormatException;
+import java.io.IOException;
+import javax.xml.stream.XMLStreamException;
 import model.map.BaseTestFixtureSerialization;
 import model.map.MapDimensions;
 import model.map.Player;
@@ -31,9 +33,6 @@ import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.Fortress;
 import org.junit.Test;
-
-import javax.xml.stream.XMLStreamException;
-import java.io.IOException;
 
 /**
  * A class to test serialization of TileFixtures.

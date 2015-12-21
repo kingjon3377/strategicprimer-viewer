@@ -1,19 +1,5 @@
 package model.map;
 
-import model.map.fixtures.Ground;
-import model.map.fixtures.TextFixture;
-import model.map.fixtures.mobile.Animal;
-import model.map.fixtures.mobile.IUnit;
-import model.map.fixtures.resources.CacheFixture;
-import model.map.fixtures.terrain.Forest;
-import model.viewer.PointIterator;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-import util.ArraySet;
-import util.EmptyIterator;
-import util.IteratorWrapper;
-import util.NullCleaner;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,6 +13,19 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import model.map.fixtures.Ground;
+import model.map.fixtures.TextFixture;
+import model.map.fixtures.mobile.Animal;
+import model.map.fixtures.mobile.IUnit;
+import model.map.fixtures.resources.CacheFixture;
+import model.map.fixtures.terrain.Forest;
+import model.viewer.PointIterator;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+import util.ArraySet;
+import util.EmptyIterator;
+import util.IteratorWrapper;
+import util.NullCleaner;
 
 /**
  * A proper implementation of IMapNG.

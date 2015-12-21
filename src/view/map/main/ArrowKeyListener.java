@@ -1,11 +1,10 @@
 package view.map.main;
 
-import org.eclipse.jdt.annotation.Nullable;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import javax.swing.*;
+import org.eclipse.jdt.annotation.Nullable;
 
 import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
 import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;

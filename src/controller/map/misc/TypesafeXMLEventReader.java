@@ -1,14 +1,13 @@
 package controller.map.misc;
 
-import org.eclipse.jdt.annotation.NonNull;
-
+import java.io.Reader;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
-import java.io.Reader;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
+import org.eclipse.jdt.annotation.NonNull;
 
 /**
  * A wrapper around {@link XMLEventReader} that makes the Iterator declaration take a type

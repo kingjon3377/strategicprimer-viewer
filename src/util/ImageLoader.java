@@ -1,15 +1,14 @@
 package util;
 
-import model.map.TileType;
-import view.map.main.TileUIHelper;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import model.map.TileType;
+import view.map.main.TileUIHelper;
 
 /**
  * A class to load images from file, backed by a cache so no image is loaded more than

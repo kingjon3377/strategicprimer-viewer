@@ -1,5 +1,6 @@
 package model.map;
 
+import java.io.IOException;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
@@ -14,9 +15,9 @@ import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 import org.junit.Test;
 
-import java.io.IOException;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static util.NullStream.DEV_NULL;
 
 /**

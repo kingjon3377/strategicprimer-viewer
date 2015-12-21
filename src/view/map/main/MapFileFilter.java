@@ -1,9 +1,8 @@
 package view.map.main;
 
-import org.eclipse.jdt.annotation.Nullable;
-
-import javax.swing.filechooser.FileFilter;
 import java.io.File;
+import javax.swing.filechooser.FileFilter;
+import org.eclipse.jdt.annotation.Nullable;
 
 import static util.NullCleaner.assertNotNull;
 

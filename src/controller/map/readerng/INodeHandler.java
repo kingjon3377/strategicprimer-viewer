@@ -2,13 +2,12 @@ package controller.map.readerng;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
+import java.util.List;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import org.eclipse.jdt.annotation.NonNull;
 import util.Warning;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import java.util.List;
 
 /**
  * An interface for *stateless* per-class XML readers/writers.

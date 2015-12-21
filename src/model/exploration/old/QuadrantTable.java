@@ -1,16 +1,15 @@
 package model.exploration.old;
 
-import model.map.Point;
-import model.map.PointFactory;
-import model.map.TileFixture;
-import model.map.TileType;
-import util.NullCleaner;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import model.map.Point;
+import model.map.PointFactory;
+import model.map.TileFixture;
+import model.map.TileType;
+import util.NullCleaner;
 
 /**
  * A class for things where results are by quadrant rather than randomly.

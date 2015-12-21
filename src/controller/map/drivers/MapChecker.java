@@ -4,16 +4,15 @@ import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
-import model.misc.IDriverModel;
-import util.TypesafeLogger;
-import util.Warning;
-
-import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.stream.XMLStreamException;
+import model.misc.IDriverModel;
+import util.TypesafeLogger;
+import util.Warning;
 
 import static view.util.SystemOut.SYS_OUT;
 

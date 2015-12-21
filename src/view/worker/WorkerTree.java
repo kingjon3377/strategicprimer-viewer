@@ -1,5 +1,15 @@
 package view.worker;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import javax.swing.*;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreePath;
 import model.listeners.UnitMemberListener;
 import model.listeners.UnitMemberSelectionSource;
 import model.listeners.UnitSelectionListener;
@@ -16,17 +26,6 @@ import model.workermgmt.IWorkerTreeModel;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import view.map.details.FixtureEditMenu;
-
-import javax.swing.*;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.TreePath;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.Collection;
 
 import static java.lang.String.format;
 import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;

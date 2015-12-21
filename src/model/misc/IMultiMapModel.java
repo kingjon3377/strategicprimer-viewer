@@ -1,10 +1,9 @@
 package model.misc;
 
+import java.io.File;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import util.Pair;
-
-import java.io.File;
 
 /**
  * A driver-model for drivers that have a main map (like every driver) and any number of

@@ -1,13 +1,12 @@
 package view.map.key;
 
+import java.awt.*;
+import javax.swing.*;
 import model.map.TileType;
 import model.viewer.TileViewSize;
 import org.eclipse.jdt.annotation.Nullable;
 import view.map.main.TileUIHelper;
 import view.util.BoxPanel;
-
-import javax.swing.*;
-import java.awt.*;
 
 import static model.viewer.ViewerModel.DEF_ZOOM_LEVEL;
 

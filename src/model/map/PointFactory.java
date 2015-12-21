@@ -1,9 +1,8 @@
 package model.map;
 
-import view.util.Coordinate;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import view.util.Coordinate;
 
 import static util.NullCleaner.assertNotNull;
 

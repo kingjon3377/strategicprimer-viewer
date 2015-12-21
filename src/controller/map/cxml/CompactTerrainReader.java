@@ -2,6 +2,13 @@ package controller.map.cxml;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.HasImage;
 import model.map.IMutablePlayerCollection;
 import model.map.TerrainFixture;
@@ -14,14 +21,6 @@ import util.ArraySet;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * A reader for TerrainFixtures.

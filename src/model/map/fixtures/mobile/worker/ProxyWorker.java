@@ -1,14 +1,5 @@
 package model.map.fixtures.mobile.worker;
 
-import model.map.HasName;
-import model.map.IFixture;
-import model.map.fixtures.UnitMember;
-import model.map.fixtures.mobile.IWorker;
-import model.map.fixtures.mobile.ProxyFor;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,6 +9,14 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import model.map.HasName;
+import model.map.IFixture;
+import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.IWorker;
+import model.map.fixtures.mobile.ProxyFor;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
 
 /**
  * An IWorker implementation to make the UI able to operate on all of a unit's workers at

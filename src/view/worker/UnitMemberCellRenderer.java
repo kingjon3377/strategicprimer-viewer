@@ -1,5 +1,16 @@
 package view.worker;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.*;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeNode;
 import model.map.HasImage;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
@@ -10,18 +21,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.ImageLoader;
 import util.NullCleaner;
 import util.TypesafeLogger;
-
-import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.TreeCellRenderer;
-import javax.swing.tree.TreeNode;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A cell renderer for the worker management tree.

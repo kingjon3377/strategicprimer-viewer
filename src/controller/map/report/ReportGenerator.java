@@ -2,6 +2,9 @@ package controller.map.report;
 
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
 import model.map.DistanceComparator;
 import model.map.FixtureIterable;
 import model.map.HasOwner;
@@ -25,10 +28,6 @@ import util.IntMap;
 import util.NullCleaner;
 import util.Pair;
 import util.PairComparator;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
 
 /**
  * A class to produce a report based on a map for a player.

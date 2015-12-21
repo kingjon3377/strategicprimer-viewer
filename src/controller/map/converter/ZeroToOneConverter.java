@@ -1,16 +1,5 @@
 package controller.map.converter;
 
-import org.eclipse.jdt.annotation.Nullable;
-import util.IteratorWrapper;
-import util.NullCleaner;
-import util.TypesafeLogger;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.EndElement;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -25,6 +14,16 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.EndElement;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import org.eclipse.jdt.annotation.Nullable;
+import util.IteratorWrapper;
+import util.NullCleaner;
+import util.TypesafeLogger;
 
 /**
  * A class to convert a version-0 map to a version-1 map. As no reader currently in the

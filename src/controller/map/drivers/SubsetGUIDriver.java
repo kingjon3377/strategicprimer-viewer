@@ -3,17 +3,16 @@ package controller.map.drivers;
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.WindowThread;
+import java.io.File;
+import java.io.IOException;
+import javax.swing.*;
+import javax.xml.stream.XMLStreamException;
 import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import util.Pair;
 import view.map.misc.SubsetFrame;
 import view.util.ErrorShower;
-
-import javax.swing.*;
-import javax.xml.stream.XMLStreamException;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * A driver to check whether player maps are subsets of the main map and display the

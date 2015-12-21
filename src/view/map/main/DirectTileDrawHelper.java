@@ -1,5 +1,6 @@
 package view.map.main; // NOPMD
 
+import java.awt.*;
 import model.map.IMapNG;
 import model.map.Point;
 import model.map.PointFactory;
@@ -7,9 +8,13 @@ import model.map.River;
 import model.map.TileType;
 import view.util.Coordinate;
 
-import java.awt.*;
-
-import static view.util.DrawingNumericConstants.*;
+import static view.util.DrawingNumericConstants.EIGHT;
+import static view.util.DrawingNumericConstants.FOUR;
+import static view.util.DrawingNumericConstants.SEVEN_SIXTEENTHS;
+import static view.util.DrawingNumericConstants.THREE;
+import static view.util.DrawingNumericConstants.THREE_QUARTERS;
+import static view.util.DrawingNumericConstants.TWO;
+import static view.util.DrawingNumericConstants.TWO_THIRDS;
 
 /**
  * A TileDrawHelper that doesn't create Shapes, but draws directly. If this is faster,

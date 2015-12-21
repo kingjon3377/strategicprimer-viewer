@@ -1,12 +1,11 @@
 package view.util;
 
-import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
+import javax.swing.*;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
 
 /**
  * A utility class to create menu items in a more functional style.

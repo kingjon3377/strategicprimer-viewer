@@ -1,13 +1,5 @@
 package view.map.main;
 
-import model.map.TileFixture;
-import model.viewer.TileTypeFixture;
-import model.viewer.ZOrderFilter;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
-
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -16,6 +8,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.*;
+import model.map.TileFixture;
+import model.viewer.TileTypeFixture;
+import model.viewer.ZOrderFilter;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
 
 /**
  * A menu to let the player turn of display of kinds of fixtures.

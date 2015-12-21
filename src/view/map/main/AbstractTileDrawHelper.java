@@ -1,5 +1,7 @@
 package view.map.main;
 
+import java.awt.*;
+import java.util.stream.StreamSupport;
 import model.map.IEvent;
 import model.map.IMapNG;
 import model.map.Point;
@@ -7,9 +9,6 @@ import model.map.TileType;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.towns.Fortress;
 import util.NullCleaner;
-
-import java.awt.*;
-import java.util.stream.StreamSupport;
 
 /**
  * An abstract superclass containing helper methods for TileDrawHelpers.

@@ -1,9 +1,8 @@
 package model.report;
 
+import javax.swing.tree.TreeNode;
 import model.map.Point;
 import util.NullCleaner;
-
-import javax.swing.tree.TreeNode;
 
 /**
  * A node for a section consisting only of a list. This is a common case, and we'd

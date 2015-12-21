@@ -1,11 +1,10 @@
 package model.viewer;
 
-import model.map.TileFixture;
-import util.NullCleaner;
-
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.*;
+import model.map.TileFixture;
+import util.NullCleaner;
 
 /**
  * The data model for a FixtureFilterList.

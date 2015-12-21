@@ -3,16 +3,6 @@ package view.resources;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
-import model.map.Player;
-import model.map.fixtures.Implement;
-import model.map.fixtures.ResourcePile;
-import model.resources.ResourceManagementDriver;
-import view.util.BoxPanel;
-import view.util.ErrorShower;
-import view.worker.PlayerChooserHandler;
-import view.worker.WorkerMenu;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -21,6 +11,15 @@ import java.text.ParseException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.stream.StreamSupport;
+import javax.swing.*;
+import model.map.Player;
+import model.map.fixtures.Implement;
+import model.map.fixtures.ResourcePile;
+import model.resources.ResourceManagementDriver;
+import view.util.BoxPanel;
+import view.util.ErrorShower;
+import view.worker.PlayerChooserHandler;
+import view.worker.WorkerMenu;
 
 /**
  * A window to let the user enter resources etc. Note that this is not a dialog to enter

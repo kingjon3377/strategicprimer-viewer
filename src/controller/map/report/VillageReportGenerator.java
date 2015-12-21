@@ -1,5 +1,10 @@
 package controller.map.report;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -14,12 +19,6 @@ import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
 import util.Pair;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 /**
  * A report generator for Villages.

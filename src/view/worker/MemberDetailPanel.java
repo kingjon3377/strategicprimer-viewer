@@ -1,5 +1,8 @@
 package view.worker;
 
+import java.awt.*;
+import java.util.Iterator;
+import javax.swing.*;
 import model.listeners.UnitMemberListener;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Animal;
@@ -9,10 +12,6 @@ import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import org.eclipse.jdt.annotation.Nullable;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.Iterator;
 
 import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
 

@@ -1,8 +1,7 @@
 package controller.map.misc;
 
-import util.Warning;
-
 import java.util.BitSet;
+import util.Warning;
 
 /**
  * A class to register IDs with and produce not-yet-used IDs. Performance is likely to be

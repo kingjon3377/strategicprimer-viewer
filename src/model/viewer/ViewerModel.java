@@ -1,5 +1,8 @@
 package model.viewer;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
 import model.listeners.GraphicalParamsListener;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSupport;
@@ -8,10 +11,6 @@ import model.map.Point;
 import model.map.PointFactory;
 import model.misc.AbstractDriverModel;
 import model.misc.IDriverModel;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * A class to encapsulate the various model-type things views need to do with maps.

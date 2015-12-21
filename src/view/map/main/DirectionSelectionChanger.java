@@ -1,11 +1,10 @@
 package view.map.main;
 
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import model.map.PointFactory;
 import model.viewer.IViewerModel;
 import org.eclipse.jdt.annotation.Nullable;
-
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 
 /**
  * A class for moving the cursor around the single-component map UI, including scrolling

@@ -1,10 +1,9 @@
 package view.map.main;
 
+import java.awt.*;
 import model.map.IMapNG;
 import model.map.Point;
 import view.util.Coordinate;
-
-import java.awt.*;
 
 /**
  * A helper to do the actual drawing of a tile. Now an interface so we can easily compare

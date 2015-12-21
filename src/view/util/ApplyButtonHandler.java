@@ -1,9 +1,8 @@
 package view.util;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A class to handle Apply and Revert button presses.

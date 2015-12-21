@@ -1,12 +1,11 @@
 package util;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Basically a FileInputStream, but the file could be on disk or in the classpath.

@@ -1,11 +1,10 @@
 package model.exploration.old;
 
+import java.util.HashSet;
+import java.util.Set;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * An EncounterTable that always returns the same value.

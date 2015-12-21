@@ -1,10 +1,9 @@
 // $codepro.audit.disable lineLength
 package util;
 
+import java.util.Objects;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-
-import java.util.Objects;
 
 /**
  * From <http://stackoverflow.com/questions/156275/what-is-the-equivalent-of-the-

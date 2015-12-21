@@ -1,5 +1,10 @@
 package view.exploration;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import model.exploration.IExplorationModel;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.IUnit;
@@ -8,12 +13,6 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import view.map.details.FixtureList;
-
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * A list-data-listener to select a random but suitable set of fixtures to be 'discovered'

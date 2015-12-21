@@ -1,12 +1,11 @@
 package view.worker;
 
-import model.workermgmt.WorkerTreeModelAlt.KindNode;
-import org.eclipse.jdt.annotation.Nullable;
-
-import javax.swing.*;
-import javax.swing.tree.TreePath;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.*;
+import javax.swing.tree.TreePath;
+import model.workermgmt.WorkerTreeModelAlt.KindNode;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A class to handle "expand all", "collapse all", etc. This is part of the Strategic

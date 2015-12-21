@@ -2,14 +2,13 @@ package controller.map.cxml;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
+import java.io.IOException;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import org.eclipse.jdt.annotation.NonNull;
 import util.IteratorWrapper;
 import util.Warning;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import java.io.IOException;
 
 /**
  * An interface for XML readers that can read multiple related types.

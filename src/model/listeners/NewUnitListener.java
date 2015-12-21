@@ -1,8 +1,7 @@
 package model.listeners;
 
-import model.map.fixtures.mobile.IUnit;
-
 import java.util.EventListener;
+import model.map.fixtures.mobile.IUnit;
 
 /**
  * An interface for things that want to accept a new user-created unit.

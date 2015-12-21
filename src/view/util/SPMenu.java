@@ -1,6 +1,10 @@
 package view.util;
 
 import controller.map.misc.IOHandler;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import javax.swing.*;
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.misc.IDriverModel;
@@ -14,13 +18,10 @@ import view.map.main.ViewerFrame;
 import view.map.main.ZoomListener;
 import view.worker.PlayerChooserHandler;
 
-import javax.swing.*;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.io.File;
-
 import static javax.swing.SwingUtilities.invokeLater;
-import static view.util.MenuItemCreator.*;
+import static view.util.MenuItemCreator.createHotkey;
+import static view.util.MenuItemCreator.createMenuItem;
+import static view.util.MenuItemCreator.createShiftHotkey;
 
 /**
  * A common superclass for application-specific menu bars.

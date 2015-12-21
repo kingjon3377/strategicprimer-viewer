@@ -1,11 +1,10 @@
 package view.util;
 
-import org.eclipse.jdt.annotation.Nullable;
-
-import javax.swing.*;
 import java.awt.*;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import javax.swing.*;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A label that can be written to using a PrintWriter.

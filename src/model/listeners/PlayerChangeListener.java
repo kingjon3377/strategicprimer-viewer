@@ -1,9 +1,8 @@
 package model.listeners;
 
+import java.util.EventListener;
 import model.map.Player;
 import org.eclipse.jdt.annotation.Nullable;
-
-import java.util.EventListener;
 
 /**
  * An interface for things that want to be called when the current player changes.

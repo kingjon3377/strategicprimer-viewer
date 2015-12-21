@@ -4,6 +4,14 @@ import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.MapReaderAdapter;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
 import model.exploration.HuntingModel;
 import model.map.IMapNG;
 import model.map.MapDimensions;
@@ -22,15 +30,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.StreamSupport;
 
 import static view.util.SystemOut.SYS_OUT;
 

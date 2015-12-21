@@ -1,13 +1,5 @@
 package model.map.fixtures.mobile;
 
-import model.map.IFixture;
-import model.map.Player;
-import model.map.TileFixture;
-import model.map.fixtures.UnitMember;
-import model.map.fixtures.mobile.worker.ProxyWorker;
-import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +7,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Logger;
+import model.map.IFixture;
+import model.map.Player;
+import model.map.TileFixture;
+import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.worker.ProxyWorker;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
 
 /**
  * A proxy for units in multiple maps.

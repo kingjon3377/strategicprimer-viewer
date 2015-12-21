@@ -1,11 +1,5 @@
 package controller.map.drivers;
 
-import model.map.Point;
-import model.map.PointFactory;
-import model.mining.LodeStatus;
-import model.mining.MiningModel;
-import util.NullCleaner;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +7,11 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.map.Point;
+import model.map.PointFactory;
+import model.mining.LodeStatus;
+import model.mining.MiningModel;
+import util.NullCleaner;
 
 /**
  * A driver to create a spreadsheet model of a mine.

@@ -1,13 +1,12 @@
 package model.exploration;
 
+import java.util.List;
+import javax.swing.*;
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-
-import javax.swing.*;
-import java.util.List;
 
 /**
  * A unit list model for the exploration GUI.

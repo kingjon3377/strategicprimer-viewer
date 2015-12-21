@@ -4,6 +4,7 @@ import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.MapReaderAdapter;
+import java.io.File;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Point;
@@ -13,8 +14,6 @@ import model.misc.IDriverModel;
 import util.SingletonRandom;
 import util.Warning;
 import util.Warning.Action;
-
-import java.io.File;
 
 /**
  * A driver to add some kind of fixture to suitable tiles throughout the map. Customize

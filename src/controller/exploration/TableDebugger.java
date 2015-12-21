@@ -1,16 +1,15 @@
 package controller.exploration;
 
-import model.exploration.old.EncounterTable;
-import model.exploration.old.ExplorationRunner;
-import model.exploration.old.MissingTableException;
-import util.NullCleaner;
-import util.TypesafeLogger;
-
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.exploration.old.EncounterTable;
+import model.exploration.old.ExplorationRunner;
+import model.exploration.old.MissingTableException;
+import util.NullCleaner;
+import util.TypesafeLogger;
 
 /**
  * A driver to help debug exploration tables.

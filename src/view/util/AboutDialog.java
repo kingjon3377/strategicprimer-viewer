@@ -1,9 +1,8 @@
 package view.util;
 
-import org.eclipse.jdt.annotation.Nullable;
-
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A dialog to explain what this program is, and the sources of code and graphics.

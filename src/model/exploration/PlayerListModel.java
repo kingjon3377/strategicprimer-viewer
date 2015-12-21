@@ -1,10 +1,9 @@
 package model.exploration;
 
+import javax.swing.*;
 import model.listeners.MapChangeListener;
 import model.map.Player;
 import org.eclipse.jdt.annotation.NonNull;
-
-import javax.swing.*;
 
 /**
  * A list model for players in the exploration GUI.

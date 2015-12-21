@@ -1,14 +1,5 @@
 package view.worker;
 
-import model.listeners.PlayerChangeListener;
-import model.listeners.PlayerChangeSource;
-import model.map.Player;
-import model.map.PlayerCollection;
-import model.misc.IDriverModel;
-import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +8,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import javax.swing.*;
+import model.listeners.PlayerChangeListener;
+import model.listeners.PlayerChangeSource;
+import model.map.Player;
+import model.map.PlayerCollection;
+import model.misc.IDriverModel;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
 
 /**
  * Listens for the 'Change current player' menu item and lets the player choose a new

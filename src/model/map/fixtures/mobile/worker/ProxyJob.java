@@ -1,11 +1,5 @@
 package model.map.fixtures.mobile.worker;
 
-import model.map.fixtures.mobile.IWorker;
-import model.map.fixtures.mobile.ProxyFor;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +9,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import model.map.fixtures.mobile.IWorker;
+import model.map.fixtures.mobile.ProxyFor;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
 
 /**
  * An IJob implementation to let the Job tree operate on a whole unit at once.

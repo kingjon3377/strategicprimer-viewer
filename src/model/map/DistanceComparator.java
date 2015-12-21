@@ -1,9 +1,8 @@
 package model.map;
 
+import java.util.Comparator;
 import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
-
-import java.util.Comparator;
 
 /**
  * A class to compare Points based on their distance to a specified point (such as a

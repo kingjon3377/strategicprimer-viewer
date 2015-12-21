@@ -1,15 +1,14 @@
 package view.exploration;
 
 import controller.map.misc.IOHandler;
-import model.exploration.ExplorationModel;
-import model.listeners.CompletionListener;
-import util.NullCleaner;
-
-import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Stream;
+import javax.swing.*;
+import model.exploration.ExplorationModel;
+import model.listeners.CompletionListener;
+import util.NullCleaner;
 
 /**
  * The main window for the exploration GUI.

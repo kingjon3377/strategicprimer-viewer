@@ -1,10 +1,9 @@
 package view.map.key;
 
+import java.awt.*;
+import javax.swing.*;
 import model.listeners.VersionChangeListener;
 import model.map.TileType;
-
-import javax.swing.*;
-import java.awt.*;
 
 /**
  * Provides a visual "key" to the various terrain types.

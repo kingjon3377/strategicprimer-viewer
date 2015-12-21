@@ -1,10 +1,9 @@
 package view.worker;
 
+import javax.swing.*;
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
 import org.eclipse.jdt.annotation.Nullable;
-
-import javax.swing.*;
 
 /**
  * A label to show the current player.
