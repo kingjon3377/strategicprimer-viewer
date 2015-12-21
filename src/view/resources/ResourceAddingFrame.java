@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -171,7 +172,7 @@ public class ResourceAddingFrame extends JFrame {
 			}
 			if ( evt.getModifiers() == 0) {
 				transferFocus();
-			} else if ( evt.getModifiers() == KeyEvent.SHIFT_MASK) {
+			} else if ( evt.getModifiers() == InputEvent.SHIFT_MASK) {
 				transferFocusBackward();
 			}
 		}
