@@ -215,12 +215,12 @@ public final class ArraySet<T> implements Set<T> {
 				&& areSetsEqual(this, (Set<?>) obj);
 	}
 	/**
-	 * @param one one set
-	 * @param two another set
+	 * @param firstSet one set
+	 * @param secondSet another set
 	 * @return whether they are equal according to the Set contract.
 	 */
-	private static boolean areSetsEqual(final Set<?> one, final Set<?> two) {
-		return one.containsAll(two) && two.containsAll(one);
+	private static boolean areSetsEqual(final Set<?> firstSet, final Set<?> secondSet) {
+		return firstSet.containsAll(secondSet) && secondSet.containsAll(firstSet);
 	}
 	/**
 	 * @return a String representation of the object

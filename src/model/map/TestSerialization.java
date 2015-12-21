@@ -202,35 +202,35 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertSerialization("Simple Tile",
 				createSimpleMap(point(1, 1), Pair.of(point(0, 0), Desert)),
 				IMapNG.class);
-		final IMutableMapNG one =
+		final IMutableMapNG firstMap =
 				createSimpleMap(point(2, 2), Pair.of(point(1, 1), Plains));
-		one.addFixture(point(1, 1), new Griffin(1));
-		assertSerialization("Tile with one fixture", one, IMapNG.class);
-		final IMutableMapNG two =
+		firstMap.addFixture(point(1, 1), new Griffin(1));
+		assertSerialization("Tile with one fixture", firstMap, IMapNG.class);
+		final IMutableMapNG secondMap =
 				createSimpleMap(point(3, 3), Pair.of(point(2, 2), Steppe));
-		two.addFixture(point(2, 2), new Unit(new Player(1, ""), "unitOne",
+		secondMap.addFixture(point(2, 2), new Unit(new Player(1, ""), "unitOne",
 				"firstUnit", 1));
-		two.setForest(point(2, 2), new Forest("forestKind", true));
-		assertSerialization("Tile with two fixtures", two, IMapNG.class);
-		final IMutableMapNG three =
+		secondMap.setForest(point(2, 2), new Forest("forestKind", true));
+		assertSerialization("Tile with two fixtures", secondMap, IMapNG.class);
+		final IMutableMapNG thirdMap =
 				createSimpleMap(point(4, 4), Pair.of(point(3, 3), Jungle));
 		final Fortress fort = new Fortress(new Player(2, ""), "fortOne", 1);
 		fort.addMember(new Unit(new Player(2, ""), "unitTwo", "secondUnit", 2));
-		three.addFixture(point(3, 3), fort);
-		three.addFixture(point(3, 3), new TextFixture("Random text here", 5));
-		three.addRivers(point(3, 3), Lake);
-		assertSerialization("More complex tile", three, IMapNG.class);
-		final IMutableMapNG four =
+		thirdMap.addFixture(point(3, 3), fort);
+		thirdMap.addFixture(point(3, 3), new TextFixture("Random text here", 5));
+		thirdMap.addRivers(point(3, 3), Lake);
+		assertSerialization("More complex tile", thirdMap, IMapNG.class);
+		final IMutableMapNG fourthMap =
 				createSimpleMap(point(5, 5), Pair.of(point(4, 4), Plains));
 		final String oldKindProperty = "type"; // NOPMD
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated tile-type idiom",
-				four,
-				assertNotNull(KIND_PATTERN.matcher(createSerializedForm(four, true))
+				fourthMap,
+				assertNotNull(KIND_PATTERN.matcher(createSerializedForm(fourthMap, true))
 						              .replaceAll(Matcher.quoteReplacement(oldKindProperty))), IMapNG.class, oldKindProperty);
 		assertDeprecatedDeserialization(
-				"Deserialization of deprecated tile-type idiom", four,
-				assertNotNull(KIND_PATTERN.matcher(createSerializedForm(four, false))
+				"Deserialization of deprecated tile-type idiom", fourthMap,
+				assertNotNull(KIND_PATTERN.matcher(createSerializedForm(fourthMap, false))
 						              .replaceAll(Matcher.quoteReplacement(oldKindProperty))), IMapNG.class,
 				oldKindProperty);
 		assertMissingProperty("<map version=\"2\" rows=\"1\" columns=\"1\">"
@@ -327,12 +327,12 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				IMapNG.class, false);
 		final Player player = new Player(1, "playerOne");
 		player.setCurrent(true);
-		final IMutableMapNG one = new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
+		final IMutableMapNG firstMap = new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
 				                                     -1);
-		one.addPlayer(player);
+		firstMap.addPlayer(player);
 		final Point point = point(0, 0);
-		one.setBaseTerrain(point, Plains);
-		assertSerialization("Simple Map serialization", one, IMapNG.class);
+		firstMap.setBaseTerrain(point, Plains);
+		assertSerialization("Simple Map serialization", firstMap, IMapNG.class);
 		assertMissingProperty("<map version=\"2\" columns=\"1\" />",
 				IMapNG.class, "rows", false);
 		assertMissingProperty("<map version=\"2\" rows=\"1\" />", IMapNG.class,
@@ -356,10 +356,10 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		player.setCurrent(true);
 		final PlayerCollection players = new PlayerCollection();
 		players.add(player);
-		final SPMapNG one = new SPMapNG(new MapDimensions(1, 1, 2), players, 0);
+		final SPMapNG firstMap = new SPMapNG(new MapDimensions(1, 1, 2), players, 0);
 		final Point point = point(0, 0);
-		one.setBaseTerrain(point, Plains);
-		assertSerialization("Simple Map serialization", one, SPMapNG.class);
+		firstMap.setBaseTerrain(point, Plains);
+		assertSerialization("Simple Map serialization", firstMap, SPMapNG.class);
 		assertMissingProperty("<map version=\"2\" columns=\"1\" />",
 				SPMapNG.class, "rows", false);
 		assertMissingProperty("<map version=\"2\" rows=\"1\" />", SPMapNG.class,
@@ -377,12 +377,12 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 			SPFormatException, IOException {
 		final Player player = new Player(1, "playerOne");
 		player.setCurrent(true);
-		final IMutableMapNG one = new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
+		final IMutableMapNG firstMap = new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
 				                                     0);
-		one.addPlayer(player);
+		firstMap.addPlayer(player);
 		final Point point = point(0, 0);
-		one.setBaseTerrain(point, Steppe);
-		assertSerialization("SPMapNG serialization", one, IMapNG.class);
+		firstMap.setBaseTerrain(point, Steppe);
+		assertSerialization("SPMapNG serialization", firstMap, IMapNG.class);
 		assertMissingProperty("<view current_turn=\"0\">"
 				+ "<map version=\"2\" rows=\"1\" columns=\"1\" /></view>",
 				IMapNG.class, "current_player", false);
@@ -401,7 +401,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				IMapNG.class, false);
 		assertMapDeserialization(
 				"Proper deserialization of map into view",
-				one,
+				firstMap,
 				assertNotNull(new StringBuilder(200)
 						.append("<map version=\"2\" rows=\"1\" ")
 						.append("columns=\"1\" current_player=\"1\">")

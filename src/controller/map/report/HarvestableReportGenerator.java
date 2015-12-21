@@ -383,14 +383,14 @@ public final class HarvestableReportGenerator extends AbstractReportGenerator<Ha
 	/**
 	 * We need this to reduce the calculated complexity.
 	 *
-	 * @param bool a Boolean
+	 * @param condition a Boolean
 	 * @param first what to return if true
 	 * @param second what to return if false
 	 * @return the result of the ternary operator.
 	 */
-	private static String ternary(final boolean bool, final String first,
+	private static String ternary(final boolean condition, final String first,
 			final String second) {
-		if (bool) {
+		if (condition) {
 			return first; // NOPMD
 		} else {
 			return second;

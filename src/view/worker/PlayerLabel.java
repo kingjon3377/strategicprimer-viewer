@@ -43,11 +43,11 @@ public final class PlayerLabel extends JLabel implements PlayerChangeListener {
 	/**
 	 * Wrap a string in HTML tags.
 	 *
-	 * @param string the string to wrap
+	 * @param text the string to wrap
 	 * @return the wrapped string
 	 */
-	private static String htmlize(final String string) {
-		return "<html><body>" + string + "</body></html>";
+	private static String htmlize(final String text) {
+		return "<html><body>" + text + "</body></html>";
 	}
 
 	/**

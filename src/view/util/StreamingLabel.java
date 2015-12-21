@@ -35,12 +35,12 @@ public final class StreamingLabel extends JLabel {
 	/**
 	 * The source for the string.
 	 */
-	private final StringWriter string = new StringWriter();
+	private final StringWriter swriter = new StringWriter();
 
 	/**
 	 * The writer that can be printed to.
 	 */
-	private final PrintWriter writer = new StreamingLabelWriter(string, this);
+	private final PrintWriter writer = new StreamingLabelWriter(swriter, this);
 
 	/**
 	 * Constructor, to set the background color to black.

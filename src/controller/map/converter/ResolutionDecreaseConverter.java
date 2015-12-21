@@ -69,17 +69,17 @@ public final class ResolutionDecreaseConverter {
 		for (int row = 0; row < newRows; row++) {
 			for (int col = 0; col < newCols; col++) {
 				final Point point = PointFactory.point(row, col);
-				final Point one = PointFactory.point(row * 2, col * 2);
-				final Point two = PointFactory.point(row * 2, col * 2 + 1);
-				final Point three = PointFactory.point(row * 2 + 1, col * 2);
-				final Point four = PointFactory.point(row * 2 + 1, col * 2 + 1);
+				final Point firstSub = PointFactory.point(row * 2, col * 2);
+				final Point secondSub = PointFactory.point(row * 2, col * 2 + 1);
+				final Point thirdSub = PointFactory.point(row * 2 + 1, col * 2);
+				final Point fourthSub = PointFactory.point(row * 2 + 1, col * 2 + 1);
 				retval.setBaseTerrain(
 						point,
-						consensus(old.getBaseTerrain(one),
-								old.getBaseTerrain(two),
-								old.getBaseTerrain(three),
-								old.getBaseTerrain(four)));
-				for (final Point oldPoint : Arrays.asList(one, two, three, four)) {
+						consensus(old.getBaseTerrain(firstSub),
+								old.getBaseTerrain(secondSub),
+								old.getBaseTerrain(thirdSub),
+								old.getBaseTerrain(fourthSub)));
+				for (final Point oldPoint : Arrays.asList(firstSub, secondSub, thirdSub, fourthSub)) {
 					if (old.isMountainous(oldPoint)) {
 						retval.setMountainous(point, true);
 					}
@@ -102,10 +102,10 @@ public final class ResolutionDecreaseConverter {
 					for (final TileFixture fixture : old.getOtherFixtures(oldPoint)) {
 						retval.addFixture(point, fixture);
 					}
-					final Set<River> upperLeftRivers = getRivers(old, one);
-					final Set<River> upperRightRivers = getRivers(old, two);
-					final Set<River> lowerLeftRivers = getRivers(old, three);
-					final Set<River> lowerRightRivers = getRivers(old, four);
+					final Set<River> upperLeftRivers = getRivers(old, firstSub);
+					final Set<River> upperRightRivers = getRivers(old, secondSub);
+					final Set<River> lowerLeftRivers = getRivers(old, thirdSub);
+					final Set<River> lowerRightRivers = getRivers(old, fourthSub);
 					removeRivers(upperLeftRivers, River.East, River.South);
 					removeRivers(upperRightRivers, River.West, River.South);
 					removeRivers(lowerLeftRivers, River.East, River.North);
@@ -174,17 +174,17 @@ public final class ResolutionDecreaseConverter {
 	}
 
 	/**
-	 * @param one one tile-type
-	 * @param two a second tile-type
-	 * @param three a third tile-type
-	 * @param four a fourth tile-type
+	 * @param firstType one tile-type
+	 * @param secondType a second tile-type
+	 * @param thirdtype a third tile-type
+	 * @param fourthType a fourth tile-type
 	 * @return the most common tile of them, or if there are two or four with
 	 *         equal representation one selected from among them at random.
 	 */
-	private static TileType consensus(final TileType one, final TileType two,
-			final TileType three, final TileType four) {
+	private static TileType consensus(final TileType firstType, final TileType secondType,
+			final TileType thirdtype, final TileType fourthType) {
 		final EnumCounter<TileType> counter = new EnumCounter<>(TileType.class);
-		counter.countMany(one, two, three, four);
+		counter.countMany(firstType, secondType, thirdtype, fourthType);
 		final Set<TileType> twos = EnumSet.noneOf(TileType.class);
 		for (final TileType type : TileType.values()) {
 			assert type != null;
@@ -205,7 +205,7 @@ public final class ResolutionDecreaseConverter {
 		if (twos.size() == 1) {
 			return NullCleaner.assertNotNull(twos.iterator().next()); // NOPMD
 		} else {
-			final List<TileType> list = Arrays.asList(one, two, three, four);
+			final List<TileType> list = Arrays.asList(firstType, secondType, thirdtype, fourthType);
 			Collections.shuffle(list);
 			return NullCleaner.assertNotNull(list.get(0));
 		}

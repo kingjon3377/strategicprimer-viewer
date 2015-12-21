@@ -50,12 +50,12 @@ public final class DualTileButton extends JButton {
 	 */
 	private final IMapNG mapTwo;
 	/**
-	 * @param one the first map
-	 * @param two the second map
+	 * @param master the first map
+	 * @param subordinate the second map
 	 */
-	public DualTileButton(final IMapNG one, final IMapNG two) {
-		mapOne = one;
-		mapTwo = two;
+	public DualTileButton(final IMapNG master, final IMapNG subordinate) {
+		mapOne = master;
+		mapTwo = subordinate;
 	}
 	/**
 	 * The currently selected point.

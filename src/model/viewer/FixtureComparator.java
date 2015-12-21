@@ -36,13 +36,13 @@ public final class FixtureComparator implements Comparator<@NonNull TileFixture>
 	/**
 	 * Compare two fixtures.
 	 *
-	 * @param one The first fixture
-	 * @param two The second fixture
+	 * @param firstFixture The first fixture
+	 * @param secondFixture The second fixture
 	 * @return the result of the comparison.
 	 */
 	@Override
-	public int compare(final TileFixture one, final TileFixture two) {
-		return two.getZValue() - one.getZValue();
+	public int compare(final TileFixture firstFixture, final TileFixture secondFixture) {
+		return secondFixture.getZValue() - firstFixture.getZValue();
 	}
 
 	/**

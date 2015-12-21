@@ -68,11 +68,11 @@ public final class ReaderComparator implements ISPDriver {
 	/**
 	 * The first reader.
 	 */
-	private final IMapReader one = new MapReaderNG();
+	private final IMapReader oldReader = new MapReaderNG();
 	/**
 	 * The second reader.
 	 */
-	private final IMapReader two = new CompactXMLReader();
+	private final IMapReader newReader = new CompactXMLReader();
 	/**
 	 * Compare the two readers.
 	 *
@@ -120,14 +120,14 @@ public final class ReaderComparator implements ISPDriver {
 			final long startOne = System.nanoTime();
 			final IMapNG map1;
 			try (StringReader reader = new StringReader(contents)) {
-				map1 = one.readMap(arg, reader, warner);
+				map1 = oldReader.readMap(arg, reader, warner);
 			}
 			final long endOne = System.nanoTime();
 			printElapsed("Old", endOne - startOne);
 			final long startTwo = System.nanoTime();
 			final IMapNG map2;
 			try (StringReader reader = new StringReader(contents)) {
-				map2 = two.readMap(arg, reader, warner);
+				map2 = newReader.readMap(arg, reader, warner);
 			}
 			final long endTwo = System.nanoTime();
 			printElapsed("New", endTwo - startTwo);

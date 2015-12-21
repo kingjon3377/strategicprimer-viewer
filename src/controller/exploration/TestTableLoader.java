@@ -109,14 +109,14 @@ public final class TestTableLoader {
 		try (final BufferedReader reader = new BufferedReader(new StringReader(
 				"terrain\ntundra one\nplains two\nocean three"))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
-			final Point one = PointFactory.point(30, 30);
+			final Point firstPoint = PointFactory.point(30, 30);
 			assertEquals("loading terrain table: tundra", ONE_STRING,
-					result.generateEvent(one, TileType.Tundra, EMPTY));
-			final Point two = PointFactory.point(15, 15);
+					result.generateEvent(firstPoint, TileType.Tundra, EMPTY));
+			final Point secondPoint = PointFactory.point(15, 15);
 			assertEquals("loading terrain table: plains", "two",
-					result.generateEvent(two, TileType.Plains, EMPTY));
+					result.generateEvent(secondPoint, TileType.Plains, EMPTY));
 			assertEquals("loading terrain table: ocean", "three",
-					result.generateEvent(two, TileType.Ocean, EMPTY));
+					result.generateEvent(secondPoint, TileType.Ocean, EMPTY));
 		}
 	}
 
@@ -129,9 +129,9 @@ public final class TestTableLoader {
 	@SuppressWarnings(ST_MET)
 	@Test
 	public void testLoadConstantTable() throws IOException {
-		try (BufferedReader one = new BufferedReader(new StringReader(
+		try (BufferedReader reader = new BufferedReader(new StringReader(
 				"constant\none"))) {
-			final EncounterTable result = TableLoader.loadTableFromStream(one);
+			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(10, 5);
 			assertEquals("loading constant table: first test", ONE_STRING,
 					result.generateEvent(point, TileType.Plains, EMPTY));
@@ -146,17 +146,17 @@ public final class TestTableLoader {
 	@SuppressWarnings(ST_MET)
 	@Test
 	public void testInvalidInput() throws IOException {
-		try (BufferedReader one = new BufferedReader(new StringReader(""))) {
-			TableLoader.loadTableFromStream(one);
+		try (BufferedReader reader = new BufferedReader(new StringReader(""))) {
+			TableLoader.loadTableFromStream(reader);
 			fail("Accepted empty input");
 		} catch (final IOException except) {
 			assertEquals("Objects to empty input",
 					"File doesn't start by specifying which kind of table.",
 					except.getMessage());
 		}
-		try (BufferedReader two = new BufferedReader(new StringReader(
+		try (BufferedReader reader = new BufferedReader(new StringReader(
 				"2\ninvaliddata\ninvaliddata"))) {
-			TableLoader.loadTableFromStream(two);
+			TableLoader.loadTableFromStream(reader);
 			fail("Accepted table without header");
 		} catch (final IllegalArgumentException except) {
 			assertEquals("Table without header", "unknown table type",

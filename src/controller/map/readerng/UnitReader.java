@@ -132,14 +132,14 @@ public final class UnitReader implements INodeHandler<Unit> {
 	}
 
 	/**
-	 * @param string a string that may be either numeric or empty.
+	 * @param text a string that may be either numeric or empty.
 	 * @return it, or "-1" if it's empty.
 	 */
-	private static String ensureNumeric(final String string) {
-		if (string.isEmpty()) {
+	private static String ensureNumeric(final String text) {
+		if (text.isEmpty()) {
 			return "-1"; // NOPMD
 		} else {
-			return string;
+			return text;
 		}
 	}
 

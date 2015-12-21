@@ -63,26 +63,26 @@ public final class TileUIHelper {
 	@SuppressWarnings("deprecation")
 	public TileUIHelper() {
 		colors = new HashMap<>(SPMapNG.MAX_VERSION + 1);
-		final Map<TileType, Color> one = new EnumMap<>(TileType.class);
-		one.put(TileType.BorealForest, new Color(72, 218, 164));
-		one.put(TileType.Desert, new Color(249, 233, 28));
-		one.put(TileType.Jungle, new Color(229, 46, 46));
-		one.put(TileType.Mountain, new Color(249, 137, 28));
-		one.put(TileType.NotVisible, NullCleaner.assertNotNull(Color.white));
-		one.put(TileType.Ocean, NullCleaner.assertNotNull(Color.blue));
-		one.put(TileType.Plains, new Color(0, 117, 0));
-		one.put(TileType.TemperateForest, new Color(72, 250, 72));
-		one.put(TileType.Tundra, new Color(153, 153, 153));
-		colors.put(NullCleaner.assertNotNull(Integer.valueOf(1)), one);
-		final Map<TileType, Color> two = new EnumMap<>(TileType.class);
-		two.put(TileType.Desert, new Color(249, 233, 28));
-		two.put(TileType.Jungle, new Color(229, 46, 46));
-		two.put(TileType.NotVisible, NullCleaner.assertNotNull(Color.white));
-		two.put(TileType.Ocean, NullCleaner.assertNotNull(Color.blue));
-		two.put(TileType.Plains, new Color(72, 218, 164));
-		two.put(TileType.Tundra, new Color(153, 153, 153));
-		two.put(TileType.Steppe, new Color(72, 100, 72));
-		colors.put(NullCleaner.assertNotNull(Integer.valueOf(2)), two);
+		final Map<TileType, Color> verOneColors = new EnumMap<>(TileType.class);
+		verOneColors.put(TileType.BorealForest, new Color(72, 218, 164));
+		verOneColors.put(TileType.Desert, new Color(249, 233, 28));
+		verOneColors.put(TileType.Jungle, new Color(229, 46, 46));
+		verOneColors.put(TileType.Mountain, new Color(249, 137, 28));
+		verOneColors.put(TileType.NotVisible, NullCleaner.assertNotNull(Color.white));
+		verOneColors.put(TileType.Ocean, NullCleaner.assertNotNull(Color.blue));
+		verOneColors.put(TileType.Plains, new Color(0, 117, 0));
+		verOneColors.put(TileType.TemperateForest, new Color(72, 250, 72));
+		verOneColors.put(TileType.Tundra, new Color(153, 153, 153));
+		colors.put(NullCleaner.assertNotNull(Integer.valueOf(1)), verOneColors);
+		final Map<TileType, Color> verTwoColors = new EnumMap<>(TileType.class);
+		verTwoColors.put(TileType.Desert, new Color(249, 233, 28));
+		verTwoColors.put(TileType.Jungle, new Color(229, 46, 46));
+		verTwoColors.put(TileType.NotVisible, NullCleaner.assertNotNull(Color.white));
+		verTwoColors.put(TileType.Ocean, NullCleaner.assertNotNull(Color.blue));
+		verTwoColors.put(TileType.Plains, new Color(72, 218, 164));
+		verTwoColors.put(TileType.Tundra, new Color(153, 153, 153));
+		verTwoColors.put(TileType.Steppe, new Color(72, 100, 72));
+		colors.put(NullCleaner.assertNotNull(Integer.valueOf(2)), verTwoColors);
 		descriptions.put(TileType.BorealForest,
 				"<html><p>Boreal Forest</p></html>");
 		descriptions.put(TileType.Desert, "<html><p>Desert</p></html>");

@@ -48,12 +48,12 @@ public final class TestProxyWorker {
 	 */
 	@Test
 	public void testProxyWorker() {
-		final Worker one = new Worker("one", "human", 1, new Job("jobOne", 1,
+		final Worker firstWorker = new Worker("one", "human", 1, new Job("jobOne", 1,
 				new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
-		final Worker two = new Worker("two", "elf", 2, new Job("jobTwo", 1,
+		final Worker secondWorker = new Worker("two", "elf", 2, new Job("jobTwo", 1,
 				new Skill("skillThree", 1, 19), new Skill("skillFour", 0, 99)));
-		final Worker three = new Worker("three", "dwarf", 5);
-		final Iterable<IJob> proxy = new ProxyWorker(one, two, three);
+		final Worker thirdWorker = new Worker("three", "dwarf", 5);
+		final Iterable<IJob> proxy = new ProxyWorker(firstWorker, secondWorker, thirdWorker);
 		for (final IJob job : proxy) {
 			for (final ISkill skill : job) {
 				skill.addHours(10, 100);
@@ -64,13 +64,13 @@ public final class TestProxyWorker {
 						new Skill("skillTwo", 2, 16)),
 				new Job("jobTwo", 0, new Skill("skillThree", 0, 10),
 						new Skill("skillFour", 0, 10)));
-		assertEquals("First worker should have appropriate experience", oneCopy, one);
+		assertEquals("First worker should have appropriate experience", oneCopy, firstWorker);
 		final Worker twoCopy = new Worker("two", "elf", 2,
 				                                 new Job("jobOne", 0, new Skill("skillOne", 0, 10),
 						                                        new Skill("skillTwo", 0, 10)),
 				                                 new Job("jobTwo", 1, new Skill("skillThree", 1, 29),
 						                                        new Skill("skillFour", 1, 0)));
-		assertEquals("Second worker should have appropriate experience", twoCopy, two);
+		assertEquals("Second worker should have appropriate experience", twoCopy, secondWorker);
 		final Worker threeCopy = new Worker("three", "dwarf", 5,
 				                                   new Job("jobOne", 0, new Skill("skillOne", 0, 10),
 						                                          new Skill("skillTwo", 0, 10)),
@@ -78,7 +78,7 @@ public final class TestProxyWorker {
 						                                          new Skill("skillFour", 0, 10)));
 		assertEquals(
 				"Initially-empty worker should have appropriate experience",
-				threeCopy, three);
+				threeCopy, thirdWorker);
 	}
 
 	/**
@@ -90,19 +90,19 @@ public final class TestProxyWorker {
 	 */
 	@Test
 	public void testProxyUnit() throws IOException {
-		final Worker one = new Worker("one", "human", 1, new Job("jobOne", 1,
+		final Worker firstWorker = new Worker("one", "human", 1, new Job("jobOne", 1,
 				new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
-		final Worker two = new Worker("two", "elf", 2, new Job("jobTwo", 1,
+		final Worker secondWorker = new Worker("two", "elf", 2, new Job("jobTwo", 1,
 				new Skill("skillThree", 1, 19), new Skill("skillFour", 0, 99)));
-		final Worker oneCopy = one.copy(false);
-		final Worker twoCopy = two.copy(false);
-		final Worker oneOrig = one.copy(false);
-		final Worker twoOrig = two.copy(false);
+		final Worker oneCopy = firstWorker.copy(false);
+		final Worker twoCopy = secondWorker.copy(false);
+		final Worker oneOrig = firstWorker.copy(false);
+		final Worker twoOrig = secondWorker.copy(false);
 		final Player player = new Player(3, "");
 		final IUnit unitOne = new Unit(player, "unitKInd", "unitName", 4);
 		final IUnit unitTwo = unitOne.copy(false);
-		unitOne.addMember(one);
-		unitOne.addMember(two);
+		unitOne.addMember(firstWorker);
+		unitOne.addMember(secondWorker);
 		unitTwo.addMember(oneCopy);
 		unitTwo.addMember(twoCopy);
 		final ProxyUnit proxy = new ProxyUnit(4);
@@ -115,21 +115,21 @@ public final class TestProxyWorker {
 				}
 			}
 		}
-		assertEquals("Two copies of first worker should be equal", one,
+		assertEquals("Two copies of first worker should be equal", firstWorker,
 				oneCopy);
-		assertEquals("Two copies of second worker should be equal", two,
+		assertEquals("Two copies of second worker should be equal", secondWorker,
 				twoCopy);
 		assertFalse("First worker should not still be as it was originally",
-				oneOrig.equals(one));
+				oneOrig.equals(firstWorker));
 		assertTrue(
 				"But first worker original should be a subset of first worker now",
-				one.isSubset(oneOrig, NullStream.DEV_NULL, ""));
+				firstWorker.isSubset(oneOrig, NullStream.DEV_NULL, ""));
 		assertFalse(
 				"Two copies of second worker shouldn't still be as it was originally",
-				twoOrig.equals(two));
+				twoOrig.equals(secondWorker));
 		assertTrue(
 				"But second worker original should be a subset of second worker now",
-				two.isSubset(twoOrig, NullStream.DEV_NULL, ""));
+				secondWorker.isSubset(twoOrig, NullStream.DEV_NULL, ""));
 	}
 
 	/**
@@ -140,19 +140,19 @@ public final class TestProxyWorker {
 	 */
 	@Test
 	public void testProxyUnitProxy() throws IOException {
-		final Worker one = new Worker("one", "human", 1, new Job("jobOne", 1,
+		final Worker firstWorker = new Worker("one", "human", 1, new Job("jobOne", 1,
 				new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
-		final Worker two = new Worker("two", "elf", 2, new Job("jobTwo", 1,
+		final Worker secondWorker = new Worker("two", "elf", 2, new Job("jobTwo", 1,
 				new Skill("skillThree", 1, 19), new Skill("skillFour", 0, 99)));
-		final Worker oneCopy = one.copy(false);
-		final Worker twoCopy = two.copy(false);
-		final Worker oneOrig = one.copy(false);
-		final Worker twoOrig = two.copy(false);
+		final Worker oneCopy = firstWorker.copy(false);
+		final Worker twoCopy = secondWorker.copy(false);
+		final Worker oneOrig = firstWorker.copy(false);
+		final Worker twoOrig = secondWorker.copy(false);
 		final Player player = new Player(3, "");
 		final IUnit unitOne = new Unit(player, "unitKInd", "unitName", 4);
 		final IUnit unitTwo = unitOne.copy(false);
-		unitOne.addMember(one);
-		unitOne.addMember(two);
+		unitOne.addMember(firstWorker);
+		unitOne.addMember(secondWorker);
 		unitTwo.addMember(oneCopy);
 		unitTwo.addMember(twoCopy);
 		final ProxyUnit proxy = new ProxyUnit(4);
@@ -164,23 +164,23 @@ public final class TestProxyWorker {
 				skill.addHours(10, 100);
 			}
 		}
-		assertEquals("Two copies of first worker should be equal", one,
+		assertEquals("Two copies of first worker should be equal", firstWorker,
 				oneCopy);
-		assertEquals("Two copies of second worker should be equal", two,
+		assertEquals("Two copies of second worker should be equal", secondWorker,
 				twoCopy);
-		assertWorkerHasJob(one, "jobTwo");
-		assertWorkerHasJob(two, "jobOne");
+		assertWorkerHasJob(firstWorker, "jobTwo");
+		assertWorkerHasJob(secondWorker, "jobOne");
 		assertFalse("First worker should not still be as it was originally",
-				oneOrig.equals(one));
+				oneOrig.equals(firstWorker));
 		assertTrue(
 				"But first worker original should be a subset of first worker now",
-				one.isSubset(oneOrig, NullStream.DEV_NULL, ""));
+				firstWorker.isSubset(oneOrig, NullStream.DEV_NULL, ""));
 		assertFalse(
 				"Two copies of second worker shouldn't still be as it was originally",
-				twoOrig.equals(two));
+				twoOrig.equals(secondWorker));
 		assertTrue(
 				"But second worker original should be a subset of second worker now",
-				two.isSubset(twoOrig, NullStream.DEV_NULL, ""));
+				secondWorker.isSubset(twoOrig, NullStream.DEV_NULL, ""));
 	}
 	/**
 	 * Assert that a worker contains a Job and that this Job is not empty.
@@ -211,9 +211,9 @@ public final class TestProxyWorker {
 	 */
 	@Test
 	public void testWorkerCopy() {
-		final IWorker one = new Worker("one", "human", 1, new Job("jobOne", 1,
+		final IWorker worker = new Worker("one", "human", 1, new Job("jobOne", 1,
 				new Skill("skillOne", 0, 5), new Skill("skillTwo", 2, 6)));
-		assertEquals("Worker copy should still be equal", one, one.copy(false));
+		assertEquals("Worker copy should still be equal", worker, worker.copy(false));
 	}
 	/**
 	 * @return a string representation of this class

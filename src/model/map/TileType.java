@@ -165,16 +165,16 @@ public enum TileType {
 	/**
 	 * Parse a tile terrain type.
 	 *
-	 * @param string A string describing the terrain
+	 * @param desc A string describing the terrain
 	 *
 	 * @return the terrain type
 	 */
-	public static TileType getTileType(final String string) {
-		if (CACHE.containsKey(string)) {
-			return NullCleaner.assertNotNull(CACHE.get(string));
+	public static TileType getTileType(final String desc) {
+		if (CACHE.containsKey(desc)) {
+			return NullCleaner.assertNotNull(CACHE.get(desc));
 		} // else
 		throw new IllegalArgumentException("Unrecognized terrain type string "
-				+ string);
+				+ desc);
 	}
 
 	/**

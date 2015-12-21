@@ -120,10 +120,10 @@ public final class HuntingModel {
 	/**
 	 * @param map one of the mappings
 	 * @param point a point
-	 * @param string a string to put in the map at that point.
+	 * @param value a string to put in the map at that point.
 	 */
 	private static void addToMap(final Map<Point, List<String>> map,
-			final Point point, final String string) {
+			final Point point, final String value) {
 		final List<String> list; // NOPMD
 		if (map.containsKey(point)) {
 			list = NullCleaner.assertNotNull(map.get(point));
@@ -131,7 +131,7 @@ public final class HuntingModel {
 			list = new ArrayList<>();
 			map.put(point, list);
 		}
-		list.add(string);
+		list.add(value);
 	}
 
 	/**

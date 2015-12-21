@@ -72,20 +72,20 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Animal) {
 				final Animal animal = (Animal) pair.second();
-				final String string; // NOPMD
+				final String desc; // NOPMD
 				if (animal.isTraces()) {
-					string = "tracks or traces of " + animal.getKind();
+					desc = "tracks or traces of " + animal.getKind();
 				} else if (animal.isTalking()) {
-					string = "talking " + animal.getKind();
+					desc = "talking " + animal.getKind();
 				} else {
-					string = animal.getKind();
+					desc = animal.getKind();
 				}
 				final List<Point> points; // NOPMD
-				if (items.containsKey(string)) {
-					points = items.get(string);
+				if (items.containsKey(desc)) {
+					points = items.get(desc);
 				} else {
 					points = new ArrayList<>(); // NOPMD
-					items.put(string, points);
+					items.put(desc, points);
 				}
 				points.add(pair.first());
 				fixtures.remove(Integer.valueOf(animal.getID()));
@@ -126,13 +126,13 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Animal) {
 				final Animal animal = (Animal) pair.second();
-				final String string = animal.getKind();
+				final String animalKind = animal.getKind();
 				final AbstractReportNode collection;
-				if (items.containsKey(string)) {
-					collection = items.get(string);
+				if (items.containsKey(animalKind)) {
+					collection = items.get(animalKind);
 				} else {
-					collection = new ListReportNode(string); // NOPMD
-					items.put(string, collection);
+					collection = new ListReportNode(animalKind); // NOPMD
+					items.put(animalKind, collection);
 				}
 				collection.add(produceRIR(fixtures, map, currentPlayer, animal,
 						pair.first()));

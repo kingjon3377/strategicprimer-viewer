@@ -67,11 +67,11 @@ public final class ReportGenerator {
 	/**
 	 * A simple comparator for fixtures.
 	 */
-	private static final Comparator<@NonNull IFixture> SIMPLE_COMPARATOR = (one, two) -> {
-		if (one.equals(two)) {
+	private static final Comparator<@NonNull IFixture> SIMPLE_COMPARATOR = (firstFixture, secondFixture) -> {
+		if (firstFixture.equals(secondFixture)) {
 			return 0;
 		} else {
-			return one.hashCode() - two.hashCode();
+			return firstFixture.hashCode() - secondFixture.hashCode();
 		}
 	};
 	/**

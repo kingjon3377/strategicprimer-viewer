@@ -36,21 +36,21 @@ public final class IntPair {
 	/**
 	 * Constructor.
 	 *
-	 * @param one the first int
-	 * @param two the second int.
+	 * @param firstInt the first int
+	 * @param secondInt the second int.
 	 */
-	public IntPair(final int one, final int two) {
-		first = one;
-		second = two;
+	public IntPair(final int firstInt, final int secondInt) {
+		first = firstInt;
+		second = secondInt;
 	}
 
 	/**
-	 * @param one a first int
-	 * @param two a second int
+	 * @param firstInt a first int
+	 * @param secondInt a second int
 	 * @return a pair of those ints
 	 */
-	public static IntPair of(final int one, final int two) { // NOPMD
-		return new IntPair(one, two);
+	public static IntPair of(final int firstInt, final int secondInt) { // NOPMD
+		return new IntPair(firstInt, secondInt);
 	}
 	/**
 	 * @return a String representation of the object

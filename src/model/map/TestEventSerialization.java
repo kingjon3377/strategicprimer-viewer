@@ -114,13 +114,13 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 								40, "twoCity", 1, owner), City.class);
 			}
 		}
-		final City three = new City(TownStatus.Active, TownSize.Small, 30, "",
+		final City thirdCity = new City(TownStatus.Active, TownSize.Small, 30, "",
 				3, owner);
-		assertSerialization("Serialization of CityEvent without a name", three,
+		assertSerialization("Serialization of CityEvent without a name", thirdCity,
 				City.class, new Warning(Action.Ignore));
-		assertMissingProperty(createSerializedForm(three, true), City.class,
+		assertMissingProperty(createSerializedForm(thirdCity, true), City.class,
 				NAME_PROPERTY, true);
-		assertMissingProperty(createSerializedForm(three, false), City.class,
+		assertMissingProperty(createSerializedForm(thirdCity, false), City.class,
 				NAME_PROPERTY, true);
 		assertMissingProperty(
 				"<city status=\"active\" size=\"small\" name=\"name\" dc=\"0\" />",
@@ -131,7 +131,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty("<city status=\"active\" size=\"small\" "
 				+ "name=\"name\" dc=\"0\" id=\"0\" />", City.class, "owner",
 				true);
-		assertImageSerialization("City image property is preserved", three,
+		assertImageSerialization("City image property is preserved", thirdCity,
 				City.class);
 	}
 
@@ -158,14 +158,14 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 						status, size, 40, "two", 2, owner), Fortification.class);
 			}
 		}
-		final Fortification three = new Fortification(TownStatus.Active,
+		final Fortification thirdFort = new Fortification(TownStatus.Active,
 				TownSize.Small, 30, "", 3, owner);
 		assertSerialization(
 				"Serialization of FortificationEvent without a name, reflection",
-				three, Fortification.class, new Warning(Action.Ignore));
-		assertMissingProperty(createSerializedForm(three, true),
+				thirdFort, Fortification.class, new Warning(Action.Ignore));
+		assertMissingProperty(createSerializedForm(thirdFort, true),
 				Fortification.class, NAME_PROPERTY, true);
-		assertMissingProperty(createSerializedForm(three, false),
+		assertMissingProperty(createSerializedForm(thirdFort, false),
 				Fortification.class, NAME_PROPERTY, true);
 		assertMissingProperty("<fortification status=\"active\" "
 				+ "size=\"small\" name=\"name\" dc=\"0\" />",
@@ -178,7 +178,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 						+ " dc=\"0\" id=\"0\"/>", Fortification.class, "owner",
 				true);
 		assertImageSerialization("Fortification image property is preserved",
-				three, Fortification.class);
+				thirdFort, Fortification.class);
 	}
 
 	/**
@@ -193,18 +193,18 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			SPFormatException, IOException {
 		assertSerialization("First MineralEvent serialization test",
 				new MineralVein("one", true, 10, 1), MineralVein.class);
-		final MineralVein two = new MineralVein("two", false, 35, 2);
-		assertSerialization("Second MineralEvent serialization test", two,
+		final MineralVein secondVein = new MineralVein("two", false, 35, 2);
+		assertSerialization("Second MineralEvent serialization test", secondVein,
 				MineralVein.class);
 		final String oldKindProperty = "mineral"; // NOPMD
 		assertDeprecatedDeserialization(
-				"Deserialization of deprecated Mineral idiom", two,
-				NullCleaner.assertNotNull(KIND_PATTERN.matcher(createSerializedForm(two, true)).replaceAll(
+				"Deserialization of deprecated Mineral idiom", secondVein,
+				NullCleaner.assertNotNull(KIND_PATTERN.matcher(createSerializedForm(secondVein, true)).replaceAll(
 						Matcher.quoteReplacement(oldKindProperty))),
 				MineralVein.class, oldKindProperty);
 		assertDeprecatedDeserialization(
-				"Deserialization of deprecated Mineral idiom", two,
-				NullCleaner.assertNotNull(KIND_PATTERN.matcher(createSerializedForm(two, false))
+				"Deserialization of deprecated Mineral idiom", secondVein,
+				NullCleaner.assertNotNull(KIND_PATTERN.matcher(createSerializedForm(secondVein, false))
 						                          .replaceAll(Matcher.quoteReplacement(oldKindProperty))),
 				MineralVein.class, oldKindProperty);
 		assertUnwantedChild(
@@ -219,7 +219,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty(
 				"<mineral kind=\"kind\" exposed=\"true\" dc=\"0\" />",
 				MineralVein.class, "id", true);
-		assertImageSerialization("Mineral image property is preserved", two,
+		assertImageSerialization("Mineral image property is preserved", secondVein,
 				MineralVein.class);
 	}
 
@@ -240,16 +240,16 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			assertSerialization("Second StoneDeposit test, kind: " + kind,
 					new StoneDeposit(kind, 15, 2), StoneDeposit.class); // NOPMD
 		}
-		final StoneDeposit three = new StoneDeposit(StoneKind.Marble, 10, 3);
+		final StoneDeposit thirdDeposit = new StoneDeposit(StoneKind.Marble, 10, 3);
 		final String oldKindProperty = "stone"; // NOPMD
 		assertDeprecatedDeserialization(
-				"Deserialization of deprecated stone idiom", three,
-				NullCleaner.assertNotNull(KIND_PATTERN.matcher(createSerializedForm(three, true))
+				"Deserialization of deprecated stone idiom", thirdDeposit,
+				NullCleaner.assertNotNull(KIND_PATTERN.matcher(createSerializedForm(thirdDeposit, true))
 						                          .replaceAll(Matcher.quoteReplacement(oldKindProperty))),
 				StoneDeposit.class, oldKindProperty);
 		assertDeprecatedDeserialization(
-				"Deserialization of deprecated stone idiom", three,
-				NullCleaner.assertNotNull(KIND_PATTERN.matcher(createSerializedForm(three, false))
+				"Deserialization of deprecated stone idiom", thirdDeposit,
+				NullCleaner.assertNotNull(KIND_PATTERN.matcher(createSerializedForm(thirdDeposit, false))
 						                          .replaceAll(Matcher.quoteReplacement(oldKindProperty))),
 				StoneDeposit.class, oldKindProperty);
 		assertUnwantedChild(
@@ -261,7 +261,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				KIND_PROPERTY, false);
 		assertMissingProperty("<stone kind=\"marble\" dc=\"0\" />",
 				StoneDeposit.class, "id", true);
-		assertImageSerialization("Stone image property is preserved", three,
+		assertImageSerialization("Stone image property is preserved", thirdDeposit,
 				StoneDeposit.class);
 	}
 
@@ -290,14 +290,14 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 								status, size, 40, "two", 2, owner), Town.class);
 			}
 		}
-		final Town three = new Town(TownStatus.Active, TownSize.Small, 30, "",
+		final Town thirdTown = new Town(TownStatus.Active, TownSize.Small, 30, "",
 				3, owner);
 		assertSerialization(
-				"Serialization of TownEvent without a name, reflection", three,
+				"Serialization of TownEvent without a name, reflection", thirdTown,
 				Town.class, new Warning(Action.Ignore));
-		assertMissingProperty(createSerializedForm(three, true), Town.class,
+		assertMissingProperty(createSerializedForm(thirdTown, true), Town.class,
 				NAME_PROPERTY, true);
-		assertMissingProperty(createSerializedForm(three, false), Town.class,
+		assertMissingProperty(createSerializedForm(thirdTown, false), Town.class,
 				NAME_PROPERTY, true);
 		assertMissingProperty("<town status=\"active\" size=\"small\"/>",
 				Town.class, "dc", false);
@@ -314,7 +314,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty("<town status=\"active\" size=\"small\" "
 				+ "name=\"name\" dc=\"0\" id=\"0\" />", Town.class, "owner",
 				true);
-		assertImageSerialization("Town image property is preserved", three,
+		assertImageSerialization("Town image property is preserved", thirdTown,
 				Town.class);
 	}
 

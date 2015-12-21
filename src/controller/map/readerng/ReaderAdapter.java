@@ -106,18 +106,18 @@ public final class ReaderAdapter implements INodeHandler<Object> {
 	 * lines, but we can't do a var-args method because the parameterization
 	 * would give us unsolvable compiler warnings.
 	 *
-	 * @param one the first reader
-	 * @param two the second reader
-	 * @param three the third reader
-	 * @param four the fourth reader
+	 * @param firstReader the first reader
+	 * @param secondReader the second reader
+	 * @param thirdReader the third reader
+	 * @param fourthReader the fourth reader
 	 */
-	private static void factoryFour(final INodeHandler<@NonNull ?> one,
-			final INodeHandler<@NonNull ?> two, final INodeHandler<@NonNull ?> three,
-			final INodeHandler<@NonNull ?> four) {
-		factory(one);
-		factory(two);
-		factory(three);
-		factory(four);
+	private static void factoryFour(final INodeHandler<@NonNull ?> firstReader,
+			final INodeHandler<@NonNull ?> secondReader, final INodeHandler<@NonNull ?> thirdReader,
+			final INodeHandler<@NonNull ?> fourthReader) {
+		factory(firstReader);
+		factory(secondReader);
+		factory(thirdReader);
+		factory(fourthReader);
 	}
 
 	static {

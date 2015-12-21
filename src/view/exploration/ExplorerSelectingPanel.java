@@ -144,11 +144,11 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	}
 
 	/**
-	 * @param string a String
+	 * @param text a String
 	 * @return a JLabel with that string on it
 	 */
-	private static JLabel label(final String string) {
-		return new JLabel(string);
+	private static JLabel label(final String text) {
+		return new JLabel(text);
 	}
 	/**
 	 * @param paras Strings, each of which should be put in its own paragraph.

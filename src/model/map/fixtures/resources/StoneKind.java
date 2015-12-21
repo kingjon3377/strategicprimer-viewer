@@ -70,13 +70,13 @@ public enum StoneKind {
 	private static final Map<String, StoneKind> SK_MAP = new HashMap<>();
 
 	/**
-	 * @param string a string representing a StoneKind
+	 * @param kind a string representing a StoneKind
 	 *
 	 * @return the StoneKind it represents
 	 */
-	public static StoneKind parseStoneKind(final String string) {
-		if (SK_MAP.containsKey(string)) {
-			return NullCleaner.assertNotNull(SK_MAP.get(string));
+	public static StoneKind parseStoneKind(final String kind) {
+		if (SK_MAP.containsKey(kind)) {
+			return NullCleaner.assertNotNull(SK_MAP.get(kind));
 		} else {
 			throw new IllegalArgumentException("Unrecognized kind of stone");
 		}
@@ -91,10 +91,10 @@ public enum StoneKind {
 	/**
 	 * Constructor.
 	 *
-	 * @param string A string representing the StoneKind.
+	 * @param desc A string representing the StoneKind.
 	 */
-	StoneKind(final String string) {
-		str = string;
+	StoneKind(final String desc) {
+		str = desc;
 	}
 
 	/**

@@ -131,12 +131,12 @@ public final class AdvancementFrame extends JFrame {
 	/**
 	 * Turn a string into left-aligned HTML.
 	 *
-	 * @param string a string
+	 * @param paragraph a string
 	 * @return a label, with its text that string wrapped in HTML code that
 	 *         should make it left-aligned.
 	 */
-	private static JLabel htmlize(final String string) {
-		return new JLabel("<html><p align=\"left\">" + string + "</p></html>");
+	private static JLabel htmlize(final String paragraph) {
+		return new JLabel("<html><p align=\"left\">" + paragraph + "</p></html>");
 	}
 
 	/**

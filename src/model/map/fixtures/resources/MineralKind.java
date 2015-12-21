@@ -63,10 +63,10 @@ public enum MineralKind {
 	/**
 	 * Constructor.
 	 *
-	 * @param string A string representing the MineralKind.
+	 * @param desc A string representing the MineralKind.
 	 */
-	MineralKind(final String string) {
-		str = string;
+	MineralKind(final String desc) {
+		str = desc;
 	}
 
 	static {
@@ -76,13 +76,13 @@ public enum MineralKind {
 	}
 
 	/**
-	 * @param string a string representing a MineralKind
+	 * @param desc a string representing a MineralKind
 	 *
 	 * @return the MineralKind it represents
 	 */
-	public static MineralKind parseMineralKind(final String string) {
-		if (M_MAP.containsKey(string)) {
-			return NullCleaner.assertNotNull(M_MAP.get(string));
+	public static MineralKind parseMineralKind(final String desc) {
+		if (M_MAP.containsKey(desc)) {
+			return NullCleaner.assertNotNull(M_MAP.get(desc));
 		} else {
 			throw new IllegalArgumentException("Not a kind of mineral we recognize");
 		}

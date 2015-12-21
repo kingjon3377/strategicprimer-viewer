@@ -82,8 +82,8 @@ public final class TestFixtureSerialization extends
 				"animalTwo", false, true, "semi-domesticated", 1), Animal.class);
 		assertSerialization("Third test of Animal serialization", new Animal(
 				"animalThree", true, false, "domesticated", 2), Animal.class);
-		final Animal four = new Animal("animalFour", true, true, "status", 3);
-		assertSerialization("Fourth test of Animal serialization", four,
+		final Animal fourthAnimal = new Animal("animalFour", true, true, "status", 3);
+		assertSerialization("Fourth test of Animal serialization", fourthAnimal,
 				Animal.class);
 		assertUnwantedChild("<animal kind=\"animal\"><troll /></animal>",
 				Animal.class, false);
@@ -99,7 +99,7 @@ public final class TestFixtureSerialization extends
 				new Animal("animalSeven", false, false, "wild", 4),
 				"<animal kind=\"animalSeven\" status=\"wild\" id=\"4\" />",
 				Animal.class);
-		assertImageSerialization("Animal image property is preserved", four,
+		assertImageSerialization("Animal image property is preserved", fourthAnimal,
 				Animal.class);
 	}
 

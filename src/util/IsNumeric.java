@@ -46,12 +46,12 @@ public final class IsNumeric {
 			.assertNotNull(NumberFormat.getIntegerInstance());
 
 	/**
-	 * @param string a String
+	 * @param input a String
 	 * @return whether it contains numeric data or not
 	 */
-	public static boolean isNumeric(final String string) {
+	public static boolean isNumeric(final String input) {
 		try {
-			PARSER.parse(string);
+			PARSER.parse(input);
 			return true; // NOPMD
 		} catch (final NumberFormatException except) {
 			LOGGER.log(Level.FINE, "Non-numeric input", except);

@@ -21,16 +21,16 @@ public final class DistanceComparator implements Comparator<@NonNull Point> {
 		base = center;
 	}
 	/**
-	 * @param one the first point
-	 * @param two the second point
+	 * @param firstPoint the first point
+	 * @param secondPoint the second point
 	 * @return the result of the comparison
 	 */
 	@Override
-	public int compare(final Point one, final Point two) {
-		final int distOne = distance(one);
-		final int distTwo = distance(two);
+	public int compare(final Point firstPoint, final Point secondPoint) {
+		final int distOne = distance(firstPoint);
+		final int distTwo = distance(secondPoint);
 		if (distOne == distTwo) {
-			return one.compareTo(two);
+			return firstPoint.compareTo(secondPoint);
 		} else {
 			return distOne - distTwo;
 		}

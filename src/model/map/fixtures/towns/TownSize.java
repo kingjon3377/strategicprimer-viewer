@@ -65,13 +65,13 @@ public enum TownSize {
 	}
 
 	/**
-	 * @param string a string representing a TownSize
+	 * @param sizeDesc a string representing a TownSize
 	 *
 	 * @return the TownSize it represents
 	 */
-	public static TownSize parseTownSize(final String string) {
-		if (TSZ_MAP.containsKey(string)) {
-			return NullCleaner.assertNotNull(TSZ_MAP.get(string));
+	public static TownSize parseTownSize(final String sizeDesc) {
+		if (TSZ_MAP.containsKey(sizeDesc)) {
+			return NullCleaner.assertNotNull(TSZ_MAP.get(sizeDesc));
 		} else {
 			throw new IllegalArgumentException("Unknown town size");
 		}

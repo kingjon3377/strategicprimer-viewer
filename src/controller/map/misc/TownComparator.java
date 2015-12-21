@@ -45,14 +45,14 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	/**
 	 * A comparator for town-sizes.
 	 */
-	private static final Comparator<TownSize> SIZE_CMP = (one, two) -> {
-			if (one == two) {
+	private static final Comparator<TownSize> SIZE_CMP = (sizeOne, sizeTwo) -> {
+			if (sizeOne == sizeTwo) {
 				return 0; // NOPMD
-			} else if (TownSize.Large == one) {
+			} else if (TownSize.Large == sizeOne) {
 				return -1; // NOPMD
-			} else if (TownSize.Large == two) {
+			} else if (TownSize.Large == sizeTwo) {
 				return 1; // NOPMD
-			} else if (TownSize.Medium == one) {
+			} else if (TownSize.Medium == sizeOne) {
 				return -1; // NOPMD
 			} else {
 				return 1;
@@ -63,18 +63,18 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	 * A comparator for town-statuses, to put active towns before abandoned ones
 	 * before ruined ones before burned-out ones.
 	 */
-	private static final Comparator<TownStatus> ST_CMP = (one, two) -> {
-		if (one == two) {
+	private static final Comparator<TownStatus> ST_CMP = (statusOne, statusTwo) -> {
+		if (statusOne == statusTwo) {
 			return 0; // NOPMD
-		} else if (TownStatus.Active == one) {
+		} else if (TownStatus.Active == statusOne) {
 			return -1; // NOPMD
-		} else if (TownStatus.Active == two) {
+		} else if (TownStatus.Active == statusTwo) {
 			return 1; // NOPMD
-		} else if (TownStatus.Abandoned == one) {
+		} else if (TownStatus.Abandoned == statusOne) {
 			return -1; // NOPMD
-		} else if (TownStatus.Abandoned == two) {
+		} else if (TownStatus.Abandoned == statusTwo) {
 			return 1; // NOPMD
-		} else if (TownStatus.Ruined == one) {
+		} else if (TownStatus.Ruined == statusOne) {
 			return -1; // NOPMD
 		} else {
 			return 1;
@@ -85,38 +85,38 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	 * A comparator for towns, sorting them *only* on the basis of kind, putting
 	 * fortresses before cities before towns before fortifications before villages.
 	 */
-	private static final Comparator<ITownFixture> KIND_CMP = (one, two) -> {
-		if (one instanceof Fortress) {
-			if (two instanceof Fortress) {
+	private static final Comparator<ITownFixture> KIND_CMP = (townOne, townTwo) -> {
+		if (townOne instanceof Fortress) {
+			if (townTwo instanceof Fortress) {
 				return 0; // NOPMD
 			} else {
 				return -1; // NOPMD
 			}
-		} else if (two instanceof Fortress) {
+		} else if (townTwo instanceof Fortress) {
 			return 1; // NOPMD
-		} else if (one instanceof City) {
-			if (two instanceof City) {
+		} else if (townOne instanceof City) {
+			if (townTwo instanceof City) {
 				return 0; // NOPMD
 			} else {
 				return -1; // NOPMD
 			}
-		} else if (two instanceof City) {
+		} else if (townTwo instanceof City) {
 			return 1; // NOPMD
-		} else if (one instanceof Town) {
-			if (two instanceof Town) {
+		} else if (townOne instanceof Town) {
+			if (townTwo instanceof Town) {
 				return 0; // NOPMD
 			} else {
 				return -1; // NOPMD
 			}
-		} else if (two instanceof Town) {
+		} else if (townTwo instanceof Town) {
 			return 1; // NOPMD
-		} else if (one instanceof Fortification) {
-			if (two instanceof Fortification) {
+		} else if (townOne instanceof Fortification) {
+			if (townTwo instanceof Fortification) {
 				return 0; // NOPMD
 			} else {
 				return -1; // NOPMD
 			}
-		} else if (two instanceof Fortification) {
+		} else if (townTwo instanceof Fortification) {
 			return 1; // NOPMD
 		} else {
 			// They should be both villages ...
@@ -129,27 +129,27 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	 * there being only three (or four, for status) possibilities and the two
 	 * towns' values for them not being the same.
 	 *
-	 * @param one the first town
-	 * @param two the second
+	 * @param townOne the first town
+	 * @param townTwo the second
 	 * @return a negative integer if the first is "less" than the second, zero
 	 *         if they're the same, and a positive integer if the first is
 	 *         "greater" than the second.
 	 */
 	@Override
-	public int compare(final AbstractTown one,
-			final AbstractTown two) {
-		if (one.status() == two.status()) {
-			if (one.size() == two.size()) {
-				if (one.getClass().equals(two.getClass())) {
-					return one.getName().compareTo(two.getName()); // NOPMD
+	public int compare(final AbstractTown townOne,
+			final AbstractTown townTwo) {
+		if (townOne.status() == townTwo.status()) {
+			if (townOne.size() == townTwo.size()) {
+				if (townOne.getClass().equals(townTwo.getClass())) {
+					return townOne.getName().compareTo(townTwo.getName()); // NOPMD
 				} else {
-					return KIND_CMP.compare(one, two); // NOPMD
+					return KIND_CMP.compare(townOne, townTwo); // NOPMD
 				}
 			} else {
-				return SIZE_CMP.compare(one.size(), two.size()); // NOPMD
+				return SIZE_CMP.compare(townOne.size(), townTwo.size()); // NOPMD
 			}
 		} else {
-			return ST_CMP.compare(one.status(), two.status());
+			return ST_CMP.compare(townOne.status(), townTwo.status());
 		}
 	}
 

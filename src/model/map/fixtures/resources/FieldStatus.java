@@ -59,10 +59,10 @@ public enum FieldStatus {
 	/**
 	 * Constructor.
 	 *
-	 * @param string a string representing the status.
+	 * @param desc a string representing the status.
 	 */
-	FieldStatus(final String string) {
-		str = string;
+	FieldStatus(final String desc) {
+		str = desc;
 	}
 
 	static {
@@ -72,12 +72,12 @@ public enum FieldStatus {
 	}
 
 	/**
-	 * @param string a string representing a FieldStatus
+	 * @param desc a string representing a FieldStatus
 	 * @return the FieldStatus it represents
 	 */
-	public static FieldStatus parse(final String string) {
-		if (FST_MAP.containsKey(string)) {
-			return NullCleaner.assertNotNull(FST_MAP.get(string));
+	public static FieldStatus parse(final String desc) {
+		if (FST_MAP.containsKey(desc)) {
+			return NullCleaner.assertNotNull(FST_MAP.get(desc));
 		} else {
 			throw new IllegalArgumentException("Not a FieldStatus we recognize");
 		}

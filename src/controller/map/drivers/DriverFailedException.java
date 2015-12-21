@@ -19,10 +19,10 @@ public class DriverFailedException extends Exception { // $codepro.audit.disable
 	/**
 	 * Constructor.
 	 *
-	 * @param string a custom error string
+	 * @param message a custom error string
 	 * @param cause the cause. Should not be null.
 	 */
-	public DriverFailedException(final String string, final Throwable cause) {
-		super(string, cause);
+	public DriverFailedException(final String message, final Throwable cause) {
+		super(message, cause);
 	}
 }

@@ -39,25 +39,25 @@ public final class PairComparator<@NonNull T, @NonNull U>
 		implements Comparator<@NonNull Pair<@NonNull T, @NonNull U>> {
 	/**
 	 * Constructor.
-	 * @param one the first comparator
-	 * @param two the second comparator
+	 * @param firstItem the first comparator
+	 * @param secondItem the second comparator
 	 */
-	public PairComparator(final Comparator<T> one, final Comparator<U> two) {
-		super(one, two);
+	public PairComparator(final Comparator<T> firstItem, final Comparator<U> secondItem) {
+		super(firstItem, secondItem);
 	}
 	/**
 	 * Compare two pairs.
-	 * @param one the first pair
-	 * @param two the second pair
+	 * @param firstPair the first pair
+	 * @param secondPair the second pair
 	 */
 	@Override
-	public int compare(@Nullable final Pair<T, U> one, @Nullable final Pair<T, U> two) {
-		if (one == null || two == null) {
+	public int compare(@Nullable final Pair<T, U> firstPair, @Nullable final Pair<T, U> secondPair) {
+		if (firstPair == null || secondPair == null) {
 			throw new NullPointerException("asked to compare null Pair");
 		}
-		final int firstResult = first().compare(one.first(), two.first());
+		final int firstResult = first().compare(firstPair.first(), secondPair.first());
 		if (firstResult == 0) {
-			return second().compare(one.second(), two.second());
+			return second().compare(firstPair.second(), secondPair.second());
 		} else {
 			return firstResult;
 		}

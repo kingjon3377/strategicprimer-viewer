@@ -55,10 +55,10 @@ public enum River {
 	/**
 	 * Constructor.
 	 *
-	 * @param string a descriptive string representing the direction
+	 * @param description a descriptive string representing the direction
 	 */
-	River(final String string) {
-		desc = string;
+	River(final String description) {
+		desc = description;
 	}
 
 	/**
@@ -66,13 +66,13 @@ public enum River {
 	 *
 	 * TODO: improve testing of this
 	 *
-	 * @param string a string giving the direction
+	 * @param description a string giving the direction
 	 *
 	 * @return the river direction
 	 */
-	public static River getRiver(final String string) {
+	public static River getRiver(final String description) {
 		for (final River river : values()) {
-			if (river.desc.equals(string)) {
+			if (river.desc.equals(description)) {
 				return river;
 			}
 		}

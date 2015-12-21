@@ -235,16 +235,16 @@ public final class SPIntermediateRepresentation {
 	 *
 	 * @param writer
 	 *            the Writer to write to
-	 * @param string
+	 * @param text
 	 *            the string to write. May be null, in which case nothing is
 	 *            written.
 	 * @throws IOException
 	 *             if I/O error in writing
 	 */
 	private void writeIfTagNotEmpty(final Appendable writer,
-	                                @SuppressWarnings("TypeMayBeWeakened") final String string) throws IOException {
+	                                @SuppressWarnings("TypeMayBeWeakened") final String text) throws IOException {
 		if (!tag.isEmpty()) {
-			writer.append(string);
+			writer.append(text);
 		}
 	}
 

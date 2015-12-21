@@ -56,10 +56,10 @@ public enum TownStatus {
 	/**
 	 * Constructor.
 	 *
-	 * @param string a string representing the status.
+	 * @param description a string representing the status.
 	 */
-	TownStatus(final String string) {
-		str = string;
+	TownStatus(final String description) {
+		str = description;
 	}
 
 	static {
@@ -69,13 +69,13 @@ public enum TownStatus {
 	}
 
 	/**
-	 * @param string a string representing a TownStatus
+	 * @param description a string representing a TownStatus
 	 *
 	 * @return the TownStatus it represents
 	 */
-	public static TownStatus parseTownStatus(final String string) {
-		if (TST_MAP.containsKey(string)) {
-			return NullCleaner.assertNotNull(TST_MAP.get(string));
+	public static TownStatus parseTownStatus(final String description) {
+		if (TST_MAP.containsKey(description)) {
+			return NullCleaner.assertNotNull(TST_MAP.get(description));
 		} else {
 			throw new IllegalArgumentException("No such town status");
 		}

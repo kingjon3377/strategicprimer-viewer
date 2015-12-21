@@ -149,10 +149,10 @@ public final class SubsetFrame extends JFrame {
 	 *
 	 * FIXME: To appease XSS-possibility warnings, make color on enumerated type.
 	 *
-	 * @param string the string to enclose
+	 * @param paragraph the string to enclose
 	 * @param color the color to make it, or the empty string if none.
 	 */
-	protected void printParagraph(final String string, final String color) {
+	protected void printParagraph(final String paragraph, final String color) {
 		try (final PrintWriter writer = label.getWriter()) {
 			// Because StringWriter's close() does nothing, this is safe.
 			if (color.isEmpty()) {
@@ -162,7 +162,7 @@ public final class SubsetFrame extends JFrame {
 				writer.print(color);
 				writer.print("\">");
 			}
-			writer.print(string);
+			writer.print(paragraph);
 			writer.println("</p>");
 		}
 		// At one point we called updateText on the label.

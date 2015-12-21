@@ -454,20 +454,20 @@ public class SPMapNG implements IMutableMapNG {
 	/**
 	 * FIXME: This is probably very slow ...
 	 *
-	 * @param one
+	 * @param firstIterable
 	 *            one iterable
-	 * @param two
+	 * @param secondIterable
 	 *            another
 	 * @param <T>
 	 *            the type of thing they contain
 	 * @return whether they contain the same elements.
 	 */
-	private static <T> boolean areIterablesEqual(final Iterable<T> one,
-	                                             final Iterable<T> two) {
-		final Collection<T> first = StreamSupport.stream(one.spliterator(), false).collect(Collectors.toList());
-		final Collection<T> firstCopy = StreamSupport.stream(one.spliterator(), false).collect(Collectors.toList());
-		final Collection<T> second = StreamSupport.stream(two.spliterator(), false).collect(Collectors.toList());
-		final Collection<T> secondCopy = StreamSupport.stream(two.spliterator(), false).collect(Collectors.toList());
+	private static <T> boolean areIterablesEqual(final Iterable<T> firstIterable,
+	                                             final Iterable<T> secondIterable) {
+		final Collection<T> first = StreamSupport.stream(firstIterable.spliterator(), false).collect(Collectors.toList());
+		final Collection<T> firstCopy = StreamSupport.stream(firstIterable.spliterator(), false).collect(Collectors.toList());
+		final Collection<T> second = StreamSupport.stream(secondIterable.spliterator(), false).collect(Collectors.toList());
+		final Collection<T> secondCopy = StreamSupport.stream(secondIterable.spliterator(), false).collect(Collectors.toList());
 		firstCopy.removeAll(second);
 		secondCopy.removeAll(first);
 		return first.containsAll(second) && second.containsAll(first) && secondCopy.isEmpty() && firstCopy.isEmpty();

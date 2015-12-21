@@ -174,13 +174,13 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * Compare two floating-point values.
 	 *
-	 * @param one the first value
-	 * @param two the second value
+	 * @param firstNum the first value
+	 * @param secondNum the second value
 	 *
 	 * @return whether the two are approximately equal
 	 */
-	private static boolean areFloatsEqual(final double one, final double two) {
-		return Math.abs(one - two) < APPROX_ZERO;
+	private static boolean areFloatsEqual(final double firstNum, final double secondNum) {
+		return Math.abs(firstNum - secondNum) < APPROX_ZERO;
 	}
 
 	/**

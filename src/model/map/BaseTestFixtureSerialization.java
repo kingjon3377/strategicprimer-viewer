@@ -517,32 +517,32 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 *
 	 * @param <T> the type they'll deserialize to.
 	 * @param message the message to pass to JUnit
-	 * @param one the first form
-	 * @param two the second form
+	 * @param firstForm the first form
+	 * @param secondForm the second form
 	 * @param type the type
 	 * @param warningLevel the warning level to set.
 	 * @throws SPFormatException on SP format error
 	 * @throws XMLStreamException on XML format error
 	 */
 	protected <T> void assertEquivalentForms(final String message,
-			final String one, final String two, final Class<T> type,
+			final String firstForm, final String secondForm, final Class<T> type,
 			final Warning.Action warningLevel) throws SPFormatException,
 			XMLStreamException {
 		assertEquals(message, oldReader.readXML(FAKE_FILENAME,
-				new StringReader(one), type, new Warning(warningLevel)),
-				oldReader.readXML(FAKE_FILENAME, new StringReader(two), type,
+				new StringReader(firstForm), type, new Warning(warningLevel)),
+				oldReader.readXML(FAKE_FILENAME, new StringReader(secondForm), type,
 						new Warning(warningLevel)));
 		assertEquals(message, oldReader.readXML(FAKE_FILENAME,
-				new StringReader(one), type, new Warning(warningLevel)),
-				oldReader.readXML(FAKE_FILENAME, new StringReader(two), type,
+				new StringReader(firstForm), type, new Warning(warningLevel)),
+				oldReader.readXML(FAKE_FILENAME, new StringReader(secondForm), type,
 						new Warning(warningLevel)));
 		assertEquals(message, newReader.readXML(FAKE_FILENAME,
-				new StringReader(one), type, new Warning(warningLevel)),
-				newReader.readXML(FAKE_FILENAME, new StringReader(two), type,
+				new StringReader(firstForm), type, new Warning(warningLevel)),
+				newReader.readXML(FAKE_FILENAME, new StringReader(secondForm), type,
 						new Warning(warningLevel)));
 		assertEquals(message, newReader.readXML(FAKE_FILENAME,
-				new StringReader(one), type, new Warning(warningLevel)),
-				newReader.readXML(FAKE_FILENAME, new StringReader(two), type,
+				new StringReader(firstForm), type, new Warning(warningLevel)),
+				newReader.readXML(FAKE_FILENAME, new StringReader(secondForm), type,
 						new Warning(warningLevel)));
 	}
 

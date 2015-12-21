@@ -185,18 +185,18 @@ public class Worker implements IWorker {
 	}
 	/**
 	 * TODO: Improve performance.
-	 * @param one a set of Jobs
-	 * @param two a set of Jobs
+	 * @param firstSet a set of Jobs
+	 * @param secondSet a set of Jobs
 	 * @return whether they are equal, ignoring any "empty" Jobs.
 	 */
-	private static boolean areJobSetsEqual(final Collection<IJob> one, final Collection<IJob> two) {
-		for (final IJob job : one) {
-			if (!job.isEmpty() && !two.contains(job)) {
+	private static boolean areJobSetsEqual(final Collection<IJob> firstSet, final Collection<IJob> secondSet) {
+		for (final IJob job : firstSet) {
+			if (!job.isEmpty() && !secondSet.contains(job)) {
 				return false;
 			}
 		}
-		for (final IJob job : two) {
-			if (!job.isEmpty() && !one.contains(job)) {
+		for (final IJob job : secondSet) {
+			if (!job.isEmpty() && !firstSet.contains(job)) {
 				return false;
 			}
 		}

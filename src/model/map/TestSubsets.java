@@ -62,23 +62,23 @@ public final class TestSubsets {
 	@SuppressWarnings(ST_MET)
 	@Test
 	public void testPlayerCollectionSubset() throws IOException {
-		final PlayerCollection one = new PlayerCollection();
-		one.add(new Player(1, ONE_STR));
-		final PlayerCollection two = new PlayerCollection();
-		two.add(new Player(1, ONE_STR));
-		two.add(new Player(2, "two"));
+		final PlayerCollection firstCollection = new PlayerCollection();
+		firstCollection.add(new Player(1, ONE_STR));
+		final PlayerCollection secondCollection = new PlayerCollection();
+		secondCollection.add(new Player(1, ONE_STR));
+		secondCollection.add(new Player(2, "two"));
 		final PlayerCollection zero = new PlayerCollection();
 		assertTrue("Empty is subset of self", zero.isSubset(zero, DEV_NULL, ""));
-		assertTrue("Empty is subset of one", one.isSubset(zero, DEV_NULL, ""));
-		assertTrue("Empty is subset of two", two.isSubset(zero, DEV_NULL, ""));
+		assertTrue("Empty is subset of one", firstCollection.isSubset(zero, DEV_NULL, ""));
+		assertTrue("Empty is subset of two", secondCollection.isSubset(zero, DEV_NULL, ""));
 		assertFalse("One is not subset of empty",
-				zero.isSubset(one, DEV_NULL, ""));
-		assertTrue("One is subset of self", one.isSubset(one, DEV_NULL, ""));
-		assertTrue("One is subset of two", two.isSubset(one, DEV_NULL, ""));
+				zero.isSubset(firstCollection, DEV_NULL, ""));
+		assertTrue("One is subset of self", firstCollection.isSubset(firstCollection, DEV_NULL, ""));
+		assertTrue("One is subset of two", secondCollection.isSubset(firstCollection, DEV_NULL, ""));
 		assertFalse("Two is not subset of empty",
-				zero.isSubset(two, DEV_NULL, ""));
-		assertFalse("Two is not subset of one", one.isSubset(two, DEV_NULL, ""));
-		assertTrue("Two is subset of self", two.isSubset(two, DEV_NULL, ""));
+				zero.isSubset(secondCollection, DEV_NULL, ""));
+		assertFalse("Two is not subset of one", firstCollection.isSubset(secondCollection, DEV_NULL, ""));
+		assertTrue("Two is subset of self", secondCollection.isSubset(secondCollection, DEV_NULL, ""));
 	}
 
 	/**
@@ -89,37 +89,37 @@ public final class TestSubsets {
 	@Test
 	public void testRiverSubset() throws IOException {
 		final RiverFixture zero = new RiverFixture();
-		final RiverFixture three = new RiverFixture(River.Lake, River.South,
+		final RiverFixture thirdCollection = new RiverFixture(River.Lake, River.South,
 				River.East, River.North, River.West);
-		assertTrue("None is a subset of all", three.isSubset(zero, DEV_NULL, ""));
-		final RiverFixture one = new RiverFixture(River.Lake, River.South,
+		assertTrue("None is a subset of all", thirdCollection.isSubset(zero, DEV_NULL, ""));
+		final RiverFixture firstRivers = new RiverFixture(River.Lake, River.South,
 				                                         River.East);
-		assertTrue("Three are a subset of all", three.isSubset(one, DEV_NULL, ""));
-		final RiverFixture two = new RiverFixture(River.West, River.North);
-		assertTrue("Two are a subset of all", three.isSubset(two, DEV_NULL, ""));
-		assertTrue("All is a subset of all", three.isSubset(three, DEV_NULL, ""));
-		assertTrue("None is a subset of two", two.isSubset(zero, DEV_NULL, ""));
+		assertTrue("Three are a subset of all", thirdCollection.isSubset(firstRivers, DEV_NULL, ""));
+		final RiverFixture secondRivers = new RiverFixture(River.West, River.North);
+		assertTrue("Two are a subset of all", thirdCollection.isSubset(secondRivers, DEV_NULL, ""));
+		assertTrue("All is a subset of all", thirdCollection.isSubset(thirdCollection, DEV_NULL, ""));
+		assertTrue("None is a subset of two", secondRivers.isSubset(zero, DEV_NULL, ""));
 		assertFalse("All is not a subset of two",
-				two.isSubset(three, DEV_NULL, ""));
+				secondRivers.isSubset(thirdCollection, DEV_NULL, ""));
 		assertFalse("Three are not a subset of two",
-				two.isSubset(one, DEV_NULL, ""));
+				secondRivers.isSubset(firstRivers, DEV_NULL, ""));
 		assertTrue("Two are a subset of themselves",
-				two.isSubset(two, DEV_NULL, ""));
-		assertTrue("None is a subset of three", one.isSubset(zero, DEV_NULL, ""));
+				secondRivers.isSubset(secondRivers, DEV_NULL, ""));
+		assertTrue("None is a subset of three", firstRivers.isSubset(zero, DEV_NULL, ""));
 		assertFalse("All is not a subset of three",
-				one.isSubset(three, DEV_NULL, ""));
+				firstRivers.isSubset(thirdCollection, DEV_NULL, ""));
 		assertFalse("A different two are not a subset of three",
-				one.isSubset(two, DEV_NULL, ""));
+				firstRivers.isSubset(secondRivers, DEV_NULL, ""));
 		assertTrue("Three are a subset of themselves",
-				one.isSubset(one, DEV_NULL, ""));
+				firstRivers.isSubset(firstRivers, DEV_NULL, ""));
 		assertTrue("None is a subset of itself",
 				zero.isSubset(zero, DEV_NULL, ""));
 		assertFalse("All are not a subset of none",
-				zero.isSubset(three, DEV_NULL, ""));
+				zero.isSubset(thirdCollection, DEV_NULL, ""));
 		assertFalse("Three are not a subset of none",
-				zero.isSubset(one, DEV_NULL, ""));
+				zero.isSubset(firstRivers, DEV_NULL, ""));
 		assertFalse("Two are not a subset of none",
-				zero.isSubset(two, DEV_NULL, ""));
+				zero.isSubset(secondRivers, DEV_NULL, ""));
 	}
 
 	/**
@@ -129,27 +129,27 @@ public final class TestSubsets {
 	@SuppressWarnings(ST_MET)
 	@Test
 	public void testFortressSubset() throws IOException {
-		final Fortress one = new Fortress(new Player(1, ONE_STR), "fOne", 1);
-		final Fortress two = new Fortress(new Player(2, "two"), "fOne", 1);
+		final Fortress firstFort = new Fortress(new Player(1, ONE_STR), "fOne", 1);
+		final Fortress secondFort = new Fortress(new Player(2, "two"), "fOne", 1);
 		assertFalse("Subset requires same owner, first test",
-				one.isSubset(two, DEV_NULL, ""));
+				firstFort.isSubset(secondFort, DEV_NULL, ""));
 		assertFalse("Subset requires same owner, second test",
-				two.isSubset(one, DEV_NULL, ""));
-		final Fortress three = new Fortress(new Player(1, ONE_STR), "fTwo", 2);
+				secondFort.isSubset(firstFort, DEV_NULL, ""));
+		final Fortress thirdFort = new Fortress(new Player(1, ONE_STR), "fTwo", 2);
 		assertFalse("Subset requires same name, first test",
-				one.isSubset(three, DEV_NULL, ""));
+				firstFort.isSubset(thirdFort, DEV_NULL, ""));
 		assertFalse("Subset requires same name, second test",
-				three.isSubset(one, DEV_NULL, ""));
-		final Fortress four = new Fortress(new Player(1, ONE_STR), "fOne", 3);
+				thirdFort.isSubset(firstFort, DEV_NULL, ""));
+		final Fortress fourthFort = new Fortress(new Player(1, ONE_STR), "fOne", 3);
 		assertTrue("Subset doesn't require identiy or ID equality",
-				one.isSubset(four, DEV_NULL, ""));
+				firstFort.isSubset(fourthFort, DEV_NULL, ""));
 		assertTrue("Subset doesn't require identiy or ID equality",
-				four.isSubset(one, DEV_NULL, ""));
-		four.addMember(new Unit(new Player(2, "two"), "unit_type", "unit_name", 4));
+				fourthFort.isSubset(firstFort, DEV_NULL, ""));
+		fourthFort.addMember(new Unit(new Player(2, "two"), "unit_type", "unit_name", 4));
 		assertTrue("Fortress without is a subset of fortress with unit",
-				four.isSubset(one, DEV_NULL, ""));
+				fourthFort.isSubset(firstFort, DEV_NULL, ""));
 		assertFalse("Fortress with is not a subset of fortress without unit",
-				one.isSubset(four, DEV_NULL, ""));
+				firstFort.isSubset(fourthFort, DEV_NULL, ""));
 	}
 
 	/**
@@ -160,48 +160,48 @@ public final class TestSubsets {
 	@SuppressWarnings(ST_MET)
 	@Test
 	public void testMapSubset() throws IOException {
-		final IMutableMapNG one =
+		final IMutableMapNG firstMap =
 				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
 						-1);
 		final Point pointOne = PointFactory.point(0, 0);
-		one.setBaseTerrain(pointOne, TileType.Jungle);
-		final IMutableMapNG two =
+		firstMap.setBaseTerrain(pointOne, TileType.Jungle);
+		final IMutableMapNG secondMap =
 				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
 						-1);
-		two.setBaseTerrain(pointOne, TileType.Jungle);
+		secondMap.setBaseTerrain(pointOne, TileType.Jungle);
 		final Point pointTwo = PointFactory.point(1, 1);
-		two.setBaseTerrain(pointTwo, TileType.Ocean);
+		secondMap.setBaseTerrain(pointTwo, TileType.Ocean);
 		final IMapNG zero = new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
 				                               -1);
 		assertTrue("None is a subset of itself",
 				zero.isSubset(zero, DEV_NULL, ""));
-		assertTrue("None is a subset of one", one.isSubset(zero, DEV_NULL, ""));
-		assertTrue("None is a subset of two", two.isSubset(zero, DEV_NULL, ""));
+		assertTrue("None is a subset of one", firstMap.isSubset(zero, DEV_NULL, ""));
+		assertTrue("None is a subset of two", secondMap.isSubset(zero, DEV_NULL, ""));
 		assertFalse("One is not a subset of none",
-				zero.isSubset(one, DEV_NULL, ""));
-		assertTrue("One is a subset of itself", one.isSubset(one, DEV_NULL, ""));
-		assertTrue("One is a subset of two", two.isSubset(one, DEV_NULL, ""));
+				zero.isSubset(firstMap, DEV_NULL, ""));
+		assertTrue("One is a subset of itself", firstMap.isSubset(firstMap, DEV_NULL, ""));
+		assertTrue("One is a subset of two", secondMap.isSubset(firstMap, DEV_NULL, ""));
 		assertFalse("TWo is not a subset of none",
-				zero.isSubset(two, DEV_NULL, ""));
-		assertFalse("Two is not a subset of one", one.isSubset(two, DEV_NULL, ""));
-		assertTrue("Two is a subset of itself", two.isSubset(two, DEV_NULL, ""));
-		one.setBaseTerrain(pointTwo, TileType.Plains);
+				zero.isSubset(secondMap, DEV_NULL, ""));
+		assertFalse("Two is not a subset of one", firstMap.isSubset(secondMap, DEV_NULL, ""));
+		assertTrue("Two is a subset of itself", secondMap.isSubset(secondMap, DEV_NULL, ""));
+		firstMap.setBaseTerrain(pointTwo, TileType.Plains);
 		assertFalse("Corresponding but non-matching tile breaks subset",
-				two.isSubset(one, DEV_NULL, ""));
+				secondMap.isSubset(firstMap, DEV_NULL, ""));
 		assertFalse("Corresponding but non-matching tile breaks subset",
-				one.isSubset(two, DEV_NULL, ""));
-		two.setBaseTerrain(pointTwo, TileType.Plains);
+				firstMap.isSubset(secondMap, DEV_NULL, ""));
+		secondMap.setBaseTerrain(pointTwo, TileType.Plains);
 		assertTrue("Subset again after resetting terrain",
-				two.isSubset(one, DEV_NULL, ""));
-		one.addFixture(pointTwo, new CacheFixture("category", "contents", 3));
+				secondMap.isSubset(firstMap, DEV_NULL, ""));
+		firstMap.addFixture(pointTwo, new CacheFixture("category", "contents", 3));
 		assertTrue("Subset calculation ignores caches",
-				two.isSubset(one, DEV_NULL, ""));
-		one.addFixture(pointTwo, new TextFixture("text", -1));
+				secondMap.isSubset(firstMap, DEV_NULL, ""));
+		firstMap.addFixture(pointTwo, new TextFixture("text", -1));
 		assertTrue("Subset calculation ignores text fixtures",
-				two.isSubset(one, DEV_NULL, ""));
-		one.addFixture(pointTwo, new Animal("animal", true, false, "status", 5));
+				secondMap.isSubset(firstMap, DEV_NULL, ""));
+		firstMap.addFixture(pointTwo, new Animal("animal", true, false, "status", 5));
 		assertTrue("Subset calculation ignores animal tracks",
-				two.isSubset(one, DEV_NULL, ""));
+				secondMap.isSubset(firstMap, DEV_NULL, ""));
 	}
 	/**
 	 * Test subsets' interaction with copy().
@@ -209,28 +209,28 @@ public final class TestSubsets {
 	 */
 	@Test
 	public void testSubsetsAndCopy() throws IOException {
-		final IMutableMapNG one =
+		final IMutableMapNG firstMap =
 				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
 						-1);
 		final Point pointOne = PointFactory.point(0, 0);
-		one.setBaseTerrain(pointOne, TileType.Jungle);
+		firstMap.setBaseTerrain(pointOne, TileType.Jungle);
 		final IMapNG zero = new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
 				                               -1);
-		assertTrue("zero is a subset of one before copy", one.isSubset(zero, DEV_NULL, ""));
-		final IMutableMapNG two =
+		assertTrue("zero is a subset of one before copy", firstMap.isSubset(zero, DEV_NULL, ""));
+		final IMutableMapNG secondMap =
 				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
 						-1);
-		two.setBaseTerrain(pointOne, TileType.Jungle);
+		secondMap.setBaseTerrain(pointOne, TileType.Jungle);
 		final Point pointTwo = PointFactory.point(1, 1);
-		two.setBaseTerrain(pointTwo, TileType.Ocean);
-		one.setBaseTerrain(pointTwo, TileType.Plains);
-		two.setBaseTerrain(pointTwo, TileType.Plains);
-		one.addFixture(pointTwo, new CacheFixture("category", "contents", 3));
-		one.addFixture(pointTwo, new TextFixture("text", -1));
-		one.addFixture(pointTwo, new Animal("animal", true, false, "status", 5));
-		one.addFixture(pointOne, new Fortification(TownStatus.Burned, TownSize.Large, 15, "fortification", 6, new Player(0, "")));
-		assertEquals("Cloned map equals original", one, one.copy(false));
-		final IMapNG clone = one.copy(true);
+		secondMap.setBaseTerrain(pointTwo, TileType.Ocean);
+		firstMap.setBaseTerrain(pointTwo, TileType.Plains);
+		secondMap.setBaseTerrain(pointTwo, TileType.Plains);
+		firstMap.addFixture(pointTwo, new CacheFixture("category", "contents", 3));
+		firstMap.addFixture(pointTwo, new TextFixture("text", -1));
+		firstMap.addFixture(pointTwo, new Animal("animal", true, false, "status", 5));
+		firstMap.addFixture(pointOne, new Fortification(TownStatus.Burned, TownSize.Large, 15, "fortification", 6, new Player(0, "")));
+		assertEquals("Cloned map equals original", firstMap, firstMap.copy(false));
+		final IMapNG clone = firstMap.copy(true);
 		assertTrue("unfilled map is still a subset of zeroed clone", clone.isSubset(zero, DEV_NULL, ""));
 		// DCs, the only thing zeroed out in *map* copy() at the moment, are ignored in equals().
 		for (final TileFixture fix : clone.getOtherFixtures(pointOne)) {

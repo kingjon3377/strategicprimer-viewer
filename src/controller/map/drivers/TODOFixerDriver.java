@@ -95,12 +95,12 @@ public final class TODOFixerDriver {
 	private void fixUnit(final Unit unit, final Collection<String> jobList) {
 		final Random random = new Random(unit.getID());
 		count++;
-		for (final String string : jobList) {
+		for (final String job : jobList) {
 			if (random.nextBoolean()) {
 				SystemOut.SYS_OUT.printf(
 						"Setting unit with ID #%d (%d / 5328) to kind %s%n",
-						Integer.valueOf(unit.getID()), Integer.valueOf(count), string);
-				unit.setKind(string);
+						Integer.valueOf(unit.getID()), Integer.valueOf(count), job);
+				unit.setKind(job);
 				return;
 			}
 		}
@@ -115,11 +115,11 @@ public final class TODOFixerDriver {
 			desc = "other";
 		}
 		try {
-			final String string =
+			final String kind =
 					helper.inputString("What's the next possible kind for "
 							+ desc + "? ");
-			unit.setKind(string);
-			jobList.add(string);
+			unit.setKind(kind);
+			jobList.add(kind);
 		} catch (final IOException e) {
 			LOGGER.log(Level.FINE, "I/O error interacting with user", e);
 			return;

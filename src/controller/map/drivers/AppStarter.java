@@ -80,21 +80,21 @@ public final class AppStarter implements ISPDriver {
 	 * If the two drivers don't have the same short and long options, or if both
 	 * are or neither is graphical, logs a warning.
 	 *
-	 * @param one a first driver
-	 * @param two a second driver
+	 * @param cliDriver a first driver
+	 * @param guiDriver a second driver
 	 */
-	private static void addChoice(final ISPDriver one, final ISPDriver two) {
-		final DriverUsage oneUsage = one.usage();
-		final DriverUsage twoUsage = two.usage();
-		if (oneUsage.isGraphical() || !twoUsage.isGraphical()) {
+	private static void addChoice(final ISPDriver cliDriver, final ISPDriver guiDriver) {
+		final DriverUsage cliUsage = cliDriver.usage();
+		final DriverUsage guiUsage = guiDriver.usage();
+		if (cliUsage.isGraphical() || !guiUsage.isGraphical()) {
 			LOGGER.warning("Two-arg addChoice expects non-GUI / GUI pair");
-		} else if (!oneUsage.getShortOption().equals(twoUsage.getShortOption())
-				|| !oneUsage.getLongOption().equals(twoUsage.getLongOption())) {
+		} else if (!cliUsage.getShortOption().equals(guiUsage.getShortOption())
+				|| !cliUsage.getLongOption().equals(guiUsage.getLongOption())) {
 			LOGGER.warning("In two-arg addChoice, args' options should match");
 		}
-		final Pair<ISPDriver, ISPDriver> pair = Pair.of(one, two);
-		CACHE.put(oneUsage.getShortOption(), pair);
-		CACHE.put(oneUsage.getLongOption(), pair);
+		final Pair<ISPDriver, ISPDriver> pair = Pair.of(cliDriver, guiDriver);
+		CACHE.put(cliUsage.getShortOption(), pair);
+		CACHE.put(cliUsage.getLongOption(), pair);
 	}
 
 	static {
