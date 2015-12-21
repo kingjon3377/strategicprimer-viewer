@@ -112,10 +112,10 @@ public final class ExplorationRunner { // NOPMD
 			throws MissingTableException {
 		if (TileType.BorealForest == terrain) {
 			return getTable("boreal_major_tree").generateEvent(point,
-					terrain, fixtures); // NOPMD
+					TileType.BorealForest, fixtures); // NOPMD
 		} else if (TileType.TemperateForest == terrain) {
 			return getTable("temperate_major_tree").generateEvent(point,
-					terrain, fixtures);
+					TileType.TemperateForest, fixtures);
 		} else {
 			throw new IllegalArgumentException(
 					"Only forests have primary trees");
