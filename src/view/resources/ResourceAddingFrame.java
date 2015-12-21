@@ -7,6 +7,7 @@ import model.map.Player;
 import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
 import model.resources.ResourceManagementDriver;
+import view.util.BoxPanel;
 import view.util.ErrorShower;
 import view.worker.PlayerChooserHandler;
 import view.worker.WorkerMenu;
@@ -82,8 +83,7 @@ public class ResourceAddingFrame extends JFrame {
 		});
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
 		add(resourceLabel);
-		final JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
+		final JPanel panel = new BoxPanel(true);
 		addPair(panel, new JLabel("General Category"), resKindBox);
 		addPair(panel, new JLabel("Turn created"), resCreatedField);
 		addPair(panel, new JLabel("Specific Resource"), resourceBox);
@@ -118,8 +118,7 @@ public class ResourceAddingFrame extends JFrame {
 		add(panel);
 		add(Box.createVerticalGlue());
 		add(implementLabel);
-		final JPanel secondPanel = new JPanel();
-		secondPanel.setLayout(new BoxLayout(secondPanel, BoxLayout.LINE_AXIS));
+		final JPanel secondPanel = new BoxPanel(true);
 		secondPanel.add(implKindBox);
 		final JButton implButton = new JButton("Add Equipment");
 		implButton.addActionListener(evt -> {
@@ -137,8 +136,7 @@ public class ResourceAddingFrame extends JFrame {
 
 	private static void addPair(final Container container, final Component firstComponent,
 	                            final Component secondComponent) {
-		final JPanel panel = new JPanel();
-		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+		final JPanel panel = new BoxPanel(false);
 		panel.add(Box.createVerticalGlue());
 		panel.add(firstComponent);
 		panel.add(Box.createVerticalGlue());
