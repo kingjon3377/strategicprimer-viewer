@@ -14,6 +14,7 @@ import controller.map.readerng.ReaderAdapter;
 import org.eclipse.jdt.annotation.NonNull;
 import util.FatalWarningException;
 import util.NullCleaner;
+import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
 
@@ -68,7 +69,8 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(BaseTestFixtureSerialization.class.getName()));
+	private static final Logger LOGGER =
+			TypesafeLogger.getLogger(BaseTestFixtureSerialization.class);
 	/**
 	 * Assert that reading the given XML will produce an UnwantedChildException.
 	 * If it's only supposed to be a warning, assert that it'll pass with
