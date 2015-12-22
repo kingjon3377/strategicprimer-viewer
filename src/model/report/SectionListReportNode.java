@@ -61,7 +61,7 @@ public class SectionListReportNode extends AbstractReportNode {
 	public SectionListReportNode(final Point point, final int lvl,
 	                             final String header) {
 		super(point, header);
-		setLevel(lvl);
+		setHeaderLevel(lvl);
 		subheader = "";
 	}
 
@@ -73,7 +73,7 @@ public class SectionListReportNode extends AbstractReportNode {
 	 */
 	public SectionListReportNode(final int lvl, final String header) {
 		super(header);
-		setLevel(lvl);
+		setHeaderLevel(lvl);
 		subheader = "";
 	}
 
@@ -131,7 +131,7 @@ public class SectionListReportNode extends AbstractReportNode {
 	/**
 	 * @param lvl the new header level
 	 */
-	public final void setLevel(final int lvl) {
+	public final void setHeaderLevel(final int lvl) {
 		level = lvl;
 	}
 

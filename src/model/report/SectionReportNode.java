@@ -39,7 +39,7 @@ public final class SectionReportNode extends AbstractReportNode {
 	 */
 	public SectionReportNode(final int lvl, final String header) {
 		super(header);
-		setLevel(lvl);
+		setHeaderLevel(lvl);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public final class SectionReportNode extends AbstractReportNode {
 	/**
 	 * @param lvl the new header level
 	 */
-	public void setLevel(final int lvl) {
+	public void setHeaderLevel(final int lvl) {
 		level = lvl;
 	}
 
