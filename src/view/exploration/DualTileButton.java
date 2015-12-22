@@ -59,6 +59,7 @@ public final class DualTileButton extends JButton {
 	/**
 	 * The currently selected point.
 	 */
+	@SuppressWarnings("FieldHasSetterButNoGetter")
 	private Point point = PointFactory.point(-1, -1);
 	/**
 	 * The ZOrderFilter instance to pass to the factory rather than null.
