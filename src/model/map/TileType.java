@@ -107,6 +107,7 @@ public enum TileType {
 	 * @param ver a map version
 	 * @return a list of all tile-types that version supports.
 	 */
+	@SuppressWarnings("SynchronizationOnStaticField")
 	public static Iterable<TileType> valuesForVersion(final int ver) {
 		final Integer boxedVer = NullCleaner.assertNotNull(Integer.valueOf(ver));
 		synchronized (VALS_BY_VER) {
