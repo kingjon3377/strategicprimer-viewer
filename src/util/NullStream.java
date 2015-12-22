@@ -31,9 +31,8 @@ public final class NullStream extends OutputStream {
 	/**
 	 * A bit-bucket to send subset output to.
 	 */
-	public static final Appendable DEV_NULL = new PrintWriter(
-			                                                         new
-					                                                         OutputStreamWriter(new NullStream()));
+	public static final Appendable DEV_NULL =
+			new PrintWriter(new OutputStreamWriter(new NullStream()));
 
 	/**
 	 * Do nothing when anything is written.
