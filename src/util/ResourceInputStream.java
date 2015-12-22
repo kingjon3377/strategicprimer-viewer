@@ -29,6 +29,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("IOResourceOpenedButNotSafelyClosed")
 public final class ResourceInputStream extends InputStream {
 	/**
 	 * The stream we wrap.

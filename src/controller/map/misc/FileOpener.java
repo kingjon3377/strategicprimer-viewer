@@ -31,6 +31,7 @@ import java.io.StringReader;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("IOResourceOpenedButNotSafelyClosed")
 public final class FileOpener {
 	/**
 	 * Do not instantiate; only static methods.
@@ -45,6 +46,8 @@ public final class FileOpener {
 	 * instead,
 	 * a StringReader is created from the string (with the "string:" prefix removed) and
 	 * returned.
+	 *
+	 * TODO: Make this a wrapper class, implementing Reader, instead of a factory
 	 *
 	 * @param filename a filename
 	 * @return a Reader reading the file it contains (but see method summary)
