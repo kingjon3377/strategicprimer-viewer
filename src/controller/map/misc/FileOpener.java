@@ -52,13 +52,11 @@ public final class FileOpener {
 	 */
 	public static Reader createReader(final String filename)
 			throws FileNotFoundException {
-		final Reader istream; // NOPMD
 		if (filename.contains("string:<")) {
-			istream = new BufferedReader(new StringReader(filename.substring(7)));
+			return new BufferedReader(new StringReader(filename.substring(7)));
 		} else {
-			istream = new BufferedReader(new FileReader(filename));
+			return new BufferedReader(new FileReader(filename));
 		}
-		return istream;
 	}
 
 	/**
