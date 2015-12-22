@@ -552,11 +552,9 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 			}
 		}
 		for (int i = 0; i < levels; i++) {
-			retval.addJob(new Job(// NOPMD
-					                     cli.inputString(
-							                     "Which Job does worker have a level in?" +
-									                     " "),
-					                     1));
+			retval.addJob(
+					new Job(cli.inputString("Which Job does worker have a level in? "),
+							       1));
 		}
 		return retval;
 	}

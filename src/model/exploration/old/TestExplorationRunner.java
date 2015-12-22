@@ -160,9 +160,7 @@ public final class TestExplorationRunner {
 		runner.loadTable(TEST_TABLE_ONE, new ConstantTable(
 				                                                  "( #test_table_two# )" +
 						                                                  ""));
-		runner.loadTable(TEST_TABLE_TWO, new ConstantTable(
-				                                                  "( #test_table_three# " +
-						                                                  ")"));
+		runner.loadTable(TEST_TABLE_TWO, new ConstantTable("( #test_table_three# )"));
 		runner.loadTable(TEST_TABLE_THREE, new ConstantTable(TEST_THREE));
 		runner.loadTable("test_table_four", new ConstantTable(
 				                                                     "_ #test_table_one"));
