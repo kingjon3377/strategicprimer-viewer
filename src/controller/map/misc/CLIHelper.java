@@ -50,9 +50,8 @@ public final class CLIHelper implements ICLIHelper {
 	/**
 	 * A parser for numbers.
 	 */
-	private static final NumberFormat NUM_PARSER = NullCleaner
-			                                               .assertNotNull(NumberFormat
-					                                                              .getIntegerInstance());
+	private static final NumberFormat NUM_PARSER =
+			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
 
 	/**
 	 * No-arg constructor.
@@ -102,13 +101,9 @@ public final class CLIHelper implements ICLIHelper {
 	 * @throws IOException on I/O error getting the user's input
 	 */
 	@Override
-	public <T extends HasName> int chooseFromList(
-			                                             final List<@NonNull ? extends
-					                                                        T> items,
-			                                             final String desc,
-			                                             final String none,
-			                                             final String prompt,
-			                                             final boolean auto)
+	public <T extends HasName> int chooseFromList(final List<@NonNull ? extends T> items,
+	                                              final String desc, final String none,
+	                                              final String prompt, final boolean auto)
 			throws IOException {
 		if (items.isEmpty()) {
 			SYS_OUT.println(none);
