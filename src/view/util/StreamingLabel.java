@@ -29,15 +29,11 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  */
 public final class StreamingLabel extends JLabel {
-	/**
-	 * The source for the string.
-	 */
-	private final StringWriter swriter = new StringWriter();
 
 	/**
 	 * The writer that can be printed to.
 	 */
-	private final PrintWriter writer = new StreamingLabelWriter(swriter, this);
+	private final PrintWriter writer = new StreamingLabelWriter(new StringWriter(), this);
 
 	/**
 	 * Constructor, to set the background color to black.
