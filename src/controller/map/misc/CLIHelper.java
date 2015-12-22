@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
@@ -48,6 +51,10 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	private final BufferedReader istream;
 	/**
+	 * The output stream we'll write to.
+	 */
+	private final PrintWriter ostream;
+	/**
 	 * A parser for numbers.
 	 */
 	private static final NumberFormat NUM_PARSER =
@@ -58,7 +65,7 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@SuppressWarnings("null") // System.in cannot be null
 	public CLIHelper() {
-		this(System.in);
+		this(System.in, System.out);
 	}
 
 	/**
@@ -66,8 +73,9 @@ public final class CLIHelper implements ICLIHelper {
 	 *
 	 * @param in the stream to read from.
 	 */
-	public CLIHelper(final InputStream in) { // NOPMD
+	public CLIHelper(final InputStream in, final OutputStream out) { // NOPMD
 		istream = new BufferedReader(new InputStreamReader(in));
+		ostream = new PrintWriter(new OutputStreamWriter(out));
 	}
 
 	/**
@@ -77,8 +85,7 @@ public final class CLIHelper implements ICLIHelper {
 	 * @param list    the list to print.
 	 * @throws IOException on I/O error writing to stream
 	 */
-	private static void printList(final Appendable ostream,
-	                              final List<? extends HasName> list) throws
+	private void printList(final List<? extends HasName> list) throws
 			IOException {
 		for (int i = 0; i < list.size(); i++) {
 			ostream.append(Integer.toString(i));
@@ -106,16 +113,16 @@ public final class CLIHelper implements ICLIHelper {
 	                                              final String prompt, final boolean auto)
 			throws IOException {
 		if (items.isEmpty()) {
-			SYS_OUT.println(none);
+			ostream.println(none);
 			return -1; // NOPMD
 		}
 		SYS_OUT.println(desc);
 		if (auto && (items.size() == 1)) {
-			SYS_OUT.print("Automatically choosing only item, ");
-			SYS_OUT.println(items.get(0));
+			ostream.print("Automatically choosing only item, ");
+			ostream.println(items.get(0));
 			return 0; // NOPMD
 		} else {
-			printList(SYS_OUT, items);
+			printList(items);
 			return inputNumber(prompt);
 		}
 	}
@@ -149,7 +156,7 @@ public final class CLIHelper implements ICLIHelper {
 	public int inputNumber(final String prompt) throws IOException {
 		int retval = -1;
 		while (retval < 0) {
-			SYS_OUT.print(prompt);
+			ostream.print(prompt);
 			final String input = istream.readLine();
 			if (input == null) {
 				throw new IOException("Null line of input");
@@ -176,7 +183,7 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public String inputString(final String prompt) throws IOException {
-		SYS_OUT.print(prompt);
+		ostream.print(prompt);
 		final String line = istream.readLine();
 		if (line == null) {
 			return ""; // NOPMD
@@ -206,8 +213,8 @@ public final class CLIHelper implements ICLIHelper {
 			} else if (EqualsAny.equalsAny(input, "no", "false", "n", "f")) {
 				return false;
 			} else {
-				SYS_OUT.println("Please enter 'yes', 'no', 'true', or 'false',");
-				SYS_OUT.println("or the first character of any of those.");
+				ostream.println("Please enter 'yes', 'no', 'true', or 'false',");
+				ostream.println("or the first character of any of those.");
 			}
 		}
 	}
@@ -227,8 +234,7 @@ public final class CLIHelper implements ICLIHelper {
 	 * @param list    the list to print.
 	 * @throws IOException on I/O error writing to stream
 	 */
-	private static void printStringList(final Appendable ostream,
-	                                    final List<String> list) throws IOException {
+	private void printStringList(final List<String> list) throws IOException {
 		for (int i = 0; i < list.size(); i++) {
 			ostream.append(Integer.toString(i));
 			ostream.append(": ");
@@ -254,16 +260,16 @@ public final class CLIHelper implements ICLIHelper {
 	                                final boolean auto)
 			throws IOException {
 		if (items.isEmpty()) {
-			SYS_OUT.println(none);
+			ostream.println(none);
 			return -1; // NOPMD
 		}
-		SYS_OUT.println(desc);
+		ostream.println(desc);
 		if (auto && (items.size() == 1)) {
-			SYS_OUT.print("Automatically choosing only item, ");
-			SYS_OUT.println(items.get(0));
+			ostream.print("Automatically choosing only item, ");
+			ostream.println(items.get(0));
 			return 0; // NOPMD
 		} else {
-			printStringList(SYS_OUT, items);
+			printStringList(items);
 			return inputNumber(prompt);
 		}
 	}
@@ -272,21 +278,24 @@ public final class CLIHelper implements ICLIHelper {
 	 * @param format the format string
 	 * @param args the arguments to fill into the format string.
 	 */
+	@Override
 	public void printf(final String format, final Object ... args) {
-		SYS_OUT.printf(format, args);
+		ostream.printf(format, args);
 	}
 	/**
 	 * Print the specified string, then a newline.
 	 * @param line the line to print
 	 */
+	@Override
 	public void println(final String line) {
-		SYS_OUT.println(line);
+		ostream.println(line);
 	}
 	/**
 	 * Print the specified string.
 	 * @param text the string to print
 	 */
+	@Override
 	public void print(final String text) {
-		SYS_OUT.print(text);
+		ostream.print(text);
 	}
 }
