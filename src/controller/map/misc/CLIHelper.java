@@ -298,4 +298,13 @@ public final class CLIHelper implements ICLIHelper {
 	public void print(final String text) {
 		ostream.print(text);
 	}
+
+	/**
+	 * Close I/O streams.
+	 */
+	@Override
+	public void close() throws IOException {
+		istream.close();
+		ostream.close();
+	}
 }

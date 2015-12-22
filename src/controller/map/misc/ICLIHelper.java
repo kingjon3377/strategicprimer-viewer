@@ -1,5 +1,6 @@
 package controller.map.misc;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.util.List;
 import model.map.HasName;
@@ -26,7 +27,7 @@ import model.map.HasName;
  *
  * @author Jonathan Lovelace
  */
-public interface ICLIHelper {
+public interface ICLIHelper extends Closeable {
 
 	/**
 	 * Have the user choose an item from a list.
