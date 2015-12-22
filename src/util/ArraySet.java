@@ -91,9 +91,7 @@ public final class ArraySet<T> implements Set<T> {
 	 */
 	@Override
 	public <TYPE> TYPE[] toArray(final TYPE @Nullable [] array) {
-		return NullCleaner.assertNotNullArray(impl.toArray(NullCleaner
-				                                                   .assertNotNull(
-						                                                   array)));
+		return NullCleaner.assertNotNullArray(impl.toArray(array));
 	}
 
 	/**
