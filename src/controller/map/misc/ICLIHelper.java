@@ -86,4 +86,20 @@ public interface ICLIHelper {
 	 * @throws IOException on I/O error
 	 */
 	boolean inputBoolean(String prompt) throws IOException;
+	/**
+	 * Print a formatted string.
+	 * @param format the format string
+	 * @param args the arguments to fill into the format string.
+	 */
+	void printf(String format, Object ... args);
+	/**
+	 * Print the specified string, then a newline.
+	 * @param line the line to print
+	 */
+	void println(String line);
+	/**
+	 * Print the specified string.
+	 * @param text the string to print
+	 */
+	void print(String text);
 }

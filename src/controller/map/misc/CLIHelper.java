@@ -267,4 +267,26 @@ public final class CLIHelper implements ICLIHelper {
 			return inputNumber(prompt);
 		}
 	}
+	/**
+	 * Print a formatted string.
+	 * @param format the format string
+	 * @param args the arguments to fill into the format string.
+	 */
+	public void printf(final String format, final Object ... args) {
+		SYS_OUT.printf(format, args);
+	}
+	/**
+	 * Print the specified string, then a newline.
+	 * @param line the line to print
+	 */
+	public void println(final String line) {
+		SYS_OUT.println(line);
+	}
+	/**
+	 * Print the specified string.
+	 * @param text the string to print
+	 */
+	public void print(final String text) {
+		SYS_OUT.print(text);
+	}
 }
