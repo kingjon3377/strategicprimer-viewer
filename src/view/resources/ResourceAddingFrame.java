@@ -54,6 +54,7 @@ import view.worker.WorkerMenu;
  */
 public class ResourceAddingFrame extends JFrame {
 	private final ResourceManagementDriver model;
+	@SuppressWarnings("FieldMayBeFinal")
 	private Player current;
 	private final JLabel resourceLabel;
 	private final JLabel implementLabel;
