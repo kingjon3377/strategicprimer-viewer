@@ -71,7 +71,7 @@ public class WorkerStats {
 	 *
 	 * @param hitPoints    the worker's health
 	 * @param maxHitPoints the worker's max health
-	 * @param strength     the worker's strength
+	 * @param strengthStat     the worker's strength
 	 * @param dexterity    the worker's dexterity
 	 * @param constitution the worker's constitution
 	 * @param intelligence the worker's intelligence
@@ -79,11 +79,11 @@ public class WorkerStats {
 	 * @param charisma     th worker's charisma
 	 */
 	public WorkerStats(final int hitPoints, final int maxHitPoints,
-	                   final int strength, final int dexterity, final int constitution,
+	                   final int strengthStat, final int dexterity, final int constitution,
 	                   final int intelligence, final int wisdom, final int charisma) {
 		hp = hitPoints;
 		maxHP = maxHitPoints;
-		this.strength = strength;
+		strength = strengthStat;
 		dex = dexterity;
 		con = constitution;
 		intel = intelligence;
@@ -135,10 +135,10 @@ public class WorkerStats {
 	}
 
 	/**
-	 * @param strength the worker's strength
+	 * @param strengthStat the worker's strength
 	 */
-	public void setStrength(final int strength) {
-		this.strength = strength;
+	public void setStrength(final int strengthStat) {
+		strength = strengthStat;
 	}
 
 	/**
