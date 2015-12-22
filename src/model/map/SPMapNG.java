@@ -670,7 +670,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * @param curr the new current turn
 	 */
 	@Override
-	public void setTurn(final int curr) {
+	public void setCurrentTurn(final int curr) {
 		turn = curr;
 	}
 

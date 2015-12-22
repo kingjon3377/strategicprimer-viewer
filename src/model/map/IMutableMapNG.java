@@ -96,5 +96,5 @@ public interface IMutableMapNG extends IMapNG {
 	/**
 	 * @param turn the new current turn
 	 */
-	void setTurn(int turn);
+	void setCurrentTurn(int turn);
 }
