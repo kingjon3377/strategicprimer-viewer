@@ -28,7 +28,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.Pair;
 
 import static util.NullCleaner.assertNotNull;
-import static view.util.SystemOut.SYS_OUT;
 
 /**
  * A CLI to help running exploration. Now separated from the "driver" bits, to simplify
@@ -174,8 +173,8 @@ public final class ExplorationCLI {
 		} catch (final TraversalImpossibleException except) {
 			LOGGER.log(Level.FINEST, "Attempted movement to impassable destination",
 					except);
-			System.out.print("That direction is impassable; we've made sure ");
-			System.out.println("all maps show that at a cost of 1 MP");
+			helper.print("That direction is impassable; we've made sure ");
+			helper.println("all maps show that at a cost of 1 MP");
 			return 1; // NOPMD
 		}
 		final Collection<TileFixture> constants = new ArrayList<>();
@@ -212,13 +211,13 @@ public final class ExplorationCLI {
 			swearVillages(dPoint);
 			cost += 5;
 		}
-		SYS_OUT.printf("The explorer comes to %s, a tile with terrain %s%n",
+		helper.printf("The explorer comes to %s, a tile with terrain %s%n",
 				dPoint.toString(), map.getBaseTerrain(dPoint).toString());
 		if (allFixtures.isEmpty()) {
-			SYS_OUT.println("The following fixtures were automatically noticed:");
+			helper.println("The following fixtures were automatically noticed:");
 		} else {
-			System.out.print("The following fixtures were noticed, all but the ");
-			System.out.println("last automtically:");
+			helper.print("The following fixtures were noticed, all but the ");
+			helper.println("last automtically:");
 			Collections.shuffle(allFixtures);
 			constants.add(allFixtures.get(0));
 		}
@@ -241,7 +240,7 @@ public final class ExplorationCLI {
 	                                     @Nullable final TileFixture fix,
 	                                     final HasOwner mover) {
 		if (fix != null) {
-			SYS_OUT.println(fix);
+			helper.println(fix.toString());
 			final boolean zero = (fix instanceof HasOwner) && !((HasOwner) fix)
 					                                                   .getOwner()
 					                                                   .equals(mover
@@ -273,14 +272,14 @@ public final class ExplorationCLI {
 	public void moveUntilDone() throws IOException {
 		final IUnit selUnit = model.getSelectedUnit();
 		if (selUnit == null) {
-			SYS_OUT.println("No unit is selected");
+			helper.println("No unit is selected");
 		} else {
-			SYS_OUT.println("Details of the unit:");
-			SYS_OUT.println(selUnit.verbose());
+			helper.println("Details of the unit:");
+			helper.println(selUnit.verbose());
 			final int totalMP = helper.inputNumber("MP the unit has: ");
 			int movement = totalMP;
 			while (movement > 0) {
-				SYS_OUT.printf("%d MP of %d remaining.%n%s%n", Integer.valueOf(movement),
+				helper.printf("%d MP of %d remaining.%n%s%n", Integer.valueOf(movement),
 						Integer.valueOf(totalMP), PROMPT);
 				movement -= move(selUnit);
 			}
