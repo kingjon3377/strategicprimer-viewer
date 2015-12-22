@@ -272,23 +272,13 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				iteratorSize(five.getOtherFixtures(point(2, 3))));
 		assertSerialization("Multiple units should come through", five,
 				IMapNG.class);
-		final String xmlTwo = new StringBuilder(280)
-				                      .append("<view current_player=\"-1\" " +
-						                              "current_turn=\"-1\">\n")
-				                      .append("\t<map version=\"2\" rows=\"3\" " +
-						                              "columns=\"4\">\n")
-				                      .append("\t\t<row index=\"2\">\n")
-				                      .append("\t\t\t<tile row=\"2\" column=\"3\" " +
-						                              "kind=\"jungle\">\n")
-				                      .append("\t\t\t\t<unit owner=\"2\" " +
-						                              "kind=\"explorer\" ")
-				                      .append("name=\"name one\" id=\"1\" />\n")
-				                      .append("\t\t\t\t<unit owner=\"2\" " +
-						                              "kind=\"explorer\" ")
-				                      .append("name=\"name two\" id=\"2\" />\n")
-				                      .append("\t\t\t</tile>\n")
-				                      .append("\t\t</row>\n\t</map>\n</view>\n")
-				                      .toString();
+		final String xmlTwo =
+				"<view current_player=\"-1\" current_turn=\"-1\">\n\t<map version=\"2\"" +
+						" rows=\"3\" columns=\"4\">\n\t\t<row index=\"2\">\n\t\t\t<tile" +
+						" row=\"2\" column=\"3\" kind=\"jungle\">\n\t\t\t\t<unit " +
+						"owner=\"2\" kind=\"explorer\" name=\"name one\" id=\"1\" />\n" +
+						"\t\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name two\"" +
+						" id=\"2\" />\n\t\t\t</tile>\n\t\t</row>\n\t</map>\n</view>\n";
 		assertEquals("Multiple units", xmlTwo, createSerializedForm(five, true));
 		assertEquals("Multiple units", xmlTwo,
 				createSerializedForm(five, false));
@@ -426,25 +416,19 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				IMapNG.class, "current_turn", false);
 		assertMissingChild("<view current_player=\"1\" current_turn=\"0\" />",
 				IMapNG.class, false);
-		assertUnwantedChild(assertNotNull(new StringBuilder(150)
-				                                  .append("<view current_player=\"0\" current_turn=\"0\">")
-				                                  .append("<map version=\"2\" rows=\"1\" columns=\"1\" />")
-				                                  .append("<map version=\"2\" rows=\"1\" columns=\"1\" />")
-				                                  .append("</view>").toString()),
+		assertUnwantedChild(
+				"<view current_player=\"0\" current_turn=\"0\"><map version=\"2\" " +
+						"rows=\"1\" columns=\"1\" /><map version=\"2\" rows=\"1\" " +
+						"columns=\"1\" /></view>",
 				IMapNG.class, false);
 		assertUnwantedChild(
 				"<view current_player=\"0\" current_turn=\"0\"><hill /></view>",
 				IMapNG.class, false);
-		assertMapDeserialization(
-				"Proper deserialization of map into view",
-				firstMap,
-				assertNotNull(new StringBuilder(200)
-						              .append("<map version=\"2\" rows=\"1\" ")
-						              .append("columns=\"1\" current_player=\"1\">")
-						              .append("<player number=\"1\" code_name=\"playerOne\" />")
-						              .append("<row index=\"0\">")
-						              .append("<tile row=\"0\" column=\"0\" kind=\"steppe\" />")
-						              .append("</row>").append("</map>").toString()));
+		assertMapDeserialization("Proper deserialization of map into view", firstMap,
+				"<map version=\"2\" rows=\"1\" columns=\"1\" " +
+						"current_player=\"1\"><player number=\"1\" " +
+						"code_name=\"playerOne\" /><row index=\"0\"><tile row=\"0\" " +
+						"column=\"0\" kind=\"steppe\" /></row></map>");
 	}
 
 	/**
