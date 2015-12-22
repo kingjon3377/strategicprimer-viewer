@@ -4,8 +4,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.swing.JTree;
-import javax.swing.ToolTipManager;
+import javax.swing.*;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -231,12 +230,15 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		if ((evt == null) || (getRowForLocation(evt.getX(), evt.getY()) == -1)) {
 			return null; // NOPMD
 		}
-		final Object path = getPathForLocation(evt.getX(), evt.getY())
-				                    .getLastPathComponent();
+		final TreePath path = getPathForLocation(evt.getX(), evt.getY());
 		if (path == null) {
+			return null;
+		}
+		final Object pathLast = path.getLastPathComponent();
+		if (pathLast == null) {
 			return null; // NOPMD
 		}
-		return getStatsToolTip(path);
+		return getStatsToolTip(pathLast);
 	}
 
 	/**
