@@ -79,6 +79,7 @@ public final class SubsetFrame extends JFrame {
 	 *
 	 * @author Jonathan Lovelace
 	 */
+	@SuppressWarnings("resource")
 	private static final class HTMLWriter extends FilterWriter {
 		private static final Pattern NEWLINE = Pattern.compile("\n");
 		/**

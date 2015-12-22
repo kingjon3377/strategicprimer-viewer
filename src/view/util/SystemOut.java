@@ -30,8 +30,8 @@ public final class SystemOut {
 	/**
 	 * The singleton object.
 	 */
-	public static final PrintStream SYS_OUT = NullCleaner
-			                                          .assertNotNull(System.out);
+	@SuppressWarnings("resource")
+	public static final PrintStream SYS_OUT = NullCleaner.assertNotNull(System.out);
 
 	/**
 	 * Constructor.

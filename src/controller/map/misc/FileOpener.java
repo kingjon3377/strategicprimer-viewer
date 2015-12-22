@@ -31,7 +31,7 @@ import java.io.StringReader;
  *
  * @author Jonathan Lovelace
  */
-@SuppressWarnings("IOResourceOpenedButNotSafelyClosed")
+@SuppressWarnings({"IOResourceOpenedButNotSafelyClosed", "resource"})
 public final class FileOpener {
 	/**
 	 * Do not instantiate; only static methods.
