@@ -262,10 +262,11 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	                           @Nullable final UnitMember selected) {
 		if (selected instanceof IWorker) {
 			root = (IWorker) selected;
+			fireTreeStructureChanged(new TreeModelEvent(this, new TreePath(root)));
 		} else {
 			root = null;
+			fireTreeStructureChanged(new TreeModelEvent(this, (TreePath) null));
 		}
-		fireTreeStructureChanged(new TreeModelEvent(this, new TreePath(root)));
 	}
 
 	/**
