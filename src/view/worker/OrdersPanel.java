@@ -480,7 +480,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 
 		@Override
 		public int hashCode() {
-			Iterator<IUnit> iter = units.iterator();
+			final Iterator<IUnit> iter = units.iterator();
 			if (iter.hasNext()) {
 				return iter.next().hashCode();
 			} else {

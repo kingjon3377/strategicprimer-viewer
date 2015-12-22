@@ -82,7 +82,7 @@ public final class AddRemovePanel extends JPanel {
 		add(first);
 		final BoxPanel second = new BoxPanel(false);
 		second.add(field);
-		ActionListener okListener = evt -> {
+		final ActionListener okListener = evt -> {
 			final String text = field.getText();
 			for (final AddRemoveListener listener : arListeners) {
 				listener.add(category, text);

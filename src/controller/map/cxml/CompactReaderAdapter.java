@@ -206,9 +206,9 @@ public final class CompactReaderAdapter {
 			// Skip it.
 			return;
 		} else if (obj instanceof ProxyFor) {
-			Iterator<?> iter = ((ProxyFor<?>) obj).getProxied().iterator();
+			final Iterator<?> iter = ((ProxyFor<?>) obj).getProxied().iterator();
 			if (iter.hasNext()) {
-				Object proxied = iter.next();
+				final Object proxied = iter.next();
 				assert proxied != null;
 				TypesafeLogger.getLogger(CompactReaderAdapter.class).log(Level.SEVERE,
 						"Wanted to write a proxy",
