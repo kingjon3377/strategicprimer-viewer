@@ -1,20 +1,15 @@
 package view.map.main;
 
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.event.ActionEvent;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import model.map.MapDimensions;
 import model.map.PointFactory;
 import model.viewer.IViewerModel;
-import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import view.util.BoxPanel;
 import view.util.ListenedButton;
@@ -41,7 +36,7 @@ import view.util.ListenedButton;
  *
  * @author Jonathan Lovelace
  */
-public final class SelectTileDialog extends JDialog implements ActionListener {
+public final class SelectTileDialog extends JDialog {
 	/**
 	 * The first text field.
 	 */
@@ -75,6 +70,11 @@ public final class SelectTileDialog extends JDialog implements ActionListener {
 		mainLabel.setAlignmentX(CENTER_ALIGNMENT);
 		mainLabel.setAlignmentY(TOP_ALIGNMENT);
 
+		final ActionListener okListener =
+				evt -> handleOK(NullCleaner.assertNotNull(row.getText()),
+						NullCleaner.assertNotNull(column.getText()));
+
+
 		final BoxPanel contentPane = new BoxPanel(false);
 		contentPane.add(mainLabel);
 		final BoxPanel boxPanel = new BoxPanel(true);
@@ -82,12 +82,12 @@ public final class SelectTileDialog extends JDialog implements ActionListener {
 		boxPanel.add(rowLabel);
 		boxPanel.add(row);
 		row.setActionCommand("OK");
-		row.addActionListener(this);
+		row.addActionListener(okListener);
 		boxPanel.addGlue();
 		boxPanel.add(new JLabel("Column: "));
 		boxPanel.add(column);
 		column.setActionCommand("OK");
-		column.addActionListener(this);
+		column.addActionListener(okListener);
 		boxPanel.addGlue();
 		contentPane.add(boxPanel);
 		contentPane.add(errorLabel);
@@ -97,34 +97,19 @@ public final class SelectTileDialog extends JDialog implements ActionListener {
 		errorLabel.setAlignmentY(TOP_ALIGNMENT);
 		final BoxPanel buttonPanel = new BoxPanel(true);
 		buttonPanel.addGlue();
-		buttonPanel.add(new ListenedButton("OK", this));
+		buttonPanel.add(new ListenedButton("OK", okListener));
 		buttonPanel.addGlue();
-		buttonPanel.add(new ListenedButton("Cancel", this));
+		buttonPanel.add(new ListenedButton("Cancel", evt -> {
+			setVisible(false);
+			row.setText("-1");
+			column.setText("-1");
+			dispose();
+		}));
 		buttonPanel.addGlue();
 		contentPane.add(buttonPanel);
 		setContentPane(contentPane);
 		map = model;
 		pack();
-	}
-
-	/**
-	 * Handle button presses.
-	 *
-	 * @param event the event to handle
-	 */
-	@Override
-	public void actionPerformed(@Nullable final ActionEvent event) {
-		if (event != null) {
-			if ("OK".equals(event.getActionCommand())) {
-				handleOK(NullCleaner.assertNotNull(row.getText()),
-						NullCleaner.assertNotNull(column.getText()));
-			} else if ("Cancel".equals(event.getActionCommand())) {
-				setVisible(false);
-				row.setText("-1");
-				column.setText("-1");
-				dispose();
-			}
-		}
 	}
 
 	/**
