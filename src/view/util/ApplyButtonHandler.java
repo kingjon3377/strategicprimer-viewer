@@ -35,6 +35,8 @@ public final class ApplyButtonHandler implements ActionListener {
 	/**
 	 * Constructor.
 	 *
+	 * FIXME: Once Applyable is split, take an Applyable and a Revertable.
+	 *
 	 * @param app the Applyable that does the heavy lifting.
 	 */
 	public ApplyButtonHandler(final Applyable app) {
