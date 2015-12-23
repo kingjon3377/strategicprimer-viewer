@@ -80,9 +80,9 @@ public final class MapComponent extends JComponent implements MapGUI,
 		model = theMap;
 		zof = zofilt;
 		helper = TileDrawHelperFactory.INSTANCE.factory(
-				model.getMapDimensions().version, this, zof);
+				model.getMapDimensions().version, this::imageUpdate, zof);
 		cml = new ComponentMouseListener(model);
-		cml.addSelectionChangeListener(this);
+		cml.addSelectionChangeListener(this::selectedPointChanged);
 		addMouseListener(cml);
 		final DirectionSelectionChanger dsl = new DirectionSelectionChanger(
 																				   model);
