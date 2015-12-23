@@ -2,7 +2,6 @@ package view.map.main;
 
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -66,7 +65,7 @@ import static view.util.SystemOut.SYS_OUT;
  *
  * @author Jonathan Lovelace
  */
-public final class FindDialog extends JDialog implements ActionListener {
+public final class FindDialog extends JDialog {
 	/**
 	 * The proportion between the bulk of the dialog and the filter list.
 	 */
@@ -118,8 +117,16 @@ public final class FindDialog extends JDialog implements ActionListener {
 	public FindDialog(final Frame parent, final IViewerModel model) {
 		super(parent);
 		parentFrame = parent;
+
+		final ActionListener okListener = evt -> {
+			search();
+			setVisible(false);
+			parentFrame.requestFocus();
+			dispose();
+		};
+
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		search.addActionListener(this);
+		search.addActionListener(okListener);
 		search.setActionCommand("OK");
 		errorLabel.setText("");
 		errorLabel.setMinimumSize(new Dimension(200, 15));
@@ -134,9 +141,13 @@ public final class FindDialog extends JDialog implements ActionListener {
 
 		final BoxPanel buttonPanel = new BoxPanel(true);
 		buttonPanel.addGlue();
-		buttonPanel.add(new ListenedButton("OK", this));
+		buttonPanel.add(new ListenedButton("OK", okListener));
 		buttonPanel.addGlue();
-		buttonPanel.add(new ListenedButton("Cancel", this));
+		buttonPanel.add(new ListenedButton("Cancel", evt -> {
+			setVisible(false);
+			parentFrame.requestFocus();
+			dispose();
+		}));
 		buttonPanel.addGlue();
 		contentPane.add(buttonPanel);
 		ffl = new FixtureFilterList();
@@ -154,21 +165,6 @@ public final class FindDialog extends JDialog implements ActionListener {
 																			null)));
 		map = model;
 		pack();
-	}
-
-	/**
-	 * @param event the event to handle
-	 */
-	@Override
-	public void actionPerformed(@Nullable final ActionEvent event) {
-		if (event != null) {
-			if ("OK".equals(event.getActionCommand())) {
-				search();
-			}
-			setVisible(false);
-			parentFrame.requestFocus();
-			dispose();
-		}
 	}
 
 	/**
