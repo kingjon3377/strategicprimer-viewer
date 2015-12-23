@@ -1,11 +1,9 @@
 package view.worker;
 
-import java.io.IOException;
 import model.listeners.LevelGainListener;
 import model.listeners.SkillSelectionListener;
 import model.listeners.UnitMemberListener;
 import model.map.HasName;
-import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.ISkill;
 import org.eclipse.jdt.annotation.Nullable;
@@ -39,109 +37,22 @@ public final class LevelListener implements LevelGainListener,
 		                                            UnitMemberListener,
 		                                            SkillSelectionListener {
 	/**
-	 * A type-safe null Skill.
-	 */
-	private static final ISkill NULL_SKILL = new ISkill() {
-		@Override
-		public boolean equals(@Nullable final Object obj) {
-			return this == obj;
-		}
-
-		@Override
-		public int hashCode() {
-			return -1;
-		}
-
-		@Override
-		public void addHours(final int hrs, final int condition) {
-			// Do nothing
-		}
-
-		@Override
-		public String getName() {
-			return "null";
-		}
-
-		@Override
-		public void setName(final String nomen) {
-			throw new IllegalStateException("setName called on null Skill");
-		}
-
-		@Override
-		public int getLevel() {
-			return -1;
-		}
-
-		@Override
-		public int getHours() {
-			return -1;
-		}
-
-		@Override
-		public ISkill copy(final boolean zero) {
-			throw new IllegalStateException("copy called on null Skill");
-		}
-
-		@Override
-		public boolean isEmpty() {
-			return true;
-		}
-	};
-	/**
-	 * A type-safe null UnitMember.
-	 */
-	private static final UnitMember NULL_UM = new UnitMember() {
-		@Override
-		public int getID() {
-			return -1;
-		}
-
-		@Override
-		public boolean equalsIgnoringID(final IFixture fix) {
-			return this == fix;
-		}
-
-		/**
-		 * @param obj
-		 *            another UnitMember
-		 * @param ostream
-		 *            a stream to report an explanation on
-		 * @param context
-		 *            a string to print before every line of output, describing
-		 *            the context
-		 * @return false
-		 * @throws IOException never, required by interface
-		 */
-		@Override
-		public boolean isSubset(final IFixture obj, final Appendable ostream,
-		                        final String context) throws IOException {
-			return false;
-		}
-
-		/**
-		 * @return nothing; throws
-		 * @param zero ignored
-		 */
-		@Override
-		public UnitMember copy(final boolean zero) {
-			throw new IllegalStateException("Tried to copy a null object");
-		}
-	};
-	/**
 	 * The current worker.
 	 */
-	private UnitMember worker = NULL_UM;
+	@Nullable
+	private UnitMember worker = null;
 	/**
 	 * The current skill.
 	 */
-	private ISkill skill = NULL_SKILL;
+	@Nullable
+	private ISkill skill = null;
 
 	/**
 	 * @param nSkill the newly selected skill
 	 */
 	@Override
 	public void selectSkill(@Nullable final ISkill nSkill) {
-		skill = NullCleaner.valueOrDefault(nSkill, NULL_SKILL);
+		skill = nSkill;
 	}
 
 	/**
@@ -151,7 +62,7 @@ public final class LevelListener implements LevelGainListener,
 	public void level() {
 		final UnitMember wkr = worker;
 		final ISkill skl = skill;
-		if (!NULL_UM.equals(wkr) && !NULL_SKILL.equals(skl)) {
+		if (wkr != null && skl != null) {
 			SYS_OUT.append(getName(wkr));
 			SYS_OUT.append(" gained a level in ");
 			SYS_OUT.append(getName(skl));
@@ -165,7 +76,7 @@ public final class LevelListener implements LevelGainListener,
 	@Override
 	public void memberSelected(@Nullable final UnitMember old,
 	                           @Nullable final UnitMember selected) {
-		worker = NullCleaner.valueOrDefault(selected, NULL_UM);
+		worker = selected;
 	}
 
 	/**
