@@ -6,7 +6,6 @@ import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import model.listeners.CompletionListener;
 import model.listeners.JobSelectionListener;
 import model.listeners.LevelGainListener;
 import model.listeners.SkillSelectionListener;
@@ -41,8 +40,7 @@ import org.eclipse.jdt.annotation.Nullable;
 public final class SkillList extends JList<ISkill> implements ListSelectionListener,
 		                                                              SkillSelectionSource,
 		                                                              LevelGainListener,
-		                                                              JobSelectionListener,
-		                                                              CompletionListener {
+		                                                              JobSelectionListener {
 	/**
 	 * The list of completion listeners listening to us.
 	 */
@@ -58,7 +56,13 @@ public final class SkillList extends JList<ISkill> implements ListSelectionListe
 	public SkillList() {
 		lmodel = new SkillListModel();
 		setModel(lmodel);
-		lmodel.addCompletionListener(this);
+		lmodel.addCompletionListener(end -> {
+			if (end) {
+				setSelectedIndex(lmodel.size() - 1);
+			} else {
+				setSelectedIndex(0);
+			}
+		});
 		addListSelectionListener(this);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
@@ -108,19 +112,5 @@ public final class SkillList extends JList<ISkill> implements ListSelectionListe
 	@Override
 	public void selectJob(@Nullable final IJob job) {
 		lmodel.selectJob(job);
-	}
-
-	/**
-	 * Handle the model's notification that it's finished setting up.
-	 *
-	 * @param end whether to skip to the end
-	 */
-	@Override
-	public void stopWaitingOn(final boolean end) {
-		if (end) {
-			setSelectedIndex(lmodel.size() - 1);
-		} else {
-			setSelectedIndex(0);
-		}
 	}
 }
