@@ -1,9 +1,11 @@
 package view.util;
 
-import java.awt.*;
+import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 

@@ -5,7 +5,7 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.WindowThread;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
