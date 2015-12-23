@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import model.listeners.JobSelectionListener;
 import model.listeners.LevelGainListener;
 import model.listeners.SkillSelectionListener;
@@ -37,8 +35,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public final class SkillList extends JList<ISkill> implements ListSelectionListener,
-		                                                              SkillSelectionSource,
+public final class SkillList extends JList<ISkill> implements SkillSelectionSource,
 		                                                              LevelGainListener,
 		                                                              JobSelectionListener {
 	/**
@@ -63,20 +60,14 @@ public final class SkillList extends JList<ISkill> implements ListSelectionListe
 				setSelectedIndex(0);
 			}
 		});
-		addListSelectionListener(this);
+		addListSelectionListener(evt -> {
+			@Nullable
+			final ISkill temp = getSelectedValue();
+			for (final SkillSelectionListener list : ssListeners) {
+				list.selectSkill(temp);
+			}
+		});
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-	}
-
-	/**
-	 * @param evt an event indicating the selection changed.
-	 */
-	@Override
-	public void valueChanged(@Nullable final ListSelectionEvent evt) {
-		@Nullable
-		final ISkill temp = getSelectedValue();
-		for (final SkillSelectionListener list : ssListeners) {
-			list.selectSkill(temp);
-		}
 	}
 
 	/**
