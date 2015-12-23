@@ -7,7 +7,7 @@ import controller.map.formatexceptions.UnsupportedTagException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -85,18 +85,11 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	/**
 	 * The tags we know how to deal with.
 	 */
-	private static final List<String> tags;
+	private static final List<String> tags =
+			Collections.unmodifiableList(Arrays.asList("map", "view"));
 	private static final Pattern EXCEPT_PATTERN =
 			Pattern.compile("^Wanted [^ ]*, was [^ " +
 									"]*$");
-
-	static {
-		// FIXME: Use Arrays.asList
-		final List<String> temp = new ArrayList<>();
-		temp.add("map");
-		temp.add("view");
-		tags = assertNotNull(Collections.unmodifiableList(temp));
-	}
 
 	/**
 	 * @return a list of the tags this reader understands
