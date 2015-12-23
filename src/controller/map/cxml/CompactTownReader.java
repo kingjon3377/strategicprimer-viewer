@@ -298,7 +298,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	@Override
 	public void write(final Appendable ostream, final ITownFixture obj,
 					  final int indent) throws IOException {
-		ostream.append(indent(indent));
+		indent(ostream, indent);
 		if (obj instanceof AbstractTown) {
 			writeAbstractTown(ostream, (AbstractTown) obj);
 		} else if (obj instanceof Village) {
@@ -342,7 +342,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 											  + unit.getClass().getName());
 					}
 				}
-				ostream.append(indent(indent));
+				indent(ostream, indent);
 			}
 			ostream.append("</fortress>\n");
 		} else {

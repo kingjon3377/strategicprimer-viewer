@@ -121,7 +121,7 @@ public final class CompactExplorableReader
 	@Override
 	public void write(final Appendable ostream, final ExplorableFixture obj,
 	                  final int indent) throws IOException {
-		ostream.append(indent(indent));
+		indent(ostream, indent);
 		if (obj instanceof Battlefield) {
 			ostream.append("<battlefield ");
 			ostream.append("dc=\"");

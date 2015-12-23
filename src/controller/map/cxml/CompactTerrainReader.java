@@ -185,7 +185,7 @@ public final class CompactTerrainReader extends
 	@Override
 	public void write(final Appendable ostream, final TerrainFixture obj,
 	                  final int indent) throws IOException {
-		ostream.append(indent(indent));
+		indent(ostream, indent);
 		if (obj instanceof Mountain) {
 			ostream.append("<mountain").append(imageXML((Mountain) obj))
 					.append(" />\n");

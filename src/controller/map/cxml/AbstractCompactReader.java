@@ -6,6 +6,7 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.SPMalformedInputException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.stream.Collectors;
@@ -289,17 +290,14 @@ public abstract class AbstractCompactReader<@NonNull T>
 	}
 
 	/**
-	 * @param tabs a nonnegative integer
-	 * @return that many tabs TODO: This should probably take Appendable and write the
-	 * tabs directly.
+	 * @param ostream the stream to write the tabs to
+	 * @param tabs a nonnegative integer: how many tabs to add to the stream
+	 * @throws IOException on I/O error writing to ostream
 	 */
-	@SuppressWarnings("TypeMayBeWeakened")
-	protected static String indent(final int tabs) {
-		final StringBuilder buf = new StringBuilder(tabs);
+	protected static void indent(Appendable ostream, final int tabs) throws IOException {
 		for (int i = 0; i < tabs; i++) {
-			buf.append('\t');
+			ostream.append('\t');
 		}
-		return NullCleaner.assertNotNull(buf.toString());
 	}
 
 	/**

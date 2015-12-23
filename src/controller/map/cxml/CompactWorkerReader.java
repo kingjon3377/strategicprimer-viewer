@@ -236,7 +236,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	@Override
 	public void write(final Appendable ostream, final Worker obj,
 					  final int indent) throws IOException {
-		ostream.append(indent(indent));
+		indent(ostream, indent);
 		ostream.append("<worker name=\"");
 		ostream.append(obj.getName());
 		if (!"human".equals(obj.getRace())) {
@@ -255,7 +255,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 					writeJob(ostream, (Job) job, indent + 1);
 				}
 			}
-			ostream.append(indent(indent));
+			indent(ostream, indent);
 			ostream.append("</worker>\n");
 		} else {
 			ostream.append(" />\n");
@@ -274,7 +274,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 								   @Nullable final WorkerStats stats, final int indent)
 			throws IOException {
 		if (stats != null) {
-			ostream.append(indent(indent));
+			indent(ostream, indent);
 			ostream.append("<stats hp=\"");
 			ostream.append(Integer.toString(stats.getHitPoints()));
 			ostream.append("\" max=\"");
@@ -308,7 +308,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 		if ((obj.getLevel() <= 0) && !obj.iterator().hasNext()) {
 			return;
 		}
-		ostream.append(indent(indent));
+		indent(ostream, indent);
 		ostream.append("<job name=\"");
 		ostream.append(obj.getName());
 		ostream.append("\" level=\"");
@@ -321,7 +321,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 					writeSkill(ostream, skill, indent + 1);
 				}
 			}
-			ostream.append(indent(indent));
+			indent(ostream, indent);
 			ostream.append("</job>\n");
 		} else {
 			ostream.append(" />\n");
@@ -338,7 +338,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 */
 	public static void writeSkill(final Appendable ostream, final ISkill obj,
 								  final int indent) throws IOException {
-		ostream.append(indent(indent));
+		indent(ostream, indent);
 		ostream.append("<skill name=\"");
 		ostream.append(obj.getName());
 		ostream.append("\" level=\"");

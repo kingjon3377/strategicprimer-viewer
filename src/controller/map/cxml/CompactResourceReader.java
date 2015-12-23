@@ -333,7 +333,7 @@ public final class CompactResourceReader extends
 	@Override
 	public void write(final Appendable ostream, final HarvestableFixture obj,
 					  final int indent) throws IOException {
-		ostream.append(indent(indent));
+		indent(ostream, indent);
 		if (obj instanceof CacheFixture) {
 			ostream.append("<cache kind=\"");
 			ostream.append(((CacheFixture) obj).getKind());

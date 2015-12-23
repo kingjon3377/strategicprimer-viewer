@@ -88,7 +88,7 @@ public final class CompactPlayerReader extends AbstractCompactReader<Player> {
 	@Override
 	public void write(final Appendable ostream, final Player obj, final int indent)
 			throws IOException {
-		ostream.append(indent(indent));
+		indent(ostream, indent);
 		ostream.append("<player number=\"");
 		ostream.append(Integer.toString(obj.getPlayerId()));
 		ostream.append("\" code_name=\"");

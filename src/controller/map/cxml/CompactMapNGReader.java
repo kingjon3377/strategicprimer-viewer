@@ -347,13 +347,13 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	@Override
 	public void write(final Appendable ostream, final IMapNG obj, final int indent)
 			throws IOException {
-		ostream.append(indent(indent));
+		indent(ostream, indent);
 		ostream.append("<view current_player=\"");
 		ostream.append(Integer.toString(obj.getCurrentPlayer().getPlayerId()));
 		ostream.append("\" current_turn=\"");
 		ostream.append(Integer.toString(obj.getCurrentTurn()));
 		ostream.append("\">\n");
-		ostream.append(indent(indent + 1));
+		indent(ostream, indent + 1);
 		final MapDimensions dim = obj.dimensions();
 		ostream.append("<map version=\"");
 		ostream.append(Integer.toString(dim.version));
@@ -376,12 +376,12 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 							|| obj.getOtherFixtures(point).iterator().hasNext()) {
 					if (rowEmpty) {
 						rowEmpty = false;
-						ostream.append(indent(indent + 2));
+						indent(ostream, indent + 2);
 						ostream.append("<row index=\"");
 						ostream.append(Integer.toString(i));
 						ostream.append("\">\n");
 					}
-					ostream.append(indent(indent + 3));
+					indent(ostream, indent + 3);
 					ostream.append("<tile row=\"");
 					ostream.append(Integer.toString(i));
 					ostream.append("\" column=\"");
@@ -395,7 +395,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					if (obj.isMountainous(point)) {
 						eolIfNeeded(true, ostream);
 						needeol = false;
-						ostream.append(indent(indent + 4));
+						indent(ostream, indent + 4);
 						ostream.append("<mountain />\n");
 					}
 					for (final River river : obj.getRivers(point)) {
@@ -421,19 +421,19 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						CompactReaderAdapter.write(ostream, fixture, indent + 4);
 					}
 					if (!needeol) {
-						ostream.append(indent(indent + 3));
+						indent(ostream, indent + 3);
 					}
 					ostream.append("</tile>\n");
 				}
 			}
 			if (!rowEmpty) {
-				ostream.append(indent(indent + 2));
+				indent(ostream, indent + 2);
 				ostream.append("</row>\n");
 			}
 		}
-		ostream.append(indent(indent + 1));
+		indent(ostream, indent + 1);
 		ostream.append("</map>\n");
-		ostream.append(indent(indent));
+		indent(ostream, indent);
 		ostream.append("</view>\n");
 	}
 

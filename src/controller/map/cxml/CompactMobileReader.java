@@ -293,7 +293,7 @@ public final class CompactMobileReader extends
 		if (obj instanceof Unit) {
 			CompactUnitReader.READER.write(ostream, (Unit) obj, indent);
 		} else if (obj instanceof Animal) {
-			ostream.append(indent(indent));
+			indent(ostream, indent);
 			ostream.append("<animal kind=\"");
 			ostream.append(((Animal) obj).getKind());
 			if (((Animal) obj).isTraces()) {
@@ -310,7 +310,7 @@ public final class CompactMobileReader extends
 			ostream.append(Integer.toString(obj.getID()));
 			ostream.append('"').append(imageXML((Animal) obj)).append(" />\n");
 		} else {
-			ostream.append(indent(indent));
+			indent(ostream, indent);
 			ostream.append('<');
 			ostream.append(TAG_MAP.get(obj.getClass()));
 			if (obj instanceof HasKind) {
