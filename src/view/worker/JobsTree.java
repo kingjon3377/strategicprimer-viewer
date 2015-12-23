@@ -92,6 +92,7 @@ public final class JobsTree extends JTree implements SkillSelectionSource {
 		getSelectionModel().addTreeSelectionListener(evt -> {
 			if (evt != null) {
 				final TreePath selPath = evt.getNewLeadSelectionPath();
+				@Nullable
 				final ISkill retval;
 				if (selPath == null) {
 					retval = null;
