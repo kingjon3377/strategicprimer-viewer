@@ -1,8 +1,6 @@
 package view.worker;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -10,9 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import model.listeners.LevelGainListener;
 import model.listeners.LevelGainSource;
 import model.listeners.SkillSelectionListener;
@@ -47,8 +43,7 @@ import view.util.ListenedButton;
  *
  * @author Jonathan Lovelace
  */
-public final class SkillAdvancementPanel extends BoxPanel implements ActionListener,
-		                                                                     SkillSelectionListener,
+public final class SkillAdvancementPanel extends BoxPanel implements SkillSelectionListener,
 		                                                                     LevelGainSource {
 	/**
 	 * Logger.
@@ -103,10 +98,33 @@ public final class SkillAdvancementPanel extends BoxPanel implements ActionListe
 		add(firstPanel);
 		final JPanel secondPanel = new JPanel();
 		secondPanel.setLayout(new FlowLayout());
-		secondPanel.add(new ListenedButton("OK", this));
+		final ActionListener okListener = evt -> {
+			final ISkill skl = skill;
+			if (skl != null) {
+				final int level = skl.getLevel();
+				try {
+					skl.addHours(NUM_PARSER.parse(hours.getText()).intValue(),
+							SingletonRandom.RANDOM.nextInt(SKILL_DIE));
+				} catch (final ParseException e) {
+					LOGGER.log(Level.FINE, "Non-numeric input", e);
+					ErrorShower.showErrorDialog(this, "Hours to add must be a number");
+					return;
+				}
+				final int newLevel = skl.getLevel();
+				if (newLevel != level) {
+					listeners.forEach(LevelGainListener::level);
+				}
+			}
+			// Clear if OK and no skill selected, on Cancel, and after
+			// successfully adding skill
+			hours.setText("");
+		};
+		secondPanel.add(new ListenedButton("OK", okListener));
 		hours.setActionCommand("OK");
-		hours.addActionListener(this);
-		secondPanel.add(new ListenedButton("Cancel", this));
+		hours.addActionListener(okListener);
+		// Clear if OK and no skill selected, on Cancel, and after
+		// successfully adding skill
+		secondPanel.add(new ListenedButton("Cancel", evt -> hours.setText("")));
 		add(secondPanel);
 		setMinimumSize(new Dimension(200, 40));
 		setPreferredSize(new Dimension(220, MAX_PANEL_HEIGHT));
@@ -119,37 +137,6 @@ public final class SkillAdvancementPanel extends BoxPanel implements ActionListe
 	private static final NumberFormat NUM_PARSER = NullCleaner
 			                                               .assertNotNull(NumberFormat
 					                                                              .getIntegerInstance());
-
-	/**
-	 * Handle a button press.
-	 *
-	 * @param evt the event to handle
-	 */
-	@Override
-	public void actionPerformed(@Nullable final ActionEvent evt) {
-		if (evt == null) {
-			return;
-		}
-		if ("OK".equalsIgnoreCase(evt.getActionCommand()) && (skill != null)) {
-			final ISkill skl = skill;
-			final int level = skl.getLevel();
-			try {
-				skl.addHours(NUM_PARSER.parse(hours.getText()).intValue(),
-						SingletonRandom.RANDOM.nextInt(SKILL_DIE));
-			} catch (final ParseException e) {
-				LOGGER.log(Level.FINE, "Non-numeric input", e);
-				ErrorShower.showErrorDialog(this, "Hours to add must be a number");
-				return;
-			}
-			final int newLevel = skl.getLevel();
-			if (newLevel != level) {
-				listeners.forEach(LevelGainListener::level);
-			}
-		}
-		// Clear if OK and no skill selected, on Cancel, and after
-		// successfully adding skill
-		hours.setText("");
-	}
 
 	/**
 	 * @param list the listener to add
