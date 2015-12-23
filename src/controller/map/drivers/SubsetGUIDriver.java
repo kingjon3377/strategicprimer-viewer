@@ -5,7 +5,7 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.WindowThread;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
@@ -44,27 +44,13 @@ public final class SubsetGUIDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-s",
-			                                                            "--subset",
-			                                                            ParamCount.Many,
-			                                                            "Check players' " +
-					                                                            "maps " +
-					                                                            "against" +
-					                                                            " master",
-
-			                                                            "Check that " +
-					                                                            "subordinate maps are subsets of the main map, containing "
-					                                                            +
-					                                                            "nothing" +
-					                                                            " that " +
-					                                                            "it does" +
-					                                                            " not " +
-					                                                            "contain" +
-					                                                            " in the" +
-					                                                            " same " +
-					                                                            "place",
-			                                                            SubsetGUIDriver
-					                                                            .class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(true, "-s", "--subset", ParamCount.Many,
+					               "Check players' maps against master",
+					               "Check that subordinate maps are subsets of the main " +
+							               "map, containing nothing that it does not " +
+							               "contain in the same place",
+					               SubsetGUIDriver.class);
 
 	/**
 	 * Run the driver.
@@ -130,7 +116,7 @@ public final class SubsetGUIDriver implements ISPDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**
@@ -138,7 +124,7 @@ public final class SubsetGUIDriver implements ISPDriver {
 	 */
 	@Override
 	public String getName() {
-		return USAGE_OBJ.getShortDescription();
+		return USAGE.getShortDescription();
 	}
 
 	/**

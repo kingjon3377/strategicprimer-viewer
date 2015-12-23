@@ -98,23 +98,18 @@ public final class MapPopulatorDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-l",
-			                                                            "--populate",
-			                                                            ParamCount.One,
-			                                                            "Add missing " +
-					                                                            "fixtures to a map",
-
-			                                                            "Add specified " +
-					                                                            "kinds " +
-					                                                            "of fixtures to suitable points throughout a map",
-			                                                            MapPopulatorDriver.class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(false, "-l", "--populate", ParamCount.One,
+					               "Add missing fixtures to a map",
+					               "Add specified kinds of fixtures to suitable points throughout a map",
+					               MapPopulatorDriver.class);
 
 	/**
 	 * @return what to call the driver in a CLI list.
 	 */
 	@Override
 	public String getName() {
-		return USAGE_OBJ.getShortDescription();
+		return USAGE.getShortDescription();
 	}
 
 	/**
@@ -178,7 +173,7 @@ public final class MapPopulatorDriver implements ISPDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**

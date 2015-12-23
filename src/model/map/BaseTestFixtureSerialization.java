@@ -710,7 +710,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * property preserved. We modify its image property, but set it back to the original
 	 * value before exiting the method.
 	 *
-	 * @param <T>     the type of the object
+	 * @param <T>     the type of the object FIXME: This isn't necessary.
 	 * @param message the message to use for assertions
 	 * @param obj     the object to serialize
 	 * @param type    its type,

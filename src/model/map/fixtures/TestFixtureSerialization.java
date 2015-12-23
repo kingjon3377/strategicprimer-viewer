@@ -80,33 +80,19 @@ public final class TestFixtureSerialization extends
 				                                                                    "wild",
 				                                                                    0),
 				Animal.class);
-		assertSerialization("Second test of Animal serialization", new Animal(
-				                                                                     "animalTwo",
-				                                                                     false,
-				                                                                     true,
-				                                                                     "semi-domesticated",
-				                                                                     1),
+		assertSerialization("Second test of Animal serialization",
+				new Animal("animalTwo", false, true, "semi-domesticated", 1),
 				Animal.class);
-		assertSerialization("Third test of Animal serialization", new Animal(
-				                                                                    "animalThree",
-				                                                                    true,
-				                                                                    false,
-				                                                                    "domesticated",
-				                                                                    2),
-				Animal.class);
+		assertSerialization("Third test of Animal serialization",
+				new Animal("animalThree", true, false, "domesticated", 2), Animal.class);
 		final Animal fourthAnimal = new Animal("animalFour", true, true, "status", 3);
 		assertSerialization("Fourth test of Animal serialization", fourthAnimal,
 				Animal.class);
 		assertUnwantedChild("<animal kind=\"animal\"><troll /></animal>",
 				Animal.class, false);
 		assertMissingProperty("<animal />", Animal.class, KIND_PROPERTY, false);
-		assertForwardDeserialization(
-				"Forward-looking XML in re talking, reflection", new Animal(
-						                                                           "animalFive",
-						                                                           false,
-						                                                           false,
-						                                                           "wild",
-						                                                           3),
+		assertForwardDeserialization("Forward-looking XML in re talking, reflection",
+				new Animal("animalFive", false, false, "wild", 3),
 				"<animal kind=\"animalFive\" talking=\"false\" id=\"3\" />",
 				Animal.class);
 		assertMissingProperty("<animal kind=\"animalSix\" talking=\"true\" />",

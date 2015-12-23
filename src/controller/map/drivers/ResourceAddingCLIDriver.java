@@ -49,18 +49,11 @@ public class ResourceAddingCLIDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-d",
-			                                                            "--add-resource",
-			                                                            ParamCount.Many,
-			                                                            "Add resources " +
-					                                                            "to maps",
-
-			                                                            "Add resources " +
-					                                                            "for " +
-					                                                            "players" +
-					                                                            " to " +
-					                                                            "maps",
-			                                                            ResourceAddingCLIDriver.class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(false, "-d", "--add-resource", ParamCount.Many,
+					               "Add resources to maps",
+					               "Add resources for players to maps",
+					               ResourceAddingCLIDriver.class);
 
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
@@ -193,7 +186,7 @@ public class ResourceAddingCLIDriver implements ISPDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**
@@ -201,7 +194,7 @@ public class ResourceAddingCLIDriver implements ISPDriver {
 	 */
 	@Override
 	public String getName() {
-		return USAGE_OBJ.getShortDescription();
+		return USAGE.getShortDescription();
 	}
 
 	/**

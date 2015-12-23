@@ -32,18 +32,11 @@ public final class MapCheckerGUI implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-k",
-			                                                            "--check",
-			                                                            ParamCount.Many,
-			                                                            "Check map for " +
-					                                                            "errors",
-			                                                            "Check a map " +
-					                                                            "file " +
-					                                                            "for " +
-					                                                            "errors," +
-					                                                            " deprecated syntax, etc.",
-			                                                            MapCheckerGUI
-					                                                            .class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(true, "-k", "--check", ParamCount.Many,
+					               "Check map for errors",
+					               "Check a map file for errors, deprecated syntax, etc.",
+					               MapCheckerGUI.class);
 
 	/**
 	 * @param model ignored
@@ -76,7 +69,7 @@ public final class MapCheckerGUI implements ISPDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**
@@ -84,7 +77,7 @@ public final class MapCheckerGUI implements ISPDriver {
 	 */
 	@Override
 	public String getName() {
-		return USAGE_OBJ.getShortDescription();
+		return USAGE.getShortDescription();
 	}
 
 	/**

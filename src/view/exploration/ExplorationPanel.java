@@ -1,6 +1,6 @@
 package view.exploration;
 
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -14,13 +14,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.InputMap;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.text.Document;
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
@@ -63,10 +57,9 @@ import view.util.ListenedButton;
  *
  * @author Jonathan Lovelace
  */
-public final class ExplorationPanel extends BorderedPanel implements ActionListener,
-		                                                                     SelectionChangeListener,
-		                                                                     CompletionSource,
-		                                                                     MovementCostListener {
+public final class ExplorationPanel extends BorderedPanel
+		implements ActionListener, SelectionChangeListener, CompletionSource,
+				           MovementCostListener {
 	/**
 	 * The label showing the current location of the explorer.
 	 */
@@ -91,28 +84,28 @@ public final class ExplorationPanel extends BorderedPanel implements ActionListe
 	/**
 	 * The collection of proxies for main-map tile-fixture-lists.
 	 */
-	private final Map<Direction, SelectionChangeSupport> mains = new EnumMap<>(
-			                                                                          Direction.class);
+	private final Map<Direction, SelectionChangeSupport> mains =
+			new EnumMap<>(Direction.class);
 	/**
 	 * The collection of proxies for secondary-map tile-fixture lists.
 	 */
-	private final Map<Direction, SelectionChangeSupport> seconds = new EnumMap<>(
-			                                                                            Direction.class);
+	private final Map<Direction, SelectionChangeSupport> seconds =
+			new EnumMap<>(Direction.class);
 	/**
 	 * The collection of dual-tile-buttons.
 	 */
-	private final Map<Direction, DualTileButton> buttons = new EnumMap<>(
-			                                                                    Direction.class);
+	private final Map<Direction, DualTileButton> buttons = new EnumMap<>(Direction
+			                                                                     .class);
 	/**
 	 * Key-bindings for dual-tile buttons: arrow keys.
 	 */
-	private static final Map<Direction, KeyStroke> ARROW_KEYS = new EnumMap<>(
-			                                                                         Direction.class);
+	private static final Map<Direction, KeyStroke> ARROW_KEYS =
+			new EnumMap<>(Direction.class);
 	/**
 	 * Key bindings for dual-tile buttons: numeric keypad.
 	 */
-	private static final Map<Direction, KeyStroke> NUM_KPAD = new EnumMap<>(
-			                                                                       Direction.class);
+	private static final Map<Direction, KeyStroke> NUM_KPAD =
+			new EnumMap<>(Direction.class);
 
 	static {
 		ARROW_KEYS.put(Direction.North, NullCleaner

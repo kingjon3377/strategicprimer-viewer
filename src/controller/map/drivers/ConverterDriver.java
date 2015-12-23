@@ -44,16 +44,11 @@ public final class ConverterDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-v",
-			                                                            "--convert",
-			                                                            ParamCount.One,
-			                                                            "Convert a map's" +
-					                                                            " format",
-
-			                                                            "Convert a map. " +
-					                                                            "At present, this means reducing its resolution.",
-			                                                            ConverterDriver
-					                                                            .class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(false, "-v", "--convert", ParamCount.One,
+					               "Convert a map's format",
+					               "Convert a map. At present, this means reducing its resolution.",
+					               ConverterDriver.class);
 
 	/**
 	 * Logger.
@@ -134,7 +129,7 @@ public final class ConverterDriver implements ISPDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**

@@ -7,7 +7,7 @@ import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;
 import java.io.File;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.resources.ResourceManagementDriver;
 import util.Warning;
@@ -41,25 +41,18 @@ public class ResourceAddingGUIDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-d",
-			                                                            "--add-resource",
-			                                                            ParamCount.Many,
-			                                                            "Add resources " +
-					                                                            "to maps",
-
-			                                                            "Add resources " +
-					                                                            "for " +
-					                                                            "players" +
-					                                                            " to " +
-					                                                            "maps",
-			                                                            ResourceAddingCLIDriver.class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(true, "-d", "--add-resource", ParamCount.Many,
+					               "Add resources to maps",
+					               "Add resources for players to maps",
+					               ResourceAddingCLIDriver.class);
 
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**
@@ -67,7 +60,7 @@ public class ResourceAddingGUIDriver implements ISPDriver {
 	 */
 	@Override
 	public String getName() {
-		return USAGE_OBJ.getShortDescription();
+		return USAGE.getShortDescription();
 	}
 
 	/**
@@ -120,15 +113,10 @@ public class ResourceAddingGUIDriver implements ISPDriver {
 					                                "choose",
 					                               except);
 		}
-		final ResourceManagementDriver model = new ResourceManagementDriver(
-				                                                                   new MapReaderAdapter()
-						                                                                   .readMultiMapModel(
-								                                                                   new Warning(Warning.Action.Warn),
-								                                                                   file,
-								                                                                   MapReaderAdapter
-										                                                                   .namesToFiles(
-												                                                                   true,
-												                                                                   args)));
+		final ResourceManagementDriver model =
+				new ResourceManagementDriver(new MapReaderAdapter().readMultiMapModel(
+						new Warning(Warning.Action.Warn), file,
+						MapReaderAdapter.namesToFiles(true, args)));
 		SwingUtilities.invokeLater(
 				new WindowThread(new ResourceAddingFrame(model, new IOHandler(model,
 						                                                             new FilteredFileChooser(".",

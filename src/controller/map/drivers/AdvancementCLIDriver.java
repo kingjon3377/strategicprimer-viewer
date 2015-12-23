@@ -59,30 +59,14 @@ public final class AdvancementCLIDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-a",
-			                                                            "--adv",
-			                                                            ParamCount.One,
-			                                                            "View a player's" +
-					                                                            " workers and manage their advancement",
-
-			                                                            "View a player's" +
-					                                                            " units," +
-					                                                            " the " +
-					                                                            "workers" +
-					                                                            " in " +
-					                                                            "those " +
-					                                                            "units, " +
-					                                                            "each " +
-					                                                            "worker's Jobs, "
-					                                                            +
-					                                                            "and his" +
-					                                                            " or her" +
-					                                                            " level " +
-					                                                            "in each" +
-					                                                            " Skill " +
-					                                                            "in each" +
-					                                                            " Job.",
-			                                                            AdvancementCLIDriver.class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(false, "-a", "--adv", ParamCount.One,
+					               "View a player's workers and manage their " +
+							               "advancement",
+					               "View a player's units, the workers in those units, " +
+							               "each worker's Jobs, and his or her level in " +
+							               "each Skill in each Job.",
+					               AdvancementCLIDriver.class);
 	/**
 	 * The CLI helper.
 	 */
@@ -93,7 +77,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**

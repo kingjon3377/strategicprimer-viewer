@@ -130,10 +130,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		Collections.sort(sorted, new TownComparator());
 		// FIXME: Within any given status, sort by distance from HQ
 		final AbstractReportNode retval = new SectionListReportNode(4,
-				                                                           "Cities, " +
-						                                                           "towns, and/or fortifications you " +
-						                                                           "know" +
-						                                                           " about:");
+				                                                           "Cities, towns, and/or fortifications you know about:");
 		for (final AbstractTown town : sorted) {
 			retval.add(produceRIR(fixtures, map, currentPlayer, town,
 					townLocs.get(town)));

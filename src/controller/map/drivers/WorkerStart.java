@@ -7,7 +7,7 @@ import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;
 import java.io.File;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
@@ -43,25 +43,18 @@ public final class WorkerStart implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-w",
-			                                                            "--worker",
-			                                                            ParamCount.Many,
-			                                                            "Manage a " +
-					                                                            "player's workers in units",
-
-			                                                            "Organize the " +
-					                                                            "members" +
-					                                                            " of a " +
-					                                                            "player's units.",
-			                                                            WorkerStart
-					                                                            .class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(true, "-w", "--worker", ParamCount.Many,
+					               "Manage a player's workers in units",
+					               "Organize the members of a player's units.",
+					               WorkerStart.class);
 
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**
@@ -69,7 +62,7 @@ public final class WorkerStart implements ISPDriver {
 	 */
 	@Override
 	public String getName() {
-		return USAGE_OBJ.getShortDescription();
+		return USAGE.getShortDescription();
 	}
 
 	/**

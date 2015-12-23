@@ -2,7 +2,7 @@ package controller.map.drivers;
 
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.MapReaderAdapter;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Random;
@@ -72,24 +72,14 @@ public final class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * graphical, even though it's not, so we can share an option with the
 	 * ReaderComparator.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-t",
-			                                                            "--test",
-			                                                            ParamCount.Many,
-			                                                            "Test drawing " +
-					                                                            "performance",
-
-			                                                            "Test the " +
-					                                                            "performance of the TileDrawHelper classes---which "
-					                                                            +
-					                                                            "do the " +
-					                                                            "heavy " +
-					                                                            "lifting" +
-					                                                            " of " +
-					                                                            "rendering the map\n"
-					                                                            +
-					                                                            "in the " +
-					                                                            "viewer---using a variety of automated tests.",
-			                                                            DrawHelperComparator.class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(true, "-t", "--test", ParamCount.Many,
+					               "Test drawing performance",
+					               "Test the performance of the TileDrawHelper " +
+							               "classes---which do the heavy lifting of " +
+							               "rendering the map\nin the viewer---using a " +
+							               "variety of automated tests.",
+					               DrawHelperComparator.class);
 
 	/**
 	 * Label to put before every direct-helper test result.
@@ -564,7 +554,7 @@ public final class DrawHelperComparator implements ISPDriver { // NOPMD
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**
@@ -572,7 +562,7 @@ public final class DrawHelperComparator implements ISPDriver { // NOPMD
 	 */
 	@Override
 	public String getName() {
-		return USAGE_OBJ.getShortDescription();
+		return USAGE.getShortDescription();
 	}
 
 	/**

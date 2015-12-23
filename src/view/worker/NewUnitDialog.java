@@ -1,8 +1,7 @@
 package view.worker;
 
 import controller.map.misc.IDFactory;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
@@ -11,11 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import model.listeners.NewUnitListener;
 import model.listeners.NewUnitSource;
 import model.listeners.PlayerChangeListener;
@@ -78,9 +73,8 @@ public final class NewUnitDialog extends JFrame implements ActionListener,
 	/**
 	 * The field to let the user specify the unit's ID #.
 	 */
-	private final JFormattedTextField idField = new JFormattedTextField(
-			                                                                   NumberFormat
-					                                                                   .getIntegerInstance());
+	private final JFormattedTextField idField =
+			new JFormattedTextField(NumberFormat.getIntegerInstance());
 	/**
 	 * Maximum and preferred height for the dialog.
 	 */

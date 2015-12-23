@@ -58,14 +58,9 @@ public final class PointIteratorTest {
 		expected.add(PointFactory.point(2, 0));
 		expected.add(PointFactory.point(2, 1));
 		expected.add(PointFactory.point(2, 2));
-		final Iterable<Point> iter = new IteratorWrapper<>(
-				                                                  new PointIterator(new
-						                                                                    MapDimensions(3,
-						                                                                                     3,
-						                                                                                     1),
-						                                                                   null,
-						                                                                   true,
-						                                                                   true));
+		final Iterable<Point> iter =
+				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1), null,
+						                                       true, true));
 		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
 				                                 .collect(Collectors.toList());
 		assertEquals(EXPECTATION, expected, actual);
@@ -77,17 +72,10 @@ public final class PointIteratorTest {
 	@SuppressWarnings("static-method")
 	@Test
 	public void testFromSelection() {
-		final Iterable<Point> iter = new IteratorWrapper<>(
-				                                                  new PointIterator(new
-						                                                                    MapDimensions(3,
-						                                                                                     3,
-						                                                                                     1),
-						                                                                   PointFactory
-								                                                                   .point(1,
-										                                                                   1),
-
-						                                                                   true,
-						                                                                   true));
+		final Iterable<Point> iter =
+				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1),
+						                                       PointFactory.point(1, 1),
+						                                       true, true));
 		final Collection<Point> expected = new ArrayList<>();
 		expected.add(PointFactory.point(1, 2));
 		expected.add(PointFactory.point(2, 0));
@@ -110,16 +98,10 @@ public final class PointIteratorTest {
 	@SuppressWarnings("static-method")
 	@Test
 	public void testInitialSelection() {
-		final Iterable<Point> iter = new IteratorWrapper<>(
-				                                                  new PointIterator(new
-						                                                                    MapDimensions(3,
-						                                                                                     3,
-						                                                                                     1),
-						                                                                   PointFactory
-								                                                                   .point(-1,
-										                                                                   -1),
-						                                                                   true,
-						                                                                   false));
+		final Iterable<Point> iter =
+				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1),
+						                                       PointFactory.point(-1, -1),
+						                                       true, false));
 		final Collection<Point> expected = new ArrayList<>();
 		expected.add(PointFactory.point(0, 0));
 		expected.add(PointFactory.point(1, 0));
@@ -151,14 +133,9 @@ public final class PointIteratorTest {
 		expected.add(PointFactory.point(0, 2));
 		expected.add(PointFactory.point(1, 2));
 		expected.add(PointFactory.point(2, 2));
-		final Iterable<Point> iter = new IteratorWrapper<>(
-				                                                  new PointIterator(new
-						                                                                    MapDimensions(3,
-						                                                                                     3,
-						                                                                                     1),
-						                                                                   null,
-						                                                                   true,
-						                                                                   false));
+		final Iterable<Point> iter =
+				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1), null,
+						                                       true, false));
 		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
 				                                 .collect(Collectors.toList());
 		assertEquals(EXPECTATION, expected, actual);
@@ -180,13 +157,9 @@ public final class PointIteratorTest {
 		expected.add(PointFactory.point(0, 2));
 		expected.add(PointFactory.point(0, 1));
 		expected.add(PointFactory.point(0, 0));
-		final Iterable<Point> iter = new IteratorWrapper<>(
-				                                                  new PointIterator(new MapDimensions(3,
-						                                                                                     3,
-						                                                                                     1),
-						                                                                   null,
-						                                                                   false,
-						                                                                   true));
+		final Iterable<Point> iter =
+				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1), null,
+						                                       false, true));
 		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
 				                                 .collect(Collectors.toList());
 		assertEquals(EXPECTATION, expected, actual);
@@ -208,13 +181,9 @@ public final class PointIteratorTest {
 		expected.add(PointFactory.point(2, 0));
 		expected.add(PointFactory.point(1, 0));
 		expected.add(PointFactory.point(0, 0));
-		final Iterable<Point> iter = new IteratorWrapper<>(
-				                                                  new PointIterator(new MapDimensions(3,
-						                                                                                     3,
-						                                                                                     1),
-						                                                                   null,
-						                                                                   false,
-						                                                                   false));
+		final Iterable<Point> iter =
+				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1), null,
+						                                       false, false));
 		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
 				                                 .collect(Collectors.toList());
 		assertEquals(EXPECTATION, expected, actual);

@@ -47,20 +47,12 @@ public final class DuplicateFixtureRemover implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-u",
-			                                                            "--dupl",
-			                                                            ParamCount.One,
-			                                                            "Remove " +
-					                                                            "duplicate fixtures",
-
-			                                                            "Remove " +
-					                                                            "duplicate fixtures---identical except ID# "
-					                                                            +
-					                                                            "and on " +
-					                                                            "the " +
-					                                                            "same " +
-					                                                            "tile---from a map.",
-			                                                            DuplicateFixtureRemover.class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(false, "-u", "--dupl", ParamCount.One,
+					               "Remove duplicate fixtures",
+					               "Remove duplicate fixtures---identical except ID# and" +
+							               " on the same tile---from a map.",
+					               DuplicateFixtureRemover.class);
 
 	/**
 	 * "Remove" (at first we just report) duplicate fixtures (i.e. hills, forests of the
@@ -153,8 +145,7 @@ public final class DuplicateFixtureRemover implements ISPDriver {
 		if (args.length == 0) {
 			SYS_OUT.println("Usage: DuplicateFixtureRemover map [map ...]");
 			throw new DriverFailedException("Not enough arguments",
-					                               new IllegalArgumentException("Need at" +
-							                                                            " least one argument"));
+					                               new IllegalArgumentException("Need at least one argument"));
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final IMultiMapModel model = reader.readMultiMapModel(Warning.INSTANCE,
@@ -168,7 +159,7 @@ public final class DuplicateFixtureRemover implements ISPDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**

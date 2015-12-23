@@ -230,6 +230,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		final MemberDetailPanel mdp = new MemberDetailPanel();
 		tree.addUnitMemberListener(mdp);
 		final StrategyExporter strategyExporter = new StrategyExporter(model, wtmodel);
+		// TODO: Don't check command text in lambda ActionListeners
 		setContentPane(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT, HALF_WAY,
 				                                   HALF_WAY,
 				                                   new SplitWithWeights(JSplitPane

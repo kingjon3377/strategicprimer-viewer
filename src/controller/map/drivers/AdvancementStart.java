@@ -7,7 +7,7 @@ import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;
 import java.io.File;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
@@ -44,31 +44,14 @@ public final class AdvancementStart implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-a",
-			                                                            "--adv",
-			                                                            ParamCount.Many,
-			                                                            "View a player's" +
-					                                                            " workers and manage their advancement",
-
-			                                                            "View a player's" +
-					                                                            " units," +
-					                                                            " the " +
-					                                                            "workers" +
-					                                                            " in " +
-					                                                            "those " +
-					                                                            "units, " +
-					                                                            "each " +
-					                                                            "worker's Jobs, "
-					                                                            +
-					                                                            "and his" +
-					                                                            " or her" +
-					                                                            " level " +
-					                                                            "in each" +
-					                                                            " Skill " +
-					                                                            "in each" +
-					                                                            " Job.",
-			                                                            AdvancementStart
-					                                                            .class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(true, "-a", "--adv", ParamCount.Many,
+					               "View a player's workers and manage their " +
+							               "advancement",
+					               "View a player's units, the workers in those units, " +
+							               "each worker's Jobs, and his or her level in " +
+							               "each Skill in each Job.",
+					               AdvancementStart.class);
 
 	/**
 	 * Run the driver
@@ -134,7 +117,7 @@ public final class AdvancementStart implements ISPDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**

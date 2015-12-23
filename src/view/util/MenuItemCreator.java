@@ -1,11 +1,9 @@
 package view.util;
 
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
-import javax.swing.JComponent;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
@@ -63,9 +61,8 @@ public final class MenuItemCreator {
 	 * @return the hotkey
 	 */
 	public static KeyStroke createHotkey(final int key) {
-		return NullCleaner.assertNotNull(KeyStroke.getKeyStroke(key, Toolkit
-				                                                             .getDefaultToolkit()
-				                                                             .getMenuShortcutKeyMask()));
+		return NullCleaner.assertNotNull(KeyStroke.getKeyStroke(key,
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 	}
 
 	/**
@@ -75,11 +72,9 @@ public final class MenuItemCreator {
 	 * @return the hotkey
 	 */
 	public static KeyStroke createShiftHotkey(final int key) {
-		return NullCleaner.assertNotNull(KeyStroke.getKeyStroke(key, Toolkit
-				                                                             .getDefaultToolkit()
-				                                                             .getMenuShortcutKeyMask()
-				                                                             |
-				                                                             InputEvent.SHIFT_DOWN_MASK));
+		return NullCleaner.assertNotNull(KeyStroke.getKeyStroke(key,
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() |
+						InputEvent.SHIFT_DOWN_MASK));
 	}
 
 	/**

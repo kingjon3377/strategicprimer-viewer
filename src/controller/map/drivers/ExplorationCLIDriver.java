@@ -40,18 +40,11 @@ public final class ExplorationCLIDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-x",
-			                                                            "--explore",
-			                                                            ParamCount.Many,
-			                                                            "Run exploration.",
-			                                                            "Move a unit " +
-					                                                            "around " +
-					                                                            "the " +
-					                                                            "map, "
-					                                                            +
-					                                                            "updating the player's map with what it sees.",
-
-			                                                            ExplorationCLIDriver.class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(false, "-x", "--explore", ParamCount.Many, "Run exploration.",
+					               "Move a unit around the map, updating the player's " +
+							               "map with what it sees.",
+					               ExplorationCLIDriver.class);
 
 	/**
 	 * Run the driver.
@@ -117,7 +110,7 @@ public final class ExplorationCLIDriver implements ISPDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**

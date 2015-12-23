@@ -66,16 +66,11 @@ public final class ExpansionDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-n",
-			                                                            "--expand",
-			                                                            ParamCount.Many,
-			                                                            "Expand a " +
-					                                                            "player's map.",
-
-			                                                            "Ensure a " +
-					                                                            "player's map covers all terrain allied villages can see.",
-			                                                            ExpansionDriver
-					                                                            .class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(false, "-n", "--expand", ParamCount.Many,
+					               "Expand a player's map.",
+					               "Ensure a player's map covers all terrain allied villages can see.",
+					               ExpansionDriver.class);
 	/**
 	 * Logger.
 	 */
@@ -87,7 +82,7 @@ public final class ExpansionDriver implements ISPDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**

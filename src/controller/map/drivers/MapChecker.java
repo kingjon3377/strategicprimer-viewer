@@ -42,18 +42,11 @@ public final class MapChecker implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-k",
-			                                                            "--check",
-			                                                            ParamCount.One,
-			                                                            "Check map for " +
-					                                                            "errors",
-			                                                            "Check a map " +
-					                                                            "file " +
-					                                                            "for " +
-					                                                            "errors," +
-					                                                            " deprecated syntax, etc.",
-			                                                            MapChecker
-					                                                            .class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(false, "-k", "--check", ParamCount.One,
+					               "Check map for errors",
+					               "Check a map file for errors, deprecated syntax, etc.",
+					               MapChecker.class);
 
 	/**
 	 * Logger.
@@ -75,8 +68,7 @@ public final class MapChecker implements ISPDriver {
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length < 1) {
 			throw new DriverFailedException("Need at least one argument",
-					                               new IllegalArgumentException("Need at" +
-							                                                            " least one argument"));
+					                               new IllegalArgumentException("Need at least one argument"));
 		}
 		for (final String filename : args) {
 			if (filename != null) {
@@ -126,7 +118,7 @@ public final class MapChecker implements ISPDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**
@@ -134,7 +126,7 @@ public final class MapChecker implements ISPDriver {
 	 */
 	@Override
 	public String getName() {
-		return USAGE_OBJ.getShortDescription();
+		return USAGE.getShortDescription();
 	}
 
 	/**
@@ -160,6 +152,9 @@ public final class MapChecker implements ISPDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
-		throw new DriverFailedException(new IllegalStateException("MapChecker can't operate on a driver model"));
+		throw new DriverFailedException(new IllegalStateException("MapChecker can't " +
+				                                                          "operate on a " +
+				                                                          "driver " +
+				                                                          "model"));
 	}
 }

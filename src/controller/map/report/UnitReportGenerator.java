@@ -392,8 +392,8 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			                                    final Player currentPlayer) {
 		final AbstractReportNode retval =
 				new SectionReportNode(4, "Units in the map");
-		retval.add(new SimpleReportNode(
-				                               "(Any units reported above are not described again.)"));
+		retval.add(
+				new SimpleReportNode("(Any units reported above are not described again.)"));
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final AbstractReportNode theirs = new SectionListReportNode(5, "Foreign units");

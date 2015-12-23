@@ -76,9 +76,8 @@ public final class CompactResourceReader extends
 	/**
 	 * Mapping from tags to enum-tags.
 	 */
-	private static final Map<String, HarvestableType> MAP = new HashMap<>(
-			                                                                     HarvestableType
-					                                                                     .values().length);
+	private static final Map<String, HarvestableType> MAP =
+			new HashMap<>(HarvestableType.values().length);
 	/**
 	 * List of supported tags.
 	 */

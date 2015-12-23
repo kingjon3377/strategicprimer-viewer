@@ -51,18 +51,11 @@ public final class ReaderComparator implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-t",
-			                                                            "--test",
-			                                                            ParamCount.One,
-			                                                            "Test map " +
-					                                                            "readers",
-
-			                                                            "Test the two " +
-					                                                            "map-reading implementations by "
-					                                                            +
-					                                                            "comparing their results on the same file.",
-			                                                            ReaderComparator
-					                                                            .class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(false, "-t", "--test", ParamCount.One, "Test map readers",
+					               "Test the two map-reading implementations by " +
+							               "comparing their results on the same file.",
+					               ReaderComparator.class);
 
 	/**
 	 * Logger.
@@ -217,7 +210,7 @@ public final class ReaderComparator implements ISPDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**
@@ -225,7 +218,7 @@ public final class ReaderComparator implements ISPDriver {
 	 */
 	@Override
 	public String getName() {
-		return USAGE_OBJ.getShortDescription();
+		return USAGE.getShortDescription();
 	}
 
 	/**

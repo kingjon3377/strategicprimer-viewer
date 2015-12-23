@@ -159,11 +159,9 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	private void handleInclude(final StartElement tag) {
 		try {
 			final String file = getAttribute(tag, "file");
-			stack.addFirst(Pair.of(file, new ComparableIterator<>(
-					                                                     new
-							                                                     TypesafeXMLEventReader(createReader(
-							                                                     file))
-			)));
+			stack.addFirst(Pair.of(file,
+					new ComparableIterator<>(new TypesafeXMLEventReader(createReader(
+							file)))));
 		} catch (final FileNotFoundException e) {
 			throw new NoSuchElementBecauseException(
 					                                       "File referenced by <include>" +

@@ -1,7 +1,6 @@
 package view.map.main;
 
-import java.awt.Dimension;
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
@@ -9,14 +8,7 @@ import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
-import javax.swing.JCheckBox;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.map.FixtureIterable;
 import model.map.HasKind;
 import model.map.HasName;
@@ -210,15 +202,11 @@ public final class FindDialog extends JDialog implements ActionListener {
 				LOGGER.log(Level.SEVERE, "Pattern we detected as numeric wasn't", e);
 			}
 		}
-		final Iterable<Point> iter = new IteratorWrapper<>(new PointIterator(
-				                                                                    map
-						                                                                    .getMapDimensions(),
-				                                                                    map
-						                                                                    .getSelectedPoint(),
-				                                                                    !backwards
-						                                                                     .isSelected(),
-				                                                                    !vertically
-						                                                                     .isSelected()));
+		final Iterable<Point> iter =
+				new IteratorWrapper<>(new PointIterator(map.getMapDimensions(),
+						                                       map.getSelectedPoint(),
+						                                       !backwards.isSelected(),
+						                                       !vertically.isSelected()));
 		for (final Point point : iter) {
 			final TileFixture ground = map.getMap().getGround(point);
 			final TileFixture forest = map.getMap().getForest(point);

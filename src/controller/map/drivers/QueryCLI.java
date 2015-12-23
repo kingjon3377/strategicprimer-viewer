@@ -59,18 +59,11 @@ public final class QueryCLI implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-m",
-			                                                            "--map",
-			                                                            ParamCount.One,
-			                                                            "Answer " +
-					                                                            "questions about a map.",
-
-			                                                            "Look at tiles " +
-					                                                            "on a " +
-					                                                            "map. Or" +
-					                                                            " run " +
-					                                                            "hunting, gathering, or fishing.",
-			                                                            QueryCLI.class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(false, "-m", "--map", ParamCount.One,
+					               "Answer questions about a map.",
+					               "Look at tiles on a map. Or run hunting, gathering, or fishing.",
+					               QueryCLI.class);
 
 	/**
 	 * Logger.
@@ -478,7 +471,7 @@ public final class QueryCLI implements ISPDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**
@@ -486,7 +479,7 @@ public final class QueryCLI implements ISPDriver {
 	 */
 	@Override
 	public String getName() {
-		return USAGE_OBJ.getShortDescription();
+		return USAGE.getShortDescription();
 	}
 
 	/**

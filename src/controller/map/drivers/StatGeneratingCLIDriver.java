@@ -89,18 +89,12 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(
-			                                                            false,
-			                                                            "-t",
-			                                                            "--stats",
-			                                                            ParamCount.Many,
-			                                                            "Enter worker " +
-					                                                            "stats " +
-					                                                            "or generate new workers.",
-
-			                                                            "Enter stats for" +
-					                                                            " existing workers or generate new workers randomly.",
-			                                                            StatGeneratingCLIDriver.class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(false, "-t", "--stats", ParamCount.Many,
+					               "Enter worker stats or generate new workers.",
+					               "Enter stats for existing workers or generate new " +
+							               "workers randomly.",
+					               StatGeneratingCLIDriver.class);
 	/**
 	 * Helper to get numbers from the user, etc.
 	 */
@@ -111,7 +105,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**
@@ -119,7 +113,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 */
 	@Override
 	public String getName() {
-		return USAGE_OBJ.getShortDescription();
+		return USAGE.getShortDescription();
 	}
 
 	/**
@@ -209,14 +203,9 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 		final String hdr = "Which unit contains the worker in question?";
 		final String none = "All that player's units are already fully statted.";
 		final String prpt = "Unit selection: ";
-		for (int unitNum = cli.chooseFromList(units, hdr, none, prpt, false); (unitNum
-				                                                                       >=
-				                                                                       0)
-				                                                                      &&
-				                                                                      (unitNum <
-						                                                                       units.size());
-				unitNum = cli.chooseFromList(units, hdr, none,
-						prpt, false)) {
+		for (int unitNum = cli.chooseFromList(units, hdr, none, prpt, false);
+				(unitNum >= 0) && (unitNum < units.size());
+				unitNum = cli.chooseFromList(units, hdr, none, prpt, false)) {
 			final IUnit unit = units.get(unitNum);
 			enterStats(model, unit);
 			if (!hasUnstattedWorker(model, unit.getID())) {

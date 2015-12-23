@@ -40,17 +40,11 @@ public final class EchoDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-e",
-			                                                            "--echo",
-			                                                            ParamCount.One,
-			                                                            "Read, then " +
-					                                                            "write a" +
-					                                                            " map.",
-			                                                            "Read and write " +
-					                                                            "a map, " +
-					                                                            "correcting deprecated syntax.",
-			                                                            EchoDriver
-					                                                            .class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(false, "-e", "--echo", ParamCount.One,
+					               "Read, then write a map.",
+					               "Read and write a map, correcting deprecated syntax.",
+					               EchoDriver.class);
 
 	/**
 	 * @param model ignored
@@ -108,7 +102,7 @@ public final class EchoDriver implements ISPDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**

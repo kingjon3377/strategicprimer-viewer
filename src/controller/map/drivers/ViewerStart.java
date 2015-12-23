@@ -7,7 +7,7 @@ import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;
 import java.io.File;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
@@ -46,15 +46,11 @@ public final class ViewerStart implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-m",
-			                                                            "--map",
-			                                                            ParamCount.One,
-			                                                            "Map viewer",
-			                                                            "Look at the map" +
-					                                                            " visually. This is probably the app you want.",
-
-			                                                            ViewerStart
-					                                                            .class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(true, "-m", "--map", ParamCount.One, "Map viewer",
+					               "Look at the map visually. This is probably the app " +
+							               "you want.",
+					               ViewerStart.class);
 
 	/**
 	 * Run the driver.
@@ -114,7 +110,7 @@ public final class ViewerStart implements ISPDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**
@@ -122,7 +118,7 @@ public final class ViewerStart implements ISPDriver {
 	 */
 	@Override
 	public String getName() {
-		return USAGE_OBJ.getShortDescription();
+		return USAGE.getShortDescription();
 	}
 
 	/**

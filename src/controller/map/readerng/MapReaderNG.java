@@ -95,11 +95,8 @@ public final class MapReaderNG implements IMapReader, ISPReader {
 			throws XMLStreamException, SPFormatException {
 		final TypesafeXMLEventReader reader = new TypesafeXMLEventReader(
 				                                                                istream);
-		final Iterable<XMLEvent> eventReader = new IteratorWrapper<>(
-				                                                            NullCleaner
-						                                                            .assertNotNull(
-								                                                            new IncludingIterator(file,
-										                                                                                 reader)));
+		final Iterable<XMLEvent> eventReader =
+				new IteratorWrapper<>(new IncludingIterator(file, reader));
 		final IDFactory idfac = new IDFactory();
 		final IMutablePlayerCollection players = new PlayerCollection();
 		for (final XMLEvent event : eventReader) {

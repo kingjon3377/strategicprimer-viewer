@@ -44,27 +44,13 @@ public final class SubsetDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-s",
-			                                                            "--subset",
-			                                                            ParamCount.Many,
-			                                                            "Check players' " +
-					                                                            "maps " +
-					                                                            "against" +
-					                                                            " master",
-
-			                                                            "Check that " +
-					                                                            "subordinate maps are subsets of the main map, containing "
-					                                                            +
-					                                                            "nothing" +
-					                                                            " that " +
-					                                                            "it does" +
-					                                                            " not " +
-					                                                            "contain" +
-					                                                            " in the" +
-					                                                            " same " +
-					                                                            "place",
-			                                                            SubsetDriver
-					                                                            .class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(false, "-s", "--subset", ParamCount.Many,
+					               "Check players' maps against master",
+					               "Check that subordinate maps are subsets of the main " +
+							               "map, containing nothing that it does not " +
+							               "contain in the same place",
+					               SubsetDriver.class);
 	/**
 	 * Logger.
 	 */
@@ -177,7 +163,7 @@ public final class SubsetDriver implements ISPDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**
@@ -185,7 +171,7 @@ public final class SubsetDriver implements ISPDriver {
 	 */
 	@Override
 	public String getName() {
-		return USAGE_OBJ.getShortDescription();
+		return USAGE.getShortDescription();
 	}
 
 	/**

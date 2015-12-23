@@ -90,15 +90,13 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		oldNode.remove(node);
 		if ((member instanceof ProxyFor) && (old instanceof ProxyUnit)
 				    && (newOwner instanceof ProxyUnit)) {
-			if ((((Collection<IUnit>) ((ProxyUnit) old).getProxied())
-					     .size() ==
+			if ((((Collection<IUnit>) ((ProxyUnit) old).getProxied()).size() ==
 					     ((Collection<IUnit>) ((ProxyUnit) newOwner).getProxied())
-							     .size())
-					    && (((Collection<IUnit>) ((ProxyUnit) old).getProxied())
-							        .size() ==
-							        ((Collection<? extends UnitMember>) ((ProxyFor<? extends UnitMember>) member)
-									                                            .getProxied())
-									        .size())) {
+							     .size()) &&
+					    (((Collection<IUnit>) ((ProxyUnit) old).getProxied()).size() ==
+							     ((Collection<? extends UnitMember>) ((ProxyFor<? extends UnitMember>) member)
+									                                         .getProxied())
+									     .size())) {
 				final Queue<UnitMember> members = new LinkedList<>();
 				final Queue<IUnit> newList = new LinkedList<>();
 				final Iterator<IUnit> oldIter = ((ProxyUnit) old).getProxied()
@@ -480,11 +478,10 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @return whether the object is or equals the node's user-object
 	 */
 	private static boolean areTreeObjectsEqual(final TreeNode node, final Object obj) {
-		return (node instanceof DefaultMutableTreeNode)
-				       && ((obj == ((DefaultMutableTreeNode) node).getUserObject()) ||
-						           obj
-						                                                                       .equals(((DefaultMutableTreeNode) node)
-								                                                                               .getUserObject()));
+		return (node instanceof DefaultMutableTreeNode) &&
+				       ((obj == ((DefaultMutableTreeNode) node).getUserObject()) ||
+						        obj.equals(
+								        ((DefaultMutableTreeNode) node).getUserObject()));
 	}
 
 	/**

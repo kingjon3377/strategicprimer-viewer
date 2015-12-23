@@ -50,17 +50,11 @@ public final class TrapModelDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-r",
-			                                                            "--trap",
-			                                                            ParamCount.One,
-			                                                            "Run a player's " +
-					                                                            "trapping",
-
-			                                                            "Determine the " +
-					                                                            "results" +
-					                                                            " a player's trapper finds.",
-			                                                            TrapModelDriver
-					                                                            .class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(false, "-r", "--trap", ParamCount.One,
+					               "Run a player's trapping",
+					               "Determine the results a player's trapper finds.",
+					               TrapModelDriver.class);
 	/**
 	 * A somewhat lengthy prompt.
 	 */
@@ -159,7 +153,7 @@ public final class TrapModelDriver implements ISPDriver {
 	 */
 	@Override
 	public String getName() {
-		return USAGE_OBJ.getShortDescription();
+		return USAGE.getShortDescription();
 	}
 
 	/**
@@ -320,7 +314,7 @@ public final class TrapModelDriver implements ISPDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**

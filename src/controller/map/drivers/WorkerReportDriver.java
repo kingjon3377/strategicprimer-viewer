@@ -39,16 +39,11 @@ public final class WorkerReportDriver implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(false, "-w",
-			                                                            "--worker",
-			                                                            ParamCount.One,
-			                                                            "Worker Report " +
-					                                                            "Generator",
-
-			                                                            "Produce HTML " +
-					                                                            "report " +
-					                                                            "of units, workers, etc., in a map.",
-			                                                            WorkerReportDriver.class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(false, "-w", "--worker", ParamCount.One,
+					               "Worker Report Generator",
+					               "Produce HTML report of units, workers, etc., in a map.",
+					               WorkerReportDriver.class);
 
 	/**
 	 * Run the driver.
@@ -119,7 +114,7 @@ public final class WorkerReportDriver implements ISPDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**
@@ -127,7 +122,7 @@ public final class WorkerReportDriver implements ISPDriver {
 	 */
 	@Override
 	public String getName() {
-		return USAGE_OBJ.getShortDescription();
+		return USAGE.getShortDescription();
 	}
 
 	/**

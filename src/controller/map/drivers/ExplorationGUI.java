@@ -5,7 +5,7 @@ import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;
 import java.io.File;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.exploration.ExplorationModel;
 import model.misc.IDriverModel;
 import util.Warning;
@@ -41,19 +41,11 @@ public final class ExplorationGUI implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-x",
-			                                                            "--explore",
-			                                                            ParamCount.Many,
-			                                                            "Run exploration.",
-			                                                            "Move a unit " +
-					                                                            "around " +
-					                                                            "the " +
-					                                                            "map, "
-					                                                            +
-					                                                            "updating the player's map with what it sees.",
-
-			                                                            ExplorationGUI
-					                                                            .class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(true, "-x", "--explore", ParamCount.Many, "Run exploration.",
+					               "Move a unit around the map, updating the player's " +
+							               "map with what it sees.",
+					               ExplorationGUI.class);
 
 	/**
 	 * Run the driver.
@@ -112,7 +104,7 @@ public final class ExplorationGUI implements ISPDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**

@@ -196,9 +196,8 @@ public final class ExplorableReportGenerator
 						(ExplorableFixture) pair.second(), pair.first()));
 			}
 		}
-		final AbstractReportNode retval = new SectionListReportNode(4,
-				                                                           "Caves, " +
-						                                                           "Battlefields, and Portals");
+		final AbstractReportNode retval =
+				new SectionListReportNode(4, "Caves, Battlefields, and Portals");
 		if (caves.getChildCount() > 0) {
 			retval.add(caves);
 		}

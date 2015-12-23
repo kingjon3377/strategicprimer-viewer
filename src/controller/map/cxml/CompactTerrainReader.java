@@ -54,9 +54,8 @@ public final class CompactTerrainReader extends
 	/**
 	 * Mapping from tags to enum-tags.
 	 */
-	private static final Map<String, TerrainFixtureType> MAP = new HashMap<>(
-			                                                                        TerrainFixtureType
-					                                                                        .values().length);
+	private static final Map<String, TerrainFixtureType> MAP =
+			new HashMap<>(TerrainFixtureType.values().length);
 	/**
 	 * List of supported tags.
 	 */

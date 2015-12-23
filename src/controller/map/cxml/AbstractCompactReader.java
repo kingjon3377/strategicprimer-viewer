@@ -256,16 +256,12 @@ public abstract class AbstractCompactReader<@NonNull T>
 	                                                   final String deprecated,
 	                                                   final Warning warner)
 			throws SPFormatException {
-		final Attribute prefProp = element.getAttributeByName(new QName(
-				                                                               preferred));
-		final Attribute deprProp = element.getAttributeByName(new QName(
-				                                                               deprecated));
+		final Attribute prefProp = element.getAttributeByName(new QName(preferred));
+		final Attribute deprProp = element.getAttributeByName(new QName(deprecated));
 		final String local = tagOrNull(element.getName().getLocalPart());
-		final MissingPropertyException exception = new MissingPropertyException(
-				                                                                       local,
-				                                                                       preferred,
-				                                                                       element.getLocation()
-						                                                                       .getLineNumber());
+		final MissingPropertyException exception =
+				new MissingPropertyException(local, preferred, element.getLocation()
+						                                               .getLineNumber());
 		if ((prefProp == null) && (deprProp == null)) {
 			throw exception;
 		} else if (prefProp == null) {

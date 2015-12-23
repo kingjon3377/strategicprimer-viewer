@@ -117,9 +117,8 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	 * @return the report
 	 */
 	@Override
-	public AbstractReportNode produceRIR(
-			                                    final DelayedRemovalMap<Integer,
-					                                                           Pair<Point, IFixture>> fixtures,
+	public AbstractReportNode produceRIR(final DelayedRemovalMap<Integer,
+			                                                                Pair<Point, IFixture>> fixtures,
 			                                    final IMapNG map,
 			                                    final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
@@ -144,9 +143,8 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 		if (items.isEmpty()) {
 			return EmptyReportNode.NULL_NODE; // NOPMD
 		} else {
-			final AbstractReportNode retval = new SectionListReportNode(4,
-					                                                           "Animal " +
-							                                                           "sightings or encounters");
+			final AbstractReportNode retval =
+					new SectionListReportNode(4, "Animal sightings or encounters");
 			for (final Entry<String, AbstractReportNode> entry : items.entrySet()) {
 				retval.add(entry.getValue());
 			}

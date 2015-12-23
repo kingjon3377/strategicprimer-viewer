@@ -3,7 +3,7 @@ package controller.map.drivers;
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.WindowThread;
-import java.awt.GraphicsEnvironment;
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,9 +13,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import util.EqualsAny;
 import util.NullCleaner;
@@ -52,17 +50,10 @@ public final class AppStarter implements ISPDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
-	private static final DriverUsage USAGE_OBJ = new DriverUsage(true, "-p",
-			                                                            "--app-starter",
-			                                                            ParamCount.Many,
-			                                                            "App Chooser",
-			                                                            "Let the user " +
-					                                                            "choose " +
-					                                                            "an app " +
-					                                                            "to start, or handle options.",
-
-			                                                            AppStarter
-					                                                            .class);
+	private static final DriverUsage USAGE =
+			new DriverUsage(true, "-p", "--app-starter", ParamCount.Many, "App Chooser",
+					               "Let the user choose an app to start, or handle options.",
+					               AppStarter.class);
 
 	/**
 	 * A map from options to the drivers they represent.
@@ -322,7 +313,7 @@ public final class AppStarter implements ISPDriver {
 	 */
 	@Override
 	public DriverUsage usage() {
-		return USAGE_OBJ;
+		return USAGE;
 	}
 
 	/**
