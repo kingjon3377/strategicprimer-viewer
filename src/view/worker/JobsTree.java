@@ -2,11 +2,9 @@ package view.worker;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 import model.listeners.SkillSelectionListener;
 import model.listeners.SkillSelectionSource;
@@ -37,8 +35,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public final class JobsTree extends JTree implements TreeSelectionListener,
-		                                                     SkillSelectionSource {
+public final class JobsTree extends JTree implements SkillSelectionSource {
 	/**
 	 * The list of completion listeners listening to us.
 	 */
@@ -92,35 +89,25 @@ public final class JobsTree extends JTree implements TreeSelectionListener,
 			expandRow(i);
 		}
 		setShowsRootHandles(true);
-		getSelectionModel().addTreeSelectionListener(this);
-	}
-
-	/**
-	 * Fire the 'skill' property with the current selection if it's a Skill, or null if
-	 * not.
-	 *
-	 * @param evt the selection event to handle
-	 */
-	@SuppressWarnings("AssignmentToNull")
-	@Override
-	public void valueChanged(@Nullable final TreeSelectionEvent evt) {
-		if (evt != null) {
-			final TreePath selPath = evt.getNewLeadSelectionPath();
-			final ISkill retval;
-			if (selPath == null) {
-				retval = null;
-			} else {
-				final Object component = selPath.getLastPathComponent();
-				if (component instanceof ISkill) {
-					retval = (ISkill) component;
-				} else {
+		getSelectionModel().addTreeSelectionListener(evt -> {
+			if (evt != null) {
+				final TreePath selPath = evt.getNewLeadSelectionPath();
+				final ISkill retval;
+				if (selPath == null) {
 					retval = null;
+				} else {
+					final Object component = selPath.getLastPathComponent();
+					if (component instanceof ISkill) {
+						retval = (ISkill) component;
+					} else {
+						retval = null;
+					}
+				}
+				for (final SkillSelectionListener list : ssListeners) {
+					list.selectSkill(retval);
 				}
 			}
-			for (final SkillSelectionListener list : ssListeners) {
-				list.selectSkill(retval);
-			}
-		}
+		});
 	}
 
 	/**
