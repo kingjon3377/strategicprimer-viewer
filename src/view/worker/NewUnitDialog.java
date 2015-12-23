@@ -3,7 +3,6 @@ package view.worker;
 import controller.map.misc.IDFactory;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -51,8 +50,7 @@ import view.util.ListenedButton;
  *
  * @author Jonathan Lovelace
  */
-public final class NewUnitDialog extends JFrame implements ActionListener,
-		                                                           NewUnitSource,
+public final class NewUnitDialog extends JFrame implements NewUnitSource,
 		                                                           PlayerChangeListener {
 	/**
 	 * The list of new-unit listeners listening to us.
@@ -104,46 +102,7 @@ public final class NewUnitDialog extends JFrame implements ActionListener,
 		owner = player;
 		idf = idFactory;
 
-		add(new JLabel("<html><b>Unit name:&nbsp;</b></html>"));
-		add(setupField(nameField));
-
-		add(new JLabel("<html><b>Kind of unit:&nbsp;</b></html>"));
-		add(setupField(kindField));
-
-		add(new JLabel("ID #: "));
-		idField.setColumns(10);
-		add(setupField(idField));
-
-		add(new ListenedButton("OK", this));
-		add(new ListenedButton("Cancel", this));
-
-		setMinimumSize(new Dimension(150, 80));
-		setPreferredSize(new Dimension(200, PREF_HEIGHT));
-		setMaximumSize(new Dimension(300, PREF_HEIGHT));
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		pack();
-	}
-
-	/**
-	 * Set up a field so that pressing Enter there will press the OK button.
-	 *
-	 * @param field the field to set up
-	 * @return the field
-	 */
-	private JTextField setupField(final JTextField field) {
-		field.setActionCommand("OK");
-		field.addActionListener(this);
-		return field;
-	}
-
-	/**
-	 * @param evt the event to handle
-	 */
-	@Override
-	public void actionPerformed(@Nullable final ActionEvent evt) {
-		if (evt == null) {
-			return;
-		} else if ("OK".equals(evt.getActionCommand())) {
+		final ActionListener okListener = evt -> {
 			final String name = nameField.getText().trim();
 			final String kind = kindField.getText().trim();
 			if (name.isEmpty()) {
@@ -176,12 +135,43 @@ public final class NewUnitDialog extends JFrame implements ActionListener,
 				setVisible(false);
 				dispose();
 			}
-		} else if ("Cancel".equals(evt.getActionCommand())) {
+		};
+		add(new JLabel("<html><b>Unit name:&nbsp;</b></html>"));
+		add(setupField(nameField, okListener));
+
+		add(new JLabel("<html><b>Kind of unit:&nbsp;</b></html>"));
+		add(setupField(kindField, okListener));
+
+		add(new JLabel("ID #: "));
+		idField.setColumns(10);
+		add(setupField(idField, okListener));
+
+		add(new ListenedButton("OK", okListener));
+		add(new ListenedButton("Cancel", evt -> {
 			nameField.setText("");
 			kindField.setText("");
 			setVisible(false);
 			dispose();
-		}
+		}));
+
+		setMinimumSize(new Dimension(150, 80));
+		setPreferredSize(new Dimension(200, PREF_HEIGHT));
+		setMaximumSize(new Dimension(300, PREF_HEIGHT));
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		pack();
+	}
+
+	/**
+	 * Set up a field so that pressing Enter there will press the OK button.
+	 *
+	 * @param field the field to set up
+	 * @param list the listener to listen for Enter in the field.
+	 * @return the field
+	 */
+	private JTextField setupField(final JTextField field, final ActionListener list) {
+		field.setActionCommand("OK");
+		field.addActionListener(list);
+		return field;
 	}
 
 	/**
