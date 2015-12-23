@@ -455,6 +455,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @return the node in the subtree under the node representing the object, or null if
 	 * it isn't in this subtree
 	 */
+	@SuppressWarnings("ReturnOfNull")
 	@Nullable
 	private static MutableTreeNode getNode(final TreeNode node, final Object obj) {
 		if ((node instanceof MutableTreeNode) && areTreeObjectsEqual(node, obj)) {

@@ -258,6 +258,7 @@ public class Job implements IJob { // NOPMD
 	 * @param skillName the name of a Skill
 	 * @return the Skill by that name in the Job, or none if not present
 	 */
+	@SuppressWarnings("ReturnOfNull")
 	@Override
 	@Nullable
 	public ISkill getSkill(final String skillName) {

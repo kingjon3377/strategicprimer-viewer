@@ -226,6 +226,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 	 * @param evt an event indicating the mouse cursor
 	 * @return a tooltip if over a worker, null otherwise
 	 */
+	@SuppressWarnings("ReturnOfNull")
 	@Override
 	@Nullable
 	public String getToolTipText(@Nullable final MouseEvent evt) {

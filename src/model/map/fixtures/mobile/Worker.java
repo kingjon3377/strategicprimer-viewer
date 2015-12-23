@@ -368,6 +368,7 @@ public class Worker implements IWorker {
 	 * @param jobName the name of a Job
 	 * @return the Job by that name the worker has, or null if it has none
 	 */
+	@SuppressWarnings("ReturnOfNull")
 	@Nullable
 	@Override
 	public IJob getJob(final String jobName) {

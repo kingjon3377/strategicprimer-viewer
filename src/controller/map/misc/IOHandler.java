@@ -134,6 +134,7 @@ public final class IOHandler implements ActionListener {
 	 * @param obj an object
 	 * @return it if it's a component, or null
 	 */
+	@SuppressWarnings("ReturnOfNull")
 	@Nullable
 	private static Component eventSource(@Nullable final Object obj) {
 		if (obj instanceof Component) {

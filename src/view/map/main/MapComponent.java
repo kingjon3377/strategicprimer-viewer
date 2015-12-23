@@ -112,6 +112,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 * @param event an event indicating where the mouse is
 	 * @return an appropriate tool-tip
 	 */
+	@SuppressWarnings("ReturnOfNull")
 	@Override
 	@Nullable
 	public String getToolTipText(@Nullable final MouseEvent event) {
