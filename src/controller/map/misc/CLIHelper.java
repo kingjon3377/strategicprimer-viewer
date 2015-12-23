@@ -91,6 +91,7 @@ public final class CLIHelper implements ICLIHelper {
 			ostream.append(": ");
 			ostream.println(list.get(i).getName());
 		}
+		ostream.flush();
 	}
 
 	/**
@@ -112,12 +113,14 @@ public final class CLIHelper implements ICLIHelper {
 			throws IOException {
 		if (items.isEmpty()) {
 			ostream.println(none);
+			ostream.flush();
 			return -1; // NOPMD
 		}
 		SYS_OUT.println(desc);
 		if (auto && (items.size() == 1)) {
 			ostream.print("Automatically choosing only item, ");
 			ostream.println(items.get(0));
+			ostream.flush();
 			return 0; // NOPMD
 		} else {
 			printList(items);
@@ -155,6 +158,7 @@ public final class CLIHelper implements ICLIHelper {
 		int retval = -1;
 		while (retval < 0) {
 			ostream.print(prompt);
+			ostream.flush();
 			final String input = istream.readLine();
 			if (input == null) {
 				throw new IOException("Null line of input");
@@ -182,6 +186,7 @@ public final class CLIHelper implements ICLIHelper {
 	@Override
 	public String inputString(final String prompt) throws IOException {
 		ostream.print(prompt);
+		ostream.flush();
 		final String line = istream.readLine();
 		if (line == null) {
 			return ""; // NOPMD
@@ -237,6 +242,7 @@ public final class CLIHelper implements ICLIHelper {
 			ostream.append(": ");
 			ostream.println(list.get(i));
 		}
+		ostream.flush();
 	}
 
 	/**
@@ -257,12 +263,14 @@ public final class CLIHelper implements ICLIHelper {
 			throws IOException {
 		if (items.isEmpty()) {
 			ostream.println(none);
+			ostream.flush();
 			return -1; // NOPMD
 		}
 		ostream.println(desc);
 		if (auto && (items.size() == 1)) {
 			ostream.print("Automatically choosing only item, ");
 			ostream.println(items.get(0));
+			ostream.flush();
 			return 0; // NOPMD
 		} else {
 			printStringList(items);
@@ -277,6 +285,7 @@ public final class CLIHelper implements ICLIHelper {
 	@Override
 	public void printf(final String format, final Object ... args) {
 		ostream.printf(format, args);
+		ostream.flush();
 	}
 	/**
 	 * Print the specified string, then a newline.
@@ -285,6 +294,7 @@ public final class CLIHelper implements ICLIHelper {
 	@Override
 	public void println(final String line) {
 		ostream.println(line);
+		ostream.flush();
 	}
 	/**
 	 * Print the specified string.
@@ -293,6 +303,7 @@ public final class CLIHelper implements ICLIHelper {
 	@Override
 	public void print(final String text) {
 		ostream.print(text);
+		ostream.flush();
 	}
 
 	/**
