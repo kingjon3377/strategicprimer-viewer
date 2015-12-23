@@ -91,7 +91,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 				NullCleaner.assertNotNull(workers.toArray(new IWorker[workers
 						                                                      .size()]));
 		proxyJobs.addAll(jobNames.stream()
-				                 .map(job -> new ProxyJob(job, parallel, workerArray))
+				                 .map(job -> new ProxyJob(job, false, workerArray))
 				                 .collect(Collectors.toList()));
 	}
 
@@ -123,7 +123,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 			}
 		}
 		proxyJobs
-				.addAll(jobNames.stream().map(job -> new ProxyJob(job, parallel,
+				.addAll(jobNames.stream().map(job -> new ProxyJob(job, true,
 						                                                 proxied))
 						        .collect(Collectors.toList()));
 	}

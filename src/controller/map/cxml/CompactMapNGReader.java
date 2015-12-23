@@ -393,7 +393,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					ostream.append("\">");
 					boolean needeol = true;
 					if (obj.isMountainous(point)) {
-						eolIfNeeded(needeol, ostream);
+						eolIfNeeded(true, ostream);
 						needeol = false;
 						ostream.append(indent(indent + 4));
 						ostream.append("<mountain />\n");
