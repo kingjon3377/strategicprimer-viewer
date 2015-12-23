@@ -81,7 +81,6 @@ public final class CLIHelper implements ICLIHelper {
 	/**
 	 * Print a list of things by name and number.
 	 *
-	 * @param ostream the stream to write to
 	 * @param list    the list to print.
 	 * @throws IOException on I/O error writing to stream
 	 */
@@ -230,7 +229,6 @@ public final class CLIHelper implements ICLIHelper {
 	/**
 	 * Print a list of things by name and number.
 	 *
-	 * @param ostream the stream to write to
 	 * @param list    the list to print.
 	 * @throws IOException on I/O error writing to stream
 	 */
