@@ -72,10 +72,10 @@ public final class TODOFixerDriver {
 	 */
 	public void fixAllUnits() {
 		for (final Point point : map.locations()) {
-			final List<String> jobList = getList(point);
+			final SimpleTerrain terrain = getTerrain(point);
 			for (final TileFixture fix : map.getOtherFixtures(point)) {
 				if ((fix instanceof Unit) && "TODO".equals(((Unit) fix).getKind())) {
-					fixUnit((Unit) fix, jobList);
+					fixUnit((Unit) fix, terrain);
 				}
 			}
 		}
@@ -85,18 +85,41 @@ public final class TODOFixerDriver {
 	 * How many units we've fixed.
 	 */
 	private int count = -1;
-
+	/**
+	 * Possible kinds of terrain.
+	 */
+	private enum SimpleTerrain {
+		Unforested, Forested, Ocean, Other;
+	}
 	/**
 	 * Fix a stubbed-out kind for a unit.
 	 *
-	 * FIXME: Fix comparison of object values with ==
-	 *
 	 * @param unit    the unit to fix
-	 * @param jobList a list of possible kinds for its surroundings
+	 * @param terrain the terrain the unit is in
 	 */
-	private void fixUnit(final Unit unit, final Collection<String> jobList) {
+	private void fixUnit(final Unit unit, final SimpleTerrain terrain) {
 		final Random random = new Random(unit.getID());
 		count++;
+		final Collection<String> jobList;
+		final String desc;
+		switch (terrain) {
+		case Unforested:
+			jobList = plainsList;
+			desc = "plains, desert, or mountains";
+			break;
+		case Forested:
+			jobList = forestList;
+			desc = "forest or jungle";
+			break;
+		case Ocean:
+			jobList = oceanList;
+			desc = "ocean";
+			break;
+		case Other:
+		default:
+			jobList = new ArrayList<>();
+			desc = "other";
+		}
 		for (final String job : jobList) {
 			if (random.nextBoolean()) {
 				SystemOut.SYS_OUT.printf(
@@ -105,16 +128,6 @@ public final class TODOFixerDriver {
 				unit.setKind(job);
 				return;
 			}
-		}
-		final String desc;
-		if (jobList == plainsList) {
-			desc = "plains, desert, or mountains";
-		} else if (jobList == forestList) {
-			desc = "forest or jungle";
-		} else if (jobList == oceanList) {
-			desc = "ocean";
-		} else {
-			desc = "other";
 		}
 		try {
 			final String kind =
@@ -143,39 +156,33 @@ public final class TODOFixerDriver {
 
 	/**
 	 * @param location a location in the map
-	 * @return a List of unit kinds (jobs) for the terrain there
+	 * @return the kind of terrain, with very coarse granularity, here
 	 */
 	@SuppressWarnings("deprecation")
-	private List<String> getList(final Point location) {
+	private SimpleTerrain getTerrain(final Point location) {
 		switch (map.getBaseTerrain(location)) {
-		case BorealForest:
-			return forestList;
-		case Desert:
-			return plainsList;
 		case Jungle:
-			return forestList;
+		case BorealForest:
+		case Steppe:
+		case TemperateForest:
+			return SimpleTerrain.Forested;
+		case Desert:
 		case Mountain:
-			return plainsList;
-		case NotVisible:
-			return plainsList; // Should never happen, but ...
+		case Tundra:
+		case NotVisible: // Should never happen, but ...
+			return SimpleTerrain.Unforested;
 		case Ocean:
-			return oceanList;
+			return SimpleTerrain.Ocean;
 		case Plains:
 			if (map.isMountainous(location)) {
-				return plainsList;
+				return SimpleTerrain.Unforested;
 			} else if (map.getForest(location) != null) {
-				return forestList;
+				return SimpleTerrain.Forested;
 			} else {
-				return plainsList;
+				return SimpleTerrain.Unforested;
 			}
-		case Steppe:
-			return forestList;
-		case TemperateForest:
-			return forestList;
-		case Tundra:
-			return plainsList;
 		default:
-			return plainsList; // Should never get here, but ...
+			return SimpleTerrain.Unforested; // Should never get here, but ...
 		}
 	}
 
