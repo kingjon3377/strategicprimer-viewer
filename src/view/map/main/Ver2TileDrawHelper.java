@@ -1,8 +1,6 @@
 package view.map.main;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.FileNotFoundException;
@@ -22,7 +20,6 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import model.map.HasImage;
-import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Point;
 import model.map.PointFactory;
@@ -483,6 +480,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		/**
 		 * The next item.
 		 */
+		@Nullable
 		private TileFixture cached;
 		/**
 		 * Whether we have a cached next item.
@@ -511,63 +509,6 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		}
 
 		/**
-		 * A TileFixture implementation to use instead of null.
-		 */
-		private static final TileFixture NULL_FIXT = new TileFixture() {
-			@Override
-			public int hashCode() {
-				return -1;
-			}
-
-			@Override
-			public boolean equals(@Nullable final Object obj) {
-				return this == obj;
-			}
-
-			@Override
-			public int compareTo(final TileFixture obj) {
-				throw new IllegalStateException(
-													   "Leak of an all-but-null object");
-			}
-
-			@Override
-			public int getID() {
-				throw new IllegalStateException(
-													   "Leak of an all-but-null object");
-			}
-
-			@Override
-			public boolean equalsIgnoringID(final IFixture fix) {
-				return fix == this;
-			}
-
-			@Override
-			public String plural() {
-				return "";
-			}
-
-			@Override
-			public int getZValue() {
-				throw new IllegalStateException(
-													   "Leak of an all-but-null object");
-			}
-
-			/**
-			 * @return a short description of the fixture
-			 */
-			@Override
-			public String shortDesc() {
-				return "null";
-			}
-
-			@Override
-			public TileFixture copy(final boolean zero) {
-				throw new IllegalStateException("Leak of an all-but-null object");
-			}
-
-		};
-
-		/**
 		 * Constructor.
 		 *
 		 * @param iter   the iterator to wrap
@@ -578,7 +519,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			wrapped = iter;
 			zof = zofilt;
 			hasCached = false;
-			cached = NULL_FIXT;
+			cached = null;
 			hasNext();
 		}
 
@@ -591,8 +532,9 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 				return true; // NOPMD
 			} else {
 				while (wrapped.hasNext()) {
+					@Nullable
 					final TileFixture tempCached = wrapped.next();
-					if ((tempCached != NULL_FIXT) && zof.shouldDisplay(tempCached)) {
+					if (tempCached != null && zof.shouldDisplay(tempCached)) {
 						cached = tempCached;
 						hasCached = true;
 						return true; // NOPMD
