@@ -1,18 +1,9 @@
 package view.exploration;
 
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JSplitPane;
-import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.*;
 import javax.swing.text.Document;
 import model.exploration.ExplorationModel;
 import model.exploration.ExplorationUnitListModel;
@@ -23,7 +14,6 @@ import model.listeners.PlayerChangeListener;
 import model.listeners.PlayerChangeSource;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
-import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
@@ -52,8 +42,7 @@ import view.util.SplitWithWeights;
  * @author Jonathan Lovelace
  */
 public final class ExplorerSelectingPanel extends BorderedPanel implements
-		ListSelectionListener, PlayerChangeSource, ActionListener,
-				CompletionSource {
+		PlayerChangeSource, CompletionSource {
 	/**
 	 * The list of players.
 	 */
@@ -110,7 +99,17 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 		final PlayerListModel plmodel = new PlayerListModel(emodel);
 		emodel.addMapChangeListener(plmodel);
 		playerList = new JList<>(plmodel);
-		playerList.addListSelectionListener(this);
+		playerList.addListSelectionListener(evt -> {
+			if (!playerList.isSelectionEmpty()) {
+				final Player newPlayer = playerList.getSelectedValue();
+				// Eclipse is mistaken when it says getSelectedValue() is @NonNull,
+				// but we already checked, so it should be safe to omit the null
+				// check.
+				for (final PlayerChangeListener list : listeners) {
+					list.playerChanged(null, newPlayer);
+				}
+			}
+		});
 		final ExplorationUnitListModel unitListModel = new ExplorationUnitListModel(
 																						   emodel);
 		addPlayerChangeListener(unitListModel);
@@ -146,7 +145,15 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 																								null,
 																								new ListenedButton(
 																														  BUTTON_TEXT,
-																														  this),
+																														  evt -> {
+																															  final IUnit selectedValue = unitList.getSelectedValue();
+																															  if (!unitList.isSelectionEmpty()) {
+																																  model.selectUnit(selectedValue);
+																																  for (final CompletionListener list : cListeners) {
+																																	  list.stopWaitingOn(true);
+																																  }
+																															  }
+																														  }),
 																								mpField,
 																								label("Unit's Movement Points: ")),
 																	   null, null)));
@@ -183,45 +190,6 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	 */
 	public Document getMPDocument() {
 		return NullCleaner.assertNotNull(mpField.getDocument());
-	}
-
-	/**
-	 * Handle the user selecting a different player.
-	 *
-	 * @param evt event
-	 */
-	@Override
-	public void valueChanged(@Nullable final ListSelectionEvent evt) {
-		if (!playerList.isSelectionEmpty()) {
-			final Player newPlayer = playerList.getSelectedValue();
-			// Eclipse is mistaken when it says getSelectedValue() is @NonNull,
-			// but we already checked, so it should be safe to omit the null
-			// check.
-			for (final PlayerChangeListener list : listeners) {
-				list.playerChanged(null, newPlayer);
-			}
-		}
-	}
-
-	/**
-	 * Handle a press of the 'start exploring' button.
-	 *
-	 * @param event the event to handle
-	 */
-	@Override
-	public void actionPerformed(@Nullable final ActionEvent event) {
-		final IUnit selectedValue = unitList.getSelectedValue();
-		// Eclipse claims getSelectedValue can never return null; the
-		// documentation contradicts this, but it returns null when
-		// isSelectionEmpty is true, which we do check.
-		if ((event != null)
-					&& BUTTON_TEXT.equalsIgnoreCase(event.getActionCommand())
-					&& !unitList.isSelectionEmpty()) {
-			model.selectUnit(selectedValue);
-			for (final CompletionListener list : cListeners) {
-				list.stopWaitingOn(true);
-			}
-		}
 	}
 
 	/**
