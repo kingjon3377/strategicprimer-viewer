@@ -38,6 +38,18 @@ public final class MissingPropertyException extends SPFormatException {
 	 * @param tag       the current tag
 	 * @param parameter the missing parameter
 	 * @param errorLine the line where this occurred
+	 * @param cause the underlying cause
+	 */
+	public MissingPropertyException(final String tag, final String parameter,
+	                                final int errorLine, final Throwable cause) {
+		super("Missing parameter " + parameter + " in tag " + tag, errorLine, cause);
+		context = tag;
+		param = parameter;
+	}
+	/**
+	 * @param tag       the current tag
+	 * @param parameter the missing parameter
+	 * @param errorLine the line where this occurred
 	 */
 	public MissingPropertyException(final String tag, final String parameter,
 	                                final int errorLine) {

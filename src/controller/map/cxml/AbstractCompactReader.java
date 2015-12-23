@@ -211,17 +211,11 @@ public abstract class AbstractCompactReader<@NonNull T>
 												  .parse(getParameter(element, "id"))
 												  .intValue());
 			} catch (final NumberFormatException | ParseException except) {
-				// TODO: Make MissingPropertyException have a constructor taking its
-				// cause.
-				final SPFormatException nexcept = new MissingPropertyException(
-																					  tagOrNull(
-																							  element.getName()
-																									  .getLocalPart()),
-																					  "id",
-																					  element.getLocation()
-																							  .getLineNumber());
-				nexcept.initCause(except);
-				throw nexcept;
+				throw new MissingPropertyException(tagOrNull(
+						element.getName().getLocalPart()), "id", element.getLocation()
+								                                         .getLineNumber(),
+
+						                                  except);
 			}
 		} else {
 			final String tag = element.getName().getLocalPart();
