@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import model.listeners.AddRemoveListener;
-import model.listeners.CompletionListener;
 import model.listeners.JobSelectionListener;
 import model.listeners.JobSelectionSource;
 import model.listeners.UnitMemberListener;
@@ -39,8 +36,8 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  */
 public final class JobsList extends JList<IJob> implements
-		ListSelectionListener, JobSelectionSource, AddRemoveListener,
-				UnitMemberListener, CompletionListener {
+		JobSelectionSource, AddRemoveListener,
+				UnitMemberListener {
 	/**
 	 * The list of completion listeners listening to us.
 	 */
@@ -56,21 +53,21 @@ public final class JobsList extends JList<IJob> implements
 	public JobsList() {
 		lmodel = new JobsListModel();
 		setModel(lmodel);
-		lmodel.addCompletionListener(this);
-		addListSelectionListener(this);
+		lmodel.addCompletionListener(end -> {
+			if (end) {
+				setSelectedIndex(lmodel.size() - 1);
+			} else {
+				setSelectedIndex(0);
+			}
+		});
+		addListSelectionListener(evt -> {
+			@Nullable
+			final IJob temp = getSelectedValue();
+			for (final JobSelectionListener list : jsListeners) {
+				list.selectJob(temp);
+			}
+		});
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-	}
-
-	/**
-	 * @param evt an event indicating the selection changed.
-	 */
-	@Override
-	public void valueChanged(@Nullable final ListSelectionEvent evt) {
-		@Nullable
-		final IJob temp = getSelectedValue();
-		for (final JobSelectionListener list : jsListeners) {
-			list.selectJob(temp);
-		}
 	}
 
 	/**
@@ -114,17 +111,5 @@ public final class JobsList extends JList<IJob> implements
 	public void memberSelected(@Nullable final UnitMember old,
 	                           @Nullable final UnitMember selected) {
 		lmodel.memberSelected(old, selected);
-	}
-
-	/**
-	 * @param end whether to slip to the end
-	 */
-	@Override
-	public void stopWaitingOn(final boolean end) {
-		if (end) {
-			setSelectedIndex(lmodel.size() - 1);
-		} else {
-			setSelectedIndex(0);
-		}
 	}
 }
