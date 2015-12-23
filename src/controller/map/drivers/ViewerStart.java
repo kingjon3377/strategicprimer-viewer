@@ -48,9 +48,9 @@ public final class ViewerStart implements ISPDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-m", "--map", ParamCount.One, "Map viewer",
-					               "Look at the map visually. This is probably the app " +
-							               "you want.",
-					               ViewerStart.class);
+								   "Look at the map visually. This is probably the app " +
+										   "you want.",
+								   ViewerStart.class);
 
 	/**
 	 * Run the driver.
@@ -65,7 +65,7 @@ public final class ViewerStart implements ISPDriver {
 			model = (IViewerModel) dmodel;
 		} else if (dmodel instanceof IMultiMapModel) {
 			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) dmodel)
-					                                            .getAllMaps()) {
+																.getAllMaps()) {
 				startDriver(new ViewerModel(pair.first(), pair.second()));
 			}
 			return;
@@ -74,8 +74,8 @@ public final class ViewerStart implements ISPDriver {
 		}
 		SwingUtilities
 				.invokeLater(new WindowThread(new ViewerFrame(model, new IOHandler(model,
-						                                                                  new FilteredFileChooser(".",
-								                                                                                         new MapFileFilter())))));
+																						  new FilteredFileChooser(".",
+																														 new MapFileFilter())))));
 	}
 
 	/**
@@ -92,15 +92,15 @@ public final class ViewerStart implements ISPDriver {
 				startDriver(new FileChooser(new File("")).getFile().getPath());
 			} catch (final ChoiceInterruptedException except) {
 				throw new DriverFailedException("File choice was interrupted or user " +
-						                                "didn't choose",
-						                               except);
+														"didn't choose",
+													   except);
 			}
 		} else {
 			// We get a MultiMapModel so the overload that takes a map-model can
 			// start one window for each map, without having to make multiple
 			// calls to the reader.
 			startDriver(new MapReaderAdapter().readMultiMapModel(new Warning(Action
-					                                                                 .Warn),
+																					 .Warn),
 					new File(args[0]), MapReaderAdapter.namesToFiles(true, args)));
 		}
 	}

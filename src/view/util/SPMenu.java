@@ -65,8 +65,8 @@ public class SPMenu extends JMenuBar {
 	 * @return the file menu
 	 */
 	protected static JMenu createFileMenu(final IOHandler handler,
-	                                      final JFrame parent, final IDriverModel
-			                                                           model) {
+										  final JFrame parent, final IDriverModel
+																	   model) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		final JMenuItem newItem = createMenuItem("New", KeyEvent.VK_N,
@@ -114,12 +114,12 @@ public class SPMenu extends JMenuBar {
 				KeyEvent.VK_M, createHotkey(KeyEvent.VK_M),
 				"Open the main map in the map viewer for a broader view",
 				evt -> invokeLater(() -> new ViewerFrame(
-						                                        new ViewerModel(model
-								                                                        .getMap(),
-								                                                       model.getMapFile()),
+																new ViewerModel(model
+																						.getMap(),
+																					   model.getMapFile()),
 
-						                                        handler)
-						                         .setVisible(true)));
+																handler)
+												 .setVisible(true)));
 		fileMenu.add(openViewerItem);
 		if (model instanceof IViewerModel) {
 			openViewerItem.setEnabled(false);
@@ -131,16 +131,16 @@ public class SPMenu extends JMenuBar {
 				evt -> {
 					if (model instanceof IMultiMapModel) {
 						final Pair<IMutableMapNG, File> mapPair = ((IMultiMapModel)
-								                                           model)
-								                                          .getSubordinateMaps()
-								                                          .iterator()
-								                                          .next();
+																		   model)
+																		  .getSubordinateMaps()
+																		  .iterator()
+																		  .next();
 						invokeLater(() -> new ViewerFrame(
-								                                 new ViewerModel(mapPair
-										                                                 .first(),
-										                                                mapPair.second()),
-								                                 handler)
-								                  .setVisible(true));
+																 new ViewerModel(mapPair
+																						 .first(),
+																						mapPair.second()),
+																 handler)
+												  .setVisible(true));
 					}
 				});
 		fileMenu.add(openSecondaryViewerItem);
@@ -152,7 +152,7 @@ public class SPMenu extends JMenuBar {
 				createHotkey(KeyEvent.VK_W),
 				"Close this window", evt -> {
 					if ((evt != null)
-							    && "Close".equals(evt.getActionCommand())) {
+								&& "Close".equals(evt.getActionCommand())) {
 						parent.setVisible(false);
 						parent.dispose();
 					}
@@ -183,7 +183,7 @@ public class SPMenu extends JMenuBar {
 	 * @return the menu created
 	 */
 	protected static JMenu createMapMenu(final JFrame parent,
-	                                     final IDriverModel model) {
+										 final IDriverModel model) {
 		final JMenu retval = new JMenu("Map");
 		retval.setMnemonic(KeyEvent.VK_M);
 		final JMenuItem gotoTileItem;
@@ -199,7 +199,7 @@ public class SPMenu extends JMenuBar {
 					KeyEvent.VK_T, createHotkey(KeyEvent.VK_T),
 					"Go to a tile by coordinates",
 					evt -> new SelectTileDialog(parent, (IViewerModel) model)
-							       .setVisible(true));
+								   .setVisible(true));
 			final FindDialog finder = new FindDialog(parent, (IViewerModel) model);
 			findItem = createMenuItem("Find a fixture", findKey,
 					findStroke, "Find a fixture by name, kind, or ID#",
@@ -286,7 +286,7 @@ public class SPMenu extends JMenuBar {
 	 * @return the "edit" menu
 	 */
 	protected static JMenu createViewMenu(final PlayerChooserHandler pch,
-	                                      final ActionListener al) {
+										  final ActionListener al) {
 		final JMenu viewtMenu = new JMenu("View");
 		viewtMenu.setMnemonic(KeyEvent.VK_E);
 		viewtMenu.add(createMenuItem(

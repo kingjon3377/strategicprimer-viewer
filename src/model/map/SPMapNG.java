@@ -117,7 +117,7 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public boolean isSubset(final IMapNG obj, final Appendable out,
-	                        final String context) throws IOException {
+							final String context) throws IOException {
 		if (dimensions().equals(obj.dimensions())) {
 			// TODO: We should probably delegate this to the PlayerCollection.
 			boolean retval = true;
@@ -135,7 +135,7 @@ public class SPMapNG implements IMutableMapNG {
 				final String ctxt =
 						context + " At " + Objects.toString(point) + ':';
 				if ((getBaseTerrain(point) != obj.getBaseTerrain(point))
-						    && (TileType.NotVisible != obj.getBaseTerrain(point))) {
+							&& (TileType.NotVisible != obj.getBaseTerrain(point))) {
 					out.append(ctxt);
 					if (TileType.NotVisible == getBaseTerrain(point)) {
 						out.append("\tHas terrain information we don't\n");
@@ -154,7 +154,7 @@ public class SPMapNG implements IMutableMapNG {
 				}
 				final Forest forest = obj.getForest(point);
 				if (!Objects.equals(getForest(point), forest)
-						    && (forest != null)) {
+							&& (forest != null)) {
 					// There are *far* too many false positives if we don't
 					// check the "other fixtures," because of the way we
 					// represent this in the XML. If we ever start a new
@@ -172,7 +172,7 @@ public class SPMapNG implements IMutableMapNG {
 				final Ground theirGround = obj.getGround(point);
 				final Ground ourGround = getGround(point);
 				if (!Objects.equals(ourGround, theirGround)
-						    && (theirGround != null)) {
+							&& (theirGround != null)) {
 					// There are *far* too many false positives if we don't
 					// check the "other fixtures," because of the way we
 					// represent this in the XML. If we ever start a new
@@ -180,16 +180,16 @@ public class SPMapNG implements IMutableMapNG {
 					// database---we should remove this
 					// check. Except for the 'exposed' bit.
 					if ((ourGround != null)
-							    && ourGround.getKind().equals(theirGround.getKind())
-							    && ourGround.isExposed()) {
+								&& ourGround.getKind().equals(theirGround.getKind())
+								&& ourGround.isExposed()) {
 						// They just don't have the exposed bit set; carry on
 						// ...
 					} else if ((ourGround == null)
-							           ||
-							           !fixtures.get(
-									           point)
-									            .contains(
-											            theirGround)) {
+									   ||
+									   !fixtures.get(
+											   point)
+												.contains(
+														theirGround)) {
 						out.append(ctxt);
 						out.append(
 								"\tHas different primary ground, or ground we don't\n");
@@ -219,37 +219,37 @@ public class SPMapNG implements IMutableMapNG {
 						obj.getOtherFixtures(point);
 				for (final TileFixture fix : theirFixtures) {
 					if (ourFixtures.contains(fix)
-							    || shouldSkip(fix)) {
+								|| shouldSkip(fix)) {
 						continue;
 					} else if (((fix instanceof Ground)
-							            &&
-							            Objects.equals(
-									            fix,
-									            getGround(
-											            point)))
-							           ||
-							           ((fix instanceof Forest)
-									            &&
-									            Objects.equals(
-											            fix,
-											            getForest(
-													            point)))) {
+										&&
+										Objects.equals(
+												fix,
+												getGround(
+														point)))
+									   ||
+									   ((fix instanceof Forest)
+												&&
+												Objects.equals(
+														fix,
+														getForest(
+																point)))) {
 						continue;
 					} else if ((fix instanceof IUnit) && ourUnits
-							                                     .containsKey(
-									                                     Integer.valueOf(
-											                                     fix
-													                                     .getID
-													                                         ()))) {
+																 .containsKey(
+																		 Integer.valueOf(
+																				 fix
+																						 .getID
+																							 ()))) {
 						retval &= ourUnits.get(Integer.valueOf(fix.getID()))
-								          .isSubset(fix, out, ctxt);
+										  .isSubset(fix, out, ctxt);
 					} else if ((fix instanceof SubsettableFixture) && ourSubsettables
-							                                                  .containsKey(
-									                                                  Integer.valueOf(
-											                                                  fix.getID()))) {
+																			  .containsKey(
+																					  Integer.valueOf(
+																							  fix.getID()))) {
 						retval &= ourSubsettables
-								          .get(Integer.valueOf(fix.getID()))
-								          .isSubset(fix, out, ctxt);
+										  .get(Integer.valueOf(fix.getID()))
+										  .isSubset(fix, out, ctxt);
 					} else {
 						out.append(ctxt);
 						out.append(" Extra fixture:\t");
@@ -301,7 +301,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * @param currentTurn the current turn
 	 */
 	public SPMapNG(final MapDimensions dimensions,
-	               final IMutablePlayerCollection players, final int currentTurn) {
+				   final IMutablePlayerCollection players, final int currentTurn) {
 		dims = dimensions;
 		playerCollection = players;
 		turn = currentTurn;
@@ -329,8 +329,8 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public Iterable<@NonNull Point> locations() {
 		return new IteratorWrapper<>(
-				                            new PointIterator(dimensions(), null, true,
-						                                             true));
+											new PointIterator(dimensions(), null, true,
+																	 true));
 	}
 
 	/**
@@ -432,19 +432,19 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	private boolean equalsImpl(final IMapNG obj) {
 		if (dimensions().equals(obj.dimensions())
-				    && areIterablesEqual(players(), obj.players())
-				    && (getCurrentTurn() == obj.getCurrentTurn())
-				    && getCurrentPlayer().equals(obj.getCurrentPlayer())) {
+					&& areIterablesEqual(players(), obj.players())
+					&& (getCurrentTurn() == obj.getCurrentTurn())
+					&& getCurrentPlayer().equals(obj.getCurrentPlayer())) {
 			for (final Point point : locations()) {
 				if ((getBaseTerrain(point) != obj.getBaseTerrain(point))
-						    || (isMountainous(point) != obj.isMountainous(point))
-						    || !areIterablesEqual(getRivers(point),
+							|| (isMountainous(point) != obj.isMountainous(point))
+							|| !areIterablesEqual(getRivers(point),
 						obj.getRivers(point))
-						    || !Objects.equals(getForest(point),
+							|| !Objects.equals(getForest(point),
 						obj.getForest(point))
-						    || !Objects.equals(getGround(point),
+							|| !Objects.equals(getGround(point),
 						obj.getGround(point))
-						    || !areIterablesEqual(getOtherFixtures(point),
+							|| !areIterablesEqual(getOtherFixtures(point),
 						obj.getOtherFixtures(point))) {
 					return false; // NOPMD
 				}
@@ -464,7 +464,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * @return whether they contain the same elements.
 	 */
 	private static <T> boolean areIterablesEqual(final Iterable<T> firstIterable,
-	                                             final Iterable<T> secondIterable) {
+												 final Iterable<T> secondIterable) {
 		final Collection<T> first = StreamSupport.stream(firstIterable.spliterator(),
 				false).collect(Collectors.toList());
 		final Collection<T> firstCopy =
@@ -479,7 +479,7 @@ public class SPMapNG implements IMutableMapNG {
 		firstCopy.removeAll(second);
 		secondCopy.removeAll(first);
 		return first.containsAll(second) && second.containsAll(first) &&
-				       secondCopy.isEmpty() && firstCopy.isEmpty();
+					   secondCopy.isEmpty() && firstCopy.isEmpty();
 	}
 
 	/**
@@ -493,7 +493,7 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public int hashCode() {
 		return dimensions().hashCode() + (getCurrentTurn() << 3)
-				       + (getCurrentPlayer().hashCode() << 5);
+					   + (getCurrentPlayer().hashCode() << 5);
 	}
 
 	/**
@@ -680,7 +680,7 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	public static boolean shouldSkip(final TileFixture fix) {
 		return (fix instanceof CacheFixture) || (fix instanceof TextFixture)
-				       || ((fix instanceof Animal) && ((Animal) fix).isTraces());
+					   || ((fix instanceof Animal) && ((Animal) fix).isTraces());
 	}
 
 	/**
@@ -691,7 +691,7 @@ public class SPMapNG implements IMutableMapNG {
 	public IMapNG copy(final boolean zero) {
 		final IMutableMapNG retval =
 				new SPMapNG(dimensions(), playerCollection.copy(false),
-						           getCurrentTurn());
+								   getCurrentTurn());
 		for (final Point point : locations()) {
 			retval.setBaseTerrain(point, getBaseTerrain(point));
 			final Ground grd = getGround(point);

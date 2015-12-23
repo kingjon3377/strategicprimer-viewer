@@ -59,16 +59,16 @@ public final class MineReader implements INodeHandler<Mine> {
 	 */
 	@Override
 	public Mine parse(final StartElement element,
-	                  final Iterable<XMLEvent> stream,
-	                  final IMutablePlayerCollection players,
-	                  final Warning warner, final IDFactory idFactory)
+					  final Iterable<XMLEvent> stream,
+					  final IMutablePlayerCollection players,
+					  final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Mine fix = new Mine(getAttributeWithDeprecatedForm(element,
 				"kind", "product", warner),
-				                         TownStatus.parseTownStatus(
-						                         getAttribute(element, "status")),
-				                         getOrGenerateID(element, warner, idFactory));
+										 TownStatus.parseTownStatus(
+												 getAttribute(element, "status")),
+										 getOrGenerateID(element, warner, idFactory));
 		addImage(element, fix);
 		return fix;
 	}
@@ -100,13 +100,13 @@ public final class MineReader implements INodeHandler<Mine> {
 	@Override
 	public <S extends Mine> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "mine",
-				                                                                            Pair.of("kind",
-						                                                                            obj.getKind()),
-				                                                                            Pair.of("status",
-						                                                                            obj
-								                                                                            .getStatus()
-								                                                                            .toString()));
+																							"mine",
+																							Pair.of("kind",
+																									obj.getKind()),
+																							Pair.of("status",
+																									obj
+																											.getStatus()
+																											.toString()));
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

@@ -46,12 +46,12 @@ public final class AdvancementStart implements ISPDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-a", "--adv", ParamCount.Many,
-					               "View a player's workers and manage their " +
-							               "advancement",
-					               "View a player's units, the workers in those units, " +
-							               "each worker's Jobs, and his or her level in " +
-							               "each Skill in each Job.",
-					               AdvancementStart.class);
+								   "View a player's workers and manage their " +
+										   "advancement",
+								   "View a player's units, the workers in those units, " +
+										   "each worker's Jobs, and his or her level in " +
+										   "each Skill in each Job.",
+								   AdvancementStart.class);
 
 	/**
 	 * Run the driver
@@ -69,9 +69,9 @@ public final class AdvancementStart implements ISPDriver {
 		}
 		SwingUtilities.invokeLater(
 				new WindowThread(new AdvancementFrame(model, new IOHandler(model,
-						                                                          new
-								                                                          FilteredFileChooser(".",
-								                                                                                 new MapFileFilter())))));
+																				  new
+																						  FilteredFileChooser(".",
+																												 new MapFileFilter())))));
 	}
 
 	/**
@@ -92,23 +92,23 @@ public final class AdvancementStart implements ISPDriver {
 								args[0], ""))).getFile();
 			}
 			final IWorkerModel model = new WorkerModel(
-					                                          new MapReaderAdapter()
-							                                          .readMultiMapModel(
-									                                          new
-											                                          Warning(Action.Warn),
-									                                          file,
-									                                          MapReaderAdapter
-											                                          .namesToFiles(
-													                                          true,
-													                                          args)));
+															  new MapReaderAdapter()
+																	  .readMultiMapModel(
+																			  new
+																					  Warning(Action.Warn),
+																			  file,
+																			  MapReaderAdapter
+																					  .namesToFiles(
+																							  true,
+																							  args)));
 			SwingUtilities.invokeLater(new WindowThread(new AdvancementFrame(
-					                                                                model,
-					                                                                new IOHandler(model,
-							                                                                             new FilteredFileChooser(".",
-									                                                                                                    new MapFileFilter())))));
+																					model,
+																					new IOHandler(model,
+																										 new FilteredFileChooser(".",
+																																		new MapFileFilter())))));
 		} catch (final ChoiceInterruptedException except) {
 			throw new DriverFailedException("File choice was interrupted or user didn't choose",
-					                               except);
+												   except);
 		}
 	}
 

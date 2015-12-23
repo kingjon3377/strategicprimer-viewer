@@ -82,7 +82,7 @@ public class Unit implements IUnit {
 	 * @param idNum     the ID number.
 	 */
 	public Unit(final Player unitOwner, final String unitType,
-	            final String unitName, final int idNum) {
+				final String unitName, final int idNum) {
 		owner = unitOwner;
 		kind = unitType;
 		name = unitName;
@@ -176,12 +176,12 @@ public class Unit implements IUnit {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof IUnit)
-				                         && (((IUnit) obj).getOwner().getPlayerId() ==
-						                             owner.getPlayerId())
-				                         && ((IUnit) obj).getKind().equals(kind)
-				                         && ((IUnit) obj).getName().equals(name)
-				                         && areMembersEqual((IUnit) obj)
-				                         && (((IUnit) obj).getID() == id));
+										 && (((IUnit) obj).getOwner().getPlayerId() ==
+													 owner.getPlayerId())
+										 && ((IUnit) obj).getKind().equals(kind)
+										 && ((IUnit) obj).getName().equals(name)
+										 && areMembersEqual((IUnit) obj)
+										 && (((IUnit) obj).getID() == id));
 	}
 
 	/**
@@ -223,7 +223,7 @@ public class Unit implements IUnit {
 			return "Independent unit of type " + kind + ", named " + name; // NOPMD
 		} else {
 			return "Unit of type " + kind + ", belonging to " + owner
-					       + ", named " + name;
+						   + ", named " + name;
 		}
 	}
 
@@ -290,10 +290,10 @@ public class Unit implements IUnit {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (this == fix) || ((fix instanceof IUnit)
-				                         && (((IUnit) fix).getOwner().getPlayerId() ==
-						                             owner.getPlayerId())
-				                         && ((IUnit) fix).getKind().equals(kind)
-				                         && ((IUnit) fix).getName().equals(name));
+										 && (((IUnit) fix).getOwner().getPlayerId() ==
+													 owner.getPlayerId())
+										 && ((IUnit) fix).getKind().equals(kind)
+										 && ((IUnit) fix).getName().equals(name));
 	}
 
 	/**
@@ -382,7 +382,7 @@ public class Unit implements IUnit {
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-	                        final String context) throws IOException {
+							final String context) throws IOException {
 		if (obj.getID() != id) {
 			ostream.append(context);
 			ostream.append("\tFixtures have different IDs\n");

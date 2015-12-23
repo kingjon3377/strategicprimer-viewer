@@ -59,17 +59,17 @@ public final class CompactResourcePileReader
 	 */
 	@Override
 	public ResourcePile read(final StartElement element,
-	                         final IteratorWrapper<XMLEvent> stream,
-	                         final IMutablePlayerCollection players, final Warning
-			                                                                 warner,
-	                         final IDFactory idFactory) throws SPFormatException {
+							 final IteratorWrapper<XMLEvent> stream,
+							 final IMutablePlayerCollection players, final Warning
+																			 warner,
+							 final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "resource");
 		final ResourcePile retval =
 				new ResourcePile(getOrGenerateID(element, warner, idFactory),
-						                getParameter(element, "kind"),
-						                getParameter(element, "contents"),
-						                getIntegerParameter(element, "quantity"),
-						                getParameter(element, "unit", ""));
+										getParameter(element, "kind"),
+										getParameter(element, "contents"),
+										getIntegerParameter(element, "quantity"),
+										getParameter(element, "unit", ""));
 		if (hasParameter(element, "created")) {
 			retval.setCreated(getIntegerParameter(element, "created"));
 		}
@@ -97,7 +97,7 @@ public final class CompactResourcePileReader
 	 */
 	@Override
 	public void write(final Appendable ostream, final ResourcePile obj,
-	                  final int indent) throws IOException {
+					  final int indent) throws IOException {
 		for (int i = 0; i < indent; i++) {
 			ostream.append('\t');
 		}

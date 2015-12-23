@@ -44,7 +44,7 @@ public interface IReportGenerator<T> {
 	 * @return the (sub-)report, or the empty string if nothing to report.
 	 */
 	String produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	               IMapNG map, Player currentPlayer);
+				   IMapNG map, Player currentPlayer);
 
 	/**
 	 * Produce a report on a single item. All fixtures that this report references should
@@ -59,7 +59,7 @@ public interface IReportGenerator<T> {
 	 * @return the (sub-)report, or the empty string if nothing to report.
 	 */
 	String produce(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-	               IMapNG map, Player currentPlayer, T item, Point loc);
+				   IMapNG map, Player currentPlayer, T item, Point loc);
 
 	/**
 	 * All fixtures that this report references should be removed from the set before
@@ -72,10 +72,10 @@ public interface IReportGenerator<T> {
 	 * @return the (sub-)report, or the empty string if nothing to report.
 	 */
 	AbstractReportNode produceRIR(
-			                             DelayedRemovalMap<Integer, Pair<Point,
-					                                                            IFixture>> fixtures,
+										 DelayedRemovalMap<Integer, Pair<Point,
+																				IFixture>> fixtures,
 
-			                             IMapNG map, Player currentPlayer);
+										 IMapNG map, Player currentPlayer);
 
 	/**
 	 * Produce a report on a single item. All fixtures that this report references should
@@ -90,8 +90,8 @@ public interface IReportGenerator<T> {
 	 * @return the (sub-)report, or null if nothing to report.
 	 */
 	AbstractReportNode produceRIR(
-			                             DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			                             IMapNG map, Player currentPlayer, T item,
-			                             Point loc);
+										 DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+										 IMapNG map, Player currentPlayer, T item,
+										 Point loc);
 
 }

@@ -57,9 +57,9 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	 */
 	public Iterable<Player> getPlayers() {
 		return StreamSupport.stream(getAllMaps().spliterator(), false)
-				       .flatMap(pair -> StreamSupport.stream(pair.first().players()
-						                                             .spliterator(),
-						       false)).collect(
+					   .flatMap(pair -> StreamSupport.stream(pair.first().players()
+																	 .spliterator(),
+							   false)).collect(
 						Collectors.toSet());
 	}
 
@@ -70,12 +70,12 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	 * @param player   the player to add it for
 	 */
 	public void addResource(@SuppressWarnings("TypeMayBeWeakened")
-	                        final FortressMember resource, final Player player) {
+							final FortressMember resource, final Player player) {
 		for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
 			final IMutableMapNG map = pair.first();
 			final Player currP = map.getCurrentPlayer();
 			if (currP.isIndependent() || (currP.getPlayerId() < 0) ||
-					    (currP.getPlayerId() == player.getPlayerId())) {
+						(currP.getPlayerId() == player.getPlayerId())) {
 				addResourceToMap(resource.copy(false), map, player);
 			}
 		}
@@ -89,13 +89,13 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	 * @param player   the player to add it for
 	 */
 	public void addResourceToMap(final FortressMember resource, final IMapNG map,
-	                             final Player player) {
+								 final Player player) {
 		for (final Point location : map.locations()) {
 			for (final TileFixture fixture : map.getOtherFixtures(location)) {
 				if ((fixture instanceof Fortress) &&
-						    (((Fortress) fixture).getOwner().getPlayerId() ==
-								     player.getPlayerId()) &&
-						    "HQ".equals(((Fortress) fixture).getName())) {
+							(((Fortress) fixture).getOwner().getPlayerId() ==
+									 player.getPlayerId()) &&
+							"HQ".equals(((Fortress) fixture).getName())) {
 					((Fortress) fixture).addMember(resource);
 				}
 			}

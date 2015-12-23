@@ -40,8 +40,8 @@ public final class UnitMemberTransferable implements Transferable {
 	 * a DataFlavor representing its class.
 	 */
 	public static final DataFlavor FLAVOR = new DataFlavor(
-			                                                      UnitMemberPair.class,
-			                                                      "Worker");
+																  UnitMemberPair.class,
+																  "Worker");
 
 	/**
 	 * A pair of a unit member and its containing unit.
@@ -77,10 +77,10 @@ public final class UnitMemberTransferable implements Transferable {
 			final String memberStr = member.toString();
 			final String unitStr = unit.toString();
 			final StringBuilder builder = new StringBuilder(22
-					                                                + memberStr.length
-							                                                            () +
+																	+ memberStr.length
+																						() +
 
-					                                                unitStr.length());
+																	unitStr.length());
 			builder.append("UnitMemberPair: (");
 			builder.append(memberStr);
 			builder.append(", ");
@@ -153,9 +153,9 @@ public final class UnitMemberTransferable implements Transferable {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof UnitMemberTransferable)
-				                         &&
-				                         data.equals(
-						                         ((UnitMemberTransferable) obj).data));
+										 &&
+										 data.equals(
+												 ((UnitMemberTransferable) obj).data));
 	}
 
 	/**

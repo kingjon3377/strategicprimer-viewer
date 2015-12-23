@@ -43,9 +43,9 @@ public final class ExplorationGUI implements ISPDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-x", "--explore", ParamCount.Many, "Run exploration.",
-					               "Move a unit around the map, updating the player's " +
-							               "map with what it sees.",
-					               ExplorationGUI.class);
+								   "Move a unit around the map, updating the player's " +
+										   "map with what it sees.",
+								   ExplorationGUI.class);
 
 	/**
 	 * Run the driver.
@@ -63,9 +63,9 @@ public final class ExplorationGUI implements ISPDriver {
 		}
 		SwingUtilities.invokeLater(
 				new WindowThread(new ExplorationFrame(model, new IOHandler(model,
-						                                                          new
-								                                                          FilteredFileChooser(".",
-								                                                                                 new MapFileFilter())))));
+																				  new
+																						  FilteredFileChooser(".",
+																												 new MapFileFilter())))));
 	}
 
 	/**
@@ -83,20 +83,20 @@ public final class ExplorationGUI implements ISPDriver {
 			System.exit(1);
 		}
 		final ExplorationModel model = new ExplorationModel(
-				                                                   new MapReaderAdapter()
-						                                                   .readMultiMapModel(
-								                                                   Warning.INSTANCE,
-								                                                   new File(args[0]),
-								                                                   MapReaderAdapter
-										                                                   .namesToFiles(
-												                                                   true,
-												                                                   args)));
+																   new MapReaderAdapter()
+																		   .readMultiMapModel(
+																				   Warning.INSTANCE,
+																				   new File(args[0]),
+																				   MapReaderAdapter
+																						   .namesToFiles(
+																								   true,
+																								   args)));
 		SwingUtilities.invokeLater(new WindowThread(new ExplorationFrame(
-				                                                                model,
-				                                                                new IOHandler(model,
-						                                                                             new FilteredFileChooser(
-								                                                                                                    ".",
-								                                                                                                    new MapFileFilter())))));
+																				model,
+																				new IOHandler(model,
+																									 new FilteredFileChooser(
+																																	".",
+																																	new MapFileFilter())))));
 	}
 
 	/**

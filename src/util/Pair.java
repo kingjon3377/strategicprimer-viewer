@@ -60,11 +60,11 @@ public class Pair<@NonNull L, @NonNull R> {
 	 * @return a pair containing the two elements
 	 */
 	public static <@NonNull FIRST, @NonNull SECOND> Pair<FIRST, SECOND> of(final FIRST
-			                                                                       firstItem,
+																				   firstItem,
 
-	                                                                       // NOPMD
-	                                                                       final SECOND
-			                                                                       secondItem) {
+																		   // NOPMD
+																		   final SECOND
+																				   secondItem) {
 		return new Pair<>(firstItem, secondItem);
 	}
 
@@ -84,8 +84,8 @@ public class Pair<@NonNull L, @NonNull R> {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Pair)
-				                         && Objects.equals(first, ((Pair) obj).first)
-				                         && Objects.equals(second, ((Pair) obj).second));
+										 && Objects.equals(first, ((Pair) obj).first)
+										 && Objects.equals(second, ((Pair) obj).second));
 	}
 
 	/**

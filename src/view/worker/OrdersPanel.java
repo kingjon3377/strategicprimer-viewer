@@ -58,8 +58,8 @@ import view.util.ListenedButton;
  * @author Jonathan Lovelace
  */
 public final class OrdersPanel extends BorderedPanel implements Applyable,
-		                                                                TreeSelectionListener,
-		                                                                PlayerChangeListener {
+																		TreeSelectionListener,
+																		PlayerChangeListener {
 	/**
 	 * The worker model to get units from if the user selected a kind.
 	 */
@@ -93,7 +93,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		// Can't use the multi-arg constructor, because of the references to
 		// 'this' below.
 		final boolean onMac = System.getProperty("os.name").toLowerCase()
-				                      .startsWith("mac os x");
+									  .startsWith("mac os x");
 		final String prefix;
 		final int keyMask;
 		if (onMac) {
@@ -105,14 +105,14 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		}
 		setPageStart(
 				new JLabel(
-						          "Orders for current selection, if a unit: ("
-								          + prefix
-								          + "D)")).setCenter(new JScrollPane(area))
+								  "Orders for current selection, if a unit: ("
+										  + prefix
+										  + "D)")).setCenter(new JScrollPane(area))
 				.setPageEnd(new BorderedPanel()
-						            .setLineStart(new ListenedButton("Apply",
-								                                            handler))
-						            .setLineEnd(
-								            new ListenedButton("Revert", handler)));
+									.setLineStart(new ListenedButton("Apply",
+																			handler))
+									.setLineEnd(
+											new ListenedButton("Revert", handler)));
 		area.addKeyListener(new KeyAdapter() {
 			private boolean isModifierPressed(final KeyEvent evt) {
 				if (onMac && evt.isMetaDown()) {
@@ -127,7 +127,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 			@Override
 			public void keyPressed(@Nullable final KeyEvent evt) {
 				if ((evt != null) && (evt.getKeyCode() == KeyEvent.VK_ENTER)
-						    && isModifierPressed(evt)) {
+							&& isModifierPressed(evt)) {
 					apply();
 
 				}
@@ -160,7 +160,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		if (sel instanceof IUnit) {
 			final IUnit selection = (IUnit) sel;
 			selection.setOrders(NullCleaner
-					                    .assertNotNull(area.getText().trim()));
+										.assertNotNull(area.getText().trim()));
 			getParent().getParent().repaint();
 		}
 	}
@@ -196,7 +196,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 			if (sel instanceof String) {
 				sel =
 						new ProxyUnit(NullCleaner.assertNotNull((String) sel),
-								             model.getUnits(player), player);
+											 model.getUnits(player), player);
 			}
 			revert();
 		}
@@ -236,7 +236,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		 * @param playr     the current player
 		 */
 		protected ProxyUnit(final String unitKind, final List<IUnit> unitsList,
-		                    final Player playr) {
+							final Player playr) {
 			kind = unitKind;
 			units = new ArrayList<>(unitsList);
 			owner = playr;
@@ -249,8 +249,8 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		@Override
 		public IUnit copy(final boolean zero) {
 			return new ProxyUnit(kind, units.stream().map(unit -> unit.copy(zero))
-					                           .collect(Collectors.toList()),
-					                    owner);
+											   .collect(Collectors.toList()),
+										owner);
 		}
 
 		/**
@@ -392,7 +392,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		 */
 		@Override
 		public boolean isSubset(final IFixture obj, final Appendable ostream,
-		                        final String context) throws IOException {
+								final String context) throws IOException {
 			ostream.append(context);
 			ostream.append("\tisSubset called on ProxyUnit\n");
 			return false;
@@ -471,11 +471,11 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		@Override
 		public boolean equals(final Object obj) {
 			return (this == obj) ||
-					       ((obj instanceof ProxyUnit) && kind.equals(((ProxyUnit)
-							                                                   obj)
-							                                                  .getKind()
-					       ) &&
-							        units.equals(((ProxyUnit) obj).units));
+						   ((obj instanceof ProxyUnit) && kind.equals(((ProxyUnit)
+																			   obj)
+																			  .getKind()
+						   ) &&
+									units.equals(((ProxyUnit) obj).units));
 		}
 
 		@Override

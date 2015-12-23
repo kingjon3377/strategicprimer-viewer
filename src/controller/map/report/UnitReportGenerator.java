@@ -57,7 +57,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public UnitReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull
-			                                                                          IFixture>> comparator) {
+																					  IFixture>> comparator) {
 		super(comparator);
 	}
 
@@ -81,14 +81,14 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 */
 	@Override
 	public String produce(
-			                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-					                     fixtures,
-			                     final IMapNG map, final Player currentPlayer,
-			                     final Unit unit, final Point loc) {
+								 final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+										 fixtures,
+								 final IMapNG map, final Player currentPlayer,
+								 final Unit unit, final Point loc) {
 		final StringBuilder builder =
 				new StringBuilder(52 + unit.getKind().length()
-						                  + unit.getName().length()
-						                  + unit.getOwner().getName().length());
+										  + unit.getName().length()
+										  + unit.getOwner().getName().length());
 		builder.append("Unit of type ");
 		builder.append(unit.getKind());
 		builder.append(", named ");
@@ -136,11 +136,11 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			                                    final DelayedRemovalMap<Integer,
-					                                                           Pair<Point, IFixture>> fixtures,
-			                                    final IMapNG map,
-			                                    final Player currentPlayer,
-			                                    final Unit unit, final Point loc) {
+												final DelayedRemovalMap<Integer,
+																			   Pair<Point, IFixture>> fixtures,
+												final IMapNG map,
+												final Player currentPlayer,
+												final Unit unit, final Point loc) {
 		final String simple; // NOPMD
 		if (unit.getOwner().isIndependent()) {
 			simple = concat("Unit of type ", unit.getKind(), ", named ",
@@ -153,8 +153,8 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		fixtures.remove(Integer.valueOf(unit.getID()));
 		if (unit.iterator().hasNext()) {
 			final AbstractReportNode retval = new ListReportNode(loc,
-					                                                    concat(simple,
-							                                                    ". Members of the unit:"));
+																		concat(simple,
+																				". Members of the unit:"));
 			for (final UnitMember member : unit) {
 				if (member instanceof Worker) {
 					retval.add(produceWorkerRIR(loc, (Worker) member,
@@ -178,7 +178,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * @return a sub-report on that worker.
 	 */
 	private static String workerReport(final Worker worker,
-	                                   final boolean details) {
+									   final boolean details) {
 		final StringBuilder builder = new StringBuilder(2048);
 		builder.append(worker.getName());
 		builder.append(", a ");
@@ -252,42 +252,42 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * @return a sub-report on that worker.
 	 */
 	private static MutableTreeNode produceWorkerRIR(final Point loc,
-	                                                final Worker worker,
-	                                                final boolean details) {
+													final Worker worker,
+													final boolean details) {
 		final AbstractReportNode retval = new ComplexReportNode(loc,
-				                                                       worker.getName() +
-						                                                       ", a " +
-						                                                       worker
-								                                                       .getRace() +
-						                                                       ". ");
+																	   worker.getName() +
+																			   ", a " +
+																			   worker
+																					   .getRace() +
+																			   ". ");
 		final WorkerStats stats = worker.getStats();
 		if ((stats != null) && details) {
 			retval.add(new SimpleReportNode(loc,
-					                               "He or she has the following stats: ",
-					                               Integer
-							                               .toString(
-									                               stats.getHitPoints()),
-					                               " / ", Integer
-							                                      .toString(
-									                                      stats
-											                                      .getMaxHitPoints()),
-					                               " Hit Points, Strength ",
-					                               getModifierString(stats
-							                                                 .getStrength()),
-					                               ", Dexterity ",
-					                               getModifierString(
-							                               stats.getDexterity()),
-					                               ", Constitution ",
-					                               getModifierString(
-							                               stats.getConstitution()),
-					                               ", Intelligence ",
-					                               getModifierString(stats
-							                                                 .getIntelligence()),
-					                               ", Wisdom ",
-					                               getModifierString(stats.getWisdom()),
-					                               ", Charisma ",
-					                               getModifierString(
-							                               stats.getCharisma())));
+												   "He or she has the following stats: ",
+												   Integer
+														   .toString(
+																   stats.getHitPoints()),
+												   " / ", Integer
+																  .toString(
+																		  stats
+																				  .getMaxHitPoints()),
+												   " Hit Points, Strength ",
+												   getModifierString(stats
+																			 .getStrength()),
+												   ", Dexterity ",
+												   getModifierString(
+														   stats.getDexterity()),
+												   ", Constitution ",
+												   getModifierString(
+														   stats.getConstitution()),
+												   ", Intelligence ",
+												   getModifierString(stats
+																			 .getIntelligence()),
+												   ", Wisdom ",
+												   getModifierString(stats.getWisdom()),
+												   ", Charisma ",
+												   getModifierString(
+														   stats.getCharisma())));
 		}
 		if (worker.iterator().hasNext() && details) {
 			final AbstractReportNode jobs = new ListReportNode(loc, HAS_TRAINING);
@@ -308,7 +308,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 */
 	private static MutableTreeNode produceJobRIR(final Job job, final Point loc) {
 		return new SimpleReportNode(loc, Integer.toString(job.getLevel()),
-				                           " levels in ", job.getName(), getSkills(job));
+										   " levels in ", job.getName(), getSkills(job));
 	}
 
 	/**
@@ -321,12 +321,12 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 */
 	@Override
 	public String produce(
-			                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-					                     fixtures,
-			                     final IMapNG map, final Player currentPlayer) {
+								 final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+										 fixtures,
+								 final IMapNG map, final Player currentPlayer) {
 		// This can get big; we'll say 8K.
 		final StringBuilder builder = new StringBuilder(8192)
-				                              .append("<h4>Units in the map</h4>\n");
+											  .append("<h4>Units in the map</h4>\n");
 		builder.append("<p>(Any units listed above are not described again.)</p>\n");
 		final StringBuilder ours =
 				new StringBuilder(8192).append("<h5>Your units</h5>\n");
@@ -387,9 +387,9 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			                                    final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-			                                    final IMapNG map,
-			                                    final Player currentPlayer) {
+												final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+												final IMapNG map,
+												final Player currentPlayer) {
 		final AbstractReportNode retval =
 				new SectionReportNode(4, "Units in the map");
 		retval.add(

@@ -46,11 +46,11 @@ public final class SubsetGUIDriver implements ISPDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-s", "--subset", ParamCount.Many,
-					               "Check players' maps against master",
-					               "Check that subordinate maps are subsets of the main " +
-							               "map, containing nothing that it does not " +
-							               "contain in the same place",
-					               SubsetGUIDriver.class);
+								   "Check players' maps against master",
+								   "Check that subordinate maps are subsets of the main " +
+										   "map, containing nothing that it does not " +
+										   "contain in the same place",
+								   SubsetGUIDriver.class);
 
 	/**
 	 * Run the driver.
@@ -65,7 +65,7 @@ public final class SubsetGUIDriver implements ISPDriver {
 			SwingUtilities.invokeLater(new WindowThread(frame));
 			frame.loadMain(model.getMap());
 			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model)
-					                                            .getSubordinateMaps()) {
+																.getSubordinateMaps()) {
 				frame.test(pair.first(), pair.second());
 			}
 		} else {
@@ -85,8 +85,8 @@ public final class SubsetGUIDriver implements ISPDriver {
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length < 2) {
 			throw new DriverFailedException("Need at least two arguments",
-					                               new IllegalArgumentException("Need at" +
-							                                                            " least two arguments"));
+												   new IllegalArgumentException("Need at" +
+																						" least two arguments"));
 		}
 		final SubsetFrame frame = new SubsetFrame();
 		SwingUtilities.invokeLater(new WindowThread(frame));
@@ -95,13 +95,13 @@ public final class SubsetGUIDriver implements ISPDriver {
 			frame.loadMain(first);
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error loading main map "
-					                                + first.getPath(), except);
+													+ first.getPath(), except);
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("XML error reading main map "
-					                                + first.getPath(), except);
+													+ first.getPath(), except);
 		} catch (final SPFormatException except) {
 			throw new DriverFailedException("Invalid SP XML in main map "
-					                                + first.getPath(), except);
+													+ first.getPath(), except);
 		}
 		for (final String arg : args) {
 			if (arg.equals(args[0])) {

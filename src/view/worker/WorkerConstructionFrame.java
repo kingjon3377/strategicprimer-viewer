@@ -59,7 +59,7 @@ import static util.IsNumeric.isNumeric;
  * @author Jonathan Lovelace
  */
 public final class WorkerConstructionFrame extends JFrame implements ActionListener,
-		                                                                     NewWorkerSource {
+																			 NewWorkerSource {
 	/**
 	 * Logger.
 	 */
@@ -145,7 +145,7 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 		buttonPanel.add(new ListenedButton("Add Worker", this));
 		buttonPanel.add(new ListenedButton("Cancel", this));
 		setContentPane(new BorderedPanel(statsPanel, textPanel, buttonPanel,
-				                                null, null));
+												null, null));
 		setMinimumSize(new Dimension(320, 240));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
@@ -214,29 +214,29 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 			final String nameText = name.getText().trim();
 			final String raceText = race.getText().trim();
 			if (nameText.isEmpty()
-					    || raceText.isEmpty()
-					    || anyNonNumeric(hpBox.getText().trim(), maxHP.getText()
-							                                             .trim(),
+						|| raceText.isEmpty()
+						|| anyNonNumeric(hpBox.getText().trim(), maxHP.getText()
+																		 .trim(),
 					strength.getText().trim(),
 					dex.getText().trim(), con.getText().trim(), intel
-							                                            .getText()
-							                                            .trim(),
+																		.getText()
+																		.trim(),
 					wis.getText().trim(),
 					cha.getText().trim())) {
 				ErrorShower.showErrorDialog(this, getErrorExpl());
 			} else {
 				final Worker retval = new Worker(nameText, raceText,
-						                                idf.createID());
+														idf.createID());
 				try {
 					retval.setStats(new WorkerStats(parseInt(hpBox),
-							                               parseInt(maxHP),
-							                               parseInt(strength),
-							                               parseInt(dex),
-							                               parseInt(con), parseInt
-									                                              (intel),
+														   parseInt(maxHP),
+														   parseInt(strength),
+														   parseInt(dex),
+														   parseInt(con), parseInt
+																				  (intel),
 
-							                               parseInt(wis),
-							                               parseInt(cha)));
+														   parseInt(wis),
+														   parseInt(cha)));
 				} catch (final ParseException e) {
 					LOGGER.log(Level.FINE, "Non-numeric input", e);
 					ErrorShower.showErrorDialog(this, "All stats must be numbers");
@@ -258,8 +258,8 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 	 * Number parser.
 	 */
 	private static final NumberFormat NUM_PARSER = NullCleaner
-			                                               .assertNotNull(NumberFormat
-					                                                              .getIntegerInstance());
+														   .assertNotNull(NumberFormat
+																				  .getIntegerInstance());
 
 	/**
 	 * @param box a text field
@@ -277,7 +277,7 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 	@SuppressWarnings("QuestionableName")
 	private static boolean anyNonNumeric(final String... strings) {
 		return Stream.of(strings)
-				       .anyMatch(string -> (string == null) || !isNumeric(string));
+					   .anyMatch(string -> (string == null) || !isNumeric(string));
 	}
 
 	/**
@@ -288,7 +288,7 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 	 * @param field the text field, or similar, to add
 	 */
 	private static void addLabeledField(final JPanel panel, final String text,
-	                                    final JComponent field) {
+										final JComponent field) {
 		panel.add(new JLabel(text));
 		panel.add(field);
 	}
@@ -316,7 +316,7 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 	private static void createSingleStat(final JTextField stat) {
 		final Random rng = SingletonRandom.RANDOM;
 		final int threeDeeSix = rng.nextInt(6) + rng.nextInt(6)
-				                        + rng.nextInt(6) + 3;
+										+ rng.nextInt(6) + 3;
 		stat.setText(Integer.toString(threeDeeSix));
 	}
 

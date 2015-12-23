@@ -59,7 +59,7 @@ public final class ZeroToOneConverter {
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			                                     .getLogger(ZeroToOneConverter.class);
+												 .getLogger(ZeroToOneConverter.class);
 
 	/**
 	 * A mapping from numeric events to XML representations of their version-1
@@ -78,11 +78,11 @@ public final class ZeroToOneConverter {
 				final StartElement selement =
 						NullCleaner.assertNotNull(event.asStartElement());
 				if ("tile".equalsIgnoreCase(selement.getName()
-						                            .getLocalPart())) {
+													.getLocalPart())) {
 					builder.append(convertTile(selement,
 							iFactory(selement.getAttributes())));
 				} else if ("map".equalsIgnoreCase(selement
-						                                  .getName().getLocalPart())) {
+														  .getName().getLocalPart())) {
 					builder.append(convertMap(selement,
 							iFactory(selement.getAttributes())));
 				} else {
@@ -93,7 +93,7 @@ public final class ZeroToOneConverter {
 				builder.append(event.asCharacters().getData().trim());
 			} else if (event.isEndElement()) {
 				builder.append(printEndElement(NullCleaner.assertNotNull(event
-						                                                         .asEndElement())));
+																				 .asEndElement())));
 			} else if (event.isStartDocument()) {
 				builder.append("<?xml version=\"1.0\"?>\n");
 			} else if (event.isEndDocument()) {
@@ -113,7 +113,7 @@ public final class ZeroToOneConverter {
 	 * @return the converted tag, in XML representation.
 	 */
 	private static String convertMap(final StartElement element,
-	                                 final Iterable<Attribute> attrs) {
+									 final Iterable<Attribute> attrs) {
 		final StringBuilder builder = new StringBuilder(64);
 		builder.append('<');
 		builder.append(element.getName().getLocalPart());
@@ -138,7 +138,7 @@ public final class ZeroToOneConverter {
 	 * @throws NumberFormatException if a tile has a non-numeric 'event'
 	 */
 	private static String convertTile(final StartElement element,
-	                                  final Iterable<Attribute> attrs) {
+									  final Iterable<Attribute> attrs) {
 		final StringBuilder builder = new StringBuilder(64);
 		builder.append('<');
 		builder.append(element.getName().getLocalPart());
@@ -147,11 +147,11 @@ public final class ZeroToOneConverter {
 			if ("event".equalsIgnoreCase(attr.getName().getLocalPart())) {
 				try {
 					events.push(NullCleaner.assertNotNull(Integer.valueOf(NumberFormat
-							                                                      .getIntegerInstance()
-							                                                      .parse
-									                                                       (attr.getValue())
+																				  .getIntegerInstance()
+																				  .parse
+																						   (attr.getValue())
 
-							                                                      .intValue())));
+																				  .intValue())));
 				} catch (final ParseException e) {
 					LOGGER.log(Level.SEVERE, "Non-numeric 'event'", e);
 				}
@@ -172,8 +172,8 @@ public final class ZeroToOneConverter {
 	 * @return a wrapper
 	 */
 	private static Iterable<Attribute> iFactory(
-			                                           @Nullable
-			                                           final Iterator<Attribute> iter) {
+													   @Nullable
+													   final Iterator<Attribute> iter) {
 		return new IteratorWrapper<>(iter);
 	}
 
@@ -197,7 +197,7 @@ public final class ZeroToOneConverter {
 	 */
 	private static String printEndElement(final EndElement element) {
 		return printEndElementImpl(NullCleaner.assertNotNull(element.getName()
-				                                                     .getLocalPart()));
+																	 .getLocalPart()));
 	}
 
 	/**
@@ -222,7 +222,7 @@ public final class ZeroToOneConverter {
 		// getAttributes() isn't actually genericized, so diamond causes compile error
 		//noinspection Convert2Diamond
 		StreamSupport.stream(new IteratorWrapper<Attribute>(element.getAttributes())
-				                     .spliterator(), false)
+									 .spliterator(), false)
 				.map(ZeroToOneConverter::printAttribute).forEach(builder::append);
 		builder.append('>');
 		return NullCleaner.assertNotNull(builder.toString());
@@ -295,8 +295,8 @@ public final class ZeroToOneConverter {
 			try (final Reader reader = new FileReader(arg)) { // NOPMD
 				System.out.println(
 						convert(new IteratorWrapper<>(XMLInputFactory.newInstance()
-								                              .createXMLEventReader(
-										                              reader))));
+															  .createXMLEventReader(
+																	  reader))));
 			} catch (final FileNotFoundException except) {
 				LOGGER.log(Level.SEVERE, "File " + arg + " not found", except);
 				continue;

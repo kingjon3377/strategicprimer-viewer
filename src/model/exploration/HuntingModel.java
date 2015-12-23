@@ -78,22 +78,22 @@ public final class HuntingModel {
 				StreamSupport.stream(map.locations().spliterator(), false)
 						.filter(point -> Ocean == map.getBaseTerrain(point)).flatMap(
 						point -> StreamSupport.stream(map.getOtherFixtures(point)
-								                              .spliterator(), false))
+															  .spliterator(), false))
 						.filter(fix -> fix instanceof Animal)
 						.map(fix -> ((HasKind) fix).getKind())
 						.collect(Collectors.toSet());
 		for (final Point point : map.locations()) {
 			for (final TileFixture fix : map.getOtherFixtures(point)) {
 				if ((fix instanceof Animal) && !((Animal) fix).isTalking()
-						    && !((Animal) fix).isTraces()) {
+							&& !((Animal) fix).isTraces()) {
 					if (fishKinds.contains(((Animal) fix).getKind())) {
 						addToMap(waterAnimals, point, ((Animal) fix).getKind());
 					} else {
 						addToMap(animals, point, ((Animal) fix).getKind());
 					}
 				} else if ((fix instanceof Grove) || (fix instanceof Meadow)
-						           ||
-						           (fix instanceof Shrub)) {
+								   ||
+								   (fix instanceof Shrub)) {
 					addToMap(plants, point,
 							NullCleaner.assertNotNull(fix.toString()));
 				}
@@ -127,7 +127,7 @@ public final class HuntingModel {
 	 * @param value a string to put in the map at that point.
 	 */
 	private static void addToMap(final Map<Point, List<String>> map,
-	                             final Point point, final String value) {
+								 final Point point, final String value) {
 		final List<String> list; // NOPMD
 		if (map.containsKey(point)) {
 			list = NullCleaner.assertNotNull(map.get(point));
@@ -171,9 +171,9 @@ public final class HuntingModel {
 								false)
 						.filter(plants::containsKey)
 						.flatMap(local -> StreamSupport
-								                  .stream(plants.get(local)
-										                          .spliterator(),
-										                  false))
+												  .stream(plants.get(local)
+																  .spliterator(),
+														  false))
 						.collect(Collectors.toList());
 		final Collection<String> retval = new ArrayList<>();
 		for (int i = 0; i < items; i++) {
@@ -192,24 +192,24 @@ public final class HuntingModel {
 	 * @return a list of results, about one eighth of which will be "nothing."
 	 */
 	private List<String> chooseFromMap(final Point point, final int items,
-	                                   final Map<Point, List<String>> chosenMap) {
+									   final Map<Point, List<String>> chosenMap) {
 		final List<String> choices = new ArrayList<>(StreamSupport
-				                                             .stream(new
-						                                                     SurroundingPointIterable(point,
-						                                                                                 dims)
-						                                                     .spliterator(),
-						                                             false)
-				                                             .filter
-						                                              (chosenMap::containsKey)
-				                                             .flatMap(
-						                                             local ->
-								                                             StreamSupport
-								                                                      .stream(chosenMap
-										                                                              .get(local)
-										                                                              .spliterator(),
-										                                                      false))
-				                                             .collect(Collectors
-						                                                      .toList()));
+															 .stream(new
+																			 SurroundingPointIterable(point,
+																										 dims)
+																			 .spliterator(),
+																	 false)
+															 .filter
+																	  (chosenMap::containsKey)
+															 .flatMap(
+																	 local ->
+																			 StreamSupport
+																					  .stream(chosenMap
+																									  .get(local)
+																									  .spliterator(),
+																							  false))
+															 .collect(Collectors
+																			  .toList()));
 		final int nothings = choices.size();
 		for (int i = 0; i < nothings; i++) {
 			choices.add(NOTHING);

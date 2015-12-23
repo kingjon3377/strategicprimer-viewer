@@ -88,15 +88,15 @@ public final class ComponentMouseListener extends MouseAdapter implements
 				mapDim.getVersion());
 		final VisibleDimensions dimensions = model.getDimensions();
 		final Point point = PointFactory.point((eventPoint.y / tileSize)
-				                                       + dimensions.getMinimumRow(),
+													   + dimensions.getMinimumRow(),
 				(eventPoint.x / tileSize)
 						+ dimensions.getMinimumCol());
 		if ((point.row < mapDim.getRows()) && (point.col < mapDim.getColumns())) {
 			return concat("<html><body>", point.toString(), ": ", model
-					                                                      .getMap()
-					                                                      .getBaseTerrain(
-							                                                      point)
-					                                                      .toString(),
+																		  .getMap()
+																		  .getBaseTerrain(
+																				  point)
+																		  .toString(),
 					"<br />",
 					getTerrainFixturesAndTop(point), "<br/></body></html>");
 		} else {
@@ -111,8 +111,8 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	private static String concat(final String... strings) {
 		final StringBuilder build =
 				new StringBuilder(Stream.of(strings)
-						                  .collect(Collectors.summingInt(String::length))
-						                  .intValue());
+										  .collect(Collectors.summingInt(String::length))
+										  .intValue());
 		Stream.of(strings).forEach(build::append);
 		return NullCleaner.assertNotNull(build.toString());
 	}
@@ -138,12 +138,12 @@ public final class ComponentMouseListener extends MouseAdapter implements
 			fixes.add(forest);
 		}
 		final Iterable<TileFixture> iter = new IteratorWrapper<>(
-				                                                        NullCleaner
-						                                                        .assertNotNull(
-								                                                        map.getOtherFixtures(
-										                                                        point)
-										                                                        .iterator()),
-				                                                        fixComp);
+																		NullCleaner
+																				.assertNotNull(
+																						map.getOtherFixtures(
+																								point)
+																								.iterator()),
+																		fixComp);
 		final Iterator<TileFixture> iterat = iter.iterator();
 		if (iterat.hasNext()) {
 			fixes.add(iterat.next());
@@ -154,8 +154,8 @@ public final class ComponentMouseListener extends MouseAdapter implements
 			}
 		}
 		return StreamSupport.stream(fixes.spliterator(), false).map
-				                                                        (TileFixture::toString)
-				       .collect(Collectors.joining("<br />"));
+																		(TileFixture::toString)
+					   .collect(Collectors.joining("<br />"));
 	}
 
 	/**
@@ -173,7 +173,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 			final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(),
 					mapDim.getVersion());
 			final Point point = PointFactory.point((eventPoint.y / tileSize)
-					                                       + dimensions.getMinimumRow(),
+														   + dimensions.getMinimumRow(),
 					(eventPoint.x / tileSize)
 							+ dimensions.getMinimumCol());
 			if ((point.row < mapDim.getRows()) && (point.col < mapDim.getColumns())) {

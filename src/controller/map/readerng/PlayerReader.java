@@ -56,14 +56,14 @@ public final class PlayerReader implements INodeHandler<@NonNull Player> {
 	 */
 	@Override
 	public Player parse(final StartElement element,
-	                    final Iterable<XMLEvent> stream,
-	                    final IMutablePlayerCollection players,
-	                    final Warning warner, final IDFactory idFactory)
+						final Iterable<XMLEvent> stream,
+						final IMutablePlayerCollection players,
+						final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		return new Player(XMLHelper.parseInt(getAttribute(element, "number"),
 				NullCleaner.assertNotNull(element.getLocation())),
-				                 getAttribute(element, "code_name"));
+								 getAttribute(element, "code_name"));
 	}
 
 	/**
@@ -91,14 +91,14 @@ public final class PlayerReader implements INodeHandler<@NonNull Player> {
 	@Override
 	public SPIntermediateRepresentation write(final Player obj) {
 		return new SPIntermediateRepresentation("player",
-				                                       Pair.of("number", NullCleaner
-						                                                         .assertNotNull(
-								                                                         Integer
-										                                                         .toString(
-												                                                         obj.getPlayerId()))),
+													   Pair.of("number", NullCleaner
+																				 .assertNotNull(
+																						 Integer
+																								 .toString(
+																										 obj.getPlayerId()))),
 
-				                                       Pair.of("code_name",
-						                                       obj.getName()));
+													   Pair.of("code_name",
+															   obj.getName()));
 	}
 
 	/**

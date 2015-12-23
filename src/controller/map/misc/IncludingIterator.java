@@ -109,8 +109,8 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 		}
 		XMLEvent retval = stack.peekFirst().second().next();
 		while (retval.isStartElement()
-				       && "include".equals(retval.asStartElement().getName()
-						                           .getLocalPart())) {
+					   && "include".equals(retval.asStartElement().getName()
+												   .getLocalPart())) {
 			handleInclude(NullCleaner.assertNotNull(retval.asStartElement()));
 			removeEmptyIterators();
 			if (stack.isEmpty()) {
@@ -135,7 +135,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 		 * @param cause   the cause
 		 */
 		public NoSuchElementBecauseException(final String message,
-		                                     final Throwable cause) {
+											 final Throwable cause) {
 			super(message);
 			initCause(cause);
 		}
@@ -164,20 +164,20 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 							file)))));
 		} catch (final FileNotFoundException e) {
 			throw new NoSuchElementBecauseException(
-					                                       "File referenced by <include>" +
-							                                       " not found",
-					                                       e);
+														   "File referenced by <include>" +
+																   " not found",
+														   e);
 		} catch (final XMLStreamException e) {
 			throw new NoSuchElementBecauseException(
-					                                       "XML stream error parsing " +
-							                                       "<include> tag or " +
-							                                       "opening file",
-					                                       e);
+														   "XML stream error parsing " +
+																   "<include> tag or " +
+																   "opening file",
+														   e);
 		} catch (final SPFormatException e) {
 			throw new NoSuchElementBecauseException(
-					                                       "SP format problem in " +
-							                                       "<include>",
-					                                       e);
+														   "SP format problem in " +
+																   "<include>",
+														   e);
 		}
 	}
 
@@ -222,23 +222,23 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
 	private static String getAttribute(final StartElement startElement,
-	                                   final String attribute) throws SPFormatException {
+									   final String attribute) throws SPFormatException {
 		final Attribute attr = startElement.getAttributeByName(new QName(
-				                                                                attribute));
+																				attribute));
 		if (attr == null) {
 			throw new MissingPropertyException(NullCleaner.valueOrDefault(
 					startElement.getName().getLocalPart(), "a null tag"),
-					                                  attribute,
-					                                  startElement.getLocation()
-							                                  .getLineNumber());
+													  attribute,
+													  startElement.getLocation()
+															  .getLineNumber());
 		}
 		final String value = attr.getValue();
 		if (value == null) {
 			throw new MissingPropertyException(NullCleaner.valueOrDefault(
 					startElement.getName().getLocalPart(), "a null tag"),
-					                                  attribute,
-					                                  startElement.getLocation()
-							                                  .getLineNumber());
+													  attribute,
+													  startElement.getLocation()
+															  .getLineNumber());
 		} else {
 			return value;
 		}

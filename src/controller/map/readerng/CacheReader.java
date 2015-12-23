@@ -57,17 +57,17 @@ public final class CacheReader implements INodeHandler<CacheFixture> {
 	 */
 	@Override
 	public CacheFixture parse(final StartElement element,
-	                          final Iterable<XMLEvent> stream,
-	                          final IMutablePlayerCollection players,
-	                          final Warning warner, final IDFactory idFactory)
+							  final Iterable<XMLEvent> stream,
+							  final IMutablePlayerCollection players,
+							  final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		final CacheFixture fix = new CacheFixture(
-				                                         getAttribute(element, "kind"),
-				                                         getAttribute(element,
-						                                         "contents"),
-				                                         getOrGenerateID(element,
-						                                         warner, idFactory));
+														 getAttribute(element, "kind"),
+														 getAttribute(element,
+																 "contents"),
+														 getOrGenerateID(element,
+																 warner, idFactory));
 		addImage(element, fix);
 		return fix;
 	}
@@ -98,14 +98,14 @@ public final class CacheReader implements INodeHandler<CacheFixture> {
 	 */
 	@Override
 	public <S extends CacheFixture> SPIntermediateRepresentation write(
-			                                                                  final S
-					                                                                  obj) {
+																			  final S
+																					  obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "cache",
-				                                                                            Pair.of("kind",
-						                                                                            obj.getKind()),
-				                                                                            Pair.of("contents",
-						                                                                            obj.getContents()));
+																							"cache",
+																							Pair.of("kind",
+																									obj.getKind()),
+																							Pair.of("contents",
+																									obj.getContents()));
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

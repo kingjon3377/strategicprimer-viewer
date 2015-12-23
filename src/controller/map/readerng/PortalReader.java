@@ -57,26 +57,26 @@ public final class PortalReader implements INodeHandler<@NonNull Portal> {
 	 */
 	@Override
 	public Portal parse(final StartElement element,
-	                    final Iterable<XMLEvent> stream,
-	                    final IMutablePlayerCollection players,
-	                    final Warning warner, final IDFactory idFactory)
+						final Iterable<XMLEvent> stream,
+						final IMutablePlayerCollection players,
+						final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Portal retval =
 				new Portal(
-						          XMLHelper.getAttribute(element, "world"),
-						          PointFactory.point(XMLHelper.parseInt(XMLHelper
-								                                                .getAttribute(
-										                                                element,
-										                                                "row"),
+								  XMLHelper.getAttribute(element, "world"),
+								  PointFactory.point(XMLHelper.parseInt(XMLHelper
+																				.getAttribute(
+																						element,
+																						"row"),
 
-								          NullCleaner
-										          .assertNotNull(element.getLocation())),
-								          XMLHelper.parseInt(XMLHelper.getAttribute(
-										          element, "column"), NullCleaner
-												                              .assertNotNull(
-														                              element.getLocation()))),
-						          XMLHelper.getOrGenerateID(element, warner, idFactory));
+										  NullCleaner
+												  .assertNotNull(element.getLocation())),
+										  XMLHelper.parseInt(XMLHelper.getAttribute(
+												  element, "column"), NullCleaner
+																			  .assertNotNull(
+																					  element.getLocation()))),
+								  XMLHelper.getOrGenerateID(element, warner, idFactory));
 		XMLHelper.addImage(element, retval);
 		return retval;
 	}

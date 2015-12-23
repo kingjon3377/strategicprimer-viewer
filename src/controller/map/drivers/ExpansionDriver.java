@@ -68,9 +68,9 @@ public final class ExpansionDriver implements ISPDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-n", "--expand", ParamCount.Many,
-					               "Expand a player's map.",
-					               "Ensure a player's map covers all terrain allied villages can see.",
-					               ExpansionDriver.class);
+								   "Expand a player's map.",
+								   "Ensure a player's map covers all terrain allied villages can see.",
+								   ExpansionDriver.class);
 	/**
 	 * Logger.
 	 */
@@ -141,8 +141,8 @@ public final class ExpansionDriver implements ISPDriver {
 		if (args.length < 2) {
 			System.err.println("Usage: ExpansionDriver master player [player ...]");
 			throw new DriverFailedException("Not enough arguments",
-					                               new IllegalArgumentException("Need at" +
-							                                                            " least two arguments"));
+												   new IllegalArgumentException("Need at" +
+																						" least two arguments"));
 		}
 		final File masterFile = new File(args[0]);
 		final MapReaderAdapter reader = new MapReaderAdapter();
@@ -160,8 +160,8 @@ public final class ExpansionDriver implements ISPDriver {
 		final Player player = map.getCurrentPlayer();
 		final IllegalStateException ise =
 				new IllegalStateException(
-						                         "Unsupported method called on mock " +
-								                         "object");
+												 "Unsupported method called on mock " +
+														 "object");
 		final Collection<Point> villagePoints =
 				StreamSupport.stream(map.locations().spliterator(), false)
 						.filter(point -> containsSwornVillage(master, point, player))
@@ -250,7 +250,7 @@ public final class ExpansionDriver implements ISPDriver {
 
 			@Override
 			public boolean isSubset(final IFixture obj, final Appendable ostream,
-			                        final String context) throws IOException {
+									final String context) throws IOException {
 				throw ise;
 			}
 
@@ -301,7 +301,7 @@ public final class ExpansionDriver implements ISPDriver {
 			addSurroundingFixtures(point, master, fixAdditions, mock);
 		}
 		for (final Map.Entry<Point, TileType> entry : terrainAdditions
-				                                              .entrySet()) {
+															  .entrySet()) {
 			if (entry == null) {
 				continue;
 			}
@@ -309,7 +309,7 @@ public final class ExpansionDriver implements ISPDriver {
 					NullCleaner.assertNotNull(entry.getValue()));
 		}
 		for (final Map.Entry<Point, Set<TileFixture>> entry : fixAdditions
-				                                                      .entrySet()) {
+																	  .entrySet()) {
 			if (entry == null) {
 				continue;
 			}
@@ -317,8 +317,8 @@ public final class ExpansionDriver implements ISPDriver {
 			for (final TileFixture fix : entry.getValue()) {
 				if (fix instanceof HasOwner) {
 					map.addFixture(point, fix
-							                      .copy(!((HasOwner) fix).getOwner()
-									                             .equals(player)));
+												  .copy(!((HasOwner) fix).getOwner()
+																 .equals(player)));
 				} else {
 					map.addFixture(point, fix.copy(true));
 				}
@@ -334,14 +334,14 @@ public final class ExpansionDriver implements ISPDriver {
 	 *                  concerned with.
 	 */
 	private static void addSurroundingFixtures(final Point point,
-	                                           final IMapNG master,
-	                                           final Map<Point, Set<TileFixture>>
-			                                           additions,
-	                                           final IUnit owned) {
+											   final IMapNG master,
+											   final Map<Point, Set<TileFixture>>
+													   additions,
+											   final IUnit owned) {
 		final List<TileFixture> possibilities = new ArrayList<>();
 		for (final Point neighbor : new SurroundingPointIterable(point,
-				                                                        master
-						                                                        .dimensions())) {
+																		master
+																				.dimensions())) {
 			final Set<TileFixture> neighborFixtures =
 					getSetFromMap(additions, neighbor);
 			possibilities.clear();
@@ -359,7 +359,7 @@ public final class ExpansionDriver implements ISPDriver {
 				} else if (SimpleMovement.shouldAlwaysNotice(owned, fix)) {
 					neighborFixtures.add(fix);
 				} else if (SimpleMovement.mightNotice(owned, fix)
-						           && !(fix instanceof CacheFixture)) {
+								   && !(fix instanceof CacheFixture)) {
 					possibilities.add(fix);
 				}
 			}
@@ -379,7 +379,7 @@ public final class ExpansionDriver implements ISPDriver {
 	 * value there yet.
 	 */
 	private static <K, V> Set<V> getSetFromMap(final Map<K, Set<V>> map,
-	                                           final K key) {
+											   final K key) {
 		if (map.containsKey(key)) {
 			return map.get(key);
 		} else {
@@ -396,12 +396,12 @@ public final class ExpansionDriver implements ISPDriver {
 	 * @param additions a collection of additions to make (by which they are returned)
 	 */
 	private static void addSurroundingTerrain(final Point point, final IMapNG master,
-	                                          final IMutableMapNG map,
-	                                          final Map<Point, TileType> additions) {
+											  final IMutableMapNG map,
+											  final Map<Point, TileType> additions) {
 		for (final Point neighbor : new SurroundingPointIterable(point,
-				                                                        map.dimensions())) {
+																		map.dimensions())) {
 			if (!additions.containsKey(neighbor)
-					    && (TileType.NotVisible == map.getBaseTerrain(neighbor))) {
+						&& (TileType.NotVisible == map.getBaseTerrain(neighbor))) {
 				additions.put(neighbor, master.getBaseTerrain(neighbor));
 				if (master.isMountainous(neighbor)) {
 					map.setMountainous(neighbor, true);
@@ -418,10 +418,10 @@ public final class ExpansionDriver implements ISPDriver {
 	 * player
 	 */
 	private static boolean containsSwornVillage(final IMapNG map, final Point point,
-	                                            final Player player) {
+												final Player player) {
 		return StreamSupport.stream(map.getOtherFixtures(point).spliterator(), false)
-				       .anyMatch(fix -> (fix instanceof ITownFixture) &&
-						                        ((HasOwner) fix).getOwner()
-								                        .equals(player));
+					   .anyMatch(fix -> (fix instanceof ITownFixture) &&
+												((HasOwner) fix).getOwner()
+														.equals(player));
 	}
 }

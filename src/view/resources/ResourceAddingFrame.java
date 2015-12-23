@@ -71,8 +71,8 @@ public class ResourceAddingFrame extends JFrame {
 		model = dmodel;
 		final IDFactory idf = IDFactoryFiller.createFactory(model);
 		current = StreamSupport.stream(dmodel.getPlayers().spliterator(), false)
-				          .filter(player -> player.isCurrent())
-				          .findAny().orElse(new Player(-1, ""));
+						  .filter(player -> player.isCurrent())
+						  .findAny().orElse(new Player(-1, ""));
 		resourceLabel =
 				new JLabel(String.format("Add resource for %s:", current.getName()));
 		implementLabel =
@@ -106,11 +106,11 @@ public class ResourceAddingFrame extends JFrame {
 				final String resource = resourceBox.getSelectedItem().toString().trim();
 				final String units = resUnitsBox.getSelectedItem().toString().trim();
 				final ResourcePile pile = new ResourcePile(idf.createID(), kind, resource,
-						                                    nf.parse(resQtyField
-								                                             .getText()
-								                                             .trim())
-								                                    .intValue(),
-						                                    units);
+															nf.parse(resQtyField
+																			 .getText()
+																			 .trim())
+																	.intValue(),
+															units);
 				pile.setCreated(nf.parse(resCreatedField.getText().trim()).intValue());
 				model.addResource(pile, current);
 				resKindBox.checkAndClear();
@@ -143,7 +143,7 @@ public class ResourceAddingFrame extends JFrame {
 	}
 
 	private static void addPair(final Container container, final Component firstComponent,
-	                            final Component secondComponent) {
+								final Component secondComponent) {
 		final JPanel panel = new BoxPanel(false);
 		panel.add(Box.createVerticalGlue());
 		panel.add(firstComponent);
@@ -169,7 +169,7 @@ public class ResourceAddingFrame extends JFrame {
 		@Override
 		public void processKeyEvent(final KeyEvent evt) {
 			if ((evt.getID() != KeyEvent.KEY_PRESSED)
-					    || (evt.getKeyCode() != KeyEvent.VK_TAB)) {
+						|| (evt.getKeyCode() != KeyEvent.VK_TAB)) {
 				super.processKeyEvent(evt);
 				return;
 			}
@@ -177,14 +177,14 @@ public class ResourceAddingFrame extends JFrame {
 			if (isPopupVisible()) {
 				assert evt.getSource() instanceof Component;
 				final KeyEvent fakeEnterKeyEvent = new KeyEvent((Component) evt.getSource(),
-						                                         evt.getID(),
-						                                         evt.getWhen(),
-						                                         0,
-						                                         // No modifiers.
-						                                         KeyEvent.VK_ENTER,
-						                                         // Enter key.
-						                                         KeyEvent
-								                                         .CHAR_UNDEFINED);
+																 evt.getID(),
+																 evt.getWhen(),
+																 0,
+																 // No modifiers.
+																 KeyEvent.VK_ENTER,
+																 // Enter key.
+																 KeyEvent
+																		 .CHAR_UNDEFINED);
 				super.processKeyEvent(fakeEnterKeyEvent);
 			}
 			if (evt.getModifiers() == 0) {

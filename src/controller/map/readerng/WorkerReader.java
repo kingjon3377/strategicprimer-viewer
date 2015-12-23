@@ -70,25 +70,25 @@ public final class WorkerReader implements INodeHandler<@NonNull Worker> {
 	 */
 	@Override
 	public Worker parse(final StartElement element,
-	                    final Iterable<XMLEvent> stream,
-	                    final IMutablePlayerCollection players,
-	                    final Warning warner, final IDFactory idFactory)
+						final Iterable<XMLEvent> stream,
+						final IMutablePlayerCollection players,
+						final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		final Worker retval = new Worker(
-				                                XMLHelper.getAttribute(element, "name"),
-				                                XMLHelper.getAttribute(element, "race",
-						                                "human"),
-				                                XMLHelper.getOrGenerateID(element,
-						                                warner,
-						                                idFactory));
+												XMLHelper.getAttribute(element, "name"),
+												XMLHelper.getAttribute(element, "race",
+														"human"),
+												XMLHelper.getOrGenerateID(element,
+														warner,
+														idFactory));
 		XMLHelper.addImage(element, retval);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final Object result =
 						ReaderAdapter.ADAPTER.parse(NullCleaner
-								                            .assertNotNull(
-										                            event.asStartElement
-												                                  ()),
+															.assertNotNull(
+																	event.asStartElement
+																				  ()),
 								stream,
 								players, warner, idFactory);
 				if (result instanceof Job) {
@@ -97,24 +97,24 @@ public final class WorkerReader implements INodeHandler<@NonNull Worker> {
 					retval.setStats((WorkerStats) result);
 				} else {
 					final String outerName = NullCleaner.valueOrDefault(element
-							                                                    .getName()
-							                                                    .getLocalPart(),
+																				.getName()
+																				.getLocalPart(),
 							"a null tag");
 					final String innerName =
 							NullCleaner.valueOrDefault(NullCleaner
-									                           .assertNotNull(
-											                           event
-													                           .asStartElement())
-									                           .getName().getLocalPart(),
+															   .assertNotNull(
+																	   event
+																			   .asStartElement())
+															   .getName().getLocalPart(),
 									"a null tag");
 					throw new UnwantedChildException(outerName, innerName,
-							                                event.getLocation()
-									                                .getLineNumber());
+															event.getLocation()
+																	.getLineNumber());
 				}
 			} else if (event.isEndElement()
-					           &&
-					           element.getName().equals(event.asEndElement().getName()
-					           )) {
+							   &&
+							   element.getName().equals(event.asEndElement().getName()
+							   )) {
 				break;
 			}
 		}
@@ -128,7 +128,7 @@ public final class WorkerReader implements INodeHandler<@NonNull Worker> {
 	@Override
 	public SPIntermediateRepresentation write(final Worker obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "worker");
+																							"worker");
 		retval.addAttribute("name", obj.getName());
 		if (!"human".equals(obj.getRace())) {
 			retval.addAttribute("race", obj.getRace());
@@ -141,7 +141,7 @@ public final class WorkerReader implements INodeHandler<@NonNull Worker> {
 		retval.addImageAttribute(obj);
 		for (final IJob job : obj) {
 			if ((job instanceof Job)
-					    && ((job.getLevel() > 0) || job.iterator().hasNext())) {
+						&& ((job.getLevel() > 0) || job.iterator().hasNext())) {
 				retval.addChild(JOB_READER.write((Job) job));
 			}
 		}

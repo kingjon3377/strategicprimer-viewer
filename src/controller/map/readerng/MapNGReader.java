@@ -88,7 +88,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	private static final List<String> tags;
 	private static final Pattern EXCEPT_PATTERN =
 			Pattern.compile("^Wanted [^ ]*, was [^ " +
-					                "]*$");
+									"]*$");
 
 	static {
 		// FIXME: Use Arrays.asList
@@ -119,10 +119,10 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	 */
 	@Override
 	public IMutableMapNG parse(final StartElement element,
-	                           final Iterable<XMLEvent> stream,
-	                           final IMutablePlayerCollection players,
-	                           final Warning warner,
-	                           final IDFactory factory) throws SPFormatException {
+							   final Iterable<XMLEvent> stream,
+							   final IMutablePlayerCollection players,
+							   final Warning warner,
+							   final IDFactory factory) throws SPFormatException {
 		final int currentTurn;
 		final StartElement mapTag;
 		final Location outerLoc = assertNotNull(element.getLocation());
@@ -133,39 +133,39 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 			mapTag = getFirstStartElement(stream, outerLoc.getLineNumber());
 			if (!"map".equals(mapTag.getName().getLocalPart())) {
 				throw new UnwantedChildException(outerTag, assertNotNull(mapTag
-						                                                         .getName()
-						                                                         .getLocalPart()),
-						                                mapTag.getLocation()
-								                                .getLineNumber());
+																				 .getName()
+																				 .getLocalPart()),
+														mapTag.getLocation()
+																.getLineNumber());
 			}
 		} else if ("map".equalsIgnoreCase(outerTag)) {
 			currentTurn = 0;
 			mapTag = element;
 		} else {
 			throw new UnwantedChildException("xml", assertNotNull(outerTag),
-					                                outerLoc.getLineNumber());
+													outerLoc.getLineNumber());
 		}
 		final Location mapTagLocation = assertNotNull(mapTag.getLocation());
 		final MapDimensions dimensions = new MapDimensions(
-				                                                  XMLHelper.parseInt(
-						                                                  XMLHelper
-								                                                  .getAttribute(
-										                                                  mapTag,
-										                                                  "rows"),
+																  XMLHelper.parseInt(
+																		  XMLHelper
+																				  .getAttribute(
+																						  mapTag,
+																						  "rows"),
 
-						                                                  mapTagLocation),
-				                                                  XMLHelper.parseInt(
-						                                                  XMLHelper
-								                                                  .getAttribute(
-										                                                  mapTag,
-										                                                  "columns"),
-						                                                  mapTagLocation),
-				                                                  XMLHelper.parseInt(
-						                                                  XMLHelper
-								                                                  .getAttribute(
-										                                                  mapTag,
-										                                                  "version"),
-						                                                  mapTagLocation));
+																		  mapTagLocation),
+																  XMLHelper.parseInt(
+																		  XMLHelper
+																				  .getAttribute(
+																						  mapTag,
+																						  "columns"),
+																		  mapTagLocation),
+																  XMLHelper.parseInt(
+																		  XMLHelper
+																				  .getAttribute(
+																						  mapTag,
+																						  "version"),
+																		  mapTagLocation));
 		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		final Point nullPoint = PointFactory.point(-1, -1);
 		Point point = nullPoint;
@@ -185,9 +185,9 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 				} else if ("tile".equalsIgnoreCase(type)) {
 					if (!nullPoint.equals(point)) {
 						throw new UnwantedChildException("tile", type,
-								                                currentLoc
-										                                .getLineNumber
-												                                 ());
+																currentLoc
+																		.getLineNumber
+																				 ());
 					}
 					point = PointFactory.point(XMLHelper.parseInt(
 							XMLHelper.getAttribute(current, "row"), currentLoc),
@@ -198,28 +198,28 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					// "kind" and then fail to load, let's be liberal in what we
 					// accept here, since we can.
 					if (XMLHelper.hasAttribute(current, "kind")
-							    || XMLHelper.hasAttribute(current, "type")) {
+								|| XMLHelper.hasAttribute(current, "type")) {
 						retval.setBaseTerrain(point,
 								TileType.getTileType(XMLHelper
-										                     .getAttributeWithDeprecatedForm(
-												                     current,
-												                     "kind", "type",
-												                     warner)));
+															 .getAttributeWithDeprecatedForm(
+																	 current,
+																	 "kind", "type",
+																	 warner)));
 					} else {
 						warner.warn(new MissingPropertyException(type, "kind",
-								                                        currentLoc
-										                                        .getLineNumber()));
+																		currentLoc
+																				.getLineNumber()));
 					}
 				} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) {
 					warner.warn(new UnsupportedTagException(type, currentLoc
-							                                              .getLineNumber
-									                                               ()));
+																		  .getLineNumber
+																				   ()));
 				} else if (nullPoint.equals(point)) {
 					// fixture outside tile
 					throw new UnwantedChildException("map", type,
-							                                currentLoc.getLineNumber());
+															currentLoc.getLineNumber());
 				} else if ("lake".equalsIgnoreCase(type)
-						           || "river".equalsIgnoreCase(type)) {
+								   || "river".equalsIgnoreCase(type)) {
 					retval.addRivers(point, RIVER_READER.parse(current, stream,
 							players, warner, factory));
 				} else if ("ground".equalsIgnoreCase(type)) {
@@ -241,13 +241,13 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					} catch (final UnwantedChildException except) {
 						if ("unknown".equals(except.getTag())) {
 							throw new UnwantedChildException(
-									                                assertNotNull(
-											                                mapTag
-													                                .getName()
-													                                .getLocalPart()),
-									                                except.getChild(),
-									                                currentLoc
-											                                .getLineNumber());
+																	assertNotNull(
+																			mapTag
+																					.getName()
+																					.getLocalPart()),
+																	except.getChild(),
+																	currentLoc
+																			.getLineNumber());
 						} else {
 							throw except;
 						}
@@ -255,16 +255,16 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 						if (EXCEPT_PATTERN.matcher(except.getMessage()).matches()) {
 							final UnwantedChildException nexcept =
 									new UnwantedChildException(
-											                          assertNotNull(
-													                          mapTag
-															                          .getName()
-															                          .getLocalPart()),
-											                          assertNotNull(
-													                          current
-															                          .getName()
-															                          .getLocalPart()),
-											                          currentLoc
-													                          .getLineNumber());
+																	  assertNotNull(
+																			  mapTag
+																					  .getName()
+																					  .getLocalPart()),
+																	  assertNotNull(
+																			  current
+																					  .getName()
+																					  .getLocalPart()),
+																	  currentLoc
+																			  .getLineNumber());
 							nexcept.initCause(except);
 							throw nexcept;
 						} else {
@@ -276,7 +276,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 				if (element.getName().equals(event.asEndElement().getName())) {
 					break;
 				} else if ("tile".equalsIgnoreCase(event.asEndElement()
-						                                   .getName().getLocalPart())) {
+														   .getName().getLocalPart())) {
 					point = PointFactory.point(-1, -1);
 				}
 			} else if (event.isCharacters()) {
@@ -307,7 +307,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	 * @param fix   the fixture to add
 	 */
 	private static void addFixture(final IMutableMapNG map, final Point point,
-	                               final TileFixture fix) {
+								   final TileFixture fix) {
 		if (fix instanceof Ground) {
 			final Ground ground = (Ground) fix;
 			final Ground oldGround = map.getGround(point);
@@ -356,14 +356,14 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	 * @throws SPFormatException if no start element in stream
 	 */
 	private static StartElement getFirstStartElement(
-			                                                final Iterable<XMLEvent>
-					                                                stream,
-			                                                final int line)
+															final Iterable<XMLEvent>
+																	stream,
+															final int line)
 			throws SPFormatException {
 		return StreamSupport.stream(stream.spliterator(), false)
-				       .filter(XMLEvent::isStartElement).findFirst()
-				       .orElseThrow(() -> new MissingChildException("map", line))
-				       .asStartElement();
+					   .filter(XMLEvent::isStartElement).findFirst()
+					   .orElseThrow(() -> new MissingChildException("map", line))
+					   .asStartElement();
 	}
 
 	/**
@@ -379,23 +379,23 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 		final SPIntermediateRepresentation retval =
 				new SPIntermediateRepresentation("view", Pair.of(
 						"current_player", assertNotNull(Integer.toString(obj
-								                                                 .getCurrentPlayer()
-								                                                 .getPlayerId()))),
-						                                Pair.of(
-								                                "current_turn",
-								                                assertNotNull(
-										                                Integer.toString(
-												                                obj
-														                                .getCurrentTurn()))));
+																				 .getCurrentPlayer()
+																				 .getPlayerId()))),
+														Pair.of(
+																"current_turn",
+																assertNotNull(
+																		Integer.toString(
+																				obj
+																						.getCurrentTurn()))));
 		final MapDimensions dim = obj.dimensions();
 		final SPIntermediateRepresentation mapTag =
 				new SPIntermediateRepresentation("map", Pair.of("version",
 						assertNotNull(Integer.toString(dim.version))), Pair.of(
 						"rows", assertNotNull(Integer.toString(dim.rows))),
-						                                Pair.of("columns",
-								                                assertNotNull(
-										                                Integer.toString(
-												                                dim.cols))));
+														Pair.of("columns",
+																assertNotNull(
+																		Integer.toString(
+																				dim.cols))));
 		retval.addChild(mapTag);
 		for (final Player player : obj.players()) {
 			mapTag.addChild(PLAYER_READER.write(player));
@@ -407,10 +407,10 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 			for (int j = 0; j < dim.cols; j++) {
 				final Point point = PointFactory.point(i, j);
 				if ((TileType.NotVisible != obj.getBaseTerrain(point))
-						    || obj.isMountainous(point)
-						    || (obj.getGround(point) != null)
-						    || (obj.getForest(point) != null)
-						    || obj.getOtherFixtures(point).iterator().hasNext()) {
+							|| obj.isMountainous(point)
+							|| (obj.getGround(point) != null)
+							|| (obj.getForest(point) != null)
+							|| obj.getOtherFixtures(point).iterator().hasNext()) {
 					mapTag.addChild(row);
 					row.addChild(writeTile(obj, point));
 				}
@@ -427,7 +427,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	 * @return an intermediate representation
 	 */
 	private static SPIntermediateRepresentation writeTile(final IMapNG map,
-	                                                      final Point point) {
+														  final Point point) {
 		// We can safely assume that an empty retval is not called for.
 		final SPIntermediateRepresentation retval =
 				new SPIntermediateRepresentation("tile");
@@ -458,8 +458,8 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	 * @return an intermediate representation of it
 	 */
 	private static SPIntermediateRepresentation writeFixture(
-			                                                        @Nullable
-			                                                        final TileFixture fixture) {
+																	@Nullable
+																	final TileFixture fixture) {
 		if (fixture == null) {
 			return new SPIntermediateRepresentation("");
 		} else {

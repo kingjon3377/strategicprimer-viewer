@@ -79,51 +79,51 @@ public final class JobReader implements INodeHandler<@NonNull Job> {
 	 */
 	@Override
 	public Job parse(final StartElement element,
-	                 final Iterable<XMLEvent> stream,
-	                 final IMutablePlayerCollection players,
-	                 final Warning warner, final IDFactory idFactory)
+					 final Iterable<XMLEvent> stream,
+					 final IMutablePlayerCollection players,
+					 final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		if (XMLHelper.hasAttribute(element, "hours")) {
 			warner.warn(new UnsupportedPropertyException("job", "hours",
-					                                            element.getLocation()
-							                                            .getLineNumber
-									                                             ()));
+																element.getLocation()
+																		.getLineNumber
+																				 ()));
 		}
 		final Job retval =
 				new Job(XMLHelper.getAttribute(element, "name"),
-						       XMLHelper.parseInt(XMLHelper.getAttribute(element,
-								       "level"), NullCleaner.assertNotNull(element
-										                                           .getLocation())));
+							   XMLHelper.parseInt(XMLHelper.getAttribute(element,
+									   "level"), NullCleaner.assertNotNull(element
+																				   .getLocation())));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final Object result =
 						ReaderAdapter.ADAPTER.parse(NullCleaner
-								                            .assertNotNull(
-										                            event.asStartElement
-												                                  ()),
+															.assertNotNull(
+																	event.asStartElement
+																				  ()),
 								stream,
 								players, warner, idFactory);
 				if (result instanceof Skill) {
 					retval.addSkill((Skill) result);
 				} else {
 					throw new UnwantedChildException(
-							                                NullCleaner.assertNotNull(
-									                                element.getName()
-											                                .getLocalPart()),
+															NullCleaner.assertNotNull(
+																	element.getName()
+																			.getLocalPart()),
 
-							                                NullCleaner.assertNotNull(
-									                                NullCleaner
-											                                .assertNotNull(
-													                                event.asStartElement())
-											                                .getName()
-											                                .getLocalPart()),
-							                                event
-									                                .getLocation()
-									                                .getLineNumber());
+															NullCleaner.assertNotNull(
+																	NullCleaner
+																			.assertNotNull(
+																					event.asStartElement())
+																			.getName()
+																			.getLocalPart()),
+															event
+																	.getLocation()
+																	.getLineNumber());
 				}
 			} else if (event.isEndElement()
-					           &&
-					           element.getName().equals(event.asEndElement().getName())) {
+							   &&
+							   element.getName().equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
@@ -139,7 +139,7 @@ public final class JobReader implements INodeHandler<@NonNull Job> {
 	@Override
 	public SPIntermediateRepresentation write(final Job obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "job");
+																							"job");
 		retval.addAttribute("name", obj.getName());
 		retval.addIntegerAttribute("level", obj.getLevel());
 		for (final ISkill skill : obj) {

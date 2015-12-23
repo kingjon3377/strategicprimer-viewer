@@ -53,15 +53,15 @@ public final class ReaderComparator implements ISPDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-t", "--test", ParamCount.One, "Test map readers",
-					               "Test the two map-reading implementations by " +
-							               "comparing their results on the same file.",
-					               ReaderComparator.class);
+								   "Test the two map-reading implementations by " +
+										   "comparing their results on the same file.",
+								   ReaderComparator.class);
 
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			                                     .getLogger(ReaderComparator.class);
+												 .getLogger(ReaderComparator.class);
 	/**
 	 * The first reader.
 	 */
@@ -109,7 +109,7 @@ public final class ReaderComparator implements ISPDriver {
 	 * @throws SPFormatException  if either reader claims invalid data
 	 */
 	public void compareReaders(final File arg) throws XMLStreamException,
-			                                                  SPFormatException {
+															  SPFormatException {
 		SYS_OUT.print(arg);
 		SYS_OUT.println(':');
 		try {
@@ -189,9 +189,9 @@ public final class ReaderComparator implements ISPDriver {
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
 		throw new DriverFailedException(new IllegalStateException("ReaderComparator is " +
-				                                                          "meaningless " +
-				                                                          "for a driver " +
-				                                                          "model"));
+																		  "meaningless " +
+																		  "for a driver " +
+																		  "model"));
 	}
 
 	/**

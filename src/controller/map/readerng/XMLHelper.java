@@ -49,8 +49,8 @@ public final class XMLHelper {
 	 * Parser for numeric input.
 	 */
 	private static final NumberFormat NUM_PARSER = NullCleaner
-			                                               .assertNotNull(NumberFormat
-					                                                              .getIntegerInstance());
+														   .assertNotNull(NumberFormat
+																				  .getIntegerInstance());
 
 	/**
 	 * Do not instantiate.
@@ -66,18 +66,18 @@ public final class XMLHelper {
 	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
 	public static String getAttribute(final StartElement startElement,
-	                                  final String attribute) throws SPFormatException {
+									  final String attribute) throws SPFormatException {
 		final Attribute attr = startElement.getAttributeByName(new QName(
-				                                                                attribute));
+																				attribute));
 		if ((attr == null) || (attr.getValue() == null)) {
 			throw new MissingPropertyException(
-					                                  NullCleaner.assertNotNull(
-							                                  startElement.getName()
-									                                  .getLocalPart()),
-					                                  attribute, startElement
-							                                             .getLocation()
-							                                             .getLineNumber
-									                                              ());
+													  NullCleaner.assertNotNull(
+															  startElement.getName()
+																	  .getLocalPart()),
+													  attribute, startElement
+																		 .getLocation()
+																		 .getLineNumber
+																				  ());
 		}
 		return NullCleaner.assertNotNull(attr.getValue());
 	}
@@ -93,7 +93,7 @@ public final class XMLHelper {
 	 * @return the value of attribute if it exists, or the default
 	 */
 	public static String getAttribute(final StartElement elem,
-	                                  final String attr, final String defaultValue) {
+									  final String attr, final String defaultValue) {
 		final Attribute value = elem.getAttributeByName(new QName(attr));
 		if (value == null) {
 			return defaultValue; // NOPMD
@@ -113,33 +113,33 @@ public final class XMLHelper {
 	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
 	public static String getAttributeWithDeprecatedForm(
-			                                                   final StartElement
-					                                                   element,
-			                                                   final String preferred,
-			                                                   final String deprecated,
-			                                                   final Warning warner)
+															   final StartElement
+																	   element,
+															   final String preferred,
+															   final String deprecated,
+															   final Warning warner)
 			throws SPFormatException {
 		final Attribute prefAttr = element.getAttributeByName(new QName(
-				                                                               preferred));
+																			   preferred));
 		final Attribute deprAttr = element.getAttributeByName(new QName(
-				                                                               deprecated));
+																			   deprecated));
 		if ((prefAttr == null) && (deprAttr == null)) {
 			throw new MissingPropertyException(
-					                                  NullCleaner.assertNotNull(
-							                                  element.getName()
-									                                  .getLocalPart()),
-					                                  preferred, element.getLocation()
-							                                             .getLineNumber
-									                                              ());
+													  NullCleaner.assertNotNull(
+															  element.getName()
+																	  .getLocalPart()),
+													  preferred, element.getLocation()
+																		 .getLineNumber
+																				  ());
 		} else if (prefAttr == null) {
 			warner.warn(new DeprecatedPropertyException(NullCleaner
-					                                            .assertNotNull(
-							                                            element.getName()
-									                                            .getLocalPart()),
-					                                           deprecated, preferred,
-					                                           element.getLocation()
-							                                           .getLineNumber
-									                                            ()));
+																.assertNotNull(
+																		element.getName()
+																				.getLocalPart()),
+															   deprecated, preferred,
+															   element.getLocation()
+																	   .getLineNumber
+																				()));
 			return NullCleaner.assertNotNull(deprAttr.getValue()); // NOPMD
 		} else {
 			return NullCleaner.assertNotNull(prefAttr.getValue());
@@ -152,7 +152,7 @@ public final class XMLHelper {
 	 * @return whether the element has that attribute
 	 */
 	public static boolean hasAttribute(final StartElement elem,
-	                                   final String attr) {
+									   final String attr) {
 		return elem.getAttributeByName(new QName(attr)) != null;
 	}
 
@@ -165,21 +165,21 @@ public final class XMLHelper {
 	 * @throws SPFormatException on unwanted child
 	 */
 	public static void spinUntilEnd(final QName tag,
-	                                final Iterable<XMLEvent> reader)
+									final Iterable<XMLEvent> reader)
 			throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException(NullCleaner.assertNotNull(tag
-						                                                           .getLocalPart()),
-						                                NullCleaner.assertNotNull(event
-								                                                          .asStartElement()
-								                                                          .getName()
-								                                                          .getLocalPart()),
-						                                event
-								                                .getLocation()
-								                                .getLineNumber());
+																				   .getLocalPart()),
+														NullCleaner.assertNotNull(event
+																						  .asStartElement()
+																						  .getName()
+																						  .getLocalPart()),
+														event
+																.getLocation()
+																.getLineNumber());
 			} else if (event.isEndElement()
-					           && tag.equals(event.asEndElement().getName())) {
+							   && tag.equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
@@ -195,19 +195,19 @@ public final class XMLHelper {
 	 * @throws SPFormatException if the parameter is mandatory and missing
 	 */
 	public static void requireNonEmptyParameter(final StartElement element,
-	                                            final String parameter,
-	                                            final boolean mandatory,
-	                                            final Warning warner)
+												final String parameter,
+												final boolean mandatory,
+												final Warning warner)
 			throws SPFormatException {
 		if (getAttribute(element, parameter, "").isEmpty()) {
 			final SPFormatException except =
 					new MissingPropertyException(
-							                            NullCleaner.assertNotNull(
-									                            element.getName()
-											                            .getLocalPart()),
-							                            parameter, element
-									                                       .getLocation()
-									                                       .getLineNumber());
+														NullCleaner.assertNotNull(
+																element.getName()
+																		.getLocalPart()),
+														parameter, element
+																		   .getLocation()
+																		   .getLineNumber());
 			if (mandatory) {
 				throw except;
 			} else {
@@ -228,8 +228,8 @@ public final class XMLHelper {
 	 * @throws SPFormatException on SP format problems reading the attribute.
 	 */
 	public static Player getPlayerOrIndependent(final StartElement element,
-	                                            final Warning warner,
-	                                            final IPlayerCollection players)
+												final Warning warner,
+												final IPlayerCollection players)
 			throws SPFormatException {
 		final Player retval; // NOPMD
 		if (hasAttribute(element, "owner")) {
@@ -237,12 +237,12 @@ public final class XMLHelper {
 					"owner"), NullCleaner.assertNotNull(element.getLocation())));
 		} else {
 			warner.warn(new MissingPropertyException(NullCleaner
-					                                         .assertNotNull(
-							                                         element.getName()
-									                                         .getLocalPart()),
-					                                        "owner",
-					                                        element.getLocation()
-							                                        .getLineNumber()));
+															 .assertNotNull(
+																	 element.getName()
+																			 .getLocalPart()),
+															"owner",
+															element.getLocation()
+																	.getLineNumber()));
 			retval = players.getIndependent();
 		}
 		return retval;
@@ -260,7 +260,7 @@ public final class XMLHelper {
 	 * @throws SPFormatException on SP format problems reading the attribute
 	 */
 	public static int getOrGenerateID(final StartElement element,
-	                                  final Warning warner, final IDFactory idFactory)
+									  final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		final int retval; // NOPMD
 		if (hasAttribute(element, "id")) {
@@ -268,12 +268,12 @@ public final class XMLHelper {
 					"id"), NullCleaner.assertNotNull(element.getLocation())));
 		} else {
 			warner.warn(new MissingPropertyException(NullCleaner
-					                                         .assertNotNull(
-							                                         element.getName()
-									                                         .getLocalPart()),
-					                                        "id",
-					                                        element.getLocation()
-							                                        .getLineNumber()));
+															 .assertNotNull(
+																	 element.getName()
+																			 .getLocalPart()),
+															"id",
+															element.getLocation()
+																	.getLineNumber()));
 			retval = idFactory.createID();
 		}
 		return retval;

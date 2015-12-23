@@ -65,36 +65,36 @@ public final class MeadowReader implements INodeHandler<Meadow> {
 	 */
 	@Override
 	public Meadow parse(final StartElement element,
-	                    final Iterable<XMLEvent> stream,
-	                    final IMutablePlayerCollection players,
-	                    final Warning warner, final IDFactory idFactory)
+						final Iterable<XMLEvent> stream,
+						final IMutablePlayerCollection players,
+						final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final int id = getOrGenerateID(element, warner, idFactory); // NOPMD
 		if (!hasAttribute(element, STATUS_ATTR)) {
 			warner.warn(new MissingPropertyException(NullCleaner
-					                                         .assertNotNull(
-							                                         element.getName()
-									                                         .getLocalPart()),
+															 .assertNotNull(
+																	 element.getName()
+																			 .getLocalPart()),
 
-					                                        STATUS_ATTR,
-					                                        element.getLocation()
-							                                        .getLineNumber()));
+															STATUS_ATTR,
+															element.getLocation()
+																	.getLineNumber()));
 		}
 		final Meadow fix =
 				new Meadow(
-						          getAttribute(element, "kind"),
-						          "field".equalsIgnoreCase(NullCleaner
-								                                   .assertNotNull(
-										                                   element
-												                                   .getName()
-												                                   .getLocalPart())),
-						          Boolean.parseBoolean(
-								          getAttribute(element, "cultivated")),
-						          id, FieldStatus
-								              .parse(getAttribute(element, STATUS_ATTR,
-										              FieldStatus.random(id)
-												              .toString())));
+								  getAttribute(element, "kind"),
+								  "field".equalsIgnoreCase(NullCleaner
+																   .assertNotNull(
+																		   element
+																				   .getName()
+																				   .getLocalPart())),
+								  Boolean.parseBoolean(
+										  getAttribute(element, "cultivated")),
+								  id, FieldStatus
+											  .parse(getAttribute(element, STATUS_ATTR,
+													  FieldStatus.random(id)
+															  .toString())));
 		addImage(element, fix);
 		return fix;
 	}
@@ -134,15 +134,15 @@ public final class MeadowReader implements INodeHandler<Meadow> {
 			tag = "meadow";
 		}
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            tag,
-				                                                                            Pair.of("kind",
-						                                                                            obj.getKind()),
-				                                                                            Pair.of("cultivated",
-						                                                                            cult),
-				                                                                            Pair.of(STATUS_ATTR,
-						                                                                            obj
-								                                                                            .getStatus()
-								                                                                            .toString()));
+																							tag,
+																							Pair.of("kind",
+																									obj.getKind()),
+																							Pair.of("cultivated",
+																									cult),
+																							Pair.of(STATUS_ATTR,
+																									obj
+																											.getStatus()
+																											.toString()));
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

@@ -36,7 +36,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  */
 public final class RiverFixture implements TileFixture, Iterable<@NonNull River>,
-		                                           SubsettableFixture {
+												   SubsettableFixture {
 	/**
 	 * The maximum size of a river's equivalent string, plus a space.
 	 */
@@ -111,7 +111,7 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof RiverFixture)
-				                         && ((RiverFixture) obj).rivers.equals(rivers));
+										 && ((RiverFixture) obj).rivers.equals(rivers));
 	}
 
 	/**
@@ -146,9 +146,9 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	@Override
 	public String toString() {
 		final StringBuilder sbuild = new StringBuilder(BASE_STRING.length()
-				                                               + (MAX_RIVER_SIZE *
-						                                                  rivers.size()))
-				                             .append(BASE_STRING);
+															   + (MAX_RIVER_SIZE *
+																		  rivers.size()))
+											 .append(BASE_STRING);
 		for (final River river : rivers) {
 			sbuild.append(river.toString());
 			sbuild.append(' ');
@@ -167,7 +167,7 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-	                        final String context) throws IOException {
+							final String context) throws IOException {
 		if (obj instanceof RiverFixture) {
 			final Set<River> temp = EnumSet.copyOf(((RiverFixture) obj).rivers);
 			temp.removeAll(rivers);

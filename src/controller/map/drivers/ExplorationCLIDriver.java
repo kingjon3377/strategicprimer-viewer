@@ -42,9 +42,9 @@ public final class ExplorationCLIDriver implements ISPDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-x", "--explore", ParamCount.Many, "Run exploration.",
-					               "Move a unit around the map, updating the player's " +
-							               "map with what it sees.",
-					               ExplorationCLIDriver.class);
+								   "Move a unit around the map, updating the player's " +
+										   "map with what it sees.",
+								   ExplorationCLIDriver.class);
 
 	/**
 	 * Run the driver.
@@ -94,13 +94,13 @@ public final class ExplorationCLIDriver implements ISPDriver {
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final IDriverModel model = new ExplorationModel(
-				                                               reader.readMultiMapModel(
-						                                               Warning.INSTANCE,
-						                                               new File(args[0]),
-						                                               MapReaderAdapter
-								                                               .namesToFiles(
-										                                               true,
-										                                               args)));
+															   reader.readMultiMapModel(
+																	   Warning.INSTANCE,
+																	   new File(args[0]),
+																	   MapReaderAdapter
+																			   .namesToFiles(
+																					   true,
+																					   args)));
 		startDriver(model);
 		reader.writeModel(model);
 	}

@@ -61,12 +61,12 @@ public final class AdvancementCLIDriver implements ISPDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-a", "--adv", ParamCount.One,
-					               "View a player's workers and manage their " +
-							               "advancement",
-					               "View a player's units, the workers in those units, " +
-							               "each worker's Jobs, and his or her level in " +
-							               "each Skill in each Job.",
-					               AdvancementCLIDriver.class);
+								   "View a player's workers and manage their " +
+										   "advancement",
+								   "View a player's units, the workers in those units, " +
+										   "each worker's Jobs, and his or her level in " +
+										   "each Skill in each Job.",
+								   AdvancementCLIDriver.class);
 	/**
 	 * The CLI helper.
 	 */
@@ -130,19 +130,19 @@ public final class AdvancementCLIDriver implements ISPDriver {
 			final String prpt = "Chosen player: ";
 			for (int playerNum = cli.chooseFromList(playerList, hdr, none, prpt,
 					false); (playerNum >= 0)
-							        && (playerNum < playerList.size()); playerNum = cli
-									                                                      .chooseFromList(
-											                                                      playerList,
-											                                                      hdr,
-											                                                      none,
-											                                                      prpt,
-											                                                      false)) {
+									&& (playerNum < playerList.size()); playerNum = cli
+																						  .chooseFromList(
+																								  playerList,
+																								  hdr,
+																								  none,
+																								  prpt,
+																								  false)) {
 				advanceWorkers(model,
 						NullCleaner.assertNotNull(playerList.remove(playerNum)));
 			}
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error interacting with user",
-					                               except);
+												   except);
 		}
 	}
 
@@ -162,13 +162,13 @@ public final class AdvancementCLIDriver implements ISPDriver {
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final IDriverModel model = new WorkerModel(
-				                                          reader.readMultiMapModel(
-						                                          Warning.INSTANCE,
-						                                          new File(args[0]),
-						                                          MapReaderAdapter
-								                                          .namesToFiles(
-										                                          true,
-										                                          args)));
+														  reader.readMultiMapModel(
+																  Warning.INSTANCE,
+																  new File(args[0]),
+																  MapReaderAdapter
+																		  .namesToFiles(
+																				  true,
+																				  args)));
 		startDriver(model);
 		reader.writeModel(model);
 	}
@@ -192,10 +192,10 @@ public final class AdvancementCLIDriver implements ISPDriver {
 			if ((unitNum >= 0) && (unitNum < units.size())) {
 				if (proxy) {
 					advanceSingleWorker(new ProxyWorker(
-							                                   NullCleaner.assertNotNull(
-									                                   units.remove(
-											                                   unitNum)
-							                                   )));
+															   NullCleaner.assertNotNull(
+																	   units.remove(
+																			   unitNum)
+															   )));
 				} else {
 					advanceWorkersInUnit(
 							NullCleaner.assertNotNull(units.remove(unitNum)));
@@ -243,8 +243,8 @@ public final class AdvancementCLIDriver implements ISPDriver {
 		final String none = "No existing jobs.";
 		final String prpt = "Job to advance: ";
 		for (int jobNum = cli.chooseFromList(jobs, hdr, none, prpt, false); jobNum <=
-				                                                                    jobs
-				                                                                              .size();
+																					jobs
+																							  .size();
 				jobNum = cli.chooseFromList(jobs, hdr, none, prpt, false)) {
 			if ((jobNum < 0) || (jobNum == jobs.size())) {
 				worker.addJob(new Job(cli.inputString("Name of new Job: "), 0));
@@ -274,7 +274,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 		final String prpt = "Job to advance: ";
 		for (int skillNum = cli.chooseFromList(skills, hdr, none, prpt, false);
 				skillNum <= skills
-						            .size();
+									.size();
 				skillNum = cli.chooseFromList(skills, hdr, none, prpt, false)) {
 			if ((skillNum < 0) || (skillNum == skills.size())) {
 				job.addSkill(new Skill(cli.inputString("Name of new Skill: "), 0, 0));

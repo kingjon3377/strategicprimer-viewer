@@ -105,9 +105,9 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Ver2TileDrawHelper)
-				                         &&
-				                         fixComp.equals(
-						                         ((Ver2TileDrawHelper) obj).fixComp));
+										 &&
+										 fixComp.equals(
+												 ((Ver2TileDrawHelper) obj).fixComp));
 	}
 
 	/**
@@ -122,7 +122,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			                                     .getLogger(Ver2TileDrawHelper.class);
+												 .getLogger(Ver2TileDrawHelper.class);
 	/**
 	 * A fallback image.
 	 */
@@ -135,7 +135,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @param zofilt the class to query about whether to display a fixture
 	 */
 	public Ver2TileDrawHelper(final ImageObserver iobs,
-	                          final ZOrderFilter zofilt) {
+							  final ZOrderFilter zofilt) {
 		observer = iobs;
 		zof = zofilt;
 		final String[] files = {"trees.png", "mountain.png"};
@@ -167,7 +167,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 *                 it's missing), false otherwise
 	 */
 	private static void logLoadingError(final IOException except,
-	                                    final String filename, final boolean fallback) {
+										final String filename, final boolean fallback) {
 		if (except instanceof FileNotFoundException) {
 			final String msg = "Image " + filename + " not found";
 			if (fallback) {
@@ -195,7 +195,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	@Override
 	public void drawTile(final Graphics pen, final IMapNG map, final Point location,
-	                     final Coordinate coordinates, final Coordinate dimensions) {
+						 final Coordinate coordinates, final Coordinate dimensions) {
 		if (needsFixtureColor(map, location)) {
 			pen.setColor(getFixtureColor(map, location));
 		} else {
@@ -226,8 +226,8 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	@Override
 	public void drawTileTranslated(final Graphics pen, final IMapNG map,
-	                               final Point location, final int width,
-	                               final int height) {
+								   final Point location, final int width,
+								   final int height) {
 		drawTile(pen, map, location, PointFactory.coordinate(0, 0),
 				PointFactory.coordinate(width, height));
 	}
@@ -238,7 +238,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return an Iterable of the drawable fixtures there
 	 */
 	private Iterable<TileFixture> getDrawableFixtures(final IMapNG map,
-	                                                  final Point location) {
+													  final Point location) {
 		final Collection<TileFixture> temp = new ArrayList<>();
 		@Nullable
 		final Ground ground = map.getGround(location);
@@ -255,12 +255,12 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		}
 		map.getOtherFixtures(location).forEach(temp::add);
 		return new IteratorWrapper<>(new FilteredIterator(
-				                                                 NullCleaner
-						                                                 .assertNotNull(
-								                                                 temp
-										                                                 .iterator()),
+																 NullCleaner
+																		 .assertNotNull(
+																				 temp
+																						 .iterator()),
 
-				                                                 zof), fixComp);
+																 zof), fixComp);
 	}
 
 	/**
@@ -324,7 +324,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	private boolean hasTerrainFixture(final IMapNG map, final Point location) {
 		return StreamSupport.stream(getDrawableFixtures(map, location).spliterator(),
 				false)
-				       .anyMatch(fix -> fix instanceof TerrainFixture);
+					   .anyMatch(fix -> fix instanceof TerrainFixture);
 	}
 
 	/**
@@ -357,9 +357,9 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			}
 		} else if (fix instanceof RiverFixture) {
 			return getImage(NullCleaner.assertNotNull(riverFiles//NOPMD
-					                                          .get(((RiverFixture) fix)
-							                                               .getRivers()
-					                                          )));
+															  .get(((RiverFixture) fix)
+																		   .getRivers()
+															  )));
 		} else {
 			LOGGER.warning("Using fallback image for unexpected kind of Fixture.");
 			return fallbackImage;
@@ -384,7 +384,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			return fallbackImage; // NOPMD
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error reading image images/"
-					                         + filename, e);
+											 + filename, e);
 			return fallbackImage;
 		}
 	}
@@ -504,10 +504,10 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		@Override
 		public boolean equals(@Nullable final Object obj) {
 			return (this == obj) || ((obj instanceof FilteredIterator)
-					                         &&
-					                         wrapped.equals(((FilteredIterator) obj)
-							                                        .wrapped)
-					                         && zof.equals(((FilteredIterator) obj).zof));
+											 &&
+											 wrapped.equals(((FilteredIterator) obj)
+																	.wrapped)
+											 && zof.equals(((FilteredIterator) obj).zof));
 		}
 
 		/**
@@ -527,13 +527,13 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			@Override
 			public int compareTo(final TileFixture obj) {
 				throw new IllegalStateException(
-						                               "Leak of an all-but-null object");
+													   "Leak of an all-but-null object");
 			}
 
 			@Override
 			public int getID() {
 				throw new IllegalStateException(
-						                               "Leak of an all-but-null object");
+													   "Leak of an all-but-null object");
 			}
 
 			@Override
@@ -549,7 +549,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			@Override
 			public int getZValue() {
 				throw new IllegalStateException(
-						                               "Leak of an all-but-null object");
+													   "Leak of an all-but-null object");
 			}
 
 			/**
@@ -574,7 +574,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		 * @param zofilt the filter to use
 		 */
 		protected FilteredIterator(final Iterator<TileFixture> iter,
-		                           final ZOrderFilter zofilt) {
+								   final ZOrderFilter zofilt) {
 			wrapped = iter;
 			zof = zofilt;
 			hasCached = false;

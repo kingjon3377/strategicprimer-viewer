@@ -66,52 +66,52 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 */
 	@Override
 	public Worker read(final StartElement element,
-	                   final IteratorWrapper<XMLEvent> stream,
-	                   final IMutablePlayerCollection players, final Warning warner,
-	                   final IDFactory idFactory) throws SPFormatException {
+					   final IteratorWrapper<XMLEvent> stream,
+					   final IMutablePlayerCollection players, final Warning warner,
+					   final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "worker");
 		final Worker retval = new Worker(getParameter(element, "name"),
-				                                getParameter(element, "race", "human"),
-				                                getOrGenerateID(
-						                                element, warner, idFactory));
+												getParameter(element, "race", "human"),
+												getOrGenerateID(
+														element, warner, idFactory));
 		retval.setImage(getParameter(element, "image", ""));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				if ("job".equalsIgnoreCase(NullCleaner.assertNotNull(event
-						                                                     .asStartElement()
-						                                                     .getName()
-						                                                     .getLocalPart()))) {
+																			 .asStartElement()
+																			 .getName()
+																			 .getLocalPart()))) {
 					retval.addJob(parseJob(
 							NullCleaner.assertNotNull(event.asStartElement()),
 							stream, warner));
 				} else if ("stats".equalsIgnoreCase(NullCleaner
-						                                    .assertNotNull(
-								                                    event
-										                                    .asStartElement()
-										                                    .getName()
-										                                    .getLocalPart()))) {
+															.assertNotNull(
+																	event
+																			.asStartElement()
+																			.getName()
+																			.getLocalPart()))) {
 					retval.setStats(parseStats(
 							NullCleaner.assertNotNull(event.asStartElement()),
 							stream));
 				} else {
 					throw new UnwantedChildException(
-							                                NullCleaner.assertNotNull(
-									                                element.getName()
-											                                .getLocalPart()),
+															NullCleaner.assertNotNull(
+																	element.getName()
+																			.getLocalPart()),
 
-							                                NullCleaner.assertNotNull(
-									                                event
-											                                .asStartElement()
-											                                .getName()
-											                                .getLocalPart()),
-							                                event
-									                                .getLocation()
-									                                .getLineNumber());
+															NullCleaner.assertNotNull(
+																	event
+																			.asStartElement()
+																			.getName()
+																			.getLocalPart()),
+															event
+																	.getLocation()
+																	.getLineNumber());
 				}
 			} else if (event.isEndElement()
-					           &&
-					           element.getName().equals(event.asEndElement().getName()
-					           )) {
+							   &&
+							   element.getName().equals(event.asEndElement().getName()
+							   )) {
 				break;
 			}
 		}
@@ -127,18 +127,18 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * @throws SPFormatException on SP format problem
 	 */
 	private static WorkerStats parseStats(final StartElement element,
-	                                      final Iterable<XMLEvent> stream)
+										  final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, "stats");
 		final WorkerStats retval =
 				new WorkerStats(getIntegerParameter(element, "hp"),
-						               getIntegerParameter(element, "max"),
-						               getIntegerParameter(element, "str"),
-						               getIntegerParameter(element, "dex"),
-						               getIntegerParameter(element, "con"),
-						               getIntegerParameter(element, "int"),
-						               getIntegerParameter(element, "wis"),
-						               getIntegerParameter(element, "cha"));
+									   getIntegerParameter(element, "max"),
+									   getIntegerParameter(element, "str"),
+									   getIntegerParameter(element, "dex"),
+									   getIntegerParameter(element, "con"),
+									   getIntegerParameter(element, "int"),
+									   getIntegerParameter(element, "wis"),
+									   getIntegerParameter(element, "cha"));
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		return retval;
 	}
@@ -153,47 +153,47 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * @throws SPFormatException on SP format problem
 	 */
 	public static IJob parseJob(final StartElement element,
-	                            final Iterable<XMLEvent> stream, final Warning warner)
+								final Iterable<XMLEvent> stream, final Warning warner)
 			throws SPFormatException {
 		requireTag(element, "job");
 		final IJob retval =
 				new Job(getParameter(element, "name"),
-						       getIntegerParameter(element, "level"));
+							   getIntegerParameter(element, "level"));
 		if (hasParameter(element, "hours")) {
 			warner.warn(new UnsupportedPropertyException("job", "hours",
-					                                            element.getLocation()
-							                                            .getLineNumber
-									                                             ()));
+																element.getLocation()
+																		.getLineNumber
+																				 ()));
 		}
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				if ("skill".equalsIgnoreCase(NullCleaner.assertNotNull(event
-						                                                       .asStartElement()
-						                                                       .getName()
-						                                                       .getLocalPart()))) {
+																			   .asStartElement()
+																			   .getName()
+																			   .getLocalPart()))) {
 					retval.addSkill(parseSkill(
 							NullCleaner.assertNotNull(event.asStartElement()),
 							warner));
 					spinUntilEnd(NullCleaner.assertNotNull(event.asStartElement()
-							                                       .getName()), stream);
+																   .getName()), stream);
 				} else {
 					throw new UnwantedChildException(
-							                                NullCleaner.assertNotNull(
-									                                element.getName()
-											                                .getLocalPart()),
-							                                NullCleaner.assertNotNull(
-									                                event
-											                                .asStartElement()
-											                                .getName()
-											                                .getLocalPart()),
-							                                event
-									                                .getLocation()
-									                                .getLineNumber());
+															NullCleaner.assertNotNull(
+																	element.getName()
+																			.getLocalPart()),
+															NullCleaner.assertNotNull(
+																	event
+																			.asStartElement()
+																			.getName()
+																			.getLocalPart()),
+															event
+																	.getLocation()
+																	.getLineNumber());
 				}
 			} else if (event.isEndElement()
-					           &&
-					           element.getName().equals(event.asEndElement().getName()
-					           )) {
+							   &&
+							   element.getName().equals(event.asEndElement().getName()
+							   )) {
 				break;
 			}
 		}
@@ -209,18 +209,18 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * @throws SPFormatException on SP format problem
 	 */
 	public static ISkill parseSkill(final StartElement element,
-	                                final Warning warner) throws SPFormatException {
+									final Warning warner) throws SPFormatException {
 		requireTag(element, "skill");
 		final ISkill retval =
 				new Skill(getParameter(element, "name"),
-						         getIntegerParameter(element, "level"),
-						         getIntegerParameter(element, "hours"));
+								 getIntegerParameter(element, "level"),
+								 getIntegerParameter(element, "hours"));
 		if ("miscellaneous".equals(retval.getName()) && (retval.getLevel() > 0)) {
 			warner.warn(new DeprecatedPropertyException("skill",
-					                                           "miscellaneous", "other",
-					                                           element.getLocation()
-							                                           .getLineNumber
-									                                            ()));
+															   "miscellaneous", "other",
+															   element.getLocation()
+																	   .getLineNumber
+																				()));
 		}
 		return retval;
 	}
@@ -235,7 +235,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 */
 	@Override
 	public void write(final Appendable ostream, final Worker obj,
-	                  final int indent) throws IOException {
+					  final int indent) throws IOException {
 		ostream.append(indent(indent));
 		ostream.append("<worker name=\"");
 		ostream.append(obj.getName());
@@ -271,7 +271,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * @throws IOException on I/O error
 	 */
 	private static void writeStats(final Appendable ostream,
-	                               @Nullable final WorkerStats stats, final int indent)
+								   @Nullable final WorkerStats stats, final int indent)
 			throws IOException {
 		if (stats != null) {
 			ostream.append(indent(indent));
@@ -304,7 +304,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * @throws IOException on I/O error
 	 */
 	public static void writeJob(final Appendable ostream, final Job obj,
-	                            final int indent) throws IOException {
+								final int indent) throws IOException {
 		if ((obj.getLevel() <= 0) && !obj.iterator().hasNext()) {
 			return;
 		}
@@ -337,7 +337,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * @throws IOException on I/O error
 	 */
 	public static void writeSkill(final Appendable ostream, final ISkill obj,
-	                              final int indent) throws IOException {
+								  final int indent) throws IOException {
 		ostream.append(indent(indent));
 		ostream.append("<skill name=\"");
 		ostream.append(obj.getName());

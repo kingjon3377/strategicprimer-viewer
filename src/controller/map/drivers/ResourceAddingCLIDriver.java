@@ -51,9 +51,9 @@ public class ResourceAddingCLIDriver implements ISPDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-d", "--add-resource", ParamCount.Many,
-					               "Add resources to maps",
-					               "Add resources for players to maps",
-					               ResourceAddingCLIDriver.class);
+								   "Add resources to maps",
+								   "Add resources for players to maps",
+								   ResourceAddingCLIDriver.class);
 
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
@@ -100,7 +100,7 @@ public class ResourceAddingCLIDriver implements ISPDriver {
 	}
 
 	private void enterResource(final IDFactory idf, final ResourceManagementDriver model,
-	                           final ICLIHelper cli, final Player player)
+							   final ICLIHelper cli, final Player player)
 			throws IOException {
 		final String kind = getResourceKind(cli);
 		String contents = getResourceContents(kind, cli);
@@ -110,15 +110,15 @@ public class ResourceAddingCLIDriver implements ISPDriver {
 		}
 		model.addResource(
 				new ResourcePile(idf.createID(), kind, contents,
-						                cli.inputNumber(
-								                String.format("Quantity in %s? ",
-										                units)),
-						                units), player);
+										cli.inputNumber(
+												String.format("Quantity in %s? ",
+														units)),
+										units), player);
 	}
 
 	private void enterImplement(final IDFactory idf, final ResourceManagementDriver
-			                                                 model,
-	                            final ICLIHelper cli, final Player player)
+															 model,
+								final ICLIHelper cli, final Player player)
 			throws IOException {
 		model.addResource(
 				new Implement(idf.createID(), cli.inputString("Kind of equipment: ")),

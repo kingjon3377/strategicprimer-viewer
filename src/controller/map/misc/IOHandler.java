@@ -67,7 +67,7 @@ public final class IOHandler implements ActionListener {
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			                                     .getLogger(IOHandler.class);
+												 .getLogger(IOHandler.class);
 	/**
 	 * File chooser.
 	 */
@@ -149,16 +149,16 @@ public final class IOHandler implements ActionListener {
 	 */
 	private void startNewViewerWindow() {
 		SwingUtilities.invokeLater(new WindowThread(
-				                                           new ViewerFrame(new
-						                                                           ViewerModel(new SPMapNG(model
-						                                                                                       .getMapDimensions(),
-						                                                                                      new PlayerCollection(),
-						                                                                                      model
-								                                                                                      .getMap()
-								                                                                                      .getCurrentTurn()),
+														   new ViewerFrame(new
+																				   ViewerModel(new SPMapNG(model
+																											   .getMapDimensions(),
+																											  new PlayerCollection(),
+																											  model
+																													  .getMap()
+																													  .getCurrentTurn()),
 
-								                                                                      new File("")),
-						                                                          this)));
+																									  new File("")),
+																				  this)));
 	}
 
 	/**
@@ -181,8 +181,8 @@ public final class IOHandler implements ActionListener {
 	 *                 null.
 	 */
 	protected static void handleError(final Exception except,
-	                                  final String filename,
-	                                  @Nullable final Component source) {
+									  final String filename,
+									  @Nullable final Component source) {
 		final String msg;
 		if (except instanceof XMLStreamException) {
 			msg = XML_ERROR_STRING + ' ' + filename;
@@ -211,7 +211,7 @@ public final class IOHandler implements ActionListener {
 			new MapReaderAdapter().write(model.getMapFile(), model.getMap());
 		} catch (final IOException e) {
 			ErrorShower.showErrorDialog(source, "I/O error writing to file "
-					                                    + model.getMapFile().getPath());
+														+ model.getMapFile().getPath());
 			LOGGER.log(Level.SEVERE, "I/O error writing XML", e);
 		}
 	}
@@ -263,7 +263,7 @@ public final class IOHandler implements ActionListener {
 		if (model instanceof IMultiMapModel) {
 			final MapReaderAdapter adapter = new MapReaderAdapter();
 			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model)
-					                                            .getAllMaps()) {
+																.getAllMaps()) {
 				try {
 					adapter.write(pair.second(), pair.first());
 				} catch (final IOException e) {
@@ -282,8 +282,8 @@ public final class IOHandler implements ActionListener {
 	 */
 	private void handleSecondaryLoadMenu(@Nullable final Component source) {
 		if ((model instanceof IMultiMapModel) && (chooser
-				                                          .showOpenDialog(source) ==
-				                                          JFileChooser.APPROVE_OPTION)) {
+														  .showOpenDialog(source) ==
+														  JFileChooser.APPROVE_OPTION)) {
 			final File file = chooser.getSelectedFile();
 			if (file == null) {
 				return;

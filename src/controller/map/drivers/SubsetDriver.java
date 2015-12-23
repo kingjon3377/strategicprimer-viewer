@@ -46,11 +46,11 @@ public final class SubsetDriver implements ISPDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-s", "--subset", ParamCount.Many,
-					               "Check players' maps against master",
-					               "Check that subordinate maps are subsets of the main " +
-							               "map, containing nothing that it does not " +
-							               "contain in the same place",
-					               SubsetDriver.class);
+								   "Check players' maps against master",
+								   "Check that subordinate maps are subsets of the main " +
+										   "map, containing nothing that it does not " +
+										   "contain in the same place",
+								   SubsetDriver.class);
 	/**
 	 * Logger.
 	 */
@@ -143,8 +143,8 @@ public final class SubsetDriver implements ISPDriver {
 	 * @return the result of doing the subset test with those maps
 	 */
 	private static Returns doSubsetTest(final Subsettable<IMapNG> mainMap, final IMapNG
-			                                                                       map,
-	                                    final File file) {
+																				   map,
+										final File file) {
 		try {
 			if (mainMap.isSubset(map, SYS_OUT, "In " + file.getName() + ':')) {
 				return Returns.OK;

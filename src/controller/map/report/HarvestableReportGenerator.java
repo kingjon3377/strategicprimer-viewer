@@ -62,8 +62,8 @@ public final class HarvestableReportGenerator
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public HarvestableReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
-			                                                                @NonNull
-					                                                                IFixture>> comparator) {
+																			@NonNull
+																					IFixture>> comparator) {
 		super(comparator);
 	}
 
@@ -79,32 +79,32 @@ public final class HarvestableReportGenerator
 	 */
 	@Override
 	public String produce(// $codepro.audit.disable cyclomaticComplexity
-	                      final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-			                      fixtures,
-	                      //NOPMD
-	                      final IMapNG map, final Player player) {
+						  final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+								  fixtures,
+						  //NOPMD
+						  final IMapNG map, final Player player) {
 		// TODO: Use Guava Multimaps to reduce cyclomatic complexity
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final HeadedList<String> stone = new HtmlList(
-				                                             "<h5>Exposed stone " +
-						                                             "deposits</h5>");
+															 "<h5>Exposed stone " +
+																	 "deposits</h5>");
 		final Map<String, List<Point>> shrubs = new HashMap<>();
 		final HeadedList<String> minerals = new HtmlList(
-				                                                "<h5>Mineral " +
-						                                                "deposits</h5>");
+																"<h5>Mineral " +
+																		"deposits</h5>");
 		final HeadedList<String> mines = new HtmlList("<h5>Mines</h5>");
 		final HeadedList<String> meadows = new HtmlList(
-				                                               "<h5>Meadows and " +
-						                                               "fields</h5>");
+															   "<h5>Meadows and " +
+																	   "fields</h5>");
 		final HeadedList<String> groves = new HtmlList(
-				                                              "<h5>Groves and " +
-						                                              "orchards</h5>");
+															  "<h5>Groves and " +
+																	  "orchards</h5>");
 		final HeadedList<String> caches = new HtmlList(
-				                                              "<h5>Caches collected by " +
-						                                              "your explorers " +
-						                                              "and " +
-						                                              "workers:</h5>");
+															  "<h5>Caches collected by " +
+																	  "your explorers " +
+																	  "and " +
+																	  "workers:</h5>");
 		for (final Pair<Point, IFixture> pair : values) {
 			final IFixture item = pair.second();
 			final Point point = pair.first();
@@ -140,17 +140,17 @@ public final class HarvestableReportGenerator
 			}
 		}
 		final HeadedList<String> shrubsText = new HtmlList(
-				                                                  "<h5>Shrubs, small " +
-						                                                  "trees, and " +
-						                                                  "such</h5>");
+																  "<h5>Shrubs, small " +
+																		  "trees, and " +
+																		  "such</h5>");
 		shrubsText.addAll(shrubs.entrySet().stream()
-				                  .map(entry -> concat(entry.getKey(), ": at ",
-						                  pointCSL(entry.getValue())))
-				                  .collect(Collectors.toList()));
+								  .map(entry -> concat(entry.getKey(), ": at ",
+										  pointCSL(entry.getValue())))
+								  .collect(Collectors.toList()));
 		sortAll(caches, groves, meadows, mines, minerals, stone, shrubsText);
 		if (caches.isEmpty() && groves.isEmpty() && meadows.isEmpty()
-				    && mines.isEmpty() && minerals.isEmpty() && stone.isEmpty()
-				    && shrubs.isEmpty()) {
+					&& mines.isEmpty() && minerals.isEmpty() && stone.isEmpty()
+					&& shrubs.isEmpty()) {
 			return ""; // NOPMD
 		} else {
 			return concat("<h4>Resource Sources</h4>\n", caches.toString(),
@@ -179,9 +179,9 @@ public final class HarvestableReportGenerator
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			                                    final DelayedRemovalMap<Integer,
-					                                                           Pair<Point, IFixture>> fixtures,
-			                                    final IMapNG map, final Player player) {
+												final DelayedRemovalMap<Integer,
+																			   Pair<Point, IFixture>> fixtures,
+												final IMapNG map, final Player player) {
 		//  TODO: Use Guava Multimaps to reduce cyclomatic complexity
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
@@ -196,7 +196,7 @@ public final class HarvestableReportGenerator
 		final AbstractReportNode groves =
 				new SortedSectionListReportNode(5, "Groves and orchards");
 		final AbstractReportNode caches = new SortedSectionListReportNode(5,
-				                                                                 "Caches collected by your explorers and workers:");
+																				 "Caches collected by your explorers and workers:");
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof HarvestableFixture) {
 				final HarvestableFixture item = (HarvestableFixture) pair.second();
@@ -249,7 +249,7 @@ public final class HarvestableReportGenerator
 	 * @return whether any of them was added
 	 */
 	public static boolean maybeAdd(final DefaultMutableTreeNode parent,
-	                               final MutableTreeNode... children) {
+								   final MutableTreeNode... children) {
 		boolean retval = false;
 		for (final MutableTreeNode child : children) {
 			if (child.getChildCount() != 0) {
@@ -272,10 +272,10 @@ public final class HarvestableReportGenerator
 	 */
 	@Override
 	public String produce(
-			                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-					                     fixtures,
-			                     final IMapNG map, final Player currentPlayer,
-			                     final HarvestableFixture item, final Point loc) {
+								 final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+										 fixtures,
+								 final IMapNG map, final Player currentPlayer,
+								 final HarvestableFixture item, final Point loc) {
 		if (item instanceof CacheFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat(atPoint(loc), " ", distCalculator.distanceString(loc),
@@ -340,67 +340,67 @@ public final class HarvestableReportGenerator
 	 */
 	@Override
 	public SimpleReportNode produceRIR(
-			                                  final DelayedRemovalMap<Integer,
-					                                                         Pair<Point,
-							                                                             IFixture>> fixtures,
-			                                  final IMapNG map,
-			                                  final Player currentPlayer,
-			                                  final HarvestableFixture item,
-			                                  final Point loc) {
+											  final DelayedRemovalMap<Integer,
+																			 Pair<Point,
+																						 IFixture>> fixtures,
+											  final IMapNG map,
+											  final Player currentPlayer,
+											  final HarvestableFixture item,
+											  final Point loc) {
 		if (item instanceof CacheFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, atPoint(loc), " ",
-					                           distCalculator.distanceString(loc),
-					                           " A cache of ", // NOPMD
-					                           ((CacheFixture) item).getKind(),
-					                           ", containing ",
-					                           ((CacheFixture) item).getContents());
+											   distCalculator.distanceString(loc),
+											   " A cache of ", // NOPMD
+											   ((CacheFixture) item).getKind(),
+											   ", containing ",
+											   ((CacheFixture) item).getContents());
 		} else if (item instanceof Grove) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, atPoint(loc), "A ",
-					                           ternary(// NOPMD
-							                           ((Grove) item).isCultivated(),
-							                           "cultivated ", "wild "),
-					                           ((Grove) item).getKind(),
-					                           ternary(((Grove) item).isOrchard(),
-							                           " orchard", " grove"), " ",
-					                           distCalculator.distanceString(loc));
+											   ternary(// NOPMD
+													   ((Grove) item).isCultivated(),
+													   "cultivated ", "wild "),
+											   ((Grove) item).getKind(),
+											   ternary(((Grove) item).isOrchard(),
+													   " orchard", " grove"), " ",
+											   distCalculator.distanceString(loc));
 		} else if (item instanceof Meadow) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, atPoint(loc), "A ",
-					                           ((Meadow) item).getStatus().toString(),
-					                           ternary(((Meadow) item).isCultivated(),
-							                           " cultivated ",
-							                           " wild or abandoned "),
-					                           ((Meadow) item).getKind(),
-					                           ternary(((Meadow) item).isField(),
-							                           " field", " meadow"), " ",
-					                           distCalculator.distanceString(loc));
+											   ((Meadow) item).getStatus().toString(),
+											   ternary(((Meadow) item).isCultivated(),
+													   " cultivated ",
+													   " wild or abandoned "),
+											   ((Meadow) item).getKind(),
+											   ternary(((Meadow) item).isField(),
+													   " field", " meadow"), " ",
+											   distCalculator.distanceString(loc));
 		} else if (item instanceof Mine) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, atPoint(loc), item.toString(), " ",
-					                           distCalculator
-							                           .distanceString(loc)); //NOPMD
+											   distCalculator
+													   .distanceString(loc)); //NOPMD
 		} else if (item instanceof MineralVein) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, atPoint(loc), "An ", // NOPMD
-					                           ternary(((MineralVein) item).isExposed(),
-							                           "exposed ",
-							                           "unexposed "), "vein of ",
-					                           ((MineralVein) item).getKind(), " ",
-					                           distCalculator.distanceString(loc));
+											   ternary(((MineralVein) item).isExposed(),
+													   "exposed ",
+													   "unexposed "), "vein of ",
+											   ((MineralVein) item).getKind(), " ",
+											   distCalculator.distanceString(loc));
 		} else if (item instanceof Shrub) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			final String kind = ((Shrub) item).getKind();
 			return new SimpleReportNode(loc, atPoint(loc), kind, " ",
-					                           distCalculator
-							                           .distanceString(loc)); // NOPMD
+											   distCalculator
+													   .distanceString(loc)); // NOPMD
 		} else if (item instanceof StoneDeposit) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, atPoint(loc), "An exposed ", // NOPMD
-					                           ((StoneDeposit) item).getKind(),
-					                           " deposit", " ",
-					                           distCalculator.distanceString(loc));
+											   ((StoneDeposit) item).getKind(),
+											   " deposit", " ",
+											   distCalculator.distanceString(loc));
 		} else {
 			throw new IllegalArgumentException("Unexpected HarvestableFixture type");
 		}
@@ -415,7 +415,7 @@ public final class HarvestableReportGenerator
 	 * @return the result of the ternary operator.
 	 */
 	private static String ternary(final boolean condition, final String first,
-	                              final String second) {
+								  final String second) {
 		if (condition) {
 			return first; // NOPMD
 		} else {

@@ -69,9 +69,9 @@ public final class FortressReader implements INodeHandler<Fortress> {
 	 */
 	@Override
 	public Fortress parse(final StartElement element,
-	                      final Iterable<XMLEvent> stream,
-	                      final IMutablePlayerCollection players,
-	                      final Warning warner, final IDFactory idFactory)
+						  final Iterable<XMLEvent> stream,
+						  final IMutablePlayerCollection players,
+						  final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "owner", false, warner);
 		requireNonEmptyParameter(element, "name", false, warner);
@@ -79,13 +79,13 @@ public final class FortressReader implements INodeHandler<Fortress> {
 				new Fortress(players.getPlayer(parseInt(
 						getAttribute(element, "owner", "-1"),
 						NullCleaner.assertNotNull(element.getLocation()))),
-						            getAttribute(element, "name", ""), getOrGenerateID(
+									getAttribute(element, "name", ""), getOrGenerateID(
 						element, warner, idFactory));
 		addImage(element, fort);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final String memberTag = event.asStartElement().getName()
-						                         .getLocalPart().toLowerCase();
+												 .getLocalPart().toLowerCase();
 				if ("unit".equals(memberTag)) {
 					fort.addMember(UNIT_READER.parse(
 							NullCleaner.assertNotNull(event.asStartElement()),
@@ -100,19 +100,19 @@ public final class FortressReader implements INodeHandler<Fortress> {
 							stream, players, warner, idFactory));
 				} else {
 					throw new UnwantedChildException("fortress",
-							                                NullCleaner.assertNotNull(
-									                                event
-											                                .asStartElement()
-											                                .getName()
-											                                .getLocalPart()),
+															NullCleaner.assertNotNull(
+																	event
+																			.asStartElement()
+																			.getName()
+																			.getLocalPart()),
 
-							                                event.getLocation()
-									                                .getLineNumber());
+															event.getLocation()
+																	.getLineNumber());
 				}
 			} else if (event.isEndElement()
-					           &&
-					           element.getName().equals(event.asEndElement().getName()
-					           )) {
+							   &&
+							   element.getName().equals(event.asEndElement().getName()
+							   )) {
 				break;
 			}
 		}
@@ -146,7 +146,7 @@ public final class FortressReader implements INodeHandler<Fortress> {
 	@Override
 	public <S extends Fortress> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "fortress");
+																							"fortress");
 		retval.addIntegerAttribute("owner", obj.getOwner().getPlayerId());
 		if (!obj.getName().isEmpty()) {
 			retval.addAttribute("name", obj.getName());
@@ -161,7 +161,7 @@ public final class FortressReader implements INodeHandler<Fortress> {
 				retval.addChild(RES_READER.write((ResourcePile) member));
 			} else {
 				LOGGER.severe("Unhandled FortressMember class: "
-						              + member.getClass().getName());
+									  + member.getClass().getName());
 			}
 		}
 		retval.addImageAttribute(obj);

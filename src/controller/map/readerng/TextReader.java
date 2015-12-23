@@ -54,9 +54,9 @@ public final class TextReader implements INodeHandler<TextFixture> {
 	 */
 	@Override
 	public TextFixture parse(final StartElement element,
-	                         final Iterable<XMLEvent> stream,
-	                         final IMutablePlayerCollection players,
-	                         final Warning warner, final IDFactory idFactory)
+							 final Iterable<XMLEvent> stream,
+							 final IMutablePlayerCollection players,
+							 final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		// Of all our uses of StringBuilder, here we can't know how much size
 		// we're going to need beforehand. But cases where we'll need more than
@@ -65,28 +65,28 @@ public final class TextReader implements INodeHandler<TextFixture> {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException("text",
-						                                NullCleaner.assertNotNull(
-								                                event.asStartElement()
-										                                .getName()
-										                                .getLocalPart()),
-						                                event.getLocation()
-								                                .getLineNumber());
+														NullCleaner.assertNotNull(
+																event.asStartElement()
+																		.getName()
+																		.getLocalPart()),
+														event.getLocation()
+																.getLineNumber());
 			} else if (event.isCharacters()) {
 				sbuild.append(event.asCharacters().getData());
 			} else if (event.isEndElement()
-					           &&
-					           element.getName().equals(event.asEndElement().getName()
-					           )) {
+							   &&
+							   element.getName().equals(event.asEndElement().getName()
+							   )) {
 				break;
 			}
 		}
 		final TextFixture fix =
 				new TextFixture(NullCleaner.assertNotNull(sbuild.toString()
-						                                          .trim()),
-						               XMLHelper.parseInt(
-								               getAttribute(element, "turn", "-1"),
-								               NullCleaner.assertNotNull(
-										               element.getLocation())));
+																  .trim()),
+									   XMLHelper.parseInt(
+											   getAttribute(element, "turn", "-1"),
+											   NullCleaner.assertNotNull(
+													   element.getLocation())));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}
@@ -117,9 +117,9 @@ public final class TextReader implements INodeHandler<TextFixture> {
 	 */
 	@Override
 	public <S extends TextFixture> SPIntermediateRepresentation write(
-			                                                                 final S obj) {
+																			 final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "text");
+																							"text");
 		if (obj.getTurn() != -1) {
 			retval.addIntegerAttribute("turn", obj.getTurn());
 		}

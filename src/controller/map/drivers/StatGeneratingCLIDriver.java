@@ -91,10 +91,10 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-t", "--stats", ParamCount.Many,
-					               "Enter worker stats or generate new workers.",
-					               "Enter stats for existing workers or generate new " +
-							               "workers randomly.",
-					               StatGeneratingCLIDriver.class);
+								   "Enter worker stats or generate new workers.",
+								   "Enter stats for existing workers or generate new " +
+										   "workers randomly.",
+								   StatGeneratingCLIDriver.class);
 	/**
 	 * Helper to get numbers from the user, etc.
 	 */
@@ -178,13 +178,13 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 		final String prpt = "Player selection: ";
 		for (int playerNum = cli.chooseFromList(players, hdr, none, prpt,
 				true); (playerNum >= 0)
-						       && (playerNum < players.size()); playerNum = cli
-								                                                  .chooseFromList(
-										                                                  players,
-										                                                  hdr,
-										                                                  none,
-										                                                  prpt,
-										                                                  true)) {
+							   && (playerNum < players.size()); playerNum = cli
+																				  .chooseFromList(
+																						  players,
+																						  hdr,
+																						  none,
+																						  prpt,
+																						  true)) {
 			enterStats(model, NullCleaner.assertNotNull(players.get(playerNum)));
 		}
 	}
@@ -221,7 +221,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 * false otherwise.
 	 */
 	private static boolean hasUnstattedWorker(final IDriverModel model,
-	                                          final int idNum) {
+											  final int idNum) {
 		final IFixture fix = find(model.getMap(), idNum);
 		return (fix instanceof IUnit) && hasUnstattedWorker((IUnit) fix);
 	}
@@ -232,8 +232,8 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 */
 	private static boolean hasUnstattedWorker(final Iterable<UnitMember> unit) {
 		return StreamSupport.stream(unit.spliterator(), false)
-				       .anyMatch(member -> (member instanceof Worker) &&
-						                           (((Worker) member).getStats() == null));
+					   .anyMatch(member -> (member instanceof Worker) &&
+												   (((Worker) member).getStats() == null));
 	}
 
 	/**
@@ -242,7 +242,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 */
 	private static List<IUnit> removeStattedUnits(final Collection<IUnit> units) {
 		return units.stream().filter(StatGeneratingCLIDriver::hasUnstattedWorker)
-				       .collect(Collectors.toList());
+					   .collect(Collectors.toList());
 	}
 
 	/**
@@ -256,20 +256,20 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	private void enterStats(final IMultiMapModel model, final Iterable<UnitMember> unit)
 			throws IOException {
 		final List<Worker> workers = StreamSupport.stream(unit.spliterator(), false)
-				                             .filter(member -> (member instanceof
-						                                                Worker) &&
-						                                               (((Worker) member)
-								                                                .getStats
-										                                                 () ==
-								                                                null))
-				                             .map(member -> (Worker) member)
-				                             .collect(Collectors.toList());
+											 .filter(member -> (member instanceof
+																		Worker) &&
+																	   (((Worker) member)
+																				.getStats
+																						 () ==
+																				null))
+											 .map(member -> (Worker) member)
+											 .collect(Collectors.toList());
 		final String hdr = "Which worker do you want to enter stats for?";
 		final String none = "There are no owkers without stats in that unit.";
 		final String prpt = "Worker to modify: ";
 		for (int workerNum = cli.chooseFromList(workers, hdr, none, prpt,
 				false); (workerNum >= 0) && (workerNum < workers.size())
-						        && !workers.isEmpty();
+								&& !workers.isEmpty();
 				workerNum = cli.chooseFromList(workers,
 						hdr, none, prpt, false)) {
 			enterStats(model, workers.get(workerNum).getID());
@@ -366,20 +366,20 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 * @throws IOException on I/O error interacting with user
 	 */
 	private void createWorkers(final IExplorationModel model,
-	                           final IDFactory idf) throws IOException {
+							   final IDFactory idf) throws IOException {
 		final List<Player> players = model.getPlayerChoices();
 		final String hdr = "Which player owns the new worker(s)?";
 		final String none = "There are no players shared by all the maps.";
 		final String prpt = "Player selection: ";
 		for (int playerNum = cli.chooseFromList(players, hdr, none, prpt,
 				false); (playerNum >= 0)
-						        && (playerNum < players.size()); playerNum = cli
-								                                                   .chooseFromList(
-										                                                   players,
-										                                                   hdr,
-										                                                   none,
-										                                                   prpt,
-										                                                   false)) {
+								&& (playerNum < players.size()); playerNum = cli
+																				   .chooseFromList(
+																						   players,
+																						   hdr,
+																						   none,
+																						   prpt,
+																						   false)) {
 			createWorkersForPlayer(model, idf,
 					NullCleaner.assertNotNull(players.get(playerNum)));
 		}
@@ -395,7 +395,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 * @throws IOException on I/O error interacting with user
 	 */
 	private void createWorkersForPlayer(final IExplorationModel model,
-	                                    final IDFactory idf, final Player player)
+										final IDFactory idf, final Player player)
 			throws IOException {
 		boolean again = true;
 		while (again) {
@@ -418,10 +418,10 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 						cli.inputNumber("Row to put new unit: "),
 						cli.inputNumber("Column to put new unit: "));
 				final TileFixture unit = new Unit(player, // NOPMD
-						                                 cli.inputString(
-								                                 "Kind of unit: "),
-						                                 cli.inputString("Unit name: "),
-						                                 idf.createID());
+														 cli.inputString(
+																 "Kind of unit: "),
+														 cli.inputString("Unit name: "),
+														 idf.createID());
 				for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
 					pair.first().addFixture(point, unit);
 				}
@@ -432,7 +432,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 				}
 			}
 			again = cli
-					        .inputBoolean("Add more workers to another unit? ");
+							.inputBoolean("Add more workers to another unit? ");
 		}
 	}
 
@@ -445,7 +445,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 * @throws IOException on I/O error interacting with the user
 	 */
 	private void createWorkersForUnit(final IMultiMapModel model,
-	                                  final IDFactory idf, final IFixture unit)
+									  final IDFactory idf, final IFixture unit)
 			throws IOException {
 		final int count = cli.inputNumber("How many workers to generate? ");
 		for (int i = 0; i < count; i++) {
@@ -469,7 +469,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	 * @throws IOException on I/O error interacting with the user
 	 */
 	private void createWorkersFromFile(final IMultiMapModel model,
-	                                   final IDFactory idf, final IFixture unit)
+									   final IDFactory idf, final IFixture unit)
 			throws IOException {
 		final int count = cli.inputNumber("How many workers to generate? ");
 		final String filename = cli.inputString("Filename to load names from: ");
@@ -506,7 +506,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	private Worker createSingleWorker(final IDFactory idf) throws IOException {
 		final String race = RaceFactory.getRace();
 		final String name = cli.inputString("Worker is a " + race
-				                                    + ". Worker name: ");
+													+ ". Worker name: ");
 		final Worker retval = new Worker(name, race, idf.createID());
 		int levels = 0;
 		for (int i = 0; i < 3; i++) {
@@ -522,7 +522,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 			SystemOut.SYS_OUT.println("Worker has 1 job level");
 		}
 		final boolean pregenStats = cli
-				                            .inputBoolean("Enter pregenerated stats? ");
+											.inputBoolean("Enter pregenerated stats? ");
 		if (pregenStats) {
 			retval.setStats(enterStats());
 		} else {
@@ -530,10 +530,10 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 			final int conBonus = (constitution - STAT_BASIS) / 2;
 			final int hitp = 8 + conBonus + rollDeeEight(levels, conBonus);
 			final WorkerStats stats = new WorkerStats(hitp, hitp, threeDeeSix(),
-					                                         threeDeeSix(), constitution,
-					                                         threeDeeSix(),
-					                                         threeDeeSix(),
-					                                         threeDeeSix());
+															 threeDeeSix(), constitution,
+															 threeDeeSix(),
+															 threeDeeSix(),
+															 threeDeeSix());
 			retval.setStats(stats);
 			if (levels > 0) {
 				SystemOut.SYS_OUT.println("Generated stats:");
@@ -543,7 +543,7 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 		for (int i = 0; i < levels; i++) {
 			retval.addJob(
 					new Job(cli.inputString("Which Job does worker have a level in? "),
-							       1));
+								   1));
 		}
 		return retval;
 	}
@@ -580,9 +580,9 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 		final int conBonus = (constitution - STAT_BASIS) / 2;
 		final int hitp = 8 + conBonus + rollDeeEight(levels, conBonus);
 		final WorkerStats stats = new WorkerStats(hitp, hitp, threeDeeSix(),
-				                                         threeDeeSix(), constitution,
-				                                         threeDeeSix(), threeDeeSix(),
-				                                         threeDeeSix());
+														 threeDeeSix(), constitution,
+														 threeDeeSix(), threeDeeSix(),
+														 threeDeeSix());
 		retval.setStats(stats);
 		if (levels > 1) {
 			SystemOut.SYS_OUT
@@ -596,9 +596,9 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 		}
 		for (int i = 0; i < levels; i++) {
 			retval.addJob(new Job(// NOPMD
-					                     cli.inputString(
-							                     "Which Job does worker have a level in? "),
-					                     1));
+										 cli.inputString(
+												 "Which Job does worker have a level in? "),
+										 1));
 		}
 		return retval;
 	}

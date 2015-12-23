@@ -66,9 +66,9 @@ public final class UnitReader implements INodeHandler<Unit> {
 	 */
 	@Override
 	public Unit parse(final StartElement element,
-	                  final Iterable<XMLEvent> stream,
-	                  final IMutablePlayerCollection players,
-	                  final Warning warner, final IDFactory idFactory)
+					  final Iterable<XMLEvent> stream,
+					  final IMutablePlayerCollection players,
+					  final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "owner", false, warner);
 		requireNonEmptyParameter(element, "name", false, warner);
@@ -76,7 +76,7 @@ public final class UnitReader implements INodeHandler<Unit> {
 				new Unit(players.getPlayer(parseInt(
 						ensureNumeric(getAttribute(element, "owner", "-1")),
 						NullCleaner.assertNotNull(element.getLocation()))),
-						        parseKind(element, warner), getAttribute(element,
+								parseKind(element, warner), getAttribute(element,
 						"name", ""), getOrGenerateID(element, warner,
 						idFactory));
 		addImage(element, fix);
@@ -91,22 +91,22 @@ public final class UnitReader implements INodeHandler<Unit> {
 					fix.addMember((UnitMember) result);
 				} else {
 					throw new UnwantedChildException(
-							                                NullCleaner.assertNotNull(
-									                                element.getName()
-											                                .getLocalPart()),
+															NullCleaner.assertNotNull(
+																	element.getName()
+																			.getLocalPart()),
 
-							                                NullCleaner.assertNotNull(
-									                                selem.getName()
-											                                .getLocalPart()),
-							                                event.getLocation()
-									                                .getLineNumber());
+															NullCleaner.assertNotNull(
+																	selem.getName()
+																			.getLocalPart()),
+															event.getLocation()
+																	.getLineNumber());
 				}
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());
 			} else if (event.isEndElement()
-					           &&
-					           element.getName().equals(event.asEndElement().getName()
-					           )) {
+							   &&
+							   element.getName().equals(event.asEndElement().getName()
+							   )) {
 				break;
 			}
 		}
@@ -124,20 +124,20 @@ public final class UnitReader implements INodeHandler<Unit> {
 	 * @throws SPFormatException on SP format error.
 	 */
 	private static String parseKind(final StartElement element,
-	                                final Warning warner) throws SPFormatException {
+									final Warning warner) throws SPFormatException {
 		try {
 			final String retval = getAttributeWithDeprecatedForm(element, // NOPMD
 					KIND_PROPERTY, "type", warner);
 			if (retval.isEmpty()) {
 				warner.warn(new MissingPropertyException(NullCleaner
-						                                         .assertNotNull(
-								                                         element
-										                                         .getName()
-										                                         .getLocalPart()),
-						                                        KIND_PROPERTY,
-						                                        element.getLocation()
-								                                        .getLineNumber
-										                                         ()));
+																 .assertNotNull(
+																		 element
+																				 .getName()
+																				 .getLocalPart()),
+																KIND_PROPERTY,
+																element.getLocation()
+																		.getLineNumber
+																				 ()));
 			}
 			return retval; // NOPMD
 		} catch (final MissingPropertyException except) {
@@ -177,7 +177,7 @@ public final class UnitReader implements INodeHandler<Unit> {
 	@Override
 	public <S extends Unit> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "unit");
+																							"unit");
 		retval.addIntegerAttribute("owner", obj.getOwner().getPlayerId());
 		if (!obj.getKind().isEmpty()) {
 			retval.addAttribute("kind", obj.getKind());

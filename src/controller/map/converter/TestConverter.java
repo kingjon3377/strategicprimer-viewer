@@ -51,22 +51,22 @@ public final class TestConverter {
 	public void testConversion() {
 		final IMutableMapNG start =
 				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
-						           0);
+								   0);
 		final Point pointOne = PointFactory.point(0, 0);
 		final Animal fixture = new Animal("animal", false, true,
-				                                 "domesticated", 1);
+												 "domesticated", 1);
 		start.addFixture(pointOne, fixture);
 		final Point pointTwo = PointFactory.point(0, 1);
 		final CacheFixture fixtureTwo = new CacheFixture("gemstones", "small",
-				                                                2);
+																2);
 		start.addFixture(pointTwo, fixtureTwo);
 		final Point pointThree = PointFactory.point(1, 0);
 		final IUnit fixtureThree = new Unit(new Player(0, "A. Player"),
-				                                   "legion", "eagles", 3);
+												   "legion", "eagles", 3);
 		start.addFixture(pointThree, fixtureThree);
 		final Point pointFour = PointFactory.point(1, 1);
 		final Fortress fixtureFour = new Fortress(new Player(1, "B. Player"),
-				                                         "HQ", 4);
+														 "HQ", 4);
 		start.addFixture(pointFour, fixtureFour);
 		final IMapNG converted = ResolutionDecreaseConverter.convert(start);
 		final Point zeroPoint = PointFactory.point(0, 0);
@@ -98,11 +98,11 @@ public final class TestConverter {
 	 * @return whether the iterable contains the item
 	 */
 	private static <T, U extends T> boolean doesIterableContain(
-			                                                           final Iterable<T>
-					                                                           iter,
-			                                                           final U item) {
+																	   final Iterable<T>
+																			   iter,
+																	   final U item) {
 		return StreamSupport.stream(iter.spliterator(), false)
-				       .anyMatch(each -> Objects.equals(each, item));
+					   .anyMatch(each -> Objects.equals(each, item));
 	}
 
 	/**

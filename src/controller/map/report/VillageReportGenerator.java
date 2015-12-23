@@ -47,8 +47,8 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public VillageReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
-			                                                            @NonNull
-					                                                            IFixture>> comparator) {
+																		@NonNull
+																				IFixture>> comparator) {
 		super(comparator);
 	}
 
@@ -63,19 +63,19 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	 */
 	@Override
 	public String produce(
-			                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-					                     fixtures,
-			                     final IMapNG map, final Player currentPlayer) {
+								 final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+										 fixtures,
+								 final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final Collection<String> own = new HtmlList(
-				                                           "<h4>Villages pledged to your" +
-						                                           " service:</h4>");
+														   "<h4>Villages pledged to your" +
+																   " service:</h4>");
 		final Collection<String> others = new HtmlList(
-				                                              "<h4>Villages you know " +
-						                                              "about:</h4>");
+															  "<h4>Villages you know " +
+																	  "about:</h4>");
 		values.stream().filter(pair -> pair.second() instanceof Village).forEach(pair
-				                                                                         -> {
+																						 -> {
 			final Village village = (Village) pair.second();
 			final String product =
 					produce(fixtures, map, currentPlayer, village,
@@ -101,23 +101,23 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			                                    final DelayedRemovalMap<Integer,
-					                                                           Pair<Point, IFixture>> fixtures,
-			                                    final IMapNG map,
-			                                    final Player currentPlayer) {
+												final DelayedRemovalMap<Integer,
+																			   Pair<Point, IFixture>> fixtures,
+												final IMapNG map,
+												final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final AbstractReportNode own = new SectionListReportNode(5,
-				                                                        "Villages " +
-						                                                        "pledged" +
-						                                                        " to " +
-						                                                        "your " +
-						                                                        "service:");
+																		"Villages " +
+																				"pledged" +
+																				" to " +
+																				"your " +
+																				"service:");
 		final AbstractReportNode others = new SectionListReportNode(5,
-				                                                           "Villages you" +
-						                                                           " know about:");
+																		   "Villages you" +
+																				   " know about:");
 		values.stream().filter(pair -> pair.second() instanceof Village).forEach(pair
-				                                                                         -> {
+																						 -> {
 			final Village village = (Village) pair.second();
 			final IReportNode product =
 					produceRIR(fixtures, map, currentPlayer, village,
@@ -156,10 +156,10 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	 */
 	@Override
 	public String produce(
-			                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-					                     fixtures,
-			                     final IMapNG map, final Player currentPlayer,
-			                     final Village item, final Point loc) {
+								 final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+										 fixtures,
+								 final IMapNG map, final Player currentPlayer,
+								 final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		if (item.getOwner().isIndependent()) {
 			return concat(atPoint(loc), item.getName(), ", a(n) ", // NOPMD
@@ -168,8 +168,8 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 		} else {
 			return concat(atPoint(loc), item.getName(), ", a(n) ",
 					item.getRace(), " village", ", sworn to "
-							                            +
-							                            playerNameOrYou(item.getOwner()),
+														+
+														playerNameOrYou(item.getOwner()),
 					" ", distCalculator.distanceString(loc));
 		}
 	}
@@ -187,24 +187,24 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	 */
 	@Override
 	public SimpleReportNode produceRIR(
-			                                  final DelayedRemovalMap<Integer,
-					                                                         Pair<Point,
-							                                                             IFixture>> fixtures,
-			                                  final IMapNG map,
-			                                  final Player currentPlayer,
-			                                  final Village item, final Point loc) {
+											  final DelayedRemovalMap<Integer,
+																			 Pair<Point,
+																						 IFixture>> fixtures,
+											  final IMapNG map,
+											  final Player currentPlayer,
+											  final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		if (item.getOwner().isIndependent()) {
 			return new SimpleReportNode(loc, atPoint(loc), item.getName(), // NOPMD
-					                           ", a(n) ", item.getRace(), " village",
-					                           ", independent ",
-					                           distCalculator.distanceString(loc));
+											   ", a(n) ", item.getRace(), " village",
+											   ", independent ",
+											   distCalculator.distanceString(loc));
 		} else {
 			return new SimpleReportNode(loc, atPoint(loc), item.getName(),
-					                           ", a(n) ", item.getRace(), " village",
-					                           ", sworn to "
-							                           + playerNameOrYou(item.getOwner()),
-					                           " ", distCalculator.distanceString(loc));
+											   ", a(n) ", item.getRace(), " village",
+											   ", sworn to "
+													   + playerNameOrYou(item.getOwner()),
+											   " ", distCalculator.distanceString(loc));
 		}
 	}
 

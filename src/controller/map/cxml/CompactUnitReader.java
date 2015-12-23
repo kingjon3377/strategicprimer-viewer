@@ -84,18 +84,18 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	 */
 	@Override
 	public Unit read(final StartElement element,
-	                 final IteratorWrapper<XMLEvent> stream,
-	                 final IMutablePlayerCollection players, final Warning warner,
-	                 final IDFactory idFactory) throws SPFormatException {
+					 final IteratorWrapper<XMLEvent> stream,
+					 final IMutablePlayerCollection players, final Warning warner,
+					 final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, UNIT_TAG);
 		requireNonEmptyParameter(element, "name", false, warner);
 		requireNonEmptyParameter(element, "owner", false, warner);
 		final Unit retval = new Unit(
-				                            players.getPlayer(
-						                            getIntegerParameter(element, "owner",
-								                            -1)), parseKind(element,
+											players.getPlayer(
+													getIntegerParameter(element, "owner",
+															-1)), parseKind(element,
 				warner), getParameter(element, "name", ""),
-				                            getOrGenerateID(element, warner, idFactory));
+											getOrGenerateID(element, warner, idFactory));
 		retval.setImage(getParameter(element, "image", ""));
 		final StringBuilder orders = new StringBuilder(512);
 		for (final XMLEvent event : stream) {
@@ -106,9 +106,9 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());
 			} else if (event.isEndElement()
-					           &&
-					           element.getName().equals(event.asEndElement().getName()
-					           )) {
+							   &&
+							   element.getName().equals(event.asEndElement().getName()
+							   )) {
 				break;
 			}
 		}
@@ -128,10 +128,10 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	 * @throws SPFormatException on SP format problem
 	 */
 	private UnitMember parseChild(final StartElement element,
-	                              final IteratorWrapper<XMLEvent> stream,
-	                              final IMutablePlayerCollection players,
-	                              final IDFactory idFactory,
-	                              final Warning warner) throws SPFormatException {
+								  final IteratorWrapper<XMLEvent> stream,
+								  final IMutablePlayerCollection players,
+								  final IDFactory idFactory,
+								  final Warning warner) throws SPFormatException {
 		final String name = NullCleaner.assertNotNull(element.getName().getLocalPart());
 		for (final CompactReader<? extends IFixture> item : readers) {
 			if (item.isSupportedTag(name)) {
@@ -141,13 +141,13 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 					return (UnitMember) retval;
 				} else {
 					throw new UnwantedChildException(UNIT_TAG, name, element
-							                                                 .getLocation()
-							                                                 .getLineNumber());
+																			 .getLocation()
+																			 .getLineNumber());
 				}
 			}
 		}
 		throw new UnwantedChildException(UNIT_TAG, name, element.getLocation()
-				                                                 .getLineNumber());
+																 .getLineNumber());
 	}
 
 	/**
@@ -160,21 +160,21 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	 * @throws SPFormatException on SP format error.
 	 */
 	private static String parseKind(final StartElement element,
-	                                final Warning warner) throws SPFormatException {
+									final Warning warner) throws SPFormatException {
 		try {
 			final String retval =
 					getParamWithDeprecatedForm(element, "kind", "type", warner);
 			if (retval.isEmpty()) {
 				warner.warn(new MissingPropertyException(NullCleaner
-						                                         .assertNotNull(
-								                                         element
-										                                         .getName()
-										                                         .getLocalPart()),
+																 .assertNotNull(
+																		 element
+																				 .getName()
+																				 .getLocalPart()),
 
-						                                        "kind",
-						                                        element.getLocation()
-								                                        .getLineNumber
-										                                         ()));
+																"kind",
+																element.getLocation()
+																		.getLineNumber
+																				 ()));
 			}
 			return retval; // NOPMD
 		} catch (final MissingPropertyException except) {

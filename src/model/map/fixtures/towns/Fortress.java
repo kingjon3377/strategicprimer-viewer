@@ -43,8 +43,8 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  */
 public class Fortress implements HasImage, ITownFixture,
-		                                 FixtureIterable<FortressMember>,
-		                                 SubsettableFixture {
+										 FixtureIterable<FortressMember>,
+										 SubsettableFixture {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -71,7 +71,7 @@ public class Fortress implements HasImage, ITownFixture,
 	 * @param idNum     the ID number.
 	 */
 	public Fortress(final Player fortOwner, final String fortName,
-	                final int idNum) {
+					final int idNum) {
 		owner = fortOwner;
 		name = fortName;
 		units = new ArrayList<>();
@@ -137,12 +137,12 @@ public class Fortress implements HasImage, ITownFixture,
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Fortress)
-				                         && name.equals(((Fortress) obj).name)
-				                         && (((Fortress) obj).owner.getPlayerId() ==
-						                             owner.getPlayerId())
-				                         && ((Fortress) obj).units.containsAll(units)
-				                         && units.containsAll(((Fortress) obj).units)
-				                         && (((Fortress) obj).id == id));
+										 && name.equals(((Fortress) obj).name)
+										 && (((Fortress) obj).owner.getPlayerId() ==
+													 owner.getPlayerId())
+										 && ((Fortress) obj).units.containsAll(units)
+										 && units.containsAll(((Fortress) obj).units)
+										 && (((Fortress) obj).id == id));
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class Fortress implements HasImage, ITownFixture,
 		final String ownerStr = owner.toString();
 		// Assume each unit is at least half a K.
 		final int len = 40 + name.length() + ownerStr.length() + (units.size()
-				                                                          * 512);
+																		  * 512);
 		final StringBuilder sbuild = new StringBuilder(len).append("Fortress ");
 		sbuild.append(name);
 		sbuild.append(", owned by player ");
@@ -225,14 +225,14 @@ public class Fortress implements HasImage, ITownFixture,
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-	                        final String context) throws IOException {
+							final String context) throws IOException {
 		if (!(obj instanceof Fortress)) {
 			ostream.append("Incompatible types");
 			return false;
 		}
 		final Fortress fort = (Fortress) obj;
 		if (name.equals(fort.name)
-				    && (fort.owner.getPlayerId() == owner.getPlayerId())) {
+					&& (fort.owner.getPlayerId() == owner.getPlayerId())) {
 			final Map<Integer, FortressMember> ours = new HashMap<>();
 			for (final FortressMember member : this) {
 				ours.put(NullCleaner.assertNotNull(Integer.valueOf(member.getID())),
@@ -290,11 +290,11 @@ public class Fortress implements HasImage, ITownFixture,
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (this == fix) || ((fix instanceof Fortress)
-				                         && name.equals(((Fortress) fix).name)
-				                         && (((Fortress) fix).owner.getPlayerId() ==
-						                             owner.getPlayerId())
-				                         && ((Fortress) fix).units.containsAll(units)
-				                         && units.containsAll(((Fortress) fix).units));
+										 && name.equals(((Fortress) fix).name)
+										 && (((Fortress) fix).owner.getPlayerId() ==
+													 owner.getPlayerId())
+										 && ((Fortress) fix).units.containsAll(units)
+										 && units.containsAll(((Fortress) fix).units));
 	}
 
 	/**

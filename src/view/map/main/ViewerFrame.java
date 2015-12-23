@@ -82,17 +82,17 @@ public final class ViewerFrame extends JFrame {
 		map.addMapChangeListener(mapPanel);
 		map.addSelectionChangeListener(mapPanel);
 		final DetailPanelNG detailPanel = new DetailPanelNG(
-				                                                   map.getMapDimensions
-						                                                       ()
-						                                                   .version,
-				                                                   map);
+																   map.getMapDimensions
+																			   ()
+																		   .version,
+																   map);
 		map.addVersionChangeListener(detailPanel);
 		map.addSelectionChangeListener(detailPanel);
 		setContentPane(new SplitWithWeights(JSplitPane.VERTICAL_SPLIT,
-				                                   MAP_PROPORTION, MAP_PROPORTION,
-				                                   new MapScrollPanel(map,
-						                                                     mapPanel),
-				                                   detailPanel));
+												   MAP_PROPORTION, MAP_PROPORTION,
+												   new MapScrollPanel(map,
+																			 mapPanel),
+												   detailPanel));
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		pack();
 		mapPanel.requestFocusInWindow();

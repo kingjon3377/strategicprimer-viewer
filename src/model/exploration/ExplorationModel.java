@@ -123,7 +123,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		return StreamSupport.stream(getMap().locations().spliterator(), false).flatMap(
 				point -> StreamSupport.stream(getUnits(getMap().getOtherFixtures(point),
 						player).spliterator(), false))
-				       .collect(Collectors.toList());
+					   .collect(Collectors.toList());
 	}
 
 	/**
@@ -132,7 +132,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @return a list of the members of the sequence that are units owned by the player
 	 */
 	private static Collection<IUnit> getUnits(final Iterable<? super Unit> iter,
-	                                          final Player player) {
+											  final Player player) {
 		final Collection<IUnit> retval = new ArrayList<>();
 		for (final Object obj : iter) {
 			if ((obj instanceof IUnit) && ((IUnit) obj).getOwner().equals(player)) {
@@ -162,8 +162,8 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		final IUnit unit = selUnit;
 		if (unit == null) {
 			throw new IllegalStateException(
-					                               "move() called when no unit " +
-							                               "selected");
+												   "move() called when no unit " +
+														   "selected");
 		}
 		final IMutableMapNG map = getMap();
 		final Point point = selUnitLoc;
@@ -178,7 +178,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 								map.getBaseTerrain(dest),
 								map.getForest(dest) != null,
 								map.isMountainous(dest), map.getRivers(dest)
-										                         .iterator().hasNext(),
+																 .iterator().hasNext(),
 								map.getOtherFixtures(dest));
 			}
 			removeImpl(map, point, unit);
@@ -218,7 +218,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @param dest the unit's new location
 	 */
 	private static void checkAllNearbyWatchers(final IMapNG map, final HasOwner unit,
-	                                           final Point dest) {
+											   final Point dest) {
 		final MapDimensions dims = map.dimensions();
 		final Collection<Point> done = new HashSet<>(25);
 		for (final Point point : new SurroundingPointIterable(dest, dims)) {
@@ -242,12 +242,12 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @param dest     where the mover moved to
 	 */
 	private static void checkNearbyWatcher(final Iterable<TileFixture> fixtures,
-	                                       final Point point, final HasOwner unit,
-	                                       final Point dest) {
+										   final Point point, final HasOwner unit,
+										   final Point dest) {
 		for (final TileFixture fix : fixtures) {
 			if ((fix instanceof HasOwner)
-					    && !((HasOwner) fix).getOwner().isIndependent()
-					    && !((HasOwner) fix).getOwner().equals(unit.getOwner())) {
+						&& !((HasOwner) fix).getOwner().isIndependent()
+						&& !((HasOwner) fix).getOwner().equals(unit.getOwner())) {
 				SystemOut.SYS_OUT.printf(
 						"Unit's motion to %s could be observed by %s at %s%n",
 						dest.toString(), fix.shortDesc(), point.toString());
@@ -261,7 +261,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @param unit  a unit to remove from that location, even if it's in a fortress
 	 */
 	private static void removeImpl(final IMutableMapNG map, final Point point,
-	                               final IUnit unit) {
+								   final IUnit unit) {
 		boolean outside = false;
 		for (final TileFixture fix : map.getOtherFixtures(point)) {
 			if (unit.equals(fix)) {
@@ -313,7 +313,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @param terrain the terrain type it should be
 	 */
 	private static void ensureTerrain(final IMutableMapNG map,
-	                                  final Point point, final TileType terrain) {
+									  final Point point, final TileType terrain) {
 		if (TileType.NotVisible == map.getBaseTerrain(point)) {
 			map.setBaseTerrain(point, terrain);
 		}
@@ -326,10 +326,10 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @return whether the map contains that fixture at that location
 	 */
 	private static boolean doesLocationHaveFixture(final IMapNG map, final Point point,
-	                                               final TileFixture fix) {
+												   final TileFixture fix) {
 		if (((fix instanceof Forest) && fix.equals(map.getForest(point)))
-				    || ((fix instanceof Ground) && fix.equals(map.getGround(point)))
-				    || ((fix instanceof Mountain) && map.isMountainous(point))) {
+					|| ((fix instanceof Ground) && fix.equals(map.getGround(point)))
+					|| ((fix instanceof Mountain) && map.isMountainous(point))) {
 			return true;
 		}
 		for (final TileFixture fixture : map.getOtherFixtures(point)) {
@@ -428,12 +428,12 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		final IMapNG source = getMap();
 		for (final Point point : source.locations()) {
 			if (((fix instanceof Mountain) && source.isMountainous(point))
-					    || ((fix instanceof Forest) && fix.equals(source
-							                                              .getForest(
-									                                              point)))
-					    || ((fix instanceof Ground) && fix.equals(source
-							                                              .getGround(
-									                                              point))
+						|| ((fix instanceof Forest) && fix.equals(source
+																		  .getForest(
+																				  point)))
+						|| ((fix instanceof Ground) && fix.equals(source
+																		  .getGround(
+																				  point))
 			)) {
 				return point;
 			}
@@ -489,7 +489,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	@Override
 	public void addSelectionChangeListener(
-			                                      final SelectionChangeListener list) {
+												  final SelectionChangeListener list) {
 		scListeners.add(list);
 	}
 
@@ -498,7 +498,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	@Override
 	public void removeSelectionChangeListener(
-			                                         final SelectionChangeListener list) {
+													 final SelectionChangeListener list) {
 		scListeners.remove(list);
 	}
 
@@ -515,7 +515,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	@Override
 	public void removeMovementCostListener(
-			                                      final MovementCostListener listener) {
+												  final MovementCostListener listener) {
 		mcListeners.remove(listener);
 	}
 

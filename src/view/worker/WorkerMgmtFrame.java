@@ -100,7 +100,7 @@ public final class WorkerMgmtFrame extends JFrame {
 	 * The logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			                                     .getLogger(WorkerMgmtFrame.class);
+												 .getLogger(WorkerMgmtFrame.class);
 	/**
 	 * The header to put above the report.
 	 */
@@ -131,7 +131,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		setMinimumSize(new Dimension(640, 480));
 		final NewUnitDialog newUnitFrame =
 				new NewUnitDialog(model.getMap().getCurrentPlayer(),
-						                 IDFactoryFiller.createFactory(model.getMap()));
+										 IDFactoryFiller.createFactory(model.getMap()));
 		final PlayerChooserHandler pch = new PlayerChooserHandler(this, model);
 		final IWorkerTreeModel wtmodel =
 				new WorkerTreeModelAlt(model.getMap().getCurrentPlayer(), model);
@@ -140,7 +140,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		pch.addPlayerChangeListener(wtmodel);
 		newUnitFrame.addNewUnitListener(wtmodel);
 		final boolean onMac = System.getProperty("os.name").toLowerCase()
-				                      .startsWith("mac os x");
+									  .startsWith("mac os x");
 		final int keyMask;
 		final String keyDesc;
 		if (onMac) {
@@ -156,9 +156,9 @@ public final class WorkerMgmtFrame extends JFrame {
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_U, keyMask), "openUnits");
 		actionMap.put("openUnits", new FocusRequester(tree));
 		final PlayerLabel plabel = new PlayerLabel("Units belonging to ",
-				                                          model.getMap()
-						                                          .getCurrentPlayer(),
-				                                          keyDesc);
+														  model.getMap()
+																  .getCurrentPlayer(),
+														  keyDesc);
 		pch.addPlayerChangeListener(plabel);
 		pch.addPlayerChangeListener(newUnitFrame);
 		final OrdersPanel ordersPanel = new OrdersPanel(model);
@@ -168,17 +168,17 @@ public final class WorkerMgmtFrame extends JFrame {
 		final Component outer = this;
 		final DefaultTreeModel reportModel =
 				new DefaultTreeModel(new SimpleReportNode("Please wait, loading report " +
-						                                          "..."));
+																  "..."));
 		new Thread(new ReportGeneratorThread(reportModel, model,
-				                                    model.getMap().getCurrentPlayer()))
+													model.getMap().getCurrentPlayer()))
 				.start();
 		final JTree report = new JTree(reportModel);
 		report.setRootVisible(false);
 		report.expandPath(new TreePath(((DefaultMutableTreeNode) reportModel
-				                                                         .getRoot())
-				                               .getPath()));
+																		 .getRoot())
+											   .getPath()));
 		final ReportUpdater reportUpdater = new ReportUpdater(model,
-				                                                     reportModel);
+																	 reportModel);
 		@NonNull
 		Point hqLoc = PointFactory.point(-1, -1);
 		boolean found = false;
@@ -188,8 +188,8 @@ public final class WorkerMgmtFrame extends JFrame {
 			} else {
 				for (final TileFixture fix : model.getMap().getOtherFixtures(location)) {
 					if ((fix instanceof Fortress) && ((Fortress) fix).getOwner()
-							                                 .equals(model.getMap()
-									                                         .getCurrentPlayer())) {
+															 .equals(model.getMap()
+																			 .getCurrentPlayer())) {
 						if ("HQ".equals(((Fortress) fix).getName())) {
 							hqLoc = location;
 							found = true;
@@ -215,7 +215,7 @@ public final class WorkerMgmtFrame extends JFrame {
 						if (point.getRow() > Integer.MIN_VALUE) {
 							((JComponent) retval)
 									.setToolTipText(distCalculator.distanceString
-											                               (point));
+																		   (point));
 						} else {
 							((JComponent) retval).setToolTipText(null);
 						}
@@ -232,64 +232,64 @@ public final class WorkerMgmtFrame extends JFrame {
 		final StrategyExporter strategyExporter = new StrategyExporter(model, wtmodel);
 		// TODO: Don't check command text in lambda ActionListeners
 		setContentPane(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT, HALF_WAY,
-				                                   HALF_WAY,
-				                                   new SplitWithWeights(JSplitPane
-						                                                        .VERTICAL_SPLIT,
-						                                                       TWO_THIRDS,
-						                                                       TWO_THIRDS,
-						                                                       new
-								                                                       BorderedPanel(new JScrollPane(tree),
-								                                                                        plabel,
-								                                                                        null,
-								                                                                        null,
-								                                                                        null),
-						                                                       new
-								                                                       BorderedPanel(ordersPanel,
-								                                                                        new ListenedButton("Add New Unit",
-										                                                                                          evt -> {
-											                                                                                          if ((evt !=
-													                                                                                               null) &&
-													                                                                                              "Add New Unit"
-															                                                                                              .equals(evt.getActionCommand())) {
-												                                                                                          newUnitFrame
-														                                                                                          .setVisible(
-																                                                                                          true);
-											                                                                                          }
-										                                                                                          }),
-								                                                                        new ListenedButton(
-										                                                                                          "Export a proto-strategy from units' orders",
-										                                                                                          evt -> {
-											                                                                                          final JFileChooser
-													                                                                                          chooser =
-													                                                                                          new JFileChooser(
-															                                                                                                          ".");
-											                                                                                          if (chooser.showSaveDialog(
-													                                                                                          outer) ==
-													                                                                                              JFileChooser.APPROVE_OPTION) {
-												                                                                                          try (final FileWriter writer = new FileWriter(
-														                                                                                                                                       chooser.getSelectedFile())) {
-													                                                                                          writer.append(
-															                                                                                          strategyExporter
-																	                                                                                          .createStrategy());
-												                                                                                          } catch (final IOException except) {
-													                                                                                          LOGGER.log(
-															                                                                                          Level.SEVERE,
-															                                                                                          "I/O error exporting strategy",
-															                                                                                          except);
-												                                                                                          }
-											                                                                                          }
-										                                                                                          }),
-								                                                                        null,
-								                                                                        null)),
-				                                   new BorderedPanel(new JScrollPane
-						                                                     (report),
-						                                                    new JLabel
-								                                                    (RPT_HDR),
-						                                                    mdp, null,
-						                                                    null)));
+												   HALF_WAY,
+												   new SplitWithWeights(JSplitPane
+																				.VERTICAL_SPLIT,
+																			   TWO_THIRDS,
+																			   TWO_THIRDS,
+																			   new
+																					   BorderedPanel(new JScrollPane(tree),
+																										plabel,
+																										null,
+																										null,
+																										null),
+																			   new
+																					   BorderedPanel(ordersPanel,
+																										new ListenedButton("Add New Unit",
+																																  evt -> {
+																																	  if ((evt !=
+																																				   null) &&
+																																				  "Add New Unit"
+																																						  .equals(evt.getActionCommand())) {
+																																		  newUnitFrame
+																																				  .setVisible(
+																																						  true);
+																																	  }
+																																  }),
+																										new ListenedButton(
+																																  "Export a proto-strategy from units' orders",
+																																  evt -> {
+																																	  final JFileChooser
+																																			  chooser =
+																																			  new JFileChooser(
+																																									  ".");
+																																	  if (chooser.showSaveDialog(
+																																			  outer) ==
+																																				  JFileChooser.APPROVE_OPTION) {
+																																		  try (final FileWriter writer = new FileWriter(
+																																															   chooser.getSelectedFile())) {
+																																			  writer.append(
+																																					  strategyExporter
+																																							  .createStrategy());
+																																		  } catch (final IOException except) {
+																																			  LOGGER.log(
+																																					  Level.SEVERE,
+																																					  "I/O error exporting strategy",
+																																					  except);
+																																		  }
+																																	  }
+																																  }),
+																										null,
+																										null)),
+												   new BorderedPanel(new JScrollPane
+																			 (report),
+																			new JLabel
+																					(RPT_HDR),
+																			mdp, null,
+																			null)));
 
 		setJMenuBar(new WorkerMenu(ioHandler, this, pch, model,
-				                          new TreeExpansionHandler(tree)));
+										  new TreeExpansionHandler(tree)));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		for (int i = 0; i < tree.getRowCount(); i++) {
 			tree.expandRow(i);
@@ -304,11 +304,11 @@ public final class WorkerMgmtFrame extends JFrame {
 	 * driver-model
 	 */
 	protected static IViewerModel getViewerModelFor(final IDriverModel model,
-	                                                final IOHandler ioh) {
+													final IOHandler ioh) {
 		for (final Frame frame : WindowList.getFrames(false, true, true)) {
 			if ((frame instanceof ViewerFrame) && ((ViewerFrame) frame).getModel()
-					                                      .getMapFile()
-					                                      .equals(model.getMapFile())) {
+														  .getMapFile()
+														  .equals(model.getMapFile())) {
 				frame.toFront();
 				if (frame.getExtendedState() == Frame.ICONIFIED) {
 					frame.setExtendedState(Frame.NORMAL);
@@ -317,10 +317,10 @@ public final class WorkerMgmtFrame extends JFrame {
 			}
 		}
 		final ViewerFrame frame = new ViewerFrame(
-				                                         new ViewerModel(model.getMap(),
-						                                                        model
-								                                                        .getMapFile()),
-				                                         ioh);
+														 new ViewerModel(model.getMap(),
+																				model
+																						.getMapFile()),
+														 ioh);
 		frame.setVisible(true);
 		return frame.getModel();
 	}
@@ -331,7 +331,7 @@ public final class WorkerMgmtFrame extends JFrame {
 	 * @author Jonathan Lovelace
 	 */
 	private static final class ReportUpdater implements PlayerChangeListener,
-			                                                    MapChangeListener {
+																MapChangeListener {
 		/**
 		 * The driver model, to get the map from.
 		 */
@@ -348,7 +348,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		 * @param tmodel the tree model we update
 		 */
 		protected ReportUpdater(final IWorkerModel wmodel,
-		                        final DefaultTreeModel tmodel) {
+								final DefaultTreeModel tmodel) {
 			model = wmodel;
 			reportModel = tmodel;
 		}
@@ -359,7 +359,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		@Override
 		public void mapChanged() {
 			new Thread(new ReportGeneratorThread(reportModel, model, model.getMap()
-					                                                         .getCurrentPlayer()))
+																			 .getCurrentPlayer()))
 					.start();
 		}
 
@@ -371,7 +371,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		 */
 		@Override
 		public void playerChanged(@Nullable final Player old,
-		                          final Player newPlayer) {
+								  final Player newPlayer) {
 			new Thread(new ReportGeneratorThread(reportModel, model, newPlayer)).start();
 		}
 
@@ -406,7 +406,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		 * @param treeModel the tree model to get dismissed unit members from
 		 */
 		public StrategyExporter(final IWorkerModel wmodel,
-		                        final IWorkerTreeModel treeModel) {
+								final IWorkerTreeModel treeModel) {
 			model = wmodel;
 			tmodel = treeModel;
 		}
@@ -533,7 +533,7 @@ public final class WorkerMgmtFrame extends JFrame {
 			if (unit.iterator().hasNext()) {
 				// Assume at least two K.
 				final StringBuilder builder = new StringBuilder(2048)
-						                              .append(" [");
+													  .append(" [");
 				boolean first = true;
 				for (final UnitMember member : unit) {
 					if (first) {
@@ -578,7 +578,7 @@ public final class WorkerMgmtFrame extends JFrame {
 				final IWorker worker = (IWorker) member;
 				// To save calculations, assume a half-K every time.
 				final StringBuilder builder = new StringBuilder(512)
-						                              .append(worker.getName());
+													  .append(worker.getName());
 				if (worker.iterator().hasNext()) {
 					builder.append(" (");
 					boolean first = true;
@@ -639,8 +639,8 @@ public final class WorkerMgmtFrame extends JFrame {
 		 * @param currentPlayer the player to generate the report for
 		 */
 		protected ReportGeneratorThread(final DefaultTreeModel treeModel,
-		                                final IWorkerModel workerModel,
-		                                final Player currentPlayer) {
+										final IWorkerModel workerModel,
+										final Player currentPlayer) {
 			tmodel = treeModel;
 			wmodel = workerModel;
 			player = currentPlayer;
@@ -678,8 +678,8 @@ public final class WorkerMgmtFrame extends JFrame {
 		private final IOHandler ioh;
 
 		protected reportMouseHandler(final JTree reportTree,
-		                             final IWorkerModel workerModel,
-		                             final IOHandler ioHandler) {
+									 final IWorkerModel workerModel,
+									 final IOHandler ioHandler) {
 			report = reportTree;
 			model = workerModel;
 			ioh = ioHandler;
@@ -697,7 +697,7 @@ public final class WorkerMgmtFrame extends JFrame {
 			}
 			final Object node = selPath.getLastPathComponent();
 			if ((evt.isControlDown() || evt.isMetaDown()) &&
-					    (node instanceof AbstractReportNode)) {
+						(node instanceof AbstractReportNode)) {
 				final Point point = ((AbstractReportNode) node).getPoint();
 				// (-inf, -inf) replaces null
 				if (point.getRow() > Integer.MIN_VALUE) {

@@ -46,7 +46,7 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public TextReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull
-			                                                                          IFixture>> comparator) {
+																					  IFixture>> comparator) {
 		super(comparator);
 	}
 
@@ -58,13 +58,13 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	 */
 	@Override
 	public String produce(
-			                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-					                     fixtures,
-			                     final IMapNG map, final Player currentPlayer) {
+								 final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+										 fixtures,
+								 final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, TextFixture>> items = new ArrayList<>();
 		for (final Map.Entry<Integer, Pair<Point, IFixture>> entry : fixtures
-				                                                             .entrySet
-						                                                              ()) {
+																			 .entrySet
+																					  ()) {
 			final Pair<Point, IFixture> pair = entry.getValue();
 			if (pair.second() instanceof TextFixture) {
 				items.add(Pair.of(pair.first(), (TextFixture) pair.second()));
@@ -72,7 +72,7 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 			}
 		}
 		items.sort((firstPair, secondPair) -> firstPair.second().getTurn() -
-				                                      secondPair.second().getTurn());
+													  secondPair.second().getTurn());
 		final HtmlList list = new HtmlList("<h4>Miscellaneous Notes</h4>");
 		list.addAll(items.stream().map(item -> produce(fixtures, map, currentPlayer,
 				item.second(), item.first())).collect(Collectors.toList()));
@@ -97,10 +97,10 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	 */
 	@Override
 	public String produce(
-			                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-					                     fixtures,
-			                     final IMapNG map, final Player currentPlayer,
-			                     final TextFixture item, final Point loc) {
+								 final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+										 fixtures,
+								 final IMapNG map, final Player currentPlayer,
+								 final TextFixture item, final Point loc) {
 		final StringBuilder builder =
 				new StringBuilder(item.getText().length() + 32);
 		builder.append("At ");
@@ -124,15 +124,15 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			                                    final DelayedRemovalMap<Integer,
-					                                                           Pair<Point, IFixture>> fixtures,
-			                                    final IMapNG map,
-			                                    final Player currentPlayer) {
+												final DelayedRemovalMap<Integer,
+																			   Pair<Point, IFixture>> fixtures,
+												final IMapNG map,
+												final Player currentPlayer) {
 		final AbstractReportNode retval =
 				new SectionListReportNode(4, "Miscellaneous Notes");
 		for (final Map.Entry<Integer, Pair<Point, IFixture>> entry : fixtures
-				                                                             .entrySet
-						                                                              ()) {
+																			 .entrySet
+																					  ()) {
 			final Pair<Point, IFixture> pair = entry.getValue();
 			if (pair.second() instanceof TextFixture) {
 				retval.add(produceRIR(fixtures, map, currentPlayer,
@@ -161,21 +161,21 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			                                    final DelayedRemovalMap<Integer,
-					                                                           Pair<Point, IFixture>> fixtures,
-			                                    final IMapNG map,
-			                                    final Player currentPlayer,
-			                                    final TextFixture item, final Point loc) {
+												final DelayedRemovalMap<Integer,
+																			   Pair<Point, IFixture>> fixtures,
+												final IMapNG map,
+												final Player currentPlayer,
+												final TextFixture item, final Point loc) {
 		if (item.getTurn() >= 0) {
 			return new SimpleReportNode(loc, "At ", loc.toString(), " ",
-					                           distCalculator.distanceString(loc), ": ",
-					                           "On turn ",
-					                           Integer.toString(item.getTurn()), ": ",
-					                           item.getText());
+											   distCalculator.distanceString(loc), ": ",
+											   "On turn ",
+											   Integer.toString(item.getTurn()), ": ",
+											   item.getText());
 		} else {
 			return new SimpleReportNode(loc, "At ", loc.toString(), " ",
-					                           distCalculator.distanceString(loc), ": ",
-					                           item.getText());
+											   distCalculator.distanceString(loc), ": ",
+											   item.getText());
 		}
 	}
 

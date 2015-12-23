@@ -67,9 +67,9 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 	 */
 	@Override
 	public TextFixture read(final StartElement element,
-	                        final IteratorWrapper<XMLEvent> stream,
-	                        final IMutablePlayerCollection players, final Warning warner,
-	                        final IDFactory idFactory) throws SPFormatException {
+							final IteratorWrapper<XMLEvent> stream,
+							final IMutablePlayerCollection players, final Warning warner,
+							final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "text");
 		// Of all the uses of a StringBuilder, this one can't know what size we
 		// need. But cases above 2K will be vanishingly rare in practice.
@@ -77,26 +77,26 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException("text",
-						                                NullCleaner.assertNotNull(
-								                                event.asStartElement()
-										                                .getName()
-										                                .getLocalPart()),
-						                                event.getLocation()
-								                                .getLineNumber());
+														NullCleaner.assertNotNull(
+																event.asStartElement()
+																		.getName()
+																		.getLocalPart()),
+														event.getLocation()
+																.getLineNumber());
 			} else if (event.isCharacters()) {
 				sbuild.append(event.asCharacters().getData());
 			} else if (event.isEndElement()
-					           &&
-					           element.getName().equals(event.asEndElement().getName()
-					           )) {
+							   &&
+							   element.getName().equals(event.asEndElement().getName()
+							   )) {
 				break;
 			}
 		}
 		final TextFixture fix = new TextFixture(
-				                                       NullCleaner.assertNotNull(
-						                                       sbuild.toString().trim()),
-				                                       getIntegerParameter(element,
-						                                       "turn", -1));
+													   NullCleaner.assertNotNull(
+															   sbuild.toString().trim()),
+													   getIntegerParameter(element,
+															   "turn", -1));
 		fix.setImage(getParameter(element, "image", ""));
 		return fix;
 	}
@@ -111,7 +111,7 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 	 */
 	@Override
 	public void write(final Appendable ostream, final TextFixture obj,
-	                  final int indent) throws IOException {
+					  final int indent) throws IOException {
 		ostream.append(indent(indent));
 		if (obj.getTurn() == -1) {
 			ostream.append("<text");

@@ -68,7 +68,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	 * The minimum length of the HTML wrapper.
 	 */
 	private static final int MIN_HTML_LEN = "<html><body></body></html>"
-			                                        .length();
+													.length();
 	/**
 	 * The length of the additional HTML tags for each paragraph.
 	 */
@@ -112,7 +112,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 		playerList = new JList<>(plmodel);
 		playerList.addListSelectionListener(this);
 		final ExplorationUnitListModel unitListModel = new ExplorationUnitListModel(
-				                                                                           emodel);
+																						   emodel);
 		addPlayerChangeListener(unitListModel);
 		unitList = new JList<>(unitListModel);
 		unitList.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
@@ -130,26 +130,26 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 			return NullCleaner.assertNotNull(retval);
 		});
 		setCenter(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT, PROPORTION,
-				                              PROPORTION, new BorderedPanel(playerList,
-						                                                           label
-								                                                           ("Players in all maps:"),
+											  PROPORTION, new BorderedPanel(playerList,
+																				   label
+																						   ("Players in all maps:"),
 
-						                                                           null,
-						                                                           null,
-						                                                           null),
-				                              new BorderedPanel(unitList, label(html(
-						                              "Units belonging to that player:",
-						                              "(Selected unit will be used for " +
-								                              "exploration.)")),
-						                                               new BorderedPanel
-								                                               (null,
-								                                                                null,
-								                                                                new ListenedButton(
-										                                                                                  BUTTON_TEXT,
-										                                                                                  this),
-								                                                                mpField,
-								                                                                label("Unit's Movement Points: ")),
-						                                               null, null)));
+																				   null,
+																				   null,
+																				   null),
+											  new BorderedPanel(unitList, label(html(
+													  "Units belonging to that player:",
+													  "(Selected unit will be used for " +
+															  "exploration.)")),
+																	   new BorderedPanel
+																			   (null,
+																								null,
+																								new ListenedButton(
+																														  BUTTON_TEXT,
+																														  this),
+																								mpField,
+																								label("Unit's Movement Points: ")),
+																	   null, null)));
 	}
 
 	/**
@@ -170,12 +170,12 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 			len += para.length() + HTML_PAR_LEN;
 		}
 		final StringBuilder builder = new StringBuilder(len)
-				                              .append("<html><body>");
+											  .append("<html><body>");
 		for (final String para : paras) {
 			builder.append("<p>").append(para).append("</p>");
 		}
 		return NullCleaner.assertNotNull(builder.append("</body></html>")
-				                                 .toString());
+												 .toString());
 	}
 
 	/**
@@ -215,8 +215,8 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 		// documentation contradicts this, but it returns null when
 		// isSelectionEmpty is true, which we do check.
 		if ((event != null)
-				    && BUTTON_TEXT.equalsIgnoreCase(event.getActionCommand())
-				    && !unitList.isSelectionEmpty()) {
+					&& BUTTON_TEXT.equalsIgnoreCase(event.getActionCommand())
+					&& !unitList.isSelectionEmpty()) {
 			model.selectUnit(selectedValue);
 			for (final CompletionListener list : cListeners) {
 				list.stopWaitingOn(true);

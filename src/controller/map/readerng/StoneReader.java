@@ -57,23 +57,23 @@ public final class StoneReader implements INodeHandler<@NonNull StoneDeposit> {
 	 */
 	@Override
 	public StoneDeposit parse(final StartElement element,
-	                          final Iterable<XMLEvent> stream,
-	                          final IMutablePlayerCollection players,
-	                          final Warning warner, final IDFactory idFactory)
+							  final Iterable<XMLEvent> stream,
+							  final IMutablePlayerCollection players,
+							  final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final StoneDeposit fix =
 				new StoneDeposit(StoneKind.parseStoneKind(XMLHelper
-						                                          .getAttributeWithDeprecatedForm(
-								                                          element,
-								                                          "kind",
-								                                          "stone",
-								                                          warner)),
-						                XMLHelper.parseInt(
-								                XMLHelper.getAttribute(element, "dc"),
-								                NullCleaner.assertNotNull(
-										                element.getLocation())),
-						                getOrGenerateID(element, warner, idFactory));
+																  .getAttributeWithDeprecatedForm(
+																		  element,
+																		  "kind",
+																		  "stone",
+																		  warner)),
+										XMLHelper.parseInt(
+												XMLHelper.getAttribute(element, "dc"),
+												NullCleaner.assertNotNull(
+														element.getLocation())),
+										getOrGenerateID(element, warner, idFactory));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}
@@ -104,12 +104,12 @@ public final class StoneReader implements INodeHandler<@NonNull StoneDeposit> {
 	public SPIntermediateRepresentation write(final StoneDeposit obj) {
 		final SPIntermediateRepresentation retval =
 				new SPIntermediateRepresentation("stone", Pair.of("kind", obj
-						                                                          .stone()
-						                                                          .toString()),
-						                                Pair.of("dc", NullCleaner
-								                                              .assertNotNull(
-										                                              Integer.toString(
-												                                              obj.getDC()))));
+																				  .stone()
+																				  .toString()),
+														Pair.of("dc", NullCleaner
+																			  .assertNotNull(
+																					  Integer.toString(
+																							  obj.getDC()))));
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

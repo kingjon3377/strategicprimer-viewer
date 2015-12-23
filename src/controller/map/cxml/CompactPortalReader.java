@@ -53,17 +53,17 @@ public final class CompactPortalReader extends AbstractCompactReader<Portal> {
 	 */
 	@Override
 	public Portal read(final StartElement element,
-	                   final IteratorWrapper<XMLEvent> stream,
-	                   final IMutablePlayerCollection players, final Warning warner,
-	                   final IDFactory idFactory) throws SPFormatException {
+					   final IteratorWrapper<XMLEvent> stream,
+					   final IMutablePlayerCollection players, final Warning warner,
+					   final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "portal");
 		final Portal retval = new Portal(getParameter(element, "world"),
-				                                PointFactory.point(getIntegerParameter(
-						                                element, "row"),
-						                                getIntegerParameter(element,
-								                                "column")),
-				                                getOrGenerateID(element, warner,
-						                                idFactory));
+												PointFactory.point(getIntegerParameter(
+														element, "row"),
+														getIntegerParameter(element,
+																"column")),
+												getOrGenerateID(element, warner,
+														idFactory));
 		retval.setImage(getParameter(element, "image", ""));
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		return retval;
@@ -79,7 +79,7 @@ public final class CompactPortalReader extends AbstractCompactReader<Portal> {
 	 */
 	@Override
 	public void write(final Appendable ostream, final Portal obj,
-	                  final int indent) throws IOException {
+					  final int indent) throws IOException {
 		ostream.append(indent(indent));
 		ostream.append("<portal world=\"");
 		ostream.append(obj.getDestinationWorld());

@@ -59,19 +59,19 @@ public final class ResourceReader implements INodeHandler<@NonNull ResourcePile>
 	 */
 	@Override
 	public ResourcePile parse(final StartElement element,
-	                          final Iterable<XMLEvent> stream,
-	                          final IMutablePlayerCollection players,
-	                          final Warning warner,
-	                          final IDFactory idFactory) throws SPFormatException {
+							  final Iterable<XMLEvent> stream,
+							  final IMutablePlayerCollection players,
+							  final Warning warner,
+							  final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final ResourcePile retval =
 				new ResourcePile(getOrGenerateID(element, warner, idFactory),
-						                getAttribute(element, "kind"),
-						                getAttribute(element, "contents"),
-						                parseInt(
-								                getAttribute(element, "quantity"),
-								                element.getLocation()),
-						                getAttribute(element, "unit", ""));
+										getAttribute(element, "kind"),
+										getAttribute(element, "contents"),
+										parseInt(
+												getAttribute(element, "quantity"),
+												element.getLocation()),
+										getAttribute(element, "unit", ""));
 		if (hasAttribute(element, "created")) {
 			retval.setCreated(
 					parseInt(getAttribute(element, "created"), element.getLocation()));

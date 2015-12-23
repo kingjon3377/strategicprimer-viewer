@@ -114,7 +114,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 * @return a list of the members of the sequence that are units owned by the player
 	 */
 	private static Collection<IUnit> getUnits(final Iterable<? super Unit> iter,
-	                                          final Player player) {
+											  final Player player) {
 		final Collection<IUnit> retval = new ArrayList<>();
 		for (final Object obj : iter) {
 			if ((obj instanceof IUnit) && ((IUnit) obj).getOwner().equals(player)) {
@@ -133,15 +133,15 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	@Override
 	public List<String> getUnitKinds(final Player player) {
 		return NullCleaner.assertNotNull(Collections
-				                                 .unmodifiableList(
-						                                 new ArrayList<>(getUnits(player)
-								                                                 .stream()
-								                                                 .map
-										                                                  (IUnit::getKind)
+												 .unmodifiableList(
+														 new ArrayList<>(getUnits(player)
+																				 .stream()
+																				 .map
+																						  (IUnit::getKind)
 
-								                                                 .collect(
-										                                                 Collectors
-												                                                 .toSet()))));
+																				 .collect(
+																						 Collectors
+																								 .toSet()))));
 	}
 
 	/**
@@ -152,7 +152,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	@Override
 	public List<IUnit> getUnits(final Player player, final String kind) {
 		return getUnits(player).stream().filter(unit -> kind.equals(unit.getKind()))
-				       .collect(Collectors.toList());
+					   .collect(Collectors.toList());
 	}
 
 	/**
@@ -163,8 +163,8 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 		for (final Point point : getMap().locations()) {
 			for (final TileFixture fix : getMap().getOtherFixtures(point)) {
 				if ((fix instanceof Fortress)
-						    && unit.getOwner().equals(((Fortress) fix).getOwner())
-						    && "HQ".equals(((Fortress) fix).getName())) {
+							&& unit.getOwner().equals(((Fortress) fix).getOwner())
+							&& "HQ".equals(((Fortress) fix).getName())) {
 					addUnitAtLocation(unit, point);
 					return;
 				}
@@ -191,7 +191,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 				boolean added = false;
 				for (final TileFixture fix : pair.first().getOtherFixtures(location)) {
 					if ((fix instanceof Fortress) &&
-							    unit.getOwner().equals(((Fortress) fix).getOwner())) {
+								unit.getOwner().equals(((Fortress) fix).getOwner())) {
 						((Fortress) fix).addMember(unit.copy(false));
 						added = true;
 						break;
@@ -205,7 +205,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 			boolean added = false;
 			for (final TileFixture fix : getMap().getOtherFixtures(location)) {
 				if ((fix instanceof Fortress) &&
-						    unit.getOwner().equals(((Fortress) fix).getOwner())) {
+							unit.getOwner().equals(((Fortress) fix).getOwner())) {
 					((Fortress) fix).addMember(unit.copy(false));
 					added = true;
 					break;

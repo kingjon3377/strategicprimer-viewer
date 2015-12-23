@@ -69,7 +69,7 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	 * @param qtyUnit     what units the quantity is measured in
 	 */
 	public ResourcePile(final int idNum, final String resKind,
-	                    final String resContents, final int qty, final String qtyUnit) {
+						final String resContents, final int qty, final String qtyUnit) {
 		id = idNum;
 		kind = resKind;
 		contents = resContents;
@@ -146,10 +146,10 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof ResourcePile)
-				       && kind.equals(((ResourcePile) fix).getKind())
-				       && contents.equals(((ResourcePile) fix).getContents())
-				       && (quantity == ((ResourcePile) fix).getQuantity())
-				       && unit.equals(((ResourcePile) fix).getUnits());
+					   && kind.equals(((ResourcePile) fix).getKind())
+					   && contents.equals(((ResourcePile) fix).getContents())
+					   && (quantity == ((ResourcePile) fix).getQuantity())
+					   && unit.equals(((ResourcePile) fix).getUnits());
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-	                        final String context) throws IOException {
+							final String context) throws IOException {
 		if (obj.getID() != id) {
 			ostream.append(context);
 			ostream.append("\tIDs differ");
@@ -187,7 +187,7 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 				retval = false;
 			}
 			if ((quantity != ((ResourcePile) obj).quantity)
-					    && (0 != ((ResourcePile) obj).quantity)) {
+						&& (0 != ((ResourcePile) obj).quantity)) {
 				ostream.append(ctxt);
 				ostream.append("Quantities differ\n");
 				retval = false;
@@ -252,10 +252,10 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	public int hashCode() {
 		final int prime = 31;
 		return (prime * ((prime
-				                  * ((prime * ((prime * (prime + contents.hashCode())) +
-						                               id))
-						                     + kind.hashCode()))
-				                 + quantity)) + unit.hashCode();
+								  * ((prime * ((prime * (prime + contents.hashCode())) +
+													   id))
+											 + kind.hashCode()))
+								 + quantity)) + unit.hashCode();
 	}
 
 	/**
@@ -265,13 +265,13 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj)
-				       ||
-				       ((obj instanceof ResourcePile) && (id == ((ResourcePile) obj).id)
-						        && (quantity == ((ResourcePile) obj).quantity)
-						        && contents.equals(((ResourcePile) obj).contents)
-						        && kind.equals(((ResourcePile) obj).kind)
-						        && unit.equals(((ResourcePile) obj).unit) &&
-						        (created == ((ResourcePile) obj).created));
+					   ||
+					   ((obj instanceof ResourcePile) && (id == ((ResourcePile) obj).id)
+								&& (quantity == ((ResourcePile) obj).quantity)
+								&& contents.equals(((ResourcePile) obj).contents)
+								&& kind.equals(((ResourcePile) obj).kind)
+								&& unit.equals(((ResourcePile) obj).unit) &&
+								(created == ((ResourcePile) obj).created));
 	}
 
 	/**
@@ -287,13 +287,13 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 		}
 		if (unit.isEmpty()) {
 			return NullCleaner
-					       .assertNotNull(String.format("A pile of %d %s (%s)%s",
-							       Integer.valueOf(quantity), contents, kind, age));
+						   .assertNotNull(String.format("A pile of %d %s (%s)%s",
+								   Integer.valueOf(quantity), contents, kind, age));
 		} else {
 			return NullCleaner
-					       .assertNotNull(String.format("A pile of %d %s of %s (%s)%s",
-							       Integer.valueOf(quantity), unit, contents, kind,
-							       age));
+						   .assertNotNull(String.format("A pile of %d %s of %s (%s)%s",
+								   Integer.valueOf(quantity), unit, contents, kind,
+								   age));
 		}
 	}
 

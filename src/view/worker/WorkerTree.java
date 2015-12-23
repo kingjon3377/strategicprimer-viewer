@@ -53,7 +53,7 @@ import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
  * @author Jonathan Lovelace
  */
 public final class WorkerTree extends JTree implements UnitMemberSelectionSource,
-		                                                       UnitSelectionSource {
+															   UnitSelectionSource {
 	/**
 	 * The format string for creating the stats tooltip.
 	 */
@@ -71,7 +71,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 	 *                   "fixme" or if a unit named "unassigned" is nonempty
 	 */
 	public WorkerTree(final IWorkerTreeModel wtModel,
-	                  final Iterable<Player> players, final boolean orderCheck) {
+					  final Iterable<Player> players, final boolean orderCheck) {
 		setModel(wtModel);
 		final JTree tree = this;
 		wtModel.addTreeModelListener(new TreeModelListener() {
@@ -115,11 +115,11 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		setDragEnabled(true);
 		setShowsRootHandles(true);
 		setTransferHandler(new WorkerTreeTransferHandler(
-				                                                NullCleaner
-						                                                .assertNotNull(
-						                                                getSelectionModel()),
+																NullCleaner
+																		.assertNotNull(
+																		getSelectionModel()),
 
-				                                                wtModel));
+																wtModel));
 		setCellRenderer(new UnitMemberCellRenderer(orderCheck));
 		addMouseListener(new TreeMouseListener(players, wtModel, this));
 		ToolTipManager.sharedInstance().registerComponent(this);
@@ -157,7 +157,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		 * @param jtree      the tree we're watching
 		 */
 		protected TreeMouseListener(final Iterable<Player> playerColl,
-		                            final IWorkerTreeModel tmodel, final JTree jtree) {
+									final IWorkerTreeModel tmodel, final JTree jtree) {
 			players = playerColl;
 			model = tmodel;
 			tree = jtree;
@@ -193,7 +193,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		 */
 		private void handleMouseEvent(@Nullable final MouseEvent event) {
 			if ((event != null) && event.isPopupTrigger()
-					    && (event.getClickCount() == 1)) {
+						&& (event.getClickCount() == 1)) {
 				final TreePath path = tree.getClosestPathForLocation(event.getX(),
 						event.getY());
 				if (path == null) {
@@ -248,7 +248,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 	@Nullable
 	private String getStatsToolTip(final Object node) {
 		final Object localNode = ((IWorkerTreeModel) getModel())
-				                         .getModelObject(node);
+										 .getModelObject(node);
 		if (localNode instanceof Worker) {
 			final WorkerStats stats = ((Worker) localNode).getStats();
 			if (stats == null) {
@@ -330,7 +330,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 					return;
 				}
 				final Object pathLast = path
-						                        .getLastPathComponent();
+												.getLastPathComponent();
 				if (pathLast != null) {
 					handleSelection(model.getModelObject(pathLast));
 				}

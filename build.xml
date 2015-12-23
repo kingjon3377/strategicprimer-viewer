@@ -47,14 +47,14 @@
 
   <target name="get-builder">
     <exec executable="/usr/bin/git" outputproperty="scm.builder.username">
-    	<arg value="config" />
-	<arg value="--get" />
-	<arg value="user.name" />
+        <arg value="config" />
+    <arg value="--get" />
+    <arg value="user.name" />
     </exec>
     <exec executable="/usr/bin/git" outputproperty="scm.builder.email">
-    	<arg value="config" />
-	<arg value="--get" />
-	<arg value="user.email" />
+        <arg value="config" />
+    <arg value="--get" />
+    <arg value="user.email" />
     </exec>
     <property name="scm.builder" value="${scm.builder.username} &lt;${scm.builder.email}&gt;" />
     <echo message="${scm.builder}" />
@@ -137,10 +137,10 @@
       <manifest>
         <attribute name="Main-Class" value="${main-class}" />
         <attribute name="Class-Path" value="." />
-	<attribute name="Built-By" value="${scm.builder}" />
-	<attribute name="Built-On" value="${TODAY}" />
-	<attribute name="Built-At" value="${TSTAMP}" />
-	<attribute name="Git-Tag" value="${micro-version-number}" />
+    <attribute name="Built-By" value="${scm.builder}" />
+    <attribute name="Built-On" value="${TODAY}" />
+    <attribute name="Built-At" value="${TSTAMP}" />
+    <attribute name="Git-Tag" value="${micro-version-number}" />
       </manifest>
       <fileset dir="${project_home}/bin" />
       <zipfileset excludes="META-INF/**/*" src="${windowmenu.jar.path}" />
@@ -151,9 +151,9 @@
       <sequential>
           <exec executable="${convert.path}" dir="${basedir}">
           <arg value="src/images/icon.png" />
-	  <arg value="-adaptive-resize" />
-	  <arg value="@{resolution}x@{resolution}" />
-	  <arg value="icon_@{resolution}px.png" />
+      <arg value="-adaptive-resize" />
+      <arg value="@{resolution}x@{resolution}" />
+      <arg value="icon_@{resolution}px.png" />
         </exec>
       </sequential>
     </for>
@@ -208,14 +208,14 @@
     <tar destfile="${release}/${basename}.tbz2" compression="bzip2">
       <tarfileset dir="${project_home}" prefix="${basename}">
         <include name="*.properties" />
-	<include name="build.xml" />
-	<include name=".checkstyle" />
-	<include name=".classpath" />
-	<include name=".lint4jprefs" />
-	<include name=".pmd" />
-	<include name=".project" />
-	<include name="checkstyle.xml" />
-	<include name="launch4j.cfg.xml" />
+    <include name="build.xml" />
+    <include name=".checkstyle" />
+    <include name=".classpath" />
+    <include name=".lint4jprefs" />
+    <include name=".pmd" />
+    <include name=".project" />
+    <include name="checkstyle.xml" />
+    <include name="launch4j.cfg.xml" />
       </tarfileset>
       <tarfileset dir="${source_dir}" prefix="${basename}/src">
         <include name="**" />

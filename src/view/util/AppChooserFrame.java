@@ -59,9 +59,9 @@ public final class AppChooserFrame extends JFrame {
 	 * @return the button
 	 */
 	private JButton button(final String desc, final List<String> params,
-	                       final Class<? extends ISPDriver> target) {
+						   final Class<? extends ISPDriver> target) {
 		return new ListenedButton(desc, new AppChoiceListenerArgs(target, params,
-				                                                         this));
+																		 this));
 	}
 
 	/**
@@ -73,9 +73,9 @@ public final class AppChooserFrame extends JFrame {
 	 * @return the button
 	 */
 	private JButton button(final String desc, final IDriverModel model,
-	                       final Class<? extends ISPDriver> target) {
+						   final Class<? extends ISPDriver> target) {
 		return new ListenedButton(desc, new AppChoiceListenerDriverModel(target, model,
-				                                                                this));
+																				this));
 	}
 
 	/**
@@ -95,10 +95,10 @@ public final class AppChooserFrame extends JFrame {
 				WorkerStart.class));
 		buttonPanel.add(button("Exploration", model, ExplorationGUI.class));
 		setContentPane(new BorderedPanel(new JScrollPane(buttonPanel),
-				                                new JLabel("Please choose one of the " +
-						                                           "applications " +
-						                                           "below:"),
-				                                null, null, null));
+												new JLabel("Please choose one of the " +
+																   "applications " +
+																   "below:"),
+												null, null, null));
 		pack();
 	}
 
@@ -121,10 +121,10 @@ public final class AppChooserFrame extends JFrame {
 				WorkerStart.class));
 		buttonPanel.add(button("Exploration", parameters, ExplorationGUI.class));
 		setContentPane(new BorderedPanel(new JScrollPane(buttonPanel),
-				                                new JLabel("Please choose one of the " +
-						                                           "applications " +
-						                                           "below:"),
-				                                null, null, null));
+												new JLabel("Please choose one of the " +
+																   "applications " +
+																   "below:"),
+												null, null, null));
 		pack();
 	}
 
@@ -134,14 +134,14 @@ public final class AppChooserFrame extends JFrame {
 	 * @author Jonathan Lovelace
 	 */
 	private static final class AppChoiceListenerArgs implements ActionListener,
-			                                                            Runnable {
+																		Runnable {
 		/**
 		 * Logger for the inner class.
 		 */
 		private static final Logger LOGGER = TypesafeLogger
-				                                     .getLogger(
-						                                     AppChoiceListenerArgs
-								                                     .class);
+													 .getLogger(
+															 AppChoiceListenerArgs
+																	 .class);
 		/**
 		 * The app to start.
 		 */
@@ -164,8 +164,8 @@ public final class AppChooserFrame extends JFrame {
 		 *                   selected.
 		 */
 		protected AppChoiceListenerArgs(final Class<? extends ISPDriver> frame,
-		                                final List<String> parameters,
-		                                final AppChooserFrame acf) {
+										final List<String> parameters,
+										final AppChooserFrame acf) {
 			app = frame;
 			params = parameters.toArray(new String[parameters.size()]);
 			outer = acf;
@@ -181,8 +181,8 @@ public final class AppChooserFrame extends JFrame {
 			try {
 				app.getConstructor().newInstance().startDriver(params);
 			} catch (final InstantiationException | IllegalAccessException
-					               | NoSuchMethodException | InvocationTargetException
-					               | DriverFailedException except) {
+								   | NoSuchMethodException | InvocationTargetException
+								   | DriverFailedException except) {
 				final String msg = except.getMessage();
 				final String message = NullCleaner.valueOrDefault(msg,
 						"Exception with null message");
@@ -222,9 +222,9 @@ public final class AppChooserFrame extends JFrame {
 		 * Logger for the inner class.
 		 */
 		private static final Logger LOGGER = TypesafeLogger
-				                                     .getLogger(
-						                                     AppChoiceListenerArgs
-								                                     .class);
+													 .getLogger(
+															 AppChoiceListenerArgs
+																	 .class);
 		/**
 		 * The app to start.
 		 */
@@ -247,8 +247,8 @@ public final class AppChooserFrame extends JFrame {
 		 *               selected.
 		 */
 		protected AppChoiceListenerDriverModel(final Class<? extends ISPDriver> frame,
-		                                       final IDriverModel dmodel,
-		                                       final AppChooserFrame acf) {
+											   final IDriverModel dmodel,
+											   final AppChooserFrame acf) {
 			app = frame;
 			outer = acf;
 			model = dmodel;
@@ -264,8 +264,8 @@ public final class AppChooserFrame extends JFrame {
 			try {
 				app.getConstructor().newInstance().startDriver(model);
 			} catch (final InstantiationException | IllegalAccessException
-					               | NoSuchMethodException | InvocationTargetException
-					               | DriverFailedException except) {
+								   | NoSuchMethodException | InvocationTargetException
+								   | DriverFailedException except) {
 				final String msg = except.getMessage();
 				final String message = NullCleaner.valueOrDefault(msg,
 						"Exception with null message");

@@ -44,8 +44,8 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  */
 public final class ScrollListener implements MapChangeListener,
-		                                             SelectionChangeListener,
-		                                             GraphicalParamsListener {
+													 SelectionChangeListener,
+													 GraphicalParamsListener {
 	/**
 	 * The map model we're working with.
 	 */
@@ -75,7 +75,7 @@ public final class ScrollListener implements MapChangeListener,
 	 * @param vertBar  the vertical scroll bar to work with
 	 */
 	public ScrollListener(final IViewerModel map, final JScrollBar horizBar,
-	                      final JScrollBar vertBar) {
+						  final JScrollBar vertBar) {
 		model = map;
 		dimensions = map.getDimensions();
 		final MapDimensions mapDim = map.getMapDimensions();
@@ -91,15 +91,15 @@ public final class ScrollListener implements MapChangeListener,
 		vbar.setInputVerifier(new LocalInputVerifier(mapDim, map, false));
 		final AdjustmentListener adjList =
 				evt -> model.setDimensions(new VisibleDimensions(vbar.getValue(), vbar
-						                                                                  .getValue() +
-						                                                                  dimensions
-								                                                                  .getHeight(),
+																						  .getValue() +
+																						  dimensions
+																								  .getHeight(),
 
-						                                                hbar.getValue(),
-						                                                hbar
-								                                                .getValue() +
-								                                                dimensions
-										                                                .getWidth()));
+																		hbar.getValue(),
+																		hbar
+																				.getValue() +
+																				dimensions
+																						.getWidth()));
 		hbar.addAdjustmentListener(adjList);
 		vbar.addAdjustmentListener(adjList);
 	}
@@ -114,7 +114,7 @@ public final class ScrollListener implements MapChangeListener,
 	 */
 	public ScrollListener(final IViewerModel map, final JComponent component) {
 		this(map, new JScrollBar(Adjustable.HORIZONTAL), new JScrollBar(
-				                                                               Adjustable.VERTICAL));
+																			   Adjustable.VERTICAL));
 		component.add(hbar, BorderLayout.PAGE_END);
 		component.add(vbar, BorderLayout.LINE_END);
 	}
@@ -125,7 +125,7 @@ public final class ScrollListener implements MapChangeListener,
 	 */
 	@Override
 	public void dimensionsChanged(final VisibleDimensions oldDim,
-	                              final VisibleDimensions newDim) {
+								  final VisibleDimensions newDim) {
 		dimensions = newDim;
 		hbar.getModel().setRangeProperties(
 				Math.max(model.getSelectedPoint().col, 0), 1, 0,
@@ -154,7 +154,7 @@ public final class ScrollListener implements MapChangeListener,
 	 */
 	@Override
 	public void selectedPointChanged(@Nullable final Point old,
-	                                 final Point newPoint) {
+									 final Point newPoint) {
 		final VisibleDimensions vdim = model.getDimensions();
 		if (!isInRange(vdim.getMinimumCol(), newPoint.col, vdim.getMaximumCol())) {
 			hbar.getModel().setValue(Math.max(newPoint.col, 0));
@@ -184,7 +184,7 @@ public final class ScrollListener implements MapChangeListener,
 	 * @return whether the value is in the range
 	 */
 	protected static boolean isInRange(final int min, final int value,
-	                                   final int max) {
+									   final int max) {
 		return (value >= min) && (value <= max);
 	}
 
@@ -202,8 +202,8 @@ public final class ScrollListener implements MapChangeListener,
 		private final boolean horiz;
 
 		protected LocalInputVerifier(final MapDimensions mapDim,
-		                             final IViewerModel mapModel,
-		                             final boolean horizontal) {
+									 final IViewerModel mapModel,
+									 final boolean horizontal) {
 			dimensions = mapDim;
 			map = mapModel;
 			horiz = horizontal;
@@ -228,7 +228,7 @@ public final class ScrollListener implements MapChangeListener,
 		@Override
 		public boolean verify(@Nullable final JComponent input) {
 			return (input instanceof JScrollBar)
-					       && isInRange(0, ((JScrollBar) input).getValue(),
+						   && isInRange(0, ((JScrollBar) input).getValue(),
 					dimension() - visibleDimension());
 		}
 	}

@@ -49,10 +49,10 @@ public final class DuplicateFixtureRemover implements ISPDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-u", "--dupl", ParamCount.One,
-					               "Remove duplicate fixtures",
-					               "Remove duplicate fixtures---identical except ID# and" +
-							               " on the same tile---from a map.",
-					               DuplicateFixtureRemover.class);
+								   "Remove duplicate fixtures",
+								   "Remove duplicate fixtures---identical except ID# and" +
+										   " on the same tile---from a map.",
+								   DuplicateFixtureRemover.class);
 
 	/**
 	 * "Remove" (at first we just report) duplicate fixtures (i.e. hills, forests of the
@@ -81,7 +81,7 @@ public final class DuplicateFixtureRemover implements ISPDriver {
 	 * @throws IOException on I/O error writing to stream
 	 */
 	private static void filter(final IMutableMapNG map, final Point location,
-	                           final Appendable ostream) throws IOException {
+							   final Appendable ostream) throws IOException {
 		final Collection<TileFixture> fixtures = new ArrayList<>();
 		final Collection<TileFixture> toRemove = new ArrayList<>();
 		// We ignore ground and forests because they don't have IDs.
@@ -89,8 +89,8 @@ public final class DuplicateFixtureRemover implements ISPDriver {
 			boolean already = false;
 			for (final TileFixture keptFixture : fixtures) {
 				if (((fix instanceof IUnit)
-						     && ((IUnit) fix).getKind().contains("TODO"))
-						    || (fix instanceof CacheFixture)) {
+							 && ((IUnit) fix).getKind().contains("TODO"))
+							|| (fix instanceof CacheFixture)) {
 					break;
 				} else if (keptFixture.equalsIgnoringID(fix)) {
 					already = true;
@@ -123,7 +123,7 @@ public final class DuplicateFixtureRemover implements ISPDriver {
 		try {
 			if (model instanceof IMultiMapModel) {
 				for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model)
-						                                            .getAllMaps()) {
+																	.getAllMaps()) {
 					filter(pair.first(), SYS_OUT);
 				}
 			} else {
@@ -145,7 +145,7 @@ public final class DuplicateFixtureRemover implements ISPDriver {
 		if (args.length == 0) {
 			SYS_OUT.println("Usage: DuplicateFixtureRemover map [map ...]");
 			throw new DriverFailedException("Not enough arguments",
-					                               new IllegalArgumentException("Need at least one argument"));
+												   new IllegalArgumentException("Need at least one argument"));
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final IMultiMapModel model = reader.readMultiMapModel(Warning.INSTANCE,

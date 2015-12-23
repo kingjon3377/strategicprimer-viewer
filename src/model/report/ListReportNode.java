@@ -64,10 +64,10 @@ public final class ListReportNode extends AbstractReportNode {
 	public String produce() {
 		// Assume each child is half a K.
 		final StringBuilder builder = new StringBuilder(getText().length()
-				                                                + BOILERPLATE_LEN +
-				                                                (getChildCount() *
-						                                                 CHILD_BUF_SIZE))
-				                              .append(getText());
+																+ BOILERPLATE_LEN +
+																(getChildCount() *
+																		 CHILD_BUF_SIZE))
+											  .append(getText());
 		builder.append("\n<ul>\n");
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
@@ -111,7 +111,7 @@ public final class ListReportNode extends AbstractReportNode {
 			final TreeNode child = getChildAt(i);
 			if (child instanceof AbstractReportNode) {
 				retval += ((AbstractReportNode) child).size()
-						          + PER_CHILD_BOILERPLATE;
+								  + PER_CHILD_BOILERPLATE;
 			}
 		}
 		return retval;
@@ -124,7 +124,7 @@ public final class ListReportNode extends AbstractReportNode {
 	@Override
 	protected boolean equalsImpl(final IReportNode obj) {
 		return (obj instanceof ListReportNode) && getText().equals(obj.getText())
-				       && children().equals(obj.children());
+					   && children().equals(obj.children());
 	}
 
 	/**

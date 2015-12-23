@@ -67,9 +67,9 @@ public final class SkillReader implements INodeHandler<@NonNull Skill> {
 	 */
 	@Override
 	public Skill parse(final StartElement element,
-	                   final Iterable<XMLEvent> stream,
-	                   final IMutablePlayerCollection players,
-	                   final Warning warner, final IDFactory idFactory)
+					   final Iterable<XMLEvent> stream,
+					   final IMutablePlayerCollection players,
+					   final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		XMLHelper.requireNonEmptyParameter(element, "name", true, warner);
 		XMLHelper.requireNonEmptyParameter(element, "level", true, warner);
@@ -77,21 +77,21 @@ public final class SkillReader implements INodeHandler<@NonNull Skill> {
 		XMLHelper.spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Skill retval =
 				new Skill(XMLHelper.getAttribute(element, "name"),
-						         XMLHelper.parseInt(XMLHelper.getAttribute(element,
-								         "level"), NullCleaner.assertNotNull(element
-										                                             .getLocation())),
+								 XMLHelper.parseInt(XMLHelper.getAttribute(element,
+										 "level"), NullCleaner.assertNotNull(element
+																					 .getLocation())),
 
-						         XMLHelper.parseInt(XMLHelper
-								                            .getAttribute(element,
-										                            "hours"), NullCleaner
-												                                      .assertNotNull(
-														                                      element.getLocation())));
+								 XMLHelper.parseInt(XMLHelper
+															.getAttribute(element,
+																	"hours"), NullCleaner
+																					  .assertNotNull(
+																							  element.getLocation())));
 		if ("miscellaneous".equals(retval.getName()) && (retval.getLevel() > 0)) {
 			warner.warn(new DeprecatedPropertyException("skill",
-					                                           "miscellaneous", "other",
-					                                           element.getLocation()
-							                                           .getLineNumber
-									                                            ()));
+															   "miscellaneous", "other",
+															   element.getLocation()
+																	   .getLineNumber
+																				()));
 		}
 		return retval;
 	}
@@ -105,7 +105,7 @@ public final class SkillReader implements INodeHandler<@NonNull Skill> {
 	@Override
 	public SPIntermediateRepresentation write(final Skill obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "skill");
+																							"skill");
 		retval.addAttribute("name", obj.getName());
 		retval.addIntegerAttribute("level", obj.getLevel());
 		retval.addIntegerAttribute("hours", obj.getHours());

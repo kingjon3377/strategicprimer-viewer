@@ -86,9 +86,9 @@ public final class AdvancementFrame extends JFrame {
 				new WorkerTree(wtmodel, source.getMap().players(), false);
 		pch.addPlayerChangeListener(wtmodel);
 		final WorkerCreationListener nwl = new WorkerCreationListener(wtmodel,
-				                                                             IDFactoryFiller
-						                                                             .createFactory(
-								                                                             source.getMap()));
+																			 IDFactoryFiller
+																					 .createFactory(
+																							 source.getMap()));
 		tree.addUnitSelectionListener(nwl);
 		final JobTreeModel jtmodel = new JobTreeModel();
 		final JobsTree jobsTree = new JobsTree(jtmodel);
@@ -105,43 +105,43 @@ public final class AdvancementFrame extends JFrame {
 		final JLabel newJobText = htmlize("Add a job to the Worker:");
 		final JLabel newSkillText = htmlize("Add a Skill to the selected Job:");
 		setContentPane(new SplitWithWeights(HORIZONTAL_SPLIT, HALF_WAY,
-				                                   HALF_WAY,
-				                                   new BorderedPanel(new JScrollPane
-						                                                     (tree),
-						                                                    plabel,
-						                                                    new
-								                                                    ListenedButton(NEW_WORKER,
-								                                                                      nwl),
+												   HALF_WAY,
+												   new BorderedPanel(new JScrollPane
+																			 (tree),
+																			plabel,
+																			new
+																					ListenedButton(NEW_WORKER,
+																									  nwl),
 
-						                                                    null, null),
-				                                   new SplitWithWeights(VERTICAL_SPLIT,
-						                                                       HALF_WAY,
-						                                                       RES_WEIGHT,
-						                                                       new
-								                                                       BorderedPanel(new JScrollPane(jobsTree),
-								                                                                        htmlize("Worker's Jobs and Skills:"),
-								                                                                        null,
-								                                                                        null,
-								                                                                        null),
-						                                                       new
-								                                                       BorderedPanel(
-								                                                                        new BorderedPanel(null,
-										                                                                                         new BorderedPanel(null,
-												                                                                                                          newJobText,
-												                                                                                                          jarp,
-												                                                                                                          null,
-												                                                                                                          null),
-										                                                                                         new BorderedPanel(null,
-												                                                                                                          newSkillText,
-												                                                                                                          sarp,
-												                                                                                                          null,
-												                                                                                                          null),
-										                                                                                         null,
-										                                                                                         null),
-								                                                                        null,
-								                                                                        sapanel,
-								                                                                        null,
-								                                                                        null))));
+																			null, null),
+												   new SplitWithWeights(VERTICAL_SPLIT,
+																			   HALF_WAY,
+																			   RES_WEIGHT,
+																			   new
+																					   BorderedPanel(new JScrollPane(jobsTree),
+																										htmlize("Worker's Jobs and Skills:"),
+																										null,
+																										null,
+																										null),
+																			   new
+																					   BorderedPanel(
+																										new BorderedPanel(null,
+																																 new BorderedPanel(null,
+																																						  newJobText,
+																																						  jarp,
+																																						  null,
+																																						  null),
+																																 new BorderedPanel(null,
+																																						  newSkillText,
+																																						  sarp,
+																																						  null,
+																																						  null),
+																																 null,
+																																 null),
+																										null,
+																										sapanel,
+																										null,
+																										null))));
 
 		pch.notifyListeners();
 
@@ -150,7 +150,7 @@ public final class AdvancementFrame extends JFrame {
 		}
 
 		setJMenuBar(new WorkerMenu(ioHandler, this, pch, source,
-				                          new TreeExpansionHandler(tree)));
+										  new TreeExpansionHandler(tree)));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
 	}
@@ -176,20 +176,20 @@ public final class AdvancementFrame extends JFrame {
 	 * @return the "ideal" dimensions for the component
 	 */
 	public static Dimension getComponentPreferredSize(
-			                                                 final JComponent component,
-			                                                 final int width) {
+															 final JComponent component,
+															 final int width) {
 		final View view = (View) component
-				                         .getClientProperty(BasicHTML.propertyKey);
+										 .getClientProperty(BasicHTML.propertyKey);
 		final Dimension defDim = component.getPreferredSize();
 		if (view == null) {
 			@SuppressWarnings("UnnecessaryLocalVariable") final int size = width;
 			return NullCleaner.valueOrDefault(defDim, new Dimension(size, // NOPMD
-					                                                       size));
+																		   size));
 		} else {
 			view.setSize(width, 0);
 			final int wid = (int) Math.ceil(view.getPreferredSpan(View.X_AXIS));
 			final int height = (int) Math.ceil(view
-					                                   .getPreferredSpan(View.Y_AXIS));
+													   .getPreferredSpan(View.Y_AXIS));
 			return new Dimension(wid, height);
 		}
 	}

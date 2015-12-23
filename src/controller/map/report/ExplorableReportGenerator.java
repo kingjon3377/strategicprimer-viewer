@@ -55,8 +55,8 @@ public final class ExplorableReportGenerator
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public ExplorableReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
-			                                                               @NonNull
-					                                                               IFixture>> comparator) {
+																		   @NonNull
+																				   IFixture>> comparator) {
 		super(comparator);
 	}
 
@@ -77,9 +77,9 @@ public final class ExplorableReportGenerator
 	 */
 	@Override
 	public String produce(
-			                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-					                     fixtures,
-			                     final IMapNG map, final Player currentPlayer) {
+								 final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+										 fixtures,
+								 final IMapNG map, final Player currentPlayer) {
 		// At only three (albeit potentially rather long) list items, I doubt this
 		// will ever be over one K ... but we'll give it two just in case.
 		final StringBuilder builder = new StringBuilder(2048).append(
@@ -92,13 +92,13 @@ public final class ExplorableReportGenerator
 				OPEN_LIST_ITEM).append(
 				"Signs of long-ago battles on the following tiles: ");
 		final StringBuilder portalBuilder = new StringBuilder(1024)
-				                                    .append(OPEN_LIST_ITEM)
-				                                    .append("Portals to other worlds: ");
+													.append(OPEN_LIST_ITEM)
+													.append("Portals to other worlds: ");
 		// I doubt this will ever be over a K either
 		final StringBuilder adventureBuilder = new StringBuilder(1024)
-				                                       .append("<h4>Possible " +
-						                                               "Adventures</h4>")
-				                                       .append(OPEN_LIST);
+													   .append("<h4>Possible " +
+																	   "Adventures</h4>")
+													   .append(OPEN_LIST);
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		boolean anyAdventures = false;
@@ -131,17 +131,17 @@ public final class ExplorableReportGenerator
 		if (anyCaves) {
 			builder.append(COLON_COMMA_PATTERN.matcher(
 					caveBuilder.append(CLOSE_LIST_ITEM).toString())
-					               .replaceAll(Matcher.quoteReplacement(": ")));
+								   .replaceAll(Matcher.quoteReplacement(": ")));
 		}
 		if (anyBattles) {
 			builder.append(COLON_COMMA_PATTERN.matcher(
 					battleBuilder.append(CLOSE_LIST_ITEM).toString())
-					               .replaceAll(Matcher.quoteReplacement(": ")));
+								   .replaceAll(Matcher.quoteReplacement(": ")));
 		}
 		if (anyPortals) {
 			builder.append(COLON_COMMA_PATTERN.matcher(
 					portalBuilder.append(CLOSE_LIST_ITEM).toString())
-					               .replaceAll(Matcher.quoteReplacement(": ")));
+								   .replaceAll(Matcher.quoteReplacement(": ")));
 		}
 		adventureBuilder.append(CLOSE_LIST);
 		builder.append(CLOSE_LIST);
@@ -170,10 +170,10 @@ public final class ExplorableReportGenerator
 	 */
 	@Override
 	public AbstractReportNode produceRIR(
-			                                    final DelayedRemovalMap<Integer,
-					                                                           Pair<Point, IFixture>> fixtures,
-			                                    final IMapNG map,
-			                                    final Player currentPlayer) {
+												final DelayedRemovalMap<Integer,
+																			   Pair<Point, IFixture>> fixtures,
+												final IMapNG map,
+												final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final AbstractReportNode portals = new ListReportNode("Portals");
@@ -237,10 +237,10 @@ public final class ExplorableReportGenerator
 	 */
 	@Override
 	public String produce(
-			                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-					                     fixtures,
-			                     final IMapNG map, final Player currentPlayer,
-			                     final ExplorableFixture item, final Point loc) {
+								 final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+										 fixtures,
+								 final IMapNG map, final Player currentPlayer,
+								 final ExplorableFixture item, final Point loc) {
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat("Caves beneath ", loc.toString(), " ",
@@ -290,59 +290,59 @@ public final class ExplorableReportGenerator
 	 */
 	@Override
 	public SimpleReportNode produceRIR(
-			                                  final DelayedRemovalMap<Integer,
-					                                                         Pair<Point,
-							                                                             IFixture>> fixtures,
-			                                  final IMapNG map,
-			                                  final Player currentPlayer,
-			                                  final ExplorableFixture item,
-			                                  final Point loc) {
+											  final DelayedRemovalMap<Integer,
+																			 Pair<Point,
+																						 IFixture>> fixtures,
+											  final IMapNG map,
+											  final Player currentPlayer,
+											  final ExplorableFixture item,
+											  final Point loc) {
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, "Caves beneath ", loc.toString(), " ",
-					                           distCalculator.distanceString(loc));
+											   distCalculator.distanceString(loc));
 		} else if (item instanceof Battlefield) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, "Signs of a long-ago battle on ",
-					                           loc.toString(), " ",
-					                           distCalculator.distanceString(loc));
+											   loc.toString(), " ",
+											   distCalculator.distanceString(loc));
 		} else if (item instanceof AdventureFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			if (((AdventureFixture) item).getOwner().isIndependent()) {
 				return new SimpleReportNode(loc,
-						                           ((AdventureFixture) item)
-								                           .getBriefDescription(), " at ",
-						                           loc.toString(),
-						                           ((AdventureFixture) item)
-								                           .getFullDescription(),
-						                           " ",
-						                           distCalculator.distanceString(loc));
+												   ((AdventureFixture) item)
+														   .getBriefDescription(), " at ",
+												   loc.toString(),
+												   ((AdventureFixture) item)
+														   .getFullDescription(),
+												   " ",
+												   distCalculator.distanceString(loc));
 			} else if (currentPlayer.equals(((AdventureFixture) item).getOwner())) {
 				return new SimpleReportNode(loc,
-						                           ((AdventureFixture) item)
-								                           .getBriefDescription(), " at ",
-						                           loc.toString(),
-						                           ((AdventureFixture) item)
-								                           .getFullDescription(),
-						                           " ",
-						                           distCalculator.distanceString(loc),
-						                           " (already investigated by you)");
+												   ((AdventureFixture) item)
+														   .getBriefDescription(), " at ",
+												   loc.toString(),
+												   ((AdventureFixture) item)
+														   .getFullDescription(),
+												   " ",
+												   distCalculator.distanceString(loc),
+												   " (already investigated by you)");
 			} else {
 				return new SimpleReportNode(loc,
-						                           ((AdventureFixture) item)
-								                           .getBriefDescription(), " at ",
-						                           loc.toString(),
-						                           ((AdventureFixture) item)
-								                           .getFullDescription(),
-						                           " ",
-						                           distCalculator.distanceString(loc),
-						                           " (already investigated by another player)");
+												   ((AdventureFixture) item)
+														   .getBriefDescription(), " at ",
+												   loc.toString(),
+												   ((AdventureFixture) item)
+														   .getFullDescription(),
+												   " ",
+												   distCalculator.distanceString(loc),
+												   " (already investigated by another player)");
 			}
 		} else if (item instanceof Portal) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, "A portal to another world at ",
-					                           loc.toString(), " ",
-					                           distCalculator.distanceString(loc));
+											   loc.toString(), " ",
+											   distCalculator.distanceString(loc));
 		} else {
 			throw new IllegalArgumentException("Unexpected ExplorableFixture type");
 		}

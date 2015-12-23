@@ -62,9 +62,9 @@ public final class FortificationReader implements INodeHandler<@NonNull Fortific
 	 */
 	@Override
 	public Fortification parse(final StartElement element,
-	                           final Iterable<XMLEvent> stream,
-	                           final IMutablePlayerCollection players,
-	                           final Warning warner, final IDFactory idFactory)
+							   final Iterable<XMLEvent> stream,
+							   final IMutablePlayerCollection players,
+							   final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
@@ -74,11 +74,11 @@ public final class FortificationReader implements INodeHandler<@NonNull Fortific
 						getAttribute(element, "size")), parseInt(
 						getAttribute(element, "dc"),
 						NullCleaner.assertNotNull(element.getLocation())),
-						                 getAttribute(element, "name", ""),
-						                 getOrGenerateID(
-								                 element, warner, idFactory),
-						                 getPlayerOrIndependent(element, warner,
-								                 players));
+										 getAttribute(element, "name", ""),
+										 getOrGenerateID(
+												 element, warner, idFactory),
+										 getPlayerOrIndependent(element, warner,
+												 players));
 		addImage(element, fix);
 		return fix;
 	}
@@ -108,7 +108,7 @@ public final class FortificationReader implements INodeHandler<@NonNull Fortific
 	@Override
 	public SPIntermediateRepresentation write(final Fortification obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "fortification");
+																							"fortification");
 		retval.addAttribute("status", obj.status().toString());
 		retval.addAttribute("size", obj.size().toString());
 		retval.addIntegerAttribute("dc", obj.getDC());

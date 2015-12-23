@@ -48,9 +48,9 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  */
 public final class MapComponent extends JComponent implements MapGUI,
-		                                                              MapChangeListener,
-		                                                              SelectionChangeListener,
-		                                                              GraphicalParamsListener {
+																	  MapChangeListener,
+																	  SelectionChangeListener,
+																	  GraphicalParamsListener {
 	/**
 	 * The map model encapsulating the map this represents, the secondary map, and the
 	 * selected tile.
@@ -85,7 +85,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 		cml.addSelectionChangeListener(this);
 		addMouseListener(cml);
 		final DirectionSelectionChanger dsl = new DirectionSelectionChanger(
-				                                                                   model);
+																				   model);
 		addMouseWheelListener(dsl);
 		requestFocusInWindow();
 		final ActionMap actionMap = getActionMap();
@@ -169,7 +169,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 * @param maxY the maximum Y (col?) to draw
 	 */
 	private void drawMapPortion(final Graphics pen, final int minX,
-	                            final int minY, final int maxX, final int maxY) {
+								final int minY, final int maxX, final int maxY) {
 		final int minRow = getMapModel().getDimensions().getMinimumRow();
 		final int maxRow = getMapModel().getDimensions().getMaximumRow();
 		final int minCol = getMapModel().getDimensions().getMinimumCol(); // NOPMD
@@ -177,7 +177,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 		for (int i = minY; (i < maxY) && ((i + minRow) < (maxRow + 1)); i++) {
 			for (int j = minX; (j < maxX) && ((j + minCol) < (maxCol + 1)); j++) {
 				final Point location = PointFactory.point(i + minRow, j
-						                                                      + minCol);
+																			  + minCol);
 				paintTile(pen, location, i, j,
 						getMapModel().getSelectedPoint().equals(location));
 			}
@@ -193,17 +193,17 @@ public final class MapComponent extends JComponent implements MapGUI,
 				getMapModel().getMapDimensions().getVersion());
 		final VisibleDimensions dim = getMapModel().getDimensions();
 		return NullCleaner.valueOrDefault(rect, new Rectangle(0, 0,
-				                                                     (dim.getMaximumCol
-						                                                          () -
-						                                                      dim
-								                                                      .getMinimumCol()) *
+																	 (dim.getMaximumCol
+																				  () -
+																			  dim
+																					  .getMinimumCol()) *
 
-						                                                     tsize,
-				                                                     (dim.getMaximumRow
-						                                                          () -
-						                                                      dim
-								                                                      .getMinimumRow()) *
-						                                                     tsize));
+																			 tsize,
+																	 (dim.getMaximumRow
+																				  () -
+																			  dim
+																					  .getMinimumRow()) *
+																			 tsize));
 	}
 
 	/**
@@ -216,7 +216,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 * @param selected whether the tile is the selected tile
 	 */
 	private void paintTile(final Graphics pen, final Point point, final int row,
-	                       final int col, final boolean selected) {
+						   final int col, final boolean selected) {
 		final int tsize = TileViewSize.scaleZoom(getMapModel().getZoomLevel(),
 				getMapModel().getMapDimensions().getVersion());
 		helper.drawTile(pen, model.getMap(), point,
@@ -248,7 +248,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 */
 	@Override
 	public void dimensionsChanged(final VisibleDimensions oldDim,
-	                              final VisibleDimensions newDim) {
+								  final VisibleDimensions newDim) {
 		repaint();
 	}
 
@@ -259,8 +259,8 @@ public final class MapComponent extends JComponent implements MapGUI,
 	@Override
 	public void tsizeChanged(final int oldSize, final int newSize) {
 		final ComponentEvent evt = new ComponentEvent(this,
-				                                             ComponentEvent
-						                                             .COMPONENT_RESIZED);
+															 ComponentEvent
+																	 .COMPONENT_RESIZED);
 		for (final ComponentListener list : getComponentListeners()) {
 			list.componentResized(evt);
 		}
@@ -273,7 +273,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 */
 	@Override
 	public void selectedPointChanged(@Nullable final Point old,
-	                                 final Point newPoint) {
+									 final Point newPoint) {
 		SwingUtilities.invokeLater(this::requestFocusInWindow);
 		if (!isSelectionVisible()) {
 			fixVisibility();
@@ -304,9 +304,9 @@ public final class MapComponent extends JComponent implements MapGUI,
 		final int maxCol = getMapModel().getDimensions().getMaximumCol();
 		final MapDimensions mapDim = getMapModel().getMapDimensions();
 		return ((selRow < 0) || (selRow >= minRow))
-				       && ((selRow >= mapDim.rows) || (selRow <= maxRow))
-				       && ((selCol < 0) || (selCol >= minCol))
-				       && ((selCol >= mapDim.cols) || (selCol <= maxCol));
+					   && ((selRow >= mapDim.rows) || (selRow <= maxRow))
+					   && ((selCol < 0) || (selCol >= minCol))
+					   && ((selCol >= mapDim.cols) || (selCol <= maxCol));
 	}
 
 	/**

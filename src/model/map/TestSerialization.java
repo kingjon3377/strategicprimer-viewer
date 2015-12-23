@@ -69,7 +69,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 */
 	@Test
 	public void testPlayerSerialization() throws XMLStreamException,
-			                                             SPFormatException, IOException {
+														 SPFormatException, IOException {
 		assertSerialization("First Player serialization test, reflection",
 				new Player(1, "one"), Player.class);
 		assertSerialization("Second Player serialization test, reflection",
@@ -91,10 +91,10 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 * @return a map containing them. Declared mutable for the sake of calling code.
 	 */
 	private static IMapNG encapsulateRivers(final Point point,
-	                                        final River... rivers) {
+											final River... rivers) {
 		final IMutableMapNG retval =
 				new SPMapNG(new MapDimensions(point.row + 1, point.col + 1, 2),
-						           new PlayerCollection(), -1);
+								   new PlayerCollection(), -1);
 		retval.setBaseTerrain(point, Plains);
 		retval.addRivers(point, rivers);
 		return retval;
@@ -124,8 +124,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 */
 	@Test
 	public void testRiverSerializationOne() throws XMLStreamException,
-			                                               SPFormatException,
-			                                               IOException {
+														   SPFormatException,
+														   IOException {
 		for (final River river : River.values()) {
 			assert river != null;
 			assertSerialization("River alone", river, River.class);
@@ -151,8 +151,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertEquals("Rivers added in different order to set", setOne, setTwo);
 		assertEquals("Rivers added in different order to fixture",
 				new RiverFixture(River.North, River.South), new RiverFixture(
-						                                                            River.South,
-						                                                            River.North));
+																					River.South,
+																					River.North));
 		final RiverFixture fixOne = new RiverFixture(River.North);
 		fixOne.addRiver(River.South);
 		final RiverFixture fixTwo = new RiverFixture(River.South);
@@ -182,11 +182,11 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 */
 	@SafeVarargs
 	private static IMutableMapNG createSimpleMap(final Point dims,
-	                                             final Pair<Point, TileType>...
-			                                             terrain) {
+												 final Pair<Point, TileType>...
+														 terrain) {
 		final IMutableMapNG retval =
 				new SPMapNG(new MapDimensions(dims.row, dims.col, 2),
-						           new PlayerCollection(), -1);
+								   new PlayerCollection(), -1);
 		for (final Pair<Point, TileType> pair : terrain) {
 			retval.setBaseTerrain(pair.first(), pair.second());
 		}
@@ -202,7 +202,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 */
 	@Test
 	public void testTileSerialization() throws XMLStreamException,
-			                                           SPFormatException, IOException {
+													   SPFormatException, IOException {
 		assertSerialization("Simple Tile",
 				createSimpleMap(point(1, 1), Pair.of(point(0, 0), Desert)),
 				IMapNG.class);
@@ -213,7 +213,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		final IMutableMapNG secondMap =
 				createSimpleMap(point(3, 3), Pair.of(point(2, 2), Steppe));
 		secondMap.addFixture(point(2, 2), new Unit(new Player(1, ""), "unitOne",
-				                                          "firstUnit", 1));
+														  "firstUnit", 1));
 		secondMap.setForest(point(2, 2), new Forest("forestKind", true));
 		assertSerialization("Tile with two fixtures", secondMap, IMapNG.class);
 		final IMutableMapNG thirdMap =
@@ -231,43 +231,43 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				"Deserialization of deprecated tile-type idiom",
 				fourthMap,
 				assertNotNull(KIND_PATTERN.matcher(createSerializedForm(fourthMap, true))
-						              .replaceAll(
-								              Matcher.quoteReplacement
-										                      (oldKindProperty))),
+									  .replaceAll(
+											  Matcher.quoteReplacement
+															  (oldKindProperty))),
 				IMapNG.class, oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated tile-type idiom", fourthMap,
 				assertNotNull(KIND_PATTERN.matcher(createSerializedForm(fourthMap,
 						false))
-						              .replaceAll(
-								              Matcher.quoteReplacement
-										                      (oldKindProperty))),
+									  .replaceAll(
+											  Matcher.quoteReplacement
+															  (oldKindProperty))),
 				IMapNG.class,
 				oldKindProperty);
 		assertMissingProperty("<map version=\"2\" rows=\"1\" columns=\"1\">"
-				                      + "<tile column=\"0\" kind=\"plains\" /></map>",
+									  + "<tile column=\"0\" kind=\"plains\" /></map>",
 				IMapNG.class,
 				"row", false);
 		assertMissingProperty("<map version=\"2\" rows=\"1\" columns=\"1\">"
-				                      + "<tile row=\"0\" kind=\"plains\" /></map>",
+									  + "<tile row=\"0\" kind=\"plains\" /></map>",
 				IMapNG.class,
 				"column", false);
 		assertMissingProperty("<map version=\"2\" rows=\"1\" columns=\"1\">"
-				                      + "<tile row=\"0\" column=\"0\" /></map>",
+									  + "<tile row=\"0\" column=\"0\" /></map>",
 				IMapNG.class,
 				KIND_PROPERTY, true);
 		assertUnwantedChild(
 				encapsulateTileString("<tile row=\"2\" column=\"0\" "
-						                      + "kind=\"plains\" />"), IMapNG.class,
+											  + "kind=\"plains\" />"), IMapNG.class,
 				false);
 		final IMutableMapNG five =
 				createSimpleMap(point(3, 4), Pair.of(point(2, 3), Jungle));
 		five.addFixture(point(2, 3), new Unit(
-				                                     new Player(2, ""), "explorer",
-				                                     "name one", 1));
+													 new Player(2, ""), "explorer",
+													 "name one", 1));
 		five.addFixture(point(2, 3), new Unit(
-				                                     new Player(2, ""), "explorer",
-				                                     "name two", 2));
+													 new Player(2, ""), "explorer",
+													 "name two", 2));
 		assertEquals("Just checking ...", 2,
 				iteratorSize(five.getOtherFixtures(point(2, 3))));
 		assertSerialization("Multiple units should come through", five,
@@ -299,12 +299,12 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 						createSimpleMap(point(1, 1),
 								Pair.of(point(0, 0), NotVisible)), false));
 		assertImageSerialization("Unit image property is preserved", new Unit(
-				                                                                     new
-						                                                                     Player(5,
-						                                                                               ""),
-				                                                                     "herder",
-				                                                                     "herderName",
-				                                                                     9),
+																					 new
+																							 Player(5,
+																									   ""),
+																					 "herder",
+																					 "herderName",
+																					 9),
 				Unit.class);
 	}
 
@@ -317,7 +317,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 */
 	@Test
 	public void testSkppableSerialization() throws XMLStreamException,
-			                                               SPFormatException {
+														   SPFormatException {
 		assertEquivalentForms("Two maps, one with row tags, one without",
 				"<map rows=\"1\" columns=\"1\" version=\"2\" />",
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><row /></map>",
@@ -340,7 +340,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 */
 	@Test
 	public void testMapSerialization() throws XMLStreamException,
-			                                          SPFormatException, IOException {
+													  SPFormatException, IOException {
 		assertUnwantedChild(
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><hill /></map>",
 				IMapNG.class, false);
@@ -348,7 +348,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		player.setCurrent(true);
 		final IMutableMapNG firstMap =
 				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
-						           -1);
+								   -1);
 		firstMap.addPlayer(player);
 		final Point point = point(0, 0);
 		firstMap.setBaseTerrain(point, Plains);
@@ -368,7 +368,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 */
 	@Test
 	public void testMapNGSerialization() throws XMLStreamException,
-			                                            SPFormatException, IOException {
+														SPFormatException, IOException {
 		assertUnwantedChild(
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><hill /></map>",
 				SPMapNG.class, false);
@@ -395,24 +395,24 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 */
 	@Test
 	public void testViewSerialization() throws XMLStreamException,
-			                                           SPFormatException, IOException {
+													   SPFormatException, IOException {
 		final Player player = new Player(1, "playerOne");
 		player.setCurrent(true);
 		final IMutableMapNG firstMap =
 				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
-						           0);
+								   0);
 		firstMap.addPlayer(player);
 		final Point point = point(0, 0);
 		firstMap.setBaseTerrain(point, Steppe);
 		assertSerialization("SPMapNG serialization", firstMap, IMapNG.class);
 		assertMissingProperty("<view current_turn=\"0\">"
-				                      +
-				                      "<map version=\"2\" rows=\"1\" columns=\"1\" " +
-				                      "/></view>",
+									  +
+									  "<map version=\"2\" rows=\"1\" columns=\"1\" " +
+									  "/></view>",
 				IMapNG.class, "current_player", false);
 		assertMissingProperty("<view current_player=\"0\">"
-				                      +
-				                      "<map version=\"2\" rows=\"1\" columns=\"1\" /></view>",
+									  +
+									  "<map version=\"2\" rows=\"1\" columns=\"1\" /></view>",
 				IMapNG.class, "current_turn", false);
 		assertMissingChild("<view current_player=\"1\" current_turn=\"0\" />",
 				IMapNG.class, false);

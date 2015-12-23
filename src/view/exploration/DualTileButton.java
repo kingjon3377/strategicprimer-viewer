@@ -80,10 +80,10 @@ public final class DualTileButton extends JButton {
 		final TileDrawHelper helper = TileDrawHelperFactory.INSTANCE.factory(2,
 				this, NULL_ZOF);
 		pen.setClip(new Polygon(
-				                       new int[]{getWidth() - MARGIN, MARGIN, MARGIN},
-				                       new int[]{
-						                       MARGIN, getHeight() - MARGIN, MARGIN},
-				                       3));
+									   new int[]{getWidth() - MARGIN, MARGIN, MARGIN},
+									   new int[]{
+											   MARGIN, getHeight() - MARGIN, MARGIN},
+									   3));
 		helper.drawTileTranslated(pen, mapOne, point, getWidth(), getHeight());
 		pen.setClip(new Polygon(new int[]{getWidth() - MARGIN,
 				getWidth() - MARGIN, MARGIN}, new int[]{MARGIN,

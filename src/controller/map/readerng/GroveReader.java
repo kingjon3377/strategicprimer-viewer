@@ -66,20 +66,20 @@ public final class GroveReader implements INodeHandler<Grove> {
 	 */
 	@Override
 	public Grove parse(final StartElement element,
-	                   final Iterable<XMLEvent> stream,
-	                   final IMutablePlayerCollection players,
-	                   final Warning warner, final IDFactory idFactory)
+					   final Iterable<XMLEvent> stream,
+					   final IMutablePlayerCollection players,
+					   final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final boolean cultivated = isCultivated(element, warner);
 		final Grove fix = new Grove(
-				                           "orchard".equalsIgnoreCase(
-						                           element.getName().getLocalPart()),
-				                           cultivated,
-				                           getAttributeWithDeprecatedForm(element,
-						                           "kind",
-						                           "tree", warner),
-				                           getOrGenerateID(element, warner, idFactory));
+										   "orchard".equalsIgnoreCase(
+												   element.getName().getLocalPart()),
+										   cultivated,
+										   getAttributeWithDeprecatedForm(element,
+												   "kind",
+												   "tree", warner),
+										   getOrGenerateID(element, warner, idFactory));
 		addImage(element, fix);
 		return fix;
 	}
@@ -93,7 +93,7 @@ public final class GroveReader implements INodeHandler<Grove> {
 	 *                           missing ever.
 	 */
 	private static boolean isCultivated(final StartElement element,
-	                                    final Warning warner) throws SPFormatException {
+										final Warning warner) throws SPFormatException {
 		if (hasAttribute(element, CULTIVATED_ATTR)) {
 			return Boolean.parseBoolean(getAttribute(element, // NOPMD
 					CULTIVATED_ATTR));
@@ -102,15 +102,15 @@ public final class GroveReader implements INodeHandler<Grove> {
 					NullCleaner.assertNotNull(element.getName().getLocalPart());
 			if (hasAttribute(element, "wild")) {
 				warner.warn(new DeprecatedPropertyException(local, "wild",
-						                                           CULTIVATED_ATTR,
-						                                           element.getLocation()
-								                                           .getLineNumber()));
+																   CULTIVATED_ATTR,
+																   element.getLocation()
+																		   .getLineNumber()));
 				return !Boolean.parseBoolean(getAttribute(element,
 						"wild")); // NOPMD
 			} else {
 				throw new MissingPropertyException(local, CULTIVATED_ATTR,
-						                                  element.getLocation()
-								                                  .getLineNumber());
+														  element.getLocation()
+																  .getLineNumber());
 			}
 		}
 	}
@@ -150,9 +150,9 @@ public final class GroveReader implements INodeHandler<Grove> {
 		final SPIntermediateRepresentation retval =
 				new SPIntermediateRepresentation(tag, Pair.of(CULTIVATED_ATTR,
 						NullCleaner.assertNotNull(Boolean.toString(obj
-								                                           .isCultivated()))),
-						                                Pair.of("kind",
-								                                obj.getKind()));
+																		   .isCultivated()))),
+														Pair.of("kind",
+																obj.getKind()));
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

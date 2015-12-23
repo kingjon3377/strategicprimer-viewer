@@ -98,14 +98,14 @@ public final class FixtureFilterList extends JList<Class<? extends TileFixture>>
 	 */
 	@Override
 	public Component getListCellRendererComponent(
-			                                             @Nullable
-			                                             final JList<? extends Class<? extends TileFixture>> list,
-			                                             final Class<? extends
-					                                                         TileFixture> value,
+														 @Nullable
+														 final JList<? extends Class<? extends TileFixture>> list,
+														 final Class<? extends
+																			 TileFixture> value,
 
-			                                             final int index,
-			                                             final boolean isSelected,
-			                                             final boolean cellHasFocus) {
+														 final int index,
+														 final boolean isSelected,
+														 final boolean cellHasFocus) {
 		if (list == null) {
 			throw new IllegalArgumentException("Asked to render null list");
 		}

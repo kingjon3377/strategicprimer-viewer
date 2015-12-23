@@ -74,8 +74,8 @@ public final class ExplorationFrame extends JFrame {
 		 * @param components things to tell to validate their layout before swapping
 		 */
 		protected SwapCompletionListener(final CardLayout clayout,
-		                                 final Container parentComp,
-		                                 final Component... components) {
+										 final Container parentComp,
+										 final Component... components) {
 			layout = clayout;
 			parent = parentComp;
 			Stream.of(components).forEach(compList::add);
@@ -110,7 +110,7 @@ public final class ExplorationFrame extends JFrame {
 	 * @param ioHandler Passed to menu constructor
 	 */
 	public ExplorationFrame(final ExplorationModel emodel,
-	                        final IOHandler ioHandler) {
+							final IOHandler ioHandler) {
 		super("Exploration");
 		if (emodel.getMapFile().exists()) {
 			setTitle(emodel.getMapFile().getName() + " | Exploration");
@@ -124,15 +124,15 @@ public final class ExplorationFrame extends JFrame {
 		setLayout(layout);
 		final ExplorerSelectingPanel esp = new ExplorerSelectingPanel(emodel);
 		final ExplorationPanel explorationPanel = new ExplorationPanel(emodel,
-				                                                              esp
-						                                                              .getMPDocument());
+																			  esp
+																					  .getMPDocument());
 		emodel.addMovementCostListener(explorationPanel);
 		emodel.addSelectionChangeListener(explorationPanel);
 		final CompletionListener swapper =
 				new SwapCompletionListener(layout,
-						                          NullCleaner.assertNotNull(
-								                          getContentPane()),
-						                          explorationPanel, esp);
+												  NullCleaner.assertNotNull(
+														  getContentPane()),
+												  explorationPanel, esp);
 		esp.addCompletionListener(swapper);
 		explorationPanel.addCompletionListener(swapper);
 		add(esp);

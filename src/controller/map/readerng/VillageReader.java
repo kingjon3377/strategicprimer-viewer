@@ -61,22 +61,22 @@ public final class VillageReader implements INodeHandler<Village> {
 	 */
 	@Override
 	public Village parse(final StartElement element,
-	                     final Iterable<XMLEvent> stream,
-	                     final IMutablePlayerCollection players,
-	                     final Warning warner, final IDFactory idFactory)
+						 final Iterable<XMLEvent> stream,
+						 final IMutablePlayerCollection players,
+						 final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final int idNum = getOrGenerateID(element, warner, idFactory);
 		final Village fix = new Village(
-				                               TownStatus.parseTownStatus(
-						                               getAttribute(element, "status")),
-				                               getAttribute(element, "name", ""), idNum,
-				                               getPlayerOrIndependent(element, warner,
-						                               players),
-				                               getAttribute(element, "race",
-						                               RaceFactory.getRace(
-								                               new Random(idNum))));
+											   TownStatus.parseTownStatus(
+													   getAttribute(element, "status")),
+											   getAttribute(element, "name", ""), idNum,
+											   getPlayerOrIndependent(element, warner,
+													   players),
+											   getAttribute(element, "race",
+													   RaceFactory.getRace(
+															   new Random(idNum))));
 		addImage(element, fix);
 		return fix;
 	}
@@ -100,7 +100,7 @@ public final class VillageReader implements INodeHandler<Village> {
 	@Override
 	public <S extends Village> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "village");
+																							"village");
 		retval.addAttribute("status", obj.status().toString());
 		if (!obj.getName().isEmpty()) {
 			retval.addAttribute("name", obj.getName());

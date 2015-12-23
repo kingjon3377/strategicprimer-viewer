@@ -47,7 +47,7 @@ import util.TypesafeLogger;
  * @author Jonathan Lovelace
  */
 public final class JobTreeModel implements TreeModel, UnitMemberListener,
-		                                           AddRemoveListener {
+												   AddRemoveListener {
 	/**
 	 * The listeners registered to listen for model changes.
 	 */
@@ -68,7 +68,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			                                     .getLogger(WorkerTreeModel.class);
+												 .getLogger(WorkerTreeModel.class);
 
 	/**
 	 * Set the selection model for the tree we're the model for.
@@ -97,14 +97,14 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	public HasName getChild(@Nullable final Object parent, final int index) {
 		final IWorker currRoot = root;
 		if ((index >= 0) && (currRoot != null) && (parent instanceof IWorker)
-				    && parent.equals(currRoot)) {
+					&& parent.equals(currRoot)) {
 			return getFromIter(currRoot, index); // NOPMD
 		} else if ((index >= 0) && (parent instanceof IJob)) {
 			return getFromIter((IJob) parent, index); // NOPMD
 		} else {
 			throw new ArrayIndexOutOfBoundsException(
-					                                        "Parent does not have that " +
-							                                        "child.");
+															"Parent does not have that " +
+																	"child.");
 		}
 	}
 
@@ -121,9 +121,9 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 				iter.next();
 			} else {
 				throw new ArrayIndexOutOfBoundsException(
-						                                        "Parent does not have " +
-								                                        "that many " +
-								                                        "children");
+																"Parent does not have " +
+																		"that many " +
+																		"children");
 			}
 		}
 		if (iter.hasNext()) {
@@ -134,8 +134,8 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 			return retval; // NOPMD
 		} else {
 			throw new ArrayIndexOutOfBoundsException(
-					                                        "Parent does not have that " +
-							                                        "many children");
+															"Parent does not have that " +
+																	"many children");
 		}
 	}
 
@@ -148,13 +148,13 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 		if ((parent instanceof IWorker) || (parent instanceof IJob)) {
 			return (int) StreamSupport.stream(((Iterable<?>) parent).spliterator(),
 					false)
-					             .count();
+								 .count();
 		} else if (parent instanceof ISkill) {
 			return 0; // NOPMD
 		} else {
 			throw new IllegalArgumentException(
-					                                  "Not a possible member of the " +
-							                                  "tree");
+													  "Not a possible member of the " +
+															  "tree");
 		}
 	}
 
@@ -173,7 +173,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 */
 	@Override
 	public void valueForPathChanged(@Nullable final TreePath path,
-	                                @Nullable final Object newValue) {
+									@Nullable final Object newValue) {
 		LOGGER.severe("valueForPathChanged needs to be implemented");
 	}
 
@@ -184,7 +184,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 */
 	@Override
 	public int getIndexOfChild(@Nullable final Object parent,
-	                           @Nullable final Object child) {
+							   @Nullable final Object child) {
 		if ((parent instanceof IWorker) || (parent instanceof IJob)) {
 			// TODO: Ought to be able to do this with the Stream API
 			int index = 0;
@@ -230,25 +230,25 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 			final int childCount = getChildCount(currRoot);
 			currRoot.addJob(job);
 			fireTreeNodesInserted(new TreeModelEvent(this, new TreePath(
-					                                                           currRoot),
-					                                        arrayOfInt(childCount),
-					                                        arrayOfObj(job)));
+																			   currRoot),
+															arrayOfInt(childCount),
+															arrayOfObj(job)));
 		} else if ("skill".equals(category)) {
 			final TreePath selPath = tsm.getSelectionPath();
 			if ((selPath != null)
-					    && (selPath.getLastPathComponent() instanceof IJob)) {
+						&& (selPath.getLastPathComponent() instanceof IJob)) {
 				final IJob job = (IJob) selPath.getLastPathComponent();
 				final ISkill skill = new Skill(addendum, 0, 0);
 				final int childCount = getChildCount(job);
 				job.addSkill(skill);
 				fireTreeNodesInserted(new TreeModelEvent(this, new TreePath(
-						                                                           new
-								                                                           Object[]{
-								                                                           root,
-								                                                           job}),
+																				   new
+																						   Object[]{
+																						   root,
+																						   job}),
 
-						                                        arrayOfInt(childCount),
-						                                        arrayOfObj(skill)));
+																arrayOfInt(childCount),
+																arrayOfObj(skill)));
 			}
 		}
 	}
@@ -259,7 +259,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 */
 	@Override
 	public void memberSelected(@Nullable final UnitMember old,
-	                           @Nullable final UnitMember selected) {
+							   @Nullable final UnitMember selected) {
 		if (selected instanceof IWorker) {
 			root = (IWorker) selected;
 			fireTreeStructureChanged(new TreeModelEvent(this, new TreePath(root)));
