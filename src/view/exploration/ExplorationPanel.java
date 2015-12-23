@@ -1,8 +1,6 @@
 package view.exploration;
 
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.text.NumberFormat;
@@ -14,13 +12,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.InputMap;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.text.Document;
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
@@ -64,8 +56,7 @@ import view.util.ListenedButton;
  * @author Jonathan Lovelace
  */
 public final class ExplorationPanel extends BorderedPanel
-		implements ActionListener, SelectionChangeListener, CompletionSource,
-				           MovementCostListener {
+		implements SelectionChangeListener, CompletionSource, MovementCostListener {
 	/**
 	 * The label showing the current location of the explorer.
 	 */
@@ -173,7 +164,11 @@ public final class ExplorationPanel extends BorderedPanel
 	public ExplorationPanel(final IExplorationModel emodel, final Document mpDoc) {
 		model = emodel;
 		final BoxPanel headerPanel = new BoxPanel(true);
-		headerPanel.add(new ListenedButton(BACK_TEXT, this));
+		headerPanel.add(new ListenedButton(BACK_TEXT, evt -> {
+			for (final CompletionListener list : cListeners) {
+				list.stopWaitingOn(true);
+			}
+		}));
 		headerPanel.add(locLabel);
 		headerPanel.add(new JLabel("Remaining Movement Points: "));
 		mpField = new JTextField(mpDoc, null, 5);
@@ -212,20 +207,6 @@ public final class ExplorationPanel extends BorderedPanel
 			}
 		}
 		return panel;
-	}
-
-	/**
-	 * Handle a button press.
-	 *
-	 * @param evt the event to handle.
-	 */
-	@Override
-	public void actionPerformed(@Nullable final ActionEvent evt) {
-		if ((evt != null) && BACK_TEXT.equalsIgnoreCase(evt.getActionCommand())) {
-			for (final CompletionListener list : cListeners) {
-				list.stopWaitingOn(true);
-			}
-		}
 	}
 
 	/**
