@@ -53,6 +53,7 @@ import util.PairComparator;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("UtilityClassCanBeEnum")
 public final class ReportGenerator {
 	/**
 	 * No non-static members anymore.

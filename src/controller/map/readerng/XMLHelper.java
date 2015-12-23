@@ -43,6 +43,7 @@ import util.Warning;
  * @author Jonathan Lovelace
  * @deprecated ReaderNG is deprecated
  */
+@SuppressWarnings("UtilityClassCanBeEnum")
 @Deprecated
 public final class XMLHelper {
 	/**

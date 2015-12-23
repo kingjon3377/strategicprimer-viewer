@@ -22,6 +22,7 @@ package view.util;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("UtilityClassCanBeEnum")
 public final class DriverQuit {
 	/**
 	 * Do not instantiate.

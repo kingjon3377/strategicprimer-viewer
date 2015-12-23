@@ -24,6 +24,7 @@ import java.util.Random;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("UtilityClassCanBeEnum")
 public final class SingletonRandom {
 	/**
 	 * The singleton Random.

@@ -26,7 +26,7 @@ import controller.map.readerng.MapReaderNG;
  *
  * @author Jonathan Lovelace
  */
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"deprecation", "UtilityClassCanBeEnum"})
 public final class TestReaderFactory {
 	/**
 	 * Do not instantiate.

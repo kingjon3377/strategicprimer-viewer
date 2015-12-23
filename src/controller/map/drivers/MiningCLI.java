@@ -35,6 +35,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("UtilityClassCanBeEnum")
 public final class MiningCLI {
 	/**
 	 * Do not instantiate.

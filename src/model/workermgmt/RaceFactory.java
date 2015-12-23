@@ -28,6 +28,7 @@ import util.SingletonRandom;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("UtilityClassCanBeEnum")
 public final class RaceFactory {
 	/**
 	 * A list of races.

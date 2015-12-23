@@ -39,6 +39,7 @@ import util.EqualsAny;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("UtilityClassCanBeEnum")
 public final class SimpleMovement {
 	/**
 	 * Do not instantiate.

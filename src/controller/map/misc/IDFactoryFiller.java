@@ -33,6 +33,7 @@ import util.Pair;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("UtilityClassCanBeEnum")
 public final class IDFactoryFiller {
 	/**
 	 * Don't instantiate.

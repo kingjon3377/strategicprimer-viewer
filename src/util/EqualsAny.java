@@ -27,6 +27,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("UtilityClassCanBeEnum")
 public final class EqualsAny {
 	/**
 	 * Do not instantiate.

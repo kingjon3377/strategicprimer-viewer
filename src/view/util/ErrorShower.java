@@ -26,6 +26,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("UtilityClassCanBeEnum")
 public final class ErrorShower {
 	/**
 	 * Do not instantiate.

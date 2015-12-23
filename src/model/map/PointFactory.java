@@ -28,6 +28,7 @@ import static util.NullCleaner.assertNotNull;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("UtilityClassCanBeEnum")
 public final class PointFactory {
 	/**
 	 * Whether to use the cache.

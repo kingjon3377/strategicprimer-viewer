@@ -27,6 +27,7 @@ import java.util.logging.Logger;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("UtilityClassCanBeEnum")
 public final class IsNumeric {
 	/**
 	 * Logger.

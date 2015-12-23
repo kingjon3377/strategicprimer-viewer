@@ -26,6 +26,7 @@ import java.util.List;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("UtilityClassCanBeEnum")
 public final class Sorter {
 	/**
 	 * Do not instantiate.
