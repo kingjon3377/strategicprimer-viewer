@@ -1,6 +1,6 @@
 package view.exploration;
 
-import java.awt.*;
+import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.text.NumberFormat;
@@ -12,7 +12,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
+import javax.swing.InputMap;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.text.Document;
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
