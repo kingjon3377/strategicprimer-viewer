@@ -91,8 +91,8 @@ public final class GriffinReader implements INodeHandler<Griffin> {
 	 */
 	@Override
 	public <S extends Griffin> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "griffin");
+		final SPIntermediateRepresentation retval =
+				new SPIntermediateRepresentation("griffin");
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

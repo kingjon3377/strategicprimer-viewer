@@ -101,41 +101,48 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 				    || !areFloatsEqual(backgroundShape.getHeight(), height)) {
 			backgroundShape = new Rectangle(0, 0, width, height);
 			rivers.clear();
-			rivers.put(River.East, new Rectangle2D.Double(width * RiverLongDimension.constant, height
-					                                                           *
-					                                                           RiverShortStart.constant,
-					                                             width * RiverLongDimension.constant,
-					                                             height * RiverShortDimension.constant));
-			rivers.put(River.Lake, new Ellipse2D.Double(width * LakeStart.constant, height
-					                                                          * LakeStart.constant,
-					                                           width * RiverLongDimension.constant,
-					                                           height * RiverLongDimension.constant));
-			rivers.put(River.North, new Rectangle2D.Double(width
-					                                               * RiverShortStart.constant, 0,
-					                                              width * RiverShortDimension.constant,
-					                                              height * RiverLongDimension.constant));
-			rivers.put(River.South, new Rectangle2D.Double(width
-					                                               * RiverShortStart.constant,
-					                                              height * RiverLongDimension.constant,
-					                                              width * RiverShortDimension.constant,
-					                                              height * RiverLongDimension.constant));
-			rivers.put(River.West, new Rectangle2D.Double(0, height
-					                                                 * RiverShortStart.constant,
-					                                             width * RiverLongDimension.constant,
-					                                             height * RiverShortDimension.constant));
-			fort = new Rectangle2D.Double((width * FortStart.constant) - 1.0, (height
-					                                                         *
-					                                                         FortStart.constant) -
-					                                                        1.0,
-					                             width * FortSize.constant, height * FortSize.constant);
-			unit = new Ellipse2D.Double(width * LakeStart.constant, height * LakeStart.constant, width
-					                                                         * LakeStart.constant,
+			rivers.put(River.East,
+					new Rectangle2D.Double(width * RiverLongDimension.constant,
+							                      height * RiverShortStart.constant,
+							                      width * RiverLongDimension.constant,
+							                      height * RiverShortDimension.constant));
+			rivers.put(River.Lake, new Ellipse2D.Double(width * LakeStart.constant,
+					                                           height *
+							                                           LakeStart.constant,
+
+					                                           width *
+							                                           RiverLongDimension.constant,
+					                                           height *
+							                                           RiverLongDimension.constant));
+			rivers.put(River.North,
+					new Rectangle2D.Double(width * RiverShortStart.constant, 0,
+							                      width * RiverShortDimension.constant,
+							                      height * RiverLongDimension.constant));
+			rivers.put(River.South,
+					new Rectangle2D.Double(width * RiverShortStart.constant,
+							                      height * RiverLongDimension.constant,
+							                      width * RiverShortDimension.constant,
+							                      height * RiverLongDimension.constant));
+			rivers.put(River.West,
+					new Rectangle2D.Double(0, height * RiverShortStart.constant,
+							                      width * RiverLongDimension.constant,
+							                      height * RiverShortDimension.constant));
+			fort = new Rectangle2D.Double((width * FortStart.constant) - 1.0,
+					                             (height * FortStart.constant) - 1.0,
+					                             width * FortSize.constant,
+					                             height * FortSize.constant);
+			unit = new Ellipse2D.Double(width * LakeStart.constant,
+					                           height * LakeStart.constant,
+					                           width * LakeStart.constant,
 					                           height * LakeStart.constant);
-			event = new Polygon(new int[]{
-					(int) Math.round(width * EventStart.constant),
-					(int) Math.round(width * RiverLongDimension.constant), width}, new int[]{0,
-					(int) Math.round(height * RiverLongDimension.constant),
-					(int) Math.round(height * RiverLongDimension.constant)}, MISC_EVENT_SIDES);
+			event = new Polygon(new int[]{(int) Math.round(width * EventStart.constant),
+					(int) Math.round(width * RiverLongDimension.constant), width},
+					                   new int[]{0, (int) Math.round(
+							                   height * RiverLongDimension.constant),
+							                   (int) Math.round(height *
+									                                    RiverLongDimension.constant)},
+
+					                   MISC_EVENT_SIDES);
 		}
 	}
 

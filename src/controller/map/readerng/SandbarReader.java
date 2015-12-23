@@ -91,8 +91,8 @@ public final class SandbarReader implements INodeHandler<Sandbar> {
 	 */
 	@Override
 	public <S extends Sandbar> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "sandbar");
+		final SPIntermediateRepresentation retval =
+				new SPIntermediateRepresentation("sandbar");
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

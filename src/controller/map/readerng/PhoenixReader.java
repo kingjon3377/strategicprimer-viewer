@@ -91,8 +91,8 @@ public final class PhoenixReader implements INodeHandler<Phoenix> {
 	 */
 	@Override
 	public <S extends Phoenix> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "phoenix");
+		final SPIntermediateRepresentation retval =
+				new SPIntermediateRepresentation("phoenix");
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

@@ -84,9 +84,8 @@ public final class ReaderAdapter implements INodeHandler<Object> {
 	 * Map from tags to readers. Initializer moved to static block below because here it
 	 * made the line *way* too long.
 	 */
-	private static final Map<String, INodeHandler<@NonNull ?>> READ_CACHE = new
-			                                                                        TreeMap<>(
-			                                                                                     String.CASE_INSENSITIVE_ORDER);
+	private static final Map<String, INodeHandler<@NonNull ?>> READ_CACHE =
+			new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	/**
 	 * Map from writable objects to writers. Initializer in static block below.
 	 */

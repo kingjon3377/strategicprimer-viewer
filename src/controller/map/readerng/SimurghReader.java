@@ -91,8 +91,8 @@ public final class SimurghReader implements INodeHandler<Simurgh> {
 	 */
 	@Override
 	public <S extends Simurgh> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "simurgh");
+		final SPIntermediateRepresentation retval =
+				new SPIntermediateRepresentation("simurgh");
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

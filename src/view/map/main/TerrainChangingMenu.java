@@ -39,10 +39,9 @@ import view.worker.NewUnitDialog;
  *
  * @author Jonathan Lovelace
  */
-public final class TerrainChangingMenu extends JPopupMenu implements ActionListener,
-		                                                                     VersionChangeListener,
-		                                                                     SelectionChangeSource,
-		                                                                     SelectionChangeListener {
+public final class TerrainChangingMenu extends JPopupMenu
+		implements ActionListener, VersionChangeListener, SelectionChangeSource,
+				           SelectionChangeListener {
 	/**
 	 * The driver model.
 	 */

@@ -91,8 +91,8 @@ public final class MinotaurReader implements INodeHandler<Minotaur> {
 	 */
 	@Override
 	public <S extends Minotaur> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "minotaur");
+		final SPIntermediateRepresentation retval =
+				new SPIntermediateRepresentation("minotaur");
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

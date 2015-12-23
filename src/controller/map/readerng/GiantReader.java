@@ -94,10 +94,8 @@ public final class GiantReader implements INodeHandler<Giant> {
 	 */
 	@Override
 	public <S extends Giant> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "giant",
-				                                                                            Pair.of("kind",
-						                                                                            obj.getKind()));
+		final SPIntermediateRepresentation retval =
+				new SPIntermediateRepresentation("giant", Pair.of("kind", obj.getKind()));
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;
