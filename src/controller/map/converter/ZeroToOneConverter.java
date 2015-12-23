@@ -13,7 +13,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.StreamSupport;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
@@ -32,8 +31,7 @@ import util.TypesafeLogger;
  *
  * We ignore namespaces, as I'm not sure quite how to handle them.
  *
- * TODO: Write tests. FIXME: This class instantiates too many StringBuilders. Methods
- * should probably take Appendable and be passed *one* StringBuilder per run.
+ * TODO: Write tests.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -69,40 +67,41 @@ public final class ZeroToOneConverter {
 
 	/**
 	 * @param stream a stream representing a SP map, format version 0
-	 * @return the XML representing an equivalent map, format version 1.
+	 * @param ostream the stream to write the equivalent map, format version 1, to
+	 * @throws IOException on I/O error writing to ostream
 	 */
-	public static String convert(final Iterable<XMLEvent> stream) {
-		final StringBuilder builder = new StringBuilder(64);
+	public static void convert(final Iterable<XMLEvent> stream, Appendable ostream)
+			throws IOException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final StartElement selement =
 						NullCleaner.assertNotNull(event.asStartElement());
 				if ("tile".equalsIgnoreCase(selement.getName()
 													.getLocalPart())) {
-					builder.append(convertTile(selement,
-							iFactory(selement.getAttributes())));
+					convertTile(ostream, selement,
+							iFactory(selement.getAttributes()));
 				} else if ("map".equalsIgnoreCase(selement
 														  .getName().getLocalPart())) {
-					builder.append(convertMap(selement,
-							iFactory(selement.getAttributes())));
+					convertMap(ostream, selement,
+							iFactory(selement.getAttributes()));
 				} else {
-					builder.append(printStartElement(selement));
+					printStartElement(ostream, selement);
 				}
 
 			} else if (event.isCharacters()) {
-				builder.append(event.asCharacters().getData().trim());
+				ostream.append(event.asCharacters().getData().trim());
 			} else if (event.isEndElement()) {
-				builder.append(printEndElement(NullCleaner.assertNotNull(event
+				ostream.append(printEndElement(NullCleaner.assertNotNull(event
 																				 .asEndElement())));
 			} else if (event.isStartDocument()) {
-				builder.append("<?xml version=\"1.0\"?>\n");
+				ostream.append("<?xml version=\"1.0\"?>\n");
 			} else if (event.isEndDocument()) {
 				break;
 			} else {
 				LOGGER.warning("Unhandled element type " + event.getEventType());
 			}
 		}
-		return NullCleaner.assertNotNull(builder.toString());
+		ostream.append('\n');
 	}
 
 	/**
@@ -110,22 +109,21 @@ public final class ZeroToOneConverter {
 	 *
 	 * @param element the map element
 	 * @param attrs   its attributes
-	 * @return the converted tag, in XML representation.
+	 * @param ostream the stream to which to write the converted tag, in XML representation.
+	 * @throws IOException on I/O error writing to ostream
 	 */
-	private static String convertMap(final StartElement element,
-									 final Iterable<Attribute> attrs) {
-		final StringBuilder builder = new StringBuilder(64);
-		builder.append('<');
-		builder.append(element.getName().getLocalPart());
+	private static void convertMap(final Appendable ostream, final StartElement element,
+									 final Iterable<Attribute> attrs) throws IOException {
+		ostream.append('<');
+		ostream.append(element.getName().getLocalPart());
 		for (final Attribute attr : attrs) {
 			if ("version".equalsIgnoreCase(attr.getName().getLocalPart())) {
-				builder.append(" version=\"1\"");
+				ostream.append(" version=\"1\"");
 			} else {
-				builder.append(printAttribute(attr));
+				ostream.append(printAttribute(attr));
 			}
 		}
-		builder.append('>');
-		return NullCleaner.assertNotNull(builder.toString());
+		ostream.append('>');
 	}
 
 	/**
@@ -134,14 +132,15 @@ public final class ZeroToOneConverter {
 	 *
 	 * @param element the current element
 	 * @param attrs   its attributes.
-	 * @return the converted tile, in XML representation
+	 * @param ostream the stream to which to write the converted tile, in XML representation
 	 * @throws NumberFormatException if a tile has a non-numeric 'event'
+	 * @throws IOException on I/O error writing to ostream
 	 */
-	private static String convertTile(final StartElement element,
-									  final Iterable<Attribute> attrs) {
-		final StringBuilder builder = new StringBuilder(64);
-		builder.append('<');
-		builder.append(element.getName().getLocalPart());
+	private static void convertTile(final Appendable ostream, final StartElement element,
+									  final Iterable<Attribute> attrs)
+			throws IOException {
+		ostream.append('<');
+		ostream.append(element.getName().getLocalPart());
 		final Deque<Integer> events = new LinkedList<>();
 		for (final Attribute attr : attrs) {
 			if ("event".equalsIgnoreCase(attr.getName().getLocalPart())) {
@@ -156,15 +155,14 @@ public final class ZeroToOneConverter {
 					LOGGER.log(Level.SEVERE, "Non-numeric 'event'", e);
 				}
 			} else {
-				builder.append(printAttribute(attr));
+				ostream.append(printAttribute(attr));
 			}
 		}
-		builder.append('>');
+		ostream.append('>');
 		while (!events.isEmpty()) {
-			builder.append('\n');
-			builder.append(getEventXML(NullCleaner.assertNotNull(events.pop())));
+			ostream.append('\n');
+			ostream.append(getEventXML(NullCleaner.assertNotNull(events.pop())));
 		}
-		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
@@ -214,18 +212,19 @@ public final class ZeroToOneConverter {
 	 * Print a start element.
 	 *
 	 * @param element the element
-	 * @return its XML representation.
+	 * @param ostream the stream to which to write its XML representation.
+	 * @throws IOException on I/O error writing to ostream
 	 */
-	private static String printStartElement(final StartElement element) {
-		final StringBuilder builder = new StringBuilder(64).append('<');
-		builder.append(element.getName().getLocalPart());
+	private static void printStartElement(final Appendable ostream, final StartElement element)
+
+			throws IOException {
+		ostream.append(element.getName().getLocalPart());
 		// getAttributes() isn't actually genericized, so diamond causes compile error
 		//noinspection Convert2Diamond
-		StreamSupport.stream(new IteratorWrapper<Attribute>(element.getAttributes())
-									 .spliterator(), false)
-				.map(ZeroToOneConverter::printAttribute).forEach(builder::append);
-		builder.append('>');
-		return NullCleaner.assertNotNull(builder.toString());
+		for (Attribute attr : new IteratorWrapper<Attribute>(element.getAttributes())) {
+			ostream.append(printAttribute(attr));
+		}
+		ostream.append('>');
 	}
 
 	/**
@@ -293,10 +292,9 @@ public final class ZeroToOneConverter {
 	public static void main(final String... args) {
 		for (final String arg : args) {
 			try (final Reader reader = new FileReader(arg)) { // NOPMD
-				System.out.println(
-						convert(new IteratorWrapper<>(XMLInputFactory.newInstance()
-															  .createXMLEventReader(
-																	  reader))));
+				convert(new IteratorWrapper<>(XMLInputFactory.newInstance()
+						                              .createXMLEventReader(reader)),
+						System.out);
 			} catch (final FileNotFoundException except) {
 				LOGGER.log(Level.SEVERE, "File " + arg + " not found", except);
 				continue;
