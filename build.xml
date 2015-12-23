@@ -15,7 +15,8 @@
   <property file="paths.local.properties" />
   <property file="paths.properties" />
 
-  <!-- Paths within the repository. This should just work, so long as the directories exist. -->
+  <!-- Paths within the repository. This should just work, so long
+       as the directories exist. -->
   <path id="junit.classpath">
     <!-- See comment in paths.properties. -->
     <pathelement location="${junit.jar.path}" />
@@ -56,7 +57,8 @@
     <arg value="--get" />
     <arg value="user.email" />
     </exec>
-    <property name="scm.builder" value="${scm.builder.username} &lt;${scm.builder.email}&gt;" />
+    <property name="scm.builder"
+              value="${scm.builder.username} &lt;${scm.builder.email}&gt;" />
     <echo message="${scm.builder}" />
   </target>
 
@@ -83,7 +85,8 @@
     </javac>
   </target>
   <target name="doc" depends="init">
-    <javadoc sourcepath="${source_dir}" defaultexcludes="yes" destdir="${javadoc_dir}" author="true">
+    <javadoc sourcepath="${source_dir}" defaultexcludes="yes" destdir="${javadoc_dir}"
+             author="true">
       <arg value="-notimestamp" />
       <tag name="todo" scope="all" description="To do:"/>
       <tag name="fixme" scope="all" description="FIXME:" />
@@ -93,22 +96,27 @@
   
   <!-- Test targets -->
   <target name="test" depends="build">
-    <echo message='If Ant fails to find JUnit task on a Gentoo system, run with ANT_TASKS="ant-junit4 jarbundler" in the environment.' />
+    <echo message='If Ant fails to find JUnit task on a Gentoo system,' />
+    <echo message='run with ANT_TASKS="ant-junit4 jarbundler" in the environment.' />
     <mkdir dir="${junit.output.dir}" />
     <junit fork="yes" printsummary="withOutAndErr" failureproperty="junit.failure">
       <formatter type="xml" />
       <!-- TODO: run all tests, dynamically detected, rather than listing them. -->
       <test name="controller.exploration.TestTableLoader" todir="${junit.output.dir}" />
-      <test name="model.exploration.old.TestExplorationRunner" todir="${junit.output.dir}" />
+      <test name="model.exploration.old.TestExplorationRunner"
+            todir="${junit.output.dir}" />
       <test name="model.map.TestSerialization" todir="${junit.output.dir}" />
       <test name="model.map.TestSubsets" todir="${junit.output.dir}" />
       <test name="model.map.TestEventSerialization" todir="${junit.output.dir}" />
-      <test name="model.map.fixtures.TestFixtureSerialization" todir="${junit.output.dir}" />
-      <test name="model.map.fixtures.TestMoreFixtureSerialization" todir="${junit.output.dir}" />
+      <test name="model.map.fixtures.TestFixtureSerialization"
+            todir="${junit.output.dir}" />
+      <test name="model.map.fixtures.TestMoreFixtureSerialization"
+            todir="${junit.output.dir}" />
       <test name="model.viewer.PointIteratorTest" todir="${junit.output.dir}" />
       <test name="model.workermgmt.TestWorkerModel" todir="${junit.output.dir}" />
       <test name="controller.map.converter.TestConverter" todir="${junit.output.dir}" />
-      <test name="model.map.fixtures.mobile.worker.TestProxyWorker" todir="${junit.output.dir}" />
+      <test name="model.map.fixtures.mobile.worker.TestProxyWorker"
+            todir="${junit.output.dir}" />
       <classpath refid="viewer.classpath" />
     </junit>
     <fail if="junit.failure" message="Unit test(s) failed. See reports." />
@@ -116,7 +124,8 @@
 
   <!-- Targets to run static analysis. -->
   <target name="check" depends="build">
-    <echo message='If Ant fails to find static-analysis tasks on a Gentoo system, run with ANT_TASKS="checkstyle" in the environment.' />
+    <echo message='If Ant fails to find static-analysis tasks on a Gentoo system,' />
+    <echo message='run with ANT_TASKS="checkstyle" in the environment.' />
     <cs:checkstyle config="checkstyle.xml">
       <fileset dir="src" includes="**/*.java" />
       <formatter type="plain" />
