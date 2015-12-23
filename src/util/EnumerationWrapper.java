@@ -53,7 +53,8 @@ public final class EnumerationWrapper<@NonNull T> implements Iterator<@NonNull T
 	 * @return the next element
 	 * @throws NoSuchElementException if no more elements
 	 */
-	@SuppressWarnings("IteratorNextCanNotThrowNoSuchElementException")
+	@SuppressWarnings(
+			{"IteratorNextCanNotThrowNoSuchElementException", "ThrowsRuntimeException"})
 	@Override
 	public T next()
 			throws NoSuchElementException { // NOPMD: @throws required by superclass
