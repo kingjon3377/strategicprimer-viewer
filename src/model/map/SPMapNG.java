@@ -206,11 +206,11 @@ public class SPMapNG implements IMutableMapNG {
 				for (final TileFixture fix : getOtherFixtures(point)) {
 					final Integer idNum =
 							NullCleaner.assertNotNull(Integer.valueOf(fix.getID()));
-					if (fix instanceof SubsettableFixture) {
+					if (fix instanceof IUnit) {
+						ourUnits.put(idNum, (IUnit) fix);
+					} else if (fix instanceof SubsettableFixture) {
 						ourSubsettables.put(idNum,
 								(SubsettableFixture) fix);
-					} else if (fix instanceof IUnit) {
-						ourUnits.put(idNum, (IUnit) fix);
 					} else {
 						ourFixtures.add(fix);
 					}
