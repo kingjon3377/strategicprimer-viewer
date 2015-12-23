@@ -9,13 +9,13 @@ import model.map.River;
 import model.map.TileType;
 import view.util.Coordinate;
 
-import static view.util.DrawingNumericConstants.EIGHT;
-import static view.util.DrawingNumericConstants.FOUR;
-import static view.util.DrawingNumericConstants.SEVEN_SIXTEENTHS;
-import static view.util.DrawingNumericConstants.THREE;
-import static view.util.DrawingNumericConstants.THREE_QUARTERS;
-import static view.util.DrawingNumericConstants.TWO;
-import static view.util.DrawingNumericConstants.TWO_THIRDS;
+import static view.util.DrawingNumericConstants.EventStart;
+import static view.util.DrawingNumericConstants.FortSize;
+import static view.util.DrawingNumericConstants.FortStart;
+import static view.util.DrawingNumericConstants.LakeStart;
+import static view.util.DrawingNumericConstants.RiverLongDimension;
+import static view.util.DrawingNumericConstants.RiverShortDimension;
+import static view.util.DrawingNumericConstants.RiverShortStart;
 
 /**
  * A TileDrawHelper that doesn't create Shapes, but draws directly. If this is faster,
@@ -71,33 +71,33 @@ public final class DirectTileDrawHelper extends AbstractTileDrawHelper {
 			}
 			if (hasAnyForts(map, location)) {
 				context.setColor(FORT_COLOR);
-				context.fillRect(((int) Math.round(dims.x * TWO_THIRDS)
+				context.fillRect(((int) Math.round(dims.x * FortStart.constant)
 						                  - 1) + position.x,
-						((int) Math.round(dims.y * TWO_THIRDS) - 1)
+						((int) Math.round(dims.y * FortStart.constant) - 1)
 								+ position.y,
-						(int) Math.round(dims.x / THREE),
-						(int) Math.round(dims.y / THREE));
+						(int) Math.round(dims.x * FortSize.constant),
+						(int) Math.round(dims.y * FortSize.constant));
 			}
 			if (hasAnyUnits(map, location)) {
 				context.setColor(UNIT_COLOR);
-				context.fillOval((int) Math.round(dims.x / FOUR)
-						                 + position.x, (int) Math.round(dims.y / FOUR)
+				context.fillOval((int) Math.round(dims.x * LakeStart.constant)
+						                 + position.x, (int) Math.round(dims.y * LakeStart.constant)
 								                               + position.y,
-						(int) Math.round(dims.x / FOUR),
-						(int) Math.round(dims.y / FOUR));
+						(int) Math.round(dims.x * LakeStart.constant),
+						(int) Math.round(dims.y * LakeStart.constant));
 			} else if (hasEvent(map, location)) {
 				context.setColor(EVENT_COLOR);
 				context.fillPolygon(
 						new int[]{
-								(int) Math.round(dims.x * THREE_QUARTERS)
+								(int) Math.round(dims.x * EventStart.constant)
 										+ position.x,
-								(int) Math.round(dims.x / TWO)
+								(int) Math.round(dims.x * RiverLongDimension.constant)
 										+ position.x, dims.x + position.x},
 						new int[]{
 								position.y,
-								(int) Math.round(dims.y / TWO)
+								(int) Math.round(dims.y * RiverLongDimension.constant)
 										+ position.y,
-								(int) Math.round(dims.y / TWO)
+								(int) Math.round(dims.y * RiverLongDimension.constant)
 										+ position.y}, MISC_EVENT_SIDES);
 			}
 		} finally {
@@ -138,32 +138,32 @@ public final class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	                              final int height) {
 		switch (river) {
 		case East:
-			pen.fillRect((int) Math.round(width / TWO) + xCoord,
-					(int) Math.round(height * SEVEN_SIXTEENTHS) + yCoord,
-					(int) Math.round(width / TWO),
-					(int) Math.round(height / EIGHT));
+			pen.fillRect((int) Math.round(width * RiverLongDimension.constant) + xCoord,
+					(int) Math.round(height * RiverShortStart.constant) + yCoord,
+					(int) Math.round(width * RiverLongDimension.constant),
+					(int) Math.round(height * RiverShortDimension.constant));
 			break;
 		case Lake:
-			pen.fillOval((int) Math.round(width / FOUR) + xCoord,
-					(int) Math.round(height / FOUR) + yCoord,
-					(int) Math.round(width / TWO),
-					(int) Math.round(height / TWO));
+			pen.fillOval((int) Math.round(width * LakeStart.constant) + xCoord,
+					(int) Math.round(height * LakeStart.constant) + yCoord,
+					(int) Math.round(width * RiverLongDimension.constant),
+					(int) Math.round(height * RiverLongDimension.constant));
 			break;
 		case North:
-			pen.fillRect((int) Math.round(width * SEVEN_SIXTEENTHS) + xCoord,
-					yCoord, (int) Math.round(width / EIGHT),
-					(int) Math.round(height / TWO));
+			pen.fillRect((int) Math.round(width * RiverShortStart.constant) + xCoord,
+					yCoord, (int) Math.round(width * RiverShortDimension.constant),
+					(int) Math.round(height * RiverLongDimension.constant));
 			break;
 		case South:
-			pen.fillRect((int) Math.round(width * SEVEN_SIXTEENTHS) + xCoord,
-					(int) Math.round(height / TWO) + yCoord,
-					(int) Math.round(width / EIGHT),
-					(int) Math.round(height / TWO));
+			pen.fillRect((int) Math.round(width * RiverShortStart.constant) + xCoord,
+					(int) Math.round(height * RiverLongDimension.constant) + yCoord,
+					(int) Math.round(width * RiverShortDimension.constant),
+					(int) Math.round(height * RiverLongDimension.constant));
 			break;
 		case West:
-			pen.fillRect(xCoord, (int) Math.round(height * SEVEN_SIXTEENTHS)
-					                     + yCoord, (int) Math.round(width / TWO),
-					(int) Math.round(height / EIGHT));
+			pen.fillRect(xCoord, (int) Math.round(height * RiverShortStart.constant)
+					                     + yCoord, (int) Math.round(width * RiverLongDimension.constant),
+					(int) Math.round(height * RiverShortDimension.constant));
 			break;
 		default:
 			// Shouldn't get here, but let's ignore it anyway

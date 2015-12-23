@@ -22,42 +22,47 @@ package view.util;
  *
  * @author Jonathan Lovelace
  */
-public final class DrawingNumericConstants {
+public enum DrawingNumericConstants {
 	/**
-	 * Eight as a double. Used to make rivers take up 1/8 of the tile in their short
-	 * dimension.
+	 * The part of a tile's width or height a river's short dimension should occupy.
 	 */
-	public static final double EIGHT = 8.0;
+	RiverShortDimension(1.0 / 8.0),
 	/**
-	 * 7/16: where the short side of a river starts, along the edge of the tile.
+	 * Where the short side of a river starts, along the edge of the tile.
 	 */
-	public static final double SEVEN_SIXTEENTHS = 7.0 / 16.0;
+	RiverShortStart(7.0 / 16.0),
 	/**
-	 * Two as a double.
+	 * The part of a tile's width or height its long dimension should occupy.
+	 *
+	 * FIXME: This gets used for drawing things other than rivers; it should be split.
 	 */
-	public static final double TWO = 2.0;
+	RiverLongDimension(1.0 / 2.0),
 	/**
-	 * Four as a double.
+	 * How far along a tile's dimension a lake should start.
+	 *
+	 * FIXME: This gets used for drawing things other than lakes; it should be split.
 	 */
-	public static final double FOUR = 4.0;
+	LakeStart(1.0 / 4.0),
 	/**
-	 * Two-thirds as a double.
+	 * How wide and tall a fort should be.
 	 */
-	public static final double TWO_THIRDS = 2.0 / 3.0;
+	FortSize(1.0 / 3.0),
 	/**
-	 * Three-quarters as a double.
+	 * Where a fort should start.
 	 */
-	public static final double THREE_QUARTERS = 3.0 / 4.0;
+	FortStart(2.0 / 3.0),
 	/**
-	 * Three as a double.
+	 * Where an 'event' should start.
 	 */
-	public static final double THREE = 3.0;
-
+	EventStart(3.0 / 4.0);
 	/**
-	 * Do not instantiate.
+	 * @param numConst the constant this instance encapsulates.
 	 */
-	private DrawingNumericConstants() {
-		// Do not use.
+	DrawingNumericConstants(double numConst) {
+		constant = numConst;
 	}
-
+	/**
+	 * The constant this instance encapsulates.
+	 */
+	public final double constant;
 }
