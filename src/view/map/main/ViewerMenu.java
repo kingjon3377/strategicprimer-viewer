@@ -48,6 +48,7 @@ public final class ViewerMenu extends SPMenu {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "SPMenu";

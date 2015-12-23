@@ -122,6 +122,7 @@ public final class CityReader implements INodeHandler<@NonNull City> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "CityReader";

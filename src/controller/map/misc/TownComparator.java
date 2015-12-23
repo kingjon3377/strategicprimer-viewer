@@ -152,6 +152,7 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "TownComparator";

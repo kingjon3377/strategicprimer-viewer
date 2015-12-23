@@ -368,6 +368,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "TestEventSerialization";

@@ -205,6 +205,7 @@ public final class AppChooserFrame extends JFrame {
 		/**
 		 * @return a String representation of the object
 		 */
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public String toString() {
 			return "AppChoiceListenerArgs";
@@ -288,6 +289,7 @@ public final class AppChooserFrame extends JFrame {
 		/**
 		 * @return a String representation of the object
 		 */
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public String toString() {
 			return "AppChoiceListenerDriverModel";

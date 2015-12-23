@@ -177,6 +177,7 @@ public final class ReaderComparator implements ISPDriver {
 	/**
 	 * @return a String representation of this object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "ReaderComparator";

@@ -115,6 +115,7 @@ public final class MineReader implements INodeHandler<Mine> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "MineReader";

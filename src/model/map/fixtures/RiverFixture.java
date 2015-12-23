@@ -115,8 +115,9 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	}
 
 	/**
-	 * @return a hash value for the object Because of Java bug #6579200, this has to
-	 * return a constant.
+	 * @return a hash value for the object
+	 *
+	 * Because of Java bug #6579200, this has to return a constant.
 	 */
 	@Override
 	public int hashCode() {

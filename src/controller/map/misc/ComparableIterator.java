@@ -103,6 +103,7 @@ public final class ComparableIterator<@NonNull T> implements Iterator<@NonNull T
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "ComparableIterator";

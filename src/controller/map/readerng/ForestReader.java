@@ -106,6 +106,7 @@ public final class ForestReader implements INodeHandler<Forest> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "ForestReader";

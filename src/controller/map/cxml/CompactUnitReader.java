@@ -234,6 +234,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "CompactUnitReader";

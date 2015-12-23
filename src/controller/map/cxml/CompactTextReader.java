@@ -129,6 +129,7 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "CompactTextReader";

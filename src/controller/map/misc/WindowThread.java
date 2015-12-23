@@ -50,6 +50,7 @@ public final class WindowThread implements Runnable {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "WindowThread";

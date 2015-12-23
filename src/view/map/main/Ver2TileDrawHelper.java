@@ -458,6 +458,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "Ver2TileDrawHelper";
@@ -566,6 +567,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		}
 
 		/**
+		 * TODO: show diagnostics
 		 * @return a String representation of the object
 		 */
 		@Override

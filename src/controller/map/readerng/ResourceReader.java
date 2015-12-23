@@ -121,6 +121,7 @@ public final class ResourceReader implements INodeHandler<@NonNull ResourcePile>
 	/**
 	 * @return a string representation of this class
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "ResourceReader";

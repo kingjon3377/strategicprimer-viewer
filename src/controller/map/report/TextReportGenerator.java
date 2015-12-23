@@ -182,6 +182,7 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	/**
 	 * @return a string representation of this class
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "TextReportGenerator";

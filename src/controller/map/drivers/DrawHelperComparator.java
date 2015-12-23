@@ -476,6 +476,7 @@ public final class DrawHelperComparator implements ISPDriver { // NOPMD
 	/**
 	 * @return a String representation of this object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "DrawHelperComparator";

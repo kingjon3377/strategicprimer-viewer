@@ -99,6 +99,7 @@ public final class DjinnReader implements INodeHandler<Djinn> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "DjinnReader";

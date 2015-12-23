@@ -100,6 +100,7 @@ public final class OgreReader implements INodeHandler<Ogre> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "OgreReader";

@@ -151,6 +151,7 @@ public final class MeadowReader implements INodeHandler<Meadow> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "MeadowReader";

@@ -96,6 +96,7 @@ public final class MountainReader implements INodeHandler<Mountain> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "MountainReader";

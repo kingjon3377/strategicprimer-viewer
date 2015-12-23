@@ -86,6 +86,7 @@ public final class RandomTable implements EncounterTable {
 	}
 
 	/**
+	 * TODO: show state
 	 * @return a String representation of the class
 	 */
 	@Override

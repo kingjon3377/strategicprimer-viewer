@@ -55,6 +55,7 @@ public class Oasis implements TerrainFixture, HasImage {
 	/**
 	 * @return a String representation of the oasis.
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "Oasis";

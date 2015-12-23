@@ -57,6 +57,7 @@ public final class ConstraintHelper extends GridBagConstraints {
 	/**
 	 * @return a String representation of the object.
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "ConstraintHelper";

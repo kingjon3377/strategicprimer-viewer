@@ -124,6 +124,7 @@ public final class FortificationReader implements INodeHandler<@NonNull Fortific
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "FortificationReader";

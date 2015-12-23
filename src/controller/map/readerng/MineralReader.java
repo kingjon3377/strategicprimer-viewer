@@ -122,6 +122,7 @@ public final class MineralReader implements INodeHandler<@NonNull MineralVein> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "MineralReader";

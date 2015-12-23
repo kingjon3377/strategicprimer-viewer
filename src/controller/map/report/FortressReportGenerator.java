@@ -385,6 +385,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "FortressReportGenerator";

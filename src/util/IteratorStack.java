@@ -119,6 +119,7 @@ public final class IteratorStack<T> implements Iterator<T> {
 	}
 
 	/**
+	 * TODO: show diagnostics
 	 * @return a String representation of the object
 	 */
 	@Override

@@ -101,6 +101,7 @@ public final class GriffinReader implements INodeHandler<Griffin> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "GriffinReader";

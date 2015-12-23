@@ -99,6 +99,7 @@ public final class OasisReader implements INodeHandler<Oasis> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "OasisReader";

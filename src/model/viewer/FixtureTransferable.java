@@ -87,6 +87,7 @@ public final class FixtureTransferable implements Transferable {
 	}
 
 	/**
+	 * TODO: show state
 	 * @return a String representation of this object
 	 */
 	@Override

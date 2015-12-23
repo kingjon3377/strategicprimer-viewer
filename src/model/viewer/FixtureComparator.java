@@ -45,6 +45,7 @@ public final class FixtureComparator implements Comparator<@NonNull TileFixture>
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "FixtureComparator";

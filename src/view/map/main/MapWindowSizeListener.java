@@ -84,6 +84,7 @@ public final class MapWindowSizeListener extends WindowAdapter {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "MapWindowSizeListener";

@@ -66,6 +66,7 @@ public final class SelectionChangeSupport implements SelectionChangeSource {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "SelectionChangeSupport";

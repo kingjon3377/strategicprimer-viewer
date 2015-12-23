@@ -111,6 +111,7 @@ public final class BattlefieldReader implements INodeHandler<@NonNull Battlefiel
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "BattlefieldReader";

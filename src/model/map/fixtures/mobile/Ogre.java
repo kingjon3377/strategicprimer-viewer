@@ -56,6 +56,7 @@ public class Ogre implements MobileFixture, HasImage, UnitMember { // NOPMD
 	/**
 	 * @return a String representation of the ogre
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "ogre";

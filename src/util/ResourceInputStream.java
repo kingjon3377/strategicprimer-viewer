@@ -120,6 +120,7 @@ public final class ResourceInputStream extends InputStream {
 	}
 
 	/**
+	 * TODO: show original filename, and perhaps which source we went with
 	 * @return a String representation of the object
 	 */
 	@Override

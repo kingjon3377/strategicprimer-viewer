@@ -106,6 +106,7 @@ public final class GiantReader implements INodeHandler<Giant> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "GiantReader";

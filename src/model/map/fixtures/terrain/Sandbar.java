@@ -44,6 +44,7 @@ public class Sandbar implements TerrainFixture, HasImage {
 	/**
 	 * @return a String representation of the sandbar.
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "Sandbar";

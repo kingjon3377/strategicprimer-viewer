@@ -101,6 +101,7 @@ public final class SandbarReader implements INodeHandler<Sandbar> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "SandbarReader";

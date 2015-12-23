@@ -103,6 +103,7 @@ public final class ImplementReader implements INodeHandler<@NonNull Implement> {
 	/**
 	 * @return a string representation of this class
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "ImplementReader";

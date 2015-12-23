@@ -120,6 +120,7 @@ public final class SubsetFrame extends JFrame {
 		/**
 		 * @return a String representation of the object
 		 */
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public String toString() {
 			return "HTMLWriter";

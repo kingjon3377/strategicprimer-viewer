@@ -99,6 +99,7 @@ public final class ExplorationFrame extends JFrame {
 		/**
 		 * @return a String representation of the object
 		 */
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public String toString() {
 			return "SwapCompletionListener";

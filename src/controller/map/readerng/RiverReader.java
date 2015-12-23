@@ -103,6 +103,7 @@ public final class RiverReader implements INodeHandler<@NonNull River> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "RiverReader";

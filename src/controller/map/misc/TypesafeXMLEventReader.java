@@ -103,6 +103,7 @@ public final class TypesafeXMLEventReader implements Iterator<@NonNull XMLEvent>
 	/**
 	 * @return a string representation of this class
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "TypesafeXMLEventReader";

@@ -108,6 +108,7 @@ public final class SurroundingPointIterable implements Iterable<@NonNull Point> 
 	}
 
 	/**
+	 * TODO: show state
 	 * @return a String representation of the object
 	 */
 	@Override

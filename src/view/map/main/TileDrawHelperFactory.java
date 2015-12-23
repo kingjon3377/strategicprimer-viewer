@@ -73,6 +73,7 @@ public final class TileDrawHelperFactory {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "TileDrawHelperFactory";

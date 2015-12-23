@@ -255,6 +255,7 @@ public final class TestExplorationRunner {
 	/**
 	 * @return a String representation of the class
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "TestExplorationRunner";

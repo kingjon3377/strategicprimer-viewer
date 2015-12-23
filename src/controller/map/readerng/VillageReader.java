@@ -123,6 +123,7 @@ public final class VillageReader implements INodeHandler<Village> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "VillageReader";

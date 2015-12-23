@@ -101,6 +101,7 @@ public final class MinotaurReader implements INodeHandler<Minotaur> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "MinotaurReader";

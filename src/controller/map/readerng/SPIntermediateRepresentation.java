@@ -250,6 +250,7 @@ public final class SPIntermediateRepresentation {
 	}
 
 	/**
+	 * TODO: show state
 	 * @return a String representation of the object
 	 */
 	@Override

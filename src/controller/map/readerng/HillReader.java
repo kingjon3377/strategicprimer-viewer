@@ -100,6 +100,7 @@ public final class HillReader implements INodeHandler<Hill> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "HillReader";

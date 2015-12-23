@@ -46,6 +46,7 @@ public final class Mountain implements TerrainFixture, HasImage {
 	/**
 	 * @return a String representation of the forest.
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "Mountain.";

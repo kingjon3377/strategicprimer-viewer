@@ -104,6 +104,7 @@ public final class PlayerReader implements INodeHandler<@NonNull Player> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "PlayerReader";

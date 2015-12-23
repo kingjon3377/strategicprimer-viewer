@@ -134,6 +134,7 @@ public final class StatsReader implements INodeHandler<@NonNull WorkerStats> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "StatsReader";

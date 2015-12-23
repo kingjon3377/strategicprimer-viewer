@@ -99,6 +99,7 @@ public final class CompactPlayerReader extends AbstractCompactReader<Player> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "CompactPlayerReader";

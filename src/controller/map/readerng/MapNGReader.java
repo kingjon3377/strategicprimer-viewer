@@ -478,6 +478,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	/**
 	 * @return a string representation of this class
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "MapNGReader";

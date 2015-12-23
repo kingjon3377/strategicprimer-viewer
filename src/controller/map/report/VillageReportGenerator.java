@@ -211,6 +211,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "VillageReportGenerator";

@@ -300,6 +300,7 @@ public final class ExplorationRunner { // NOPMD
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "ExplorationRunner";

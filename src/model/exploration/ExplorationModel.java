@@ -522,6 +522,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "ExplorationModel";

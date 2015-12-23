@@ -87,6 +87,7 @@ public final class IDFactory {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "IDFactory";

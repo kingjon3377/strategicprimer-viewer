@@ -378,6 +378,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		/**
 		 * @return a String representation of the object
 		 */
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public String toString() {
 			return "ReportUpdater";
@@ -603,6 +604,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		/**
 		 * @return a String representation of the object
 		 */
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public String toString() {
 			return "StrategyExporter";

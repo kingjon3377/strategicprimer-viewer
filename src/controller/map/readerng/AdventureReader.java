@@ -121,6 +121,7 @@ public final class AdventureReader implements INodeHandler<@NonNull AdventureFix
 	/**
 	 * @return a string representation of this class
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "AdventureReader";

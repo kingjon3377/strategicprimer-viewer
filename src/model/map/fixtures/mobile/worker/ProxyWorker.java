@@ -370,6 +370,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	/**
 	 * @return a string representation of this class
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "ProxyWorker";

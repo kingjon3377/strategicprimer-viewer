@@ -133,6 +133,7 @@ public final class WorkerStart implements ISPDriver {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "WorkerStart";

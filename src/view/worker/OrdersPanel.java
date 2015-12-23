@@ -463,6 +463,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 		/**
 		 * @return a String representation of the object
 		 */
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public String toString() {
 			return "OrdersPanel#ProxyUnit";

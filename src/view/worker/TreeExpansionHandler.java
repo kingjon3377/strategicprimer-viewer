@@ -78,6 +78,7 @@ public final class TreeExpansionHandler implements ActionListener {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "TreeExpansionHandler";

@@ -112,6 +112,7 @@ public final class QuadrantTable implements EncounterTable {
 	}
 
 	/**
+	 * TODO: show state
 	 * @return a String representation of the object
 	 */
 	@Override

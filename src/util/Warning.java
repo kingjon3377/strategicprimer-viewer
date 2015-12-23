@@ -106,6 +106,7 @@ public class Warning {
 	}
 
 	/**
+	 * TODO: should be per-constant
 	 * @return a String representation of the object
 	 */
 	@Override

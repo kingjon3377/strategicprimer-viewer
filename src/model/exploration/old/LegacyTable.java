@@ -115,6 +115,7 @@ public final class LegacyTable implements EncounterTable {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "LegacyTable";

@@ -119,6 +119,7 @@ public final class PortalReader implements INodeHandler<@NonNull Portal> {
 	/**
 	 * @return a string representation of this class
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "PortalReader";

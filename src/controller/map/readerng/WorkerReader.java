@@ -160,6 +160,7 @@ public final class WorkerReader implements INodeHandler<@NonNull Worker> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "WorkerReader";

@@ -120,6 +120,7 @@ public final class AnimalReader implements INodeHandler<@NonNull Animal> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "AnimalReader";

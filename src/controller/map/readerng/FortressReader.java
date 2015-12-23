@@ -184,6 +184,7 @@ public final class FortressReader implements INodeHandler<Fortress> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "FortressReader";

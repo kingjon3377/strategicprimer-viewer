@@ -106,6 +106,7 @@ public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "CompactGroundReader";

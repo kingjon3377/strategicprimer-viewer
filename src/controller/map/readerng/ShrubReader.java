@@ -107,6 +107,7 @@ public final class ShrubReader implements INodeHandler<Shrub> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "ShrubReader";

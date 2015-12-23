@@ -136,6 +136,7 @@ public final class MapReaderNG implements IMapReader, ISPReader {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "MapReaderNG";

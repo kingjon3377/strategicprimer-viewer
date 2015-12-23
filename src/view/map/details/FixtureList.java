@@ -203,6 +203,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		/**
 		 * @return a String representation of the object
 		 */
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public String toString() {
 			return "FixtureMouseListener";

@@ -69,6 +69,7 @@ public final class SetPairConverter<@NonNull I, @NonNull K>
 		/**
 		 * @return a String representation of the object
 		 */
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public String toString() {
 			return "SetPairConverter#IteratorImpl";
@@ -113,6 +114,7 @@ public final class SetPairConverter<@NonNull I, @NonNull K>
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "SetPairConverter";

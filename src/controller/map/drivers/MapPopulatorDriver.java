@@ -179,6 +179,7 @@ public final class MapPopulatorDriver implements ISPDriver {
 	/**
 	 * @return a string representation of this class
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "MapPopulatorDriver";

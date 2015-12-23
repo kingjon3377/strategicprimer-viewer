@@ -73,6 +73,7 @@ public final class ConstantTable implements EncounterTable {
 	}
 
 	/**
+	 * TODO: Show state.
 	 * @return a String representation of the object
 	 */
 	@Override

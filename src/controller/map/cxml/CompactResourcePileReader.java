@@ -121,6 +121,7 @@ public final class CompactResourcePileReader
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "CompactResourcePileReader";

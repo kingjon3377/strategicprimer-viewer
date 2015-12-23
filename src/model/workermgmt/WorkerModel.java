@@ -220,6 +220,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "WorkerModel";

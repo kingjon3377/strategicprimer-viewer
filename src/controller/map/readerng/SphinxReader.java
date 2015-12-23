@@ -101,6 +101,7 @@ public final class SphinxReader implements INodeHandler<Sphinx> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "SphinxReader";

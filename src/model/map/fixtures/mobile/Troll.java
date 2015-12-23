@@ -58,6 +58,7 @@ public class Troll implements MobileFixture, HasImage, UnitMember {
 	/**
 	 * @return a String representation of the djinn
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "troll";

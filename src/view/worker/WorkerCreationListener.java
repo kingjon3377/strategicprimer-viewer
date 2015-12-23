@@ -120,6 +120,7 @@ public final class WorkerCreationListener implements ActionListener,
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "WorkerCreationListener";

@@ -56,6 +56,7 @@ public class Minotaur implements MobileFixture, HasImage, UnitMember {
 	/**
 	 * @return a String representation of the minotaur
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "minotaur";

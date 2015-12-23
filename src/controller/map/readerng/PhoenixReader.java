@@ -101,6 +101,7 @@ public final class PhoenixReader implements INodeHandler<Phoenix> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "PhoenixReader";

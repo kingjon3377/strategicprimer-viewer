@@ -292,6 +292,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "ExplorationClickListener";

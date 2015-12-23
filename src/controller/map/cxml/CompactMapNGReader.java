@@ -522,6 +522,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	/**
 	 * @return a string representation of this class
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "CompactMapNGReader";

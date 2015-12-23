@@ -215,6 +215,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		/**
 		 * @return a String representation of the object
 		 */
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public String toString() {
 			return "TreeMouseListener";
@@ -398,6 +399,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		/**
 		 * @return a String representation of the object
 		 */
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public String toString() {
 			return "WorkerTreeSelectionListener";

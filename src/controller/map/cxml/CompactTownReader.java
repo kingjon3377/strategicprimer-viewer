@@ -386,6 +386,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "CompactTownReader";

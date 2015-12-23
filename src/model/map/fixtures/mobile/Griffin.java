@@ -56,6 +56,7 @@ public class Griffin implements MobileFixture, HasImage, UnitMember {
 	/**
 	 * @return a String representation of the griffin
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "griffin";

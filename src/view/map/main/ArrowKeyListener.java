@@ -170,6 +170,7 @@ public final class ArrowKeyListener {
 	/**
 	 * @return a String representation of the object.
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "ArrowKeyListener";
@@ -213,6 +214,7 @@ public final class ArrowKeyListener {
 		/**
 		 * @return a String representation of the object
 		 */
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public String toString() {
 			return "AbstractDirListener";
@@ -510,6 +512,7 @@ public final class ArrowKeyListener {
 		/**
 		 * @return a String representation of the object
 		 */
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public String toString() {
 			return "JumpUpLeftListener";
@@ -555,6 +558,7 @@ public final class ArrowKeyListener {
 		/**
 		 * @return a String representation of the object
 		 */
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public String toString() {
 			return "JumpDownRightListener";
@@ -590,6 +594,7 @@ public final class ArrowKeyListener {
 		/**
 		 * @return a String representation of the object
 		 */
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public String toString() {
 			return "JumpUpListener";
@@ -634,6 +639,7 @@ public final class ArrowKeyListener {
 		/**
 		 * @return a String representation of the object
 		 */
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public String toString() {
 			return "JumpDownListener";
@@ -678,6 +684,7 @@ public final class ArrowKeyListener {
 		/**
 		 * @return a String representation of the object
 		 */
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public String toString() {
 			return "JumpLeftListener";
@@ -722,6 +729,7 @@ public final class ArrowKeyListener {
 		/**
 		 * @return a String representation of the object
 		 */
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public String toString() {
 			return "JumpRightListener";

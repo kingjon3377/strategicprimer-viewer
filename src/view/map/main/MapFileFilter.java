@@ -9,6 +9,8 @@ import static util.NullCleaner.assertNotNull;
 /**
  * Filter out extraneous files when we're opening a map.
  *
+ * FIXME: This should be singleton
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
@@ -73,6 +75,7 @@ public final class MapFileFilter extends FileFilter {
 	/**
 	 * @return a String representation of the object.
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "MapFileFilter";

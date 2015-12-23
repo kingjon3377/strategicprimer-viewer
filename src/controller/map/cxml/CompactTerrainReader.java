@@ -218,6 +218,7 @@ public final class CompactTerrainReader extends
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "CompactTerrainReader";

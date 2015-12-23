@@ -56,6 +56,7 @@ public class Hill implements TerrainFixture, HasImage {
 	/**
 	 * @return a String representation of the hill.
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "Hill";

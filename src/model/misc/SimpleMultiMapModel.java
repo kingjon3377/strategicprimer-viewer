@@ -103,6 +103,7 @@ public class SimpleMultiMapModel extends AbstractDriverModel
 	/**
 	 * @return a string representation of this class
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "SimpleMultiMapModel";

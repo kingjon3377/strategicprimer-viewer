@@ -555,6 +555,7 @@ public final class TestMoreFixtureSerialization extends
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "TestMoreFixtureSerialization";

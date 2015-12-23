@@ -153,6 +153,7 @@ public final class JobReader implements INodeHandler<@NonNull Job> {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "JobReader";

@@ -99,6 +99,7 @@ public class Portal implements ExplorableFixture {
 	/**
 	 * @return a String represntation of the fixture
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "A portal to another world";
