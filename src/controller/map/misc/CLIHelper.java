@@ -89,8 +89,7 @@ public final class CLIHelper implements ICLIHelper {
 		for (int i = 0; i < list.size(); i++) {
 			ostream.append(Integer.toString(i));
 			ostream.append(": ");
-			ostream.append(list.get(i).getName());
-			ostream.append('\n');
+			ostream.println(list.get(i).getName());
 		}
 	}
 
@@ -236,8 +235,7 @@ public final class CLIHelper implements ICLIHelper {
 		for (int i = 0; i < list.size(); i++) {
 			ostream.append(Integer.toString(i));
 			ostream.append(": ");
-			ostream.append(list.get(i));
-			ostream.append('\n');
+			ostream.println(list.get(i));
 		}
 	}
 
