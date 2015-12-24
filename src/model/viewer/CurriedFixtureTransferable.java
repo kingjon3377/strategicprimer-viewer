@@ -101,11 +101,10 @@ public final class CurriedFixtureTransferable implements Transferable {
 	}
 
 	/**
-	 * TODO: show state.
 	 * @return a String representation of the object
 	 */
 	@Override
 	public String toString() {
-		return "CurriedFixtureTransferable";
+		return "CurriedFixtureTransferable with payload containing " + payload.size() + " elements";
 	}
 }
