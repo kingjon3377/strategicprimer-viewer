@@ -16,10 +16,6 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * We extend Comparable so we can put one of these in a Pair.
  *
- * TODO: Write tests.
- *
- * TODO: Write a proper implementation (not using MapView), and serialization for it.
- *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
