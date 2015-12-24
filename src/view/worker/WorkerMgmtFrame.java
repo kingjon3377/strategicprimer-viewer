@@ -4,9 +4,7 @@ import com.bric.window.WindowList;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
 import controller.map.report.ReportGenerator;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -21,20 +19,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTree;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -231,54 +216,55 @@ public final class WorkerMgmtFrame extends JFrame {
 		tree.addUnitMemberListener(mdp);
 		final StrategyExporter strategyExporter = new StrategyExporter(model, wtmodel);
 		setContentPane(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT, HALF_WAY,
-												   HALF_WAY,
-												   new SplitWithWeights(JSplitPane
-																				.VERTICAL_SPLIT,
-																			   TWO_THIRDS,
-																			   TWO_THIRDS,
-																			   new
-																					   BorderedPanel(new JScrollPane(tree),
-																										plabel,
-																										null,
-																										null,
-																										null),
-																			   new
-																					   BorderedPanel(ordersPanel,
-																										new ListenedButton("Add New Unit",
-																																  evt -> newUnitFrame
-																																		  .setVisible(
-																																				  true)),
-																										new ListenedButton(
-																																  "Export a proto-strategy from units' orders",
-																																  evt -> {
-																																	  final JFileChooser
-																																			  chooser =
-																																			  new JFileChooser(
-																																									  ".");
-																																	  if (chooser.showSaveDialog(
-																																			  outer) ==
-																																				  JFileChooser.APPROVE_OPTION) {
-																																		  try (final FileWriter writer = new FileWriter(
-																																															   chooser.getSelectedFile())) {
-																																			  writer.append(
-																																					  strategyExporter
-																																							  .createStrategy());
-																																		  } catch (final IOException except) {
-																																			  LOGGER.log(
-																																					  Level.SEVERE,
-																																					  "I/O error exporting strategy",
-																																					  except);
-																																		  }
-																																	  }
-																																  }),
-																										null,
-																										null)),
-												   new BorderedPanel(new JScrollPane
-																			 (report),
-																			new JLabel
-																					(RPT_HDR),
-																			mdp, null,
-																			null)));
+				                                   HALF_WAY,
+				                                   new SplitWithWeights(JSplitPane
+						                                                        .VERTICAL_SPLIT,
+						                                                       TWO_THIRDS,
+						                                                       TWO_THIRDS,
+						                                                       new
+								                                                       BorderedPanel(new JScrollPane(tree),
+										                                                                    plabel,
+										                                                                    null,
+										                                                                    null,
+										                                                                    null),
+
+						                                                       new
+								                                                       BorderedPanel(ordersPanel,
+										                                                                    new ListenedButton("Add New Unit",
+												                                                                                      evt -> newUnitFrame
+														                                                                                             .setVisible(
+																                                                                                             true)),
+										                                                                    new ListenedButton(
+												                                                                                      "Export a proto-strategy from units' orders",
+												                                                                                      evt -> {
+													                                                                                      final JFileChooser
+															                                                                                      chooser =
+															                                                                                      new JFileChooser(
+																	                                                                                                      ".");
+													                                                                                      if (chooser.showSaveDialog(
+															                                                                                      outer) ==
+															                                                                                          JFileChooser.APPROVE_OPTION) {
+														                                                                                      try (final FileWriter writer = new FileWriter(
+																                                                                                                                                   chooser.getSelectedFile())) {
+															                                                                                      writer.append(
+																	                                                                                      strategyExporter
+																			                                                                                      .createStrategy());
+														                                                                                      } catch (final IOException except) {
+															                                                                                      LOGGER.log(
+																	                                                                                      Level.SEVERE,
+																	                                                                                      "I/O error exporting strategy",
+																	                                                                                      except);
+														                                                                                      }
+													                                                                                      }
+												                                                                                      }),
+										                                                                    null,
+										                                                                    null)),
+				                                   new BorderedPanel(new JScrollPane
+						                                                     (report),
+						                                                    new JLabel
+								                                                    (RPT_HDR),
+						                                                    mdp, null,
+						                                                    null)));
 
 		setJMenuBar(new WorkerMenu(ioHandler, this, pch, model,
 										  new TreeExpansionHandler(tree)));
