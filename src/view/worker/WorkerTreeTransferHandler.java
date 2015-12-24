@@ -183,7 +183,6 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	}
 
 	/**
-	 * TODO: show state?
 	 * @return a String representation of the object
 	 */
 	@Override
