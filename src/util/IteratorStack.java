@@ -119,11 +119,10 @@ public final class IteratorStack<T> implements Iterator<T> {
 	}
 
 	/**
-	 * TODO: show diagnostics
 	 * @return a String representation of the object
 	 */
 	@Override
 	public String toString() {
-		return "IteratorStack";
+		return "IteratorStack with " + queue.size() + " iterators";
 	}
 }
