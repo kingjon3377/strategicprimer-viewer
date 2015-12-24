@@ -144,7 +144,7 @@ public final class UnitMemberTransferable implements Transferable {
 	 */
 	@Override
 	public String toString() {
-		return "UnitMemberTransferable";
+		return "UnitMemberTransferable conveying " + data.member.toString();
 	}
 
 	/**
