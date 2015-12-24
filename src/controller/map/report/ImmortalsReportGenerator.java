@@ -361,8 +361,9 @@ public final class ImmortalsReportGenerator
 										   final String infix,
 										   final StringBuilder builder) {
 		for (final Entry<String, List<Point>> entry : mapping.entrySet()) {
-			builder.append(OPEN_LIST_ITEM).append(entry.getKey()).append(infix)
-					.append(pointCSL(entry.getValue())).append(CLOSE_LIST_ITEM);
+			builder.append(OPEN_LIST_ITEM).append(entry.getKey()).append(infix);
+			pointCSL(builder, entry.getValue());
+			builder.append(CLOSE_LIST_ITEM);
 		}
 	}
 
@@ -378,8 +379,9 @@ public final class ImmortalsReportGenerator
 											final String prefix,
 											final StringBuilder builder) {
 		if (!points.isEmpty()) {
-			builder.append(OPEN_LIST_ITEM).append(prefix)
-					.append(pointCSL(points)).append(CLOSE_LIST_ITEM);
+			builder.append(OPEN_LIST_ITEM).append(prefix);
+			pointCSL(builder, points);
+			builder.append(CLOSE_LIST_ITEM);
 		}
 	}
 

@@ -144,8 +144,12 @@ public final class HarvestableReportGenerator
 																		  "trees, and " +
 																		  "such</h5>");
 		shrubsText.addAll(shrubs.entrySet().stream()
-								  .map(entry -> concat(entry.getKey(), ": at ",
-										  pointCSL(entry.getValue())))
+								  .map(entry -> {
+									  StringBuilder builder = new StringBuilder();
+									  pointCSL(builder, entry.getValue());
+									  return concat(entry.getKey(), ": at ",
+											  builder.toString());
+								  })
 								  .collect(Collectors.toList()));
 		sortAll(caches, groves, meadows, mines, minerals, stone, shrubsText);
 		if (caches.isEmpty() && groves.isEmpty() && meadows.isEmpty()

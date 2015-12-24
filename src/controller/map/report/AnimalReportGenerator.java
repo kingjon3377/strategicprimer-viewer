@@ -100,8 +100,9 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 					OPEN_LIST);
 			for (final Entry<String, List<Point>> entry : items.entrySet()) {
 				builder.append(OPEN_LIST_ITEM).append(entry.getKey())
-						.append(": at ").append(pointCSL(entry.getValue()))
-						.append(CLOSE_LIST_ITEM);
+						.append(": at ");
+				pointCSL(builder, entry.getValue());
+				builder.append(CLOSE_LIST_ITEM);
 			}
 			return NullCleaner.assertNotNull(builder.append(CLOSE_LIST)
 													 .toString()); // NOPMD

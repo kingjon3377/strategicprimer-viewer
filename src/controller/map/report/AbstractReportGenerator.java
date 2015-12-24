@@ -169,35 +169,31 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	}
 
 	/**
-	 * TODO: This should probably take Appendable (StringBuilder) instead of returning
-	 * the
-	 * String.
-	 *
+	 * We specify StringBuilder, rather than just Appendable, so we don't have to say we
+	 * throw IOException.
 	 * @param points a list of points
-	 * @return a comma-separated string representing them.
+	 * @param ostream a stream to which to write a comma-separated string representing them.
 	 */
-	protected static String pointCSL(final List<Point> points) {
-		if (points.isEmpty()) {
-			return ""; // NOPMD
-		} else if (points.size() == 1) {
-			return points.get(0).toString(); // NOPMD
-		} else if (points.size() == 2) {
-			return points.get(0) + " and " + points.get(1); // NOPMD
-		} else {
-			final StringBuilder builder = new StringBuilder(points.size() * 15);
-			for (int i = 0; i < points.size(); i++) {
-				if (i == (points.size() - 1)) {
-					builder.append(", and ");
-				} else if (i != 0) {
-					builder.append(", ");
+	protected static void pointCSL(final StringBuilder ostream, final List<Point> points) {
+		if (!points.isEmpty()) {
+			if (points.size() == 1) {
+				ostream.append(points.get(0).toString());
+			} else if (points.size() == 2) {
+				ostream.append(points.get(0).toString());
+				ostream.append(" and ");
+				ostream.append(points.get(1).toString());
+			} else {
+				for (int i = 0; i < points.size(); i++) {
+					if (i == (points.size() - 1)) {
+						ostream.append(", and ");
+					} else if (i != 0) {
+						ostream.append(", ");
+					}
+					ostream.append(points.get(i).toString());
 				}
-				builder.append(points.get(i));
 			}
-			final String retval = builder.toString();
-			return NullCleaner.valueOrDefault(retval, "");
 		}
 	}
-
 	/**
 	 * @param player a player
 	 * @return the player's name, or "you" if the player is the current player
