@@ -100,8 +100,6 @@ public final class Mountain implements TerrainFixture, HasImage {
 	}
 
 	/**
-	 * TODO: Perhaps make this per-mountain?
-	 *
 	 * @return an ID number
 	 */
 	@Override
