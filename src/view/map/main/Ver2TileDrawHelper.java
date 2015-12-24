@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -569,12 +570,11 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		}
 
 		/**
-		 * TODO: show diagnostics
 		 * @return a String representation of the object
 		 */
 		@Override
 		public String toString() {
-			return "FilteredIterator";
+			return "FilteredIterator with next item " + Objects.toString(cached);
 		}
 	}
 }
