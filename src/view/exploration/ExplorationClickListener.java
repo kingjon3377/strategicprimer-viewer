@@ -118,8 +118,6 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 * because it has to be run on the EDT to prevent concurrency issues, and putting
 	 * this
 	 * code in the Runnable means accessing private members from that inner class ...
-	 *
-	 * TODO: Remove caches from main map.
 	 */
 	protected void handleMove() {
 		try {

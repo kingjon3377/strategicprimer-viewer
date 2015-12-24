@@ -228,8 +228,6 @@ public final class ExplorationCLI {
 	}
 
 	/**
-	 * TODO: Remove caches from master map.
-	 *
 	 * @param dPoint the current location
 	 * @param fix    the fixture to copy to subordinate maps. May be null, to simplify
 	 *                  the
