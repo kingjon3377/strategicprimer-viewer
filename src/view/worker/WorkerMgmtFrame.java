@@ -17,7 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -57,6 +56,11 @@ import view.util.BorderedPanel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
 import view.util.SystemOut;
+
+import static java.util.logging.Level.SEVERE;
+import static javax.swing.JFileChooser.APPROVE_OPTION;
+import static javax.swing.JSplitPane.HORIZONTAL_SPLIT;
+import static javax.swing.JSplitPane.VERTICAL_SPLIT;
 
 /**
  * A window to let the player manage units.
@@ -215,10 +219,10 @@ public final class WorkerMgmtFrame extends JFrame {
 		final MemberDetailPanel mdp = new MemberDetailPanel();
 		tree.addUnitMemberListener(mdp);
 		final StrategyExporter strategyExporter = new StrategyExporter(model, wtmodel);
-		setContentPane(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT, HALF_WAY,
+		setContentPane(new SplitWithWeights(HORIZONTAL_SPLIT, HALF_WAY,
 				                                   HALF_WAY,
-				                                   new SplitWithWeights(JSplitPane
-						                                                        .VERTICAL_SPLIT,
+				                                   new SplitWithWeights(
+						                                                       VERTICAL_SPLIT,
 						                                                       TWO_THIRDS,
 						                                                       TWO_THIRDS,
 						                                                       new
@@ -234,6 +238,7 @@ public final class WorkerMgmtFrame extends JFrame {
 												                                                                                      evt -> newUnitFrame
 														                                                                                             .setVisible(
 																                                                                                             true)),
+
 										                                                                    new ListenedButton(
 												                                                                                      "Export a proto-strategy from units' orders",
 												                                                                                      evt -> {
@@ -243,7 +248,7 @@ public final class WorkerMgmtFrame extends JFrame {
 																	                                                                                                      ".");
 													                                                                                      if (chooser.showSaveDialog(
 															                                                                                      outer) ==
-															                                                                                          JFileChooser.APPROVE_OPTION) {
+															                                                                                          APPROVE_OPTION) {
 														                                                                                      try (final FileWriter writer = new FileWriter(
 																                                                                                                                                   chooser.getSelectedFile())) {
 															                                                                                      writer.append(
@@ -251,7 +256,7 @@ public final class WorkerMgmtFrame extends JFrame {
 																			                                                                                      .createStrategy());
 														                                                                                      } catch (final IOException except) {
 															                                                                                      LOGGER.log(
-																	                                                                                      Level.SEVERE,
+																	                                                                                      SEVERE,
 																	                                                                                      "I/O error exporting strategy",
 																	                                                                                      except);
 														                                                                                      }
