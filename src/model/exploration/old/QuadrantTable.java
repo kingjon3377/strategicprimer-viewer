@@ -35,25 +35,25 @@ import util.NullCleaner;
  */
 public final class QuadrantTable implements EncounterTable {
 	/**
-	 * The size of the map in rows. TODO: this should be dynamic.
+	 * The default size of the map in rows.
 	 */
 	private static final int MAP_SIZE_ROWS = 69;
 	/**
-	 * The size of the map in columns. TODO: this should be dynamic.
+	 * The default size of the map in columns.
 	 */
 	private static final int MAP_SIZE_COLS = 88;
 	/**
 	 * The collection of results.
 	 */
 	private final Map<Point, String> quadrants;
-
 	/**
 	 * Constructor.
-	 *
-	 * @param rows  the number of rows of quadrants
+	 * @param mapRows the size of the map in rows
+	 * @param mapCols the size of the map in columns
+	 * @param rows the number of rows of quadrants
 	 * @param items the items to allocate by quadrant
 	 */
-	public QuadrantTable(final int rows, final List<String> items) {
+	public QuadrantTable(final int mapRows, final int mapCols, final int rows, final List<String> items) {
 		if ((items.size() % rows) != 0) {
 			throw new IllegalArgumentException(Integer.toString(items.size())
 					                                   +
@@ -61,18 +61,27 @@ public final class QuadrantTable implements EncounterTable {
 					                                   + Integer.toString(rows));
 		}
 		final int cols = items.size() / rows;
-		final int rowstep = MAP_SIZE_ROWS / rows;
-		final int colstep = MAP_SIZE_COLS / cols;
-		final int rowRemain = MAP_SIZE_ROWS % rows;
-		final int colRemain = MAP_SIZE_COLS % cols;
+		final int rowstep = mapRows / rows;
+		final int colstep = mapCols / cols;
+		final int rowRemain = mapRows % rows;
+		final int colRemain = mapCols % cols;
 		quadrants = new HashMap<>();
 		int i = 0;
-		for (int row = 0; row < (MAP_SIZE_ROWS - rowRemain); row += rowstep) {
-			for (int col = 0; col < (MAP_SIZE_COLS - colRemain); col += colstep) {
+		for (int row = 0; row < (mapRows - rowRemain); row += rowstep) {
+			for (int col = 0; col < (mapCols - colRemain); col += colstep) {
 				quadrants.put(PointFactory.point(row, col), items.get(i));
 				i++;
 			}
 		}
+	}
+	/**
+	 * Constructor.
+	 *
+	 * @param rows  the number of rows of quadrants
+	 * @param items the items to allocate by quadrant
+	 */
+	public QuadrantTable(final int rows, final List<String> items) {
+		this(MAP_SIZE_ROWS, MAP_SIZE_COLS, rows, items);
 	}
 
 	/**
