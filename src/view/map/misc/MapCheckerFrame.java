@@ -3,16 +3,14 @@ package view.map.misc;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
 import util.NullCleaner;
 import util.TypesafeLogger;
@@ -43,9 +41,15 @@ import view.util.StreamingLabel;
  */
 public final class MapCheckerFrame extends JFrame {
 	/**
+	 * Colors to use on a StreamingLabel. Enumerated to appease XSS-possibility warnings.
+	 */
+	private enum LabelTextColor {
+		yellow, white, red, green;
+	}
+	/**
 	 * The color to use for errors.
 	 */
-	private static final String ERROR_COLOR = "red";
+	private static final LabelTextColor ERROR_COLOR = LabelTextColor.red;
 	/**
 	 * The warning instance to use to print warnings to the frame.
 	 */
@@ -57,11 +61,11 @@ public final class MapCheckerFrame extends JFrame {
 				printParagraph(
 						"SP format warning: "
 								+ warning.getLocalizedMessage(),
-						"yellow");
+						LabelTextColor.yellow);
 			} else {
 				printParagraph(
 						"Warning: " + warning.getLocalizedMessage(),
-						"yellow");
+						LabelTextColor.yellow);
 			}
 		}
 	};
@@ -92,27 +96,31 @@ public final class MapCheckerFrame extends JFrame {
 	}
 
 	/**
-	 * Enclose a string in HTML paragraph indicators, optionally with a color. And
-	 * repaint
-	 * the label so it shows up. This is "package-private" because, since the anonymous
-	 * inner class below needs it, we can't make it private. If no color is specified,
-	 * we'll make it white, because the label's background color is black.
+	 * Enclose a string in HTML paragraph indicators, using the default color. And
+	 * repaint the label so it shows up. This is "package-private" because, since the
+	 * anonymous inner class below needs it, we can't make it private. If no color is
+	 * specified, we'll make it white, because the label's background color is black.
 	 *
-	 * FIXME: To appease XSS-possibility warnings, make color on enumerated type.
+	 * @param paragraph the string to enclose
+	 */
+	protected void printParagraph(final String paragraph) {
+		printParagraph(paragraph, LabelTextColor.white);
+	}
+	/**
+	 * Enclose a string in HTML paragraph indicators, optionally with a color. And
+	 * repaint the label so it shows up. This is "package-private" because, since the
+	 * anonymous inner class below needs it, we can't make it private. If no color is
+	 * specified, we'll make it white, because the label's background color is black.
 	 *
 	 * @param paragraph the string to enclose
 	 * @param color     the color to make it, or the empty string if none.
 	 */
-	protected void printParagraph(final String paragraph, final String color) {
+	protected void printParagraph(final String paragraph, final LabelTextColor color) {
 		try (final PrintWriter writer = label.getWriter()) {
 			// This is safe because StringWriter.close() does nothing.
-			if (color.isEmpty()) {
-				writer.print("<p style=\"color:white\">");
-			} else {
-				writer.print("<p style=\"color:");
-				writer.print(color);
-				writer.print("\">");
-			}
+			writer.print("<p style=\"color:");
+			writer.print(color);
+			writer.print("\">");
 			writer.print(paragraph);
 			writer.println("</p>");
 		}
@@ -126,14 +134,14 @@ public final class MapCheckerFrame extends JFrame {
 	 * @param filename the name of the file to check.
 	 */
 	public void check(final String filename) {
-		printParagraph("Starting " + filename, "");
+		printParagraph("Starting " + filename);
 		try {
 			reader.readMap(new File(filename), warner);
 		} catch (final IOException | XMLStreamException | SPFormatException except) {
 			printError(except, filename);
 			return;
 		}
-		printParagraph("No errors in " + filename, "green");
+		printParagraph("No errors in " + filename, LabelTextColor.green);
 	}
 
 	/**
