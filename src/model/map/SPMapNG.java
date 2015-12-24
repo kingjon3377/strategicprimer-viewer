@@ -51,11 +51,11 @@ import util.NullCleaner;
  */
 public class SPMapNG implements IMutableMapNG {
 	/**
-	 * The set of mountainous places. TODO: Populate the set.
+	 * The set of mountainous places.
 	 */
 	private final Collection<Point> mountains = new HashSet<>();
 	/**
-	 * The base terrain at points in the map. TODO: Populate the map.
+	 * The base terrain at points in the map.
 	 */
 	private final Map<Point, TileType> terrain = new HashMap<>();
 	/**
@@ -69,8 +69,6 @@ public class SPMapNG implements IMutableMapNG {
 	/**
 	 * The forests in the map. If there's more than one forest, only one goes here, and
 	 * the rest go in the "miscellaneous fixtures" pile.
-	 *
-	 * TODO: populate the map.
 	 */
 	private final Map<Point, Forest> forests = new HashMap<>();
 	/**
@@ -78,8 +76,6 @@ public class SPMapNG implements IMutableMapNG {
 	 * Collection rather than Iterable because they need to be explicitly mutable for
 	 * unit
 	 * motion.
-	 *
-	 * TODO: populate the map
 	 *
 	 * TODO: Use a multimap once we add the Guava dependency.
 	 */
@@ -92,13 +88,10 @@ public class SPMapNG implements IMutableMapNG {
 	/**
 	 * The ground under various locations. If there's more than one, others go in the
 	 * "other fixtures" collection.
-	 *
-	 * TODO: Populate the map.
 	 */
 	private final Map<Point, Ground> ground = new HashMap<>();
 	/**
-	 * The rivers in the map. TODO: populate the map; remember to use EnumSets, not
-	 * RiverFixtures.
+	 * The rivers in the map.
 	 */
 	private final Map<@NonNull Point, @NonNull EnumSet<@NonNull River>> rivers =
 			new HashMap<>();
