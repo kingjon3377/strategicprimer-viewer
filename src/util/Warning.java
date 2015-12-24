@@ -8,6 +8,8 @@ import java.util.logging.Logger;
 /**
  * A class to log warnings.
  *
+ * FIXME: Just combine with the enum ...
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
@@ -106,11 +108,10 @@ public class Warning {
 	}
 
 	/**
-	 * TODO: should be per-constant
 	 * @return a String representation of the object
 	 */
 	@Override
 	public String toString() {
-		return "Warning";
+		return "Warning with action " + state;
 	}
 }
