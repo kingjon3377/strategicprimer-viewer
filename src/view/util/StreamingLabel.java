@@ -29,6 +29,12 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  */
 public final class StreamingLabel extends JLabel {
+	/**
+	 * Colors to use on a StreamingLabel. Enumerated to appease XSS-possibility warnings.
+	 */
+	public enum LabelTextColor {
+		yellow, white, red, green;
+	}
 
 	/**
 	 * The writer that can be printed to.

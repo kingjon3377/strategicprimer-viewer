@@ -3,7 +3,7 @@ package view.map.misc;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilterWriter;
@@ -13,8 +13,7 @@ import java.io.Writer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
 import model.map.MapDimensions;
@@ -26,6 +25,7 @@ import util.TypesafeLogger;
 import util.Warning;
 import util.Warning.Action;
 import view.util.StreamingLabel;
+import view.util.StreamingLabel.LabelTextColor;
 
 /**
  * A window to show the result of running subset tests.
@@ -67,7 +67,7 @@ public final class SubsetFrame extends JFrame {
 	/**
 	 * The color to use for errors.
 	 */
-	private static final String ERROR_COLOR = "red";
+	private static final LabelTextColor ERROR_COLOR = LabelTextColor.red;
 	/**
 	 * The main map.
 	 */
@@ -138,27 +138,31 @@ public final class SubsetFrame extends JFrame {
 	}
 
 	/**
-	 * Enclose a string in HTML paragraph indicators, optionally with a color. And
-	 * repaint
-	 * the label so it shows up. This is "package-private" because, since the anonymous
-	 * inner class below needs it, we can't make it private. If no color is specified,
-	 * we'll make it white, because the label's background color is black.
+	 * Enclose a string in HTML paragraph indicators, using the default color. And
+	 * repaint the label so it shows up. This is "package-private" because, since the
+	 * anonymous inner class below needs it, we can't make it private. If no color is
+	 * specified, we'll make it white, because the label's background color is black.
 	 *
-	 * FIXME: To appease XSS-possibility warnings, make color on enumerated type.
+	 * @param paragraph the string to enclose
+	 */
+	protected void printParagraph(final String paragraph) {
+		printParagraph(paragraph, LabelTextColor.white);
+	}
+	/**
+	 * Enclose a string in HTML paragraph indicators, optionally with a color. And
+	 * repaint the label so it shows up. This is "package-private" because, since the
+	 * anonymous inner class below needs it, we can't make it private. If no color is
+	 * specified, we'll make it white, because the label's background color is black.
 	 *
 	 * @param paragraph the string to enclose
 	 * @param color     the color to make it, or the empty string if none.
 	 */
-	protected void printParagraph(final String paragraph, final String color) {
+	protected void printParagraph(final String paragraph, final LabelTextColor color) {
 		try (final PrintWriter writer = label.getWriter()) {
 			// Because StringWriter's close() does nothing, this is safe.
-			if (color.isEmpty()) {
-				writer.print("<p style=\"color:white\">");
-			} else {
-				writer.print("<p style=\"color:");
-				writer.print(color);
-				writer.print("\">");
-			}
+			writer.print("<p style=\"color:");
+			writer.print(color);
+			writer.print("\">");
 			writer.print(paragraph);
 			writer.println("</p>");
 		}
@@ -213,7 +217,7 @@ public final class SubsetFrame extends JFrame {
 						+ "<span style=\"color:yellow\">WARN</span> if apparently "
 						+ "not (but check by hand), "
 						+ "<span style=\"color:red\">FAIL</span> if "
-						+ "error in reading", "");
+						+ "error in reading");
 	}
 
 	/**
@@ -233,12 +237,12 @@ public final class SubsetFrame extends JFrame {
 	 * @param file the file from which it was loaded
 	 */
 	public void test(final IMapNG map, final File file) {
-		printParagraph("Testing " + file + " ...", "");
+		printParagraph("Testing " + file + " ...");
 		try (final Writer out = new HTMLWriter(label.getWriter())) {
 			if (mainMap.isSubset(map, out, file.getName() + ':')) {
-				printParagraph("OK", "green");
+				printParagraph("OK", LabelTextColor.green);
 			} else {
-				printParagraph("WARN", "yellow");
+				printParagraph("WARN", LabelTextColor.yellow);
 			}
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error writing to window", e);
@@ -254,14 +258,14 @@ public final class SubsetFrame extends JFrame {
 	 * @param arg the file from which to load the possible subset.
 	 */
 	public void test(final File arg) { // NOPMD: this isn't a JUnit test ...
-		printParagraph("Testing " + arg + " ...", "");
+		printParagraph("Testing " + arg + " ...");
 		try {
 			final IMapNG map = reader.readMap(arg, new Warning(Action.Ignore));
 			try (final Writer out = new HTMLWriter(label.getWriter())) {
 				if (mainMap.isSubset(map, out, arg.getName() + ':')) {
-					printParagraph("OK", "green");
+					printParagraph("OK", LabelTextColor.green);
 				} else {
-					printParagraph("WARN", "yellow");
+					printParagraph("WARN", LabelTextColor.yellow);
 				}
 			}
 		} catch (final MapVersionException except) {

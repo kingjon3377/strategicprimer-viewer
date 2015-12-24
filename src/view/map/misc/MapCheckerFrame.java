@@ -16,6 +16,7 @@ import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import view.util.StreamingLabel;
+import static view.util.StreamingLabel.LabelTextColor;
 
 /**
  * A window to show the results of checking maps for errors.
@@ -40,12 +41,6 @@ import view.util.StreamingLabel;
  * @author Jonathan Lovelace
  */
 public final class MapCheckerFrame extends JFrame {
-	/**
-	 * Colors to use on a StreamingLabel. Enumerated to appease XSS-possibility warnings.
-	 */
-	private enum LabelTextColor {
-		yellow, white, red, green;
-	}
 	/**
 	 * The color to use for errors.
 	 */
