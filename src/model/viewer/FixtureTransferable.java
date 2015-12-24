@@ -87,12 +87,11 @@ public final class FixtureTransferable implements Transferable {
 	}
 
 	/**
-	 * TODO: show state
 	 * @return a String representation of this object
 	 */
 	@Override
 	public String toString() {
-		return "FixtureTransferable";
+		return "FixtureTransferable transferring " + data.shortDesc();
 	}
 
 	/**
