@@ -68,11 +68,10 @@ public final class DistanceComparator implements Comparator<@NonNull Point> {
 	}
 
 	/**
-	 * TODO: show state
 	 * @return a string representation of this class
 	 */
 	@Override
 	public String toString() {
-		return "DistanceComparator";
+		return "DistanceComparator with base " + base;
 	}
 }
