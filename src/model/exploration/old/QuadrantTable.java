@@ -121,11 +121,10 @@ public final class QuadrantTable implements EncounterTable {
 	}
 
 	/**
-	 * TODO: show state
 	 * @return a String representation of the object
 	 */
 	@Override
 	public String toString() {
-		return "QuadrantTable";
+		return "QuadrantTable in " + quadrants.size() + " quadrants";
 	}
 }
