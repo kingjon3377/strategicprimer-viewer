@@ -1,6 +1,6 @@
 package model.viewer;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -47,17 +47,12 @@ public final class PointIteratorTest {
 	@SuppressWarnings("static-method")
 	@Test
 	public void testFromBeginning() {
-		// FIXME: Use Arrays.asList for this, and throughout these tests
-		final Collection<Point> expected = new ArrayList<>();
-		expected.add(PointFactory.point(0, 0));
-		expected.add(PointFactory.point(0, 1));
-		expected.add(PointFactory.point(0, 2));
-		expected.add(PointFactory.point(1, 0));
-		expected.add(PointFactory.point(1, 1));
-		expected.add(PointFactory.point(1, 2));
-		expected.add(PointFactory.point(2, 0));
-		expected.add(PointFactory.point(2, 1));
-		expected.add(PointFactory.point(2, 2));
+		final Collection<Point> expected =
+				Arrays.asList(PointFactory.point(0, 0), PointFactory.point(0, 1),
+						PointFactory.point(0, 2), PointFactory.point(1, 0),
+						PointFactory.point(1, 1), PointFactory.point(1, 2),
+						PointFactory.point(2, 0), PointFactory.point(2, 1),
+						PointFactory.point(2, 2));
 		final Iterable<Point> iter =
 				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1), null,
 						                                       true, true));
@@ -76,16 +71,12 @@ public final class PointIteratorTest {
 				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1),
 						                                       PointFactory.point(1, 1),
 						                                       true, true));
-		final Collection<Point> expected = new ArrayList<>();
-		expected.add(PointFactory.point(1, 2));
-		expected.add(PointFactory.point(2, 0));
-		expected.add(PointFactory.point(2, 1));
-		expected.add(PointFactory.point(2, 2));
-		expected.add(PointFactory.point(0, 0));
-		expected.add(PointFactory.point(0, 1));
-		expected.add(PointFactory.point(0, 2));
-		expected.add(PointFactory.point(1, 0));
-		expected.add(PointFactory.point(1, 1));
+		final Collection<Point> expected =
+				Arrays.asList(PointFactory.point(1, 2), PointFactory.point(2, 0),
+						PointFactory.point(2, 1), PointFactory.point(2, 2),
+						PointFactory.point(0, 0), PointFactory.point(0, 1),
+						PointFactory.point(0, 2), PointFactory.point(1, 0),
+						PointFactory.point(1, 1));
 		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
 				                                 .collect(Collectors.toList());
 		assertEquals(EXPECTATION, expected, actual);
@@ -102,16 +93,12 @@ public final class PointIteratorTest {
 				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1),
 						                                       PointFactory.point(-1, -1),
 						                                       true, false));
-		final Collection<Point> expected = new ArrayList<>();
-		expected.add(PointFactory.point(0, 0));
-		expected.add(PointFactory.point(1, 0));
-		expected.add(PointFactory.point(2, 0));
-		expected.add(PointFactory.point(0, 1));
-		expected.add(PointFactory.point(1, 1));
-		expected.add(PointFactory.point(2, 1));
-		expected.add(PointFactory.point(0, 2));
-		expected.add(PointFactory.point(1, 2));
-		expected.add(PointFactory.point(2, 2));
+		final Collection<Point> expected =
+				Arrays.asList(PointFactory.point(0, 0), PointFactory.point(1, 0),
+						PointFactory.point(2, 0), PointFactory.point(0, 1),
+						PointFactory.point(1, 1), PointFactory.point(2, 1),
+						PointFactory.point(0, 2), PointFactory.point(1, 2),
+						PointFactory.point(2, 2));
 		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
 				                                 .collect(Collectors.toList());
 		assertEquals(EXPECTATION, expected, actual);
@@ -123,16 +110,12 @@ public final class PointIteratorTest {
 	@SuppressWarnings("static-method")
 	@Test
 	public void testVertical() {
-		final Collection<Point> expected = new ArrayList<>();
-		expected.add(PointFactory.point(0, 0));
-		expected.add(PointFactory.point(1, 0));
-		expected.add(PointFactory.point(2, 0));
-		expected.add(PointFactory.point(0, 1));
-		expected.add(PointFactory.point(1, 1));
-		expected.add(PointFactory.point(2, 1));
-		expected.add(PointFactory.point(0, 2));
-		expected.add(PointFactory.point(1, 2));
-		expected.add(PointFactory.point(2, 2));
+		final Collection<Point> expected =
+				Arrays.asList(PointFactory.point(0, 0), PointFactory.point(1, 0),
+						PointFactory.point(2, 0), PointFactory.point(0, 1),
+						PointFactory.point(1, 1), PointFactory.point(2, 1),
+						PointFactory.point(0, 2), PointFactory.point(1, 2),
+						PointFactory.point(2, 2));
 		final Iterable<Point> iter =
 				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1), null,
 						                                       true, false));
@@ -147,16 +130,12 @@ public final class PointIteratorTest {
 	@SuppressWarnings("static-method")
 	@Test
 	public void testReverse() {
-		final Collection<Point> expected = new ArrayList<>();
-		expected.add(PointFactory.point(2, 2));
-		expected.add(PointFactory.point(2, 1));
-		expected.add(PointFactory.point(2, 0));
-		expected.add(PointFactory.point(1, 2));
-		expected.add(PointFactory.point(1, 1));
-		expected.add(PointFactory.point(1, 0));
-		expected.add(PointFactory.point(0, 2));
-		expected.add(PointFactory.point(0, 1));
-		expected.add(PointFactory.point(0, 0));
+		final Collection<Point> expected =
+				Arrays.asList(PointFactory.point(2, 2), PointFactory.point(2, 1),
+						PointFactory.point(2, 0), PointFactory.point(1, 2),
+						PointFactory.point(1, 1), PointFactory.point(1, 0),
+						PointFactory.point(0, 2), PointFactory.point(0, 1),
+						PointFactory.point(0, 0));
 		final Iterable<Point> iter =
 				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1), null,
 						                                       false, true));
@@ -171,16 +150,12 @@ public final class PointIteratorTest {
 	@SuppressWarnings("static-method")
 	@Test
 	public void testVerticalReverse() {
-		final Collection<Point> expected = new ArrayList<>();
-		expected.add(PointFactory.point(2, 2));
-		expected.add(PointFactory.point(1, 2));
-		expected.add(PointFactory.point(0, 2));
-		expected.add(PointFactory.point(2, 1));
-		expected.add(PointFactory.point(1, 1));
-		expected.add(PointFactory.point(0, 1));
-		expected.add(PointFactory.point(2, 0));
-		expected.add(PointFactory.point(1, 0));
-		expected.add(PointFactory.point(0, 0));
+		final Collection<Point> expected =
+				Arrays.asList(PointFactory.point(2, 2), PointFactory.point(1, 2),
+						PointFactory.point(0, 2), PointFactory.point(2, 1),
+						PointFactory.point(1, 1), PointFactory.point(0, 1),
+						PointFactory.point(2, 0), PointFactory.point(1, 0),
+						PointFactory.point(0, 0));
 		final Iterable<Point> iter =
 				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1), null,
 						                                       false, false));
