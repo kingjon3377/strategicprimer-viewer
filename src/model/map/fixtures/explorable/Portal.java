@@ -42,8 +42,6 @@ public class Portal implements ExplorableFixture {
 	/**
 	 * The coordinates in that world that the portal connects to. A negative coordinate
 	 * indicates that the coordinate needs to be generated, presumably randomly.
-	 *
-	 * TODO: add mutator
 	 */
 	private Point destinationCoordinates;
 	/**
