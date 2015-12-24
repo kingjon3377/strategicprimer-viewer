@@ -670,13 +670,11 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * Determine the size of an iterable. Note that its iterator will have been advanced
 	 * to the end.
 	 *
-	 * FIXME: Can this return long, as stream().count() does?
-	 *
 	 * @param iter an iterable
 	 * @param <T>  the type of thing it contains
 	 * @return the number of items in the iterable
 	 */
-	protected static <T> int iteratorSize(final Iterable<T> iter) {
+	protected static <T> long iteratorSize(final Iterable<T> iter) {
 		return (int) StreamSupport.stream(iter.spliterator(), false).count();
 	}
 
