@@ -76,11 +76,10 @@ public final class TerrainTable implements EncounterTable {
 	}
 
 	/**
-	 * TODO: show state
 	 * @return a String representation of the class
 	 */
 	@Override
 	public String toString() {
-		return "TerrainTable";
+		return "TerrainTable covering " + mapping.size() + " terrain types";
 	}
 }
