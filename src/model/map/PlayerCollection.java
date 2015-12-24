@@ -112,12 +112,11 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	}
 
 	/**
-	 * TODO: show state
 	 * @return a String representation of the class
 	 */
 	@Override
 	public String toString() {
-		return "PlayerCollection";
+		return "PlayerCollection with " + players.size() + " players";
 	}
 
 	/**
