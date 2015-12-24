@@ -76,11 +76,9 @@ public final class ZoomListener implements ActionListener {
 			} else {
 				leftColumn = selection.col - (vDims.getWidth() / 2);
 			}
-			final VisibleDimensions next = // TODO: inline
-					new VisibleDimensions(topRow, topRow + dims.getRows(),
-							                     leftColumn,
-							                     leftColumn + dims.getColumns());
-			model.setDimensions(next);
+			model.setDimensions(
+					new VisibleDimensions(topRow, topRow + dims.getRows(), leftColumn,
+							                     leftColumn + dims.getColumns()));
 		}
 	}
 
