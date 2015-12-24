@@ -230,7 +230,6 @@ public final class WorkerMgmtFrame extends JFrame {
 		final MemberDetailPanel mdp = new MemberDetailPanel();
 		tree.addUnitMemberListener(mdp);
 		final StrategyExporter strategyExporter = new StrategyExporter(model, wtmodel);
-		// TODO: Don't check command text in lambda ActionListeners
 		setContentPane(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT, HALF_WAY,
 												   HALF_WAY,
 												   new SplitWithWeights(JSplitPane
@@ -246,16 +245,9 @@ public final class WorkerMgmtFrame extends JFrame {
 																			   new
 																					   BorderedPanel(ordersPanel,
 																										new ListenedButton("Add New Unit",
-																																  evt -> {
-																																	  if ((evt !=
-																																				   null) &&
-																																				  "Add New Unit"
-																																						  .equals(evt.getActionCommand())) {
-																																		  newUnitFrame
-																																				  .setVisible(
-																																						  true);
-																																	  }
-																																  }),
+																																  evt -> newUnitFrame
+																																		  .setVisible(
+																																				  true)),
 																										new ListenedButton(
 																																  "Export a proto-strategy from units' orders",
 																																  evt -> {
