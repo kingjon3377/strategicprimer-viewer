@@ -86,11 +86,10 @@ public final class RandomTable implements EncounterTable {
 	}
 
 	/**
-	 * TODO: show state
 	 * @return a String representation of the class
 	 */
 	@Override
 	public String toString() {
-		return "RandomTable";
+		return "RandomTable of " + table.size() + " items";
 	}
 }
