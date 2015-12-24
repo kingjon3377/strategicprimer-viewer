@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Queue;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -426,13 +427,12 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	}
 
 	/**
-	 * TODO: Specify which player.
-	 *
 	 * @return a String representation of the object
 	 */
 	@Override
 	public String toString() {
-		return "WorkerTreeModelAlt";
+		return "WorkerTreeModelAlt representing units of player " +
+				       Objects.toString(getModelObject(root));
 	}
 
 	/**

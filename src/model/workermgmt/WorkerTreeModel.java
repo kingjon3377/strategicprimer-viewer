@@ -3,6 +3,7 @@ package model.workermgmt;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 import javax.swing.event.TreeModelEvent;
@@ -351,13 +352,11 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	}
 
 	/**
-	 * TODO: specify which player.
-	 *
 	 * @return a String representation of the object
 	 */
 	@Override
 	public String toString() {
-		return "WorkerTreeModel";
+		return "WorkerTreeModel representing units of player " + Objects.toString(root);
 	}
 
 	/**
