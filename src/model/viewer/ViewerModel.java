@@ -161,7 +161,7 @@ public final class ViewerModel extends AbstractDriverModel implements
 	 */
 	@Override
 	public String toString() {
-		return "MapModel";
+		return "ViewerModel for " + getMapFile().getName();
 	}
 
 	/**
