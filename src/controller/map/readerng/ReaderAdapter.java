@@ -73,10 +73,7 @@ public final class ReaderAdapter implements INodeHandler<Object> {
 			return READ_CACHE.get(iLocal).parse(element, stream, players,
 					warner, idFactory);
 		} else {
-			throw new UnwantedChildException("unknown", iLocal, element
-					                                                    .getLocation()
-					                                                    .getLineNumber
-							                                                     ());
+			throw new UnwantedChildException("unknown", iLocal, element.getLocation());
 		}
 	}
 

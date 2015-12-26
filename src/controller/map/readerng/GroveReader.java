@@ -101,16 +101,14 @@ public final class GroveReader implements INodeHandler<Grove> {
 			final String local =
 					NullCleaner.assertNotNull(element.getName().getLocalPart());
 			if (hasAttribute(element, "wild")) {
-				warner.warn(new DeprecatedPropertyException(local, "wild",
-																   CULTIVATED_ATTR,
-																   element.getLocation()
-																		   .getLineNumber()));
+				warner.warn(
+						new DeprecatedPropertyException(local, "wild", CULTIVATED_ATTR,
+								                               element.getLocation()));
 				return !Boolean.parseBoolean(getAttribute(element,
 						"wild")); // NOPMD
 			} else {
 				throw new MissingPropertyException(local, CULTIVATED_ATTR,
-														  element.getLocation()
-																  .getLineNumber());
+						                                  element.getLocation());
 			}
 		}
 	}

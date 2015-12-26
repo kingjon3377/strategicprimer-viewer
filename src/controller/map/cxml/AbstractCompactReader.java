@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.namespace.QName;
+import javax.xml.stream.Location;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -101,16 +102,11 @@ public abstract class AbstractCompactReader<@NonNull T>
 		final Attribute attr = element.getAttributeByName(new QName(param));
 		final String local = tagOrNull(element.getName().getLocalPart());
 		if (attr == null) {
-			throw new MissingPropertyException(local, param, element
-																	 .getLocation()
-																	 .getLineNumber());
+			throw new MissingPropertyException(local, param, element.getLocation());
 		} else {
 			final String value = attr.getValue();
 			if (value == null) {
-				throw new MissingPropertyException(local, param, element
-																		 .getLocation()
-																		 .getLineNumber
-																				  ());
+				throw new MissingPropertyException(local, param, element.getLocation());
 			} else {
 				return value;
 			}
@@ -151,12 +147,8 @@ public abstract class AbstractCompactReader<@NonNull T>
 			throws SPFormatException {
 		if (getParameter(element, param, "").isEmpty()) {
 			final String local = tagOrNull(element.getName().getLocalPart());
-			final SPFormatException except = new MissingPropertyException(
-																				 local,
-																				 param,
-																				 element
-																						 .getLocation()
-																						 .getLineNumber());
+			final SPFormatException except =
+					new MissingPropertyException(local, param, element.getLocation());
 			if (mandatory) {
 				throw except;
 			} else {
@@ -179,12 +171,9 @@ public abstract class AbstractCompactReader<@NonNull T>
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException(tagOrNull(tag.getLocalPart()),
-														tagOrNull(event.asStartElement()
-																		  .getName()
-																		  .getLocalPart
-																				   ()),
-														event.getLocation()
-																.getLineNumber());
+						                                tagOrNull(
+						event.asStartElement().getName().getLocalPart()),
+						                                event.getLocation());
 			} else if (event.isEndElement()
 							   && tag.equals(event.asEndElement().getName())) {
 				break;
@@ -213,16 +202,13 @@ public abstract class AbstractCompactReader<@NonNull T>
 												  .intValue());
 			} catch (final NumberFormatException | ParseException except) {
 				throw new MissingPropertyException(tagOrNull(
-						element.getName().getLocalPart()), "id", element.getLocation()
-								                                         .getLineNumber(),
-
+						element.getName().getLocalPart()), "id", element.getLocation(),
 						                                  except);
 			}
 		} else {
 			final String tag = element.getName().getLocalPart();
 			warner.warn(new MissingPropertyException(tagOrNull(tag), "id",
-															element.getLocation()
-																	.getLineNumber()));
+					                                        element.getLocation()));
 			return idFactory.createID();
 		}
 	}
@@ -255,16 +241,12 @@ public abstract class AbstractCompactReader<@NonNull T>
 		final Attribute deprProp = element.getAttributeByName(new QName(deprecated));
 		final String local = tagOrNull(element.getName().getLocalPart());
 		final MissingPropertyException exception =
-				new MissingPropertyException(local, preferred, element.getLocation()
-																	   .getLineNumber());
+				new MissingPropertyException(local, preferred, element.getLocation());
 		if ((prefProp == null) && (deprProp == null)) {
 			throw exception;
 		} else if (prefProp == null) {
-			warner.warn(new DeprecatedPropertyException(local, deprecated,
-															   preferred,
-															   element.getLocation()
-																	   .getLineNumber
-																				()));
+			warner.warn(new DeprecatedPropertyException(local, deprecated, preferred,
+					                                           element.getLocation()));
 			final String value = deprProp.getValue();
 			if (value == null) {
 				throw exception;
@@ -329,23 +311,23 @@ public abstract class AbstractCompactReader<@NonNull T>
 														   .assertNotNull(NumberFormat
 																				  .getIntegerInstance());
 
+
 	/**
 	 * Parse an integer.
 	 *
 	 * @param str  the text to parse
-	 * @param line the current line in the document
+	 * @param location the current location in the document
 	 * @return the result of parsing the text
 	 * @throws SPFormatException if the string is nonnumeric or otherwise malformed
 	 */
-	private static int parseInt(final String str, final int line)
+	private static int parseInt(final String str, final Location location)
 			throws SPFormatException {
 		try {
 			return NUM_PARSER.parse(str).intValue();
 		} catch (final ParseException e) {
-			throw new SPMalformedInputException(line, e);
+			throw new SPMalformedInputException(location, e);
 		}
 	}
-
 	/**
 	 * Parse an integer parameter.
 	 *
@@ -359,7 +341,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	protected static int getIntegerParameter(final StartElement tag,
 											 final String parameter)
 			throws SPFormatException {
-		return parseInt(getParameter(tag, parameter), tag.getLocation().getLineNumber());
+		return parseInt(getParameter(tag, parameter), tag.getLocation());
 	}
 
 	/**
@@ -384,7 +366,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 		if ((val == null) || val.isEmpty()) {
 			return defaultValue;
 		} else {
-			return parseInt(val, tag.getLocation().getLineNumber());
+			return parseInt(val, tag.getLocation());
 		}
 	}
 }

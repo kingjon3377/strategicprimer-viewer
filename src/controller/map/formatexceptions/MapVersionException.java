@@ -1,5 +1,7 @@
 package controller.map.formatexceptions;
 
+import javax.xml.stream.Location;
+
 /**
  * An exception to throw when the map's version is too old.
  *
@@ -29,16 +31,41 @@ public final class MapVersionException extends SPFormatException {
 	 * @param message the message to show the user if this isn't caught.
 	 */
 	public MapVersionException(final String message) {
-		super(message, 0);
+		super(message, new Location() {
+			@Override
+			public int getLineNumber() {
+				return 0;
+			}
+
+			@Override
+			public int getColumnNumber() {
+				return 0;
+			}
+
+			@Override
+			public int getCharacterOffset() {
+				return 0;
+			}
+
+			@Override
+			public String getPublicId() {
+				return null;
+			}
+
+			@Override
+			public String getSystemId() {
+				return null;
+			}
+		});
 	}
 
 	/**
 	 * Constructor.
 	 *
 	 * @param message the message to show the user if this isn't caught.
-	 * @param line    the line of the map tag.
+	 * @param loc     the location of the map tag.
 	 */
-	public MapVersionException(final String message, final int line) {
-		super(message, line);
+	public MapVersionException(final String message, final Location loc) {
+		super(message, loc);
 	}
 }

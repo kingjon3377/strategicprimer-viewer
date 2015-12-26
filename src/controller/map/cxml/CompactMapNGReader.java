@@ -114,19 +114,16 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		final int outerLine = outerLoc.getLineNumber();
 		if ("view".equalsIgnoreCase(outerTag)) {
 			currentTurn = getIntegerParameter(element, "current_turn");
-			mapTag = getFirstStartElement(stream, outerLine);
+			mapTag = getFirstStartElement(stream, outerLoc);
 			if (!"map".equalsIgnoreCase(mapTag.getName().getLocalPart())) {
-				throw new UnwantedChildException(outerTag, assertNotNull(mapTag
-																				 .getName()
-																				 .getLocalPart()),
-														mapTag.getLocation()
-																.getLineNumber());
+				throw new UnwantedChildException(outerTag, assertNotNull(
+						mapTag.getName().getLocalPart()), mapTag.getLocation());
 			}
 		} else if ("map".equalsIgnoreCase(outerTag)) {
 			currentTurn = 0;
 			mapTag = element;
 		} else {
-			throw new UnwantedChildException("xml", outerTag, outerLine);
+			throw new UnwantedChildException("xml", outerTag, outerLoc);
 		}
 		final MapDimensions dimensions =
 				new MapDimensions(getIntegerParameter(mapTag, "rows"),
@@ -152,7 +149,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				} else if ("tile".equalsIgnoreCase(type)) {
 					if (!nullPoint.equals(point)) {
 						throw new UnwantedChildException("tile", type,
-																currentLine);
+								                                currentLoc);
 					}
 					point = PointFactory.point(
 							getIntegerParameter(current, "row"),
@@ -169,14 +166,14 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 																			 "type",
 																			 warner)));
 					} else {
-						warner.warn(new MissingPropertyException(type, "kind",
-																		currentLine));
+						warner.warn(
+								new MissingPropertyException(type, "kind", currentLoc));
 					}
 				} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) {
-					warner.warn(new UnsupportedTagException(type, currentLine));
+					warner.warn(new UnsupportedTagException(type, currentLoc));
 				} else if (nullPoint.equals(point)) {
 					// fixture outside tile
-					throw new UnwantedChildException("map", type, currentLine);
+					throw new UnwantedChildException("map", type, currentLoc);
 				} else if ("lake".equalsIgnoreCase(type)
 								   || "river".equalsIgnoreCase(type)) {
 					retval.addRivers(point,
@@ -202,7 +199,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						if ("unknown".equals(except.getTag())) {
 							throw new UnwantedChildException(mapName,
 																	except.getChild(),
-																	currentLine);
+																	currentLoc);
 						} else {
 							throw except;
 						}
@@ -210,7 +207,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						if (EXCEPT_PATTERN.matcher(except.getMessage()).matches()) {
 							final UnwantedChildException nexcept =
 									new UnwantedChildException(mapName, type,
-																	  currentLine);
+																	  currentLoc);
 							nexcept.initCause(except);
 							throw nexcept;
 						} else {
@@ -317,27 +314,25 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				return item.read(element, stream, players, warner, idFactory);
 			}
 		}
-		throw new UnwantedChildException("tile", name, element.getLocation()
-															   .getLineNumber());
+		throw new UnwantedChildException("tile", name, element.getLocation());
 	}
 
 	/**
 	 * @param stream a stream of XMLEvents
-	 * @param line   the line the parent tag is on
+	 * @param loc    the location of the parent tag
 	 * @return the first start-element in the stream
 	 * @throws SPFormatException if no start element in stream
 	 */
 	private static StartElement getFirstStartElement(
-															final Iterable<XMLEvent>
-																	stream,
-															final int line)
+			                                                final Iterable<XMLEvent>
+					                                                stream,
+			                                                final Location loc)
 			throws SPFormatException {
 		return StreamSupport.stream(stream.spliterator(), false)
-					   .filter(XMLEvent::isStartElement).findFirst()
-					   .orElseThrow(() -> new MissingChildException("map", line))
-					   .asStartElement();
+				       .filter(XMLEvent::isStartElement).findFirst()
+				       .orElseThrow(() -> new MissingChildException("map", loc))
+				       .asStartElement();
 	}
-
 	/**
 	 * @param obj     a map
 	 * @param ostream the stream to write it to

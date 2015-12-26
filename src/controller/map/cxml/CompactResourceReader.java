@@ -258,13 +258,9 @@ public final class CompactResourceReader extends
 												   final Warning warner)
 			throws SPFormatException {
 		if (!hasParameter(element, STATUS_PAR)) {
-			warner.warn(new MissingPropertyException(NullCleaner
-															 .assertNotNull(
-																	 element.getName()
-																			 .getLocalPart()),
-															STATUS_PAR,
-															element.getLocation()
-																	.getLineNumber()));
+			warner.warn(new MissingPropertyException(NullCleaner.assertNotNull(
+					element.getName().getLocalPart()), STATUS_PAR,
+					                                        element.getLocation()));
 		}
 		return new Meadow(getParameter(element, KIND_PAR), field,
 								 parseBoolean(getParameter(element, CULTIVATED_PARAM)),
@@ -309,15 +305,13 @@ public final class CompactResourceReader extends
 			final String local =
 					NullCleaner.assertNotNull(element.getName().getLocalPart());
 			if (hasParameter(element, "wild")) {
-				warner.warn(new DeprecatedPropertyException(local, "wild",
-																   CULTIVATED_PARAM,
-																   element.getLocation()
-																		   .getLineNumber()));
+				warner.warn(
+						new DeprecatedPropertyException(local, "wild", CULTIVATED_PARAM,
+								                               element.getLocation()));
 				return !parseBoolean(getParameter(element, "wild"));
 			} else {
 				throw new MissingPropertyException(local, CULTIVATED_PARAM,
-														  element.getLocation()
-																  .getLineNumber());
+						                                  element.getLocation());
 			}
 		}
 	}

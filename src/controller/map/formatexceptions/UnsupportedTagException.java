@@ -1,5 +1,7 @@
 package controller.map.formatexceptions;
 
+import javax.xml.stream.Location;
+
 /**
  * A custom exception for not-yet-supported tags.
  *
@@ -37,11 +39,11 @@ public final class UnsupportedTagException extends SPFormatException {
 
 	/**
 	 * @param uTag the unsupported tag
-	 * @param line the line it's on
+	 * @param location where it occurred
 	 */
-	public UnsupportedTagException(final String uTag, final int line) {
+	public UnsupportedTagException(final String uTag, final Location location) {
 		super("Unexpected tag " + uTag
-				      + "; probably a more recent map format than viewer", line);
+				      + "; probably a more recent map format than viewer", location);
 		tag = uTag;
 	}
 }

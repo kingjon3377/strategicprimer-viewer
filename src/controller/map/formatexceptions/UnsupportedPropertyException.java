@@ -1,5 +1,7 @@
 package controller.map.formatexceptions;
 
+import javax.xml.stream.Location;
+
 /**
  * A custom exception for cases where a tag has a property it doesn't support.
  *
@@ -36,15 +38,14 @@ public final class UnsupportedPropertyException extends SPFormatException {
 	/**
 	 * @param tag       the current tag
 	 * @param parameter the unsupported parameter
-	 * @param line      the line where this occurred
+	 * @param location  the line where this occurred
 	 */
 	public UnsupportedPropertyException(final String tag,
-	                                    final String parameter, final int line) {
-		super("Unsupported property " + parameter + " in tag " + tag, line);
+	                                    final String parameter, final Location location) {
+		super("Unsupported property " + parameter + " in tag " + tag, location);
 		context = tag;
 		param = parameter;
 	}
-
 	/**
 	 * @return the current tag
 	 */

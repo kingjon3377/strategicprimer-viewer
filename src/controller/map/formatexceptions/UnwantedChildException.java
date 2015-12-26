@@ -1,5 +1,7 @@
 package controller.map.formatexceptions;
 
+import javax.xml.stream.Location;
+
 /**
  * A custom exception for when a tag has a child tag it can't handle.
  *
@@ -35,13 +37,14 @@ public final class UnwantedChildException extends SPFormatException {
 	private final String chld;
 
 	/**
+	 * FIXME: Take optional Throwable
 	 * @param parent    the current tag
 	 * @param child     the unwanted child
-	 * @param errorLine the line where this happened
+	 * @param errorLoc  the location where this happened
 	 */
 	public UnwantedChildException(final String parent, final String child,
-	                              final int errorLine) {
-		super("Unexpected child " + child + " in tag " + parent, errorLine);
+	                              final Location errorLoc) {
+		super("Unexpected child " + child + " in tag " + parent, errorLoc);
 		tag = parent;
 		chld = child;
 	}

@@ -108,8 +108,7 @@ public final class WorkerReader implements INodeHandler<@NonNull Worker> {
 															   .getName().getLocalPart(),
 									"a null tag");
 					throw new UnwantedChildException(outerName, innerName,
-															event.getLocation()
-																	.getLineNumber());
+							                                event.getLocation());
 				}
 			} else if (event.isEndElement()
 							   &&

@@ -228,18 +228,14 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 																				attribute));
 		if (attr == null) {
 			throw new MissingPropertyException(NullCleaner.valueOrDefault(
-					startElement.getName().getLocalPart(), "a null tag"),
-													  attribute,
-													  startElement.getLocation()
-															  .getLineNumber());
+					startElement.getName().getLocalPart(), "a null tag"), attribute,
+					                                  startElement.getLocation());
 		}
 		final String value = attr.getValue();
 		if (value == null) {
 			throw new MissingPropertyException(NullCleaner.valueOrDefault(
-					startElement.getName().getLocalPart(), "a null tag"),
-													  attribute,
-													  startElement.getLocation()
-															  .getLineNumber());
+					startElement.getName().getLocalPart(), "a null tag"), attribute,
+					                                  startElement.getLocation());
 		} else {
 			return value;
 		}

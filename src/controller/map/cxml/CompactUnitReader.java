@@ -140,14 +140,12 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 				if (retval instanceof UnitMember) {
 					return (UnitMember) retval;
 				} else {
-					throw new UnwantedChildException(UNIT_TAG, name, element
-																			 .getLocation()
-																			 .getLineNumber());
+					throw new UnwantedChildException(UNIT_TAG, name,
+							                                element.getLocation());
 				}
 			}
 		}
-		throw new UnwantedChildException(UNIT_TAG, name, element.getLocation()
-																 .getLineNumber());
+		throw new UnwantedChildException(UNIT_TAG, name, element.getLocation());
 	}
 
 	/**
@@ -165,16 +163,9 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 			final String retval =
 					getParamWithDeprecatedForm(element, "kind", "type", warner);
 			if (retval.isEmpty()) {
-				warner.warn(new MissingPropertyException(NullCleaner
-																 .assertNotNull(
-																		 element
-																				 .getName()
-																				 .getLocalPart()),
-
-																"kind",
-																element.getLocation()
-																		.getLineNumber
-																				 ()));
+				warner.warn(new MissingPropertyException(NullCleaner.assertNotNull(
+						element.getName().getLocalPart()), "kind",
+						                                        element.getLocation()));
 			}
 			return retval; // NOPMD
 		} catch (final MissingPropertyException except) {

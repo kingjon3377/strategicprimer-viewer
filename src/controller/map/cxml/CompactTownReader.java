@@ -212,13 +212,9 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			retval = players
 							 .getPlayer(getIntegerParameter(element, OWNER_PARAM));
 		} else {
-			warner.warn(new MissingPropertyException(NullCleaner
-															 .assertNotNull(
-																	 element.getName()
-																			 .getLocalPart()),
-															OWNER_PARAM,
-															element.getLocation()
-																	.getLineNumber()));
+			warner.warn(new MissingPropertyException(NullCleaner.assertNotNull(
+					element.getName().getLocalPart()), OWNER_PARAM,
+					                                        element.getLocation()));
 			retval = players.getIndependent();
 		}
 		return retval;
@@ -264,17 +260,10 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 							NullCleaner.assertNotNull(event.asStartElement()),
 							stream, players, warner, idFactory));
 				} else {
-					throw new UnwantedChildException(
-															NullCleaner.assertNotNull(
-																	element.getName()
-																			.getLocalPart()),
-															NullCleaner.assertNotNull(
-																	event
-																			.asStartElement()
-																			.getName()
-																			.getLocalPart()),
-															event.getLocation()
-																	.getLineNumber());
+					throw new UnwantedChildException(NullCleaner.assertNotNull(
+							element.getName().getLocalPart()), NullCleaner.assertNotNull(
+							event.asStartElement().getName().getLocalPart()),
+							                                event.getLocation());
 				}
 			} else if (event.isEndElement()
 							   &&

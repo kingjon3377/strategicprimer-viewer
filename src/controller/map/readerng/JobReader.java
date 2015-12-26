@@ -85,9 +85,7 @@ public final class JobReader implements INodeHandler<@NonNull Job> {
 			throws SPFormatException {
 		if (XMLHelper.hasAttribute(element, "hours")) {
 			warner.warn(new UnsupportedPropertyException("job", "hours",
-																element.getLocation()
-																		.getLineNumber
-																				 ()));
+					                                            element.getLocation()));
 		}
 		final Job retval =
 				new Job(XMLHelper.getAttribute(element, "name"),
@@ -106,20 +104,10 @@ public final class JobReader implements INodeHandler<@NonNull Job> {
 				if (result instanceof Skill) {
 					retval.addSkill((Skill) result);
 				} else {
-					throw new UnwantedChildException(
-															NullCleaner.assertNotNull(
-																	element.getName()
-																			.getLocalPart()),
-
-															NullCleaner.assertNotNull(
-																	NullCleaner
-																			.assertNotNull(
-																					event.asStartElement())
-																			.getName()
-																			.getLocalPart()),
-															event
-																	.getLocation()
-																	.getLineNumber());
+					throw new UnwantedChildException(NullCleaner.assertNotNull(
+							element.getName().getLocalPart()), NullCleaner.assertNotNull(
+							NullCleaner.assertNotNull(event.asStartElement()).getName()
+									.getLocalPart()), event.getLocation());
 				}
 			} else if (event.isEndElement()
 							   &&

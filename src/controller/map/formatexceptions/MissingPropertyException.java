@@ -1,5 +1,7 @@
 package controller.map.formatexceptions;
 
+import javax.xml.stream.Location;
+
 /**
  * An exception for cases where a parameter is required (or, if this is merely logged,
  * recommended) but missing.
@@ -35,29 +37,30 @@ public final class MissingPropertyException extends SPFormatException {
 	private final String param;
 
 	/**
+	 * TODO: Should also take QName for tag.
+	 *
 	 * @param tag       the current tag
 	 * @param parameter the missing parameter
-	 * @param errorLine the line where this occurred
+	 * @param errorLoc  the location where this occurred
 	 * @param cause the underlying cause
 	 */
 	public MissingPropertyException(final String tag, final String parameter,
-	                                final int errorLine, final Throwable cause) {
-		super("Missing parameter " + parameter + " in tag " + tag, errorLine, cause);
+	                                final Location errorLoc, final Throwable cause) {
+		super("Missing parameter " + parameter + " in tag " + tag, errorLoc, cause);
 		context = tag;
 		param = parameter;
 	}
 	/**
 	 * @param tag       the current tag
 	 * @param parameter the missing parameter
-	 * @param errorLine the line where this occurred
+	 * @param errorLoc  the location where this occurred
 	 */
 	public MissingPropertyException(final String tag, final String parameter,
-	                                final int errorLine) {
-		super("Missing parameter " + parameter + " in tag " + tag, errorLine);
+	                                final Location errorLoc) {
+		super("Missing parameter " + parameter + " in tag " + tag, errorLoc);
 		context = tag;
 		param = parameter;
 	}
-
 	/**
 	 * @return the current tag
 	 */

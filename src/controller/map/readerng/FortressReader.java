@@ -99,15 +99,13 @@ public final class FortressReader implements INodeHandler<Fortress> {
 							NullCleaner.assertNotNull(event.asStartElement()),
 							stream, players, warner, idFactory));
 				} else {
-					throw new UnwantedChildException("fortress",
-															NullCleaner.assertNotNull(
-																	event
-																			.asStartElement()
-																			.getName()
-																			.getLocalPart()),
+					throw new UnwantedChildException("fortress", NullCleaner
+							                                             .assertNotNull(
+									                                             event.asStartElement()
+											                                             .getName()
+											                                             .getLocalPart()),
 
-															event.getLocation()
-																	.getLineNumber());
+							                                event.getLocation());
 				}
 			} else if (event.isEndElement()
 							   &&

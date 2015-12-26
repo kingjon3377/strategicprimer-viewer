@@ -1,9 +1,9 @@
 package controller.map.formatexceptions;
 
+import javax.xml.stream.Location;
+
 /**
  * A custom exception for XML format errors.
- *
- * TODO: Take Location rather than int for the location in the XML.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -38,24 +38,25 @@ public class SPFormatException extends Exception {
 	}
 
 	/**
+	 * @param message   a message describing what's wrong with the XML
+	 * @param errorLoc  the location of the text causing the error
+	 * @param cause     the "initial cause" of this
+	 */
+	protected SPFormatException(final String message, final Location errorLoc,
+	                            final Throwable cause) {
+		super("Incorrect SP XML at line " + errorLoc.getLineNumber() + ", column " +
+				      errorLoc.getColumnNumber() + ": " + message, cause);
+		line = errorLoc.getLineNumber();
+	}
+	/**
 	 * Constructor.
 	 *
 	 * @param message   a message describing what's wrong with the XML.
-	 * @param errorLine the line containing the error.
+	 * @param errorLoc  the location containing the error.
 	 */
-	protected SPFormatException(final String message, final int errorLine) {
-		super("Incorrect SP XML at line " + errorLine + ": " + message);
-		line = errorLine;
-	}
-
-	/**
-	 * @param message   a message describing what's wrong with the XML
-	 * @param errorLine the line containing the error
-	 * @param cause     the "initial cause" of this
-	 */
-	protected SPFormatException(final String message, final int errorLine,
-	                            final Throwable cause) {
-		super("Incorrect SP XML at line " + errorLine + ": " + message, cause);
-		line = errorLine;
+	protected SPFormatException(final String message, final Location errorLoc) {
+		super("Incorrect SP XML at line " + errorLoc.getLineNumber() + ", column " +
+				      errorLoc.getColumnNumber() + ": " + message);
+		line = errorLoc.getLineNumber();
 	}
 }

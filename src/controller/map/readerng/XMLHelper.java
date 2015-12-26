@@ -71,14 +71,9 @@ public final class XMLHelper {
 		final Attribute attr = startElement.getAttributeByName(new QName(
 																				attribute));
 		if ((attr == null) || (attr.getValue() == null)) {
-			throw new MissingPropertyException(
-													  NullCleaner.assertNotNull(
-															  startElement.getName()
-																	  .getLocalPart()),
-													  attribute, startElement
-																		 .getLocation()
-																		 .getLineNumber
-																				  ());
+			throw new MissingPropertyException(NullCleaner.assertNotNull(
+					startElement.getName().getLocalPart()), attribute,
+					                                  startElement.getLocation());
 		}
 		return NullCleaner.assertNotNull(attr.getValue());
 	}
@@ -125,22 +120,12 @@ public final class XMLHelper {
 		final Attribute deprAttr = element.getAttributeByName(new QName(
 																			   deprecated));
 		if ((prefAttr == null) && (deprAttr == null)) {
-			throw new MissingPropertyException(
-													  NullCleaner.assertNotNull(
-															  element.getName()
-																	  .getLocalPart()),
-													  preferred, element.getLocation()
-																		 .getLineNumber
-																				  ());
+			throw new MissingPropertyException(NullCleaner.assertNotNull(
+					element.getName().getLocalPart()), preferred, element.getLocation());
 		} else if (prefAttr == null) {
-			warner.warn(new DeprecatedPropertyException(NullCleaner
-																.assertNotNull(
-																		element.getName()
-																				.getLocalPart()),
-															   deprecated, preferred,
-															   element.getLocation()
-																	   .getLineNumber
-																				()));
+			warner.warn(new DeprecatedPropertyException(NullCleaner.assertNotNull(
+					element.getName().getLocalPart()), deprecated, preferred,
+					                                           element.getLocation()));
 			return NullCleaner.assertNotNull(deprAttr.getValue()); // NOPMD
 		} else {
 			return NullCleaner.assertNotNull(prefAttr.getValue());
@@ -170,15 +155,10 @@ public final class XMLHelper {
 			throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement()) {
-				throw new UnwantedChildException(NullCleaner.assertNotNull(tag
-																				   .getLocalPart()),
-														NullCleaner.assertNotNull(event
-																						  .asStartElement()
-																						  .getName()
-																						  .getLocalPart()),
-														event
-																.getLocation()
-																.getLineNumber());
+				throw new UnwantedChildException(NullCleaner.assertNotNull(
+						tag.getLocalPart()), NullCleaner.assertNotNull(
+						event.asStartElement().getName().getLocalPart()),
+						                                event.getLocation());
 			} else if (event.isEndElement()
 							   && tag.equals(event.asEndElement().getName())) {
 				break;
@@ -201,14 +181,13 @@ public final class XMLHelper {
 												final Warning warner)
 			throws SPFormatException {
 		if (getAttribute(element, parameter, "").isEmpty()) {
-			final SPFormatException except =
-					new MissingPropertyException(
-														NullCleaner.assertNotNull(
-																element.getName()
-																		.getLocalPart()),
-														parameter, element
-																		   .getLocation()
-																		   .getLineNumber());
+			final SPFormatException except = new MissingPropertyException(NullCleaner
+					                                                              .assertNotNull(
+							                                                              element.getName()
+									                                                              .getLocalPart()),
+
+					                                                             parameter,
+					                                                             element.getLocation());
 			if (mandatory) {
 				throw except;
 			} else {
@@ -237,13 +216,8 @@ public final class XMLHelper {
 			retval = players.getPlayer(parseInt(getAttribute(element,
 					"owner"), NullCleaner.assertNotNull(element.getLocation())));
 		} else {
-			warner.warn(new MissingPropertyException(NullCleaner
-															 .assertNotNull(
-																	 element.getName()
-																			 .getLocalPart()),
-															"owner",
-															element.getLocation()
-																	.getLineNumber()));
+			warner.warn(new MissingPropertyException(NullCleaner.assertNotNull(
+					element.getName().getLocalPart()), "owner", element.getLocation()));
 			retval = players.getIndependent();
 		}
 		return retval;
@@ -268,13 +242,8 @@ public final class XMLHelper {
 			retval = idFactory.register(parseInt(getAttribute(element,
 					"id"), NullCleaner.assertNotNull(element.getLocation())));
 		} else {
-			warner.warn(new MissingPropertyException(NullCleaner
-															 .assertNotNull(
-																	 element.getName()
-																			 .getLocalPart()),
-															"id",
-															element.getLocation()
-																	.getLineNumber()));
+			warner.warn(new MissingPropertyException(NullCleaner.assertNotNull(
+					element.getName().getLocalPart()), "id", element.getLocation()));
 			retval = idFactory.createID();
 		}
 		return retval;
@@ -291,7 +260,7 @@ public final class XMLHelper {
 		try {
 			return NUM_PARSER.parse(str).intValue();
 		} catch (final ParseException e) {
-			throw new SPMalformedInputException(loc.getLineNumber(), e);
+			throw new SPMalformedInputException(loc, e);
 		}
 	}
 

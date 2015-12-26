@@ -1,5 +1,7 @@
 package controller.map.formatexceptions;
 
+import javax.xml.stream.Location;
+
 /**
  * An exception to throw when an "include" tag references a file containing errors. We
  * need it because we can't throw XMLStreamException from tag-processing functions, only
@@ -30,12 +32,12 @@ public final class BadIncludeException extends SPFormatException {
 	 *
 	 * @param file  the missing file
 	 * @param cause the exception that caused this one to be thrown.
-	 * @param line  the line the "include" tag was on.
+	 * @param location  the location of the "include" tag.
 	 */
 	public BadIncludeException(final String file, final Throwable cause,
-	                           final int line) {
-		super("File " + file + ", referenced by <include> tag on line " + line
-				      + ", contains XML format errors (see specified cause)", line,
+	                           final Location location) {
+		super("File " + file + ", referenced by <include> tag on line " + location.getLineNumber()
+				      + ", contains XML format errors (see specified cause)", location,
 				cause);
 	}
 }

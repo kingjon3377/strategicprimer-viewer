@@ -64,13 +64,9 @@ public final class TextReader implements INodeHandler<TextFixture> {
 		final StringBuilder sbuild = new StringBuilder(2048); // NOPMD
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new UnwantedChildException("text",
-														NullCleaner.assertNotNull(
-																event.asStartElement()
-																		.getName()
-																		.getLocalPart()),
-														event.getLocation()
-																.getLineNumber());
+				throw new UnwantedChildException("text", NullCleaner.assertNotNull(
+						event.asStartElement().getName().getLocalPart()),
+						                                event.getLocation());
 			} else if (event.isCharacters()) {
 				sbuild.append(event.asCharacters().getData());
 			} else if (event.isEndElement()

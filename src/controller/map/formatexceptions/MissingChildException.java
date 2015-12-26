@@ -1,5 +1,7 @@
 package controller.map.formatexceptions;
 
+import javax.xml.stream.Location;
+
 /**
  * A custom exception for when a tag (or a Node) requuires a child and it isn't there.
  *
@@ -37,11 +39,10 @@ public final class MissingChildException extends SPFormatException {
 
 	/**
 	 * @param tag  the current tag (the one that needs a child)
-	 * @param line the current line
+	 * @param loc the current location
 	 */
-	public MissingChildException(final String tag, final int line) {
-		super("Tag " + tag + " missing a child", line);
+	public MissingChildException(final String tag, final Location loc) {
+		super("Tag " + tag + " missing a child", loc);
 		context = tag;
 	}
-
 }

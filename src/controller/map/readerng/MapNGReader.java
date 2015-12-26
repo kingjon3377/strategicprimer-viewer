@@ -123,20 +123,16 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 		if ("view".equalsIgnoreCase(element.getName().getLocalPart())) {
 			currentTurn = XMLHelper.parseInt(
 					XMLHelper.getAttribute(element, "current_turn"), outerLoc);
-			mapTag = getFirstStartElement(stream, outerLoc.getLineNumber());
+			mapTag = getFirstStartElement(stream, outerLoc);
 			if (!"map".equals(mapTag.getName().getLocalPart())) {
-				throw new UnwantedChildException(outerTag, assertNotNull(mapTag
-																				 .getName()
-																				 .getLocalPart()),
-														mapTag.getLocation()
-																.getLineNumber());
+				throw new UnwantedChildException(outerTag, assertNotNull(
+						mapTag.getName().getLocalPart()), mapTag.getLocation());
 			}
 		} else if ("map".equalsIgnoreCase(outerTag)) {
 			currentTurn = 0;
 			mapTag = element;
 		} else {
-			throw new UnwantedChildException("xml", assertNotNull(outerTag),
-													outerLoc.getLineNumber());
+			throw new UnwantedChildException("xml", assertNotNull(outerTag), outerLoc);
 		}
 		final Location mapTagLocation = assertNotNull(mapTag.getLocation());
 		final MapDimensions dimensions = new MapDimensions(
@@ -177,10 +173,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					continue;
 				} else if ("tile".equalsIgnoreCase(type)) {
 					if (!nullPoint.equals(point)) {
-						throw new UnwantedChildException("tile", type,
-																currentLoc
-																		.getLineNumber
-																				 ());
+						throw new UnwantedChildException("tile", type, currentLoc);
 					}
 					point = PointFactory.point(XMLHelper.parseInt(
 							XMLHelper.getAttribute(current, "row"), currentLoc),
@@ -199,18 +192,14 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 																	 "kind", "type",
 																	 warner)));
 					} else {
-						warner.warn(new MissingPropertyException(type, "kind",
-																		currentLoc
-																				.getLineNumber()));
+						warner.warn(
+								new MissingPropertyException(type, "kind", currentLoc));
 					}
 				} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) {
-					warner.warn(new UnsupportedTagException(type, currentLoc
-																		  .getLineNumber
-																				   ()));
+					warner.warn(new UnsupportedTagException(type, currentLoc));
 				} else if (nullPoint.equals(point)) {
 					// fixture outside tile
-					throw new UnwantedChildException("map", type,
-															currentLoc.getLineNumber());
+					throw new UnwantedChildException("map", type, currentLoc);
 				} else if ("lake".equalsIgnoreCase(type)
 								   || "river".equalsIgnoreCase(type)) {
 					retval.addRivers(point, RIVER_READER.parse(current, stream,
@@ -233,31 +222,22 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 								TileFixture.class));
 					} catch (final UnwantedChildException except) {
 						if ("unknown".equals(except.getTag())) {
-							throw new UnwantedChildException(
-																	assertNotNull(
-																			mapTag
-																					.getName()
-																					.getLocalPart()),
-																	except.getChild(),
-																	currentLoc
-																			.getLineNumber());
+							throw new UnwantedChildException(assertNotNull(
+									mapTag.getName().getLocalPart()), except.getChild(),
+									                                currentLoc);
 						} else {
 							throw except;
 						}
 					} catch (final IllegalStateException except) {
 						if (EXCEPT_PATTERN.matcher(except.getMessage()).matches()) {
 							final UnwantedChildException nexcept =
-									new UnwantedChildException(
-																	  assertNotNull(
-																			  mapTag
-																					  .getName()
-																					  .getLocalPart()),
-																	  assertNotNull(
-																			  current
-																					  .getName()
-																					  .getLocalPart()),
-																	  currentLoc
-																			  .getLineNumber());
+									new UnwantedChildException(assertNotNull(
+											mapTag.getName().getLocalPart()),
+											                          assertNotNull(
+													                          current.getName()
+															                          .getLocalPart()),
+
+											                          currentLoc);
 							nexcept.initCause(except);
 							throw nexcept;
 						} else {
@@ -344,21 +324,20 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 
 	/**
 	 * @param stream a stream of XMLEvents
-	 * @param line   the line the parent tag is on
+	 * @param loc    the location of the parent tag
 	 * @return the first start-element in the stream
 	 * @throws SPFormatException if no start element in stream
 	 */
 	private static StartElement getFirstStartElement(
-															final Iterable<XMLEvent>
-																	stream,
-															final int line)
+			                                                final Iterable<XMLEvent>
+					                                                stream,
+			                                                final Location loc)
 			throws SPFormatException {
 		return StreamSupport.stream(stream.spliterator(), false)
-					   .filter(XMLEvent::isStartElement).findFirst()
-					   .orElseThrow(() -> new MissingChildException("map", line))
-					   .asStartElement();
+				       .filter(XMLEvent::isStartElement).findFirst()
+				       .orElseThrow(() -> new MissingChildException("map", loc))
+				       .asStartElement();
 	}
-
 	/**
 	 * Create an intermediate representation of the map to convert it to XML.
 	 *

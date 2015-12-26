@@ -1,5 +1,7 @@
 package controller.map.formatexceptions;
 
+import javax.xml.stream.Location;
+
 /**
  * For cases of malformed input where we can't use XMLStreamException.
  *
@@ -26,17 +28,17 @@ public final class SPMalformedInputException extends SPFormatException {
 	/**
 	 * Constructor.
 	 *
-	 * @param line where this occurred
+	 * @param location where this occurred
 	 */
-	public SPMalformedInputException(final int line) {
-		super("Malformed input", line);
+	public SPMalformedInputException(final Location location) {
+		super("Malformed input", location);
 	}
 
 	/**
-	 * @param line  where this occurred
-	 * @param cause the underlying exception
+	 * @param location  where this occurred
+	 * @param cause     the underlying exception
 	 */
-	public SPMalformedInputException(final int line, final Throwable cause) {
-		super("Malformed input", line, cause);
+	public SPMalformedInputException(final Location location, final Throwable cause) {
+		super("Malformed input", location, cause);
 	}
 }

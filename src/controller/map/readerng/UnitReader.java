@@ -90,16 +90,9 @@ public final class UnitReader implements INodeHandler<Unit> {
 				if (result instanceof UnitMember) {
 					fix.addMember((UnitMember) result);
 				} else {
-					throw new UnwantedChildException(
-															NullCleaner.assertNotNull(
-																	element.getName()
-																			.getLocalPart()),
-
-															NullCleaner.assertNotNull(
-																	selem.getName()
-																			.getLocalPart()),
-															event.getLocation()
-																	.getLineNumber());
+					throw new UnwantedChildException(NullCleaner.assertNotNull(
+							element.getName().getLocalPart()), NullCleaner.assertNotNull(
+							selem.getName().getLocalPart()), event.getLocation());
 				}
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());
@@ -129,15 +122,9 @@ public final class UnitReader implements INodeHandler<Unit> {
 			final String retval = getAttributeWithDeprecatedForm(element, // NOPMD
 					KIND_PROPERTY, "type", warner);
 			if (retval.isEmpty()) {
-				warner.warn(new MissingPropertyException(NullCleaner
-																 .assertNotNull(
-																		 element
-																				 .getName()
-																				 .getLocalPart()),
-																KIND_PROPERTY,
-																element.getLocation()
-																		.getLineNumber
-																				 ()));
+				warner.warn(new MissingPropertyException(NullCleaner.assertNotNull(
+						element.getName().getLocalPart()), KIND_PROPERTY,
+						                                        element.getLocation()));
 			}
 			return retval; // NOPMD
 		} catch (final MissingPropertyException except) {

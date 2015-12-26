@@ -1,5 +1,7 @@
 package controller.map.formatexceptions;
 
+import javax.xml.stream.Location;
+
 /**
  * A custom exception for cases where one property is deprecated in favor of another.
  *
@@ -63,13 +65,13 @@ public final class DeprecatedPropertyException extends SPFormatException {
 	 * @param tag        the current tag
 	 * @param deprecated the old form
 	 * @param newForm    the preferred form
-	 * @param line       where this occurred
+	 * @param loc        where this occurred
 	 */
 	public DeprecatedPropertyException(final String tag,
 	                                   final String deprecated, final String newForm,
-	                                   final int line) {
+	                                   final Location loc) {
 		super("Use of the property '" + deprecated + "' in tag '" + tag
-				      + "' is deprecated; use '" + newForm + "' instead", line);
+				      + "' is deprecated; use '" + newForm + "' instead", loc);
 		context = tag;
 		old = deprecated;
 		preferred = newForm;

@@ -94,19 +94,10 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 							NullCleaner.assertNotNull(event.asStartElement()),
 							stream));
 				} else {
-					throw new UnwantedChildException(
-															NullCleaner.assertNotNull(
-																	element.getName()
-																			.getLocalPart()),
-
-															NullCleaner.assertNotNull(
-																	event
-																			.asStartElement()
-																			.getName()
-																			.getLocalPart()),
-															event
-																	.getLocation()
-																	.getLineNumber());
+					throw new UnwantedChildException(NullCleaner.assertNotNull(
+							element.getName().getLocalPart()), NullCleaner.assertNotNull(
+							event.asStartElement().getName().getLocalPart()),
+							                                event.getLocation());
 				}
 			} else if (event.isEndElement()
 							   &&
@@ -161,9 +152,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 							   getIntegerParameter(element, "level"));
 		if (hasParameter(element, "hours")) {
 			warner.warn(new UnsupportedPropertyException("job", "hours",
-																element.getLocation()
-																		.getLineNumber
-																				 ()));
+					                                            element.getLocation()));
 		}
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
@@ -177,18 +166,10 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 					spinUntilEnd(NullCleaner.assertNotNull(event.asStartElement()
 																   .getName()), stream);
 				} else {
-					throw new UnwantedChildException(
-															NullCleaner.assertNotNull(
-																	element.getName()
-																			.getLocalPart()),
-															NullCleaner.assertNotNull(
-																	event
-																			.asStartElement()
-																			.getName()
-																			.getLocalPart()),
-															event
-																	.getLocation()
-																	.getLineNumber());
+					throw new UnwantedChildException(NullCleaner.assertNotNull(
+							element.getName().getLocalPart()), NullCleaner.assertNotNull(
+							event.asStartElement().getName().getLocalPart()),
+							                                event.getLocation());
 				}
 			} else if (event.isEndElement()
 							   &&
@@ -216,11 +197,9 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 								 getIntegerParameter(element, "level"),
 								 getIntegerParameter(element, "hours"));
 		if ("miscellaneous".equals(retval.getName()) && (retval.getLevel() > 0)) {
-			warner.warn(new DeprecatedPropertyException("skill",
-															   "miscellaneous", "other",
-															   element.getLocation()
-																	   .getLineNumber
-																				()));
+			warner.warn(new DeprecatedPropertyException("skill", "miscellaneous",
+					                                           "other",
+					                                           element.getLocation()));
 		}
 		return retval;
 	}
