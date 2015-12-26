@@ -205,11 +205,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						}
 					} catch (final IllegalStateException except) {
 						if (EXCEPT_PATTERN.matcher(except.getMessage()).matches()) {
-							final UnwantedChildException nexcept =
-									new UnwantedChildException(mapName, type,
-																	  currentLoc);
-							nexcept.initCause(except);
-							throw nexcept;
+							throw new UnwantedChildException(mapName, type,
+															  currentLoc, except);
 						} else {
 							throw except;
 						}

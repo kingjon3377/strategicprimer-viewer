@@ -230,16 +230,13 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 						}
 					} catch (final IllegalStateException except) {
 						if (EXCEPT_PATTERN.matcher(except.getMessage()).matches()) {
-							final UnwantedChildException nexcept =
-									new UnwantedChildException(assertNotNull(
-											mapTag.getName().getLocalPart()),
-											                          assertNotNull(
-													                          current.getName()
-															                          .getLocalPart()),
+							throw new UnwantedChildException(assertNotNull(
+									mapTag.getName().getLocalPart()),
+									                          assertNotNull(
+											                          current.getName()
+													                          .getLocalPart()),
 
-											                          currentLoc);
-							nexcept.initCause(except);
-							throw nexcept;
+									                          currentLoc, except);
 						} else {
 							throw except;
 						}

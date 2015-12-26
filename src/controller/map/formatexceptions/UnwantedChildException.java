@@ -37,7 +37,6 @@ public final class UnwantedChildException extends SPFormatException {
 	private final String chld;
 
 	/**
-	 * FIXME: Take optional Throwable
 	 * @param parent    the current tag
 	 * @param child     the unwanted child
 	 * @param errorLoc  the location where this happened
@@ -49,6 +48,18 @@ public final class UnwantedChildException extends SPFormatException {
 		chld = child;
 	}
 
+	/**
+	 * @param parent    the current tag
+	 * @param child     the unwanted child
+	 * @param errorLoc  the location where this happened
+	 * @param cause     another exception that caused this one
+	 */
+	public UnwantedChildException(final String parent, final String child,
+	                              final Location errorLoc, final Throwable cause) {
+		super("Unexpected child " + child + " in tag " + parent, errorLoc, cause);
+		tag = parent;
+		chld = child;
+	}
 	/**
 	 * @return the current tag.
 	 */
