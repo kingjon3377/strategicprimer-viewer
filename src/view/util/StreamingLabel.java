@@ -33,7 +33,7 @@ public final class StreamingLabel extends JLabel {
 	 * Colors to use on a StreamingLabel. Enumerated to appease XSS-possibility warnings.
 	 */
 	public enum LabelTextColor {
-		yellow, white, red, green;
+		yellow, white, red, green
 	}
 
 	/**

@@ -89,7 +89,7 @@ public final class TODOFixerDriver {
 	 * Possible kinds of terrain.
 	 */
 	private enum SimpleTerrain {
-		Unforested, Forested, Ocean, Other;
+		Unforested, Forested, Ocean, Other
 	}
 	/**
 	 * Fix a stubbed-out kind for a unit.
