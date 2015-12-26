@@ -69,7 +69,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 	                       final @NonNull IWorkerTreeModel @NonNull ...
 			                       changeListeners) {
 		Collections.addAll(listeners, changeListeners);
-		boolean mutable = false;
+		boolean immutable = true;
 		final FixtureEditMenu outer = this;
 		if (fixture instanceof HasName) {
 			addMenuItem(new JMenuItem("Rename", KeyEvent.VK_N), event -> {
@@ -84,7 +84,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 					}
 				}
 			});
-			mutable = true;
+			immutable = false;
 		}
 		if (fixture instanceof HasKind) {
 			addMenuItem(new JMenuItem("Change kind", KeyEvent.VK_K),
@@ -102,7 +102,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 							}
 						}
 					});
-			mutable = true;
+			immutable = false;
 		}
 		if (fixture instanceof HasOwner) {
 			addMenuItem(new JMenuItem("Change owner", KeyEvent.VK_O),
@@ -118,7 +118,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 							((HasOwner) fixture).setOwner(result);
 						}
 					});
-			mutable = true;
+			immutable = false;
 		}
 		if (fixture instanceof UnitMember) {
 			addMenuItem(new JMenuItem("Dismiss", KeyEvent.VK_D),
@@ -133,7 +133,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 						}
 					});
 		}
-		if (!mutable) {
+		if (immutable) {
 			add(new JLabel("Fixture is not mutable"));
 		}
 	}
