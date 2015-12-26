@@ -62,7 +62,7 @@ public final class LevelListener implements LevelGainListener,
 	public void level() {
 		final UnitMember wkr = worker;
 		final ISkill skl = skill;
-		if (wkr != null && skl != null) {
+		if ((wkr != null) && (skl != null)) {
 			SYS_OUT.append(getName(wkr));
 			SYS_OUT.append(" gained a level in ");
 			SYS_OUT.append(getName(skl));
