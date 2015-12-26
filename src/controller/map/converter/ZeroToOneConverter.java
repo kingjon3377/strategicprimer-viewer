@@ -70,7 +70,7 @@ public final class ZeroToOneConverter {
 	 * @param ostream the stream to write the equivalent map, format version 1, to
 	 * @throws IOException on I/O error writing to ostream
 	 */
-	public static void convert(final Iterable<XMLEvent> stream, Appendable ostream)
+	public static void convert(final Iterable<XMLEvent> stream, final Appendable ostream)
 			throws IOException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
@@ -221,7 +221,7 @@ public final class ZeroToOneConverter {
 		ostream.append(element.getName().getLocalPart());
 		// getAttributes() isn't actually genericized, so diamond causes compile error
 		//noinspection Convert2Diamond
-		for (Attribute attr : new IteratorWrapper<Attribute>(element.getAttributes())) {
+		for (final Attribute attr : new IteratorWrapper<Attribute>(element.getAttributes())) {
 			ostream.append(printAttribute(attr));
 		}
 		ostream.append('>');

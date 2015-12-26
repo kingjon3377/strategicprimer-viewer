@@ -58,7 +58,7 @@ public enum DrawingNumericConstants {
 	/**
 	 * @param numConst the constant this instance encapsulates.
 	 */
-	DrawingNumericConstants(double numConst) {
+	DrawingNumericConstants(final double numConst) {
 		constant = numConst;
 	}
 	/**
