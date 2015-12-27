@@ -79,13 +79,6 @@ public final class AboutDialog extends JDialog {
 		link(builder, "https://stackoverflow.com/a/3646398", "StackOverflow");
 		builder.append("</p>");
 		builder.append(
-				"<p>Code to resize components given a fixed width adapted from ");
-		link(builder,
-				"http://blog.nobel-joergensen" +
-						".com/2009/01/18/changing-preferred-size-of-a-html-jlabel/",
-				"Nobel Joergensen");
-		builder.append("</p>");
-		builder.append(
 				"<p>Drag-and-drop implementation uses code adapted from 'helloworld922' " +
 						"on the ");
 		link(builder,
