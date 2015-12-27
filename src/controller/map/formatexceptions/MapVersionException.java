@@ -31,32 +31,7 @@ public final class MapVersionException extends SPFormatException {
 	 * @param message the message to show the user if this isn't caught.
 	 */
 	public MapVersionException(final String message) {
-		super(message, new Location() {
-			@Override
-			public int getLineNumber() {
-				return 0;
-			}
-
-			@Override
-			public int getColumnNumber() {
-				return 0;
-			}
-
-			@Override
-			public int getCharacterOffset() {
-				return 0;
-			}
-
-			@Override
-			public String getPublicId() {
-				return null;
-			}
-
-			@Override
-			public String getSystemId() {
-				return null;
-			}
-		});
+		super(message, new ZeroLocation());
 	}
 
 	/**
@@ -67,5 +42,35 @@ public final class MapVersionException extends SPFormatException {
 	 */
 	public MapVersionException(final String message, final Location loc) {
 		super(message, loc);
+	}
+
+	/**
+	 * The location of the start of the document.
+	 */
+	private static class ZeroLocation implements Location {
+		@Override
+		public int getLineNumber() {
+			return 0;
+		}
+
+		@Override
+		public int getColumnNumber() {
+			return 0;
+		}
+
+		@Override
+		public int getCharacterOffset() {
+			return 0;
+		}
+
+		@Override
+		public String getPublicId() {
+			return null;
+		}
+
+		@Override
+		public String getSystemId() {
+			return null;
+		}
 	}
 }
