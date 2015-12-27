@@ -10,7 +10,6 @@ import model.exploration.ExplorationModel;
 import model.misc.IDriverModel;
 import util.Warning;
 import view.exploration.ExplorationFrame;
-import view.util.FilteredFileChooser;
 
 import static view.util.SystemOut.SYS_OUT;
 
@@ -60,9 +59,8 @@ public final class ExplorationGUI implements ISPDriver {
 		} else {
 			model = new ExplorationModel(dmodel);
 		}
-		SwingUtilities.invokeLater(new WindowThread(new ExplorationFrame(model,
-				                                                                new IOHandler(model,
-						                                                                             new FilteredFileChooser()))));
+		SwingUtilities.invokeLater(
+				new WindowThread(new ExplorationFrame(model, new IOHandler(model))));
 	}
 
 	/**
@@ -88,9 +86,8 @@ public final class ExplorationGUI implements ISPDriver {
 																						   .namesToFiles(
 																								   true,
 																								   args)));
-		SwingUtilities.invokeLater(new WindowThread(new ExplorationFrame(model,
-				                                                                new IOHandler(model,
-						                                                                             new FilteredFileChooser()))));
+		SwingUtilities.invokeLater(
+				new WindowThread(new ExplorationFrame(model, new IOHandler(model))));
 	}
 
 	/**

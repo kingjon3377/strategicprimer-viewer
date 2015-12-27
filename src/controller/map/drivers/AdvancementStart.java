@@ -14,7 +14,6 @@ import model.workermgmt.WorkerModel;
 import util.NullCleaner;
 import util.Warning;
 import util.Warning.Action;
-import view.util.FilteredFileChooser;
 import view.worker.AdvancementFrame;
 
 /**
@@ -66,9 +65,8 @@ public final class AdvancementStart implements ISPDriver {
 		} else {
 			model = new WorkerModel(dmodel);
 		}
-		SwingUtilities.invokeLater(new WindowThread(new AdvancementFrame(model,
-				                                                                new IOHandler(model,
-						                                                                             new FilteredFileChooser()))));
+		SwingUtilities.invokeLater(
+				new WindowThread(new AdvancementFrame(model, new IOHandler(model))));
 	}
 
 	/**
@@ -98,9 +96,8 @@ public final class AdvancementStart implements ISPDriver {
 																					  .namesToFiles(
 																							  true,
 																							  args)));
-			SwingUtilities.invokeLater(new WindowThread(new AdvancementFrame(model,
-					                                                                new IOHandler(model,
-							                                                                             new FilteredFileChooser()))));
+			SwingUtilities.invokeLater(
+					new WindowThread(new AdvancementFrame(model, new IOHandler(model))));
 		} catch (final ChoiceInterruptedException except) {
 			throw new DriverFailedException("File choice was interrupted or user didn't choose",
 												   except);

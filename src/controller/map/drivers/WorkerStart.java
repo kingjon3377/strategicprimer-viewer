@@ -13,7 +13,6 @@ import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
 import util.Warning;
 import util.Warning.Action;
-import view.util.FilteredFileChooser;
 import view.worker.WorkerMgmtFrame;
 
 /**
@@ -87,9 +86,8 @@ public final class WorkerStart implements ISPDriver {
 		} else {
 			model = new WorkerModel(dmodel);
 		}
-		SwingUtilities.invokeLater(new WindowThread(new WorkerMgmtFrame(model,
-				                                                               new IOHandler(model,
-						                                                                            new FilteredFileChooser()))));
+		SwingUtilities.invokeLater(
+				new WindowThread(new WorkerMgmtFrame(model, new IOHandler(model))));
 	}
 
 	/**
@@ -120,9 +118,8 @@ public final class WorkerStart implements ISPDriver {
 										                                          .namesToFiles(
 												                                          true,
 												                                          args)));
-		SwingUtilities.invokeLater(new WindowThread(new WorkerMgmtFrame(model,
-				                                                               new IOHandler(model,
-						                                                                            new FilteredFileChooser()))));
+		SwingUtilities.invokeLater(
+				new WindowThread(new WorkerMgmtFrame(model, new IOHandler(model))));
 	}
 
 	/**

@@ -17,7 +17,6 @@ import util.Pair;
 import util.Warning;
 import util.Warning.Action;
 import view.map.main.ViewerFrame;
-import view.util.FilteredFileChooser;
 
 /**
  * A class to start the viewer, to reduce circular dependencies between packages.
@@ -71,9 +70,8 @@ public final class ViewerStart implements ISPDriver {
 		} else {
 			model = new ViewerModel(dmodel);
 		}
-		SwingUtilities.invokeLater(new WindowThread(new ViewerFrame(model,
-				                                                           new IOHandler(model,
-						                                                                        new FilteredFileChooser()))));
+		SwingUtilities.invokeLater(
+				new WindowThread(new ViewerFrame(model, new IOHandler(model))));
 	}
 
 	/**

@@ -12,7 +12,6 @@ import model.misc.IDriverModel;
 import model.resources.ResourceManagementDriver;
 import util.Warning;
 import view.resources.ResourceAddingFrame;
-import view.util.FilteredFileChooser;
 
 /**
  * A class to start the resource-entry app.
@@ -85,9 +84,8 @@ public class ResourceAddingGUIDriver implements ISPDriver {
 		} else {
 			model = new ResourceManagementDriver(dmodel);
 		}
-		SwingUtilities.invokeLater(new WindowThread(new ResourceAddingFrame(model,
-				                                                                   new IOHandler(model,
-						                                                                                new FilteredFileChooser()))));
+		SwingUtilities.invokeLater(
+				new WindowThread(new ResourceAddingFrame(model, new IOHandler(model))));
 	}
 
 	/**
@@ -114,9 +112,8 @@ public class ResourceAddingGUIDriver implements ISPDriver {
 				new ResourceManagementDriver(new MapReaderAdapter().readMultiMapModel(
 						new Warning(Warning.Action.Warn), file,
 						MapReaderAdapter.namesToFiles(true, args)));
-		SwingUtilities.invokeLater(new WindowThread(new ResourceAddingFrame(model,
-				                                                                   new IOHandler(model,
-						                                                                                new FilteredFileChooser()))));
+		SwingUtilities.invokeLater(
+				new WindowThread(new ResourceAddingFrame(model, new IOHandler(model))));
 	}
 
 	/**

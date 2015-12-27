@@ -1,7 +1,7 @@
 package controller.map.misc;
 
 import controller.map.formatexceptions.SPFormatException;
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -9,8 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFileChooser;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -27,6 +26,7 @@ import util.Warning;
 import view.map.main.ViewerFrame;
 import view.util.AboutDialog;
 import view.util.ErrorShower;
+import view.util.FilteredFileChooser;
 
 /**
  * An ActionListener to dispatch file I/O.
@@ -171,6 +171,16 @@ public final class IOHandler implements ActionListener {
 	public IOHandler(final IDriverModel map, final JFileChooser fchooser) {
 		model = map;
 		chooser = fchooser;
+	}
+	/**
+	 * Constructor. File-chooser defaults to the current directory filtered to include
+	 * only maps.
+	 *
+	 * @param map      the map model
+	 */
+	public IOHandler(final IDriverModel map) {
+		model = map;
+		chooser = new FilteredFileChooser();
 	}
 
 	/**
