@@ -302,16 +302,14 @@ public final class CompactResourceReader extends
 		if (hasParameter(element, CULTIVATED_PARAM)) {
 			return parseBoolean(getParameter(element, CULTIVATED_PARAM)); // NOPMD
 		} else {
-			final String local =
-					NullCleaner.assertNotNull(element.getName().getLocalPart());
-			final QName localName = element.getName();
+			final QName local = element.getName();
 			if (hasParameter(element, "wild")) {
 				warner.warn(
 						new DeprecatedPropertyException(local, "wild", CULTIVATED_PARAM,
 								                               element.getLocation()));
 				return !parseBoolean(getParameter(element, "wild"));
 			} else {
-				throw new MissingPropertyException(localName, CULTIVATED_PARAM,
+				throw new MissingPropertyException(local, CULTIVATED_PARAM,
 						                                  element.getLocation());
 			}
 		}

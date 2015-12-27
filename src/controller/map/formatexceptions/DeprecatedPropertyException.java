@@ -1,5 +1,6 @@
 package controller.map.formatexceptions;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 
 /**
@@ -28,7 +29,7 @@ public final class DeprecatedPropertyException extends SPFormatException {
 	/**
 	 * The current tag.
 	 */
-	private final String context;
+	private final QName context;
 
 	/**
 	 * The old property.
@@ -43,7 +44,7 @@ public final class DeprecatedPropertyException extends SPFormatException {
 	/**
 	 * @return the current tag.
 	 */
-	public String getTag() {
+	public QName getTag() {
 		return context;
 	}
 
@@ -62,16 +63,15 @@ public final class DeprecatedPropertyException extends SPFormatException {
 	}
 
 	/**
-	 * TODO: Take tag as QName
 	 * @param tag        the current tag
 	 * @param deprecated the old form
 	 * @param newForm    the preferred form
 	 * @param loc        where this occurred
 	 */
-	public DeprecatedPropertyException(final String tag,
+	public DeprecatedPropertyException(final QName tag,
 	                                   final String deprecated, final String newForm,
 	                                   final Location loc) {
-		super("Use of the property '" + deprecated + "' in tag '" + tag
+		super("Use of the property '" + deprecated + "' in tag '" + tag.getLocalPart()
 				      + "' is deprecated; use '" + newForm + "' instead", loc);
 		context = tag;
 		old = deprecated;

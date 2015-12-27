@@ -87,9 +87,10 @@ public final class SkillReader implements INodeHandler<@NonNull Skill> {
 																					  .assertNotNull(
 																							  element.getLocation())));
 		if ("miscellaneous".equals(retval.getName()) && (retval.getLevel() > 0)) {
-			warner.warn(new DeprecatedPropertyException("skill", "miscellaneous",
-					                                           "other",
-					                                           element.getLocation()));
+			warner.warn(
+					new DeprecatedPropertyException(element.getName(), "miscellaneous",
+							                               "other",
+							                               element.getLocation()));
 		}
 		return retval;
 	}

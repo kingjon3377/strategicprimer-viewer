@@ -124,8 +124,7 @@ public final class XMLHelper {
 					                                  preferred, element.getLocation());
 		} else if (prefAttr == null) {
 			warner.warn(new DeprecatedPropertyException(NullCleaner.assertNotNull(
-					element.getName().getLocalPart()), deprecated, preferred,
-					                                           element.getLocation()));
+					element.getName()), deprecated, preferred, element.getLocation()));
 			return NullCleaner.assertNotNull(deprAttr.getValue()); // NOPMD
 		} else {
 			return NullCleaner.assertNotNull(prefAttr.getValue());

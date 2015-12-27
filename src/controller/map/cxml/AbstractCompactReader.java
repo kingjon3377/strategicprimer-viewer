@@ -238,7 +238,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 			throws SPFormatException {
 		final Attribute prefProp = element.getAttributeByName(new QName(preferred));
 		final Attribute deprProp = element.getAttributeByName(new QName(deprecated));
-		final String local = tagOrNull(element.getName().getLocalPart());
+		final QName local = element.getName();
 		final MissingPropertyException exception =
 				new MissingPropertyException(element.getName(), preferred, element.getLocation());
 		if ((prefProp == null) && (deprProp == null)) {

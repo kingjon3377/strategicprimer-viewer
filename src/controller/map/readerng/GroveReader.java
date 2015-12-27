@@ -99,9 +99,7 @@ public final class GroveReader implements INodeHandler<Grove> {
 			return Boolean.parseBoolean(getAttribute(element, // NOPMD
 					CULTIVATED_ATTR));
 		} else {
-			final String local =
-					NullCleaner.assertNotNull(element.getName().getLocalPart());
-			final QName localName = element.getName();
+		final QName local = element.getName();
 			if (hasAttribute(element, "wild")) {
 				warner.warn(
 						new DeprecatedPropertyException(local, "wild", CULTIVATED_ATTR,
@@ -109,8 +107,7 @@ public final class GroveReader implements INodeHandler<Grove> {
 				return !Boolean.parseBoolean(getAttribute(element,
 						"wild")); // NOPMD
 			} else {
-				throw new MissingPropertyException(localName, CULTIVATED_ATTR,
-						                                  element.getLocation());
+				throw new MissingPropertyException(local, CULTIVATED_ATTR, element.getLocation());
 			}
 		}
 	}

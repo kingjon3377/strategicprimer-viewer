@@ -197,9 +197,10 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 								 getIntegerParameter(element, "level"),
 								 getIntegerParameter(element, "hours"));
 		if ("miscellaneous".equals(retval.getName()) && (retval.getLevel() > 0)) {
-			warner.warn(new DeprecatedPropertyException("skill", "miscellaneous",
-					                                           "other",
-					                                           element.getLocation()));
+			warner.warn(
+					new DeprecatedPropertyException(element.getName(), "miscellaneous",
+							                               "other",
+							                               element.getLocation()));
 		}
 		return retval;
 	}
