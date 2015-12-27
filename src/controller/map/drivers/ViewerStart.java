@@ -74,7 +74,7 @@ public final class ViewerStart implements ISPDriver {
 		}
 		SwingUtilities.invokeLater(new WindowThread(new ViewerFrame(model,
 				                                                           new IOHandler(model,
-						                                                                        new FilteredFileChooser(new MapFileFilter())))));
+						                                                                        new FilteredFileChooser(MapFileFilter.FILTER)))));
 	}
 
 	/**

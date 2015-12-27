@@ -88,7 +88,7 @@ public class ResourceAddingGUIDriver implements ISPDriver {
 		}
 		SwingUtilities.invokeLater(new WindowThread(new ResourceAddingFrame(model,
 				                                                                   new IOHandler(model,
-						                                                                                new FilteredFileChooser(new MapFileFilter())))));
+						                                                                                new FilteredFileChooser(MapFileFilter.FILTER)))));
 	}
 
 	/**
@@ -117,7 +117,7 @@ public class ResourceAddingGUIDriver implements ISPDriver {
 						MapReaderAdapter.namesToFiles(true, args)));
 		SwingUtilities.invokeLater(new WindowThread(new ResourceAddingFrame(model,
 				                                                                   new IOHandler(model,
-						                                                                                new FilteredFileChooser(new MapFileFilter())))));
+						                                                                                new FilteredFileChooser(MapFileFilter.FILTER)))));
 	}
 
 	/**

@@ -9,8 +9,6 @@ import static util.NullCleaner.assertNotNull;
 /**
  * Filter out extraneous files when we're opening a map.
  *
- * FIXME: This should be singleton
- *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
@@ -31,6 +29,16 @@ import static util.NullCleaner.assertNotNull;
  * @author Jonathan Lovelace
  */
 public final class MapFileFilter extends FileFilter {
+	/**
+	 * Singleton.
+	 */
+	private MapFileFilter() {
+		// Do nothing.
+	}
+	/**
+	 * Singleton.
+	 */
+	public static final MapFileFilter FILTER = new MapFileFilter();
 	/**
 	 * Accept .xml and .map.
 	 *

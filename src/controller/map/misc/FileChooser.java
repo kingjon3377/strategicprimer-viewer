@@ -47,7 +47,7 @@ public final class FileChooser {
 	 * A file chooser.
 	 */
 	private final FilteredFileChooser chooser =
-			new FilteredFileChooser(new MapFileFilter());
+			new FilteredFileChooser(MapFileFilter.FILTER);
 
 	/**
 	 * Constructor. When the filename is asked for, if the given value is valid, we'll

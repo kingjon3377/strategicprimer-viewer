@@ -90,7 +90,7 @@ public final class WorkerStart implements ISPDriver {
 		}
 		SwingUtilities.invokeLater(new WindowThread(new WorkerMgmtFrame(model,
 				                                                               new IOHandler(model,
-						                                                                            new FilteredFileChooser(new MapFileFilter())))));
+						                                                                            new FilteredFileChooser(MapFileFilter.FILTER)))));
 	}
 
 	/**
@@ -123,7 +123,7 @@ public final class WorkerStart implements ISPDriver {
 												                                          args)));
 		SwingUtilities.invokeLater(new WindowThread(new WorkerMgmtFrame(model,
 				                                                               new IOHandler(model,
-						                                                                            new FilteredFileChooser(new MapFileFilter())))));
+						                                                                            new FilteredFileChooser(MapFileFilter.FILTER)))));
 	}
 
 	/**

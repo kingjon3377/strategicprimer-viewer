@@ -69,7 +69,7 @@ public final class AdvancementStart implements ISPDriver {
 		}
 		SwingUtilities.invokeLater(new WindowThread(new AdvancementFrame(model,
 				                                                                new IOHandler(model,
-						                                                                             new FilteredFileChooser(new MapFileFilter())))));
+						                                                                             new FilteredFileChooser(MapFileFilter.FILTER)))));
 	}
 
 	/**
@@ -101,7 +101,7 @@ public final class AdvancementStart implements ISPDriver {
 																							  args)));
 			SwingUtilities.invokeLater(new WindowThread(new AdvancementFrame(model,
 					                                                                new IOHandler(model,
-							                                                                             new FilteredFileChooser(new MapFileFilter())))));
+							                                                                             new FilteredFileChooser(MapFileFilter.FILTER)))));
 		} catch (final ChoiceInterruptedException except) {
 			throw new DriverFailedException("File choice was interrupted or user didn't choose",
 												   except);

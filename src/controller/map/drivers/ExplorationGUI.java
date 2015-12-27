@@ -63,7 +63,7 @@ public final class ExplorationGUI implements ISPDriver {
 		}
 		SwingUtilities.invokeLater(new WindowThread(new ExplorationFrame(model,
 				                                                                new IOHandler(model,
-						                                                                             new FilteredFileChooser(new MapFileFilter())))));
+						                                                                             new FilteredFileChooser(MapFileFilter.FILTER)))));
 	}
 
 	/**
@@ -91,7 +91,7 @@ public final class ExplorationGUI implements ISPDriver {
 																								   args)));
 		SwingUtilities.invokeLater(new WindowThread(new ExplorationFrame(model,
 				                                                                new IOHandler(model,
-						                                                                             new FilteredFileChooser(new MapFileFilter())))));
+						                                                                             new FilteredFileChooser(MapFileFilter.FILTER)))));
 	}
 
 	/**
