@@ -14,9 +14,8 @@ import util.Pair;
 import util.Warning;
 
 import static controller.map.readerng.XMLHelper.addImage;
-import static controller.map.readerng.XMLHelper.getAttribute;
+import static controller.map.readerng.XMLHelper.getIntegerAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
-import static controller.map.readerng.XMLHelper.parseInt;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
 /**
@@ -64,10 +63,9 @@ public final class BattlefieldReader implements INodeHandler<@NonNull Battlefiel
 	                         final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		final Battlefield fix =
-				new Battlefield(parseInt(getAttribute(element, "dc"),
-						NullCleaner.assertNotNull(element.getLocation())),
-						               getOrGenerateID(element, warner, idFactory));
+		final Battlefield fix = new Battlefield(getIntegerAttribute(element, "dc"),
+				                                       getOrGenerateID(element, warner,
+						                                       idFactory));
 		addImage(element, fix);
 		return fix;
 	}

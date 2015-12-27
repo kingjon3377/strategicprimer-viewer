@@ -16,9 +16,9 @@ import util.Warning;
 
 import static controller.map.readerng.XMLHelper.addImage;
 import static controller.map.readerng.XMLHelper.getAttribute;
+import static controller.map.readerng.XMLHelper.getIntegerAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.getPlayerOrIndependent;
-import static controller.map.readerng.XMLHelper.parseInt;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
@@ -69,13 +69,11 @@ public final class TownReader implements INodeHandler<@NonNull Town> {
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Town fix =
-				new Town(TownStatus.parseTownStatus(getAttribute(element,
-						"status")), TownSize.parseTownSize(
-						getAttribute(element, "size")), parseInt(
-						getAttribute(element, "dc"),
-						NullCleaner.assertNotNull(element.getLocation())),
-						        getAttribute(element, "name", ""), getOrGenerateID(
-						element, warner, idFactory),
+				new Town(TownStatus.parseTownStatus(getAttribute(element, "status")),
+						        TownSize.parseTownSize(getAttribute(element, "size")),
+						        getIntegerAttribute(element, "dc"),
+						        getAttribute(element, "name", ""),
+						        getOrGenerateID(element, warner, idFactory),
 						        getPlayerOrIndependent(element, warner, players));
 		addImage(element, fix);
 		return fix;

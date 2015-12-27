@@ -12,8 +12,6 @@ import model.map.fixtures.TextFixture;
 import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.readerng.XMLHelper.getAttribute;
-
 /**
  * A reader for text elements.
  *
@@ -77,12 +75,9 @@ public final class TextReader implements INodeHandler<TextFixture> {
 			}
 		}
 		final TextFixture fix =
-				new TextFixture(NullCleaner.assertNotNull(sbuild.toString()
-																  .trim()),
-									   XMLHelper.parseInt(
-											   getAttribute(element, "turn", "-1"),
-											   NullCleaner.assertNotNull(
-													   element.getLocation())));
+				new TextFixture(NullCleaner.assertNotNull(sbuild.toString().trim()),
+						               XMLHelper
+								               .getIntegerAttribute(element, "turn", -1));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}

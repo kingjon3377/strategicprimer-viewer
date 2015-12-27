@@ -61,9 +61,8 @@ public final class PlayerReader implements INodeHandler<@NonNull Player> {
 						final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		return new Player(XMLHelper.parseInt(getAttribute(element, "number"),
-				NullCleaner.assertNotNull(element.getLocation())),
-								 getAttribute(element, "code_name"));
+		return new Player(XMLHelper.getIntegerAttribute(element, "number"),
+				                 getAttribute(element, "code_name"));
 	}
 
 	/**

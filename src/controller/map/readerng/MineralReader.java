@@ -16,8 +16,8 @@ import util.Warning;
 import static controller.map.readerng.XMLHelper.addImage;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
+import static controller.map.readerng.XMLHelper.getIntegerAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
-import static controller.map.readerng.XMLHelper.parseInt;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
 /**
@@ -67,11 +67,10 @@ public final class MineralReader implements INodeHandler<@NonNull MineralVein> {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final MineralVein fix =
 				new MineralVein(getAttributeWithDeprecatedForm(element, "kind",
-						"mineral", warner), Boolean.parseBoolean(getAttribute(
-						element, "exposed")), parseInt(
-						getAttribute(element, "dc"),
-						NullCleaner.assertNotNull(element.getLocation())),
-									   getOrGenerateID(element, warner, idFactory));
+						"mineral",
+						warner), Boolean.parseBoolean(getAttribute(element, "exposed")),
+						               getIntegerAttribute(element, "dc"),
+						               getOrGenerateID(element, warner, idFactory));
 		addImage(element, fix);
 		return fix;
 	}

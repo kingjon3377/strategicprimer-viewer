@@ -72,42 +72,15 @@ public final class StatsReader implements INodeHandler<@NonNull WorkerStats> {
 							 final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		final Location loc = NullCleaner.assertNotNull(element.getLocation());
-		final WorkerStats retval = new WorkerStats(XMLHelper.parseInt(XMLHelper
-																			  .getAttribute(
-																					  element,
-																					  "hp"),
-				loc), XMLHelper.parseInt(XMLHelper
-												 .getAttribute(element, "max"), loc),
-														  XMLHelper.parseInt(XMLHelper
-																					 .getAttribute(
-																							 element,
-																							 "str"),
-																  loc),
-														  XMLHelper.parseInt(XMLHelper
-																					 .getAttribute(
-																							 element,
-																							 "dex"),
-																  loc),
-														  XMLHelper.parseInt(XMLHelper
-																					 .getAttribute(
-																							 element,
-																							 "con"),
-																  loc),
-														  XMLHelper.parseInt(XMLHelper
-																					 .getAttribute(
-																							 element,
-																							 "int"),
-																  loc),
-														  XMLHelper.parseInt(XMLHelper
-																					 .getAttribute(
-																							 element,
-																							 "wis"),
-																  loc),
-														  XMLHelper.parseInt(XMLHelper
-																					 .getAttribute(
-																							 element,
-																							 "cha"),
-																  loc));
+		final WorkerStats retval =
+				new WorkerStats(XMLHelper.getIntegerAttribute(element, "hp"),
+						               XMLHelper.getIntegerAttribute(element, "max"),
+						               XMLHelper.getIntegerAttribute(element, "str"),
+						               XMLHelper.getIntegerAttribute(element, "dex"),
+						               XMLHelper.getIntegerAttribute(element, "con"),
+						               XMLHelper.getIntegerAttribute(element, "int"),
+						               XMLHelper.getIntegerAttribute(element, "wis"),
+						               XMLHelper.getIntegerAttribute(element, "cha"));
 		XMLHelper.spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		return retval;
 	}

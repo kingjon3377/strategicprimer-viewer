@@ -86,11 +86,10 @@ public final class JobReader implements INodeHandler<@NonNull Job> {
 		if (XMLHelper.hasAttribute(element, "hours")) {
 			warner.warn(new UnsupportedPropertyException(element, "hours"));
 		}
-		final Job retval =
-				new Job(XMLHelper.getAttribute(element, "name"),
-							   XMLHelper.parseInt(XMLHelper.getAttribute(element,
-									   "level"), NullCleaner.assertNotNull(element
-																				   .getLocation())));
+		final Job retval = new Job(XMLHelper.getAttribute(element, "name"), XMLHelper
+				                                                                    .getIntegerAttribute(
+						                                                                    element,
+						                                                                    "level"));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final Object result =

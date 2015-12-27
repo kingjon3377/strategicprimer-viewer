@@ -62,10 +62,7 @@ public final class AdventureReader implements INodeHandler<@NonNull AdventureFix
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		Player player = players.getIndependent();
 		if (XMLHelper.hasAttribute(element, "owner")) {
-			player =
-					players.getPlayer(XMLHelper.parseInt(
-							XMLHelper.getAttribute(element, "owner"),
-							NullCleaner.assertNotNull(element.getLocation())));
+			player = players.getPlayer(XMLHelper.getIntegerAttribute(element, "owner"));
 		}
 		final AdventureFixture retval =
 				new AdventureFixture(player, XMLHelper.getAttribute(element,

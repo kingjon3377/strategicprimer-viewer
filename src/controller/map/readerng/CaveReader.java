@@ -61,11 +61,8 @@ public final class CaveReader implements INodeHandler<@NonNull Cave> {
 	                  final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		final Cave fix =
-				new Cave(XMLHelper.parseInt(
-						XMLHelper.getAttribute(element, "dc"),
-						NullCleaner.assertNotNull(element.getLocation())),
-						        getOrGenerateID(element, warner, idFactory));
+		final Cave fix = new Cave(XMLHelper.getIntegerAttribute(element, "dc"),
+				                         getOrGenerateID(element, warner, idFactory));
 		XMLHelper.addImage(element, fix);
 		return fix;
 	}

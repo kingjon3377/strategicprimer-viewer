@@ -17,8 +17,8 @@ import util.Warning;
 import static controller.map.readerng.XMLHelper.addImage;
 import static controller.map.readerng.XMLHelper.getAttribute;
 import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
+import static controller.map.readerng.XMLHelper.getIntegerAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
-import static controller.map.readerng.XMLHelper.parseInt;
 import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
 
 /**
@@ -73,12 +73,10 @@ public final class UnitReader implements INodeHandler<Unit> {
 		requireNonEmptyParameter(element, "owner", false, warner);
 		requireNonEmptyParameter(element, "name", false, warner);
 		final Unit fix =
-				new Unit(players.getPlayer(parseInt(
-						ensureNumeric(getAttribute(element, "owner", "-1")),
-						NullCleaner.assertNotNull(element.getLocation()))),
-								parseKind(element, warner), getAttribute(element,
-						"name", ""), getOrGenerateID(element, warner,
-						idFactory));
+				new Unit(players.getPlayer(getIntegerAttribute(element, "owner", -1)),
+						        parseKind(element, warner),
+						        getAttribute(element, "name", ""),
+						        getOrGenerateID(element, warner, idFactory));
 		addImage(element, fix);
 		final StringBuilder orders = new StringBuilder(512);
 		for (final XMLEvent event : stream) {

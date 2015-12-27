@@ -10,7 +10,6 @@ import controller.map.misc.IncludingIterator;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import javax.xml.namespace.QName;
-import javax.xml.stream.Location;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -203,8 +202,7 @@ public final class XMLHelper {
 			throws SPFormatException {
 		final Player retval; // NOPMD
 		if (hasAttribute(element, "owner")) {
-			retval = players.getPlayer(parseInt(getAttribute(element,
-					"owner"), NullCleaner.assertNotNull(element.getLocation())));
+			retval = players.getPlayer(getIntegerAttribute(element, "owner"));
 		} else {
 			warner.warn(new MissingPropertyException(element, "owner"));
 			retval = players.getIndependent();
@@ -228,8 +226,7 @@ public final class XMLHelper {
 			throws SPFormatException {
 		final int retval; // NOPMD
 		if (hasAttribute(element, "id")) {
-			retval = idFactory.register(parseInt(getAttribute(element,
-					"id"), NullCleaner.assertNotNull(element.getLocation())));
+			retval = idFactory.register(getIntegerAttribute(element, "id"));
 		} else {
 			warner.warn(new MissingPropertyException(element, "id"));
 			retval = idFactory.createID();
@@ -238,17 +235,46 @@ public final class XMLHelper {
 	}
 
 	/**
-	 * @param loc the current location in the XML
-	 * @param str a string
-	 * @return the integer it contains, or
-	 * @throws SPFormatException if it is nonnumeric or otherwise malformed
+	 * @param startElement a tag
+	 * @param attribute    the attribute we want
+	 * @return the value of that attribute.
+	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
-	public static int parseInt(final String str, final Location loc)
-			throws SPFormatException {
+	public static int getIntegerAttribute(final StartElement startElement,
+	                                  final String attribute) throws SPFormatException {
+		final Attribute attr = startElement.getAttributeByName(new QName(
+				                                                                attribute));
+		if ((attr == null) || (attr.getValue() == null)) {
+			throw new MissingPropertyException(startElement, attribute);
+		}
 		try {
-			return NUM_PARSER.parse(str).intValue();
-		} catch (final ParseException e) {
-			throw new SPMalformedInputException(loc, e);
+			return NUM_PARSER.parse(attr.getValue()).intValue();
+		} catch (ParseException e) {
+			throw new SPMalformedInputException(startElement.getLocation(), e);
+		}
+	}
+	/**
+	 * A variant of getAttribute() that returns a specified default value if the
+	 * attribute
+	 * is missing, instead of throwing an exception.
+	 *
+	 * @param elem         the element
+	 * @param attr         the attribute we want
+	 * @param defaultValue the default value if the element doesn't have the attribute
+	 * @return the value of attribute if it exists, or the default
+	 */
+	public static int getIntegerAttribute(final StartElement elem, final String attr,
+	                                      final int defaultValue)
+			throws SPFormatException {
+		final Attribute value = elem.getAttributeByName(new QName(attr));
+		if (value == null) {
+			return defaultValue; // NOPMD
+		} else {
+			try {
+				return NUM_PARSER.parse(value.getValue()).intValue();
+			} catch (ParseException e) {
+				throw new SPMalformedInputException(elem.getLocation(), e);
+			}
 		}
 	}
 

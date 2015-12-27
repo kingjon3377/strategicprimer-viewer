@@ -121,8 +121,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 		final Location outerLoc = assertNotNull(element.getLocation());
 		final String outerTag = assertNotNull(element.getName().getLocalPart());
 		if ("view".equalsIgnoreCase(element.getName().getLocalPart())) {
-			currentTurn = XMLHelper.parseInt(
-					XMLHelper.getAttribute(element, "current_turn"), outerLoc);
+			currentTurn = XMLHelper.getIntegerAttribute(element, "current_turn");
 			mapTag = getFirstStartElement(stream, outerLoc);
 			if (!"map".equals(mapTag.getName().getLocalPart())) {
 				throw new UnwantedChildException(outerTag, assertNotNull(
@@ -135,26 +134,12 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 			throw new UnwantedChildException("xml", assertNotNull(outerTag), outerLoc);
 		}
 		final Location mapTagLocation = assertNotNull(mapTag.getLocation());
-		final MapDimensions dimensions = new MapDimensions(
-																  XMLHelper.parseInt(
-																		  XMLHelper
-																				  .getAttribute(
-																						  mapTag,
-																						  "rows"),
-
-																		  mapTagLocation),
-																  XMLHelper.parseInt(
-																		  XMLHelper
-																				  .getAttribute(
-																						  mapTag,
-																						  "columns"),
-																		  mapTagLocation),
-																  XMLHelper.parseInt(
-																		  XMLHelper
-																				  .getAttribute(
-																						  mapTag,
-																						  "version"),
-																		  mapTagLocation));
+		final MapDimensions dimensions =
+				new MapDimensions(XMLHelper.getIntegerAttribute(mapTag, "rows"),
+						                 XMLHelper.getIntegerAttribute(mapTag,
+								                 "columns"),
+						                 XMLHelper
+								                 .getIntegerAttribute(mapTag, "version"));
 		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		final Point nullPoint = PointFactory.point(-1, -1);
 		Point point = nullPoint;
@@ -175,11 +160,10 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					if (!nullPoint.equals(point)) {
 						throw new UnwantedChildException("tile", type, currentLoc);
 					}
-					point = PointFactory.point(XMLHelper.parseInt(
-							XMLHelper.getAttribute(current, "row"), currentLoc),
-							XMLHelper.parseInt(
-									XMLHelper.getAttribute(current, "column"),
-									currentLoc));
+					point = PointFactory
+							        .point(XMLHelper.getIntegerAttribute(current, "row"),
+									        XMLHelper.getIntegerAttribute(current,
+											        "column"));
 					// Since tiles have been known to be *written* without
 					// "kind" and then fail to load, let's be liberal in what we
 					// accept here, since we can.
@@ -257,13 +241,11 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 			}
 		}
 		if (XMLHelper.hasAttribute(mapTag, "current_player")) {
-			retval.setCurrentPlayer(players.getPlayer(XMLHelper.parseInt(
-					XMLHelper.getAttribute(mapTag, "current_player"),
-					mapTagLocation)));
+			retval.setCurrentPlayer(players.getPlayer(
+					XMLHelper.getIntegerAttribute(mapTag, "current_player")));
 		} else if (XMLHelper.hasAttribute(element, "current_player")) {
-			retval.setCurrentPlayer(players.getPlayer(XMLHelper.parseInt(
-					XMLHelper.getAttribute(element, "current_player"),
-					mapTagLocation)));
+			retval.setCurrentPlayer(players.getPlayer(
+					XMLHelper.getIntegerAttribute(element, "current_player")));
 		}
 		return retval;
 	}

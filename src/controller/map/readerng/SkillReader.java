@@ -75,17 +75,13 @@ public final class SkillReader implements INodeHandler<@NonNull Skill> {
 		XMLHelper.requireNonEmptyParameter(element, "level", true, warner);
 		XMLHelper.requireNonEmptyParameter(element, "hours", true, warner);
 		XMLHelper.spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		final Skill retval =
-				new Skill(XMLHelper.getAttribute(element, "name"),
-								 XMLHelper.parseInt(XMLHelper.getAttribute(element,
-										 "level"), NullCleaner.assertNotNull(element
-																					 .getLocation())),
+		final Skill retval = new Skill(XMLHelper.getAttribute(element, "name"), XMLHelper
+				                                                                        .getIntegerAttribute(
+						                                                                        element,
+						                                                                        "level"),
 
-								 XMLHelper.parseInt(XMLHelper
-															.getAttribute(element,
-																	"hours"), NullCleaner
-																					  .assertNotNull(
-																							  element.getLocation())));
+				                              XMLHelper.getIntegerAttribute(element,
+						                              "hours"));
 		if ("miscellaneous".equals(retval.getName()) && (retval.getLevel() > 0)) {
 			warner.warn(
 					new DeprecatedPropertyException(element, "miscellaneous", "other"));

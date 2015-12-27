@@ -14,9 +14,9 @@ import util.Warning;
 
 import static controller.map.readerng.XMLHelper.addImage;
 import static controller.map.readerng.XMLHelper.getAttribute;
+import static controller.map.readerng.XMLHelper.getIntegerAttribute;
 import static controller.map.readerng.XMLHelper.getOrGenerateID;
 import static controller.map.readerng.XMLHelper.hasAttribute;
-import static controller.map.readerng.XMLHelper.parseInt;
 import static controller.map.readerng.XMLHelper.spinUntilEnd;
 
 /**
@@ -68,13 +68,10 @@ public final class ResourceReader implements INodeHandler<@NonNull ResourcePile>
 				new ResourcePile(getOrGenerateID(element, warner, idFactory),
 										getAttribute(element, "kind"),
 										getAttribute(element, "contents"),
-										parseInt(
-												getAttribute(element, "quantity"),
-												element.getLocation()),
+										getIntegerAttribute(element, "quantity"),
 										getAttribute(element, "unit", ""));
 		if (hasAttribute(element, "created")) {
-			retval.setCreated(
-					parseInt(getAttribute(element, "created"), element.getLocation()));
+			retval.setCreated(getIntegerAttribute(element, "created"));
 		}
 		addImage(element, retval);
 		return retval;
