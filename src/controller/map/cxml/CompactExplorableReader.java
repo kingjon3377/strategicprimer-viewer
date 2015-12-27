@@ -102,8 +102,7 @@ public final class CompactExplorableReader
 		} else if ("cave".equalsIgnoreCase(tag)) {
 			retval = new Cave(getDC(elem), idNum);
 		} else {
-			throw new UnsupportedTagException(NullCleaner.assertNotNull(tag),
-					                                 elem.getLocation());
+			throw new UnsupportedTagException(elem);
 		}
 		spinUntilEnd(NullCleaner.assertNotNull(elem.getName()), stream);
 		retval.setImage(getParameter(elem, "image", ""));

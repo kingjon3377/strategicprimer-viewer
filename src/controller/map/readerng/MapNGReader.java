@@ -197,7 +197,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 						warner.warn(new MissingPropertyException(current, "kind"));
 					}
 				} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) {
-					warner.warn(new UnsupportedTagException(type, currentLoc));
+					warner.warn(new UnsupportedTagException(current));
 				} else if (nullPoint.equals(point)) {
 					// fixture outside tile
 					throw new UnwantedChildException("map", type, currentLoc);

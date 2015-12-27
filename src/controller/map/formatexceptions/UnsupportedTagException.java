@@ -1,6 +1,7 @@
 package controller.map.formatexceptions;
 
-import javax.xml.stream.Location;
+import javax.xml.namespace.QName;
+import javax.xml.stream.events.StartElement;
 
 /**
  * A custom exception for not-yet-supported tags.
@@ -28,22 +29,21 @@ public final class UnsupportedTagException extends SPFormatException {
 	/**
 	 * The tag.
 	 */
-	private final String tag;
+	private final QName tag;
 
 	/**
 	 * @return the tag.
 	 */
-	public String getTag() {
+	public QName getTag() {
 		return tag;
 	}
 
 	/**
 	 * @param uTag the unsupported tag
-	 * @param location where it occurred
 	 */
-	public UnsupportedTagException(final String uTag, final Location location) {
-		super("Unexpected tag " + uTag
-				      + "; probably a more recent map format than viewer", location);
-		tag = uTag;
+	public UnsupportedTagException(final StartElement uTag) {
+		super("Unexpected tag " + uTag.getName().getLocalPart()
+				      + "; probably a more recent map format than viewer", uTag.getLocation());
+		tag = uTag.getName();
 	}
 }
