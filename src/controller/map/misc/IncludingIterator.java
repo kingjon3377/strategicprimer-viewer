@@ -158,7 +158,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	 */
 	private void handleInclude(final StartElement tag) {
 		try {
-			final String file = getAttribute(tag, "file");
+			final String file = getFileAttribute(tag);
 			stack.addFirst(Pair.of(file,
 					new ComparableIterator<>(new TypesafeXMLEventReader(createReader(
 							file)))));
@@ -218,23 +218,21 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 
 	/**
 	 * @param startElement a tag
-	 * @param attribute    the attribute we want
 	 * @return the value of that attribute.
 	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
-	private static String getAttribute(final StartElement startElement,
-									   final String attribute) throws SPFormatException {
-		final Attribute attr = startElement.getAttributeByName(new QName(
-																				attribute));
+	private static String getFileAttribute(final StartElement startElement)
+			throws SPFormatException {
+		final Attribute attr = startElement.getAttributeByName(new QName("file"));
 		if (attr == null) {
 			throw new MissingPropertyException(NullCleaner.valueOrDefault(
-					startElement.getName().getLocalPart(), "a null tag"), attribute,
+					startElement.getName().getLocalPart(), "a null tag"), "file",
 					                                  startElement.getLocation());
 		}
 		final String value = attr.getValue();
 		if (value == null) {
 			throw new MissingPropertyException(NullCleaner.valueOrDefault(
-					startElement.getName().getLocalPart(), "a null tag"), attribute,
+					startElement.getName().getLocalPart(), "a null tag"), "file",
 					                                  startElement.getLocation());
 		} else {
 			return value;
