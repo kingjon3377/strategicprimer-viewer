@@ -38,11 +38,6 @@ import util.NullCleaner;
  */
 public final class ExplorationFrame extends JFrame {
 	/**
-	 * The exploration model.
-	 */
-	protected final ExplorationModel model;
-
-	/**
 	 * A listener to swap the panels when 'completion' is signalled.
 	 *
 	 * @author Jonathan Lovelace
@@ -118,7 +113,6 @@ public final class ExplorationFrame extends JFrame {
 			getRootPane().putClientProperty("Window.documentFile",
 					emodel.getMapFile());
 		}
-		model = emodel;
 		setMinimumSize(new Dimension(768, 480));
 		setPreferredSize(new Dimension(1024, 640));
 		final CardLayout layout = new CardLayout();
