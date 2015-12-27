@@ -72,8 +72,7 @@ public final class MeadowReader implements INodeHandler<Meadow> {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final int id = getOrGenerateID(element, warner, idFactory); // NOPMD
 		if (!hasAttribute(element, STATUS_ATTR)) {
-			warner.warn(new MissingPropertyException(NullCleaner.assertNotNull(
-					element.getName()), STATUS_ATTR, element.getLocation()));
+			warner.warn(new MissingPropertyException(element, STATUS_ATTR));
 		}
 		final Meadow fix =
 				new Meadow(

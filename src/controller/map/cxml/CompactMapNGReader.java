@@ -168,8 +168,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 																			 "type",
 																			 warner)));
 					} else {
-						warner.warn(
-								new MissingPropertyException(typeName, "kind", currentLoc));
+						warner.warn(new MissingPropertyException(current, "kind"));
 					}
 				} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) {
 					warner.warn(new UnsupportedTagException(type, currentLoc));

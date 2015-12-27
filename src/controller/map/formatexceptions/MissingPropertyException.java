@@ -1,7 +1,7 @@
 package controller.map.formatexceptions;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.Location;
+import javax.xml.stream.events.StartElement;
 
 /**
  * An exception for cases where a parameter is required (or, if this is merely logged,
@@ -38,27 +38,22 @@ public final class MissingPropertyException extends SPFormatException {
 	private final String param;
 
 	/**
-	 * TODO: Take StartElement instead of QName + errorLoc
 	 * @param tag       the current tag
 	 * @param parameter the missing parameter
-	 * @param errorLoc  the location where this occurred
 	 * @param cause the underlying cause
 	 */
-	public MissingPropertyException(final QName tag, final String parameter,
-	                                final Location errorLoc, final Throwable cause) {
-		super("Missing parameter " + parameter + " in tag " + tag.getLocalPart(), errorLoc, cause);
-		context = tag;
+	public MissingPropertyException(final StartElement tag, final String parameter, final Throwable cause) {
+		super("Missing parameter " + parameter + " in tag " + tag.getName(), tag.getLocation(), cause);
+		context = tag.getName();
 		param = parameter;
 	}
 	/**
 	 * @param tag       the current tag
 	 * @param parameter the missing parameter
-	 * @param errorLoc  the location where this occurred
 	 */
-	public MissingPropertyException(final QName tag, final String parameter,
-	                                final Location errorLoc) {
-		super("Missing parameter " + parameter + " in tag " + tag.getLocalPart(), errorLoc);
-		context = tag;
+	public MissingPropertyException(final StartElement tag, final String parameter) {
+		super("Missing parameter " + parameter + " in tag " + tag.getName(), tag.getLocation());
+		context = tag.getName();
 		param = parameter;
 	}
 	/**

@@ -101,13 +101,11 @@ public abstract class AbstractCompactReader<@NonNull T>
 										 final String param) throws SPFormatException {
 		final Attribute attr = element.getAttributeByName(new QName(param));
 		if (attr == null) {
-			throw new MissingPropertyException(element.getName(), param,
-					                                  element.getLocation());
+			throw new MissingPropertyException(element, param);
 		} else {
 			final String value = attr.getValue();
 			if (value == null) {
-				throw new MissingPropertyException(element.getName(), param,
-						                                  element.getLocation());
+				throw new MissingPropertyException(element, param);
 			} else {
 				return value;
 			}
@@ -147,9 +145,8 @@ public abstract class AbstractCompactReader<@NonNull T>
 												   final Warning warner)
 			throws SPFormatException {
 		if (getParameter(element, param, "").isEmpty()) {
-			final SPFormatException except =
-					new MissingPropertyException(element.getName(), param,
-							                            element.getLocation());
+			final SPFormatException except = new MissingPropertyException(element,
+					                                                             param);
 			if (mandatory) {
 				throw except;
 			} else {
@@ -202,12 +199,10 @@ public abstract class AbstractCompactReader<@NonNull T>
 												  .parse(getParameter(element, "id"))
 												  .intValue());
 			} catch (final NumberFormatException | ParseException except) {
-				throw new MissingPropertyException(element.getName(), "id",
-						                                  element.getLocation(), except);
+				throw new MissingPropertyException(element, "id", except);
 			}
 		} else {
-			warner.warn(new MissingPropertyException(element.getName(), "id",
-					                                        element.getLocation()));
+			warner.warn(new MissingPropertyException(element, "id"));
 			return idFactory.createID();
 		}
 	}
@@ -240,7 +235,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 		final Attribute deprProp = element.getAttributeByName(new QName(deprecated));
 		final QName local = element.getName();
 		final MissingPropertyException exception =
-				new MissingPropertyException(element.getName(), preferred, element.getLocation());
+				new MissingPropertyException(element, preferred);
 		if ((prefProp == null) && (deprProp == null)) {
 			throw exception;
 		} else if (prefProp == null) {

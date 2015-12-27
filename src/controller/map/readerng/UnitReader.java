@@ -122,8 +122,7 @@ public final class UnitReader implements INodeHandler<Unit> {
 			final String retval = getAttributeWithDeprecatedForm(element, // NOPMD
 					KIND_PROPERTY, "type", warner);
 			if (retval.isEmpty()) {
-				warner.warn(new MissingPropertyException(NullCleaner.assertNotNull(
-						element.getName()), KIND_PROPERTY, element.getLocation()));
+				warner.warn(new MissingPropertyException(element, KIND_PROPERTY));
 			}
 			return retval; // NOPMD
 		} catch (final MissingPropertyException except) {

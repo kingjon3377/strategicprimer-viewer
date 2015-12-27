@@ -163,8 +163,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 			final String retval =
 					getParamWithDeprecatedForm(element, "kind", "type", warner);
 			if (retval.isEmpty()) {
-				warner.warn(new MissingPropertyException(NullCleaner.assertNotNull(
-						element.getName()), "kind", element.getLocation()));
+				warner.warn(new MissingPropertyException(element, "kind"));
 			}
 			return retval; // NOPMD
 		} catch (final MissingPropertyException except) {

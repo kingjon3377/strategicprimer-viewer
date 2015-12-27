@@ -225,13 +225,11 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 			throws SPFormatException {
 		final Attribute attr = startElement.getAttributeByName(new QName("file"));
 		if (attr == null) {
-			throw new MissingPropertyException(startElement.getName(), "file",
-					                                  startElement.getLocation());
+			throw new MissingPropertyException(startElement, "file");
 		}
 		final String value = attr.getValue();
 		if (value == null) {
-			throw new MissingPropertyException(startElement.getName(), "file",
-					                                  startElement.getLocation());
+			throw new MissingPropertyException(startElement, "file");
 		} else {
 			return value;
 		}

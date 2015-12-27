@@ -194,8 +194,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 																	 "kind", "type",
 																	 warner)));
 					} else {
-						warner.warn(
-								new MissingPropertyException(typeName, "kind", currentLoc));
+						warner.warn(new MissingPropertyException(current, "kind"));
 					}
 				} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) {
 					warner.warn(new UnsupportedTagException(type, currentLoc));

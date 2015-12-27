@@ -107,7 +107,7 @@ public final class GroveReader implements INodeHandler<Grove> {
 				return !Boolean.parseBoolean(getAttribute(element,
 						"wild")); // NOPMD
 			} else {
-				throw new MissingPropertyException(local, CULTIVATED_ATTR, element.getLocation());
+				throw new MissingPropertyException(element, CULTIVATED_ATTR);
 			}
 		}
 	}
