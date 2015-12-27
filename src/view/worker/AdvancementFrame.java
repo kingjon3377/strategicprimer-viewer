@@ -48,11 +48,11 @@ public final class AdvancementFrame extends JFrame {
 	/**
 	 * Dividers start at half-way.
 	 */
-	private static final double HALF_WAY = .5;
+	private static final double HALF_WAY = 0.5;
 	/**
 	 * The resize weight for the main division.
 	 */
-	private static final double RES_WEIGHT = .3;
+	private static final double RES_WEIGHT = 0.3;
 
 	/**
 	 * Constructor.
