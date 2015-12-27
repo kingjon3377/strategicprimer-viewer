@@ -116,7 +116,7 @@ public class ResourceAddingCLIDriver implements ISPDriver {
 										units), player);
 	}
 
-	private void enterImplement(final IDFactory idf, final ResourceManagementDriver
+	private static void enterImplement(final IDFactory idf, final ResourceManagementDriver
 															 model,
 								final ICLIHelper cli, final Player player)
 			throws IOException {

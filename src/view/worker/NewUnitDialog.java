@@ -168,7 +168,7 @@ public final class NewUnitDialog extends JFrame implements NewUnitSource,
 	 * @param list the listener to listen for Enter in the field.
 	 * @return the field
 	 */
-	private JTextField setupField(final JTextField field, final ActionListener list) {
+	private static JTextField setupField(final JTextField field, final ActionListener list) {
 		field.setActionCommand("OK");
 		field.addActionListener(list);
 		return field;
