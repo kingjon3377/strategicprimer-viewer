@@ -1,6 +1,7 @@
 package controller.map.formatexceptions;
 
-import javax.xml.stream.Location;
+import javax.xml.namespace.QName;
+import javax.xml.stream.events.StartElement;
 
 /**
  * A custom exception for cases where a tag has a property it doesn't support.
@@ -29,7 +30,7 @@ public final class UnsupportedPropertyException extends SPFormatException {
 	/**
 	 * The current tag.
 	 */
-	private final String context;
+	private final QName context;
 	/**
 	 * The unsupported parameter.
 	 */
@@ -38,18 +39,18 @@ public final class UnsupportedPropertyException extends SPFormatException {
 	/**
 	 * @param tag       the current tag
 	 * @param parameter the unsupported parameter
-	 * @param location  the line where this occurred
 	 */
-	public UnsupportedPropertyException(final String tag,
-	                                    final String parameter, final Location location) {
-		super("Unsupported property " + parameter + " in tag " + tag, location);
-		context = tag;
+	public UnsupportedPropertyException(final StartElement tag,
+	                                    final String parameter) {
+		super("Unsupported property " + parameter + " in tag " +
+				      tag.getName().getLocalPart(), tag.getLocation());
+		context = tag.getName();
 		param = parameter;
 	}
 	/**
 	 * @return the current tag
 	 */
-	public String getTag() {
+	public QName getTag() {
 		return context;
 	}
 

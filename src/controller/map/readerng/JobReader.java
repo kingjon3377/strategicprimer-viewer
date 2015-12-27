@@ -84,8 +84,7 @@ public final class JobReader implements INodeHandler<@NonNull Job> {
 					 final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		if (XMLHelper.hasAttribute(element, "hours")) {
-			warner.warn(new UnsupportedPropertyException("job", "hours",
-					                                            element.getLocation()));
+			warner.warn(new UnsupportedPropertyException(element, "hours"));
 		}
 		final Job retval =
 				new Job(XMLHelper.getAttribute(element, "name"),

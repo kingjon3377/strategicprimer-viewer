@@ -151,8 +151,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 				new Job(getParameter(element, "name"),
 							   getIntegerParameter(element, "level"));
 		if (hasParameter(element, "hours")) {
-			warner.warn(new UnsupportedPropertyException("job", "hours",
-					                                            element.getLocation()));
+			warner.warn(new UnsupportedPropertyException(element, "hours"));
 		}
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
