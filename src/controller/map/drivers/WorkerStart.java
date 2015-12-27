@@ -13,7 +13,6 @@ import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
 import util.Warning;
 import util.Warning.Action;
-import view.map.main.MapFileFilter;
 import view.util.FilteredFileChooser;
 import view.worker.WorkerMgmtFrame;
 
@@ -90,7 +89,7 @@ public final class WorkerStart implements ISPDriver {
 		}
 		SwingUtilities.invokeLater(new WindowThread(new WorkerMgmtFrame(model,
 				                                                               new IOHandler(model,
-						                                                                            new FilteredFileChooser(MapFileFilter.FILTER)))));
+						                                                                            new FilteredFileChooser()))));
 	}
 
 	/**
@@ -123,7 +122,7 @@ public final class WorkerStart implements ISPDriver {
 												                                          args)));
 		SwingUtilities.invokeLater(new WindowThread(new WorkerMgmtFrame(model,
 				                                                               new IOHandler(model,
-						                                                                            new FilteredFileChooser(MapFileFilter.FILTER)))));
+						                                                                            new FilteredFileChooser()))));
 	}
 
 	/**

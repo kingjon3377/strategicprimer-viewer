@@ -16,7 +16,6 @@ import model.viewer.ViewerModel;
 import util.Pair;
 import util.Warning;
 import util.Warning.Action;
-import view.map.main.MapFileFilter;
 import view.map.main.ViewerFrame;
 import view.util.FilteredFileChooser;
 
@@ -74,7 +73,7 @@ public final class ViewerStart implements ISPDriver {
 		}
 		SwingUtilities.invokeLater(new WindowThread(new ViewerFrame(model,
 				                                                           new IOHandler(model,
-						                                                                        new FilteredFileChooser(MapFileFilter.FILTER)))));
+						                                                                        new FilteredFileChooser()))));
 	}
 
 	/**

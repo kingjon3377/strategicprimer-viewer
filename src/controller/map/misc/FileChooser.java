@@ -4,7 +4,6 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import javax.swing.*;
 import util.NullCleaner;
-import view.map.main.MapFileFilter;
 import view.util.FilteredFileChooser;
 
 import static javax.swing.JFileChooser.APPROVE_OPTION;
@@ -46,8 +45,7 @@ public final class FileChooser {
 	/**
 	 * A file chooser.
 	 */
-	private final FilteredFileChooser chooser =
-			new FilteredFileChooser(MapFileFilter.FILTER);
+	private final FilteredFileChooser chooser = new FilteredFileChooser();
 
 	/**
 	 * Constructor. When the filename is asked for, if the given value is valid, we'll

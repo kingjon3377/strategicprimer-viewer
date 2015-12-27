@@ -2,6 +2,7 @@ package view.util;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
+import view.map.main.MapFileFilter;
 
 /**
  * A JFileChooser that takes a FileFilter in its constructor.
@@ -40,7 +41,7 @@ public final class FilteredFileChooser extends JFileChooser {
 	 * Constructor, setting the default location to the current directory.
 	 * @param filter the filter to apply
 	 */
-	public FilteredFileChooser(final FileFilter filter) {
-		this(".", filter);
+	public FilteredFileChooser() {
+		this(".", MapFileFilter.FILTER);
 	}
 }

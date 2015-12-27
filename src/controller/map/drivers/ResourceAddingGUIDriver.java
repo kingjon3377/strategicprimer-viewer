@@ -11,7 +11,6 @@ import javax.swing.*;
 import model.misc.IDriverModel;
 import model.resources.ResourceManagementDriver;
 import util.Warning;
-import view.map.main.MapFileFilter;
 import view.resources.ResourceAddingFrame;
 import view.util.FilteredFileChooser;
 
@@ -88,7 +87,7 @@ public class ResourceAddingGUIDriver implements ISPDriver {
 		}
 		SwingUtilities.invokeLater(new WindowThread(new ResourceAddingFrame(model,
 				                                                                   new IOHandler(model,
-						                                                                                new FilteredFileChooser(MapFileFilter.FILTER)))));
+						                                                                                new FilteredFileChooser()))));
 	}
 
 	/**
@@ -117,7 +116,7 @@ public class ResourceAddingGUIDriver implements ISPDriver {
 						MapReaderAdapter.namesToFiles(true, args)));
 		SwingUtilities.invokeLater(new WindowThread(new ResourceAddingFrame(model,
 				                                                                   new IOHandler(model,
-						                                                                                new FilteredFileChooser(MapFileFilter.FILTER)))));
+						                                                                                new FilteredFileChooser()))));
 	}
 
 	/**
