@@ -675,7 +675,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @return the number of items in the iterable
 	 */
 	protected static <T> long iteratorSize(final Iterable<T> iter) {
-		return (int) StreamSupport.stream(iter.spliterator(), false).count();
+		return StreamSupport.stream(iter.spliterator(), false).count();
 	}
 
 	/**
