@@ -7,7 +7,7 @@ import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;
 import java.io.File;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
@@ -67,11 +67,9 @@ public final class AdvancementStart implements ISPDriver {
 		} else {
 			model = new WorkerModel(dmodel);
 		}
-		SwingUtilities.invokeLater(
-				new WindowThread(new AdvancementFrame(model, new IOHandler(model,
-																				  new
-																						  FilteredFileChooser(".",
-																												 new MapFileFilter())))));
+		SwingUtilities.invokeLater(new WindowThread(new AdvancementFrame(model,
+				                                                                new IOHandler(model,
+						                                                                             new FilteredFileChooser(new MapFileFilter())))));
 	}
 
 	/**
@@ -101,11 +99,9 @@ public final class AdvancementStart implements ISPDriver {
 																					  .namesToFiles(
 																							  true,
 																							  args)));
-			SwingUtilities.invokeLater(new WindowThread(new AdvancementFrame(
-																					model,
-																					new IOHandler(model,
-																										 new FilteredFileChooser(".",
-																																		new MapFileFilter())))));
+			SwingUtilities.invokeLater(new WindowThread(new AdvancementFrame(model,
+					                                                                new IOHandler(model,
+							                                                                             new FilteredFileChooser(new MapFileFilter())))));
 		} catch (final ChoiceInterruptedException except) {
 			throw new DriverFailedException("File choice was interrupted or user didn't choose",
 												   except);

@@ -7,7 +7,7 @@ import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;
 import java.io.File;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.resources.ResourceManagementDriver;
 import util.Warning;
@@ -87,10 +87,8 @@ public class ResourceAddingGUIDriver implements ISPDriver {
 			model = new ResourceManagementDriver(dmodel);
 		}
 		SwingUtilities.invokeLater(new WindowThread(new ResourceAddingFrame(model,
-				                                                                   new
-						                                                                   IOHandler(model,
-						                                                                                new FilteredFileChooser(".",
-								                                                                                                       new MapFileFilter())))));
+				                                                                   new IOHandler(model,
+						                                                                                new FilteredFileChooser(new MapFileFilter())))));
 	}
 
 	/**
@@ -117,10 +115,9 @@ public class ResourceAddingGUIDriver implements ISPDriver {
 				new ResourceManagementDriver(new MapReaderAdapter().readMultiMapModel(
 						new Warning(Warning.Action.Warn), file,
 						MapReaderAdapter.namesToFiles(true, args)));
-		SwingUtilities.invokeLater(
-				new WindowThread(new ResourceAddingFrame(model, new IOHandler(model,
-						                                                             new FilteredFileChooser(".",
-								                                                                                    new MapFileFilter())))));
+		SwingUtilities.invokeLater(new WindowThread(new ResourceAddingFrame(model,
+				                                                                   new IOHandler(model,
+						                                                                                new FilteredFileChooser(new MapFileFilter())))));
 	}
 
 	/**

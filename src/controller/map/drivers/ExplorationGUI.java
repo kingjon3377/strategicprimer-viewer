@@ -5,7 +5,7 @@ import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;
 import java.io.File;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.exploration.ExplorationModel;
 import model.misc.IDriverModel;
 import util.Warning;
@@ -61,11 +61,9 @@ public final class ExplorationGUI implements ISPDriver {
 		} else {
 			model = new ExplorationModel(dmodel);
 		}
-		SwingUtilities.invokeLater(
-				new WindowThread(new ExplorationFrame(model, new IOHandler(model,
-																				  new
-																						  FilteredFileChooser(".",
-																												 new MapFileFilter())))));
+		SwingUtilities.invokeLater(new WindowThread(new ExplorationFrame(model,
+				                                                                new IOHandler(model,
+						                                                                             new FilteredFileChooser(new MapFileFilter())))));
 	}
 
 	/**
@@ -91,12 +89,9 @@ public final class ExplorationGUI implements ISPDriver {
 																						   .namesToFiles(
 																								   true,
 																								   args)));
-		SwingUtilities.invokeLater(new WindowThread(new ExplorationFrame(
-																				model,
-																				new IOHandler(model,
-																									 new FilteredFileChooser(
-																																	".",
-																																	new MapFileFilter())))));
+		SwingUtilities.invokeLater(new WindowThread(new ExplorationFrame(model,
+				                                                                new IOHandler(model,
+						                                                                             new FilteredFileChooser(new MapFileFilter())))));
 	}
 
 	/**

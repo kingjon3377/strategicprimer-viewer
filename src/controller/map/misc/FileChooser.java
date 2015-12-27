@@ -2,7 +2,7 @@ package controller.map.misc;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import util.NullCleaner;
 import view.map.main.MapFileFilter;
 import view.util.FilteredFileChooser;
@@ -46,9 +46,8 @@ public final class FileChooser {
 	/**
 	 * A file chooser.
 	 */
-	private final FilteredFileChooser chooser = new FilteredFileChooser(".",
-			                                                                   new
-					                                                                   MapFileFilter());
+	private final FilteredFileChooser chooser =
+			new FilteredFileChooser(new MapFileFilter());
 
 	/**
 	 * Constructor. When the filename is asked for, if the given value is valid, we'll

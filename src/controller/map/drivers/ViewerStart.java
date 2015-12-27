@@ -7,7 +7,7 @@ import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
 import controller.map.misc.WindowThread;
 import java.io.File;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
@@ -72,10 +72,9 @@ public final class ViewerStart implements ISPDriver {
 		} else {
 			model = new ViewerModel(dmodel);
 		}
-		SwingUtilities
-				.invokeLater(new WindowThread(new ViewerFrame(model, new IOHandler(model,
-																						  new FilteredFileChooser(".",
-																														 new MapFileFilter())))));
+		SwingUtilities.invokeLater(new WindowThread(new ViewerFrame(model,
+				                                                           new IOHandler(model,
+						                                                                        new FilteredFileChooser(new MapFileFilter())))));
 	}
 
 	/**
