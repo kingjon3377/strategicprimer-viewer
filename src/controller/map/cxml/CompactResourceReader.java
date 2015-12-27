@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IEvent;
@@ -301,11 +300,9 @@ public final class CompactResourceReader extends
 		if (hasParameter(element, CULTIVATED_PARAM)) {
 			return parseBoolean(getParameter(element, CULTIVATED_PARAM)); // NOPMD
 		} else {
-			final QName local = element.getName();
 			if (hasParameter(element, "wild")) {
-				warner.warn(
-						new DeprecatedPropertyException(local, "wild", CULTIVATED_PARAM,
-								                               element.getLocation()));
+				warner.warn(new DeprecatedPropertyException(element, "wild",
+						                                           CULTIVATED_PARAM));
 				return !parseBoolean(getParameter(element, "wild"));
 			} else {
 				throw new MissingPropertyException(element, CULTIVATED_PARAM);
