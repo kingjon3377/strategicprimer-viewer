@@ -133,7 +133,6 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 		} else {
 			throw new UnwantedChildException("xml", assertNotNull(outerTag), outerLoc);
 		}
-		final Location mapTagLocation = assertNotNull(mapTag.getLocation());
 		final MapDimensions dimensions =
 				new MapDimensions(XMLHelper.getIntegerAttribute(mapTag, "rows"),
 						                 XMLHelper.getIntegerAttribute(mapTag,

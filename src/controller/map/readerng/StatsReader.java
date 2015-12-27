@@ -4,7 +4,6 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import java.util.Collections;
 import java.util.List;
-import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
@@ -71,7 +70,6 @@ public final class StatsReader implements INodeHandler<@NonNull WorkerStats> {
 							 final IMutablePlayerCollection players,
 							 final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		final Location loc = NullCleaner.assertNotNull(element.getLocation());
 		final WorkerStats retval =
 				new WorkerStats(XMLHelper.getIntegerAttribute(element, "hp"),
 						               XMLHelper.getIntegerAttribute(element, "max"),
