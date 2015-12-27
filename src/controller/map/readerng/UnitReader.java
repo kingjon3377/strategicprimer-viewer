@@ -123,8 +123,7 @@ public final class UnitReader implements INodeHandler<Unit> {
 					KIND_PROPERTY, "type", warner);
 			if (retval.isEmpty()) {
 				warner.warn(new MissingPropertyException(NullCleaner.assertNotNull(
-						element.getName().getLocalPart()), KIND_PROPERTY,
-						                                        element.getLocation()));
+						element.getName()), KIND_PROPERTY, element.getLocation()));
 			}
 			return retval; // NOPMD
 		} catch (final MissingPropertyException except) {

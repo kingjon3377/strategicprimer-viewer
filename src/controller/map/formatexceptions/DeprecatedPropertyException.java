@@ -62,6 +62,7 @@ public final class DeprecatedPropertyException extends SPFormatException {
 	}
 
 	/**
+	 * TODO: Take tag as QName
 	 * @param tag        the current tag
 	 * @param deprecated the old form
 	 * @param newForm    the preferred form

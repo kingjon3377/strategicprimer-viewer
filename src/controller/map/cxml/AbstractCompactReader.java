@@ -100,13 +100,14 @@ public abstract class AbstractCompactReader<@NonNull T>
 	protected static String getParameter(final StartElement element,
 										 final String param) throws SPFormatException {
 		final Attribute attr = element.getAttributeByName(new QName(param));
-		final String local = tagOrNull(element.getName().getLocalPart());
 		if (attr == null) {
-			throw new MissingPropertyException(local, param, element.getLocation());
+			throw new MissingPropertyException(element.getName(), param,
+					                                  element.getLocation());
 		} else {
 			final String value = attr.getValue();
 			if (value == null) {
-				throw new MissingPropertyException(local, param, element.getLocation());
+				throw new MissingPropertyException(element.getName(), param,
+						                                  element.getLocation());
 			} else {
 				return value;
 			}
@@ -146,9 +147,9 @@ public abstract class AbstractCompactReader<@NonNull T>
 												   final Warning warner)
 			throws SPFormatException {
 		if (getParameter(element, param, "").isEmpty()) {
-			final String local = tagOrNull(element.getName().getLocalPart());
 			final SPFormatException except =
-					new MissingPropertyException(local, param, element.getLocation());
+					new MissingPropertyException(element.getName(), param,
+							                            element.getLocation());
 			if (mandatory) {
 				throw except;
 			} else {
@@ -201,13 +202,11 @@ public abstract class AbstractCompactReader<@NonNull T>
 												  .parse(getParameter(element, "id"))
 												  .intValue());
 			} catch (final NumberFormatException | ParseException except) {
-				throw new MissingPropertyException(tagOrNull(
-						element.getName().getLocalPart()), "id", element.getLocation(),
-						                                  except);
+				throw new MissingPropertyException(element.getName(), "id",
+						                                  element.getLocation(), except);
 			}
 		} else {
-			final String tag = element.getName().getLocalPart();
-			warner.warn(new MissingPropertyException(tagOrNull(tag), "id",
+			warner.warn(new MissingPropertyException(element.getName(), "id",
 					                                        element.getLocation()));
 			return idFactory.createID();
 		}
@@ -241,7 +240,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 		final Attribute deprProp = element.getAttributeByName(new QName(deprecated));
 		final String local = tagOrNull(element.getName().getLocalPart());
 		final MissingPropertyException exception =
-				new MissingPropertyException(local, preferred, element.getLocation());
+				new MissingPropertyException(element.getName(), preferred, element.getLocation());
 		if ((prefProp == null) && (deprProp == null)) {
 			throw exception;
 		} else if (prefProp == null) {

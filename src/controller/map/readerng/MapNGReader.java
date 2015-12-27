@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.StreamSupport;
+import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -162,6 +163,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 			if (event.isStartElement()) {
 				final StartElement current = event.asStartElement();
 				final String type = current.getName().getLocalPart();
+				final QName typeName = current.getName();
 				final Location currentLoc = assertNotNull(current.getLocation());
 				if (type == null) {
 					continue;
@@ -193,7 +195,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 																	 warner)));
 					} else {
 						warner.warn(
-								new MissingPropertyException(type, "kind", currentLoc));
+								new MissingPropertyException(typeName, "kind", currentLoc));
 					}
 				} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) {
 					warner.warn(new UnsupportedTagException(type, currentLoc));

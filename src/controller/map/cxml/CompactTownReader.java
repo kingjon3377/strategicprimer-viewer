@@ -213,8 +213,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 							 .getPlayer(getIntegerParameter(element, OWNER_PARAM));
 		} else {
 			warner.warn(new MissingPropertyException(NullCleaner.assertNotNull(
-					element.getName().getLocalPart()), OWNER_PARAM,
-					                                        element.getLocation()));
+					element.getName()), OWNER_PARAM, element.getLocation()));
 			retval = players.getIndependent();
 		}
 		return retval;

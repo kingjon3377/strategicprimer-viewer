@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IEvent;
@@ -259,8 +260,7 @@ public final class CompactResourceReader extends
 			throws SPFormatException {
 		if (!hasParameter(element, STATUS_PAR)) {
 			warner.warn(new MissingPropertyException(NullCleaner.assertNotNull(
-					element.getName().getLocalPart()), STATUS_PAR,
-					                                        element.getLocation()));
+					element.getName()), STATUS_PAR, element.getLocation()));
 		}
 		return new Meadow(getParameter(element, KIND_PAR), field,
 								 parseBoolean(getParameter(element, CULTIVATED_PARAM)),
@@ -304,13 +304,14 @@ public final class CompactResourceReader extends
 		} else {
 			final String local =
 					NullCleaner.assertNotNull(element.getName().getLocalPart());
+			final QName localName = element.getName();
 			if (hasParameter(element, "wild")) {
 				warner.warn(
 						new DeprecatedPropertyException(local, "wild", CULTIVATED_PARAM,
 								                               element.getLocation()));
 				return !parseBoolean(getParameter(element, "wild"));
 			} else {
-				throw new MissingPropertyException(local, CULTIVATED_PARAM,
+				throw new MissingPropertyException(localName, CULTIVATED_PARAM,
 						                                  element.getLocation());
 			}
 		}

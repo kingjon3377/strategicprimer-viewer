@@ -6,6 +6,7 @@ import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import java.util.Arrays;
 import java.util.List;
+import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
@@ -100,6 +101,7 @@ public final class GroveReader implements INodeHandler<Grove> {
 		} else {
 			final String local =
 					NullCleaner.assertNotNull(element.getName().getLocalPart());
+			final QName localName = element.getName();
 			if (hasAttribute(element, "wild")) {
 				warner.warn(
 						new DeprecatedPropertyException(local, "wild", CULTIVATED_ATTR,
@@ -107,7 +109,7 @@ public final class GroveReader implements INodeHandler<Grove> {
 				return !Boolean.parseBoolean(getAttribute(element,
 						"wild")); // NOPMD
 			} else {
-				throw new MissingPropertyException(local, CULTIVATED_ATTR,
+				throw new MissingPropertyException(localName, CULTIVATED_ATTR,
 						                                  element.getLocation());
 			}
 		}
