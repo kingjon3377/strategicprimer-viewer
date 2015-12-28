@@ -312,7 +312,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 			throws SPFormatException {
 		return StreamSupport.stream(stream.spliterator(), false)
 				       .filter(XMLEvent::isStartElement).findFirst()
-				       .orElseThrow(() -> new MissingChildException(parent.getName().getLocalPart(), parent.getLocation()))
+				       .orElseThrow(() -> new MissingChildException(parent.getName(), parent.getLocation()))
 				       .asStartElement();
 	}
 	/**

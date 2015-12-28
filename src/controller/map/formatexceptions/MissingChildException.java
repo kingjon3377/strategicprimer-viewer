@@ -1,5 +1,6 @@
 package controller.map.formatexceptions;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 
 /**
@@ -28,12 +29,12 @@ public final class MissingChildException extends SPFormatException {
 	/**
 	 * The current tag.
 	 */
-	private final String context;
+	private final QName context;
 
 	/**
 	 * @return the current tag.
 	 */
-	public String getTag() {
+	public QName getTag() {
 		return context;
 	}
 
@@ -41,8 +42,8 @@ public final class MissingChildException extends SPFormatException {
 	 * @param tag  the current tag (the one that needs a child)
 	 * @param loc the current location
 	 */
-	public MissingChildException(final String tag, final Location loc) {
-		super("Tag " + tag + " missing a child", loc);
+	public MissingChildException(final QName tag, final Location loc) {
+		super("Tag " + tag.getLocalPart() + " missing a child", loc);
 		context = tag;
 	}
 }
