@@ -18,6 +18,7 @@ import java.io.StringWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import org.eclipse.jdt.annotation.NonNull;
 import util.FatalWarningException;
@@ -143,7 +144,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 				final Throwable cause = except.getCause();
 				assertTrue("Unsupported tag",
 						cause instanceof UnsupportedTagException);
-				assertEquals("The tag we expected", tag,
+				assertEquals("The tag we expected", new QName(tag),
 						((UnsupportedTagException) cause).getTag());
 			}
 		} else {
