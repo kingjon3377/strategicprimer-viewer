@@ -1,7 +1,7 @@
 package controller.map.formatexceptions;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.Location;
+import javax.xml.stream.events.StartElement;
 
 /**
  * A custom exception for when a tag (or a Node) requuires a child and it isn't there.
@@ -40,10 +40,9 @@ public final class MissingChildException extends SPFormatException {
 
 	/**
 	 * @param tag  the current tag (the one that needs a child)
-	 * @param loc the current location
 	 */
-	public MissingChildException(final QName tag, final Location loc) {
-		super("Tag " + tag.getLocalPart() + " missing a child", loc);
-		context = tag;
+	public MissingChildException(final StartElement tag) {
+		super("Tag " + tag.getName().getLocalPart() + " missing a child", tag.getLocation());
+		context = tag.getName();
 	}
 }
