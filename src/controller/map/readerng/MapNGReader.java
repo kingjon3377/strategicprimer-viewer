@@ -122,7 +122,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 		final String outerTag = assertNotNull(element.getName().getLocalPart());
 		if ("view".equalsIgnoreCase(element.getName().getLocalPart())) {
 			currentTurn = XMLHelper.getIntegerAttribute(element, "current_turn");
-			mapTag = getFirstStartElement(stream, outerLoc);
+			mapTag = getFirstStartElement(stream, element);
 			if (!"map".equals(mapTag.getName().getLocalPart())) {
 				throw new UnwantedChildException(outerTag, assertNotNull(
 						mapTag.getName().getLocalPart()), mapTag.getLocation());
@@ -301,18 +301,18 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 
 	/**
 	 * @param stream a stream of XMLEvents
-	 * @param loc    the location of the parent tag
+	 * @param parent the parent tag
 	 * @return the first start-element in the stream
 	 * @throws SPFormatException if no start element in stream
 	 */
 	private static StartElement getFirstStartElement(
 			                                                final Iterable<XMLEvent>
 					                                                stream,
-			                                                final Location loc)
+			                                                final StartElement parent)
 			throws SPFormatException {
 		return StreamSupport.stream(stream.spliterator(), false)
 				       .filter(XMLEvent::isStartElement).findFirst()
-				       .orElseThrow(() -> new MissingChildException("map", loc))
+				       .orElseThrow(() -> new MissingChildException(parent.getName().getLocalPart(), parent.getLocation()))
 				       .asStartElement();
 	}
 	/**
