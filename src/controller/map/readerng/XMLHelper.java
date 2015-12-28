@@ -267,7 +267,7 @@ public final class XMLHelper {
 	                                      final int defaultValue)
 			throws SPFormatException {
 		final Attribute value = elem.getAttributeByName(new QName(attr));
-		if (value == null) {
+		if (value == null || value.getValue().isEmpty()) {
 			return defaultValue; // NOPMD
 		} else {
 			try {
