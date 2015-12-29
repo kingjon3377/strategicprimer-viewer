@@ -2,8 +2,11 @@ package view.worker;
 
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Dimension;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.WindowConstants;
 import model.map.Player;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
