@@ -258,9 +258,9 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 							NullCleaner.assertNotNull(event.asStartElement()),
 							stream, players, warner, idFactory));
 				} else {
-					throw new UnwantedChildException(NullCleaner.assertNotNull(
-							element.getName().getLocalPart()), NullCleaner.assertNotNull(
-							event.asStartElement().getName().getLocalPart()),
+					throw new UnwantedChildException(element.getName(),
+							                                event.asStartElement()
+									                                .getName(),
 							                                event.getLocation());
 				}
 			} else if (event.isEndElement()

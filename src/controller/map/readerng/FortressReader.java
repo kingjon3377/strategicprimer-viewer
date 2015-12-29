@@ -6,6 +6,7 @@ import controller.map.misc.IDFactory;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
+import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
@@ -98,12 +99,9 @@ public final class FortressReader implements INodeHandler<Fortress> {
 							NullCleaner.assertNotNull(event.asStartElement()),
 							stream, players, warner, idFactory));
 				} else {
-					throw new UnwantedChildException("fortress", NullCleaner
-							                                             .assertNotNull(
-									                                             event.asStartElement()
-											                                             .getName()
-											                                             .getLocalPart()),
-
+					throw new UnwantedChildException(new QName("fortress"),
+							                                event.asStartElement()
+									                                .getName(),
 							                                event.getLocation());
 				}
 			} else if (event.isEndElement()

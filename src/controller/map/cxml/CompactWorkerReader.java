@@ -94,9 +94,9 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 							NullCleaner.assertNotNull(event.asStartElement()),
 							stream));
 				} else {
-					throw new UnwantedChildException(NullCleaner.assertNotNull(
-							element.getName().getLocalPart()), NullCleaner.assertNotNull(
-							event.asStartElement().getName().getLocalPart()),
+					throw new UnwantedChildException(element.getName(),
+							                                event.asStartElement()
+									                                .getName(),
 							                                event.getLocation());
 				}
 			} else if (event.isEndElement()
@@ -165,9 +165,9 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 					spinUntilEnd(NullCleaner.assertNotNull(event.asStartElement()
 																   .getName()), stream);
 				} else {
-					throw new UnwantedChildException(NullCleaner.assertNotNull(
-							element.getName().getLocalPart()), NullCleaner.assertNotNull(
-							event.asStartElement().getName().getLocalPart()),
+					throw new UnwantedChildException(element.getName(),
+							                                event.asStartElement()
+									                                .getName(),
 							                                event.getLocation());
 				}
 			} else if (event.isEndElement()

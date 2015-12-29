@@ -168,9 +168,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 			throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement()) {
-				throw new UnwantedChildException(tagOrNull(tag.getLocalPart()),
-						                                tagOrNull(
-						event.asStartElement().getName().getLocalPart()),
+				throw new UnwantedChildException(tag, event.asStartElement().getName(),
 						                                event.getLocation());
 			} else if (event.isEndElement()
 							   && tag.equals(event.asEndElement().getName())) {

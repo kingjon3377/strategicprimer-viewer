@@ -1,5 +1,6 @@
 package controller.map.formatexceptions;
 
+import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 
 /**
@@ -29,21 +30,21 @@ public final class UnwantedChildException extends SPFormatException {
 	/**
 	 * The current tag.
 	 */
-	private final String tag;
+	private final QName tag;
 
 	/**
 	 * The unwanted child.
 	 */
-	private final String chld;
+	private final QName chld;
 
 	/**
 	 * @param parent    the current tag
 	 * @param child     the unwanted child
 	 * @param errorLoc  the location where this happened
 	 */
-	public UnwantedChildException(final String parent, final String child,
+	public UnwantedChildException(final QName parent, final QName child,
 	                              final Location errorLoc) {
-		super("Unexpected child " + child + " in tag " + parent, errorLoc);
+		super("Unexpected child " + child.getLocalPart() + " in tag " + parent.getLocalPart(), errorLoc);
 		tag = parent;
 		chld = child;
 	}
@@ -54,23 +55,23 @@ public final class UnwantedChildException extends SPFormatException {
 	 * @param errorLoc  the location where this happened
 	 * @param cause     another exception that caused this one
 	 */
-	public UnwantedChildException(final String parent, final String child,
+	public UnwantedChildException(final QName parent, final QName child,
 	                              final Location errorLoc, final Throwable cause) {
-		super("Unexpected child " + child + " in tag " + parent, errorLoc, cause);
+		super("Unexpected child " + child.getLocalPart() + " in tag " + parent.getLocalPart(), errorLoc, cause);
 		tag = parent;
 		chld = child;
 	}
 	/**
 	 * @return the current tag.
 	 */
-	public String getTag() {
+	public QName getTag() {
 		return tag;
 	}
 
 	/**
 	 * @return the unwanted child.
 	 */
-	public String getChild() {
+	public QName getChild() {
 		return chld;
 	}
 }

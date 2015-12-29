@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.StreamSupport;
+import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -124,14 +125,14 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 			currentTurn = XMLHelper.getIntegerAttribute(element, "current_turn");
 			mapTag = getFirstStartElement(stream, element);
 			if (!"map".equals(mapTag.getName().getLocalPart())) {
-				throw new UnwantedChildException(outerTag, assertNotNull(
-						mapTag.getName().getLocalPart()), mapTag.getLocation());
+				throw new UnwantedChildException(element.getName(), mapTag.getName(),
+						                                mapTag.getLocation());
 			}
 		} else if ("map".equalsIgnoreCase(outerTag)) {
 			currentTurn = 0;
 			mapTag = element;
 		} else {
-			throw new UnwantedChildException("xml", assertNotNull(outerTag), outerLoc);
+			throw new UnwantedChildException(new QName("xml"), element.getName(), outerLoc);
 		}
 		final MapDimensions dimensions =
 				new MapDimensions(XMLHelper.getIntegerAttribute(mapTag, "rows"),
@@ -157,7 +158,9 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					continue;
 				} else if ("tile".equalsIgnoreCase(type)) {
 					if (!nullPoint.equals(point)) {
-						throw new UnwantedChildException("tile", type, currentLoc);
+						throw new UnwantedChildException(new QName("tile"),
+								                                current.getName(),
+								                                currentLoc);
 					}
 					point = PointFactory
 							        .point(XMLHelper.getIntegerAttribute(current, "row"),
@@ -181,7 +184,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					warner.warn(new UnsupportedTagException(current));
 				} else if (nullPoint.equals(point)) {
 					// fixture outside tile
-					throw new UnwantedChildException("map", type, currentLoc);
+					throw new UnwantedChildException(mapTag.getName(), current.getName(), currentLoc);
 				} else if ("lake".equalsIgnoreCase(type)
 								   || "river".equalsIgnoreCase(type)) {
 					retval.addRivers(point, RIVER_READER.parse(current, stream,
@@ -203,22 +206,18 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 										players, warner, factory),
 								TileFixture.class));
 					} catch (final UnwantedChildException except) {
-						if ("unknown".equals(except.getTag())) {
-							throw new UnwantedChildException(assertNotNull(
-									mapTag.getName().getLocalPart()), except.getChild(),
+						if ("unknown".equals(except.getTag().getLocalPart())) {
+							throw new UnwantedChildException(mapTag.getName(),
+									                                except.getChild(),
 									                                currentLoc);
 						} else {
 							throw except;
 						}
 					} catch (final IllegalStateException except) {
 						if (EXCEPT_PATTERN.matcher(except.getMessage()).matches()) {
-							throw new UnwantedChildException(assertNotNull(
-									mapTag.getName().getLocalPart()),
-									                          assertNotNull(
-											                          current.getName()
-													                          .getLocalPart()),
-
-									                          currentLoc, except);
+							throw new UnwantedChildException(mapTag.getName(),
+									                                current.getName(),
+									                                currentLoc, except);
 						} else {
 							throw except;
 						}

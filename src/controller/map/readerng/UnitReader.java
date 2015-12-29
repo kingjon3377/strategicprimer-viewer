@@ -88,9 +88,8 @@ public final class UnitReader implements INodeHandler<Unit> {
 				if (result instanceof UnitMember) {
 					fix.addMember((UnitMember) result);
 				} else {
-					throw new UnwantedChildException(NullCleaner.assertNotNull(
-							element.getName().getLocalPart()), NullCleaner.assertNotNull(
-							selem.getName().getLocalPart()), event.getLocation());
+					throw new UnwantedChildException(element.getName(), selem.getName(),
+							                                event.getLocation());
 				}
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());

@@ -7,6 +7,7 @@ import controller.map.misc.IDFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IFixture;
@@ -140,12 +141,14 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 				if (retval instanceof UnitMember) {
 					return (UnitMember) retval;
 				} else {
-					throw new UnwantedChildException(UNIT_TAG, name,
+					throw new UnwantedChildException(new QName(UNIT_TAG),
+							                                element.getName(),
 							                                element.getLocation());
 				}
 			}
 		}
-		throw new UnwantedChildException(UNIT_TAG, name, element.getLocation());
+		throw new UnwantedChildException(new QName(UNIT_TAG), element.getName(),
+				                                element.getLocation());
 	}
 
 	/**

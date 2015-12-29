@@ -149,9 +149,7 @@ public final class XMLHelper {
 			throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement()) {
-				throw new UnwantedChildException(NullCleaner.assertNotNull(
-						tag.getLocalPart()), NullCleaner.assertNotNull(
-						event.asStartElement().getName().getLocalPart()),
+				throw new UnwantedChildException(tag, event.asStartElement().getName(),
 						                                event.getLocation());
 			} else if (event.isEndElement()
 							   && tag.equals(event.asEndElement().getName())) {

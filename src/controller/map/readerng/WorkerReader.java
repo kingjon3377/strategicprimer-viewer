@@ -96,18 +96,9 @@ public final class WorkerReader implements INodeHandler<@NonNull Worker> {
 				} else if (result instanceof WorkerStats) {
 					retval.setStats((WorkerStats) result);
 				} else {
-					final String outerName = NullCleaner.valueOrDefault(element
-																				.getName()
-																				.getLocalPart(),
-							"a null tag");
-					final String innerName =
-							NullCleaner.valueOrDefault(NullCleaner
-															   .assertNotNull(
-																	   event
-																			   .asStartElement())
-															   .getName().getLocalPart(),
-									"a null tag");
-					throw new UnwantedChildException(outerName, innerName,
+					throw new UnwantedChildException(element.getName(),
+							                                event.asStartElement()
+									                                .getName(),
 							                                event.getLocation());
 				}
 			} else if (event.isEndElement()

@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
@@ -73,7 +74,8 @@ public final class ReaderAdapter implements INodeHandler<Object> {
 			return READ_CACHE.get(iLocal).parse(element, stream, players,
 					warner, idFactory);
 		} else {
-			throw new UnwantedChildException("unknown", iLocal, element.getLocation());
+			throw new UnwantedChildException(new QName("unknown"), element.getName(),
+					                                element.getLocation());
 		}
 	}
 
