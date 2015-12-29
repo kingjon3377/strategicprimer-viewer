@@ -53,7 +53,7 @@ public final class IDFactoryFiller {
 			// can skip them and just test the "other" fixtures
 			for (final IFixture fixture : map.getOtherFixtures(point)) {
 				final int idNum = fixture.getID();
-				if (!retval.used(idNum)) {
+				if (retval.isIDUnused(idNum)) {
 					// We don't want to set off duplicate-ID warnings for
 					// the same fixture in multiple maps.
 					retval.register(idNum);
@@ -78,7 +78,7 @@ public final class IDFactoryFiller {
 				// can skip them and just test the "other" fixtures
 				for (final IFixture fixture : pair.first().getOtherFixtures(point)) {
 					final int idNum = fixture.getID();
-					if (!retval.used(idNum)) {
+					if (retval.isIDUnused(idNum)) {
 						// We don't want to set off duplicate-ID warnings for
 						// the same fixture in multiple maps.
 						retval.register(idNum);
@@ -113,7 +113,7 @@ public final class IDFactoryFiller {
 			                                      iter) {
 		for (final IFixture fix : iter) {
 			final int idNum = fix.getID();
-			if (!idf.used(idNum)) {
+			if (idf.isIDUnused(idNum)) {
 				// We don't want to set off duplicate-ID warnings for the same
 				// fixture in multiple maps. Or for Mountains and the like.
 				idf.register(idNum);

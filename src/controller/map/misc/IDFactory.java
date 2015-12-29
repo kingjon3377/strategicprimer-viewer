@@ -34,15 +34,12 @@ public final class IDFactory {
 	private final BitSet usedIDs = new BitSet();
 
 	/**
-	 * This should probably only be called from the IDFactoryFiller.
-	 *
-	 * @param idNum an ID number.
-	 * @return whether it's used.
+	 * @param idNum
+	 * @return whether it's unused
 	 */
-	public boolean used(final int idNum) {
-		return (idNum < 0) || usedIDs.get(idNum);
+	public boolean isIDUnused(final int idNum) {
+		return (idNum >= 0) && !usedIDs.get(idNum);
 	}
-
 	/**
 	 * Register an ID.
 	 *
