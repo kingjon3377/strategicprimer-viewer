@@ -1,8 +1,6 @@
 package view.map.main;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.FileNotFoundException;
@@ -292,11 +290,10 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return the top fixture there
 	 */
 	private TileFixture getTopFixture(final IMapNG map, final Point location) {
-		final Iterable<TileFixture> iter = getDrawableFixtures(map, location);
-		for (final TileFixture item : iter) {
-			return item;
-		}
-		throw new IllegalArgumentException("Tile has no non-null fixtures");
+		return StreamSupport
+				       .stream(getDrawableFixtures(map, location).spliterator(), false)
+				       .findFirst().orElseThrow(
+						() -> new IllegalArgumentException("Tile has no fixtures"));
 	}
 
 	/**
