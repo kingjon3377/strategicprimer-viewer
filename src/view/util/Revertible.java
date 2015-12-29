@@ -4,9 +4,6 @@ package view.util;
  * An interface that, together with the ApplyButtonHandler class and the Applyable
  * interface, simplifies form management.
  *
- * FIXME: Split revert() into its own interface, so each can be a fluent interface that
- * can be implemented by a lambda.
- *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
