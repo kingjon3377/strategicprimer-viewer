@@ -265,36 +265,38 @@ public final class QueryCLI implements ISPDriver {
 		} else if (count < 0) {
 			ostream.append("Can't have a negative number of animals.\n");
 			return; // NOPMD
-		}
-		final int herders = helper.inputNumber("How many herders?\t");
-		if (herders <= 0) {
-			ostream.append("Can't herd with no herders.\n");
-			return; // NOPMD
-		}
-		final int animalsPerHerder = ((count + herders) - 1) / herders;
-		if (poultry) {
-			ostream.append("Gathering eggs takes ");
-			ostream.append(Integer.toString(animalsPerHerder * 2));
-			ostream.append(" minutes; cleaning up after them,\n");
-			ostream.append(String.format(
-					"which should be done every third turn at least, takes %.1f hours" +
-							".%n",
-					Double.valueOf(animalsPerHerder * 0.5)));
-			ostream.append(String.format(
-					"This produces %.0f eggs, totaling %.1f oz.%n",
-					Double.valueOf(rate * count),
-					Double.valueOf(rate * 2.0 * count)));
 		} else {
-			ostream.append("Tending the animals takes ");
-			ostream.append(Integer.toString(animalsPerHerder * time));
-			ostream.append(" minutes, or ");
-			ostream.append(Integer.toString(animalsPerHerder * (time - 5)));
-			ostream.append(" minutes with expert herders, twice daily.\n");
-			ostream.append("Gathering them for each milking takes 30 min more.\n");
-			ostream.append(String.format(
-					"This produces %,.1f gallons, %,.1f lbs, of milk per day.%n",
-					Double.valueOf(rate * count),
-					Double.valueOf(rate * 8.6 * count)));
+			final int herders = helper.inputNumber("How many herders?\t");
+			if (herders <= 0) {
+				ostream.append("Can't herd with no herders.\n");
+				return; // NOPMD
+			}
+			final int animalsPerHerder = ((count + herders) - 1) / herders;
+			if (poultry) {
+				ostream.append("Gathering eggs takes ");
+				ostream.append(Integer.toString(animalsPerHerder * 2));
+				ostream.append(" minutes; cleaning up after them,\n");
+				ostream.append(String.format(
+						"which should be done every third turn at least, takes %.1f hours" +
+
+								".%n",
+						Double.valueOf(animalsPerHerder * 0.5)));
+				ostream.append(String.format(
+						"This produces %.0f eggs, totaling %.1f oz.%n",
+						Double.valueOf(rate * count),
+						Double.valueOf(rate * 2.0 * count)));
+			} else {
+				ostream.append("Tending the animals takes ");
+				ostream.append(Integer.toString(animalsPerHerder * time));
+				ostream.append(" minutes, or ");
+				ostream.append(Integer.toString(animalsPerHerder * (time - 5)));
+				ostream.append(" minutes with expert herders, twice daily.\n");
+				ostream.append("Gathering them for each milking takes 30 min more.\n");
+				ostream.append(String.format(
+						"This produces %,.1f gallons, %,.1f lbs, of milk per day.%n",
+						Double.valueOf(rate * count),
+						Double.valueOf(rate * 8.6 * count)));
+			}
 		}
 	}
 

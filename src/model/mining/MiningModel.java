@@ -73,30 +73,31 @@ public final class MiningModel {
 			} else if (Math.abs(point.col) > 300) {
 				pruneCounter++;
 				continue;
-			}
-			final Point left = PointFactory.point(point.row, point.col - 1);
-			final Point down = PointFactory.point(point.row + 1, point.col);
-			final Point right = PointFactory.point(point.row, point.col + 1);
-			final LodeStatus current;
-			if (unnormalized.containsKey(point)) {
-				current = unnormalized.get(point);
 			} else {
-				current = LodeStatus.None;
-			}
-			if ((current == null) || (LodeStatus.None == current)) {
-				continue;
-			}
-			if (!unnormalized.containsKey(right)) {
-				unnormalized.put(right, LodeStatus.adjacent(current, rng));
-				queue.add(right);
-			}
-			if (!unnormalized.containsKey(down)) {
-				unnormalized.put(down, LodeStatus.adjacent(current, rng));
-				queue.add(down);
-			}
-			if (!unnormalized.containsKey(left)) {
-				unnormalized.put(left, LodeStatus.adjacent(current, rng));
-				queue.add(left);
+				final Point left = PointFactory.point(point.row, point.col - 1);
+				final Point down = PointFactory.point(point.row + 1, point.col);
+				final Point right = PointFactory.point(point.row, point.col + 1);
+				final LodeStatus current;
+				if (unnormalized.containsKey(point)) {
+					current = unnormalized.get(point);
+				} else {
+					current = LodeStatus.None;
+				}
+				if ((current == null) || (LodeStatus.None == current)) {
+					continue;
+				}
+				if (!unnormalized.containsKey(right)) {
+					unnormalized.put(right, LodeStatus.adjacent(current, rng));
+					queue.add(right);
+				}
+				if (!unnormalized.containsKey(down)) {
+					unnormalized.put(down, LodeStatus.adjacent(current, rng));
+					queue.add(down);
+				}
+				if (!unnormalized.containsKey(left)) {
+					unnormalized.put(left, LodeStatus.adjacent(current, rng));
+					queue.add(left);
+				}
 			}
 		}
 		SystemOut.SYS_OUT.printf("%nPruned %d branches beyond our boundaries%n",

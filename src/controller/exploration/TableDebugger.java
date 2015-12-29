@@ -100,9 +100,8 @@ public final class TableDebugger {
 			ostream.append(after);
 			ostream.append('\n');
 			return;
-		} else {
-			set.add(table);
-		}
+		} // else
+		set.add(table);
 		for (final String value : table.allEvents()) {
 			if (value.contains("#")) {
 				final String[] parsed = value.split("#", 3);
