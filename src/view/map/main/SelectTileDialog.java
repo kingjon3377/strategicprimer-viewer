@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 import model.map.MapDimensions;
 import model.map.PointFactory;
 import model.viewer.IViewerModel;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import view.util.BoxPanel;
 import view.util.ListenedButton;
@@ -66,7 +67,7 @@ public final class SelectTileDialog extends JDialog {
 	 * @param parent the parent to attach this dialog to
 	 * @param model  the map model to change the selection in
 	 */
-	public SelectTileDialog(final Frame parent, final IViewerModel model) {
+	public SelectTileDialog(@Nullable final Frame parent, final IViewerModel model) {
 		super(parent);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		final JLabel mainLabel = new JLabel("Coordinates of tile to select:");
