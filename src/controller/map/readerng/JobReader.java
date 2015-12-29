@@ -103,9 +103,7 @@ public final class JobReader implements INodeHandler<@NonNull Job> {
 					retval.addSkill((Skill) result);
 				} else {
 					throw new UnwantedChildException(element.getName(),
-							                                event.asStartElement()
-									                                .getName(),
-							                                event.getLocation());
+							                                event.asStartElement());
 				}
 			} else if (event.isEndElement()
 							   &&

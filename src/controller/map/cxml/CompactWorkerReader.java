@@ -95,9 +95,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 							stream));
 				} else {
 					throw new UnwantedChildException(element.getName(),
-							                                event.asStartElement()
-									                                .getName(),
-							                                event.getLocation());
+							                                event.asStartElement());
 				}
 			} else if (event.isEndElement()
 							   &&
@@ -166,9 +164,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 																   .getName()), stream);
 				} else {
 					throw new UnwantedChildException(element.getName(),
-							                                event.asStartElement()
-									                                .getName(),
-							                                event.getLocation());
+							                                event.asStartElement());
 				}
 			} else if (event.isEndElement()
 							   &&

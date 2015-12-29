@@ -2,6 +2,7 @@ package controller.map.formatexceptions;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.Location;
+import javax.xml.stream.events.StartElement;
 
 /**
  * A custom exception for when a tag has a child tag it can't handle.
@@ -40,13 +41,12 @@ public final class UnwantedChildException extends SPFormatException {
 	/**
 	 * @param parent    the current tag
 	 * @param child     the unwanted child
-	 * @param errorLoc  the location where this happened
 	 */
-	public UnwantedChildException(final QName parent, final QName child,
-	                              final Location errorLoc) {
-		super("Unexpected child " + child.getLocalPart() + " in tag " + parent.getLocalPart(), errorLoc);
+	public UnwantedChildException(final QName parent, final StartElement child) {
+		super("Unexpected child " + child.getName().getLocalPart() + " in tag " +
+				      parent.getLocalPart(), child.getLocation());
 		tag = parent;
-		chld = child;
+		chld = child.getName();
 	}
 
 	/**
@@ -55,11 +55,51 @@ public final class UnwantedChildException extends SPFormatException {
 	 * @param errorLoc  the location where this happened
 	 * @param cause     another exception that caused this one
 	 */
-	public UnwantedChildException(final QName parent, final QName child,
-	                              final Location errorLoc, final Throwable cause) {
-		super("Unexpected child " + child.getLocalPart() + " in tag " + parent.getLocalPart(), errorLoc, cause);
+	public UnwantedChildException(final QName parent, final StartElement child, final Throwable cause) {
+		super("Unexpected child " + child.getName().getLocalPart() + " in tag " +
+				      parent.getLocalPart(), child.getLocation(), cause);
 		tag = parent;
-		chld = child;
+		chld = child.getName();
+	}
+	/**
+	 * Copy-constructor-with-replacement, for cases where the original thrower didn't know the parent tag.
+	 * @param parent the parent tag
+	 * @param except the exception to copy
+	 */
+	public UnwantedChildException(final QName parent, final UnwantedChildException except) {
+		// FIXME: Make superclass have an accessor for its Location.
+		super("Unexpected child " + except.getChild().getLocalPart() + " in tag " +
+				      parent.getLocalPart(), new Location() {
+			@Override
+			public int getLineNumber() {
+				return except.getLine();
+			}
+
+			@Override
+			public int getColumnNumber() {
+				return 0;
+			}
+
+			@Override
+			public int getCharacterOffset() {
+				return 0;
+			}
+
+			@Override
+			public String getPublicId() {
+				return null;
+			}
+
+			@Override
+			public String getSystemId() {
+				return null;
+			}
+		});
+		tag = parent;
+		chld = except.getChild();
+		if (except.getCause() != null) {
+			initCause(except.getCause());
+		}
 	}
 	/**
 	 * @return the current tag.

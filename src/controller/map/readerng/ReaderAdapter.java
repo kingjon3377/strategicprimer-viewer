@@ -74,8 +74,7 @@ public final class ReaderAdapter implements INodeHandler<Object> {
 			return READ_CACHE.get(iLocal).parse(element, stream, players,
 					warner, idFactory);
 		} else {
-			throw new UnwantedChildException(new QName("unknown"), element.getName(),
-					                                element.getLocation());
+			throw new UnwantedChildException(new QName("unknown"), element);
 		}
 	}
 

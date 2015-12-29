@@ -97,9 +97,7 @@ public final class WorkerReader implements INodeHandler<@NonNull Worker> {
 					retval.setStats((WorkerStats) result);
 				} else {
 					throw new UnwantedChildException(element.getName(),
-							                                event.asStartElement()
-									                                .getName(),
-							                                event.getLocation());
+							                                event.asStartElement());
 				}
 			} else if (event.isEndElement()
 							   &&

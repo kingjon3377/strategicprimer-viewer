@@ -125,14 +125,13 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 			currentTurn = XMLHelper.getIntegerAttribute(element, "current_turn");
 			mapTag = getFirstStartElement(stream, element);
 			if (!"map".equals(mapTag.getName().getLocalPart())) {
-				throw new UnwantedChildException(element.getName(), mapTag.getName(),
-						                                mapTag.getLocation());
+				throw new UnwantedChildException(element.getName(), mapTag);
 			}
 		} else if ("map".equalsIgnoreCase(outerTag)) {
 			currentTurn = 0;
 			mapTag = element;
 		} else {
-			throw new UnwantedChildException(new QName("xml"), element.getName(), outerLoc);
+			throw new UnwantedChildException(new QName("xml"), element);
 		}
 		final MapDimensions dimensions =
 				new MapDimensions(XMLHelper.getIntegerAttribute(mapTag, "rows"),
@@ -159,8 +158,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 				} else if ("tile".equalsIgnoreCase(type)) {
 					if (!nullPoint.equals(point)) {
 						throw new UnwantedChildException(new QName("tile"),
-								                                current.getName(),
-								                                currentLoc);
+								                                current);
 					}
 					point = PointFactory
 							        .point(XMLHelper.getIntegerAttribute(current, "row"),
@@ -184,7 +182,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					warner.warn(new UnsupportedTagException(current));
 				} else if (nullPoint.equals(point)) {
 					// fixture outside tile
-					throw new UnwantedChildException(mapTag.getName(), current.getName(), currentLoc);
+					throw new UnwantedChildException(mapTag.getName(), current);
 				} else if ("lake".equalsIgnoreCase(type)
 								   || "river".equalsIgnoreCase(type)) {
 					retval.addRivers(point, RIVER_READER.parse(current, stream,
@@ -208,16 +206,14 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					} catch (final UnwantedChildException except) {
 						if ("unknown".equals(except.getTag().getLocalPart())) {
 							throw new UnwantedChildException(mapTag.getName(),
-									                                except.getChild(),
-									                                currentLoc);
+									                                except);
 						} else {
 							throw except;
 						}
 					} catch (final IllegalStateException except) {
 						if (EXCEPT_PATTERN.matcher(except.getMessage()).matches()) {
-							throw new UnwantedChildException(mapTag.getName(),
-									                                current.getName(),
-									                                currentLoc, except);
+							throw new UnwantedChildException(mapTag.getName(), current,
+									                                except);
 						} else {
 							throw except;
 						}

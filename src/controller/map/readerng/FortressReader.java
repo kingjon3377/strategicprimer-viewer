@@ -100,9 +100,7 @@ public final class FortressReader implements INodeHandler<Fortress> {
 							stream, players, warner, idFactory));
 				} else {
 					throw new UnwantedChildException(new QName("fortress"),
-							                                event.asStartElement()
-									                                .getName(),
-							                                event.getLocation());
+							                                event.asStartElement());
 				}
 			} else if (event.isEndElement()
 							   &&

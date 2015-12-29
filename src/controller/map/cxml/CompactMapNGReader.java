@@ -116,15 +116,13 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			currentTurn = getIntegerParameter(element, "current_turn");
 			mapTag = getFirstStartElement(stream, element);
 			if (!"map".equalsIgnoreCase(mapTag.getName().getLocalPart())) {
-				throw new UnwantedChildException(element.getName(), mapTag.getName(),
-						                                mapTag.getLocation());
+				throw new UnwantedChildException(element.getName(), mapTag);
 			}
 		} else if ("map".equalsIgnoreCase(outerTag)) {
 			currentTurn = 0;
 			mapTag = element;
 		} else {
-			throw new UnwantedChildException(new QName("xml"), element.getName(),
-					                                outerLoc);
+			throw new UnwantedChildException(new QName("xml"), element);
 		}
 		final MapDimensions dimensions =
 				new MapDimensions(getIntegerParameter(mapTag, "rows"),
@@ -148,9 +146,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					continue;
 				} else if ("tile".equalsIgnoreCase(type)) {
 					if (!nullPoint.equals(point)) {
-						throw new UnwantedChildException(new QName("tile"),
-								                                current.getName(),
-								                                currentLoc);
+						throw new UnwantedChildException(new QName("tile"), current);
 					}
 					point = PointFactory.point(
 							getIntegerParameter(current, "row"),
@@ -173,8 +169,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					warner.warn(new UnsupportedTagException(current));
 				} else if (nullPoint.equals(point)) {
 					// fixture outside tile
-					throw new UnwantedChildException(mapTag.getName(), current.getName(),
-							                                currentLoc);
+					throw new UnwantedChildException(mapTag.getName(), current);
 				} else if ("lake".equalsIgnoreCase(type)
 								   || "river".equalsIgnoreCase(type)) {
 					retval.addRivers(point,
@@ -198,17 +193,14 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 								players, idFactory, warner));
 					} catch (final UnwantedChildException except) {
 						if ("unknown".equals(except.getTag())) {
-							throw new UnwantedChildException(mapTag.getName(),
-																	except.getChild(),
-																	currentLoc);
+							throw new UnwantedChildException(mapTag.getName(), except);
 						} else {
 							throw except;
 						}
 					} catch (final IllegalStateException except) {
 						if (EXCEPT_PATTERN.matcher(except.getMessage()).matches()) {
-							throw new UnwantedChildException(mapTag.getName(),
-									                                current.getName(),
-									                                currentLoc, except);
+							throw new UnwantedChildException(mapTag.getName(), current,
+									                                except);
 						} else {
 							throw except;
 						}
@@ -313,8 +305,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				return item.read(element, stream, players, warner, idFactory);
 			}
 		}
-		throw new UnwantedChildException(new QName("tile"), element.getName(),
-				                                element.getLocation());
+		throw new UnwantedChildException(new QName("tile"), element);
 	}
 
 	/**

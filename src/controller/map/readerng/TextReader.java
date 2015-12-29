@@ -63,8 +63,7 @@ public final class TextReader implements INodeHandler<TextFixture> {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException(element.getName(),
-						                                event.asStartElement().getName(),
-						                                event.getLocation());
+						                                event.asStartElement());
 			} else if (event.isCharacters()) {
 				sbuild.append(event.asCharacters().getData());
 			} else if (event.isEndElement()
