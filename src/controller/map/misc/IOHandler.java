@@ -16,6 +16,7 @@ import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
+import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
 import model.misc.IDriverModel;
@@ -33,6 +34,7 @@ import view.map.main.ViewerFrame;
 import view.util.AboutDialog;
 import view.util.ErrorShower;
 import view.util.FilteredFileChooser;
+import view.worker.PlayerChooserHandler;
 
 /**
  * An ActionListener to dispatch file I/O.
@@ -89,6 +91,12 @@ public final class IOHandler implements ActionListener {
 	 */
 	@Nullable
 	private FindDialog finder = null;
+	/**
+	 * The handler for player-change menu items.
+	 *
+	 * TODO: Combine with this class.
+	 */
+	private PlayerChooserHandler pch = null;
 
 	/**
 	 * Handle the "load" menu item.
@@ -197,6 +205,9 @@ public final class IOHandler implements ActionListener {
 				if (model instanceof IViewerModel) {
 					SwingUtilities.invokeLater(() -> getFindDialog(source).search());
 				}
+				break;
+			case PlayerChooserHandler.MENU_ITEM:
+				pch.actionPerformed(event);
 				break;
 			}
 		}
@@ -394,6 +405,34 @@ public final class IOHandler implements ActionListener {
 				return finder;
 			} else {
 				return NullCleaner.assertNotNull(finder);
+			}
+		} else {
+			return null;
+		}
+	}
+	/**
+	 * @param component a component
+	 * @return a FindDialog if the driver model is for a map viewer, or null otherwise
+	 */
+	@Nullable
+	private synchronized PlayerChooserHandler getPlayerChooserHandler(final Component component) {
+		Window window = SwingUtilities.getWindowAncestor(component);
+		if (window instanceof Frame) {
+			if (pch == null) {
+				final PlayerChooserHandler local = new PlayerChooserHandler((Frame) window, model);
+				local.addPlayerChangeListener((old, newPlayer) -> {
+					for (final Player player : model.getMap().players()) {
+						if (player.equals(newPlayer)) {
+							player.setCurrent(true);
+						} else {
+							player.setCurrent(false);
+						}
+					}
+				});
+				pch = local;
+				return local;
+			} else {
+				return NullCleaner.assertNotNull(pch);
 			}
 		} else {
 			return null;

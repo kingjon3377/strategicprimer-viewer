@@ -9,7 +9,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
-import model.map.Player;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
@@ -214,19 +213,9 @@ public class SPMenu extends JMenuBar {
 				createHotkey(KeyEvent.VK_C),
 				"Center the view on the selected tile", zoomListener));
 		retval.addSeparator();
-		final PlayerChooserHandler pch = new PlayerChooserHandler(parent, model);
 		retval.add(createMenuItem(
 				PlayerChooserHandler.MENU_ITEM, KeyEvent.VK_P, null,
-				"Mark a player as the current player in the map", pch));
-		pch.addPlayerChangeListener((old, newPlayer) -> {
-			for (final Player player : model.getMap().players()) {
-				if (player.equals(newPlayer)) {
-					player.setCurrent(true);
-				} else {
-					player.setCurrent(false);
-				}
-			}
-		});
+				"Mark a player as the current player in the map", handler));
 		return retval;
 	}
 
@@ -238,14 +227,14 @@ public class SPMenu extends JMenuBar {
 	 *            to
 	 * @return the "edit" menu
 	 */
-	protected static JMenu createViewMenu(final PlayerChooserHandler pch,
+	protected static JMenu createViewMenu(final IOHandler handler, final PlayerChooserHandler pch,
 										  final ActionListener al) {
 		final JMenu viewtMenu = new JMenu("View");
 		viewtMenu.setMnemonic(KeyEvent.VK_E);
 		viewtMenu.add(createMenuItem(
 				PlayerChooserHandler.MENU_ITEM, KeyEvent.VK_P,
 				createHotkey(KeyEvent.VK_P),
-				"Look at a different player's units and workers", pch));
+				"Look at a different player's units and workers", handler));
 		viewtMenu.add(createMenuItem("Reload tree",
 				KeyEvent.VK_R, createHotkey(KeyEvent.VK_R),
 				"Refresh the view of the workers", e -> pch.reload()));

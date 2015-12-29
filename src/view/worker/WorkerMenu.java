@@ -45,7 +45,7 @@ public final class WorkerMenu extends SPMenu {
 	                  final ActionListener teh) {
 		add(createFileMenu(handler, parent, model));
 		addDisabled(createMapMenu(handler, parent, model));
-		add(createViewMenu(pch, teh));
+		add(createViewMenu(handler, pch, teh));
 		add(new WindowMenu(parent));
 	}
 }
