@@ -3,9 +3,9 @@ package controller.map.cxml;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -17,7 +17,6 @@ import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
-import util.ArraySet;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
@@ -52,75 +51,17 @@ public final class CompactTerrainReader extends
 	public static final CompactTerrainReader READER = new CompactTerrainReader();
 
 	/**
-	 * Mapping from tags to enum-tags.
-	 */
-	private static final Map<String, TerrainFixtureType> MAP =
-			new HashMap<>(TerrainFixtureType.values().length);
-	/**
 	 * List of supported tags.
 	 */
-	private static final Set<String> SUPP_TAGS;
+	private static final Set<String> SUPP_TAGS = Collections.unmodifiableSet(
+			new HashSet<>(Arrays.asList("forest", "hill", "mountain", "oasis",
+					"sandbar")));
 
 	/**
 	 * Singleton.
 	 */
 	private CompactTerrainReader() {
 		// Singleton.
-	}
-
-	/**
-	 * Enumeration of the types we know how to handle.
-	 */
-	private enum TerrainFixtureType {
-		/**
-		 * Forest.
-		 */
-		ForestType("forest"),
-		/**
-		 * Hill.
-		 */
-		HillType("hill"),
-		/**
-		 * Mountain.
-		 */
-		MountainType("mountain"),
-		/**
-		 * Oasis.
-		 */
-		OasisType("oasis"),
-		/**
-		 * Sandbar.
-		 */
-		SandbarType("sandbar");
-		/**
-		 * The tag.
-		 */
-		private final String tag;
-
-		/**
-		 * Constructor.
-		 *
-		 * @param tagString The tag.
-		 */
-		TerrainFixtureType(final String tagString) {
-			tag = tagString;
-		}
-
-		/**
-		 * @return the tag used to represent the fixture type.
-		 */
-		public String getTag() {
-			return tag;
-		}
-	}
-
-	static {
-		final Set<String> suppTagsTemp = new ArraySet<>();
-		for (final TerrainFixtureType type : TerrainFixtureType.values()) {
-			MAP.put(type.getTag(), type);
-			suppTagsTemp.add(type.getTag());
-		}
-		SUPP_TAGS = NullCleaner.assertNotNull(Collections.unmodifiableSet(suppTagsTemp));
 	}
 
 	/**
@@ -149,25 +90,26 @@ public final class CompactTerrainReader extends
 	                           final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "forest", "hill", "mountain", "oasis", "sandbar");
 		final TerrainFixture retval; // NOPMD
-		switch (MAP.get(element.getName().getLocalPart())) {
-		case ForestType:
+		switch (element.getName().getLocalPart().toLowerCase()) {
+		case "forest":
 			retval = new Forest(getParameter(element, "kind"), hasParameter(
 					element, "rows"));
 			break;
-		case HillType:
+		case "hill":
 			retval = new Hill(getOrGenerateID(element, warner, idFactory));
 			break;
-		case MountainType:
+		case "mountain":
 			retval = new Mountain();
 			break;
-		case OasisType:
+		case "oasis":
 			retval = new Oasis(getOrGenerateID(element, warner, idFactory));
 			break;
-		case SandbarType:
+		case "sandbar":
 			retval = new Sandbar(getOrGenerateID(element, warner, idFactory));
 			break;
 		default:
-			throw new IllegalArgumentException("Shouldn't get here");
+			throw new IllegalArgumentException("Unhandled terrain fixture tag " +
+					                                   element.getName().getLocalPart());
 		}
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		((HasImage) retval).setImage(getParameter(element, "image", ""));
