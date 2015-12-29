@@ -84,7 +84,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	 * @param wmodel the worker model
 	 */
 	public OrdersPanel(final IWorkerModel wmodel) {
-		final ApplyButtonHandler handler = new ApplyButtonHandler(this, this);
+		final ApplyButtonHandler handler = new ApplyButtonHandler(this::apply, this::revert);
 		// Can't use the multi-arg constructor, because of the references to
 		// 'this' below.
 		final boolean onMac = System.getProperty("os.name").toLowerCase()
