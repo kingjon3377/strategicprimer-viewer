@@ -139,7 +139,6 @@ public final class UnitMemberTransferable implements Transferable {
 	}
 
 	/**
-	 * TODO: show state
 	 * @return a String representation of this object
 	 */
 	@Override
