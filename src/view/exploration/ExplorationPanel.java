@@ -19,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
@@ -83,7 +84,7 @@ public final class ExplorationPanel extends BorderedPanel
 	/**
 	 * The text-field containing the running MP total.
 	 */
-	private final JTextField mpField;
+	private final Document mpDocument;
 	/**
 	 * The collection of proxies for main-map tile-fixture-lists.
 	 */
@@ -173,9 +174,8 @@ public final class ExplorationPanel extends BorderedPanel
 		}));
 		headerPanel.add(locLabel);
 		headerPanel.add(new JLabel("Remaining Movement Points: "));
-		mpField = new JTextField(mpDoc, null, 5);
-		// TODO: store reference to document, not text field, in class body
-		headerPanel.add(mpField);
+		mpDocument = mpDoc;
+		headerPanel.add(new JTextField(mpDocument, null, 5));
 		setCenter(new JSplitPane(JSplitPane.VERTICAL_SPLIT, headerPanel,
 				                        setupTilesGUI(new JPanel(new GridLayout(3, 12, 2,
 						                                                               2)))));
@@ -282,7 +282,13 @@ public final class ExplorationPanel extends BorderedPanel
 	 */
 	@Override
 	public void deduct(final int cost) {
-		final String mpText = mpField.getText().trim();
+		final String mpText;
+		try {
+			mpText = mpDocument.getText(0, mpDocument.getLength()).trim();
+		} catch (final BadLocationException except) {
+			LOGGER.log(Level.SEVERE, "Exception trying to update MP counter", except);
+			return;
+		}
 		if (IsNumeric.isNumeric(mpText)) {
 			int mpoints;
 			try {
@@ -293,7 +299,12 @@ public final class ExplorationPanel extends BorderedPanel
 				return;
 			}
 			mpoints -= cost;
-			mpField.setText(Integer.toString(mpoints));
+			try {
+				mpDocument.remove(0, mpDocument.getLength());
+				mpDocument.insertString(0, Integer.toString(mpoints), null);
+			} catch (final BadLocationException except) {
+				LOGGER.log(Level.SEVERE, "Exception trying to update MP counter", except);
+			}
 		}
 	}
 
