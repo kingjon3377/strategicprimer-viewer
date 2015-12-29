@@ -260,15 +260,9 @@ public final class SubsetFrame extends JFrame {
 	 */
 	public void test(final File arg) { // NOPMD: this isn't a JUnit test ...
 		printParagraph("Testing " + arg + " ...");
+		final IMapNG map;
 		try {
-			final IMapNG map = reader.readMap(arg, new Warning(Action.Ignore));
-			try (final Writer out = new HTMLWriter(label.getWriter())) {
-				if (mainMap.isSubset(map, out, arg.getName() + ':')) {
-					printParagraph("OK", LabelTextColor.green);
-				} else {
-					printParagraph("WARN", LabelTextColor.yellow);
-				}
-			}
+			map = reader.readMap(arg, new Warning(Action.Ignore));
 		} catch (final MapVersionException except) {
 			LOGGER.log(Level.SEVERE, "Map version in " + arg.getPath()
 					                         + " not acceptable to reader", except);
@@ -304,6 +298,16 @@ public final class SubsetFrame extends JFrame {
 					NullCleaner.assertNotNull(except.getLocalizedMessage()),
 					ERROR_COLOR);
 			return;
+		}
+		try (final Writer out = new HTMLWriter(label.getWriter())) {
+			if (mainMap.isSubset(map, out, arg.getName() + ':')) {
+				printParagraph("OK", LabelTextColor.green);
+			} else {
+				printParagraph("WARN", LabelTextColor.yellow);
+			}
+		} catch (final IOException except) {
+			LOGGER.log(Level.SEVERE, "I/O error writing to label", except);
+			printParagraph("ERROR: " + except.getLocalizedMessage(), LabelTextColor.red);
 		}
 	}
 }
