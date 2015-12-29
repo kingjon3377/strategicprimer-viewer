@@ -5,9 +5,9 @@ import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -24,7 +24,6 @@ import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.resources.StoneKind;
 import model.map.fixtures.towns.TownStatus;
-import util.ArraySet;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
@@ -74,86 +73,17 @@ public final class CompactResourceReader extends
 	private static final String CULTIVATED_PARAM = "cultivated";
 
 	/**
-	 * Mapping from tags to enum-tags.
-	 */
-	private static final Map<String, HarvestableType> MAP =
-			new HashMap<>(HarvestableType.values().length);
-	/**
 	 * List of supported tags.
 	 */
-	private static final Set<String> SUPP_TAGS;
+	private static final Set<String> SUPP_TAGS = Collections.unmodifiableSet(
+			new HashSet<>(Arrays.asList("cache", "grove", "orchard", "field", "meadow",
+					"mine", "mineral", "shrub", "stone")));
 
 	/**
 	 * Singleton.
 	 */
 	private CompactResourceReader() {
 		// Singleton.
-	}
-
-	/**
-	 * Enumeration of the types we know how to handle.
-	 */
-	private enum HarvestableType {
-		/**
-		 * Cache.
-		 */
-		CacheType("cache"),
-		/**
-		 * Grove.
-		 */
-		GroveType("grove"),
-		/**
-		 * Orchard.
-		 */
-		OrchardType("orchard"),
-		/**
-		 * Field.
-		 */
-		FieldType("field"),
-		/**
-		 * Meadow.
-		 */
-		MeadowType("meadow"),
-		/**
-		 * Mine.
-		 */
-		MineType("mine"),
-		/**
-		 * Mineral.
-		 */
-		MineralType("mineral"),
-		/**
-		 * Shrub.
-		 */
-		ShrubType("shrub"),
-		/**
-		 * Stone.
-		 */
-		StoneType("stone");
-		/**
-		 * The tag.
-		 */
-		public final String tag;
-
-		/**
-		 * Constructor.
-		 *
-		 * @param tagString The tag.
-		 */
-		HarvestableType(final String tagString) {
-			tag = tagString;
-		}
-	}
-
-	static {
-		final Set<String> suppTagsTemp = new ArraySet<>();
-		for (final HarvestableType type : HarvestableType.values()) {
-			MAP.put(type.tag, type);
-			suppTagsTemp.add(type.tag);
-		}
-		SUPP_TAGS =
-				NullCleaner.assertNotNull(Collections
-												  .unmodifiableSet(suppTagsTemp));
 	}
 
 	/**
@@ -185,40 +115,40 @@ public final class CompactResourceReader extends
 				"field", "meadow", "mine", "mineral", "shrub", "stone");
 		final int idNum = getOrGenerateID(elem, warner, idFactory);
 		final HarvestableFixture retval; // NOPMD
-		switch (MAP.get(elem.getName().getLocalPart())) {
-		case CacheType:
+		switch (elem.getName().getLocalPart().toLowerCase()) {
+		case "cache":
 			retval = new CacheFixture(getParameter(elem, KIND_PAR),
 											 getParameter(elem, "contents"), idNum);
 			break;
-		case FieldType:
+		case "field":
 			retval = createMeadow(elem, true, idNum, warner);
 			break;
-		case GroveType:
+		case "grove":
 			retval = createGrove(elem, false, idNum, warner);
 			break;
-		case MeadowType:
+		case "meadow":
 			retval = createMeadow(elem, false, idNum, warner);
 			break;
-		case MineType:
+		case "mine":
 			retval = new Mine(getParamWithDeprecatedForm(elem, KIND_PAR,
 					"product", warner),
 									 TownStatus.parseTownStatus(
 											 getParameter(elem, STATUS_PAR)),
 									 idNum);
 			break;
-		case MineralType:
+		case "mineral":
 			retval = new MineralVein(getParamWithDeprecatedForm(elem, KIND_PAR,
 					"mineral", warner), parseBoolean(getParameter(elem,
 					"exposed")), getDC(elem), idNum);
 			break;
-		case OrchardType:
+		case "orchard":
 			retval = createGrove(elem, true, idNum, warner);
 			break;
-		case ShrubType:
+		case "shrub":
 			retval = new Shrub(getParamWithDeprecatedForm(elem, KIND_PAR,
 					"shrub", warner), idNum);
 			break;
-		case StoneType:
+		case "stone":
 			retval = new StoneDeposit(
 											 StoneKind.parseStoneKind(
 													 getParamWithDeprecatedForm(elem,
@@ -226,7 +156,7 @@ public final class CompactResourceReader extends
 											 getDC(elem), idNum);
 			break;
 		default:
-			throw new IllegalArgumentException("Shouldn't get here");
+			throw new IllegalArgumentException("Unhandled harvestable tag");
 		}
 		spinUntilEnd(NullCleaner.assertNotNull(elem.getName()), stream);
 		retval.setImage(getParameter(elem, "image", ""));
