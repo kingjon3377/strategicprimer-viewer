@@ -250,12 +250,11 @@ public final class SPIntermediateRepresentation {
 	}
 
 	/**
-	 * TODO: show state
 	 * @return a String representation of the object
 	 */
 	@Override
 	public String toString() {
-		return "SPIntermediateRepresentation";
+		return "SPIntermediateRepresentation for tag " + tag;
 	}
 
 	/**
