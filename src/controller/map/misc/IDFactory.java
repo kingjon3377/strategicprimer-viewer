@@ -34,7 +34,7 @@ public final class IDFactory {
 	private final BitSet usedIDs = new BitSet();
 
 	/**
-	 * @param idNum
+	 * @param idNum the ID number to check
 	 * @return whether it's unused
 	 */
 	public boolean isIDUnused(final int idNum) {

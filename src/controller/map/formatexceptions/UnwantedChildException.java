@@ -51,7 +51,6 @@ public final class UnwantedChildException extends SPFormatException {
 	/**
 	 * @param parent    the current tag
 	 * @param child     the unwanted child
-	 * @param errorLoc  the location where this happened
 	 * @param cause     another exception that caused this one
 	 */
 	public UnwantedChildException(final QName parent, final StartElement child,

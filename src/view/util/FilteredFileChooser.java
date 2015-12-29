@@ -39,7 +39,6 @@ public final class FilteredFileChooser extends JFileChooser {
 	}
 	/**
 	 * Constructor, setting the default location to the current directory.
-	 * @param filter the filter to apply
 	 */
 	public FilteredFileChooser() {
 		this(".", MapFileFilter.FILTER);
