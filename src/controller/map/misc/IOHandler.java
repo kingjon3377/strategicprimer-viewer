@@ -135,6 +135,12 @@ public final class IOHandler implements ActionListener {
 			case "save all":
 				saveAll(source);
 				break;
+			case "open in map viewer":
+				final ViewerModel nmodel = new ViewerModel(model);
+				SwingUtilities.invokeLater(
+						() -> new ViewerFrame(nmodel, new IOHandler(nmodel, chooser))
+								      .setVisible(true));
+				break;
 			}
 		}
 	}
