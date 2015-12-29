@@ -1,9 +1,6 @@
 package view.map.details;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,18 +9,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
+import javax.swing.*;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
 import model.map.HasImage;
 import model.map.TileFixture;
-import org.eclipse.jdt.annotation.Nullable;
 import util.ImageLoader;
 import util.NullCleaner;
 import util.TypesafeLogger;
@@ -76,19 +66,12 @@ public final class FixtureCellRenderer implements ListCellRenderer<TileFixture> 
 	 * @return a component representing the cell
 	 */
 	@Override
-	public Component getListCellRendererComponent(
-			                                             @Nullable
-			                                             final JList<? extends TileFixture> list,
-			                                             @Nullable
-			                                             final TileFixture value,
-			                                             final int index,
-			                                             final boolean isSelected,
-			                                             final boolean cellHasFocus) {
-		if (list == null) {
-			throw new IllegalArgumentException("Asked to render a null list");
-		} else if (value == null) {
-			throw new IllegalArgumentException("Asked to render a null value");
-		}
+	public Component getListCellRendererComponent(final JList<? extends TileFixture>
+			                                                  list,
+	                                              final TileFixture value,
+	                                              final int index,
+	                                              final boolean isSelected,
+	                                              final boolean cellHasFocus) {
 		final Component component = LIST_DEFAULT.getListCellRendererComponent(
 				list, value, index, isSelected, cellHasFocus);
 		((JLabel) component).setText("<html><p>" + value.toString()
