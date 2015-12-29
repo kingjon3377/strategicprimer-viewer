@@ -246,7 +246,7 @@ public final class XMLHelper {
 		}
 		try {
 			return NUM_PARSER.parse(attr.getValue()).intValue();
-		} catch (ParseException e) {
+		} catch (final ParseException e) {
 			throw new SPMalformedInputException(startElement.getLocation(), e);
 		}
 	}
@@ -269,7 +269,7 @@ public final class XMLHelper {
 		} else {
 			try {
 				return NUM_PARSER.parse(value.getValue()).intValue();
-			} catch (ParseException e) {
+			} catch (final ParseException e) {
 				throw new SPMalformedInputException(elem.getLocation(), e);
 			}
 		}
