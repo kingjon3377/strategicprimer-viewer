@@ -141,6 +141,18 @@ public final class IOHandler implements ActionListener {
 						() -> new ViewerFrame(nmodel, new IOHandler(nmodel, chooser))
 								      .setVisible(true));
 				break;
+			case "open secondary map in map viewer":
+				if (model instanceof IMultiMapModel) {
+					final Pair<IMutableMapNG, File> mapPair =
+							((IMultiMapModel) model).getSubordinateMaps().iterator()
+									.next();
+					final ViewerModel submodel =
+							new ViewerModel(mapPair.first(), mapPair.second());
+					SwingUtilities.invokeLater(
+							() -> new ViewerFrame(submodel, new IOHandler(submodel, chooser))
+									      .setVisible(true));
+				}
+				break;
 			}
 		}
 	}

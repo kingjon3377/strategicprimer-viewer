@@ -3,27 +3,21 @@ package view.util;
 import controller.map.misc.IOHandler;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import javax.swing.InputMap;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
-import model.map.IMutableMapNG;
 import model.map.Player;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
-import model.viewer.ViewerModel;
-import util.Pair;
 import view.map.main.FindDialog;
 import view.map.main.SelectTileDialog;
-import view.map.main.ViewerFrame;
 import view.map.main.ZoomListener;
 import view.worker.PlayerChooserHandler;
 
-import static javax.swing.SwingUtilities.invokeLater;
 import static view.util.MenuItemCreator.createHotkey;
 import static view.util.MenuItemCreator.createMenuItem;
 import static view.util.MenuItemCreator.createShiftHotkey;
@@ -122,21 +116,7 @@ public class SPMenu extends JMenuBar {
 				"Open secondary map in map viewer", KeyEvent.VK_E,
 				createHotkey(KeyEvent.VK_E),
 				"Open the first secondary map in the map viewer for a broader view",
-				evt -> {
-					if (model instanceof IMultiMapModel) {
-						final Pair<IMutableMapNG, File> mapPair = ((IMultiMapModel)
-																		   model)
-																		  .getSubordinateMaps()
-																		  .iterator()
-																		  .next();
-						invokeLater(() -> new ViewerFrame(
-																 new ViewerModel(mapPair
-																						 .first(),
-																						mapPair.second()),
-																 handler)
-												  .setVisible(true));
-					}
-				});
+				handler);
 		fileMenu.add(openSecondaryViewerItem);
 		if ((model instanceof IViewerModel) || !(model instanceof IMultiMapModel)) {
 			openSecondaryViewerItem.setEnabled(false);
