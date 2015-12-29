@@ -5,6 +5,7 @@ import controller.map.misc.IDFactory;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.xml.stream.events.StartElement;
@@ -28,7 +29,6 @@ import model.map.fixtures.mobile.Sphinx;
 import model.map.fixtures.mobile.Troll;
 import model.map.fixtures.mobile.Unit;
 import org.eclipse.jdt.annotation.NonNull;
-import util.ArraySet;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
@@ -58,12 +58,6 @@ import util.Warning;
 public final class CompactMobileReader extends
 		AbstractCompactReader<@NonNull MobileFixture> {
 	/**
-	 * Mapping from tags to enum-tags.
-	 */
-	private static final Map<String, MobileType> MAP = new HashMap<>(
-																			MobileType
-																					.values().length);
-	/**
 	 * List of supported tags.
 	 */
 	private static final Set<String> SUPP_TAGS;
@@ -86,89 +80,7 @@ public final class CompactMobileReader extends
 		// Singleton.
 	}
 
-	/**
-	 * Enumeration of the types we know how to handle.
-	 */
-	private enum MobileType {
-		/**
-		 * Animal.
-		 */
-		AnimalType("animal"),
-		/**
-		 * Centaur.
-		 */
-		CentaurType("centaur"),
-		/**
-		 * Djinn.
-		 */
-		DjinnType("djinn"),
-		/**
-		 * Dragon.
-		 */
-		DragonType("dragon"),
-		/**
-		 * Fairy.
-		 */
-		FairyType("fairy"),
-		/**
-		 * Giant.
-		 */
-		GiantType("giant"),
-		/**
-		 * Griffin.
-		 */
-		GriffinType("griffin"),
-		/**
-		 * Minotaur.
-		 */
-		MinotaurType("minotaur"),
-		/**
-		 * Ogre.
-		 */
-		OgreType("ogre"),
-		/**
-		 * Phoenix.
-		 */
-		PhoenixType("phoenix"),
-		/**
-		 * Simurgh.
-		 */
-		SimurghType("simurgh"),
-		/**
-		 * Sphinx.
-		 */
-		SphinxType("sphinx"),
-		/**
-		 * Troll.
-		 */
-		TrollType("troll"),
-		/**
-		 * Unit. (Handled by a different reader, but might get directed here by mistake,
-		 * so we 'handle' it anyway.
-		 */
-		UnitType("unit");
-		/**
-		 * The tag.
-		 */
-		public final String tag;
-
-		/**
-		 * Constructor.
-		 *
-		 * @param tagString The tag.
-		 */
-		MobileType(final String tagString) {
-			tag = tagString;
-		}
-	}
-
 	static {
-		final Set<String> suppTagsTemp = new ArraySet<>();
-		for (final MobileType mtype : MobileType.values()) {
-			MAP.put(mtype.tag, mtype);
-			suppTagsTemp.add(mtype.tag);
-		}
-		SUPP_TAGS = NullCleaner.assertNotNull(Collections.unmodifiableSet(suppTagsTemp));
 		TAG_MAP = new HashMap<>();
 		TAG_MAP.put(Animal.class, "animal");
 		TAG_MAP.put(Centaur.class, "centaur");
@@ -184,6 +96,7 @@ public final class CompactMobileReader extends
 		TAG_MAP.put(Sphinx.class, "sphinx");
 		TAG_MAP.put(Troll.class, "troll");
 		TAG_MAP.put(Unit.class, "unit");
+		SUPP_TAGS = NullCleaner.assertNotNull(Collections.unmodifiableSet(new HashSet<>(TAG_MAP.values())));
 	}
 
 	/**
@@ -214,33 +127,33 @@ public final class CompactMobileReader extends
 				"giant", "griffin", "minotaur", "ogre", "phoenix", "simurgh",
 				"sphinx", "troll", "unit");
 		final MobileFixture retval; // NOPMD
-		final MobileType type = MAP.get(element.getName().getLocalPart());
+		final String type = element.getName().getLocalPart().toLowerCase();
 		switch (type) {
-		case UnitType:
+		case "unit":
 			return CompactUnitReader.READER.read(element, stream, players, // NOPMD
 					warner, idFactory);
-		case AnimalType:
+		case "animal":
 			retval = createAnimal(element,
 					getOrGenerateID(element, warner, idFactory));
 			break;
-		case CentaurType:
+		case "centaur":
 			retval = new Centaur(getKind(element), getOrGenerateID(element,
 					warner, idFactory));
 			break;
-		case DragonType:
+		case "dragon":
 			retval = new Dragon(getKind(element), getOrGenerateID(element,
 					warner, idFactory));
 			break;
-		case FairyType:
+		case "fairy":
 			retval = new Fairy(getKind(element), getOrGenerateID(element,
 					warner, idFactory));
 			break;
-		case GiantType:
+		case "giant":
 			retval = new Giant(getKind(element), getOrGenerateID(element,
 					warner, idFactory));
 			break;
 		default:
-			retval = readSimple(type,
+			retval = readSimple(element.getName().getLocalPart(),
 					getOrGenerateID(element, warner, idFactory));
 			break;
 		}
@@ -327,46 +240,32 @@ public final class CompactMobileReader extends
 			ostream.append(" />\n");
 		}
 	}
-
 	/**
-	 * This is part of the switch statement in read() split off to reduce calculated
-	 * complexity.
-	 *
-	 * @param type  the type being read
-	 * @param idNum the ID # to give it.
-	 * @return the thing being read.
+	 * @param tag the tag being read
+	 *            @param idNum the ID # to give the fixture
+	 *                         @return the thing being read
 	 */
-	private static MobileFixture readSimple(final MobileType type, final int idNum) {
-		final MobileFixture retval; // NOPMD
-		switch (type) {
-		case DjinnType:
-			retval = new Djinn(idNum);
-			break;
-		case GriffinType:
-			retval = new Griffin(idNum);
-			break;
-		case MinotaurType:
-			retval = new Minotaur(idNum);
-			break;
-		case OgreType:
-			retval = new Ogre(idNum);
-			break;
-		case PhoenixType:
-			retval = new Phoenix(idNum);
-			break;
-		case SimurghType:
-			retval = new Simurgh(idNum);
-			break;
-		case SphinxType:
-			retval = new Sphinx(idNum);
-			break;
-		case TrollType:
-			retval = new Troll(idNum);
-			break;
+	private static MobileFixture readSimple(final String tag, final int idNum) {
+		switch (tag) {
+		case "djinn":
+			return new Djinn(idNum);
+		case "griffin":
+			return new Griffin(idNum);
+		case "minotaur":
+			return new Minotaur(idNum);
+		case "ogre":
+			return new Ogre(idNum);
+		case "phoenix":
+			return new Phoenix(idNum);
+		case "simurgh":
+			return new Simurgh(idNum);
+		case "sphinx":
+			return new Sphinx(idNum);
+		case "troll":
+			return new Troll(idNum);
 		default:
-			throw new IllegalArgumentException("Shouldn't get here");
+			throw new IllegalArgumentException("Unhandled mobile tag " + tag);
 		}
-		return retval;
 	}
 
 	/**
