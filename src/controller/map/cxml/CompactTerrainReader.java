@@ -190,29 +190,33 @@ public final class CompactTerrainReader extends
 			ostream.append("<mountain").append(imageXML((Mountain) obj))
 					.append(" />\n");
 			return; // NOPMD Mountains don't yet have IDs.
-		} else if (obj instanceof Forest) {
-			ostream.append("<forest kind=\"");
-			ostream.append(((Forest) obj).getKind());
-			if (((Forest) obj).isRows()) {
-				ostream.append("\" rows=\"true");
-			}
-			ostream.append('"').append(imageXML((Forest) obj)).append(" />\n");
-			return; // NOPMD Neither do Forests.
-		} else if (obj instanceof Hill) {
-			ostream.append("<hill");
-			ostream.append(imageXML((Hill) obj));
-		} else if (obj instanceof Oasis) {
-			ostream.append("<oasis");
-			ostream.append(imageXML((Oasis) obj));
-		} else if (obj instanceof Sandbar) {
-			ostream.append("<sandbar");
-			ostream.append(imageXML((Sandbar) obj));
 		} else {
-			throw new IllegalStateException("Unexpected TerrainFixture type.");
+			if (obj instanceof Forest) {
+				ostream.append("<forest kind=\"");
+				ostream.append(((Forest) obj).getKind());
+				if (((Forest) obj).isRows()) {
+					ostream.append("\" rows=\"true");
+				}
+				ostream.append('"').append(imageXML((Forest) obj)).append(" />\n");
+				return; // NOPMD Neither do Forests.
+			} else {
+				if (obj instanceof Hill) {
+					ostream.append("<hill");
+					ostream.append(imageXML((Hill) obj));
+				} else if (obj instanceof Oasis) {
+					ostream.append("<oasis");
+					ostream.append(imageXML((Oasis) obj));
+				} else if (obj instanceof Sandbar) {
+					ostream.append("<sandbar");
+					ostream.append(imageXML((Sandbar) obj));
+				} else {
+					throw new IllegalStateException("Unexpected TerrainFixture type.");
+				}
+				ostream.append(" id=\"");
+				ostream.append(Integer.toString(obj.getID()));
+				ostream.append("\" />\n");
+			}
 		}
-		ostream.append(" id=\"");
-		ostream.append(Integer.toString(obj.getID()));
-		ostream.append("\" />\n");
 	}
 
 	/**

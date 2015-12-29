@@ -249,8 +249,9 @@ public final class FindDialog extends JDialog {
 					false)
 						   .anyMatch((IFixture member) -> matches(pattern, idNum, member,
 								   csen));
+		} else {
+			return false;
 		}
-		return false;
 	}
 
 	/**
