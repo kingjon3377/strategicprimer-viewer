@@ -1,8 +1,8 @@
 package view.util;
 
 /**
- * An interface that, together with the ApplyButtonHandler class, simplifies form
- * management.
+ * An interface that, together with the ApplyButtonHandler class and the Applyable
+ * interface, simplifies form management.
  *
  * FIXME: Split revert() into its own interface, so each can be a fluent interface that
  * can be implemented by a lambda.
@@ -10,7 +10,7 @@ package view.util;
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
- * Copyright (C) 2010-2013 Jonathan Lovelace
+ * Copyright (C) 2015 Jonathan Lovelace
  *
  * This program is free software: you can redistribute it and/or modify it under the terms
  * of version 3 of the GNU General Public License as published by the Free Software
@@ -26,9 +26,9 @@ package view.util;
  *
  * @author Jonathan Lovelace
  */
-public interface Applyable {
+public interface Revertible {
 	/**
-	 * Method to call when the Apply button is pressed.
+	 * Method to call when the Revert button is pressed.
 	 */
-	void apply();
+	void revert();
 }

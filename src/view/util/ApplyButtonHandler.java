@@ -30,7 +30,11 @@ public final class ApplyButtonHandler implements ActionListener {
 	/**
 	 * The Applyable that does the heavy lifting.
 	 */
-	private final Applyable obj;
+	private final Applyable objOne;
+	/**
+	 * The Revertible that does the other half of the heavy lifting.
+	 */
+	private final Revertible objTwo;
 
 	/**
 	 * Constructor.
@@ -39,8 +43,9 @@ public final class ApplyButtonHandler implements ActionListener {
 	 *
 	 * @param app the Applyable that does the heavy lifting.
 	 */
-	public ApplyButtonHandler(final Applyable app) {
-		obj = app;
+	public ApplyButtonHandler(final Applyable app, final Revertible rev) {
+		objOne = app;
+		objTwo = rev;
 	}
 
 	/**
@@ -52,9 +57,9 @@ public final class ApplyButtonHandler implements ActionListener {
 	public void actionPerformed(@Nullable final ActionEvent evt) {
 		if (evt != null) {
 			if ("Apply".equals(evt.getActionCommand())) {
-				obj.apply();
+				objOne.apply();
 			} else if ("Revert".equals(evt.getActionCommand())) {
-				obj.revert();
+				objTwo.revert();
 			}
 		}
 	}

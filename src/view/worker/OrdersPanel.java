@@ -9,13 +9,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -34,6 +28,7 @@ import view.util.ApplyButtonHandler;
 import view.util.Applyable;
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
+import view.util.Revertible;
 
 /**
  * A panel for the user to enter a unit's orders.
@@ -57,7 +52,7 @@ import view.util.ListenedButton;
  *
  * @author Jonathan Lovelace
  */
-public final class OrdersPanel extends BorderedPanel implements Applyable,
+public final class OrdersPanel extends BorderedPanel implements Applyable, Revertible,
 																		TreeSelectionListener,
 																		PlayerChangeListener {
 	/**
@@ -89,7 +84,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 	 * @param wmodel the worker model
 	 */
 	public OrdersPanel(final IWorkerModel wmodel) {
-		final ApplyButtonHandler handler = new ApplyButtonHandler(this);
+		final ApplyButtonHandler handler = new ApplyButtonHandler(this, this);
 		// Can't use the multi-arg constructor, because of the references to
 		// 'this' below.
 		final boolean onMac = System.getProperty("os.name").toLowerCase()
