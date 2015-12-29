@@ -1,5 +1,6 @@
 package model.report;
 
+import java.util.Enumeration;
 import java.util.Iterator;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
@@ -212,5 +213,12 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	 */
 	protected boolean isEmptyNode() {
 		return false;
+	}
+	/**
+	 * Add generic-type information for the compiler.
+	 */
+	@Override
+	public Enumeration<AbstractReportNode> children() {
+		return super.children();
 	}
 }
