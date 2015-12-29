@@ -156,10 +156,6 @@ public final class ExplorationPanel extends BorderedPanel
 	 * The exploration model.
 	 */
 	private final IExplorationModel model;
-	/**
-	 * The text for the 'back' button.
-	 */
-	private static final String BACK_TEXT = "Select a different explorer";
 
 	/**
 	 * Constructor.
@@ -170,7 +166,7 @@ public final class ExplorationPanel extends BorderedPanel
 	public ExplorationPanel(final IExplorationModel emodel, final Document mpDoc) {
 		model = emodel;
 		final BoxPanel headerPanel = new BoxPanel(true);
-		headerPanel.add(new ListenedButton(BACK_TEXT, evt -> {
+		headerPanel.add(new ListenedButton("Select a different explorer", evt -> {
 			for (final CompletionListener list : cListeners) {
 				list.stopWaitingOn(true);
 			}
