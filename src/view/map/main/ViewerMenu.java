@@ -40,7 +40,7 @@ public final class ViewerMenu extends SPMenu {
 	public ViewerMenu(final IOHandler handler, final JFrame parent,
 	                  final IViewerModel model) {
 		add(createFileMenu(handler, parent, model));
-		add(createMapMenu(parent, model));
+		add(createMapMenu(handler, parent, model));
 		addDisabled(createViewMenu(new PlayerChooserHandler(parent, model), handler));
 		add(new WindowMenu(parent));
 	}

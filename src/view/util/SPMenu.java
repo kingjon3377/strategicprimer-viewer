@@ -14,7 +14,6 @@ import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
 import view.map.main.FindDialog;
-import view.map.main.SelectTileDialog;
 import view.map.main.ZoomListener;
 import view.worker.PlayerChooserHandler;
 
@@ -154,9 +153,10 @@ public class SPMenu extends JMenuBar {
 	 *
 	 * @param parent the menu-bar's parent window
 	 * @param model  the driver model
+	 * @param handler the menu-item-handler
 	 * @return the menu created
 	 */
-	protected static JMenu createMapMenu(final JFrame parent,
+	protected static JMenu createMapMenu(final IOHandler handler, final JFrame parent,
 										 final IDriverModel model) {
 		final JMenu retval = new JMenu("Map");
 		retval.setMnemonic(KeyEvent.VK_M);
@@ -172,8 +172,7 @@ public class SPMenu extends JMenuBar {
 			gotoTileItem = createMenuItem("Go to tile",
 					KeyEvent.VK_T, createHotkey(KeyEvent.VK_T),
 					"Go to a tile by coordinates",
-					evt -> new SelectTileDialog(parent, (IViewerModel) model)
-								   .setVisible(true));
+					handler);
 			final FindDialog finder = new FindDialog(parent, (IViewerModel) model);
 			findItem = createMenuItem("Find a fixture", findKey,
 					findStroke, "Find a fixture by name, kind, or ID#",

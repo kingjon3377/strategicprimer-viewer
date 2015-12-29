@@ -2,6 +2,8 @@ package controller.map.misc;
 
 import controller.map.formatexceptions.SPFormatException;
 import java.awt.Component;
+import java.awt.Frame;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -18,12 +20,14 @@ import model.map.PlayerCollection;
 import model.map.SPMapNG;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
+import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
 import util.Warning;
+import view.map.main.SelectTileDialog;
 import view.map.main.ViewerFrame;
 import view.util.AboutDialog;
 import view.util.ErrorShower;
@@ -153,6 +157,23 @@ public final class IOHandler implements ActionListener {
 									      .setVisible(true));
 				}
 				break;
+			case "go to tile":
+				@Nullable
+				final Frame parent;
+				if (source == null) {
+					parent = null;
+				} else {
+					Window temp = SwingUtilities.getWindowAncestor(source);
+					if (temp instanceof Frame) {
+						parent = (Frame) temp;
+					} else {
+						parent = null;
+					}
+				}
+				if (model instanceof IViewerModel) {
+					SwingUtilities.invokeLater(() -> new SelectTileDialog(parent, (IViewerModel) model)
+							                                 .setVisible(true));
+				}
 			}
 		}
 	}

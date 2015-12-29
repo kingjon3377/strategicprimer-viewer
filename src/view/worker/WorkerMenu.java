@@ -44,7 +44,7 @@ public final class WorkerMenu extends SPMenu {
 	                  final PlayerChooserHandler pch, final IDriverModel model,
 	                  final ActionListener teh) {
 		add(createFileMenu(handler, parent, model));
-		addDisabled(createMapMenu(parent, model));
+		addDisabled(createMapMenu(handler, parent, model));
 		add(createViewMenu(pch, teh));
 		add(new WindowMenu(parent));
 	}
