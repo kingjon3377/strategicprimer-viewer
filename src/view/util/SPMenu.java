@@ -113,13 +113,8 @@ public class SPMenu extends JMenuBar {
 		final JMenuItem openViewerItem = createMenuItem("Open in map viewer",
 				KeyEvent.VK_M, createHotkey(KeyEvent.VK_M),
 				"Open the main map in the map viewer for a broader view",
-				evt -> invokeLater(() -> new ViewerFrame(
-																new ViewerModel(model
-																						.getMap(),
-																					   model.getMapFile()),
-
-																handler)
-												 .setVisible(true)));
+				evt -> invokeLater(() -> new ViewerFrame(new ViewerModel(model), handler)
+						                         .setVisible(true)));
 		fileMenu.add(openViewerItem);
 		if (model instanceof IViewerModel) {
 			openViewerItem.setEnabled(false);
