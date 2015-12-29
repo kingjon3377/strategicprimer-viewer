@@ -1,8 +1,10 @@
 package view.exploration;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import model.exploration.IExplorationModel;
@@ -168,23 +170,22 @@ public final class ExplorationListListener implements ListDataListener {
 			list.clearSelection();
 			final List<IntPair<TileFixture>> constants = new ArrayList<>();
 			final List<IntPair<TileFixture>> possibles = new ArrayList<>();
-			for (int i = 0; i < list.getModel().getSize(); i++) {
-				// TODO: Write a ListModel->Iterable wrapper
-				final TileFixture fix =
-						NullCleaner.assertNotNull(list.getModel().getElementAt(i));
+			int i = 0;
+			for (TileFixture fix : new ListModelWrapper<>(list.getModel())) {
 				if (SimpleMovement.shouldAlwaysNotice(selUnit, fix)) {
 					constants.add(IntPair.of(i, fix));
 				} else if (SimpleMovement.mightNotice(selUnit, fix)) {
 					possibles.add(IntPair.of(i, fix));
 				}
+				i++;
 			}
 			Collections.shuffle(possibles);
 			if (!possibles.isEmpty()) {
 				constants.add(possibles.get(0));
 			}
 			final int[] indices = new int[constants.size()];
-			for (int i = 0; i < constants.size(); i++) {
-				indices[i] = constants.get(i).first();
+			for (int index = 0; index < constants.size(); index++) {
+				indices[index] = constants.get(index).first();
 			}
 			list.setSelectedIndices(indices);
 		}
@@ -197,5 +198,30 @@ public final class ExplorationListListener implements ListDataListener {
 	@Override
 	public String toString() {
 		return "ExplorationListListener";
+	}
+	/**
+	 * A wrapper around a ListModel.
+	 */
+	private static class ListModelWrapper<E> extends AbstractList<E> {
+		/**
+		 * The wrapped object.
+		 */
+		private final ListModel<E> wrapped;
+		/**
+		 * @param lmodel the wrapped object
+		 */
+		protected ListModelWrapper(final ListModel<E> lmodel) {
+			wrapped = lmodel;
+		}
+
+		@Override
+		public E get(final int index) {
+			return wrapped.getElementAt(index);
+		}
+
+		@Override
+		public int size() {
+			return wrapped.getSize();
+		}
 	}
 }
