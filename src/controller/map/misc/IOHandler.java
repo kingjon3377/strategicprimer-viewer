@@ -116,6 +116,18 @@ public final class IOHandler implements ActionListener {
 		if (event != null) { // it wouldn't be @Nullable except that the JDK
 			// isn't annotated
 			final Component source = eventSource(event.getSource());
+			@Nullable
+			final Frame parent;
+			if (source == null) {
+				parent = null;
+			} else {
+				Window temp = SwingUtilities.getWindowAncestor(source);
+				if (temp instanceof Frame) {
+					parent = (Frame) temp;
+				} else {
+					parent = null;
+				}
+			}
 			switch(event.getActionCommand().toLowerCase()) {
 			case "load":
 				handleLoadMenu(source);
@@ -158,21 +170,15 @@ public final class IOHandler implements ActionListener {
 				}
 				break;
 			case "go to tile":
-				@Nullable
-				final Frame parent;
-				if (source == null) {
-					parent = null;
-				} else {
-					Window temp = SwingUtilities.getWindowAncestor(source);
-					if (temp instanceof Frame) {
-						parent = (Frame) temp;
-					} else {
-						parent = null;
-					}
-				}
 				if (model instanceof IViewerModel) {
 					SwingUtilities.invokeLater(() -> new SelectTileDialog(parent, (IViewerModel) model)
 							                                 .setVisible(true));
+				}
+				break;
+			case "close":
+				if (parent != null) {
+					parent.setVisible(false);
+					parent.dispose();
 				}
 			}
 		}

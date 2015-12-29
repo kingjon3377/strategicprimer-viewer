@@ -5,6 +5,8 @@ import javax.swing.JFrame;
 /**
  * A thread to run a window.
  *
+ * FIXME: Replace with lambdas throughout.
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *

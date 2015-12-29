@@ -121,15 +121,8 @@ public class SPMenu extends JMenuBar {
 			openSecondaryViewerItem.setEnabled(false);
 		}
 		fileMenu.addSeparator();
-		fileMenu.add(createMenuItem("Close", KeyEvent.VK_W,
-				createHotkey(KeyEvent.VK_W),
-				"Close this window", evt -> {
-					if ((evt != null)
-								&& "Close".equals(evt.getActionCommand())) {
-						parent.setVisible(false);
-						parent.dispose();
-					}
-				}));
+		fileMenu.add(createMenuItem("Close", KeyEvent.VK_W, createHotkey(KeyEvent.VK_W),
+				"Close this window", handler));
 		fileMenu.addSeparator();
 		fileMenu.add(createMenuItem("About", KeyEvent.VK_B,
 				createHotkey(KeyEvent.VK_B), "Show development credits", handler));
