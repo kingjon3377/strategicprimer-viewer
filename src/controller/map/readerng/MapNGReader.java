@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.StreamSupport;
 import javax.xml.namespace.QName;
-import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMapNG;
@@ -119,7 +118,6 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 							   final IDFactory factory) throws SPFormatException {
 		final int currentTurn;
 		final StartElement mapTag;
-		final Location outerLoc = assertNotNull(element.getLocation());
 		final String outerTag = assertNotNull(element.getName().getLocalPart());
 		if ("view".equalsIgnoreCase(element.getName().getLocalPart())) {
 			currentTurn = XMLHelper.getIntegerAttribute(element, "current_turn");
@@ -146,7 +144,6 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 			if (event.isStartElement()) {
 				final StartElement current = event.asStartElement();
 				final String type = current.getName().getLocalPart();
-				final Location currentLoc = assertNotNull(current.getLocation());
 				if (type == null) {
 					continue;
 				} else if ("player".equalsIgnoreCase(type)) {

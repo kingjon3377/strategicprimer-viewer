@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.StreamSupport;
 import javax.xml.namespace.QName;
-import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMapNG;
@@ -110,7 +109,6 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		requireTag(element, "map", "view");
 		final int currentTurn;
 		final StartElement mapTag;
-		final Location outerLoc = assertNotNull(element.getLocation());
 		final String outerTag = assertNotNull(element.getName().getLocalPart());
 		if ("view".equalsIgnoreCase(outerTag)) {
 			currentTurn = getIntegerParameter(element, "current_turn");
@@ -135,7 +133,6 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			if (event.isStartElement()) {
 				final StartElement current = event.asStartElement();
 				final String type = current.getName().getLocalPart();
-				final Location currentLoc = assertNotNull(current.getLocation());
 				if (type == null) {
 					continue;
 				} else if ("player".equalsIgnoreCase(type)) {
@@ -186,8 +183,6 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				} else if ("mountain".equalsIgnoreCase(type)) {
 					retval.setMountainous(point, true);
 				} else {
-					final String mapName =
-							assertNotNull(mapTag.getName().getLocalPart());
 					try {
 						retval.addFixture(point, parseFixture(current, stream,
 								players, idFactory, warner));
