@@ -132,15 +132,10 @@ public final class AppStarter implements ISPDriver {
 			final List<ISPDriver> drivers = new ArrayList<>();
 			CACHE.values().stream().filter(pair -> !drivers.contains(pair.first()))
 					.forEach(pair -> drivers.add(pair.first()));
-			try {
-				startChosenDriver(NullCleaner.assertNotNull(drivers
-						                                            .get(new CLIHelper()
-								                                                 .chooseFromList(
-										                                                 drivers,
-										                                                 "CLI apps available:",
-										                                                 "No applications available",
-										                                                 "App to start: ",
-										                                                 true))),
+			try (final CLIHelper cli = new CLIHelper()) {
+				startChosenDriver(NullCleaner.assertNotNull(drivers.get(
+						cli.chooseFromList(drivers, "CLI apps available:",
+								"No applications available", "App to start: ", true))),
 						model);
 			} catch (final IOException except) {
 				LOGGER.log(Level.SEVERE,
@@ -232,15 +227,10 @@ public final class AppStarter implements ISPDriver {
 			final List<ISPDriver> drivers = new ArrayList<>();
 			CACHE.values().stream().filter(pair -> !drivers.contains(pair.first()))
 					.forEach(pair -> drivers.add(pair.first()));
-			try {
-				startChosenDriver(NullCleaner.assertNotNull(drivers
-						                                            .get(new CLIHelper()
-								                                                 .chooseFromList(
-										                                                 drivers,
-										                                                 "CLI apps available:",
-										                                                 "No applications available",
-										                                                 "App to start: ",
-										                                                 true))),
+			try (final CLIHelper cli = new CLIHelper()) {
+				startChosenDriver(NullCleaner.assertNotNull(drivers.get(
+						cli.chooseFromList(drivers, "CLI apps available:",
+								"No applications available", "App to start: ", true))),
 						others);
 			} catch (final IOException except) {
 				LOGGER.log(Level.SEVERE,
