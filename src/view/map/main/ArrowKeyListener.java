@@ -1,12 +1,12 @@
 package view.map.main;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
-import org.eclipse.jdt.annotation.Nullable;
 
 import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
 import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
@@ -68,14 +68,26 @@ public final class ArrowKeyListener {
 		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD7, 0), "up-left");
 		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD3, 0), "down-right");
 		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD1, 0), "down-left");
-		actionMap.put("up", new UpListener(selListener, 1));
-		actionMap.put("down", new DownListener(selListener, 1));
-		actionMap.put("left", new LeftListener(selListener, 1));
-		actionMap.put("right", new RightListener(selListener, 1));
-		actionMap.put("up-right", new UpRightListener(selListener, 1));
-		actionMap.put("up-left", new UpLeftListener(selListener, 1));
-		actionMap.put("down-right", new DownRightListener(selListener, 1));
-		actionMap.put("down-left", new DownLeftListener(selListener, 1));
+		actionMap.put("up", new DirectionListener(evt -> selListener.up()));
+		actionMap.put("down", new DirectionListener(evt -> selListener.down()));
+		actionMap.put("left", new DirectionListener(evt -> selListener.left()));
+		actionMap.put("right", new DirectionListener(evt -> selListener.right()));
+		actionMap.put("up-right", new DirectionListener(evt -> {
+			selListener.up();
+			selListener.right();
+		}));
+		actionMap.put("up-left", new DirectionListener(evt -> {
+			selListener.up();
+			selListener.left();
+		}));
+		actionMap.put("down-right", new DirectionListener(evt -> {
+			selListener.down();
+			selListener.right();
+		}));
+		actionMap.put("down-left", new DirectionListener(evt -> {
+			selListener.down();
+			selListener.left();
+		}));
 		final int fiveMask;
 		if (ON_MAC) {
 			fiveMask = InputEvent.ALT_DOWN_MASK;
@@ -107,14 +119,26 @@ public final class ArrowKeyListener {
 				"ctrl-down-right");
 		inputMap.put(getKeyStroke(KeyEvent.VK_NUMPAD1, fiveMask),
 				"ctrl-down-left");
-		actionMap.put("ctrlUp", new UpListener(selListener, 5));
-		actionMap.put("ctrlDown", new DownListener(selListener, 5));
-		actionMap.put("ctrlLeft", new LeftListener(selListener, 5));
-		actionMap.put("ctrlRight", new RightListener(selListener, 5));
-		actionMap.put("ctrl-up-right", new UpRightListener(selListener, 5));
-		actionMap.put("ctrl-up-left", new UpLeftListener(selListener, 5));
-		actionMap.put("ctrl-down-right", new DownRightListener(selListener, 5));
-		actionMap.put("ctrl-down-left", new DownLeftListener(selListener, 5));
+		actionMap.put("ctrlUp", new DirectionListener(evt -> selListener.up(), 5));
+		actionMap.put("ctrlDown", new DirectionListener(evt -> selListener.down(), 5));
+		actionMap.put("ctrlLeft", new DirectionListener(evt -> selListener.left(), 5));
+		actionMap.put("ctrlRight", new DirectionListener(evt -> selListener.right(), 5));
+		actionMap.put("ctrl-up-right", new DirectionListener(evt -> {
+			selListener.up();
+			selListener.right();
+		}, 5));
+		actionMap.put("ctrl-up-left", new DirectionListener(evt -> {
+			selListener.up();
+			selListener.left();
+		}, 5));
+		actionMap.put("ctrl-down-right", new DirectionListener(evt -> {
+			selListener.down();
+			selListener.right();
+		}, 5));
+		actionMap.put("ctrl-down-left", new DirectionListener(evt -> {
+			selListener.down();
+			selListener.left();
+		}, 5));
 		if (ON_MAC) {
 			inputMap.put(getKeyStroke(KeyEvent.VK_HOME, InputEvent.META_DOWN_MASK),
 					"ctrl-home");
@@ -159,12 +183,18 @@ public final class ArrowKeyListener {
 		inputMap.put(getKeyStroke('^', 0), "caret");
 		inputMap.put(getKeyStroke(KeyEvent.VK_DOLLAR, 0), "dollar");
 		inputMap.put(getKeyStroke(KeyEvent.VK_4, SHIFT_DOWN_MASK), "dollar");
-		actionMap.put("ctrl-home", new JumpUpLeftListener(selListener));
-		actionMap.put("home", new JumpUpListener(selListener));
-		actionMap.put("ctrl-end", new JumpDownRightListener(selListener));
-		actionMap.put("end", new JumpDownListener(selListener));
-		actionMap.put("caret", new JumpLeftListener(selListener));
-		actionMap.put("dollar", new JumpRightListener(selListener));
+		actionMap.put("ctrl-home", new DirectionListener(evt -> {
+			selListener.jumpUp();
+			selListener.jumpLeft();
+		}));
+		actionMap.put("home", new DirectionListener(evt -> selListener.jumpUp()));
+		actionMap.put("ctrl-end", new DirectionListener(evt -> {
+			selListener.jumpDown();
+			selListener.jumpRight();
+		}));
+		actionMap.put("end", new DirectionListener(evt -> selListener.jumpDown()));
+		actionMap.put("caret", new DirectionListener(evt -> selListener.jumpLeft()));
+		actionMap.put("dollar", new DirectionListener(evt -> selListener.jumpRight()));
 	}
 
 	/**
@@ -175,573 +205,39 @@ public final class ArrowKeyListener {
 	public String toString() {
 		return "ArrowKeyListener";
 	}
-
 	/**
-	 * A listener to move the cursor in a direction.
-	 *
-	 * @author Jonathan Lovelace
+	 * A listener to move the cursor in a direction. Wraps an ActionListener.
 	 */
-	private abstract static class AbstractDirListener extends AbstractAction {
+	private static class DirectionListener extends AbstractAction {
 		/**
-		 * How many times to repeat the motion on each user action.
+		 * The wrapped action.
+		 */
+		private final ActionListener wrapped;
+		/**
+		 * How many times to repeat the action on each user action.
 		 */
 		private final int count;
-
 		/**
-		 * Do the actual motion.
+		 * @param action the wrapped action
+		 * @param num how many times to repeat it on each user action
 		 */
-		protected abstract void move();
-
+		protected DirectionListener(final ActionListener action, final int num) {
+			wrapped = action;
+			count = num;
+		}
 		/**
-		 * @param countNum how many times to move on each user action
+		 * @param action the wrapped action
 		 */
-		protected AbstractDirListener(final int countNum) {
-			count = countNum;
+		protected DirectionListener(final ActionListener action) {
+			this(action, 1);
 		}
 
-		/**
-		 * Handle user action.
-		 *
-		 * @param event the event to handle
-		 */
 		@Override
-		public void actionPerformed(@Nullable final ActionEvent event) {
+		public void actionPerformed(final ActionEvent e) {
 			for (int i = 0; i < count; i++) {
-				move();
+				wrapped.actionPerformed(e);
 			}
 		}
-
-		/**
-		 * @return a String representation of the object
-		 */
-		@SuppressWarnings("MethodReturnAlwaysConstant")
-		@Override
-		public String toString() {
-			return "AbstractDirListener";
-		}
-
-		/**
-		 * @return nothing
-		 * @throws CloneNotSupportedException always
-		 */
-		@Override
-		protected Object clone() throws CloneNotSupportedException {
-			throw new CloneNotSupportedException("Cloning not supported");
-		}
 	}
 
-	/**
-	 * A listener to move the cursor up.
-	 *
-	 * @author Jonathan Lovelace
-	 */
-	private static final class UpListener extends AbstractDirListener {
-		/**
-		 * The listener that handles the motion.
-		 */
-		private final DirectionSelectionChanger dsc;
-
-		/**
-		 * @param selListener the listener that handles the motion
-		 * @param countNum    how many times to move on each user action
-		 */
-		protected UpListener(final DirectionSelectionChanger selListener,
-		                     final int countNum) {
-			super(countNum);
-			dsc = selListener;
-		}
-
-		/**
-		 * Do the motion.
-		 */
-		@Override
-		protected void move() {
-			dsc.up();
-		}
-	}
-
-	/**
-	 * A listener to move the cursor down.
-	 *
-	 * @author Jonathan Lovelace
-	 */
-	private static final class DownListener extends AbstractDirListener {
-		/**
-		 * The listener that handles the motion.
-		 */
-		private final DirectionSelectionChanger dsc;
-
-		/**
-		 * @param selListener the listener that handles the motion
-		 * @param countNum    how many times to move on each user action
-		 */
-		protected DownListener(final DirectionSelectionChanger selListener,
-		                       final int countNum) {
-			super(countNum);
-			dsc = selListener;
-		}
-
-		/**
-		 * Do the motion.
-		 */
-		@Override
-		protected void move() {
-			dsc.down();
-		}
-	}
-
-	/**
-	 * A listener to move the cursor left.
-	 *
-	 * @author Jonathan Lovelace
-	 */
-	private static final class LeftListener extends AbstractDirListener {
-		/**
-		 * The listener that handles the motion.
-		 */
-		private final DirectionSelectionChanger dsc;
-
-		/**
-		 * @param selListener the listener that handles the motion
-		 * @param countNum    how many times to move on each user action
-		 */
-		protected LeftListener(final DirectionSelectionChanger selListener,
-		                       final int countNum) {
-			super(countNum);
-			dsc = selListener;
-		}
-
-		/**
-		 * Do the motion.
-		 */
-		@Override
-		protected void move() {
-			dsc.left();
-		}
-	}
-
-	/**
-	 * A listener to move the cursor right.
-	 *
-	 * @author Jonathan Lovelace
-	 */
-	private static final class RightListener extends AbstractDirListener {
-		/**
-		 * The listener that handles the motion.
-		 */
-		private final DirectionSelectionChanger dsc;
-
-		/**
-		 * @param selListener the listener that handles the motion
-		 * @param countNum    how many times to move on each user action
-		 */
-		protected RightListener(final DirectionSelectionChanger selListener,
-		                        final int countNum) {
-			super(countNum);
-			dsc = selListener;
-		}
-
-		/**
-		 * Do the motion.
-		 */
-		@Override
-		protected void move() {
-			dsc.right();
-		}
-	}
-
-	/**
-	 * A listener to move the cursor up and right.
-	 *
-	 * @author Jonathan Lovelace
-	 */
-	private static final class UpRightListener extends AbstractDirListener {
-		/**
-		 * The listener that handles the motion.
-		 */
-		private final DirectionSelectionChanger dsc;
-
-		/**
-		 * @param selListener the listener that handles the motion
-		 * @param countNum    how many times to move on each user action
-		 */
-		protected UpRightListener(final DirectionSelectionChanger selListener,
-		                          final int countNum) {
-			super(countNum);
-			dsc = selListener;
-		}
-
-		/**
-		 * Do the motion.
-		 */
-		@Override
-		protected void move() {
-			// TODO: Perhaps add proper support to DirectionSelectionChanger so
-			// we don't have to make two calls here
-			dsc.up();
-			dsc.right();
-		}
-	}
-
-	/**
-	 * A listener to move the cursor up and left.
-	 *
-	 * @author Jonathan Lovelace
-	 */
-	private static final class UpLeftListener extends AbstractDirListener {
-		/**
-		 * The listener that handles the motion.
-		 */
-		private final DirectionSelectionChanger dsc;
-
-		/**
-		 * @param selListener the listener that handles the motion
-		 * @param countNum    how many times to move on each user action
-		 */
-		protected UpLeftListener(final DirectionSelectionChanger selListener,
-		                         final int countNum) {
-			super(countNum);
-			dsc = selListener;
-		}
-
-		/**
-		 * Do the motion.
-		 */
-		@Override
-		protected void move() {
-			// TODO: Perhaps add proper support to DirectionSelectionChanger so
-			// we don't have to make two calls here
-			dsc.up();
-			dsc.left();
-		}
-	}
-
-	/**
-	 * A listener to move the cursor down and right.
-	 *
-	 * @author Jonathan Lovelace
-	 */
-	private static final class DownRightListener extends AbstractDirListener {
-		/**
-		 * The listener that handles the motion.
-		 */
-		private final DirectionSelectionChanger dsc;
-
-		/**
-		 * @param selListener the listener that handles the motion
-		 * @param countNum    how many times to move on each user action
-		 */
-		protected DownRightListener(final DirectionSelectionChanger selListener,
-		                            final int countNum) {
-			super(countNum);
-			dsc = selListener;
-		}
-
-		/**
-		 * Do the motion.
-		 */
-		@Override
-		protected void move() {
-			// TODO: Perhaps add proper support to DirectionSelectionChanger so
-			// we don't have to make two calls here
-			dsc.down();
-			dsc.right();
-		}
-	}
-
-	/**
-	 * A listener to move the cursor down and left.
-	 *
-	 * @author Jonathan Lovelace
-	 */
-	private static final class DownLeftListener extends AbstractDirListener {
-		/**
-		 * The listener that handles the motion.
-		 */
-		private final DirectionSelectionChanger dsc;
-
-		/**
-		 * @param selListener the listener that handles the motion
-		 * @param countNum    how many times to move on each user action
-		 */
-		protected DownLeftListener(final DirectionSelectionChanger selListener,
-		                           final int countNum) {
-			super(countNum);
-			dsc = selListener;
-		}
-
-		/**
-		 * Do the motion.
-		 */
-		@Override
-		protected void move() {
-			// TODO: Perhaps add proper support to DirectionSelectionChanger so
-			// we don't have to make two calls here
-			dsc.down();
-			dsc.left();
-		}
-	}
-
-	/**
-	 * A listener to move the cursor to the top left corner.
-	 */
-	private static final class JumpUpLeftListener extends AbstractAction {
-		/**
-		 * The helper that actually performs the cursor movement.
-		 */
-		private final DirectionSelectionChanger dsc;
-
-		/**
-		 * @param dsch The helper to actually perform the cursor movement
-		 */
-		protected JumpUpLeftListener(final DirectionSelectionChanger dsch) {
-			dsc = dsch;
-		}
-
-		/**
-		 * Handle a key-press.
-		 *
-		 * @param evt the event to handle.
-		 */
-		@Override
-		public void actionPerformed(@Nullable final ActionEvent evt) {
-			dsc.jumpUp();
-			dsc.jumpLeft();
-		}
-
-		/**
-		 * @return a String representation of the object
-		 */
-		@SuppressWarnings("MethodReturnAlwaysConstant")
-		@Override
-		public String toString() {
-			return "JumpUpLeftListener";
-		}
-
-		/**
-		 * @return nothing
-		 * @throws CloneNotSupportedException always
-		 */
-		@Override
-		protected Object clone() throws CloneNotSupportedException {
-			throw new CloneNotSupportedException("Cloning not supported");
-		}
-	}
-
-	/**
-	 * A listener to move the cursor to the bottom right corner.
-	 */
-	private static final class JumpDownRightListener extends AbstractAction {
-		/**
-		 * The helper that actually performs the cursor movement.
-		 */
-		private final DirectionSelectionChanger dsc;
-
-		/**
-		 * @param dsch The helper to actually perform the cursor movement
-		 */
-		protected JumpDownRightListener(final DirectionSelectionChanger dsch) {
-			dsc = dsch;
-		}
-
-		/**
-		 * Handle a key-press.
-		 *
-		 * @param evt the event to handle.
-		 */
-		@Override
-		public void actionPerformed(@Nullable final ActionEvent evt) {
-			dsc.jumpDown();
-			dsc.jumpRight();
-		}
-
-		/**
-		 * @return a String representation of the object
-		 */
-		@SuppressWarnings("MethodReturnAlwaysConstant")
-		@Override
-		public String toString() {
-			return "JumpDownRightListener";
-		}
-	}
-
-	/**
-	 * A listener to move the cursor all the way up.
-	 */
-	private static final class JumpUpListener extends AbstractAction {
-		/**
-		 * The helper that actually performs the cursor movement.
-		 */
-		private final DirectionSelectionChanger dsc;
-
-		/**
-		 * @param dsch The helper to actually perform the cursor movement
-		 */
-		protected JumpUpListener(final DirectionSelectionChanger dsch) {
-			dsc = dsch;
-		}
-
-		/**
-		 * Handle a key-press.
-		 *
-		 * @param evt the event to handle.
-		 */
-		@Override
-		public void actionPerformed(@Nullable final ActionEvent evt) {
-			dsc.jumpUp();
-		}
-
-		/**
-		 * @return a String representation of the object
-		 */
-		@SuppressWarnings("MethodReturnAlwaysConstant")
-		@Override
-		public String toString() {
-			return "JumpUpListener";
-		}
-
-		/**
-		 * @return nothing
-		 * @throws CloneNotSupportedException always
-		 */
-		@Override
-		protected Object clone() throws CloneNotSupportedException {
-			throw new CloneNotSupportedException("Cloning not supported");
-		}
-	}
-
-	/**
-	 * A listener to move the cursor all the way down.
-	 */
-	private static final class JumpDownListener extends AbstractAction {
-		/**
-		 * The helper that actually performs the cursor movement.
-		 */
-		private final DirectionSelectionChanger dsc;
-
-		/**
-		 * @param dsch The helper to actually perform the cursor movement
-		 */
-		protected JumpDownListener(final DirectionSelectionChanger dsch) {
-			dsc = dsch;
-		}
-
-		/**
-		 * Handle a key-press.
-		 *
-		 * @param evt the event to handle.
-		 */
-		@Override
-		public void actionPerformed(@Nullable final ActionEvent evt) {
-			dsc.jumpDown();
-		}
-
-		/**
-		 * @return a String representation of the object
-		 */
-		@SuppressWarnings("MethodReturnAlwaysConstant")
-		@Override
-		public String toString() {
-			return "JumpDownListener";
-		}
-
-		/**
-		 * @return nothing
-		 * @throws CloneNotSupportedException always
-		 */
-		@Override
-		protected Object clone() throws CloneNotSupportedException {
-			throw new CloneNotSupportedException("Cloning not supported");
-		}
-	}
-
-	/**
-	 * A listener to move the cursor all the way left.
-	 */
-	private static final class JumpLeftListener extends AbstractAction {
-		/**
-		 * The helper that actually performs the cursor movement.
-		 */
-		private final DirectionSelectionChanger dsc;
-
-		/**
-		 * @param dsch The helper to actually perform the cursor movement
-		 */
-		protected JumpLeftListener(final DirectionSelectionChanger dsch) {
-			dsc = dsch;
-		}
-
-		/**
-		 * Handle a key-press.
-		 *
-		 * @param evt the event to handle.
-		 */
-		@Override
-		public void actionPerformed(@Nullable final ActionEvent evt) {
-			dsc.jumpLeft();
-		}
-
-		/**
-		 * @return a String representation of the object
-		 */
-		@SuppressWarnings("MethodReturnAlwaysConstant")
-		@Override
-		public String toString() {
-			return "JumpLeftListener";
-		}
-
-		/**
-		 * @return nothing
-		 * @throws CloneNotSupportedException always
-		 */
-		@Override
-		protected Object clone() throws CloneNotSupportedException {
-			throw new CloneNotSupportedException("Cloning not supported");
-		}
-	}
-
-	/**
-	 * A listener to move the cursor all the way right.
-	 */
-	private static final class JumpRightListener extends AbstractAction {
-		/**
-		 * The helper that actually performs the cursor movement.
-		 */
-		private final DirectionSelectionChanger dsc;
-
-		/**
-		 * @param dsch The helper to actually perform the cursor movement
-		 */
-		protected JumpRightListener(final DirectionSelectionChanger dsch) {
-			dsc = dsch;
-		}
-
-		/**
-		 * Handle a key-press.
-		 *
-		 * @param evt the event to handle.
-		 */
-		@Override
-		public void actionPerformed(@Nullable final ActionEvent evt) {
-			dsc.jumpRight();
-		}
-
-		/**
-		 * @return a String representation of the object
-		 */
-		@SuppressWarnings("MethodReturnAlwaysConstant")
-		@Override
-		public String toString() {
-			return "JumpRightListener";
-		}
-
-		/**
-		 * @return nothing
-		 * @throws CloneNotSupportedException always
-		 */
-		@Override
-		protected Object clone() throws CloneNotSupportedException {
-			throw new CloneNotSupportedException("Cloning not supported");
-		}
-	}
 }
