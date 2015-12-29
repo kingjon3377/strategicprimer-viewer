@@ -13,7 +13,6 @@ import model.map.Player;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
-import view.map.main.FindDialog;
 import view.map.main.ZoomListener;
 import view.worker.PlayerChooserHandler;
 
@@ -161,36 +160,24 @@ public class SPMenu extends JMenuBar {
 		final int nextKey = KeyEvent.VK_N;
 		final KeyStroke nextStroke = createHotkey(KeyEvent.VK_G);
 		final ActionListener zoomListener;
+		gotoTileItem = createMenuItem("Go to tile",
+				KeyEvent.VK_T, createHotkey(KeyEvent.VK_T),
+				"Go to a tile by coordinates",
+				handler);
+		findItem = createMenuItem("Find a fixture", findKey,
+				findStroke, "Find a fixture by name, kind, or ID#",
+				handler);
+		nextItem = createMenuItem("Find next", nextKey,
+				nextStroke, "Find the next fixture matching the pattern",
+				handler);
 		if (model instanceof IViewerModel) {
-			gotoTileItem = createMenuItem("Go to tile",
-					KeyEvent.VK_T, createHotkey(KeyEvent.VK_T),
-					"Go to a tile by coordinates",
-					handler);
-			final FindDialog finder = new FindDialog(parent, (IViewerModel) model);
-			findItem = createMenuItem("Find a fixture", findKey,
-					findStroke, "Find a fixture by name, kind, or ID#",
-					evt -> finder.setVisible(true));
-			nextItem = createMenuItem("Find next", nextKey,
-					nextStroke, "Find the next fixture matching the pattern",
-					evt -> finder.search());
 			zoomListener = new ZoomListener((IViewerModel) model);
 		} else {
 			final ActionListener nullAction = evt -> {
 				// do nothing
 			};
-			gotoTileItem = createMenuItem("Go to tile",
-					KeyEvent.VK_T, createHotkey(KeyEvent.VK_T),
-					"Go to a tile by coordinates", nullAction);
 			gotoTileItem.setEnabled(false);
-			findItem = createMenuItem("Find a fixture", findKey,
-					findStroke, "Find a fixture by name, kind, or ID#",
-					nullAction);
 			findItem.setEnabled(false);
-			nextItem =
-					createMenuItem("Find next", nextKey,
-							nextStroke,
-							"Find the next fixture matching the pattern",
-							nullAction);
 			zoomListener = nullAction;
 		}
 		retval.add(gotoTileItem);

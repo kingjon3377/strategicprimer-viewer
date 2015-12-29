@@ -27,6 +27,7 @@ import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
 import util.Warning;
+import view.map.main.FindDialog;
 import view.map.main.SelectTileDialog;
 import view.map.main.ViewerFrame;
 import view.util.AboutDialog;
@@ -83,6 +84,11 @@ public final class IOHandler implements ActionListener {
 	 * saved.
 	 */
 	private final IDriverModel model;
+	/**
+	 * The "find" dialog, if this is for a map viewer.
+	 */
+	@Nullable
+	private FindDialog finder = null;
 
 	/**
 	 * Handle the "load" menu item.
@@ -180,6 +186,18 @@ public final class IOHandler implements ActionListener {
 					parent.setVisible(false);
 					parent.dispose();
 				}
+				break;
+			case "find a fixture":
+				if (model instanceof IViewerModel) {
+					SwingUtilities
+							.invokeLater(() -> getFindDialog(source).setVisible(true));
+				}
+				break;
+			case "find next":
+				if (model instanceof IViewerModel) {
+					SwingUtilities.invokeLater(() -> getFindDialog(source).search());
+				}
+				break;
 			}
 		}
 	}
@@ -362,7 +380,25 @@ public final class IOHandler implements ActionListener {
 			}
 		}
 	}
-
+	/**
+	 * @param component a component
+	 * @return a FindDialog if the driver model is for a map viewer, or null otherwise
+	 */
+	@Nullable
+	private synchronized FindDialog getFindDialog(final Component component) {
+		Window window = SwingUtilities.getWindowAncestor(component);
+		if (model instanceof IViewerModel && window instanceof Frame) {
+			if (finder == null) {
+				final FindDialog local = new FindDialog((Frame) window, (IViewerModel) model);
+				finder = local;
+				return finder;
+			} else {
+				return NullCleaner.assertNotNull(finder);
+			}
+		} else {
+			return null;
+		}
+	}
 	/**
 	 * @return a String representation of the object.
 	 */
