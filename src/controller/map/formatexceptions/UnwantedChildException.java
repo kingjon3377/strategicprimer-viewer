@@ -67,34 +67,8 @@ public final class UnwantedChildException extends SPFormatException {
 	 * @param except the exception to copy
 	 */
 	public UnwantedChildException(final QName parent, final UnwantedChildException except) {
-		// FIXME: Make superclass have an accessor for its Location.
 		super("Unexpected child " + except.getChild().getLocalPart() + " in tag " +
-				      parent.getLocalPart(), new Location() {
-			@Override
-			public int getLineNumber() {
-				return except.getLine();
-			}
-
-			@Override
-			public int getColumnNumber() {
-				return 0;
-			}
-
-			@Override
-			public int getCharacterOffset() {
-				return 0;
-			}
-
-			@Override
-			public String getPublicId() {
-				return null;
-			}
-
-			@Override
-			public String getSystemId() {
-				return null;
-			}
-		});
+				      parent.getLocalPart(), except.getLocation());
 		tag = parent;
 		chld = except.getChild();
 		if (except.getCause() != null) {

@@ -28,15 +28,20 @@ public class SPFormatException extends Exception {
 	/**
 	 * The line of the XML file containing the mistake.
 	 */
-	private final int line;
+	private final Location location;
 
 	/**
 	 * @return the line of the XML file containing the mistake
 	 */
 	public int getLine() {
-		return line;
+		return location.getLineNumber();
 	}
-
+	/**
+	 * @return the location in the XML file containing the mistake
+	 */
+	public Location getLocation() {
+		return location;
+	}
 	/**
 	 * @param message   a message describing what's wrong with the XML
 	 * @param errorLoc  the location of the text causing the error
@@ -46,7 +51,7 @@ public class SPFormatException extends Exception {
 	                            final Throwable cause) {
 		super("Incorrect SP XML at line " + errorLoc.getLineNumber() + ", column " +
 				      errorLoc.getColumnNumber() + ": " + message, cause);
-		line = errorLoc.getLineNumber();
+		location = errorLoc;
 	}
 	/**
 	 * Constructor.
@@ -57,6 +62,6 @@ public class SPFormatException extends Exception {
 	protected SPFormatException(final String message, final Location errorLoc) {
 		super("Incorrect SP XML at line " + errorLoc.getLineNumber() + ", column " +
 				      errorLoc.getColumnNumber() + ": " + message);
-		line = errorLoc.getLineNumber();
+		location = errorLoc;
 	}
 }
