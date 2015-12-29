@@ -112,21 +112,29 @@ public final class IOHandler implements ActionListener {
 		if (event != null) { // it wouldn't be @Nullable except that the JDK
 			// isn't annotated
 			final Component source = eventSource(event.getSource());
-			if ("Load".equals(event.getActionCommand())) {
+			switch(event.getActionCommand().toLowerCase()) {
+			case "load":
 				handleLoadMenu(source);
-			} else if ("Save".equals(event.getActionCommand())) {
+				break;
+			case "save":
 				saveMap(source);
-			} else if ("Save As".equals(event.getActionCommand())) {
+				break;
+			case "save as":
 				saveMapAs(model.getMap(), source);
-			} else if ("New".equals(event.getActionCommand())) {
+				break;
+			case "new":
 				startNewViewerWindow();
-			} else if ("About".equals(event.getActionCommand())) {
+				break;
+			case "about":
 				// FIXME: This should use the title of whatever app it was called from
 				new AboutDialog(source, "Exploration Helper").setVisible(true);
-			} else if ("Load secondary".equalsIgnoreCase(event.getActionCommand())) {
+				break;
+			case "load secondary":
 				handleSecondaryLoadMenu(source);
-			} else if ("Save All".equalsIgnoreCase(event.getActionCommand())) {
+				break;
+			case "save all":
 				saveAll(source);
+				break;
 			}
 		}
 	}
