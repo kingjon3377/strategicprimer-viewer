@@ -115,12 +115,10 @@ public final class OrdersPanel extends BorderedPanel implements Applyable,
 											new ListenedButton("Revert", handler)));
 		area.addKeyListener(new KeyAdapter() {
 			private boolean isModifierPressed(final KeyEvent evt) {
-				if (onMac && evt.isMetaDown()) {
-					return true;
-				} else if (!onMac && evt.isControlDown()) {
-					return true;
+				if (onMac) {
+					return evt.isMetaDown();
 				} else {
-					return false;
+					return evt.isControlDown();
 				}
 			}
 
