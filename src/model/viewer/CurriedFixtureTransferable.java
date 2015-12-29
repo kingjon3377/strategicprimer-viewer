@@ -105,6 +105,7 @@ public final class CurriedFixtureTransferable implements Transferable {
 	 */
 	@Override
 	public String toString() {
-		return "CurriedFixtureTransferable with payload containing " + payload.size() + " elements";
+		return "CurriedFixtureTransferable with payload containing " + payload.size() +
+				       " elements";
 	}
 }

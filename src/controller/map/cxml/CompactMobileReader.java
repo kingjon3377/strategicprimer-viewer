@@ -96,7 +96,8 @@ public final class CompactMobileReader extends
 		TAG_MAP.put(Sphinx.class, "sphinx");
 		TAG_MAP.put(Troll.class, "troll");
 		TAG_MAP.put(Unit.class, "unit");
-		SUPP_TAGS = NullCleaner.assertNotNull(Collections.unmodifiableSet(new HashSet<>(TAG_MAP.values())));
+		SUPP_TAGS = NullCleaner.assertNotNull(
+				Collections.unmodifiableSet(new HashSet<>(TAG_MAP.values())));
 	}
 
 	/**

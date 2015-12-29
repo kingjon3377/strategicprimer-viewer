@@ -265,7 +265,8 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @param tabs a nonnegative integer: how many tabs to add to the stream
 	 * @throws IOException on I/O error writing to ostream
 	 */
-	protected static void indent(final Appendable ostream, final int tabs) throws IOException {
+	protected static void indent(final Appendable ostream, final int tabs)
+			throws IOException {
 		for (int i = 0; i < tabs; i++) {
 			ostream.append('\t');
 		}
