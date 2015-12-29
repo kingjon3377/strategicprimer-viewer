@@ -8,7 +8,8 @@ import java.util.logging.Logger;
 /**
  * A class to log warnings.
  *
- * FIXME: Just combine with the enum ...
+ * While I'd like to combine the Warning class with the Action enum, there's at least
+ * one subclass (that logs warnings to a GUI text label), so we can't.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
