@@ -153,7 +153,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 						new Warning(Action.Ignore));
 				fail("Expected an UnsupportedTagException");
 			} catch (final UnsupportedTagException except) {
-				assertEquals("The tag we expected", tag, except.getTag());
+				assertEquals("The tag we expected", tag, except.getTag().getLocalPart());
 			}
 		}
 	}
