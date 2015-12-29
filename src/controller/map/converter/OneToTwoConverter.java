@@ -420,12 +420,9 @@ public final class OneToTwoConverter { // NOPMD
 	 */
 	private static void waterDesert(final IMutableMapNG map, final Point point,
 									final Random random, final boolean watered) {
-		if (watered && (random.nextDouble() < DESERT_TO_PLAINS)) {
-			map.setBaseTerrain(point, TileType.Plains);
-		} else if (!map.getRivers(point).iterator().hasNext()
-						   &&
-						   (random.nextDouble() <
-									SIXTY_PERCENT)) {
+		if (watered && (random.nextDouble() < DESERT_TO_PLAINS) ||
+				    !map.getRivers(point).iterator().hasNext() &&
+						    (random.nextDouble() < SIXTY_PERCENT)) {
 			map.setBaseTerrain(point, TileType.Plains);
 		}
 	}

@@ -211,22 +211,11 @@ public class SPMapNG implements IMutableMapNG {
 				final Iterable<TileFixture> theirFixtures =
 						obj.getOtherFixtures(point);
 				for (final TileFixture fix : theirFixtures) {
-					if (ourFixtures.contains(fix)
-								|| shouldSkip(fix)) {
-						continue;
-					} else if (((fix instanceof Ground)
-										&&
-										Objects.equals(
-												fix,
-												getGround(
-														point)))
-									   ||
-									   ((fix instanceof Forest)
-												&&
-												Objects.equals(
-														fix,
-														getForest(
-																point)))) {
+					if (ourFixtures.contains(fix) || shouldSkip(fix) ||
+							    ((fix instanceof Ground) &&
+									     Objects.equals(fix, getGround(point))) ||
+							    ((fix instanceof Forest) &&
+									     Objects.equals(fix, getForest(point)))) {
 						continue;
 					} else if ((fix instanceof IUnit) && ourUnits
 																 .containsKey(

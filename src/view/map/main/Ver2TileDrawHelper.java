@@ -348,9 +348,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	private Image getImageForFixture(final TileFixture fix) {
 		if (fix instanceof HasImage) {
 			final String image = ((HasImage) fix).getImage();
-			if (image.isEmpty()) {
-				return getImage(((HasImage) fix).getDefaultImage()); // NOPMD
-			} else if (missingFiles.contains(image)) {
+			if (image.isEmpty() || missingFiles.contains(image)) {
 				return getImage(((HasImage) fix).getDefaultImage()); // NOPMD
 			} else {
 				return getImage(image); // NOPMD
