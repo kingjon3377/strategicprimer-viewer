@@ -1,7 +1,6 @@
 package controller.map.formatexceptions;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
 
 /**
