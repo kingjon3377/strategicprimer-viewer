@@ -42,8 +42,10 @@ public final class MissingPropertyException extends SPFormatException {
 	 * @param parameter the missing parameter
 	 * @param cause the underlying cause
 	 */
-	public MissingPropertyException(final StartElement tag, final String parameter, final Throwable cause) {
-		super("Missing parameter " + parameter + " in tag " + tag.getName(), tag.getLocation(), cause);
+	public MissingPropertyException(final StartElement tag, final String parameter,
+	                                final Throwable cause) {
+		super("Missing parameter " + parameter + " in tag " + tag.getName(),
+				tag.getLocation(), cause);
 		context = tag.getName();
 		param = parameter;
 	}

@@ -54,14 +54,16 @@ public final class UnwantedChildException extends SPFormatException {
 	 * @param errorLoc  the location where this happened
 	 * @param cause     another exception that caused this one
 	 */
-	public UnwantedChildException(final QName parent, final StartElement child, final Throwable cause) {
+	public UnwantedChildException(final QName parent, final StartElement child,
+	                              final Throwable cause) {
 		super("Unexpected child " + child.getName().getLocalPart() + " in tag " +
 				      parent.getLocalPart(), child.getLocation(), cause);
 		tag = parent;
 		chld = child.getName();
 	}
 	/**
-	 * Copy-constructor-with-replacement, for cases where the original thrower didn't know the parent tag.
+	 * Copy-constructor-with-replacement, for cases where the original thrower didn't
+	 * know the parent tag.
 	 * @param parent the parent tag
 	 * @param except the exception to copy
 	 */

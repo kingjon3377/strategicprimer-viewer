@@ -215,9 +215,8 @@ public final class ZeroToOneConverter {
 	 * @param ostream the stream to which to write its XML representation.
 	 * @throws IOException on I/O error writing to ostream
 	 */
-	private static void printStartElement(final Appendable ostream, final StartElement element)
-
-			throws IOException {
+	private static void printStartElement(final Appendable ostream,
+	                                      final StartElement element) throws IOException {
 		ostream.append(element.getName().getLocalPart());
 		// getAttributes() isn't actually genericized, so diamond causes compile error
 		//noinspection Convert2Diamond

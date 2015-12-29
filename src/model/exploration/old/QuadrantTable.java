@@ -53,7 +53,8 @@ public final class QuadrantTable implements EncounterTable {
 	 * @param rows the number of rows of quadrants
 	 * @param items the items to allocate by quadrant
 	 */
-	public QuadrantTable(final int mapRows, final int mapCols, final int rows, final List<String> items) {
+	public QuadrantTable(final int mapRows, final int mapCols, final int rows,
+	                     final List<String> items) {
 		if ((items.size() % rows) != 0) {
 			throw new IllegalArgumentException(Integer.toString(items.size())
 					                                   +
