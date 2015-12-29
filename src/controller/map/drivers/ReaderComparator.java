@@ -112,35 +112,36 @@ public final class ReaderComparator implements ISPDriver {
 															  SPFormatException {
 		SYS_OUT.print(arg);
 		SYS_OUT.println(':');
+		final String contents;
 		try {
-			final String contents = readIntoBuffer(arg);
-			final Warning warner = new Warning(Action.Ignore);
-			final long startOne = System.nanoTime();
-			final IMapNG map1;
-			try (StringReader reader = new StringReader(contents)) {
-				map1 = oldReader.readMap(arg, reader, warner);
-			}
-			final long endOne = System.nanoTime();
-			printElapsed("Old", endOne - startOne);
-			final long startTwo = System.nanoTime();
-			final IMapNG map2;
-			try (StringReader reader = new StringReader(contents)) {
-				map2 = newReader.readMap(arg, reader, warner);
-			}
-			final long endTwo = System.nanoTime();
-			printElapsed("New", endTwo - startTwo);
-			if (map1.equals(map2)) {
-				SYS_OUT.println("Readers produce identical results.");
-			} else {
-				SYS_OUT.print("Readers differ on ");
-				SYS_OUT.println(arg);
-			}
+			contents = readIntoBuffer(arg);
 		} catch (final FileNotFoundException except) {
 			LOGGER.log(Level.SEVERE, "File " + arg + " not found", except);
 			return; // NOPMD
 		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error reading file " + arg, except);
 			return;
+		}
+		final Warning warner = new Warning(Action.Ignore);
+		final long startOne = System.nanoTime();
+		final IMapNG map1;
+		try (StringReader reader = new StringReader(contents)) {
+			map1 = oldReader.readMap(arg, reader, warner);
+		}
+		final long endOne = System.nanoTime();
+		printElapsed("Old", endOne - startOne);
+		final long startTwo = System.nanoTime();
+		final IMapNG map2;
+		try (StringReader reader = new StringReader(contents)) {
+			map2 = newReader.readMap(arg, reader, warner);
+		}
+		final long endTwo = System.nanoTime();
+		printElapsed("New", endTwo - startTwo);
+		if (map1.equals(map2)) {
+			SYS_OUT.println("Readers produce identical results.");
+		} else {
+			SYS_OUT.print("Readers differ on ");
+			SYS_OUT.println(arg);
 		}
 	}
 
