@@ -31,6 +31,7 @@ import util.Warning;
 import view.map.main.FindDialog;
 import view.map.main.SelectTileDialog;
 import view.map.main.ViewerFrame;
+import view.map.main.ZoomListener;
 import view.util.AboutDialog;
 import view.util.ErrorShower;
 import view.util.FilteredFileChooser;
@@ -94,9 +95,17 @@ public final class IOHandler implements ActionListener {
 	/**
 	 * The handler for player-change menu items.
 	 *
-	 * TODO: Combine with this class.
+	 * FIXME: Combine with this class.
 	 */
 	private PlayerChooserHandler pch = null;
+	/**
+	 * The handler for zoom-related items.
+	 *
+	 * TODO: Consider combining with this class.
+	 */
+	@Nullable
+	private final ZoomListener zoomer;
+
 
 	/**
 	 * Handle the "load" menu item.
@@ -212,6 +221,13 @@ public final class IOHandler implements ActionListener {
 			case "reload tree":
 				pch.reload();
 				break;
+			case "zoom in":
+			case "zoom out":
+			case "center":
+				if (zoomer != null) {
+					zoomer.actionPerformed(event);
+				}
+				break;
 			}
 		}
 	}
@@ -257,16 +273,26 @@ public final class IOHandler implements ActionListener {
 	public IOHandler(final IDriverModel map, final JFileChooser fchooser) {
 		model = map;
 		chooser = fchooser;
+		if (model instanceof IViewerModel) {
+			zoomer = new ZoomListener((IViewerModel) model);
+		} else {
+			zoomer = null;
+		}
 	}
 	/**
 	 * Constructor. File-chooser defaults to the current directory filtered to include
-	 * only maps.
+	 * only maps. TODO: delegate to other constructor
 	 *
 	 * @param map      the map model
 	 */
 	public IOHandler(final IDriverModel map) {
 		model = map;
 		chooser = new FilteredFileChooser();
+		if (model instanceof IViewerModel) {
+			zoomer = new ZoomListener((IViewerModel) model);
+		} else {
+			zoomer = null;
+		}
 	}
 
 	/**

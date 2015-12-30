@@ -169,15 +169,9 @@ public class SPMenu extends JMenuBar {
 		nextItem = createMenuItem("Find next", nextKey,
 				nextStroke, "Find the next fixture matching the pattern",
 				handler);
-		if (model instanceof IViewerModel) {
-			zoomListener = new ZoomListener((IViewerModel) model);
-		} else {
-			final ActionListener nullAction = evt -> {
-				// do nothing
-			};
+		if (!(model instanceof IViewerModel)) {
 			gotoTileItem.setEnabled(false);
 			findItem.setEnabled(false);
-			zoomListener = nullAction;
 		}
 		retval.add(gotoTileItem);
 		final InputMap findInput = findItem.getInputMap(WHEN_IN_FOCUSED_WINDOW);
@@ -195,7 +189,7 @@ public class SPMenu extends JMenuBar {
 		final JMenuItem zoomInItem =
 				createMenuItem("Zoom in", KeyEvent.VK_I,
 						plusKey, "Increase the visible size of each tile",
-						zoomListener);
+						handler);
 		final InputMap inputMap =
 				zoomInItem.getInputMap(WHEN_IN_FOCUSED_WINDOW);
 		inputMap.put(createHotkey(KeyEvent.VK_EQUALS),
@@ -207,11 +201,11 @@ public class SPMenu extends JMenuBar {
 		retval.add(zoomInItem);
 		retval.add(createMenuItem("Zoom out", KeyEvent.VK_O,
 				createHotkey(KeyEvent.VK_MINUS),
-				"Decrease the visible size of each tile", zoomListener));
+				"Decrease the visible size of each tile", handler));
 		retval.addSeparator();
 		retval.add(createMenuItem("Center", KeyEvent.VK_C,
 				createHotkey(KeyEvent.VK_C),
-				"Center the view on the selected tile", zoomListener));
+				"Center the view on the selected tile", handler));
 		retval.addSeparator();
 		retval.add(createMenuItem(
 				PlayerChooserHandler.MENU_ITEM, KeyEvent.VK_P, null,
