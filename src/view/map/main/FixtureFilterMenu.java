@@ -1,7 +1,5 @@
 package view.map.main;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,8 +38,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public final class FixtureFilterMenu extends JMenu implements ZOrderFilter,
-		                                                              ActionListener {
+public final class FixtureFilterMenu extends JMenu implements ZOrderFilter {
 	/**
 	 * Map from fixture classes to menu-items representing them.
 	 */
@@ -59,10 +56,10 @@ public final class FixtureFilterMenu extends JMenu implements ZOrderFilter,
 		super("Display ...");
 		setMnemonic(KeyEvent.VK_D);
 		final JMenuItem all = new JMenuItem("All");
-		all.addActionListener(this);
+		all.addActionListener(evt -> selectAll());
 		add(all);
 		final JMenuItem none = new JMenuItem("None");
-		none.addActionListener(this);
+		none.addActionListener(evt -> deselectAll());
 		add(none);
 		addSeparator();
 	}
@@ -100,22 +97,20 @@ public final class FixtureFilterMenu extends JMenu implements ZOrderFilter,
 			return item.isSelected();
 		}
 	}
-
 	/**
-	 * @param evt the event to handle
+	 * Select all items.
 	 */
-	@Override
-	public void actionPerformed(@Nullable final ActionEvent evt) {
-		if (evt == null) {
-			return; // NOPMD
-		} else if ("All".equals(evt.getActionCommand())) {
-			for (final JCheckBoxMenuItem item : mapping.values()) {
-				item.setSelected(true);
-			}
-		} else if ("None".equals(evt.getActionCommand())) {
-			for (final JCheckBoxMenuItem item : mapping.values()) {
-				item.setSelected(false);
-			}
+	private void selectAll() {
+		for (final JCheckBoxMenuItem item : mapping.values()) {
+			item.setSelected(true);
+		}
+	}
+	/**
+	 * Deselect all items.
+	 */
+	private void deselectAll() {
+		for (final JCheckBoxMenuItem item : mapping.values()) {
+			item.setSelected(false);
 		}
 	}
 }
