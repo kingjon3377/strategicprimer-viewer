@@ -9,11 +9,19 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
+import model.listeners.PlayerChangeListener;
+import model.listeners.PlayerChangeSource;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
@@ -35,7 +43,6 @@ import view.map.main.ZoomListener;
 import view.util.AboutDialog;
 import view.util.ErrorShower;
 import view.util.FilteredFileChooser;
-import view.worker.PlayerChooserHandler;
 
 /**
  * An ActionListener to dispatch file I/O.
@@ -59,7 +66,7 @@ import view.worker.PlayerChooserHandler;
  *
  * @author Jonathan Lovelace
  */
-public final class IOHandler implements ActionListener {
+public final class IOHandler implements ActionListener, PlayerChangeSource {
 	/**
 	 * Error message fragment when file not found.
 	 */
@@ -83,6 +90,14 @@ public final class IOHandler implements ActionListener {
 	protected final JFileChooser chooser;
 
 	/**
+	 * The list of player-change listeners.
+	 */
+	private final Collection<PlayerChangeListener> playerChangeListeners = new ArrayList<>();
+	/**
+	 * The current player.
+	 */
+	private Player currentPlayer;
+	/**
 	 * The map model, which needs to be told about newly loaded maps and holds maps to be
 	 * saved.
 	 */
@@ -92,12 +107,6 @@ public final class IOHandler implements ActionListener {
 	 */
 	@Nullable
 	private FindDialog finder = null;
-	/**
-	 * The handler for player-change menu items.
-	 *
-	 * FIXME: Combine with this class.
-	 */
-	private PlayerChooserHandler pch = null;
 	/**
 	 * The handler for zoom-related items.
 	 *
@@ -215,11 +224,25 @@ public final class IOHandler implements ActionListener {
 					SwingUtilities.invokeLater(() -> getFindDialog(source).search());
 				}
 				break;
-			case PlayerChooserHandler.MENU_ITEM:
-				pch.actionPerformed(event);
+			case "Change current player":
+				final Player retval = (Player) JOptionPane.showInputDialog(parent,
+						"Player to view:", "Choose New Player",
+						JOptionPane.PLAIN_MESSAGE, null, playersAsArray(model
+								                                                .getMap()
+								                                                .players()),
+
+						currentPlayer);
+				if (retval != null) {
+					for (final PlayerChangeListener list : playerChangeListeners) {
+						list.playerChanged(currentPlayer, retval);
+					}
+					currentPlayer = retval;
+				}
 				break;
 			case "reload tree":
-				pch.reload();
+				for (final PlayerChangeListener listener : playerChangeListeners) {
+					listener.playerChanged(currentPlayer, currentPlayer);
+				}
 				break;
 			case "zoom in":
 			case "zoom out":
@@ -278,6 +301,7 @@ public final class IOHandler implements ActionListener {
 		} else {
 			zoomer = null;
 		}
+		currentPlayer = model.getMap().getCurrentPlayer();
 	}
 	/**
 	 * Constructor. File-chooser defaults to the current directory filtered to include
@@ -433,34 +457,7 @@ public final class IOHandler implements ActionListener {
 			return null;
 		}
 	}
-	/**
-	 * @param component a component
-	 * @return a FindDialog if the driver model is for a map viewer, or null otherwise
-	 */
-	@Nullable
-	private synchronized PlayerChooserHandler getPlayerChooserHandler(final Component component) {
-		Window window = SwingUtilities.getWindowAncestor(component);
-		if (window instanceof Frame) {
-			if (pch == null) {
-				final PlayerChooserHandler local = new PlayerChooserHandler((Frame) window, model);
-				local.addPlayerChangeListener((old, newPlayer) -> {
-					for (final Player player : model.getMap().players()) {
-						if (player.equals(newPlayer)) {
-							player.setCurrent(true);
-						} else {
-							player.setCurrent(false);
-						}
-					}
-				});
-				pch = local;
-				return local;
-			} else {
-				return NullCleaner.assertNotNull(pch);
-			}
-		} else {
-			return null;
-		}
-	}
+
 	/**
 	 * @return a String representation of the object.
 	 */
@@ -468,5 +465,43 @@ public final class IOHandler implements ActionListener {
 	@Override
 	public String toString() {
 		return "IOHandler";
+	}
+	/**
+	 * @param list a listener to add
+	 */
+	@Override
+	public void addPlayerChangeListener(final PlayerChangeListener list) {
+		playerChangeListeners.add(list);
+	}
+
+	/**
+	 * @param list a listener to remove
+	 */
+	@Override
+	public void removePlayerChangeListener(final PlayerChangeListener list) {
+		playerChangeListeners.remove(list);
+	}
+	/**
+	 * @param players a collection of players
+	 * @return the players as an array
+	 */
+	private static Player[] playersAsArray(final Iterable<Player> players) {
+		if (players instanceof PlayerCollection) {
+			return ((PlayerCollection) players).asArray(); // NOPMD
+		} else {
+			final List<Player> list = StreamSupport.stream(players.spliterator(), false)
+					                          .collect(Collectors.toList());
+			return NullCleaner
+					       .assertNotNull(list.toArray(new Player[list.size()]));
+		}
+	}
+	/**
+	 * Should only be called once per object lifetime. Notify all listeners, as if the
+	 * current player had changed from null to its current value.
+	 */
+	public void notifyListeners() {
+		for (final PlayerChangeListener list : playerChangeListeners) {
+			list.playerChanged(null, currentPlayer);
+		}
 	}
 }

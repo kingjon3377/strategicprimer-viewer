@@ -12,7 +12,6 @@ import javax.swing.KeyStroke;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
-import view.worker.PlayerChooserHandler;
 
 import static view.util.MenuItemCreator.createHotkey;
 import static view.util.MenuItemCreator.createMenuItem;
@@ -207,7 +206,7 @@ public class SPMenu extends JMenuBar {
 				"Center the view on the selected tile", handler));
 		retval.addSeparator();
 		retval.add(createMenuItem(
-				PlayerChooserHandler.MENU_ITEM, KeyEvent.VK_P, null,
+				"Change current player", KeyEvent.VK_P, null,
 				"Mark a player as the current player in the map", handler));
 		return retval;
 	}
@@ -226,7 +225,7 @@ public class SPMenu extends JMenuBar {
 		final JMenu viewtMenu = new JMenu("View");
 		viewtMenu.setMnemonic(KeyEvent.VK_E);
 		viewtMenu.add(createMenuItem(
-				PlayerChooserHandler.MENU_ITEM, KeyEvent.VK_P,
+				"Change current player", KeyEvent.VK_P,
 				createHotkey(KeyEvent.VK_P),
 				"Look at a different player's units and workers", handler));
 		viewtMenu.add(createMenuItem("Reload tree",

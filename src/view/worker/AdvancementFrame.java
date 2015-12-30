@@ -72,15 +72,13 @@ public final class AdvancementFrame extends JFrame {
 		}
 		setMinimumSize(new Dimension(640, 480));
 
-		final PlayerChooserHandler pch = new PlayerChooserHandler(this, source);
-
 		final Player player = source.getMap().getCurrentPlayer();
 		final PlayerLabel plabel = new PlayerLabel("", player, "'s Units:");
-		pch.addPlayerChangeListener(plabel);
+		ioHandler.addPlayerChangeListener(plabel);
 		final IWorkerTreeModel wtmodel = new WorkerTreeModelAlt(player, source);
 		final WorkerTree tree =
 				new WorkerTree(wtmodel, source.getMap().players(), false);
-		pch.addPlayerChangeListener(wtmodel);
+		ioHandler.addPlayerChangeListener(wtmodel);
 		final WorkerCreationListener nwl = new WorkerCreationListener(wtmodel,
 																			 IDFactoryFiller
 																					 .createFactory(
@@ -139,7 +137,7 @@ public final class AdvancementFrame extends JFrame {
 																										null,
 																										null))));
 
-		pch.notifyListeners();
+		ioHandler.notifyListeners();
 
 		for (int i = 0; i < tree.getRowCount(); i++) {
 			tree.expandRow(i);

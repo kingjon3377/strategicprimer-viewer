@@ -26,7 +26,6 @@ import model.map.fixtures.ResourcePile;
 import model.resources.ResourceManagementDriver;
 import view.util.BoxPanel;
 import view.util.ErrorShower;
-import view.worker.PlayerChooserHandler;
 import view.worker.WorkerMenu;
 
 /**
@@ -77,8 +76,7 @@ public class ResourceAddingFrame extends JFrame {
 				new JLabel(String.format("Add resource for %s:", current.getName()));
 		implementLabel =
 				new JLabel(String.format("Add equipment for %s:", current.getName()));
-		final PlayerChooserHandler pch = new PlayerChooserHandler(this, model);
-		pch.addPlayerChangeListener((old, newPlayer) -> {
+		ioh.addPlayerChangeListener((old, newPlayer) -> {
 			if (newPlayer == null) {
 				current = new Player(-1, "");
 			} else {

@@ -121,12 +121,11 @@ public final class WorkerMgmtFrame extends JFrame {
 		final NewUnitDialog newUnitFrame =
 				new NewUnitDialog(model.getMap().getCurrentPlayer(),
 										 IDFactoryFiller.createFactory(model.getMap()));
-		final PlayerChooserHandler pch = new PlayerChooserHandler(this, model);
 		final IWorkerTreeModel wtmodel =
 				new WorkerTreeModelAlt(model.getMap().getCurrentPlayer(), model);
 		final WorkerTree tree =
 				new WorkerTree(wtmodel, model.getMap().players(), true);
-		pch.addPlayerChangeListener(wtmodel);
+		ioHandler.addPlayerChangeListener(wtmodel);
 		newUnitFrame.addNewUnitListener(wtmodel);
 		final boolean onMac = System.getProperty("os.name").toLowerCase()
 									  .startsWith("mac os x");
@@ -148,10 +147,10 @@ public final class WorkerMgmtFrame extends JFrame {
 														  model.getMap()
 																  .getCurrentPlayer(),
 														  keyDesc);
-		pch.addPlayerChangeListener(plabel);
-		pch.addPlayerChangeListener(newUnitFrame);
+		ioHandler.addPlayerChangeListener(plabel);
+		ioHandler.addPlayerChangeListener(newUnitFrame);
 		final OrdersPanel ordersPanel = new OrdersPanel(model);
-		pch.addPlayerChangeListener(ordersPanel);
+		ioHandler.addPlayerChangeListener(ordersPanel);
 		ordersPanel.playerChanged(null, model.getMap().getCurrentPlayer());
 		tree.addTreeSelectionListener(ordersPanel);
 		final Component outer = this;
@@ -214,7 +213,7 @@ public final class WorkerMgmtFrame extends JFrame {
 				});
 		ToolTipManager.sharedInstance().registerComponent(report);
 		report.addMouseListener(new reportMouseHandler(report, model, ioHandler));
-		pch.addPlayerChangeListener(reportUpdater);
+		ioHandler.addPlayerChangeListener(reportUpdater);
 		model.addMapChangeListener(reportUpdater);
 		final MemberDetailPanel mdp = new MemberDetailPanel();
 		tree.addUnitMemberListener(mdp);
