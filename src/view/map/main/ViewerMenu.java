@@ -39,7 +39,7 @@ public final class ViewerMenu extends SPMenu {
 	public ViewerMenu(final IOHandler handler, final JFrame parent,
 	                  final IViewerModel model) {
 		add(createFileMenu(handler, parent, model));
-		add(createMapMenu(handler, parent, model));
+		add(createMapMenu(handler, model));
 		addDisabled(createViewMenu(handler, handler));
 		add(new WindowMenu(parent));
 	}

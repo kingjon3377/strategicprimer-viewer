@@ -12,7 +12,6 @@ import javax.swing.KeyStroke;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
-import view.map.main.ZoomListener;
 import view.worker.PlayerChooserHandler;
 
 import static view.util.MenuItemCreator.createHotkey;
@@ -147,8 +146,8 @@ public class SPMenu extends JMenuBar {
 	 * @param handler the menu-item-handler
 	 * @return the menu created
 	 */
-	protected static JMenu createMapMenu(final IOHandler handler, final JFrame parent,
-										 final IDriverModel model) {
+	protected static JMenu createMapMenu(final IOHandler handler,
+	                                     final IDriverModel model) {
 		final JMenu retval = new JMenu("Map");
 		retval.setMnemonic(KeyEvent.VK_M);
 		final JMenuItem gotoTileItem;
