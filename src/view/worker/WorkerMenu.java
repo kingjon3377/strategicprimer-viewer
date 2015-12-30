@@ -2,7 +2,6 @@ package view.worker;
 
 import com.bric.window.WindowMenu;
 import controller.map.misc.IOHandler;
-import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import model.misc.IDriverModel;
 import view.util.SPMenu;
@@ -41,10 +40,10 @@ public final class WorkerMenu extends SPMenu {
 	 * @param teh     a handler to listen for "expand all" etc.
 	 */
 	public WorkerMenu(final IOHandler handler, final JFrame parent,
-	                  final IDriverModel model, final ActionListener teh) {
+	                  final IDriverModel model) {
 		add(createFileMenu(handler, parent, model));
 		addDisabled(createMapMenu(handler, model));
-		add(createViewMenu(handler, teh));
+		add(createViewMenu(handler));
 		add(new WindowMenu(parent));
 	}
 }

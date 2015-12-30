@@ -43,6 +43,7 @@ import view.map.main.ZoomListener;
 import view.util.AboutDialog;
 import view.util.ErrorShower;
 import view.util.FilteredFileChooser;
+import view.util.TreeExpansionOrderListener;
 
 /**
  * An ActionListener to dispatch file I/O.
@@ -93,6 +94,10 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 * The list of player-change listeners.
 	 */
 	private final Collection<PlayerChangeListener> playerChangeListeners = new ArrayList<>();
+	/**
+	 * The list of tree-expansion-order listeners.
+	 */
+	private final Collection<TreeExpansionOrderListener> treeExpansionListeners = new ArrayList<>();
 	/**
 	 * The current player.
 	 */
@@ -250,6 +255,15 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 				if (zoomer != null) {
 					zoomer.actionPerformed(event);
 				}
+				break;
+			case "expand all":
+				treeExpansionListeners.forEach(TreeExpansionOrderListener::expandAll);
+				break;
+			case "collapse all":
+				treeExpansionListeners.forEach(TreeExpansionOrderListener::collapseAll);
+				break;
+			case "expand unit kinds":
+				treeExpansionListeners.forEach(listener -> listener.expandSome(2));
 				break;
 			}
 		}
@@ -503,5 +517,17 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 		for (final PlayerChangeListener list : playerChangeListeners) {
 			list.playerChanged(null, currentPlayer);
 		}
+	}
+	/**
+	 * @param list the listener to add
+	 */
+	public void addTreeExpansionListener(final TreeExpansionOrderListener list) {
+		treeExpansionListeners.add(list);
+	}
+	/**
+	 * @param list the listener to remove
+	 */
+	public void removeTreeExpansionListener(final TreeExpansionOrderListener list) {
+		treeExpansionListeners.remove(list);
 	}
 }

@@ -220,8 +220,7 @@ public class SPMenu extends JMenuBar {
 	 *            to
 	 * @return the "edit" menu
 	 */
-	protected static JMenu createViewMenu(final IOHandler handler,
-										  final ActionListener al) {
+	protected static JMenu createViewMenu(final IOHandler handler) {
 		final JMenu viewtMenu = new JMenu("View");
 		viewtMenu.setMnemonic(KeyEvent.VK_E);
 		viewtMenu.add(createMenuItem(
@@ -232,12 +231,12 @@ public class SPMenu extends JMenuBar {
 				KeyEvent.VK_R, createHotkey(KeyEvent.VK_R),
 				"Refresh the view of the workers", handler));
 		viewtMenu.add(createMenuItem("Expand All", KeyEvent.VK_X, null,
-				"Expand all nodes in the unit tree", al));
+				"Expand all nodes in the unit tree", handler));
 		viewtMenu.add(
 				createMenuItem("Expand Unit Kinds", KeyEvent.VK_K, null,
-						"Expand all unit kinds to show the units", al));
+						"Expand all unit kinds to show the units", handler));
 		viewtMenu.add(createMenuItem("Collapse All", KeyEvent.VK_C, null,
-				"Collapse all nodes in the unit tree", al));
+				"Collapse all nodes in the unit tree", handler));
 		return viewtMenu;
 	}
 

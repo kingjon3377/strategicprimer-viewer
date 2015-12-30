@@ -4,7 +4,9 @@ import com.bric.window.WindowList;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
 import controller.map.report.ReportGenerator;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -18,7 +20,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
-import javax.swing.*;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
+import javax.swing.WindowConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -261,9 +275,8 @@ public final class WorkerMgmtFrame extends JFrame {
 						                                                    new JLabel(RPT_HDR),
 						                                                    mdp, null,
 						                                                    null)));
-
-		setJMenuBar(new WorkerMenu(ioHandler, this, model,
-										  new TreeExpansionHandler(tree)));
+		ioHandler.addTreeExpansionListener(new TreeExpansionHandler(tree));
+		setJMenuBar(new WorkerMenu(ioHandler, this, model));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		for (int i = 0; i < tree.getRowCount(); i++) {
 			tree.expandRow(i);

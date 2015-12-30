@@ -1,11 +1,8 @@
 package view.worker;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JTree;
 import javax.swing.tree.TreePath;
-import model.workermgmt.WorkerTreeModelAlt.KindNode;
-import org.eclipse.jdt.annotation.Nullable;
+import view.util.TreeExpansionOrderListener;
 
 /**
  * A class to handle "expand all", "collapse all", etc. This is part of the Strategic
@@ -27,7 +24,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public final class TreeExpansionHandler implements ActionListener {
+public final class TreeExpansionHandler implements TreeExpansionOrderListener {
 	/**
 	 * The tree we're handling
 	 */
@@ -41,46 +38,39 @@ public final class TreeExpansionHandler implements ActionListener {
 	}
 
 	/**
-	 * Handle menu items.
-	 *
-	 * @param evt the event to handle
-	 */
-	@Override
-	public void actionPerformed(@Nullable final ActionEvent evt) {
-		if (evt == null) {
-			return;
-		} else if ("Expand All".equals(evt.getActionCommand())) {
-			for (int i = 0; i < tree.getRowCount(); i++) {
-				tree.expandRow(i);
-			}
-		} else if ("Collapse All".equals(evt.getActionCommand())) {
-			int i = tree.getRowCount() - 1;
-			while (i >= 0) {
-				if (i < tree.getRowCount()) {
-					tree.collapseRow(i);
-				}
-				i--;
-			}
-		} else if ("Expand Unit Kinds".equals(evt.getActionCommand()) &&
-				           (tree instanceof WorkerTree)) {
-			for (int i = 0; i < tree.getRowCount(); i++) {
-				final TreePath path = tree.getPathForRow(i);
-				if (path == null) {
-					continue;
-				} else if ((path.getLastPathComponent() instanceof String) ||
-						           (path.getLastPathComponent() instanceof KindNode)) {
-					tree.expandRow(i);
-				}
-			}
-		}
-	}
-
-	/**
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "TreeExpansionHandler";
+	}
+
+	@Override
+	public void expandAll() {
+		for (int i = 0; i < tree.getRowCount(); i++) {
+			tree.expandRow(i);
+		}
+	}
+
+	@Override
+	public void collapseAll() {
+		int i = tree.getRowCount() - 1;
+		while (i >= 0) {
+			if (i < tree.getRowCount()) {
+				tree.collapseRow(i);
+			}
+			i--;
+		}
+	}
+
+	@Override
+	public void expandSome(final int levels) {
+		for (int i = 0; i < tree.getRowCount(); i++) {
+			TreePath path = tree.getPathForRow(i);
+			if (path != null && path.getPathCount() <= levels) {
+				tree.expandRow(i);
+			}
+		}
 	}
 }

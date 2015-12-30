@@ -40,7 +40,7 @@ public final class ViewerMenu extends SPMenu {
 	                  final IViewerModel model) {
 		add(createFileMenu(handler, parent, model));
 		add(createMapMenu(handler, model));
-		addDisabled(createViewMenu(handler, handler));
+		addDisabled(createViewMenu(handler));
 		add(new WindowMenu(parent));
 	}
 

@@ -136,7 +136,7 @@ public class ResourceAddingFrame extends JFrame {
 		secondPanel.add(implButton);
 		add(secondPanel);
 		add(Box.createVerticalGlue());
-		setJMenuBar(new WorkerMenu(ioh, this, model, ioh));
+		setJMenuBar(new WorkerMenu(ioh, this, model));
 		pack();
 	}
 

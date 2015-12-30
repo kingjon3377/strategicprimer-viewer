@@ -40,7 +40,7 @@ public final class ExplorationMenu extends SPMenu {
 	                       final IExplorationModel model, final JFrame parent) {
 		add(createFileMenu(ioh, parent, model));
 		addDisabled(createMapMenu(ioh, model));
-		addDisabled(createViewMenu(ioh, ioh));
+		addDisabled(createViewMenu(ioh));
 		add(new WindowMenu(parent));
 	}
 }
