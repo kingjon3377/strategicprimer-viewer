@@ -159,7 +159,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			if (source == null) {
 				parent = null;
 			} else {
-				Window temp = SwingUtilities.getWindowAncestor(source);
+				final Window temp = SwingUtilities.getWindowAncestor(source);
 				if (temp instanceof Frame) {
 					parent = (Frame) temp;
 				} else {
@@ -461,7 +461,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 */
 	@Nullable
 	private synchronized FindDialog getFindDialog(final Component component) {
-		Window window = SwingUtilities.getWindowAncestor(component);
+		final Window window = SwingUtilities.getWindowAncestor(component);
 		if (model instanceof IViewerModel && window instanceof Frame) {
 			if (finder == null) {
 				final FindDialog local = new FindDialog((Frame) window, (IViewerModel) model);
