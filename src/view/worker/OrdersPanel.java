@@ -30,7 +30,6 @@ import model.workermgmt.IWorkerModel;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EmptyIterator;
 import util.NullCleaner;
-import view.util.ApplyButtonHandler;
 import view.util.Applyable;
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
@@ -90,7 +89,6 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	 * @param wmodel the worker model
 	 */
 	public OrdersPanel(final IWorkerModel wmodel) {
-		final ApplyButtonHandler handler = new ApplyButtonHandler(this::apply, this::revert);
 		// Can't use the multi-arg constructor, because of the references to
 		// 'this' below.
 		final boolean onMac = System.getProperty("os.name").toLowerCase()
@@ -111,9 +109,9 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 										  + "D)")).setCenter(new JScrollPane(area))
 				.setPageEnd(new BorderedPanel()
 									.setLineStart(new ListenedButton("Apply",
-																			handler))
+																			evt -> apply()))
 									.setLineEnd(
-											new ListenedButton("Revert", handler)));
+											new ListenedButton("Revert", evt -> revert())));
 		area.addKeyListener(new KeyAdapter() {
 			private boolean isModifierPressed(final KeyEvent evt) {
 				if (onMac) {
