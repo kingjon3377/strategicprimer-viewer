@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 import model.listeners.PlayerChangeListener;
@@ -155,17 +156,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			// isn't annotated
 			final Component source = eventSource(event.getSource());
 			@Nullable
-			final Frame parent;
-			if (source == null) {
-				parent = null;
-			} else {
-				final Window temp = SwingUtilities.getWindowAncestor(source);
-				if (temp instanceof Frame) {
-					parent = (Frame) temp;
-				} else {
-					parent = null;
-				}
-			}
+			final Frame parent = getContainingFrame(source);
 			switch(event.getActionCommand().toLowerCase()) {
 			case "load":
 				handleLoadMenu(source);
@@ -458,10 +449,11 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 */
 	@Nullable
 	private synchronized FindDialog getFindDialog(final Component component) {
-		final Window window = SwingUtilities.getWindowAncestor(component);
+		final Window window = getContainingFrame(component);
 		if ((model instanceof IViewerModel) && (window instanceof Frame)) {
 			if (finder == null) {
-				final FindDialog local = new FindDialog((Frame) window, (IViewerModel) model);
+				final FindDialog local =
+						new FindDialog((Frame) window, (IViewerModel) model);
 				finder = local;
 				return local;
 			} else {
@@ -529,5 +521,23 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 */
 	public void removeTreeExpansionListener(final TreeExpansionOrderListener list) {
 		treeExpansionListeners.remove(list);
+	}
+	/**
+	 * @param component a component
+	 * @return the frame containing it, if any
+	 */
+	@Nullable
+	private Frame getContainingFrame(final Component component) {
+		Component temp = component;
+		while (temp != null) {
+			if (temp instanceof Frame) {
+				return (Frame) temp;
+			} else if (temp instanceof JPopupMenu) {
+				temp = ((JPopupMenu) temp).getInvoker();
+			} else {
+				temp = temp.getParent();
+			}
+		}
+		return null;
 	}
 }
