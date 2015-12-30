@@ -213,11 +213,10 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	}
 
 	/**
-	 * @param zero ignored
 	 * @return a copy of this collection
 	 */
 	@Override
-	public IMutablePlayerCollection copy(final boolean zero) {
+	public IMutablePlayerCollection copy() {
 		final IMutablePlayerCollection retval = new PlayerCollection();
 		forEach(retval::add);
 		return retval;

@@ -672,7 +672,7 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public IMapNG copy(final boolean zero) {
 		final IMutableMapNG retval =
-				new SPMapNG(dimensions(), playerCollection.copy(false),
+				new SPMapNG(dimensions(), playerCollection.copy(),
 								   getCurrentTurn());
 		for (final Point point : locations()) {
 			retval.setBaseTerrain(point, getBaseTerrain(point));
