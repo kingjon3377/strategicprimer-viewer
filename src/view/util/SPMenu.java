@@ -214,10 +214,6 @@ public class SPMenu extends JMenuBar {
 	/**
 	 * Create the "view" menu.
 	 *
-	 * FIXME: Figure out how to make IOHandler handle tree-expansion menu items
-	 *
-	 * @param al  the object to expand and collapse rows of the tree when the user says
-	 *            to
 	 * @return the "edit" menu
 	 */
 	protected static JMenu createViewMenu(final IOHandler handler) {
