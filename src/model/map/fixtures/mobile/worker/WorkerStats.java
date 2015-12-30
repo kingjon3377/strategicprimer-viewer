@@ -92,10 +92,9 @@ public class WorkerStats {
 	}
 
 	/**
-	 * @param zero ignored, as all our information is "essential"
 	 * @return a copy of this
 	 */
-	public WorkerStats copy(final boolean zero) {
+	public WorkerStats copy() {
 		return new WorkerStats(hp, maxHP, strength, dex, con, intel, wis, cha);
 	}
 

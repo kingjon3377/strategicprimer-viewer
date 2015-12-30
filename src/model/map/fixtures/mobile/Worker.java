@@ -350,7 +350,7 @@ public class Worker implements IWorker {
 			final Worker retval = new Worker(name, race, id);
 			final WorkerStats localStats = stats;
 			if (localStats != null) {
-				retval.setStats(localStats.copy(false));
+				retval.setStats(localStats.copy());
 			}
 			retval.setImage(image);
 			for (final IJob job : this) {
