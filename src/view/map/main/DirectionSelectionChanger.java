@@ -2,8 +2,12 @@ package view.map.main;
 
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import model.map.MapDimensions;
+import model.map.Point;
 import model.map.PointFactory;
 import model.viewer.IViewerModel;
+import model.viewer.TileViewSize;
+import model.viewer.VisibleDimensions;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -175,6 +179,19 @@ public final class DirectionSelectionChanger implements MouseWheelListener {
 			return;
 		} else if (evt.isControlDown() || evt.isMetaDown()) {
 			final int count = evt.getWheelRotation();
+			Point oldSel = model.getSelectedPoint();
+			final java.awt.Point eventPoint = evt.getPoint();
+			final VisibleDimensions dimensions = model.getDimensions();
+			final MapDimensions mapDim = model.getMapDimensions();
+			final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(),
+					mapDim.getVersion());
+			final Point point = PointFactory.point((eventPoint.y / tileSize)
+					                                       + dimensions.getMinimumRow(),
+					(eventPoint.x / tileSize)
+							+ dimensions.getMinimumCol());
+			if ((point.row < mapDim.getRows()) && (point.col < mapDim.getColumns())) {
+				model.setSelection(point);
+			}
 			if (count < 0) {
 				for (int i = 0; i > count; i--) {
 					model.zoomIn();
@@ -184,6 +201,7 @@ public final class DirectionSelectionChanger implements MouseWheelListener {
 					model.zoomOut();
 				}
 			}
+			model.setSelection(oldSel);
 		} else if (evt.isShiftDown()) {
 			// Scroll sideways on Shift+scroll
 			final int count = evt.getWheelRotation();
