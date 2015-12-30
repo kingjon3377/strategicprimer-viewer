@@ -133,8 +133,7 @@ public final class AppChooserFrame extends JFrame {
 	 *
 	 * @author Jonathan Lovelace
 	 */
-	private static final class AppChoiceListenerArgs implements ActionListener,
-																		Runnable {
+	private static final class AppChoiceListenerArgs implements ActionListener {
 		/**
 		 * Logger for the inner class.
 		 */
@@ -190,16 +189,10 @@ public final class AppChooserFrame extends JFrame {
 				ErrorShower.showErrorDialog(outer, message);
 				return;
 			}
-			SwingUtilities.invokeLater(this);
-		}
-
-		/**
-		 * Close the frame.
-		 */
-		@Override
-		public void run() {
-			outer.setVisible(false);
-			outer.dispose();
+			SwingUtilities.invokeLater(() -> {
+				outer.setVisible(false);
+				outer.dispose();
+			});
 		}
 
 		/**
@@ -218,7 +211,7 @@ public final class AppChooserFrame extends JFrame {
 	 * @author Jonathan Lovelace
 	 */
 	private static final class AppChoiceListenerDriverModel
-			implements ActionListener, Runnable {
+			implements ActionListener {
 		/**
 		 * Logger for the inner class.
 		 */
@@ -274,16 +267,10 @@ public final class AppChooserFrame extends JFrame {
 				ErrorShower.showErrorDialog(outer, message);
 				return;
 			}
-			SwingUtilities.invokeLater(this);
-		}
-
-		/**
-		 * Close the frame.
-		 */
-		@Override
-		public void run() {
-			outer.setVisible(false);
-			outer.dispose();
+			SwingUtilities.invokeLater(() -> {
+				outer.setVisible(false);
+				outer.dispose();
+			});
 		}
 
 		/**
