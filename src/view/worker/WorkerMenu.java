@@ -35,9 +35,7 @@ public final class WorkerMenu extends SPMenu {
 	 * @param handler the I/O handler to handle I/O related items
 	 * @param parent  the window this is to be attached to, which should close on
 	 *                "Close".
-	 * @param pch     a handler to listen to the 'change player' menu item.
 	 * @param model   the current driver model
-	 * @param teh     a handler to listen for "expand all" etc.
 	 */
 	public WorkerMenu(final IOHandler handler, final JFrame parent,
 	                  final IDriverModel model) {
