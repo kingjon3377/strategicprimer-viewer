@@ -461,30 +461,29 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws SPFormatException  on SP format error
 	 * @throws XMLStreamException on XML format error
 	 */
-	protected <T> void assertMissingPropertyDeserialization(
+	protected void assertMissingPropertyDeserialization(
 																   final String message,
-																   final T expected,
+																   final Object expected,
 																   final String xml,
-																   final Class<T> type,
 																   final String property)
 			throws XMLStreamException, SPFormatException {
 		try (StringReader sreader = new StringReader(xml)) {
 			assertEquals(message, expected, oldReader.readXML(FAKE_FILENAME, sreader,
-					type, new Warning(Action.Ignore)));
+					expected.getClass(), new Warning(Action.Ignore)));
 		}
 		try (StringReader sreader = new StringReader(xml)) {
 			assertEquals(message, expected, oldReader.readXML(FAKE_FILENAME, sreader,
-					type, new Warning(Action.Ignore)));
+					expected.getClass(), new Warning(Action.Ignore)));
 		}
 		try (StringReader sreader = new StringReader(xml)) {
 			assertEquals(message, expected, newReader.readXML(FAKE_FILENAME, sreader,
-					type, new Warning(Action.Ignore)));
+					expected.getClass(), new Warning(Action.Ignore)));
 		}
 		try (StringReader sreader = new StringReader(xml)) {
 			assertEquals(message, expected, newReader.readXML(FAKE_FILENAME, sreader,
-					type, new Warning(Action.Ignore)));
+					expected.getClass(), new Warning(Action.Ignore)));
 		}
-		assertMissingProperty(xml, type, property, true);
+		assertMissingProperty(xml, expected.getClass(), property, true);
 	}
 
 	/**

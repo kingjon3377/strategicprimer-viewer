@@ -286,12 +286,10 @@ public final class TestMoreFixtureSerialization extends
 														"elf");
 		assertMissingPropertyDeserialization(
 				"Village serialization with no or empty name does The Right Thing",
-				thirdVillage, createSerializedForm(thirdVillage, true), Village.class,
-				NAME_PROPERTY);
+				thirdVillage, createSerializedForm(thirdVillage, true), NAME_PROPERTY);
 		assertMissingPropertyDeserialization(
 				"Village serialization with no or empty name does The Right Thing",
-				thirdVillage, createSerializedForm(thirdVillage, false), Village.class,
-				NAME_PROPERTY);
+				thirdVillage, createSerializedForm(thirdVillage, false), NAME_PROPERTY);
 		assertUnwantedChild("<village status=\"active\"><village /></village>",
 				Village.class, false);
 		assertMissingProperty("<village />", Village.class, STATUS_PROPERTY,
@@ -355,26 +353,20 @@ public final class TestMoreFixtureSerialization extends
 		assertSerialization("Deserialize unit with no kind properly",
 				new Unit(new Player(2, ""), "", NAME_PROPERTY, 2),
 				new Warning(Action.Ignore));
-		assertMissingPropertyDeserialization(
-				"Deserialize unit with no owner properly", new Unit(new Player(
-																					  -1,
-																					  ""),
-																		   "kind",
-																		   "unitThree",
-																		   3),
-				"<unit kind=\"kind\" name=\"unitThree\" id=\"3\" />",
-				Unit.class, OWNER_PROPERTY);
+		assertMissingPropertyDeserialization("Deserialize unit with no owner properly",
+				new Unit(new Player(-1, ""), "kind", "unitThree", 3),
+				"<unit kind=\"kind\" name=\"unitThree\" id=\"3\" />", OWNER_PROPERTY);
 		final Unit fourthUnit = new Unit(new Player(3, ""), "unitKind", "", 4);
 		assertMissingPropertyDeserialization(
 				"Deserialize unit with no name properly", fourthUnit,
-				createSerializedForm(fourthUnit, true), Unit.class, NAME_PROPERTY);
+				createSerializedForm(fourthUnit, true), NAME_PROPERTY);
 		assertMissingPropertyDeserialization(
 				"Deserialize unit with no name properly", fourthUnit,
-				createSerializedForm(fourthUnit, false), Unit.class, NAME_PROPERTY);
+				createSerializedForm(fourthUnit, false), NAME_PROPERTY);
 		assertMissingPropertyDeserialization(
 				"Deserialize unit with empty name properly", fourthUnit,
 				"<unit owner=\"3\" kind=\"unitKind\" name=\"\" id=\"4\" />",
-				Unit.class, NAME_PROPERTY);
+				NAME_PROPERTY);
 		assertMissingProperty(
 				"<unit owner=\"1\" kind=\"kind\" name=\"name\" />", Unit.class,
 				"id", true);
