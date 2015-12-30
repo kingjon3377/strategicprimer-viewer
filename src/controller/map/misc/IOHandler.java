@@ -209,6 +209,9 @@ public final class IOHandler implements ActionListener {
 			case PlayerChooserHandler.MENU_ITEM:
 				pch.actionPerformed(event);
 				break;
+			case "reload tree":
+				pch.reload();
+				break;
 			}
 		}
 	}

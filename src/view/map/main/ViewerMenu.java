@@ -5,7 +5,6 @@ import controller.map.misc.IOHandler;
 import javax.swing.JFrame;
 import model.viewer.IViewerModel;
 import view.util.SPMenu;
-import view.worker.PlayerChooserHandler;
 
 /**
  * A class encapsulating the menus.
@@ -41,7 +40,7 @@ public final class ViewerMenu extends SPMenu {
 	                  final IViewerModel model) {
 		add(createFileMenu(handler, parent, model));
 		add(createMapMenu(handler, parent, model));
-		addDisabled(createViewMenu(handler, new PlayerChooserHandler(parent, model), handler));
+		addDisabled(createViewMenu(handler, handler));
 		add(new WindowMenu(parent));
 	}
 

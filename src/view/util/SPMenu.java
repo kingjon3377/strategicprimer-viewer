@@ -227,7 +227,7 @@ public class SPMenu extends JMenuBar {
 	 *            to
 	 * @return the "edit" menu
 	 */
-	protected static JMenu createViewMenu(final IOHandler handler, final PlayerChooserHandler pch,
+	protected static JMenu createViewMenu(final IOHandler handler,
 										  final ActionListener al) {
 		final JMenu viewtMenu = new JMenu("View");
 		viewtMenu.setMnemonic(KeyEvent.VK_E);
@@ -237,7 +237,7 @@ public class SPMenu extends JMenuBar {
 				"Look at a different player's units and workers", handler));
 		viewtMenu.add(createMenuItem("Reload tree",
 				KeyEvent.VK_R, createHotkey(KeyEvent.VK_R),
-				"Refresh the view of the workers", e -> pch.reload()));
+				"Refresh the view of the workers", handler));
 		viewtMenu.add(createMenuItem("Expand All", KeyEvent.VK_X, null,
 				"Expand all nodes in the unit tree", al));
 		viewtMenu.add(

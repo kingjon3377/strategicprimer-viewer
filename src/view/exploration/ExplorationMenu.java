@@ -5,7 +5,6 @@ import controller.map.misc.IOHandler;
 import javax.swing.JFrame;
 import model.exploration.IExplorationModel;
 import view.util.SPMenu;
-import view.worker.PlayerChooserHandler;
 
 /**
  * Menus for the exploration GUI.
@@ -41,7 +40,7 @@ public final class ExplorationMenu extends SPMenu {
 	                       final IExplorationModel model, final JFrame parent) {
 		add(createFileMenu(ioh, parent, model));
 		addDisabled(createMapMenu(ioh, parent, model));
-		addDisabled(createViewMenu(ioh, new PlayerChooserHandler(parent, model), ioh));
+		addDisabled(createViewMenu(ioh, ioh));
 		add(new WindowMenu(parent));
 	}
 }

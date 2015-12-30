@@ -263,7 +263,7 @@ public final class WorkerMgmtFrame extends JFrame {
 						                                                    mdp, null,
 						                                                    null)));
 
-		setJMenuBar(new WorkerMenu(ioHandler, this, pch, model,
+		setJMenuBar(new WorkerMenu(ioHandler, this, model,
 										  new TreeExpansionHandler(tree)));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		for (int i = 0; i < tree.getRowCount(); i++) {

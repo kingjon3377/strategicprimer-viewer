@@ -41,11 +41,10 @@ public final class WorkerMenu extends SPMenu {
 	 * @param teh     a handler to listen for "expand all" etc.
 	 */
 	public WorkerMenu(final IOHandler handler, final JFrame parent,
-	                  final PlayerChooserHandler pch, final IDriverModel model,
-	                  final ActionListener teh) {
+	                  final IDriverModel model, final ActionListener teh) {
 		add(createFileMenu(handler, parent, model));
 		addDisabled(createMapMenu(handler, parent, model));
-		add(createViewMenu(handler, pch, teh));
+		add(createViewMenu(handler, teh));
 		add(new WindowMenu(parent));
 	}
 }
