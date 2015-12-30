@@ -9,6 +9,7 @@ import controller.map.misc.MapReaderAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.util.Collection;
@@ -473,9 +474,10 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 			throws IOException {
 		final int count = cli.inputNumber("How many workers to generate? ");
 		final String filename = cli.inputString("Filename to load names from: ");
-		final List<String> names =
-				Files.readAllLines(FileSystems.getDefault().getPath(filename),
-						Charset.defaultCharset());
+		final List<String> names;
+		try (final FileSystem fsys = FileSystems.getDefault()) {
+			names = Files.readAllLines(fsys.getPath(filename), Charset.defaultCharset());
+		}
 		for (int i = 0; i < count; i++) {
 			final Worker worker =
 					createWorkerFromNameFile(
