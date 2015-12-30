@@ -73,6 +73,9 @@ public final class CompactReaderAdapter {
 	/**
 	 * Parse an object from XML.
 	 *
+	 * FIXME: We should switch on the element's tag, not the expected type, which we'd
+	 * like to drop entirely.
+	 *
 	 * @param <T>       the type the caller expects
 	 * @param type      the type the caller expects
 	 * @param element   the element we're immediately dealing with

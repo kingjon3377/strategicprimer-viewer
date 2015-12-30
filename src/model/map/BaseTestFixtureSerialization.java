@@ -505,29 +505,27 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @param message  the message to pass to JUnit
 	 * @param expected the object we expect the deserialized form to equal
 	 * @param xml      the serialized form
-	 * @param type     the type of object
 	 * @throws SPFormatException  on SP format error
 	 * @throws XMLStreamException on XML format error
 	 */
-	protected <T> void assertForwardDeserialization(final String message,
-													final T expected, final String xml,
-													final Class<T> type)
+	protected void assertForwardDeserialization(final String message,
+	                                            final Object expected, final String xml)
 			throws XMLStreamException, SPFormatException {
 		try (StringReader sreader = new StringReader(xml)) {
 			assertEquals(message, expected, oldReader.readXML(FAKE_FILENAME, sreader,
-					type, new Warning(Action.Die)));
+					expected.getClass(), new Warning(Action.Die)));
 		}
 		try (StringReader sreader = new StringReader(xml)) {
 			assertEquals(message, expected, oldReader.readXML(FAKE_FILENAME, sreader,
-					type, new Warning(Action.Die)));
+					expected.getClass(), new Warning(Action.Die)));
 		}
 		try (StringReader sreader = new StringReader(xml)) {
 			assertEquals(message, expected, newReader.readXML(FAKE_FILENAME, sreader,
-					type, new Warning(Action.Die)));
+					expected.getClass(), new Warning(Action.Die)));
 		}
 		try (StringReader sreader = new StringReader(xml)) {
 			assertEquals(message, expected, newReader.readXML(FAKE_FILENAME, sreader,
-					type, new Warning(Action.Die)));
+					expected.getClass(), new Warning(Action.Die)));
 		}
 	}
 

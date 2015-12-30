@@ -434,8 +434,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testInclude() throws XMLStreamException, SPFormatException {
 		assertForwardDeserialization("Reading Ogre via <include>", new Ogre(1),
-				"<include file=\"string:&lt;ogre id=&quot;1&quot; /&gt;\" />",
-				Ogre.class);
+				"<include file=\"string:&lt;ogre id=&quot;1&quot; /&gt;\" />");
 	}
 
 	/**

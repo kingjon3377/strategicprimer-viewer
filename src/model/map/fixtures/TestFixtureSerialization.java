@@ -93,14 +93,12 @@ public final class TestFixtureSerialization extends
 		assertMissingProperty("<animal />", Animal.class, KIND_PROPERTY, false);
 		assertForwardDeserialization("Forward-looking XML in re talking, reflection",
 				new Animal("animalFive", false, false, "wild", 3),
-				"<animal kind=\"animalFive\" talking=\"false\" id=\"3\" />",
-				Animal.class);
+				"<animal kind=\"animalFive\" talking=\"false\" id=\"3\" />");
 		assertMissingProperty("<animal kind=\"animalSix\" talking=\"true\" />",
 				Animal.class, "id", true);
 		assertForwardDeserialization("Explicit default status of animal",
 				new Animal("animalSeven", false, false, "wild", 4),
-				"<animal kind=\"animalSeven\" status=\"wild\" id=\"4\" />",
-				Animal.class);
+				"<animal kind=\"animalSeven\" status=\"wild\" id=\"4\" />");
 		assertImageSerialization("Animal image property is preserved", fourthAnimal);
 	}
 
