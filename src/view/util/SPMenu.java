@@ -4,7 +4,6 @@ import controller.map.misc.IOHandler;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import javax.swing.InputMap;
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -46,16 +45,12 @@ public class SPMenu extends JMenuBar {
 	 * FIXME: Any menu items not handled by the IOHandler should be handled there.
 	 *
 	 * @param handler the class to handle I/O related menu items
-	 * @param parent  the menu-bar's parent window, which should be the window closed
-	 *                   when
-	 *                the user selects "close"
 	 * @param model   the current driver model; only its type is used, to determine which
 	 *                menu items to disable.
 	 * @return the file menu
 	 */
 	protected static JMenu createFileMenu(final IOHandler handler,
-										  final JFrame parent, final IDriverModel
-																	   model) {
+	                                      final IDriverModel model) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		final JMenuItem newItem = createMenuItem("New", KeyEvent.VK_N,
@@ -140,7 +135,6 @@ public class SPMenu extends JMenuBar {
 	 * takes any IDriverModel, because it's expected that apps where none of that makes
 	 * sense will show but disable the menu.
 	 *
-	 * @param parent the menu-bar's parent window
 	 * @param model  the driver model
 	 * @param handler the menu-item-handler
 	 * @return the menu created

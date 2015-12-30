@@ -41,7 +41,7 @@ public final class WorkerMenu extends SPMenu {
 	 */
 	public WorkerMenu(final IOHandler handler, final JFrame parent,
 	                  final IDriverModel model) {
-		add(createFileMenu(handler, parent, model));
+		add(createFileMenu(handler, model));
 		addDisabled(createMapMenu(handler, model));
 		add(createViewMenu(handler));
 		add(new WindowMenu(parent));
