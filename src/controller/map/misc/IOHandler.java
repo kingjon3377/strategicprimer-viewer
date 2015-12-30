@@ -291,17 +291,14 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 * map.
 	 */
 	private void startNewViewerWindow() {
-		SwingUtilities.invokeLater(new WindowThread(
-														   new ViewerFrame(new
-																				   ViewerModel(new SPMapNG(model
-																											   .getMapDimensions(),
-																											  new PlayerCollection(),
-																											  model
-																													  .getMap()
-																													  .getCurrentTurn()),
+		final ViewerModel nmodel = new ViewerModel(new SPMapNG(model.getMapDimensions(),
+				                                                      new PlayerCollection(),
+				                                                      model.getMap()
+						                                                      .getCurrentTurn()),
 
-																									  new File("")),
-																				  this)));
+				                                          new File(""));
+		SwingUtilities.invokeLater(
+				() -> new ViewerFrame(nmodel, new IOHandler(nmodel)).setVisible(true));
 	}
 
 	/**

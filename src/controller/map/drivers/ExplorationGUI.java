@@ -3,7 +3,6 @@ package controller.map.drivers;
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
-import controller.map.misc.WindowThread;
 import java.io.File;
 import javax.swing.SwingUtilities;
 import model.exploration.ExplorationModel;
@@ -60,7 +59,7 @@ public final class ExplorationGUI implements ISPDriver {
 			model = new ExplorationModel(dmodel);
 		}
 		SwingUtilities.invokeLater(
-				new WindowThread(new ExplorationFrame(model, new IOHandler(model))));
+				() -> new ExplorationFrame(model, new IOHandler(model)).setVisible(true));
 	}
 
 	/**
@@ -87,7 +86,7 @@ public final class ExplorationGUI implements ISPDriver {
 																								   true,
 																								   args)));
 		SwingUtilities.invokeLater(
-				new WindowThread(new ExplorationFrame(model, new IOHandler(model))));
+				() -> new ExplorationFrame(model, new IOHandler(model)).setVisible(true));
 	}
 
 	/**

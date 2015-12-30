@@ -5,7 +5,6 @@ import controller.map.misc.FileChooser;
 import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
-import controller.map.misc.WindowThread;
 import java.io.File;
 import javax.swing.SwingUtilities;
 import model.misc.IDriverModel;
@@ -85,7 +84,8 @@ public class ResourceAddingGUIDriver implements ISPDriver {
 			model = new ResourceManagementDriver(dmodel);
 		}
 		SwingUtilities.invokeLater(
-				new WindowThread(new ResourceAddingFrame(model, new IOHandler(model))));
+				() -> new ResourceAddingFrame(model, new IOHandler(model))
+						      .setVisible(true));
 	}
 
 	/**
@@ -113,7 +113,8 @@ public class ResourceAddingGUIDriver implements ISPDriver {
 						new Warning(Warning.Action.Warn), file,
 						MapReaderAdapter.namesToFiles(true, args)));
 		SwingUtilities.invokeLater(
-				new WindowThread(new ResourceAddingFrame(model, new IOHandler(model))));
+				() -> new ResourceAddingFrame(model, new IOHandler(model))
+						      .setVisible(true));
 	}
 
 	/**

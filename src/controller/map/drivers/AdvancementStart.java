@@ -5,7 +5,6 @@ import controller.map.misc.FileChooser;
 import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
-import controller.map.misc.WindowThread;
 import java.io.File;
 import javax.swing.SwingUtilities;
 import model.misc.IDriverModel;
@@ -66,7 +65,7 @@ public final class AdvancementStart implements ISPDriver {
 			model = new WorkerModel(dmodel);
 		}
 		SwingUtilities.invokeLater(
-				new WindowThread(new AdvancementFrame(model, new IOHandler(model))));
+				() -> new AdvancementFrame(model, new IOHandler(model)).setVisible(true));
 	}
 
 	/**
@@ -97,7 +96,8 @@ public final class AdvancementStart implements ISPDriver {
 																							  true,
 																							  args)));
 			SwingUtilities.invokeLater(
-					new WindowThread(new AdvancementFrame(model, new IOHandler(model))));
+					() -> new AdvancementFrame(model, new IOHandler(model))
+							      .setVisible(true));
 		} catch (final ChoiceInterruptedException except) {
 			throw new DriverFailedException("File choice was interrupted or user didn't choose",
 												   except);

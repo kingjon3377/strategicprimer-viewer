@@ -2,7 +2,6 @@ package controller.map.drivers;
 
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
-import controller.map.misc.WindowThread;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -143,8 +142,8 @@ public final class AppStarter implements ISPDriver {
 				return;
 			}
 		} else {
-			SwingUtilities.invokeLater(new WindowThread(new AppChooserFrame(
-					                                                               model)));
+			SwingUtilities.invokeLater(() -> new AppChooserFrame(model).setVisible
+					                                                            (true));
 		}
 	}
 
@@ -221,8 +220,8 @@ public final class AppStarter implements ISPDriver {
 	                                 final List<String> others)
 			throws DriverFailedException {
 		if (gui) {
-			SwingUtilities.invokeLater(new WindowThread(new AppChooserFrame(
-					                                                               others)));
+			SwingUtilities
+					.invokeLater(() -> new AppChooserFrame(others).setVisible(true));
 		} else {
 			final List<ISPDriver> drivers = new ArrayList<>();
 			CACHE.values().stream().filter(pair -> !drivers.contains(pair.first()))

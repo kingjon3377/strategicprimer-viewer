@@ -5,7 +5,6 @@ import controller.map.misc.FileChooser;
 import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
 import controller.map.misc.MapReaderAdapter;
-import controller.map.misc.WindowThread;
 import java.io.File;
 import javax.swing.SwingUtilities;
 import model.map.IMutableMapNG;
@@ -71,7 +70,7 @@ public final class ViewerStart implements ISPDriver {
 			model = new ViewerModel(dmodel);
 		}
 		SwingUtilities.invokeLater(
-				new WindowThread(new ViewerFrame(model, new IOHandler(model))));
+				() -> new ViewerFrame(model, new IOHandler(model)).setVisible(true));
 	}
 
 	/**

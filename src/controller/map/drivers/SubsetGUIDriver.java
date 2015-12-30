@@ -2,7 +2,6 @@ package controller.map.drivers;
 
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.WindowThread;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.SwingUtilities;
@@ -62,7 +61,7 @@ public final class SubsetGUIDriver implements ISPDriver {
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
 		if (model instanceof IMultiMapModel) {
 			final SubsetFrame frame = new SubsetFrame();
-			SwingUtilities.invokeLater(new WindowThread(frame));
+			SwingUtilities.invokeLater(() -> frame.setVisible(true));
 			frame.loadMain(model.getMap());
 			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model)
 																.getSubordinateMaps()) {
@@ -89,7 +88,7 @@ public final class SubsetGUIDriver implements ISPDriver {
 																						" least two arguments"));
 		}
 		final SubsetFrame frame = new SubsetFrame();
-		SwingUtilities.invokeLater(new WindowThread(frame));
+		SwingUtilities.invokeLater(() -> frame.setVisible(true));
 		final File first = new File(args[0]);
 		try {
 			frame.loadMain(first);
