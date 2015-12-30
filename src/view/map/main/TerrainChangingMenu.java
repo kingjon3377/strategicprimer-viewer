@@ -1,10 +1,7 @@
 package view.map.main;
 
 import controller.map.misc.IDFactoryFiller;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
+import javax.swing.*;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
 import model.listeners.SelectionChangeSupport;
@@ -40,8 +37,7 @@ import view.worker.NewUnitDialog;
  * @author Jonathan Lovelace
  */
 public final class TerrainChangingMenu extends JPopupMenu
-		implements ActionListener, VersionChangeListener, SelectionChangeSource,
-				           SelectionChangeListener {
+		implements VersionChangeListener, SelectionChangeSource, SelectionChangeListener {
 	/**
 	 * The driver model.
 	 */
@@ -94,26 +90,13 @@ public final class TerrainChangingMenu extends JPopupMenu
 		for (final TileType type : TileType.valuesForVersion(version)) {
 			final JMenuItem item = new JMenuItem(type.toString()); // NOPMD
 			add(item);
-			item.addActionListener(this);
+			item.addActionListener(evt -> {
+				model.getMap().setBaseTerrain(point, type);
+				scs.fireChanges(null, point);
+			});
 		}
 		addSeparator();
 		add(newUnitItem);
-	}
-
-	/**
-	 * Handle Menu selections.
-	 *
-	 * @param event the menu-item-selected event we're handling.
-	 */
-	@Override
-	public void actionPerformed(@Nullable final ActionEvent event) {
-		if (event != null) {
-			final String command = event.getActionCommand();
-			if (command != null) {
-				model.getMap().setBaseTerrain(point, TileType.valueOf(command));
-				scs.fireChanges(null, point);
-			}
-		}
 	}
 
 	/**
