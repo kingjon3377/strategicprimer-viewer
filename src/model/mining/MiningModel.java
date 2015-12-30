@@ -67,7 +67,7 @@ public final class MiningModel {
 				System.out.append('.');
 			}
 			// Limit the size of the output spreadsheet
-			if (Math.abs(point.row) > 400 || Math.abs(point.col) > 300) {
+			if ((Math.abs(point.row) > 400) || (Math.abs(point.col) > 300)) {
 				pruneCounter++;
 				continue;
 			} else {

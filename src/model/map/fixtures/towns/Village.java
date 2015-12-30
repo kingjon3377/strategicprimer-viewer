@@ -323,7 +323,7 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 				ostream.append(Integer.toString(id));
 				ostream.append("):\tDominant race differs\n");
 				return false;
-			} else if (owner.getPlayerId() == village.owner.getPlayerId() ||
+			} else if ((owner.getPlayerId() == village.owner.getPlayerId()) ||
 					           village.owner.isIndependent()) {
 				return true;
 			} else {
