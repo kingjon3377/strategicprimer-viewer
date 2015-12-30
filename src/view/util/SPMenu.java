@@ -139,22 +139,19 @@ public class SPMenu extends JMenuBar {
 	                                     final IDriverModel model) {
 		final JMenu retval = new JMenu("Map");
 		retval.setMnemonic(KeyEvent.VK_M);
-		final JMenuItem gotoTileItem;
 		final int findKey = KeyEvent.VK_F;
 		final KeyStroke findStroke = createHotkey(findKey);
-		final JMenuItem findItem;
-		final JMenuItem nextItem;
-		final int nextKey = KeyEvent.VK_N;
 		final KeyStroke nextStroke = createHotkey(KeyEvent.VK_G);
 		final ActionListener zoomListener;
-		gotoTileItem = createMenuItem("Go to tile",
+		final JMenuItem gotoTileItem = createMenuItem("Go to tile",
 				KeyEvent.VK_T, createHotkey(KeyEvent.VK_T),
 				"Go to a tile by coordinates",
 				handler);
-		findItem = createMenuItem("Find a fixture", findKey,
+		final JMenuItem findItem = createMenuItem("Find a fixture", findKey,
 				findStroke, "Find a fixture by name, kind, or ID#",
 				handler);
-		nextItem = createMenuItem("Find next", nextKey,
+		final int nextKey = KeyEvent.VK_N;
+		final JMenuItem nextItem = createMenuItem("Find next", nextKey,
 				nextStroke, "Find the next fixture matching the pattern",
 				handler);
 		if (!(model instanceof IViewerModel)) {
