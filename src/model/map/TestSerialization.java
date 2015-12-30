@@ -298,14 +298,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				createSerializedForm(
 						createSimpleMap(point(1, 1),
 								Pair.of(point(0, 0), NotVisible)), false));
-		assertImageSerialization("Unit image property is preserved", new Unit(
-																					 new
-																							 Player(5,
-																									   ""),
-																					 "herder",
-																					 "herderName",
-																					 9),
-				Unit.class);
+		assertImageSerialization("Unit image property is preserved",
+				new Unit(new Player(5, ""), "herder", "herderName", 9));
 	}
 
 	/**

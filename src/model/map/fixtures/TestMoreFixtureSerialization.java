@@ -123,7 +123,7 @@ public final class TestMoreFixtureSerialization extends
 				"<grove cultivated=\"false\" kind=\"tree\" id=\"0\" />",
 				Grove.class, Action.Ignore);
 		assertImageSerialization("Grove image property is preserved",
-				new Grove(false, false, "five", 5), Grove.class);
+				new Grove(false, false, "five", 5));
 	}
 
 	/**
@@ -162,8 +162,7 @@ public final class TestMoreFixtureSerialization extends
 				"<field kind=\"kind\" cultivated=\"true\" id=\"0\" />",
 				Meadow.class, "status", true);
 		assertImageSerialization("Meadow image property is preserved",
-				new Meadow("five", false, false, 5, FieldStatus.Fallow),
-				Meadow.class);
+				new Meadow("five", false, false, 5, FieldStatus.Fallow));
 	}
 
 	/**
@@ -216,8 +215,7 @@ public final class TestMoreFixtureSerialization extends
 				STATUS_PROPERTY, false);
 		assertMissingProperty("<mine kind=\"kind\" status=\"active\" />",
 				Mine.class, "id", true);
-		assertImageSerialization("Mine image property is preserved", fourthMine,
-				Mine.class);
+		assertImageSerialization("Mine image property is preserved", fourthMine);
 	}
 
 	/**
@@ -255,8 +253,7 @@ public final class TestMoreFixtureSerialization extends
 		assertMissingProperty("<shrub />", Shrub.class, KIND_PROPERTY, false);
 		assertMissingProperty("<shrub kind=\"kind\" />", Shrub.class, "id",
 				true);
-		assertImageSerialization("Shrub image property is preserved", secondShrub,
-				Shrub.class);
+		assertImageSerialization("Shrub image property is preserved", secondShrub);
 	}
 
 	/**
@@ -283,8 +280,7 @@ public final class TestMoreFixtureSerialization extends
 				TextFixture.class);
 		assertUnwantedChild("<text turn=\"1\"><troll /></text>",
 				TextFixture.class, false);
-		assertImageSerialization("Text image property is preserved", thirdText,
-				TextFixture.class);
+		assertImageSerialization("Text image property is preserved", thirdText);
 	}
 
 	/**
@@ -331,8 +327,7 @@ public final class TestMoreFixtureSerialization extends
 		assertMissingProperty(
 				"<village name=\"name\" status=\"active\" id=\"0\" />",
 				Village.class, OWNER_PROPERTY, true);
-		assertImageSerialization("Village image property is preserved", thirdVillage,
-				Village.class);
+		assertImageSerialization("Village image property is preserved", thirdVillage);
 	}
 
 	/**
@@ -481,8 +476,7 @@ public final class TestMoreFixtureSerialization extends
 		final Worker secondWorker = new Worker("sixth", "dwarf", 9);
 		secondWorker.setStats(new WorkerStats(0, 0, 1, 2, 3, 4, 5, 6));
 		assertSerialization("Worker can have skills", secondWorker, Worker.class);
-		assertImageSerialization("Worker image property is preserved", secondWorker,
-				Worker.class);
+		assertImageSerialization("Worker image property is preserved", secondWorker);
 	}
 
 	/**

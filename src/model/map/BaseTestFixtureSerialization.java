@@ -684,23 +684,18 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * property preserved. We modify its image property, but set it back to the original
 	 * value before exiting the method.
 	 *
-	 * @param <T>     the type of the object
 	 * @param message the message to use for assertions
 	 * @param obj     the object to serialize
-	 * @param type    its type,
 	 * @throws SPFormatException  on SP XML problem
 	 * @throws XMLStreamException on XML reading problem
 	 * @throws IOException        on I/O error creating serialized form
 	 */
-	protected <T extends HasImage> void assertImageSerialization(
-																		final String message,
-																		final T obj,
-																		final Class<T> type)
+	protected void assertImageSerialization(final String message, final HasImage obj)
 			throws XMLStreamException, SPFormatException, IOException {
 		final String origImage = obj.getImage();
 		obj.setImage("imageForSerialization");
-		assertImageSerialization(message, obj, type, oldReader);
-		assertImageSerialization(message, obj, type, newReader);
+		assertImageSerialization(message, obj, oldReader);
+		assertImageSerialization(message, obj, newReader);
 		obj.setImage(origImage);
 	}
 
@@ -709,33 +704,28 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * property preserved. We modify its image property, but set it back to the original
 	 * value before exiting the method.
 	 *
-	 * @param <T>     the type of the object FIXME: This isn't necessary.
 	 * @param message the message to use for assertions
 	 * @param obj     the object to serialize
-	 * @param type    its type,
 	 * @param reader  the reader to use
 	 * @throws SPFormatException  on SP XML problem
 	 * @throws XMLStreamException on XML reading problem
 	 * @throws IOException        on I/O error creating serialized form
 	 */
-	private static <T extends HasImage> void assertImageSerialization(
-																			 final String message,
-																			 final T obj,
-																			 final Class<T> type,
-																			 final ISPReader reader)
-			throws XMLStreamException,
-						   SPFormatException, IOException {
+	private static void assertImageSerialization(final String message, final HasImage
+			                                                                   obj,
+	                                             final ISPReader reader)
+			throws XMLStreamException, SPFormatException, IOException {
 		assertEquals(
 				message,
 				obj.getImage(),
 				reader.readXML(FAKE_FILENAME,
 						new StringReader(createSerializedForm(obj, true)),
-						type, new Warning(Action.Ignore)).getImage());
+						obj.getClass(), new Warning(Action.Ignore)).getImage());
 		assertEquals(
 				message,
 				obj.getImage(),
 				reader.readXML(FAKE_FILENAME,
 						new StringReader(createSerializedForm(obj, false)),
-						type, new Warning(Action.Ignore)).getImage());
+						obj.getClass(), new Warning(Action.Ignore)).getImage());
 	}
 }
