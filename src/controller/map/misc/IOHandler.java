@@ -466,7 +466,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			if (finder == null) {
 				final FindDialog local = new FindDialog((Frame) window, (IViewerModel) model);
 				finder = local;
-				return finder;
+				return local;
 			} else {
 				return NullCleaner.assertNotNull(finder);
 			}
