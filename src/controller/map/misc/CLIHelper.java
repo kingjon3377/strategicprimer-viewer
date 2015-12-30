@@ -84,8 +84,7 @@ public final class CLIHelper implements ICLIHelper {
 	 * @param list    the list to print.
 	 * @throws IOException on I/O error writing to stream
 	 */
-	private void printList(final List<? extends HasName> list) throws
-			IOException {
+	private void printList(final List<? extends HasName> list) {
 		for (int i = 0; i < list.size(); i++) {
 			ostream.append(Integer.toString(i));
 			ostream.append(": ");
@@ -237,7 +236,7 @@ public final class CLIHelper implements ICLIHelper {
 	 * @param list    the list to print.
 	 * @throws IOException on I/O error writing to stream
 	 */
-	private void printStringList(final List<String> list) throws IOException {
+	private void printStringList(final List<String> list) {
 		for (int i = 0; i < list.size(); i++) {
 			ostream.append(Integer.toString(i));
 			ostream.append(": ");
