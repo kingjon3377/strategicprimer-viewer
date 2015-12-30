@@ -73,21 +73,14 @@ public final class TestFixtureSerialization extends
 	@Test
 	public void testAnimalSerialization() throws XMLStreamException,
 			                                             SPFormatException, IOException {
-		assertSerialization("First test of Animal serialization", new Animal(
-				                                                                    "animalOne",
-				                                                                    false,
-				                                                                    false,
-				                                                                    "wild",
-				                                                                    0),
-				Animal.class);
+		assertSerialization("First test of Animal serialization",
+				new Animal("animalOne", false, false, "wild", 0));
 		assertSerialization("Second test of Animal serialization",
-				new Animal("animalTwo", false, true, "semi-domesticated", 1),
-				Animal.class);
+				new Animal("animalTwo", false, true, "semi-domesticated", 1));
 		assertSerialization("Third test of Animal serialization",
-				new Animal("animalThree", true, false, "domesticated", 2), Animal.class);
+				new Animal("animalThree", true, false, "domesticated", 2));
 		final Animal fourthAnimal = new Animal("animalFour", true, true, "status", 3);
-		assertSerialization("Fourth test of Animal serialization", fourthAnimal,
-				Animal.class);
+		assertSerialization("Fourth test of Animal serialization", fourthAnimal);
 		assertUnwantedChild("<animal kind=\"animal\"><troll /></animal>",
 				Animal.class, false);
 		assertMissingProperty("<animal />", Animal.class, KIND_PROPERTY, false);
@@ -113,11 +106,9 @@ public final class TestFixtureSerialization extends
 	public void testCacheSerialization() throws XMLStreamException,
 			                                            SPFormatException, IOException {
 		assertSerialization("First test of Cache serialization",
-				new CacheFixture("kindOne", "contentsOne", 1),
-				CacheFixture.class);
+				new CacheFixture("kindOne", "contentsOne", 1));
 		assertSerialization("Second test of Cache serialization",
-				new CacheFixture("kindTwo", "contentsTwo", 2),
-				CacheFixture.class);
+				new CacheFixture("kindTwo", "contentsTwo", 2));
 		assertUnwantedChild(
 				"<cache kind=\"kind\" contents=\"cont\"><troll /></cache>",
 				CacheFixture.class, false);
@@ -142,12 +133,10 @@ public final class TestFixtureSerialization extends
 	public void testCentaurSerialization() throws XMLStreamException,
 			                                              SPFormatException,
 			                                                  IOException {
-		assertSerialization("First test of Centaur serialization", new Centaur(
-				                                                                      "firstCentaur",
-				                                                                      0),
-				Centaur.class);
+		assertSerialization("First test of Centaur serialization",
+				new Centaur("firstCentaur", 0));
 		assertSerialization("Second test of Centaur serialization",
-				new Centaur("secondCentaur", 1), Centaur.class);
+				new Centaur("secondCentaur", 1));
 		assertUnwantedChild("<centaur kind=\"forest\"><troll /></centaur>",
 				Centaur.class, false);
 		assertMissingProperty("<centaur />", Centaur.class, KIND_PROPERTY,
@@ -168,14 +157,9 @@ public final class TestFixtureSerialization extends
 	@Test
 	public void testDragonSerialization() throws XMLStreamException,
 			                                             SPFormatException, IOException {
-		assertSerialization("First test of Dragon serialization", new Dragon(
-				                                                                    "",
-				                                                                    1),
-				Dragon.class);
-		assertSerialization("Second test of Dragon serialization", new Dragon(
-				                                                                     "secondDragon",
-				                                                                     2),
-				Dragon.class);
+		assertSerialization("First test of Dragon serialization", new Dragon("", 1));
+		assertSerialization("Second test of Dragon serialization",
+				new Dragon("secondDragon", 2));
 		assertUnwantedChild("<dragon kind=\"ice\"><hill /></dragon>",
 				Dragon.class, false);
 		assertMissingProperty("<dragon />", Dragon.class, KIND_PROPERTY, false);
@@ -195,14 +179,10 @@ public final class TestFixtureSerialization extends
 	@Test
 	public void testFairySerialization() throws XMLStreamException,
 			                                            SPFormatException, IOException {
-		assertSerialization("First test of Fairy serialization", new Fairy(
-				                                                                  "oneFairy",
-				                                                                  1),
-				Fairy.class);
-		assertSerialization("Second test of Fairy serialization", new Fairy(
-				                                                                   "twoFairy",
-				                                                                   2),
-				Fairy.class);
+		assertSerialization("First test of Fairy serialization",
+				new Fairy("oneFairy", 1));
+		assertSerialization("Second test of Fairy serialization",
+				new Fairy("twoFairy", 2));
 		assertUnwantedChild("<fairy kind=\"great\"><hill /></fairy>",
 				Fairy.class, false);
 		assertMissingProperty("<fairy />", Fairy.class, KIND_PROPERTY, false);
@@ -222,14 +202,10 @@ public final class TestFixtureSerialization extends
 	@Test
 	public void testForestSerialization() throws XMLStreamException,
 			                                             SPFormatException, IOException {
-		assertSerialization("First test of Forest serialization", new Forest(
-				                                                                    "firstForest",
-				                                                                    false),
-				Forest.class);
-		assertSerialization("Second test of Forest serialization", new Forest(
-				                                                                     "secondForest",
-				                                                                     true),
-				Forest.class);
+		assertSerialization("First test of Forest serialization",
+				new Forest("firstForest", false));
+		assertSerialization("Second test of Forest serialization",
+				new Forest("secondForest", true));
 		assertUnwantedChild("<forest kind=\"trees\"><hill /></forest>",
 				Forest.class, false);
 		assertMissingProperty("<forest />", Forest.class, KIND_PROPERTY, false);
@@ -252,18 +228,17 @@ public final class TestFixtureSerialization extends
 		// pass a set of players in
 		final Player firstPlayer = new Player(1, "");
 		assertSerialization("First test of Fortress serialization",
-				new Fortress(firstPlayer, "one", 1), Fortress.class);
+				new Fortress(firstPlayer, "one", 1));
 		assertSerialization("Second test of Fortress serialization",
-				new Fortress(firstPlayer, "two", 2), Fortress.class);
+				new Fortress(firstPlayer, "two", 2));
 		final Player secondPlayer = new Player(2, "");
 		assertSerialization("Third test of Fortress serialization",
-				new Fortress(secondPlayer, "three", 3), Fortress.class);
+				new Fortress(secondPlayer, "three", 3));
 		assertSerialization("Fourth test of Fortress serialization",
-				new Fortress(secondPlayer, "four", 4), Fortress.class);
+				new Fortress(secondPlayer, "four", 4));
 		final Fortress five = new Fortress(secondPlayer, "five", 5);
 		five.addMember(new Unit(secondPlayer, "unitOne", "unitTwo", 1));
-		assertSerialization("Fifth test of Fortress serialization", five,
-				Fortress.class);
+		assertSerialization("Fifth test of Fortress serialization", five);
 		assertUnwantedChild("<fortress><hill /></fortress>", Fortress.class,
 				false);
 		assertMissingProperty("<fortress />", Fortress.class, "owner", true);
@@ -284,14 +259,8 @@ public final class TestFixtureSerialization extends
 	@Test
 	public void testGiantSerialization() throws XMLStreamException,
 			                                            SPFormatException, IOException {
-		assertSerialization("First test of Giant serialization", new Giant(
-				                                                                  "one",
-				                                                                  1),
-				Giant.class);
-		assertSerialization("Second test of Giant serialization", new Giant(
-				                                                                   "two",
-				                                                                   2),
-				Giant.class);
+		assertSerialization("First test of Giant serialization", new Giant("one", 1));
+		assertSerialization("Second test of Giant serialization", new Giant("two", 2));
 		assertUnwantedChild("<giant kind=\"hill\"><hill /></giant>",
 				Giant.class, false);
 		assertMissingProperty("<giant />", Giant.class, KIND_PROPERTY, false);
@@ -311,26 +280,19 @@ public final class TestFixtureSerialization extends
 	@Test
 	public void testGroundSerialization() throws XMLStreamException,
 			                                             SPFormatException, IOException {
-		assertSerialization("First test of Ground serialization", new Ground(
-				                                                                    "one",
-				                                                                    true),
-				Ground.class);
-		assertSerialization("Second test of Ground serialization", new Ground(
-				                                                                     "two",
-				                                                                     true),
-				Ground.class);
-		assertSerialization("Third test of Ground serialization", new Ground(
-				                                                                    "three",
-				                                                                    false),
-				Ground.class);
+		assertSerialization("First test of Ground serialization",
+				new Ground("one", true));
+		assertSerialization("Second test of Ground serialization",
+				new Ground("two", true));
+		assertSerialization("Third test of Ground serialization",
+				new Ground("three", false));
 		final Point point = PointFactory.point(0, 0);
 		final SPMapNG map =
 				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
 						           -1);
 		map.setBaseTerrain(point, TileType.Plains);
 		map.setGround(point, new Ground("four", true));
-		assertSerialization("Test that reader handles ground as a fixture",
-				map, SPMapNG.class);
+		assertSerialization("Test that reader handles ground as a fixture", map);
 		assertUnwantedChild(
 				"<ground kind=\"sand\" exposed=\"true\"><hill /></ground>",
 				Ground.class, false);
@@ -410,50 +372,39 @@ public final class TestFixtureSerialization extends
 	@Test
 	public void testSimpleSerialization() throws XMLStreamException, // NOPMD
 			                                             SPFormatException, IOException {
-		assertSerialization("Djinn serialization", new Djinn(1), Djinn.class);
-		assertSerialization("Djinn serialization", new Djinn(2), Djinn.class);
+		assertSerialization("Djinn serialization", new Djinn(1));
+		assertSerialization("Djinn serialization", new Djinn(2));
 		assertMissingProperty("<djinn />", Djinn.class, "id", true);
-		assertSerialization("Griffin serialization", new Griffin(1),
-				Griffin.class);
-		assertSerialization("Griffin serialization", new Griffin(2),
-				Griffin.class);
+		assertSerialization("Griffin serialization", new Griffin(1));
+		assertSerialization("Griffin serialization", new Griffin(2));
 		assertMissingProperty("<griffin />", Griffin.class, "id", true);
-		assertSerialization("Hill serialization", new Hill(1), Hill.class);
-		assertSerialization("Hill serialization", new Hill(2), Hill.class);
+		assertSerialization("Hill serialization", new Hill(1));
+		assertSerialization("Hill serialization", new Hill(2));
 		assertMissingProperty("<hill />", Hill.class, "id", true);
-		assertSerialization("Minotaur serialization", new Minotaur(1),
-				Minotaur.class);
-		assertSerialization("Minotaur serialization", new Minotaur(2),
-				Minotaur.class);
+		assertSerialization("Minotaur serialization", new Minotaur(1));
+		assertSerialization("Minotaur serialization", new Minotaur(2));
 		assertMissingProperty("<minotaur />", Minotaur.class, "id", true);
-		assertSerialization("Mountain serialization", new Mountain(),
-				Mountain.class);
-		assertSerialization("Oasis serialization", new Oasis(1), Oasis.class);
-		assertSerialization("Oasis serialization", new Oasis(2), Oasis.class);
+		assertSerialization("Mountain serialization", new Mountain());
+		assertSerialization("Oasis serialization", new Oasis(1));
+		assertSerialization("Oasis serialization", new Oasis(2));
 		assertMissingProperty("<oasis />", Oasis.class, "id", true);
-		assertSerialization("Ogre serialization", new Ogre(1), Ogre.class);
-		assertSerialization("Ogre serialization", new Ogre(2), Ogre.class);
+		assertSerialization("Ogre serialization", new Ogre(1));
+		assertSerialization("Ogre serialization", new Ogre(2));
 		assertMissingProperty("<ogre />", Ogre.class, "id", true);
-		assertSerialization("Phoenix serialization", new Phoenix(1),
-				Phoenix.class);
-		assertSerialization("Phoenix serialization", new Phoenix(2),
-				Phoenix.class);
+		assertSerialization("Phoenix serialization", new Phoenix(1));
+		assertSerialization("Phoenix serialization", new Phoenix(2));
 		assertMissingProperty("<phoenix />", Phoenix.class, "id", true);
-		assertSerialization("Sandbar serialization", new Sandbar(1),
-				Sandbar.class);
-		assertSerialization("Sandbar serialization", new Sandbar(2),
-				Sandbar.class);
+		assertSerialization("Sandbar serialization", new Sandbar(1));
+		assertSerialization("Sandbar serialization", new Sandbar(2));
 		assertMissingProperty("<sandbar />", Sandbar.class, "id", true);
-		assertSerialization("Simurgh serialization", new Simurgh(1),
-				Simurgh.class);
-		assertSerialization("Simurgh serialization", new Simurgh(2),
-				Simurgh.class);
+		assertSerialization("Simurgh serialization", new Simurgh(1));
+		assertSerialization("Simurgh serialization", new Simurgh(2));
 		assertMissingProperty("<simurgh />", Simurgh.class, "id", true);
-		assertSerialization("Sphinx serialization", new Sphinx(1), Sphinx.class);
-		assertSerialization("Sphinx serialization", new Sphinx(2), Sphinx.class);
+		assertSerialization("Sphinx serialization", new Sphinx(1));
+		assertSerialization("Sphinx serialization", new Sphinx(2));
 		assertMissingProperty("<sphinx />", Sphinx.class, "id", true);
-		assertSerialization("Troll serialization", new Troll(1), Troll.class);
-		assertSerialization("Troll serialization", new Troll(2), Troll.class);
+		assertSerialization("Troll serialization", new Troll(1));
+		assertSerialization("Troll serialization", new Troll(2));
 		assertMissingProperty("<troll />", Troll.class, "id", true);
 	}
 

@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
-import org.eclipse.jdt.annotation.NonNull;
 import util.FatalWarningException;
 import util.NullCleaner;
 import util.TypesafeLogger;
@@ -351,11 +350,9 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML reading problem
 	 * @throws IOException        on I/O error creating serialized form
 	 */
-	protected <@NonNull T> void assertSerialization(final String message, final T obj,
-													final Class<T> type)
-			throws XMLStreamException, SPFormatException,
-						   IOException {
-		assertSerialization(message, obj, type, new Warning(Action.Die));
+	protected void assertSerialization(final String message, final Object obj)
+			throws XMLStreamException, SPFormatException, IOException {
+		assertSerialization(message, obj, new Warning(Action.Die));
 	}
 
 	/**
@@ -371,12 +368,11 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML reading problem
 	 * @throws IOException        on I/O error creating serialized form
 	 */
-	protected <@NonNull T> void assertSerialization(final String message, final T obj,
-													final Class<T> type,
-													final Warning warning)
+	protected void assertSerialization(final String message, final Object obj,
+	                                   final Warning warning)
 			throws XMLStreamException, SPFormatException, IOException {
-		assertSerialization(message, oldReader, obj, type, warning);
-		assertSerialization(message, newReader, obj, type, warning);
+		assertSerialization(message, oldReader, obj, warning);
+		assertSerialization(message, newReader, obj, warning);
 	}
 
 	/**
@@ -393,29 +389,25 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML reading problem
 	 * @throws IOException        on I/O error creating serialized form
 	 */
-	private static <@NonNull T> void assertSerialization(final String message,
-														 final ISPReader reader,
-														 final T obj, final Class<T>
-																			  type,
-														 final Warning warner)
-			throws XMLStreamException, SPFormatException,
-						   IOException {
+	private static void assertSerialization(final String message, final ISPReader reader,
+	                                        final Object obj, final Warning warner)
+			throws XMLStreamException, SPFormatException, IOException {
 		try (StringReader sreader = new StringReader(createSerializedForm(obj, true))) {
 			assertEquals(message, obj,
-					reader.readXML(FAKE_FILENAME, sreader, type, warner));
+					reader.readXML(FAKE_FILENAME, sreader, obj.getClass(), warner));
 		}
 		try (StringReader sreader = new StringReader(createSerializedForm(obj, true))) {
 			assertEquals(message, obj,
-					reader.readXML(FAKE_FILENAME, sreader, type, warner));
+					reader.readXML(FAKE_FILENAME, sreader, obj.getClass(), warner));
 		}
 
 		try (StringReader sreader = new StringReader(createSerializedForm(obj, false))) {
 			assertEquals(message, obj,
-					reader.readXML(FAKE_FILENAME, sreader, type, warner));
+					reader.readXML(FAKE_FILENAME, sreader, obj.getClass(), warner));
 		}
 		try (StringReader sreader = new StringReader(createSerializedForm(obj, false))) {
 			assertEquals(message, obj,
-					reader.readXML(FAKE_FILENAME, sreader, type, warner));
+					reader.readXML(FAKE_FILENAME, sreader, obj.getClass(), warner));
 		}
 	}
 
