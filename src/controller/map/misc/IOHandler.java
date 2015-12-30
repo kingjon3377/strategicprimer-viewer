@@ -41,6 +41,7 @@ import view.map.main.SelectTileDialog;
 import view.map.main.ViewerFrame;
 import view.map.main.ZoomListener;
 import view.util.AboutDialog;
+import view.util.DriverQuit;
 import view.util.ErrorShower;
 import view.util.FilteredFileChooser;
 import view.util.TreeExpansionOrderListener;
@@ -265,6 +266,8 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			case "expand unit kinds":
 				treeExpansionListeners.forEach(listener -> listener.expandSome(2));
 				break;
+			case "quit":
+				DriverQuit.quit(0);
 			}
 		}
 	}

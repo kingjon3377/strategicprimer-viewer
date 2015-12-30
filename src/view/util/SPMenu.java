@@ -119,13 +119,9 @@ public class SPMenu extends JMenuBar {
 				createHotkey(KeyEvent.VK_B), "Show development credits", handler));
 		fileMenu.addSeparator();
 		if (!System.getProperty("os.name").toLowerCase().startsWith("mac os x")) {
-			fileMenu.add(createMenuItem("Quit", KeyEvent.VK_Q,
-					createHotkey(KeyEvent.VK_Q), "Quit the application",
-					event -> {
-						if ((event != null) && "Quit".equals(event.getActionCommand())) {
-							DriverQuit.quit(0);
-						}
-					}));
+			fileMenu.add(
+					createMenuItem("Quit", KeyEvent.VK_Q, createHotkey(KeyEvent.VK_Q),
+							"Quit the application", handler));
 		}
 		return fileMenu;
 	}
