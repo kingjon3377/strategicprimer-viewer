@@ -281,18 +281,12 @@ public final class IOHandler implements ActionListener {
 	}
 	/**
 	 * Constructor. File-chooser defaults to the current directory filtered to include
-	 * only maps. TODO: delegate to other constructor
+	 * only maps.
 	 *
 	 * @param map      the map model
 	 */
 	public IOHandler(final IDriverModel map) {
-		model = map;
-		chooser = new FilteredFileChooser();
-		if (model instanceof IViewerModel) {
-			zoomer = new ZoomListener((IViewerModel) model);
-		} else {
-			zoomer = null;
-		}
+		this(map, new FilteredFileChooser());
 	}
 
 	/**
