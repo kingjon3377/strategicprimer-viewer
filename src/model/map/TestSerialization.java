@@ -233,7 +233,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 									  .replaceAll(
 											  Matcher.quoteReplacement
 															  (oldKindProperty))),
-				IMapNG.class, oldKindProperty);
+				oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated tile-type idiom", fourthMap,
 				assertNotNull(KIND_PATTERN.matcher(createSerializedForm(fourthMap,
@@ -241,7 +241,6 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 									  .replaceAll(
 											  Matcher.quoteReplacement
 															  (oldKindProperty))),
-				IMapNG.class,
 				oldKindProperty);
 		assertMissingProperty("<map version=\"2\" rows=\"1\" columns=\"1\">"
 									  + "<tile column=\"0\" kind=\"plains\" /></map>",

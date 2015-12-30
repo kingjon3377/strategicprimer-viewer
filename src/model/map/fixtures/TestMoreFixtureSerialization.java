@@ -185,13 +185,11 @@ public final class TestMoreFixtureSerialization extends
 						KIND_PATTERN.matcher(createSerializedForm(fourthMine, true))
 								.replaceAll(
 										Matcher.quoteReplacement(oldKindProperty))),
-				Mine.class,
 				oldKindProperty);
 		assertDeprecatedDeserialization("Deprecated Mine idiom", fourthMine,
 				NullCleaner.assertNotNull(
 						KIND_PATTERN.matcher(createSerializedForm(fourthMine, false))
 								.replaceAll(Matcher.quoteReplacement(oldKindProperty))),
-				Mine.class,
 				oldKindProperty);
 		assertUnwantedChild(
 				"<mine kind=\"gold\" status=\"active\"><troll /></mine>",
@@ -223,13 +221,11 @@ public final class TestMoreFixtureSerialization extends
 				secondShrub, NullCleaner.assertNotNull(
 						KIND_PATTERN.matcher(createSerializedForm(secondShrub, true))
 								.replaceAll(Matcher.quoteReplacement(oldKindProperty))),
-				Shrub.class,
 				oldKindProperty);
 		assertDeprecatedDeserialization("Deserialization of mangled shrub",
 				secondShrub, NullCleaner.assertNotNull(
 						KIND_PATTERN.matcher(createSerializedForm(secondShrub, false))
 								.replaceAll(Matcher.quoteReplacement(oldKindProperty))),
-				Shrub.class,
 				oldKindProperty);
 		assertUnwantedChild("<shrub kind=\"shrub\"><troll /></shrub>",
 				Shrub.class, false);
@@ -347,14 +343,12 @@ public final class TestMoreFixtureSerialization extends
 				firstUnit, NullCleaner.assertNotNull(
 						KIND_PATTERN.matcher(createSerializedForm(firstUnit, true))
 								.replaceAll(Matcher.quoteReplacement(oldKindProperty))),
-				Unit.class,
 				oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialize properly with deprecated use of 'type' for unit kind",
 				firstUnit, NullCleaner.assertNotNull(
 						KIND_PATTERN.matcher(createSerializedForm(firstUnit, false))
 								.replaceAll(Matcher.quoteReplacement(oldKindProperty))),
-				Unit.class,
 				oldKindProperty);
 		assertMissingProperty("<unit owner=\"2\" kind=\"unit\" />", Unit.class,
 				NAME_PROPERTY, true);
@@ -423,7 +417,7 @@ public final class TestMoreFixtureSerialization extends
 																				   0))),
 				"<worker name=\"4th\" id=\"6\"><job name=\"5th\" level=\"0\">"
 						+ "<skill name=\"miscellaneous\" level=\"1\" hours=\"0\"/>"
-						+ "</job></worker>", Worker.class, "miscellaneous");
+						+ "</job></worker>", "miscellaneous");
 		assertSerialization("but 'miscellaneous' skill without levels causes no warnings",
 				new Worker("sixth", DEFAULT_RACE, 7, new Job("seventh", 0,
 						                                            new Skill("miscellaneous",

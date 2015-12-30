@@ -203,13 +203,13 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 						KIND_PATTERN.matcher(createSerializedForm(secondVein, true))
 								.replaceAll(
 										Matcher.quoteReplacement(oldKindProperty))),
-				MineralVein.class, oldKindProperty);
+				oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated Mineral idiom", secondVein,
 				NullCleaner.assertNotNull(
 						KIND_PATTERN.matcher(createSerializedForm(secondVein, false))
 								.replaceAll(Matcher.quoteReplacement(oldKindProperty))),
-				MineralVein.class, oldKindProperty);
+				oldKindProperty);
 		assertUnwantedChild(
 				"<mineral kind=\"gold\" exposed=\"false\" dc=\"0\">"
 						+ "<troll /></mineral>", MineralVein.class, false);
@@ -249,13 +249,13 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				NullCleaner.assertNotNull(
 						KIND_PATTERN.matcher(createSerializedForm(thirdDeposit, true))
 								.replaceAll(Matcher.quoteReplacement(oldKindProperty))),
-				StoneDeposit.class, oldKindProperty);
+				oldKindProperty);
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated stone idiom", thirdDeposit,
 				NullCleaner.assertNotNull(
 						KIND_PATTERN.matcher(createSerializedForm(thirdDeposit, false))
 								.replaceAll(Matcher.quoteReplacement(oldKindProperty))),
-				StoneDeposit.class, oldKindProperty);
+				oldKindProperty);
 		assertUnwantedChild(
 				"<stone kind=\"marble\" dc=\"10\"><troll /></stone>",
 				StoneDeposit.class, false);
