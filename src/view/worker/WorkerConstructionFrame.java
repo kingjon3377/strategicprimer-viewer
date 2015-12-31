@@ -3,8 +3,6 @@ package view.worker;
 import controller.map.misc.IDFactory;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -24,7 +22,6 @@ import model.listeners.NewWorkerSource;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import model.workermgmt.RaceFactory;
-import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.Pair;
 import util.SingletonRandom;
@@ -58,8 +55,7 @@ import static util.IsNumeric.isNumeric;
  *
  * @author Jonathan Lovelace
  */
-public final class WorkerConstructionFrame extends JFrame implements ActionListener,
-																			 NewWorkerSource {
+public final class WorkerConstructionFrame extends JFrame implements NewWorkerSource {
 	/**
 	 * Logger.
 	 */
@@ -142,8 +138,40 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 		addLabeledField(statsPanel, "Charisma:", cha);
 
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 2));
-		buttonPanel.add(new ListenedButton("Add Worker", this));
-		buttonPanel.add(new ListenedButton("Cancel", this));
+		buttonPanel.add(new ListenedButton("Add Worker", evt -> {
+			final String nameText = name.getText().trim();
+			final String raceText = race.getText().trim();
+			if (nameText.isEmpty() || raceText.isEmpty() ||
+					    anyNonNumeric(hpBox.getText().trim(), maxHP.getText().trim(),
+							    strength.getText().trim(), dex.getText().trim(),
+							    con.getText().trim(), intel.getText().trim(),
+							    wis.getText().trim(), cha.getText().trim())) {
+				ErrorShower.showErrorDialog(this, getErrorExpl());
+			} else {
+				final Worker retval = new Worker(nameText, raceText,
+						                                idf.createID());
+				try {
+					retval.setStats(new WorkerStats(parseInt(hpBox), parseInt(maxHP),
+							                               parseInt(strength),
+							                               parseInt(dex), parseInt(con),
+							                               parseInt(intel), parseInt(wis),
+							                               parseInt(cha)));
+				} catch (final ParseException e) {
+					LOGGER.log(Level.FINE, "Non-numeric input", e);
+					ErrorShower.showErrorDialog(this, "All stats must be numbers");
+					return;
+				}
+				for (final NewWorkerListener list : nwListeners) {
+					list.addNewWorker(retval);
+				}
+				setVisible(false);
+				dispose();
+			}
+		}));
+		buttonPanel.add(new ListenedButton("Cancel", evt -> {
+			setVisible(false);
+			dispose();
+		}));
 		setContentPane(new BorderedPanel(statsPanel, textPanel, buttonPanel,
 												null, null));
 		setMinimumSize(new Dimension(320, 240));
@@ -199,59 +227,6 @@ public final class WorkerConstructionFrame extends JFrame implements ActionListe
 			}
 		}
 		return NullCleaner.assertNotNull(builder.toString());
-	}
-
-	/**
-	 * Handle button presses.
-	 *
-	 * @param evt the action to handle.
-	 */
-	@Override
-	public void actionPerformed(@Nullable final ActionEvent evt) {
-		if (evt == null) {
-			return;
-		} else if ("Add Worker".equalsIgnoreCase(evt.getActionCommand())) {
-			final String nameText = name.getText().trim();
-			final String raceText = race.getText().trim();
-			if (nameText.isEmpty()
-						|| raceText.isEmpty()
-						|| anyNonNumeric(hpBox.getText().trim(), maxHP.getText()
-																		 .trim(),
-					strength.getText().trim(),
-					dex.getText().trim(), con.getText().trim(), intel
-																		.getText()
-																		.trim(),
-					wis.getText().trim(),
-					cha.getText().trim())) {
-				ErrorShower.showErrorDialog(this, getErrorExpl());
-			} else {
-				final Worker retval = new Worker(nameText, raceText,
-														idf.createID());
-				try {
-					retval.setStats(new WorkerStats(parseInt(hpBox),
-														   parseInt(maxHP),
-														   parseInt(strength),
-														   parseInt(dex),
-														   parseInt(con), parseInt
-																				  (intel),
-
-														   parseInt(wis),
-														   parseInt(cha)));
-				} catch (final ParseException e) {
-					LOGGER.log(Level.FINE, "Non-numeric input", e);
-					ErrorShower.showErrorDialog(this, "All stats must be numbers");
-					return;
-				}
-				for (final NewWorkerListener list : nwListeners) {
-					list.addNewWorker(retval);
-				}
-				setVisible(false);
-				dispose();
-			}
-		} else if ("Cancel".equalsIgnoreCase(evt.getActionCommand())) {
-			setVisible(false);
-			dispose();
-		}
 	}
 
 	/**
