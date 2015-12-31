@@ -1,7 +1,8 @@
 package view.map.main;
 
 import controller.map.misc.IDFactoryFiller;
-import javax.swing.*;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
 import model.listeners.SelectionChangeSupport;
