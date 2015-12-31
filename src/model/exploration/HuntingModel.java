@@ -111,6 +111,13 @@ public final class HuntingModel {
 			case Jungle:
 				nothings = len / 2;
 				break;
+			case Mountain:
+			case BorealForest:
+			case TemperateForest:
+			case Ocean:
+			case Plains:
+			case Steppe:
+			case NotVisible:
 			default:
 				nothings = len;
 				break;
