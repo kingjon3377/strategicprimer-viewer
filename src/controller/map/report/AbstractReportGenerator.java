@@ -54,16 +54,13 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
-	protected AbstractReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
-			                                                                @NonNull
-					                                                                IFixture>> comparator) {
+	protected AbstractReportGenerator(final Comparator<Pair<Point, IFixture>> comparator) {
 		pairComparator = comparator;
-		if ((comparator instanceof PairComparator)
-				    && (((PairComparator<@NonNull Point, @NonNull IFixture>) comparator)
-						        .first() instanceof DistanceComparator)) {
+		if ((comparator instanceof PairComparator) &&
+				    (((PairComparator<Point, IFixture>) comparator)
+						     .first() instanceof DistanceComparator)) {
 			distCalculator =
-					(DistanceComparator) ((PairComparator<@NonNull Point, @NonNull
-							                                                      IFixture>) comparator)
+					(DistanceComparator) ((PairComparator<Point, IFixture>) comparator)
 							                     .first();
 		} else {
 			distCalculator = new DistanceComparator(PointFactory.point(-1, -1));
