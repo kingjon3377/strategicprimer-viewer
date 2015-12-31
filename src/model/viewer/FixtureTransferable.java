@@ -3,7 +3,6 @@ package model.viewer;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
 import model.map.TileFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -74,11 +73,10 @@ public final class FixtureTransferable implements Transferable {
 	 * @param dflavor a DataFlavor
 	 * @return our underlying data if they want it in the flavor we support
 	 * @throws UnsupportedFlavorException if they want an unsupported flavor
-	 * @throws IOException                required by spec but not thrown
 	 */
 	@Override
 	public TileFixture getTransferData(@Nullable final DataFlavor dflavor)
-			throws UnsupportedFlavorException, IOException {
+			throws UnsupportedFlavorException {
 		if (FLAVOR.equals(dflavor)) {
 			return data; // NOPMD
 		} else {

@@ -486,10 +486,9 @@ public final class DrawHelperComparator implements ISPDriver { // NOPMD
 	 * Start the driver.
 	 *
 	 * @param model the driver model to run on
-	 * @throws DriverFailedException if the driver fails for some reason
 	 */
 	@Override
-	public void startDriver(final IDriverModel model) throws DriverFailedException {
+	public void startDriver(final IDriverModel model) {
 		final Random random = new Random();
 		final int reps = 50; // NOPMD
 		if (model instanceof IMultiMapModel) {

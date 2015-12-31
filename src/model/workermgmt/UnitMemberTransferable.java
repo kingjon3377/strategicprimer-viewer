@@ -3,7 +3,6 @@ package model.workermgmt;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import org.eclipse.jdt.annotation.Nullable;
@@ -126,11 +125,10 @@ public final class UnitMemberTransferable implements Transferable {
 	 * @param dflavor a DataFlavor
 	 * @return our underlying data if they want it in the flavor we support
 	 * @throws UnsupportedFlavorException if they want an unsupported flavor
-	 * @throws IOException                required by spec but not thrown
 	 */
 	@Override
 	public UnitMemberPair getTransferData(@Nullable final DataFlavor dflavor)
-			throws UnsupportedFlavorException, IOException {
+			throws UnsupportedFlavorException {
 		if (FLAVOR.equals(dflavor)) {
 			return data; // NOPMD
 		} else {

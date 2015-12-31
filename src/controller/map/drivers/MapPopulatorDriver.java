@@ -125,10 +125,9 @@ public final class MapPopulatorDriver implements ISPDriver {
 	 * that may change.
 	 *
 	 * @param model the driver-model that should be used by the app
-	 * @throws DriverFailedException if the driver fails for some reason
 	 */
 	@Override
-	public void startDriver(final IDriverModel model) throws DriverFailedException {
+	public void startDriver(final IDriverModel model) {
 		populate(model.getMap());
 	}
 

@@ -286,10 +286,9 @@ public final class TrapModelDriver implements ISPDriver {
 	 * Start the driver.
 	 *
 	 * @param model the driver model to operate on
-	 * @throws DriverFailedException never?
 	 */
 	@Override
-	public void startDriver(final IDriverModel model) throws DriverFailedException {
+	public void startDriver(final IDriverModel model) {
 		repl(model.getMap(), SYS_OUT);
 	}
 

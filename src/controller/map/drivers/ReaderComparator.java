@@ -200,10 +200,9 @@ public final class ReaderComparator implements ISPDriver {
 	 * Run the driver, comparing the readers' performance.
 	 *
 	 * @param args The files to test on
-	 * @throws DriverFailedException Probably never?
 	 */
 	@Override
-	public void startDriver(final String... args) throws DriverFailedException {
+	public void startDriver(final String... args) {
 		compareReaders(args);
 	}
 

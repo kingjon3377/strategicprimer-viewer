@@ -1,6 +1,5 @@
 package util;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -39,10 +38,9 @@ public final class NullStream extends OutputStream {
 	 * Do nothing when anything is written.
 	 *
 	 * @param byt ignored
-	 * @throws IOException never
 	 */
 	@Override
-	public void write(final int byt) throws IOException {
+	public void write(final int byt) {
 		// Do nothing.
 	}
 

@@ -3,7 +3,6 @@ package model.viewer;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -88,11 +87,10 @@ public final class CurriedFixtureTransferable implements Transferable {
 	 * @param dFlavor a DataFlavor
 	 * @return our underlying data if they want it in the flavor we support
 	 * @throws UnsupportedFlavorException if they want an unsupported flavor
-	 * @throws IOException                required by spec but not thrown
 	 */
 	@Override
 	public Iterable<Transferable> getTransferData(@Nullable final DataFlavor dFlavor)
-			throws UnsupportedFlavorException, IOException {
+			throws UnsupportedFlavorException {
 		if (isDataFlavorSupported(dFlavor)) {
 			return payload; // NOPMD
 		} else {

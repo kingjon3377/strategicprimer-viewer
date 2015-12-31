@@ -446,10 +446,9 @@ public final class QueryCLI implements ISPDriver {
 	 * Run the driver.
 	 *
 	 * @param model the driver model
-	 * @throws DriverFailedException on error
 	 */
 	@Override
-	public void startDriver(final IDriverModel model) throws DriverFailedException {
+	public void startDriver(final IDriverModel model) {
 		repl(model, SYS_OUT);
 	}
 

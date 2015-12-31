@@ -55,10 +55,9 @@ public final class SubsetGUIDriver implements ISPDriver {
 	 * Run the driver.
 	 *
 	 * @param model the driver model
-	 * @throws DriverFailedException on error
 	 */
 	@Override
-	public void startDriver(final IDriverModel model) throws DriverFailedException {
+	public void startDriver(final IDriverModel model) {
 		if (model instanceof IMultiMapModel) {
 			final SubsetFrame frame = new SubsetFrame();
 			SwingUtilities.invokeLater(() -> frame.setVisible(true));

@@ -75,10 +75,9 @@ public final class WorkerStart implements ISPDriver {
 	 * that may change.
 	 *
 	 * @param dmodel the driver-model that should be used by the app
-	 * @throws DriverFailedException if the driver fails for some reason
 	 */
 	@Override
-	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
+	public void startDriver(final IDriverModel dmodel) {
 		final IWorkerModel model;
 		if (dmodel instanceof IWorkerModel) {
 			model = (IWorkerModel) dmodel;

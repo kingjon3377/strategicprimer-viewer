@@ -3,7 +3,6 @@ package controller.map.drivers;
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.MapReaderAdapter;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -114,10 +113,9 @@ public final class ExpansionDriver implements ISPDriver {
 	 * Run the driver.
 	 *
 	 * @param dmodel the driver model
-	 * @throws DriverFailedException on error
 	 */
 	@Override
-	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
+	public void startDriver(final IDriverModel dmodel) {
 		final IMultiMapModel model;
 		if (dmodel instanceof IMultiMapModel) {
 			model = (IMultiMapModel) dmodel;
@@ -251,7 +249,7 @@ public final class ExpansionDriver implements ISPDriver {
 
 			@Override
 			public boolean isSubset(final IFixture obj, final Appendable ostream,
-									final String context) throws IOException {
+									final String context) {
 				throw ise;
 			}
 

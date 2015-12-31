@@ -54,10 +54,9 @@ public final class AdvancementStart implements ISPDriver {
 	 * Run the driver
 	 *
 	 * @param dmodel the driver model
-	 * @throws DriverFailedException on error
 	 */
 	@Override
-	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
+	public void startDriver(final IDriverModel dmodel) {
 		final IWorkerModel model;
 		if (dmodel instanceof IWorkerModel) {
 			model = (IWorkerModel) dmodel;

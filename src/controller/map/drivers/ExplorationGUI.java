@@ -48,10 +48,9 @@ public final class ExplorationGUI implements ISPDriver {
 	 * Run the driver.
 	 *
 	 * @param dmodel the driver model
-	 * @throws DriverFailedException on error
 	 */
 	@Override
-	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
+	public void startDriver(final IDriverModel dmodel) {
 		final ExplorationModel model;
 		if (dmodel instanceof ExplorationModel) {
 			model = (ExplorationModel) dmodel;

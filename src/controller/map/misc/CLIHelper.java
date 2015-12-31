@@ -82,7 +82,6 @@ public final class CLIHelper implements ICLIHelper {
 	 * Print a list of things by name and number.
 	 *
 	 * @param list    the list to print.
-	 * @throws IOException on I/O error writing to stream
 	 */
 	private void printList(final List<? extends HasName> list) {
 		for (int i = 0; i < list.size(); i++) {
@@ -234,7 +233,6 @@ public final class CLIHelper implements ICLIHelper {
 	 * Print a list of things by name and number.
 	 *
 	 * @param list    the list to print.
-	 * @throws IOException on I/O error writing to stream
 	 */
 	private void printStringList(final List<String> list) {
 		for (int i = 0; i < list.size(); i++) {

@@ -55,10 +55,9 @@ public final class MapCheckerGUI implements ISPDriver {
 	 * Run the driver.
 	 *
 	 * @param args command-line arguments
-	 * @throws DriverFailedException if not enough arguments
 	 */
 	@Override
-	public void startDriver(final String... args) throws DriverFailedException {
+	public void startDriver(final String... args) {
 		final MapCheckerFrame window = new MapCheckerFrame();
 		window.setVisible(true);
 		Stream.of(args).forEach(window::check);
