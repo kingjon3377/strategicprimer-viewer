@@ -188,30 +188,30 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	private void addUnitAtLocation(final IUnit unit, final Point location) {
 		if (getSubordinateMaps().iterator().hasNext()) {
 			for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
-				boolean added = false;
+				boolean stillToAdd = true;
 				for (final TileFixture fix : pair.first().getOtherFixtures(location)) {
 					if ((fix instanceof Fortress) &&
 								unit.getOwner().equals(((Fortress) fix).getOwner())) {
 						((Fortress) fix).addMember(unit.copy(false));
-						added = true;
+						stillToAdd = false;
 						break;
 					}
 				}
-				if (!added) {
+				if (stillToAdd) {
 					pair.first().addFixture(location, unit.copy(false));
 				}
 			}
 		} else {
-			boolean added = false;
+			boolean stillToAdd = true;
 			for (final TileFixture fix : getMap().getOtherFixtures(location)) {
 				if ((fix instanceof Fortress) &&
 							unit.getOwner().equals(((Fortress) fix).getOwner())) {
 					((Fortress) fix).addMember(unit.copy(false));
-					added = true;
+					stillToAdd = false;
 					break;
 				}
 			}
-			if (!added) {
+			if (stillToAdd) {
 				getMap().addFixture(location, unit.copy(false));
 			}
 		}

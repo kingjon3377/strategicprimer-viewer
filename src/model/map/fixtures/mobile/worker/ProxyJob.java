@@ -74,17 +74,17 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 		name = nomen;
 		skillNames = new HashSet<>();
 		for (final IWorker worker : workers) {
-			boolean touched = false;
+			boolean unmodified = true;
 			for (final IJob job : worker) {
 				if (nomen.equals(job.getName())) {
 					proxiedJobs.add(job);
 					for (final ISkill skill : job) {
 						skillNames.add(skill.getName());
 					}
-					touched = true;
+					unmodified = false;
 				}
 			}
-			if (!touched) {
+			if (unmodified) {
 				final IJob job = new Job(nomen, 0);
 				worker.addJob(job);
 				boolean found = false;

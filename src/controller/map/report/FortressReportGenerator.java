@@ -182,19 +182,19 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 		final StringBuilder builder = new StringBuilder(130).append(
 				"Surrounding terrain: ").append(
 				map.getBaseTerrain(point).toXML().replace('_', ' '));
-		boolean hasForest = false;
+		boolean unforested = true;
 		final Forest forest = map.getForest(point);
 		if (forest != null) {
 			builder.append(", forested with ").append(forest.getKind());
-			hasForest = true;
+			unforested = false;
 		}
 		if (map.isMountainous(point)) {
 			builder.append(", mountainous");
 		}
 		for (final TileFixture fix : map.getOtherFixtures(point)) {
 			if (fix instanceof Forest) {
-				if (!hasForest) {
-					hasForest = true;
+				if (unforested) {
+					unforested = false;
 					builder.append(", forested with ").append(
 							((Forest) fix).getKind());
 				}

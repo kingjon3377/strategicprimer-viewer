@@ -41,7 +41,7 @@ public final class FileChooser {
 	 * throw an
 	 * exception if that fails).
 	 */
-	private boolean shouldReturn;
+	private boolean shouldWait = true;
 	/**
 	 * A file chooser.
 	 */
@@ -75,7 +75,7 @@ public final class FileChooser {
 	 *                                    declines to choose a file.
 	 */
 	public File getFile() throws ChoiceInterruptedException {
-		if (!shouldReturn) {
+		if (shouldWait) {
 			if (SwingUtilities.isEventDispatchThread()) {
 				if (chooser.showOpenDialog(null) == APPROVE_OPTION) {
 					setFile(assertNotNull(chooser.getSelectedFile()));
@@ -131,10 +131,10 @@ public final class FileChooser {
 	public void setFile(final File loc) {
 		if (loc.exists()) {
 			file = loc;
-			shouldReturn = true;
+			shouldWait = false;
 		} else {
 			file = new File("");
-			shouldReturn = false;
+			shouldWait = true;
 		}
 	}
 

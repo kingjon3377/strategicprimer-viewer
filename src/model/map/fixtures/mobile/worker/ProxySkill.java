@@ -143,16 +143,16 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 		final Random random = new Random(condition);
 		if (parallel) {
 			for (final IJob job : proxied) {
-				boolean touched = false;
+				boolean unmodified = true;
 				for (final ISkill skill : job) {
 					if (skill == this) {
 						continue;
 					} else if (skill.getName().equals(name)) {
 						skill.addHours(hrs, condition);
-						touched = true;
+						unmodified = false;
 					}
 				}
-				if (!touched) {
+				if (unmodified) {
 					final ISkill skill = new Skill(name, 0, 0);
 					skill.addHours(hrs, condition);
 					job.addSkill(skill);
@@ -160,27 +160,27 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 			}
 		} else {
 			for (final IJob job : proxied) {
-				boolean touched = false;
+				boolean unmodified = true;
 				for (final ISkill skill : job) {
 					if (skill == this) {
 						continue;
 					} else if (skill.getName().equals(name)) {
 						skill.addHours(hrs, random.nextInt(100));
-						touched = true;
+						unmodified = false;
 					}
 				}
-				if (!touched) {
+				if (unmodified) {
 					final ISkill skill = new Skill(name, 0, 0);
 					job.addSkill(skill);
-					boolean found = false;
+					boolean absent = true;
 					for (final ISkill temp : job) {
 						if (temp.getName().equals(name)) {
 							temp.addHours(hrs, random.nextInt(100));
-							found = true;
+							absent = false;
 							break;
 						}
 					}
-					if (!found) {
+					if (absent) {
 						skill.addHours(hrs, random.nextInt(100));
 					}
 				}

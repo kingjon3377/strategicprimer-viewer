@@ -84,9 +84,9 @@ public final class SubsetFrame extends JFrame {
 	private static final class HTMLWriter extends FilterWriter {
 		private static final Pattern NEWLINE = Pattern.compile("\n");
 		/**
-		 * Whether we're in the middle of a line.
+		 * Whether we're at the start of a line.
 		 */
-		private boolean middle = false;
+		private boolean lineStart = true;
 
 		/**
 		 * Constructor.
@@ -109,12 +109,12 @@ public final class SubsetFrame extends JFrame {
 		public Writer append(@Nullable final CharSequence str) throws IOException {
 			final String local =
 					NullCleaner.valueOrDefault(str, "null").toString();
-			if (!middle) {
+			if (lineStart) {
 				super.append("<p style=\"color:white\">");
 			}
 			super.append(
 					NEWLINE.matcher(local).replaceAll("</p><p style=\"color:white\">"));
-			middle = true;
+			lineStart = false;
 			return this;
 		}
 

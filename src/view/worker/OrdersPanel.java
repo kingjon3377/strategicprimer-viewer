@@ -140,9 +140,9 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 		actionMap.put("openOrders", new AbstractAction() {
 			@Override
 			public void actionPerformed(@Nullable final ActionEvent evt) {
-				final boolean focused = area.isFocusOwner();
+				final boolean newlyGainingFocus = !area.isFocusOwner();
 				area.requestFocusInWindow();
-				if (!focused) {
+				if (newlyGainingFocus) {
 					area.selectAll();
 				}
 			}
