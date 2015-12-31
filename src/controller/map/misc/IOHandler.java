@@ -99,7 +99,8 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	/**
 	 * The list of tree-expansion-order listeners.
 	 */
-	private final Collection<TreeExpansionOrderListener> treeExpansionListeners = new ArrayList<>();
+	private final Collection<TreeExpansionOrderListener> treeExpansionListeners =
+			new ArrayList<>();
 	/**
 	 * The current player.
 	 */
