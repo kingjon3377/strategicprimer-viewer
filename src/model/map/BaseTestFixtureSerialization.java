@@ -342,10 +342,8 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * Assert that the serialized form of the given object will deserialize without error
 	 * using both old and new readers.
 	 *
-	 * @param <T>     the type of the object
 	 * @param message the message to use
 	 * @param obj     the object to serialize
-	 * @param type    its type
 	 * @throws SPFormatException  on SP XML problem
 	 * @throws XMLStreamException on XML reading problem
 	 * @throws IOException        on I/O error creating serialized form
@@ -359,10 +357,8 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * Assert that the serialized form of the given object will deserialize without error
 	 * using both the old and new readers.
 	 *
-	 * @param <T>     the type of the object
 	 * @param message the message to use
 	 * @param obj     the object to serialize
-	 * @param type    its type
 	 * @param warning the warning instance to use
 	 * @throws SPFormatException  on SP XML problem
 	 * @throws XMLStreamException on XML reading problem
@@ -379,11 +375,9 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * Assert that the serialized form of the given object will deserialize without error
 	 * using both the reflection and non-reflection methods.
 	 *
-	 * @param <T>     the type of the object
 	 * @param message the message to use
 	 * @param reader  the reader to parse the serialized form
 	 * @param obj     the object to serialize
-	 * @param type    its type
 	 * @param warner  the warning instance to use
 	 * @throws SPFormatException  on SP XML problem
 	 * @throws XMLStreamException on XML reading problem
@@ -415,11 +409,9 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * Assert that a deprecated idiom deserializes properly if warnings are ignored, but
 	 * is warned about.
 	 *
-	 * @param <T>      the type
 	 * @param message  the message to pass to JUnit
 	 * @param expected the object we expect the deserialized form to equal
 	 * @param xml      the serialized form
-	 * @param type     the type of object
 	 * @param property the deprecated property
 	 * @throws SPFormatException  on SP format error
 	 * @throws XMLStreamException on XML format error
@@ -452,11 +444,9 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * Assert that a serialized form with a recommended but not required property missing
 	 * deserializes properly if warnings are ignored, but is warned about.
 	 *
-	 * @param <T>      the type
 	 * @param message  the message to pass to JUnit
 	 * @param expected the object we expect the deserialized form to equal
 	 * @param xml      the serialized form
-	 * @param type     the type of object
 	 * @param property the missing property
 	 * @throws SPFormatException  on SP format error
 	 * @throws XMLStreamException on XML format error
@@ -491,7 +481,6 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * accept---will be deserialized properly by both readers, both with and without
 	 * reflection.
 	 *
-	 * @param <T>      the type
 	 * @param message  the message to pass to JUnit
 	 * @param expected the object we expect the deserialized form to equal
 	 * @param xml      the serialized form
