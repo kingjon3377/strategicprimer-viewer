@@ -57,6 +57,7 @@ public final class MapPopulatorDriver implements ISPDriver {
 	 * @param location the location being considered
 	 * @return whether the location is suitable for whatever fixture is being added
 	 */
+	@SuppressWarnings("IfStatementWithIdenticalBranches")
 	private static boolean isSuitable(final IMapNG map,
 	                                  final Point location) {
 		final TileType terrain = map.getBaseTerrain(location);
