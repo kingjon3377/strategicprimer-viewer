@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Set;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import model.map.IEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.explorable.Battlefield;
 import model.map.fixtures.explorable.Cave;
@@ -110,7 +111,7 @@ public final class CompactExplorableReader
 	}
 
 	/**
-	 * Write an object to a stream. TODO: Some way of simplifying this?
+	 * Write an object to a stream.
 	 *
 	 * @param ostream The stream to write to.
 	 * @param obj     The object to write.
@@ -121,24 +122,34 @@ public final class CompactExplorableReader
 	public void write(final Appendable ostream, final ExplorableFixture obj,
 	                  final int indent) throws IOException {
 		indent(ostream, indent);
-		if (obj instanceof Battlefield) {
-			ostream.append("<battlefield ");
-			ostream.append("dc=\"");
-			ostream.append(Integer.toString(((Battlefield) obj).getDC()));
-		} else if (obj instanceof Cave) {
-			ostream.append("<cave ");
-			ostream.append("dc=\"");
-			ostream.append(Integer.toString(((Cave) obj).getDC()));
-		} else {
-			throw new IllegalStateException("Unhandled ExplorableFixture subtype");
-		}
+		writeTag(ostream, obj);
+		ostream.append(" dc=\"");
+		ostream.append(Integer.toString(((IEvent) obj).getDC()));
 		ostream.append("\" id=\"");
 		ostream.append(Integer.toString(obj.getID()));
 		ostream.append('"');
 		ostream.append(imageXML(obj));
 		ostream.append(" />\n");
 	}
-
+	/**
+	 * Write the tag for an object to a stream. If a new ExplorableFixture
+	 * implementation is added that doesn't need its own CXML writer but that isn't an
+	 * IEvent, this will have to be merged back into write().
+	 * @param ostream the stream to write to
+	 * @param obj the object in question
+	 * @throws IOException on I/O error writing to the stream
+	 */
+	private static void writeTag(final Appendable ostream, final ExplorableFixture obj)
+			throws IOException {
+		ostream.append('<');
+		if (obj instanceof Battlefield) {
+			ostream.append("battlefield");
+		} else if (obj instanceof Cave) {
+			ostream.append("cave");
+		} else {
+			throw new IllegalStateException("Unhandled ExplorableFixture subtype");
+		}
+	}
 	/**
 	 * @return a string representation of this class
 	 */
