@@ -214,7 +214,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 				if (model instanceof IViewerModel) {
 					SwingUtilities
 							.invokeLater(() -> {
-								FindDialog fdialog = getFindDialog(source);
+								final FindDialog fdialog = getFindDialog(source);
 								if (fdialog != null) {
 									fdialog.setVisible(true);
 								}
@@ -224,7 +224,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			case "find next":
 				if (model instanceof IViewerModel) {
 					SwingUtilities.invokeLater(() -> {
-						FindDialog fdialog = getFindDialog(source);
+						final FindDialog fdialog = getFindDialog(source);
 						if (fdialog != null) {
 							fdialog.search();
 						}
