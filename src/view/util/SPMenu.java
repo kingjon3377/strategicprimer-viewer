@@ -1,13 +1,8 @@
 package view.util;
 
 import controller.map.misc.IOHandler;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import javax.swing.InputMap;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
@@ -142,7 +137,6 @@ public class SPMenu extends JMenuBar {
 		final int findKey = KeyEvent.VK_F;
 		final KeyStroke findStroke = createHotkey(findKey);
 		final KeyStroke nextStroke = createHotkey(KeyEvent.VK_G);
-		final ActionListener zoomListener;
 		final JMenuItem gotoTileItem = createMenuItem("Go to tile",
 				KeyEvent.VK_T, createHotkey(KeyEvent.VK_T),
 				"Go to a tile by coordinates",
