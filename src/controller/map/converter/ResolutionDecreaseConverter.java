@@ -113,7 +113,6 @@ public final class ResolutionDecreaseConverter {
 							lowerLeftRivers, lowerRightRivers)) {
 						retval.addRivers(point, river);
 					}
-					// FIXME: Rivers
 				}
 			}
 		}
