@@ -9,6 +9,7 @@ import model.exploration.ExplorationModel;
 import model.misc.IDriverModel;
 import util.Warning;
 import view.exploration.ExplorationFrame;
+import view.util.DriverQuit;
 
 import static view.util.SystemOut.SYS_OUT;
 
@@ -73,7 +74,7 @@ public final class ExplorationGUI implements ISPDriver {
 			SYS_OUT.print("Usage: ");
 			SYS_OUT.print(getClass().getSimpleName());
 			SYS_OUT.println(" master-map [player-map ...]");
-			System.exit(1);
+			DriverQuit.quit(1);
 		}
 		final ExplorationModel model = new ExplorationModel(
 																   new MapReaderAdapter()

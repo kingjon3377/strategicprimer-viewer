@@ -29,6 +29,7 @@ import util.NullCleaner;
 import util.Pair;
 import util.SingletonRandom;
 import util.Warning;
+import view.util.DriverQuit;
 
 import static view.util.SystemOut.SYS_OUT;
 
@@ -159,7 +160,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 			SYS_OUT.print("Usage: ");
 			SYS_OUT.print(getClass().getSimpleName());
 			SYS_OUT.println(" map [map ...]");
-			System.exit(1);
+			DriverQuit.quit(1);
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final IDriverModel model = new WorkerModel(

@@ -11,6 +11,7 @@ import model.map.fixtures.mobile.IUnit;
 import model.misc.IDriverModel;
 import util.Warning;
 import view.exploration.ExplorationCLI;
+import view.util.DriverQuit;
 
 import static view.util.SystemOut.SYS_OUT;
 
@@ -90,7 +91,7 @@ public final class ExplorationCLIDriver implements ISPDriver {
 			SYS_OUT.print("Usage: ");
 			SYS_OUT.print(getClass().getSimpleName());
 			SYS_OUT.println(" master-map [player-map ...]");
-			System.exit(1);
+			DriverQuit.quit(1);
 		}
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final IDriverModel model = new ExplorationModel(

@@ -49,6 +49,7 @@ import model.workermgmt.RaceFactory;
 import org.eclipse.jdt.annotation.Nullable;
 import util.TypesafeLogger;
 import util.Warning;
+import view.util.DriverQuit;
 
 import static util.NullCleaner.assertNotNull;
 
@@ -716,7 +717,7 @@ public final class OneToTwoConverter { // NOPMD
 			System.err.print(filename);
 			System.err.println(':');
 			except.printStackTrace(System.err);
-			System.exit(3);
+			DriverQuit.quit(3);
 		}
 	}
 }
