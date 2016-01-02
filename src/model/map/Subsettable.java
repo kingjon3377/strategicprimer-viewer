@@ -52,8 +52,9 @@ public interface Subsettable<T> {
 	 * @return whether the two items are equal
 	 * @throws IOException on error writing to the stream
 	 */
-	default boolean areItemsEqual(Appendable ostream, @Nullable Object one,
-	                              @Nullable Object two, String... messages) throws IOException {
+	default boolean areItemsEqual(final Appendable ostream, @Nullable final Object one,
+	                              @Nullable final Object two, final String... messages)
+			throws IOException {
 		if (Objects.equals(one, two)) {
 			return true;
 		} else {
@@ -72,8 +73,9 @@ public interface Subsettable<T> {
 	 * @return whether the two items are equal
 	 * @throws IOException on error writing to the stream
 	 */
-	default boolean areItemsEqual(Appendable ostream, boolean one,
-	                              boolean two, String... messages) throws IOException {
+	default boolean areItemsEqual(final Appendable ostream, final boolean one,
+	                              final boolean two, final String... messages)
+			throws IOException {
 		if (Objects.equals(one, two)) {
 			return true;
 		} else {
@@ -92,8 +94,9 @@ public interface Subsettable<T> {
 	 * @return whether the two items are equal
 	 * @throws IOException on error writing to the stream
 	 */
-	default boolean areIntItemsEqual(Appendable ostream, int one,
-	                              int two, String... messages) throws IOException {
+	default boolean areIntItemsEqual(final Appendable ostream, final int one,
+	                                 final int two, final String... messages)
+			throws IOException {
 		if (Objects.equals(one, two)) {
 			return true;
 		} else {
@@ -111,7 +114,8 @@ public interface Subsettable<T> {
 	 * @return whether it's true
 	 * @throws IOException on error writing to the stream
 	 */
-	default boolean isConditionTrue(Appendable ostream, boolean condition, String... messages) throws IOException {
+	default boolean isConditionTrue(final Appendable ostream, final boolean condition,
+	                                final String... messages) throws IOException {
 		if (condition) {
 			return true;
 		} else {
