@@ -81,6 +81,7 @@ public final class ReportGenerator {
 	 * fortresses if
 	 * not found, (-1, -1) if none found
 	 */
+	@SuppressWarnings("IfStatementWithIdenticalBranches")
 	private static Point findHQ(final IMapNG map, final Player player) {
 		Point retval = PointFactory.point(-1, -1);
 		for (final Point location : map.locations()) {
