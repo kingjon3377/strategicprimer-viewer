@@ -350,7 +350,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			boolean rowEmpty = true;
 			for (int j = 0; j < dim.cols; j++) {
 				final Point point = PointFactory.point(i, j);
-				if ((TileType.NotVisible != obj.getBaseTerrain(point))
+				TileType terrain = obj.getBaseTerrain(point);
+				if ((TileType.NotVisible != terrain)
 							|| obj.isMountainous(point)
 							|| (obj.getGround(point) != null)
 							|| (obj.getForest(point) != null)
@@ -367,9 +368,9 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					ostream.append(Integer.toString(i));
 					ostream.append("\" column=\"");
 					ostream.append(Integer.toString(j));
-					if (TileType.NotVisible != obj.getBaseTerrain(point)) {
+					if (TileType.NotVisible != terrain) {
 						ostream.append("\" kind=\"");
-						ostream.append(obj.getBaseTerrain(point).toXML());
+						ostream.append(terrain.toXML());
 					}
 					ostream.append("\">");
 					boolean needeol = true;
