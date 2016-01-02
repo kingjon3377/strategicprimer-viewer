@@ -85,15 +85,8 @@ public class Implement implements UnitMember, FortressMember, HasKind, HasImage 
 			ostream.append("\tIDs differ");
 			return false;
 		} else if (obj instanceof Implement) {
-			if (kind.equals(((Implement) obj).getKind())) {
-				return true;
-			} else {
-				ostream.append(context);
-				ostream.append("\tIn Implement ");
-				ostream.append(Integer.toString(id));
-				ostream.append(": Kinds differ");
-				return false;
-			}
+			return areItemsEqual(ostream, kind, ((Implement) obj).kind, context,
+					"\tIn Implement ID #", Integer.toString(id), ": Kinds differ\n");
 		} else {
 			ostream.append(context);
 			ostream.append("\tDifferent fixture types given for ID #");

@@ -242,16 +242,12 @@ public class Fortress implements HasImage, ITownFixture,
 					context + " In fortress " + name + " (ID #" + id + "):";
 			boolean retval = true;
 			for (final FortressMember unit : fort) {
-				if (!ours.containsKey(Integer.valueOf(unit.getID()))) {
-					ostream.append(ctxt);
-					ostream.append(" Extra unit:\t");
-					ostream.append(unit.toString());
-					ostream.append(", ID #");
-					ostream.append(Integer.toString(unit.getID()));
-					ostream.append('\n');
-					retval = false;
-				} else if (!ours.get(Integer.valueOf(unit.getID())).isSubset(
-						unit, ostream, ctxt)) {
+				if (!isConditionTrue(ostream,
+						ours.containsKey(Integer.valueOf(unit.getID())), ctxt,
+						"Extra unit:\t", unit.toString(), ", ID #",
+						Integer.toString(unit.getID()), "\n") ||
+						    !ours.get(Integer.valueOf(unit.getID())).isSubset(
+								    unit, ostream, ctxt)) {
 					retval = false;
 				}
 			}

@@ -393,25 +393,15 @@ public class Unit implements IUnit {
 			ostream.append(Integer.toString(obj.getID()));
 			ostream.append('\n');
 			return false;
-		} else if (((IUnit) obj).getOwner().getPlayerId() != owner.getPlayerId()) {
-			ostream.append(context);
-			ostream.append(" Unit of ID #");
-			ostream.append(Integer.toString(id));
-			ostream.append(":\tOwners differ\n");
-			return false; // NOPMD
-		} else if (!name.equals(((IUnit) obj).getName())) {
-			ostream.append(context);
-			ostream.append(" Unit of ID #");
-			ostream.append(Integer.toString(id));
-			ostream.append(":\tNames differ\n");
-			return false; // NOPMD
-		} else if (!kind.equals(((IUnit) obj).getKind())) {
-			ostream.append(context);
-			ostream.append(" Unit of ID #");
-			ostream.append(Integer.toString(id));
-			ostream.append(":\tKinds differ\n");
-			return false; // NOPMD
-		} else {
+		} else if (areIntItemsEqual(ostream, owner.getPlayerId(),
+				((IUnit) obj).getOwner().getPlayerId(), context, " Unit of ID #",
+				Integer.toString(id), ":\tOwners differ.\n") &&
+				           areItemsEqual(ostream, name, ((IUnit) obj).getName(), context,
+						           " Unit of ID #", Integer.toString(id),
+						           ":\tNames differ\n") &&
+				           areItemsEqual(ostream, kind, ((IUnit) obj).getKind(), context,
+						           " Unit of ID #", Integer.toString(id),
+						           ":\tKinds differ\n")) {
 			final Iterable<UnitMember> other = (IUnit) obj;
 			final Map<Integer, UnitMember> ours = new HashMap<>();
 			for (final UnitMember member : this) {
@@ -449,7 +439,9 @@ public class Unit implements IUnit {
 			} else {
 				return false;
 			}
-//			return retval;
+			//			return retval;
+		} else {
+			return false; // NOPMD
 		}
 	}
 }

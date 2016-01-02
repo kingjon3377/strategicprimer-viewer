@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Objects;
 import model.map.IFixture;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
@@ -220,21 +219,12 @@ public class Worker implements IWorker {
 				final String ctxt =
 						context + " In worker " + ((Worker) obj).name
 								+ " (ID #" + Integer.toString(id) + "):";
-				if (!name.equals(((Worker) obj).name)) {
-					ostream.append(context);
-					ostream.append(" In worker with ID #");
-					ostream.append(Integer.toString(id));
-					ostream.append(":\tnames differ\n");
-					return false;
-				} else if (!race.equals(((Worker) obj).race)) {
-					ostream.append(ctxt);
-					ostream.append(":\traces differ\n");
-					return false;
-				} else if (!Objects.equals(stats, ((Worker) obj).stats)) {
-					ostream.append(ctxt);
-					ostream.append(":\tstats differ\n");
-					return false;
-				} else {
+				if (areItemsEqual(ostream, name, ((Worker) obj).name, ctxt,
+						"\tNames differ\n") &&
+						    areItemsEqual(ostream, race, ((Worker) obj).race, ctxt,
+								    ":\tRaces differ\n") &&
+						    areItemsEqual(ostream, stats, ((Worker) obj).stats, ctxt,
+								    ":\tStats differ\n")) {
 					final Map<String, IJob> ours = new HashMap<>();
 					for (final IJob job : jobSet) {
 						ours.put(job.getName(), job);
@@ -253,6 +243,8 @@ public class Worker implements IWorker {
 						}
 					}
 					return retval;
+				} else {
+					return false;
 				}
 			} else {
 				ostream.append("For ID #");

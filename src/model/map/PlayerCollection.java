@@ -131,16 +131,16 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	public boolean isSubset(final IPlayerCollection obj,
 							final Appendable ostream, final String context)
 			throws IOException {
-		for (final Player player : obj) {
-			if (!players.containsValue(player)) {
-				ostream.append(context);
-				ostream.append("\tExtra player ");
-				ostream.append(player.getName());
-				ostream.append('\n');
-				return false; // NOPMD
-			}
-		}
-		return true;
+		return StreamSupport.stream(obj.spliterator(), false).allMatch(
+				player -> {
+					try {
+						return isConditionTrue(ostream, players.containsValue(player),
+								context,
+								"\tExtra player ", player.getName(), "\n");
+					} catch (IOException e) {
+						return false;
+					}
+				});
 	}
 
 	/**

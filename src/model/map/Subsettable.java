@@ -1,6 +1,8 @@
 package model.map;
 
 import java.io.IOException;
+import java.util.Objects;
+import org.eclipse.jdt.annotation.Nullable;
 
 
 /**
@@ -40,4 +42,83 @@ public interface Subsettable<T> {
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	boolean isSubset(T obj, Appendable ostream, String context) throws IOException;
+
+	/**
+	 * A helper method to compare two items and, if they're not equal, report this to the stream.
+	 * @param ostream the stream to write to
+	 * @param messages messages to write if the two aren't equal
+	 * @param one the first item
+	 * @param two the second item
+	 * @return whether the two items are equal
+	 * @throws IOException on error writing to the stream
+	 */
+	default boolean areItemsEqual(Appendable ostream, @Nullable Object one,
+	                              @Nullable Object two, String... messages) throws IOException {
+		if (Objects.equals(one, two)) {
+			return true;
+		} else {
+			for (final String message : messages) {
+				ostream.append(message);
+			}
+			return false;
+		}
+	}
+	/**
+	 * A helper method to compare two items and, if they're not equal, report this to the stream.
+	 * @param ostream the stream to write to
+	 * @param messages messages to write if the two aren't equal
+	 * @param one the first item
+	 * @param two the second item
+	 * @return whether the two items are equal
+	 * @throws IOException on error writing to the stream
+	 */
+	default boolean areItemsEqual(Appendable ostream, boolean one,
+	                              boolean two, String... messages) throws IOException {
+		if (Objects.equals(one, two)) {
+			return true;
+		} else {
+			for (final String message : messages) {
+				ostream.append(message);
+			}
+			return false;
+		}
+	}
+	/**
+	 * A helper method to compare two items and, if they're not equal, report this to the stream.
+	 * @param ostream the stream to write to
+	 * @param messages messages to write if the two aren't equal
+	 * @param one the first item
+	 * @param two the second item
+	 * @return whether the two items are equal
+	 * @throws IOException on error writing to the stream
+	 */
+	default boolean areIntItemsEqual(Appendable ostream, int one,
+	                              int two, String... messages) throws IOException {
+		if (Objects.equals(one, two)) {
+			return true;
+		} else {
+			for (final String message : messages) {
+				ostream.append(message);
+			}
+			return false;
+		}
+	}
+	/**
+	 * A helper method to report a message to the stream if a condition isn't true.
+	 * @param ostream the stream to write to
+	 * @param condition the condition to check
+	 * @param messages the messages to write if it isn't true
+	 * @return whether it's true
+	 * @throws IOException on error writing to the stream
+	 */
+	default boolean isConditionTrue(Appendable ostream, boolean condition, String... messages) throws IOException {
+		if (condition) {
+			return true;
+		} else {
+			for (final String message : messages) {
+				ostream.append(message);
+			}
+			return false;
+		}
+	}
 }

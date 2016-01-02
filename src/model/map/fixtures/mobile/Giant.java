@@ -162,15 +162,9 @@ public class Giant implements MobileFixture, HasImage, HasKind, UnitMember {
 	                        final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Giant) {
-				if (kind.equals(((Giant) obj).getKind())) {
-					return true;
-				} else {
-					ostream.append(context);
-					ostream.append("\tDifferent kinds of giant for ID #");
-					ostream.append(Integer.toString(id));
-					ostream.append('\n');
-					return false;
-				}
+				return areItemsEqual(ostream, kind, ((Giant) obj).kind, context,
+						"\tDifferent kinds of giant for ID #", Integer.toString(id),
+						"\n");
 			} else {
 				ostream.append(context);
 				ostream.append("\tFor ID #");

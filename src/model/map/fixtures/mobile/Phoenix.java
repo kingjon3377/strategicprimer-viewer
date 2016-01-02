@@ -139,15 +139,8 @@ public class Phoenix implements MobileFixture, HasImage, UnitMember {
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
 	                        final String context) throws IOException {
 		if (obj.getID() == id) {
-			if (obj instanceof Phoenix) {
-				return true;
-			} else {
-				ostream.append(context);
-				ostream.append("\tFor ID #");
-				ostream.append(Integer.toString(id));
-				ostream.append(", different kinds of members");
-				return false;
-			}
+			return isConditionTrue(ostream, obj instanceof Phoenix, context,
+					"\tFor ID #", Integer.toString(id), ", different kinds of members");
 		} else {
 			ostream.append(context);
 			ostream.append("\tCalled with different IDs, #");

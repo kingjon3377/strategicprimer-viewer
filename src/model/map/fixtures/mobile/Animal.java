@@ -181,34 +181,19 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	                        final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Animal) {
-				if (!kind.equals(((Animal) obj).getKind())) {
-					ostream.append(context);
-					ostream.append("\tDifferent kinds of animal for ID #");
-					ostream.append(Integer.toString(id));
-					ostream.append('\n');
-					return false;
-				} else if (!talking && ((Animal) obj).talking) {
-					ostream.append(context);
-					ostream.append(" In animal ID #");
-					ostream.append(Integer.toString(id));
-					ostream.append(":\tSubmap's is talking and master's isn't\n");
-					return false;
-				} else if (traces && !((Animal) obj).traces) {
-					ostream.append(context);
-					ostream.append(" In animal ID #");
-					ostream.append(Integer.toString(id));
-					ostream.append(":\tSubmap has animal and master only tracks\n");
-					return false;
-				} else if (!status.equals(((Animal) obj).status)) {
-					ostream.append(context);
-					ostream.append('\t');
-					ostream.append("Domestication status of animal differs at ID #");
-					ostream.append(Integer.toString(id));
-					ostream.append('\n');
-					return false;
-				} else {
-					return true;
-				}
+				return areItemsEqual(ostream, kind, ((Animal) obj).kind, context,
+						"\tDifferent kinds of animal for ID #", Integer.toString(id),
+						"\n") && isConditionTrue(ostream,
+						talking || !((Animal) obj).talking, context, "\tIn animal ID #",
+						Integer.toString(id),
+						":\tSubmap's is talking and master's isn't\n") &&
+						       isConditionTrue(ostream, !traces || ((Animal) obj).traces,
+								       context, "\tIn animal ID #", Integer.toString(id),
+								       ":\tSubmap has animal and master only tracks\n") &&
+						       areItemsEqual(ostream, status, ((Animal) obj).status,
+								       context,
+								       "\tDomestication status of animal differs at ID #",
+								       Integer.toString(id), "\n");
 			} else {
 				ostream.append(context);
 				ostream.append("\tFor ID #");

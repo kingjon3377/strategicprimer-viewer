@@ -158,14 +158,9 @@ public class Fairy implements MobileFixture, HasImage, HasKind, UnitMember {
 	                        final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Fairy) {
-				if (kind.equals(((Fairy) obj).getKind())) {
-					return true;
-				} else {
-					ostream.append(context);
-					ostream.append("\tDifferent kinds of fairy for ID #");
-					ostream.append(Integer.toString(id));
-					return false;
-				}
+				return areItemsEqual(ostream, kind, ((Fairy) obj).kind, context,
+						"\tDifferent kinds of fairy for ID #", Integer.toString(id),
+						"\n");
 			} else {
 				ostream.append(context);
 				ostream.append("\tFor ID #");

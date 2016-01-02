@@ -299,42 +299,23 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 	                        final String context) throws IOException {
 		if (obj instanceof Village) {
 			final Village village = (Village) obj;
-			if (village.id != id) {
-				ostream.append(context);
-				ostream.append("\tIDs differ\n");
-				return false;
-			} else if (status != village.status) {
-				ostream.append(context);
-				ostream.append(" In village (ID #");
-				ostream.append(Integer.toString(id));
-				ostream.append("):\tVillage status differs\n");
-				return false;
-			} else if (!name.equals(village.name)) {
-				ostream.append(context);
-				ostream.append("In village (ID #");
-				ostream.append(Integer.toString(id));
-				ostream.append("):\tVillage names differ\n");
-				return false;
-			} else if (!race.equals(village.race)) {
-				ostream.append(context);
-				ostream.append("In village ");
-				ostream.append(name);
-				ostream.append(" (ID #");
-				ostream.append(Integer.toString(id));
-				ostream.append("):\tDominant race differs\n");
-				return false;
-			} else if ((owner.getPlayerId() == village.owner.getPlayerId()) ||
-					           village.owner.isIndependent()) {
-				return true;
-			} else {
-				ostream.append(context);
-				ostream.append("In village ");
-				ostream.append(name);
-				ostream.append(" (ID #");
-				ostream.append(Integer.toString(id));
-				ostream.append("):\tOwners differ\n");
-				return false;
-			}
+			return !(!areIntItemsEqual(ostream, id, village.id, context,
+					"\tIDs differ\n") ||
+					         !areItemsEqual(ostream, status, village.status, context,
+							         " In village (ID #", Integer.toString(id),
+							         "):\tVillage status differs\n") ||
+					         !areItemsEqual(ostream, name, village.name, context,
+							         " In village (ID #", Integer.toString(id),
+							         "):\tVillage name differs\n") ||
+					         !areItemsEqual(ostream, race, village.race, context,
+							         " In village ", name, " (ID #", Integer.toString
+									                                                 (id),
+							         "):\tDominant race differs\n") ||
+					         !isConditionTrue(ostream,
+							         owner.getPlayerId() == village.owner.getPlayerId() ||
+									         village.owner.isIndependent(), context,
+							         " In village ", name, " (ID #", Integer.toString(id),
+							         "):\tOwners differ\n"));
 		} else {
 			ostream.append("Incompatible types\n");
 			return false;
