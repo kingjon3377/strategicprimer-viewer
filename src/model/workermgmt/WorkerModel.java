@@ -70,6 +70,17 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	}
 
 	/**
+	 * @return a list of all the players in all the maps
+	 */
+	@Override
+	public List<Player> getPlayers() {
+		return new ArrayList<>(StreamSupport.stream(getAllMaps().spliterator(), false).flatMap(
+				pair -> StreamSupport.stream(pair.first().players().spliterator(),
+						false))
+				       .collect(Collectors.toSet()));
+	}
+
+	/**
 	 * @param player a player in the map
 	 * @return a list of that player's units
 	 */

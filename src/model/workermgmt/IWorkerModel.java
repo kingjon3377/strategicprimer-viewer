@@ -30,6 +30,10 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public interface IWorkerModel extends IMultiMapModel {
 	/**
+	 * @return a list of all the players in all the maps
+	 */
+	List<Player> getPlayers();
+	/**
 	 * @param player a player in the map
 	 * @return a list of the units in the map belonging to the player
 	 */

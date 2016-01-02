@@ -6,13 +6,9 @@ import controller.map.misc.ICLIHelper;
 import controller.map.misc.MapReaderAdapter;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
@@ -26,7 +22,6 @@ import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
 import util.NullCleaner;
-import util.Pair;
 import util.SingletonRandom;
 import util.Warning;
 import view.util.DriverQuit;
@@ -121,11 +116,7 @@ public final class AdvancementCLIDriver implements ISPDriver {
 		} else {
 			model = new WorkerModel(dmodel);
 		}
-		final Set<Player> allPlayers = new HashSet<>();
-		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
-			allPlayers.addAll(CLIHelper.toList(pair.first().players()));
-		}
-		final List<Player> playerList = new ArrayList<>(allPlayers);
+		final List<Player> playerList = model.getPlayers();
 		try {
 			final String hdr = "Available players:";
 			final String none = "No players found.";
