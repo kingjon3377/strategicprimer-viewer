@@ -23,6 +23,7 @@ package view.util;
  *
  * @author Jonathan Lovelace
  */
+@FunctionalInterface
 public interface Revertible {
 	/**
 	 * Method to call when the Revert button is pressed.

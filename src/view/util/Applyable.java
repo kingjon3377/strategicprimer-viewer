@@ -23,6 +23,7 @@ package view.util;
  *
  * @author Jonathan Lovelace
  */
+@FunctionalInterface
 public interface Applyable {
 	/**
 	 * Method to call when the Apply button is pressed.
