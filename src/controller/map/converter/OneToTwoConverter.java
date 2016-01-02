@@ -158,15 +158,15 @@ public final class OneToTwoConverter { // NOPMD
 	/**
 	 * @param map   a map
 	 * @param point a point
-	 * @return whether that location in the map is empty (no terrain type, no ground, no
-	 * forest, no rivers, no fixtures)
+	 * @return whether that location in the map has anything (terrain type, ground,
+	 * forest, rivers, or fixtures) on it
 	 */
-	private static boolean isPointEmpty(final IMapNG map, final Point point) {
-		return (TileType.NotVisible == map.getBaseTerrain(point))
-					   && (map.getGround(point) == null) && (map.getForest(point) ==
-																	 null)
-					   && !map.getRivers(point).iterator().hasNext()
-					   && !map.getOtherFixtures(point).iterator().hasNext();
+	private static boolean doesPointHaveContents(final IMapNG map, final Point point) {
+		return (TileType.NotVisible != map.getBaseTerrain(point)) ||
+				       (map.getGround(point) != null) || (map.getForest(point) !=
+						                                          null) ||
+				       map.getRivers(point).iterator().hasNext() ||
+				       map.getOtherFixtures(point).iterator().hasNext();
 	}
 
 	/**
@@ -183,7 +183,7 @@ public final class OneToTwoConverter { // NOPMD
 											  final IMutableMapNG newMap,
 											  final boolean main) {
 		final List<Point> initial = new LinkedList<>();
-		if (!isPointEmpty(oldMap, point)) {
+		if (doesPointHaveContents(oldMap, point)) {
 			for (int i = 0; i < RES_JUMP; i++) {
 				for (int j = 0; j < RES_JUMP; j++) {
 					final int row = (point.row * RES_JUMP) + i;
@@ -215,7 +215,7 @@ public final class OneToTwoConverter { // NOPMD
 										  final Player independentPlayer) {
 		final List<Point> initial = createInitialSubtiles(point,
 				oldMap, newMap, main);
-		if (!isPointEmpty(oldMap, point)) {
+		if (doesPointHaveContents(oldMap, point)) {
 			final int idNum = idFactory.createID();
 			if (oldMap instanceof IMutableMapNG) {
 				((IMutableMapNG) oldMap).addFixture(point, new Village(
@@ -305,7 +305,7 @@ public final class OneToTwoConverter { // NOPMD
 				map.setBaseTerrain(point, TileType.Plains);
 				map.setMountainous(point, true);
 			} else if (TileType.TemperateForest == map.getBaseTerrain(point)) {
-				if (!hasForest(map, point)) {
+				if (isPointUnforested(map, point)) {
 					map.setForest(
 							point,
 							new Forest(runner.getPrimaryTree(point,
@@ -314,7 +314,7 @@ public final class OneToTwoConverter { // NOPMD
 				}
 				map.setBaseTerrain(point, TileType.Plains);
 			} else if (TileType.BorealForest == map.getBaseTerrain(point)) {
-				if (!hasForest(map, point)) {
+				if (isPointUnforested(map, point)) {
 					map.setForest(
 							point,
 							new Forest(runner.getPrimaryTree(point,
@@ -559,13 +559,13 @@ public final class OneToTwoConverter { // NOPMD
 	/**
 	 * @param point a location
 	 * @param map   the map
-	 * @return whether that location already has a forest
+	 * @return false if that location already has a forest, true otherwise
 	 */
-	private static boolean hasForest(final IMapNG map, final Point point) {
-		return (map.getForest(point) != null) ||
-					   StreamSupport.stream(map.getOtherFixtures(point).spliterator(),
-							   false)
-							   .anyMatch(fix -> fix instanceof Forest);
+	private static boolean isPointUnforested(final IMapNG map, final Point point) {
+		return (map.getForest(point) == null) &&
+				       StreamSupport.stream(map.getOtherFixtures(point).spliterator(),
+						       false)
+						       .noneMatch(fix -> fix instanceof Forest);
 	}
 
 	/**
