@@ -312,7 +312,8 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 									                                                 (id),
 							         "):\tDominant race differs\n") ||
 					         !isConditionTrue(ostream,
-							         owner.getPlayerId() == village.owner.getPlayerId() ||
+							         (owner.getPlayerId() ==
+									          village.owner.getPlayerId()) ||
 									         village.owner.isIndependent(), context,
 							         " In village ", name, " (ID #", Integer.toString(id),
 							         "):\tOwners differ\n"));
