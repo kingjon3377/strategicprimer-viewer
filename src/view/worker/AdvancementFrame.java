@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
+import model.map.IMapNG;
 import model.map.Player;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
@@ -66,13 +67,13 @@ public final class AdvancementFrame extends JFrame {
 					source.getMapFile());
 		}
 		setMinimumSize(new Dimension(640, 480));
-
-		final Player player = source.getMap().getCurrentPlayer();
+		IMapNG map = source.getMap();
+		final Player player = map.getCurrentPlayer();
 		final PlayerLabel plabel = new PlayerLabel("", player, "'s Units:");
 		ioHandler.addPlayerChangeListener(plabel);
 		final IWorkerTreeModel wtmodel = new WorkerTreeModelAlt(player, source);
 		final WorkerTree tree =
-				new WorkerTree(wtmodel, source.getMap().players(), false);
+				new WorkerTree(wtmodel, map.players(), false);
 		ioHandler.addPlayerChangeListener(wtmodel);
 		final WorkerCreationListener nwl = new WorkerCreationListener(wtmodel,
 																			 IDFactoryFiller
