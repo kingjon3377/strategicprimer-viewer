@@ -214,12 +214,22 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			case "find a fixture":
 				if (model instanceof IViewerModel) {
 					SwingUtilities
-							.invokeLater(() -> getFindDialog(source).setVisible(true));
+							.invokeLater(() -> {
+								FindDialog fdialog = getFindDialog(source);
+								if (fdialog != null) {
+									fdialog.setVisible(true);
+								}
+							});
 				}
 				break;
 			case "find next":
 				if (model instanceof IViewerModel) {
-					SwingUtilities.invokeLater(() -> getFindDialog(source).search());
+					SwingUtilities.invokeLater(() -> {
+						FindDialog fdialog = getFindDialog(source);
+						if (fdialog != null) {
+							fdialog.search();
+						}
+					});
 				}
 				break;
 			case "Change current player":
