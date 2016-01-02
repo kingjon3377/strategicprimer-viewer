@@ -3,7 +3,6 @@ package controller.map.misc;
 import controller.map.formatexceptions.SPFormatException;
 import java.awt.Component;
 import java.awt.Frame;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -460,11 +459,11 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 */
 	@Nullable
 	private synchronized FindDialog getFindDialog(final Component component) {
-		final Window window = getContainingFrame(component);
-		if ((model instanceof IViewerModel) && (window instanceof Frame)) {
+		final Frame window = getContainingFrame(component);
+		if ((model instanceof IViewerModel) && (window != null)) {
 			if (finder == null) {
 				final FindDialog local =
-						new FindDialog((Frame) window, (IViewerModel) model);
+						new FindDialog(window, (IViewerModel) model);
 				finder = local;
 				return local;
 			} else {
