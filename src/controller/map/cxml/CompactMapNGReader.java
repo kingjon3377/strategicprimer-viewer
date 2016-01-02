@@ -187,7 +187,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 						retval.addFixture(point, parseFixture(current, stream,
 								players, idFactory, warner));
 					} catch (final UnwantedChildException except) {
-						if ("unknown".equals(except.getTag())) {
+						if ("unknown".equals(except.getTag().getLocalPart())) {
 							throw new UnwantedChildException(mapTag.getName(), except);
 						} else {
 							throw except;
