@@ -87,15 +87,15 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 			if (unmodified) {
 				final IJob job = new Job(nomen, 0);
 				worker.addJob(job);
-				boolean found = false;
+				boolean absent = true;
 				for (final IJob temp : worker) {
 					if (temp.getName().equals(nomen)) {
 						proxiedJobs.add(temp);
-						found = true;
+						absent = false;
 						break;
 					}
 				}
-				if (!found) {
+				if (absent) {
 					proxiedJobs.add(job);
 				}
 			}
