@@ -2,6 +2,7 @@ package view.worker;
 
 import java.awt.GridLayout;
 import java.util.Iterator;
+import java.util.function.ToIntFunction;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -61,27 +62,27 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	/**
 	 * The label to say a worker's strength.
 	 */
-	private final JLabel strLabel = new JLabel("+NaN");
+	private final StatLabel strLabel = new StatLabel(WorkerStats::getStrength);
 	/**
 	 * The label to say a worker's dexterity.
 	 */
-	private final JLabel dexLabel = new JLabel("+NaN");
+	private final StatLabel dexLabel = new StatLabel(WorkerStats::getDexterity);
 	/**
 	 * The label to say a worker's constitution.
 	 */
-	private final JLabel conLabel = new JLabel("+NaN");
+	private final StatLabel conLabel = new StatLabel(WorkerStats::getConstitution);
 	/**
 	 * The label to say a worker's intelligence.
 	 */
-	private final JLabel intLabel = new JLabel("+NaN");
+	private final StatLabel intLabel = new StatLabel(WorkerStats::getIntelligence);
 	/**
 	 * The label to say a worker's wisdom.
 	 */
-	private final JLabel wisLabel = new JLabel("+NaN");
+	private final StatLabel wisLabel = new StatLabel(WorkerStats::getWisdom);
 	/**
 	 * The label to say a worker's charisma.
 	 */
-	private final JLabel chaLabel = new JLabel("+NaN");
+	private final StatLabel chaLabel = new StatLabel(WorkerStats::getCharisma);
 	/**
 	 * The subpanel to show a worker's Job experience or training.
 	 */
@@ -240,7 +241,33 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			recache();
 		}
 	}
-
+	/**
+	 * A label to represent a stat.
+	 */
+	private static class StatLabel extends JLabel {
+		/**
+		 * A handle for the stat in question.
+		 */
+		private final ToIntFunction<WorkerStats> handle;
+		/**
+		 * Constructor.
+		 * @param stat a handle for the stat we represent
+		 */
+		public StatLabel(final ToIntFunction<WorkerStats> stat) {
+			super("+NaN");
+			handle = stat;
+		}
+		/**
+		 * Update the label.
+		 */
+		public void recache(@Nullable final WorkerStats stats) {
+			if (stats == null) {
+				setText("");
+			} else {
+				setText(getModifierString(handle.applyAsInt(stats)));
+			}
+		}
+	}
 	/**
 	 * Invalidate and recompute the display.
 	 */
@@ -250,33 +277,24 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			typeLabel.setText("");
 			nameLabel.setText("");
 			kindLabel.setText("");
-			strLabel.setText("");
-			dexLabel.setText("");
-			conLabel.setText("");
-			intLabel.setText("");
-			wisLabel.setText("");
-			chaLabel.setText("");
+			strLabel.recache(null);
+			dexLabel.recache(null);
+			conLabel.recache(null);
+			intLabel.recache(null);
+			wisLabel.recache(null);
+			chaLabel.recache(null);
 			jobsPanel.removeAll();
 		} else if (local instanceof Worker) {
 			typeLabel.setText("Worker");
 			nameLabel.setText(((Worker) local).getName());
 			kindLabel.setText(((Worker) local).getKind());
 			final WorkerStats stats = ((Worker) local).getStats();
-			if (stats == null) {
-				strLabel.setText("");
-				dexLabel.setText("");
-				conLabel.setText("");
-				intLabel.setText("");
-				wisLabel.setText("");
-				chaLabel.setText("");
-			} else {
-				strLabel.setText(getModifierString(stats.getStrength()));
-				dexLabel.setText(getModifierString(stats.getDexterity()));
-				conLabel.setText(getModifierString(stats.getConstitution()));
-				intLabel.setText(getModifierString(stats.getIntelligence()));
-				wisLabel.setText(getModifierString(stats.getWisdom()));
-				chaLabel.setText(getModifierString(stats.getCharisma()));
-			}
+			strLabel.recache(stats);
+			dexLabel.recache(stats);
+			conLabel.recache(stats);
+			intLabel.recache(stats);
+			wisLabel.recache(stats);
+			chaLabel.recache(stats);
 			jobsPanel.removeAll();
 			for (final IJob job : (Worker) local) {
 				final JLabel label = new JLabel(job.getName() + ' ' + job.getLevel());
