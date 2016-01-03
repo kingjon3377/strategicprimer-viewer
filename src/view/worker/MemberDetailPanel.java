@@ -1,6 +1,9 @@
 package view.worker;
 
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.function.ToIntFunction;
 import javax.swing.GroupLayout;
@@ -60,29 +63,9 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	 */
 	private final JLabel kindLabel = new JLabel("member kind");
 	/**
-	 * The label to say a worker's strength.
+	 * The labels to say a worker's stats.
 	 */
-	private final StatLabel strLabel = new StatLabel(WorkerStats::getStrength);
-	/**
-	 * The label to say a worker's dexterity.
-	 */
-	private final StatLabel dexLabel = new StatLabel(WorkerStats::getDexterity);
-	/**
-	 * The label to say a worker's constitution.
-	 */
-	private final StatLabel conLabel = new StatLabel(WorkerStats::getConstitution);
-	/**
-	 * The label to say a worker's intelligence.
-	 */
-	private final StatLabel intLabel = new StatLabel(WorkerStats::getIntelligence);
-	/**
-	 * The label to say a worker's wisdom.
-	 */
-	private final StatLabel wisLabel = new StatLabel(WorkerStats::getWisdom);
-	/**
-	 * The label to say a worker's charisma.
-	 */
-	private final StatLabel chaLabel = new StatLabel(WorkerStats::getCharisma);
+	private final Collection<StatLabel> statLabels = new ArrayList<>(6);
 	/**
 	 * The subpanel to show a worker's Job experience or training.
 	 */
@@ -107,6 +90,14 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		final JLabel wisCaption = new JLabel("<html><b>Wis:</b></html>");
 		final JLabel chaCaption = new JLabel("<html><b>Cha:</b></html>");
 		final JLabel jobsCaption = new JLabel("<html><b>Job Levels:</b></html>");
+		final StatLabel strLabel = new StatLabel(WorkerStats::getStrength);
+		final StatLabel dexLabel = new StatLabel(WorkerStats::getDexterity);
+		final StatLabel conLabel = new StatLabel(WorkerStats::getConstitution);
+		final StatLabel intLabel = new StatLabel(WorkerStats::getIntelligence);
+		final StatLabel wisLabel = new StatLabel(WorkerStats::getWisdom);
+		final StatLabel chaLabel = new StatLabel(WorkerStats::getCharisma);
+		statLabels.addAll(Arrays.asList(strLabel, dexLabel, conLabel, intLabel, wisLabel,
+				chaLabel));
 		layout.setVerticalGroup(layout.createSequentialGroup()
 										.addComponent(header)
 										.addGroup(layout.createParallelGroup()
@@ -277,24 +268,18 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			typeLabel.setText("");
 			nameLabel.setText("");
 			kindLabel.setText("");
-			strLabel.recache(null);
-			dexLabel.recache(null);
-			conLabel.recache(null);
-			intLabel.recache(null);
-			wisLabel.recache(null);
-			chaLabel.recache(null);
+			for (StatLabel label : statLabels) {
+				label.recache(null);
+			}
 			jobsPanel.removeAll();
 		} else if (local instanceof Worker) {
 			typeLabel.setText("Worker");
 			nameLabel.setText(((Worker) local).getName());
 			kindLabel.setText(((Worker) local).getKind());
 			final WorkerStats stats = ((Worker) local).getStats();
-			strLabel.recache(stats);
-			dexLabel.recache(stats);
-			conLabel.recache(stats);
-			intLabel.recache(stats);
-			wisLabel.recache(stats);
-			chaLabel.recache(stats);
+			for (StatLabel label : statLabels) {
+				label.recache(stats);
+			}
 			jobsPanel.removeAll();
 			for (final IJob job : (Worker) local) {
 				final JLabel label = new JLabel(job.getName() + ' ' + job.getLevel());
@@ -320,23 +305,17 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			typeLabel.setText("Animal");
 			nameLabel.setText("");
 			kindLabel.setText(((Animal) local).getKind());
-			strLabel.setText("");
-			dexLabel.setText("");
-			conLabel.setText("");
-			intLabel.setText("");
-			wisLabel.setText("");
-			chaLabel.setText("");
+			for (StatLabel label : statLabels) {
+				label.recache(null);
+			}
 			jobsPanel.removeAll();
 		} else {
 			typeLabel.setText("Unknown");
 			nameLabel.setText("");
 			kindLabel.setText(local.getClass().getSimpleName());
-			strLabel.setText("");
-			dexLabel.setText("");
-			conLabel.setText("");
-			intLabel.setText("");
-			wisLabel.setText("");
-			chaLabel.setText("");
+			for (StatLabel label : statLabels) {
+				label.recache(null);
+			}
 			jobsPanel.removeAll();
 		}
 	}
