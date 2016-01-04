@@ -36,11 +36,10 @@ public interface IWorker extends UnitMember, Iterable<@NonNull IJob>, HasName, H
 	 * Add a job.
 	 *
 	 * Note that this does not guarantee that the worker will contain this Job object,
-	 * nor
-	 * that any changes made to it will be applied to the Job that the worker already had
-	 * or that is actually added. (TODO: implementations *should* do that.) If levels
-	 * *need* to be added, callers should get the Job the worker contains after this
-	 * returns using {@link #getJob(String)} and apply changes to that.
+	 * nor that any changes made to it will be applied to the Job that the worker
+	 * already had or that is actually added. (TODO: implementations *should* do that.)
+	 * If levels *need* to be added, callers should get the Job the worker contains
+	 * after this returns using {@link #getJob(String)} and apply changes to that.
 	 *
 	 * @param job the job to add.
 	 * @return the result of the operation
