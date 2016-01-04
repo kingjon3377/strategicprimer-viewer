@@ -74,14 +74,11 @@ public final class WorkerReader implements INodeHandler<@NonNull Worker> {
 						final IMutablePlayerCollection players,
 						final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		final Worker retval = new Worker(
-												XMLHelper.getAttribute(element, "name"),
-												XMLHelper.getAttribute(element, "race",
-														"human"),
-												XMLHelper.getOrGenerateID(element,
-														warner,
-														idFactory));
-		XMLHelper.addImage(element, retval);
+		final Worker retval = new Worker(getAttribute(element, "name"),
+				                                getAttribute(element, "race", "human"),
+				                                getOrGenerateID(element, warner,
+						                                idFactory));
+		addImage(element, retval);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final Object result =

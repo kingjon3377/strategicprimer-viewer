@@ -11,9 +11,6 @@ import model.map.fixtures.mobile.Phoenix;
 import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.readerng.XMLHelper.getOrGenerateID;
-import static controller.map.readerng.XMLHelper.spinUntilEnd;
-
 /**
  * A reader for Phoenixes.
  *
@@ -61,7 +58,7 @@ public final class PhoenixReader implements INodeHandler<Phoenix> {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Phoenix fix = new Phoenix(getOrGenerateID(element, warner,
 				idFactory));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

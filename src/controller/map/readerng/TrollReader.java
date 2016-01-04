@@ -11,9 +11,6 @@ import model.map.fixtures.mobile.Troll;
 import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.readerng.XMLHelper.getOrGenerateID;
-import static controller.map.readerng.XMLHelper.spinUntilEnd;
-
 /**
  * A reader for Trolls.
  *
@@ -60,7 +57,7 @@ public final class TrollReader implements INodeHandler<Troll> {
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Troll fix = new Troll(getOrGenerateID(element, warner, idFactory));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

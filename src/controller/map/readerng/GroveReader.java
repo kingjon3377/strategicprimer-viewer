@@ -14,13 +14,6 @@ import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 
-import static controller.map.readerng.XMLHelper.addImage;
-import static controller.map.readerng.XMLHelper.getAttribute;
-import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
-import static controller.map.readerng.XMLHelper.getOrGenerateID;
-import static controller.map.readerng.XMLHelper.hasAttribute;
-import static controller.map.readerng.XMLHelper.spinUntilEnd;
-
 /**
  * A reader for Groves.
  *
@@ -92,7 +85,7 @@ public final class GroveReader implements INodeHandler<Grove> {
 	 *                           'cultivated' if warnings are fatal, or both properties
 	 *                           missing ever.
 	 */
-	private static boolean isCultivated(final StartElement element,
+	private boolean isCultivated(final StartElement element,
 										final Warning warner) throws SPFormatException {
 		if (hasAttribute(element, CULTIVATED_ATTR)) {
 			return Boolean.parseBoolean(getAttribute(element, // NOPMD

@@ -14,9 +14,6 @@ import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 
-import static controller.map.readerng.XMLHelper.getOrGenerateID;
-import static controller.map.readerng.XMLHelper.spinUntilEnd;
-
 /**
  * A reader for Stones.
  *
@@ -62,18 +59,13 @@ public final class StoneReader implements INodeHandler<@NonNull StoneDeposit> {
 							  final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		final StoneDeposit fix = new StoneDeposit(StoneKind.parseStoneKind(XMLHelper
-				                                                                   .getAttributeWithDeprecatedForm(
-						                                                                   element,
-						                                                                   "kind",
-						                                                                   "stone",
-						                                                                   warner)),
-
-				                                         XMLHelper.getIntegerAttribute(
-						                                         element, "dc"),
+		final StoneDeposit fix = new StoneDeposit(StoneKind.parseStoneKind(
+				getAttributeWithDeprecatedForm(element, "kind", "stone", warner)),
+				                                         getIntegerAttribute(element,
+						                                         "dc"),
 				                                         getOrGenerateID(element, warner,
 						                                         idFactory));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

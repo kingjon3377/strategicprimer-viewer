@@ -71,17 +71,13 @@ public final class SkillReader implements INodeHandler<@NonNull Skill> {
 					   final IMutablePlayerCollection players,
 					   final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		XMLHelper.requireNonEmptyParameter(element, "name", true, warner);
-		XMLHelper.requireNonEmptyParameter(element, "level", true, warner);
-		XMLHelper.requireNonEmptyParameter(element, "hours", true, warner);
-		XMLHelper.spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		final Skill retval = new Skill(XMLHelper.getAttribute(element, "name"), XMLHelper
-				                                                                        .getIntegerAttribute(
-						                                                                        element,
-						                                                                        "level"),
-
-				                              XMLHelper.getIntegerAttribute(element,
-						                              "hours"));
+		requireNonEmptyParameter(element, "name", true, warner);
+		requireNonEmptyParameter(element, "level", true, warner);
+		requireNonEmptyParameter(element, "hours", true, warner);
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+		final Skill retval = new Skill(getAttribute(element, "name"),
+				                              getIntegerAttribute(element, "level"),
+				                              getIntegerAttribute(element, "hours"));
 		if ("miscellaneous".equals(retval.getName()) && (retval.getLevel() > 0)) {
 			warner.warn(
 					new DeprecatedPropertyException(element, "miscellaneous", "other"));

@@ -11,8 +11,6 @@ import model.map.fixtures.terrain.Mountain;
 import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.readerng.XMLHelper.spinUntilEnd;
-
 /**
  * A reader for Mountains.
  *
@@ -59,7 +57,7 @@ public final class MountainReader implements INodeHandler<Mountain> {
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Mountain fix = new Mountain();
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

@@ -11,9 +11,6 @@ import model.map.fixtures.mobile.Sphinx;
 import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.readerng.XMLHelper.getOrGenerateID;
-import static controller.map.readerng.XMLHelper.spinUntilEnd;
-
 /**
  * A reader for Sphinxes.
  *
@@ -61,7 +58,7 @@ public final class SphinxReader implements INodeHandler<Sphinx> {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Sphinx fix = new Sphinx(getOrGenerateID(element, warner,
 				idFactory));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

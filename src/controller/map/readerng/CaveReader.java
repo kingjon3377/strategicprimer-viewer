@@ -13,9 +13,6 @@ import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 
-import static controller.map.readerng.XMLHelper.getOrGenerateID;
-import static controller.map.readerng.XMLHelper.spinUntilEnd;
-
 /**
  * A reader for Caves.
  *
@@ -61,9 +58,9 @@ public final class CaveReader implements INodeHandler<@NonNull Cave> {
 	                  final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		final Cave fix = new Cave(XMLHelper.getIntegerAttribute(element, "dc"),
+		final Cave fix = new Cave(getIntegerAttribute(element, "dc"),
 				                         getOrGenerateID(element, warner, idFactory));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

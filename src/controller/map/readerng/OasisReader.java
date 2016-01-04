@@ -11,9 +11,6 @@ import model.map.fixtures.terrain.Oasis;
 import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.readerng.XMLHelper.getOrGenerateID;
-import static controller.map.readerng.XMLHelper.spinUntilEnd;
-
 /**
  * A reader for Oases.
  *
@@ -59,7 +56,7 @@ public final class OasisReader implements INodeHandler<Oasis> {
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Oasis fix = new Oasis(getOrGenerateID(element, warner, idFac));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

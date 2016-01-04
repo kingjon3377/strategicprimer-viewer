@@ -13,8 +13,6 @@ import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.readerng.XMLHelper.spinUntilEnd;
-
 /**
  * A reader for adventure hooks.
  *
@@ -61,15 +59,14 @@ public final class AdventureReader implements INodeHandler<@NonNull AdventureFix
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		Player player = players.getIndependent();
-		if (XMLHelper.hasAttribute(element, "owner")) {
-			player = players.getPlayer(XMLHelper.getIntegerAttribute(element, "owner"));
+		if (hasAttribute(element, "owner")) {
+			player = players.getPlayer(getIntegerAttribute(element, "owner"));
 		}
 		final AdventureFixture retval =
-				new AdventureFixture(player, XMLHelper.getAttribute(element,
-						"brief", ""), XMLHelper.getAttribute(element, "full",
-						""), XMLHelper.getOrGenerateID(element, warner,
-						idFactory));
-		XMLHelper.addImage(element, retval);
+				new AdventureFixture(player, getAttribute(element, "brief", ""),
+						                    getAttribute(element, "full", ""),
+						                    getOrGenerateID(element, warner, idFactory));
+		addImage(element, retval);
 		return retval;
 	}
 

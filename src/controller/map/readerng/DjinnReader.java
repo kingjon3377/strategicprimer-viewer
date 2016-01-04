@@ -11,9 +11,6 @@ import model.map.fixtures.mobile.Djinn;
 import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.readerng.XMLHelper.getOrGenerateID;
-import static controller.map.readerng.XMLHelper.spinUntilEnd;
-
 /**
  * A reader for djinn.
  *
@@ -59,7 +56,7 @@ public final class DjinnReader implements INodeHandler<Djinn> {
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Djinn fix = new Djinn(getOrGenerateID(element, warner, idFac));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

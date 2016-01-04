@@ -14,13 +14,6 @@ import model.map.fixtures.mobile.Unit;
 import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.readerng.XMLHelper.addImage;
-import static controller.map.readerng.XMLHelper.getAttribute;
-import static controller.map.readerng.XMLHelper.getAttributeWithDeprecatedForm;
-import static controller.map.readerng.XMLHelper.getIntegerAttribute;
-import static controller.map.readerng.XMLHelper.getOrGenerateID;
-import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
-
 /**
  * A reader for Units.
  *
@@ -112,7 +105,7 @@ public final class UnitReader implements INodeHandler<Unit> {
 	 * @return the kind of unit
 	 * @throws SPFormatException on SP format error.
 	 */
-	private static String parseKind(final StartElement element,
+	private String parseKind(final StartElement element,
 									final Warning warner) throws SPFormatException {
 		try {
 			final String retval = getAttributeWithDeprecatedForm(element, // NOPMD

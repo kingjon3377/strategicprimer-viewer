@@ -71,15 +71,15 @@ public final class StatsReader implements INodeHandler<@NonNull WorkerStats> {
 							 final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		final WorkerStats retval =
-				new WorkerStats(XMLHelper.getIntegerAttribute(element, "hp"),
-						               XMLHelper.getIntegerAttribute(element, "max"),
-						               XMLHelper.getIntegerAttribute(element, "str"),
-						               XMLHelper.getIntegerAttribute(element, "dex"),
-						               XMLHelper.getIntegerAttribute(element, "con"),
-						               XMLHelper.getIntegerAttribute(element, "int"),
-						               XMLHelper.getIntegerAttribute(element, "wis"),
-						               XMLHelper.getIntegerAttribute(element, "cha"));
-		XMLHelper.spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+				new WorkerStats(getIntegerAttribute(element, "hp"),
+						               getIntegerAttribute(element, "max"),
+						               getIntegerAttribute(element, "str"),
+						               getIntegerAttribute(element, "dex"),
+						               getIntegerAttribute(element, "con"),
+						               getIntegerAttribute(element, "int"),
+						               getIntegerAttribute(element, "wis"),
+						               getIntegerAttribute(element, "cha"));
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		return retval;
 	}
 

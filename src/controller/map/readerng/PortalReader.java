@@ -15,8 +15,6 @@ import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 
-import static controller.map.readerng.XMLHelper.spinUntilEnd;
-
 /**
  * A reader for portals.
  *
@@ -62,17 +60,18 @@ public final class PortalReader implements INodeHandler<@NonNull Portal> {
 						final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		final Portal retval = new Portal(XMLHelper.getAttribute(element, "world"),
-				                                PointFactory.point(XMLHelper
-						                                                   .getIntegerAttribute(
-								                                                   element,
-								                                                   "row"),
+		final Portal retval = new Portal(getAttribute(element, "world"), PointFactory
+				                                                                 .point
+						                                                                  (getIntegerAttribute(
+						                                                                 element,
+						                                                                 "row"),
+						                                                                 getIntegerAttribute(
+								                                                                 element,
+								                                                                 "column")),
 
-						                                XMLHelper.getIntegerAttribute(
-								                                element, "column")),
-				                                XMLHelper.getOrGenerateID(element, warner,
+				                                getOrGenerateID(element, warner,
 						                                idFactory));
-		XMLHelper.addImage(element, retval);
+		addImage(element, retval);
 		return retval;
 	}
 

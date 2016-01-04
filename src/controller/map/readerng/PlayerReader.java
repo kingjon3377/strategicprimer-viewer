@@ -13,9 +13,6 @@ import util.NullCleaner;
 import util.Pair;
 import util.Warning;
 
-import static controller.map.readerng.XMLHelper.getAttribute;
-import static controller.map.readerng.XMLHelper.spinUntilEnd;
-
 /**
  * A reader to produce Players.
  *
@@ -61,7 +58,7 @@ public final class PlayerReader implements INodeHandler<@NonNull Player> {
 						final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		return new Player(XMLHelper.getIntegerAttribute(element, "number"),
+		return new Player(getIntegerAttribute(element, "number"),
 				                 getAttribute(element, "code_name"));
 	}
 

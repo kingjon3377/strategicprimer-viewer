@@ -83,13 +83,11 @@ public final class JobReader implements INodeHandler<@NonNull Job> {
 					 final IMutablePlayerCollection players,
 					 final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (XMLHelper.hasAttribute(element, "hours")) {
+		if (hasAttribute(element, "hours")) {
 			warner.warn(new UnsupportedPropertyException(element, "hours"));
 		}
-		final Job retval = new Job(XMLHelper.getAttribute(element, "name"), XMLHelper
-				                                                                    .getIntegerAttribute(
-						                                                                    element,
-						                                                                    "level"));
+		final Job retval = new Job(getAttribute(element, "name"),
+				                          getIntegerAttribute(element, "level"));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final Object result =

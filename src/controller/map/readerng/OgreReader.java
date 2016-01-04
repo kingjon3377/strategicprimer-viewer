@@ -11,9 +11,6 @@ import model.map.fixtures.mobile.Ogre;
 import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.readerng.XMLHelper.getOrGenerateID;
-import static controller.map.readerng.XMLHelper.spinUntilEnd;
-
 /**
  * A reader for Ogres.
  *
@@ -60,7 +57,7 @@ public final class OgreReader implements INodeHandler<Ogre> {
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Ogre fix = new Ogre(getOrGenerateID(element, warner, idFactory));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

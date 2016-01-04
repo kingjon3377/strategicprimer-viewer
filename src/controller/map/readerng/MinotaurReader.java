@@ -11,9 +11,6 @@ import model.map.fixtures.mobile.Minotaur;
 import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.readerng.XMLHelper.getOrGenerateID;
-import static controller.map.readerng.XMLHelper.spinUntilEnd;
-
 /**
  * A reader for minotaurs.
  *
@@ -61,7 +58,7 @@ public final class MinotaurReader implements INodeHandler<Minotaur> {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Minotaur fix = new Minotaur(getOrGenerateID(element, warner,
 				idFactory));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

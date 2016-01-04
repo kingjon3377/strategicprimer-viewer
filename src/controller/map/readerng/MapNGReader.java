@@ -120,7 +120,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 		final StartElement mapTag;
 		final String outerTag = assertNotNull(element.getName().getLocalPart());
 		if ("view".equalsIgnoreCase(element.getName().getLocalPart())) {
-			currentTurn = XMLHelper.getIntegerAttribute(element, "current_turn");
+			currentTurn = getIntegerAttribute(element, "current_turn");
 			mapTag = getFirstStartElement(stream, element);
 			if (!"map".equals(mapTag.getName().getLocalPart())) {
 				throw new UnwantedChildException(element.getName(), mapTag);
@@ -132,11 +132,9 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 			throw new UnwantedChildException(new QName("xml"), element);
 		}
 		final MapDimensions dimensions =
-				new MapDimensions(XMLHelper.getIntegerAttribute(mapTag, "rows"),
-						                 XMLHelper.getIntegerAttribute(mapTag,
-								                 "columns"),
-						                 XMLHelper
-								                 .getIntegerAttribute(mapTag, "version"));
+				new MapDimensions(getIntegerAttribute(mapTag, "rows"),
+						                 getIntegerAttribute(mapTag, "columns"),
+						                 getIntegerAttribute(mapTag, "version"));
 		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		final Point nullPoint = PointFactory.point(-1, -1);
 		Point point = nullPoint;
@@ -157,21 +155,16 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 						throw new UnwantedChildException(new QName("tile"),
 								                                current);
 					}
-					point = PointFactory
-							        .point(XMLHelper.getIntegerAttribute(current, "row"),
-									        XMLHelper.getIntegerAttribute(current,
-											        "column"));
+					point = PointFactory.point(getIntegerAttribute(current, "row"),
+							getIntegerAttribute(current, "column"));
 					// Since tiles have been known to be *written* without
 					// "kind" and then fail to load, let's be liberal in what we
 					// accept here, since we can.
-					if (XMLHelper.hasAttribute(current, "kind")
-								|| XMLHelper.hasAttribute(current, "type")) {
-						retval.setBaseTerrain(point,
-								TileType.getTileType(XMLHelper
-															 .getAttributeWithDeprecatedForm(
-																	 current,
-																	 "kind", "type",
-																	 warner)));
+					if (hasAttribute(current, "kind")
+								|| hasAttribute(current, "type")) {
+						retval.setBaseTerrain(point, TileType.getTileType(
+								getAttributeWithDeprecatedForm(current, "kind", "type",
+										warner)));
 					} else {
 						warner.warn(new MissingPropertyException(current, "kind"));
 					}
@@ -231,12 +224,12 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 				}
 			}
 		}
-		if (XMLHelper.hasAttribute(mapTag, "current_player")) {
-			retval.setCurrentPlayer(players.getPlayer(
-					XMLHelper.getIntegerAttribute(mapTag, "current_player")));
-		} else if (XMLHelper.hasAttribute(element, "current_player")) {
-			retval.setCurrentPlayer(players.getPlayer(
-					XMLHelper.getIntegerAttribute(element, "current_player")));
+		if (hasAttribute(mapTag, "current_player")) {
+			retval.setCurrentPlayer(
+					players.getPlayer(getIntegerAttribute(mapTag, "current_player")));
+		} else if (hasAttribute(element, "current_player")) {
+			retval.setCurrentPlayer(
+					players.getPlayer(getIntegerAttribute(element, "current_player")));
 		}
 		return retval;
 	}

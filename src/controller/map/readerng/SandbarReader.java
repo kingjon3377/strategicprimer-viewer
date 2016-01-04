@@ -11,9 +11,6 @@ import model.map.fixtures.terrain.Sandbar;
 import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.readerng.XMLHelper.getOrGenerateID;
-import static controller.map.readerng.XMLHelper.spinUntilEnd;
-
 /**
  * A reader for Sandbars.
  *
@@ -61,7 +58,7 @@ public final class SandbarReader implements INodeHandler<Sandbar> {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Sandbar fix = new Sandbar(getOrGenerateID(element, warner,
 				idFactory));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

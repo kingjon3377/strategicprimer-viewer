@@ -11,9 +11,6 @@ import model.map.fixtures.mobile.Griffin;
 import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.readerng.XMLHelper.getOrGenerateID;
-import static controller.map.readerng.XMLHelper.spinUntilEnd;
-
 /**
  * A reader for griffins.
  *
@@ -61,7 +58,7 @@ public final class GriffinReader implements INodeHandler<Griffin> {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Griffin fix = new Griffin(getOrGenerateID(element, warner,
 				idFactory));
-		XMLHelper.addImage(element, fix);
+		addImage(element, fix);
 		return fix;
 	}
 

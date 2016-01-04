@@ -14,13 +14,6 @@ import model.workermgmt.RaceFactory;
 import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.readerng.XMLHelper.addImage;
-import static controller.map.readerng.XMLHelper.getAttribute;
-import static controller.map.readerng.XMLHelper.getOrGenerateID;
-import static controller.map.readerng.XMLHelper.getPlayerOrIndependent;
-import static controller.map.readerng.XMLHelper.requireNonEmptyParameter;
-import static controller.map.readerng.XMLHelper.spinUntilEnd;
-
 /**
  * A reader for Villages.
  *
