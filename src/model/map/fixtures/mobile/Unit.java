@@ -92,8 +92,8 @@ public class Unit implements IUnit {
 
 	/**
 	 * TODO: There should be some way to convey the unit's *size* without the
-	 * *details* of
-	 * its contents. Or maybe we should give the contents but not *their* details?
+	 * *details* of its contents. Or maybe we should give the contents but not *their*
+	 * details?
 	 *
 	 * @param zero whether to omit its contents and orders
 	 * @return a copy of this unit
