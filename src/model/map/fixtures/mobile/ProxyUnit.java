@@ -13,6 +13,7 @@ import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.ProxyWorker;
 import org.eclipse.jdt.annotation.Nullable;
+import util.EmptyIterator;
 import util.NullCleaner;
 
 /**
@@ -43,7 +44,10 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	private static final Logger LOGGER =
 			NullCleaner.assertNotNull(Logger.getLogger(ProxyUnit.class.getName()));
-
+	/**
+	 * Whether we are proxying parallel units in different maps.
+	 */
+	private final boolean parallel;
 	/**
 	 * Constructor.
 	 *
@@ -51,8 +55,22 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	public ProxyUnit(final int idNum) {
 		id = idNum;
+		parallel = true;
+		kind = "";
 	}
-
+	/**
+	 * Constructor.
+	 * @param uKind the kind of the units we are a proxy for.
+	 */
+	public ProxyUnit(final String uKind) {
+		id = -1;
+		parallel = false;
+		kind = uKind;
+	}
+	/**
+	 * The kind of the units we are a proxy for, if we're not proxying parallel units of the same ID.
+	 */
+	private final String kind;
 	/**
 	 * The units we're a proxy for.
 	 */
@@ -65,8 +83,10 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	public void addProxied(final IUnit unit) {
 		if (unit == this) {
 			return;
-		} else if (unit.getID() != id) {
+		} else if (parallel && unit.getID() != id) {
 			throw new IllegalArgumentException("Expected unit with ID #" + id);
+		} else if (!parallel && !kind.equals(unit.getKind())) {
+			throw new IllegalArgumentException("Expected unit of kind " + kind);
 		} else {
 			proxied.add(unit);
 		}
@@ -78,7 +98,12 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	@Override
 	public IUnit copy(final boolean zero) {
-		final ProxyUnit retval = new ProxyUnit(id);
+		final ProxyUnit retval;
+		if (parallel) {
+			retval = new ProxyUnit(id);
+		} else {
+			retval = new ProxyUnit(kind);
+		}
 		for (final IUnit unit : proxied) {
 			retval.addProxied(unit.copy(zero));
 		}
@@ -207,16 +232,20 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	@Override
 	public String getKind() {
-		@Nullable String kind = null;
-		for (final IUnit unit : proxied) {
-			if (kind == null) {
-				kind = unit.getKind();
-			} else if (!kind.equals(unit.getKind())) {
-				return "proxied";
+		if (parallel) {
+			@Nullable String localKind = null;
+			for (final IUnit unit : proxied) {
+				if (localKind == null) {
+					localKind = unit.getKind();
+				} else if (!localKind.equals(unit.getKind())) {
+					return "proxied";
+				}
 			}
-		}
-		if (kind == null) {
-			return "proxied";
+			if (localKind == null) {
+				return "proxied";
+			} else {
+				return localKind;
+			}
 		} else {
 			return kind;
 		}
@@ -227,8 +256,14 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	@Override
 	public void setKind(final String nKind) {
-		for (final IUnit unit : proxied) {
-			unit.setKind(nKind);
+		if (parallel) {
+			for (final IUnit unit : proxied) {
+				unit.setKind(nKind);
+			}
+		} else {
+			// FIXME: This restriction isn't really reasonable or discoverable
+			throw new IllegalStateException("Can't change kind of a proxy-unit " +
+					                                "proxying units of the same kind");
 		}
 	}
 
@@ -237,40 +272,45 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	@Override
 	public Iterator<UnitMember> iterator() {
-		final Map<Integer, UnitMember> map = new TreeMap<>();
-		for (final IUnit unit : proxied) {
-			for (final UnitMember member : unit) {
-				// Warning suppressed because the type in the map is really
-				// a UnitMember&ProxyFor<IWorker|UnitMember>
-				@SuppressWarnings("unchecked")
-				@Nullable final
-				ProxyFor<? extends UnitMember> proxy;
-				final Integer memberID =
-						NullCleaner.assertNotNull(Integer.valueOf(member.getID()));
-				if (map.containsKey(memberID)) {
-					proxy = (ProxyFor<? extends UnitMember>) map.get(memberID);
-					if (proxy instanceof ProxyWorker) {
-						if (member instanceof IWorker) {
-							((ProxyWorker) proxy).addProxied((IWorker) member);
+		if (parallel) {
+			final Map<Integer, UnitMember> map = new TreeMap<>();
+			for (final IUnit unit : proxied) {
+				for (final UnitMember member : unit) {
+					// Warning suppressed because the type in the map is really
+					// a UnitMember&ProxyFor<IWorker|UnitMember>
+					@SuppressWarnings("unchecked")
+					@Nullable final
+					ProxyFor<? extends UnitMember> proxy;
+					final Integer memberID =
+							NullCleaner.assertNotNull(Integer.valueOf(member.getID()));
+					if (map.containsKey(memberID)) {
+						proxy = (ProxyFor<? extends UnitMember>) map.get(memberID);
+						if (proxy instanceof ProxyWorker) {
+							if (member instanceof IWorker) {
+								((ProxyWorker) proxy).addProxied((IWorker) member);
+							} else {
+								LOGGER.warning(
+										"Proxy is a ProxyWorker but member isn't a worker");
+
+								continue;
+							}
 						} else {
-							LOGGER.warning(
-									"Proxy is a ProxyWorker but member isn't a worker");
-							continue;
+							((ProxyFor<UnitMember>) proxy).addProxied(member);
 						}
 					} else {
-						((ProxyFor<UnitMember>) proxy).addProxied(member);
+						if (member instanceof IWorker) {
+							proxy = new ProxyWorker((IWorker) member);
+						} else {
+							proxy = new ProxyMember(member);
+						}
+						map.put(memberID, (UnitMember) proxy);
 					}
-				} else {
-					if (member instanceof IWorker) {
-						proxy = new ProxyWorker((IWorker) member);
-					} else {
-						proxy = new ProxyMember(member);
-					}
-					map.put(memberID, (UnitMember) proxy);
 				}
 			}
+			return NullCleaner.assertNotNull(map.values().iterator());
+		} else {
+			return new EmptyIterator<>();
 		}
-		return NullCleaner.assertNotNull(map.values().iterator());
 	}
 
 	/**
@@ -398,17 +438,21 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	@Override
 	public void addMember(final UnitMember member) {
-		for (final IUnit unit : proxied) {
-			boolean shouldAdd = true;
-			for (final UnitMember item : unit) {
-				if (member.equals(item)) {
-					shouldAdd = false;
-					break;
+		if (parallel) {
+			for (final IUnit unit : proxied) {
+				boolean shouldAdd = true;
+				for (final UnitMember item : unit) {
+					if (member.equals(item)) {
+						shouldAdd = false;
+						break;
+					}
+				}
+				if (shouldAdd) {
+					unit.addMember(member);
 				}
 			}
-			if (shouldAdd) {
-				unit.addMember(member);
-			}
+		} else {
+			LOGGER.severe("addMember() called on proxy for all units of one kind");
 		}
 	}
 
@@ -421,13 +465,17 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	@Override
 	public void removeMember(final UnitMember member) {
-		for (final IUnit unit : proxied) {
-			for (final UnitMember item : unit) {
-				if (member.equals(item)) {
-					unit.removeMember(item);
-					break;
+		if (parallel) {
+			for (final IUnit unit : proxied) {
+				for (final UnitMember item : unit) {
+					if (member.equals(item)) {
+						unit.removeMember(item);
+						break;
+					}
 				}
 			}
+		} else {
+			LOGGER.severe("removeMember() called on proxy for all units of one kind");
 		}
 	}
 
@@ -563,17 +611,21 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	@Override
 	public String toString() {
-		return NullCleaner.assertNotNull(String.format("ProxyUnit for ID #%d", Integer
-				                                                                       .valueOf(
-						                                                                       id)));
+		if (parallel) {
+			return NullCleaner.assertNotNull(
+					String.format("ProxyUnit for ID #%d", Integer.valueOf(id)));
+		} else {
+			return "ProxyUnit for units of kind " + kind;
+		}
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return (this == obj) ||
-				       ((obj instanceof ProxyUnit) && (id == ((ProxyUnit) obj).getID
-						                                                               ()) &&
-						        proxied.equals(((ProxyUnit) obj).getProxied()));
+		return (this == obj) || ((obj instanceof ProxyUnit) &&
+				                         (parallel == ((ProxyUnit) obj).parallel) &&
+				                         (id == ((ProxyUnit) obj).getID()) &&
+				                         kind.equals(((ProxyUnit) obj).kind) &&
+				                         proxied.equals(((ProxyUnit) obj).getProxied()));
 	}
 
 	@Override
@@ -593,6 +645,6 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	@Override
 	public boolean isParallel() {
-		return true;
+		return parallel;
 	}
 }

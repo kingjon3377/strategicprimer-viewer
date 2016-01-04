@@ -4,31 +4,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import model.listeners.PlayerChangeListener;
-import model.map.IFixture;
 import model.map.Player;
-import model.map.TileFixture;
-import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
+import model.map.fixtures.mobile.ProxyUnit;
 import model.workermgmt.IWorkerModel;
 import org.eclipse.jdt.annotation.Nullable;
-import util.EmptyIterator;
 import util.NullCleaner;
 import view.util.Applyable;
 import view.util.BorderedPanel;
@@ -191,9 +177,10 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 				sel = ((DefaultMutableTreeNode) sel).getUserObject();
 			}
 			if (sel instanceof String) {
-				sel =
-						new ProxyUnit(NullCleaner.assertNotNull((String) sel),
-											 model.getUnits(player), player);
+				String kind = (String) sel;
+				ProxyUnit proxyUnit = new ProxyUnit(kind);
+				model.getUnits(player, kind).forEach(proxyUnit::addProxied);
+				sel = proxyUnit;
 			}
 			revert();
 		}
@@ -208,282 +195,4 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 		player = newPlayer;
 	}
 
-	/**
-	 * A "unit" that serves as the proxy, for orders purposes, for all units of a kind.
-	 *
-	 * FIXME: This should probably be removed in favor of the top-level ProxyUnit class.
-	 */
-	private static final class ProxyUnit implements IUnit {
-		/**
-		 * The kind we're interested in.
-		 */
-		private final String kind;
-		/**
-		 * The units we might be proxying.
-		 */
-		private final List<IUnit> units;
-		/**
-		 * The owner of the units.
-		 */
-		private final Player owner;
-
-		/**
-		 * @param unitKind  the kind of unit to proxy for
-		 * @param unitsList the units among which to proxy
-		 * @param playr     the current player
-		 */
-		protected ProxyUnit(final String unitKind, final List<IUnit> unitsList,
-							final Player playr) {
-			kind = unitKind;
-			units = new ArrayList<>(unitsList);
-			owner = playr;
-		}
-
-		/**
-		 * @param zero whether to "zero out" sensitive information
-		 * @return a copy of this proxy
-		 */
-		@Override
-		public IUnit copy(final boolean zero) {
-			return new ProxyUnit(kind, units.stream().map(unit -> unit.copy(zero))
-											   .collect(Collectors.toList()),
-										owner);
-		}
-
-		/**
-		 * @return a dummy Z-value
-		 */
-		@Override
-		public int getZValue() {
-			return 0;
-		}
-
-		/**
-		 * @return "proxies"
-		 */
-		@Override
-		public String plural() {
-			return "proxies";
-		}
-
-		/**
-		 * @return "proxy"
-		 */
-		@Override
-		public String shortDesc() {
-			return "proxy";
-		}
-
-		/**
-		 * @param fix A TileFixture to compare to
-		 * @return the result of the comparison
-		 */
-		@Override
-		public int compareTo(final TileFixture fix) {
-			return fix.hashCode() - hashCode();
-		}
-
-		/**
-		 * @return a dummy ID #
-		 */
-		@Override
-		public int getID() {
-			return -1;
-		}
-
-		/**
-		 * @param fix a fixture
-		 * @return whether it is this instance
-		 */
-		@Override
-		public boolean equalsIgnoringID(final IFixture fix) {
-			return this == fix;
-		}
-
-		/**
-		 * @return a dummy image filename
-		 */
-		@Override
-		public String getDefaultImage() {
-			return "proxy.png";
-		}
-
-		/**
-		 * @param image ignored
-		 */
-		@Override
-		public void setImage(final String image) {
-			throw new IllegalStateException("setImage called on ProxyImage");
-		}
-
-		/**
-		 * @return the same dummy image filename
-		 */
-		@Override
-		public String getImage() {
-			return "proxy.png";
-		}
-
-		/**
-		 * @return the specified kind
-		 */
-		@Override
-		public String getKind() {
-			return kind;
-		}
-
-		/**
-		 * @param nKind ignored
-		 */
-		@Override
-		public void setKind(final String nKind) {
-			throw new IllegalStateException("setKind called on ProxyImage");
-		}
-
-		/**
-		 * @return an empty iterator
-		 */
-		@Override
-		public Iterator<UnitMember> iterator() {
-			return new EmptyIterator<>();
-		}
-
-		/**
-		 * @return a dummy name
-		 */
-		@Override
-		public String getName() {
-			return "proxy";
-		}
-
-		/**
-		 * @param nomen ignored
-		 */
-		@Override
-		public void setName(final String nomen) {
-			throw new IllegalStateException("setName called on ProxyUnit");
-		}
-
-		/**
-		 * @return the specified owner
-		 */
-		@Override
-		public Player getOwner() {
-			return owner;
-		}
-
-		/**
-		 * @param newOwner ignored
-		 */
-		@Override
-		public void setOwner(final Player newOwner) {
-			throw new IllegalStateException("setOwner called on ProxyUnit");
-		}
-
-		/**
-		 * @param obj     ignored
-		 * @param ostream the stream to write the error message to
-		 * @param context the context in which to write the error message
-		 * @return false
-		 * @throws IOException on error writing to stream
-		 */
-		@Override
-		public boolean isSubset(final IFixture obj, final Appendable ostream,
-								final String context) throws IOException {
-			ostream.append(context);
-			ostream.append("\tisSubset called on ProxyUnit\n");
-			return false;
-		}
-
-		/**
-		 * @return the orders that every unit of this kind shares, or the empty string if
-		 * not all share the same orders.
-		 */
-		@Override
-		public String getOrders() {
-			String retval = null;
-			for (final IUnit unit : units) {
-				if (!kind.equals(unit.getKind())) {
-					continue;
-				} else if (retval == null) {
-					retval = unit.getOrders();
-				} else if (!retval.equals(unit.getOrders())) {
-					return "";
-				}
-			}
-			if (retval == null) {
-				return "";
-			} else {
-				return retval;
-			}
-		}
-
-		/**
-		 * @param newOrders orders to set on every unit with this kind.
-		 */
-		@Override
-		public void setOrders(final String newOrders) {
-			units.stream().filter(unit -> kind.equals(unit.getKind()))
-					.forEach(unit -> unit.setOrders(newOrders));
-		}
-
-		/**
-		 * @return "proxy"
-		 */
-		@Override
-		public String verbose() {
-			return "proxy";
-		}
-
-		/**
-		 * TODO: We should probably throw, or at least log, an exception when this is
-		 * called.
-		 *
-		 * @param member ignored
-		 */
-		@Override
-		public void addMember(final UnitMember member) {
-			// Do nothing
-		}
-
-		/**
-		 * TODO: We should probably throw, or at least log, an exception when this is
-		 * called.
-		 *
-		 * @param member ignored
-		 */
-		@Override
-		public void removeMember(final UnitMember member) {
-			// Do nothing
-		}
-
-		/**
-		 * @return a String representation of the object
-		 */
-		@SuppressWarnings("MethodReturnAlwaysConstant")
-		@Override
-		public String toString() {
-			return "OrdersPanel#ProxyUnit";
-		}
-
-		@Override
-		public boolean equals(final Object obj) {
-			return (this == obj) ||
-						   ((obj instanceof ProxyUnit) && kind.equals(((ProxyUnit)
-																			   obj)
-																			  .getKind()
-						   ) &&
-									units.equals(((ProxyUnit) obj).units));
-		}
-
-		@Override
-		public int hashCode() {
-			final Iterator<IUnit> iter = units.iterator();
-			if (iter.hasNext()) {
-				return iter.next().hashCode();
-			} else {
-				return -1;
-			}
-		}
-	}
 }
