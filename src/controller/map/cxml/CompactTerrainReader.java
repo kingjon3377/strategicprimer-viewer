@@ -49,9 +49,6 @@ public final class CompactTerrainReader extends
 	 * Singleton object.
 	 */
 	public static final CompactTerrainReader READER = new CompactTerrainReader();
-	static {
-		CompactReaderAdapter.register(READER);
-	}
 	/**
 	 * List of supported tags.
 	 */
@@ -170,5 +167,12 @@ public final class CompactTerrainReader extends
 	@Override
 	public String toString() {
 		return "CompactTerrainReader";
+	}
+	/**
+	 * @param obj an object
+	 * @return whether we can write it
+	 */
+	public boolean canWrite(Object obj) {
+		return obj instanceof TerrainFixture;
 	}
 }

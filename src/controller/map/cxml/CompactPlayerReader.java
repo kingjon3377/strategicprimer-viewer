@@ -38,9 +38,6 @@ public final class CompactPlayerReader extends AbstractCompactReader<Player> {
 	 * Singleton object.
 	 */
 	public static final CompactReader<Player> READER = new CompactPlayerReader();
-	static {
-		CompactReaderAdapter.register(READER);
-	}
 	/**
 	 * Singleton.
 	 */
@@ -105,5 +102,12 @@ public final class CompactPlayerReader extends AbstractCompactReader<Player> {
 	@Override
 	public String toString() {
 		return "CompactPlayerReader";
+	}
+	/**
+	 * @param obj an object
+	 * @return whether we can write it
+	 */
+	public boolean canWrite(Object obj) {
+		return obj instanceof Player;
 	}
 }

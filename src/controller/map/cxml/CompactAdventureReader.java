@@ -40,9 +40,6 @@ public final class CompactAdventureReader extends
 	 * Singleton object.
 	 */
 	public static final CompactAdventureReader READER = new CompactAdventureReader();
-	static {
-		CompactReaderAdapter.register(READER);
-	}
 
 	/**
 	 * Read an adventure from XML.
@@ -128,5 +125,12 @@ public final class CompactAdventureReader extends
 	@Override
 	public String toString() {
 		return "CompactAdventureReader";
+	}
+	/**
+	 * @param obj an object
+	 * @return whether we can write it
+	 */
+	public boolean canWrite(Object obj) {
+		return obj instanceof AdventureFixture;
 	}
 }

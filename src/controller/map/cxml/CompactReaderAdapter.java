@@ -3,37 +3,20 @@ package controller.map.cxml;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import model.map.IFixture;
-import model.map.IMapNG;
 import model.map.IMutablePlayerCollection;
-import model.map.Player;
 import model.map.River;
-import model.map.TerrainFixture;
-import model.map.fixtures.Ground;
-import model.map.fixtures.Implement;
-import model.map.fixtures.ResourcePile;
 import model.map.fixtures.RiverFixture;
-import model.map.fixtures.TextFixture;
-import model.map.fixtures.explorable.AdventureFixture;
-import model.map.fixtures.explorable.ExplorableFixture;
-import model.map.fixtures.explorable.Portal;
-import model.map.fixtures.mobile.MobileFixture;
 import model.map.fixtures.mobile.ProxyFor;
-import model.map.fixtures.mobile.Unit;
-import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
-import model.map.fixtures.resources.HarvestableFixture;
-import model.map.fixtures.towns.ITownFixture;
-import model.viewer.TileTypeFixture;
 import util.IteratorWrapper;
-import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 
@@ -72,13 +55,16 @@ public final class CompactReaderAdapter {
 	/**
 	 * The set of readers.
 	 */
-	private static final Set<CompactReader<?>> READERS = new HashSet<>();
-	/**
-	 * Register a reader.
-	 */
-	public static void register(final CompactReader<?> reader) {
-		READERS.add(reader);
-	}
+	private static final Set<CompactReader<?>> READERS =
+			new HashSet<>(Arrays.asList(CompactAdventureReader.READER,
+					CompactExplorableReader.READER, CompactGroundReader.READER,
+					CompactImplementReader.READER, CompactMapNGReader.READER,
+					CompactMobileReader.READER, CompactPlayerReader.READER,
+					CompactPortalReader.READER, CompactResourcePileReader.READER,
+					CompactResourceReader.READER, CompactTerrainReader.READER,
+					CompactTextReader.READER, CompactTownReader.READER,
+					CompactUnitReader.READER, CompactWorkerReader.READER));
+
 	/**
 	 * Parse an object from XML.
 	 * @param element   the element we're immediately dealing with
@@ -106,48 +92,6 @@ public final class CompactReaderAdapter {
 	}
 
 	/**
-	 * @param <T>  the type
-	 * @param type the type
-	 * @return a reader for that type
-	 */
-	@SuppressWarnings("unchecked")
-	private static <T extends IFixture> CompactReader<T> getFixtureReader(
-			                                                                     final
-			                                                                     Class<T> type) {
-		final CompactReader<T> reader; // NOPMD
-		if (TerrainFixture.class.isAssignableFrom(type)) {
-			reader = (CompactReader<T>) CompactTerrainReader.READER;
-		} else if (ITownFixture.class.isAssignableFrom(type)) {
-			reader = (CompactReader<T>) CompactTownReader.READER;
-		} else if (HarvestableFixture.class.isAssignableFrom(type)) {
-			reader = (CompactReader<T>) CompactResourceReader.READER;
-		} else if (Unit.class.isAssignableFrom(type)) {
-			reader = (CompactReader<T>) CompactUnitReader.READER;
-		} else if (MobileFixture.class.isAssignableFrom(type)) {
-			reader = (CompactReader<T>) CompactMobileReader.READER;
-		} else if (Ground.class.isAssignableFrom(type)) {
-			reader = (CompactReader<T>) CompactGroundReader.READER;
-		} else if (TextFixture.class.isAssignableFrom(type)) {
-			reader = (CompactReader<T>) CompactTextReader.READER;
-		} else if (Worker.class.isAssignableFrom(type)) {
-			reader = (CompactReader<T>) CompactWorkerReader.READER;
-		} else if (AdventureFixture.class.isAssignableFrom(type)) {
-			reader = (CompactReader<T>) CompactAdventureReader.READER;
-		} else if (Portal.class.isAssignableFrom(type)) {
-			reader = (CompactReader<T>) CompactPortalReader.READER;
-		} else if (ExplorableFixture.class.isAssignableFrom(type)) {
-			reader = (CompactReader<T>) CompactExplorableReader.READER;
-		} else if (Implement.class.isAssignableFrom(type)) {
-			reader = (CompactReader<T>) CompactImplementReader.READER;
-		} else if (ResourcePile.class.isAssignableFrom(type)) {
-			reader = (CompactReader<T>) CompactResourcePileReader.READER;
-		} else {
-			throw new IllegalStateException("Unhandled type " + type.getName());
-		}
-		return reader;
-	}
-
-	/**
 	 * Write an object to XML.
 	 *
 	 * @param ostream The stream to write to.
@@ -158,27 +102,14 @@ public final class CompactReaderAdapter {
 	@SuppressWarnings("unchecked")
 	public static void write(final Appendable ostream, final Object obj,
 	                         final int indent) throws IOException {
-		@SuppressWarnings("rawtypes") // NOPMD
-		final CompactReader reader; // NOPMD
-		if (obj instanceof IMapNG) {
-			reader = CompactMapNGReader.READER;
-		} else if (obj instanceof River) {
+		if (obj instanceof River) {
 			CompactMapNGReader.writeRiver(ostream, (River) obj, indent);
-			return; // NOPMD
 		} else if (obj instanceof RiverFixture) {
 			CompactMapNGReader.writeAllRivers(ostream, (RiverFixture) obj, indent);
-			return; // NOPMD
 		} else if (obj instanceof Job) {
 			CompactWorkerReader.writeJob(ostream, (Job) obj, indent);
-			return; // NOPMD
 		} else if (obj instanceof Skill) {
 			CompactWorkerReader.writeSkill(ostream, (Skill) obj, indent);
-			return; // NOPMD
-		} else if (obj instanceof Player) {
-			reader = CompactPlayerReader.READER;
-		} else if (obj instanceof TileTypeFixture) {
-			// Skip it.
-			return;
 		} else if (obj instanceof ProxyFor) {
 			final Iterator<?> iter = ((ProxyFor<?>) obj).getProxied().iterator();
 			if (iter.hasNext()) {
@@ -190,18 +121,21 @@ public final class CompactReaderAdapter {
 				write(ostream, proxied, indent);
 				return;
 			} else {
-				throw new IllegalStateException("Don't know how to write this type (a proxy " +
-
-						                                "not proxying any objects)");
+				throw new IllegalStateException("Don't know how to write this type (a " +
+						                                "proxy not proxying any " +
+						                                "objects)");
 			}
-		} else if (obj instanceof IFixture) {
-			reader =
-					getFixtureReader(NullCleaner.assertNotNull(((IFixture) obj)
-							                                           .getClass()));
 		} else {
-			throw new IllegalStateException("Don't know how to write this type");
+			for (CompactReader<?> reader : READERS) {
+				if (reader.canWrite(obj)) {
+					reader.writeRaw(ostream, obj, indent);
+					return;
+				}
+			}
+			throw new IllegalArgumentException("After checking " + READERS.size() +
+					                                   " readers, don't know how to write a " +
+					                                   obj.getClass().getSimpleName());
 		}
-		reader.write(ostream, obj, indent);
 	}
 
 	/**

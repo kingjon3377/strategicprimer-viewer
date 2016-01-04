@@ -40,9 +40,6 @@ public final class CompactResourcePileReader
 	 */
 	public static final CompactReader<ResourcePile> READER =
 			new CompactResourcePileReader();
-	static {
-		CompactReaderAdapter.register(READER);
-	}
 	/**
 	 * Singleton.
 	 */
@@ -127,5 +124,12 @@ public final class CompactResourcePileReader
 	@Override
 	public String toString() {
 		return "CompactResourcePileReader";
+	}
+	/**
+	 * @param obj an object
+	 * @return whether we can write it
+	 */
+	public boolean canWrite(Object obj) {
+		return obj instanceof ResourcePile;
 	}
 }

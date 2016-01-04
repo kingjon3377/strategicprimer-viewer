@@ -72,9 +72,6 @@ public final class CompactMobileReader extends
 	 */
 	public static final AbstractCompactReader<@NonNull MobileFixture> READER =
 			new CompactMobileReader();
-	static {
-		CompactReaderAdapter.register(READER);
-	}
 	/**
 	 * Singleton.
 	 */
@@ -278,5 +275,12 @@ public final class CompactMobileReader extends
 	@Override
 	public String toString() {
 		return "CompactMobileReader";
+	}
+	/**
+	 * @param obj an object
+	 * @return whether we can write it
+	 */
+	public boolean canWrite(Object obj) {
+		return obj instanceof MobileFixture && !(obj instanceof Unit);
 	}
 }

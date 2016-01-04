@@ -63,5 +63,22 @@ public interface CompactReader<@NonNull T> {
 	 */
 	boolean isSupportedTag(String tag);
 
-
+	/**
+	 * @param obj an object
+	 * @return whether we can write it
+	 */
+	boolean canWrite(Object obj);
+	/**
+	 * Write, when the caller knows the object is the right type but doesn't know what
+	 * type that is. Throws ClassCastException if it's not the right type.
+	 *
+	 * @param ostream The stream to write to.
+	 * @param obj     The object to write.
+	 * @param indent  the current indentation level.
+	 * @throws IOException on I/O problems.
+	 */
+	default void writeRaw(Appendable ostream, Object obj, int indent) throws
+			IOException {
+		write(ostream, (T) obj, indent);
+	}
 }

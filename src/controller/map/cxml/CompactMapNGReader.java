@@ -66,9 +66,6 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * Singleton instance.
 	 */
 	public static final CompactReader<IMapNG> READER = new CompactMapNGReader();
-	static {
-		CompactReaderAdapter.register(READER);
-	}
 	private static final Pattern EXCEPT_PATTERN =
 			Pattern.compile("^Wanted [^ ]*, was [^ " +
 									"]*$");
@@ -511,5 +508,12 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	@Override
 	public String toString() {
 		return "CompactMapNGReader";
+	}
+	/**
+	 * @param obj an object
+	 * @return whether we can write it
+	 */
+	public boolean canWrite(Object obj) {
+		return obj instanceof IMapNG;
 	}
 }

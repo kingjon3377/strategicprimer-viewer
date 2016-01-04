@@ -58,9 +58,6 @@ public final class CompactResourceReader extends
 	 * Singleton object.
 	 */
 	public static final CompactResourceReader READER = new CompactResourceReader();
-	static {
-		CompactReaderAdapter.register(READER);
-	}
 	/**
 	 * The parameter giving the status of a fixture.
 	 */
@@ -338,5 +335,12 @@ public final class CompactResourceReader extends
 	@Override
 	public String toString() {
 		return "CompactResourceReader";
+	}
+	/**
+	 * @param obj an object
+	 * @return whether we can write it
+	 */
+	public boolean canWrite(Object obj) {
+		return obj instanceof HarvestableFixture;
 	}
 }

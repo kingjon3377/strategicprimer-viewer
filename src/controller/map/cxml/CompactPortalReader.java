@@ -39,9 +39,6 @@ public final class CompactPortalReader extends AbstractCompactReader<Portal> {
 	 * Singleton object.
 	 */
 	public static final CompactPortalReader READER = new CompactPortalReader();
-	static {
-		CompactReaderAdapter.register(READER);
-	}
 	/**
 	 * Read a portal from XML.
 	 *
@@ -112,5 +109,12 @@ public final class CompactPortalReader extends AbstractCompactReader<Portal> {
 	@Override
 	public String toString() {
 		return "CompactPortalReader";
+	}
+	/**
+	 * @param obj an object
+	 * @return whether we can write it
+	 */
+	public boolean canWrite(Object obj) {
+		return obj instanceof Portal;
 	}
 }

@@ -228,4 +228,12 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	public String toString() {
 		return "CompactUnitReader";
 	}
+	/**
+	 * @param obj an object
+	 * @return whether we can write it
+	 */
+	public boolean canWrite(Object obj) {
+		return obj instanceof Unit;
+	}
+
 }

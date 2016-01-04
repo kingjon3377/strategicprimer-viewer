@@ -64,9 +64,6 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	 * Singleton object.
 	 */
 	public static final CompactTownReader READER = new CompactTownReader();
-	static {
-		CompactReaderAdapter.register(READER);
-	}
 	/**
 	 * The "owner" parameter.
 	 */
@@ -377,5 +374,12 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	@Override
 	public String toString() {
 		return "CompactTownReader";
+	}
+	/**
+	 * @param obj an object
+	 * @return whether we can write it
+	 */
+	public boolean canWrite(Object obj) {
+		return obj instanceof ITownFixture;
 	}
 }

@@ -54,9 +54,6 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	private CompactWorkerReader() {
 		// Singleton.
 	}
-	static {
-		CompactReaderAdapter.register(READER);
-	}
 	/**
 	 * @param element   the XML element to parse
 	 * @param stream    the stream to read more elements from
@@ -339,5 +336,12 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	@Override
 	public String toString() {
 		return "CompactWorkerReader";
+	}
+	/**
+	 * @param obj an object
+	 * @return whether we can write it
+	 */
+	public boolean canWrite(Object obj) {
+		return obj instanceof Worker;
 	}
 }

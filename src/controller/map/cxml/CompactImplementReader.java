@@ -41,9 +41,6 @@ public final class CompactImplementReader extends AbstractCompactReader<Implemen
 	 * Singleton object.
 	 */
 	public static final CompactReader<Implement> READER = new CompactImplementReader();
-	static {
-		CompactReaderAdapter.register(READER);
-	}
 	/**
 	 * Singleton.
 	 */
@@ -111,5 +108,12 @@ public final class CompactImplementReader extends AbstractCompactReader<Implemen
 	@Override
 	public String toString() {
 		return "CompactImplementReader";
+	}
+	/**
+	 * @param obj an object
+	 * @return whether we can write it
+	 */
+	public boolean canWrite(Object obj) {
+		return obj instanceof Implement;
 	}
 }

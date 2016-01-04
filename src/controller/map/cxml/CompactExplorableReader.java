@@ -47,9 +47,6 @@ public final class CompactExplorableReader
 	 */
 	public static final CompactExplorableReader READER =
 			new CompactExplorableReader();
-	static {
-		CompactReaderAdapter.register(READER);
-	}
 	/**
 	 * List of supported tags.
 	 */
@@ -161,4 +158,12 @@ public final class CompactExplorableReader
 	public String toString() {
 		return "CompactExplorableReader";
 	}
+	/**
+	 * @param obj an object
+	 * @return whether we can write it
+	 */
+	public boolean canWrite(Object obj) {
+		return obj instanceof Battlefield || obj instanceof Cave;
+	}
+
 }

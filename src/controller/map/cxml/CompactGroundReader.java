@@ -38,9 +38,6 @@ public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 	 * Singleton object.
 	 */
 	public static final CompactGroundReader READER = new CompactGroundReader();
-	static {
-		CompactReaderAdapter.register(READER);
-	}
 	/**
 	 * Singleton.
 	 */
@@ -112,5 +109,12 @@ public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 	@Override
 	public String toString() {
 		return "CompactGroundReader";
+	}
+	/**
+	 * @param obj an object
+	 * @return whether we can write it
+	 */
+	public boolean canWrite(Object obj) {
+		return obj instanceof Ground;
 	}
 }
