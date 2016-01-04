@@ -300,13 +300,7 @@ public final class ImmortalsReportGenerator
 								  fixtures,
 						  final IMapNG map, final Player currentPlayer,
 						  final MobileFixture item, final Point loc) {
-		//  TODO: Create Immortal marker interface
-		if ((item instanceof Dragon) || (item instanceof Fairy)
-					|| (item instanceof Troll) || (item instanceof Djinn)
-					|| (item instanceof Sphinx) || (item instanceof Giant)
-					|| (item instanceof Minotaur) || (item instanceof Ogre)
-					|| (item instanceof Centaur) || (item instanceof Phoenix)
-					|| (item instanceof Simurgh) || (item instanceof Griffin)) {
+		if (isImmortal(item)) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat(atPoint(loc), "A(n) ", item.toString(), " ",
 					distCalculator.distanceString(loc));
@@ -332,19 +326,27 @@ public final class ImmortalsReportGenerator
 												final Player currentPlayer,
 												final MobileFixture item,
 												final Point loc) {
-		// TODO: Create Immortal marker interface
-		if ((item instanceof Dragon) || (item instanceof Fairy)
-					|| (item instanceof Troll) || (item instanceof Djinn)
-					|| (item instanceof Sphinx) || (item instanceof Giant)
-					|| (item instanceof Minotaur) || (item instanceof Ogre)
-					|| (item instanceof Centaur) || (item instanceof Phoenix)
-					|| (item instanceof Simurgh) || (item instanceof Griffin)) {
+		if (isImmortal(item)) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, atPoint(loc), "A(n) ", item.toString(), " ",
 											   distCalculator.distanceString(loc));
 		} else {
 			return EmptyReportNode.NULL_NODE;
 		}
+	}
+
+	/**
+	 * TODO: Create Immortal marker interface.
+	 * @param item a fixture
+	 * @return whether it's an immortal
+	 */
+	private boolean isImmortal(final MobileFixture item) {
+		return (item instanceof Dragon) || (item instanceof Fairy)
+					|| (item instanceof Troll) || (item instanceof Djinn)
+					|| (item instanceof Sphinx) || (item instanceof Giant)
+					|| (item instanceof Minotaur) || (item instanceof Ogre)
+					|| (item instanceof Centaur) || (item instanceof Phoenix)
+					|| (item instanceof Simurgh) || (item instanceof Griffin);
 	}
 
 	/**
