@@ -72,7 +72,9 @@ public final class CompactMobileReader extends
 	 */
 	public static final AbstractCompactReader<@NonNull MobileFixture> READER =
 			new CompactMobileReader();
-
+	static {
+		CompactReaderAdapter.register(READER);
+	}
 	/**
 	 * Singleton.
 	 */

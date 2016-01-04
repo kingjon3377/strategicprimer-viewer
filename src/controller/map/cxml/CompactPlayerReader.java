@@ -38,7 +38,9 @@ public final class CompactPlayerReader extends AbstractCompactReader<Player> {
 	 * Singleton object.
 	 */
 	public static final CompactReader<Player> READER = new CompactPlayerReader();
-
+	static {
+		CompactReaderAdapter.register(READER);
+	}
 	/**
 	 * Singleton.
 	 */

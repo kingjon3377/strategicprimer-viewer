@@ -40,7 +40,9 @@ public final class CompactResourcePileReader
 	 */
 	public static final CompactReader<ResourcePile> READER =
 			new CompactResourcePileReader();
-
+	static {
+		CompactReaderAdapter.register(READER);
+	}
 	/**
 	 * Singleton.
 	 */

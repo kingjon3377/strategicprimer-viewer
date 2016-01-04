@@ -39,7 +39,9 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 	 * Singleton object.
 	 */
 	public static final CompactTextReader READER = new CompactTextReader();
-
+	static {
+		CompactReaderAdapter.register(READER);
+	}
 	/**
 	 * Singleton.
 	 */

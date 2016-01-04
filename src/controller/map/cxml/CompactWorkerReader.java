@@ -54,7 +54,9 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	private CompactWorkerReader() {
 		// Singleton.
 	}
-
+	static {
+		CompactReaderAdapter.register(READER);
+	}
 	/**
 	 * @param element   the XML element to parse
 	 * @param stream    the stream to read more elements from

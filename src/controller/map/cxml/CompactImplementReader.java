@@ -41,7 +41,9 @@ public final class CompactImplementReader extends AbstractCompactReader<Implemen
 	 * Singleton object.
 	 */
 	public static final CompactReader<Implement> READER = new CompactImplementReader();
-
+	static {
+		CompactReaderAdapter.register(READER);
+	}
 	/**
 	 * Singleton.
 	 */

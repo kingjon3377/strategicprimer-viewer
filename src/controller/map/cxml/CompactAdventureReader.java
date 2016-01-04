@@ -40,6 +40,9 @@ public final class CompactAdventureReader extends
 	 * Singleton object.
 	 */
 	public static final CompactAdventureReader READER = new CompactAdventureReader();
+	static {
+		CompactReaderAdapter.register(READER);
+	}
 
 	/**
 	 * Read an adventure from XML.

@@ -3,7 +3,9 @@ package controller.map.cxml;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.logging.Level;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -13,7 +15,6 @@ import model.map.IMutablePlayerCollection;
 import model.map.Player;
 import model.map.River;
 import model.map.TerrainFixture;
-import model.map.TileFixture;
 import model.map.fixtures.Ground;
 import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
@@ -31,7 +32,6 @@ import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.resources.HarvestableFixture;
 import model.map.fixtures.towns.ITownFixture;
 import model.viewer.TileTypeFixture;
-import org.eclipse.jdt.annotation.NonNull;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.TypesafeLogger;
@@ -69,15 +69,18 @@ public final class CompactReaderAdapter {
 	private CompactReaderAdapter() {
 		// Singleton.
 	}
-
+	/**
+	 * The set of readers.
+	 */
+	private static final Set<CompactReader<?>> READERS = new HashSet<>();
+	/**
+	 * Register a reader.
+	 */
+	public static void register(final CompactReader<?> reader) {
+		READERS.add(reader);
+	}
 	/**
 	 * Parse an object from XML.
-	 *
-	 * FIXME: We should switch on the element's tag, not the expected type, which we'd
-	 * like to drop entirely.
-	 *
-	 * @param <T>       the type the caller expects
-	 * @param type      the type the caller expects
 	 * @param element   the element we're immediately dealing with
 	 * @param stream    the stream from which to read more elements
 	 * @param players   the PlayerCollecton to use when needed
@@ -86,52 +89,20 @@ public final class CompactReaderAdapter {
 	 * @return the object encoded by the XML
 	 * @throws SPFormatException on SP format problems
 	 */
-	public static <@NonNull T> T parse(final Class<T> type, final StartElement element,
-	                                   final IteratorWrapper<XMLEvent> stream,
-	                                   final IMutablePlayerCollection players,
-	                                   final Warning warner,
-	                                   final IDFactory idFactory)
-			throws SPFormatException {
-		if (River.class.isAssignableFrom(type)) {
-			// Handle rivers specially.
-			final T river = (T) CompactMapNGReader.parseRiver(element, warner);
-			AbstractCompactReader.spinUntilEnd(
-					NullCleaner.assertNotNull(element.getName()), stream);
-			return river; // NOPMD
-		} else {
-			return getReader(type).read(element, stream, players, warner, idFactory);
+	public static Object parse(final StartElement element, final IteratorWrapper<XMLEvent> stream,
+	                           final IMutablePlayerCollection players, final Warning warner,
+	                           final IDFactory idFactory) throws SPFormatException {
+		String tag = element.getName().getLocalPart();
+		// Handle rivers specially.
+		if ("river".equals(tag) || "lake".equals(tag)) {
+			return CompactMapNGReader.parseRiver(element, warner);
 		}
-	}
-
-	/**
-	 * Get a reader for the specified type.
-	 *
-	 * @param <T>  the type
-	 * @param type the type
-	 * @return a reader for the type
-	 */
-	@SuppressWarnings("unchecked")
-	// We *do* check ... but neither Java nor Eclipse can know that
-	private static <@NonNull T> CompactReader<T> getReader(final Class<T> type) {
-		final CompactReader<T> reader; // NOPMD
-		if (IMapNG.class.isAssignableFrom(type)) {
-			reader = (CompactReader<T>) CompactMapNGReader.READER;
-		} else if (Player.class.isAssignableFrom(type)) {
-			reader = (CompactReader<T>) CompactPlayerReader.READER;
-		} else if (TileFixture.class.isAssignableFrom(type)) {
-			final Class<? extends TileFixture> fixType =
-					(Class<? extends TileFixture>) type;
-			reader = (CompactReader<T>) getFixtureReader(fixType);
-		} else if (Worker.class.isAssignableFrom(type)) {
-			reader = (CompactReader<T>) CompactWorkerReader.READER;
-		} else if (ResourcePile.class.isAssignableFrom(type)) {
-			reader = (CompactReader<T>) CompactResourcePileReader.READER;
-		} else if (Implement.class.isAssignableFrom(type)) {
-			reader = (CompactReader<T>) CompactImplementReader.READER;
-		} else {
-			throw new IllegalStateException("Unhandled type " + type.getName());
+		for (CompactReader<?> reader : READERS) {
+			if (reader.isSupportedTag(tag)) {
+				return reader.read(element, stream, players, warner, idFactory);
+			}
 		}
-		return reader;
+		throw new IllegalStateException("Unhandled tag " + tag);
 	}
 
 	/**

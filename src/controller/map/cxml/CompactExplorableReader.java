@@ -47,6 +47,9 @@ public final class CompactExplorableReader
 	 */
 	public static final CompactExplorableReader READER =
 			new CompactExplorableReader();
+	static {
+		CompactReaderAdapter.register(READER);
+	}
 	/**
 	 * List of supported tags.
 	 */

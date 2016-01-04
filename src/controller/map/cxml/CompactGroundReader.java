@@ -38,7 +38,9 @@ public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 	 * Singleton object.
 	 */
 	public static final CompactGroundReader READER = new CompactGroundReader();
-
+	static {
+		CompactReaderAdapter.register(READER);
+	}
 	/**
 	 * Singleton.
 	 */

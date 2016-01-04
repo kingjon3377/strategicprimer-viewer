@@ -18,7 +18,6 @@ import model.map.PlayerCollection;
 import model.map.SPMapNG;
 import org.eclipse.jdt.annotation.NonNull;
 import util.IteratorWrapper;
-import util.NullCleaner;
 import util.Warning;
 
 /**
@@ -66,9 +65,12 @@ public final class CompactXMLReader implements IMapReader, ISPReader {
 		final IDFactory idFactory = new IDFactory();
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
-				return CompactReaderAdapter.parse(type,
-						NullCleaner.assertNotNull(event.asStartElement()),
-						eventReader, players, warner, idFactory);
+				Object retval = CompactReaderAdapter.parse(event.asStartElement(), eventReader, players, warner, idFactory);
+				if (type.isAssignableFrom(retval.getClass())) {
+					return (T) retval;
+				} else {
+					throw new IllegalStateException("Reader produced different type than we expected");
+				}
 			}
 		}
 		throw new XMLStreamException(

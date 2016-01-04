@@ -49,7 +49,9 @@ public final class CompactTerrainReader extends
 	 * Singleton object.
 	 */
 	public static final CompactTerrainReader READER = new CompactTerrainReader();
-
+	static {
+		CompactReaderAdapter.register(READER);
+	}
 	/**
 	 * List of supported tags.
 	 */
