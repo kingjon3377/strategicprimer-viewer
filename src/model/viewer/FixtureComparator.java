@@ -39,7 +39,15 @@ public final class FixtureComparator implements Comparator<@NonNull TileFixture>
 	 */
 	@Override
 	public int compare(final TileFixture firstFixture, final TileFixture secondFixture) {
-		return secondFixture.getZValue() - firstFixture.getZValue();
+		final int oneValue = firstFixture.getZValue();
+		final int twoValue = secondFixture.getZValue();
+		if (twoValue > oneValue) {
+			return 1;
+		} else if (twoValue == oneValue) {
+			return 0;
+		} else {
+			return -1;
+		}
 	}
 
 	/**
