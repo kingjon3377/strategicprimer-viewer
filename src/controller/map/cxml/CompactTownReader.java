@@ -379,6 +379,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	 * @param obj an object
 	 * @return whether we can write it
 	 */
+	@Override
 	public boolean canWrite(final Object obj) {
 		return obj instanceof ITownFixture;
 	}

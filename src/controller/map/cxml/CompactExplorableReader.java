@@ -162,6 +162,7 @@ public final class CompactExplorableReader
 	 * @param obj an object
 	 * @return whether we can write it
 	 */
+	@Override
 	public boolean canWrite(final Object obj) {
 		return (obj instanceof Battlefield) || (obj instanceof Cave);
 	}

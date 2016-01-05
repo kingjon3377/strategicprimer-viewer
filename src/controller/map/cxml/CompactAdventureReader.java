@@ -130,6 +130,7 @@ public final class CompactAdventureReader extends
 	 * @param obj an object
 	 * @return whether we can write it
 	 */
+	@Override
 	public boolean canWrite(final Object obj) {
 		return obj instanceof AdventureFixture;
 	}
