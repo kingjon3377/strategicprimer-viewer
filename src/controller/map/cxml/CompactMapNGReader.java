@@ -350,7 +350,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			boolean rowEmpty = true;
 			for (int j = 0; j < dim.cols; j++) {
 				final Point point = PointFactory.point(i, j);
-				TileType terrain = obj.getBaseTerrain(point);
+				final TileType terrain = obj.getBaseTerrain(point);
 				if ((TileType.NotVisible != terrain)
 							|| obj.isMountainous(point)
 							|| (obj.getGround(point) != null)
@@ -513,7 +513,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * @param obj an object
 	 * @return whether we can write it
 	 */
-	public boolean canWrite(Object obj) {
+	public boolean canWrite(final Object obj) {
 		return obj instanceof IMapNG;
 	}
 }

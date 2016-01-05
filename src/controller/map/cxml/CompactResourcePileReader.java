@@ -129,7 +129,7 @@ public final class CompactResourcePileReader
 	 * @param obj an object
 	 * @return whether we can write it
 	 */
-	public boolean canWrite(Object obj) {
+	public boolean canWrite(final Object obj) {
 		return obj instanceof ResourcePile;
 	}
 }

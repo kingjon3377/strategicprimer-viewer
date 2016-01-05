@@ -268,7 +268,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			typeLabel.setText("");
 			nameLabel.setText("");
 			kindLabel.setText("");
-			for (StatLabel label : statLabels) {
+			for (final StatLabel label : statLabels) {
 				label.recache(null);
 			}
 			jobsPanel.removeAll();
@@ -277,7 +277,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			nameLabel.setText(((Worker) local).getName());
 			kindLabel.setText(((Worker) local).getKind());
 			final WorkerStats stats = ((Worker) local).getStats();
-			for (StatLabel label : statLabels) {
+			for (final StatLabel label : statLabels) {
 				label.recache(stats);
 			}
 			jobsPanel.removeAll();
@@ -305,7 +305,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			typeLabel.setText("Animal");
 			nameLabel.setText("");
 			kindLabel.setText(((Animal) local).getKind());
-			for (StatLabel label : statLabels) {
+			for (final StatLabel label : statLabels) {
 				label.recache(null);
 			}
 			jobsPanel.removeAll();
@@ -313,7 +313,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			typeLabel.setText("Unknown");
 			nameLabel.setText("");
 			kindLabel.setText(local.getClass().getSimpleName());
-			for (StatLabel label : statLabels) {
+			for (final StatLabel label : statLabels) {
 				label.recache(null);
 			}
 			jobsPanel.removeAll();

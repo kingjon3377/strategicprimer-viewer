@@ -77,7 +77,7 @@ public interface CompactReader<@NonNull T> {
 	 * @param indent  the current indentation level.
 	 * @throws IOException on I/O problems.
 	 */
-	default void writeRaw(Appendable ostream, Object obj, int indent) throws
+	default void writeRaw(final Appendable ostream, final Object obj, final int indent) throws
 			IOException {
 		write(ostream, (T) obj, indent);
 	}

@@ -177,8 +177,8 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 				sel = ((DefaultMutableTreeNode) sel).getUserObject();
 			}
 			if (sel instanceof String) {
-				String kind = (String) sel;
-				ProxyUnit proxyUnit = new ProxyUnit(kind);
+				final String kind = (String) sel;
+				final ProxyUnit proxyUnit = new ProxyUnit(kind);
 				model.getUnits(player, kind).forEach(proxyUnit::addProxied);
 				sel = proxyUnit;
 			}

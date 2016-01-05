@@ -78,12 +78,12 @@ public final class CompactReaderAdapter {
 	public static Object parse(final StartElement element, final IteratorWrapper<XMLEvent> stream,
 	                           final IMutablePlayerCollection players, final Warning warner,
 	                           final IDFactory idFactory) throws SPFormatException {
-		String tag = element.getName().getLocalPart();
+		final String tag = element.getName().getLocalPart();
 		// Handle rivers specially.
 		if ("river".equals(tag) || "lake".equals(tag)) {
 			return CompactMapNGReader.parseRiver(element, warner);
 		}
-		for (CompactReader<?> reader : READERS) {
+		for (final CompactReader<?> reader : READERS) {
 			if (reader.isSupportedTag(tag)) {
 				return reader.read(element, stream, players, warner, idFactory);
 			}
@@ -126,7 +126,7 @@ public final class CompactReaderAdapter {
 						                                "objects)");
 			}
 		} else {
-			for (CompactReader<?> reader : READERS) {
+			for (final CompactReader<?> reader : READERS) {
 				if (reader.canWrite(obj)) {
 					reader.writeRaw(ostream, obj, indent);
 					return;

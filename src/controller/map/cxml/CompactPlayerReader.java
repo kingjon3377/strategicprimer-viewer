@@ -107,7 +107,7 @@ public final class CompactPlayerReader extends AbstractCompactReader<Player> {
 	 * @param obj an object
 	 * @return whether we can write it
 	 */
-	public boolean canWrite(Object obj) {
+	public boolean canWrite(final Object obj) {
 		return obj instanceof Player;
 	}
 }
