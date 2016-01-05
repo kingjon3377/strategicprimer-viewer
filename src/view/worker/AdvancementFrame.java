@@ -3,6 +3,7 @@ package view.worker;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
 import java.awt.Dimension;
+import java.io.File;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -61,13 +62,14 @@ public final class AdvancementFrame extends JFrame {
 	 */
 	public AdvancementFrame(final IWorkerModel source, final IOHandler ioHandler) {
 		super("Worker Advancement");
-		if (source.getMapFile().exists()) {
-			setTitle(source.getMapFile().getName() + " | Worker Advancement");
+		final File mapFile = source.getMapFile();
+		if (mapFile.exists()) {
+			setTitle(mapFile.getName() + " | Worker Advancement");
 			getRootPane().putClientProperty("Window.documentFile",
-					source.getMapFile());
+					mapFile);
 		}
 		setMinimumSize(new Dimension(640, 480));
-		IMapNG map = source.getMap();
+		final IMapNG map = source.getMap();
 		final Player player = map.getCurrentPlayer();
 		final PlayerLabel plabel = new PlayerLabel("", player, "'s Units:");
 		ioHandler.addPlayerChangeListener(plabel);
