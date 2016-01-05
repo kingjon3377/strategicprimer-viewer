@@ -98,8 +98,6 @@ public final class QueryCLI implements ISPDriver {
 			}
 		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O exception", except);
-		} catch (final DriverFailedException except) {
-			LOGGER.log(Level.SEVERE, "Problem in the trapping program", except);
 		}
 	}
 
