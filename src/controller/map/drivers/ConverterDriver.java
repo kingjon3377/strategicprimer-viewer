@@ -106,20 +106,16 @@ public final class ConverterDriver implements ISPDriver {
 			} catch (final MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename
 						                         + " not acceptable to reader", e);
-				continue;
 			} catch (final FileNotFoundException e) {
 				LOGGER.log(Level.SEVERE, filename + " not found", e);
 			} catch (final IOException e) {
 				LOGGER.log(Level.SEVERE, "I/O error processing " + filename, e);
-				continue;
 			} catch (final XMLStreamException e) {
 				LOGGER.log(Level.SEVERE,
 						"XML stream error reading " + filename, e);
-				continue;
 			} catch (final SPFormatException e) {
 				LOGGER.log(Level.SEVERE, "SP map format error reading "
 						                         + filename, e);
-				continue;
 			}
 		}
 	}

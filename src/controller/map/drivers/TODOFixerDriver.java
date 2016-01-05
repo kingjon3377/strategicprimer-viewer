@@ -210,7 +210,6 @@ public final class TODOFixerDriver {
 				reader.write(file, map);
 			} catch (final IOException e) {
 				LOGGER.log(Level.SEVERE, "I/O error writing map to " + arg, e);
-				continue;
 			}
 		}
 	}

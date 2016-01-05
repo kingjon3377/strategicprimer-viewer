@@ -87,16 +87,13 @@ public final class ReaderComparator implements ISPDriver {
 				LOGGER.log(Level.SEVERE,
 						"XMLStreamException (probably badly formed input) in "
 								+ arg, e);
-				continue;
 			} catch (final MapVersionException e) {
 				LOGGER.log(Level.SEVERE,
 						"Map version too old for old-style reader in file "
 								+ arg, e);
-				continue;
 			} catch (final SPFormatException e) {
 				LOGGER.log(Level.SEVERE,
 						"New reader claims invalid SP map data in " + arg, e);
-				continue;
 			}
 		}
 	}

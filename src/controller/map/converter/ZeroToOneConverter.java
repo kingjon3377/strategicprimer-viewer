@@ -296,7 +296,6 @@ public final class ZeroToOneConverter {
 						System.out);
 			} catch (final FileNotFoundException except) {
 				LOGGER.log(Level.SEVERE, "File " + arg + " not found", except);
-				continue;
 			} catch (final XMLStreamException except) {
 				LOGGER.log(Level.SEVERE, "XML error", except);
 			} catch (final IOException except) {

@@ -292,7 +292,6 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 								LOGGER.warning(
 										"Proxy is a ProxyWorker but member isn't a worker");
 
-								continue;
 							}
 						} else {
 							((ProxyFor<UnitMember>) proxy).addProxied(member);
