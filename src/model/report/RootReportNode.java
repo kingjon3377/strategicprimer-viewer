@@ -94,31 +94,17 @@ public final class RootReportNode extends AbstractReportNode implements IReportN
 	}
 
 	/**
-	 * @param obj a node
-	 * @return whether it equals this one
-	 */
-	@Override
-	protected boolean equalsNode(final IReportNode obj) {
-		return (obj instanceof RootReportNode) && getText().equals(obj.getText())
-				       && children().equals(obj.children());
-	}
-
-	/**
-	 * @return a hash value for the object
-	 */
-	@Override
-	protected int hashCodeImpl() {
-		return getText().hashCode();
-	}
-
-	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof IReportNode)
-				                         && equalsNode((IReportNode) obj));
+		return (this == obj) || ((obj instanceof RootReportNode) && getText()
+				                                                            .equals(((IReportNode) obj)
+						                                                                    .getText()) &&
+
+				                         children()
+						                         .equals(((IReportNode) obj).children()));
 	}
 
 	/**
@@ -126,7 +112,7 @@ public final class RootReportNode extends AbstractReportNode implements IReportN
 	 */
 	@Override
 	public int hashCode() {
-		return hashCodeImpl();
+		return getText().hashCode();
 	}
 
 	/**

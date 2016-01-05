@@ -51,16 +51,4 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 		setText(txt);
 		setPoint(null);
 	}
-
-	/**
-	 * @param obj a node
-	 * @return whether it's equal to this one.
-	 */
-	protected abstract boolean equalsNode(final IReportNode obj);
-
-	/**
-	 * @return a hash code for the object
-	 */
-	protected abstract int hashCodeImpl();
-
 }

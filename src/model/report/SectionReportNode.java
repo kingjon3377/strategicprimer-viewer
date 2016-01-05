@@ -31,7 +31,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public final class SectionReportNode extends AbstractReportNode implements IReportNode {
+public final class SectionReportNode extends AbstractReportNode {
 	/**
 	 * The header level.
 	 */
@@ -114,32 +114,18 @@ public final class SectionReportNode extends AbstractReportNode implements IRepo
 
 	/**
 	 * @param obj an object
-	 * @return whether it's the same as this
-	 */
-	@Override
-	protected boolean equalsNode(final IReportNode obj) {
-		return (obj instanceof SectionReportNode)
-				       && (level == ((SectionReportNode) obj).getLevel())
-				       && getText().equals(obj.getText())
-				       && children().equals(obj.children());
-	}
-
-	/**
-	 * @return a hash value for the object
-	 */
-	@Override
-	protected int hashCodeImpl() {
-		return level + getText().hashCode();
-	}
-
-	/**
-	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof IReportNode)
-				                         && equalsNode((IReportNode) obj));
+		return (this == obj) || ((obj instanceof SectionReportNode) && (level ==
+				                                                                ((SectionReportNode) obj)
+						                                                                .getLevel()) &&
+
+				                         getText()
+						                         .equals(((IReportNode) obj).getText()) &&
+				                         children()
+						                         .equals(((IReportNode) obj).children()));
 	}
 
 	/**
@@ -147,7 +133,7 @@ public final class SectionReportNode extends AbstractReportNode implements IRepo
 	 */
 	@Override
 	public int hashCode() {
-		return hashCodeImpl();
+		return level + getText().hashCode();
 	}
 
 	/**

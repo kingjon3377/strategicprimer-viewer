@@ -30,7 +30,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public final class EmptyReportNode extends AbstractReportNode implements IReportNode {
+public final class EmptyReportNode extends AbstractReportNode {
 	/**
 	 * Let's make this singleton, to reduce object allocations further.
 	 */
@@ -74,23 +74,6 @@ public final class EmptyReportNode extends AbstractReportNode implements IReport
 	}
 
 	/**
-	 * @param obj an object
-	 * @return whether it equals this; all EmptyReportNodes are equal.
-	 */
-	@Override
-	protected boolean equalsNode(final IReportNode obj) {
-		return (this == obj) || (obj instanceof EmptyReportNode);
-	}
-
-	/**
-	 * @return a constant hash code
-	 */
-	@Override
-	protected int hashCodeImpl() {
-		return 0;
-	}
-
-	/**
 	 * @return true: this is "the empty node."
 	 */
 	@Override
@@ -104,8 +87,7 @@ public final class EmptyReportNode extends AbstractReportNode implements IReport
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof IReportNode)
-				                         && equalsNode((IReportNode) obj));
+		return (this == obj) || (obj instanceof EmptyReportNode);
 	}
 
 	/**
@@ -113,7 +95,7 @@ public final class EmptyReportNode extends AbstractReportNode implements IReport
 	 */
 	@Override
 	public int hashCode() {
-		return hashCodeImpl();
+		return 0;
 	}
 
 	/**

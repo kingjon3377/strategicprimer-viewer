@@ -31,7 +31,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public final class ListReportNode extends AbstractReportNode implements IReportNode {
+public final class ListReportNode extends AbstractReportNode {
 	/**
 	 * The length of the boilerplate even if we have no text and no children.
 	 */
@@ -132,31 +132,17 @@ public final class ListReportNode extends AbstractReportNode implements IReportN
 	}
 
 	/**
-	 * @param obj a node
-	 * @return whether it equals this one
-	 */
-	@Override
-	protected boolean equalsNode(final IReportNode obj) {
-		return (obj instanceof ListReportNode) && getText().equals(obj.getText())
-					   && children().equals(obj.children());
-	}
-
-	/**
-	 * @return a hash value for the object
-	 */
-	@Override
-	protected int hashCodeImpl() {
-		return getText().hashCode();
-	}
-
-	/**
 	 * @param obj an object
 	 * @return whether it's equal to this one
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof IReportNode)
-				                         && equalsNode((IReportNode) obj));
+		return (this == obj) || ((obj instanceof ListReportNode) && getText()
+				                                                            .equals(((IReportNode) obj)
+						                                                                    .getText()) &&
+
+				                         children()
+						                         .equals(((IReportNode) obj).children()));
 	}
 
 	/**
@@ -164,7 +150,7 @@ public final class ListReportNode extends AbstractReportNode implements IReportN
 	 */
 	@Override
 	public int hashCode() {
-		return hashCodeImpl();
+		return getText().hashCode();
 	}
 
 	/**
