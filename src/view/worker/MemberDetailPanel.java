@@ -79,6 +79,14 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		setLayout(layout);
 		layout.setAutoCreateGaps(true);
 		layout.setAutoCreateContainerGaps(true);
+		final StatLabel strLabel = new StatLabel(WorkerStats::getStrength);
+		final StatLabel dexLabel = new StatLabel(WorkerStats::getDexterity);
+		final StatLabel conLabel = new StatLabel(WorkerStats::getConstitution);
+		final StatLabel intLabel = new StatLabel(WorkerStats::getIntelligence);
+		final StatLabel wisLabel = new StatLabel(WorkerStats::getWisdom);
+		final StatLabel chaLabel = new StatLabel(WorkerStats::getCharisma);
+		statLabels.addAll(Arrays.asList(strLabel, dexLabel, conLabel, intLabel, wisLabel,
+				chaLabel));
 		final JLabel header = new JLabel("<html><h2>Unit Member Details:</h2></html>");
 		final JLabel typeCaption = new JLabel("<html><b>Member Type:</b></html>");
 		final JLabel nameCaption = new JLabel("<html><b>Name:</b></html>");
@@ -90,14 +98,6 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		final JLabel wisCaption = new JLabel("<html><b>Wis:</b></html>");
 		final JLabel chaCaption = new JLabel("<html><b>Cha:</b></html>");
 		final JLabel jobsCaption = new JLabel("<html><b>Job Levels:</b></html>");
-		final StatLabel strLabel = new StatLabel(WorkerStats::getStrength);
-		final StatLabel dexLabel = new StatLabel(WorkerStats::getDexterity);
-		final StatLabel conLabel = new StatLabel(WorkerStats::getConstitution);
-		final StatLabel intLabel = new StatLabel(WorkerStats::getIntelligence);
-		final StatLabel wisLabel = new StatLabel(WorkerStats::getWisdom);
-		final StatLabel chaLabel = new StatLabel(WorkerStats::getCharisma);
-		statLabels.addAll(Arrays.asList(strLabel, dexLabel, conLabel, intLabel, wisLabel,
-				chaLabel));
 		layout.setVerticalGroup(layout.createSequentialGroup()
 										.addComponent(header)
 										.addGroup(layout.createParallelGroup()
