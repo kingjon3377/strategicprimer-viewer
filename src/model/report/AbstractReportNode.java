@@ -172,6 +172,7 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	/**
 	 * @return the point, if any, in the map that this represents something on
 	 */
+	@Override
 	public final Point getPoint() {
 		if (point != null) {
 			return point;
@@ -196,6 +197,7 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	/**
 	 * @param pt the point, if any, in the map that this represents something on
 	 */
+	@Override
 	public final void setPoint(final Point pt) {
 		point = pt;
 	}

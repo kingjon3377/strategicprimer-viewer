@@ -1,7 +1,9 @@
 package model.report;
 
 import javax.swing.tree.MutableTreeNode;
+import model.map.Point;
 import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * An interface for report nodes.
@@ -51,4 +53,19 @@ public interface IReportNode extends Comparable<@NonNull IReportNode>, MutableTr
 	 * @param txt the new text for the node
 	 */
 	void setText(String txt);
+
+	/**
+	 * Add a node. Do nothing if null, rather than crashing.
+	 *
+	 * @param node the node to add
+	 */
+	void add(@Nullable final MutableTreeNode node);
+	/**
+	 * @return the point, if any, in the map that this represents something on
+	 */
+	Point getPoint();
+	/**
+	 * @param pt the point, if any, in the map that this represents something on
+	 */
+	void setPoint(final Point pt);
 }
