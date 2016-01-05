@@ -1,13 +1,9 @@
 package model.report;
 
-import java.util.Enumeration;
-import java.util.Iterator;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.MutableTreeNode;
 import model.map.Point;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import util.EnumerationWrapper;
 
 /**
  * A superclass for report-nodes.
@@ -86,28 +82,10 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * @param obj an object
-	 * @return whether it's equal to this one
-	 */
-	@Override
-	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof IReportNode)
-				                         && equalsNode((IReportNode) obj));
-	}
-
-	/**
 	 * @param obj a node
 	 * @return whether it's equal to this one.
 	 */
 	protected abstract boolean equalsNode(final IReportNode obj);
-
-	/**
-	 * @return a hash code for the object
-	 */
-	@Override
-	public int hashCode() {
-		return hashCodeImpl();
-	}
 
 	/**
 	 * @return a hash code for the object
@@ -120,24 +98,6 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	@Override
 	public String toString() {
 		return getText();
-	}
-
-	/**
-	 * Add a node. Do nothing if null, rather than crashing.
-	 *
-	 * @param node the node to add
-	 */
-	@Override
-	public void add(@Nullable final MutableTreeNode node) {
-		if (node != null) {
-			if (node instanceof IReportNode) {
-				if (!((IReportNode) node).isEmptyNode()) {
-					super.add(node);
-				}
-			} else {
-				super.add(node);
-			}
-		}
 	}
 
 	/**
@@ -155,19 +115,5 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	public final Point getLocalPoint() {
 		return point;
 	}
-	/**
-	 * @return an iterator over the children
-	 */
-	@Override
-	public Iterator<IReportNode> iterator() {
-		return new EnumerationWrapper<>(children());
-	}
 
-	/**
-	 * Add generic-type information for the compiler.
-	 */
-	@Override
-	public Enumeration<IReportNode> children() {
-		return super.children();
-	}
 }

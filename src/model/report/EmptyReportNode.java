@@ -1,5 +1,11 @@
 package model.report;
 
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Iterator;
+import javax.swing.tree.MutableTreeNode;
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A node to replace usages of null.
  *
@@ -22,7 +28,7 @@ package model.report;
  *
  * @author Jonathan Lovelace
  */
-public final class EmptyReportNode extends AbstractReportNode {
+public final class EmptyReportNode extends AbstractReportNode implements IReportNode {
 	/**
 	 * Let's make this singleton, to reduce object allocations further.
 	 */
@@ -83,5 +89,49 @@ public final class EmptyReportNode extends AbstractReportNode {
 	@Override
 	public boolean isEmptyNode() {
 		return true;
+	}
+
+	/**
+	 * @param obj an object
+	 * @return whether it's equal to this one
+	 */
+	@Override
+	public boolean equals(@Nullable final Object obj) {
+		return (this == obj) || ((obj instanceof IReportNode)
+				                         && equalsNode((IReportNode) obj));
+	}
+
+	/**
+	 * @return a hash code for the object
+	 */
+	@Override
+	public int hashCode() {
+		return hashCodeImpl();
+	}
+
+	/**
+	 * Add a node. Do nothing if null, rather than crashing.
+	 *
+	 * @param node the node to add
+	 */
+	@Override
+	public void add(final @Nullable MutableTreeNode node) {
+		// Do nothing.
+	}
+
+	/**
+	 * @return an iterator over the children
+	 */
+	@Override
+	public Iterator<IReportNode> iterator() {
+		return Collections.emptyIterator();
+	}
+
+	/**
+	 * Add generic-type information for the compiler.
+	 */
+	@Override
+	public Enumeration<IReportNode> children() {
+		return Collections.emptyEnumeration();
 	}
 }
