@@ -88,6 +88,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 * @param index  the index of the child we want
 	 * @return the specified child
 	 */
+	@SuppressWarnings("ProhibitedExceptionThrown")
 	@Override
 	public Object getChild(@Nullable final Object parent, final int index) {
 		if (index < 0) {
