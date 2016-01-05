@@ -93,6 +93,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 * @param index  the index of the child we want
 	 * @return the specified child
 	 */
+	@SuppressWarnings("ProhibitedExceptionThrown")
 	@Override
 	public HasName getChild(@Nullable final Object parent, final int index) {
 		final IWorker currRoot = root;
@@ -114,6 +115,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 * @param index    the index of the item we want to return
 	 * @return that item
 	 */
+	@SuppressWarnings("ProhibitedExceptionThrown")
 	private static <T> T getFromIter(final Iterable<T> iterable, final int index) {
 		final Iterator<T> iter = iterable.iterator();
 		for (int i = 0; i < index; i++) {
