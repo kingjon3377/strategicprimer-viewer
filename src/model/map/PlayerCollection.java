@@ -129,8 +129,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 */
 	@Override
 	public boolean isSubset(final IPlayerCollection obj,
-							final Appendable ostream, final String context)
-			throws IOException {
+							final Appendable ostream, final String context) {
 		return StreamSupport.stream(obj.spliterator(), false).allMatch(
 				player -> {
 					try {

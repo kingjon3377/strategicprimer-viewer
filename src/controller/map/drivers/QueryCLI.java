@@ -113,7 +113,7 @@ public final class QueryCLI implements ISPDriver {
 	 */
 	public void handleCommand(final IDriverModel model, final HuntingModel hmodel,
 	                          final Appendable ostream, final char input)
-			throws IOException, DriverFailedException {
+			throws IOException {
 		switch (input) {
 		case '?':
 			usage(ostream);
