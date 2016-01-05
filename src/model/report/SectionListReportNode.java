@@ -55,6 +55,15 @@ public class SectionListReportNode extends AbstractReportNode implements IReport
 	 * The size of the boilerplate text we have to add for each child.
 	 */
 	private static final int PER_CHILD_BPLATE = "<li></li>\n".length();
+	/**
+	 * The point, if any, in the map that this node represents something on.
+	 */
+	@Nullable
+	private Point point;
+	/**
+	 * The (usually header) text. May be empty, but not null.
+	 */
+	private String text;
 
 	/**
 	 * Constructor.
@@ -217,5 +226,47 @@ public class SectionListReportNode extends AbstractReportNode implements IReport
 	@Override
 	public Enumeration<IReportNode> children() {
 		return super.children();
+	}
+
+	/**
+	 * @return the text of the node, usually the header.
+	 */
+	@Override
+	public final String getText() {
+		return text;
+	}
+
+	/**
+	 * @param txt the new text for the node
+	 */
+	@Override
+	public final void setText(final String txt) {
+		text = txt;
+		setUserObject(text);
+	}
+
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return getText();
+	}
+
+	/**
+	 * @param pt the point, if any, in the map that this represents something on
+	 */
+	@Override
+	public final void setPoint(final Point pt) {
+		point = pt;
+	}
+
+	/**
+	 * @return the point, if any, in the map that this node in particular represents something on
+	 */
+	@Override
+	@Nullable
+	public final Point getLocalPoint() {
+		return point;
 	}
 }

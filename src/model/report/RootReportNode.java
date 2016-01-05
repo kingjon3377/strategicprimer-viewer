@@ -4,6 +4,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
+import model.map.Point;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EnumerationWrapper;
 import util.NullCleaner;
@@ -31,6 +32,16 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  */
 public final class RootReportNode extends AbstractReportNode implements IReportNode {
+	/**
+	 * The point, if any, in the map that this node represents something on.
+	 */
+	@Nullable
+	private Point point;
+	/**
+	 * The (usually header) text. May be empty, but not null.
+	 */
+	private String text;
+
 	/**
 	 * Constructor.
 	 *
@@ -150,5 +161,47 @@ public final class RootReportNode extends AbstractReportNode implements IReportN
 	@Override
 	public Enumeration<IReportNode> children() {
 		return super.children();
+	}
+
+	/**
+	 * @return the text of the node, usually the header.
+	 */
+	@Override
+	public final String getText() {
+		return text;
+	}
+
+	/**
+	 * @param txt the new text for the node
+	 */
+	@Override
+	public final void setText(final String txt) {
+		text = txt;
+		setUserObject(text);
+	}
+
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return getText();
+	}
+
+	/**
+	 * @param pt the point, if any, in the map that this represents something on
+	 */
+	@Override
+	public final void setPoint(final Point pt) {
+		point = pt;
+	}
+
+	/**
+	 * @return the point, if any, in the map that this node in particular represents something on
+	 */
+	@Override
+	@Nullable
+	public final Point getLocalPoint() {
+		return point;
 	}
 }

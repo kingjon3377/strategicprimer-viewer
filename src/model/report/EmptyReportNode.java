@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import javax.swing.tree.MutableTreeNode;
+import model.map.Point;
+import model.map.PointFactory;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -33,6 +35,11 @@ public final class EmptyReportNode extends AbstractReportNode implements IReport
 	 * Let's make this singleton, to reduce object allocations further.
 	 */
 	public static final EmptyReportNode NULL_NODE = new EmptyReportNode();
+	/**
+	 * The point, if any, in the map that this node represents something on.
+	 */
+	@Nullable
+	private final Point point = PointFactory.point(Integer.MIN_VALUE, Integer.MIN_VALUE);
 
 	/**
 	 * Constructor.
@@ -133,5 +140,46 @@ public final class EmptyReportNode extends AbstractReportNode implements IReport
 	@Override
 	public Enumeration<IReportNode> children() {
 		return Collections.emptyEnumeration();
+	}
+
+	/**
+	 * @return the text of the node, usually the header.
+	 */
+	@Override
+	public final String getText() {
+		return "";
+	}
+
+	/**
+	 * @param txt the new text for the node
+	 */
+	@Override
+	public final void setText(final String txt) {
+		// Do nothing
+	}
+
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return getText();
+	}
+
+	/**
+	 * @param pt the point, if any, in the map that this represents something on
+	 */
+	@Override
+	public final void setPoint(final Point pt) {
+		// Do nothing
+	}
+
+	/**
+	 * @return the point, if any, in the map that this node in particular represents something on
+	 */
+	@Override
+	@Nullable
+	public final Point getLocalPoint() {
+		return point;
 	}
 }

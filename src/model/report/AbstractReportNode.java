@@ -3,7 +3,6 @@ package model.report;
 import javax.swing.tree.DefaultMutableTreeNode;
 import model.map.Point;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A superclass for report-nodes.
@@ -29,15 +28,6 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public abstract class AbstractReportNode extends DefaultMutableTreeNode
 		implements IReportNode, Iterable<@NonNull IReportNode> {
-	/**
-	 * The point, if any, in the map that this node represents something on.
-	 */
-	@Nullable
-	private Point point;
-	/**
-	 * The (usually header) text. May be empty, but not null.
-	 */
-	private String text;
 
 	/**
 	 * Constructor.
@@ -47,9 +37,8 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	 */
 	protected AbstractReportNode(final Point pt, final String txt) {
 		super(txt);
-		text = txt;
 		setText(txt);
-		point = pt;
+		setPoint(pt);
 	}
 
 	/**
@@ -59,26 +48,8 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	 */
 	protected AbstractReportNode(final String txt) {
 		super(txt);
-		text = txt;
 		setText(txt);
-		point = null;
-	}
-
-	/**
-	 * @return the text of the node, usually the header.
-	 */
-	@Override
-	public final String getText() {
-		return text;
-	}
-
-	/**
-	 * @param txt the new text for the node
-	 */
-	@Override
-	public final void setText(final String txt) {
-		text = txt;
-		setUserObject(text);
+		setPoint(null);
 	}
 
 	/**
@@ -91,29 +62,5 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	 * @return a hash code for the object
 	 */
 	protected abstract int hashCodeImpl();
-
-	/**
-	 * @return a String representation of the object
-	 */
-	@Override
-	public String toString() {
-		return getText();
-	}
-
-	/**
-	 * @param pt the point, if any, in the map that this represents something on
-	 */
-	@Override
-	public final void setPoint(final Point pt) {
-		point = pt;
-	}
-	/**
-	 * @return the point, if any, in the map that this node in particular represents something on
-	 */
-	@Override
-	@Nullable
-	public final Point getLocalPoint() {
-		return point;
-	}
 
 }
