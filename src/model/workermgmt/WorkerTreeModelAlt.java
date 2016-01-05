@@ -169,7 +169,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * @param userObj the user object the node wraps.
 		 */
 		protected WorkerTreeNode(final T userObj) {
-			super(userObj, true);
+			this(userObj, true);
 		}
 
 		/**
