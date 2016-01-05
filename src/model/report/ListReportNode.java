@@ -2,9 +2,11 @@ package model.report;
 
 import java.util.Enumeration;
 import java.util.Iterator;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import model.map.Point;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EnumerationWrapper;
 import util.NullCleaner;
@@ -31,7 +33,8 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public final class ListReportNode extends AbstractReportNode {
+public final class ListReportNode extends DefaultMutableTreeNode
+		implements IReportNode, Iterable<@NonNull IReportNode> {
 	/**
 	 * The length of the boilerplate even if we have no text and no children.
 	 */
@@ -61,7 +64,9 @@ public final class ListReportNode extends AbstractReportNode {
 	 * @param text  the header text
 	 */
 	public ListReportNode(final Point point, final String text) {
-		super(point, text);
+		super(text);
+		setText(text);
+		setPoint(point);
 	}
 
 	/**
@@ -69,6 +74,8 @@ public final class ListReportNode extends AbstractReportNode {
 	 */
 	public ListReportNode(final String text) {
 		super(text);
+		setText(text);
+		setPoint(null);
 	}
 
 	/**

@@ -2,9 +2,11 @@ package model.report;
 
 import java.util.Enumeration;
 import java.util.Iterator;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import model.map.Point;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EnumerationWrapper;
 import util.NullCleaner;
@@ -31,7 +33,8 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public final class RootReportNode extends AbstractReportNode implements IReportNode {
+public final class RootReportNode extends DefaultMutableTreeNode
+		implements IReportNode, Iterable<@NonNull IReportNode> {
 	/**
 	 * The point, if any, in the map that this node represents something on.
 	 */
@@ -49,6 +52,8 @@ public final class RootReportNode extends AbstractReportNode implements IReportN
 	 */
 	public RootReportNode(final String title) {
 		super(title);
+		setText(title);
+		setPoint(null);
 	}
 
 	/**

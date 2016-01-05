@@ -4,8 +4,10 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import model.map.Point;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EnumerationWrapper;
 import util.NullCleaner;
@@ -32,7 +34,8 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public final class SimpleReportNode extends AbstractReportNode implements IReportNode {
+public final class SimpleReportNode extends DefaultMutableTreeNode
+		implements IReportNode, Iterable<@NonNull IReportNode> {
 	/**
 	 * The point, if any, in the map that this node represents something on.
 	 */
@@ -42,20 +45,28 @@ public final class SimpleReportNode extends AbstractReportNode implements IRepor
 	 * The (usually header) text. May be empty, but not null.
 	 */
 	private String text;
-
+	/**
+	 * @param string a concatentated string to make the text of the node
+	 */
+	private SimpleReportNode(String string) {
+		super(string);
+		setText(string);
+	}
 	/**
 	 * @param point the point, if any, in the map that this represents something on
 	 * @param texts a number of strings to concatenate and make the text of the node.
 	 */
 	public SimpleReportNode(final Point point, final String... texts) {
-		super(point, concat(texts));
+		this(concat(texts));
+		setPoint(point);
 	}
 
 	/**
 	 * @param texts a number of strings to concatenate and make the text of the node.
 	 */
 	public SimpleReportNode(final String... texts) {
-		super(concat(texts));
+		this(concat(texts));
+		setPoint(null);
 	}
 
 	/**

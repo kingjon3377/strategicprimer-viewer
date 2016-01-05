@@ -2,9 +2,11 @@ package model.report;
 
 import java.util.Enumeration;
 import java.util.Iterator;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import model.map.Point;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EnumerationWrapper;
 import util.NullCleaner;
@@ -31,7 +33,8 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public final class SectionReportNode extends AbstractReportNode {
+public final class SectionReportNode extends DefaultMutableTreeNode
+		implements IReportNode, Iterable<@NonNull IReportNode> {
 	/**
 	 * The header level.
 	 */
@@ -54,6 +57,8 @@ public final class SectionReportNode extends AbstractReportNode {
 	 */
 	public SectionReportNode(final int lvl, final String header) {
 		super(header);
+		setText(header);
+		setPoint(null);
 		setHeaderLevel(lvl);
 	}
 

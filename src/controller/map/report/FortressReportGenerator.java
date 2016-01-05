@@ -22,7 +22,6 @@ import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.towns.Fortress;
-import model.report.AbstractReportNode;
 import model.report.ComplexReportNode;
 import model.report.EmptyReportNode;
 import model.report.IReportNode;

@@ -3,9 +3,11 @@ package model.report;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import model.map.Point;
 import model.map.PointFactory;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -30,7 +32,8 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public final class EmptyReportNode extends AbstractReportNode {
+public final class EmptyReportNode extends DefaultMutableTreeNode
+		implements IReportNode, Iterable<@NonNull IReportNode> {
 	/**
 	 * Let's make this singleton, to reduce object allocations further.
 	 */
@@ -46,6 +49,8 @@ public final class EmptyReportNode extends AbstractReportNode {
 	 */
 	private EmptyReportNode() {
 		super("");
+		setText("");
+		setPoint(null);
 	}
 
 	/**
