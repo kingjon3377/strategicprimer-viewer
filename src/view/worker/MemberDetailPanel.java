@@ -244,7 +244,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		 * Constructor.
 		 * @param stat a handle for the stat we represent
 		 */
-		public StatLabel(final ToIntFunction<WorkerStats> stat) {
+		protected StatLabel(final ToIntFunction<WorkerStats> stat) {
 			super("+NaN");
 			handle = stat;
 		}
