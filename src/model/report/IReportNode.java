@@ -2,6 +2,7 @@ package model.report;
 
 import javax.swing.tree.MutableTreeNode;
 import model.map.Point;
+import model.map.PointFactory;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -27,7 +28,8 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public interface IReportNode extends Comparable<@NonNull IReportNode>, MutableTreeNode {
+public interface IReportNode
+		extends Comparable<@NonNull IReportNode>, MutableTreeNode, Iterable<IReportNode> {
 	/**
 	 * @return the HTML representation of the node.
 	 */
@@ -63,7 +65,33 @@ public interface IReportNode extends Comparable<@NonNull IReportNode>, MutableTr
 	/**
 	 * @return the point, if any, in the map that this represents something on
 	 */
-	Point getPoint();
+	default Point getPoint() {
+		Point point = getLocalPoint();
+		if (point != null) {
+			return point;
+		} else {
+			Point locPoint = null;
+			for (final IReportNode child : this) {
+				if (locPoint == null) {
+					locPoint = child.getPoint();
+				} else if (!locPoint.equals(child.getPoint())) {
+					locPoint = PointFactory.point(Integer.MIN_VALUE,
+							Integer.MIN_VALUE);
+				}
+			}
+			if (locPoint == null) {
+				return PointFactory.point(Integer.MIN_VALUE, Integer.MIN_VALUE);
+			} else {
+				return locPoint;
+			}
+		}
+	}
+	/**
+	 * @return the point, if any, in the map that this node, as opposed to any of its
+	 * children, represents something on.
+	 */
+	@Nullable
+	Point getLocalPoint();
 	/**
 	 * @param pt the point, if any, in the map that this represents something on
 	 */
@@ -73,5 +101,13 @@ public interface IReportNode extends Comparable<@NonNull IReportNode>, MutableTr
 	 */
 	default boolean isEmptyNode() {
 		return false;
+	}
+	/**
+	 * @param obj an object to compare to.
+	 * @return the result of the comparison
+	 */
+	@Override
+	default int compareTo(final IReportNode obj) {
+		return produce().compareTo(obj.produce());
 	}
 }
