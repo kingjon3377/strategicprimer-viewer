@@ -2,7 +2,6 @@ package util;
 
 import java.util.Comparator;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A comparator for Pairs, that uses provided comparators to compare first the first item
@@ -50,11 +49,8 @@ public final class PairComparator<@NonNull T, @NonNull U>
 	 * @param secondPair the second pair
 	 */
 	@Override
-	public int compare(@Nullable final Pair<T, U> firstPair,
-	                   @Nullable final Pair<T, U> secondPair) {
-		if ((firstPair == null) || (secondPair == null)) {
-			throw new NullPointerException("asked to compare null Pair");
-		}
+	public int compare(final Pair<T, U> firstPair,
+	                   final Pair<T, U> secondPair) {
 		final int firstResult = first().compare(firstPair.first(), secondPair.first());
 		if (firstResult == 0) {
 			return second().compare(firstPair.second(), secondPair.second());
