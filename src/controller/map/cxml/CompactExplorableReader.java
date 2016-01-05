@@ -163,7 +163,7 @@ public final class CompactExplorableReader
 	 * @return whether we can write it
 	 */
 	public boolean canWrite(final Object obj) {
-		return obj instanceof Battlefield || obj instanceof Cave;
+		return (obj instanceof Battlefield) || (obj instanceof Cave);
 	}
 
 }

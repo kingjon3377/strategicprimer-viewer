@@ -281,6 +281,6 @@ public final class CompactMobileReader extends
 	 * @return whether we can write it
 	 */
 	public boolean canWrite(final Object obj) {
-		return obj instanceof MobileFixture && !(obj instanceof Unit);
+		return (obj instanceof MobileFixture) && !(obj instanceof Unit);
 	}
 }

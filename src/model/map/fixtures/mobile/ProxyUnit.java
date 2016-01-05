@@ -83,7 +83,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	public void addProxied(final IUnit unit) {
 		if (unit == this) {
 			return;
-		} else if (parallel && unit.getID() != id) {
+		} else if (parallel && (unit.getID() != id)) {
 			throw new IllegalArgumentException("Expected unit with ID #" + id);
 		} else if (!parallel && !kind.equals(unit.getKind())) {
 			throw new IllegalArgumentException("Expected unit of kind " + kind);
