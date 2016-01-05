@@ -116,7 +116,7 @@ public final class AdvancementStart implements ISPDriver {
 	 */
 	@Override
 	public String getName() {
-		return usage().getShortDescription();
+		return USAGE.getShortDescription();
 	}
 
 	/**
