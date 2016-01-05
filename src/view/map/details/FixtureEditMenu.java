@@ -54,7 +54,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 	/**
 	 * Listeners to notify about name and kind changes.
 	 */
-	protected final Collection<IWorkerTreeModel> listeners = new ArrayList<>();
+	private final Collection<IWorkerTreeModel> listeners = new ArrayList<>();
 
 	/**
 	 * Constructor.
@@ -142,7 +142,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 	 * @param players a collection of players
 	 * @return it as an array
 	 */
-	protected static Player[] playersAsArray(final Iterable<Player> players) {
+	private static Player[] playersAsArray(final Iterable<Player> players) {
 		if (players instanceof PlayerCollection) {
 			return ((PlayerCollection) players).asArray(); // NOPMD
 		} else {

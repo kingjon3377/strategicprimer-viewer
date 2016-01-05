@@ -65,7 +65,7 @@ public final class HuntingModel {
 	/**
 	 * The size of the map.
 	 */
-	protected final MapDimensions dims;
+	private final MapDimensions dims;
 
 	/**
 	 * Constructor.

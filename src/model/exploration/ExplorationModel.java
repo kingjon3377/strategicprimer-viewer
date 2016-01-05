@@ -393,7 +393,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @param max the maximum number we want to return
 	 * @return either num + 1, if max or lower, or 0.
 	 */
-	public static int increment(final int num, final int max) {
+	private static int increment(final int num, final int max) {
 		if (num >= (max - 1)) {
 			return 0; // NOPMD
 		} else {
@@ -408,7 +408,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @param max the number to "underflow" to.
 	 * @return either num - 1, if 1 or higher, or max.
 	 */
-	public static int decrement(final int num, final int max) {
+	private static int decrement(final int num, final int max) {
 		if (num == 0) {
 			return max; // NOPMD
 		} else {

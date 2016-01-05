@@ -72,15 +72,15 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	/**
 	 * Error message fragment when file not found.
 	 */
-	protected static final String NOT_FOUND_ERROR = " not found";
+	private static final String NOT_FOUND_ERROR = " not found";
 	/**
 	 * Error message when the map contains invalid data.
 	 */
-	protected static final String INV_DATA_ERROR = "Map contained invalid data";
+	private static final String INV_DATA_ERROR = "Map contained invalid data";
 	/**
 	 * An error message refactored from at least four uses.
 	 */
-	protected static final String XML_ERROR_STRING = "Error reading XML file";
+	private static final String XML_ERROR_STRING = "Error reading XML file";
 	/**
 	 * Logger.
 	 */
@@ -89,7 +89,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	/**
 	 * File chooser.
 	 */
-	protected final JFileChooser chooser;
+	private final JFileChooser chooser;
 
 	/**
 	 * The list of player-change listeners.
@@ -336,9 +336,9 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 * @param source   the component to use as the parent of the error dialog. May be
 	 *                 null.
 	 */
-	protected static void handleError(final Exception except,
-									  final String filename,
-									  @Nullable final Component source) {
+	private static void handleError(final Exception except,
+	                                final String filename,
+	                                @Nullable final Component source) {
 		final String msg;
 		if (except instanceof XMLStreamException) {
 			msg = XML_ERROR_STRING + ' ' + filename;
@@ -404,7 +404,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 * @throws XMLStreamException if the XML isn't well-formed
 	 * @throws SPFormatException  if the file contains invalid data
 	 */
-	protected static IMutableMapNG readMap(final File file, final Warning warner)
+	private static IMutableMapNG readMap(final File file, final Warning warner)
 			throws IOException, XMLStreamException, SPFormatException {
 		return new MapReaderAdapter().readMap(file, warner);
 	}
