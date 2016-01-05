@@ -1,6 +1,6 @@
 package view.util;
 
-import controller.map.misc.IOHandler;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import javax.swing.*;
 import model.misc.IDriverModel;
@@ -42,7 +42,7 @@ public class SPMenu extends JMenuBar {
 	 *                menu items to disable.
 	 * @return the file menu
 	 */
-	protected static JMenu createFileMenu(final IOHandler handler,
+	protected static JMenu createFileMenu(final ActionListener handler,
 	                                      final IDriverModel model) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
@@ -128,7 +128,7 @@ public class SPMenu extends JMenuBar {
 	 * @param handler the menu-item-handler
 	 * @return the menu created
 	 */
-	protected static JMenu createMapMenu(final IOHandler handler,
+	protected static JMenu createMapMenu(final ActionListener handler,
 	                                     final IDriverModel model) {
 		final JMenu retval = new JMenu("Map");
 		retval.setMnemonic(KeyEvent.VK_M);
@@ -195,7 +195,7 @@ public class SPMenu extends JMenuBar {
 	 *
 	 * @return the "edit" menu
 	 */
-	protected static JMenu createViewMenu(final IOHandler handler) {
+	protected static JMenu createViewMenu(final ActionListener handler) {
 		final JMenu viewtMenu = new JMenu("View");
 		viewtMenu.setMnemonic(KeyEvent.VK_E);
 		viewtMenu.add(createMenuItem(

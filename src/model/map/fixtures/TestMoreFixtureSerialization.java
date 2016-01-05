@@ -6,6 +6,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.xml.stream.XMLStreamException;
 import model.map.BaseTestFixtureSerialization;
+import model.map.HasImage;
+import model.map.IMutableMapNG;
 import model.map.MapDimensions;
 import model.map.Player;
 import model.map.PlayerCollection;
@@ -16,6 +18,7 @@ import model.map.TileType;
 import model.map.fixtures.explorable.AdventureFixture;
 import model.map.fixtures.explorable.Portal;
 import model.map.fixtures.mobile.Animal;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
@@ -177,7 +180,7 @@ public final class TestMoreFixtureSerialization extends
 				new Mine("two", TownStatus.Abandoned, 2));
 		assertSerialization("Third test of Mine serialization",
 				new Mine("three", TownStatus.Burned, 3));
-		final Mine fourthMine = new Mine("four", TownStatus.Ruined, 4);
+		final HasImage fourthMine = new Mine("four", TownStatus.Ruined, 4);
 		assertSerialization("Fourth test of Mine serialization", fourthMine);
 		final String oldKindProperty = "product"; // NOPMD
 		assertDeprecatedDeserialization("Deprecated Mine idiom", fourthMine,
@@ -214,7 +217,7 @@ public final class TestMoreFixtureSerialization extends
 	public void testShrubSerialization() throws XMLStreamException,
 														SPFormatException, IOException {
 		assertSerialization("First test of Shrub serialization", new Shrub("one", 1));
-		final Shrub secondShrub = new Shrub("two", 2);
+		final HasImage secondShrub = new Shrub("two", 2);
 		assertSerialization("Second test of Shrub serialization", secondShrub);
 		final String oldKindProperty = "shrub"; // NOPMD
 		assertDeprecatedDeserialization("Deserialization of mangled shrub",
@@ -251,7 +254,7 @@ public final class TestMoreFixtureSerialization extends
 		final TextFixture secondText = new TextFixture("two", 2);
 		assertSerialization("Second test of TextFixture serialization, reflection",
 				secondText);
-		final TextFixture thirdText = new TextFixture("three", 10);
+		final HasImage thirdText = new TextFixture("three", 10);
 		assertSerialization("Third test of TextFixture serialization, reflection",
 				thirdText);
 		assertUnwantedChild("<text turn=\"1\"><troll /></text>",
@@ -282,7 +285,7 @@ public final class TestMoreFixtureSerialization extends
 			assertSerialization("2nd Village serialization test,  " + status,
 					secondVillage);
 		}
-		final Village thirdVillage = new Village(TownStatus.Abandoned, "", 3, owner,
+		final HasImage thirdVillage = new Village(TownStatus.Abandoned, "", 3, owner,
 														"elf");
 		assertMissingPropertyDeserialization(
 				"Village serialization with no or empty name does The Right Thing",
@@ -383,7 +386,7 @@ public final class TestMoreFixtureSerialization extends
 	public void testUnitMemberSerialization() throws XMLStreamException,
 															 SPFormatException,
 															 IOException {
-		final Unit firstUnit = new Unit(new Player(1, ""), "unitType", "unitName", 1);
+		final IUnit firstUnit = new Unit(new Player(1, ""), "unitType", "unitName", 1);
 		firstUnit.addMember(new Animal("animal", false, true, "wild", 2));
 		assertSerialization("Unit can have an animal as a member", firstUnit);
 		firstUnit.addMember(new Worker("worker", DEFAULT_RACE, 3));
@@ -438,7 +441,7 @@ public final class TestMoreFixtureSerialization extends
 														 SPFormatException, IOException {
 		final Player player = new Player(0, "");
 		final Unit firstUnit = new Unit(player, "kind of unit", "name of unit", 2);
-		final Unit secondUnit = new Unit(player, "kind of unit", "name of unit", 2);
+		final IUnit secondUnit = new Unit(player, "kind of unit", "name of unit", 2);
 		secondUnit.setOrders("some orders");
 		assertEquals("Orders have no effect on equals", firstUnit, secondUnit);
 		assertSerialization("Orders don't mess up deserialization", secondUnit,
@@ -470,7 +473,7 @@ public final class TestMoreFixtureSerialization extends
 											"second hook brief", "second hook full", 2);
 		assertFalse("Two different hooks are not equal",
 				firstAdventure.equals(secondAdventure));
-		final SPMapNG wrapper =
+		final IMutableMapNG wrapper =
 				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
 								   -1);
 		wrapper.addPlayer(independent);

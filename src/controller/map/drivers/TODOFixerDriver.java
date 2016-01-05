@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -144,15 +143,15 @@ public final class TODOFixerDriver {
 	/**
 	 * A list of unit kinds (jobs) for plains etc.
 	 */
-	private final List<String> plainsList = new ArrayList<>();
+	private final Collection<String> plainsList = new ArrayList<>();
 	/**
 	 * A list of unit kinds (jobs) for forest and jungle.
 	 */
-	private final List<String> forestList = new ArrayList<>();
+	private final Collection<String> forestList = new ArrayList<>();
 	/**
 	 * A list of unit kinds (jobs) for ocean.
 	 */
-	private final List<String> oceanList = new ArrayList<>();
+	private final Collection<String> oceanList = new ArrayList<>();
 
 	/**
 	 * @param location a location in the map

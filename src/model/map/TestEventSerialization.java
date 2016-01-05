@@ -109,7 +109,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 						new City(status, size, 40, "twoCity", 1, owner));
 			}
 		}
-		final City thirdCity = new City(TownStatus.Active, TownSize.Small, 30, "",
+		final HasImage thirdCity = new City(TownStatus.Active, TownSize.Small, 30, "",
 				                               3, owner);
 		assertSerialization("Serialization of CityEvent without a name", thirdCity,
 				new Warning(Action.Ignore));
@@ -157,7 +157,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 						new Fortification(status, size, 40, "two", 2, owner));
 			}
 		}
-		final Fortification thirdFort = new Fortification(TownStatus.Active,
+		final HasImage thirdFort = new Fortification(TownStatus.Active,
 				                                                 TownSize.Small, 30, "",
 				                                                 3, owner);
 		assertSerialization(
@@ -194,7 +194,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			                                                  IOException {
 		assertSerialization("First MineralEvent serialization test",
 				new MineralVein("one", true, 10, 1));
-		final MineralVein secondVein = new MineralVein("two", false, 35, 2);
+		final HasImage secondVein = new MineralVein("two", false, 35, 2);
 		assertSerialization("Second MineralEvent serialization test", secondVein);
 		final String oldKindProperty = "mineral"; // NOPMD
 		assertDeprecatedDeserialization(
@@ -242,7 +242,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			assertSerialization("Second StoneDeposit test, kind: " + kind,
 					new StoneDeposit(kind, 15, 2)); // NOPMD
 		}
-		final StoneDeposit thirdDeposit = new StoneDeposit(StoneKind.Marble, 10, 3);
+		final HasImage thirdDeposit = new StoneDeposit(StoneKind.Marble, 10, 3);
 		final String oldKindProperty = "stone"; // NOPMD
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated stone idiom", thirdDeposit,
@@ -293,7 +293,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 						new Town(status, size, 40, "two", 2, owner));
 			}
 		}
-		final Town thirdTown = new Town(TownStatus.Active, TownSize.Small, 30, "",
+		final HasImage thirdTown = new Town(TownStatus.Active, TownSize.Small, 30, "",
 				                               3, owner);
 		assertSerialization("Serialization of TownEvent without a name", thirdTown,
 				new Warning(Action.Ignore));

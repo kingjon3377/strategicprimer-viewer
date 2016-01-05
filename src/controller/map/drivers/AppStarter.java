@@ -2,7 +2,8 @@ package controller.map.drivers;
 
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
-import java.awt.GraphicsEnvironment;
+import controller.map.misc.ICLIHelper;
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,9 +13,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import util.EqualsAny;
 import util.NullCleaner;
@@ -131,7 +130,7 @@ public final class AppStarter implements ISPDriver {
 			final List<ISPDriver> drivers = new ArrayList<>();
 			CACHE.values().stream().filter(pair -> !drivers.contains(pair.first()))
 					.forEach(pair -> drivers.add(pair.first()));
-			try (final CLIHelper cli = new CLIHelper()) {
+			try (final ICLIHelper cli = new CLIHelper()) {
 				startChosenDriver(NullCleaner.assertNotNull(drivers.get(
 						cli.chooseFromList(drivers, "CLI apps available:",
 								"No applications available", "App to start: ", true))),
@@ -226,7 +225,7 @@ public final class AppStarter implements ISPDriver {
 			final List<ISPDriver> drivers = new ArrayList<>();
 			CACHE.values().stream().filter(pair -> !drivers.contains(pair.first()))
 					.forEach(pair -> drivers.add(pair.first()));
-			try (final CLIHelper cli = new CLIHelper()) {
+			try (final ICLIHelper cli = new CLIHelper()) {
 				startChosenDriver(NullCleaner.assertNotNull(drivers.get(
 						cli.chooseFromList(drivers, "CLI apps available:",
 								"No applications available", "App to start: ", true))),

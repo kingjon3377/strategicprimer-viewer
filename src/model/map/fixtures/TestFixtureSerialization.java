@@ -4,6 +4,8 @@ import controller.map.formatexceptions.SPFormatException;
 import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 import model.map.BaseTestFixtureSerialization;
+import model.map.HasImage;
+import model.map.IMutableMapNG;
 import model.map.MapDimensions;
 import model.map.Player;
 import model.map.PlayerCollection;
@@ -79,7 +81,7 @@ public final class TestFixtureSerialization extends
 				new Animal("animalTwo", false, true, "semi-domesticated", 1));
 		assertSerialization("Third test of Animal serialization",
 				new Animal("animalThree", true, false, "domesticated", 2));
-		final Animal fourthAnimal = new Animal("animalFour", true, true, "status", 3);
+		final HasImage fourthAnimal = new Animal("animalFour", true, true, "status", 3);
 		assertSerialization("Fourth test of Animal serialization", fourthAnimal);
 		assertUnwantedChild("<animal kind=\"animal\"><troll /></animal>",
 				Animal.class, false);
@@ -287,7 +289,7 @@ public final class TestFixtureSerialization extends
 		assertSerialization("Third test of Ground serialization",
 				new Ground("three", false));
 		final Point point = PointFactory.point(0, 0);
-		final SPMapNG map =
+		final IMutableMapNG map =
 				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
 						           -1);
 		map.setBaseTerrain(point, TileType.Plains);

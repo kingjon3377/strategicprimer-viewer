@@ -2,8 +2,8 @@ package view.map.main;
 
 import com.bric.window.WindowMenu;
 import controller.map.misc.IOHandler;
-import javax.swing.JFrame;
-import model.viewer.IViewerModel;
+import javax.swing.*;
+import model.misc.IDriverModel;
 import view.util.SPMenu;
 
 /**
@@ -37,7 +37,7 @@ public final class ViewerMenu extends SPMenu {
 	 * @param model   the map model
 	 */
 	public ViewerMenu(final IOHandler handler, final JFrame parent,
-	                  final IViewerModel model) {
+	                  final IDriverModel model) {
 		add(createFileMenu(handler, model));
 		add(createMapMenu(handler, model));
 		addDisabled(createViewMenu(handler));

@@ -367,7 +367,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		player.setCurrent(true);
 		final PlayerCollection players = new PlayerCollection();
 		players.add(player);
-		final SPMapNG firstMap = new SPMapNG(new MapDimensions(1, 1, 2), players, 0);
+		final IMutableMapNG firstMap = new SPMapNG(new MapDimensions(1, 1, 2), players, 0);
 		final Point point = point(0, 0);
 		firstMap.setBaseTerrain(point, Plains);
 		assertSerialization("Simple Map serialization", firstMap);
