@@ -74,7 +74,7 @@ public class Job implements IJob { // NOPMD
 		} else {
 			final IJob retval = new Job(name, level);
 			for (final ISkill skill : this) {
-				retval.addSkill(skill.copy(false));
+				retval.addSkill(skill.copy());
 			}
 			return retval;
 		}

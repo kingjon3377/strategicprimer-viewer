@@ -45,10 +45,9 @@ public interface ISkill extends HasName {
 	void addHours(int hrs, int condition);
 
 	/**
-	 * @param zero whether to "zero out" sensitive details
 	 * @return a copy of this skill
 	 */
-	ISkill copy(boolean zero);
+	ISkill copy();
 
 	/**
 	 * A Skill is "empty" if the worker has no levels in it and no hours of experience in

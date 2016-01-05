@@ -53,16 +53,11 @@ public class Skill implements ISkill {
 	}
 
 	/**
-	 * @param zero whether to "zero out" sensitive information
 	 * @return a copy of this skill
 	 */
 	@Override
-	public Skill copy(final boolean zero) {
-		if (zero) {
-			return new Skill(name, 0, 0);
-		} else {
-			return new Skill(name, level, hours);
-		}
+	public Skill copy() {
+		return new Skill(name, level, hours);
 	}
 
 	/**
