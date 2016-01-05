@@ -81,7 +81,7 @@ public final class EmptyReportNode extends AbstractReportNode {
 	 * @return true: this is "the empty node."
 	 */
 	@Override
-	protected boolean isEmptyNode() {
+	public boolean isEmptyNode() {
 		return true;
 	}
 }

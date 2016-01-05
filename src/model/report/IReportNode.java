@@ -68,4 +68,10 @@ public interface IReportNode extends Comparable<@NonNull IReportNode>, MutableTr
 	 * @param pt the point, if any, in the map that this represents something on
 	 */
 	void setPoint(final Point pt);
+	/**
+	 * @return whether this is "the empty node," which should always be ignored.
+	 */
+	default boolean isEmptyNode() {
+		return false;
+	}
 }

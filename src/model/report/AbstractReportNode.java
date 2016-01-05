@@ -211,12 +211,6 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * @return whether this is "the empty node," which should always be ignored.
-	 */
-	protected boolean isEmptyNode() {
-		return false;
-	}
-	/**
 	 * Add generic-type information for the compiler.
 	 */
 	@Override
