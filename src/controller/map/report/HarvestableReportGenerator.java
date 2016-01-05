@@ -23,8 +23,8 @@ import model.map.fixtures.resources.Mine;
 import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.resources.StoneDeposit;
-import model.report.AbstractReportNode;
 import model.report.EmptyReportNode;
+import model.report.IReportNode;
 import model.report.ListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
@@ -183,24 +183,24 @@ public final class HarvestableReportGenerator
 	 * @return the part of the report listing things that can be harvested.
 	 */
 	@Override
-	public AbstractReportNode produceRIR(
+	public IReportNode produceRIR(
 												final DelayedRemovalMap<Integer,
 																			   Pair<Point, IFixture>> fixtures,
 												final IMapNG map, final Player player) {
 		//  TODO: Use Guava Multimaps to reduce cyclomatic complexity
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
-		final AbstractReportNode stone =
+		final IReportNode stone =
 				new SortedSectionListReportNode(5, "Exposed stone deposits");
-		final Map<String, AbstractReportNode> shrubs = new HashMap<>();
-		final AbstractReportNode minerals =
+		final Map<String, IReportNode> shrubs = new HashMap<>();
+		final IReportNode minerals =
 				new SortedSectionListReportNode(5, "Mineral deposits");
-		final AbstractReportNode mines = new SortedSectionListReportNode(5, "Mines");
-		final AbstractReportNode meadows =
+		final IReportNode mines = new SortedSectionListReportNode(5, "Mines");
+		final IReportNode meadows =
 				new SortedSectionListReportNode(5, "Meadows and fields");
-		final AbstractReportNode groves =
+		final IReportNode groves =
 				new SortedSectionListReportNode(5, "Groves and orchards");
-		final AbstractReportNode caches = new SortedSectionListReportNode(5,
+		final IReportNode caches = new SortedSectionListReportNode(5,
 																				 "Caches collected by your explorers and workers:");
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof HarvestableFixture) {
@@ -219,7 +219,7 @@ public final class HarvestableReportGenerator
 					minerals.add(produceRIR(fixtures, map, player, item,
 							loc));
 				} else if (item instanceof Shrub) {
-					final AbstractReportNode collection; // NOPMD
+					final IReportNode collection; // NOPMD
 					if (shrubs.containsKey(((Shrub) item).getKind())) {
 						collection = shrubs.get(((Shrub) item).getKind());
 					} else {
@@ -234,12 +234,12 @@ public final class HarvestableReportGenerator
 				}
 			}
 		}
-		final AbstractReportNode shrubsNode =
+		final IReportNode shrubsNode =
 				new SortedSectionListReportNode(5, "Shrubs, small trees, and such");
-		for (final Entry<String, AbstractReportNode> entry : shrubs.entrySet()) {
+		for (final Entry<String, IReportNode> entry : shrubs.entrySet()) {
 			shrubsNode.add(entry.getValue());
 		}
-		final AbstractReportNode retval = new SectionReportNode(4, "Resource Sources");
+		final SectionReportNode retval = new SectionReportNode(4, "Resource Sources");
 		if (maybeAdd(retval, caches, groves, meadows, mines, minerals, stone,
 				shrubsNode)) {
 			return retval; // NOPMD

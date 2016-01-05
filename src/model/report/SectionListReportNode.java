@@ -101,9 +101,9 @@ public class SectionListReportNode extends AbstractReportNode {
 			builder.append("<ul>\n");
 			for (int i = 0; i < getChildCount(); i++) {
 				final TreeNode child = getChildAt(i);
-				if (child instanceof AbstractReportNode) {
+				if (child instanceof IReportNode) {
 					builder.append("<li>");
-					builder.append(((AbstractReportNode) child).produce());
+					builder.append(((IReportNode) child).produce());
 					builder.append("</li>\n");
 				}
 			}
@@ -120,8 +120,8 @@ public class SectionListReportNode extends AbstractReportNode {
 		int retval = MIN_BOILERPLATE + getText().length() + subheader.length();
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
-			if (child instanceof AbstractReportNode) {
-				retval += ((AbstractReportNode) child).size()
+			if (child instanceof IReportNode) {
+				retval += ((IReportNode) child).size()
 						          + PER_CHILD_BPLATE;
 			}
 		}

@@ -10,7 +10,6 @@ import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.fixtures.towns.Village;
-import model.report.AbstractReportNode;
 import model.report.EmptyReportNode;
 import model.report.IReportNode;
 import model.report.SectionListReportNode;
@@ -100,20 +99,20 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	 * @return the part of the report dealing with villages.
 	 */
 	@Override
-	public AbstractReportNode produceRIR(
+	public IReportNode produceRIR(
 												final DelayedRemovalMap<Integer,
 																			   Pair<Point, IFixture>> fixtures,
 												final IMapNG map,
 												final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
-		final AbstractReportNode own = new SectionListReportNode(5,
+		final IReportNode own = new SectionListReportNode(5,
 																		"Villages " +
 																				"pledged" +
 																				" to " +
 																				"your " +
 																				"service:");
-		final AbstractReportNode others = new SectionListReportNode(5,
+		final IReportNode others = new SectionListReportNode(5,
 																		   "Villages you" +
 																				   " know about:");
 		values.stream().filter(pair -> pair.second() instanceof Village).forEach(pair
@@ -128,7 +127,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 				others.add(product);
 			}
 		});
-		final AbstractReportNode retval = new SectionReportNode(4, "Villages:");
+		final IReportNode retval = new SectionReportNode(4, "Villages:");
 		if (own.getChildCount() != 0) {
 			retval.add(own);
 		}

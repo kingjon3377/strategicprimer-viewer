@@ -33,7 +33,7 @@ import util.EnumerationWrapper;
  * @author Jonathan Lovelace
  */
 public abstract class AbstractReportNode extends DefaultMutableTreeNode
-		implements IReportNode, Iterable<@NonNull AbstractReportNode> {
+		implements IReportNode, Iterable<@NonNull IReportNode> {
 	/**
 	 * The point, if any, in the map that this node represents something on.
 	 */
@@ -159,8 +159,8 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	@Override
 	public void add(@Nullable final MutableTreeNode node) {
 		if (node != null) {
-			if (node instanceof AbstractReportNode) {
-				if (!((AbstractReportNode) node).isEmptyNode()) {
+			if (node instanceof IReportNode) {
+				if (!((IReportNode) node).isEmptyNode()) {
 					super.add(node);
 				}
 			} else {
@@ -178,7 +178,7 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 			return point;
 		} else {
 			Point locPoint = null;
-			for (final AbstractReportNode child : this) {
+			for (final IReportNode child : this) {
 				if (locPoint == null) {
 					locPoint = child.getPoint();
 				} else if (!locPoint.equals(child.getPoint())) {
@@ -206,7 +206,7 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	 * @return an iterator over the children
 	 */
 	@Override
-	public Iterator<AbstractReportNode> iterator() {
+	public Iterator<IReportNode> iterator() {
 		return new EnumerationWrapper<>(children());
 	}
 
@@ -214,7 +214,7 @@ public abstract class AbstractReportNode extends DefaultMutableTreeNode
 	 * Add generic-type information for the compiler.
 	 */
 	@Override
-	public Enumeration<AbstractReportNode> children() {
+	public Enumeration<IReportNode> children() {
 		return super.children();
 	}
 }

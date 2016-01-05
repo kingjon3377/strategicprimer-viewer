@@ -4,7 +4,7 @@ import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
-import model.report.AbstractReportNode;
+import model.report.IReportNode;
 import util.DelayedRemovalMap;
 import util.Pair;
 
@@ -71,11 +71,8 @@ public interface IReportGenerator<T> {
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return the (sub-)report, or the empty string if nothing to report.
 	 */
-	AbstractReportNode produceRIR(
-										 DelayedRemovalMap<Integer, Pair<Point,
-																				IFixture>> fixtures,
-
-										 IMapNG map, Player currentPlayer);
+	IReportNode produceRIR(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                       IMapNG map, Player currentPlayer);
 
 	/**
 	 * Produce a report on a single item. All fixtures that this report references should
@@ -89,9 +86,7 @@ public interface IReportGenerator<T> {
 	 * @param loc           the location of that item, if it's a fixture.
 	 * @return the (sub-)report, or null if nothing to report.
 	 */
-	AbstractReportNode produceRIR(
-										 DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-										 IMapNG map, Player currentPlayer, T item,
-										 Point loc);
+	IReportNode produceRIR(DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
+	                       IMapNG map, Player currentPlayer, T item, Point loc);
 
 }

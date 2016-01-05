@@ -28,8 +28,8 @@ import model.map.fixtures.mobile.Phoenix;
 import model.map.fixtures.mobile.Simurgh;
 import model.map.fixtures.mobile.Sphinx;
 import model.map.fixtures.mobile.Troll;
-import model.report.AbstractReportNode;
 import model.report.EmptyReportNode;
+import model.report.IReportNode;
 import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
@@ -185,25 +185,24 @@ public final class ImmortalsReportGenerator
 	 * @return the part of the report listing "immortals"
 	 */
 	@Override
-	public AbstractReportNode produceRIR(
-												final DelayedRemovalMap<Integer,
-																			   Pair<Point, IFixture>> fixtures,
-												final IMapNG map,
-												final Player currentPlayer) {
+	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point,
+			                                                                       IFixture>> fixtures,
+
+	                              final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
-		final AbstractReportNode griffins = new ListReportNode("Griffins");
-		final AbstractReportNode simurghs = new ListReportNode("Simurghs");
-		final AbstractReportNode phoenixes = new ListReportNode("Phoenixes");
-		final Map<String, AbstractReportNode> centaurs = new HashMap<>();
-		final AbstractReportNode ogres = new ListReportNode("Ogres");
-		final AbstractReportNode minotaurs = new ListReportNode("Minotaurs");
-		final Map<String, AbstractReportNode> giants = new HashMap<>();
-		final AbstractReportNode sphinxes = new ListReportNode("Sphinxes");
-		final AbstractReportNode djinni = new ListReportNode("Djinni");
-		final AbstractReportNode trolls = new ListReportNode("Trolls");
-		final Map<String, AbstractReportNode> fairies = new HashMap<>();
-		final Map<String, AbstractReportNode> dragons = new HashMap<>();
+		final IReportNode griffins = new ListReportNode("Griffins");
+		final IReportNode simurghs = new ListReportNode("Simurghs");
+		final IReportNode phoenixes = new ListReportNode("Phoenixes");
+		final Map<String, IReportNode> centaurs = new HashMap<>();
+		final IReportNode ogres = new ListReportNode("Ogres");
+		final IReportNode minotaurs = new ListReportNode("Minotaurs");
+		final Map<String, IReportNode> giants = new HashMap<>();
+		final IReportNode sphinxes = new ListReportNode("Sphinxes");
+		final IReportNode djinni = new ListReportNode("Djinni");
+		final IReportNode trolls = new ListReportNode("Trolls");
+		final Map<String, IReportNode> fairies = new HashMap<>();
+		final Map<String, IReportNode> dragons = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : values) {
 			final Point point = pair.first();
 			final IFixture immortal = pair.second();
@@ -249,7 +248,7 @@ public final class ImmortalsReportGenerator
 						(MobileFixture) immortal, point));
 			}
 		}
-		final AbstractReportNode retval = new SectionListReportNode(4,
+		final IReportNode retval = new SectionListReportNode(4,
 																		   "Immortals");
 		optionallyAdd(retval, coalesce("Dragons", dragons),
 				coalesce("Fairies", fairies), trolls, djinni, sphinxes,
@@ -267,10 +266,10 @@ public final class ImmortalsReportGenerator
 	 * @param mapping a mapping from kinds to nodes
 	 * @return a node with all of the nodes as children
 	 */
-	private static AbstractReportNode coalesce(final String header,
-											   final Map<String, AbstractReportNode>
+	private static IReportNode coalesce(final String header,
+											   final Map<String, IReportNode>
 													   mapping) {
-		final AbstractReportNode retval = new ListReportNode(header);
+		final IReportNode retval = new ListReportNode(header);
 		mapping.values().forEach(retval::add);
 		return retval;
 	}
@@ -279,8 +278,8 @@ public final class ImmortalsReportGenerator
 	 * @param parent   a node
 	 * @param children possible children to add, if they have children of their own
 	 */
-	private static void optionallyAdd(final AbstractReportNode parent,
-									  final AbstractReportNode... children) {
+	private static void optionallyAdd(final IReportNode parent,
+									  final IReportNode... children) {
 		Stream.of(children).filter(child -> child.getChildCount() > 0)
 				.forEach(parent::add);
 	}
@@ -319,7 +318,7 @@ public final class ImmortalsReportGenerator
 	 * here.
 	 */
 	@Override
-	public AbstractReportNode produceRIR(
+	public IReportNode produceRIR(
 												final DelayedRemovalMap<Integer,
 																			   Pair<Point, IFixture>> fixtures,
 												final IMapNG map,
@@ -417,18 +416,16 @@ public final class ImmortalsReportGenerator
 	 * @param item    the item under consideration
 	 * @return the entry in the map for the item's kind
 	 */
-	private static AbstractReportNode separateByKindRIR(
-															   final Map<String, AbstractReportNode> mapping,
+	private static IReportNode separateByKindRIR(
+															   final Map<String, IReportNode> mapping,
 															   final HasKind item) {
 		// For the three classes we deal with here, we don't want just the kind,
 		// we want the full toString, so we use that instead of getKind.
 		if (mapping.containsKey(item.toString())) {
 			return NullCleaner.assertNotNull(mapping.get(item.toString()));
 		} else {
-			final AbstractReportNode retval = new ListReportNode(
-																		NullCleaner
-																				.assertNotNull(
-																						item.toString()));
+			final IReportNode retval =
+					new ListReportNode(NullCleaner.assertNotNull(item.toString()));
 			mapping.put(item.toString(), retval);
 			return retval;
 		}

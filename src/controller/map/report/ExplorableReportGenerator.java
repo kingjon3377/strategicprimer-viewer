@@ -15,9 +15,9 @@ import model.map.fixtures.explorable.Battlefield;
 import model.map.fixtures.explorable.Cave;
 import model.map.fixtures.explorable.ExplorableFixture;
 import model.map.fixtures.explorable.Portal;
-import model.report.AbstractReportNode;
 import model.report.ComplexReportNode;
 import model.report.EmptyReportNode;
+import model.report.IReportNode;
 import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
@@ -169,17 +169,16 @@ public final class ExplorableReportGenerator
 	 * @return the part of the report listing things that can be explored.
 	 */
 	@Override
-	public AbstractReportNode produceRIR(
-												final DelayedRemovalMap<Integer,
-																			   Pair<Point, IFixture>> fixtures,
-												final IMapNG map,
-												final Player currentPlayer) {
+	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point,
+			                                                                       IFixture>> fixtures,
+
+	                              final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
-		final AbstractReportNode portals = new ListReportNode("Portals");
-		final AbstractReportNode battles = new ListReportNode("Battlefields");
-		final AbstractReportNode caves = new ListReportNode("Caves");
-		final AbstractReportNode adventures =
+		final IReportNode portals = new ListReportNode("Portals");
+		final IReportNode battles = new ListReportNode("Battlefields");
+		final IReportNode caves = new ListReportNode("Caves");
+		final IReportNode adventures =
 				new SectionListReportNode(4, "Possible Adventures");
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Cave) {
@@ -196,7 +195,7 @@ public final class ExplorableReportGenerator
 						(ExplorableFixture) pair.second(), pair.first()));
 			}
 		}
-		final AbstractReportNode retval =
+		final IReportNode retval =
 				new SectionListReportNode(4, "Caves, Battlefields, and Portals");
 		if (caves.getChildCount() > 0) {
 			retval.add(caves);
@@ -209,7 +208,7 @@ public final class ExplorableReportGenerator
 		}
 		if (retval.getChildCount() > 0) {
 			if (adventures.getChildCount() > 0) {
-				final AbstractReportNode real = new ComplexReportNode("");
+				final IReportNode real = new ComplexReportNode("");
 				real.add(retval);
 				real.add(adventures);
 				return real;

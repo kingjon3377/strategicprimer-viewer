@@ -20,7 +20,7 @@ import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.Fortress;
-import model.report.AbstractReportNode;
+import model.report.IReportNode;
 import model.report.RootReportNode;
 import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
@@ -224,8 +224,8 @@ public final class ReportGenerator {
 	 * @param map the map to base the report on
 	 * @return the report, in ReportIntermediateRepresentation
 	 */
-	public static AbstractReportNode createReportIR(final IMapNG map) {
-		final AbstractReportNode retval = new RootReportNode(
+	public static IReportNode createReportIR(final IMapNG map) {
+		final IReportNode retval = new RootReportNode(
 																	"Strategic Primer " +
 																			"map summary" +
 																			" report");
@@ -272,7 +272,7 @@ public final class ReportGenerator {
 	 * @param player the player to report on
 	 * @return the report, in HTML, as a string.
 	 */
-	public static AbstractReportNode createAbbreviatedReportIR(final IMapNG map,
+	public static IReportNode createAbbreviatedReportIR(final IMapNG map,
 															   final Player player) {
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
@@ -288,10 +288,8 @@ public final class ReportGenerator {
 				.forEach(pair -> fixtures.remove(Integer.valueOf(pair.second().getID()
 				)));
 		fixtures.coalesce();
-		final AbstractReportNode retval = new RootReportNode(
-																	"Strategic Primer " +
-																			"map summary" +
-																			" abbreviated report");
+		final IReportNode retval =
+				new RootReportNode("Strategic Primer map summary abbreviated report");
 		retval.add(new FortressReportGenerator(comparator).produceRIR(fixtures, map,
 				player));
 		fixtures.coalesce();

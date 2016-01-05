@@ -71,9 +71,9 @@ public final class ListReportNode extends AbstractReportNode {
 		builder.append("\n<ul>\n");
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
-			if (child instanceof AbstractReportNode) {
+			if (child instanceof IReportNode) {
 				builder.append("<li>");
-				builder.append(((AbstractReportNode) child).produce());
+				builder.append(((IReportNode) child).produce());
 				builder.append("</li>\n");
 			}
 		}
@@ -91,9 +91,9 @@ public final class ListReportNode extends AbstractReportNode {
 		builder.append("\n<ul>\n");
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
-			if (child instanceof AbstractReportNode) {
+			if (child instanceof IReportNode) {
 				builder.append("<li>");
-				((AbstractReportNode) child).produce(builder);
+				((IReportNode) child).produce(builder);
 				builder.append("</li>\n");
 			}
 		}
@@ -109,8 +109,8 @@ public final class ListReportNode extends AbstractReportNode {
 		int retval = BOILERPLATE_LEN + getText().length();
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
-			if (child instanceof AbstractReportNode) {
-				retval += ((AbstractReportNode) child).size()
+			if (child instanceof IReportNode) {
+				retval += ((IReportNode) child).size()
 								  + PER_CHILD_BOILERPLATE;
 			}
 		}

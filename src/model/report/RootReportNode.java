@@ -54,8 +54,8 @@ public final class RootReportNode extends AbstractReportNode {
 				.append("</title></head>\n<body>");
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
-			if (child instanceof AbstractReportNode) {
-				((AbstractReportNode) child).produce(builder);
+			if (child instanceof IReportNode) {
+				((IReportNode) child).produce(builder);
 			}
 		}
 		builder.append("</body>\n</html>\n");
@@ -70,8 +70,8 @@ public final class RootReportNode extends AbstractReportNode {
 		int retval = 72 + getText().length();
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
-			if (child instanceof AbstractReportNode) {
-				retval += ((AbstractReportNode) child).size();
+			if (child instanceof IReportNode) {
+				retval += ((IReportNode) child).size();
 			}
 		}
 		return retval;

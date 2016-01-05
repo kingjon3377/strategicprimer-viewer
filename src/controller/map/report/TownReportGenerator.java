@@ -15,8 +15,8 @@ import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.ITownFixture;
 import model.map.fixtures.towns.Village;
-import model.report.AbstractReportNode;
 import model.report.EmptyReportNode;
+import model.report.IReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
@@ -116,7 +116,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 * helpful.
 	 */
 	@Override
-	public AbstractReportNode produceRIR(
+	public IReportNode produceRIR(
 			                                    final DelayedRemovalMap<Integer,
 					                                                           Pair<Point, IFixture>> fixtures,
 			                                    final IMapNG map,
@@ -129,7 +129,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		final List<AbstractTown> sorted = new ArrayList<>(townLocs.keySet());
 		Collections.sort(sorted, new TownComparator());
 		// FIXME: Within any given status, sort by distance from HQ
-		final AbstractReportNode retval = new SectionListReportNode(4,
+		final IReportNode retval = new SectionListReportNode(4,
 				                                                           "Cities, towns, and/or fortifications you know about:");
 		for (final AbstractTown town : sorted) {
 			retval.add(produceRIR(fixtures, map, currentPlayer, town,
@@ -203,7 +203,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 * @return the sub-report dealing with the town.
 	 */
 	@Override
-	public AbstractReportNode produceRIR(
+	public IReportNode produceRIR(
 			                                    final DelayedRemovalMap<Integer,
 					                                                           Pair<Point, IFixture>> fixtures,
 			                                    final IMapNG map,

@@ -63,8 +63,8 @@ public final class ComplexReportNode extends AbstractReportNode {
 		builder.append(getText());
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode node = getChildAt(i);
-			if (node instanceof AbstractReportNode) {
-				((AbstractReportNode) node).produce(builder);
+			if (node instanceof IReportNode) {
+				((IReportNode) node).produce(builder);
 			}
 		}
 		return builder;
@@ -78,8 +78,8 @@ public final class ComplexReportNode extends AbstractReportNode {
 		int retval = getText().length();
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
-			if (child instanceof AbstractReportNode) {
-				retval += ((AbstractReportNode) child).size();
+			if (child instanceof IReportNode) {
+				retval += ((IReportNode) child).size();
 			}
 		}
 		return retval;

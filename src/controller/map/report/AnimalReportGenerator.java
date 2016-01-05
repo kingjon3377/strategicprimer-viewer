@@ -12,8 +12,8 @@ import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.fixtures.mobile.Animal;
-import model.report.AbstractReportNode;
 import model.report.EmptyReportNode;
+import model.report.IReportNode;
 import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
@@ -118,18 +118,18 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	 * @return the report
 	 */
 	@Override
-	public AbstractReportNode produceRIR(final DelayedRemovalMap<Integer,
+	public IReportNode produceRIR(final DelayedRemovalMap<Integer,
 																			Pair<Point, IFixture>> fixtures,
-												final IMapNG map,
-												final Player currentPlayer) {
+	                              final IMapNG map,
+	                              final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
-		final Map<String, AbstractReportNode> items = new HashMap<>();
+		final Map<String, IReportNode> items = new HashMap<>();
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Animal) {
 				final Animal animal = (Animal) pair.second();
 				final String animalKind = animal.getKind();
-				final AbstractReportNode collection;
+				final IReportNode collection;
 				if (items.containsKey(animalKind)) {
 					collection = items.get(animalKind);
 				} else {
@@ -144,9 +144,9 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 		if (items.isEmpty()) {
 			return EmptyReportNode.NULL_NODE; // NOPMD
 		} else {
-			final AbstractReportNode retval =
+			final IReportNode retval =
 					new SectionListReportNode(4, "Animal sightings or encounters");
-			for (final Entry<String, AbstractReportNode> entry : items.entrySet()) {
+			for (final Entry<String, IReportNode> entry : items.entrySet()) {
 				retval.add(entry.getValue());
 			}
 			return retval; // NOPMD

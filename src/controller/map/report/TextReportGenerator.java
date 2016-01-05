@@ -10,8 +10,8 @@ import model.map.IMapNG;
 import model.map.Player;
 import model.map.Point;
 import model.map.fixtures.TextFixture;
-import model.report.AbstractReportNode;
 import model.report.EmptyReportNode;
+import model.report.IReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
@@ -123,12 +123,12 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	 * @return the sub-report dealing with arbitrary-text notes
 	 */
 	@Override
-	public AbstractReportNode produceRIR(
+	public IReportNode produceRIR(
 												final DelayedRemovalMap<Integer,
 																			   Pair<Point, IFixture>> fixtures,
 												final IMapNG map,
 												final Player currentPlayer) {
-		final AbstractReportNode retval =
+		final IReportNode retval =
 				new SectionListReportNode(4, "Miscellaneous Notes");
 		for (final Map.Entry<Integer, Pair<Point, IFixture>> entry : fixtures
 																			 .entrySet
@@ -160,7 +160,7 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	 * @return the sub-report dealing with that note
 	 */
 	@Override
-	public AbstractReportNode produceRIR(
+	public IReportNode produceRIR(
 												final DelayedRemovalMap<Integer,
 																			   Pair<Point, IFixture>> fixtures,
 												final IMapNG map,

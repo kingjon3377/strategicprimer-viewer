@@ -4,9 +4,7 @@ import com.bric.window.WindowList;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
 import controller.map.report.ReportGenerator;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -20,19 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -53,7 +39,7 @@ import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
-import model.report.AbstractReportNode;
+import model.report.IReportNode;
 import model.report.SimpleReportNode;
 import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
@@ -211,8 +197,8 @@ public final class WorkerMgmtFrame extends JFrame {
 					final Component retval = defRender.getTreeCellRendererComponent(
 							renderedTree, value, selected, expanded, leaf, row,
 							hasFocus);
-					if (value instanceof AbstractReportNode) {
-						final Point point = ((AbstractReportNode) value).getPoint();
+					if (value instanceof IReportNode) {
+						final Point point = ((IReportNode) value).getPoint();
 						// (-inf, -inf) replaces null
 						if (point.getRow() > Integer.MIN_VALUE) {
 							((JComponent) retval)
@@ -641,7 +627,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		@Override
 		public void run() {
 			RGT_LOGGER.info("About to generate report");
-			final AbstractReportNode report =
+			final IReportNode report =
 					ReportGenerator.createAbbreviatedReportIR(wmodel.getMap(), player);
 			RGT_LOGGER.info("Finished generating report");
 			SwingUtilities.invokeLater(() -> tmodel.setRoot(report));
@@ -686,8 +672,8 @@ public final class WorkerMgmtFrame extends JFrame {
 			}
 			final Object node = selPath.getLastPathComponent();
 			if ((evt.isControlDown() || evt.isMetaDown()) &&
-						(node instanceof AbstractReportNode)) {
-				final Point point = ((AbstractReportNode) node).getPoint();
+						(node instanceof IReportNode)) {
+				final Point point = ((IReportNode) node).getPoint();
 				// (-inf, -inf) replaces null
 				if (point.getRow() > Integer.MIN_VALUE) {
 					final IViewerModel vModel =

@@ -25,6 +25,7 @@ import model.map.fixtures.towns.Fortress;
 import model.report.AbstractReportNode;
 import model.report.ComplexReportNode;
 import model.report.EmptyReportNode;
+import model.report.IReportNode;
 import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
@@ -130,20 +131,16 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 * @return the part of the report dealing with fortresses
 	 */
 	@Override
-	public AbstractReportNode produceRIR(
+	public IReportNode produceRIR(
 												final DelayedRemovalMap<Integer,
 																			   Pair<Point, IFixture>> fixtures,
 												final IMapNG map,
 												final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
-		final AbstractReportNode foreign = new SectionReportNode(4,
-																		"Foreign " +
-																				"fortresses in the map:");
-		final AbstractReportNode ours = new SectionReportNode(4,
-																	 "Your fortresses in" +
-																			 " the " +
-																			 "map:");
+		final IReportNode foreign =
+				new SectionReportNode(4, "Foreign fortresses in the map:");
+		final IReportNode ours = new SectionReportNode(4, "Your fortresses in the map:");
 		values.stream().filter(pair -> pair.second() instanceof Fortress)
 				.forEach(pair -> {
 					final HasOwner fort = (HasOwner) pair.second();
@@ -155,7 +152,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 								(Fortress) pair.second(), pair.first()));
 					}
 				});
-		final AbstractReportNode retval = new ComplexReportNode("");
+		final IReportNode retval = new ComplexReportNode("");
 		if (ours.getChildCount() != 0) {
 			retval.add(ours);
 		}
@@ -240,9 +237,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 * @param parent the node to add nodes describing rivers to
 	 * @param rivers the collection of rivers
 	 */
-	private static void riversToNode(final Point loc,
-									 final AbstractReportNode parent,
-									 final Collection<River> rivers) {
+	private static void riversToNode(final Point loc, final IReportNode parent,
+	                                 final Collection<River> rivers) {
 		if (rivers.contains(River.Lake)) {
 			parent.add(new SimpleReportNode(loc, "There is a nearby lake."));
 			rivers.remove(River.Lake);
@@ -359,7 +355,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 							.collect(Collectors.toSet()));
 		}
 		if (item.iterator().hasNext()) {
-			final AbstractReportNode units = new ListReportNode(loc,
+			final IReportNode units = new ListReportNode(loc,
 																	   "Units on the tile:");
 			final MutableTreeNode contents =
 					new ListReportNode(loc, "Other Contents of Fortress:");

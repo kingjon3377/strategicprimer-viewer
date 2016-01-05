@@ -16,9 +16,9 @@ import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
-import model.report.AbstractReportNode;
 import model.report.ComplexReportNode;
 import model.report.EmptyReportNode;
+import model.report.IReportNode;
 import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
@@ -135,7 +135,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * @return a sub-report on the unit
 	 */
 	@Override
-	public AbstractReportNode produceRIR(
+	public IReportNode produceRIR(
 												final DelayedRemovalMap<Integer,
 																			   Pair<Point, IFixture>> fixtures,
 												final IMapNG map,
@@ -152,7 +152,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		}
 		fixtures.remove(Integer.valueOf(unit.getID()));
 		if (unit.iterator().hasNext()) {
-			final AbstractReportNode retval = new ListReportNode(loc,
+			final IReportNode retval = new ListReportNode(loc,
 																		concat(simple,
 																				". Members of the unit:"));
 			for (final UnitMember member : unit) {
@@ -254,7 +254,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	private static MutableTreeNode produceWorkerRIR(final Point loc,
 													final Worker worker,
 													final boolean details) {
-		final AbstractReportNode retval = new ComplexReportNode(loc,
+		final IReportNode retval = new ComplexReportNode(loc,
 																	   worker.getName() +
 																			   ", a " +
 																			   worker
@@ -290,7 +290,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 														   stats.getCharisma())));
 		}
 		if (worker.iterator().hasNext() && details) {
-			final AbstractReportNode jobs = new ListReportNode(loc, HAS_TRAINING);
+			final IReportNode jobs = new ListReportNode(loc, HAS_TRAINING);
 			for (final IJob job : worker) {
 				if (job instanceof Job) {
 					jobs.add(produceJobRIR((Job) job, loc));
@@ -386,21 +386,21 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * @return the part of the report dealing with units
 	 */
 	@Override
-	public AbstractReportNode produceRIR(
+	public IReportNode produceRIR(
 												final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
 												final IMapNG map,
 												final Player currentPlayer) {
-		final AbstractReportNode retval =
+		final IReportNode retval =
 				new SectionReportNode(4, "Units in the map");
 		retval.add(
 				new SimpleReportNode("(Any units reported above are not described again.)"));
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
-		final AbstractReportNode theirs = new SectionListReportNode(5, "Foreign units");
-		final AbstractReportNode ours = new SectionListReportNode(5, "Your units");
+		final IReportNode theirs = new SectionListReportNode(5, "Foreign units");
+		final IReportNode ours = new SectionListReportNode(5, "Your units");
 		values.stream().filter(pair -> pair.second() instanceof Unit).forEach(pair -> {
 			final Unit unit = (Unit) pair.second();
-			final AbstractReportNode unitNode = produceRIR(fixtures, map,
+			final IReportNode unitNode = produceRIR(fixtures, map,
 					currentPlayer, unit, pair.first());
 			unitNode.setText(concat(atPoint(pair.first()), unitNode.getText(), " ",
 					distCalculator.distanceString(pair.first())));
