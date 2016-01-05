@@ -165,7 +165,9 @@ public class Dragon implements MobileFixture, HasImage, HasKind, UnitMember {
 	                        final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Dragon) {
-				return areItemsEqual(ostream, kind, ((Dragon) obj).kind, context, "\tDifferent kinds of dragon for ID #", Integer.toString(id), "\n");
+				return areItemsEqual(ostream, kind, ((Dragon) obj).kind, context,
+						"\tDifferent kinds of dragon for ID #", Integer.toString(id),
+						"\n");
 			} else {
 				ostream.append(context);
 				ostream.append("\tFor ID #");

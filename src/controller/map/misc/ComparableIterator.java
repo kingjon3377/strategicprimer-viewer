@@ -30,8 +30,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  */
 public final class ComparableIterator<@NonNull T> implements Iterator<@NonNull T>,
-		                                                             Comparable<@NonNull
-				                                                                        ComparableIterator<@NonNull T>> {
+		                                                             Comparable<@NonNull ComparableIterator<@NonNull T>> {
 	/**
 	 * The Iterator we're wrapping.
 	 */

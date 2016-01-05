@@ -68,7 +68,8 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		kind = uKind;
 	}
 	/**
-	 * The kind of the units we are a proxy for, if we're not proxying parallel units of the same ID.
+	 * The kind of the units we are a proxy for, if we're not proxying parallel units of
+	 * the same ID.
 	 */
 	private final String kind;
 	/**

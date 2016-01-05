@@ -75,9 +75,11 @@ public final class CompactReaderAdapter {
 	 * @return the object encoded by the XML
 	 * @throws SPFormatException on SP format problems
 	 */
-	public static Object parse(final StartElement element, final IteratorWrapper<XMLEvent> stream,
-	                           final IMutablePlayerCollection players, final Warning warner,
-	                           final IDFactory idFactory) throws SPFormatException {
+	public static Object parse(final StartElement element,
+	                           final IteratorWrapper<XMLEvent> stream,
+	                           final IMutablePlayerCollection players,
+	                           final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		final String tag = element.getName().getLocalPart();
 		// Handle rivers specially.
 		if ("river".equals(tag) || "lake".equals(tag)) {

@@ -65,7 +65,9 @@ public final class CompactXMLReader implements IMapReader, ISPReader {
 		final IDFactory idFactory = new IDFactory();
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
-				final Object retval = CompactReaderAdapter.parse(event.asStartElement(), eventReader, players, warner, idFactory);
+				final Object retval = CompactReaderAdapter
+						                      .parse(event.asStartElement(), eventReader,
+								                      players, warner, idFactory);
 				if (type.isAssignableFrom(retval.getClass())) {
 					return (T) retval;
 				} else {

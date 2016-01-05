@@ -44,7 +44,8 @@ public interface Subsettable<T> {
 	boolean isSubset(T obj, Appendable ostream, String context) throws IOException;
 
 	/**
-	 * A helper method to compare two items and, if they're not equal, report this to the stream.
+	 * A helper method to compare two items and, if they're not equal, report this to
+	 * the stream.
 	 * @param ostream the stream to write to
 	 * @param messages messages to write if the two aren't equal
 	 * @param one the first item
@@ -65,7 +66,8 @@ public interface Subsettable<T> {
 		}
 	}
 	/**
-	 * A helper method to compare two items and, if they're not equal, report this to the stream.
+	 * A helper method to compare two items and, if they're not equal, report this to
+	 * the stream.
 	 * @param ostream the stream to write to
 	 * @param messages messages to write if the two aren't equal
 	 * @param one the first item
@@ -86,7 +88,8 @@ public interface Subsettable<T> {
 		}
 	}
 	/**
-	 * A helper method to compare two items and, if they're not equal, report this to the stream.
+	 * A helper method to compare two items and, if they're not equal, report this to
+	 * the stream.
 	 * @param ostream the stream to write to
 	 * @param messages messages to write if the two aren't equal
 	 * @param one the first item
