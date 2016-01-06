@@ -7,7 +7,6 @@ import java.util.stream.Stream;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import model.map.Point;
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EnumerationWrapper;
 import util.NullCleaner;
@@ -35,7 +34,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  */
 public final class SimpleReportNode extends DefaultMutableTreeNode
-		implements IReportNode, Iterable<@NonNull IReportNode> {
+		implements IReportNode {
 	/**
 	 * The point, if any, in the map that this node represents something on.
 	 */

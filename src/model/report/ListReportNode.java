@@ -34,7 +34,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  */
 public final class ListReportNode extends DefaultMutableTreeNode
-		implements IReportNode, Iterable<@NonNull IReportNode> {
+		implements IReportNode {
 	/**
 	 * The length of the boilerplate even if we have no text and no children.
 	 */

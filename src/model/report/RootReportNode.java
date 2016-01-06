@@ -34,7 +34,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  */
 public final class RootReportNode extends DefaultMutableTreeNode
-		implements IReportNode, Iterable<@NonNull IReportNode> {
+		implements IReportNode {
 	/**
 	 * The point, if any, in the map that this node represents something on.
 	 */

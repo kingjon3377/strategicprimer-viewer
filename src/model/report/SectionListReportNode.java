@@ -35,7 +35,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  */
 public class SectionListReportNode extends DefaultMutableTreeNode
-		implements IReportNode, Iterable<@NonNull IReportNode> {
+		implements IReportNode {
 	/**
 	 * The header level.
 	 */

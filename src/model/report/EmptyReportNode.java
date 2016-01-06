@@ -33,7 +33,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  */
 public final class EmptyReportNode extends DefaultMutableTreeNode
-		implements IReportNode, Iterable<@NonNull IReportNode> {
+		implements IReportNode {
 	/**
 	 * Let's make this singleton, to reduce object allocations further.
 	 */
