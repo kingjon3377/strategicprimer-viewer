@@ -100,7 +100,7 @@ public interface IReportNode
 	/**
 	 * @return whether this is "the empty node," which should always be ignored.
 	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
+	@SuppressWarnings({"MethodReturnAlwaysConstant", "BooleanMethodIsAlwaysInverted"})
 	default boolean isEmptyNode() {
 		return false;
 	}
