@@ -117,7 +117,7 @@ public class ResourceAddingFrame extends JFrame {
 				resQtyField.setText("");
 				resUnitsBox.checkAndClear();
 				resKindBox.requestFocusInWindow();
-			} catch (final ParseException except) {
+			} catch (final ParseException ignored) {
 				ErrorShower.showErrorDialog(outer, "Quantity must be numeric");
 			}
 		});
