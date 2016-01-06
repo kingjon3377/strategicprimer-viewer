@@ -49,7 +49,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	/**
 	 * @param concatenated a concatentated string to make the text of the node
 	 */
-	private SimpleReportNode(String concatenated) {
+	private SimpleReportNode(final String concatenated) {
 		super(concatenated);
 		setText(concatenated);
 	}

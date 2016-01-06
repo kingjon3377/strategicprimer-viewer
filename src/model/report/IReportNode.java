@@ -67,7 +67,7 @@ public interface IReportNode
 	 * @return the point, if any, in the map that this represents something on
 	 */
 	default Point getPoint() {
-		Point point = getLocalPoint();
+		final Point point = getLocalPoint();
 		if (point != null) {
 			return point;
 		} else {
