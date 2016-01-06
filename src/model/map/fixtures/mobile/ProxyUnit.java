@@ -177,7 +177,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	@Override
 	public int compareTo(final TileFixture fix) {
 		LOGGER.warning("compareTo called on ProxyUnit");
-		return fix.hashCode() - hashCode();
+		return IUnit.super.compareTo(fix);
 	}
 
 	/**

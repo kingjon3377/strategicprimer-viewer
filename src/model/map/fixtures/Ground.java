@@ -127,15 +127,6 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	}
 
 	/**
-	 * @param fix A TileFixture to compare to
-	 * @return the result of the comparison
-	 */
-	@Override
-	public int compareTo(final TileFixture fix) {
-		return fix.hashCode() - hashCode();
-	}
-
-	/**
 	 * @return a String representation of the Ground.
 	 */
 	@Override

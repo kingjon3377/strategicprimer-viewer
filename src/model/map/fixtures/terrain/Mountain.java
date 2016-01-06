@@ -3,7 +3,6 @@ package model.map.fixtures.terrain;
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TerrainFixture;
-import model.map.TileFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -88,15 +87,6 @@ public final class Mountain implements TerrainFixture, HasImage {
 	@Override
 	public int hashCode() {
 		return 1;
-	}
-
-	/**
-	 * @param fix A TileFixture to compare to
-	 * @return the result of the comparison
-	 */
-	@Override
-	public int compareTo(final TileFixture fix) {
-		return fix.hashCode() - hashCode();
 	}
 
 	/**

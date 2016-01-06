@@ -220,15 +220,6 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	}
 
 	/**
-	 * @param fix A TileFixture to compare to
-	 * @return the result of the comparison
-	 */
-	@Override
-	public int compareTo(final TileFixture fix) {
-		return fix.hashCode() - hashCode();
-	}
-
-	/**
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */

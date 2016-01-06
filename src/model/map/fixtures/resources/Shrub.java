@@ -2,7 +2,6 @@ package model.map.fixtures.resources;
 
 import model.map.HasKind;
 import model.map.IFixture;
-import model.map.TileFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -115,15 +114,6 @@ public class Shrub implements HarvestableFixture, HasKind {
 	@Override
 	public int hashCode() {
 		return id;
-	}
-
-	/**
-	 * @param fix A TileFixture to compare to
-	 * @return the result of the comparison
-	 */
-	@Override
-	public int compareTo(final TileFixture fix) {
-		return fix.hashCode() - hashCode();
 	}
 
 	/**

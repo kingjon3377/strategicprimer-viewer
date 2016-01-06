@@ -140,15 +140,6 @@ public class Portal implements ExplorableFixture {
 	}
 
 	/**
-	 * @param fix A TileFixture to compare to
-	 * @return the result of the comparison
-	 */
-	@Override
-	public int compareTo(final TileFixture fix) {
-		return fix.hashCode() - hashCode();
-	}
-
-	/**
 	 * @param img the name of an image to use for this particular fixture
 	 */
 	@Override

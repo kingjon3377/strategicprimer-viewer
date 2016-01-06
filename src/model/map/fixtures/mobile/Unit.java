@@ -204,15 +204,6 @@ public class Unit implements IUnit {
 	}
 
 	/**
-	 * @param fix A TileFixture to compare to
-	 * @return the result of the comparison
-	 */
-	@Override
-	public int compareTo(final TileFixture fix) {
-		return fix.hashCode() - hashCode();
-	}
-
-	/**
 	 * TODO: Use a StringBuilder, specifying the size.
 	 *
 	 * @return a String representation of the Unit.

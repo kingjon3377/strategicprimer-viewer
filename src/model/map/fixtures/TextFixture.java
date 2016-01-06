@@ -142,15 +142,6 @@ public class TextFixture implements TileFixture, HasImage {
 	}
 
 	/**
-	 * @param fix A TileFixture to compare to
-	 * @return the result of the comparison
-	 */
-	@Override
-	public int compareTo(final TileFixture fix) {
-		return fix.hashCode() - hashCode();
-	}
-
-	/**
 	 * TextFixtures deliberately don't have a UID---unlike Forests, Mountains, or Ground,
 	 * which lack one because there are so many in the world map.
 	 *

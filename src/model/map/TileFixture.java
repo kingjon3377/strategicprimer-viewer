@@ -54,4 +54,13 @@ public interface TileFixture extends IFixture, Comparable<@NonNull TileFixture> 
 	 */
 	@Override
 	TileFixture copy(boolean zero);
+	/**
+	 * @param fix A TileFixture to compare to
+	 * @return the result of the comparison
+	 */
+	@Override
+	default int compareTo(final TileFixture fix) {
+		return fix.hashCode() - hashCode();
+	}
+
 }

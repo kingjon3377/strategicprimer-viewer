@@ -3,7 +3,6 @@ package model.map.fixtures.explorable;
 import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.Player;
-import model.map.TileFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -163,15 +162,6 @@ public class AdventureFixture implements ExplorableFixture, HasOwner {
 	@Override
 	public int hashCode() {
 		return briefDesc.hashCode() | (fullDesc.hashCode() << owner.getPlayerId());
-	}
-
-	/**
-	 * @param fix A TileFixture to compare to
-	 * @return the result of the comparison
-	 */
-	@Override
-	public int compareTo(final TileFixture fix) {
-		return fix.hashCode() - hashCode();
 	}
 
 	/**

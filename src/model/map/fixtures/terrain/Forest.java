@@ -4,7 +4,6 @@ import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.TerrainFixture;
-import model.map.TileFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -139,15 +138,6 @@ public class Forest implements TerrainFixture, HasImage, HasKind {
 		} else {
 			return trees.hashCode();
 		}
-	}
-
-	/**
-	 * @param fix A TileFixture to compare to
-	 * @return the result of the comparison
-	 */
-	@Override
-	public int compareTo(final TileFixture fix) {
-		return fix.hashCode() - hashCode();
 	}
 
 	/**

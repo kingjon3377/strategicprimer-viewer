@@ -75,7 +75,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	@Override
 	public int compareTo(final TileFixture obj) {
 		LOGGER.warning("TileTypeFixture#compareTo() called");
-		return obj.getZValue() - getZValue();
+		return TileFixture.super.compareTo(obj);
 	}
 
 	/**

@@ -11,7 +11,6 @@ import model.map.HasImage;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.SubsettableFixture;
-import model.map.TileFixture;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.mobile.IUnit;
 import org.eclipse.jdt.annotation.Nullable;
@@ -255,15 +254,6 @@ public class Fortress implements HasImage, ITownFixture,
 		} else {
 			return false;
 		}
-	}
-
-	/**
-	 * @param fix A TileFixture to compare to
-	 * @return the result of the comparison
-	 */
-	@Override
-	public int compareTo(final TileFixture fix) {
-		return fix.hashCode() - hashCode();
 	}
 
 	/**
