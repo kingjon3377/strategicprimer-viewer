@@ -235,7 +235,6 @@ public final class AppStarter implements ISPDriver {
 			} catch (final IOException except) {
 				LOGGER.log(Level.SEVERE,
 						"I/O error prompting user for app to start", except);
-				return;
 			}
 		}
 	}

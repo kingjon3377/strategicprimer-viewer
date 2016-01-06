@@ -136,7 +136,6 @@ public final class TODOFixerDriver {
 			jobList.add(kind);
 		} catch (final IOException e) {
 			LOGGER.log(Level.FINE, "I/O error interacting with user", e);
-			return;
 		}
 	}
 
