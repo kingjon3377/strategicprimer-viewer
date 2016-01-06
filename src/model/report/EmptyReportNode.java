@@ -41,6 +41,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	/**
 	 * The point, if any, in the map that this node represents something on.
 	 */
+	@SuppressWarnings("FieldHasSetterButNoGetter")
 	@Nullable
 	private final Point point = PointFactory.point(Integer.MIN_VALUE, Integer.MIN_VALUE);
 

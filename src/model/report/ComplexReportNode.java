@@ -41,6 +41,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	/**
 	 * The point, if any, in the map that this node represents something on.
 	 */
+	@SuppressWarnings("FieldHasSetterButNoGetter")
 	@Nullable
 	private Point point;
 	/**
