@@ -106,7 +106,7 @@ public class Giant implements MobileFixture, HasImage, HasKind, UnitMember {
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Giant)
 				                         && ((Giant) obj).kind.equals(kind)
-				                         && (id == ((Giant) obj).getID()));
+				                         && (id == ((Giant) obj).id));
 	}
 
 	/**

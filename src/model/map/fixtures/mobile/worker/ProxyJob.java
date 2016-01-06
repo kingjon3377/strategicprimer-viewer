@@ -178,7 +178,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	 */
 	@Override
 	public String toString() {
-		return getName();
+		return name;
 	}
 
 	/**

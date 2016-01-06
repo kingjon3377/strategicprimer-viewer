@@ -131,7 +131,7 @@ public class CacheFixture implements HarvestableFixture, HasKind {
 	 */
 	private boolean equalsImpl(final CacheFixture obj) {
 		return kind.equals(obj.kind) && contents.equals(obj.contents)
-				       && (id == obj.getID());
+				       && (id == obj.id);
 	}
 
 	/**
@@ -203,6 +203,6 @@ public class CacheFixture implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public String shortDesc() {
-		return "a cache of " + getKind();
+		return "a cache of " + kind;
 	}
 }

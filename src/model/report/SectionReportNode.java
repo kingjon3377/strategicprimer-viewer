@@ -78,7 +78,7 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public StringBuilder produce(final StringBuilder builder) {
-		builder.append("<h").append(level).append('>').append(getText())
+		builder.append("<h").append(level).append('>').append(text)
 				.append("</h").append(level).append(">\n");
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
@@ -94,7 +94,7 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public int size() {
-		int retval = 16 + getText().length();
+		int retval = 16 + text.length();
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
 			if (child instanceof IReportNode) {
@@ -128,7 +128,7 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 				                                                                ((SectionReportNode) obj)
 						                                                                .getLevel()) &&
 
-				                         getText()
+				                         text
 						                         .equals(((IReportNode) obj).getText()) &&
 				                         children()
 						                         .equals(((IReportNode) obj).children()));
@@ -139,7 +139,7 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public int hashCode() {
-		return level + getText().hashCode();
+		return level + text.hashCode();
 	}
 
 	/**
@@ -198,7 +198,7 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public String toString() {
-		return getText();
+		return text;
 	}
 
 	/**

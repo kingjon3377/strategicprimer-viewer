@@ -146,10 +146,10 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof ResourcePile)
-					   && kind.equals(((ResourcePile) fix).getKind())
-					   && contents.equals(((ResourcePile) fix).getContents())
-					   && (quantity == ((ResourcePile) fix).getQuantity())
-					   && unit.equals(((ResourcePile) fix).getUnits());
+					   && kind.equals(((ResourcePile) fix).kind)
+					   && contents.equals(((ResourcePile) fix).contents)
+					   && (quantity == ((ResourcePile) fix).quantity)
+					   && unit.equals(((ResourcePile) fix).unit);
 	}
 
 	/**
@@ -171,17 +171,17 @@ public class ResourcePile implements UnitMember, FortressMember, HasKind, HasIma
 			boolean retval = true;
 			final String ctxt = String.format("%s\tIn Resource Pile, ID #%d: ",
 					context, Integer.valueOf(id));
-			if (!kind.equals(((ResourcePile) obj).getKind())) {
+			if (!kind.equals(((ResourcePile) obj).kind)) {
 				ostream.append(ctxt);
 				ostream.append("Kinds differ\n");
 				retval = false;
 			}
-			if (!contents.equals(((ResourcePile) obj).getContents())) {
+			if (!contents.equals(((ResourcePile) obj).contents)) {
 				ostream.append(ctxt);
 				ostream.append("Contents differ\n");
 				retval = false;
 			}
-			if (!unit.equals(((ResourcePile) obj).getUnits())) {
+			if (!unit.equals(((ResourcePile) obj).unit)) {
 				ostream.append(ctxt);
 				ostream.append("Units differ\n");
 				retval = false;

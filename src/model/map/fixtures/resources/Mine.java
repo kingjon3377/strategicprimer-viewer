@@ -94,7 +94,7 @@ public class Mine implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public String toString() {
-		return getStatus().toString() + " mine of " + getKind();
+		return status.toString() + " mine of " + kind;
 	}
 
 	/**
@@ -185,6 +185,6 @@ public class Mine implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public String shortDesc() {
-		return getStatus().toString() + ' ' + getKind() + " mine";
+		return status.toString() + ' ' + kind + " mine";
 	}
 }

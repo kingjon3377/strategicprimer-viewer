@@ -152,7 +152,7 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	 * @return whether it's equal to this one ignoring ID.
 	 */
 	protected final boolean equalsContents(final AbstractTown fix) {
-		return (fix.size() == size) && fix.getName().equals(name)
+		return (fix.size() == size) && fix.name.equals(name)
 				       && (fix.status() == status) && fix.owner.equals(owner);
 	}
 

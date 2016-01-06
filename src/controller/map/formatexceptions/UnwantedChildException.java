@@ -67,10 +67,11 @@ public final class UnwantedChildException extends SPFormatException {
 	 * @param except the exception to copy
 	 */
 	public UnwantedChildException(final QName parent, final UnwantedChildException except) {
-		super("Unexpected child " + except.getChild().getLocalPart() + " in tag " +
+
+		super("Unexpected child " + except.chld.getLocalPart() + " in tag " +
 				      parent.getLocalPart(), except.getLocation());
 		tag = parent;
-		chld = except.getChild();
+		chld = except.chld;
 		if (except.getCause() != null) {
 			initCause(except.getCause());
 		}

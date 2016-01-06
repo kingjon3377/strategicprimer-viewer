@@ -80,7 +80,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	 */
 	@Override
 	public String toString() {
-		return getKind();
+		return description;
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class Shrub implements HarvestableFixture, HasKind {
 	 * @return whether it's equal to this one
 	 */
 	private boolean equalsImpl(final Shrub obj) {
-		return description.equals(obj.description) && (id == obj.getID());
+		return description.equals(obj.description) && (id == obj.id);
 	}
 
 	/**

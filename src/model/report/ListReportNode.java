@@ -85,11 +85,10 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	@Override
 	public String produce() {
 		// Assume each child is half a K.
-		final StringBuilder builder = new StringBuilder(getText().length()
-																+ BOILERPLATE_LEN +
-																(getChildCount() *
-																		 CHILD_BUF_SIZE))
-											  .append(getText());
+		final StringBuilder builder = new StringBuilder(text.length() + BOILERPLATE_LEN +
+				                                                (getChildCount() *
+						                                                 CHILD_BUF_SIZE))
+				                              .append(text);
 		builder.append("\n<ul>\n");
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
@@ -109,7 +108,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public StringBuilder produce(final StringBuilder builder) {
-		builder.append(getText());
+		builder.append(text);
 		builder.append("\n<ul>\n");
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
@@ -128,7 +127,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public int size() {
-		int retval = BOILERPLATE_LEN + getText().length();
+		int retval = BOILERPLATE_LEN + text.length();
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
 			if (child instanceof IReportNode) {
@@ -145,10 +144,8 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof ListReportNode) && getText()
-				                                                            .equals(((IReportNode) obj)
-						                                                                    .getText()) &&
-
+		return (this == obj) || ((obj instanceof ListReportNode) &&
+				                         text.equals(((IReportNode) obj).getText()) &&
 				                         children()
 						                         .equals(((IReportNode) obj).children()));
 	}
@@ -158,7 +155,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public int hashCode() {
-		return getText().hashCode();
+		return text.hashCode();
 	}
 
 	/**
@@ -217,7 +214,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public String toString() {
-		return getText();
+		return text;
 	}
 
 	/**

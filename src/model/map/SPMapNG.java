@@ -415,7 +415,7 @@ public class SPMapNG implements IMutableMapNG {
 	private boolean equalsImpl(final IMapNG obj) {
 		if (dimensions().equals(obj.dimensions())
 					&& areIterablesEqual(players(), obj.players())
-					&& (getCurrentTurn() == obj.getCurrentTurn())
+					&& (turn == obj.getCurrentTurn())
 					&& getCurrentPlayer().equals(obj.getCurrentPlayer())) {
 			for (final Point point : locations()) {
 				if ((getBaseTerrain(point) != obj.getBaseTerrain(point))
@@ -474,7 +474,7 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public int hashCode() {
-		return dimensions().hashCode() + (getCurrentTurn() << 3)
+		return dimensions().hashCode() + (turn << 3)
 					   + (getCurrentPlayer().hashCode() << 5);
 	}
 
@@ -491,7 +491,7 @@ public class SPMapNG implements IMutableMapNG {
 		builder.append("\nColumns: ");
 		builder.append(dimensions().cols);
 		builder.append("\nCurrent Turn: ");
-		builder.append(getCurrentTurn());
+		builder.append(turn);
 		builder.append("\n\nPlayers:\n");
 		for (final Player player : players()) {
 			builder.append(player.toString());
@@ -673,7 +673,7 @@ public class SPMapNG implements IMutableMapNG {
 	public IMapNG copy(final boolean zero) {
 		final IMutableMapNG retval =
 				new SPMapNG(dimensions(), playerCollection.copy(),
-								   getCurrentTurn());
+						           turn);
 		for (final Point point : locations()) {
 			retval.setBaseTerrain(point, getBaseTerrain(point));
 			final Ground grd = getGround(point);

@@ -623,7 +623,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	public boolean equals(final Object obj) {
 		return (this == obj) || ((obj instanceof ProxyUnit) &&
 				                         (parallel == ((ProxyUnit) obj).parallel) &&
-				                         (id == ((ProxyUnit) obj).getID()) &&
+				                         (id == ((ProxyUnit) obj).id) &&
 				                         kind.equals(((ProxyUnit) obj).kind) &&
 				                         proxied.equals(((ProxyUnit) obj).getProxied()));
 	}

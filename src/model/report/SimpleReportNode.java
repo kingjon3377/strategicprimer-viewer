@@ -87,7 +87,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public String produce() {
-		return getText();
+		return text;
 	}
 
 	/**
@@ -96,7 +96,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public StringBuilder produce(final StringBuilder builder) {
-		return NullCleaner.assertNotNull(builder.append(getText()));
+		return NullCleaner.assertNotNull(builder.append(text));
 	}
 
 	/**
@@ -104,7 +104,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public int size() {
-		return getText().length();
+		return text.length();
 	}
 
 	/**
@@ -114,7 +114,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof SimpleReportNode) &&
-				                         getText().equals(((IReportNode) obj).getText()));
+				                         text.equals(((IReportNode) obj).getText()));
 	}
 
 	/**
@@ -122,7 +122,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public int hashCode() {
-		return getText().hashCode();
+		return text.hashCode();
 	}
 
 	/**
@@ -173,7 +173,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public String toString() {
-		return getText();
+		return text;
 	}
 
 	/**

@@ -357,9 +357,9 @@ public class Fortress implements HasImage, ITownFixture,
 	@Override
 	public String shortDesc() {
 		if (owner.isCurrent()) {
-			return "a fortress, " + getName() + ", owned by you"; // NOPMD
+			return "a fortress, " + name + ", owned by you"; // NOPMD
 		} else {
-			return "a fortress, " + getName() + ", owned by " + owner.getName();
+			return "a fortress, " + name + ", owned by " + owner.getName();
 		}
 	}
 }

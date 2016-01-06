@@ -114,7 +114,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public StringBuilder produce(final StringBuilder builder) {
-		builder.append("<h").append(level).append('>').append(getText())
+		builder.append("<h").append(level).append('>').append(text)
 				.append("</h").append(level).append(">\n");
 		if (!subheader.isEmpty()) {
 			builder.append("<p>").append(subheader).append("</p>\n");
@@ -139,7 +139,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public int size() {
-		int retval = MIN_BOILERPLATE + getText().length() + subheader.length();
+		int retval = MIN_BOILERPLATE + text.length() + subheader.length();
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
 			if (child instanceof IReportNode) {
@@ -171,9 +171,8 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof SectionListReportNode) &&
-				                         (((SectionListReportNode) obj)
-						                          .getHeaderLevel() == level) &&
-				                         getText()
+				                         (((SectionListReportNode) obj).level == level) &&
+				                         text
 								                                                         .equals(((IReportNode) obj)
 										                                                                 .getText()) &&
 				                         children()
@@ -185,7 +184,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public int hashCode() {
-		return level + getText().hashCode() /* | children().hashCode() */;
+		return level + text.hashCode() /* | children().hashCode() */;
 	}
 
 	/**
@@ -244,7 +243,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public String toString() {
-		return getText();
+		return text;
 	}
 
 	/**

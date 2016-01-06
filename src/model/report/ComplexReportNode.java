@@ -83,7 +83,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public StringBuilder produce(final StringBuilder builder) {
-		builder.append(getText());
+		builder.append(text);
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode node = getChildAt(i);
 			if (node instanceof IReportNode) {
@@ -98,7 +98,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public int size() {
-		int retval = getText().length();
+		int retval = text.length();
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
 			if (child instanceof IReportNode) {
@@ -114,10 +114,8 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof ComplexReportNode) && getText()
-				                                                               .equals(((IReportNode) obj)
-						                                                                       .getText()) &&
-
+		return (this == obj) || ((obj instanceof ComplexReportNode) &&
+				                         text.equals(((IReportNode) obj).getText()) &&
 				                         children()
 						                         .equals(((IReportNode) obj).children()));
 	}
@@ -127,7 +125,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public int hashCode() {
-		return getText().hashCode();
+		return text.hashCode();
 	}
 
 	/**
@@ -186,7 +184,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public String toString() {
-		return getText();
+		return text;
 	}
 
 	/**

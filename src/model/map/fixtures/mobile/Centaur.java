@@ -102,7 +102,7 @@ public class Centaur implements MobileFixture, HasImage, HasKind, UnitMember {
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Centaur)
 				                         && ((Centaur) obj).kind.equals(kind)
-				                         && (((Centaur) obj).getID() == id));
+				                         && (((Centaur) obj).id == id));
 	}
 
 	/**

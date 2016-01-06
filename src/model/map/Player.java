@@ -73,8 +73,8 @@ public final class Player implements Comparable<Player>, HasName {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Player)
-				                         && (playerID == ((Player) obj).getPlayerId())
-				                         && playerName.equals(((Player) obj).getName()));
+				                         && (playerID == ((Player) obj).playerID)
+				                         && playerName.equals(((Player) obj).playerName));
 	}
 
 	/**
@@ -127,7 +127,7 @@ public final class Player implements Comparable<Player>, HasName {
 	 * fixtures.
 	 */
 	public boolean isIndependent() {
-		return "independent".equalsIgnoreCase(getName());
+		return "independent".equalsIgnoreCase(playerName);
 	}
 
 	/**
