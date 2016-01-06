@@ -28,6 +28,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
 public interface IReportNode
 		extends Comparable<@NonNull IReportNode>, MutableTreeNode, Iterable<IReportNode> {
 	/**
