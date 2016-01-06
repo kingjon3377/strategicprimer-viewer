@@ -227,7 +227,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	 */
 	@Override
 	public Iterable<IJob> getProxied() {
-		return proxiedJobs;
+		return new ArrayList<>(proxiedJobs);
 	}
 
 	/**

@@ -484,7 +484,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 */
 	@Override
 	public Iterable<IUnit> getProxied() {
-		return proxied;
+		return new ArrayList<>(proxied);
 	}
 
 	/**
@@ -578,7 +578,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		 */
 		@Override
 		public Iterable<UnitMember> getProxied() {
-			return proxiedMembers;
+			return new ArrayList<>(proxiedMembers);
 		}
 
 		/**

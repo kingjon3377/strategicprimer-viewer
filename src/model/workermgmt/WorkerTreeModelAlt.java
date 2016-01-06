@@ -598,6 +598,6 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 */
 	@Override
 	public Iterable<UnitMember> dismissed() {
-		return dismissedMembers;
+		return new ArrayList<>(dismissedMembers);
 	}
 }

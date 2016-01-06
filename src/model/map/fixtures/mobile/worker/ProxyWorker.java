@@ -233,7 +233,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	 */
 	@Override
 	public Iterable<IWorker> getProxied() {
-		return workers;
+		return new ArrayList<>(workers);
 	}
 
 	/**

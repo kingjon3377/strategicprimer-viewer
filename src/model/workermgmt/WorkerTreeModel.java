@@ -476,6 +476,6 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 */
 	@Override
 	public Iterable<UnitMember> dismissed() {
-		return dismissedMembers;
+		return new ArrayList<>(dismissedMembers);
 	}
 }

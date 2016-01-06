@@ -214,7 +214,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	 */
 	@Override
 	public Iterable<IJob> getProxied() {
-		return proxied;
+		return new ArrayList<>(proxied);
 	}
 
 	/**
