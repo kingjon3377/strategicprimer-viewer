@@ -27,6 +27,7 @@ import org.eclipse.jdt.annotation.NonNull;
  * @author Jonathan Lovelace
  * @see Pair
  */
+@SuppressWarnings("EqualsAndHashcode")
 public final class ComparablePair<K extends Comparable<K>, V extends Comparable<V>>
 		extends Pair<K, V> implements Comparable<@NonNull ComparablePair<K, V>> {
 	/**
