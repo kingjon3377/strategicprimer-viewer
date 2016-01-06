@@ -30,6 +30,7 @@ public final class EmptyIterator<T> implements Iterator<T> {
 	/**
 	 * @return false
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public boolean hasNext() {
 		return false;

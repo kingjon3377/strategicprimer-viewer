@@ -75,6 +75,7 @@ public final class MapFileFilter extends FileFilter {
 	/**
 	 * @return A description of the filter.
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String getDescription() {
 		return "Strategic Primer world map files";

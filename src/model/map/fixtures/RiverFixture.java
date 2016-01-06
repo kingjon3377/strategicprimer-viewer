@@ -119,6 +119,7 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	 *
 	 * Because of Java bug #6579200, this has to return a constant.
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public int hashCode() {
 		return 0;

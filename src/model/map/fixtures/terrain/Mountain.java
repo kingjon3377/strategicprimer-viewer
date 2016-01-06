@@ -84,6 +84,7 @@ public final class Mountain implements TerrainFixture, HasImage {
 	/**
 	 * @return a hash value for the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public int hashCode() {
 		return 1;

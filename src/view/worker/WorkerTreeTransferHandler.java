@@ -78,6 +78,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	 * @param component ignored
 	 * @return the actions we support
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public int getSourceActions(@Nullable final JComponent component) {
 		return TransferHandler.MOVE;
@@ -185,6 +186,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	/**
 	 * @return a String representation of the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public String toString() {
 		return "WorkerTreeTransferHandler";

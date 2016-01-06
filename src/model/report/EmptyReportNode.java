@@ -82,6 +82,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	/**
 	 * @return true: this is "the empty node."
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public boolean isEmptyNode() {
 		return true;
@@ -99,6 +100,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	/**
 	 * @return a hash code for the object
 	 */
+	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override
 	public int hashCode() {
 		return 0;

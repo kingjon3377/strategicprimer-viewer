@@ -48,16 +48,19 @@ public final class MapVersionException extends SPFormatException {
 	 * The location of the start of the document.
 	 */
 	private static class ZeroLocation implements Location {
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public int getLineNumber() {
 			return 0;
 		}
 
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public int getColumnNumber() {
 			return 0;
 		}
 
+		@SuppressWarnings("MethodReturnAlwaysConstant")
 		@Override
 		public int getCharacterOffset() {
 			return 0;
