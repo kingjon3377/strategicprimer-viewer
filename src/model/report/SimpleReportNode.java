@@ -54,12 +54,12 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 		setText(concatenated);
 	}
 	/**
-	 * @param point the point, if any, in the map that this represents something on
+	 * @param pt the point, if any, in the map that this represents something on
 	 * @param texts a number of strings to concatenate and make the text of the node.
 	 */
-	public SimpleReportNode(final Point point, final String... texts) {
+	public SimpleReportNode(final Point pt, final String... texts) {
 		this(concat(texts));
-		setPoint(point);
+		setPoint(pt);
 	}
 
 	/**

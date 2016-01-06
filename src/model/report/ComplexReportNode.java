@@ -50,21 +50,21 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	private String text;
 
 	/**
-	 * @param text  the main text of the node
-	 * @param point the point, if any, in the map that this represents something on
+	 * @param txt  the main text of the node
+	 * @param pt the point, if any, in the map that this represents something on
 	 */
-	public ComplexReportNode(final Point point, final String text) {
-		super(text);
-		setText(text);
-		setPoint(point);
+	public ComplexReportNode(final Point pt, final String txt) {
+		super(txt);
+		setText(txt);
+		setPoint(pt);
 	}
 
 	/**
-	 * @param text the main text of the node
+	 * @param txt the main text of the node
 	 */
-	public ComplexReportNode(final String text) {
-		super(text);
-		setText(text);
+	public ComplexReportNode(final String txt) {
+		super(txt);
+		setText(txt);
 		setPoint(null);
 	}
 

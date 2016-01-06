@@ -61,21 +61,21 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	private String text;
 
 	/**
-	 * @param point the point in the map that this represents something on
-	 * @param text  the header text
+	 * @param pt the point in the map that this represents something on
+	 * @param txt  the header text
 	 */
-	public ListReportNode(final Point point, final String text) {
-		super(text);
-		setText(text);
-		setPoint(point);
+	public ListReportNode(final Point pt, final String txt) {
+		super(txt);
+		setText(txt);
+		setPoint(pt);
 	}
 
 	/**
-	 * @param text the header text
+	 * @param txt the header text
 	 */
-	public ListReportNode(final String text) {
-		super(text);
-		setText(text);
+	public ListReportNode(final String txt) {
+		super(txt);
+		setText(txt);
 		setPoint(null);
 	}
 

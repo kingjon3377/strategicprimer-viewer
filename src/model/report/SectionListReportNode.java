@@ -72,15 +72,15 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	/**
 	 * Constructor.
 	 *
-	 * @param point  the point, if any, in the map that this represents something on
+	 * @param pt  the point, if any, in the map that this represents something on
 	 * @param lvl    the header level
 	 * @param header the header text
 	 */
-	public SectionListReportNode(final Point point, final int lvl,
+	public SectionListReportNode(final Point pt, final int lvl,
 	                             final String header) {
 		super(header);
 		setText(header);
-		setPoint(point);
+		setPoint(pt);
 		setHeaderLevel(lvl);
 		subheader = "";
 	}
