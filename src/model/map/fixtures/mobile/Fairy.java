@@ -58,7 +58,7 @@ public class Fairy implements MobileFixture, HasImage, HasKind, UnitMember {
 	@Override
 	public Fairy copy(final boolean zero) {
 		final Fairy retval = new Fairy(kind, id);
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 

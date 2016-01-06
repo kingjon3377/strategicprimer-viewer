@@ -76,7 +76,7 @@ public class Portal implements ExplorableFixture {
 		} else {
 			retval = new Portal(destinationWorld, destinationCoordinates, id);
 		}
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 

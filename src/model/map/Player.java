@@ -48,7 +48,7 @@ public final class Player implements Comparable<Player>, HasName {
 	public Player(final int idNum, final String name) {
 		playerID = idNum;
 		playerName = name;
-		setCurrent(false);
+		current = false;
 	}
 
 	/**

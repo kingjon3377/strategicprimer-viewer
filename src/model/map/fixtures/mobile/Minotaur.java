@@ -49,7 +49,7 @@ public class Minotaur implements MobileFixture, HasImage, UnitMember {
 	@Override
 	public Minotaur copy(final boolean zero) {
 		final Minotaur retval = new Minotaur(id);
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 

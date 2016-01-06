@@ -61,7 +61,7 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 		} else {
 			retval = new Battlefield(dc, id);
 		}
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 

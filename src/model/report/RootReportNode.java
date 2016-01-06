@@ -54,7 +54,7 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	public RootReportNode(final String title) {
 		super(title);
 		setText(title);
-		setPoint(null);
+		point = null;
 	}
 
 	/**

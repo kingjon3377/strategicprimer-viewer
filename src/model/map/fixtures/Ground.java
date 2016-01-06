@@ -62,7 +62,7 @@ public class Ground implements TileFixture, HasImage, HasKind {
 	@Override
 	public Ground copy(final boolean zero) {
 		final Ground retval = new Ground(kind, exposed);
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 

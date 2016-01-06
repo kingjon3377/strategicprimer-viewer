@@ -4,7 +4,6 @@ import java.io.IOException;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IFixture;
-import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
@@ -279,7 +278,7 @@ public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
 	public Animal copy(final boolean zero) {
 		// TODO: Should we "zero" out any information?
 		final Animal retval = new Animal(kind, traces, talking, status, id);
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 }

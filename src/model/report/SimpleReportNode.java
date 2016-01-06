@@ -59,7 +59,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 */
 	public SimpleReportNode(final Point pt, final String... texts) {
 		this(concat(texts));
-		setPoint(pt);
+		point = pt;
 	}
 
 	/**
@@ -67,7 +67,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 */
 	public SimpleReportNode(final String... texts) {
 		this(concat(texts));
-		setPoint(null);
+		point = null;
 	}
 
 	/**

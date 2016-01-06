@@ -49,7 +49,7 @@ public class Simurgh implements MobileFixture, HasImage, UnitMember {
 	@Override
 	public Simurgh copy(final boolean zero) {
 		final Simurgh retval = new Simurgh(id);
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 

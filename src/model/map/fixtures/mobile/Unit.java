@@ -102,12 +102,12 @@ public class Unit implements IUnit {
 	public Unit copy(final boolean zero) {
 		final Unit retval = new Unit(owner, kind, name, id);
 		if (!zero) {
-			retval.setOrders(orders);
+			retval.orders = orders;
 			for (final UnitMember member : this) {
 				retval.addMember(member.copy(false));
 			}
 		}
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 

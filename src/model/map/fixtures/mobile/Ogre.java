@@ -49,7 +49,7 @@ public class Ogre implements MobileFixture, HasImage, UnitMember { // NOPMD
 	@Override
 	public Ogre copy(final boolean zero) {
 		final Ogre retval = new Ogre(id);
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 

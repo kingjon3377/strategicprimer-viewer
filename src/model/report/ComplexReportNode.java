@@ -56,7 +56,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	public ComplexReportNode(final Point pt, final String txt) {
 		super(txt);
 		setText(txt);
-		setPoint(pt);
+		point = pt;
 	}
 
 	/**
@@ -65,7 +65,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	public ComplexReportNode(final String txt) {
 		super(txt);
 		setText(txt);
-		setPoint(null);
+		point = null;
 	}
 
 	/**

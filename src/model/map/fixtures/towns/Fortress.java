@@ -91,7 +91,7 @@ public class Fortress implements HasImage, ITownFixture,
 				retval.addMember(unit.copy(false));
 			}
 		}
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 

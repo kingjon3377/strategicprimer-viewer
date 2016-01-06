@@ -75,7 +75,7 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 		} else {
 			retval = new MineralVein(mineral, exposed, dc, id);
 		}
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 

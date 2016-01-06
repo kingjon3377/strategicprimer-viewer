@@ -56,7 +56,7 @@ public final class Cave implements IEvent, ExplorableFixture {
 		} else {
 			retval = new Cave(dc, id);
 		}
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 

@@ -49,7 +49,7 @@ public class Djinn implements MobileFixture, HasImage, UnitMember {
 	@Override
 	public Djinn copy(final boolean zero) {
 		final Djinn retval = new Djinn(id);
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 

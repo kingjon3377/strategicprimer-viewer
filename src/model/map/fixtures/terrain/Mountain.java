@@ -38,7 +38,7 @@ public final class Mountain implements TerrainFixture, HasImage {
 	@Override
 	public Mountain copy(final boolean zero) {
 		final Mountain retval = new Mountain();
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 

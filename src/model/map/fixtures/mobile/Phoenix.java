@@ -49,7 +49,7 @@ public class Phoenix implements MobileFixture, HasImage, UnitMember {
 	@Override
 	public Phoenix copy(final boolean zero) {
 		final Phoenix retval = new Phoenix(id);
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 

@@ -145,7 +145,7 @@ public class Sandbar implements TerrainFixture, HasImage {
 	@Override
 	public Sandbar copy(final boolean zero) {
 		final Sandbar retval = new Sandbar(id);
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 }

@@ -81,7 +81,7 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 	@Override
 	public Village copy(final boolean zero) {
 		final Village retval = new Village(status, name, id, owner, race);
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 

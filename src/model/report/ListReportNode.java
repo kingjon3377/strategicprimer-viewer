@@ -67,7 +67,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	public ListReportNode(final Point pt, final String txt) {
 		super(txt);
 		setText(txt);
-		setPoint(pt);
+		point = pt;
 	}
 
 	/**
@@ -76,7 +76,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	public ListReportNode(final String txt) {
 		super(txt);
 		setText(txt);
-		setPoint(null);
+		point = null;
 	}
 
 	/**

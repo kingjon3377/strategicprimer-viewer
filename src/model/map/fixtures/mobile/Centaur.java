@@ -58,7 +58,7 @@ public class Centaur implements MobileFixture, HasImage, HasKind, UnitMember {
 	@Override
 	public Centaur copy(final boolean zero) {
 		final Centaur retval = new Centaur(kind, id);
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 

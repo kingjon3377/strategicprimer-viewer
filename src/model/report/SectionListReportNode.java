@@ -80,8 +80,8 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	                             final String header) {
 		super(header);
 		setText(header);
-		setPoint(pt);
-		setHeaderLevel(lvl);
+		point = pt;
+		level = lvl;
 		subheader = "";
 	}
 
@@ -94,8 +94,8 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	public SectionListReportNode(final int lvl, final String header) {
 		super(header);
 		setText(header);
-		setPoint(null);
-		setHeaderLevel(lvl);
+		point = null;
+		level = lvl;
 		subheader = "";
 	}
 

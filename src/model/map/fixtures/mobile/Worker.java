@@ -336,15 +336,15 @@ public class Worker implements IWorker {
 	public Worker copy(final boolean zero) {
 		if (zero) {
 			final Worker retval = new Worker(name, race, id);
-			retval.setImage(image);
+			retval.image = image;
 			return retval;
 		} else {
 			final Worker retval = new Worker(name, race, id);
 			final WorkerStats localStats = stats;
 			if (localStats != null) {
-				retval.setStats(localStats.copy());
+				retval.stats = localStats.copy();
 			}
-			retval.setImage(image);
+			retval.image = image;
 			for (final IJob job : this) {
 				if (!job.isEmpty()) {
 					retval.addJob(job.copy(false));

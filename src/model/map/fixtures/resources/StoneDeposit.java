@@ -55,7 +55,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
 		} else {
 			retval = new StoneDeposit(stone, dc, id);
 		}
-		retval.setImage(image);
+		retval.image = image;
 		return retval;
 	}
 

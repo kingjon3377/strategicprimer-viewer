@@ -59,8 +59,8 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	public SectionReportNode(final int lvl, final String header) {
 		super(header);
 		setText(header);
-		setPoint(null);
-		setHeaderLevel(lvl);
+		point = null;
+		level = lvl;
 	}
 
 	/**
