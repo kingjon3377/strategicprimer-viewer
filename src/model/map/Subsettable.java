@@ -78,7 +78,7 @@ public interface Subsettable<T> {
 	default boolean areItemsEqual(final Appendable ostream, final boolean one,
 	                              final boolean two, final String... messages)
 			throws IOException {
-		if (Objects.equals(one, two)) {
+		if (one == two) {
 			return true;
 		} else {
 			for (final String message : messages) {
@@ -100,7 +100,7 @@ public interface Subsettable<T> {
 	default boolean areIntItemsEqual(final Appendable ostream, final int one,
 	                                 final int two, final String... messages)
 			throws IOException {
-		if (Objects.equals(one, two)) {
+		if (one == two) {
 			return true;
 		} else {
 			for (final String message : messages) {
