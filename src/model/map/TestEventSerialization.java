@@ -147,8 +147,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 			for (final TownSize size : TownSize.values()) {
 				assert size != null;
 				assertSerialization(
-						"Fortification serialization test, status " + status + ", size" +
-								" " +
+						"Fortification serialization: status " + status + ", size " +
 								size,
 						new Fortification(status, size, 10, "one", 1, owner));
 				assertSerialization("Fortification serialization test, status " +
