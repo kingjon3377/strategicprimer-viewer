@@ -179,6 +179,7 @@ public final class ZeroToOneConverter {
 	 * @param num an event number
 	 * @return the XML representing it, or "" if none.
 	 */
+	@SuppressWarnings("TypeMayBeWeakened")
 	private static String getEventXML(final Integer num) {
 		if (EQUIVS.containsKey(num)) {
 			return NullCleaner.assertNotNull(EQUIVS.get(num)); // NOPMD
@@ -193,6 +194,7 @@ public final class ZeroToOneConverter {
 	 * @param element the element
 	 * @return its XML representation.
 	 */
+	@SuppressWarnings("TypeMayBeWeakened")
 	private static String printEndElement(final EndElement element) {
 		return printEndElementImpl(NullCleaner.assertNotNull(element.getName()
 																	 .getLocalPart()));
@@ -230,6 +232,7 @@ public final class ZeroToOneConverter {
 	 * @param attr an attribute
 	 * @return its XML representation
 	 */
+	@SuppressWarnings("TypeMayBeWeakened")
 	private static String printAttribute(final Attribute attr) {
 		return NullCleaner.assertNotNull(String.format(" %s=\"%s\"",
 				attr.getName().getLocalPart(), attr.getValue()));
