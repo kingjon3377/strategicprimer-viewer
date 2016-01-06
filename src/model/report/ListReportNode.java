@@ -196,7 +196,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	 * @return the text of the node, usually the header.
 	 */
 	@Override
-	public final String getText() {
+	public String getText() {
 		return text;
 	}
 
@@ -204,7 +204,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	 * @param txt the new text for the node
 	 */
 	@Override
-	public final void setText(final String txt) {
+	public void setText(final String txt) {
 		text = txt;
 		setUserObject(text);
 	}
@@ -221,7 +221,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	 * @param pt the point, if any, in the map that this represents something on
 	 */
 	@Override
-	public final void setPoint(final Point pt) {
+	public void setPoint(final Point pt) {
 		point = pt;
 	}
 
@@ -230,7 +230,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	@Nullable
-	public final Point getLocalPoint() {
+	public Point getLocalPoint() {
 		return point;
 	}
 }
