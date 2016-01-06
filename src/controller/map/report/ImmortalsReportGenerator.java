@@ -339,7 +339,7 @@ public final class ImmortalsReportGenerator
 	 * @param item a fixture
 	 * @return whether it's an immortal
 	 */
-	private boolean isImmortal(final MobileFixture item) {
+	private static boolean isImmortal(final MobileFixture item) {
 		return (item instanceof Dragon) || (item instanceof Fairy)
 					|| (item instanceof Troll) || (item instanceof Djinn)
 					|| (item instanceof Sphinx) || (item instanceof Giant)

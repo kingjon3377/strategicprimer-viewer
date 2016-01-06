@@ -537,7 +537,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 * @return the frame containing it, if any
 	 */
 	@Nullable
-	private Frame getContainingFrame(final Component component) {
+	private static Frame getContainingFrame(final Component component) {
 		Component temp = component;
 		while (temp != null) {
 			if (temp instanceof Frame) {
