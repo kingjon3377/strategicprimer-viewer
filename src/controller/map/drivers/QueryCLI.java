@@ -107,7 +107,6 @@ public final class QueryCLI implements ISPDriver {
 	 * @param ostream the stream to write to
 	 * @param input   the command
 	 * @throws IOException           on I/O error
-	 * @throws DriverFailedException on error (in the trap model driver)
 	 */
 	public void handleCommand(final IDriverModel model, final HuntingModel hmodel,
 	                          final Appendable ostream, final char input)

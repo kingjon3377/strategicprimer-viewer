@@ -125,7 +125,6 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 * @param context a string to print before every line of output, describing the
 	 *                context
 	 * @return whether it's a strict subset of this one
-	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
 	public boolean isSubset(final IPlayerCollection obj,

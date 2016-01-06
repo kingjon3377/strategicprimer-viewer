@@ -60,7 +60,6 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	}
 
 	/**
-	 * @param zero whether to "zero out" sensitive information
 	 * @return a copy of this proxy
 	 */
 	@Override
