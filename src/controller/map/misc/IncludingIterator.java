@@ -101,6 +101,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	 *
 	 * @return the next item in the topmost iterator.
 	 */
+	@SuppressWarnings("NewExceptionWithoutArguments")
 	@Override
 	public XMLEvent next() {
 		removeEmptyIterators();
@@ -186,6 +187,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	 * sure
 	 * that no empty iterator is on the top of the stack both before and after doing so.
 	 */
+	@SuppressWarnings("NewExceptionWithoutArguments")
 	@Override
 	public void remove() {
 		removeEmptyIterators();

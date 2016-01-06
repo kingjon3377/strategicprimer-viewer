@@ -74,6 +74,7 @@ public final class FileChooser {
 	 * @throws ChoiceInterruptedException when the choice is interrupted or the user
 	 *                                    declines to choose a file.
 	 */
+	@SuppressWarnings("NewExceptionWithoutArguments")
 	public File getFile() throws ChoiceInterruptedException {
 		if (shouldWait) {
 			if (SwingUtilities.isEventDispatchThread()) {
