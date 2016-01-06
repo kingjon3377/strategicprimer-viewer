@@ -48,15 +48,15 @@ public interface Subsettable<T> {
 	 * the stream.
 	 * @param ostream the stream to write to
 	 * @param messages messages to write if the two aren't equal
-	 * @param one the first item
-	 * @param two the second item
+	 * @param first the first item
+	 * @param second the second item
 	 * @return whether the two items are equal
 	 * @throws IOException on error writing to the stream
 	 */
-	default boolean areItemsEqual(final Appendable ostream, @Nullable final Object one,
-	                              @Nullable final Object two, final String... messages)
+	default boolean areItemsEqual(final Appendable ostream, @Nullable final Object first,
+	                              @Nullable final Object second, final String... messages)
 			throws IOException {
-		if (Objects.equals(one, two)) {
+		if (Objects.equals(first, second)) {
 			return true;
 		} else {
 			for (final String message : messages) {
@@ -70,15 +70,15 @@ public interface Subsettable<T> {
 	 * the stream.
 	 * @param ostream the stream to write to
 	 * @param messages messages to write if the two aren't equal
-	 * @param one the first item
-	 * @param two the second item
+	 * @param first the first item
+	 * @param second the second item
 	 * @return whether the two items are equal
 	 * @throws IOException on error writing to the stream
 	 */
-	default boolean areItemsEqual(final Appendable ostream, final boolean one,
-	                              final boolean two, final String... messages)
+	default boolean areItemsEqual(final Appendable ostream, final boolean first,
+	                              final boolean second, final String... messages)
 			throws IOException {
-		if (one == two) {
+		if (first == second) {
 			return true;
 		} else {
 			for (final String message : messages) {
@@ -92,15 +92,15 @@ public interface Subsettable<T> {
 	 * the stream.
 	 * @param ostream the stream to write to
 	 * @param messages messages to write if the two aren't equal
-	 * @param one the first item
-	 * @param two the second item
+	 * @param first the first item
+	 * @param second the second item
 	 * @return whether the two items are equal
 	 * @throws IOException on error writing to the stream
 	 */
-	default boolean areIntItemsEqual(final Appendable ostream, final int one,
-	                                 final int two, final String... messages)
+	default boolean areIntItemsEqual(final Appendable ostream, final int first,
+	                                 final int second, final String... messages)
 			throws IOException {
-		if (one == two) {
+		if (first == second) {
 			return true;
 		} else {
 			for (final String message : messages) {
