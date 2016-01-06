@@ -1,8 +1,8 @@
 package view.map.main;
 
 import com.bric.window.WindowMenu;
-import controller.map.misc.IOHandler;
-import javax.swing.JFrame;
+import java.awt.event.ActionListener;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import view.util.SPMenu;
 
@@ -36,7 +36,7 @@ public final class ViewerMenu extends SPMenu {
 	 * @param parent  the frame we'll be attached to
 	 * @param model   the map model
 	 */
-	public ViewerMenu(final IOHandler handler, final JFrame parent,
+	public ViewerMenu(final ActionListener handler, final JFrame parent,
 	                  final IDriverModel model) {
 		add(createFileMenu(handler, model));
 		add(createMapMenu(handler, model));

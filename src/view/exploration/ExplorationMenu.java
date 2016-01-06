@@ -1,8 +1,8 @@
 package view.exploration;
 
 import com.bric.window.WindowMenu;
-import controller.map.misc.IOHandler;
-import javax.swing.JFrame;
+import java.awt.event.ActionListener;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import view.util.SPMenu;
 
@@ -36,7 +36,7 @@ public final class ExplorationMenu extends SPMenu {
 	 * @param model  the exploration model
 	 * @param parent the window this is to be attached to, which should close on "Close".
 	 */
-	public ExplorationMenu(final IOHandler ioh,
+	public ExplorationMenu(final ActionListener ioh,
 	                       final IDriverModel model, final JFrame parent) {
 		add(createFileMenu(ioh, model));
 		addDisabled(createMapMenu(ioh, model));

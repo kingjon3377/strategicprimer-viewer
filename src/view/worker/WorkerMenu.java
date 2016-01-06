@@ -1,8 +1,8 @@
 package view.worker;
 
 import com.bric.window.WindowMenu;
-import controller.map.misc.IOHandler;
-import javax.swing.JFrame;
+import java.awt.event.ActionListener;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import view.util.SPMenu;
 
@@ -37,7 +37,7 @@ public final class WorkerMenu extends SPMenu {
 	 *                "Close".
 	 * @param model   the current driver model
 	 */
-	public WorkerMenu(final IOHandler handler, final JFrame parent,
+	public WorkerMenu(final ActionListener handler, final JFrame parent,
 	                  final IDriverModel model) {
 		add(createFileMenu(handler, model));
 		addDisabled(createMapMenu(handler, model));

@@ -37,7 +37,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	/**
 	 * Let's make this singleton, to reduce object allocations further.
 	 */
-	public static final EmptyReportNode NULL_NODE = new EmptyReportNode();
+	public static final IReportNode NULL_NODE = new EmptyReportNode();
 	/**
 	 * The point, if any, in the map that this node represents something on.
 	 */
