@@ -3,7 +3,6 @@ package model.map.fixtures.explorable;
 import model.map.IFixture;
 import model.map.Point;
 import model.map.PointFactory;
-import model.map.TileFixture;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**

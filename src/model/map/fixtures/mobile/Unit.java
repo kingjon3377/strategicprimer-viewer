@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import model.map.IFixture;
 import model.map.Player;
-import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
