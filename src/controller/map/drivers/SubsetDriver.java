@@ -1,7 +1,6 @@
 package controller.map.drivers;
 
 import controller.map.drivers.DriverUsage.ParamCount;
-import controller.map.misc.MapReaderAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -14,7 +13,6 @@ import model.misc.SimpleMultiMapModel;
 import util.NullCleaner;
 import util.Pair;
 import util.Warning;
-import util.Warning.Action;
 
 import static view.util.SystemOut.SYS_OUT;
 
@@ -40,7 +38,7 @@ import static view.util.SystemOut.SYS_OUT;
  *
  * @author Jonathan Lovelace
  */
-public final class SubsetDriver implements ISPDriver {
+public final class SubsetDriver implements SimpleDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
@@ -108,10 +106,7 @@ public final class SubsetDriver implements ISPDriver {
 			SYS_OUT.println("Usage: SubsetDriver mainMap playerMap [playerMap ...]");
 			return;
 		}
-		final MapReaderAdapter reader = new MapReaderAdapter();
-		final IMultiMapModel model = reader.readMultiMapModel(new Warning(Action.Ignore),
-				new File(args[0]), MapReaderAdapter.namesToFiles(true, args));
-		startDriver(model);
+		SimpleDriver.super.startDriver(args);
 	}
 
 	/**

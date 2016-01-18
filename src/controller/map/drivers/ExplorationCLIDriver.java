@@ -2,14 +2,11 @@ package controller.map.drivers;
 
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
-import controller.map.misc.MapReaderAdapter;
-import java.io.File;
 import java.io.IOException;
 import model.exploration.ExplorationModel;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
 import model.misc.IDriverModel;
-import util.Warning;
 import view.exploration.ExplorationCLI;
 import view.util.DriverQuit;
 
@@ -37,7 +34,7 @@ import static view.util.SystemOut.SYS_OUT;
  *
  * @author Jonathan Lovelace
  */
-public final class ExplorationCLIDriver implements ISPDriver {
+public final class ExplorationCLIDriver implements SimpleCLIDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
@@ -93,17 +90,7 @@ public final class ExplorationCLIDriver implements ISPDriver {
 			SYS_OUT.println(" master-map [player-map ...]");
 			DriverQuit.quit(1);
 		}
-		final MapReaderAdapter reader = new MapReaderAdapter();
-		final IDriverModel model = new ExplorationModel(
-															   reader.readMultiMapModel(
-																	   Warning.INSTANCE,
-																	   new File(args[0]),
-																	   MapReaderAdapter
-																			   .namesToFiles(
-																					   true,
-																					   args)));
-		startDriver(model);
-		reader.writeModel(model);
+		SimpleCLIDriver.super.startDriver(args);
 	}
 
 	/**

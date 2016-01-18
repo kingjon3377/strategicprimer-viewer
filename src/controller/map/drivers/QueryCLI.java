@@ -3,8 +3,6 @@ package controller.map.drivers;
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
-import controller.map.misc.MapReaderAdapter;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,8 +26,6 @@ import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
 import org.eclipse.jdt.annotation.Nullable;
 import util.TypesafeLogger;
-import util.Warning;
-import util.Warning.Action;
 
 import static view.util.SystemOut.SYS_OUT;
 
@@ -55,7 +51,7 @@ import static view.util.SystemOut.SYS_OUT;
  *
  * @author Jonathan Lovelace
  */
-public final class QueryCLI implements ISPDriver {
+public final class QueryCLI implements SimpleDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
@@ -461,8 +457,7 @@ public final class QueryCLI implements ISPDriver {
 			throw new DriverFailedException("Need one argument",
 					                               new IllegalArgumentException("Need one argument"));
 		}
-		startDriver(new MapReaderAdapter().readMapModel(new File(args[0]),
-				new Warning(Action.Warn)));
+		SimpleDriver.super.startDriver(args);
 	}
 
 	/**

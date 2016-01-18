@@ -1,7 +1,6 @@
 package controller.map.drivers;
 
 import controller.map.drivers.DriverUsage.ParamCount;
-import controller.map.misc.MapReaderAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import model.map.fixtures.resources.CacheFixture;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import util.Pair;
-import util.Warning;
 
 import static view.util.SystemOut.SYS_OUT;
 
@@ -43,7 +41,7 @@ import static view.util.SystemOut.SYS_OUT;
  *
  * @author Jonathan Lovelace
  */
-public final class DuplicateFixtureRemover implements ISPDriver {
+public final class DuplicateFixtureRemover implements SimpleCLIDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
@@ -147,11 +145,7 @@ public final class DuplicateFixtureRemover implements ISPDriver {
 			throw new DriverFailedException("Not enough arguments",
 												   new IllegalArgumentException("Need at least one argument"));
 		}
-		final MapReaderAdapter reader = new MapReaderAdapter();
-		final IMultiMapModel model = reader.readMultiMapModel(Warning.INSTANCE,
-				new File(args[0]), MapReaderAdapter.namesToFiles(true, args));
-		startDriver(model);
-		reader.writeModel(model);
+		SimpleCLIDriver.super.startDriver(args);
 	}
 
 	/**

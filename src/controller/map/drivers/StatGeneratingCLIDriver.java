@@ -5,7 +5,6 @@ import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
-import controller.map.misc.MapReaderAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -40,7 +39,6 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.Pair;
-import util.Warning;
 import view.util.SystemOut;
 
 import static util.SingletonRandom.RANDOM;
@@ -68,7 +66,7 @@ import static util.SingletonRandom.RANDOM;
  *
  * @author Jonathan Lovelace
  */
-public final class StatGeneratingCLIDriver implements ISPDriver {
+public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	/**
 	 * The prompt to use to ask the user if he or she wants to load names from file and
 	 * generate new stats.
@@ -132,22 +130,6 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error interacting with user", except);
 		}
-	}
-
-	/**
-	 * Start the driver.
-	 *
-	 * @param args command-line arguments
-	 * @throws DriverFailedException if the driver failed
-	 */
-	@Override
-	public void startDriver(final String... args) throws DriverFailedException {
-		final MapReaderAdapter reader = new MapReaderAdapter();
-		final IDriverModel model = new ExplorationModel(reader.readMultiMapModel(
-				Warning.INSTANCE, new File(args[0]),
-				MapReaderAdapter.namesToFiles(true, args)));
-		startDriver(model);
-		reader.writeModel(model);
 	}
 
 	/**

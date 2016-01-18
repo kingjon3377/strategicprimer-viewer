@@ -1,8 +1,7 @@
 package controller.map.drivers;
 
 import controller.map.drivers.DriverUsage.ParamCount;
-import controller.map.misc.MapReaderAdapter;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Random;
@@ -17,8 +16,6 @@ import model.viewer.TileViewSize;
 import model.viewer.ViewerModel;
 import util.NullCleaner;
 import util.Pair;
-import util.Warning;
-import util.Warning.Action;
 import view.map.main.CachingTileDrawHelper;
 import view.map.main.DirectTileDrawHelper;
 import view.map.main.TileDrawHelper;
@@ -49,7 +46,7 @@ import static view.util.SystemOut.SYS_OUT;
  *
  * @author Jonathan Lovelace
  */
-public final class DrawHelperComparator implements ISPDriver { // NOPMD
+public final class DrawHelperComparator implements SimpleDriver { // NOPMD
 	/**
 	 * The minimum row for the iteration-vs-filtering test.
 	 */
@@ -535,18 +532,6 @@ public final class DrawHelperComparator implements ISPDriver { // NOPMD
 				runAllTests(map, reps);
 			}
 		}
-	}
-
-	/**
-	 * Run the driver.
-	 *
-	 * @param args command-line arguments
-	 * @throws DriverFailedException on error
-	 */
-	@Override
-	public void startDriver(final String... args) throws DriverFailedException {
-		startDriver(new MapReaderAdapter().readMultiMapModel(new Warning(Action.Ignore),
-				new File(args[0]), MapReaderAdapter.namesToFiles(true, args)));
 	}
 
 	/**

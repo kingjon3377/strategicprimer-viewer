@@ -4,17 +4,14 @@ import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.FileChooser;
 import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
-import controller.map.misc.MapReaderAdapter;
 import java.io.File;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
 import util.Pair;
-import util.Warning;
-import util.Warning.Action;
 import view.map.main.ViewerFrame;
 
 /**
@@ -39,7 +36,7 @@ import view.map.main.ViewerFrame;
  *
  * @author Jonathan Lovelace
  */
-public final class ViewerStart implements ISPDriver {
+public final class ViewerStart implements SimpleDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
@@ -91,12 +88,10 @@ public final class ViewerStart implements ISPDriver {
 													   except);
 			}
 		} else {
-			// We get a MultiMapModel so the overload that takes a map-model can
-			// start one window for each map, without having to make multiple
-			// calls to the reader.
-			startDriver(new MapReaderAdapter().readMultiMapModel(new Warning(Action
-																					 .Warn),
-					new File(args[0]), MapReaderAdapter.namesToFiles(true, args)));
+			// We allow the default implementation to get a MultiMapModel so the
+			// overload that takes a map-model can start one window for each map,
+			// without having to make multiple calls to the reader.
+			SimpleDriver.super.startDriver(args);
 		}
 	}
 

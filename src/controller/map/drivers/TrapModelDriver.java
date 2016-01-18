@@ -3,8 +3,6 @@ package controller.map.drivers;
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
-import controller.map.misc.MapReaderAdapter;
-import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -18,8 +16,6 @@ import model.map.Point;
 import model.misc.IDriverModel;
 import util.NullCleaner;
 import util.TypesafeLogger;
-import util.Warning;
-import util.Warning.Action;
 
 import static model.map.PointFactory.point;
 import static view.util.SystemOut.SYS_OUT;
@@ -46,7 +42,7 @@ import static view.util.SystemOut.SYS_OUT;
  *
  * @author Jonathan Lovelace
  */
-public final class TrapModelDriver implements ISPDriver {
+public final class TrapModelDriver implements SimpleDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
@@ -288,8 +284,7 @@ public final class TrapModelDriver implements ISPDriver {
 			throw new DriverFailedException("Need one argument",
 					                               new IllegalArgumentException("Need one argument"));
 		}
-		startDriver(new MapReaderAdapter().readMapModel(new File(args[0]),
-				new Warning(Action.Warn)));
+		SimpleDriver.super.startDriver(args);
 	}
 
 	/**

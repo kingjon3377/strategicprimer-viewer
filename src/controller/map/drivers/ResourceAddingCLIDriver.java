@@ -5,8 +5,6 @@ import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
-import controller.map.misc.MapReaderAdapter;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +19,6 @@ import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
 import model.misc.IDriverModel;
 import model.resources.ResourceManagementDriver;
-import util.Warning;
 
 /**
  * A driver to let the user enter resources etc.
@@ -45,7 +42,7 @@ import util.Warning;
  *
  * @author Jonathan Lovelace
  */
-public class ResourceAddingCLIDriver implements ISPDriver {
+public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
@@ -87,16 +84,6 @@ public class ResourceAddingCLIDriver implements ISPDriver {
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error interacting with user", except);
 		}
-	}
-
-	@Override
-	public void startDriver(final String... args) throws DriverFailedException {
-		final MapReaderAdapter reader = new MapReaderAdapter();
-		final IDriverModel model =
-				new ResourceManagementDriver(reader.readMultiMapModel(Warning.INSTANCE,
-						new File(args[0]), MapReaderAdapter.namesToFiles(true, args)));
-		startDriver(model);
-		reader.writeModel(model);
 	}
 
 	private void enterResource(final IDFactory idf, final ResourceManagementDriver model,

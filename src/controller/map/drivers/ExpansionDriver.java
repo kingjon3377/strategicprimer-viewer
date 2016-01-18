@@ -1,7 +1,6 @@
 package controller.map.drivers;
 
 import controller.map.drivers.DriverUsage.ParamCount;
-import controller.map.misc.MapReaderAdapter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,7 +35,6 @@ import model.misc.SimpleMultiMapModel;
 import util.ArraySet;
 import util.NullCleaner;
 import util.Pair;
-import util.Warning;
 
 /**
  * A driver to update a player's map to include a certain minimum distance around allied
@@ -61,7 +59,7 @@ import util.Warning;
  *
  * @author Jonathan Lovelace
  */
-public final class ExpansionDriver implements ISPDriver {
+public final class ExpansionDriver implements SimpleCLIDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
@@ -127,12 +125,7 @@ public final class ExpansionDriver implements ISPDriver {
 												   new IllegalArgumentException("Need at" +
 																						" least two arguments"));
 		}
-		final File masterFile = new File(args[0]);
-		final MapReaderAdapter reader = new MapReaderAdapter();
-		final IMultiMapModel model = reader.readMultiMapModel(Warning.INSTANCE,
-				masterFile, MapReaderAdapter.namesToFiles(true, args));
-		startDriver(model);
-		reader.writeModel(model);
+		SimpleCLIDriver.super.startDriver(args);
 	}
 
 	/**
