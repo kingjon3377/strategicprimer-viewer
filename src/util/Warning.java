@@ -11,6 +11,9 @@ import java.util.logging.Logger;
  * While I'd like to combine the Warning class with the Action enum, there's at least
  * one subclass (that logs warnings to a GUI text label), so we can't.
  *
+ * TODO: Try making it an enum with 'custom', taking a Logger or method-handle, as an
+ * option for that case.
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
