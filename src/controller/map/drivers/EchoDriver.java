@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
-import model.misc.IDriverModel;
 import util.Warning;
 import util.Warning.Action;
 
@@ -36,7 +35,7 @@ import util.Warning.Action;
  *
  * @author Jonathan Lovelace
  */
-public final class EchoDriver implements ISPDriver {
+public final class EchoDriver implements UtilityDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
@@ -45,17 +44,6 @@ public final class EchoDriver implements ISPDriver {
 					               "Read, then write a map.",
 					               "Read and write a map, correcting deprecated syntax.",
 					               EchoDriver.class);
-
-	/**
-	 * @param model ignored
-	 * @throws DriverFailedException always
-	 */
-	@Override
-	public void startDriver(final IDriverModel model) throws DriverFailedException {
-		throw new DriverFailedException(new IllegalStateException("EchoDriver doesn't " +
-				                                                          "make sense on" +
-				                                                          " a driver-model object"));
-	}
 
 	/**
 	 * Run the driver.

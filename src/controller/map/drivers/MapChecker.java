@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
-import model.misc.IDriverModel;
 import util.TypesafeLogger;
 import util.Warning;
 
@@ -38,7 +37,7 @@ import static view.util.SystemOut.SYS_OUT;
  *
  * @author Jonathan Lovelace
  */
-public final class MapChecker implements ISPDriver {
+public final class MapChecker implements UtilityDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
@@ -128,18 +127,5 @@ public final class MapChecker implements ISPDriver {
 	@Override
 	public String toString() {
 		return "MapChecker";
-	}
-
-	/**
-	 * @param model ignored
-	 * @throws DriverFailedException always; this driver has finished once maps are fully
-	 *                               read.
-	 */
-	@Override
-	public void startDriver(final IDriverModel model) throws DriverFailedException {
-		throw new DriverFailedException(new IllegalStateException("MapChecker can't " +
-				                                                          "operate on a " +
-				                                                          "driver " +
-				                                                          "model"));
 	}
 }

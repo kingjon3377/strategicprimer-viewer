@@ -12,7 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
-import model.misc.IDriverModel;
 import util.TypesafeLogger;
 import util.Warning;
 
@@ -40,7 +39,7 @@ import static view.util.SystemOut.SYS_OUT;
  *
  * @author Jonathan Lovelace
  */
-public final class ConverterDriver implements ISPDriver {
+public final class ConverterDriver implements UtilityDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
@@ -59,19 +58,6 @@ public final class ConverterDriver implements ISPDriver {
 	 * The map reader we'll use.
 	 */
 	private static final MapReaderAdapter READER = new MapReaderAdapter();
-
-	/**
-	 * @param model ignored
-	 * @throws DriverFailedException always: this driver doesn't hold a map in memory any
-	 *                               longer than it has to
-	 */
-	@Override
-	public void startDriver(final IDriverModel model) throws DriverFailedException {
-		throw new DriverFailedException(new IllegalStateException("ConverterDriver can't" +
-				                                                          " operate on a" +
-				                                                          " driver " +
-				                                                          "model"));
-	}
 
 	/**
 	 * Run the driver.

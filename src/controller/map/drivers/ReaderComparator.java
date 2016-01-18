@@ -16,7 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
-import model.misc.IDriverModel;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
@@ -47,7 +46,7 @@ import static view.util.SystemOut.SYS_OUT;
  * @author Jonathan Lovelace
  */
 @SuppressWarnings("deprecation")
-public final class ReaderComparator implements ISPDriver {
+public final class ReaderComparator implements UtilityDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
@@ -179,18 +178,6 @@ public final class ReaderComparator implements ISPDriver {
 	@Override
 	public String toString() {
 		return "ReaderComparator";
-	}
-
-	/**
-	 * @param model ignored
-	 * @throws DriverFailedException always; this is meaningless on a driver-model.
-	 */
-	@Override
-	public void startDriver(final IDriverModel model) throws DriverFailedException {
-		throw new DriverFailedException(new IllegalStateException("ReaderComparator is " +
-																		  "meaningless " +
-																		  "for a driver " +
-																		  "model"));
 	}
 
 	/**
