@@ -52,5 +52,19 @@ public interface ISPDriver extends HasName {
 	default DriverUsage usage() {
 		throw new IllegalStateException("This driver has not implemented usage()");
 	}
+	/**
+	 * @return what to call the driver in a CLI list.
+	 */
+	@Override
+	default String getName() {
+		return usage().getShortDescription();
+	}
 
+	/**
+	 * @param nomen ignored
+	 */
+	@Override
+	default void setName(final String nomen) {
+		throw new IllegalStateException("Can't rename a driver");
+	}
 }

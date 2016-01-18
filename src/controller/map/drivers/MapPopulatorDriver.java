@@ -107,22 +107,6 @@ public final class MapPopulatorDriver implements ISPDriver {
 					               MapPopulatorDriver.class);
 
 	/**
-	 * @return what to call the driver in a CLI list.
-	 */
-	@Override
-	public String getName() {
-		return USAGE.getShortDescription();
-	}
-
-	/**
-	 * @param nomen ignored
-	 */
-	@Override
-	public void setName(final String nomen) {
-		throw new IllegalStateException("Can't rename a driver");
-	}
-
-	/**
 	 * Run the driver. This form is, at the moment, primarily for use in test code, but
 	 * that may change.
 	 *

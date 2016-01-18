@@ -110,22 +110,6 @@ public final class StatGeneratingCLIDriver implements ISPDriver {
 	}
 
 	/**
-	 * @return what to call the driver in a CLI list.
-	 */
-	@Override
-	public String getName() {
-		return USAGE.getShortDescription();
-	}
-
-	/**
-	 * @param nomen ignored
-	 */
-	@Override
-	public void setName(final String nomen) {
-		throw new IllegalStateException("Can't rename a driver");
-	}
-
-	/**
 	 * Run the driver.
 	 *
 	 * @param dmodel the driver model

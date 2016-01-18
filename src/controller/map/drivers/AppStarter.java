@@ -308,22 +308,6 @@ public final class AppStarter implements ISPDriver {
 	}
 
 	/**
-	 * @return what to call the driver in a CLI list.
-	 */
-	@Override
-	public String getName() {
-		return usage().getShortDescription();
-	}
-
-	/**
-	 * @param nomen ignored
-	 */
-	@Override
-	public void setName(final String nomen) {
-		throw new IllegalStateException("Can't rename a driver");
-	}
-
-	/**
 	 * @return a String representation of the object
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
