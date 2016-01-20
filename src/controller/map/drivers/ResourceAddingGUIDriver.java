@@ -89,7 +89,7 @@ public class ResourceAddingGUIDriver implements SimpleDriver {
 		} catch (final ChoiceInterruptedException except) {
 			throw new DriverFailedException("File choice was interrupted or user didn't choose",
 					                               except);
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error getting the path of the chosen file", except);
 		}
 	}
