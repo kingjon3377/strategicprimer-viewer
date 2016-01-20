@@ -418,13 +418,10 @@ public class Unit implements IUnit {
 				}
 			}
 			if (retval) {
-				if ("unassigned".equals(name) || "unassigned".equals(kind)) {
-					if (!members.isEmpty() && !other.iterator().hasNext()) {
-						ostream.append(ctxt);
-						ostream.append(
-								" Nonempty 'unassigned' when submap has it empty\n");
-					}
-				}
+				isConditionTrue(ostream,
+						("unassigned".equals(name) || "unassigned".equals(kind)) &&
+								!members.isEmpty() && !other.iterator().hasNext(), ctxt,
+						" Nonempty 'unassigned' when submap has it empty\n");
 				return true;
 			} else {
 				return false;
