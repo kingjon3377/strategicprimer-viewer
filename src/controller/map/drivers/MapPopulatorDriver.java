@@ -3,8 +3,6 @@ package controller.map.drivers;
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
-import controller.map.misc.MapReaderAdapter;
-import java.io.File;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Point;
@@ -12,8 +10,6 @@ import model.map.TileType;
 import model.map.fixtures.mobile.Animal;
 import model.misc.IDriverModel;
 import util.SingletonRandom;
-import util.Warning;
-import util.Warning.Action;
 
 /**
  * A driver to add some kind of fixture to suitable tiles throughout the map. Customize
@@ -38,7 +34,7 @@ import util.Warning.Action;
  *
  * @author Jonathan Lovelace
  */
-public final class MapPopulatorDriver implements ISPDriver {
+public final class MapPopulatorDriver implements SimpleCLIDriver {
 	/**
 	 * How many tiles we've found suitable so far.
 	 */
@@ -115,6 +111,8 @@ public final class MapPopulatorDriver implements ISPDriver {
 	@Override
 	public void startDriver(final IDriverModel model) {
 		populate(model.getMap());
+		System.out.printf("%d out of %d suitable locations were changed",
+				Integer.valueOf(changedCount), Integer.valueOf(suitableCount));
 	}
 
 	/**
@@ -129,13 +127,7 @@ public final class MapPopulatorDriver implements ISPDriver {
 			throw new DriverFailedException("Need one argument",
 					                               new IllegalArgumentException("Need one argument"));
 		}
-		final MapReaderAdapter reader = new MapReaderAdapter();
-		final IDriverModel model =
-				reader.readMapModel(new File(args[0]), new Warning(Action.Warn));
-		populate(model.getMap());
-		reader.writeModel(model);
-		System.out.printf("%d out of %d suitable locations were changed",
-				Integer.valueOf(changedCount), Integer.valueOf(suitableCount));
+		SimpleCLIDriver.super.startDriver(args);
 	}
 
 	/**
