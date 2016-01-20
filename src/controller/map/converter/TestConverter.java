@@ -1,5 +1,7 @@
 package controller.map.converter;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Objects;
 import java.util.stream.StreamSupport;
 import model.map.IMapNG;
@@ -10,13 +12,23 @@ import model.map.PlayerCollection;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.SPMapNG;
+import model.map.TileType;
+import model.map.fixtures.Ground;
+import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.resources.CacheFixture;
+import model.map.fixtures.resources.FieldStatus;
+import model.map.fixtures.resources.Grove;
+import model.map.fixtures.resources.Meadow;
+import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.Fortress;
+import model.map.fixtures.towns.TownStatus;
+import model.map.fixtures.towns.Village;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -85,7 +97,249 @@ public final class TestConverter {
 				doesIterableContain(converted.getOtherFixtures(zeroPoint),
 						fixtureFour));
 	}
+	/**
+	 * Test version-1 to version-2 conversion.
+	 */
+	@Test
+	public void testOneToTwoConversion() throws IOException {
+		final IMutableMapNG one =
+				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
+		one.setBaseTerrain(PointFactory.point(0, 0), TileType.BorealForest);
+		one.setBaseTerrain(PointFactory.point(0, 1), TileType.TemperateForest);
+		one.setBaseTerrain(PointFactory.point(1, 0), TileType.Desert);
+		one.setBaseTerrain(PointFactory.point(1, 1), TileType.Plains);
 
+		final String maxIterWarn = "FIXME: A fixture here was force-added after MAX_ITER";
+		final Player noPlayer = new Player(-1, "");
+
+		final IMutableMapNG converted =
+				new SPMapNG(new MapDimensions(8, 8, 2), new PlayerCollection(), -1);
+		converted.setBaseTerrain(PointFactory.point(0, 0), TileType.Steppe);
+		converted.setGround(PointFactory.point(0, 0), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(0, 0), new Forest("btree1", false));
+		converted.setBaseTerrain(PointFactory.point(0, 1), TileType.Steppe);
+		converted.setGround(PointFactory.point(0, 1), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(0, 1), new Forest("btree1", false));
+		converted.addFixture(PointFactory.point(0, 1), new Meadow("grain1", true, true, 12,
+				                                                         FieldStatus.Growing));
+		converted.setBaseTerrain(PointFactory.point(0, 2), TileType.Steppe);
+		converted.setGround(PointFactory.point(0, 2), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(0, 2), new Forest("btree1", false));
+		converted.addFixture(PointFactory.point(0, 2), new Forest("ttree1", false));
+		converted.setBaseTerrain(PointFactory.point(0, 3), TileType.Steppe);
+		converted.setGround(PointFactory.point(0, 3), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(0, 3), new Forest("btree1", false));
+		converted.addFixture(PointFactory.point(0, 3), new Grove(true, true, "fruit1", 9));
+		converted.setBaseTerrain(PointFactory.point(0, 4), TileType.Plains);
+		converted.setGround(PointFactory.point(0, 4), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(0, 4), new Forest("ttree1", false));
+		converted.setBaseTerrain(PointFactory.point(0, 5), TileType.Plains);
+		converted.setGround(PointFactory.point(0, 5), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(0, 5), new Forest("ttree1", false));
+		converted.setBaseTerrain(PointFactory.point(0, 6), TileType.Plains);
+		converted.setGround(PointFactory.point(0, 6), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(0, 6), new Forest("ttree1", false));
+		converted.setBaseTerrain(PointFactory.point(0, 7), TileType.Plains);
+		converted.setGround(PointFactory.point(0, 7), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(0, 7), new Forest("ttree1", false));
+		converted.setBaseTerrain(PointFactory.point(1, 0), TileType.Steppe);
+		converted.setGround(PointFactory.point(1, 0), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(1, 0), new Forest("btree1", false));
+		converted.setBaseTerrain(PointFactory.point(1, 1), TileType.Steppe);
+		converted.setGround(PointFactory.point(1, 1), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(1, 1), new Forest("btree1", false));
+		converted.addFixture(PointFactory.point(1, 1),
+				new Meadow("grain1", true, true, 6, FieldStatus.Growing));
+		converted.setBaseTerrain(PointFactory.point(1, 2), TileType.Steppe);
+		converted.setGround(PointFactory.point(1, 2), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(1, 2), new Forest("btree1", false));
+		converted.addFixture(PointFactory.point(1, 2),
+				new Village(TownStatus.Active, "", 0, noPlayer, "dwarf"));
+		converted.addFixture(PointFactory.point(1, 2), new TextFixture(maxIterWarn, 10));
+		converted.addFixture(PointFactory.point(1, 2), new Forest("ttree1", false));
+		converted.setBaseTerrain(PointFactory.point(1, 3), TileType.Steppe);
+		converted.setGround(PointFactory.point(1, 3), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(1, 3), new Forest("btree1", false));
+		converted.setBaseTerrain(PointFactory.point(1, 4), TileType.Plains);
+		converted.setGround(PointFactory.point(1, 4), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(1, 4), new Forest("ttree1", false));
+		converted.setBaseTerrain(PointFactory.point(1, 5), TileType.Plains);
+		converted.setGround(PointFactory.point(1, 5), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(1, 5), new Forest("ttree1", false));
+		converted.setBaseTerrain(PointFactory.point(1, 6), TileType.Plains);
+		converted.setGround(PointFactory.point(1, 6), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(1, 6), new Forest("ttree1", false));
+		converted.setBaseTerrain(PointFactory.point(1, 7), TileType.Plains);
+		converted.setGround(PointFactory.point(1, 7), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(1, 7), new Forest("ttree1", false));
+		converted.addFixture(PointFactory.point(1, 7),
+				new Meadow("grain1", true, true, 4, FieldStatus.Growing));
+		converted.setBaseTerrain(PointFactory.point(2, 0), TileType.Steppe);
+		converted.setGround(PointFactory.point(2, 0), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(2, 0), new Forest("btree1", false));
+		converted.setBaseTerrain(PointFactory.point(2, 1), TileType.Steppe);
+		converted.setGround(PointFactory.point(2, 1), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(2, 1), new Forest("btree1", false));
+		converted.setBaseTerrain(PointFactory.point(2, 2), TileType.Steppe);
+		converted.setGround(PointFactory.point(2, 2), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(2, 2), new Forest("btree1", false));
+		converted.addFixture(PointFactory.point(2, 2), new Forest("ttree1", false));
+		converted.setBaseTerrain(PointFactory.point(2, 3), TileType.Steppe);
+		converted.setGround(PointFactory.point(2, 3), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(2, 3), new Forest("btree1", false));
+		converted.addFixture(PointFactory.point(2, 3),
+				new Meadow("grain1", true, true, 21, FieldStatus.Growing));
+		converted.setBaseTerrain(PointFactory.point(2, 4), TileType.Plains);
+		converted.setGround(PointFactory.point(2, 4), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(2, 4), new Forest("ttree1", false));
+		converted.setBaseTerrain(PointFactory.point(2, 5), TileType.Plains);
+		converted.setGround(PointFactory.point(2, 5), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(2, 5), new Forest("ttree1", false));
+		converted.setBaseTerrain(PointFactory.point(2, 6), TileType.Plains);
+		converted.setGround(PointFactory.point(2, 6), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(2, 6), new Forest("ttree1", false));
+		converted.addFixture(PointFactory.point(2, 6),
+				new Village(TownStatus.Active, "", 1, noPlayer, "human"));
+		converted.addFixture(PointFactory.point(2, 6), new TextFixture(maxIterWarn, 10));
+		converted.setBaseTerrain(PointFactory.point(2, 7), TileType.Plains);
+		converted.setGround(PointFactory.point(2, 7), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(2, 7), new Forest("ttree1", false));
+		converted.addFixture(PointFactory.point(2, 7),
+				new Meadow("grain1", true, true, 20, FieldStatus.Growing));
+		converted.setBaseTerrain(PointFactory.point(3, 0), TileType.Steppe);
+		converted.setGround(PointFactory.point(3, 0), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(3, 0), new Forest("btree1", false));
+		converted.setBaseTerrain(PointFactory.point(3, 1), TileType.Steppe);
+		converted.setGround(PointFactory.point(3, 1), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(3, 1), new Forest("btree1", false));
+		converted.setBaseTerrain(PointFactory.point(3, 2), TileType.Steppe);
+		converted.setGround(PointFactory.point(3, 2), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(3, 2), new Forest("btree1", false));
+		converted.setBaseTerrain(PointFactory.point(3, 3), TileType.Steppe);
+		converted.setGround(PointFactory.point(3, 3), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(3, 3), new Forest("btree1", false));
+		converted.setBaseTerrain(PointFactory.point(3, 4), TileType.Plains);
+		converted.setGround(PointFactory.point(3, 4), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(3, 4), new Forest("ttree1", false));
+		converted.setBaseTerrain(PointFactory.point(3, 5), TileType.Plains);
+		converted.setGround(PointFactory.point(3, 5), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(3, 5), new Forest("ttree1", false));
+		converted.setBaseTerrain(PointFactory.point(3, 6), TileType.Plains);
+		converted.setGround(PointFactory.point(3, 6), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(3, 6), new Forest("ttree1", false));
+		converted.addFixture(PointFactory.point(3, 6),
+				new Meadow("grain1", true, true, 7, FieldStatus.Growing));
+		converted.setBaseTerrain(PointFactory.point(3, 7), TileType.Plains);
+		converted.setGround(PointFactory.point(3, 7), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(3, 7), new Forest("ttree1", false));
+		converted.addFixture(PointFactory.point(3, 7),
+				new Grove(true, true, "fruit1", 19));
+
+		converted.setBaseTerrain(PointFactory.point(4, 0), TileType.Desert);
+		converted.setGround(PointFactory.point(4, 0), new Ground("rock1", false));
+		converted.setBaseTerrain(PointFactory.point(4, 1), TileType.Desert);
+		converted.setGround(PointFactory.point(4, 1), new Ground("rock1", false));
+		converted.addFixture(PointFactory.point(4, 1),
+				new Meadow("grain1", true, true, 10, FieldStatus.Growing));
+		converted.setBaseTerrain(PointFactory.point(4, 2), TileType.Desert);
+		converted.setGround(PointFactory.point(4, 2), new Ground("rock1", false));
+		converted
+				.addFixture(PointFactory.point(4, 2), new Grove(true, true, "fruit1", 5));
+		converted.setBaseTerrain(PointFactory.point(4, 3), TileType.Desert);
+		converted.setGround(PointFactory.point(4, 3), new Ground("rock1", false));
+		converted
+				.addFixture(PointFactory.point(4, 3), new Grove(true, true, "fruit1", 18));
+		converted.setBaseTerrain(PointFactory.point(4, 4), TileType.Plains);
+		converted.setGround(PointFactory.point(4, 4), new Ground("rock1", false));
+		converted
+				.addFixture(PointFactory.point(4, 4), new Grove(true, true, "fruit1", 14));
+		converted.setBaseTerrain(PointFactory.point(4, 5), TileType.Plains);
+		converted.setGround(PointFactory.point(4, 5), new Ground("rock1", false));
+		converted
+				.addFixture(PointFactory.point(4, 5), new Grove(true, true, "fruit1", 16));
+		converted.setBaseTerrain(PointFactory.point(4, 6), TileType.Plains);
+		converted.setGround(PointFactory.point(4, 6), new Ground("rock1", false));
+		converted.addFixture(PointFactory.point(4, 6),
+				new Meadow("grain1", true, true, 8, FieldStatus.Growing));
+		converted.setBaseTerrain(PointFactory.point(4, 7), TileType.Plains);
+		converted.setGround(PointFactory.point(4, 7), new Ground("rock1", false));
+		converted.setBaseTerrain(PointFactory.point(5, 0), TileType.Plains);
+		converted.setGround(PointFactory.point(5, 0), new Ground("rock1", false));
+		converted.setBaseTerrain(PointFactory.point(5, 1), TileType.Desert);
+		converted.setGround(PointFactory.point(5, 1), new Ground("rock1", false));
+		converted.setBaseTerrain(PointFactory.point(5, 2), TileType.Plains);
+		converted.setGround(PointFactory.point(5, 2), new Ground("rock1", false));
+		converted.addFixture(PointFactory.point(5, 2),
+				new Village(TownStatus.Active, "", 2, noPlayer, "human"));
+		converted.addFixture(PointFactory.point(5, 2), new TextFixture(maxIterWarn, 10));
+		converted.setBaseTerrain(PointFactory.point(5, 3), TileType.Plains);
+		converted.setGround(PointFactory.point(5, 3), new Ground("rock1", false));
+		converted.setBaseTerrain(PointFactory.point(5, 4), TileType.Plains);
+		converted.setGround(PointFactory.point(5, 4), new Ground("rock1", false));
+		converted.addFixture(PointFactory.point(5, 4),
+				new Grove(true, true, "fruit1", 11));
+		converted.setBaseTerrain(PointFactory.point(5, 5), TileType.Plains);
+		converted.setGround(PointFactory.point(5, 5), new Ground("rock1", false));
+		converted.addFixture(PointFactory.point(5, 5),
+				new Village(TownStatus.Active, "", 3, noPlayer, "human"));
+		converted.addFixture(PointFactory.point(5, 5), new TextFixture(maxIterWarn, 10));
+		converted.setBaseTerrain(PointFactory.point(5, 6), TileType.Plains);
+		converted.setGround(PointFactory.point(5, 6), new Ground("rock1", false));
+		converted.addFixture(PointFactory.point(5, 6),
+				new Meadow("grain1", true, true, 13, FieldStatus.Growing));
+		converted.setBaseTerrain(PointFactory.point(5, 7), TileType.Plains);
+		converted.setGround(PointFactory.point(5, 7), new Ground("rock1", false));
+		converted.setBaseTerrain(PointFactory.point(6, 0), TileType.Plains);
+		converted.setGround(PointFactory.point(6, 0), new Ground("rock1", false));
+		converted.setBaseTerrain(PointFactory.point(6, 1), TileType.Desert);
+		converted.setGround(PointFactory.point(6, 1), new Ground("rock1", false));
+		converted.addFixture(PointFactory.point(6, 1),
+				new Meadow("grain1", true, true, 22, FieldStatus.Growing));
+		converted.setBaseTerrain(PointFactory.point(6, 2), TileType.Desert);
+		converted.setGround(PointFactory.point(6, 2), new Ground("rock1", false));
+		converted.addFixture(PointFactory.point(6, 2),
+				new Meadow("grain1", true, true, 15, FieldStatus.Growing));
+		converted.setBaseTerrain(PointFactory.point(6, 3), TileType.Plains);
+		converted.setGround(PointFactory.point(6, 3), new Ground("rock1", false));
+		converted.setBaseTerrain(PointFactory.point(6, 4), TileType.Plains);
+		converted.setGround(PointFactory.point(6, 4), new Ground("rock1", false));
+		converted.setBaseTerrain(PointFactory.point(6, 5), TileType.Plains);
+		converted.setGround(PointFactory.point(6, 5), new Ground("rock1", false));
+		converted.addFixture(PointFactory.point(6, 5),
+				new Grove(true, true, "fruit1", 17));
+		converted.setBaseTerrain(PointFactory.point(6, 6), TileType.Plains);
+		converted.setGround(PointFactory.point(6, 6), new Ground("rock1", false));
+		converted.setForest(PointFactory.point(6, 6), new Forest("ttree1", false));
+		converted.setBaseTerrain(PointFactory.point(6, 7), TileType.Plains);
+		converted.setGround(PointFactory.point(6, 7), new Ground("rock1", false));
+		converted.setBaseTerrain(PointFactory.point(7, 0), TileType.Plains);
+		converted.setGround(PointFactory.point(7, 0), new Ground("rock1", false));
+		converted.setBaseTerrain(PointFactory.point(7, 1), TileType.Plains);
+		converted.setGround(PointFactory.point(7, 1), new Ground("rock1", false));
+		converted.setBaseTerrain(PointFactory.point(7, 2), TileType.Plains);
+		converted.setGround(PointFactory.point(7, 2), new Ground("rock1", false));
+		converted.setBaseTerrain(PointFactory.point(7, 3), TileType.Desert);
+		converted.setGround(PointFactory.point(7, 3), new Ground("rock1", false));
+		converted.setBaseTerrain(PointFactory.point(7, 4), TileType.Plains);
+		converted.setGround(PointFactory.point(7, 4), new Ground("rock1", false));
+		converted.setBaseTerrain(PointFactory.point(7, 5), TileType.Plains);
+		converted.setGround(PointFactory.point(7, 5), new Ground("rock1", false));
+		converted.setBaseTerrain(PointFactory.point(7, 6), TileType.Plains);
+		converted.setGround(PointFactory.point(7, 6), new Ground("rock1", false));
+		converted.setBaseTerrain(PointFactory.point(7, 7), TileType.Plains);
+		converted.setGround(PointFactory.point(7, 7), new Ground("rock1", false));
+
+		StringWriter outOne = new StringWriter();
+		StringWriter outTwo = new StringWriter();
+		assertEquals("Products of two runs are both or neither subsets of expected",
+				converted.isSubset(
+						new OneToTwoConverter().convert(one, true), outOne, ""),
+				converted.isSubset(
+						new OneToTwoConverter().convert(one, true), outTwo, ""));
+		assertEquals("Two runs produce identical results", outOne.toString(), outTwo.toString());
+		assertTrue("Actual is at least subset of expected converted", converted.isSubset(
+				new OneToTwoConverter().convert(one, true), System.out, ""));
+	}
 	/**
 	 * Test whether an item is in an iterable. Note that the iterable's iterator will
 	 * have

@@ -56,8 +56,6 @@ import static util.NullCleaner.assertNotNull;
 /**
  * A class to convert a version-1 map to a version-2 map with greater resolution.
  *
- * TODO: Write tests.
- *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
