@@ -154,7 +154,7 @@ public class SPMapNG implements IMutableMapNG {
 					// campaign with a different data representation---perhaps a
 					// database---we should remove this
 					// check.
-					if (!fixtures.get(point).contains(forest)) {
+					if (!fixtures.containsKey(point) || !fixtures.get(point).contains(forest)) {
 						out.append(ctxt);
 						out.append(
 								"\tHas forest we don't, or different primary forest\n");
