@@ -204,6 +204,9 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			}
 		}
 
+		/**
+		 * @return the node's user object, asserting it is a Player
+		 */
 		@Override
 		public Player getUserObject() {
 			final Object obj = super.getUserObject();
@@ -211,6 +214,9 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			return (Player) obj;
 		}
 
+		/**
+		 * @param userObj the new user-object for the node, which must be a Player
+		 */
 		@Override
 		public void setUserObject(final Object userObj) {
 			if (userObj instanceof Player) {
@@ -243,6 +249,9 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			}
 		}
 
+		/**
+		 * @return the user object for the node, asserting that it is a String
+		 */
 		@Override
 		public String getUserObject() {
 			final Object obj = super.getUserObject();
@@ -250,6 +259,9 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			return (String) obj;
 		}
 
+		/**
+		 * @param userObj the user object for the node, which must be a String
+		 */
 		@Override
 		public void setUserObject(final Object userObj) {
 			if (userObj instanceof String) {
@@ -281,6 +293,9 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			}
 		}
 
+		/**
+		 * @return the user object for the node, asserting that it is an IUnit
+		 */
 		@Override
 		public IUnit getUserObject() {
 			final Object obj = super.getUserObject();
@@ -288,6 +303,9 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			return (IUnit) obj;
 		}
 
+		/**
+		 * @param userObj the new user object for the node, which must be an IUnit
+		 */
 		@Override
 		public void setUserObject(final Object userObj) {
 			if (userObj instanceof IUnit) {
@@ -314,6 +332,9 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			super(member, false);
 		}
 
+		/**
+		 * @return the user-object for the node, asserting that it is a UnitMember
+		 */
 		@Override
 		public UnitMember getUserObject() {
 			final Object obj = super.getUserObject();
@@ -321,6 +342,9 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			return (UnitMember) obj;
 		}
 
+		/**
+		 * @param userObj the new user-object for the node, which must be a UnitMember
+		 */
 		@Override
 		public void setUserObject(final Object userObj) {
 			if (userObj instanceof UnitMember) {

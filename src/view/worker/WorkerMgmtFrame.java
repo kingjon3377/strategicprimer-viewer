@@ -648,24 +648,56 @@ public final class WorkerMgmtFrame extends JFrame {
 		}
 	}
 
+	/**
+	 * An action to request focus in a component.
+	 */
 	private static class FocusRequester extends AbstractAction {
+		/**
+		 * The component we care about.
+		 */
 		private final JComponent component;
 
+		/**
+		 * Constructor.
+		 * @param comp The component to request focus in.
+		 */
 		protected FocusRequester(final WorkerTree comp) {
 			component = comp;
 		}
 
+		/**
+		 * Handle the menu item click.
+		 * @param evt the event to handle
+		 */
 		@Override
 		public void actionPerformed(final @Nullable ActionEvent evt) {
 			component.requestFocusInWindow();
 		}
 	}
 
+	/**
+	 * Handler for mouse clicks in the report tree.
+	 */
 	private static class reportMouseHandler extends MouseAdapter {
+		/**
+		 * The report tree.
+		 */
 		private final JTree report;
+		/**
+		 * The driver model.
+		 */
 		private final IWorkerModel model;
+		/**
+		 * The menu-item handler.
+		 */
 		private final IOHandler ioh;
 
+		/**
+		 * Constructor.
+		 * @param reportTree The report tree.
+		 * @param workerModel the driver model
+		 * @param ioHandler the menu-item handler
+		 */
 		protected reportMouseHandler(final JTree reportTree,
 									 final IWorkerModel workerModel,
 									 final IOHandler ioHandler) {
@@ -674,6 +706,10 @@ public final class WorkerMgmtFrame extends JFrame {
 			ioh = ioHandler;
 		}
 
+		/**
+		 * Handle a mouse press.
+		 * @param evt the event to handle
+		 */
 		@Override
 		public void mousePressed(final @Nullable MouseEvent evt) {
 			if (evt == null) {

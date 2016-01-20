@@ -232,6 +232,9 @@ public final class ArrowKeyListener {
 			this(action, 1);
 		}
 
+		/**
+		 * @param e the event to pass to the wrapped ActionListener
+		 */
 		@Override
 		public void actionPerformed(final ActionEvent e) {
 			for (int i = 0; i < count; i++) {

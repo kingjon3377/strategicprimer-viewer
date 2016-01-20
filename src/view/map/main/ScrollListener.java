@@ -197,11 +197,30 @@ public final class ScrollListener implements MapChangeListener,
 		return "ScrollListener";
 	}
 
+	/**
+	 * A class to verify scroll-bar input.
+	 */
 	private static class LocalInputVerifier extends InputVerifier {
+		/**
+		 * The dimensions of the map.
+		 */
 		private final MapDimensions dimensions;
+		/**
+		 * The map model.
+		 */
 		private final IViewerModel map;
+		/**
+		 * Whether we're verifying the horizontal scrollbar. (If false, the vertical.)
+		 */
 		private final boolean horiz;
 
+		/**
+		 * Constructor.
+		 * @param mapDim the dimensions of the map
+		 * @param mapModel the map model
+		 * @param horizontal whether we're verifying the horizontal scrollbar, rather
+		 *                         than the vertical.
+		 */
 		protected LocalInputVerifier(final MapDimensions mapDim,
 									 final IViewerModel mapModel,
 									 final boolean horizontal) {
@@ -210,6 +229,9 @@ public final class ScrollListener implements MapChangeListener,
 			horiz = horizontal;
 		}
 
+		/**
+		 * @return the map's size in the dimension we're concerned with
+		 */
 		private int dimension() {
 			if (horiz) {
 				return dimensions.cols;
@@ -218,6 +240,9 @@ public final class ScrollListener implements MapChangeListener,
 			}
 		}
 
+		/**
+		 * @return the map's visible size in the dimension we're concerned with
+		 */
 		private int visibleDimension() {
 			if (horiz) {
 				return map.getDimensions().getWidth();
@@ -226,6 +251,12 @@ public final class ScrollListener implements MapChangeListener,
 			}
 		}
 
+		/**
+		 * TODO: This doesn't seem quite right.
+		 * @param input a component
+		 * @return true iff it is a scrollbar and its value is between 0 and the size of
+		 * the map minus the visible size of the map.
+		 */
 		@Override
 		public boolean verify(@Nullable final JComponent input) {
 			return (input instanceof JScrollBar)

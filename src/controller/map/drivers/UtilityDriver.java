@@ -25,6 +25,13 @@ import model.misc.IDriverModel;
  * @author Jonathan Lovelace
  */
 public interface UtilityDriver extends ISPDriver {
+	/**
+	 * Try to start the driver. This default method always throws, because a utility
+	 * driver most often can't operate on a driver model.
+	 * @param model the driver-model that should be used by the app
+	 * @throws DriverFailedException always: a utility driver operates on files
+	 * directly, not a driver model.
+	 */
 	default void startDriver(IDriverModel model) throws DriverFailedException {
 		throw new DriverFailedException(new IllegalStateException("A utility driver can't operate on a driver model"));
 	}

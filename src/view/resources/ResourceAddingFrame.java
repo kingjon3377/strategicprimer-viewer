@@ -52,19 +52,57 @@ import view.worker.WorkerMenu;
  * @author Jonathan Lovelace
  */
 public class ResourceAddingFrame extends JFrame {
+	/**
+	 * The driver model.
+	 */
 	private final ResourceManagementDriver model;
+	/**
+	 * The current player.
+	 */
 	@SuppressWarnings({"FieldMayBeFinal", "CanBeFinal"})
 	private Player current;
+	/**
+	 * The "resource" label.
+	 */
 	private final JLabel resourceLabel;
+	/**
+	 * The "implement" label.
+	 */
 	private final JLabel implementLabel;
+	/**
+	 * The combo box for resource kinds.
+	 */
 	private final UpdatedComboBox resKindBox = new UpdatedComboBox();
+	/**
+	 * The parser for integers.
+	 */
 	private final NumberFormat nf = NumberFormat.getIntegerInstance();
+	/**
+	 * The text field for the turn resources were created
+	 */
 	private final JFormattedTextField resCreatedField = new JFormattedTextField(nf);
+	/**
+	 * The combo box for resource types.
+	 */
 	private final UpdatedComboBox resourceBox = new UpdatedComboBox();
+	/**
+	 * The text field for resource quantities.
+	 */
 	private final JFormattedTextField resQtyField = new JFormattedTextField(nf);
+	/**
+	 * The combo box for resource units.
+	 */
 	private final UpdatedComboBox resUnitsBox = new UpdatedComboBox();
+	/**
+	 * The combo box for implement kinds.
+	 */
 	private final UpdatedComboBox implKindBox = new UpdatedComboBox();
 
+	/**
+	 * Constructor.
+	 * @param dmodel the driver model
+	 * @param ioh the I/O handler for menu items
+	 */
 	public ResourceAddingFrame(final ResourceManagementDriver dmodel, final IOHandler ioh) {
 		super("Resource Entry");
 		model = dmodel;
@@ -140,6 +178,12 @@ public class ResourceAddingFrame extends JFrame {
 		pack();
 	}
 
+	/**
+	 * Add two components in a panel joining them vertically.
+	 * @param container the container to add the panel containing the two components to
+	 * @param firstComponent the first component
+	 * @param secondComponent the second component
+	 */
 	private static void addPair(final Container container, final Component firstComponent,
 								final Component secondComponent) {
 		final JPanel panel = new BoxPanel(false);
@@ -152,6 +196,10 @@ public class ResourceAddingFrame extends JFrame {
 	}
 
 	/**
+	 * A combo-box that handles 'enter' properly.
+	 *
+	 * TODO: Should handle Tab as well, if it doesn't already.
+	 *
 	 * TODO: The central functionality of this should be a top-level class in view.util
 	 */
 	private static class UpdatedComboBox extends JComboBox<String> {
@@ -192,8 +240,15 @@ public class ResourceAddingFrame extends JFrame {
 			}
 		}
 
+		/**
+		 * The values we've had in the past.
+		 */
 		private final Collection<String> values = new HashSet<>();
 
+		/**
+		 * Clear the combo box, but if its value was one we haven't had previously, add
+		 * it to the drop-down list.
+		 */
 		public void checkAndClear() {
 			final String item = getSelectedItem().toString().trim();
 			if (!values.contains(item)) {

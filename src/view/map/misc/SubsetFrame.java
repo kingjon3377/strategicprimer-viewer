@@ -82,6 +82,9 @@ public final class SubsetFrame extends JFrame {
 	 */
 	@SuppressWarnings("resource")
 	private static final class HTMLWriter extends FilterWriter {
+		/**
+		 * Pre-compiled pattern for matching newlines.
+		 */
 		private static final Pattern NEWLINE = Pattern.compile("\n");
 		/**
 		 * Whether we're at the start of a line.

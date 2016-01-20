@@ -52,6 +52,11 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 								   "Add resources for players to maps",
 								   ResourceAddingCLIDriver.class);
 
+	/**
+	 * Start the driver.
+	 * @param model the driver-model that should be used by the app
+	 * @throws DriverFailedException on any failure
+	 */
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
 		final ResourceManagementDriver dmodel;
@@ -86,6 +91,14 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 		}
 	}
 
+	/**
+	 * Ask the user to enter a resource.
+	 * @param idf the ID factory
+	 * @param model the driver model
+	 * @param cli how to interact with the user
+	 * @param player the current player
+	 * @throws IOException on I/O error interacting with the user
+	 */
 	private void enterResource(final IDFactory idf, final ResourceManagementDriver model,
 							   final ICLIHelper cli, final Player player)
 			throws IOException {
@@ -103,6 +116,14 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 										units), player);
 	}
 
+	/**
+	 * Ask the user to enter an Implement.
+	 * @param idf the ID factory
+	 * @param model the driver model
+	 * @param cli how to interact with the user
+	 * @param player the current player
+	 * @throws IOException on I/O error interacting with the user
+	 */
 	private static void enterImplement(final IDFactory idf, final ResourceManagementDriver
 															 model,
 								final ICLIHelper cli, final Player player)
@@ -112,8 +133,17 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 				player);
 	}
 
+	/**
+	 * The kinds of resources the user has entered before.
+	 */
 	private final Set<String> resourceKinds = new HashSet<>();
 
+	/**
+	 * Ask the user to choose or enter a resource kind.
+	 * @param cli how to interact with the user
+	 * @return the chosen resource-kind
+	 * @throws IOException on I/O error interacting with the user
+	 */
 	private String getResourceKind(final ICLIHelper cli) throws IOException {
 		final List<String> list = new ArrayList<>(resourceKinds);
 		final int num = cli.chooseStringFromList(list, "Possible kinds of resources:",
@@ -127,8 +157,18 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 		}
 	}
 
+	/**
+	 * A map from resource-kinds to the resource-content types the user has entered before.
+	 */
 	private final Map<String, Set<String>> resourceContents = new HashMap<>();
 
+	/**
+	 * Ask the user to choose or enter a resource-content-type for a given resource kind.
+	 * @param kind the chosen kind
+	 * @param cli how to interact with the user
+	 * @return the chosen resource content type
+	 * @throws IOException on I/O error interacting with the user
+	 */
 	private String getResourceContents(final String kind, final ICLIHelper cli)
 			throws IOException {
 		final Set<String> set;
@@ -151,8 +191,18 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 		}
 	}
 
+	/**
+	 * A map from resource types to units.
+	 */
 	private final Map<String, String> resourceUnits = new HashMap<>();
 
+	/**
+	 * Ask the user to choose units for a type of resource.
+	 * @param resource the resource type
+	 * @param cli how to interact with the user
+	 * @return the chosen units
+	 * @throws IOException on I/O error interacting with the user
+	 */
 	private String getResourceUnits(final String resource, final ICLIHelper cli)
 			throws IOException {
 		if (resourceUnits.containsKey(resource)) {

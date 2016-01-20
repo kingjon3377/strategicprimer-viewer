@@ -619,6 +619,10 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		}
 	}
 
+	/**
+	 * @param obj an object
+	 * @return whether it's the same as this one
+	 */
 	@Override
 	public boolean equals(final Object obj) {
 		return (this == obj) || ((obj instanceof ProxyUnit) &&
@@ -628,6 +632,9 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 				                         proxied.equals(((ProxyUnit) obj).getProxied()));
 	}
 
+	/**
+	 * @return a hash value for the object
+	 */
 	@Override
 	public int hashCode() {
 		final Iterator<IUnit> iter = proxied.iterator();

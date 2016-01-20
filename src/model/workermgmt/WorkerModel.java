@@ -184,6 +184,11 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 		SystemOut.SYS_OUT.println("No suitable location found");
 	}
 
+	/**
+	 * @param owner the unit's owner
+	 * @param id    the ID # to search for
+	 * @return the unit with that ID, or null if none.
+	 */
 	@Override
 	public @Nullable IUnit getUnitByID(final Player owner, final int id) {
 		final Optional<IUnit> retval =

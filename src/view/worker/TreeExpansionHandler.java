@@ -46,6 +46,9 @@ public final class TreeExpansionHandler implements TreeExpansionOrderListener {
 		return "TreeExpansionHandler";
 	}
 
+	/**
+	 * Expand all rows of the tree.
+	 */
 	@Override
 	public void expandAll() {
 		for (int i = 0; i < tree.getRowCount(); i++) {
@@ -53,6 +56,9 @@ public final class TreeExpansionHandler implements TreeExpansionOrderListener {
 		}
 	}
 
+	/**
+	 * Collapse all rows of the tree.
+	 */
 	@Override
 	public void collapseAll() {
 		int i = tree.getRowCount() - 1;
@@ -64,6 +70,10 @@ public final class TreeExpansionHandler implements TreeExpansionOrderListener {
 		}
 	}
 
+	/**
+	 * Expand some rows of the tree.
+	 * @param levels how many levels from the root, inclusive, to expand
+	 */
 	@Override
 	public void expandSome(final int levels) {
 		for (int i = 0; i < tree.getRowCount(); i++) {

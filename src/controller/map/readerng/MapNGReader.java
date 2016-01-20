@@ -87,6 +87,9 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	 */
 	private static final List<String> tags =
 			Collections.unmodifiableList(Arrays.asList("map", "view"));
+	/**
+	 * Pre-compiled pattern for exceptions we want to wrap.
+	 */
 	private static final Pattern EXCEPT_PATTERN =
 			Pattern.compile("^Wanted [^ ]*, was [^ " +
 									"]*$");

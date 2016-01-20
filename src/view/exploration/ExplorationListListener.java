@@ -214,11 +214,18 @@ public final class ExplorationListListener implements ListDataListener {
 			wrapped = lmodel;
 		}
 
+		/**
+		 * @param index an index
+		 * @return the object at that index
+		 */
 		@Override
 		public E get(final int index) {
 			return wrapped.getElementAt(index);
 		}
 
+		/**
+		 * @return the size of the list-model
+		 */
 		@Override
 		public int size() {
 			return wrapped.getSize();

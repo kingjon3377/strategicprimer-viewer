@@ -70,6 +70,10 @@ public final class ComparablePair<K extends Comparable<K>, V extends Comparable<
 		return new ComparablePair<>(first, second);
 	}
 
+	/**
+	 * @param obj an object
+	 * @return whether it is equal to this one
+	 */
 	@SuppressWarnings("RawUseOfParameterized")
 	@Override
 	public boolean equals(final Object obj) {

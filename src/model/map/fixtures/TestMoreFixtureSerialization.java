@@ -85,6 +85,9 @@ public final class TestMoreFixtureSerialization extends
 	 * Extracted constant.
 	 */
 	private static final String STATUS_PROPERTY = "status";
+	/**
+	 * Pre-compiled pattern for matching "kind".
+	 */
 	private static final Pattern KIND_PATTERN =
 			Pattern.compile(KIND_PROPERTY, Pattern.LITERAL);
 

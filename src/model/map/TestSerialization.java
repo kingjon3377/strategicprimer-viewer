@@ -57,6 +57,9 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 * Extracted constant.
 	 */
 	private static final String KIND_PROPERTY = "kind";
+	/**
+	 * Pre-compiled pattern for matching "kind".
+	 */
 	private static final Pattern KIND_PATTERN =
 			Pattern.compile(KIND_PROPERTY, Pattern.LITERAL);
 
