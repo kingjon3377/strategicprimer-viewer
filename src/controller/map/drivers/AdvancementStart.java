@@ -4,15 +4,12 @@ import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.FileChooser;
 import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
-import controller.map.misc.MapReaderAdapter;
 import java.io.File;
+import java.io.IOException;
 import javax.swing.SwingUtilities;
 import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
-import util.NullCleaner;
-import util.Warning;
-import util.Warning.Action;
 import view.worker.AdvancementFrame;
 
 /**
@@ -37,7 +34,7 @@ import view.worker.AdvancementFrame;
  *
  * @author Jonathan Lovelace
  */
-public final class AdvancementStart implements ISPDriver {
+public final class AdvancementStart implements SimpleDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
@@ -78,28 +75,15 @@ public final class AdvancementStart implements ISPDriver {
 		try {
 			final File file; // NOPMD
 			if (args.length == 0) {
-				file = new FileChooser(new File("")).getFile();
+				SimpleDriver.super.startDriver(new FileChooser(new File("")).getFile().getCanonicalPath());
 			} else {
-				file =
-						new FileChooser(new File(NullCleaner.valueOrDefault(
-								args[0], ""))).getFile();
+				SimpleDriver.super.startDriver(args);
 			}
-			final IWorkerModel model = new WorkerModel(
-															  new MapReaderAdapter()
-																	  .readMultiMapModel(
-																			  new
-																					  Warning(Action.Warn),
-																			  file,
-																			  MapReaderAdapter
-																					  .namesToFiles(
-																							  true,
-																							  args)));
-			SwingUtilities.invokeLater(
-					() -> new AdvancementFrame(model, new IOHandler(model))
-							      .setVisible(true));
 		} catch (final ChoiceInterruptedException except) {
 			throw new DriverFailedException("File choice was interrupted or user didn't choose",
 												   except);
+		} catch (IOException except) {
+			throw new DriverFailedException("I/O error getting the path of the chosen file", except);
 		}
 	}
 
