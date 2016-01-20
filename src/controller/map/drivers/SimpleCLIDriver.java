@@ -28,6 +28,7 @@ import util.Warning;
  *
  * @author Jonathan Lovelace
  */
+@FunctionalInterface
 public interface SimpleCLIDriver extends SimpleDriver {
 	/**
 	 * Run the driver. If the driver is a GUIDriver, this should use

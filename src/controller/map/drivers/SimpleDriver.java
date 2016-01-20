@@ -26,6 +26,7 @@ import util.Warning;
  *
  * @author Jonathan Lovelace
  */
+@FunctionalInterface
 public interface SimpleDriver extends ISPDriver {
 	/**
 	 * Run the driver. If the driver is a GUIDriver, this should use

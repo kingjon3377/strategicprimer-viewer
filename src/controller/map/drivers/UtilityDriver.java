@@ -24,6 +24,7 @@ import model.misc.IDriverModel;
  *
  * @author Jonathan Lovelace
  */
+@FunctionalInterface
 public interface UtilityDriver extends ISPDriver {
 	/**
 	 * Try to start the driver. This default method always throws, because a utility
