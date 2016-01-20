@@ -4,6 +4,7 @@ import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import java.io.File;
 import java.io.IOException;
+import java.util.stream.Stream;
 import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMutableMapNG;
@@ -101,12 +102,7 @@ public final class SubsetGUIDriver implements ISPDriver {
 			throw new DriverFailedException("Invalid SP XML in main map "
 													+ first.getPath(), except);
 		}
-		for (final String arg : args) {
-			if (arg.equals(args[0])) {
-				continue;
-			}
-			frame.test(new File(arg));
-		}
+		Stream.of(args).skip(1).map(arg -> new File(arg)).forEach(frame::test);
 	}
 
 	/**
