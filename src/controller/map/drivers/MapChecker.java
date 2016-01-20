@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import javax.xml.stream.XMLStreamException;
 import util.TypesafeLogger;
 import util.Warning;
@@ -69,11 +70,7 @@ public final class MapChecker implements UtilityDriver {
 			throw new DriverFailedException("Need at least one argument",
 					                               new IllegalArgumentException("Need at least one argument"));
 		}
-		for (final String filename : args) {
-			if (filename != null) {
-				check(new File(filename));
-			}
-		}
+		Stream.of(args).map(arg -> new File(arg)).forEach(this::check);
 	}
 
 	/**
