@@ -329,8 +329,8 @@ public final class TestConverter {
 		converted.setBaseTerrain(PointFactory.point(7, 7), TileType.Plains);
 		converted.setGround(PointFactory.point(7, 7), new Ground("rock1", false));
 
-		StringWriter outOne = new StringWriter();
-		StringWriter outTwo = new StringWriter();
+		final StringWriter outOne = new StringWriter();
+		final StringWriter outTwo = new StringWriter();
 		assertEquals("Products of two runs are both or neither subsets of expected",
 				converted.isSubset(
 						new OneToTwoConverter().convert(one, true), outOne, ""),

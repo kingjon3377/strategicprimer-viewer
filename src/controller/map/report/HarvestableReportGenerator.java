@@ -145,8 +145,8 @@ public final class HarvestableReportGenerator
 																		  "such</h5>");
 		shrubsText.addAll(shrubs.entrySet().stream()
 								  .map(entry -> {
-									  List<Point> lst = entry.getValue();
-									  StringBuilder builder = new StringBuilder(lst.size() * 10);
+									  final List<Point> lst = entry.getValue();
+									  final StringBuilder builder = new StringBuilder(lst.size() * 10);
 									  pointCSL(builder, lst);
 									  return concat(entry.getKey(), ": at ",
 											  builder.toString());
