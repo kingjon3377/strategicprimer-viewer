@@ -100,6 +100,7 @@ public final class TestConverter {
 	/**
 	 * Test version-1 to version-2 conversion.
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testOneToTwoConversion() throws IOException {
 		final IMutableMapNG one =
@@ -152,7 +153,7 @@ public final class TestConverter {
 		converted.setForest(PointFactory.point(1, 2), new Forest("btree1", false));
 
 		final Player noPlayer = new Player(-1, "");
-		
+
 		converted.addFixture(PointFactory.point(1, 2),
 				new Village(TownStatus.Active, "", 0, noPlayer, "dwarf"));
 
