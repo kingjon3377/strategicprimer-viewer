@@ -54,10 +54,23 @@ import static org.junit.Assert.assertTrue;
  * @author Jonathan Lovelace
  */
 public final class TestConverter {
-
+	/**
+	 * Extracted constant: the type of rock used in the test-data tables.
+	 */
 	public static final String ROCK_TYPE = "rock1";
+	/**
+	 * Extracted constant: the type of tree used for boreal forests in the test-data
+	 * tables.
+	 */
 	public static final String BOREAL_TREE = "btree1";
+	/**
+	 * Extracted constant: the type of field used in the test-data tables.
+	 */
 	public static final String FIELD_TYPE = "grain1";
+	/**
+	 * Extracted constant: the type of tree used for temperate forests in the test-data
+	 * tables.
+	 */
 	public static final String TEMP_TREE = "ttree1";
 
 	/**
@@ -104,6 +117,8 @@ public final class TestConverter {
 	}
 	/**
 	 * Test version-1 to version-2 conversion.
+	 *
+	 * TODO: Make the converter (and the tests) pass the map size to the encounter tables.
 	 */
 	@SuppressWarnings("deprecation")
 	@Test
