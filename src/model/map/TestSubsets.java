@@ -59,7 +59,7 @@ public final class TestSubsets {
 	 */
 	@SuppressWarnings(ST_MET)
 	@Test
-	public void testPlayerCollectionSubset() throws IOException {
+	public void testPlayerCollectionSubset() {
 		final PlayerCollection firstCollection = new PlayerCollection();
 		firstCollection.add(new Player(1, ONE_STR));
 		final PlayerCollection secondCollection = new PlayerCollection();
