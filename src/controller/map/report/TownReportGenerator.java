@@ -83,11 +83,9 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		Collections.sort(sorted, new TownComparator());
 		// FIXME: Within any given status, sort by distance from HQ
 		final int len = 80 + (sorted.size() * 512);
-		final StringBuilder builder = new StringBuilder(len)
-				                              .append("<h4>Cities, towns, and/or " +
-						                                      "fortifications ")
-				                              .append("you know about:</h4>\n")
-				                              .append(OPEN_LIST);
+		final StringBuilder builder = new StringBuilder(len);
+		builder.append("<h4>Cities, towns, and/or fortifications you know about:</h4>\n");
+		builder.append(OPEN_LIST);
 		for (final AbstractTown town : sorted) {
 			builder.append(OPEN_LIST_ITEM).append(
 					produce(fixtures, map, currentPlayer, town, townLocs.get(town)))
