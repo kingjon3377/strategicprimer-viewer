@@ -102,7 +102,7 @@ public final class SubsetGUIDriver implements ISPDriver {
 			throw new DriverFailedException("Invalid SP XML in main map "
 													+ first.getPath(), except);
 		}
-		Stream.of(args).skip(1).map(arg -> new File(arg)).forEach(frame::test);
+		Stream.of(args).skip(1).map(File::new).forEach(frame::test);
 	}
 
 	/**

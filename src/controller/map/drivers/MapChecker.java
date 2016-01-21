@@ -70,7 +70,7 @@ public final class MapChecker implements UtilityDriver {
 			throw new DriverFailedException("Need at least one argument",
 					                               new IllegalArgumentException("Need at least one argument"));
 		}
-		Stream.of(args).map(arg -> new File(arg)).forEach(this::check);
+		Stream.of(args).map(File::new).forEach(this::check);
 	}
 
 	/**
