@@ -121,7 +121,6 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 */
 	protected void handleMove() {
 		try {
-			final List<TileFixture> fixtures = getSelectedValuesList();
 			if (Direction.Nowhere == direction) {
 				final int swearing = JOptionPane.showConfirmDialog(null,
 						"Should the explorer swear any villages on this tile?");
@@ -143,6 +142,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 			final Player player =
 					NullCleaner.assertNotNull(model.getSelectedUnit()).getOwner();
 			final Collection<CacheFixture> caches = new HashSet<>();
+			final List<TileFixture> fixtures = getSelectedValuesList();
 			for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 				final IMutableMapNG map = pair.first();
 				map.setBaseTerrain(dPoint, model.getMap()

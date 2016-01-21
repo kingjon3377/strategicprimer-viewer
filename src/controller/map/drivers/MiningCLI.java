@@ -69,8 +69,6 @@ public final class MiningCLI {
 			System.exit(2);
 			return;
 		}
-		final LodeStatus initial =
-				NullCleaner.assertNotNull(LodeStatus.values()[index]);
 		final long seed;
 		if (args.length >= 3) {
 			try {
@@ -83,6 +81,8 @@ public final class MiningCLI {
 		} else {
 			seed = System.currentTimeMillis();
 		}
+		final LodeStatus initial =
+				NullCleaner.assertNotNull(LodeStatus.values()[index]);
 		final MiningModel model = new MiningModel(initial, seed);
 		final Point lowerRight = model.getMaxPoint();
 		final int maxCol = lowerRight.col + 1;

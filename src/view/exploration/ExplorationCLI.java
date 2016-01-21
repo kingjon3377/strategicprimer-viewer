@@ -165,8 +165,6 @@ public final class ExplorationCLI {
 		}
 		final Direction direction =
 				assertNotNull(Direction.values()[directionNum]);
-		final Point point = model.getSelectedUnitLocation();
-		final Point dPoint = model.getDestination(point, direction);
 		int cost; // NOPMD
 		try {
 			cost = model.move(direction);
@@ -177,6 +175,8 @@ public final class ExplorationCLI {
 			helper.println("all maps show that at a cost of 1 MP");
 			return 1; // NOPMD
 		}
+		final Point point = model.getSelectedUnitLocation();
+		final Point dPoint = model.getDestination(point, direction);
 		final Collection<TileFixture> constants = new ArrayList<>();
 		final IMutableMapNG map = model.getMap();
 		if (map.isMountainous(dPoint)) {
