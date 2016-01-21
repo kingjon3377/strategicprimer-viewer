@@ -18,7 +18,7 @@ import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.Fortress;
 import org.junit.Test;
 import util.Pair;
-import util.Warning.Action;
+import util.Warning;
 
 import static model.map.PointFactory.point;
 import static model.map.River.Lake;
@@ -315,11 +315,11 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertEquivalentForms("Two maps, one with row tags, one without",
 				"<map rows=\"1\" columns=\"1\" version=\"2\" />",
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><row /></map>",
-				IMapNG.class, Action.Die);
+				IMapNG.class, Warning.Die);
 		assertEquivalentForms("Two maps, one with future tag, one without",
 				"<map rows=\"1\" columns=\"1\" version=\"2\" />",
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>",
-				IMapNG.class, Action.Ignore);
+				IMapNG.class, Warning.Ignore);
 		assertUnsupportedTag(
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>",
 				IMapNG.class, "future", true);

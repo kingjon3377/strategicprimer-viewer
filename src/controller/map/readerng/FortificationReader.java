@@ -54,9 +54,9 @@ public final class FortificationReader implements INodeHandler<@NonNull Fortific
 	 */
 	@Override
 	public Fortification parse(final StartElement element,
-							   final Iterable<XMLEvent> stream,
-							   final IMutablePlayerCollection players,
-							   final Warning warner, final IDFactory idFactory)
+	                           final Iterable<XMLEvent> stream,
+	                           final IMutablePlayerCollection players,
+	                           final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);

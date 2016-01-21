@@ -198,7 +198,7 @@ public final class TODOFixerDriver {
 			final IMutableMapNG map;
 			final File file = new File(arg);
 			try {
-				map = reader.readMap(file, Warning.INSTANCE);
+				map = reader.readMap(file, Warning.DEFAULT);
 			} catch (final IOException | XMLStreamException | SPFormatException e) {
 				LOGGER.log(Level.SEVERE, "Error reading map " + arg, e);
 				continue;

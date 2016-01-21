@@ -9,7 +9,6 @@ import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
 import util.Warning;
-import util.Warning.Action;
 
 /**
  * A driver that reads in maps and then writes them out again---this is primarily to make
@@ -62,9 +61,7 @@ public final class EchoDriver implements UtilityDriver {
 		final File infile = new File(args[0]);
 		try {
 			map =
-					new MapReaderAdapter().readMap(infile, new Warning(
-							                                                  Action
-									                                                  .Ignore));
+					new MapReaderAdapter().readMap(infile, Warning.Ignore);
 		} catch (final MapVersionException except) {
 			throw new DriverFailedException("Unsupported map version", except);
 		} catch (final IOException except) {

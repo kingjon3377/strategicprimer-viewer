@@ -24,7 +24,6 @@ import util.FatalWarningException;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
-import util.Warning.Action;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -134,11 +133,11 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		if (warning) {
 			try (StringReader sreader = new StringReader(xml)) {
 				reader.readXML(FAKE_FILENAME, sreader, desideratum,
-						new Warning(Action.Ignore));
+						Warning.Ignore);
 			}
 			try (StringReader sreader = new StringReader(xml)) {
 				reader.readXML(FAKE_FILENAME, sreader,
-						desideratum, new Warning(Action.Die));
+						desideratum, Warning.Die);
 			} catch (final FatalWarningException except) {
 				final Throwable cause = except.getCause();
 				assertTrue("Unsupported tag",
@@ -149,7 +148,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		} else {
 			try (StringReader sreader = new StringReader(xml)) {
 				reader.readXML(FAKE_FILENAME, sreader, desideratum,
-						new Warning(Action.Ignore));
+						Warning.Ignore);
 				fail("Expected an UnsupportedTagException");
 			} catch (final UnsupportedTagException except) {
 				assertEquals("The tag we expected", tag, except.getTag().getLocalPart());
@@ -176,11 +175,11 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		if (warning) {
 			try (StringReader sreader = new StringReader(xml)) {
 				reader.readXML(FAKE_FILENAME, sreader, desideratum,
-						new Warning(Action.Ignore));
+						Warning.Ignore);
 			}
 			try (StringReader sreader = new StringReader(xml)) {
 				reader.readXML(FAKE_FILENAME, sreader, desideratum,
-						new Warning(Action.Die));
+						Warning.Die);
 				fail("We were expecting an UnwantedChildException");
 			} catch (final FatalWarningException except) {
 				assertTrue("Unwanted child",
@@ -189,7 +188,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		} else {
 			try (StringReader sreader = new StringReader(xml)) {
 				reader.readXML(FAKE_FILENAME, sreader, desideratum,
-						new Warning(Action.Ignore));
+						Warning.Ignore);
 				fail("We were expecting an UnwantedChildException");
 			} catch (final UnwantedChildException except) {
 				assertNotNull("Dummy check", except);
@@ -240,11 +239,11 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		if (warning) {
 			try (StringReader sreader = new StringReader(xml)) {
 				reader.readXML(FAKE_FILENAME, sreader, desideratum,
-						new Warning(Action.Ignore));
+						Warning.Ignore);
 			}
 			try (StringReader sreader = new StringReader(xml)) {
 				reader.readXML(FAKE_FILENAME, sreader, desideratum,
-						new Warning(Action.Die));
+						Warning.Die);
 				fail("We were expecting a MissingParameterException");
 			} catch (final FatalWarningException except) {
 				final Throwable cause = except.getCause();
@@ -257,7 +256,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		} else {
 			try (StringReader sreader = new StringReader(xml)) {
 				reader.readXML(FAKE_FILENAME, sreader, desideratum,
-						new Warning(Action.Ignore));
+						Warning.Ignore);
 			} catch (final MissingPropertyException except) {
 				assertEquals(
 						"Missing property should be the one we're expecting",
@@ -311,11 +310,11 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		if (warning) {
 			try (StringReader sreader = new StringReader(xml)) {
 				reader.readXML(FAKE_FILENAME, sreader, desideratum,
-						new Warning(Action.Ignore));
+						Warning.Ignore);
 			}
 			try (StringReader sreader = new StringReader(xml)) {
 				reader.readXML(FAKE_FILENAME, sreader, desideratum,
-						new Warning(Action.Die));
+						Warning.Die);
 				fail("We were expecting a MissingParameterException");
 			} catch (final FatalWarningException except) {
 				final Throwable cause = except.getCause();
@@ -329,7 +328,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		} else {
 			try (StringReader sreader = new StringReader(xml)) {
 				reader.readXML(FAKE_FILENAME, sreader, desideratum,
-						new Warning(Action.Ignore));
+						Warning.Ignore);
 			} catch (final DeprecatedPropertyException except) {
 				assertEquals(
 						"Missing property should be the one we're expecting",
@@ -350,7 +349,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 */
 	protected void assertSerialization(final String message, final Object obj)
 			throws XMLStreamException, SPFormatException, IOException {
-		assertSerialization(message, obj, new Warning(Action.Die));
+		assertSerialization(message, obj, Warning.Die);
 	}
 
 	/**
@@ -423,19 +422,19 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 			throws XMLStreamException, SPFormatException {
 		try (StringReader sreader = new StringReader(xml)) {
 			assertEquals(message, expected, oldReader.readXML(FAKE_FILENAME, sreader,
-					expected.getClass(), new Warning(Action.Ignore)));
+					expected.getClass(), Warning.Ignore));
 		}
 		try (StringReader sreader = new StringReader(xml)) {
 			assertEquals(message, expected, oldReader.readXML(FAKE_FILENAME, sreader,
-					expected.getClass(), new Warning(Action.Ignore)));
+					expected.getClass(), Warning.Ignore));
 		}
 		try (StringReader sreader = new StringReader(xml)) {
 			assertEquals(message, expected, newReader.readXML(FAKE_FILENAME, sreader,
-					expected.getClass(), new Warning(Action.Ignore)));
+					expected.getClass(), Warning.Ignore));
 		}
 		try (StringReader sreader = new StringReader(xml)) {
 			assertEquals(message, expected, newReader.readXML(FAKE_FILENAME, sreader,
-					expected.getClass(), new Warning(Action.Ignore)));
+					expected.getClass(), Warning.Ignore));
 		}
 		assertDeprecatedProperty(xml, expected.getClass(), property, true);
 	}
@@ -459,19 +458,19 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 			throws XMLStreamException, SPFormatException {
 		try (StringReader sreader = new StringReader(xml)) {
 			assertEquals(message, expected, oldReader.readXML(FAKE_FILENAME, sreader,
-					expected.getClass(), new Warning(Action.Ignore)));
+					expected.getClass(), Warning.Ignore));
 		}
 		try (StringReader sreader = new StringReader(xml)) {
 			assertEquals(message, expected, oldReader.readXML(FAKE_FILENAME, sreader,
-					expected.getClass(), new Warning(Action.Ignore)));
+					expected.getClass(), Warning.Ignore));
 		}
 		try (StringReader sreader = new StringReader(xml)) {
 			assertEquals(message, expected, newReader.readXML(FAKE_FILENAME, sreader,
-					expected.getClass(), new Warning(Action.Ignore)));
+					expected.getClass(), Warning.Ignore));
 		}
 		try (StringReader sreader = new StringReader(xml)) {
 			assertEquals(message, expected, newReader.readXML(FAKE_FILENAME, sreader,
-					expected.getClass(), new Warning(Action.Ignore)));
+					expected.getClass(), Warning.Ignore));
 		}
 		assertMissingProperty(xml, expected.getClass(), property, true);
 	}
@@ -492,19 +491,19 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 			throws XMLStreamException, SPFormatException {
 		try (StringReader sreader = new StringReader(xml)) {
 			assertEquals(message, expected, oldReader.readXML(FAKE_FILENAME, sreader,
-					expected.getClass(), new Warning(Action.Die)));
+					expected.getClass(), Warning.Die));
 		}
 		try (StringReader sreader = new StringReader(xml)) {
 			assertEquals(message, expected, oldReader.readXML(FAKE_FILENAME, sreader,
-					expected.getClass(), new Warning(Action.Die)));
+					expected.getClass(), Warning.Die));
 		}
 		try (StringReader sreader = new StringReader(xml)) {
 			assertEquals(message, expected, newReader.readXML(FAKE_FILENAME, sreader,
-					expected.getClass(), new Warning(Action.Die)));
+					expected.getClass(), Warning.Die));
 		}
 		try (StringReader sreader = new StringReader(xml)) {
 			assertEquals(message, expected, newReader.readXML(FAKE_FILENAME, sreader,
-					expected.getClass(), new Warning(Action.Die)));
+					expected.getClass(), Warning.Die));
 		}
 	}
 
@@ -526,25 +525,25 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 											 final String firstForm,
 											 final String secondForm, final Class<T>
 																			  type,
-											 final Warning.Action warningLevel)
+											 final Warning warningLevel)
 			throws SPFormatException,
 						   XMLStreamException {
 		assertEquals(message, oldReader.readXML(FAKE_FILENAME,
-				new StringReader(firstForm), type, new Warning(warningLevel)),
+				new StringReader(firstForm), type, warningLevel),
 				oldReader.readXML(FAKE_FILENAME, new StringReader(secondForm), type,
-						new Warning(warningLevel)));
+						warningLevel));
 		assertEquals(message, oldReader.readXML(FAKE_FILENAME,
-				new StringReader(firstForm), type, new Warning(warningLevel)),
+				new StringReader(firstForm), type, warningLevel),
 				oldReader.readXML(FAKE_FILENAME, new StringReader(secondForm), type,
-						new Warning(warningLevel)));
+						warningLevel));
 		assertEquals(message, newReader.readXML(FAKE_FILENAME,
-				new StringReader(firstForm), type, new Warning(warningLevel)),
+				new StringReader(firstForm), type, warningLevel),
 				newReader.readXML(FAKE_FILENAME, new StringReader(secondForm), type,
-						new Warning(warningLevel)));
+						warningLevel));
 		assertEquals(message, newReader.readXML(FAKE_FILENAME,
-				new StringReader(firstForm), type, new Warning(warningLevel)),
+				new StringReader(firstForm), type, warningLevel),
 				newReader.readXML(FAKE_FILENAME, new StringReader(secondForm), type,
-						new Warning(warningLevel)));
+						warningLevel));
 	}
 
 	/**
@@ -603,10 +602,10 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 			throws XMLStreamException, SPFormatException {
 		if (warning) {
 			reader.readXML(FAKE_FILENAME, new StringReader(xml), desideratum,
-					new Warning(Action.Ignore));
+					Warning.Ignore);
 			try {
 				reader.readXML(FAKE_FILENAME, new StringReader(xml),
-						desideratum, new Warning(Action.Die));
+						desideratum, Warning.Die);
 				fail("We were expecting a MissingChildException");
 			} catch (final FatalWarningException except) {
 				assertTrue("Missing child",
@@ -615,7 +614,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 		} else {
 			try {
 				reader.readXML(FAKE_FILENAME, new StringReader(xml),
-						desideratum, new Warning(Action.Ignore));
+						desideratum, Warning.Ignore);
 				fail("We were expecting a MissingChildException");
 			} catch (final MissingChildException except) {
 				LOGGER.log(Level.FINEST, "Got the expected MissingChildException",
@@ -639,9 +638,9 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 											final IMapNG expected, final String xml)
 			throws XMLStreamException, SPFormatException {
 		assertEquals(message, expected, ((IMapReader) oldReader).readMap(
-				FAKE_FILENAME, new StringReader(xml), new Warning(Action.Die)));
+				FAKE_FILENAME, new StringReader(xml), Warning.Die));
 		assertEquals(message, expected, ((IMapReader) newReader).readMap(
-				FAKE_FILENAME, new StringReader(xml), new Warning(Action.Die)));
+				FAKE_FILENAME, new StringReader(xml), Warning.Die));
 	}
 
 	/**
@@ -697,12 +696,12 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 				obj.getImage(),
 				reader.readXML(FAKE_FILENAME,
 						new StringReader(createSerializedForm(obj, true)),
-						obj.getClass(), new Warning(Action.Ignore)).getImage());
+						obj.getClass(), Warning.Ignore).getImage());
 		assertEquals(
 				message,
 				obj.getImage(),
 				reader.readXML(FAKE_FILENAME,
 						new StringReader(createSerializedForm(obj, false)),
-						obj.getClass(), new Warning(Action.Ignore)).getImage());
+						obj.getClass(), Warning.Ignore).getImage());
 	}
 }

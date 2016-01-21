@@ -79,9 +79,9 @@ public final class JobReader implements INodeHandler<@NonNull Job> {
 	 */
 	@Override
 	public Job parse(final StartElement element,
-					 final Iterable<XMLEvent> stream,
-					 final IMutablePlayerCollection players,
-					 final Warning warner, final IDFactory idFactory)
+	                 final Iterable<XMLEvent> stream,
+	                 final IMutablePlayerCollection players,
+	                 final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		if (hasAttribute(element, "hours")) {
 			warner.warn(new UnsupportedPropertyException(element, "hours"));

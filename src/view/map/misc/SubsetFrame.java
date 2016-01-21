@@ -3,7 +3,7 @@ package view.map.misc;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilterWriter;
@@ -13,8 +13,7 @@ import java.io.Writer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
 import model.map.MapDimensions;
@@ -24,7 +23,6 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
-import util.Warning.Action;
 import view.util.StreamingLabel;
 import view.util.StreamingLabel.LabelTextColor;
 
@@ -185,7 +183,7 @@ public final class SubsetFrame extends JFrame {
 	public void loadMain(final File arg) throws SPFormatException,
 			                                            XMLStreamException, IOException {
 		try {
-			mainMap = reader.readMap(arg, new Warning(Action.Ignore));
+			mainMap = reader.readMap(arg, Warning.Ignore);
 		} catch (final FileNotFoundException except) {
 			printParagraph("File " + arg + " not found", ERROR_COLOR);
 			throw except;
@@ -264,7 +262,7 @@ public final class SubsetFrame extends JFrame {
 		printParagraph("Testing " + arg + " ...");
 		final IMapNG map;
 		try {
-			map = reader.readMap(arg, new Warning(Action.Ignore));
+			map = reader.readMap(arg, Warning.Ignore);
 		} catch (final MapVersionException except) {
 			LOGGER.log(Level.SEVERE, "Map version in " + arg.getPath()
 					                         + " not acceptable to reader", except);

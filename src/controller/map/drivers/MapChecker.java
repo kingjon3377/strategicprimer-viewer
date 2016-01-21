@@ -83,7 +83,7 @@ public final class MapChecker implements UtilityDriver {
 		SYS_OUT.println(file.getPath());
 		boolean retval = true;
 		try {
-			reader.readMap(file, Warning.INSTANCE);
+			reader.readMap(file, Warning.DEFAULT);
 		} catch (final MapVersionException e) {
 			LOGGER.log(Level.SEVERE, "Map version in " + file.getPath()
 					                         + " not acceptable to reader", e);

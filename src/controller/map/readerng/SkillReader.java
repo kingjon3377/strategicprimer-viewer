@@ -67,9 +67,9 @@ public final class SkillReader implements INodeHandler<@NonNull Skill> {
 	 */
 	@Override
 	public Skill parse(final StartElement element,
-					   final Iterable<XMLEvent> stream,
-					   final IMutablePlayerCollection players,
-					   final Warning warner, final IDFactory idFactory)
+	                   final Iterable<XMLEvent> stream,
+	                   final IMutablePlayerCollection players,
+	                   final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "name", true, warner);
 		requireNonEmptyParameter(element, "level", true, warner);

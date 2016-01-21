@@ -19,7 +19,6 @@ import model.map.IMapNG;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
-import util.Warning.Action;
 
 import static view.util.SystemOut.SYS_OUT;
 
@@ -118,18 +117,17 @@ public final class ReaderComparator implements UtilityDriver {
 			LOGGER.log(Level.SEVERE, "I/O error reading file " + arg, except);
 			return;
 		}
-		final Warning warner = new Warning(Action.Ignore);
 		final long startOne = System.nanoTime();
 		final IMapNG map1;
 		try (StringReader reader = new StringReader(contents)) {
-			map1 = oldReader.readMap(arg, reader, warner);
+			map1 = oldReader.readMap(arg, reader, Warning.Ignore);
 		}
 		final long endOne = System.nanoTime();
 		printElapsed("Old", endOne - startOne);
 		final long startTwo = System.nanoTime();
 		final IMapNG map2;
 		try (StringReader reader = new StringReader(contents)) {
-			map2 = newReader.readMap(arg, reader, warner);
+			map2 = newReader.readMap(arg, reader, Warning.Ignore);
 		}
 		final long endTwo = System.nanoTime();
 		printElapsed("New", endTwo - startTwo);

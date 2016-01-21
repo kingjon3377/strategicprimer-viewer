@@ -11,7 +11,6 @@ import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 import model.misc.IDriverModel;
 import util.Warning;
-import util.Warning.Action;
 
 /**
  * A driver to produce a report of the units in a map.
@@ -67,7 +66,6 @@ public final class WorkerReportDriver implements ISPDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		final Warning warner = new Warning(Action.Ignore);
 		for (final String filename : args) {
 			if (filename == null) {
 				continue;
@@ -79,7 +77,8 @@ public final class WorkerReportDriver implements ISPDriver {
 				report =
 						ReportGenerator.createReport(reader.readMap(new File(
 								                                                    filename),
-								warner));
+
+								Warning.Ignore));
 			} catch (final MapVersionException except) {
 				throw new DriverFailedException(filename
 						                                +

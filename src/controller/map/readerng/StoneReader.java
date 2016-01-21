@@ -54,9 +54,9 @@ public final class StoneReader implements INodeHandler<@NonNull StoneDeposit> {
 	 */
 	@Override
 	public StoneDeposit parse(final StartElement element,
-							  final Iterable<XMLEvent> stream,
-							  final IMutablePlayerCollection players,
-							  final Warning warner, final IDFactory idFactory)
+	                          final Iterable<XMLEvent> stream,
+	                          final IMutablePlayerCollection players,
+	                          final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final StoneDeposit fix = new StoneDeposit(StoneKind.parseStoneKind(

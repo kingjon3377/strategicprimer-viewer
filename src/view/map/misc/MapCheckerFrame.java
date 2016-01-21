@@ -3,21 +3,20 @@ package view.map.misc;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.MapReaderAdapter;
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import view.util.StreamingLabel;
+
 import static view.util.StreamingLabel.LabelTextColor;
 
 /**
@@ -48,25 +47,6 @@ public final class MapCheckerFrame extends JFrame {
 	 */
 	private static final LabelTextColor ERROR_COLOR = LabelTextColor.red;
 	/**
-	 * The warning instance to use to print warnings to the frame.
-	 */
-	private final Warning warner = new Warning() {
-		@Override
-		public void warn(final Exception warning) {
-			// At one point we also called the super-implementation.
-			if (warning instanceof SPFormatException) {
-				printParagraph(
-						"SP format warning: "
-								+ warning.getLocalizedMessage(),
-						LabelTextColor.yellow);
-			} else {
-				printParagraph(
-						"Warning: " + warning.getLocalizedMessage(),
-						LabelTextColor.yellow);
-			}
-		}
-	};
-	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
@@ -85,6 +65,7 @@ public final class MapCheckerFrame extends JFrame {
 	 */
 	public MapCheckerFrame() {
 		super("Strategic Primer Map Checker");
+		Warning.Custom.setCustomPrinter(str -> printParagraph(str, LabelTextColor.yellow));
 		setBackground(Color.black);
 		setMinimumSize(new Dimension(640, 320));
 		setContentPane(new JScrollPane(label));
@@ -133,7 +114,7 @@ public final class MapCheckerFrame extends JFrame {
 	public void check(final String filename) {
 		printParagraph("Starting " + filename);
 		try {
-			reader.readMap(new File(filename), warner);
+			reader.readMap(new File(filename), Warning.Custom);
 		} catch (final IOException | XMLStreamException | SPFormatException except) {
 			printError(except, filename);
 			return;

@@ -42,7 +42,7 @@ public interface SimpleCLIDriver extends SimpleDriver {
 	default void startDriver(final String... args) throws DriverFailedException {
 		final MapReaderAdapter reader = new MapReaderAdapter();
 		final IDriverModel model =
-				reader.readMultiMapModel(Warning.INSTANCE, new File(args[0]),
+				reader.readMultiMapModel(Warning.DEFAULT, new File(args[0]),
 						MapReaderAdapter.namesToFiles(true, args));
 		startDriver(model);
 		reader.writeModel(model);

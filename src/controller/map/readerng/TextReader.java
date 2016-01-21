@@ -52,9 +52,9 @@ public final class TextReader implements INodeHandler<TextFixture> {
 	 */
 	@Override
 	public TextFixture parse(final StartElement element,
-							 final Iterable<XMLEvent> stream,
-							 final IMutablePlayerCollection players,
-							 final Warning warner, final IDFactory idFactory)
+	                         final Iterable<XMLEvent> stream,
+	                         final IMutablePlayerCollection players,
+	                         final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		// Of all our uses of StringBuilder, here we can't know how much size
 		// we're going to need beforehand. But cases where we'll need more than

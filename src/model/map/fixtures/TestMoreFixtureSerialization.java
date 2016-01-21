@@ -35,7 +35,6 @@ import model.map.fixtures.towns.Village;
 import org.junit.Test;
 import util.NullCleaner;
 import util.Warning;
-import util.Warning.Action;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -127,7 +126,7 @@ public final class TestMoreFixtureSerialization extends
 				"Assert that wild is the inverse of cultivated",
 				"<grove wild=\"true\" kind=\"tree\" id=\"0\" />",
 				"<grove cultivated=\"false\" kind=\"tree\" id=\"0\" />",
-				Grove.class, Action.Ignore);
+				Grove.class, Warning.Ignore);
 		assertImageSerialization("Grove image property is preserved",
 				new Grove(false, false, "five", 5));
 	}
@@ -358,7 +357,7 @@ public final class TestMoreFixtureSerialization extends
 				NAME_PROPERTY, true);
 		assertSerialization("Deserialize unit with no kind properly",
 				new Unit(new Player(2, ""), "", NAME_PROPERTY, 2),
-				new Warning(Action.Ignore));
+				Warning.Ignore);
 		assertMissingPropertyDeserialization("Deserialize unit with no owner properly",
 				new Unit(new Player(-1, ""), "kind", "unitThree", 3),
 				"<unit kind=\"kind\" name=\"unitThree\" id=\"3\" />", OWNER_PROPERTY);
@@ -421,11 +420,11 @@ public final class TestMoreFixtureSerialization extends
 						                                            new Skill("miscellaneous",
 								                                                     0,
 								                                                     20))),
-				new Warning(Action.Die));
+				Warning.Die);
 		assertSerialization("and levels in another skill cause no warnings",
 				new Worker("fourth", DEFAULT_RACE, 8,
 						          new Job("fifth", 0, new Skill("odd-skill", 1, 0))),
-				new Warning(Action.Die));
+				Warning.Die);
 		final Worker secondWorker = new Worker("sixth", "dwarf", 9);
 		secondWorker.setStats(new WorkerStats(0, 0, 1, 2, 3, 4, 5, 6));
 		assertSerialization("Worker can have skills", secondWorker);
@@ -448,7 +447,7 @@ public final class TestMoreFixtureSerialization extends
 		secondUnit.setOrders("some orders");
 		assertEquals("Orders have no effect on equals", firstUnit, secondUnit);
 		assertSerialization("Orders don't mess up deserialization", secondUnit,
-				new Warning(Action.Die));
+				Warning.Die);
 		assertTrue("Serialized form contains orders",
 				createSerializedForm(secondUnit, true).contains("some orders"));
 		assertTrue("Serialized form contains orders",

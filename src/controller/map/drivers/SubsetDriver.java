@@ -147,7 +147,7 @@ public final class SubsetDriver implements SimpleDriver {
 				return Returns.Warn;
 			}
 		} catch (final IOException e) {
-			Warning.INSTANCE.warn(e);
+			Warning.DEFAULT.warn(e);
 			return Returns.Fail;
 		}
 	}

@@ -81,7 +81,7 @@ public final class ConverterDriver implements UtilityDriver {
 			SYS_OUT.print(" ... ");
 			final File file = new File(filename);
 			try {
-				final IMapNG old = READER.readMap(file, Warning.INSTANCE);
+				final IMapNG old = READER.readMap(file, Warning.DEFAULT);
 				SYS_OUT.println(" ... Converting ... ");
 				final String newFilename = filename + ".new";
 				final File newFile = new File(newFilename);

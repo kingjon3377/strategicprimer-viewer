@@ -70,9 +70,9 @@ public final class WorkerReader implements INodeHandler<@NonNull Worker> {
 	 */
 	@Override
 	public Worker parse(final StartElement element,
-						final Iterable<XMLEvent> stream,
-						final IMutablePlayerCollection players,
-						final Warning warner, final IDFactory idFactory)
+	                    final Iterable<XMLEvent> stream,
+	                    final IMutablePlayerCollection players,
+	                    final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		final Worker retval = new Worker(getAttribute(element, "name"),
 				                                getAttribute(element, "race", "human"),

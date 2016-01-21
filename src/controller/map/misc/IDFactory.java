@@ -49,7 +49,7 @@ public final class IDFactory {
 	public int register(final int idNum) {
 		if (idNum >= 0) {
 			if (usedIDs.get(idNum)) {
-				Warning.INSTANCE.warn(new DuplicateIDException(idNum));
+				Warning.DEFAULT.warn(new DuplicateIDException(idNum));
 			}
 			usedIDs.set(idNum);
 		}

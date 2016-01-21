@@ -40,7 +40,7 @@ public interface SimpleDriver extends ISPDriver {
 	default void startDriver(final String... args) throws DriverFailedException {
 		// FIXME: This blows up if args.length == 0
 		startDriver(new MapReaderAdapter()
-				            .readMultiMapModel(Warning.INSTANCE, new File(args[0]),
+				            .readMultiMapModel(Warning.DEFAULT, new File(args[0]),
 						            MapReaderAdapter.namesToFiles(true, args)));
 	}
 }

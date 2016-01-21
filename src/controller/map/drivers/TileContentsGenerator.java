@@ -88,7 +88,7 @@ public final class TileContentsGenerator {
 			INSTANCES.put(
 					filename,
 					new TileContentsGenerator(READER.readMap(new File(filename),
-							Warning.INSTANCE)));
+							Warning.DEFAULT)));
 		}
 		return NullCleaner.assertNotNull(INSTANCES.get(filename));
 	}

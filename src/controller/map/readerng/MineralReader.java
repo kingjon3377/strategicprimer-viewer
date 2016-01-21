@@ -53,9 +53,9 @@ public final class MineralReader implements INodeHandler<@NonNull MineralVein> {
 	 */
 	@Override
 	public MineralVein parse(final StartElement element,
-							 final Iterable<XMLEvent> stream,
-							 final IMutablePlayerCollection players,
-							 final Warning warner, final IDFactory idFactory)
+	                         final Iterable<XMLEvent> stream,
+	                         final IMutablePlayerCollection players,
+	                         final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final MineralVein fix =

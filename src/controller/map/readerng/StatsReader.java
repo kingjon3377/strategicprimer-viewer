@@ -66,9 +66,9 @@ public final class StatsReader implements INodeHandler<@NonNull WorkerStats> {
 	 */
 	@Override
 	public WorkerStats parse(final StartElement element,
-							 final Iterable<XMLEvent> stream,
-							 final IMutablePlayerCollection players,
-							 final Warning warner, final IDFactory idFactory)
+	                         final Iterable<XMLEvent> stream,
+	                         final IMutablePlayerCollection players,
+	                         final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		final WorkerStats retval =
 				new WorkerStats(getIntegerAttribute(element, "hp"),

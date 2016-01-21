@@ -188,7 +188,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @throws SPFormatException on SP format problems reading the attribute
 	 */
 	protected static int getOrGenerateID(final StartElement element,
-										 final Warning warner, final IDFactory idFactory)
+	                                     final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		if (hasParameter(element, "id")) {
 			try {

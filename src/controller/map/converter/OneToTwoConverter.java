@@ -657,7 +657,7 @@ public final class OneToTwoConverter { // NOPMD
 				final File file = new File(arg);
 				final IMapNG old;
 				try {
-					old = reader.readMap(file, Warning.INSTANCE);
+					old = reader.readMap(file, Warning.DEFAULT);
 				} catch (final IOException | XMLStreamException
 									   | SPFormatException except) {
 					printReadError(except, arg);

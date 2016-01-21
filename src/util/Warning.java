@@ -2,17 +2,12 @@ package util;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.DuplicateIDException;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * A class to log warnings.
- *
- * While I'd like to combine the Warning class with the Action enum, there's at least
- * one subclass (that logs warnings to a GUI text label), so we can't.
- *
- * TODO: Try making it an enum with 'custom', taking a Logger or method-handle, as an
- * option for that case.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -33,58 +28,45 @@ import java.util.logging.Logger;
  *
  * @author Jonathan Lovelace
  */
-public class Warning {
+public enum Warning {
 	/**
-	 * An instance.
+	 * Don't do anything with warnings.
 	 */
-	public static final Warning INSTANCE = new Warning();
-
+	Ignore,
 	/**
-	 * How we should deal with warnings.
+	 * Log each warning, but let them pass.
 	 */
-	private final Action state;
-
+	Warn,
 	/**
-	 * An enumeration of possible states.
+	 * Default to sending the warning to stderr, but allows the user to set a custom
+	 * output method.
 	 */
-	public enum Action {
-		/**
-		 * Don't do anything with a warning.
-		 */
-		Ignore,
-		/**
-		 * Default: Log each warning, but let them pass.
-		 */
-		Warn,
-		/**
-		 * Treat warnings as errors: Throw them as runtime exceptions.
-		 */
-		Die
+	Custom,
+	/**
+	 * Treat warnings as errors.
+	 */
+	Die;
+	/**
+	 * The output stream to log to. Used only by Custom.
+	 */
+	private Consumer<String> customHandle = System.out::println;
+	/**
+	 * In Custom, set the custom printing method. In others, throw.
+	 * @param printer the printing method to use
+	 */
+	public void setCustomPrinter(final Consumer<String> printer) {
+		if (this == Custom) {
+			customHandle = printer;
+		} else {
+			throw new IllegalStateException("Custom printer is only valid for Custom");
+		}
 	}
-
 	/**
-	 * Constructor.
-	 *
-	 * @param action what action to take with each warning
-	 */
-	public Warning(final Action action) {
-		state = action;
-	}
-
-	/**
-	 * Constructor. Only warn on warnings.
-	 */
-	public Warning() {
-		this(Action.Warn);
-	}
-
-	/**
-	 * Log a warning, e.g. if a particular map-format construct is deprecated.
-	 *
+	 * Handle a warning, e.g. if a particular map-format construct is deprecated.
 	 * @param warning the warning
 	 */
 	public void warn(final Exception warning) {
-		switch (state) {
+		switch (this) {
 		case Die:
 			throw new FatalWarningException(warning); // NOPMD
 		case Warn:
@@ -104,18 +86,18 @@ public class Warning {
 			break;
 		case Ignore:
 			break;
-		default:
-			throw new IllegalStateException(
-					                               "Default case of an enum-switch that " +
-							                               "isn't missing any cases");
+		case Custom:
+			// TODO: Should this switch be outside, and the handle take the Exception?
+			if (warning instanceof SPFormatException) {
+				customHandle.accept("SP format warning: " + warning.getLocalizedMessage());
+			} else {
+				customHandle.accept("Warning: " + warning.getLocalizedMessage());
+			}
 		}
 	}
-
 	/**
-	 * @return a String representation of the object
+	 * The default level. This is provided so that it can in theory be changed later in
+	 * one place rather than everywhere.
 	 */
-	@Override
-	public String toString() {
-		return "Warning with action " + state;
-	}
+	public static final Warning DEFAULT = Warn;
 }

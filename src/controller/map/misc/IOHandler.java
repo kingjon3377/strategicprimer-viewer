@@ -1,8 +1,7 @@
 package controller.map.misc;
 
 import controller.map.formatexceptions.SPFormatException;
-import java.awt.Component;
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -15,10 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
 import model.listeners.PlayerChangeListener;
 import model.listeners.PlayerChangeSource;
@@ -137,7 +133,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 				return;
 			}
 			try {
-				model.setMap(readMap(file, Warning.INSTANCE), file);
+				model.setMap(readMap(file, Warning.DEFAULT), file);
 			} catch (final IOException | SPFormatException | XMLStreamException e) {
 				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
 						"a null path"), source);
@@ -446,7 +442,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			}
 			try {
 				((IMultiMapModel) model).addSubordinateMap(
-						readMap(file, Warning.INSTANCE), file);
+						readMap(file, Warning.DEFAULT), file);
 			} catch (final IOException | SPFormatException | XMLStreamException e) {
 				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
 						"a null path"), source);

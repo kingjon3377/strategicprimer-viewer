@@ -53,9 +53,9 @@ public final class CacheReader implements INodeHandler<CacheFixture> {
 	 */
 	@Override
 	public CacheFixture parse(final StartElement element,
-							  final Iterable<XMLEvent> stream,
-							  final IMutablePlayerCollection players,
-							  final Warning warner, final IDFactory idFactory)
+	                          final Iterable<XMLEvent> stream,
+	                          final IMutablePlayerCollection players,
+	                          final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		final CacheFixture fix = new CacheFixture(

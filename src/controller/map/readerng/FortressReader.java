@@ -64,9 +64,9 @@ public final class FortressReader implements INodeHandler<Fortress> {
 	 */
 	@Override
 	public Fortress parse(final StartElement element,
-						  final Iterable<XMLEvent> stream,
-						  final IMutablePlayerCollection players,
-						  final Warning warner, final IDFactory idFactory)
+	                      final Iterable<XMLEvent> stream,
+	                      final IMutablePlayerCollection players,
+	                      final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "owner", false, warner);
 		requireNonEmptyParameter(element, "name", false, warner);

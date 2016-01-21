@@ -53,9 +53,9 @@ public final class PlayerReader implements INodeHandler<@NonNull Player> {
 	 */
 	@Override
 	public Player parse(final StartElement element,
-						final Iterable<XMLEvent> stream,
-						final IMutablePlayerCollection players,
-						final Warning warner, final IDFactory idFactory)
+	                    final Iterable<XMLEvent> stream,
+	                    final IMutablePlayerCollection players,
+	                    final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		return new Player(getIntegerAttribute(element, "number"),
