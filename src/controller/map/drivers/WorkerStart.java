@@ -79,7 +79,6 @@ public final class WorkerStart implements SimpleDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		try {
-			final File file; // NOPMD
 			if (args.length == 0) {
 				SimpleDriver.super.startDriver(new FileChooser(new File("")).getFile().getCanonicalPath());
 			} else {
