@@ -108,12 +108,12 @@ public final class TestConverter {
 	@SuppressWarnings("deprecation")
 	@Test
 	public void testOneToTwoConversion() throws IOException {
-		final IMutableMapNG one =
+		final IMutableMapNG original =
 				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
-		one.setBaseTerrain(PointFactory.point(0, 0), TileType.BorealForest);
-		one.setBaseTerrain(PointFactory.point(0, 1), TileType.TemperateForest);
-		one.setBaseTerrain(PointFactory.point(1, 0), TileType.Desert);
-		one.setBaseTerrain(PointFactory.point(1, 1), TileType.Plains);
+		original.setBaseTerrain(PointFactory.point(0, 0), TileType.BorealForest);
+		original.setBaseTerrain(PointFactory.point(0, 1), TileType.TemperateForest);
+		original.setBaseTerrain(PointFactory.point(1, 0), TileType.Desert);
+		original.setBaseTerrain(PointFactory.point(1, 1), TileType.Plains);
 
 		final IMutableMapNG converted =
 				new SPMapNG(new MapDimensions(8, 8, 2), new PlayerCollection(), -1);
@@ -343,12 +343,12 @@ public final class TestConverter {
 		final StringWriter outTwo = new StringWriter();
 		assertEquals("Products of two runs are both or neither subsets of expected",
 				converted.isSubset(
-						new OneToTwoConverter().convert(one, true), outOne, ""),
+						new OneToTwoConverter().convert(original, true), outOne, ""),
 				converted.isSubset(
-						new OneToTwoConverter().convert(one, true), outTwo, ""));
+						new OneToTwoConverter().convert(original, true), outTwo, ""));
 		assertEquals("Two runs produce identical results", outOne.toString(), outTwo.toString());
 		assertTrue("Actual is at least subset of expected converted", converted.isSubset(
-				new OneToTwoConverter().convert(one, true), System.out, ""));
+				new OneToTwoConverter().convert(original, true), System.out, ""));
 	}
 	/**
 	 * Test whether an item is in an iterable. Note that the iterable's iterator will
