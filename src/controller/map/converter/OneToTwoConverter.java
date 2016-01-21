@@ -570,7 +570,7 @@ public final class OneToTwoConverter { // NOPMD
 	/**
 	 * @return How many subtiles per tile the addRiver() algorithm is optimized for.
 	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
+	@SuppressWarnings({"MethodReturnAlwaysConstant", "SameReturnValue"})
 	private static int optSubtilesPerTile() {
 		return 4;
 	}

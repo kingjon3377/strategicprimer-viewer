@@ -73,7 +73,7 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 	/**
 	 * @return The probability of adding to any given tile.
 	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
+	@SuppressWarnings({"MethodReturnAlwaysConstant", "SameReturnValue"})
 	private static double chance() {
 		return 0.05;
 	}
