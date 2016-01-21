@@ -24,6 +24,7 @@ import org.eclipse.jdt.annotation.NonNull;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("ComparableImplementedButEqualsNotOverridden")
 public interface TileFixture extends IFixture, Comparable<@NonNull TileFixture> {
 	// Marker interface; also, TODO: what members should this have?
 
