@@ -54,8 +54,6 @@ public final class TestSubsets {
 
 	/**
 	 * A test of PlayerCollection's subset feature.
-	 *
-	 * @throws IOException on I/O error writing to the null stream
 	 */
 	@SuppressWarnings(ST_MET)
 	@Test
