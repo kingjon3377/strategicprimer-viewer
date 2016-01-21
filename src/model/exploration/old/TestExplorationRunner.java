@@ -157,13 +157,10 @@ public final class TestExplorationRunner {
 	 */
 	@Test
 	public void testRecursiveConsultTable() throws MissingTableException {
-		runner.loadTable(TEST_TABLE_ONE, new ConstantTable(
-				                                                  "( #test_table_two# )" +
-						                                                  ""));
+		runner.loadTable(TEST_TABLE_ONE, new ConstantTable("( #test_table_two# )"));
 		runner.loadTable(TEST_TABLE_TWO, new ConstantTable("( #test_table_three# )"));
 		runner.loadTable(TEST_TABLE_THREE, new ConstantTable(TEST_THREE));
-		runner.loadTable("test_table_four", new ConstantTable(
-				                                                     "_ #test_table_one"));
+		runner.loadTable("test_table_four", new ConstantTable("_ #test_table_one"));
 		final Point point = PointFactory.point(0, 0);
 		assertEquals(
 				"two levels of recursion",
@@ -222,9 +219,7 @@ public final class TestExplorationRunner {
 		assertFalse("base case of existent table",
 				runner.recursiveCheck("existent_table"));
 		runner.loadTable("referent_one", new ConstantTable("#existent_table#"));
-		runner.loadTable("referent_two", new ConstantTable(
-				                                                  "( #existent_table# )" +
-						                                                  ""));
+		runner.loadTable("referent_two", new ConstantTable("( #existent_table# )"));
 		runner.loadTable("referent_three", new QuadrantTable(1,
 				                                                    NullCleaner
 						                                                    .assertNotNull(
