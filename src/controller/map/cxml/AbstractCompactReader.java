@@ -18,7 +18,6 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.HasImage;
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
 import util.NullCleaner;
 import util.Warning;
@@ -284,14 +283,6 @@ public abstract class AbstractCompactReader<@NonNull T>
 		} else {
 			return " image=\"" + image + '"';
 		}
-	}
-
-	/**
-	 * @param tag the name of a tag, which may be null
-	 * @return "a null tag" if null, or the tag name if not
-	 */
-	private static String tagOrNull(@Nullable final String tag) {
-		return NullCleaner.valueOrDefault(tag, NULL_TAG);
 	}
 
 	/**
