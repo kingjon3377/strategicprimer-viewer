@@ -109,9 +109,6 @@ public final class TestConverter {
 		one.setBaseTerrain(PointFactory.point(1, 0), TileType.Desert);
 		one.setBaseTerrain(PointFactory.point(1, 1), TileType.Plains);
 
-		final String maxIterWarn = "FIXME: A fixture here was force-added after MAX_ITER";
-		final Player noPlayer = new Player(-1, "");
-
 		final IMutableMapNG converted =
 				new SPMapNG(new MapDimensions(8, 8, 2), new PlayerCollection(), -1);
 		converted.setBaseTerrain(PointFactory.point(0, 0), TileType.Steppe);
@@ -153,8 +150,15 @@ public final class TestConverter {
 		converted.setBaseTerrain(PointFactory.point(1, 2), TileType.Steppe);
 		converted.setGround(PointFactory.point(1, 2), new Ground("rock1", false));
 		converted.setForest(PointFactory.point(1, 2), new Forest("btree1", false));
+
+		final Player noPlayer = new Player(-1, "");
+		
 		converted.addFixture(PointFactory.point(1, 2),
 				new Village(TownStatus.Active, "", 0, noPlayer, "dwarf"));
+
+		final String maxIterWarn = "FIXME: A fixture here was force-added after " +
+				                           "MAX_ITER";
+
 		converted.addFixture(PointFactory.point(1, 2), new TextFixture(maxIterWarn, 10));
 		converted.addFixture(PointFactory.point(1, 2), new Forest("ttree1", false));
 		converted.setBaseTerrain(PointFactory.point(1, 3), TileType.Steppe);
