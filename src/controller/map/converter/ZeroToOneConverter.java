@@ -219,6 +219,7 @@ public final class ZeroToOneConverter {
 	 */
 	private static void printStartElement(final Appendable ostream,
 	                                      final StartElement element) throws IOException {
+		ostream.append('<');
 		ostream.append(element.getName().getLocalPart());
 		// getAttributes() isn't actually genericized, so diamond causes compile error
 		//noinspection Convert2Diamond
