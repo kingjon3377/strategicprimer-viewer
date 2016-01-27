@@ -8,6 +8,7 @@ import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.SPWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -76,6 +77,19 @@ public final class MapReaderAdapter {
 	public IMutableMapNG readMap(final File file, final Warning warner)
 			throws IOException, XMLStreamException, SPFormatException {
 		return reader.readMap(file, warner);
+	}
+	/**
+	 * @param stream the stream to read the map from
+	 * @param warner the Warning instance to use for warnings.
+	 * @return the map it contains
+	 * @throws IOException        on I/O error opening the file
+	 * @throws XMLStreamException if the XML is badly formed
+	 * @throws SPFormatException  if the reader can't handle this map version or there
+	 * are map format errors
+	 */
+	public IMutableMapNG readMapFromStream(final Reader stream, final Warning warner)
+			throws IOException, XMLStreamException, SPFormatException {
+		return reader.readMap(new File(""), stream, warner);
 	}
 
 	/**
