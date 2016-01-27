@@ -53,5 +53,29 @@ public class TestCLIHelper {
 			assertEquals("chooseFromList prompted the user", "0: one\n1: two\nprompt",
 					out.toString());
 		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("chooseFromList chooses only choice when this is specified", 0,
+					new CLIHelper(new StringReader(""), out)
+							.chooseFromList(Arrays.asList(new Player(1, "one")),
+									"test desc", "none present", "prompt", true));
+			assertEquals("chooseFromList automatically chose only choice",
+					"Automatically choosing only item, one\n", out.toString());
+		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("chooseFromList doesn't always automatically choose only choice", 0,
+					new CLIHelper(new StringReader("0\n"), out)
+							.chooseFromList(Arrays.asList(new Player(1, "one")),
+									"test desc", "none present", "prompt", false));
+			assertEquals("chooseFromList didn't automatically chose only choice",
+					"0: one\nprompt", out.toString());
+		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("chooseFromList prompts again when negative index given", 0,
+					new CLIHelper(new StringReader("-1\n0\n"), out).chooseFromList(
+							Arrays.asList(new Player(1, "one"), new Player(2, "two")),
+							"test desc", "none present", "prompt", false));
+			assertEquals("chooseFromList prompts again when negative index given",
+					"0: one\n1: two\npromptprompt", out.toString());
+		}
 	}
 }
