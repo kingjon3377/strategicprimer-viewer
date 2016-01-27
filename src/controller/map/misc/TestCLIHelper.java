@@ -37,19 +37,21 @@ public class TestCLIHelper {
 	 */
 	@Test
 	public void testChooseFromList() throws IOException {
-		final StringWriter outOne = new StringWriter();
-		assertEquals("chooseFromList chooses the one specified by user", 0,
-				new CLIHelper(new StringReader("0\n"), outOne).chooseFromList(
-						Arrays.asList(new Player(1, "one"), new Player(2, "two")),
-						"test desc", "none present", "prompt", false));
-		assertEquals("chooseFromList prompted the user", "0: one\n1: two\nprompt",
-				outOne.toString());
-		final StringWriter outTwo = new StringWriter();
-		assertEquals("chooseFromList chooses the one specified by user", 1,
-				new CLIHelper(new StringReader("1\n"), outTwo).chooseFromList(
-						Arrays.asList(new Player(1, "one"), new Player(2, "two")),
-						"test desc", "none present", "prompt", false));
-		assertEquals("chooseFromList prompted the user", "0: one\n1: two\nprompt",
-				outTwo.toString());
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("chooseFromList chooses the one specified by user", 0,
+					new CLIHelper(new StringReader("0\n"), out).chooseFromList(
+							Arrays.asList(new Player(1, "one"), new Player(2, "two")),
+							"test desc", "none present", "prompt", false));
+			assertEquals("chooseFromList prompted the user", "0: one\n1: two\nprompt",
+					out.toString());
+		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("chooseFromList chooses the one specified by user", 1,
+					new CLIHelper(new StringReader("1\n"), out).chooseFromList(
+							Arrays.asList(new Player(1, "one"), new Player(2, "two")),
+							"test desc", "none present", "prompt", false));
+			assertEquals("chooseFromList prompted the user", "0: one\n1: two\nprompt",
+					out.toString());
+		}
 	}
 }
