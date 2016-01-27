@@ -2,11 +2,11 @@ package controller.map.misc;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
@@ -65,7 +65,7 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@SuppressWarnings("null") // System.in cannot be null
 	public CLIHelper() {
-		this(System.in, System.out);
+		this(new InputStreamReader(System.in), new OutputStreamWriter(System.out));
 	}
 
 	/**
@@ -73,9 +73,9 @@ public final class CLIHelper implements ICLIHelper {
 	 *
 	 * @param in the stream to read from.
 	 */
-	public CLIHelper(final InputStream in, final OutputStream out) { // NOPMD
-		istream = new BufferedReader(new InputStreamReader(in));
-		ostream = new PrintWriter(new OutputStreamWriter(out));
+	public CLIHelper(final Reader in, final Writer out) { // NOPMD
+		istream = new BufferedReader(in);
+		ostream = new PrintWriter(out);
 	}
 
 	/**
