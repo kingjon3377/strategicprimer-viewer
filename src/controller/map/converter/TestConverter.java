@@ -1,9 +1,16 @@
 package controller.map.converter;
 
+import controller.map.cxml.CompactXMLWriter;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.MapReaderAdapter;
 import java.io.IOException;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Objects;
 import java.util.stream.StreamSupport;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.MapDimensions;
@@ -22,11 +29,16 @@ import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.resources.FieldStatus;
 import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
+import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.Fortress;
+import model.map.fixtures.towns.Town;
+import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
 import org.junit.Test;
+import util.IteratorWrapper;
+import util.Warning;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -383,7 +395,44 @@ public final class TestConverter {
 		return StreamSupport.stream(iter.spliterator(), false)
 					   .anyMatch(each -> Objects.equals(each, item));
 	}
+	/**
+	 * Test version-0 to version-1 conversion.
+	 */
+	@Test
+	public void testZeroToOneConversion()
+			throws XMLStreamException, IOException, SPFormatException {
+		// FIXME: Include tile fixtures beyond those implicit in events
+		final String orig = "<map version='0' rows='2' columns='2'><player number='0' code_name='Test Player' /><row index='0'><tile row='0' column='0' type='tundra' event='0'></tile><tile row='0' column='1' type='boreal_forest' event='183'></tile></row><row index='1'><tile row='1' column='0' type='mountain' event='229'></tile><tile row='1' column='1' type='temperate_forest' event='219'></tile></row></map>";
+		final StringWriter out = new StringWriter();
+		ZeroToOneConverter.convert(
+				new IteratorWrapper<XMLEvent>(XMLInputFactory.newInstance()
+						                              .createXMLEventReader(
+								                              new StringReader(orig))),
+				out);
+		final StringWriter actualXML = new StringWriter();
+		CompactXMLWriter.writeSPObject(actualXML, new MapReaderAdapter()
+				                                                  .readMapFromStream(
+						                                                  new StringReader(out.toString()),
+						                                                  Warning.Ignore));
+		final IMutableMapNG expected = new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
+		expected.addPlayer(new Player(0, "Test Player"));
+		expected.setBaseTerrain(PointFactory.point(0, 0), TileType.Tundra);
+		expected.setBaseTerrain(PointFactory.point(0, 1), TileType.BorealForest);
+		expected.setBaseTerrain(PointFactory.point(1, 0), TileType.Mountain);
+		expected.setBaseTerrain(PointFactory.point(1, 1), TileType.TemperateForest);
+		expected.addFixture(PointFactory.point(1, 0),
+				new Town(TownStatus.Burned, TownSize.Small, 0, "", 0,
+						        new Player(-1, "Independent")));
+		expected.addFixture(PointFactory.point(1, 1), new MineralVein("coal", true, 0, 1));
 
+		final StringWriter expectedXML = new StringWriter();
+		CompactXMLWriter.writeSPObject(expectedXML, expected);
+		assertEquals("Converted map's serialized form was as expected", expectedXML.toString(), actualXML.toString());
+		assertEquals("Converted map was as expected", expected, new MapReaderAdapter()
+				                                                        .readMapFromStream(
+						                                                        new StringReader(out.toString()),
+						                                                        Warning.Ignore));
+	}
 	/**
 	 * @return a String representation of the object
 	 */

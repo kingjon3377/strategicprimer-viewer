@@ -31,8 +31,6 @@ import util.TypesafeLogger;
  *
  * We ignore namespaces, as I'm not sure quite how to handle them.
  *
- * TODO: Write tests.
- *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
