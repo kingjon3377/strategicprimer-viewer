@@ -77,5 +77,63 @@ public class TestCLIHelper {
 			assertEquals("chooseFromList prompts again when negative index given",
 					"0: one\n1: two\npromptprompt", out.toString());
 		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("chooseFromList allows too-large choice", 3,
+					new CLIHelper(new StringReader("3\n"), out).chooseFromList(
+							Arrays.asList(new Player(1, "one"), new Player(2, "two")),
+							"test desc", "none present", "prompt", false));
+			assertEquals("chooseFromList allows too-large choice",
+					"0: one\n1: two\nprompt", out.toString());
+		}
+	}
+	/**
+	 * Test inputNumber().
+	 */
+	@Test
+	public void testInputNumber() throws IOException {
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("inputNumber works", 2,
+					new CLIHelper(new StringReader("2\n"), out)
+							.inputNumber("test prompt"));
+			assertEquals("inputNumber uses given prompt", "test prompt", out.toString());
+		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("inputNumber works", 8,
+					new CLIHelper(new StringReader("8\n"), out)
+							.inputNumber("test prompt two"));
+			assertEquals("inputNumber uses given prompt", "test prompt two",
+					out.toString());
+		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("inputNumber asks again on negative input", 0,
+					new CLIHelper(new StringReader("-1\n0\n"), out)
+							.inputNumber("test prompt three"));
+			assertEquals("inputNumber asks again on negative input",
+					"test prompt threetest prompt three", out.toString());
+		}
+	}
+	/**
+	 * Test for inputString().
+	 */
+	@Test
+	public void testInputString() throws IOException {
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("inputString returns the inputted string", "first",
+					new CLIHelper(new StringReader("first\n"), out)
+							.inputString("string prompt"));
+			assertEquals("inputString displays prompt", "string prompt", out.toString());
+		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("inputString returns the inputted string", "second",
+					new CLIHelper(new StringReader("second\n"), out)
+							.inputString("second prompt"));
+			assertEquals("inputString displays prompt", "second prompt", out.toString());
+		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("inputString returns empty on EOF", "",
+					new CLIHelper(new StringReader(""), out)
+							.inputString("third prompt"));
+			assertEquals("inputString displays prompt", "third prompt", out.toString());
+		}
 	}
 }
