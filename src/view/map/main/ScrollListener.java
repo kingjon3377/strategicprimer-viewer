@@ -1,11 +1,8 @@
 package view.map.main;
 
-import java.awt.Adjustable;
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.AdjustmentListener;
-import javax.swing.InputVerifier;
-import javax.swing.JComponent;
-import javax.swing.JScrollBar;
+import javax.swing.*;
 import model.listeners.GraphicalParamsListener;
 import model.listeners.MapChangeListener;
 import model.listeners.SelectionChangeListener;
@@ -252,7 +249,9 @@ public final class ScrollListener implements MapChangeListener,
 		}
 
 		/**
-		 * TODO: This doesn't seem quite right.
+		 * A scrollbar is valid if its value is between 0 and the size of the map minus
+		 * the visible size of the map---that last because we don't want to show empty
+		 * tiles to the right of or below the map.
 		 * @param input a component
 		 * @return true iff it is a scrollbar and its value is between 0 and the size of
 		 * the map minus the visible size of the map.
