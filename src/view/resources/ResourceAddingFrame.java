@@ -198,8 +198,6 @@ public class ResourceAddingFrame extends JFrame {
 	/**
 	 * A combo-box that handles 'enter' properly.
 	 *
-	 * TODO: Should handle Tab as well, if it doesn't already.
-	 *
 	 * TODO: The central functionality of this should be a top-level class in view.util
 	 */
 	private static class UpdatedComboBox extends JComboBox<String> {
