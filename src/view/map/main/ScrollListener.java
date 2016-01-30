@@ -261,7 +261,7 @@ public final class ScrollListener implements MapChangeListener,
 		public boolean verify(@Nullable final JComponent input) {
 			return (input instanceof JScrollBar)
 						   && isInRange(0, ((JScrollBar) input).getValue(),
-					dimension() - visibleDimension());
+					dimension() - visibleDimension() - 1);
 		}
 	}
 }
