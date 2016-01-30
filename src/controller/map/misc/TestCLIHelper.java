@@ -136,4 +136,124 @@ public class TestCLIHelper {
 			assertEquals("inputString displays prompt", "third prompt", out.toString());
 		}
 	}
+	/**
+	 * Test for inputBoolean().
+	 */
+	@Test
+	public void testInputBoolean() throws IOException {
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("inputBoolean returns true on 'yes'", true,
+					new CLIHelper(new StringReader("yes\n"), out)
+							.inputBoolean("bool prompt"));
+			assertEquals("inputBoolean displays prompt", "bool prompt", out.toString());
+		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("inputBoolean returns true on 'true'", true,
+					new CLIHelper(new StringReader("true\n"), out)
+							.inputBoolean("prompt two"));
+			assertEquals("inputBoolean displays prompt", "prompt two", out.toString());
+		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("inputBoolean returns true on 'y'", true,
+					new CLIHelper(new StringReader("y\n"), out)
+							.inputBoolean("prompt three"));
+			assertEquals("inputBoolean displays prompt", "prompt three", out.toString());
+		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("inputBoolean returns true on 't'", true,
+					new CLIHelper(new StringReader("t\n"), out)
+							.inputBoolean("prompt four"));
+			assertEquals("inputBoolean displays prompt", "prompt four", out.toString());
+		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("inputBoolean returns false on 'no'", false,
+					new CLIHelper(new StringReader("no\n"), out)
+							.inputBoolean("prompt five"));
+			assertEquals("inputBoolean displays prompt", "prompt five", out.toString());
+		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("inputBoolean returns false on 'false'", false,
+					new CLIHelper(new StringReader("false\n"), out)
+							.inputBoolean("prompt six"));
+			assertEquals("inputBoolean displays prompt", "prompt six", out.toString());
+		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("inputBoolean returns false on 'n'", false,
+					new CLIHelper(new StringReader("n\n"), out)
+							.inputBoolean("prompt seven"));
+			assertEquals("inputBoolean displays prompt", "prompt seven", out.toString());
+		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("inputBoolean returns false on 'f'", false,
+					new CLIHelper(new StringReader("f\n"), out)
+							.inputBoolean("prompt eight"));
+			assertEquals("inputBoolean displays prompt", "prompt eight", out.toString());
+		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("inputBoolean rejects other input", true,
+					new CLIHelper(new StringReader("xyzzy\nyes\n"), out)
+							.inputBoolean("prompt nine"));
+			assertEquals("inputBoolean gives message on invalid input",
+					"prompt ninePlease enter 'yes', 'no', 'true', or 'false',\nor the " +
+							"first character of any of those.\nprompt nine",
+					out.toString());
+		}
+	}
+	/**
+	 * Test chooseStringFromList().
+	 */
+	@Test
+	public void testStringChooseFromList() throws IOException {
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("chooseStringFromList chooses the one specified by user", 0,
+					new CLIHelper(new StringReader("0\n"), out)
+							.chooseStringFromList(Arrays.asList("one", "two"),
+									"test desc", "none present", "prompt", false));
+			assertEquals("chooseStringFromList prompted the user",
+					"test desc\n0: one\n1: two\nprompt", out.toString());
+		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("chooseStringFromList chooses the one specified by user", 1,
+					new CLIHelper(new StringReader("1\n"), out)
+							.chooseStringFromList(Arrays.asList("one", "two"),
+									"test desc", "none present", "prompt", false));
+			assertEquals("chooseStringFromList prompted the user",
+					"test desc\n0: one\n1: two\nprompt", out.toString());
+		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals(
+					"chooseStringFromList chooses only choice when this is specified", 0,
+					new CLIHelper(new StringReader(""), out)
+							.chooseStringFromList(Arrays.asList("one"), "test desc",
+									"none present", "prompt", true));
+			assertEquals("chooseStringFromList automatically chose only choice",
+					"test desc\nAutomatically choosing only item, one\n", out.toString());
+		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals(
+					"chooseStringFromList doesn't always automatically choose only " +
+							"choice",
+					0, new CLIHelper(new StringReader("0\n"), out)
+							   .chooseStringFromList(Arrays.asList("one"), "test desc",
+									   "none present", "prompt", false));
+			assertEquals("chooseStringFromList didn't automatically chose only choice",
+					"test desc\n0: one\nprompt", out.toString());
+		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("chooseStringFromList prompts again when negative index given",
+					0, new CLIHelper(new StringReader("-1\n0\n"), out)
+							   .chooseStringFromList(Arrays.asList("one", "two"),
+									   "test desc", "none present", "prompt", false));
+			assertEquals("chooseStringFromList prompts again when negative index given",
+					"test desc\n0: one\n1: two\npromptprompt", out.toString());
+		}
+		try (StringWriter out = new StringWriter()) {
+			assertEquals("chooseStringFromList allows too-large choice", 3,
+					new CLIHelper(new StringReader("3\n"), out)
+							.chooseStringFromList(Arrays.asList("one", "two"),
+									"test desc", "none present", "prompt", false));
+			assertEquals("chooseStringFromList allows too-large choice",
+					"test desc\n0: one\n1: two\nprompt", out.toString());
+		}
+	}
 }

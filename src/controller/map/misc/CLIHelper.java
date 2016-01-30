@@ -24,8 +24,6 @@ import static view.util.SystemOut.SYS_OUT;
 /**
  * A helper class to let help CLIs interact with the user.
  *
- * TODO: Write tests (using string streams).
- *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
