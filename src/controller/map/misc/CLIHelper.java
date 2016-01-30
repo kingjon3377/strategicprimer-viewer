@@ -19,8 +19,6 @@ import util.EqualsAny;
 import util.IsNumeric;
 import util.NullCleaner;
 
-import static view.util.SystemOut.SYS_OUT;
-
 /**
  * A helper class to let help CLIs interact with the user.
  *
@@ -112,7 +110,7 @@ public final class CLIHelper implements ICLIHelper {
 			ostream.flush();
 			return -1; // NOPMD
 		}
-		SYS_OUT.println(desc);
+		ostream.println(desc);
 		if (auto && (items.size() == 1)) {
 			ostream.print("Automatically choosing only item, ");
 			ostream.println(items.get(0));
