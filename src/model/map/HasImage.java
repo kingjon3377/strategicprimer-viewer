@@ -5,6 +5,8 @@ package model.map;
  * This interface should really be in model.viewer, but that would, I think, introduce
  * circular dependencies between packages.
  *
+ * TODO: Split mutator into separate interface
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *

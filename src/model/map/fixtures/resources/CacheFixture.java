@@ -1,6 +1,6 @@
 package model.map.fixtures.resources;
 
-import model.map.HasKind;
+import model.map.HasMutableKind;
 import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
@@ -27,7 +27,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public class CacheFixture implements HarvestableFixture, HasKind {
+public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */

@@ -1,6 +1,6 @@
 package model.map.fixtures.resources;
 
-import model.map.HasKind;
+import model.map.HasMutableKind;
 import model.map.IEvent;
 import model.map.IFixture;
 import model.map.TileFixture;
@@ -29,7 +29,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public final class StoneDeposit implements IEvent, HarvestableFixture, HasKind {
+public final class StoneDeposit implements IEvent, HarvestableFixture, HasMutableKind {
 	/**
 	 * Constructor.
 	 *

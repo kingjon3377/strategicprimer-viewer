@@ -3,13 +3,10 @@ package model.map;
 /**
  * An interface for fixtures that have a 'kind' property.
  *
- * FIXME: Should we split this, and other similar interfaces, into "HasX" and
- * "MutableHasX"?
- *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
- * Copyright (C) 2012-2014 Jonathan Lovelace
+ * Copyright (C) 2012-2016 Jonathan Lovelace
  *
  * This program is free software: you can redistribute it and/or modify it under the terms
  * of version 3 of the GNU General Public License as published by the Free Software
@@ -25,14 +22,10 @@ package model.map;
  *
  * @author Jonathan Lovelace
  */
+@FunctionalInterface
 public interface HasKind {
 	/**
 	 * @return the kind of whatever this is
 	 */
 	String getKind();
-
-	/**
-	 * @param nKind the thing's new kind
-	 */
-	void setKind(String nKind);
 }

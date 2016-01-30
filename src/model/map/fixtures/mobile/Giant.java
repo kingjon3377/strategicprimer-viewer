@@ -2,7 +2,7 @@ package model.map.fixtures.mobile;
 
 import java.io.IOException;
 import model.map.HasImage;
-import model.map.HasKind;
+import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.Nullable;
@@ -29,7 +29,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Giant implements MobileFixture, HasImage, HasKind, UnitMember {
+public class Giant implements MobileFixture, HasImage, HasMutableKind, UnitMember {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */

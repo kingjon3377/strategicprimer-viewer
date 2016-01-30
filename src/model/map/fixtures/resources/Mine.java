@@ -1,6 +1,6 @@
 package model.map.fixtures.resources;
 
-import model.map.HasKind;
+import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.fixtures.towns.TownStatus;
 import org.eclipse.jdt.annotation.Nullable;
@@ -27,7 +27,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Mine implements HarvestableFixture, HasKind {
+public class Mine implements HarvestableFixture, HasMutableKind {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */

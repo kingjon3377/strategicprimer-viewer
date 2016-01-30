@@ -2,7 +2,7 @@ package model.map.fixtures;
 
 import java.io.IOException;
 import model.map.HasImage;
-import model.map.HasKind;
+import model.map.HasMutableKind;
 import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
@@ -31,7 +31,7 @@ import util.NullCleaner;
  *
  *         TODO: more members
  */
-public class ResourcePile implements UnitMember, FortressMember, HasKind, HasImage {
+public class ResourcePile implements UnitMember, FortressMember, HasMutableKind, HasImage {
 	/**
 	 * The ID # of the resource pile.
 	 */

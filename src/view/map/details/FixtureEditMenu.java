@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import model.map.HasKind;
+import model.map.HasMutableKind;
 import model.map.HasName;
 import model.map.HasOwner;
 import model.map.IFixture;
@@ -96,7 +97,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 								PLAIN_MESSAGE, null, null,
 								((HasKind) fixture).getKind());
 						if ((result != null) && !old.equals(result)) {
-							((HasKind) fixture).setKind(result);
+							((HasMutableKind) fixture).setKind(result);
 							for (final IWorkerTreeModel listener : listeners) {
 								listener.moveItem((HasKind) fixture);
 							}

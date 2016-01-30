@@ -1,7 +1,7 @@
 package model.map.fixtures.terrain;
 
 import model.map.HasImage;
-import model.map.HasKind;
+import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.TerrainFixture;
 import org.eclipse.jdt.annotation.Nullable;
@@ -28,7 +28,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Forest implements TerrainFixture, HasImage, HasKind {
+public class Forest implements TerrainFixture, HasImage, HasMutableKind {
 	/**
 	 * What kind of trees dominate the forest.
 	 */

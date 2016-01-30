@@ -3,6 +3,8 @@ package model.map;
 /**
  * An interface for things that have a name.
  *
+ * TODO: Split mutator into separate interface
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *

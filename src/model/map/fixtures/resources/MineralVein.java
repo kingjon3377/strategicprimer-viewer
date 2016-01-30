@@ -1,6 +1,6 @@
 package model.map.fixtures.resources;
 
-import model.map.HasKind;
+import model.map.HasMutableKind;
 import model.map.IEvent;
 import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
@@ -29,7 +29,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  */
 public final class MineralVein implements IEvent, HarvestableFixture,
-		                                          HasKind {
+		                                          HasMutableKind {
 	/**
 	 * Whether the vein is exposed.
 	 *

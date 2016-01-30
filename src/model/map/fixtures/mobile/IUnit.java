@@ -2,7 +2,7 @@ package model.map.fixtures.mobile;
 
 import model.map.FixtureIterable;
 import model.map.HasImage;
-import model.map.HasKind;
+import model.map.HasMutableKind;
 import model.map.HasName;
 import model.map.HasOwner;
 import model.map.fixtures.FortressMember;
@@ -31,7 +31,7 @@ import org.eclipse.jdt.annotation.NonNull;
  *
  * @author Jonathan Lovelace
  */
-public interface IUnit extends MobileFixture, HasImage, HasKind,
+public interface IUnit extends MobileFixture, HasImage, HasMutableKind,
 		                               FixtureIterable<@NonNull UnitMember>, HasName,
 		                               HasOwner, FortressMember {
 	/**

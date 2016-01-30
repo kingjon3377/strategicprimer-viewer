@@ -2,7 +2,7 @@ package model.map.fixtures.mobile;
 
 import java.io.IOException;
 import model.map.HasImage;
-import model.map.HasKind;
+import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.Nullable;
@@ -32,7 +32,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public class Animal implements MobileFixture, HasImage, HasKind, UnitMember {
+public class Animal implements MobileFixture, HasImage, HasMutableKind, UnitMember {
 	/**
 	 * ID number.
 	 */

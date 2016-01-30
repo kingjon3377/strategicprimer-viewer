@@ -4,6 +4,8 @@ package model.map;
  * An interface for model objects that may have a "portrait" to display in the "fixture
  * details" panel.
  *
+ * TODO: Split mutator into separate interface
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
