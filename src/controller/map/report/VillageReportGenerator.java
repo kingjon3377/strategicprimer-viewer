@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -53,7 +55,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 
 	/**
 	 * Produce the report on all villages. All fixtures referred to in this report are
-	 * removed from the collection. TODO: sort this by owner.
+	 * removed from the collection.
 	 *
 	 * @param fixtures      the set of fixtures
 	 * @param currentPlayer the player for whom the report is being produced
@@ -70,9 +72,9 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 		final Collection<String> own = new HtmlList(
 														   "<h4>Villages pledged to your" +
 																   " service:</h4>");
-		final Collection<String> others = new HtmlList(
-															  "<h4>Villages you know " +
-																	  "about:</h4>");
+		final Collection<String> independents =
+				new HtmlList("<h4>Villages you think are independent:</h4>");
+		final Map<Player, Collection<String>> others = new HashMap<>();
 		values.stream().filter(pair -> pair.second() instanceof Village).forEach(pair
 																						 -> {
 			final Village village = (Village) pair.second();
@@ -81,17 +83,32 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 							pair.first());
 			if (village.getOwner().isCurrent()) {
 				own.add(product);
+			} else if (village.getOwner().isIndependent()) {
+				independents.add(product);
+			} else if (others.containsKey(village.getOwner())) {
+				others.get(village.getOwner()).add(product);
 			} else {
-				others.add(product);
+				final Collection<String> coll = new HtmlList("<h5>Villages sworn to " +
+								             village.getOwner().getName() + "</h5>");
+				coll.add(product);
+				others.put(village.getOwner(), coll);
 			}
 		});
+		// TODO: Size?
+		final StringBuilder retval = new StringBuilder();
 		// HtmlLists will return the empty string if they are empty.
-		return own.toString() + others.toString();
+		retval.append(own.toString());
+		retval.append(independents.toString());
+		if (!others.isEmpty()) {
+			retval.append("<h4>Other villages you know about:</h4>\n");
+			others.values().stream().map(Object::toString).forEach(retval::append);
+		}
+		return retval.toString();
 	}
 
 	/**
 	 * Produce the report on all villages. All fixtures referred to in this report are
-	 * removed from the collection. TODO: sort this by owner.
+	 * removed from the collection.
 	 *
 	 * @param fixtures      the set of fixtures
 	 * @param currentPlayer the player for whom the report is being produced
@@ -112,24 +129,38 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 																				" to " +
 																				"your " +
 																				"service:");
-		final IReportNode others = new SectionListReportNode(5,
-																		   "Villages you" +
-																				   " know about:");
+		final IReportNode independents =
+				new SectionListReportNode(5, "Villages you think are independent:");
+		final IReportNode others =
+				new SectionListReportNode(5, "Other villages you know about:");
+		final Map<Player, IReportNode> othersMap = new HashMap<>();
 		values.stream().filter(pair -> pair.second() instanceof Village).forEach(pair
 																						 -> {
 			final Village village = (Village) pair.second();
+			final Player owner = village.getOwner();
 			final IReportNode product =
 					produceRIR(fixtures, map, currentPlayer, village,
 							pair.first());
-			if (village.getOwner().isCurrent()) {
+			if (owner.isCurrent()) {
 				own.add(product);
+			} else if (owner.isIndependent()) {
+				independents.add(product);
+			} else if (othersMap.containsKey(owner)) {
+				othersMap.get(owner).add(product);
 			} else {
-				others.add(product);
+				IReportNode node =
+						new SectionListReportNode(6, "Villages sworn to " + owner.getName());
+				node.add(product);
+				others.add(node);
+				othersMap.put(owner, node);
 			}
 		});
 		final IReportNode retval = new SectionReportNode(4, "Villages:");
 		if (own.getChildCount() != 0) {
 			retval.add(own);
+		}
+		if (independents.getChildCount() != 0) {
+			retval.add(independents);
 		}
 		if (others.getChildCount() != 0) {
 			retval.add(others);
