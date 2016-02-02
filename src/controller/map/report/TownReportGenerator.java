@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -119,11 +120,13 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 					                                                           Pair<Point, IFixture>> fixtures,
 			                                    final IMapNG map,
 			                                    final Player currentPlayer) {
-		final Map<AbstractTown, Point> townLocs = new HashMap<>();
-		fixtures.values().stream().filter(pair -> pair.second() instanceof AbstractTown)
-				.forEach(
-						pair -> townLocs.put((AbstractTown) pair.second(), pair.first
-								                                                        ()));
+		final Map<AbstractTown, Point> townLocs = fixtures.values().stream()
+				                                          .filter(pair -> pair.second()
+						                                                          instanceof AbstractTown)
+
+				                                          .collect(Collectors
+						                                                   .toMap(pair -> (AbstractTown) pair.second(),
+								                                                   Pair::first));
 		final List<AbstractTown> sorted = new ArrayList<>(townLocs.keySet());
 		Collections.sort(sorted, new TownComparator());
 		// FIXME: Within any given status, sort by distance from HQ
