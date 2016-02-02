@@ -70,7 +70,13 @@ public final class ReportGenerator {
 				if (firstFixture.equals(secondFixture)) {
 					return 0;
 				} else {
-					return firstFixture.hashCode() - secondFixture.hashCode();
+					if (firstFixture.hashCode() > secondFixture.hashCode()) {
+						return 1;
+					} else if (firstFixture.hashCode() == secondFixture.hashCode()) {
+						return 0;
+					} else {
+						return -1;
+					}
 				}
 			};
 
