@@ -121,9 +121,8 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	@Override
 	public List<IUnit> getUnits(final Player player) {
 		return StreamSupport.stream(getMap().locations().spliterator(), false).flatMap(
-				point -> StreamSupport.stream(getUnits(getMap().getOtherFixtures(point),
-						player).spliterator(), false))
-					   .collect(Collectors.toList());
+				point -> getUnits(getMap().getOtherFixtures(point), player).stream())
+				       .collect(Collectors.toList());
 	}
 
 	/**

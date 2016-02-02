@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
 import model.map.IMapNG;
@@ -153,9 +152,8 @@ public final class ComponentMouseListener extends MouseAdapter implements
 				fixes.add(fix);
 			}
 		}
-		return StreamSupport.stream(fixes.spliterator(), false).map
-																		(TileFixture::toString)
-					   .collect(Collectors.joining("<br />"));
+		return fixes.stream().map(TileFixture::toString)
+				       .collect(Collectors.joining("<br />"));
 	}
 
 	/**

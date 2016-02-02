@@ -223,9 +223,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			builder.append(OPEN_LIST_ITEM);
 			builder.append("There is a river on the tile, "); // NOPMD
 			builder.append("flowing through the following borders: ");
-			builder.append(StreamSupport.stream(rivers.spliterator(), false)
-								   .map(River::getDescription)
-								   .collect(Collectors.joining(", ")));
+			builder.append(rivers.stream().map(River::getDescription)
+					               .collect(Collectors.joining(", ")));
 			builder.append(CLOSE_LIST_ITEM);
 		}
 		return NullCleaner.assertNotNull(builder.toString());
@@ -243,17 +242,14 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			rivers.remove(River.Lake);
 		}
 		if (!rivers.isEmpty()) {
-			parent.add(
-					new SimpleReportNode(loc,
-												"There is a river on the tile, flowing " +
-														"through the following " +
-														"borders: ",
-												StreamSupport.stream(rivers
-																			 .spliterator(),
-														false)
-														.map(River::getDescription)
-														.collect(Collectors.joining(
-																", "))));
+			parent.add(new SimpleReportNode(loc,
+					                               "There is a river on the tile, " +
+							                               "flowing through the " +
+							                               "following borders: ",
+					                               rivers.stream()
+							                               .map(River::getDescription)
+							                               .collect(Collectors.joining(
+									                               ", "))));
 		}
 	}
 

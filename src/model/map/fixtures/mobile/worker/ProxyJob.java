@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.ProxyFor;
 import org.eclipse.jdt.annotation.NonNull;
@@ -238,8 +237,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	 */
 	@Override
 	public boolean isEmpty() {
-		return StreamSupport.stream(proxiedJobs.spliterator(), false).allMatch
-				                                                              (IJob::isEmpty);
+		return proxiedJobs.stream().allMatch(IJob::isEmpty);
 	}
 
 	/**

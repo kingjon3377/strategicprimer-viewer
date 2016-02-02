@@ -176,12 +176,8 @@ public final class HuntingModel {
 		final List<String> choices =
 				StreamSupport
 						.stream(new SurroundingPointIterable(point, dims).spliterator(),
-								false)
-						.filter(plants::containsKey)
-						.flatMap(local -> StreamSupport
-												  .stream(plants.get(local)
-																  .spliterator(),
-														  false))
+								false).filter(plants::containsKey)
+						.flatMap(local -> plants.get(local).stream())
 						.collect(Collectors.toList());
 		final Collection<String> retval = new ArrayList<>();
 		for (int i = 0; i < items; i++) {
@@ -202,22 +198,17 @@ public final class HuntingModel {
 	private List<String> chooseFromMap(final Point point, final int items,
 									   final Map<Point, List<String>> chosenMap) {
 		final List<String> choices = new ArrayList<>(StreamSupport
-															 .stream(new
-																			 SurroundingPointIterable(point,
-																										 dims)
-																			 .spliterator(),
-																	 false)
-															 .filter
-																	  (chosenMap::containsKey)
-															 .flatMap(
-																	 local ->
-																			 StreamSupport
-																					  .stream(chosenMap
-																									  .get(local)
-																									  .spliterator(),
-																							  false))
-															 .collect(Collectors
-																			  .toList()));
+				                                             .stream(new
+						                                                     SurroundingPointIterable(point,
+						                                                                                 dims)
+						                                                     .spliterator(),
+						                                             false)
+				                                             .filter(chosenMap::containsKey)
+				                                             .flatMap(local -> chosenMap
+						                                                               .get(local)
+						                                                               .stream())
+				                                             .collect(Collectors
+						                                                      .toList()));
 		final int nothings = choices.size();
 		for (int i = 0; i < nothings; i++) {
 			choices.add(NOTHING);
