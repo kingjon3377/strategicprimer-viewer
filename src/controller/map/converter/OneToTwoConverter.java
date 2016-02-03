@@ -8,7 +8,6 @@ import controller.map.misc.MapReaderAdapter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -17,7 +16,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import java.util.stream.Stream;
 import javax.xml.stream.XMLStreamException;
 import model.exploration.old.ExplorationRunner;
 import model.exploration.old.MissingTableException;
@@ -510,23 +509,16 @@ public final class OneToTwoConverter { // NOPMD
 	 * NotVisible---what is returned when a tile isn't in the map) shouldn't affect the
 	 * caller at all; it should be as if it wasn't in the Iterable.
 	 *
-	 * TODO: Return Stream instead of Iterable
-	 *
 	 * @param point the location of the tile
 	 * @return the locations of its neighbors.
 	 */
-	private static Iterable<Point> getNeighbors(final Point point) {
+	private static Stream<Point> getNeighbors(final Point point) {
 		final int row = point.row;
 		final int col = point.col;
-		return assertNotNull(Arrays.asList(
-				PointFactory.point(row - 1, col - 1),
-				PointFactory.point(row - 1, col),
-				PointFactory.point(row - 1, col + 1),
-				PointFactory.point(row, col - 1),
-				PointFactory.point(row, col + 1),
-				PointFactory.point(row + 1, col - 1),
-				PointFactory.point(row + 1, col),
-				PointFactory.point(row + 1, col + 1)));
+		return Stream.of(PointFactory.point(row - 1, col - 1), PointFactory.point(row - 1, col),
+				PointFactory.point(row - 1, col + 1), PointFactory.point(row, col - 1),
+				PointFactory.point(row, col + 1), PointFactory.point(row + 1, col - 1),
+				PointFactory.point(row + 1, col), PointFactory.point(row + 1, col + 1));
 	}
 
 	/**
@@ -535,8 +527,7 @@ public final class OneToTwoConverter { // NOPMD
 	 * @return whether the tile is adjacent to a town.
 	 */
 	private static boolean isAdjacentToTown(final Point point, final IMapNG map) {
-		return StreamSupport.stream(getNeighbors(point).spliterator(), false)
-					   .flatMap(npoint -> map.streamOtherFixtures(npoint))
+		return getNeighbors(point).flatMap(npoint -> map.streamOtherFixtures(npoint))
 					   .anyMatch(fix -> fix instanceof ITownFixture);
 	}
 
@@ -546,9 +537,9 @@ public final class OneToTwoConverter { // NOPMD
 	 * @return whether the tile is adjacent to a river or ocean
 	 */
 	private static boolean hasAdjacentWater(final Point point, final IMapNG map) {
-		return StreamSupport.stream(getNeighbors(point).spliterator(), false).anyMatch(
+		return getNeighbors(point).anyMatch(
 				npoint -> map.getRivers(npoint).iterator().hasNext() ||
-								  (TileType.Ocean == map.getBaseTerrain(npoint)));
+						          (TileType.Ocean == map.getBaseTerrain(npoint)));
 	}
 
 	/**
