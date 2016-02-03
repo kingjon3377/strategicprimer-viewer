@@ -79,10 +79,9 @@ public final class HuntingModel {
 				StreamSupport.stream(map.locations().spliterator(), false)
 						.filter(point -> Ocean == map.getBaseTerrain(point)).flatMap(
 						point -> StreamSupport.stream(map.getOtherFixtures(point)
-															  .spliterator(), false))
-						.filter(fix -> fix instanceof Animal)
-						.map(fix -> ((HasKind) fix).getKind())
-						.collect(Collectors.toSet());
+								                              .spliterator(), false))
+						.filter(Animal.class::isInstance).map(HasKind.class::cast)
+						.map(HasKind::getKind).collect(Collectors.toSet());
 		for (final Point point : map.locations()) {
 			for (final TileFixture fix : map.getOtherFixtures(point)) {
 				if ((fix instanceof Animal) && !((Animal) fix).isTalking()

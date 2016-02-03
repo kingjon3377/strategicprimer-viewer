@@ -223,14 +223,10 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	private void enterStats(final IMultiMapModel model, final Iterable<UnitMember> unit)
 			throws IOException {
 		final List<Worker> workers = StreamSupport.stream(unit.spliterator(), false)
-											 .filter(member -> (member instanceof
-																		Worker) &&
-																	   (((Worker) member)
-																				.getStats
-																						 () ==
-																				null))
-											 .map(member -> (Worker) member)
-											 .collect(Collectors.toList());
+				                             .filter(Worker.class::isInstance)
+				                             .map(Worker.class::cast)
+				                             .filter(wkr -> wkr.getStats() == null)
+				                             .collect(Collectors.toList());
 		final String hdr = "Which worker do you want to enter stats for?";
 		final String none = "There are no owkers without stats in that unit.";
 		final String prpt = "Worker to modify: ";

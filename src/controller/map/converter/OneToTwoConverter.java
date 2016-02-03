@@ -372,9 +372,8 @@ public final class OneToTwoConverter { // NOPMD
 			final Collection<TileFixture> forests =
 					StreamSupport.stream(map.getOtherFixtures(point).spliterator(),
 							false)
-							.filter(p -> p instanceof Forest).collect(
-
-							Collectors.toList());
+							.filter(Forest.class::isInstance)
+							.collect(Collectors.toList());
 			for (final TileFixture fixture : forests) {
 				map.removeFixture(point, fixture);
 			}

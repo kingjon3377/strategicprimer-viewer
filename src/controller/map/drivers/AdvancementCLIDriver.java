@@ -178,11 +178,10 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	 */
 	private void advanceWorkersInUnit(final Iterable<UnitMember> unit) throws
 			IOException {
-		final List<IWorker> workers =
-				StreamSupport.stream(unit.spliterator(), false)
-						.filter(member -> member instanceof IWorker)
-						.map(p -> (IWorker) p).collect(
-						Collectors.toList());
+		final List<IWorker> workers = StreamSupport.stream(unit.spliterator(), false)
+				                              .filter(IWorker.class::isInstance)
+				                              .map(IWorker.class::cast)
+				                              .collect(Collectors.toList());
 		while (!workers.isEmpty()) {
 			final int workerNum = cli.chooseFromList(workers, "Workers in unit:",
 					"No unadvanced workers remain.", "Chosen worker: ", false);

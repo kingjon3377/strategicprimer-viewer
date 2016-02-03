@@ -167,16 +167,15 @@ public final class QueryCLI implements SimpleDriver {
 				if ((fix instanceof IUnit)
 						    && player.equals(((IUnit) fix).getOwner())) {
 					count += StreamSupport.stream(((IUnit) fix).spliterator(), false)
-							         .filter(member -> member instanceof IWorker)
-							         .count();
+							         .filter(IWorker.class::isInstance).count();
 				} else if (fix instanceof Fortress) {
+					// TODO: Turn for-loop into Streams calls
 					for (final FortressMember unit : (Fortress) fix) {
 						if ((unit instanceof IUnit)
 								    && player.equals(((IUnit) unit).getOwner())) {
 							count += StreamSupport
 									         .stream(((IUnit) unit).spliterator(), false)
-									         .filter(member -> member instanceof IWorker)
-									         .count();
+									         .filter(IWorker.class::isInstance).count();
 						}
 					}
 				}
