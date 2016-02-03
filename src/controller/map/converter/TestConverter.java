@@ -400,6 +400,7 @@ public final class TestConverter {
 		// FIXME: Include tile fixtures beyond those implicit in events
 		final String orig = "<map version='0' rows='2' columns='2'><player number='0' code_name='Test Player' /><row index='0'><tile row='0' column='0' type='tundra' event='0'></tile><tile row='0' column='1' type='boreal_forest' event='183'></tile></row><row index='1'><tile row='1' column='0' type='mountain' event='229'></tile><tile row='1' column='1' type='temperate_forest' event='219'></tile></row></map>";
 		final StringWriter out = new StringWriter();
+		//noinspection unchecked
 		ZeroToOneConverter.convert(
 				new IteratorWrapper<XMLEvent>(XMLInputFactory.newInstance()
 						                              .createXMLEventReader(

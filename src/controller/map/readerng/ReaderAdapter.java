@@ -192,12 +192,14 @@ public final class ReaderAdapter implements INodeHandler<Object> {
 	@Override
 	public <@NonNull S> SPIntermediateRepresentation write(final S obj) {
 		if (WRITERS.containsKey(obj.getClass())) {
+			//noinspection unchecked
 			return ((INodeHandler<S>) WRITERS.get(obj.getClass()))
 					       .write(obj);
 		} else {
 			for (final Map.Entry<Class<?>, INodeHandler<@NonNull ?>> entry : WRITERS
 					                                                                 .entrySet()) {
 				if (entry.getKey().isAssignableFrom(obj.getClass())) {
+					//noinspection unchecked
 					return ((INodeHandler<S>) entry.getValue()).write(obj);
 				}
 			}

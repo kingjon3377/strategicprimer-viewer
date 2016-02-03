@@ -1,6 +1,6 @@
 package model.viewer;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -12,7 +12,7 @@ import java.awt.dnd.DropTargetEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComponent;
+import javax.swing.*;
 import model.map.TileFixture;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
@@ -218,9 +218,9 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 					}
 					return;
 				} else if (flavor.equals(CurriedFixtureTransferable.FLAVOR)) {
-					final Iterable<Transferable> curried = (Iterable<Transferable>) trans
-																							.getTransferData(
-																									flavor);
+					@SuppressWarnings("unchecked")
+					final Iterable<Transferable> curried =
+							(Iterable<Transferable>) trans.getTransferData(flavor);
 					for (final Transferable item : curried) {
 						handleDrop(item);
 					}

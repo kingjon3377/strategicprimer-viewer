@@ -151,6 +151,7 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public Enumeration<IReportNode> children() {
+		//noinspection unchecked
 		return super.children();
 	}
 

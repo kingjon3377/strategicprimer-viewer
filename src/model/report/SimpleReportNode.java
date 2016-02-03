@@ -145,6 +145,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	/**
 	 * Add generic-type information for the compiler.
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public Enumeration<IReportNode> children() {
 		return super.children();

@@ -285,6 +285,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 					final Integer memberID =
 							NullCleaner.assertNotNull(Integer.valueOf(member.getID()));
 					if (map.containsKey(memberID)) {
+						//noinspection unchecked
 						proxy = (ProxyFor<? extends UnitMember>) map.get(memberID);
 						if (proxy instanceof ProxyWorker) {
 							if (member instanceof IWorker) {
@@ -295,6 +296,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 
 							}
 						} else {
+							//noinspection unchecked
 							((ProxyFor<UnitMember>) proxy).addProxied(member);
 						}
 					} else {

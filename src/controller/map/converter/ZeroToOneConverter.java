@@ -76,10 +76,12 @@ public final class ZeroToOneConverter {
 						NullCleaner.assertNotNull(event.asStartElement());
 				if ("tile".equalsIgnoreCase(selement.getName()
 													.getLocalPart())) {
+					//noinspection unchecked
 					convertTile(ostream, selement,
 							iFactory(selement.getAttributes()));
 				} else if ("map".equalsIgnoreCase(selement
 														  .getName().getLocalPart())) {
+					//noinspection unchecked
 					convertMap(ostream, selement,
 							iFactory(selement.getAttributes()));
 				} else {
@@ -219,8 +221,9 @@ public final class ZeroToOneConverter {
 	                                      final StartElement element) throws IOException {
 		ostream.append('<');
 		ostream.append(element.getName().getLocalPart());
+		// TODO: Use Stream API
 		// getAttributes() isn't actually genericized, so diamond causes compile error
-		//noinspection Convert2Diamond
+		//noinspection Convert2Diamond,unchecked
 		for (final Attribute attr : new IteratorWrapper<Attribute>(element.getAttributes())) {
 			ostream.append(printAttribute(attr));
 		}
@@ -293,6 +296,7 @@ public final class ZeroToOneConverter {
 	public static void main(final String... args) {
 		for (final String arg : args) {
 			try (final Reader reader = new FileReader(arg)) { // NOPMD
+				//noinspection unchecked
 				convert(new IteratorWrapper<>(XMLInputFactory.newInstance()
 						                              .createXMLEventReader(reader)),
 						System.out);

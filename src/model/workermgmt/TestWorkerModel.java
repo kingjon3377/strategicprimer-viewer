@@ -113,6 +113,7 @@ public final class TestWorkerModel {
 		for (final T item : list) {
 			if (item instanceof ProxyFor<?>) {
 				// this wouldn't work for Skills, but ...
+				//noinspection unchecked
 				((ProxyFor<T>) item).getProxied().forEach(retval::add);
 			} else {
 				retval.add(item);

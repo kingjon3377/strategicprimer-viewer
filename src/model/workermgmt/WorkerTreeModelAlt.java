@@ -91,6 +91,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		oldNode.remove(node);
 		if ((member instanceof ProxyFor) && (old instanceof ProxyUnit)
 					&& (newOwner instanceof ProxyUnit)) {
+			//noinspection unchecked
 			if ((((Collection<IUnit>) ((ProxyUnit) old).getProxied()).size() ==
 						 ((Collection<IUnit>) ((ProxyUnit) newOwner).getProxied())
 								 .size()) &&
@@ -104,6 +105,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 														.iterator();
 				final Iterator<IUnit> newIter =
 						((ProxyUnit) newOwner).getProxied().iterator();
+				//noinspection unchecked
 				for (final UnitMember item : ((ProxyFor<? extends UnitMember>) member)
 													 .getProxied()) {
 					assert oldIter.hasNext() && newIter.hasNext();
@@ -175,6 +177,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		/**
 		 * @return an iterator over the immediate children of this node
 		 */
+		@SuppressWarnings("unchecked")
 		@Override
 		public Iterator<TreeNode> iterator() {
 			return new EnumerationWrapper<>(children());
@@ -368,6 +371,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 				new UnitNode(model.getUnitByID(((PlayerNode) root).getUserObject(),
 						unit.getID()));
 		final String kind = unit.getKind();
+		//noinspection unchecked
 		for (final TreeNode child : (Iterable<TreeNode>) root) {
 			if ((child instanceof KindNode)
 						&& kind.equals(((KindNode) child).getUserObject())) {
@@ -432,6 +436,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	@Override
 	public void addUnitMember(final IUnit unit, final UnitMember member) {
 		UnitNode unode = null;
+		//noinspection unchecked
 		for (final TreeNode item : (Iterable<TreeNode>) root) {
 			if ((item instanceof UnitNode)
 						&& ((UnitNode) item).getUserObject().equals(unit)) {
@@ -548,6 +553,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			final TreeNode[] pathOne = getPathToRoot(node);
 			final int indexOne = getIndexOfChild(pathOne[pathOne.length - 2], node);
 			TreeNode nodeTwo = null;
+			//noinspection unchecked
 			for (final TreeNode child : (Iterable<TreeNode>) root) {
 				if ((child instanceof KindNode)
 							&& item.getKind().equals(

@@ -69,6 +69,7 @@ public final class CompactXMLReader implements IMapReader, ISPReader {
 						                      .parse(event.asStartElement(), eventReader,
 								                      players, warner, idFactory);
 				if (type.isAssignableFrom(retval.getClass())) {
+					//noinspection unchecked
 					return (T) retval;
 				} else {
 					throw new IllegalStateException("Reader produced different type than we expected");

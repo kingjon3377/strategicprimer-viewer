@@ -162,6 +162,7 @@ public final class TestProxyWorker {
 		proxy.addProxied(unitOne);
 		proxy.addProxied(unitTwo);
 		for (final UnitMember member : proxy) {
+			//noinspection unchecked
 			for (final Iterable<ISkill> job : (Iterable<IJob>) member) {
 				for (final ISkill skill : job) {
 					skill.addHours(10, 100);

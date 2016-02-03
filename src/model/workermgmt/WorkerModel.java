@@ -95,9 +95,11 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 						final IUnit proxy;
 						if (retval.containsKey(Integer.valueOf(unit.getID()))) {
 							proxy = retval.get(Integer.valueOf(unit.getID()));
+							//noinspection unchecked
 							((ProxyFor<IUnit>) proxy).addProxied(unit);
 						} else {
 							proxy = new ProxyUnit(unit.getID());
+							//noinspection unchecked
 							((ProxyFor<IUnit>) proxy).addProxied(unit);
 							retval.put(NullCleaner.assertNotNull(
 									Integer.valueOf(unit.getID())), proxy);

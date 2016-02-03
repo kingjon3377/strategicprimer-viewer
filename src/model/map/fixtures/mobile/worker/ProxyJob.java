@@ -208,6 +208,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 		}
 		proxiedJobs.add(item);
 		for (final ISkill skill : proxied) {
+			//noinspection unchecked
 			((ProxyFor<IJob>) skill).addProxied(item);
 		}
 		final IJob[] jobsArray =

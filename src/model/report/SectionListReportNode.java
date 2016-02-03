@@ -217,6 +217,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public Enumeration<IReportNode> children() {
+		//noinspection unchecked
 		return super.children();
 	}
 
