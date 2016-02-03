@@ -347,7 +347,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 							|| obj.isMountainous(point)
 							|| (obj.getGround(point) != null)
 							|| (obj.getForest(point) != null)
-							|| obj.streamOtherFixtures(point).anyMatch(f -> true)) {
+							|| obj.streamOtherFixtures(point).anyMatch(fix -> true)) {
 					mapTag.addChild(row);
 					row.addChild(writeTile(obj, point));
 				}

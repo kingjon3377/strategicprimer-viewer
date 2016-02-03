@@ -164,7 +164,7 @@ public final class OneToTwoConverter { // NOPMD
 				       (map.getGround(point) != null) || (map.getForest(point) !=
 						                                          null) ||
 				       map.getRivers(point).iterator().hasNext() ||
-				       map.streamOtherFixtures(point).anyMatch(f -> true);
+				       map.streamOtherFixtures(point).anyMatch(fix -> true);
 	}
 
 	/**
