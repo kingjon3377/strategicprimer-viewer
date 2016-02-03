@@ -149,6 +149,7 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	/**
 	 * Add generic-type information for the compiler.
 	 */
+	@SuppressWarnings("EmptyMethod")
 	@Override
 	public Enumeration<IReportNode> children() {
 		//noinspection unchecked

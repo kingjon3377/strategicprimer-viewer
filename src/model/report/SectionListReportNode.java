@@ -215,6 +215,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	/**
 	 * Add generic-type information for the compiler.
 	 */
+	@SuppressWarnings("EmptyMethod")
 	@Override
 	public Enumeration<IReportNode> children() {
 		//noinspection unchecked
