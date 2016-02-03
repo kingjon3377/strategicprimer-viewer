@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
@@ -110,6 +111,17 @@ public final class QuadrantTable implements EncounterTable {
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
 	                            final Iterable<TileFixture> fixtures) {
+		return getQuadrantValue(point.row, point.col);
+	}
+	/**
+	 * @param terrain  ignored
+	 * @param point    ignored
+	 * @param fixtures any fixtures on the tile
+	 * @return the event on that tile
+	 */
+	@Override
+	public String generateEvent(final Point point, final TileType terrain,
+	                            final Stream<TileFixture> fixtures) {
 		return getQuadrantValue(point.row, point.col);
 	}
 

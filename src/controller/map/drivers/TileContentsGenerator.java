@@ -10,17 +10,16 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import javax.xml.stream.XMLStreamException;
 import model.exploration.old.ExplorationRunner;
 import model.exploration.old.MissingTableException;
 import model.map.IMapNG;
 import model.map.Point;
 import model.map.PointFactory;
-import model.map.TileFixture;
 import model.map.TileType;
 import util.NullCleaner;
 import util.SingletonRandom;
@@ -124,11 +123,9 @@ public final class TileContentsGenerator {
 	private void generateTileContents(final Point point, final TileType terrain)
 			throws MissingTableException {
 		final int reps = SingletonRandom.RANDOM.nextInt(4) + 1;
-		final List<TileFixture> empty =
-				NullCleaner.assertNotNull(Collections.emptyList());
 		for (int i = 0; i < reps; i++) {
 			println(runner.recursiveConsultTable("fisher", point,
-					terrain, empty));
+					terrain, Stream.empty()));
 		}
 	}
 

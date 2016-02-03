@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -16,8 +17,6 @@ import util.TypesafeLogger;
 /**
  * A class to create exploration results. The initial implementation is a bit hackish, and
  * should be generalized and improved.
- *
- * TODO: Take Streams instead of Iterables.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -54,7 +53,7 @@ public final class ExplorationRunner { // NOPMD
 	 */
 	@SuppressWarnings("deprecation")
 	public String defaultResults(final Point point, final TileType terrain,
-	                             final Iterable<TileFixture> fixtures)
+	                             final Stream<TileFixture> fixtures)
 			throws MissingTableException {
 		final StringBuilder sbuild = new StringBuilder(80)
 				                             .append("The primary rock type here is ");
@@ -92,7 +91,7 @@ public final class ExplorationRunner { // NOPMD
 	 * @throws MissingTableException if table missing
 	 */
 	public String getPrimaryRock(final Point point, final TileType terrain,
-	                             final Iterable<TileFixture> fixtures)
+	                             final Stream<TileFixture> fixtures)
 			throws MissingTableException {
 		return getTable("major_rock").generateEvent(point,
 				terrain, fixtures);
@@ -107,7 +106,7 @@ public final class ExplorationRunner { // NOPMD
 	 */
 	@SuppressWarnings("deprecation")
 	public String getPrimaryTree(final Point point, final TileType terrain,
-	                             final Iterable<TileFixture> fixtures)
+	                             final Stream<TileFixture> fixtures)
 			throws MissingTableException {
 		if (TileType.BorealForest == terrain) {
 			return getTable("boreal_major_tree").generateEvent(point,
@@ -135,7 +134,7 @@ public final class ExplorationRunner { // NOPMD
 	 */
 	public String consultTable(final String table, final Point point,
 	                           final TileType terrain,
-	                           final Iterable<TileFixture> fixtures)
+	                           final Stream<TileFixture> fixtures)
 			throws MissingTableException {
 		return getTable(table).generateEvent(point, terrain, fixtures);
 	}
@@ -174,7 +173,7 @@ public final class ExplorationRunner { // NOPMD
 	 */
 	public String recursiveConsultTable(final String table, final Point point,
 	                                    final TileType terrain,
-	                                    final Iterable<TileFixture> fixtures)
+	                                    final Stream<TileFixture> fixtures)
 			throws MissingTableException {
 		final String result = consultTable(table, point, terrain, fixtures);
 		if (result.contains("#")) {

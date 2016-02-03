@@ -4,6 +4,7 @@ import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -64,6 +65,22 @@ public final class TerrainTable implements EncounterTable {
 			throw new IllegalArgumentException(
 					                                  "Table does not account for that " +
 							                                  "terrain type");
+		}
+	}
+	/**
+	 * @param terrain  ignored
+	 * @param point    ignored
+	 * @param fixtures any fixtures on the tile
+	 * @return the event on that tile
+	 */
+	@Override
+	public String generateEvent(final Point point, final TileType terrain,
+	                            final Stream<TileFixture> fixtures) {
+		if (mapping.containsKey(terrain)) {
+			return NullCleaner.assertNotNull(mapping.get(terrain));
+		} else {
+			throw new IllegalArgumentException("Table does not account for that terrain " +
+					                                   "type");
 		}
 	}
 

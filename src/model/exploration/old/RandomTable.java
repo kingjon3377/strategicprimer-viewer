@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -52,6 +53,17 @@ public final class RandomTable implements EncounterTable {
 	                            final Iterable<TileFixture> fixtures) {
 		final int roll = SingletonRandom.RANDOM.nextInt(100);
 		return getLowestMatch(roll);
+	}
+	/**
+	 * @param terrain  ignored
+	 * @param point    ignored
+	 * @param fixtures any fixtures on the tile
+	 * @return the event on that tile
+	 */
+	@Override
+	public String generateEvent(final Point point, final TileType terrain,
+	                            final Stream<TileFixture> fixtures) {
+		return getLowestMatch(SingletonRandom.RANDOM.nextInt(100));
 	}
 
 	/**

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 import model.map.IEvent;
 import model.map.Player;
 import model.map.Point;
@@ -102,6 +103,19 @@ public final class LegacyTable implements EncounterTable {
 			}
 		}
 		return "Nothing interesting here ...";
+	}
+	/**
+	 * @param terrain  ignored
+	 * @param point    ignored
+	 * @param fixtures any fixtures on the tile
+	 * @return the event on that tile
+	 */
+	@Override
+	public String generateEvent(final Point point, final TileType terrain,
+	                            final Stream<TileFixture> fixtures) {
+		return fixtures.filter(IEvent.class::isInstance).map(IEvent.class::cast)
+				       .map(IEvent::getText).findFirst()
+				       .orElse("Nothing interesting here ...");
 	}
 
 	/**

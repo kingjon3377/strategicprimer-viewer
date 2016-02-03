@@ -308,7 +308,7 @@ public final class OneToTwoConverter { // NOPMD
 							point,
 							new Forest(runner.getPrimaryTree(point,
 									map.getBaseTerrain(point),
-									map.getOtherFixtures(point)), false));
+									map.streamOtherFixtures(point)), false));
 				}
 				map.setBaseTerrain(point, TileType.Plains);
 			} else if (TileType.BorealForest == map.getBaseTerrain(point)) {
@@ -317,7 +317,7 @@ public final class OneToTwoConverter { // NOPMD
 							point,
 							new Forest(runner.getPrimaryTree(point,
 									map.getBaseTerrain(point),
-									map.getOtherFixtures(point)), false));
+									map.streamOtherFixtures(point)), false));
 				}
 				map.setBaseTerrain(point, TileType.Steppe);
 			}
@@ -326,7 +326,7 @@ public final class OneToTwoConverter { // NOPMD
 					point,
 					new Ground(runner.getPrimaryRock(point,
 							map.getBaseTerrain(point),
-							map.getOtherFixtures(point)), false), main);
+							map.streamOtherFixtures(point)), false), main);
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing table", e);
 		}
@@ -444,7 +444,7 @@ public final class OneToTwoConverter { // NOPMD
 						point,
 						new Meadow(runner.recursiveConsultTable("grain", point,
 								map.getBaseTerrain(point),
-								map.getOtherFixtures(point)), true, true, id,
+								map.streamOtherFixtures(point)), true, true, id,
 										  FieldStatus.random(id)), main);
 			} else {
 				addFixture(
@@ -453,7 +453,7 @@ public final class OneToTwoConverter { // NOPMD
 						new Grove(true, true, runner.recursiveConsultTable(
 								"fruit_trees", point,
 								map.getBaseTerrain(point),
-								map.getOtherFixtures(point)), id), main);
+								map.streamOtherFixtures(point)), id), main);
 			}
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing encounter table", e);
@@ -477,7 +477,7 @@ public final class OneToTwoConverter { // NOPMD
 					new Forest(runner.recursiveConsultTable(
 							"temperate_major_tree", point,
 							map.getBaseTerrain(point),
-							map.getOtherFixtures(point)), false), main);
+							map.streamOtherFixtures(point)), false), main);
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.WARNING, "Missing encounter table", e);
 		}

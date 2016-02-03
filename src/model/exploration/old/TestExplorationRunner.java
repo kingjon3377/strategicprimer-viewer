@@ -1,8 +1,7 @@
 package model.exploration.old;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.stream.Stream;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
@@ -42,8 +41,8 @@ public final class TestExplorationRunner {
 	/**
 	 * The empty list.
 	 */
-	private static final List<TileFixture> EMPTY =
-			NullCleaner.assertNotNull(Collections.emptyList());
+	private static final Stream<TileFixture> EMPTY =
+			NullCleaner.assertNotNull(Stream.empty());
 	/**
 	 * Extracted constant, to fix a warning because it occurred three or more times.
 	 */
