@@ -37,6 +37,7 @@ public interface SimpleDriver extends ISPDriver {
 	 * @param args any command-line arguments that should be passed to the driver.
 	 * @throws DriverFailedException if it's impossible for the driver to start.
 	 */
+	@Override
 	default void startDriver(final String... args) throws DriverFailedException {
 		// FIXME: This blows up if args.length == 0
 		startDriver(new MapReaderAdapter()

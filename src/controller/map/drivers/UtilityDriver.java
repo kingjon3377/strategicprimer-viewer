@@ -33,6 +33,7 @@ public interface UtilityDriver extends ISPDriver {
 	 * @throws DriverFailedException always: a utility driver operates on files
 	 * directly, not a driver model.
 	 */
+	@Override
 	default void startDriver(final IDriverModel model) throws DriverFailedException {
 		throw new DriverFailedException(new IllegalStateException("A utility driver can't operate on a driver model"));
 	}
