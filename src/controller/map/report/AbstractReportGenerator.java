@@ -171,7 +171,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 * @param points a list of points
 	 * @param ostream a stream to which to write a comma-separated string representing them.
 	 */
-	protected static void pointCSL(final StringBuilder ostream, final List<Point> points) {
+	protected static void pointCSL(final StringBuilder ostream, final List<?> points) {
 		if (!points.isEmpty()) {
 			if (points.size() == 1) {
 				ostream.append(points.get(0).toString());
