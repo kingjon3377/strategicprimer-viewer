@@ -17,7 +17,6 @@ import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
-import model.map.fixtures.FortressMember;
 import model.map.fixtures.Ground;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
@@ -169,15 +168,12 @@ public final class QueryCLI implements SimpleDriver {
 					count += StreamSupport.stream(((IUnit) fix).spliterator(), false)
 							         .filter(IWorker.class::isInstance).count();
 				} else if (fix instanceof Fortress) {
-					// TODO: Turn for-loop into Streams calls
-					for (final FortressMember unit : (Fortress) fix) {
-						if ((unit instanceof IUnit)
-								    && player.equals(((IUnit) unit).getOwner())) {
-							count += StreamSupport
-									         .stream(((IUnit) unit).spliterator(), false)
-									         .filter(IWorker.class::isInstance).count();
-						}
-					}
+					StreamSupport.stream(((Fortress) fix).spliterator(), false)
+							.filter(IUnit.class::isInstance).map(IUnit.class::cast)
+							.filter(unit -> player.equals(unit.getOwner()))
+							.flatMap(unit -> StreamSupport
+									                 .stream(unit.spliterator(), false))
+							.filter(IWorker.class::isInstance).count();
 				}
 			}
 		}
