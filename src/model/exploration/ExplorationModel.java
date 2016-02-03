@@ -122,27 +122,25 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	@Override
 	public List<IUnit> getUnits(final Player player) {
 		return StreamSupport.stream(getMap().locations().spliterator(), false).flatMap(
-				point -> getUnits(getMap().getOtherFixtures(point), player).stream())
+				point -> getUnits(getMap().streamOtherFixtures(point), player))
 				       .collect(Collectors.toList());
 	}
 
 	/**
-	 * TODO: Take Stream, not Iterable?
-	 * @param iter   a sequence of members of that type
+	 * @param stream   a sequence of members of that type
 	 * @param player a player
 	 * @return a list of the members of the sequence that are units owned by the player
 	 */
-	private static Collection<IUnit> getUnits(final Iterable<? super Unit> iter,
+	private static Stream<IUnit> getUnits(final Stream<? super Unit> stream,
 											  final Player player) {
-		final Collection<IUnit> retval = new ArrayList<>();
-		for (final Object obj : iter) {
-			if ((obj instanceof IUnit) && ((IUnit) obj).getOwner().equals(player)) {
-				retval.add((IUnit) obj);
-			} else if (obj instanceof Fortress) {
-				retval.addAll(getUnits((Fortress) obj, player));
+		return stream.flatMap(obj -> {
+			if (obj instanceof Fortress) {
+				return StreamSupport.stream(((Fortress) obj).spliterator(), false);
+			} else {
+				return Stream.of(obj);
 			}
-		}
-		return retval;
+		}).filter(IUnit.class::isInstance).map(IUnit.class::cast)
+				       .filter(unit -> unit.getOwner().equals(player));
 	}
 
 	/**
@@ -227,7 +225,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 				continue;
 			} else {
 				done.add(point);
-				checkNearbyWatcher(map.getOtherFixtures(point), point, unit,
+				checkNearbyWatcher(map.streamOtherFixtures(point), point, unit,
 						dest);
 			}
 		}
@@ -237,25 +235,22 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * If a unit's motion to a new tile could be observed by a watcher on a specified
 	 * nearby tile, print a message to stdout saying so.
 	 *
-	 * TODO: Take Stream, not Iterable?
-	 *
 	 * @param fixtures a collection of fixtures in the location being considered
 	 * @param point    its location
 	 * @param unit     the mover
 	 * @param dest     where the mover moved to
 	 */
-	private static void checkNearbyWatcher(final Iterable<TileFixture> fixtures,
+	private static void checkNearbyWatcher(final Stream<TileFixture> fixtures,
 										   final Point point, final HasOwner unit,
 										   final Point dest) {
-		for (final TileFixture fix : fixtures) {
-			if ((fix instanceof HasOwner)
-						&& !((HasOwner) fix).getOwner().isIndependent()
-						&& !((HasOwner) fix).getOwner().equals(unit.getOwner())) {
-				SystemOut.SYS_OUT.printf(
-						"Unit's motion to %s could be observed by %s at %s%n",
-						dest.toString(), fix.shortDesc(), point.toString());
-			}
-		}
+		fixtures.filter(HasOwner.class::isInstance).map(HasOwner.class::cast)
+				.filter(fix -> !fix.getOwner().isIndependent() &&
+						               !fix.getOwner().equals(unit.getOwner())).forEach(
+				fix -> SystemOut.SYS_OUT
+						       .printf("Unit's motion to %s could be observed by %s at " +
+								               "%s%n",
+								       dest.toString(), ((TileFixture) fix).shortDesc(),
+								       point.toString()));
 	}
 
 	/**
