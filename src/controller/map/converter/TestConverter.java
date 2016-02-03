@@ -10,7 +10,6 @@ import java.util.Objects;
 import java.util.stream.Stream;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.XMLEvent;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.MapDimensions;
@@ -411,9 +410,9 @@ public final class TestConverter {
 		final StringWriter out = new StringWriter();
 		//noinspection unchecked
 		ZeroToOneConverter.convert(
-				new IteratorWrapper<XMLEvent>(XMLInputFactory.newInstance()
-						                              .createXMLEventReader(
-								                              new StringReader(orig))),
+				new IteratorWrapper<>(XMLInputFactory.newInstance()
+						                      .createXMLEventReader(
+								                      new StringReader(orig))),
 				out);
 		final StringWriter actualXML = new StringWriter();
 		CompactXMLWriter.writeSPObject(actualXML, new MapReaderAdapter()
