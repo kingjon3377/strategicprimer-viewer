@@ -69,6 +69,7 @@ public final class TODOFixerDriver {
 	 * Search for and fix units with kinds missing.
 	 */
 	public void fixAllUnits() {
+		// TODO: How to make this use Stream API instead of loop?
 		for (final Point point : map.locations()) {
 			final SimpleTerrain terrain = getTerrain(point);
 			map.streamOtherFixtures(point).filter(Unit.class::isInstance)

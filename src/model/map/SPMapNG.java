@@ -314,7 +314,14 @@ public class SPMapNG implements IMutableMapNG {
 											new PointIterator(dimensions(), null, true,
 																	 true));
 	}
-
+	/**
+	 * @return the locations in the map
+	 */
+	@Override
+	public Stream<@NonNull Point> locationStream() {
+		// TODO: Implement in more fluent fashion
+		return StreamSupport.stream(locations().spliterator(), false);
+	}
 	/**
 	 * @param location a location
 	 * @return the base terrain at that location
@@ -428,21 +435,17 @@ public class SPMapNG implements IMutableMapNG {
 					&& areIterablesEqual(players(), obj.players())
 					&& (turn == obj.getCurrentTurn())
 					&& getCurrentPlayer().equals(obj.getCurrentPlayer())) {
-			for (final Point point : locations()) {
-				if ((getBaseTerrain(point) != obj.getBaseTerrain(point))
-							|| (isMountainous(point) != obj.isMountainous(point))
-							|| !areIterablesEqual(getRivers(point),
-						obj.getRivers(point))
-							|| !Objects.equals(getForest(point),
-						obj.getForest(point))
-							|| !Objects.equals(getGround(point),
-						obj.getGround(point))
-							|| !areIterablesEqual(getOtherFixtures(point),
-						obj.getOtherFixtures(point))) {
-					return false; // NOPMD
-				}
-			}
-			return true; // NOPMD
+			return locationStream().allMatch(
+					point -> getBaseTerrain(point) == obj.getBaseTerrain(point) &&
+							         isMountainous(point) == obj.isMountainous(point) &&
+							         areIterablesEqual(getRivers(point),
+									         obj.getRivers(point)) &&
+							         Objects.equals(getForest(point),
+									         obj.getForest(point)) &&
+							         Objects.equals(getGround(point),
+									         obj.getGround(point)) &&
+							         areStreamsEqual(streamOtherFixtures(point),
+									         obj.streamOtherFixtures(point)));
 		} else {
 			return false; // NOPMD
 		}
@@ -450,8 +453,6 @@ public class SPMapNG implements IMutableMapNG {
 
 	/**
 	 * FIXME: This is probably very slow ...
-	 *
-	 * TODO: Provide equivalent for Streams, if possible. (Probably not.)
 	 *
 	 * @param firstIterable  one iterable
 	 * @param secondIterable another
@@ -475,6 +476,27 @@ public class SPMapNG implements IMutableMapNG {
 		secondCopy.removeAll(first);
 		return first.containsAll(second) && second.containsAll(first) &&
 					   secondCopy.isEmpty() && firstCopy.isEmpty();
+	}
+	/**
+	 * Note that this consumes the streams!
+	 *
+	 * FIXME: This is probably very slow ...
+	 *
+	 * @param firstStream  one stream
+	 * @param secondStream another
+	 * @param <T>            the type of thing they contain
+	 * @return whether they contain the same elements.
+	 */
+	private static <T> boolean areStreamsEqual(final Stream<T> firstStream,
+	                                           final Stream<T> secondStream) {
+		final Collection<T> first = firstStream.collect(Collectors.toList());
+		final Collection<T> firstCopy = new ArrayList<>(first);
+		final Collection<T> second = secondStream.collect(Collectors.toList());
+		final Collection<T> secondCopy = new ArrayList<>(second);
+		firstCopy.removeAll(second);
+		secondCopy.removeAll(first);
+		return first.containsAll(second) && second.containsAll(first) &&
+				       secondCopy.isEmpty() && firstCopy.isEmpty();
 	}
 
 	/**

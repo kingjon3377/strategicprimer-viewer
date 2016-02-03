@@ -49,11 +49,13 @@ public interface IMapNG
 	Iterable<Player> players();
 
 	/**
-	 * TODO: Add a method returning them as a Stream
 	 * @return a view of the locations on the map
 	 */
 	Iterable<Point> locations();
-
+	/**
+	 * @return a view of the locations on the map
+	 */
+	Stream<Point> locationStream();
 	/**
 	 * @param location a location
 	 * @return the "base terrain" at that location

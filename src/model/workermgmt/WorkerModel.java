@@ -109,12 +109,10 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 		} else {
 			// Just in case I missed something in the proxy implementation, make
 			// sure things work correctly when there's only one map.
-			final List<IUnit> retval = new ArrayList<>();
-			for (final Point point : getMap().locations()) {
-				retval.addAll(
-						getUnits(getMap().getOtherFixtures(point), player));
-			}
-			return retval;
+			// TODO: Improve Stream API usage
+			return new ArrayList<>(getUnits(getMap().locationStream()
+					                .flatMap(point -> getMap().streamOtherFixtures(point))
+					                .collect(Collectors.toList()), player));
 		}
 	}
 

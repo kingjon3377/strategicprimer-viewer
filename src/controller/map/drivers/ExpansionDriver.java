@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 import model.exploration.SurroundingPointIterable;
 import model.map.HasOwner;
 import model.map.IFixture;
@@ -138,11 +137,11 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 				new IllegalStateException(
 												 "Unsupported method called on mock " +
 														 "object");
-		final Collection<Point> villagePoints =
-				StreamSupport.stream(map.locations().spliterator(), false)
-						.filter(point -> containsSwornVillage(master, point, player))
-						.collect(
-								Collectors.toSet());
+		final Collection<Point> villagePoints = map.locationStream()
+				                                        .filter(point ->
+						                                                containsSwornVillage(
+						                                        master, point, player))
+				                                        .collect(Collectors.toSet());
 		final IUnit mock = new IUnit() {
 			@Override
 			public int getZValue() {

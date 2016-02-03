@@ -76,9 +76,8 @@ public final class HuntingModel {
 	public HuntingModel(final IMapNG map) {
 		dims = map.dimensions();
 		final Collection<String> fishKinds =
-				StreamSupport.stream(map.locations().spliterator(), false)
-						.filter(point -> Ocean == map.getBaseTerrain(point)).flatMap(
-						point -> map.streamOtherFixtures(point))
+				map.locationStream().filter(point -> Ocean == map.getBaseTerrain(point))
+						.flatMap(point -> map.streamOtherFixtures(point))
 						.filter(Animal.class::isInstance).map(HasKind.class::cast)
 						.map(HasKind::getKind).collect(Collectors.toSet());
 		for (final Point point : map.locations()) {
