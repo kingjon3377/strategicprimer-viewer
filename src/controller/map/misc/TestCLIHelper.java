@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Arrays;
+import java.util.Collections;
 import model.map.Player;
 import org.junit.Test;
 
@@ -57,16 +58,17 @@ public class TestCLIHelper {
 		}
 		try (StringWriter out = new StringWriter()) {
 			assertEquals("chooseFromList chooses only choice when this is specified", 0,
-					new CLIHelper(new StringReader(""), out)
-							.chooseFromList(Arrays.asList(new Player(1, "one")),
-									"test desc", "none present", "prompt", true));
+					new CLIHelper(new StringReader(""), out).chooseFromList(
+							Collections.singletonList(new Player(1, "one")), "test desc",
+							"none present", "prompt", true));
 			assertEquals("chooseFromList automatically chose only choice",
 					"test desc\nAutomatically choosing only item, one\n", out.toString());
 		}
 		try (StringWriter out = new StringWriter()) {
 			assertEquals("chooseFromList doesn't always automatically choose only choice", 0,
 					new CLIHelper(new StringReader("0\n"), out)
-							.chooseFromList(Arrays.asList(new Player(1, "one")),
+							.chooseFromList(
+									Collections.singletonList(new Player(1, "one")),
 									"test desc", "none present", "prompt", false));
 			assertEquals("chooseFromList didn't automatically chose only choice",
 					"test desc\n0: one\nprompt", out.toString());
@@ -227,7 +229,7 @@ public class TestCLIHelper {
 			assertEquals(
 					"chooseStringFromList chooses only choice when this is specified", 0,
 					new CLIHelper(new StringReader(""), out)
-							.chooseStringFromList(Arrays.asList("one"), "test desc",
+							.chooseStringFromList(Collections.singletonList("one"), "test desc",
 									"none present", "prompt", true));
 			assertEquals("chooseStringFromList automatically chose only choice",
 					"test desc\nAutomatically choosing only item, one\n", out.toString());
@@ -237,7 +239,7 @@ public class TestCLIHelper {
 					"chooseStringFromList doesn't always automatically choose only " +
 							"choice",
 					0, new CLIHelper(new StringReader("0\n"), out)
-							   .chooseStringFromList(Arrays.asList("one"), "test desc",
+							   .chooseStringFromList(Collections.singletonList("one"), "test desc",
 									   "none present", "prompt", false));
 			assertEquals("chooseStringFromList didn't automatically chose only choice",
 					"test desc\n0: one\nprompt", out.toString());
