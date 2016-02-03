@@ -82,13 +82,12 @@ public final class MapReaderAdapter {
 	 * @param stream the stream to read the map from
 	 * @param warner the Warning instance to use for warnings.
 	 * @return the map it contains
-	 * @throws IOException        on I/O error opening the file
 	 * @throws XMLStreamException if the XML is badly formed
 	 * @throws SPFormatException  if the reader can't handle this map version or there
 	 * are map format errors
 	 */
 	public IMutableMapNG readMapFromStream(final Reader stream, final Warning warner)
-			throws IOException, XMLStreamException, SPFormatException {
+			throws XMLStreamException, SPFormatException {
 		return reader.readMap(new File(""), stream, warner);
 	}
 
