@@ -132,7 +132,7 @@ public final class TestConverter {
 	 *
 	 * TODO: Make the converter (and the tests) pass the map size to the encounter tables.
 	 */
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({"deprecation", "boxing"})
 	@Test
 	public void testOneToTwoConversion() throws IOException {
 		final IMutableMapNG original =

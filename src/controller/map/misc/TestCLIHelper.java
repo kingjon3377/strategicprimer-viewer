@@ -139,6 +139,7 @@ public class TestCLIHelper {
 	/**
 	 * Test for inputBoolean().
 	 */
+	@SuppressWarnings("boxing")
 	@Test
 	public void testInputBoolean() throws IOException {
 		try (StringWriter out = new StringWriter()) {
