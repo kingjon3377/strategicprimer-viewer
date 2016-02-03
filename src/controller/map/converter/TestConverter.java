@@ -393,6 +393,7 @@ public final class TestConverter {
 	/**
 	 * Test version-0 to version-1 conversion.
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testZeroToOneConversion()
 			throws XMLStreamException, IOException, SPFormatException {
