@@ -13,6 +13,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -129,9 +130,9 @@ public final class AppStarter implements ISPDriver {
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
 		if (GraphicsEnvironment.isHeadless()) {
-			final List<ISPDriver> drivers = new ArrayList<>();
-			CACHE.values().stream().filter(pair -> !drivers.contains(pair.first()))
-					.forEach(pair -> drivers.add(pair.first()));
+			final List<ISPDriver> drivers =
+					new ArrayList<>(CACHE.values().stream().map(Pair::first)
+							                .collect(Collectors.toSet()));
 			try (final ICLIHelper cli = new CLIHelper()) {
 				startChosenDriver(NullCleaner.assertNotNull(drivers.get(
 						cli.chooseFromList(drivers, "CLI apps available:",
@@ -224,9 +225,9 @@ public final class AppStarter implements ISPDriver {
 			SwingUtilities
 					.invokeLater(() -> new AppChooserFrame(others).setVisible(true));
 		} else {
-			final List<ISPDriver> drivers = new ArrayList<>();
-			CACHE.values().stream().filter(pair -> !drivers.contains(pair.first()))
-					.forEach(pair -> drivers.add(pair.first()));
+			final List<ISPDriver> drivers =
+					new ArrayList<>(CACHE.values().stream().map(Pair::first)
+							                .collect(Collectors.toSet()));
 			try (final ICLIHelper cli = new CLIHelper()) {
 				startChosenDriver(NullCleaner.assertNotNull(drivers.get(
 						cli.chooseFromList(drivers, "CLI apps available:",
