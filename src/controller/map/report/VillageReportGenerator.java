@@ -148,7 +148,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 			} else if (othersMap.containsKey(owner)) {
 				othersMap.get(owner).add(product);
 			} else {
-				IReportNode node =
+				final IReportNode node =
 						new SectionListReportNode(6, "Villages sworn to " + owner.getName());
 				node.add(product);
 				others.add(node);

@@ -200,7 +200,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	private void addUnitAtLocation(final IUnit unit, final Point location) {
 		if (getSubordinateMaps().iterator().hasNext()) {
 			for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
-				Optional<Fortress> fort = pair.first().streamOtherFixtures(location)
+				final Optional<Fortress> fort = pair.first().streamOtherFixtures(location)
 						                          .filter(Fortress.class::isInstance)
 						                          .map(Fortress.class::cast)
 						                          .filter(fix -> unit.getOwner()
@@ -214,7 +214,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 				}
 			}
 		} else {
-			Optional<Fortress> fort = getMap().streamOtherFixtures(location)
+			final Optional<Fortress> fort = getMap().streamOtherFixtures(location)
 					                          .filter(Fortress.class::isInstance)
 					                          .map(Fortress.class::cast)
 					                          .filter(fix -> unit.getOwner()

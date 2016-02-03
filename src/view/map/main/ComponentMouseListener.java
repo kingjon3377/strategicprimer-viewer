@@ -135,7 +135,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 		if (forest != null) {
 			fixes.add(forest);
 		}
-		Optional<TileFixture> first = map.streamOtherFixtures(point).findAny();
+		final Optional<TileFixture> first = map.streamOtherFixtures(point).findAny();
 		if (first.isPresent()) {
 			fixes.add(first.get());
 		}
