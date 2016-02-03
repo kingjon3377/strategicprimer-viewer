@@ -83,7 +83,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 				.sorted(pairComparator).forEach(
 				pair -> separated.get(((ITownFixture) pair.second()).status())
 						        .add(produce(fixtures, map, currentPlayer,
-								        ((ITownFixture) pair.second()), pair.first())));
+								        (ITownFixture) pair.second(), pair.first())));
 		final StringBuilder builder =
 				new StringBuilder((separated.values().stream().mapToInt(Collection::size)
 						                   .sum() * 512) + 80);
@@ -132,7 +132,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 				.sorted(pairComparator).forEach(
 				pair -> separated.get(((ITownFixture) pair.second()).status())
 						        .add(produceRIR(fixtures, map, currentPlayer,
-								        ((ITownFixture) pair.second()), pair.first())));
+								        (ITownFixture) pair.second(), pair.first())));
 
 		final IReportNode retval = new SectionListReportNode(4,
 				                                                           "Cities, towns, and/or fortifications you know about:");
