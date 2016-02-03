@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Objects;
-import java.util.stream.StreamSupport;
+import java.util.stream.Stream;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
@@ -113,18 +113,18 @@ public final class TestConverter {
 		final IMapNG converted = ResolutionDecreaseConverter.convert(start);
 		final Point zeroPoint = PointFactory.point(0, 0);
 		assertTrue("Combined tile should contain fixtures from tile one",
-				doesIterableContain(converted.getOtherFixtures(zeroPoint), fixture));
+				doesStreamContain(converted.streamOtherFixtures(zeroPoint), fixture));
 		assertTrue(
 				"Combined tile should contain fixtures from tile two",
-				doesIterableContain(converted.getOtherFixtures(zeroPoint),
+				doesStreamContain(converted.streamOtherFixtures(zeroPoint),
 						fixtureTwo));
 		assertTrue(
 				"Combined tile should contain fixtures from tile three",
-				doesIterableContain(converted.getOtherFixtures(zeroPoint),
+				doesStreamContain(converted.streamOtherFixtures(zeroPoint),
 						fixtureThree));
 		assertTrue(
 				"Combined tile should contain fixtures from tile four",
-				doesIterableContain(converted.getOtherFixtures(zeroPoint),
+				doesStreamContain(converted.streamOtherFixtures(zeroPoint),
 						fixtureFour));
 	}
 	/**
@@ -378,24 +378,18 @@ public final class TestConverter {
 				new OneToTwoConverter().convert(original, true), System.out, ""));
 	}
 	/**
-	 * Test whether an item is in an iterable. Note that the iterable's iterator will
-	 * have advanced either to the item searched for or to the end.
+	 * Test whether an item is in a Stream. Note that this is a stream-modifying operation.
 	 *
-	 * TODO: Add and use equivalent for Streams.
-	 *
-	 * @param iter an iterable
+	 * @param stream a stream
 	 * @param item an item
-	 * @param <T>  the type of the items in the iterator
-	 * @param <U>  the type of the item
-	 * @return whether the iterable contains the item
+	 * @param <T> the type of the items in the stream
+	 * @param <U> the type of the item
+	 * @return whether the stream contains the item
 	 */
-	private static <T, U extends T> boolean doesIterableContain(
-																	   final Iterable<T>
-																			   iter,
-																	   final U item) {
-		return StreamSupport.stream(iter.spliterator(), false)
-					   .anyMatch(each -> Objects.equals(each, item));
+	private static <T, U extends T> boolean doesStreamContain(final Stream<T> stream, final U item) {
+		return stream.anyMatch(each -> Objects.equals(each, item));
 	}
+
 	/**
 	 * Test version-0 to version-1 conversion.
 	 */
