@@ -2,7 +2,7 @@ package view.exploration;
 
 import com.bric.window.WindowMenu;
 import java.awt.event.ActionListener;
-import javax.swing.*;
+import javax.swing.JFrame;
 import model.misc.IDriverModel;
 import view.util.SPMenu;
 

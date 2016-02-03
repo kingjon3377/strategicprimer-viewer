@@ -5,7 +5,7 @@ import controller.map.misc.FileChooser;
 import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
 import java.io.File;
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
