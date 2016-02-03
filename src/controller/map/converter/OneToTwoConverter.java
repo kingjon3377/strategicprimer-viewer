@@ -527,7 +527,7 @@ public final class OneToTwoConverter { // NOPMD
 	 * @return whether the tile is adjacent to a town.
 	 */
 	private static boolean isAdjacentToTown(final Point point, final IMapNG map) {
-		return getNeighbors(point).flatMap(npoint -> map.streamOtherFixtures(npoint))
+		return getNeighbors(point).flatMap(map::streamOtherFixtures)
 					   .anyMatch(fix -> fix instanceof ITownFixture);
 	}
 

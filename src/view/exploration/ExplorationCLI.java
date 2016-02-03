@@ -139,7 +139,7 @@ public final class ExplorationCLI {
 		final IUnit visitor = model.getSelectedUnit();
 		if (visitor != null) {
 			StreamSupport.stream(model.getAllMaps().spliterator(), false)
-					.map(p -> p.first()).flatMap(map -> map.streamOtherFixtures(point))
+					.map(Pair::first).flatMap(map -> map.streamOtherFixtures(point))
 					.filter(Village.class::isInstance).map(Village.class::cast)
 					.forEach(village -> village.setOwner(visitor.getOwner()));
 		}

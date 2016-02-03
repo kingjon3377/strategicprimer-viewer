@@ -77,7 +77,7 @@ public final class HuntingModel {
 		dims = map.dimensions();
 		final Collection<String> fishKinds =
 				map.locationStream().filter(point -> Ocean == map.getBaseTerrain(point))
-						.flatMap(point -> map.streamOtherFixtures(point))
+						.flatMap(map::streamOtherFixtures)
 						.filter(Animal.class::isInstance).map(HasKind.class::cast)
 						.map(HasKind::getKind).collect(Collectors.toSet());
 		for (final Point point : map.locations()) {
