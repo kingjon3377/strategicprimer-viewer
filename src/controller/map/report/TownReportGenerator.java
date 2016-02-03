@@ -80,11 +80,10 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		separated.put(TownStatus.Burned, new HtmlList("<h5>Burned-Out Communities</h5>"));
 		separated.put(TownStatus.Ruined, new HtmlList("<h5>Ruined Communities</h5>"));
 		fixtures.values().stream().filter(pair -> pair.second() instanceof AbstractTown)
-				.forEach(pair -> separated.get(((AbstractTown) pair.second()).status())
-						                 .add(produce(fixtures, map, currentPlayer,
-								                 ((AbstractTown) pair.second()),
-								                 pair.first())));
-		// FIXME: Within any given status, sort by distance from HQ
+				.sorted(pairComparator).forEach(
+				pair -> separated.get(((AbstractTown) pair.second()).status())
+						        .add(produce(fixtures, map, currentPlayer,
+								        ((AbstractTown) pair.second()), pair.first())));
 		final StringBuilder builder =
 				new StringBuilder(separated.values().stream().mapToInt(Collection::size)
 						                  .sum() * 512 + 80);
@@ -130,12 +129,11 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		separated.put(TownStatus.Burned, new SectionListReportNode(5, "Burned-Out Communities"));
 		separated.put(TownStatus.Ruined, new SectionListReportNode(5, "Ruined Communities"));
 		fixtures.values().stream().filter(pair -> pair.second() instanceof AbstractTown)
-				.forEach(pair -> separated.get(((AbstractTown) pair.second()).status())
-						                 .add(produceRIR(fixtures, map, currentPlayer,
-								                 ((AbstractTown) pair.second()),
-								                 pair.first())));
+				.sorted(pairComparator).forEach(
+				pair -> separated.get(((AbstractTown) pair.second()).status())
+						        .add(produceRIR(fixtures, map, currentPlayer,
+								        ((AbstractTown) pair.second()), pair.first())));
 
-		// FIXME: Within any given status, sort by distance from HQ
 		final IReportNode retval = new SectionListReportNode(4,
 				                                                           "Cities, towns, and/or fortifications you know about:");
 		Arrays.asList(TownStatus.Active, TownStatus.Abandoned, TownStatus.Ruined,
