@@ -81,9 +81,9 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		separated.put(TownStatus.Ruined, new HtmlList("<h5>Ruined Communities</h5>"));
 		fixtures.values().stream().filter(pair -> pair.second() instanceof AbstractTown)
 				.sorted(pairComparator).forEach(
-				pair -> separated.get(((AbstractTown) pair.second()).status())
+				pair -> separated.get(((ITownFixture) pair.second()).status())
 						        .add(produce(fixtures, map, currentPlayer,
-								        ((AbstractTown) pair.second()), pair.first())));
+								        ((ITownFixture) pair.second()), pair.first())));
 		final StringBuilder builder =
 				new StringBuilder(separated.values().stream().mapToInt(Collection::size)
 						                  .sum() * 512 + 80);
@@ -130,9 +130,9 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		separated.put(TownStatus.Ruined, new SectionListReportNode(5, "Ruined Communities"));
 		fixtures.values().stream().filter(pair -> pair.second() instanceof AbstractTown)
 				.sorted(pairComparator).forEach(
-				pair -> separated.get(((AbstractTown) pair.second()).status())
+				pair -> separated.get(((ITownFixture) pair.second()).status())
 						        .add(produceRIR(fixtures, map, currentPlayer,
-								        ((AbstractTown) pair.second()), pair.first())));
+								        ((ITownFixture) pair.second()), pair.first())));
 
 		final IReportNode retval = new SectionListReportNode(4,
 				                                                           "Cities, towns, and/or fortifications you know about:");
