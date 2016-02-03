@@ -60,7 +60,7 @@ public final class TestTableLoader {
 	@Test
 	public void testLoadQuadrantTable() throws IOException {
 		try (final BufferedReader reader = new BufferedReader(new StringReader
-				                                                      ("quadrant\n2\none\ntwo\nthree\nfour\nfive\nsix"))) {
+				                   ("quadrant\n2\none\ntwo\nthree\nfour\nfive\nsix"))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(0, 0);
 			assertEquals("loading quadrant table", ONE_STRING,
@@ -107,8 +107,7 @@ public final class TestTableLoader {
 	@Test
 	public void testLoadTerrainTable() throws IOException {
 		try (final BufferedReader reader = new BufferedReader(new StringReader
-				                                                      ("terrain\ntundra " +
-						                                                       "one\nplains two\nocean three"))) {
+				          ("terrain\ntundra one\nplains two\nocean three"))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point firstPoint = PointFactory.point(30, 30);
 			assertEquals("loading terrain table: tundra", ONE_STRING,

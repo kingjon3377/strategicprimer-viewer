@@ -101,7 +101,8 @@ public interface IMapNG
 	Iterable<@NonNull TileFixture> getOtherFixtures(Point location);
 	/**
 	 * @param location a location
-	 * @return a stream of any fixtures on the map that aren't covered in the other querying methods.
+	 * @return a stream of any fixtures on the map that aren't covered in the other
+	 * querying methods.
 	 */
 	Stream<@NonNull TileFixture> streamOtherFixtures(Point location);
 

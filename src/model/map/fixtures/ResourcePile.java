@@ -31,7 +31,8 @@ import util.NullCleaner;
  *
  *         TODO: more members
  */
-public class ResourcePile implements UnitMember, FortressMember, HasMutableKind, HasImage {
+public class ResourcePile
+		implements UnitMember, FortressMember, HasMutableKind, HasImage {
 	/**
 	 * The ID # of the resource pile.
 	 */

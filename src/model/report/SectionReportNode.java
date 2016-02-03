@@ -127,8 +127,7 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 				                                                                ((SectionReportNode) obj)
 						                                                                .getLevel()) &&
 
-				                         text
-						                         .equals(((IReportNode) obj).getText()) &&
+				                         text.equals(((IReportNode) obj).getText()) &&
 				                         children()
 						                         .equals(((IReportNode) obj).children()));
 	}
@@ -211,7 +210,8 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * @return the point, if any, in the map that this node in particular represents something on
+	 * @return the point, if any, in the map that this node in particular represents
+	 * something on
 	 */
 	@Override
 	@Nullable

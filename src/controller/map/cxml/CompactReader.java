@@ -78,8 +78,8 @@ public interface CompactReader<@NonNull T> {
 	 * @throws IOException on I/O problems.
 	 */
 	@SuppressWarnings("unchecked")
-	default void writeRaw(final Appendable ostream, final Object obj, final int indent) throws
-			IOException {
+	default void writeRaw(final Appendable ostream, final Object obj, final int indent)
+			throws IOException {
 		write(ostream, (T) obj, indent);
 	}
 }

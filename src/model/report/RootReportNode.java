@@ -104,10 +104,8 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof RootReportNode) && text
-				                                                            .equals(((IReportNode) obj)
-						                                                                    .getText()) &&
-
+		return (this == obj) || ((obj instanceof RootReportNode) &&
+				                         text.equals(((IReportNode) obj).getText()) &&
 				                         children()
 						                         .equals(((IReportNode) obj).children()));
 	}
@@ -190,7 +188,8 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * @return the point, if any, in the map that this node in particular represents something on
+	 * @return the point, if any, in the map that this node in particular represents
+	 * something on
 	 */
 	@Override
 	@Nullable

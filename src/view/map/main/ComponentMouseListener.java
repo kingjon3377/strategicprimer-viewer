@@ -139,7 +139,8 @@ public final class ComponentMouseListener extends MouseAdapter implements
 		if (first.isPresent()) {
 			fixes.add(first.get());
 		}
-		map.streamOtherFixtures(point).filter(TerrainFixture.class::isInstance).forEach(fixes::add);
+		map.streamOtherFixtures(point).filter(TerrainFixture.class::isInstance)
+				.forEach(fixes::add);
 		return fixes.stream().map(TileFixture::toString)
 				       .collect(Collectors.joining("<br />"));
 	}

@@ -196,7 +196,8 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * @return the point, if any, in the map that this node in particular represents something on
+	 * @return the point, if any, in the map that this node in particular represents
+	 * something on
 	 */
 	@Override
 	@Nullable

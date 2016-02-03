@@ -6,7 +6,7 @@ import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.resources.ResourceManagementDriver;
 import view.resources.ResourceAddingFrame;
@@ -81,7 +81,8 @@ public class ResourceAddingGUIDriver implements SimpleDriver {
 	public void startDriver(final String... args) throws DriverFailedException {
 		try {
 			if (args.length == 0) {
-				SimpleDriver.super.startDriver(new FileChooser(new File("")).getFile().getCanonicalPath());
+				SimpleDriver.super.startDriver(
+						new FileChooser(new File("")).getFile().getCanonicalPath());
 			} else {
 				SimpleDriver.super.startDriver(args);
 			}
@@ -89,7 +90,8 @@ public class ResourceAddingGUIDriver implements SimpleDriver {
 			throw new DriverFailedException("File choice was interrupted or user didn't choose",
 					                               except);
 		} catch (final IOException except) {
-			throw new DriverFailedException("I/O error getting the path of the chosen file", except);
+			throw new DriverFailedException("I/O error getting path of the chosen file",
+					                               except);
 		}
 	}
 

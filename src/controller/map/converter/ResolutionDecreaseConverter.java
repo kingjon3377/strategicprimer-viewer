@@ -96,7 +96,8 @@ public final class ResolutionDecreaseConverter {
 							retval.addFixture(point, forest);
 						}
 					}
-					old.streamOtherFixtures(oldPoint).forEach(fixture -> retval.addFixture(point, fixture));
+					old.streamOtherFixtures(oldPoint)
+							.forEach(fixture -> retval.addFixture(point, fixture));
 					final Set<River> upperLeftRivers = getRivers(old, firstSub);
 					final Set<River> upperRightRivers = getRivers(old, secondSub);
 					final Set<River> lowerLeftRivers = getRivers(old, thirdSub);

@@ -170,10 +170,9 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof SectionListReportNode) &&
-				                         (((SectionListReportNode) obj).level == level) &&
-				                         text
-								                                                         .equals(((IReportNode) obj)
-										                                                                 .getText()) &&
+				                         (((SectionListReportNode) obj).level ==
+						                          level) &&
+				                         text.equals(((IReportNode) obj).getText()) &&
 				                         children()
 						                         .equals(((IReportNode) obj).children()));
 	}
@@ -256,7 +255,8 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	}
 
 	/**
-	 * @return the point, if any, in the map that this node in particular represents something on
+	 * @return the point, if any, in the map that this node in particular represents
+	 * something on
 	 */
 	@Override
 	@Nullable

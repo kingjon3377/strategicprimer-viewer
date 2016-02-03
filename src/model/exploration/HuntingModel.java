@@ -194,18 +194,13 @@ public final class HuntingModel {
 	 */
 	private List<String> chooseFromMap(final Point point, final int items,
 									   final Map<Point, List<String>> chosenMap) {
-		final List<String> choices = new ArrayList<>(StreamSupport
-				                                             .stream(new
-						                                                     SurroundingPointIterable(point,
-						                                                                                 dims)
-						                                                     .spliterator(),
-						                                             false)
-				                                             .filter(chosenMap::containsKey)
-				                                             .flatMap(local -> chosenMap
-						                                                               .get(local)
-						                                                               .stream())
-				                                             .collect(Collectors
-						                                                      .toList()));
+		final List<String> choices = StreamSupport
+				                             .stream(new SurroundingPointIterable(point,
+						                                                                 dims)
+						                                     .spliterator(), false)
+				                             .filter(chosenMap::containsKey).flatMap(
+						local -> chosenMap.get(local).stream())
+				                             .collect(Collectors.toList());
 		final int nothings = choices.size();
 		for (int i = 0; i < nothings; i++) {
 			choices.add(NOTHING);

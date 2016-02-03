@@ -67,7 +67,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 */
 	public static final CompactReader<IMapNG> READER = new CompactMapNGReader();
 	/**
-	 * Pre-compiled pattern for the regular expression to detect the exceptions we want to wrap.
+	 * Pre-compiled pattern for the regular expression to detect the exceptions we want
+	 * to wrap.
 	 */
 	private static final Pattern EXCEPT_PATTERN =
 			Pattern.compile("^Wanted [^ ]*, was [^ " +

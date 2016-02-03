@@ -126,7 +126,8 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		separated.put(TownStatus.Abandoned,
 				new SectionListReportNode(5, "Abandoned Communities"));
 		separated.put(TownStatus.Active, new SectionListReportNode(5, "Active Communities"));
-		separated.put(TownStatus.Burned, new SectionListReportNode(5, "Burned-Out Communities"));
+		separated.put(TownStatus.Burned,
+				new SectionListReportNode(5, "Burned-Out Communities"));
 		separated.put(TownStatus.Ruined, new SectionListReportNode(5, "Ruined Communities"));
 		fixtures.values().stream().filter(pair -> pair.second() instanceof AbstractTown)
 				.sorted(pairComparator).forEach(
@@ -135,7 +136,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 								        (ITownFixture) pair.second(), pair.first())));
 
 		final IReportNode retval = new SectionListReportNode(4,
-				                                                           "Cities, towns, and/or fortifications you know about:");
+				                                                    "Cities, towns, and/or fortifications you know about:");
 		Arrays.asList(TownStatus.Active, TownStatus.Abandoned, TownStatus.Ruined,
 				TownStatus.Burned).stream().map(separated::get)
 				.filter(node -> node.getChildCount() != 0).forEach(retval::add);

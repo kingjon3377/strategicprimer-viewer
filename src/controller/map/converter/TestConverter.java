@@ -373,7 +373,8 @@ public final class TestConverter {
 						new OneToTwoConverter().convert(original, true), outOne, ""),
 				converted.isSubset(
 						new OneToTwoConverter().convert(original, true), outTwo, ""));
-		assertEquals("Two runs produce identical results", outOne.toString(), outTwo.toString());
+		assertEquals("Two runs produce identical results", outOne.toString(),
+				outTwo.toString());
 		assertTrue("Actual is at least subset of expected converted", converted.isSubset(
 				new OneToTwoConverter().convert(original, true), System.out, ""));
 	}
@@ -386,7 +387,8 @@ public final class TestConverter {
 	 * @param <U> the type of the item
 	 * @return whether the stream contains the item
 	 */
-	private static <T, U extends T> boolean doesStreamContain(final Stream<T> stream, final U item) {
+	private static <T, U extends T> boolean doesStreamContain(final Stream<T> stream,
+	                                                          final U item) {
 		return stream.anyMatch(each -> Objects.equals(each, item));
 	}
 
@@ -398,7 +400,14 @@ public final class TestConverter {
 	public void testZeroToOneConversion()
 			throws XMLStreamException, IOException, SPFormatException {
 		// FIXME: Include tile fixtures beyond those implicit in events
-		final String orig = "<map version='0' rows='2' columns='2'><player number='0' code_name='Test Player' /><row index='0'><tile row='0' column='0' type='tundra' event='0'></tile><tile row='0' column='1' type='boreal_forest' event='183'></tile></row><row index='1'><tile row='1' column='0' type='mountain' event='229'></tile><tile row='1' column='1' type='temperate_forest' event='219'></tile></row></map>";
+		final String orig =
+				"<map version='0' rows='2' columns='2'><player number='0' " +
+						"code_name='Test Player' /><row index='0'><tile row='0' " +
+						"column='0' type='tundra' event='0'></tile><tile row='0' " +
+						"column='1' type='boreal_forest' event='183'></tile></row><row " +
+						"index='1'><tile row='1' column='0' type='mountain' " +
+						"event='229'></tile><tile row='1' column='1' " +
+						"type='temperate_forest' event='219'></tile></row></map>";
 		final StringWriter out = new StringWriter();
 		//noinspection unchecked
 		ZeroToOneConverter.convert(
@@ -411,7 +420,8 @@ public final class TestConverter {
 				                                                  .readMapFromStream(
 						                                                  new StringReader(out.toString()),
 						                                                  Warning.Ignore));
-		final IMutableMapNG expected = new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
+		final IMutableMapNG expected =
+				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
 		expected.addPlayer(new Player(0, "Test Player"));
 		expected.setBaseTerrain(PointFactory.point(0, 0), TileType.Tundra);
 		expected.setBaseTerrain(PointFactory.point(0, 1), TileType.BorealForest);
@@ -424,7 +434,8 @@ public final class TestConverter {
 
 		final StringWriter expectedXML = new StringWriter();
 		CompactXMLWriter.writeSPObject(expectedXML, expected);
-		assertEquals("Converted map's serialized form was as expected", expectedXML.toString(), actualXML.toString());
+		assertEquals("Converted map's serialized form was as expected",
+				expectedXML.toString(), actualXML.toString());
 		assertEquals("Converted map was as expected", expected, new MapReaderAdapter()
 				                                                        .readMapFromStream(
 						                                                        new StringReader(out.toString()),

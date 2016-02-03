@@ -6,7 +6,7 @@ import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
@@ -74,7 +74,8 @@ public final class AdvancementStart implements SimpleDriver {
 	public void startDriver(final String... args) throws DriverFailedException {
 		try {
 			if (args.length == 0) {
-				SimpleDriver.super.startDriver(new FileChooser(new File("")).getFile().getCanonicalPath());
+				SimpleDriver.super.startDriver(
+						new FileChooser(new File("")).getFile().getCanonicalPath());
 			} else {
 				SimpleDriver.super.startDriver(args);
 			}
@@ -82,7 +83,8 @@ public final class AdvancementStart implements SimpleDriver {
 			throw new DriverFailedException("File choice was interrupted or user didn't choose",
 												   except);
 		} catch (final IOException except) {
-			throw new DriverFailedException("I/O error getting the path of the chosen file", except);
+			throw new DriverFailedException("I/O error getting path of the chosen file",
+					                               except);
 		}
 	}
 
