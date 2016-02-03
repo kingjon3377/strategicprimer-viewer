@@ -1,13 +1,10 @@
 package controller.map.report;
 
-import controller.map.misc.TownComparator;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.EnumMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -15,6 +12,7 @@ import model.map.Point;
 import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.ITownFixture;
+import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
 import model.report.EmptyReportNode;
 import model.report.IReportNode;
@@ -75,25 +73,30 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 			                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
 					                     fixtures,
 			                     final IMapNG map, final Player currentPlayer) {
-		final Map<AbstractTown, Point> townLocs = new HashMap<>();
+		final Map<TownStatus, Collection<String>> separated = new EnumMap<>(TownStatus.class);
+		separated.put(TownStatus.Abandoned,
+				new HtmlList("<h5>Abandoned Communities</h5>"));
+		separated.put(TownStatus.Active, new HtmlList("<h5>Active Communities</h5>"));
+		separated.put(TownStatus.Burned, new HtmlList("<h5>Burned-Out Communities</h5>"));
+		separated.put(TownStatus.Ruined, new HtmlList("<h5>Ruined Communities</h5>"));
 		fixtures.values().stream().filter(pair -> pair.second() instanceof AbstractTown)
-				.forEach(
-						pair -> townLocs.put((AbstractTown) pair.second(), pair.first
-								                                                        ()));
-		final List<AbstractTown> sorted = new ArrayList<>(townLocs.keySet());
-		Collections.sort(sorted, new TownComparator());
+				.forEach(pair -> separated.get(((AbstractTown) pair.second()).status())
+						                 .add(produce(fixtures, map, currentPlayer,
+								                 ((AbstractTown) pair.second()),
+								                 pair.first())));
 		// FIXME: Within any given status, sort by distance from HQ
-		final int len = 80 + (sorted.size() * 512);
-		final StringBuilder builder = new StringBuilder(len);
+		final StringBuilder builder =
+				new StringBuilder(separated.values().stream().mapToInt(Collection::size)
+						                  .sum() * 512 + 80);
 		builder.append("<h4>Cities, towns, and/or fortifications you know about:</h4>\n");
 		builder.append(OPEN_LIST);
-		for (final AbstractTown town : sorted) {
-			builder.append(OPEN_LIST_ITEM).append(
-					produce(fixtures, map, currentPlayer, town, townLocs.get(town)))
-					.append(CLOSE_LIST_ITEM);
-		}
+		Arrays.asList(TownStatus.Active, TownStatus.Abandoned, TownStatus.Ruined,
+				TownStatus.Burned).stream().map(separated::get)
+				.filter(coll -> !coll.isEmpty()).forEach(
+				coll -> builder.append(OPEN_LIST_ITEM).append(coll.toString())
+						        .append(CLOSE_LIST_ITEM));
 		builder.append(CLOSE_LIST);
-		if (sorted.isEmpty()) {
+		if (separated.values().stream().allMatch(Collection::isEmpty)) {
 			return "";
 		} else {
 			return NullCleaner.assertNotNull(builder.toString()); // NOPMD
@@ -120,23 +123,25 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 					                                                           Pair<Point, IFixture>> fixtures,
 			                                    final IMapNG map,
 			                                    final Player currentPlayer) {
-		final Map<AbstractTown, Point> townLocs = fixtures.values().stream()
-				                                          .filter(pair -> pair.second()
-						                                                          instanceof AbstractTown)
+		final Map<TownStatus, IReportNode> separated = new EnumMap<>(TownStatus.class);
+		separated.put(TownStatus.Abandoned,
+				new SectionListReportNode(5, "Abandoned Communities"));
+		separated.put(TownStatus.Active, new SectionListReportNode(5, "Active Communities"));
+		separated.put(TownStatus.Burned, new SectionListReportNode(5, "Burned-Out Communities"));
+		separated.put(TownStatus.Ruined, new SectionListReportNode(5, "Ruined Communities"));
+		fixtures.values().stream().filter(pair -> pair.second() instanceof AbstractTown)
+				.forEach(pair -> separated.get(((AbstractTown) pair.second()).status())
+						                 .add(produceRIR(fixtures, map, currentPlayer,
+								                 ((AbstractTown) pair.second()),
+								                 pair.first())));
 
-				                                          .collect(Collectors
-						                                                   .toMap(pair -> (AbstractTown) pair.second(),
-								                                                   Pair::first));
-		final List<AbstractTown> sorted = new ArrayList<>(townLocs.keySet());
-		Collections.sort(sorted, new TownComparator());
 		// FIXME: Within any given status, sort by distance from HQ
 		final IReportNode retval = new SectionListReportNode(4,
 				                                                           "Cities, towns, and/or fortifications you know about:");
-		for (final AbstractTown town : sorted) {
-			retval.add(produceRIR(fixtures, map, currentPlayer, town,
-					townLocs.get(town)));
-		}
-		if (sorted.isEmpty()) {
+		Arrays.asList(TownStatus.Active, TownStatus.Abandoned, TownStatus.Ruined,
+				TownStatus.Burned).stream().map(separated::get)
+				.filter(node -> node.getChildCount() != 0).forEach(retval::add);
+		if (retval.getChildCount() == 0) {
 			return EmptyReportNode.NULL_NODE; // NOPMD
 		} else {
 			return retval;
