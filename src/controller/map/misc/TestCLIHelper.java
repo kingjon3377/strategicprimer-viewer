@@ -8,6 +8,8 @@ import model.map.Player;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for CLIHelper
@@ -143,55 +145,55 @@ public class TestCLIHelper {
 	@Test
 	public void testInputBoolean() throws IOException {
 		try (StringWriter out = new StringWriter()) {
-			assertEquals("inputBoolean returns true on 'yes'", true,
+			assertTrue("inputBoolean returns true on 'yes'",
 					new CLIHelper(new StringReader("yes\n"), out)
 							.inputBoolean("bool prompt"));
 			assertEquals("inputBoolean displays prompt", "bool prompt", out.toString());
 		}
 		try (StringWriter out = new StringWriter()) {
-			assertEquals("inputBoolean returns true on 'true'", true,
+			assertTrue("inputBoolean returns true on 'true'",
 					new CLIHelper(new StringReader("true\n"), out)
 							.inputBoolean("prompt two"));
 			assertEquals("inputBoolean displays prompt", "prompt two", out.toString());
 		}
 		try (StringWriter out = new StringWriter()) {
-			assertEquals("inputBoolean returns true on 'y'", true,
+			assertTrue("inputBoolean returns true on 'y'",
 					new CLIHelper(new StringReader("y\n"), out)
 							.inputBoolean("prompt three"));
 			assertEquals("inputBoolean displays prompt", "prompt three", out.toString());
 		}
 		try (StringWriter out = new StringWriter()) {
-			assertEquals("inputBoolean returns true on 't'", true,
+			assertTrue("inputBoolean returns true on 't'",
 					new CLIHelper(new StringReader("t\n"), out)
 							.inputBoolean("prompt four"));
 			assertEquals("inputBoolean displays prompt", "prompt four", out.toString());
 		}
 		try (StringWriter out = new StringWriter()) {
-			assertEquals("inputBoolean returns false on 'no'", false,
+			assertFalse("inputBoolean returns false on 'no'",
 					new CLIHelper(new StringReader("no\n"), out)
 							.inputBoolean("prompt five"));
 			assertEquals("inputBoolean displays prompt", "prompt five", out.toString());
 		}
 		try (StringWriter out = new StringWriter()) {
-			assertEquals("inputBoolean returns false on 'false'", false,
+			assertFalse("inputBoolean returns false on 'false'",
 					new CLIHelper(new StringReader("false\n"), out)
 							.inputBoolean("prompt six"));
 			assertEquals("inputBoolean displays prompt", "prompt six", out.toString());
 		}
 		try (StringWriter out = new StringWriter()) {
-			assertEquals("inputBoolean returns false on 'n'", false,
+			assertFalse("inputBoolean returns false on 'n'",
 					new CLIHelper(new StringReader("n\n"), out)
 							.inputBoolean("prompt seven"));
 			assertEquals("inputBoolean displays prompt", "prompt seven", out.toString());
 		}
 		try (StringWriter out = new StringWriter()) {
-			assertEquals("inputBoolean returns false on 'f'", false,
+			assertFalse("inputBoolean returns false on 'f'",
 					new CLIHelper(new StringReader("f\n"), out)
 							.inputBoolean("prompt eight"));
 			assertEquals("inputBoolean displays prompt", "prompt eight", out.toString());
 		}
 		try (StringWriter out = new StringWriter()) {
-			assertEquals("inputBoolean rejects other input", true,
+			assertTrue("inputBoolean rejects other input",
 					new CLIHelper(new StringReader("xyzzy\nyes\n"), out)
 							.inputBoolean("prompt nine"));
 			assertEquals("inputBoolean gives message on invalid input",
