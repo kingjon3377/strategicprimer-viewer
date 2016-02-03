@@ -73,6 +73,7 @@ public final class SimpleMovement {
 	}
 
 	/**
+	 * TODO: Take Stream instead of Iterable
 	 * @param terrain  a terrain type
 	 * @param forest   whether the location is forested
 	 * @param mountain whether the location is mountainous

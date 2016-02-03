@@ -16,7 +16,6 @@ import model.map.Point;
 import model.map.PointFactory;
 import model.map.River;
 import model.map.SPMapNG;
-import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
@@ -97,9 +96,7 @@ public final class ResolutionDecreaseConverter {
 							retval.addFixture(point, forest);
 						}
 					}
-					for (final TileFixture fixture : old.getOtherFixtures(oldPoint)) {
-						retval.addFixture(point, fixture);
-					}
+					old.streamOtherFixtures(oldPoint).forEach(fixture -> retval.addFixture(point, fixture));
 					final Set<River> upperLeftRivers = getRivers(old, firstSub);
 					final Set<River> upperRightRivers = getRivers(old, secondSub);
 					final Set<River> lowerLeftRivers = getRivers(old, thirdSub);

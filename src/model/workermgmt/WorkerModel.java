@@ -14,7 +14,6 @@ import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
-import model.map.TileFixture;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.ProxyFor;
 import model.map.fixtures.mobile.ProxyUnit;
@@ -120,6 +119,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	}
 
 	/**
+	 * TODO: Take Stream instead of Iterable
 	 * @param iter   a sequence of members of that type
 	 * @param player a player
 	 * @return a list of the members of the sequence that are units owned by the player
@@ -172,15 +172,14 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	@Override
 	public void addUnit(final IUnit unit) {
 		for (final Point point : getMap().locations()) {
-			for (final TileFixture fix : getMap().getOtherFixtures(point)) {
-				if ((fix instanceof Fortress)
-							&& unit.getOwner().equals(((Fortress) fix).getOwner())
-							&& "HQ".equals(((Fortress) fix).getName())) {
+			if (getMap().streamOtherFixtures(point).filter(Fortress.class::isInstance)
+					    .map(Fortress.class::cast).anyMatch(
+							fort -> "HQ".equals(fort.getName()) &&
+									        unit.getOwner().equals(fort.getOwner()))) {
 					addUnitAtLocation(unit, point);
 					return;
 				}
 			}
-		}
 		SystemOut.SYS_OUT.println("No suitable location found");
 	}
 
@@ -203,30 +202,30 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	private void addUnitAtLocation(final IUnit unit, final Point location) {
 		if (getSubordinateMaps().iterator().hasNext()) {
 			for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
-				boolean stillToAdd = true;
-				for (final TileFixture fix : pair.first().getOtherFixtures(location)) {
-					if ((fix instanceof Fortress) &&
-								unit.getOwner().equals(((Fortress) fix).getOwner())) {
-						((Fortress) fix).addMember(unit.copy(false));
-						stillToAdd = false;
-						break;
-					}
-				}
-				if (stillToAdd) {
+				Optional<Fortress> fort = pair.first().streamOtherFixtures(location)
+						                          .filter(Fortress.class::isInstance)
+						                          .map(Fortress.class::cast)
+						                          .filter(fix -> unit.getOwner()
+								                                          .equals(fix.getOwner()))
+
+						                          .findAny();
+				if (fort.isPresent()) {
+					fort.get().addMember(unit.copy(false));
+				} else {
 					pair.first().addFixture(location, unit.copy(false));
 				}
 			}
 		} else {
-			boolean stillToAdd = true;
-			for (final TileFixture fix : getMap().getOtherFixtures(location)) {
-				if ((fix instanceof Fortress) &&
-							unit.getOwner().equals(((Fortress) fix).getOwner())) {
-					((Fortress) fix).addMember(unit.copy(false));
-					stillToAdd = false;
-					break;
-				}
-			}
-			if (stillToAdd) {
+			Optional<Fortress> fort = getMap().streamOtherFixtures(location)
+					                          .filter(Fortress.class::isInstance)
+					                          .map(Fortress.class::cast)
+					                          .filter(fix -> unit.getOwner()
+							                                         .equals(fix.getOwner()))
+
+					                          .findAny();
+			if (fort.isPresent()) {
+				fort.get().addMember(unit.copy(false));
+			} else {
 				getMap().addFixture(location, unit.copy(false));
 			}
 		}

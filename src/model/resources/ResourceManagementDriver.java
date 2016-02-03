@@ -7,7 +7,6 @@ import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
-import model.map.TileFixture;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
@@ -91,14 +90,13 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	public void addResourceToMap(final FortressMember resource, final IMapNG map,
 								 final Player player) {
 		for (final Point location : map.locations()) {
-			for (final TileFixture fixture : map.getOtherFixtures(location)) {
-				if ((fixture instanceof Fortress) &&
-							(((Fortress) fixture).getOwner().getPlayerId() ==
-									 player.getPlayerId()) &&
-							"HQ".equals(((Fortress) fixture).getName())) {
-					((Fortress) fixture).addMember(resource);
-				}
-			}
+			map.streamOtherFixtures(location).filter(Fortress.class::isInstance)
+					.map(Fortress.class::cast)
+					.filter(fort -> "HQ".equals(fort.getName()) && player.getPlayerId
+							                                                      () ==
+							                                               fort.getOwner()
+									                                               .getPlayerId())
+					.forEach(fort -> fort.addMember(resource));
 		}
 	}
 }

@@ -233,6 +233,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
+	 * TODO: Return Stream, not Iterable
 	 * @param map      a map
 	 * @param location a location
 	 * @return an Iterable of the drawable fixtures there
@@ -253,7 +254,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		if (map.isMountainous(location)) {
 			temp.add(new Mountain());
 		}
-		map.getOtherFixtures(location).forEach(temp::add);
+		map.streamOtherFixtures(location).forEach(temp::add);
 		return new IteratorWrapper<>(new FilteredIterator(
 																 NullCleaner
 																		 .assertNotNull(

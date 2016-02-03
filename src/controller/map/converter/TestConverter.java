@@ -379,8 +379,9 @@ public final class TestConverter {
 	}
 	/**
 	 * Test whether an item is in an iterable. Note that the iterable's iterator will
-	 * have
-	 * advanced either to the item searched for or to the end.
+	 * have advanced either to the item searched for or to the end.
+	 *
+	 * TODO: Add and use equivalent for Streams.
 	 *
 	 * @param iter an iterable
 	 * @param item an item

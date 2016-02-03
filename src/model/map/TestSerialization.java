@@ -270,7 +270,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 													 new Player(2, ""), "explorer",
 													 "name two", 2));
 		assertEquals("Just checking ...", 2,
-				iteratorSize(five.getOtherFixtures(point(2, 3))));
+				five.streamOtherFixtures(point(2, 3)).count());
 		assertSerialization("Multiple units should come through", five);
 		final String xmlTwo =
 				"<view current_player=\"-1\" current_turn=\"-1\">\n\t<map version=\"2\"" +

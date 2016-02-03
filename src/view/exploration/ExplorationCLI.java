@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
 import model.map.HasOwner;
@@ -137,14 +138,10 @@ public final class ExplorationCLI {
 	private void swearVillages(final Point point) {
 		final IUnit visitor = model.getSelectedUnit();
 		if (visitor != null) {
-			for (final Pair<IMutableMapNG, File> mapPair : model.getAllMaps()) {
-				final IMutableMapNG map = mapPair.first();
-				for (final TileFixture fix : map.getOtherFixtures(point)) {
-					if (fix instanceof Village) {
-						((Village) fix).setOwner(visitor.getOwner());
-					}
-				}
-			}
+			StreamSupport.stream(model.getAllMaps().spliterator(), false)
+					.map(p -> p.first()).flatMap(map -> map.streamOtherFixtures(point))
+					.filter(Village.class::isInstance).map(Village.class::cast)
+					.forEach(village -> village.setOwner(visitor.getOwner()));
 		}
 	}
 

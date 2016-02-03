@@ -17,6 +17,8 @@ import util.TypesafeLogger;
  * A class to create exploration results. The initial implementation is a bit hackish, and
  * should be generalized and improved.
  *
+ * TODO: Take Streams instead of Iterables.
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *

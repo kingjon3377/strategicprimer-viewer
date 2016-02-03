@@ -3,7 +3,7 @@ package view.map.main;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import model.listeners.SelectionChangeListener;
@@ -23,7 +23,6 @@ import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
-import util.IteratorWrapper;
 import util.NullCleaner;
 
 /**
@@ -136,22 +135,11 @@ public final class ComponentMouseListener extends MouseAdapter implements
 		if (forest != null) {
 			fixes.add(forest);
 		}
-		final Iterable<TileFixture> iter = new IteratorWrapper<>(
-																		NullCleaner
-																				.assertNotNull(
-																						map.getOtherFixtures(
-																								point)
-																								.iterator()),
-																		fixComp);
-		final Iterator<TileFixture> iterat = iter.iterator();
-		if (iterat.hasNext()) {
-			fixes.add(iterat.next());
+		Optional<TileFixture> first = map.streamOtherFixtures(point).findAny();
+		if (first.isPresent()) {
+			fixes.add(first.get());
 		}
-		for (final TileFixture fix : iter) {
-			if (fix instanceof TerrainFixture) {
-				fixes.add(fix);
-			}
-		}
+		map.streamOtherFixtures(point).filter(TerrainFixture.class::isInstance).forEach(fixes::add);
 		return fixes.stream().map(TileFixture::toString)
 				       .collect(Collectors.joining("<br />"));
 	}

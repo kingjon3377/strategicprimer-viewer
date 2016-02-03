@@ -1,5 +1,6 @@
 package model.map;
 
+import java.util.stream.Stream;
 import model.map.fixtures.Ground;
 import model.map.fixtures.terrain.Forest;
 import org.eclipse.jdt.annotation.NonNull;
@@ -48,6 +49,7 @@ public interface IMapNG
 	Iterable<Player> players();
 
 	/**
+	 * TODO: Add a method returning them as a Stream
 	 * @return a view of the locations on the map
 	 */
 	Iterable<Point> locations();
@@ -95,6 +97,11 @@ public interface IMapNG
 	 * methods.
 	 */
 	Iterable<@NonNull TileFixture> getOtherFixtures(Point location);
+	/**
+	 * @param location a location
+	 * @return a stream of any fixtures on the map that aren't covered in the other querying methods.
+	 */
+	Stream<@NonNull TileFixture> streamOtherFixtures(Point location);
 
 	/**
 	 * @return the current turn

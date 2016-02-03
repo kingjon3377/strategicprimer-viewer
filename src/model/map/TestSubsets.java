@@ -257,11 +257,9 @@ public final class TestSubsets {
 				clone.isSubset(zero, DEV_NULL, ""));
 		// DCs, the only thing zeroed out in *map* copy() at the moment, are ignored in
 		// equals().
-		for (final TileFixture fix : clone.getOtherFixtures(pointOne)) {
-			if (fix instanceof AbstractTown) {
-				assertEquals("Copied map didn't copy DCs", 0, ((IEvent) fix).getDC());
-			}
-		}
+		clone.streamOtherFixtures(pointOne).filter(AbstractTown.class::isInstance)
+				.map(IEvent.class::cast).forEach(
+				fix -> assertEquals("Copied map didn't copy DCs", 0, fix.getDC()));
 		final Unit uOne = new Unit(new Player(0, ""), "type", "name", 7);
 		uOne.addMember(new Worker("worker", "dwarf", 8, new Job("job", 1)));
 		assertEquals("clone equals original", uOne, uOne.copy(false));

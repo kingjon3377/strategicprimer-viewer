@@ -395,9 +395,8 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 */
 	private static boolean containsSwornVillage(final IMapNG map, final Point point,
 												final Player player) {
-		return StreamSupport.stream(map.getOtherFixtures(point).spliterator(), false)
-					   .anyMatch(fix -> (fix instanceof ITownFixture) &&
-												((HasOwner) fix).getOwner()
-														.equals(player));
+		return map.streamOtherFixtures(point).anyMatch(
+				fix -> (fix instanceof ITownFixture) &&
+						       ((HasOwner) fix).getOwner().equals(player));
 	}
 }

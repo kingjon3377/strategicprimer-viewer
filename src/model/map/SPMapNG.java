@@ -382,7 +382,18 @@ public class SPMapNG implements IMutableMapNG {
 			return new IteratorWrapper<>(new EmptyIterator<>());
 		}
 	}
-
+	/**
+	 * @param location a location
+	 * @return a stream of any other fixtures there
+	 */
+	@Override
+	public Stream<TileFixture> streamOtherFixtures(final Point location) {
+		if (fixtures.containsKey(location)) {
+			return NullCleaner.assertNotNull(fixtures.get(location)).stream();
+		} else {
+			return Stream.empty();
+		}
+	}
 	/**
 	 * @return the current turn
 	 */
@@ -439,6 +450,8 @@ public class SPMapNG implements IMutableMapNG {
 
 	/**
 	 * FIXME: This is probably very slow ...
+	 *
+	 * TODO: Provide equivalent for Streams, if possible. (Probably not.)
 	 *
 	 * @param firstIterable  one iterable
 	 * @param secondIterable another
@@ -692,6 +705,7 @@ public class SPMapNG implements IMutableMapNG {
 			for (final River river : getRivers(point)) {
 				retval.addRivers(point, river);
 			}
+			// TODO: What other fixtures should we zero, or skip?
 			for (final TileFixture fixture : getOtherFixtures(point)) {
 				if (fixture instanceof IEvent) {
 					retval.addFixture(point, fixture.copy(zero));

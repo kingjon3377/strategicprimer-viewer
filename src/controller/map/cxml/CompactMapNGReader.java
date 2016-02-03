@@ -358,7 +358,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 							|| obj.isMountainous(point)
 							|| (obj.getGround(point) != null)
 							|| (obj.getForest(point) != null)
-							|| obj.getOtherFixtures(point).iterator().hasNext()) {
+							|| obj.streamOtherFixtures(point).anyMatch(x->true)) {
 					if (rowEmpty) {
 						rowEmpty = false;
 						indent(ostream, indent + 2);

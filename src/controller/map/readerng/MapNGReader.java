@@ -347,7 +347,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 							|| obj.isMountainous(point)
 							|| (obj.getGround(point) != null)
 							|| (obj.getForest(point) != null)
-							|| obj.getOtherFixtures(point).iterator().hasNext()) {
+							|| obj.streamOtherFixtures(point).anyMatch(f -> true)) {
 					mapTag.addChild(row);
 					row.addChild(writeTile(obj, point));
 				}
@@ -381,9 +381,8 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 		}
 		retval.addChild(writeFixture(map.getGround(point)));
 		retval.addChild(writeFixture(map.getForest(point)));
-		for (final TileFixture fixture : map.getOtherFixtures(point)) {
-			retval.addChild(writeFixture(fixture));
-		}
+		map.streamOtherFixtures(point).map(MapNGReader::writeFixture)
+				.forEach(retval::addChild);
 		return retval;
 	}
 

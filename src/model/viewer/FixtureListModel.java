@@ -89,7 +89,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 		if (forest != null) {
 			addElement(forest);
 		}
-		map.getOtherFixtures(newPoint).forEach(this::addElement);
+		map.streamOtherFixtures(newPoint).forEach(this::addElement);
 		point = newPoint;
 	}
 

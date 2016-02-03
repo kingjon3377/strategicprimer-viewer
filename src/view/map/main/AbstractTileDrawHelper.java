@@ -2,7 +2,6 @@ package view.map.main;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.stream.StreamSupport;
 import model.map.IEvent;
 import model.map.IMapNG;
 import model.map.Point;
@@ -79,8 +78,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * @return whether there are any fortresses at that location
 	 */
 	protected static boolean hasAnyForts(final IMapNG map, final Point location) {
-		return StreamSupport.stream(map.getOtherFixtures(location).spliterator(), false)
-				       .anyMatch(fix -> fix instanceof Fortress);
+		return map.streamOtherFixtures(location).anyMatch(Fortress.class::isInstance);
 	}
 
 	/**
@@ -89,8 +87,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * @return whether there are any units at that location
 	 */
 	protected static boolean hasAnyUnits(final IMapNG map, final Point location) {
-		return StreamSupport.stream(map.getOtherFixtures(location).spliterator(), false)
-				       .anyMatch(fix -> fix instanceof IUnit);
+		return map.streamOtherFixtures(location).anyMatch(IUnit.class::isInstance);
 	}
 
 	/**
@@ -99,8 +96,7 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * @return whether there are any 'events' at that location
 	 */
 	protected static boolean hasEvent(final IMapNG map, final Point location) {
-		return StreamSupport.stream(map.getOtherFixtures(location).spliterator(), false)
-				       .anyMatch(fix -> fix instanceof IEvent);
+		return map.streamOtherFixtures(location).anyMatch(IEvent.class::isInstance);
 	}
 
 	/**

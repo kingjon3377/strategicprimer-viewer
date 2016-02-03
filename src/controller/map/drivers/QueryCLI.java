@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import model.exploration.HuntingModel;
 import model.map.IMapNG;
@@ -348,7 +349,7 @@ public final class QueryCLI implements SimpleDriver {
 		ostream.append(map.getBaseTerrain(location).toString());
 		ostream.append('\n');
 		final List<TileFixture> fixtures =
-				CLIHelper.toList(map.getOtherFixtures(location));
+				map.streamOtherFixtures(location).collect(Collectors.toList());
 		final Collection<Ground> ground = new ArrayList<>();
 		@Nullable
 		final Ground locGround = map.getGround(location);

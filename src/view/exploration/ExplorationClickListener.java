@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.StreamSupport;
 import javax.swing.AbstractAction;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -207,8 +206,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 */
 	private static boolean hasFixture(final IMapNG map, final Point dPoint,
 	                                  final TileFixture fix) {
-		return StreamSupport.stream(map.getOtherFixtures(dPoint).spliterator(), false)
-				       .anyMatch(fix::equals);
+		return map.streamOtherFixtures(dPoint).anyMatch(fix::equals);
 	}
 
 	/**
@@ -220,13 +218,9 @@ public final class ExplorationClickListener extends AbstractAction implements
 			final IMutableMapNG map = pair.first();
 			final IUnit mover = model.getSelectedUnit();
 			if (mover != null) {
-				final Player owner = mover.getOwner();
-				for (final TileFixture fix : map.getOtherFixtures(model
-						                                                  .getSelectedUnitLocation())) {
-					if (fix instanceof Village) {
-						((Village) fix).setOwner(owner);
-					}
-				}
+				map.streamOtherFixtures(model.getSelectedUnitLocation())
+						.filter(Village.class::isInstance).map(HasOwner.class::cast)
+						.forEach(fix -> fix.setOwner(mover.getOwner()));
 			}
 		}
 	}

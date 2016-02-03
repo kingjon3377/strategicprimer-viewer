@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMutableMapNG;
 import model.map.Point;
-import model.map.TileFixture;
 import model.map.fixtures.mobile.Unit;
 import util.NullCleaner;
 import util.Warning;
@@ -72,11 +71,9 @@ public final class TODOFixerDriver {
 	public void fixAllUnits() {
 		for (final Point point : map.locations()) {
 			final SimpleTerrain terrain = getTerrain(point);
-			for (final TileFixture fix : map.getOtherFixtures(point)) {
-				if ((fix instanceof Unit) && "TODO".equals(((Unit) fix).getKind())) {
-					fixUnit((Unit) fix, terrain);
-				}
-			}
+			map.streamOtherFixtures(point).filter(Unit.class::isInstance)
+					.map(Unit.class::cast).filter(unit -> "TODO".equals(unit.getKind()))
+					.forEach(unit -> fixUnit(unit, terrain));
 		}
 	}
 

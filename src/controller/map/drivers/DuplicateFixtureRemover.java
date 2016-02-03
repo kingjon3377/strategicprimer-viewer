@@ -83,6 +83,7 @@ public final class DuplicateFixtureRemover implements SimpleCLIDriver {
 		final Collection<TileFixture> fixtures = new ArrayList<>();
 		final Collection<TileFixture> toRemove = new ArrayList<>();
 		// We ignore ground and forests because they don't have IDs.
+		// TODO: Try to use Streams API instead of complicated loop
 		for (final TileFixture fix : map.getOtherFixtures(location)) {
 			boolean already = false;
 			for (final TileFixture keptFixture : fixtures) {

@@ -165,7 +165,7 @@ public final class OneToTwoConverter { // NOPMD
 				       (map.getGround(point) != null) || (map.getForest(point) !=
 						                                          null) ||
 				       map.getRivers(point).iterator().hasNext() ||
-				       map.getOtherFixtures(point).iterator().hasNext();
+				       map.streamOtherFixtures(point).anyMatch(f -> true);
 	}
 
 	/**
@@ -237,7 +237,7 @@ public final class OneToTwoConverter { // NOPMD
 			if (forest != null) {
 				fixtures.add(forest);
 			}
-			oldMap.getOtherFixtures(point).forEach(fixtures::add);
+			oldMap.streamOtherFixtures(point).forEach(fixtures::add);
 			separateRivers(point, initial, oldMap, newMap);
 			final Random random = new Random(getSeed(point));
 			Collections.shuffle(initial, random);
@@ -342,8 +342,7 @@ public final class OneToTwoConverter { // NOPMD
 	 * @return whether that location is suitable
 	 */
 	private static boolean isSubtileSuitable(final IMapNG map, final Point point) {
-		return StreamSupport.stream(map.getOtherFixtures(point).spliterator(), false)
-					   .anyMatch(OneToTwoConverter::isBackground);
+		return map.streamOtherFixtures(point).anyMatch(OneToTwoConverter::isBackground);
 	}
 
 	/**
@@ -370,10 +369,9 @@ public final class OneToTwoConverter { // NOPMD
 								  final TileFixture fix) {
 		if ((fix instanceof Village) || (fix instanceof ITownFixture)) {
 			final Collection<TileFixture> forests =
-					StreamSupport.stream(map.getOtherFixtures(point).spliterator(),
-							false)
-							.filter(Forest.class::isInstance)
+					map.streamOtherFixtures(point).filter(Forest.class::isInstance)
 							.collect(Collectors.toList());
+			// TODO: Can we safely get rid of the intermediate loop?
 			for (final TileFixture fixture : forests) {
 				map.removeFixture(point, fixture);
 			}
@@ -512,6 +510,8 @@ public final class OneToTwoConverter { // NOPMD
 	 * NotVisible---what is returned when a tile isn't in the map) shouldn't affect the
 	 * caller at all; it should be as if it wasn't in the Iterable.
 	 *
+	 * TODO: Return Stream instead of Iterable
+	 *
 	 * @param point the location of the tile
 	 * @return the locations of its neighbors.
 	 */
@@ -536,10 +536,7 @@ public final class OneToTwoConverter { // NOPMD
 	 */
 	private static boolean isAdjacentToTown(final Point point, final IMapNG map) {
 		return StreamSupport.stream(getNeighbors(point).spliterator(), false)
-					   .flatMap(npoint -> StreamSupport.stream(map.getOtherFixtures
-																		   (npoint)
-																	   .spliterator(),
-							   false))
+					   .flatMap(npoint -> map.streamOtherFixtures(npoint))
 					   .anyMatch(fix -> fix instanceof ITownFixture);
 	}
 
@@ -561,9 +558,7 @@ public final class OneToTwoConverter { // NOPMD
 	 */
 	private static boolean isPointUnforested(final IMapNG map, final Point point) {
 		return (map.getForest(point) == null) &&
-				       StreamSupport.stream(map.getOtherFixtures(point).spliterator(),
-						       false)
-						       .noneMatch(fix -> fix instanceof Forest);
+				       map.streamOtherFixtures(point).noneMatch(Forest.class::isInstance);
 	}
 
 	/**

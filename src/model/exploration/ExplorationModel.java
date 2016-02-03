@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import model.listeners.MovementCostListener;
 import model.listeners.SelectionChangeListener;
@@ -126,6 +127,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	}
 
 	/**
+	 * TODO: Take Stream, not Iterable?
 	 * @param iter   a sequence of members of that type
 	 * @param player a player
 	 * @return a list of the members of the sequence that are units owned by the player
@@ -234,6 +236,8 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	/**
 	 * If a unit's motion to a new tile could be observed by a watcher on a specified
 	 * nearby tile, print a message to stdout saying so.
+	 *
+	 * TODO: Take Stream, not Iterable?
 	 *
 	 * @param fixtures a collection of fixtures in the location being considered
 	 * @param point    its location
@@ -427,25 +431,26 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		final IMapNG source = getMap();
 		for (final Point point : source.locations()) {
 			if (((fix instanceof Mountain) && source.isMountainous(point))
-						|| ((fix instanceof Forest) && fix.equals(source
-																		  .getForest(
-																				  point)))
-						|| ((fix instanceof Ground) && fix.equals(source
-																		  .getGround(
-																				  point))
+					    || ((fix instanceof Forest) && fix.equals(source
+							                                              .getForest(
+									                                              point)))
+
+					    || ((fix instanceof Ground) && fix.equals(source
+							                                              .getGround(
+									                                              point))
 			)) {
 				return point;
 			}
-			for (final TileFixture item : source.getOtherFixtures(point)) {
-				if (fix.equals(item)) {
-					return point; // NOPMD
-				} else if (item instanceof FixtureIterable) {
-					for (final IFixture inner : (FixtureIterable<@NonNull ?>) item) {
-						if (fix.equals(inner)) {
-							return point; // NOPMD
-						}
-					}
+			if (source.streamOtherFixtures(point).flatMap(item -> {
+				if (item instanceof FixtureIterable) {
+					return StreamSupport
+							       .stream(((FixtureIterable<@NonNull ?>) item)
+									               .spliterator(), false);
+				} else {
+					return Stream.of(item);
 				}
+			}).anyMatch(fix::equals)) {
+				return point;
 			}
 		}
 		return PointFactory.point(-1, -1);
