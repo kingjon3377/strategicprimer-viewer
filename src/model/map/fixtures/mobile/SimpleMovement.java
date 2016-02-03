@@ -1,5 +1,7 @@
 package model.map.fixtures.mobile;
 
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import model.map.HasOwner;
 import model.map.TileFixture;
@@ -73,7 +75,6 @@ public final class SimpleMovement {
 	}
 
 	/**
-	 * TODO: Take Stream instead of Iterable
 	 * @param terrain  a terrain type
 	 * @param forest   whether the location is forested
 	 * @param mountain whether the location is mountainous
@@ -84,14 +85,12 @@ public final class SimpleMovement {
 	public static int getMovementCost(final TileType terrain,
 	                                  final boolean forest, final boolean mountain,
 	                                  final boolean river,
-	                                  final Iterable<TileFixture> fixtures) {
+	                                  final Supplier<Stream<TileFixture>> fixtures) {
 		if ((TileType.Ocean == terrain)
 				    || (TileType.NotVisible == terrain)) {
 			return Integer.MAX_VALUE; // NOPMD
-		} else if (forest || mountain || isForest(fixtures) || isHill(fixtures)
-				           ||
-				           (TileType.Desert ==
-						            terrain)) {
+		} else if (forest || mountain || isForest(fixtures.get()) ||
+				           isHill(fixtures.get()) || (TileType.Desert == terrain)) {
 			if (river) {
 				return 2; // NOPMD
 			} else {
@@ -119,7 +118,7 @@ public final class SimpleMovement {
 	 * @param fixtures a sequence of fixtures
 	 * @return whether any of them is a forest
 	 */
-	private static boolean isForest(final Iterable<TileFixture> fixtures) {
+	private static boolean isForest(final Stream<TileFixture> fixtures) {
 		return StreamSupport.stream(fixtures.spliterator(), false)
 				       .anyMatch(fix -> fix instanceof Forest);
 	}
@@ -128,7 +127,7 @@ public final class SimpleMovement {
 	 * @param fixtures a sequence of fixtures
 	 * @return whether any of them is a mountain or a hill
 	 */
-	private static boolean isHill(final Iterable<TileFixture> fixtures) {
+	private static boolean isHill(final Stream<TileFixture> fixtures) {
 		return StreamSupport.stream(fixtures.spliterator(), false)
 				       .anyMatch(fix -> (fix instanceof Mountain) ||
 						                        (fix instanceof Hill));

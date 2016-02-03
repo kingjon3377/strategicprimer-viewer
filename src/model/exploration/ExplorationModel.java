@@ -178,7 +178,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 								map.getForest(dest) != null,
 								map.isMountainous(dest), map.getRivers(dest)
 																 .iterator().hasNext(),
-								map.getOtherFixtures(dest));
+								() -> map.streamOtherFixtures(dest));
 			}
 			removeImpl(map, point, unit);
 			map.addFixture(dest, unit);
