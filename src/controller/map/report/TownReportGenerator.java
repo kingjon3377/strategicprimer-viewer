@@ -85,8 +85,8 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 						        .add(produce(fixtures, map, currentPlayer,
 								        ((ITownFixture) pair.second()), pair.first())));
 		final StringBuilder builder =
-				new StringBuilder(separated.values().stream().mapToInt(Collection::size)
-						                  .sum() * 512 + 80);
+				new StringBuilder((separated.values().stream().mapToInt(Collection::size)
+						                   .sum() * 512) + 80);
 		builder.append("<h4>Cities, towns, and/or fortifications you know about:</h4>\n");
 		builder.append(OPEN_LIST);
 		Arrays.asList(TownStatus.Active, TownStatus.Abandoned, TownStatus.Ruined,

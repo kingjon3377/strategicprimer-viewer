@@ -436,8 +436,9 @@ public class SPMapNG implements IMutableMapNG {
 					&& (turn == obj.getCurrentTurn())
 					&& getCurrentPlayer().equals(obj.getCurrentPlayer())) {
 			return locationStream().allMatch(
-					point -> getBaseTerrain(point) == obj.getBaseTerrain(point) &&
-							         isMountainous(point) == obj.isMountainous(point) &&
+					point -> (getBaseTerrain(point) == obj.getBaseTerrain(point)) &&
+							         (isMountainous(point) == obj.isMountainous(point)
+							         ) &&
 							         areIterablesEqual(getRivers(point),
 									         obj.getRivers(point)) &&
 							         Objects.equals(getForest(point),
