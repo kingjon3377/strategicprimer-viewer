@@ -87,7 +87,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 			});
 			immutable = false;
 		}
-		if (fixture instanceof HasKind) {
+		if (fixture instanceof HasMutableKind) {
 			addMenuItem(new JMenuItem("Change kind", KeyEvent.VK_K),
 					event -> {
 						final String old = ((HasKind) fixture).getKind();
