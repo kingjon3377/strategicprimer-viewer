@@ -12,6 +12,11 @@ import model.listeners.AddRemoveListener;
 /**
  * A panel to be the GUI to add or remove items from a list.
  *
+ * TODO: To appease abstraction warnings, make an AddRemoveSource interface
+ *
+ * TODO: Rather than having boolean constructor parameter, split into two classes, one
+ * allowing removals and the other not.
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
