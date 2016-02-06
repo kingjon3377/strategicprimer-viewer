@@ -221,7 +221,6 @@ public final class ZeroToOneConverter {
 	                                      final StartElement element) throws IOException {
 		ostream.append('<');
 		ostream.append(element.getName().getLocalPart());
-		// TODO: Use Stream API
 		// getAttributes() isn't actually genericized, so diamond causes compile error
 		//noinspection Convert2Diamond,unchecked
 		for (final Attribute attr : new IteratorWrapper<Attribute>(element.getAttributes())) {
