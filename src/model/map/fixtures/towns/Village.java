@@ -312,4 +312,11 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 			return false;
 		}
 	}
+	/**
+	 * @return what kind of town this is
+	 */
+	@Override
+	public final String kind() {
+		return "village";
+	}
 }

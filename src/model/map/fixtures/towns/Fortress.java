@@ -362,4 +362,11 @@ public class Fortress implements HasImage, ITownFixture,
 			return "a fortress, " + name + ", owned by " + owner.getName();
 		}
 	}
+	/**
+	 * @return what kind of town this is
+	 */
+	@Override
+	public final String kind() {
+		return "fortress";
+	}
 }

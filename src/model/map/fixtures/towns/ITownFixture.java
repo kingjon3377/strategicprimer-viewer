@@ -47,6 +47,11 @@ public interface ITownFixture extends TileFixture, HasName, HasOwner {
 	TownSize size();
 
 	/**
+	 * @return a description of what kind of 'town' this is.
+	 */
+	String kind();
+
+	/**
 	 * @return the player that owns the town, fortress, or city
 	 */
 	@Override

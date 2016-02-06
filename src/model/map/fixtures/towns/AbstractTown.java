@@ -201,11 +201,6 @@ public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
 	}
 
 	/**
-	 * @return a description of what kind of 'town' this is.
-	 */
-	public abstract String kind();
-
-	/**
 	 * TODO: Should be more granular.
 	 *
 	 * @return the name of an image to represent the event.
