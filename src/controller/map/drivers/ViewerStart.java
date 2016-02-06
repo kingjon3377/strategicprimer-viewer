@@ -71,8 +71,7 @@ public final class ViewerStart implements SimpleDriver {
 	}
 
 	/**
-	 * Run the driver. TODO: Somehow unify similar code between this and other similar
-	 * drivers.
+	 * Run the driver.
 	 *
 	 * @param args Command-line arguments.
 	 * @throws DriverFailedException if the driver failed to run.
