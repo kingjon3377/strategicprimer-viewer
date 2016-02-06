@@ -13,7 +13,7 @@ import model.workermgmt.WorkerModel;
 import view.worker.AdvancementFrame;
 
 /**
- * A class to start the worker management GUI. TODO: Merge with ViewerStart.
+ * A class to start the worker management GUI.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
