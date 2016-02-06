@@ -133,7 +133,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 				new SectionListReportNode(5, "Villages you think are independent:");
 		final IReportNode others =
 				new SectionListReportNode(5, "Other villages you know about:");
-		final Map<Player, IReportNode> othersMap = new HashMap<>();
+		@SuppressWarnings("TooBroadScope") final Map<Player, IReportNode> othersMap = new HashMap<>();
 		values.stream().filter(pair -> pair.second() instanceof Village).forEach(pair
 																						 -> {
 			final Village village = (Village) pair.second();
