@@ -5,8 +5,6 @@ import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -19,7 +17,6 @@ import java.util.stream.StreamSupport;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -30,6 +27,7 @@ import model.map.fixtures.ResourcePile;
 import model.resources.ResourceManagementDriver;
 import view.util.BoxPanel;
 import view.util.ErrorShower;
+import view.util.ImprovedComboBox;
 import view.worker.WorkerMenu;
 
 /**
@@ -200,52 +198,17 @@ public class ResourceAddingFrame extends JFrame {
 	}
 
 	/**
-	 * A combo-box that handles 'enter' properly.
-	 *
-	 * TODO: The central functionality of this should be a top-level class in view.util
+	 * Extends ImprovedComboBox to keep a running collection of values.
 	 */
-	private static class UpdatedComboBox extends JComboBox<String> {
+	private static class UpdatedComboBox extends ImprovedComboBox<String> {
 		protected UpdatedComboBox() {
-			setEditable(true);
-		}
-
-		/**
-		 * From http://stackoverflow.com/a/24336768
-		 *
-		 * @param evt the event to process
-		 */
-		@Override
-		public void processKeyEvent(final KeyEvent evt) {
-			if ((evt.getID() != KeyEvent.KEY_PRESSED)
-						|| (evt.getKeyCode() != KeyEvent.VK_TAB)) {
-				super.processKeyEvent(evt);
-				return;
-			}
-
-			if (isPopupVisible()) {
-				assert evt.getSource() instanceof Component;
-				final KeyEvent fakeEnterKeyEvent = new KeyEvent((Component) evt.getSource(),
-																 evt.getID(),
-																 evt.getWhen(),
-																 0,
-																 // No modifiers.
-																 KeyEvent.VK_ENTER,
-																 // Enter key.
-																 KeyEvent
-																		 .CHAR_UNDEFINED);
-				super.processKeyEvent(fakeEnterKeyEvent);
-			}
-			if (evt.getModifiers() == 0) {
-				transferFocus();
-			} else if (evt.getModifiers() == InputEvent.SHIFT_MASK) {
-				transferFocusBackward();
-			}
+			values = new HashSet<>();
 		}
 
 		/**
 		 * The values we've had in the past.
 		 */
-		private final Collection<String> values = new HashSet<>();
+		private final Collection<String> values;
 
 		/**
 		 * Clear the combo box, but if its value was one we haven't had previously, add
