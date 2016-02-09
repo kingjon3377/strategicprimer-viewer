@@ -390,5 +390,10 @@ public abstract class AbstractCompactReader<@NonNull T>
 		indent(ostream, indent);
 		ostream.append('<');
 		ostream.append(tag);
+		if (indent == 0) {
+			ostream.append(" xmlns=\"");
+			ostream.append(ISPReader.NAMESPACE);
+			ostream.append("\"");
+		}
 	}
 }

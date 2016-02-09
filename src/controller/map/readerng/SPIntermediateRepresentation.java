@@ -1,5 +1,6 @@
 package controller.map.readerng;
 
+import controller.map.iointerfaces.ISPReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -169,6 +170,11 @@ public final class SPIntermediateRepresentation {
 		} else {
 			writeIfTagNotEmpty(writer, "<");
 			writeIfTagNotEmpty(writer, tag);
+			if (indentationLevel == 0) {
+				writeIfTagNotEmpty(writer, " xmlns=\"");
+				writeIfTagNotEmpty(writer, ISPReader.NAMESPACE);
+				writeIfTagNotEmpty(writer, "\"");
+			}
 			// final String text = "text".equals(tag) ? attrs
 			// .remove("text-contents") : "";
 			final String text = removeAttribute("text-contents");
