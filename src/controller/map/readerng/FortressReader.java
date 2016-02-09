@@ -2,11 +2,12 @@ package controller.map.readerng;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
-import javax.xml.namespace.QName;
+import javax.xml.XMLConstants;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
@@ -15,6 +16,7 @@ import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
+import util.EqualsAny;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
@@ -77,7 +79,9 @@ public final class FortressReader implements INodeHandler<Fortress> {
 						            getOrGenerateID(element, warner, idFactory));
 		addImage(element, fort);
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
+			if (event.isStartElement() && EqualsAny.equalsAny(
+					event.asStartElement().getName().getNamespaceURI(),
+					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				final String memberTag = event.asStartElement().getName()
 												 .getLocalPart().toLowerCase();
 				if ("unit".equals(memberTag)) {
@@ -93,7 +97,7 @@ public final class FortressReader implements INodeHandler<Fortress> {
 							NullCleaner.assertNotNull(event.asStartElement()),
 							stream, players, warner, idFactory));
 				} else {
-					throw new UnwantedChildException(new QName("fortress"),
+					throw new UnwantedChildException(element.getName(),
 							                                event.asStartElement());
 				}
 			} else if (event.isEndElement()

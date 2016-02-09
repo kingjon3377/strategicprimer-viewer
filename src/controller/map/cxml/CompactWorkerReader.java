@@ -4,8 +4,10 @@ import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnsupportedPropertyException;
 import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import java.io.IOException;
+import javax.xml.XMLConstants;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
@@ -16,6 +18,7 @@ import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import org.eclipse.jdt.annotation.Nullable;
+import util.EqualsAny;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
@@ -75,7 +78,9 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 														element, warner, idFactory));
 		retval.setImage(getParameter(element, "image", ""));
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
+			if (event.isStartElement() && EqualsAny.equalsAny(
+					event.asStartElement().getName().getNamespaceURI(),
+					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				if ("job".equalsIgnoreCase(NullCleaner.assertNotNull(event
 																			 .asStartElement()
 																			 .getName()
@@ -151,7 +156,9 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 			warner.warn(new UnsupportedPropertyException(element, "hours"));
 		}
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
+			if (event.isStartElement() && EqualsAny.equalsAny(
+					event.asStartElement().getName().getNamespaceURI(),
+					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				if ("skill".equalsIgnoreCase(NullCleaner.assertNotNull(event
 																			   .asStartElement()
 																			   .getName()

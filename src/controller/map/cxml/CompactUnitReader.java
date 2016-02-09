@@ -3,10 +3,12 @@ package controller.map.cxml;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -15,6 +17,7 @@ import model.map.IMutablePlayerCollection;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
 import org.eclipse.jdt.annotation.NonNull;
+import util.EqualsAny;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
@@ -100,16 +103,16 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 		retval.setImage(getParameter(element, "image", ""));
 		final StringBuilder orders = new StringBuilder(512);
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
+			if (event.isStartElement() && EqualsAny.equalsAny(
+					event.asStartElement().getName().getNamespaceURI(),
+					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				retval.addMember(parseChild(
 						NullCleaner.assertNotNull(event.asStartElement()),
 						stream, players, idFactory, warner));
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());
-			} else if (event.isEndElement()
-							   &&
-							   element.getName().equals(event.asEndElement().getName()
-							   )) {
+			} else if (event.isEndElement() &&
+					           element.getName().equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
@@ -141,11 +144,14 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 				if (retval instanceof UnitMember) {
 					return (UnitMember) retval;
 				} else {
-					throw new UnwantedChildException(new QName(UNIT_TAG), element);
+					throw new UnwantedChildException(new QName(element.getName()
+							                                           .getNamespaceURI(),
+							                                          UNIT_TAG), element);
 				}
 			}
 		}
-		throw new UnwantedChildException(new QName(UNIT_TAG), element);
+		throw new UnwantedChildException(new QName(element.getName().getNamespaceURI(),
+				                                          UNIT_TAG), element);
 	}
 
 	/**

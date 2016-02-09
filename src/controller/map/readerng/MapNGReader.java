@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.StreamSupport;
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -142,7 +143,9 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 		final Point nullPoint = PointFactory.point(-1, -1);
 		Point point = nullPoint;
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
+			if (event.isStartElement() && EqualsAny.equalsAny(
+					event.asStartElement().getName().getNamespaceURI(),
+					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				final StartElement current = event.asStartElement();
 				final String type = current.getName().getLocalPart();
 				if (type == null) {
@@ -155,7 +158,9 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					continue;
 				} else if ("tile".equalsIgnoreCase(type)) {
 					if (!nullPoint.equals(point)) {
-						throw new UnwantedChildException(new QName("tile"),
+						throw new UnwantedChildException(new QName(current.getName()
+								                                           .getNamespaceURI(),
+								                                          "tile"),
 								                                current);
 					}
 					point = PointFactory.point(getIntegerAttribute(current, "row"),
@@ -299,9 +304,11 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 			                                                final StartElement parent)
 			throws SPFormatException {
 		return StreamSupport.stream(stream.spliterator(), false)
-				       .filter(XMLEvent::isStartElement).findFirst()
-				       .orElseThrow(() -> new MissingChildException(parent))
-				       .asStartElement();
+				       .filter(XMLEvent::isStartElement).map(XMLEvent::asStartElement)
+				       .filter(elem -> EqualsAny.equalsAny(
+						       elem.getName().getNamespaceURI(), ISPReader.NAMESPACE,
+						       XMLConstants.NULL_NS_URI)).findFirst()
+				       .orElseThrow(() -> new MissingChildException(parent));
 	}
 	/**
 	 * Create an intermediate representation of the map to convert it to XML.

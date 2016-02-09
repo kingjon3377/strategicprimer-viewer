@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.StreamSupport;
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -137,7 +138,9 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			if (event.isStartElement()) {
 				final StartElement current = event.asStartElement();
 				final String type = current.getName().getLocalPart();
-				if (type == null) {
+				if (type == null || !EqualsAny.equalsAny(
+						current.getName().getNamespaceURI(), ISPReader.NAMESPACE,
+						XMLConstants.NULL_NS_URI)) {
 					continue;
 				} else if ("player".equalsIgnoreCase(type)) {
 					retval.addPlayer(CompactPlayerReader.READER.read(current,
@@ -147,7 +150,10 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					continue;
 				} else if ("tile".equalsIgnoreCase(type)) {
 					if (!nullPoint.equals(point)) {
-						throw new UnwantedChildException(new QName("tile"), current);
+						throw new UnwantedChildException(new QName(current.getName()
+								                                           .getNamespaceURI(),
+								                                          "tile"),
+								                                current);
 					}
 					point = PointFactory.point(
 							getIntegerParameter(current, "row"),
@@ -304,7 +310,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				return item.read(element, stream, players, warner, idFactory);
 			}
 		}
-		throw new UnwantedChildException(new QName("tile"), element);
+		throw new UnwantedChildException(new QName(element.getName().getNamespaceURI(),
+				                                          "tile"), element);
 	}
 
 	/**
@@ -319,9 +326,11 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			                                                final StartElement parent)
 			throws SPFormatException {
 		return StreamSupport.stream(stream.spliterator(), false)
-				       .filter(XMLEvent::isStartElement).findFirst()
-				       .orElseThrow(() -> new MissingChildException(parent))
-				       .asStartElement();
+				       .filter(XMLEvent::isStartElement).map(XMLEvent::asStartElement)
+				       .filter(elem -> EqualsAny.equalsAny(
+						       elem.getName().getNamespaceURI(), ISPReader.NAMESPACE,
+						       XMLConstants.NULL_NS_URI)).findFirst()
+				       .orElseThrow(() -> new MissingChildException(parent));
 	}
 	/**
 	 * @param obj     a map

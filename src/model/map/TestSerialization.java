@@ -1,6 +1,8 @@
 package model.map;
 
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.iointerfaces.ISPReader;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -28,6 +30,7 @@ import static model.map.TileType.NotVisible;
 import static model.map.TileType.Plains;
 import static model.map.TileType.Steppe;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static util.NullCleaner.assertNotNull;
 
 /**
@@ -423,6 +426,42 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 						"current_player=\"1\"><player number=\"1\" " +
 						"code_name=\"playerOne\" /><row index=\"0\"><tile row=\"0\" " +
 						"column=\"0\" kind=\"steppe\" /></row></map>");
+	}
+	/**
+	 * Test support for XML namespaces.
+	 *
+	 * @throws SPFormatException  on SP format error
+	 * @throws XMLStreamException on XML reading error
+	 * @throws IOException        on I/O error creating serialized form
+	 */
+	@Test
+	public void testNamespacedSerialization() throws XMLStreamException,
+			                                           SPFormatException, IOException {
+		final Player player = new Player(1, "playerOne");
+		player.setCurrent(true);
+		final IMutableMapNG firstMap =
+				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
+						           0);
+		firstMap.addPlayer(player);
+		final Point point = point(0, 0);
+		firstMap.setBaseTerrain(point, Steppe);
+		assertMapDeserialization("Proper deserialization of namespaced map", firstMap,
+				"<map xmlns=\"" + ISPReader.NAMESPACE + "\" version=\"2\" rows=\"1\" columns=\"1\" " +
+						"current_player=\"1\"><player number=\"1\" " +
+						"code_name=\"playerOne\" /><row index=\"0\"><tile row=\"0\" " +
+						"column=\"0\" kind=\"steppe\" /></row></map>");
+		try {
+			assertMapDeserialization("Proper deserialization of namespaced map", firstMap,
+
+					"<map xmlns=\"xyzzy\" version=\"2\" rows=\"1\" columns=\"1\" " +
+							"current_player=\"1\"><player number=\"1\" " +
+							"code_name=\"playerOne\" /><row index=\"0\"><tile row=\"0\"" +
+							" " +
+							"column=\"0\" kind=\"steppe\" /></row></map>");
+			fail("Map in an unsupported namespace shouldn't be accepted");
+		} catch (final UnwantedChildException ignored) {
+			// do nothing
+		}
 	}
 
 	/**

@@ -1,6 +1,7 @@
 package controller.map.cxml;
 
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import java.io.IOException;
 import java.util.Arrays;
@@ -8,6 +9,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
+import javax.xml.XMLConstants;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
@@ -16,6 +18,7 @@ import model.map.fixtures.RiverFixture;
 import model.map.fixtures.mobile.ProxyFor;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
+import util.EqualsAny;
 import util.IteratorWrapper;
 import util.TypesafeLogger;
 import util.Warning;
@@ -80,6 +83,12 @@ public final class CompactReaderAdapter {
 	                           final IMutablePlayerCollection players,
 	                           final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
+		if (!EqualsAny.equalsAny(element.getName().getNamespaceURI(), ISPReader.NAMESPACE,
+				XMLConstants.NULL_NS_URI)) {
+			throw new IllegalArgumentException("CompactReaderAdapter can only parse " +
+					                                   "objects in either our namespace " +
+					                                   "or the default namespace");
+		}
 		final String tag = element.getName().getLocalPart();
 		// Handle rivers specially.
 		if ("river".equals(tag) || "lake".equals(tag)) {

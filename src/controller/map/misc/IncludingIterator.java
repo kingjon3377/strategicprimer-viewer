@@ -2,18 +2,21 @@ package controller.map.misc;
 
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.iointerfaces.ISPReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import org.eclipse.jdt.annotation.NonNull;
+import util.EqualsAny;
 import util.NullCleaner;
 import util.Pair;
 
@@ -109,9 +112,11 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 			throw new NoSuchElementException();
 		}
 		XMLEvent retval = stack.peekFirst().second().next();
-		while (retval.isStartElement()
-					   && "include".equals(retval.asStartElement().getName()
-												   .getLocalPart())) {
+		while (retval.isStartElement() && EqualsAny.equalsAny(
+				retval.asStartElement().getName().getNamespaceURI(), ISPReader.NAMESPACE,
+				XMLConstants.NULL_NS_URI) && "include".equals(retval.asStartElement()
+						                                              .getName()
+						                                              .getLocalPart())) {
 			handleInclude(NullCleaner.assertNotNull(retval.asStartElement()));
 			removeEmptyIterators();
 			if (stack.isEmpty()) {
@@ -225,15 +230,28 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	 */
 	private static String getFileAttribute(final StartElement startElement)
 			throws SPFormatException {
-		final Attribute attr = startElement.getAttributeByName(new QName("file"));
-		if (attr == null) {
-			throw new MissingPropertyException(startElement, "file");
-		}
-		final String value = attr.getValue();
-		if (value == null) {
-			throw new MissingPropertyException(startElement, "file");
+		final Attribute namespacedAttr =
+				startElement.getAttributeByName(new QName(ISPReader.NAMESPACE, "file"));
+		final String namespacedValue;
+		if (namespacedAttr == null) {
+			namespacedValue = null;
 		} else {
-			return value;
+			namespacedValue = namespacedAttr.getValue();
+		}
+		if (namespacedValue == null) {
+			final Attribute defaultAttr =
+					startElement.getAttributeByName(new QName("file"));
+			if (defaultAttr == null) {
+				throw new MissingPropertyException(startElement, "file");
+			}
+			final String value = defaultAttr.getValue();
+			if (value == null) {
+				throw new MissingPropertyException(startElement, "file");
+			} else {
+				return value;
+			}
+		} else {
+			return namespacedValue;
 		}
 	}
 }

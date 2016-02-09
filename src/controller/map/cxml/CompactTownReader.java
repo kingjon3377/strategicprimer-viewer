@@ -3,10 +3,12 @@ package controller.map.cxml;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import java.io.IOException;
 import java.util.Random;
 import java.util.logging.Logger;
+import javax.xml.XMLConstants;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
@@ -241,7 +243,9 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 													getOrGenerateID(element, warner,
 															idFactory));
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement()) {
+			if (event.isStartElement() && EqualsAny.equalsAny(
+					event.asStartElement().getName().getNamespaceURI(),
+					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				final String memberTag = event.asStartElement().getName()
 												 .getLocalPart().toLowerCase();
 				if ("unit".equals(memberTag)) {

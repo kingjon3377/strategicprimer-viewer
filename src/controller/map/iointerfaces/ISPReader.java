@@ -41,7 +41,10 @@ public interface ISPReader {
 					                                                              ("future",
 					"explorer", "building", "resource", "changeset", "change", "move",
 					"work", "discover", "submap")));
-
+	/**
+	 * The namespace that SP XML will use.
+	 */
+	String NAMESPACE = "https://github.com/kingjon3377/strategicprimer-viewer";
 	/**
 	 * @param <T>     A supertype of the object the XML represents
 	 * @param file    the name of the file being read from

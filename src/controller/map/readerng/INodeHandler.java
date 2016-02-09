@@ -5,6 +5,7 @@ import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.SPMalformedInputException;
 import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
 import java.text.NumberFormat;
@@ -92,12 +93,17 @@ public interface INodeHandler<@NonNull T> {
 	 */
 	default String getAttribute(final StartElement startElement,
 	                                  final String attribute) throws SPFormatException {
-		final Attribute attr = startElement.getAttributeByName(new QName(
-				                                                                attribute));
-		if ((attr == null) || (attr.getValue() == null)) {
-			throw new MissingPropertyException(startElement, attribute);
+		final Attribute namespacedAttr = startElement.getAttributeByName(
+				new QName(ISPReader.NAMESPACE, attribute));
+		if ((namespacedAttr == null) || (namespacedAttr.getValue() == null)) {
+			final Attribute attr = startElement.getAttributeByName(new QName(attribute));
+			if (attr == null || attr.getValue() == null) {
+				throw new MissingPropertyException(startElement, attribute);
+			} else {
+				return NullCleaner.assertNotNull(attr.getValue());
+			}
 		}
-		return NullCleaner.assertNotNull(attr.getValue());
+		return NullCleaner.assertNotNull(namespacedAttr.getValue());
 	}
 
 	/**
@@ -112,11 +118,17 @@ public interface INodeHandler<@NonNull T> {
 	 */
 	default String getAttribute(final StartElement elem,
 	                                  final String attr, final String defaultValue) {
-		final Attribute value = elem.getAttributeByName(new QName(attr));
-		if (value == null) {
-			return defaultValue; // NOPMD
+		final Attribute namespacedValue =
+				elem.getAttributeByName(new QName(ISPReader.NAMESPACE, attr));
+		if (namespacedValue == null) {
+			final Attribute value = elem.getAttributeByName(new QName(attr));
+			if (value == null) {
+				return defaultValue; // NOPMD
+			} else {
+				return NullCleaner.assertNotNull(value.getValue());
+			}
 		} else {
-			return NullCleaner.assertNotNull(value.getValue());
+			return NullCleaner.assertNotNull(namespacedValue.getValue());
 		}
 	}
 
@@ -137,10 +149,20 @@ public interface INodeHandler<@NonNull T> {
 			                                                   final String deprecated,
 			                                                   final Warning warner)
 			throws SPFormatException {
-		final Attribute prefAttr = element.getAttributeByName(new QName(
-				                                                               preferred));
-		final Attribute deprAttr = element.getAttributeByName(new QName(
-				                                                               deprecated));
+		final Attribute nsPrefAttr = element.getAttributeByName(new QName(ISPReader.NAMESPACE, preferred));
+		final Attribute nsDeprAttr = element.getAttributeByName(new QName(ISPReader.NAMESPACE, deprecated));
+		final Attribute prefAttr;
+		if (nsPrefAttr == null) {
+			prefAttr = element.getAttributeByName(new QName(preferred));
+		} else {
+			prefAttr = nsPrefAttr;
+		}
+		final Attribute deprAttr;
+		if (nsDeprAttr == null) {
+			deprAttr = element.getAttributeByName(new QName(deprecated));
+		} else {
+			deprAttr = nsDeprAttr;
+		}
 		if ((prefAttr == null) && (deprAttr == null)) {
 			throw new MissingPropertyException(element, preferred);
 		} else if (prefAttr == null) {
@@ -158,7 +180,8 @@ public interface INodeHandler<@NonNull T> {
 	 */
 	default boolean hasAttribute(final StartElement elem,
 	                                   final String attr) {
-		return elem.getAttributeByName(new QName(attr)) != null;
+		return elem.getAttributeByName(new QName(ISPReader.NAMESPACE, attr)) != null ||
+				       elem.getAttributeByName(new QName(attr)) != null;
 	}
 
 	/**
@@ -264,14 +287,9 @@ public interface INodeHandler<@NonNull T> {
 	 */
 	default int getIntegerAttribute(final StartElement startElement,
 	                                      final String attribute) throws SPFormatException {
-		final Attribute attr = startElement.getAttributeByName(new QName(
-				                                                                attribute));
-		if ((attr == null) || (attr.getValue() == null)) {
-			throw new MissingPropertyException(startElement, attribute);
-		}
 		try {
 			return NullCleaner.assertNotNull(NumberFormat.getIntegerInstance())
-					       .parse(attr.getValue()).intValue();
+					       .parse(getAttribute(startElement, attribute)).intValue();
 		} catch (final ParseException e) {
 			throw new SPMalformedInputException(startElement.getLocation(), e);
 		}
@@ -289,13 +307,13 @@ public interface INodeHandler<@NonNull T> {
 	default int getIntegerAttribute(final StartElement elem, final String attr,
 	                                      final int defaultValue)
 			throws SPFormatException {
-		final Attribute value = elem.getAttributeByName(new QName(attr));
-		if ((value == null) || value.getValue().isEmpty()) {
+		final String value = getAttribute(elem, attr, "");
+		if (value.isEmpty()) {
 			return defaultValue; // NOPMD
 		} else {
 			try {
 				return NullCleaner.assertNotNull(NumberFormat.getIntegerInstance())
-						       .parse(value.getValue()).intValue();
+						       .parse(value).intValue();
 			} catch (final ParseException e) {
 				throw new SPMalformedInputException(elem.getLocation(), e);
 			}

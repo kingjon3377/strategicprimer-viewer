@@ -1,5 +1,6 @@
 package controller.map.converter;
 
+import controller.map.iointerfaces.ISPReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -13,6 +14,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
@@ -62,7 +65,15 @@ public final class ZeroToOneConverter {
 	 * equivalents.
 	 */
 	private static final Map<Integer, String> EQUIVS = new HashMap<>();
-
+	/**
+	 * @param tag the name of an XML tag
+	 * @param desired the desired XML tag
+	 * @return whether it matches, either in our namespace or the default namespace
+	 */
+	private static boolean isSpecifiedTag(final QName tag, final String desired) {
+		return tag.equals(new QName(ISPReader.NAMESPACE, desired)) ||
+				       tag.equals(new QName(desired));
+	}
 	/**
 	 * @param stream a stream representing a SP map, format version 0
 	 * @param ostream the stream to write the equivalent map, format version 1, to
@@ -74,13 +85,11 @@ public final class ZeroToOneConverter {
 			if (event.isStartElement()) {
 				final StartElement selement =
 						NullCleaner.assertNotNull(event.asStartElement());
-				if ("tile".equalsIgnoreCase(selement.getName()
-													.getLocalPart())) {
+				if (isSpecifiedTag(selement.getName(), "tile")) {
 					//noinspection unchecked
 					convertTile(ostream, selement,
 							iFactory(selement.getAttributes()));
-				} else if ("map".equalsIgnoreCase(selement
-														  .getName().getLocalPart())) {
+				} else if (isSpecifiedTag(selement.getName(), "map")) {
 					//noinspection unchecked
 					convertMap(ostream, selement,
 							iFactory(selement.getAttributes()));
@@ -115,6 +124,10 @@ public final class ZeroToOneConverter {
 	private static void convertMap(final Appendable ostream, final StartElement element,
 									 final Iterable<Attribute> attrs) throws IOException {
 		ostream.append('<');
+		if (!XMLConstants.DEFAULT_NS_PREFIX.equals(element.getName().getNamespaceURI())) {
+			ostream.append(element.getName().getPrefix());
+			ostream.append(':');
+		}
 		ostream.append(element.getName().getLocalPart());
 		for (final Attribute attr : attrs) {
 			if ("version".equalsIgnoreCase(attr.getName().getLocalPart())) {
@@ -140,6 +153,10 @@ public final class ZeroToOneConverter {
 									  final Iterable<Attribute> attrs)
 			throws IOException {
 		ostream.append('<');
+		if (!XMLConstants.DEFAULT_NS_PREFIX.equals(element.getName().getNamespaceURI())) {
+			ostream.append(element.getName().getPrefix());
+			ostream.append(':');
+		}
 		ostream.append(element.getName().getLocalPart());
 		final Deque<Integer> events = new LinkedList<>();
 		for (final Attribute attr : attrs) {
@@ -196,8 +213,16 @@ public final class ZeroToOneConverter {
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	private static String printEndElement(final EndElement element) {
-		return printEndElementImpl(NullCleaner.assertNotNull(element.getName()
-																	 .getLocalPart()));
+		if (XMLConstants.DEFAULT_NS_PREFIX.equals(element.getName().getNamespaceURI())) {
+			return printEndElementImpl(NullCleaner.assertNotNull(element.getName()
+					                                                     .getLocalPart
+							                                                      ()));
+		} else {
+			return printEndElementImpl(
+					NullCleaner.assertNotNull(element.getName().getPrefix()) + ':' +
+							NullCleaner.assertNotNull(element.getName().getLocalPart()));
+		}
+
 	}
 
 	/**
@@ -220,6 +245,10 @@ public final class ZeroToOneConverter {
 	private static void printStartElement(final Appendable ostream,
 	                                      final StartElement element) throws IOException {
 		ostream.append('<');
+		if (!XMLConstants.DEFAULT_NS_PREFIX.equals(element.getName().getNamespaceURI())) {
+			ostream.append(element.getName().getPrefix());
+			ostream.append(':');
+		}
 		ostream.append(element.getName().getLocalPart());
 		// getAttributes() isn't actually genericized, so diamond causes compile error
 		//noinspection Convert2Diamond,unchecked
