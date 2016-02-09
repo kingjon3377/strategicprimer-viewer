@@ -176,19 +176,14 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			if (item.getOwner().isIndependent()) {
-				return concat(atPoint(loc), item.getName(), //NOPMD
-						", an independent ", item.size().toString(), " ", item
-								                                                  .status()
-								                                                  .toString(),
-						" ",
-						((AbstractTown) item).kind(), " ",
-						distCalculator.distanceString(loc));
+				return concat(atPoint(loc), item.getName(), ", an independent ",
+						item.size().toString(), " ", item.status().toString(), " ",
+						item.kind(), " ", distCalculator.distanceString(loc));
 			} else {
-				return concat(atPoint(loc), item.getName(), ", a ", // NOPMD
-						item.size().toString(), " ", item.status().toString(),
-						" ", ((AbstractTown) item).kind(), " allied with ",
-						playerNameOrYou(item.getOwner()), " ",
-						distCalculator.distanceString(loc));
+				return concat(atPoint(loc), item.getName(), ", a ",
+						item.size().toString(), " ", item.status().toString(), " ",
+						item.kind(), " allied with ", playerNameOrYou(item.getOwner()),
+						" ", distCalculator.distanceString(loc));
 			}
 		} else {
 			throw new IllegalStateException("Unhandled ITownFixture subclass");
@@ -228,20 +223,19 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 			if (item.getOwner().isIndependent()) {
 				return new SimpleReportNode(loc, atPoint(loc), item.getName(),
 						                           ", an independent ",
-						                           item.size().toString(), " ", item
-								                                                        .status()
-								                                                        .toString(),
-						                           " ",
-						                           ((AbstractTown) item).kind(), " ",
+						                           item.size().toString(), " ",
+						                           item.status().toString(), " ",
+						                           item.kind(), " ",
 						                           distCalculator.distanceString(loc));
 			} else {
-				return new SimpleReportNode(loc, atPoint(loc), item.getName(),
-						                           ", a ", item.size().toString(), " ",
-						                           item.status()
-								                           .toString(), " ",
-						                           ((AbstractTown) item).kind(),
-						                           " allied with " + playerNameOrYou(
-								                           item.getOwner()), " ",
+				return new SimpleReportNode(loc, atPoint(loc), item.getName(), ", a ",
+						                           item.size().toString(), " ",
+						                           item.status().toString(), " ",
+						                           item.kind(), " allied with " +
+								                                        playerNameOrYou(
+										                                        item.getOwner()),
+
+						                           " ",
 						                           distCalculator.distanceString(loc));
 			}
 		} else {
