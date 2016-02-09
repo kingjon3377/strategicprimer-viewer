@@ -2,7 +2,6 @@ package model.workermgmt;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +10,6 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
@@ -87,33 +85,32 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	@Override
 	public List<IUnit> getUnits(final Player player) {
 		if (getSubordinateMaps().iterator().hasNext()) {
-			final Map<Integer, IUnit> retval = new TreeMap<>();
-			for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
-				final IMapNG map = pair.first();
-				for (final Point point : map.locations()) {
-					for (final IUnit unit : getUnits(map.streamOtherFixtures(point), player)) {
-						final IUnit proxy;
-						if (retval.containsKey(Integer.valueOf(unit.getID()))) {
-							proxy = retval.get(Integer.valueOf(unit.getID()));
-							//noinspection unchecked
-							((ProxyFor<IUnit>) proxy).addProxied(unit);
-						} else {
-							proxy = new ProxyUnit(unit.getID());
-							//noinspection unchecked
-							((ProxyFor<IUnit>) proxy).addProxied(unit);
-							retval.put(NullCleaner.assertNotNull(
-									Integer.valueOf(unit.getID())), proxy);
-						}
-					}
-				}
-			}
-			return new ArrayList<>(retval.values());
+			return new ArrayList<>(StreamSupport.stream(getAllMaps().spliterator(),
+					false).map(Pair::first).flatMap(
+							map -> map.locationStream().flatMap(
+									point -> getUnits(map.streamOtherFixtures(point),
+											player)))
+					                       .collect(() -> new TreeMap<Integer, IUnit>(),
+							                       (collection, unit) -> {
+							final IUnit proxy;
+							if (collection.containsKey(Integer.valueOf(unit.getID()))) {
+								proxy = collection.get(Integer.valueOf(unit.getID()));
+								//noinspection unchecked
+								((ProxyFor<IUnit>) proxy).addProxied(unit);
+							} else {
+								proxy = new ProxyUnit(unit.getID());
+								//noinspection unchecked
+								((ProxyFor<IUnit>) proxy).addProxied(unit);
+								collection.put(NullCleaner.assertNotNull(
+										Integer.valueOf(unit.getID())), proxy);
+							}
+						}, Map::putAll).values());
 		} else {
 			// Just in case I missed something in the proxy implementation, make
 			// sure things work correctly when there's only one map.
-			// TODO: Improve Stream API usage
-			return new ArrayList<>(getUnits(getMap().locationStream().flatMap(
-					point -> getMap().streamOtherFixtures(point)), player));
+			return getUnits(getMap().locationStream().flatMap(
+					point -> getMap().streamOtherFixtures(point)), player).collect(
+					Collectors.toList());
 		}
 	}
 
@@ -122,7 +119,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 * @param player a player
 	 * @return a list of the members of the sequence that are units owned by the player
 	 */
-	private static Collection<IUnit> getUnits(final Stream<? super Unit> iter,
+	private static Stream<IUnit> getUnits(final Stream<? super Unit> iter,
 											  final Player player) {
 		return iter.flatMap(item -> {
 			if (item instanceof Fortress) {
@@ -130,7 +127,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 			} else {
 				return Stream.of(item);
 			}
-		}).filter(IUnit.class::isInstance).map(IUnit.class::cast).filter(unit -> unit.getOwner().equals(player)).collect(Collectors.toList());
+		}).filter(IUnit.class::isInstance).map(IUnit.class::cast).filter(unit -> unit.getOwner().equals(player));
 	}
 
 	/**
