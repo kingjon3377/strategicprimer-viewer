@@ -16,8 +16,6 @@ import model.listeners.AddRemoveListener;
 /**
  * A panel to be the GUI to add or remove items from a list.
  *
- * TODO: To appease abstraction warnings, make an AddRemoveSource interface
- *
  * TODO: Rather than having boolean constructor parameter, split into two classes, one
  * allowing removals and the other not.
  *
@@ -40,7 +38,7 @@ import model.listeners.AddRemoveListener;
  *
  * @author Jonathan Lovelace
  */
-public final class AddRemovePanel extends JPanel {
+public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 	/**
 	 * The maximum height of the widget.
 	 */
@@ -126,6 +124,7 @@ public final class AddRemovePanel extends JPanel {
 	/**
 	 * @param list a listener to add
 	 */
+	@Override
 	public void addAddRemoveListener(final AddRemoveListener list) {
 		arListeners.add(list);
 	}
@@ -133,6 +132,7 @@ public final class AddRemovePanel extends JPanel {
 	/**
 	 * @param list a list to remove
 	 */
+	@Override
 	public void removeAddRemoveListener(final AddRemoveListener list) {
 		arListeners.remove(list);
 	}
