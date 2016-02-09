@@ -1,5 +1,9 @@
 package model.report;
 
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Enumeration;
 import java.util.Iterator;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -262,5 +266,23 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	@Nullable
 	public final Point getLocalPoint() {
 		return point;
+	}
+	/**
+	 * Prevent serialization.
+	 * @param out ignored
+	 * @throws IOException always
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+	/**
+	 * Prevent serialization
+	 * @param in ignored
+	 * @throws IOException always
+	 * @throws ClassNotFoundException never
+	 */
+	private void readObject(ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		throw new NotSerializableException("Serialization is not allowed");
 	}
 }

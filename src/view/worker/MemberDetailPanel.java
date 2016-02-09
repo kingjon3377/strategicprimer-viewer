@@ -1,6 +1,10 @@
 package view.worker;
 
 import java.awt.GridLayout;
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -258,6 +262,24 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 				setText(getModifierString(handle.applyAsInt(stats)));
 			}
 		}
+		/**
+		 * Prevent serialization.
+		 * @param out ignored
+		 * @throws IOException always
+		 */
+		private void writeObject(ObjectOutputStream out) throws IOException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
+		/**
+		 * Prevent serialization
+		 * @param in ignored
+		 * @throws IOException always
+		 * @throws ClassNotFoundException never
+		 */
+		private void readObject(ObjectInputStream in)
+				throws IOException, ClassNotFoundException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
 	}
 	/**
 	 * Invalidate and recompute the display.
@@ -318,5 +340,23 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			}
 			jobsPanel.removeAll();
 		}
+	}
+	/**
+	 * Prevent serialization.
+	 * @param out ignored
+	 * @throws IOException always
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+	/**
+	 * Prevent serialization
+	 * @param in ignored
+	 * @throws IOException always
+	 * @throws ClassNotFoundException never
+	 */
+	private void readObject(ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		throw new NotSerializableException("Serialization is not allowed");
 	}
 }

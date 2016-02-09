@@ -1,12 +1,12 @@
 package view.util;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Frame;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
+import java.awt.*;
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import javax.swing.*;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -31,7 +31,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public final class AboutDialog extends JDialog {
+public final class AboutDialog extends JDialog implements Serializable {
 	/**
 	 * @param parent the parent window
 	 * @param app    a string describing what the application is
@@ -132,5 +132,24 @@ public final class AboutDialog extends JDialog {
 		builder.append("<p>");
 		builder.append(text);
 		builder.append("</p>");
+	}
+	/**
+	 * Prevent serialization.
+	 * @param out ignored
+	 * @throws IOException always
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+
+	/**
+	 * Prevent serialization
+	 * @param in ignored
+	 * @throws IOException always
+	 * @throws ClassNotFoundException never
+	 */
+	private void readObject(ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		throw new NotSerializableException("Serialization is not allowed");
 	}
 }

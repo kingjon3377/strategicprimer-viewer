@@ -1,5 +1,9 @@
 package controller.map.report;
 
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -154,6 +158,24 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 				final String retval = builder.append(CLOSE_LIST).toString();
 				return NullCleaner.valueOrDefault(retval, "");
 			}
+		}
+		/**
+		 * Prevent serialization.
+		 * @param out ignored
+		 * @throws IOException always
+		 */
+		private void writeObject(ObjectOutputStream out) throws IOException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
+		/**
+		 * Prevent serialization
+		 * @param in ignored
+		 * @throws IOException always
+		 * @throws ClassNotFoundException never
+		 */
+		private void readObject(ObjectInputStream in)
+				throws IOException, ClassNotFoundException {
+			throw new NotSerializableException("Serialization is not allowed");
 		}
 	}
 

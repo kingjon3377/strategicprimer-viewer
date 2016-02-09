@@ -3,6 +3,10 @@ package view.map.main;
 import controller.map.misc.IOHandler;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import javax.swing.WindowConstants;
@@ -110,5 +114,23 @@ public final class ViewerFrame extends JFrame {
 	 */
 	public IViewerModel getModel() {
 		return model;
+	}
+	/**
+	 * Prevent serialization.
+	 * @param out ignored
+	 * @throws IOException always
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+	/**
+	 * Prevent serialization
+	 * @param in ignored
+	 * @throws IOException always
+	 * @throws ClassNotFoundException never
+	 */
+	private void readObject(ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		throw new NotSerializableException("Serialization is not allowed");
 	}
 }

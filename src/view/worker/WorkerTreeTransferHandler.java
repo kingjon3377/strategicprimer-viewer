@@ -3,6 +3,9 @@ package view.worker;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
@@ -190,5 +193,23 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	@Override
 	public String toString() {
 		return "WorkerTreeTransferHandler";
+	}
+	/**
+	 * Prevent serialization.
+	 * @param out ignored
+	 * @throws IOException always
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+	/**
+	 * Prevent serialization
+	 * @param in ignored
+	 * @throws IOException always
+	 * @throws ClassNotFoundException never
+	 */
+	private void readObject(ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		throw new NotSerializableException("Serialization is not allowed");
 	}
 }

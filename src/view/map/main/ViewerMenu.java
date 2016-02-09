@@ -2,6 +2,10 @@ package view.map.main;
 
 import com.bric.window.WindowMenu;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import javax.swing.JFrame;
 import model.misc.IDriverModel;
 import view.util.SPMenu;
@@ -51,5 +55,23 @@ public final class ViewerMenu extends SPMenu {
 	@Override
 	public String toString() {
 		return "SPMenu";
+	}
+	/**
+	 * Prevent serialization.
+	 * @param out ignored
+	 * @throws IOException always
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+	/**
+	 * Prevent serialization
+	 * @param in ignored
+	 * @throws IOException always
+	 * @throws ClassNotFoundException never
+	 */
+	private void readObject(ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		throw new NotSerializableException("Serialization is not allowed");
 	}
 }

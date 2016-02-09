@@ -1,5 +1,9 @@
 package view.worker;
 
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import javax.swing.JLabel;
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
@@ -72,5 +76,23 @@ public final class PlayerLabel extends JLabel implements PlayerChangeListener {
 	@Override
 	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		setText(htmlize(before + newPlayer.getName() + after));
+	}
+	/**
+	 * Prevent serialization.
+	 * @param out ignored
+	 * @throws IOException always
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+	/**
+	 * Prevent serialization
+	 * @param in ignored
+	 * @throws IOException always
+	 * @throws ClassNotFoundException never
+	 */
+	private void readObject(ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		throw new NotSerializableException("Serialization is not allowed");
 	}
 }

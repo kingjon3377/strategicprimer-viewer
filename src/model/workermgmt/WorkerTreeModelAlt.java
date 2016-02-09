@@ -1,5 +1,9 @@
 package model.workermgmt;
 
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -182,6 +186,24 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		public Iterator<TreeNode> iterator() {
 			return new EnumerationWrapper<>(children());
 		}
+		/**
+		 * Prevent serialization.
+		 * @param out ignored
+		 * @throws IOException always
+		 */
+		private void writeObject(ObjectOutputStream out) throws IOException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
+		/**
+		 * Prevent serialization
+		 * @param in ignored
+		 * @throws IOException always
+		 * @throws ClassNotFoundException never
+		 */
+		private void readObject(ObjectInputStream in)
+				throws IOException, ClassNotFoundException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
 	}
 
 	/**
@@ -229,6 +251,24 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 														   "Player");
 			}
 		}
+		/**
+		 * Prevent serialization.
+		 * @param out ignored
+		 * @throws IOException always
+		 */
+		private void writeObject(ObjectOutputStream out) throws IOException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
+		/**
+		 * Prevent serialization
+		 * @param in ignored
+		 * @throws IOException always
+		 * @throws ClassNotFoundException never
+		 */
+		private void readObject(ObjectInputStream in)
+				throws IOException, ClassNotFoundException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
 	}
 
 	/**
@@ -274,6 +314,24 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 														   "Player");
 			}
 		}
+		/**
+		 * Prevent serialization.
+		 * @param out ignored
+		 * @throws IOException always
+		 */
+		private void writeObject(ObjectOutputStream out) throws IOException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
+		/**
+		 * Prevent serialization
+		 * @param in ignored
+		 * @throws IOException always
+		 * @throws ClassNotFoundException never
+		 */
+		private void readObject(ObjectInputStream in)
+				throws IOException, ClassNotFoundException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
 	}
 
 	/**
@@ -318,6 +376,24 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 														   "Player");
 			}
 		}
+		/**
+		 * Prevent serialization.
+		 * @param out ignored
+		 * @throws IOException always
+		 */
+		private void writeObject(ObjectOutputStream out) throws IOException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
+		/**
+		 * Prevent serialization
+		 * @param in ignored
+		 * @throws IOException always
+		 * @throws ClassNotFoundException never
+		 */
+		private void readObject(ObjectInputStream in)
+				throws IOException, ClassNotFoundException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
 	}
 
 	/**
@@ -356,6 +432,24 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 				throw new IllegalArgumentException("PlayerNode can only contain a " +
 														   "Player");
 			}
+		}
+		/**
+		 * Prevent serialization.
+		 * @param out ignored
+		 * @throws IOException always
+		 */
+		private void writeObject(ObjectOutputStream out) throws IOException {
+			throw new NotSerializableException("Serialization is not allowed");
+		}
+		/**
+		 * Prevent serialization
+		 * @param in ignored
+		 * @throws IOException always
+		 * @throws ClassNotFoundException never
+		 */
+		private void readObject(ObjectInputStream in)
+				throws IOException, ClassNotFoundException {
+			throw new NotSerializableException("Serialization is not allowed");
 		}
 	}
 
@@ -629,5 +723,23 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	@Override
 	public Iterable<UnitMember> dismissed() {
 		return new ArrayList<>(dismissedMembers);
+	}
+	/**
+	 * Prevent serialization.
+	 * @param out ignored
+	 * @throws IOException always
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+	/**
+	 * Prevent serialization
+	 * @param in ignored
+	 * @throws IOException always
+	 * @throws ClassNotFoundException never
+	 */
+	private void readObject(ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		throw new NotSerializableException("Serialization is not allowed");
 	}
 }

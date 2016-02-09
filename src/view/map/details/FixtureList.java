@@ -9,6 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.InputMap;
@@ -83,6 +87,13 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 			@Override
 			public void actionPerformed(@Nullable final ActionEvent event) {
 				((FixtureListModel) getModel()).removeAll(getSelectedValuesList());
+			}
+			private void writeObject(ObjectOutputStream out) throws IOException {
+				throw new NotSerializableException("Serialization is not allowed");
+			}
+			private void readObject(ObjectInputStream in)
+					throws IOException, ClassNotFoundException {
+				throw new NotSerializableException("Serialization is not allowed");
 			}
 		});
 		addMouseListener(new FixtureMouseListener(players, this));
@@ -218,5 +229,23 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 	public void selectedPointChanged(@Nullable final Point old,
 	                                 final Point newPoint) {
 		flm.selectedPointChanged(old, newPoint);
+	}
+	/**
+	 * Prevent serialization.
+	 * @param out ignored
+	 * @throws IOException always
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+	/**
+	 * Prevent serialization
+	 * @param in ignored
+	 * @throws IOException always
+	 * @throws ClassNotFoundException never
+	 */
+	private void readObject(ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		throw new NotSerializableException("Serialization is not allowed");
 	}
 }

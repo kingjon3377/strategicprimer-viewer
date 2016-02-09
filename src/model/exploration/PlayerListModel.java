@@ -1,5 +1,9 @@
 package model.exploration;
 
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import javax.swing.DefaultListModel;
 import model.listeners.MapChangeListener;
 import model.map.Player;
@@ -50,5 +54,22 @@ public final class PlayerListModel extends DefaultListModel<@NonNull Player> imp
 		clear();
 		model.getPlayerChoices().forEach(this::addElement);
 	}
-
+	/**
+	 * Prevent serialization.
+	 * @param out ignored
+	 * @throws IOException always
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+	/**
+	 * Prevent serialization
+	 * @param in ignored
+	 * @throws IOException always
+	 * @throws ClassNotFoundException never
+	 */
+	private void readObject(ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
 }

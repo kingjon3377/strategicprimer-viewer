@@ -1,5 +1,9 @@
 package view.map.main;
 
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import javax.swing.JComponent;
 import model.viewer.IViewerModel;
 import view.util.BorderedPanel;
@@ -38,5 +42,23 @@ public final class MapScrollPanel extends BorderedPanel {
 		final ScrollListener scrollListener = new ScrollListener(map, this);
 		map.addGraphicalParamsListener(scrollListener);
 		map.addMapChangeListener(scrollListener);
+	}
+	/**
+	 * Prevent serialization.
+	 * @param out ignored
+	 * @throws IOException always
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+	/**
+	 * Prevent serialization
+	 * @param in ignored
+	 * @throws IOException always
+	 * @throws ClassNotFoundException never
+	 */
+	private void readObject(ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		throw new NotSerializableException("Serialization is not allowed");
 	}
 }

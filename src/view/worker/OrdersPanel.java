@@ -4,6 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -138,6 +142,13 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 					area.selectAll();
 				}
 			}
+			private void writeObject(ObjectOutputStream out) throws IOException {
+				throw new NotSerializableException("Serialization is not allowed");
+			}
+			private void readObject(ObjectInputStream in)
+					throws IOException, ClassNotFoundException {
+				throw new NotSerializableException("Serialization is not allowed");
+			}
 		});
 	}
 
@@ -200,5 +211,22 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		player = newPlayer;
 	}
-
+	/**
+	 * Prevent serialization.
+	 * @param out ignored
+	 * @throws IOException always
+	 */
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+	/**
+	 * Prevent serialization
+	 * @param in ignored
+	 * @throws IOException always
+	 * @throws ClassNotFoundException never
+	 */
+	private void readObject(ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
 }
