@@ -36,6 +36,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("CloneableClassInSecureContext")
 public final class RootReportNode extends DefaultMutableTreeNode
 		implements IReportNode {
 	/**

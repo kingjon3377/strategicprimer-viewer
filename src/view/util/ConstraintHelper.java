@@ -29,6 +29,7 @@ import java.io.ObjectOutputStream;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("CloneableClassInSecureContext")
 public final class ConstraintHelper extends GridBagConstraints {
 	/**
 	 * Constructor taking just position.

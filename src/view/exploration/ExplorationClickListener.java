@@ -311,4 +311,11 @@ public final class ExplorationClickListener extends AbstractAction implements
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+	/**
+	 * Prevent cloning.
+	 */
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		throw new CloneNotSupportedException("Cloning is not allowed.");
+	}
 }

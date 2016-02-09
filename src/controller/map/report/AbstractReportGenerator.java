@@ -108,6 +108,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 *
 	 * @author Jonathan Lovelace
 	 */
+	@SuppressWarnings("CloneableClassInSecureContext")
 	protected static final class HtmlList extends ArrayList<@NonNull String>
 			implements HeadedList<@NonNull String> {
 		/**

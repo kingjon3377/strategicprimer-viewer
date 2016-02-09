@@ -158,6 +158,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	/**
 	 * A base class for our nodes.
 	 */
+	@SuppressWarnings("CloneableClassInSecureContext")
 	public static class WorkerTreeNode<T> extends
 			DefaultMutableTreeNode implements Iterable<TreeNode> {
 		/**
@@ -211,6 +212,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 *
 	 * @author Jonathan Lovelace
 	 */
+	@SuppressWarnings("CloneableClassInSecureContext")
 	public static final class PlayerNode extends WorkerTreeNode<Player> {
 		/**
 		 * Constructor.
@@ -276,6 +278,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 *
 	 * @author Jonathan Lovelace
 	 */
+	@SuppressWarnings("CloneableClassInSecureContext")
 	public static final class KindNode extends WorkerTreeNode<String> {
 		/**
 		 * Constructor.
@@ -339,6 +342,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 *
 	 * @author Jonathan Lovelace
 	 */
+	@SuppressWarnings("CloneableClassInSecureContext")
 	public static final class UnitNode extends WorkerTreeNode<IUnit> {
 		/**
 		 * Constructor.
@@ -401,6 +405,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 *
 	 * @author Jonathan Lovelace
 	 */
+	@SuppressWarnings("CloneableClassInSecureContext")
 	public static final class UnitMemberNode extends WorkerTreeNode<UnitMember> {
 		/**
 		 * Constructor.

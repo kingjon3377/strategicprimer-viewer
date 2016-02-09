@@ -35,6 +35,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("CloneableClassInSecureContext")
 public final class EmptyReportNode extends DefaultMutableTreeNode
 		implements IReportNode {
 	/**
