@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -90,8 +91,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 			for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
 				final IMapNG map = pair.first();
 				for (final Point point : map.locations()) {
-					for (final IUnit unit : getUnits(map.getOtherFixtures(point),
-							player)) {
+					for (final IUnit unit : getUnits(map.streamOtherFixtures(point), player)) {
 						final IUnit proxy;
 						if (retval.containsKey(Integer.valueOf(unit.getID()))) {
 							proxy = retval.get(Integer.valueOf(unit.getID()));
@@ -112,29 +112,25 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 			// Just in case I missed something in the proxy implementation, make
 			// sure things work correctly when there's only one map.
 			// TODO: Improve Stream API usage
-			return new ArrayList<>(getUnits(getMap().locationStream()
-					                .flatMap(point -> getMap().streamOtherFixtures(point))
-					                .collect(Collectors.toList()), player));
+			return new ArrayList<>(getUnits(getMap().locationStream().flatMap(
+					point -> getMap().streamOtherFixtures(point)), player));
 		}
 	}
 
 	/**
-	 * TODO: Take Stream instead of Iterable
 	 * @param iter   a sequence of members of that type
 	 * @param player a player
 	 * @return a list of the members of the sequence that are units owned by the player
 	 */
-	private static Collection<IUnit> getUnits(final Iterable<? super Unit> iter,
+	private static Collection<IUnit> getUnits(final Stream<? super Unit> iter,
 											  final Player player) {
-		final Collection<IUnit> retval = new ArrayList<>();
-		for (final Object obj : iter) {
-			if ((obj instanceof IUnit) && ((IUnit) obj).getOwner().equals(player)) {
-				retval.add((IUnit) obj);
-			} else if (obj instanceof Fortress) {
-				retval.addAll(getUnits((Fortress) obj, player));
+		return iter.flatMap(item -> {
+			if (item instanceof Fortress) {
+				return StreamSupport.stream(((Fortress) item).spliterator(), false);
+			} else {
+				return Stream.of(item);
 			}
-		}
-		return retval;
+		}).filter(IUnit.class::isInstance).map(IUnit.class::cast).filter(unit -> unit.getOwner().equals(player)).collect(Collectors.toList());
 	}
 
 	/**
