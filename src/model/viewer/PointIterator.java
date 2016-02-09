@@ -12,6 +12,8 @@ import util.NullCleaner;
 /**
  * An view of locations on the map in order, starting at a given point.
  *
+ * TODO: Make a Streams API equivalent?
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *

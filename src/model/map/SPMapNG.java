@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.Spliterators;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -319,8 +320,8 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public Stream<@NonNull Point> locationStream() {
-		// TODO: Implement in more fluent fashion
-		return StreamSupport.stream(locations().spliterator(), false);
+		return StreamSupport.stream(Spliterators.spliteratorUnknownSize(
+				new PointIterator(dimensions(), null, true, true), 0), false);
 	}
 	/**
 	 * @param location a location
