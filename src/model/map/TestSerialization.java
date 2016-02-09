@@ -451,8 +451,13 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 						"current_player=\"1\"><player number=\"1\" " +
 						"code_name=\"playerOne\" /><row index=\"0\"><tile row=\"0\" " +
 						"column=\"0\" kind=\"steppe\" /></row></map>");
+		assertMapDeserialization("Non-root other-namespace tags ignored", firstMap,
+				"<map xmlns=\"" + ISPReader.NAMESPACE + "\" version=\"2\" rows=\"1\" columns=\"1\" " +
+						"current_player=\"1\" xmlns:xy=\"xyzzy\"><player number=\"1\" " +
+						"code_name=\"playerOne\" /><xy:xyzzy /><row index=\"0\"><tile row=\"0\" " +
+						"column=\"0\" kind=\"steppe\" /></row></map>");
 		try {
-			assertMapDeserialization("Proper deserialization of namespaced map", firstMap,
+			assertMapDeserialization("Root tag must be in supported namespace", firstMap,
 
 					"<map xmlns=\"xyzzy\" version=\"2\" rows=\"1\" columns=\"1\" " +
 							"current_player=\"1\"><player number=\"1\" " +
