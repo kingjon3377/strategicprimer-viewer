@@ -21,6 +21,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import model.map.HasImage;
 import model.map.IMapNG;
@@ -38,7 +39,6 @@ import model.viewer.ZOrderFilter;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ImageLoader;
-import util.IteratorWrapper;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import view.util.Coordinate;
@@ -233,13 +233,12 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
-	 * TODO: Return Stream, not Iterable
 	 * @param map      a map
 	 * @param location a location
 	 * @return an Iterable of the drawable fixtures there
 	 */
-	private Iterable<TileFixture> getDrawableFixtures(final IMapNG map,
-													  final Point location) {
+	private Stream<TileFixture> getDrawableFixtures(final IMapNG map,
+	                                                final Point location) {
 		final Collection<TileFixture> temp = new ArrayList<>();
 		@Nullable
 		final Ground ground = map.getGround(location);
@@ -255,13 +254,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			temp.add(new Mountain());
 		}
 		map.streamOtherFixtures(location).forEach(temp::add);
-		return new IteratorWrapper<>(new FilteredIterator(
-																 NullCleaner
-																		 .assertNotNull(
-																				 temp
-																						 .iterator()),
-
-																 zof), fixComp);
+		return temp.stream().filter(zof::shouldDisplay).sorted(fixComp);
 	}
 
 	/**
@@ -270,7 +263,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return whether there are any fixtures worth drawing there
 	 */
 	private boolean hasFixture(final IMapNG map, final Point location) {
-		return getDrawableFixtures(map, location).iterator().hasNext();
+		return getDrawableFixtures(map, location).anyMatch(x -> true);
 	}
 
 	/**
@@ -293,10 +286,8 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return the top fixture there
 	 */
 	private TileFixture getTopFixture(final IMapNG map, final Point location) {
-		return StreamSupport
-				       .stream(getDrawableFixtures(map, location).spliterator(), false)
-				       .findFirst().orElseThrow(
-						() -> new IllegalArgumentException("Tile has no fixtures"));
+		return getDrawableFixtures(map, location).findFirst().orElseThrow(
+				() -> new IllegalArgumentException("Tile has no fixtures"));
 	}
 
 	/**
@@ -322,9 +313,8 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return whether there is a terrain fixture there
 	 */
 	private boolean hasTerrainFixture(final IMapNG map, final Point location) {
-		return StreamSupport.stream(getDrawableFixtures(map, location).spliterator(),
-				false)
-					   .anyMatch(fix -> fix instanceof TerrainFixture);
+		return getDrawableFixtures(map, location)
+				       .anyMatch(fix -> fix instanceof TerrainFixture);
 	}
 
 	/**
@@ -333,12 +323,9 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return a color to represent the not-on-top terrain feature there.
 	 */
 	private Color getFixtureColor(final IMapNG map, final Point location) {
-		for (final TileFixture fix : getDrawableFixtures(map, location)) {
-			if (fix instanceof TerrainFixture) {
-				return getHelper().getFeatureColor(fix); // NOPMD
-			}
-		}
-		return getTileColor(2, map.getBaseTerrain(location));
+		return getDrawableFixtures(map, location).filter(TerrainFixture.class::isInstance)
+				       .map(fix -> getHelper().getFeatureColor(fix)).findFirst()
+				       .orElse(getTileColor(2, map.getBaseTerrain(location)));
 	}
 
 	/**
