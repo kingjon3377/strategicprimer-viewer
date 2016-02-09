@@ -451,6 +451,14 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 						"current_player=\"1\"><player number=\"1\" " +
 						"code_name=\"playerOne\" /><row index=\"0\"><tile row=\"0\" " +
 						"column=\"0\" kind=\"steppe\" /></row></map>");
+		assertMapDeserialization(
+				"Proper deserialization of map if another namespace is declared default",
+				firstMap, "<sp:map xmlns=\"xyzzy\" xmlns:sp=\"" + ISPReader.NAMESPACE +
+						          "\" version=\"2\" rows=\"1\" columns=\"1\" " +
+						          "current_player=\"1\"><sp:player number=\"1\" " +
+						          "code_name=\"playerOne\" /><sp:row " +
+						          "index=\"0\"><sp:tile row=\"0\" column=\"0\" " +
+						          "kind=\"steppe\" /></sp:row></sp:map>");
 		assertMapDeserialization("Non-root other-namespace tags ignored", firstMap,
 				"<map xmlns=\"" + ISPReader.NAMESPACE + "\" version=\"2\" rows=\"1\" columns=\"1\" " +
 						"current_player=\"1\" xmlns:xy=\"xyzzy\"><player number=\"1\" " +
