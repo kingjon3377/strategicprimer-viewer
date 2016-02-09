@@ -1,11 +1,6 @@
 package view.map.main; // NOPMD
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
@@ -17,6 +12,7 @@ import model.map.River;
 import model.map.TileType;
 import view.util.Coordinate;
 
+import static view.util.DrawingNumericConstants.EventOther;
 import static view.util.DrawingNumericConstants.EventStart;
 import static view.util.DrawingNumericConstants.FortSize;
 import static view.util.DrawingNumericConstants.FortStart;
@@ -24,6 +20,8 @@ import static view.util.DrawingNumericConstants.LakeStart;
 import static view.util.DrawingNumericConstants.RiverLongDimension;
 import static view.util.DrawingNumericConstants.RiverShortDimension;
 import static view.util.DrawingNumericConstants.RiverShortStart;
+import static view.util.DrawingNumericConstants.UnitSize;
+
 
 /**
  * A class to do the drawing of a tile, whether on a GUITile or on a single-component
@@ -131,16 +129,16 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 					                             (height * FortStart.constant) - 1.0,
 					                             width * FortSize.constant,
 					                             height * FortSize.constant);
-			unit = new Ellipse2D.Double(width * LakeStart.constant,
-					                           height * LakeStart.constant,
-					                           width * LakeStart.constant,
-					                           height * LakeStart.constant);
+			unit = new Ellipse2D.Double(width * UnitSize.constant,
+					                           height * UnitSize.constant,
+					                           width * UnitSize.constant,
+					                           height * UnitSize.constant);
 			event = new Polygon(new int[]{(int) Math.round(width * EventStart.constant),
-					(int) Math.round(width * RiverLongDimension.constant), width},
+					(int) Math.round(width * EventOther.constant), width},
 					                   new int[]{0, (int) Math.round(
-							                   height * RiverLongDimension.constant),
+							                   height * EventOther.constant),
 							                   (int) Math.round(height *
-									                                    RiverLongDimension.constant)},
+									                                    EventOther.constant)},
 
 					                   MISC_EVENT_SIDES);
 		}

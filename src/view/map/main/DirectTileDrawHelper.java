@@ -9,6 +9,7 @@ import model.map.River;
 import model.map.TileType;
 import view.util.Coordinate;
 
+import static view.util.DrawingNumericConstants.EventOther;
 import static view.util.DrawingNumericConstants.EventStart;
 import static view.util.DrawingNumericConstants.FortSize;
 import static view.util.DrawingNumericConstants.FortStart;
@@ -16,6 +17,7 @@ import static view.util.DrawingNumericConstants.LakeStart;
 import static view.util.DrawingNumericConstants.RiverLongDimension;
 import static view.util.DrawingNumericConstants.RiverShortDimension;
 import static view.util.DrawingNumericConstants.RiverShortStart;
+import static view.util.DrawingNumericConstants.UnitSize;
 
 /**
  * A TileDrawHelper that doesn't create Shapes, but draws directly. If this is faster,
@@ -80,24 +82,24 @@ public final class DirectTileDrawHelper extends AbstractTileDrawHelper {
 			}
 			if (hasAnyUnits(map, location)) {
 				context.setColor(UNIT_COLOR);
-				context.fillOval((int) Math.round(dims.x * LakeStart.constant)
-						                 + position.x, (int) Math.round(dims.y * LakeStart.constant)
+				context.fillOval((int) Math.round(dims.x * UnitSize.constant)
+						                 + position.x, (int) Math.round(dims.y * UnitSize.constant)
 								                               + position.y,
-						(int) Math.round(dims.x * LakeStart.constant),
-						(int) Math.round(dims.y * LakeStart.constant));
+						(int) Math.round(dims.x * UnitSize.constant),
+						(int) Math.round(dims.y * UnitSize.constant));
 			} else if (hasEvent(map, location)) {
 				context.setColor(EVENT_COLOR);
 				context.fillPolygon(
 						new int[]{
 								(int) Math.round(dims.x * EventStart.constant)
 										+ position.x,
-								(int) Math.round(dims.x * RiverLongDimension.constant)
+								(int) Math.round(dims.x * EventOther.constant)
 										+ position.x, dims.x + position.x},
 						new int[]{
 								position.y,
-								(int) Math.round(dims.y * RiverLongDimension.constant)
+								(int) Math.round(dims.y * EventOther.constant)
 										+ position.y,
-								(int) Math.round(dims.y * RiverLongDimension.constant)
+								(int) Math.round(dims.y * EventOther.constant)
 										+ position.y}, MISC_EVENT_SIDES);
 			}
 		} finally {

@@ -33,16 +33,20 @@ public enum DrawingNumericConstants {
 	RiverShortStart(7.0 / 16.0),
 	/**
 	 * The part of a tile's width or height its long dimension should occupy.
-	 *
-	 * FIXME: This gets used for drawing things other than rivers; it should be split.
 	 */
 	RiverLongDimension(1.0 / 2.0),
 	/**
+	 * The coordinates in an 'event' other than EventStart, 0, and 100%.
+	 */
+	EventOther(1.0 / 2.0),
+	/**
 	 * How far along a tile's dimension a lake should start.
-	 *
-	 * FIXME: This gets used for drawing things other than lakes; it should be split.
 	 */
 	LakeStart(1.0 / 4.0),
+	/**
+	 * How big a unit should be. Also its starting position (?).
+	 */
+	UnitSize(1.0 / 4.0),
 	/**
 	 * How wide and tall a fort should be.
 	 */
