@@ -1,6 +1,7 @@
 package view.util;
 
-import java.awt.*;
+import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -8,16 +9,17 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import model.listeners.AddRemoveListener;
 
 /**
- * A panel to be the GUI to add or remove items from a list.
+ * A panel to be the GUI to add items from a list.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
- * Copyright (C) 2013-2016 Jonathan Lovelace
+ * Copyright (C) 2016 Jonathan Lovelace
  *
  * This program is free software: you can redistribute it and/or modify it under the terms
  * of version 3 of the GNU General Public License as published by the Free Software
@@ -33,7 +35,7 @@ import model.listeners.AddRemoveListener;
  *
  * @author Jonathan Lovelace
  */
-public final class AddRemovePanel extends JPanel implements AddRemoveSource {
+public class ItemAdditionPanel extends JPanel implements AddRemoveSource {
 	/**
 	 * The maximum height of the widget.
 	 */
@@ -62,7 +64,7 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 	 *
 	 * @param what            what we're adding or removing
 	 */
-	public AddRemovePanel(final String what) {
+	public ItemAdditionPanel(final String what) {
 		layout = new CardLayout();
 		category = what;
 		setLayout(layout);
@@ -71,11 +73,6 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 		first.add(new ListenedButton("+", evt -> {
 			layout.next(this);
 			field.requestFocusInWindow();
-		}));
-		first.add(new ListenedButton("-", evt -> {
-			for (final AddRemoveListener listener : arListeners) {
-				listener.remove(what);
-			}
 		}));
 		setPanelSizes(first);
 		add(first);
