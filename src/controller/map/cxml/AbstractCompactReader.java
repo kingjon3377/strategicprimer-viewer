@@ -377,4 +377,18 @@ public abstract class AbstractCompactReader<@NonNull T>
 			return parseInt(val, tag.getLocation());
 		}
 	}
+	/**
+	 * Write the necessary number of tab characters and a tag. Does not write the right
+	 * bracket to close the tag.
+	 * @param ostream the stream to write to
+	 * @param tag the tag to write
+	 * @param indent the indentation level
+	 * @throws IOException on I/O error writing to stream
+	 */
+	protected static void writeTag(final Appendable ostream, final String tag,
+	                               final int indent) throws IOException {
+		indent(ostream, indent);
+		ostream.append('<');
+		ostream.append(tag);
+	}
 }

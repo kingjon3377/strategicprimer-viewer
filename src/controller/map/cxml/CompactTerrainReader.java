@@ -126,37 +126,33 @@ public final class CompactTerrainReader extends
 	@Override
 	public void write(final Appendable ostream, final TerrainFixture obj,
 	                  final int indent) throws IOException {
-		indent(ostream, indent);
 		if (obj instanceof Mountain) {
-			ostream.append("<mountain").append(imageXML((Mountain) obj))
-					.append(" />\n");
+			writeTag(ostream, "mountain", indent);
+			ostream.append(imageXML((Mountain) obj)).append(" />\n");
 			return; // NOPMD Mountains don't yet have IDs.
-		} else {
-			if (obj instanceof Forest) {
-				ostream.append("<forest kind=\"");
-				ostream.append(((Forest) obj).getKind());
-				if (((Forest) obj).isRows()) {
-					ostream.append("\" rows=\"true");
-				}
-				ostream.append('"').append(imageXML((Forest) obj)).append(" />\n");
-				return; // NOPMD Neither do Forests.
-			} else {
-				if (obj instanceof Hill) {
-					ostream.append("<hill");
-					ostream.append(imageXML((Hill) obj));
-				} else if (obj instanceof Oasis) {
-					ostream.append("<oasis");
-					ostream.append(imageXML((Oasis) obj));
-				} else if (obj instanceof Sandbar) {
-					ostream.append("<sandbar");
-					ostream.append(imageXML((Sandbar) obj));
-				} else {
-					throw new IllegalStateException("Unexpected TerrainFixture type.");
-				}
-				ostream.append(" id=\"");
-				ostream.append(Integer.toString(obj.getID()));
-				ostream.append("\" />\n");
+		} else if (obj instanceof Forest) {
+			writeTag(ostream, "forest", indent);
+			ostream.append(" kind=\"");
+			ostream.append(((Forest) obj).getKind());
+			if (((Forest) obj).isRows()) {
+				ostream.append("\" rows=\"true");
 			}
+			ostream.append('"').append(imageXML((Forest) obj)).append(" />\n");
+			return; // NOPMD Neither do Forests.
+		} else {
+			if (obj instanceof Hill) {
+				writeTag(ostream, "hill", indent);
+			} else if (obj instanceof Oasis) {
+				writeTag(ostream, "oasis", indent);
+			} else if (obj instanceof Sandbar) {
+				writeTag(ostream, "sandbar", indent);
+			} else {
+				throw new IllegalStateException("Unexpected TerrainFixture type.");
+			}
+			ostream.append(imageXML((HasImage) obj));
+			ostream.append(" id=\"");
+			ostream.append(Integer.toString(obj.getID()));
+			ostream.append("\" />\n");
 		}
 	}
 

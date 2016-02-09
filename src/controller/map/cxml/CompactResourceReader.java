@@ -250,15 +250,14 @@ public final class CompactResourceReader extends
 	@Override
 	public void write(final Appendable ostream, final HarvestableFixture obj,
 					  final int indent) throws IOException {
-		indent(ostream, indent);
 		if (obj instanceof CacheFixture) {
-			ostream.append("<cache kind=\"");
+			writeTag(ostream, "cache", indent);
+			ostream.append(" kind=\"");
 			ostream.append(((CacheFixture) obj).getKind());
 			ostream.append("\" contents=\"");
 			ostream.append(((CacheFixture) obj).getContents());
 		} else if (obj instanceof Meadow) {
-			ostream.append('<');
-			ostream.append(getMeadowTag((Meadow) obj));
+			writeTag(ostream, getMeadowTag((Meadow) obj), indent);
 			ostream.append(" kind=\"");
 			ostream.append(((Meadow) obj).getKind());
 			ostream.append("\" cultivated=\"");
@@ -266,29 +265,32 @@ public final class CompactResourceReader extends
 			ostream.append("\" status=\"");
 			ostream.append(((Meadow) obj).getStatus().toString());
 		} else if (obj instanceof Grove) {
-			ostream.append('<');
-			ostream.append(getGroveTag((Grove) obj));
+			writeTag(ostream, getGroveTag((Grove) obj), indent);
 			ostream.append(" cultivated=\"");
 			ostream.append(Boolean.toString(((Grove) obj).isCultivated()));
 			ostream.append("\" kind=\"");
 			ostream.append(((Grove) obj).getKind());
 		} else if (obj instanceof Mine) {
-			ostream.append("<mine kind=\"");
+			writeTag(ostream, "mine", indent);
+			ostream.append(" kind=\"");
 			ostream.append(((Mine) obj).getKind());
 			ostream.append("\" status=\"");
 			ostream.append(((Mine) obj).getStatus().toString());
 		} else if (obj instanceof MineralVein) {
-			ostream.append("<mineral kind=\"");
+			writeTag(ostream, "mineral", indent);
+			ostream.append(" kind=\"");
 			ostream.append(((MineralVein) obj).getKind());
 			ostream.append("\" exposed=\"");
 			ostream.append(Boolean.toString(((MineralVein) obj).isExposed()));
 			ostream.append("\" dc=\"");
 			ostream.append(Integer.toString(((IEvent) obj).getDC()));
 		} else if (obj instanceof Shrub) {
-			ostream.append("<shrub kind=\"");
+			writeTag(ostream, "shrub", indent);
+			ostream.append(" kind=\"");
 			ostream.append(((Shrub) obj).getKind());
 		} else if (obj instanceof StoneDeposit) {
-			ostream.append("<stone kind=\"");
+			writeTag(ostream, "stone", indent);
+			ostream.append(" kind=\"");
 			ostream.append(((StoneDeposit) obj).stone().toString());
 			ostream.append("\" dc=\"");
 			ostream.append(Integer.toString(((StoneDeposit) obj).getDC()));

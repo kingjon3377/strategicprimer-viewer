@@ -86,8 +86,8 @@ public final class CompactAdventureReader extends
 	@Override
 	public void write(final Appendable ostream, final AdventureFixture obj,
 					  final int indent) throws IOException {
-		indent(ostream, indent);
-		ostream.append("<adventure id=\"");
+		writeTag(ostream, "adventure", indent);
+		ostream.append(" id=\"");
 		ostream.append(Integer.toString(obj.getID()));
 		ostream.append("\" ");
 		if (!obj.getOwner().isIndependent()) {

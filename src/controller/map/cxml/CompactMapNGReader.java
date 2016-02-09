@@ -341,15 +341,15 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	@Override
 	public void write(final Appendable ostream, final IMapNG obj, final int indent)
 			throws IOException {
-		indent(ostream, indent);
-		ostream.append("<view current_player=\"");
+		writeTag(ostream, "view", indent);
+		ostream.append(" current_player=\"");
 		ostream.append(Integer.toString(obj.getCurrentPlayer().getPlayerId()));
 		ostream.append("\" current_turn=\"");
 		ostream.append(Integer.toString(obj.getCurrentTurn()));
 		ostream.append("\">\n");
-		indent(ostream, indent + 1);
+		writeTag(ostream, "map", indent + 1);
 		final MapDimensions dim = obj.dimensions();
-		ostream.append("<map version=\"");
+		ostream.append(" version=\"");
 		ostream.append(Integer.toString(dim.version));
 		ostream.append("\" rows=\"");
 		ostream.append(Integer.toString(dim.rows));
@@ -371,13 +371,13 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 							|| obj.streamOtherFixtures(point).anyMatch(x->true)) {
 					if (rowEmpty) {
 						rowEmpty = false;
-						indent(ostream, indent + 2);
-						ostream.append("<row index=\"");
+						writeTag(ostream, "row", indent + 2);
+						ostream.append(" index=\"");
 						ostream.append(Integer.toString(i));
 						ostream.append("\">\n");
 					}
-					indent(ostream, indent + 3);
-					ostream.append("<tile row=\"");
+					writeTag(ostream, "tile", indent + 3);
+					ostream.append(" row=\"");
 					ostream.append(Integer.toString(i));
 					ostream.append("\" column=\"");
 					ostream.append(Integer.toString(j));
@@ -390,8 +390,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					if (obj.isMountainous(point)) {
 						eolIfNeeded(true, ostream);
 						needeol = false;
-						indent(ostream, indent + 4);
-						ostream.append("<mountain />\n");
+						writeTag(ostream, "mountain", indent + 4);
+						ostream.append(" />\n");
 					}
 					for (final River river : obj.getRivers(point)) {
 						eolIfNeeded(needeol, ostream);
@@ -485,17 +485,15 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 */
 	public static void writeRiver(final Appendable ostream, final River obj,
 								  final int indent) throws IOException {
-		for (int i = 0; i < indent; i++) {
-			ostream.append('\t');
-		}
 		if (River.Lake == obj) {
-			ostream.append("<lake />");
+			writeTag(ostream, "lake", indent);
 		} else {
-			ostream.append("<river direction=\"");
+			writeTag(ostream, "river", indent);
+			ostream.append(" direction=\"");
 			ostream.append(obj.getDescription());
-			ostream.append("\" />");
+			ostream.append("\"");
 		}
-		ostream.append('\n');
+		ostream.append(" />\n");
 	}
 
 	/**

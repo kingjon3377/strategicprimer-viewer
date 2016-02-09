@@ -91,10 +91,8 @@ public final class CompactImplementReader extends AbstractCompactReader<Implemen
 	@Override
 	public void write(final Appendable ostream, final Implement obj,
 	                  final int indent) throws IOException {
-		for (int i = 0; i < indent; i++) {
-			ostream.append('\t');
-		}
-		ostream.append("<implement id=\"");
+		writeTag(ostream, "implement", indent);
+		ostream.append(" id=\"");
 		ostream.append(Integer.toString(obj.getID()));
 		ostream.append("\" kind=\"");
 		ostream.append(obj.getKind());

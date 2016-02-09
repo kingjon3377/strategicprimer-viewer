@@ -286,11 +286,11 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	@Override
 	public void write(final Appendable ostream, final ITownFixture obj,
 					  final int indent) throws IOException {
-		indent(ostream, indent);
 		if (obj instanceof AbstractTown) {
-			writeAbstractTown(ostream, (AbstractTown) obj);
+			writeAbstractTown(ostream, (AbstractTown) obj, indent);
 		} else if (obj instanceof Village) {
-			ostream.append("<village status=\"");
+			writeTag(ostream, "village", indent);
+			ostream.append(" status=\"");
 			ostream.append(obj.status().toString());
 			if (!obj.getName().isEmpty()) {
 				ostream.append("\" name=\"");
@@ -304,7 +304,8 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			ostream.append(((Village) obj).getRace());
 			ostream.append("\" ").append(imageXML((Village) obj)).append("/>\n");
 		} else if (obj instanceof Fortress) {
-			ostream.append("<fortress owner=\"");
+			writeTag(ostream, "fortress", indent);
+			ostream.append(" owner=\"");
 			ostream.append(Integer.toString(obj.getOwner().getPlayerId()));
 			if (!obj.getName().isEmpty()) {
 				ostream.append("\" name=\"");
@@ -341,20 +342,21 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 	/**
 	 * @param ostream the stream to write to
 	 * @param obj     the AbstractTownEvent to write
+	 * @param indent  how far to indent the tag
 	 * @throws IOException on I/O error
 	 */
 	private static void writeAbstractTown(final Appendable ostream,
-										  final AbstractTown obj) throws IOException {
+										  final AbstractTown obj, final int indent) throws IOException {
 		if (obj instanceof Fortification) {
-			ostream.append("<fortification ");
+			writeTag(ostream, "fortification", indent);
 		} else if (obj instanceof Town) {
-			ostream.append("<town ");
+			writeTag(ostream, "town", indent);
 		} else if (obj instanceof City) {
-			ostream.append("<city ");
+			writeTag(ostream, "city", indent);
 		} else {
 			throw new IllegalStateException("Unknown AbstractTownEvent type");
 		}
-		ostream.append("status=\"");
+		ostream.append(" status=\"");
 		ostream.append(obj.status().toString());
 		ostream.append("\" size=\"");
 		ostream.append(obj.size().toString());

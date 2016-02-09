@@ -92,10 +92,8 @@ public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 	@Override
 	public void write(final Appendable ostream, final Ground obj, final int indent)
 			throws IOException {
-		for (int i = 0; i < indent; i++) {
-			ostream.append('\t');
-		}
-		ostream.append("<ground kind=\"");
+		writeTag(ostream, "ground", indent);
+		ostream.append(" kind=\"");
 		ostream.append(obj.getKind());
 		ostream.append("\" exposed=\"");
 		ostream.append(Boolean.toString(obj.isExposed()));

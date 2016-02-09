@@ -106,11 +106,9 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 	@Override
 	public void write(final Appendable ostream, final TextFixture obj,
 					  final int indent) throws IOException {
-		indent(ostream, indent);
-		if (obj.getTurn() == -1) {
-			ostream.append("<text");
-		} else {
-			ostream.append("<text turn=\"");
+		writeTag(ostream, "text", indent);
+		if (obj.getTurn() != -1) {
+			ostream.append(" turn=\"");
 			ostream.append(Integer.toString(obj.getTurn()));
 			ostream.append('"');
 		}

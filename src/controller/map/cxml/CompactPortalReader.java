@@ -79,8 +79,8 @@ public final class CompactPortalReader extends AbstractCompactReader<Portal> {
 	@Override
 	public void write(final Appendable ostream, final Portal obj,
 					  final int indent) throws IOException {
-		indent(ostream, indent);
-		ostream.append("<portal world=\"");
+		writeTag(ostream, "portal", indent);
+		ostream.append(" world=\"");
 		ostream.append(obj.getDestinationWorld());
 		ostream.append("\" row=\"");
 		ostream.append(Integer.toString(obj.getDestinationCoordinates().row));

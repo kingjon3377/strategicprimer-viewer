@@ -215,8 +215,8 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	@Override
 	public void write(final Appendable ostream, final Worker obj,
 					  final int indent) throws IOException {
-		indent(ostream, indent);
-		ostream.append("<worker name=\"");
+		writeTag(ostream, "worker", indent);
+		ostream.append(" name=\"");
 		ostream.append(obj.getName());
 		if (!"human".equals(obj.getRace())) {
 			ostream.append("\" race=\"");

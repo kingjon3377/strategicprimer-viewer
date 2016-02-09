@@ -199,8 +199,8 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	public void
 	write(final Appendable ostream, final Unit obj, final int indent)
 			throws IOException {
-		indent(ostream, indent);
-		ostream.append("<unit owner=\"");
+		writeTag(ostream, "unit", indent);
+		ostream.append(" owner=\"");
 		ostream.append(Integer.toString(obj.getOwner().getPlayerId()));
 		if (!obj.getKind().isEmpty()) {
 			ostream.append("\" kind=\"");

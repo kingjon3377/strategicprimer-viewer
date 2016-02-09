@@ -121,8 +121,13 @@ public final class CompactExplorableReader
 	@Override
 	public void write(final Appendable ostream, final ExplorableFixture obj,
 	                  final int indent) throws IOException {
-		indent(ostream, indent);
-		writeTag(ostream, obj);
+		if (obj instanceof Battlefield) {
+			writeTag(ostream, "battlefield", indent);
+		} else if (obj instanceof Cave) {
+			writeTag(ostream, "cave", indent);
+		} else {
+			throw new IllegalStateException("Unhandled ExplorableFixture subtype");
+		}
 		ostream.append(" dc=\"");
 		ostream.append(Integer.toString(((IEvent) obj).getDC()));
 		ostream.append("\" id=\"");
@@ -131,25 +136,7 @@ public final class CompactExplorableReader
 		ostream.append(imageXML(obj));
 		ostream.append(" />\n");
 	}
-	/**
-	 * Write the tag for an object to a stream. If a new ExplorableFixture
-	 * implementation is added that doesn't need its own CXML writer but that isn't an
-	 * IEvent, this will have to be merged back into write().
-	 * @param ostream the stream to write to
-	 * @param obj the object in question
-	 * @throws IOException on I/O error writing to the stream
-	 */
-	private static void writeTag(final Appendable ostream, final ExplorableFixture obj)
-			throws IOException {
-		ostream.append('<');
-		if (obj instanceof Battlefield) {
-			ostream.append("battlefield");
-		} else if (obj instanceof Cave) {
-			ostream.append("cave");
-		} else {
-			throw new IllegalStateException("Unhandled ExplorableFixture subtype");
-		}
-	}
+
 	/**
 	 * @return a string representation of this class
 	 */
