@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import model.map.MapDimensions;
 import model.map.Player;
 import model.map.PlayerCollection;
@@ -108,18 +111,15 @@ public final class TestWorkerModel {
 	 * proxy
 	 */
 	private static <T> List<T> filterProxies(final Iterable<T> list) {
-		// FIXME: There ought to be a way of doing this using the Streams API
-		final List<T> retval = new ArrayList<>();
-		for (final T item : list) {
+		return StreamSupport.stream(list.spliterator(), false).flatMap(item -> {
 			if (item instanceof ProxyFor<?>) {
 				// this wouldn't work for Skills, but ...
 				//noinspection unchecked
-				((ProxyFor<T>) item).getProxied().forEach(retval::add);
+				return StreamSupport.stream(((ProxyFor<T>) item).getProxied().spliterator(), false);
 			} else {
-				retval.add(item);
+				return Stream.of(item);
 			}
-		}
-		return retval;
+		}).collect(Collectors.toList());
 	}
 
 	/**
