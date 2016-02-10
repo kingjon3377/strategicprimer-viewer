@@ -40,7 +40,7 @@ public interface ISPReader {
 			NullCleaner.assertNotNull(Collections.unmodifiableList(Arrays.asList
 					                                                              ("future",
 					"explorer", "building", "resource", "changeset", "change", "move",
-					"work", "discover", "submap")));
+					"work", "discover", "submap", "futureTag")));
 	/**
 	 * The namespace that SP XML will use.
 	 */
