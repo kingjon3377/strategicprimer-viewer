@@ -88,6 +88,7 @@ public final class ArraySet<T> implements Set<T> {
 	 * @param array  an array of that type
 	 * @return the contents of the set in that array
 	 */
+	@SuppressWarnings("SuspiciousToArrayCall")
 	@Override
 	public <TYPE> TYPE[] toArray(final TYPE @Nullable [] array) {
 		return NullCleaner.assertNotNullArray(impl.toArray(array));
