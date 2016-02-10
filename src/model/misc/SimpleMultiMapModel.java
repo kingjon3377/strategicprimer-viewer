@@ -76,6 +76,7 @@ public class SimpleMultiMapModel extends AbstractDriverModel
 	/**
 	 * @param map the subordinate map to remove
 	 */
+	@SuppressWarnings("SuspiciousMethodCalls")
 	@Override
 	public final void removeSubordinateMap(final IMapNG map) {
 		subordinateMaps.remove(map);
