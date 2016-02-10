@@ -578,10 +578,10 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML format error
 	 */
 	protected void assertMissingChild(final String xml,
-									  final Class<?> desideratum, final boolean warning)
+									  final Class<?> desideratum)
 			throws XMLStreamException, SPFormatException {
-		assertMissingChild(oldReader, xml, desideratum, warning);
-		assertMissingChild(newReader, xml, desideratum, warning);
+		assertMissingChild(oldReader, xml, desideratum);
+		assertMissingChild(newReader, xml, desideratum);
 	}
 
 	/**
@@ -597,29 +597,15 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML format error
 	 */
 	private static void assertMissingChild(final ISPReader reader,
-										   final String xml, final Class<?> desideratum,
-										   final boolean warning)
+										   final String xml, final Class<?> desideratum)
 			throws XMLStreamException, SPFormatException {
-		if (warning) {
-			reader.readXML(FAKE_FILENAME, new StringReader(xml), desideratum,
-					Warning.Ignore);
-			try {
-				reader.readXML(FAKE_FILENAME, new StringReader(xml),
-						desideratum, Warning.Die);
-				fail("We were expecting a MissingChildException");
-			} catch (final FatalWarningException except) {
-				assertTrue("Missing child",
-						except.getCause() instanceof MissingChildException);
-			}
-		} else {
-			try {
-				reader.readXML(FAKE_FILENAME, new StringReader(xml),
-						desideratum, Warning.Ignore);
-				fail("We were expecting a MissingChildException");
-			} catch (final MissingChildException except) {
-				LOGGER.log(Level.FINEST, "Got the expected MissingChildException",
-						except);
-			}
+		try {
+			reader.readXML(FAKE_FILENAME, new StringReader(xml),
+					desideratum, Warning.Ignore);
+			fail("We were expecting a MissingChildException");
+		} catch (final MissingChildException except) {
+			LOGGER.log(Level.FINEST, "Got the expected MissingChildException",
+					except);
 		}
 	}
 
