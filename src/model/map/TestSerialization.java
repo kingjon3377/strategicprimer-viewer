@@ -418,6 +418,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				IMapNG.class, "current_turn", false);
 		assertMissingChild("<view current_player=\"1\" current_turn=\"0\" />",
 				IMapNG.class, false);
+		assertMissingChild("<view current_player=\"1\" current_turn=\"13\" />",
+				IMapNG.class, false);
 		assertUnwantedChild(
 				"<view current_player=\"0\" current_turn=\"0\"><map version=\"2\" " +
 						"rows=\"1\" columns=\"1\" /><map version=\"2\" rows=\"1\" " +
