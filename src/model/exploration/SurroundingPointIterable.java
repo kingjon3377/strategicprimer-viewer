@@ -38,7 +38,10 @@ public final class SurroundingPointIterable implements Iterable<@NonNull Point> 
 	 * the list of points.
 	 */
 	private final Collection<Point> points = new ArrayList<>();
-
+	/**
+	 * The starting point. Used only in diagnostic toString().
+	 */
+	private final Point startingPoint;
 	/**
 	 * Pass the default radius of 2.
 	 *
@@ -57,6 +60,7 @@ public final class SurroundingPointIterable implements Iterable<@NonNull Point> 
 	 */
 	public SurroundingPointIterable(final Point starting,
 	                                final MapDimensions dimensions, final int radius) {
+		startingPoint = starting;
 		for (int rad = radius; rad >= 0; rad--) {
 			final int lowerBound = 0 - rad;
 			final int upperBound = rad + 1;
@@ -108,11 +112,10 @@ public final class SurroundingPointIterable implements Iterable<@NonNull Point> 
 	}
 
 	/**
-	 * TODO: show state
 	 * @return a String representation of the object
 	 */
 	@Override
 	public String toString() {
-		return "SurroundingPointIterable";
+		return "Points surrounding " + startingPoint;
 	}
 }
