@@ -268,7 +268,7 @@ public final class ArrowKeyListener {
 		 */
 		@SuppressWarnings("UseOfClone")
 		@Override
-		public final Object clone() throws CloneNotSupportedException {
+		public final DirectionListener clone() throws CloneNotSupportedException {
 			throw new CloneNotSupportedException("Cloning is not allowed.");
 		}
 	}

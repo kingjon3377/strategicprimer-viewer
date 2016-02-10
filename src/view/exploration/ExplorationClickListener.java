@@ -315,7 +315,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 * Prevent cloning.
 	 */
 	@Override
-	public Object clone() throws CloneNotSupportedException {
+	public ExplorationClickListener clone() throws CloneNotSupportedException {
 		throw new CloneNotSupportedException("Cloning is not allowed.");
 	}
 }

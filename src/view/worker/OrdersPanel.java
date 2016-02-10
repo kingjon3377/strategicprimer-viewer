@@ -149,6 +149,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 					throws IOException, ClassNotFoundException {
 				throw new NotSerializableException("Serialization is not allowed");
 			}
+			@SuppressWarnings("CloneReturnsClassType")
 			@Override
 			public Object clone() throws CloneNotSupportedException {
 				throw new CloneNotSupportedException("Cloning is not allowed.");

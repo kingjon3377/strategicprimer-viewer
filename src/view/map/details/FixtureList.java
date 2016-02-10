@@ -95,6 +95,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 					throws IOException, ClassNotFoundException {
 				throw new NotSerializableException("Serialization is not allowed");
 			}
+			@SuppressWarnings("CloneReturnsClassType")
 			public Object clone() throws CloneNotSupportedException {
 				throw new CloneNotSupportedException("Cloning is not allowed.");
 			}

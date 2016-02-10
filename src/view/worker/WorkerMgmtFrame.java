@@ -676,7 +676,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		 */
 		@SuppressWarnings("UseOfClone")
 		@Override
-		public final Object clone() throws CloneNotSupportedException {
+		public final FocusRequester clone() throws CloneNotSupportedException {
 			throw new CloneNotSupportedException("Cloning is not allowed.");
 		}
 	}
