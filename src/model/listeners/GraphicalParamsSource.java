@@ -27,10 +27,12 @@ public interface GraphicalParamsSource {
 	/**
 	 * @param list a listener to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addGraphicalParamsListener(GraphicalParamsListener list);
 
 	/**
 	 * @param list a listener to remove
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void removeGraphicalParamsListener(GraphicalParamsListener list);
 }

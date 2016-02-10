@@ -28,6 +28,7 @@ public interface PlayerChangeSource {
 	 *
 	 * @param list the listener to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addPlayerChangeListener(PlayerChangeListener list);
 
 	/**
@@ -35,5 +36,6 @@ public interface PlayerChangeSource {
 	 *
 	 * @param list the listener to remove
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void removePlayerChangeListener(PlayerChangeListener list);
 }

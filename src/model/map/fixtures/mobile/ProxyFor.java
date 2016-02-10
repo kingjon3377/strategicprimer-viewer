@@ -29,6 +29,7 @@ public interface ProxyFor<T> /* extends T */ {
 	 *
 	 * @param item the object to be proxied.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addProxied(T item);
 
 	/**

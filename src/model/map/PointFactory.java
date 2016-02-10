@@ -58,6 +58,7 @@ public final class PointFactory {
 	/**
 	 * @param shouldUseCache whether to use the cache from now on
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public static void shouldUseCache(final boolean shouldUseCache) {
 		useCache = shouldUseCache;
 	}

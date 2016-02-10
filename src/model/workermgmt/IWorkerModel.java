@@ -57,6 +57,7 @@ public interface IWorkerModel extends IMultiMapModel {
 	 *
 	 * @param unit the unit to add.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addUnit(IUnit unit);
 
 	/**

@@ -26,10 +26,12 @@ public interface UnitMemberSelectionSource {
 	/**
 	 * @param list a listener to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addUnitMemberListener(UnitMemberListener list);
 
 	/**
 	 * @param list a listener to remove
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void removeUnitMemberListener(UnitMemberListener list);
 }

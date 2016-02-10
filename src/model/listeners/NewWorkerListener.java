@@ -32,5 +32,6 @@ public interface NewWorkerListener extends EventListener {
 	 *
 	 * @param unit the unit to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addNewWorker(Worker unit);
 }

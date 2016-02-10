@@ -67,6 +67,7 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	 * @param resource the resource to add
 	 * @param player   the player to add it for
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void addResource(@SuppressWarnings("TypeMayBeWeakened")
 							final FortressMember resource, final Player player) {
 		for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
@@ -86,8 +87,9 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	 * @param map      the map to add it in
 	 * @param player   the player to add it for
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void addResourceToMap(final FortressMember resource, final IMapNG map,
-								 final Player player) {
+	                             final Player player) {
 		map.locationStream().flatMap(map::streamOtherFixtures)
 				.filter(Fortress.class::isInstance).map(Fortress.class::cast)
 				.filter(fort -> "HQ".equals(fort.getName()) && (player.getPlayerId() ==

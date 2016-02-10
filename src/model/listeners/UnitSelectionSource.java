@@ -26,10 +26,12 @@ public interface UnitSelectionSource {
 	/**
 	 * @param list a listener to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addUnitSelectionListener(UnitSelectionListener list);
 
 	/**
 	 * @param list a listener to remove
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void removeUnitSelectionListener(UnitSelectionListener list);
 }

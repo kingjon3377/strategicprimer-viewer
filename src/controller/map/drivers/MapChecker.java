@@ -78,6 +78,7 @@ public final class MapChecker implements UtilityDriver {
 	 *
 	 * @param file the file to check
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void check(final File file) {
 		SYS_OUT.print("Starting ");
 		SYS_OUT.println(file.getPath());

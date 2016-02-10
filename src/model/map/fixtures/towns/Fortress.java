@@ -108,6 +108,7 @@ public class Fortress implements HasImage, ITownFixture,
 	 *
 	 * @param unit the unit to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public final void addMember(final FortressMember unit) {
 		units.add(unit);
 	}
@@ -117,6 +118,7 @@ public class Fortress implements HasImage, ITownFixture,
 	 *
 	 * @param unit the unit to remove
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public final void removeMember(final FortressMember unit) {
 		units.remove(unit);
 	}

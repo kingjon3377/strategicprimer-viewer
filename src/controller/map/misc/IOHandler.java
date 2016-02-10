@@ -524,12 +524,14 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	/**
 	 * @param list the listener to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void addTreeExpansionListener(final TreeExpansionOrderListener list) {
 		treeExpansionListeners.add(list);
 	}
 	/**
 	 * @param list the listener to remove
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void removeTreeExpansionListener(final TreeExpansionOrderListener list) {
 		treeExpansionListeners.remove(list);
 	}

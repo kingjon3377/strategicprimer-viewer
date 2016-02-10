@@ -29,10 +29,12 @@ public interface MovementCostSource {
 	 *
 	 * @param list the listener to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addMovementCostListener(MovementCostListener list);
 
 	/**
 	 * @param list the listener to remove
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void removeMovementCostListener(MovementCostListener list);
 }

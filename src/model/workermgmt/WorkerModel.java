@@ -192,6 +192,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 		}
 	}
 
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void addUnitAtLocation(final IUnit unit, final Point location) {
 		if (getSubordinateMaps().iterator().hasNext()) {
 			for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {

@@ -249,8 +249,9 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	 * @param point where to add the fixture
 	 * @param fix   the fixture to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addFixture(final IMutableMapNG map, final Point point,
-								   final TileFixture fix) {
+	                               final TileFixture fix) {
 		if (fix instanceof Ground) {
 			final Ground ground = (Ground) fix;
 			final Ground oldGround = map.getGround(point);

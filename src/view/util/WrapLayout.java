@@ -195,6 +195,7 @@ public final class WrapLayout extends FlowLayout {
 	 * @param rowWidth  the width of the row to add
 	 * @param rowHeight the height of the row to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void addRow(final Dimension dim, final int rowWidth,
 	                    final int rowHeight) {
 		dim.width = Math.max(dim.width, rowWidth);

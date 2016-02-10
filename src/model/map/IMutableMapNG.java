@@ -31,6 +31,7 @@ public interface IMutableMapNG extends IMapNG {
 	/**
 	 * @param player a player to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addPlayer(Player player);
 
 	/**
@@ -49,12 +50,14 @@ public interface IMutableMapNG extends IMapNG {
 	 * @param location a location
 	 * @param rivers   rivers to add there
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addRivers(Point location, @NonNull River @NonNull ... rivers);
 
 	/**
 	 * @param location a location
 	 * @param rivers   rivers to remove there
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void removeRivers(Point location, @NonNull River @NonNull ... rivers);
 
 	/**
@@ -77,6 +80,7 @@ public interface IMutableMapNG extends IMapNG {
 	 * @param location a location
 	 * @param fix      a fixture to add there
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addFixture(Point location, TileFixture fix);
 
 	/**
@@ -86,6 +90,7 @@ public interface IMutableMapNG extends IMapNG {
 	 * @param location a location
 	 * @param fix      a fixture to remove there.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void removeFixture(Point location, TileFixture fix);
 
 	/**

@@ -274,6 +274,7 @@ public final class ZeroToOneConverter {
 	 * @param xml  the XML to add
 	 * @param nums the numbers to add it for
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addXML(final String xml, final int... nums) {
 		for (final int num : nums) {
 			EQUIVS.put(NullCleaner.assertNotNull(Integer.valueOf(num)), xml);

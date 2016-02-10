@@ -186,8 +186,9 @@ public class ResourceAddingFrame extends JFrame {
 	 * @param firstComponent the first component
 	 * @param secondComponent the second component
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addPair(final Container container, final Component firstComponent,
-								final Component secondComponent) {
+	                            final Component secondComponent) {
 		final JPanel panel = new BoxPanel(false);
 		panel.add(Box.createVerticalGlue());
 		panel.add(firstComponent);
@@ -214,6 +215,7 @@ public class ResourceAddingFrame extends JFrame {
 		 * Clear the combo box, but if its value was one we haven't had previously, add
 		 * it to the drop-down list.
 		 */
+		@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 		public void checkAndClear() {
 			final String item = getSelectedItem().toString().trim();
 			if (!values.contains(item)) {

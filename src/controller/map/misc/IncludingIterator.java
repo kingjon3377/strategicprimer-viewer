@@ -88,6 +88,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	/**
 	 * Remove any empty iterators from the top of the stack.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void removeEmptyIterators() {
 		while (!stack.isEmpty() && !stack.peekFirst().second().hasNext()) {
 			stack.removeFirst();

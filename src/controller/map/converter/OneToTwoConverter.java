@@ -433,9 +433,10 @@ public final class OneToTwoConverter { // NOPMD
 	 *                  map)
 	 * @param idFactory the factory to use to create ID numbers.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void addFieldOrOrchard(final boolean field, final Point point,
-								   final IMutableMapNG map, final boolean main,
-								   final IDFactory idFactory) {
+	                               final IMutableMapNG map, final boolean main,
+	                               final IDFactory idFactory) {
 		try {
 			final int id = idFactory.createID(); // NOPMD
 			if (field) {
@@ -468,8 +469,9 @@ public final class OneToTwoConverter { // NOPMD
 	 * @param main  whether we should actually add the fixtures (i.e. is this the main
 	 *              map)
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void addForest(final Point point, final IMutableMapNG map,
-						   final boolean main) {
+	                       final boolean main) {
 		try {
 			addFixture(
 					map,
@@ -491,8 +493,9 @@ public final class OneToTwoConverter { // NOPMD
 	 * @param fix   the fixture to add
 	 * @param main  whether this is the main map, i.e. should we actually add the fixture
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addFixture(final IMutableMapNG map, final Point point,
-								   final TileFixture fix, final boolean main) {
+	                               final TileFixture fix, final boolean main) {
 		if (main) {
 			if ((fix instanceof Ground) && (map.getGround(point) == null)) {
 				map.setGround(point, (Ground) fix);
@@ -565,8 +568,9 @@ public final class OneToTwoConverter { // NOPMD
 	 * @param points the subpoints to apply it to
 	 * @param map    the map to work in
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addRiver(final River river,
-								 final List<Point> points, final IMutableMapNG map) {
+	                             final List<Point> points, final IMutableMapNG map) {
 		if (RES_JUMP != optSubtilesPerTile()) {
 			throw new IllegalStateException(
 												   "This function is tuned for 4 " +

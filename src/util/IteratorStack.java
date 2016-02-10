@@ -70,6 +70,7 @@ public final class IteratorStack<T> implements Iterator<T> {
 	/**
 	 * Remove any empty iterators from the front of the queue.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void removeEmptyIterators() {
 		while (!queue.isEmpty() && !queue.peekFirst().hasNext()) {
 			queue.removeFirst();

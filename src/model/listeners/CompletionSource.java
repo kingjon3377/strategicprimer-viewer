@@ -26,10 +26,12 @@ public interface CompletionSource {
 	/**
 	 * @param list a listener to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addCompletionListener(CompletionListener list);
 
 	/**
 	 * @param list a listener to remove
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void removeCompletionListener(CompletionListener list);
 }

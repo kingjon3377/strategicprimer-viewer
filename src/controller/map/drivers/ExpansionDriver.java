@@ -308,11 +308,12 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 * @param owned     a "unit" (probably a mock-object) indicating the player we're
 	 *                  concerned with.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addSurroundingFixtures(final Point point,
-											   final IMapNG master,
-											   final Map<Point, Set<TileFixture>>
+	                                           final IMapNG master,
+	                                           final Map<Point, Set<TileFixture>>
 													   additions,
-											   final IUnit owned) {
+	                                           final IUnit owned) {
 		final List<TileFixture> possibilities = new ArrayList<>();
 		for (final Point neighbor : new SurroundingPointIterable(point,
 																		master
@@ -370,9 +371,10 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 * @param map       a player's map
 	 * @param additions a collection of additions to make (by which they are returned)
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addSurroundingTerrain(final Point point, final IMapNG master,
-											  final IMutableMapNG map,
-											  final Map<Point, TileType> additions) {
+	                                          final IMutableMapNG map,
+	                                          final Map<Point, TileType> additions) {
 		for (final Point neighbor : new SurroundingPointIterable(point,
 																		map.dimensions())) {
 			if (!additions.containsKey(neighbor)

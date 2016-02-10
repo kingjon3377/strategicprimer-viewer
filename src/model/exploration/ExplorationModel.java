@@ -216,8 +216,9 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @param unit the mover
 	 * @param dest the unit's new location
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void checkAllNearbyWatchers(final IMapNG map, final HasOwner unit,
-											   final Point dest) {
+	                                           final Point dest) {
 		final MapDimensions dims = map.dimensions();
 		final Collection<Point> done = new HashSet<>(25);
 		for (final Point point : new SurroundingPointIterable(dest, dims)) {
@@ -240,9 +241,10 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @param unit     the mover
 	 * @param dest     where the mover moved to
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void checkNearbyWatcher(final Stream<TileFixture> fixtures,
-										   final Point point, final HasOwner unit,
-										   final Point dest) {
+	                                       final Point point, final HasOwner unit,
+	                                       final Point dest) {
 		fixtures.filter(HasOwner.class::isInstance).map(HasOwner.class::cast)
 				.filter(fix -> !fix.getOwner().isIndependent() &&
 						               !fix.getOwner().equals(unit.getOwner())).forEach(
@@ -258,8 +260,9 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @param point the location where the unit is
 	 * @param unit  a unit to remove from that location, even if it's in a fortress
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void removeImpl(final IMutableMapNG map, final Point point,
-								   final IUnit unit) {
+	                               final IUnit unit) {
 		boolean outside = false;
 		for (final TileFixture fix : map.getOtherFixtures(point)) {
 			if (unit.equals(fix)) {

@@ -76,6 +76,7 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	 *
 	 * @param river the river to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void addRiver(final River river) {
 		rivers.add(river);
 	}
@@ -85,6 +86,7 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	 *
 	 * @param river the river to remove
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void removeRiver(final River river) {
 		rivers.remove(river);
 	}

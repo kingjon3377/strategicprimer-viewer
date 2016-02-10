@@ -28,11 +28,13 @@ public interface AddRemoveSource {
 	/**
 	 * @param list a listener to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addAddRemoveListener(final AddRemoveListener list);
 
 	/**
 	 * @param list a listener to remove
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void removeAddRemoveListener(final AddRemoveListener list);
 
 }

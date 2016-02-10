@@ -57,6 +57,7 @@ public class BoxPanel extends JPanel {
 	/**
 	 * Add "glue" between components.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public final void addGlue() {
 		if (horizontal) {
 			add(Box.createHorizontalGlue());
@@ -70,6 +71,7 @@ public class BoxPanel extends JPanel {
 	 *
 	 * @param dim how big to make it in the dimension that counts.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public final void addRigidArea(final int dim) {
 		if (horizontal) {
 			add(Box.createRigidArea(new Dimension(dim, 0)));

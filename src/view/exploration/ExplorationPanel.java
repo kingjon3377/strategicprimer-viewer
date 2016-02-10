@@ -224,6 +224,7 @@ public final class ExplorationPanel extends BorderedPanel
 	 * @param direction which direction from the currently selected tile this GUI
 	 *                  represents.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void addTileGUI(final JPanel panel, final Direction direction) {
 		final SelectionChangeSupport mainPCS = new SelectionChangeSupport();
 		final FixtureList mainList = new FixtureList(panel, model, model.getMap()

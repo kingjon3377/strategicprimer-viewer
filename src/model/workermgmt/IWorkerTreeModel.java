@@ -49,6 +49,7 @@ public interface IWorkerTreeModel extends TreeModel, NewUnitListener,
 	 *
 	 * @param unit the unit to add.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addUnit(IUnit unit);
 
 	/**
@@ -64,6 +65,7 @@ public interface IWorkerTreeModel extends TreeModel, NewUnitListener,
 	 * @param unit   the unit that should own it
 	 * @param member the member to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addUnitMember(IUnit unit, UnitMember member);
 
 	/**

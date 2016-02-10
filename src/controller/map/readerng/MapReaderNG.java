@@ -121,7 +121,7 @@ public final class MapReaderNG implements IMapReader, ISPReader {
 	 * @param type the type to check it against.
 	 * @return the object, if it matches the desired type.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "NonBooleanMethodNameMayNotStartWithQuestion"})
 	private static <T> T checkType(final Object obj, final Class<T> type) {
 		if (type.isAssignableFrom(obj.getClass())) {
 			return (T) obj; // NOPMD

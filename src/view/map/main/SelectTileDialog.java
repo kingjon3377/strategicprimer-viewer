@@ -154,6 +154,7 @@ public final class SelectTileDialog extends JDialog {
 	 * @param bound its maximum value
 	 * @return a State representing any problems with it.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static State checkNumber(final String text, final int bound) {
 		try {
 			final int num = NUM_PARSER.parse(text).intValue();

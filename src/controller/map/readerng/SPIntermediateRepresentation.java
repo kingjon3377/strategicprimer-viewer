@@ -92,6 +92,7 @@ public final class SPIntermediateRepresentation {
 	 * @param name  the name of the attribute
 	 * @param value its value
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void addIntegerAttribute(final String name, final int value) {
 		addAttribute(name, NullCleaner.assertNotNull(Integer.toString(value)));
 	}
@@ -102,6 +103,7 @@ public final class SPIntermediateRepresentation {
 	 * @param name  the name of the attribute
 	 * @param value its value
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void addAttribute(final String name, final String value) {
 		// attrs.put(name, value);
 		// attrs.add(Pair.of(name, value));
@@ -119,6 +121,7 @@ public final class SPIntermediateRepresentation {
 	 *
 	 * @param child the child to add.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void addChild(final SPIntermediateRepresentation child) {
 		if (!child.tag.isEmpty()) {
 			children.add(child);
@@ -131,6 +134,7 @@ public final class SPIntermediateRepresentation {
 	 * @param name an attribute name
 	 * @return its value, or "" if it's not there
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private String removeAttribute(final String name) {
 		if (attrs.contains(name)) {
 			final int index = attrs.indexOf(name);
@@ -270,6 +274,7 @@ public final class SPIntermediateRepresentation {
 	 *
 	 * @param obj the object to consider.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void addImageAttribute(final HasImage obj) {
 		final String image = obj.getImage();
 		if (!image.isEmpty() && !image.equals(obj.getDefaultImage())) {
@@ -283,6 +288,7 @@ public final class SPIntermediateRepresentation {
 	 *
 	 * @param idNum the ID to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void addIdAttribute(final int idNum) {
 		addIntegerAttribute("id", idNum);
 	}

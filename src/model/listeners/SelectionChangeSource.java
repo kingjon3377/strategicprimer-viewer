@@ -26,10 +26,12 @@ public interface SelectionChangeSource {
 	/**
 	 * @param list a listener to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addSelectionChangeListener(SelectionChangeListener list);
 
 	/**
 	 * @param list a listener to remove
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void removeSelectionChangeListener(SelectionChangeListener list);
 }

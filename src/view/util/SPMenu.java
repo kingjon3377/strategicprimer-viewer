@@ -229,6 +229,7 @@ public class SPMenu extends JMenuBar {
 	 * @param menu a menu
 	 * @return it
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	protected final JMenu addDisabled(final JMenu menu) {
 		add(menu);
 		menu.setEnabled(false);

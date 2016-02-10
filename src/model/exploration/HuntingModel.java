@@ -131,8 +131,9 @@ public final class HuntingModel {
 	 * @param point a point
 	 * @param value a string to put in the map at that point.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addToMap(final Map<Point, List<String>> map,
-								 final Point point, final String value) {
+	                             final Point point, final String value) {
 		final List<String> list; // NOPMD
 		if (map.containsKey(point)) {
 			list = NullCleaner.assertNotNull(map.get(point));

@@ -341,6 +341,7 @@ public interface INodeHandler<@NonNull T> {
 	 * @param obj     the object being constructed.
 	 * @throws SPFormatException on SP format error
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	default void addImage(final StartElement element, final HasImage obj)
 			throws SPFormatException {
 		if (hasAttribute(element, "image")) {

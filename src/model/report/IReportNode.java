@@ -62,6 +62,7 @@ public interface IReportNode
 	 *
 	 * @param node the node to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void add(@Nullable final MutableTreeNode node);
 	/**
 	 * @return the point, if any, in the map that this represents something on

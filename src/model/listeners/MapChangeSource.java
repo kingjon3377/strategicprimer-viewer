@@ -28,6 +28,7 @@ public interface MapChangeSource {
 	 *
 	 * @param list the listener to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addMapChangeListener(MapChangeListener list);
 
 	/**
@@ -35,5 +36,6 @@ public interface MapChangeSource {
 	 *
 	 * @param list the listener to remove
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void removeMapChangeListener(MapChangeListener list);
 }

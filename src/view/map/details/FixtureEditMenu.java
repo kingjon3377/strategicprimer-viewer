@@ -163,6 +163,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 	 * @param item     the menu item
 	 * @param listener the listener to listen to it
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void addMenuItem(final JMenuItem item, final ActionListener listener) {
 		add(item);
 		item.addActionListener(listener);

@@ -29,6 +29,7 @@ public interface AddRemoveListener extends EventListener {
 	 * @param category what kind of thing is being added
 	 * @param addendum A String description of the thing to be added
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void add(String category, String addendum);
 
 	/**
@@ -36,5 +37,6 @@ public interface AddRemoveListener extends EventListener {
 	 *
 	 * @param category what kind of thing is being removed
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void remove(String category);
 }

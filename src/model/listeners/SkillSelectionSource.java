@@ -26,10 +26,12 @@ public interface SkillSelectionSource {
 	/**
 	 * @param list a listener to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addSkillSelectionListener(SkillSelectionListener list);
 
 	/**
 	 * @param list a listener to remove
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void removeSkillSelectionListener(SkillSelectionListener list);
 }

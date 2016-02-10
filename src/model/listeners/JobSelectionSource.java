@@ -26,10 +26,12 @@ public interface JobSelectionSource {
 	/**
 	 * @param list a listener to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addJobSelectionListener(JobSelectionListener list);
 
 	/**
 	 * @param list a listener to remove
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void removeJobSelectionListener(JobSelectionListener list);
 }

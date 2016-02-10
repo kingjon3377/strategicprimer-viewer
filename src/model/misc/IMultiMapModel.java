@@ -35,6 +35,7 @@ public interface IMultiMapModel extends IDriverModel {
 	 * @param map  the map to remove
 	 * @param file the file it was loaded from
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addSubordinateMap(IMutableMapNG map, File file);
 
 	/**
@@ -42,6 +43,7 @@ public interface IMultiMapModel extends IDriverModel {
 	 *
 	 * @param map the map to remove
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void removeSubordinateMap(IMapNG map);
 
 	/**

@@ -42,6 +42,7 @@ public interface ISkill extends HasName {
 	 * @param condition If less than or equal to the number of hours after the addition,
 	 *                  level up and zero the hours instead.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addHours(int hrs, int condition);
 
 	/**

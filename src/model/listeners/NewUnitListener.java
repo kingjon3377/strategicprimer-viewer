@@ -32,5 +32,6 @@ public interface NewUnitListener extends EventListener {
 	 *
 	 * @param unit the unit to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addNewUnit(IUnit unit);
 }

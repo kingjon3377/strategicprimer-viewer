@@ -26,10 +26,12 @@ public interface VersionChangeSource {
 	/**
 	 * @param list a listener to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addVersionChangeListener(VersionChangeListener list);
 
 	/**
 	 * @param list a listener to remove
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void removeVersionChangeListener(VersionChangeListener list);
 }

@@ -129,6 +129,7 @@ public final class TestWorkerModel {
 	 * @param item  the item to add
 	 * @param lists the lists to add to
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	@SafeVarargs
 	private static <T> void addItem(final T item,
 	                                final List<? super T>... lists) {

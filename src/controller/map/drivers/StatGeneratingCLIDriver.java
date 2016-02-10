@@ -207,6 +207,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @param units a list of units
 	 * @return a list of the units in the list that have workers without stats
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static List<IUnit> removeStattedUnits(final Collection<IUnit> units) {
 		return units.stream().filter(StatGeneratingCLIDriver::hasUnstattedWorker)
 					   .collect(Collectors.toList());

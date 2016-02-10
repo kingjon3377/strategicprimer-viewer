@@ -54,6 +54,7 @@ public interface IUnit extends MobileFixture, HasImage, HasMutableKind,
 	 *
 	 * @param member the member to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addMember(UnitMember member);
 
 	/**
@@ -61,6 +62,7 @@ public interface IUnit extends MobileFixture, HasImage, HasMutableKind,
 	 *
 	 * @param member the member to remove
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void removeMember(UnitMember member);
 
 	/**

@@ -116,6 +116,7 @@ public final class MapCheckerFrame extends JFrame {
 	 *
 	 * @param filename the name of the file to check.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void check(final String filename) {
 		printParagraph("Starting " + filename);
 		try {

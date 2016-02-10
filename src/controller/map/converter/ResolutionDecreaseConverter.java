@@ -122,6 +122,7 @@ public final class ResolutionDecreaseConverter {
 	 *
 	 * @param map the map to check.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void checkRequirements(final IMapNG map) {
 		if (((map.dimensions().rows % 2) != 0)
 					|| ((map.dimensions().cols % 2) != 0)) {
@@ -158,6 +159,7 @@ public final class ResolutionDecreaseConverter {
 	 * @param fix    a RiverFixture
 	 * @param rivers a series of rivers to add to it
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	@SafeVarargs
 	private static void addRivers(final RiverFixture fix,
 								  final Iterable<River>... rivers) {
@@ -170,8 +172,9 @@ public final class ResolutionDecreaseConverter {
 	 * @param set    a set of rivers
 	 * @param rivers a series of rivers to remove from it
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void removeRivers(final Collection<River> set,
-									 final River... rivers) {
+	                                 final River... rivers) {
 		set.removeAll(Arrays.asList(rivers));
 	}
 

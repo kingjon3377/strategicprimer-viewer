@@ -67,6 +67,7 @@ public final class AppStarter implements ISPDriver {
 	/**
 	 * @param driver a driver to add twice.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addChoice(final ISPDriver driver) {
 		final DriverUsage usage = driver.usage();
 		final Pair<ISPDriver, ISPDriver> pair = Pair.of(driver, driver);
@@ -81,6 +82,7 @@ public final class AppStarter implements ISPDriver {
 	 * @param cliDriver a first driver
 	 * @param guiDriver a second driver
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addChoice(final ISPDriver cliDriver, final ISPDriver guiDriver) {
 		final DriverUsage cliUsage = cliDriver.usage();
 		final DriverUsage guiUsage = guiDriver.usage();

@@ -28,6 +28,7 @@ public interface LevelGainSource {
 	 *
 	 * @param list the listener to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addLevelGainListener(LevelGainListener list);
 
 	/**
@@ -35,5 +36,6 @@ public interface LevelGainSource {
 	 *
 	 * @param list the listener to remove
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void removeLevelGainListener(LevelGainListener list);
 }

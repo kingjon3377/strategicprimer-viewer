@@ -102,6 +102,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 *
 	 * @param fix the fixture to add.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void addFixture(final TileFixture fix) {
 		final IMutableMapNG map = dmodel.getMap();
 		if ((fix instanceof Ground) && (map.getGround(point) == null)) {
@@ -129,6 +130,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 *
 	 * @param list the list of items to remove. If null, none are removed.
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void removeAll(@Nullable final Iterable<TileFixture> list) {
 		if (list != null) {
 			final IMutableMapNG map = dmodel.getMap();

@@ -26,10 +26,12 @@ public interface NewWorkerSource {
 	/**
 	 * @param list a new listener to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addNewWorkerListener(NewWorkerListener list);
 
 	/**
 	 * @param list a listener to remove
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void removeNewWorkerListener(NewWorkerListener list);
 }

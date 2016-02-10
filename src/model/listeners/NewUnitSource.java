@@ -26,10 +26,12 @@ public interface NewUnitSource {
 	/**
 	 * @param list a new listener to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void addNewUnitListener(NewUnitListener list);
 
 	/**
 	 * @param list a listener to remove
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	void removeNewUnitListener(NewUnitListener list);
 }

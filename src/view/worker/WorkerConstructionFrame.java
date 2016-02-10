@@ -265,8 +265,9 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	 * @param text  the text to put on the label
 	 * @param field the text field, or similar, to add
 	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addLabeledField(final JPanel panel, final String text,
-										final JComponent field) {
+	                                    final JComponent field) {
 		panel.add(new JLabel(text));
 		panel.add(field);
 	}
