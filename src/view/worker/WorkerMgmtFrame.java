@@ -219,43 +219,39 @@ public final class WorkerMgmtFrame extends JFrame {
 		final MemberDetailPanel mdp = new MemberDetailPanel();
 		tree.addUnitMemberListener(mdp);
 		final StrategyExporter strategyExporter = new StrategyExporter(model, wtmodel);
-		setContentPane(SplitWithWeights.horizontal(HALF_WAY, HALF_WAY, SplitWithWeights
-				                                                               .vertical(
-						                                                               TWO_THIRDS,
-						                                                               TWO_THIRDS,
-						                                                               new BorderedPanel(new JScrollPane(tree),
-								                                                                                plabel,
-								                                                                                null,
-								                                                                                null,
-								                                                                                null),
+		setContentPane(SplitWithWeights.horizontal(HALF_WAY, HALF_WAY,
+				SplitWithWeights.vertical(TWO_THIRDS, TWO_THIRDS,
+						new BorderedPanel(new JScrollPane(tree), plabel, null, null,
+								                 null), new BorderedPanel(ordersPanel,
+										                                         new
+												                                         ListenedButton("Add New Unit",
+												                                                           evt -> newUnitFrame
+														                                                                  .setVisible(
+																                                                                  true)),
 
-						                                                               new BorderedPanel(ordersPanel,
-								                                                                                new ListenedButton("Add New Unit",
-										                                                                                                  evt -> newUnitFrame
-												                                                                                                         .setVisible(
-														                                                                                                         true)),
-								                                                                                new ListenedButton("Export a proto-strategy from units' orders",
-										                                                                                                  evt -> {
-											                                                                                                  final JFileChooser
-													                                                                                                  chooser =
-													                                                                                                  new JFileChooser(".");
-											                                                                                                  if (chooser.showSaveDialog(
-													                                                                                                  outer) ==
-													                                                                                                      APPROVE_OPTION) {
-												                                                                                                  try (final FileWriter writer = new FileWriter(chooser.getSelectedFile())) {
-													                                                                                                  writer.append(
-															                                                                                                  strategyExporter
-																	                                                                                                  .createStrategy());
-												                                                                                                  } catch (final IOException except) {
-													                                                                                                  LOGGER.log(
-															                                                                                                  SEVERE,
-															                                                                                                  "I/O error exporting strategy",
-															                                                                                                  except);
-												                                                                                                  }
-											                                                                                                  }
-										                                                                                                  }),
-								                                                                                null,
-								                                                                                null)),
+										                                         new
+												                                         ListenedButton("Export a proto-strategy from units' orders",
+												                                                           evt -> {
+													                                                           final JFileChooser
+															                                                           chooser =
+															                                                           new JFileChooser(".");
+													                                                           if (chooser.showSaveDialog(
+															                                                           outer) ==
+															                                                               APPROVE_OPTION) {
+														                                                           try (final FileWriter writer = new FileWriter(chooser.getSelectedFile())) {
+															                                                           writer.append(
+																	                                                           strategyExporter
+																			                                                           .createStrategy());
+														                                                           } catch (final IOException except) {
+															                                                           LOGGER.log(
+																	                                                           SEVERE,
+																	                                                           "I/O error exporting strategy",
+																	                                                           except);
+														                                                           }
+													                                                           }
+												                                                           }),
+										                                         null,
+										                                         null)),
 				new BorderedPanel(new JScrollPane(report), new JLabel(RPT_HDR), mdp, null,
 						                 null)));
 		ioHandler.addTreeExpansionListener(new TreeExpansionHandler(tree));
