@@ -79,6 +79,7 @@ public final class SkillAdvancementPanel extends BoxPanel
 	/**
 	 * @param nSkill the newly selected skill.
 	 */
+	@SuppressWarnings("VariableNotUsedInsideIf")
 	@Override
 	public void selectSkill(@Nullable final ISkill nSkill) {
 		skill = nSkill;

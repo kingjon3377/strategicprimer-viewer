@@ -422,6 +422,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 						parent = unit;
 					}
 				}
+				//noinspection VariableNotUsedInsideIf
 				if (parent != null) {
 					break;
 				}
