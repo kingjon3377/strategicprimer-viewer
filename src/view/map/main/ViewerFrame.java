@@ -1,15 +1,13 @@
 package view.map.main;
 
 import controller.map.misc.IOHandler;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.JFrame;
-import javax.swing.JSplitPane;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import model.viewer.IViewerModel;
 import view.map.details.DetailPanelNG;
 import view.util.SplitWithWeights;
@@ -92,11 +90,8 @@ public final class ViewerFrame extends JFrame {
 																   map);
 		map.addVersionChangeListener(detailPanel);
 		map.addSelectionChangeListener(detailPanel);
-		setContentPane(new SplitWithWeights(JSplitPane.VERTICAL_SPLIT,
-												   MAP_PROPORTION, MAP_PROPORTION,
-												   new MapScrollPanel(map,
-																			 mapPanel),
-												   detailPanel));
+		setContentPane(SplitWithWeights.vertical(MAP_PROPORTION, MAP_PROPORTION,
+				new MapScrollPanel(map, mapPanel), detailPanel));
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		pack();
 		mapPanel.requestFocusInWindow();

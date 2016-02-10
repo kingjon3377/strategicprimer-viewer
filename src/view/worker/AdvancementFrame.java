@@ -2,16 +2,13 @@ package view.worker;
 
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import model.map.IMapNG;
 import model.map.Player;
 import model.workermgmt.IWorkerModel;
@@ -22,9 +19,6 @@ import view.util.BorderedPanel;
 import view.util.ItemAdditionPanel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
-
-import static javax.swing.JSplitPane.HORIZONTAL_SPLIT;
-import static javax.swing.JSplitPane.VERTICAL_SPLIT;
 
 /**
  * A GUI to let a user manage workers.
@@ -100,40 +94,28 @@ public final class AdvancementFrame extends JFrame {
 		sapanel.addLevelGainListener(llist);
 		final JLabel newJobText = htmlize("Add a job to the Worker:");
 		final JLabel newSkillText = htmlize("Add a Skill to the selected Job:");
-		setContentPane(new SplitWithWeights(HORIZONTAL_SPLIT, HALF_WAY, HALF_WAY,
-				                                   new BorderedPanel(new JScrollPane
-						                                                     (tree),
-						                                                    plabel,
-						                                                    new
-								                                                    ListenedButton("Add worker to selected unit ...",
-								                                                                      nwl),
+		setContentPane(SplitWithWeights.horizontal(HALF_WAY, HALF_WAY,
+				new BorderedPanel(new JScrollPane(tree), plabel,
+						                 new ListenedButton("Add worker to selected unit" +
+								                                    " ...",
+								                                   nwl), null, null),
+				SplitWithWeights.vertical(HALF_WAY, RES_WEIGHT,
+						new BorderedPanel(new JScrollPane(jobsTree),
+								                 htmlize("Worker's Jobs and Skills:"),
+								                 null, null, null),
+						new BorderedPanel(new BorderedPanel(null, new BorderedPanel(null,
+								                                                           newJobText,
+								                                                           jarp,
+								                                                           null,
+								                                                           null),
+								                                   new BorderedPanel(null,
+										                                                    newSkillText,
+										                                                    sarp,
+										                                                    null,
+										                                                    null),
 
-						                                                    null, null),
-				                                   new SplitWithWeights(VERTICAL_SPLIT,
-						                                                       HALF_WAY,
-						                                                       RES_WEIGHT,
-						                                                       new BorderedPanel(new JScrollPane(jobsTree),
-								                                                                        htmlize("Worker's Jobs and Skills:"),
-								                                                                        null,
-								                                                                        null,
-								                                                                        null),
-						                                                       new BorderedPanel(new BorderedPanel(null,
-								                                                                                          new BorderedPanel(null,
-										                                                                                                           newJobText,
-										                                                                                                           jarp,
-										                                                                                                           null,
-										                                                                                                           null),
-								                                                                                          new BorderedPanel(null,
-										                                                                                                           newSkillText,
-										                                                                                                           sarp,
-										                                                                                                           null,
-										                                                                                                           null),
-								                                                                                          null,
-								                                                                                          null),
-								                                                                        null,
-								                                                                        sapanel,
-								                                                                        null,
-								                                                                        null))));
+								                                   null, null), null,
+								                 sapanel, null, null))));
 
 		ioHandler.notifyListeners();
 

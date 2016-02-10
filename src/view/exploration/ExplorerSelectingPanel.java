@@ -1,18 +1,13 @@
 package view.exploration;
 
-import java.awt.Component;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JSplitPane;
-import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
+import javax.swing.*;
 import javax.swing.text.Document;
 import model.exploration.ExplorationModel;
 import model.exploration.ExplorationUnitListModel;
@@ -137,35 +132,32 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 			}
 			return NullCleaner.assertNotNull(retval);
 		});
-		setCenter(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT, PROPORTION,
-											  PROPORTION, new BorderedPanel(playerList,
-																				   label
-																						   ("Players in all maps:"),
+		setCenter(SplitWithWeights.horizontal(PROPORTION, PROPORTION,
+				new BorderedPanel(playerList, label("Players in all maps:"), null, null,
+						                 null), new BorderedPanel(unitList, label(html(
+						"Units belonging to that player:",
+						"(Selected unit will be used for exploration.)")),
+								                                         new
+										                                         BorderedPanel(null,
+										                                                          null,
+										                                                          new ListenedButton(BUTTON_TEXT,
+												                                                                            evt -> {
+													                                                                            final IUnit
+															                                                                            selectedValue =
+															                                                                            unitList.getSelectedValue();
 
-																				   null,
-																				   null,
-																				   null),
-											  new BorderedPanel(unitList, label(html(
-													  "Units belonging to that player:",
-													  "(Selected unit will be used for " +
-															  "exploration.)")),
-																	   new BorderedPanel
-																			   (null,
-																								null,
-																								new ListenedButton(
-																														  BUTTON_TEXT,
-																														  evt -> {
-																															  final IUnit selectedValue = unitList.getSelectedValue();
-																															  if (!unitList.isSelectionEmpty()) {
-																																  model.selectUnit(selectedValue);
-																																  for (final CompletionListener list : cListeners) {
-																																	  list.stopWaitingOn(true);
-																																  }
-																															  }
-																														  }),
-																								mpField,
-																								label("Unit's Movement Points: ")),
-																	   null, null)));
+													                                                                            if (!unitList.isSelectionEmpty()) {
+														                                                                            model.selectUnit(
+																                                                                            selectedValue);
+														                                                                            for (final CompletionListener list : cListeners) {
+															                                                                            list.stopWaitingOn(
+																	                                                                            true);
+														                                                                            }
+													                                                                            }
+												                                                                            }),
+										                                                          mpField,
+										                                                          label("Unit's Movement Points: ")),
+								                                         null, null)));
 	}
 
 	/**

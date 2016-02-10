@@ -1,11 +1,11 @@
 package view.util;
 
-import java.awt.Component;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.JSplitPane;
+import javax.swing.*;
 
 /**
  * A version of JSplitPane that takes the divider location and resize weight, as well as
@@ -32,6 +32,28 @@ import javax.swing.JSplitPane;
  */
 public final class SplitWithWeights extends JSplitPane {
 	/**
+	 * Factory method.
+	 * @param divLoc    the divider location
+	 * @param resWeight the resize weight
+	 * @param left      the left or top component
+	 * @param right     the right or bottom component
+	 */
+	public static JSplitPane vertical(final double divLoc, final double resWeight,
+	                           final Component left, final Component right) {
+		return new SplitWithWeights(VERTICAL_SPLIT, divLoc, resWeight, left, right);
+	}
+	/**
+	 * Factory method.
+	 * @param divLoc    the divider location
+	 * @param resWeight the resize weight
+	 * @param left      the left or top component
+	 * @param right     the right or bottom component
+	 */
+	public static JSplitPane horizontal(final double divLoc, final double resWeight,
+	                             final Component left, final Component right) {
+		return new SplitWithWeights(HORIZONTAL_SPLIT, divLoc, resWeight, left, right);
+	}
+	/**
 	 * Constructor.
 	 *
 	 * @param orient    the orientation of the panel.
@@ -40,7 +62,7 @@ public final class SplitWithWeights extends JSplitPane {
 	 * @param left      the left or top component
 	 * @param right     the right or bottom component
 	 */
-	public SplitWithWeights(final int orient, final double divLoc,
+	private SplitWithWeights(final int orient, final double divLoc,
 	                        final double resWeight, final Component left,
 	                        final Component right) {
 		super(orient, true, left, right);

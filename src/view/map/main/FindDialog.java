@@ -1,7 +1,6 @@
 package view.map.main;
 
-import java.awt.Dimension;
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -13,14 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import javax.swing.JCheckBox;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.map.FixtureIterable;
 import model.map.HasKind;
 import model.map.HasName;
@@ -157,17 +149,12 @@ public final class FindDialog extends JDialog {
 		contentPane.add(buttonPanel);
 		ffl = new FixtureFilterList();
 		SwingUtilities.invokeLater(new FilterPopulator(ffl, model));
-		setContentPane(new SplitWithWeights(JSplitPane.HORIZONTAL_SPLIT,
-												   FILTER_PROPORTION, FILTER_PROPORTION,
-												   contentPane,
-												   new BorderedPanel(new JScrollPane(ffl,
-																							ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-																							ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER),
-																			new JLabel
-																					("Find only ..."),
-
-																			null, null,
-																			null)));
+		setContentPane(SplitWithWeights.horizontal(FILTER_PROPORTION, FILTER_PROPORTION,
+				contentPane, new BorderedPanel(new JScrollPane(ffl,
+						                                              ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+						                                              ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER),
+						                              new JLabel("Find only ..."), null,
+						                              null, null)));
 		map = model;
 		pack();
 	}
