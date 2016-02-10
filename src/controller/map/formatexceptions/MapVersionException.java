@@ -78,6 +78,7 @@ public final class MapVersionException extends SPFormatException {
 		/**
 		 * @return null
 		 */
+		@SuppressWarnings("ReturnOfNull")
 		@Override
 		public String getPublicId() {
 			return null;
@@ -86,6 +87,7 @@ public final class MapVersionException extends SPFormatException {
 		/**
 		 * @return null
 		 */
+		@SuppressWarnings("ReturnOfNull")
 		@Override
 		public String getSystemId() {
 			return null;
