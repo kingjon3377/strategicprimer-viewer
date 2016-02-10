@@ -93,19 +93,17 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 									point -> getUnits(map.streamOtherFixtures(point),
 											player))).collect(
 							(Supplier<TreeMap<Integer, IUnit>>) TreeMap::new,
-							(collection, unit) -> {
+							(retval, unit) -> {
 								final IUnit proxy;
-								if (collection
-										    .containsKey(Integer.valueOf(unit.getID())
-										    )) {
-									proxy = collection.get(Integer.valueOf(unit.getID()));
+								if (retval.containsKey(Integer.valueOf(unit.getID()))) {
+									proxy = retval.get(Integer.valueOf(unit.getID()));
 									//noinspection unchecked
 									((ProxyFor<IUnit>) proxy).addProxied(unit);
 								} else {
 									proxy = new ProxyUnit(unit.getID());
 									//noinspection unchecked
 									((ProxyFor<IUnit>) proxy).addProxied(unit);
-									collection.put(NullCleaner.assertNotNull(
+									retval.put(NullCleaner.assertNotNull(
 											Integer.valueOf(unit.getID())), proxy);
 								}
 							}, Map::putAll).values());
