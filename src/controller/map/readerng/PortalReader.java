@@ -8,12 +8,13 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.Point;
-import model.map.PointFactory;
 import model.map.fixtures.explorable.Portal;
 import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
 import util.Pair;
 import util.Warning;
+
+import static model.map.PointFactory.point;
 
 /**
  * A reader for portals.
@@ -60,15 +61,11 @@ public final class PortalReader implements INodeHandler<@NonNull Portal> {
 	                    final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		final Portal retval = new Portal(getAttribute(element, "world"), PointFactory
-				                                                                 .point
-						                                                                  (getIntegerAttribute(
-						                                                                 element,
-						                                                                 "row"),
-						                                                                 getIntegerAttribute(
-								                                                                 element,
-								                                                                 "column")),
-
+		final Portal retval = new Portal(getAttribute(element, "world"),
+				                                point(getIntegerAttribute(element,
+						                                "row"),
+						                                getIntegerAttribute(element,
+								                                "column")),
 				                                getOrGenerateID(element, warner,
 						                                idFactory));
 		addImage(element, retval);

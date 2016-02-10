@@ -117,11 +117,10 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 * helpful.
 	 */
 	@Override
-	public IReportNode produceRIR(
-			                                    final DelayedRemovalMap<Integer,
-					                                                           Pair<Point, IFixture>> fixtures,
-			                                    final IMapNG map,
-			                                    final Player currentPlayer) {
+	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point,
+			                                                                       IFixture>> fixtures,
+
+	                              final IMapNG map, final Player currentPlayer) {
 		final Map<TownStatus, IReportNode> separated = new EnumMap<>(TownStatus.class);
 		separated.put(TownStatus.Abandoned,
 				new SectionListReportNode(5, "Abandoned Communities"));
@@ -203,13 +202,11 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 * @return the sub-report dealing with the town.
 	 */
 	@Override
-	public IReportNode produceRIR(
-			                                    final DelayedRemovalMap<Integer,
-					                                                           Pair<Point, IFixture>> fixtures,
-			                                    final IMapNG map,
-			                                    final Player currentPlayer,
-			                                    final ITownFixture item,
-			                                    final Point loc) {
+	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point,
+			                                                                       IFixture>> fixtures,
+
+	                              final IMapNG map, final Player currentPlayer,
+	                              final ITownFixture item, final Point loc) {
 		if (item instanceof Village) {
 			return new VillageReportGenerator(pairComparator)
 					       .produceRIR(fixtures, // NOPMD

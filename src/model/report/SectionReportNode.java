@@ -128,13 +128,11 @@ public final class SectionReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof SectionReportNode) && (level ==
-				                                                                ((SectionReportNode) obj)
-						                                                                .getLevel()) &&
-
-				                         text.equals(((IReportNode) obj).getText()) &&
-				                         children()
-						                         .equals(((IReportNode) obj).children()));
+		return (this == obj) ||
+				       ((obj instanceof SectionReportNode) &&
+						        (level == ((SectionReportNode) obj).getLevel()) &&
+						        text.equals(((IReportNode) obj).getText()) &&
+						        children().equals(((IReportNode) obj).children()));
 	}
 
 	/**

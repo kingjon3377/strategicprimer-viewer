@@ -67,8 +67,8 @@ public final class MapChecker implements UtilityDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length < 1) {
-			throw new DriverFailedException("Need at least one argument",
-					                               new IllegalArgumentException("Need at least one argument"));
+			final String msg = "Need at least one argument";
+			throw new DriverFailedException(msg, new IllegalArgumentException(msg));
 		}
 		Stream.of(args).map(File::new).forEach(this::check);
 	}

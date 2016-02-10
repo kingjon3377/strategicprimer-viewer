@@ -149,8 +149,10 @@ public interface INodeHandler<@NonNull T> {
 			                                                   final String deprecated,
 			                                                   final Warning warner)
 			throws SPFormatException {
-		final Attribute nsPrefAttr = element.getAttributeByName(new QName(ISPReader.NAMESPACE, preferred));
-		final Attribute nsDeprAttr = element.getAttributeByName(new QName(ISPReader.NAMESPACE, deprecated));
+		final Attribute nsPrefAttr =
+				element.getAttributeByName(new QName(ISPReader.NAMESPACE, preferred));
+		final Attribute nsDeprAttr =
+				element.getAttributeByName(new QName(ISPReader.NAMESPACE, deprecated));
 		final Attribute prefAttr;
 		if (nsPrefAttr == null) {
 			prefAttr = element.getAttributeByName(new QName(preferred));

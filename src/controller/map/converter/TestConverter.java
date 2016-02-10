@@ -435,10 +435,10 @@ public final class TestConverter {
 		CompactXMLWriter.writeSPObject(expectedXML, expected);
 		assertEquals("Converted map's serialized form was as expected",
 				expectedXML.toString(), actualXML.toString());
-		assertEquals("Converted map was as expected", expected, new MapReaderAdapter()
-				                                                        .readMapFromStream(
-						                                                        new StringReader(out.toString()),
-						                                                        Warning.Ignore));
+		assertEquals("Converted map was as expected", expected,
+				new MapReaderAdapter().readMapFromStream(new StringReader(out.toString
+						                                                              ()),
+						Warning.Ignore));
 	}
 	/**
 	 * @return a String representation of the object

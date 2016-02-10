@@ -217,7 +217,8 @@ public abstract class AbstractCompactReader<@NonNull T>
 	/**
 	 * @param element the current tag
 	 * @param param the parameter we want
-	 * @return it if it's presnt in either the default namespace or our namespace, or null if not present
+	 * @return it if it's presnt in either the default namespace or our namespace, or
+	 * null if not present
 	 */
 	@Nullable
 	protected static Attribute getAttributeByName(final StartElement element,
