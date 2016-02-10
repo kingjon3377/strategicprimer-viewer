@@ -343,6 +343,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 		if (except instanceof XMLStreamException) {
 			msg = XML_ERROR_STRING + ' ' + filename;
 		} else if (except instanceof FileNotFoundException) {
+			//noinspection StringConcatenationMissingWhitespace
 			msg = "File " + filename + NOT_FOUND_ERROR;
 		} else if (except instanceof IOException) {
 			msg = "I/O error reading file " + filename;
