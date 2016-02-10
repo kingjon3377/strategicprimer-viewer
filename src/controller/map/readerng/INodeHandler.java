@@ -97,7 +97,7 @@ public interface INodeHandler<@NonNull T> {
 				new QName(ISPReader.NAMESPACE, attribute));
 		if ((namespacedAttr == null) || (namespacedAttr.getValue() == null)) {
 			final Attribute attr = startElement.getAttributeByName(new QName(attribute));
-			if (attr == null || attr.getValue() == null) {
+			if ((attr == null) || (attr.getValue() == null)) {
 				throw new MissingPropertyException(startElement, attribute);
 			} else {
 				return NullCleaner.assertNotNull(attr.getValue());
@@ -182,8 +182,8 @@ public interface INodeHandler<@NonNull T> {
 	 */
 	default boolean hasAttribute(final StartElement elem,
 	                                   final String attr) {
-		return elem.getAttributeByName(new QName(ISPReader.NAMESPACE, attr)) != null ||
-				       elem.getAttributeByName(new QName(attr)) != null;
+		return (elem.getAttributeByName(new QName(ISPReader.NAMESPACE, attr)) != null) ||
+				       (elem.getAttributeByName(new QName(attr)) != null);
 	}
 
 	/**
