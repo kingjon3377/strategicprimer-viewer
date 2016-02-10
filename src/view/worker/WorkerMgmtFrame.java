@@ -144,11 +144,11 @@ public final class WorkerMgmtFrame extends JFrame {
 		assert (inputMap != null) && (actionMap != null);
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_U, keyMask), "openUnits");
 		actionMap.put("openUnits", new FocusRequester(tree));
-		final PlayerLabel plabel = new PlayerLabel("Units belonging to ",
+		final PlayerLabel plabl = new PlayerLabel("Units belonging to ",
 														  model.getMap()
 																  .getCurrentPlayer(),
 														  keyDesc);
-		ioHandler.addPlayerChangeListener(plabel);
+		ioHandler.addPlayerChangeListener(plabl);
 		ioHandler.addPlayerChangeListener(newUnitFrame);
 		final OrdersPanel ordersPanel = new OrdersPanel(model);
 		ioHandler.addPlayerChangeListener(ordersPanel);
@@ -219,39 +219,40 @@ public final class WorkerMgmtFrame extends JFrame {
 		final MemberDetailPanel mdp = new MemberDetailPanel();
 		tree.addUnitMemberListener(mdp);
 		final StrategyExporter strategyExporter = new StrategyExporter(model, wtmodel);
+		// TODO: Make a JFileChooser subclass or wrapper that takes what to do with the
+		// chosen file as a parameter
 		setContentPane(SplitWithWeights.horizontal(HALF_WAY, HALF_WAY,
 				SplitWithWeights.vertical(TWO_THIRDS, TWO_THIRDS,
-						new BorderedPanel(new JScrollPane(tree), plabel, null, null,
-								                 null), new BorderedPanel(ordersPanel,
-										                                         new
-												                                         ListenedButton("Add New Unit",
-												                                                           evt -> newUnitFrame
-														                                                                  .setVisible(
-																                                                                  true)),
+						new BorderedPanel(new JScrollPane(tree), plabl, null, null, null),
+						new BorderedPanel(ordersPanel, new ListenedButton("Add New Unit",
+								                                                 evt ->
+										                                                 newUnitFrame
+										                                                        .setVisible(
+												                                                        true)),
 
-										                                         new
-												                                         ListenedButton("Export a proto-strategy from units' orders",
-												                                                           evt -> {
-													                                                           final JFileChooser
-															                                                           chooser =
-															                                                           new JFileChooser(".");
-													                                                           if (chooser.showSaveDialog(
-															                                                           outer) ==
-															                                                               APPROVE_OPTION) {
-														                                                           try (final FileWriter writer = new FileWriter(chooser.getSelectedFile())) {
-															                                                           writer.append(
-																	                                                           strategyExporter
-																			                                                           .createStrategy());
-														                                                           } catch (final IOException except) {
-															                                                           LOGGER.log(
-																	                                                           SEVERE,
-																	                                                           "I/O error exporting strategy",
-																	                                                           except);
-														                                                           }
-													                                                           }
-												                                                           }),
-										                                         null,
-										                                         null)),
+								                 new ListenedButton("Export a " +
+										                                    "proto-strategy from units' orders",
+										                                   evt -> {
+											                                   final
+											                                   JFileChooser
+													                                   chooser =
+													                                   new JFileChooser(".");
+											                                   if (chooser.showSaveDialog(
+													                                   outer) ==
+													                                       APPROVE_OPTION) {
+												                                   try (final FileWriter writer = new FileWriter(chooser.getSelectedFile())) {
+													                                   writer.append(
+															                                   strategyExporter
+																	                                   .createStrategy());
+												                                   } catch (final IOException except) {
+													                                   LOGGER.log(
+															                                   SEVERE,
+															                                   "I/O error exporting strategy",
+															                                   except);
+												                                   }
+											                                   }
+										                                   }), null,
+								                 null)),
 				new BorderedPanel(new JScrollPane(report), new JLabel(RPT_HDR), mdp, null,
 						                 null)));
 		ioHandler.addTreeExpansionListener(new TreeExpansionHandler(tree));
