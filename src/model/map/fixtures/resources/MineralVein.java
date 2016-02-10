@@ -200,6 +200,7 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	 * @param fix a fixture
 	 * @return whether it's identical to this except ID and DC.
 	 */
+	@SuppressWarnings("ObjectEquality")
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (this == fix) || ((fix instanceof MineralVein)

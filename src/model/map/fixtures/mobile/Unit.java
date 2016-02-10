@@ -277,6 +277,7 @@ public class Unit implements IUnit {
 	 * @param fix a fixture
 	 * @return whether it's an identical-except-ID unit.
 	 */
+	@SuppressWarnings("ObjectEquality")
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (this == fix) || ((fix instanceof IUnit)

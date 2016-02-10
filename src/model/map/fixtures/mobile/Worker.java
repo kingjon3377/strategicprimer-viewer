@@ -160,6 +160,7 @@ public class Worker implements IWorker {
 	 * @param fix a fixture
 	 * @return whether it equals this one except its ID.
 	 */
+	@SuppressWarnings("ObjectEquality")
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (this == fix) || ((fix instanceof Worker)
