@@ -71,7 +71,14 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 		setText(txt);
 		point = null;
 	}
-
+	/**
+	 * No-arg constructor.
+	 */
+	public ComplexReportNode() {
+		super("");
+		setText("");
+		point = null;
+	}
 	/**
 	 * @return an HTML representation of the node.
 	 */

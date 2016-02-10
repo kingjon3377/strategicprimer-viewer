@@ -208,7 +208,7 @@ public final class ExplorableReportGenerator
 		}
 		if (retval.getChildCount() > 0) {
 			if (adventures.getChildCount() > 0) {
-				final IReportNode real = new ComplexReportNode("");
+				final IReportNode real = new ComplexReportNode();
 				real.add(retval);
 				real.add(adventures);
 				return real;
