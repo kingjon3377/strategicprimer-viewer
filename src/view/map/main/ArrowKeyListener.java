@@ -267,7 +267,7 @@ public final class ArrowKeyListener {
 		 * Prevent cloning.
 		 */
 		@Override
-		public Object clone() throws CloneNotSupportedException {
+		public final Object clone() throws CloneNotSupportedException {
 			throw new CloneNotSupportedException("Cloning is not allowed.");
 		}
 	}
