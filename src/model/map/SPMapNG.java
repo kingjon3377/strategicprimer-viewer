@@ -272,7 +272,15 @@ public class SPMapNG implements IMutableMapNG {
 		if (equals(other)) {
 			return 0; // NOPMD
 		} else {
-			return hashCode() - Objects.hashCode(other);
+			final int ours = hashCode();
+			final int theirs = Objects.hashCode(other);
+			if (ours > theirs) {
+				return 1;
+			} else if (ours < theirs) {
+				return -1;
+			} else {
+				return 0;
+			}
 		}
 	}
 

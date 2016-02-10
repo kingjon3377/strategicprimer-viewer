@@ -51,7 +51,15 @@ public final class ComparableIterator<@NonNull T> implements Iterator<@NonNull T
 	 */
 	@Override
 	public int compareTo(final ComparableIterator<T> obj) {
-		return Objects.hashCode(obj) - hashCode();
+		final int theirs = Objects.hashCode(obj);
+		final int ours = hashCode();
+		if (ours > theirs) {
+			return 1;
+		} else if (ours == theirs) {
+			return 0;
+		} else {
+			return -1;
+		}
 	}
 
 	/**

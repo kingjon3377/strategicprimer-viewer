@@ -84,7 +84,17 @@ public final class Point implements Comparable<@NonNull Point> {
 	 */
 	@Override
 	public int compareTo(final Point point) {
-		return (((point.row - row) << 7) + point.col) - col;
+		if (row > point.row) {
+			return 1;
+		} else if (row < point.row) {
+			return -1;
+		} else if (col > point.col) {
+			return 1;
+		} else if (col < point.col) {
+			return -1;
+		} else {
+			return 0;
+		}
 	}
 
 	/**

@@ -93,7 +93,15 @@ public final class Player implements Comparable<Player>, HasName {
 	 */
 	@Override
 	public int compareTo(final Player player) {
-		return player.hashCode() - hashCode();
+		final int theirs = player.hashCode();
+		final int ours = hashCode();
+		if (ours > theirs) {
+			return 1;
+		} else if (ours == theirs) {
+			return 0;
+		} else {
+			return -1;
+		}
 	}
 
 	/**
