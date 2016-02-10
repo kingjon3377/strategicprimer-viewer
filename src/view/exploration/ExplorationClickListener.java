@@ -298,7 +298,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 * @param out ignored
 	 * @throws IOException always
 	 */
-	private void writeObject(ObjectOutputStream out) throws IOException {
+	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
 	/**
@@ -307,7 +307,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
-	private void readObject(ObjectInputStream in)
+	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
