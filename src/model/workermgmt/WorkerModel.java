@@ -129,7 +129,8 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 			} else {
 				return Stream.of(item);
 			}
-		}).filter(IUnit.class::isInstance).map(IUnit.class::cast).filter(unit -> unit.getOwner().equals(player));
+		}).filter(IUnit.class::isInstance).map(IUnit.class::cast)
+				       .filter(unit -> unit.getOwner().equals(player));
 	}
 
 	/**
