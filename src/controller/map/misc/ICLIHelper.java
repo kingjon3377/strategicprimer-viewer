@@ -86,6 +86,7 @@ public interface ICLIHelper extends Closeable {
 	 * @return true if yes, false if no
 	 * @throws IOException on I/O error
 	 */
+	@SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
 	boolean inputBoolean(String prompt) throws IOException;
 	/**
 	 * Print a formatted string.
