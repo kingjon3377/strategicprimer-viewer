@@ -327,6 +327,10 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertUnsupportedTag(
 				"<map rows=\"1\" columns=\"1\" version=\"2\"><future /></map>",
 				IMapNG.class, "future", true);
+		assertUnsupportedTag(
+				"<map rows=\"1\" columns=\"1\" version=\"2\"><tile row=\"0\" " +
+						"column=\"0\" kind=\"steppe\"><future /></tile></map>",
+				IMapNG.class, "future", true);
 	}
 
 	/**
