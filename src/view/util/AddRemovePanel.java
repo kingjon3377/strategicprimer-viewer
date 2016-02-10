@@ -1,6 +1,7 @@
 package view.util;
 
-import java.awt.*;
+import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -8,7 +9,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import model.listeners.AddRemoveListener;
 
 /**
