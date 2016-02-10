@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -86,25 +87,28 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	public List<IUnit> getUnits(final Player player) {
 		if (getSubordinateMaps().iterator().hasNext()) {
 			return new ArrayList<>(StreamSupport.stream(getAllMaps().spliterator(),
-					false).map(Pair::first).flatMap(
+					false)
+					                       .map(Pair::first).flatMap(
 							map -> map.locationStream().flatMap(
 									point -> getUnits(map.streamOtherFixtures(point),
-											player)))
-					                       .collect(() -> new TreeMap<Integer, IUnit>(),
-							                       (collection, unit) -> {
-							final IUnit proxy;
-							if (collection.containsKey(Integer.valueOf(unit.getID()))) {
-								proxy = collection.get(Integer.valueOf(unit.getID()));
-								//noinspection unchecked
-								((ProxyFor<IUnit>) proxy).addProxied(unit);
-							} else {
-								proxy = new ProxyUnit(unit.getID());
-								//noinspection unchecked
-								((ProxyFor<IUnit>) proxy).addProxied(unit);
-								collection.put(NullCleaner.assertNotNull(
-										Integer.valueOf(unit.getID())), proxy);
-							}
-						}, Map::putAll).values());
+											player))).collect(
+							(Supplier<TreeMap<Integer, IUnit>>) TreeMap::new,
+							(collection, unit) -> {
+								final IUnit proxy;
+								if (collection
+										    .containsKey(Integer.valueOf(unit.getID())
+										    )) {
+									proxy = collection.get(Integer.valueOf(unit.getID()));
+									//noinspection unchecked
+									((ProxyFor<IUnit>) proxy).addProxied(unit);
+								} else {
+									proxy = new ProxyUnit(unit.getID());
+									//noinspection unchecked
+									((ProxyFor<IUnit>) proxy).addProxied(unit);
+									collection.put(NullCleaner.assertNotNull(
+											Integer.valueOf(unit.getID())), proxy);
+								}
+							}, Map::putAll).values());
 		} else {
 			// Just in case I missed something in the proxy implementation, make
 			// sure things work correctly when there's only one map.
