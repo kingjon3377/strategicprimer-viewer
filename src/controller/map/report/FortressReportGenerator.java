@@ -7,7 +7,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import javax.swing.tree.MutableTreeNode;
 import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.IMapNG;
@@ -70,6 +69,11 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 * Instance we use.
 	 */
 	private final IReportGenerator<Unit> urg = new UnitReportGenerator(pairComparator);
+	/**
+	 * Instance we use.
+	 */
+	private final IReportGenerator<FortressMember> fmrg =
+			new FortressMemberReportGenerator(pairComparator);
 
 	/**
 	 * All fixtures referred to in this report are removed from the collection.
@@ -305,8 +309,11 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			if (!contents.isEmpty()) {
 				builder.append(OPEN_LIST_ITEM)
 						.append("Other fortress contents:\n").append(OPEN_LIST);
+				// TODO: Group resources and implements separately
 				for (final FortressMember member : contents) {
-					// FIXME: Produce and append the proper sub-report
+					builder.append(OPEN_LIST_ITEM)
+							.append(fmrg.produce(fixtures, map, currentPlayer, member,
+									loc)).append(CLOSE_LIST_ITEM);
 				}
 				builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
 			}
@@ -352,14 +359,16 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 		if (item.iterator().hasNext()) {
 			final IReportNode units = new ListReportNode(loc,
 																	   "Units on the tile:");
-			final MutableTreeNode contents =
+			final IReportNode contents =
 					new ListReportNode(loc, "Other Contents of Fortress:");
+			// TODO: Group resources and equipment separately
 			for (final FortressMember unit : item) {
 				if (unit instanceof Unit) {
 					units.add(urg.produceRIR(fixtures, map, currentPlayer,
 							(Unit) unit, loc));
 				} else {
-					// FIXME: Produce the sub-report using the proper generator.
+					contents.add(
+							fmrg.produceRIR(fixtures, map, currentPlayer, unit, loc));
 				}
 			}
 			if (units.getChildCount() != 0) {
