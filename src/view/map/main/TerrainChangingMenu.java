@@ -1,12 +1,16 @@
 package view.map.main;
 
-import controller.map.misc.IDFactoryFiller;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+
+import org.eclipse.jdt.annotation.Nullable;
+
+import controller.map.misc.IDFactoryFiller;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
 import model.listeners.SelectionChangeSupport;
@@ -16,7 +20,6 @@ import model.map.PointFactory;
 import model.map.TileType;
 import model.misc.IDriverModel;
 import model.viewer.IViewerModel;
-import org.eclipse.jdt.annotation.Nullable;
 import view.worker.NewUnitDialog;
 
 /**
@@ -151,6 +154,7 @@ public final class TerrainChangingMenu extends JPopupMenu
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -160,6 +164,7 @@ public final class TerrainChangingMenu extends JPopupMenu
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

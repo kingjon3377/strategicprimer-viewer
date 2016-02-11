@@ -7,7 +7,11 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
+
 import javax.swing.DefaultListModel;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.listeners.AddRemoveListener;
 import model.listeners.CompletionListener;
 import model.listeners.CompletionSource;
@@ -16,7 +20,6 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A list model for a list of a worker's jobs.
@@ -119,6 +122,7 @@ public final class JobsListModel extends DefaultListModel<IJob> implements
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -128,6 +132,7 @@ public final class JobsListModel extends DefaultListModel<IJob> implements
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

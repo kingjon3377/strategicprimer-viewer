@@ -1,6 +1,5 @@
 package view.worker;
 
-import controller.map.misc.IDFactory;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -14,18 +13,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+
+import org.eclipse.jdt.annotation.Nullable;
+
+import controller.map.misc.IDFactory;
 import model.listeners.NewUnitListener;
 import model.listeners.NewUnitSource;
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
-import org.eclipse.jdt.annotation.Nullable;
 import util.IsNumeric;
 import util.NullCleaner;
 import view.util.ListenedButton;
@@ -210,6 +213,7 @@ public final class NewUnitDialog extends JFrame implements NewUnitSource,
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -219,6 +223,7 @@ public final class NewUnitDialog extends JFrame implements NewUnitSource,
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

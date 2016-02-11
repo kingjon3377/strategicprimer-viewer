@@ -9,12 +9,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.DistanceComparator;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
-import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
 import util.Pair;
 import util.PairComparator;
@@ -165,6 +167,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		 * @param out ignored
 		 * @throws IOException always
 		 */
+		@SuppressWarnings({ "unused", "static-method" })
 		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("Serialization is not allowed");
 		}
@@ -174,6 +177,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		 * @throws IOException always
 		 * @throws ClassNotFoundException never
 		 */
+		@SuppressWarnings({ "unused", "static-method" })
 		private void readObject(final ObjectInputStream in)
 				throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("Serialization is not allowed");

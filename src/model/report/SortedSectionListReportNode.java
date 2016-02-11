@@ -5,7 +5,9 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Collections;
+
 import javax.swing.tree.MutableTreeNode;
+
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -58,6 +60,7 @@ public final class SortedSectionListReportNode extends SectionListReportNode {
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -67,6 +70,7 @@ public final class SortedSectionListReportNode extends SectionListReportNode {
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

@@ -13,14 +13,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.listeners.LevelGainListener;
 import model.listeners.LevelGainSource;
 import model.listeners.SkillSelectionListener;
 import model.map.fixtures.mobile.worker.ISkill;
-import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.SingletonRandom;
 import util.TypesafeLogger;
@@ -166,6 +169,7 @@ public final class SkillAdvancementPanel extends BoxPanel
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -175,6 +179,7 @@ public final class SkillAdvancementPanel extends BoxPanel
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

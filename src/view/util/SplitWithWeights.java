@@ -1,11 +1,12 @@
 package view.util;
 
-import java.awt.*;
+import java.awt.Component;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.*;
+
+import javax.swing.JSplitPane;
 
 /**
  * A version of JSplitPane that takes the divider location and resize weight, as well as
@@ -74,6 +75,7 @@ public final class SplitWithWeights extends JSplitPane {
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -83,6 +85,7 @@ public final class SplitWithWeights extends JSplitPane {
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

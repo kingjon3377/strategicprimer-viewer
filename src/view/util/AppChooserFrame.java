@@ -1,11 +1,5 @@
 package view.util;
 
-import controller.map.drivers.AdvancementStart;
-import controller.map.drivers.DriverFailedException;
-import controller.map.drivers.ExplorationGUI;
-import controller.map.drivers.ISPDriver;
-import controller.map.drivers.ViewerStart;
-import controller.map.drivers.WorkerStart;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -16,14 +10,23 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
-import model.misc.IDriverModel;
+
 import org.eclipse.jdt.annotation.NonNull;
+
+import controller.map.drivers.AdvancementStart;
+import controller.map.drivers.DriverFailedException;
+import controller.map.drivers.ExplorationGUI;
+import controller.map.drivers.ISPDriver;
+import controller.map.drivers.ViewerStart;
+import controller.map.drivers.WorkerStart;
+import model.misc.IDriverModel;
 import util.NullCleaner;
 import util.TypesafeLogger;
 
@@ -171,6 +174,7 @@ public final class AppChooserFrame extends JFrame {
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -180,6 +184,7 @@ public final class AppChooserFrame extends JFrame {
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

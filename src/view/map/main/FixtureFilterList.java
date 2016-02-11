@@ -7,15 +7,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.TileFixture;
 import model.viewer.FixtureFilterListModel;
 import model.viewer.ZOrderFilter;
-import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**
@@ -128,6 +131,7 @@ public final class FixtureFilterList extends JList<Class<? extends TileFixture>>
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -137,6 +141,7 @@ public final class FixtureFilterList extends JList<Class<? extends TileFixture>>
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

@@ -1,6 +1,7 @@
 package view.worker;
 
-import controller.map.misc.IDFactory;
+import static util.IsNumeric.isNumeric;
+
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.IOException;
@@ -15,12 +16,15 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
+
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+
+import controller.map.misc.IDFactory;
 import model.listeners.NewWorkerListener;
 import model.listeners.NewWorkerSource;
 import model.map.fixtures.mobile.Worker;
@@ -33,8 +37,6 @@ import util.TypesafeLogger;
 import view.util.BorderedPanel;
 import view.util.ErrorShower;
 import view.util.ListenedButton;
-
-import static util.IsNumeric.isNumeric;
 
 /**
  * A window to let the user add a new worker. As this is a dialog, we do *not* extend
@@ -319,6 +321,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -328,6 +331,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

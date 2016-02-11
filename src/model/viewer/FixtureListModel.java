@@ -4,7 +4,12 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import javax.swing.DefaultListModel;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.listeners.SelectionChangeListener;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -17,8 +22,6 @@ import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.terrain.Forest;
 import model.misc.IDriverModel;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A model for a FixtureList.
@@ -193,6 +196,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -202,6 +206,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

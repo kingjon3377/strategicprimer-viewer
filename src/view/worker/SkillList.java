@@ -6,8 +6,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.listeners.JobSelectionListener;
 import model.listeners.LevelGainListener;
 import model.listeners.SkillSelectionListener;
@@ -15,7 +19,6 @@ import model.listeners.SkillSelectionSource;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
 import model.workermgmt.SkillListModel;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A visual list of a job's skills. Also handles listening for selection changes.
@@ -113,6 +116,7 @@ public final class SkillList extends JList<ISkill> implements SkillSelectionSour
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -122,6 +126,7 @@ public final class SkillList extends JList<ISkill> implements SkillSelectionSour
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

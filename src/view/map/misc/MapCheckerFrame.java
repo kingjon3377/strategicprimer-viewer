@@ -1,8 +1,5 @@
 package view.map.misc;
 
-import controller.map.formatexceptions.MapVersionException;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.MapReaderAdapter;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.io.File;
@@ -14,15 +11,19 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.xml.stream.XMLStreamException;
+
+import controller.map.formatexceptions.MapVersionException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.MapReaderAdapter;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import view.util.StreamingLabel;
-
-import static view.util.StreamingLabel.LabelTextColor;
+import view.util.StreamingLabel.LabelTextColor;
 
 /**
  * A window to show the results of checking maps for errors.
@@ -174,6 +175,7 @@ public final class MapCheckerFrame extends JFrame {
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -183,6 +185,7 @@ public final class MapCheckerFrame extends JFrame {
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

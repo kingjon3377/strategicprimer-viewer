@@ -12,11 +12,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.AbstractAction;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import javax.swing.SwingUtilities;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
 import model.listeners.MovementCostListener;
@@ -36,7 +40,6 @@ import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
-import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
@@ -298,6 +301,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -307,6 +311,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

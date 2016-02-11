@@ -1,8 +1,5 @@
 package view.map.misc;
 
-import controller.map.formatexceptions.MapVersionException;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.MapReaderAdapter;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,14 +13,20 @@ import java.io.Writer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.xml.stream.XMLStreamException;
+
+import org.eclipse.jdt.annotation.Nullable;
+
+import controller.map.formatexceptions.MapVersionException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.MapReaderAdapter;
 import model.map.IMapNG;
 import model.map.MapDimensions;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
-import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
@@ -319,6 +322,7 @@ public final class SubsetFrame extends JFrame {
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -328,6 +332,7 @@ public final class SubsetFrame extends JFrame {
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

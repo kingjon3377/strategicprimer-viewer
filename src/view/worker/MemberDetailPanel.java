@@ -1,5 +1,7 @@
 package view.worker;
 
+import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
+
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -10,10 +12,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.function.ToIntFunction;
+
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.listeners.UnitMemberListener;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Animal;
@@ -22,9 +28,6 @@ import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.WorkerStats;
-import org.eclipse.jdt.annotation.Nullable;
-
-import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
 
 /**
  * A panel to show the details of the currently selected unit-member.
@@ -267,6 +270,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		 * @param out ignored
 		 * @throws IOException always
 		 */
+		@SuppressWarnings({ "unused", "static-method" })
 		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("Serialization is not allowed");
 		}
@@ -276,6 +280,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		 * @throws IOException always
 		 * @throws ClassNotFoundException never
 		 */
+		@SuppressWarnings({ "unused", "static-method" })
 		private void readObject(final ObjectInputStream in)
 				throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("Serialization is not allowed");
@@ -346,6 +351,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -355,6 +361,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

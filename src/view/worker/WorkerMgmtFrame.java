@@ -1,10 +1,11 @@
 package view.worker;
 
-import com.bric.window.WindowList;
-import controller.map.misc.IDFactoryFiller;
-import controller.map.misc.IOHandler;
-import controller.map.report.ReportGenerator;
-import java.awt.*;
+import static java.util.logging.Level.SEVERE;
+import static javax.swing.JFileChooser.APPROVE_OPTION;
+
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -21,12 +22,34 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
-import javax.swing.*;
+
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTree;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
+import javax.swing.WindowConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
+import com.bric.window.WindowList;
+
+import controller.map.misc.IDFactoryFiller;
+import controller.map.misc.IOHandler;
+import controller.map.report.ReportGenerator;
 import model.listeners.MapChangeListener;
 import model.listeners.PlayerChangeListener;
 import model.map.DistanceComparator;
@@ -50,8 +73,6 @@ import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
 import model.workermgmt.WorkerTreeModelAlt;
 import model.workermgmt.WorkerTreeModelAlt.PlayerNode;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import view.map.main.ViewerFrame;
@@ -59,9 +80,6 @@ import view.util.BorderedPanel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
 import view.util.SystemOut;
-
-import static java.util.logging.Level.SEVERE;
-import static javax.swing.JFileChooser.APPROVE_OPTION;
 
 /**
  * A window to let the player manage units.
@@ -658,6 +676,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		 * @param out ignored
 		 * @throws IOException always
 		 */
+		@SuppressWarnings({ "unused", "static-method" })
 		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("Serialization is not allowed");
 		}
@@ -667,6 +686,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		 * @throws IOException always
 		 * @throws ClassNotFoundException never
 		 */
+		@SuppressWarnings({ "unused", "static-method" })
 		private void readObject(final ObjectInputStream in)
 				throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("Serialization is not allowed");
@@ -744,6 +764,7 @@ public final class WorkerMgmtFrame extends JFrame {
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -753,6 +774,7 @@ public final class WorkerMgmtFrame extends JFrame {
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

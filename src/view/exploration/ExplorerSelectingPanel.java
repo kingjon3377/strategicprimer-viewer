@@ -1,14 +1,20 @@
 package view.exploration;
 
-import java.awt.*;
+import java.awt.Component;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.swing.*;
+
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.text.Document;
+
 import model.exploration.ExplorationModel;
 import model.exploration.ExplorationUnitListModel;
 import model.exploration.PlayerListModel;
@@ -229,6 +235,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -238,6 +245,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

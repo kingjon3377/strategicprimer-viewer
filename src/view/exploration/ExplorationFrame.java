@@ -1,6 +1,5 @@
 package view.exploration;
 
-import controller.map.misc.IOHandler;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Container;
@@ -12,8 +11,11 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Stream;
+
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
+
+import controller.map.misc.IOHandler;
 import model.exploration.ExplorationModel;
 import model.listeners.CompletionListener;
 import util.NullCleaner;
@@ -146,6 +148,7 @@ public final class ExplorationFrame extends JFrame {
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -155,6 +158,7 @@ public final class ExplorationFrame extends JFrame {
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

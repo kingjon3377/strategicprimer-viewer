@@ -1,6 +1,9 @@
 package view.map.main;
 
-import java.awt.*;
+import static view.util.SystemOut.SYS_OUT;
+
+import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -12,7 +15,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import javax.swing.*;
+
+import javax.swing.JCheckBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.FixtureIterable;
 import model.map.HasKind;
 import model.map.HasName;
@@ -28,8 +42,6 @@ import model.misc.IDriverModel;
 import model.viewer.IViewerModel;
 import model.viewer.PointIterator;
 import model.viewer.ZOrderFilter;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 import util.IsNumeric;
 import util.IteratorWrapper;
 import util.NullCleaner;
@@ -37,8 +49,6 @@ import view.util.BorderedPanel;
 import view.util.BoxPanel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
-
-import static view.util.SystemOut.SYS_OUT;
 
 /**
  * A dialog to let the user find fixtures by ID, name, or "kind".
@@ -239,7 +249,7 @@ public final class FindDialog extends JDialog {
 			return StreamSupport.stream(((FixtureIterable<@NonNull ?>) fix)
 												.spliterator(),
 					false)
-						   .anyMatch((IFixture member) -> matches(pattern, idNum, member,
+						   .anyMatch((final IFixture member) -> matches(pattern, idNum, member,
 								   csen));
 		} else {
 			return false;
@@ -420,6 +430,7 @@ public final class FindDialog extends JDialog {
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -429,6 +440,7 @@ public final class FindDialog extends JDialog {
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

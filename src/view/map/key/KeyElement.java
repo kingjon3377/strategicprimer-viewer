@@ -1,5 +1,7 @@
 package view.map.key;
 
+import static model.viewer.ViewerModel.DEF_ZOOM_LEVEL;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -7,15 +9,16 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.TileType;
 import model.viewer.TileViewSize;
-import org.eclipse.jdt.annotation.Nullable;
 import view.map.main.TileUIHelper;
 import view.util.BoxPanel;
-
-import static model.viewer.ViewerModel.DEF_ZOOM_LEVEL;
 
 /**
  * An element of the key.
@@ -134,6 +137,7 @@ public final class KeyElement extends BoxPanel {
 		 * @param out ignored
 		 * @throws IOException always
 		 */
+		@SuppressWarnings({ "unused", "static-method" })
 		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("Serialization is not allowed");
 		}
@@ -143,6 +147,7 @@ public final class KeyElement extends BoxPanel {
 		 * @throws IOException always
 		 * @throws ClassNotFoundException never
 		 */
+		@SuppressWarnings({ "unused", "static-method" })
 		private void readObject(final ObjectInputStream in)
 				throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("Serialization is not allowed");
@@ -153,6 +158,7 @@ public final class KeyElement extends BoxPanel {
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -162,6 +168,7 @@ public final class KeyElement extends BoxPanel {
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

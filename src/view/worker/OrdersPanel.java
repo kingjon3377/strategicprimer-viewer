@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -19,12 +20,14 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.ProxyUnit;
 import model.workermgmt.IWorkerModel;
-import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import view.util.Applyable;
 import view.util.BorderedPanel;
@@ -142,9 +145,11 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 					area.selectAll();
 				}
 			}
+			@SuppressWarnings({ "unused" })
 			private void writeObject(final ObjectOutputStream out) throws IOException {
 				throw new NotSerializableException("Serialization is not allowed");
 			}
+			@SuppressWarnings({ "unused" })
 			private void readObject(final ObjectInputStream in)
 					throws IOException, ClassNotFoundException {
 				throw new NotSerializableException("Serialization is not allowed");
@@ -221,6 +226,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -230,6 +236,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

@@ -11,13 +11,16 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.MapDimensions;
 import model.map.PointFactory;
 import model.viewer.IViewerModel;
-import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import view.util.BoxPanel;
 import view.util.ListenedButton;
@@ -245,6 +248,7 @@ public final class SelectTileDialog extends JDialog {
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -254,6 +258,7 @@ public final class SelectTileDialog extends JDialog {
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

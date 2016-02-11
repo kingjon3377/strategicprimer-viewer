@@ -1,8 +1,5 @@
 package view.resources;
 
-import controller.map.misc.IDFactory;
-import controller.map.misc.IDFactoryFiller;
-import controller.map.misc.IOHandler;
 import java.awt.Component;
 import java.awt.Container;
 import java.io.IOException;
@@ -14,6 +11,7 @@ import java.text.ParseException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.stream.StreamSupport;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -21,6 +19,10 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import controller.map.misc.IDFactory;
+import controller.map.misc.IDFactoryFiller;
+import controller.map.misc.IOHandler;
 import model.map.Player;
 import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
@@ -229,6 +231,7 @@ public class ResourceAddingFrame extends JFrame {
 		 * @param out ignored
 		 * @throws IOException always
 		 */
+		@SuppressWarnings({ "unused", "static-method" })
 		private void writeObject(final ObjectOutputStream out) throws IOException {
 			throw new NotSerializableException("Serialization is not allowed");
 		}
@@ -238,6 +241,7 @@ public class ResourceAddingFrame extends JFrame {
 		 * @throws IOException always
 		 * @throws ClassNotFoundException never
 		 */
+		@SuppressWarnings({ "unused", "static-method" })
 		private void readObject(final ObjectInputStream in)
 				throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("Serialization is not allowed");
@@ -248,6 +252,7 @@ public class ResourceAddingFrame extends JFrame {
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -257,6 +262,7 @@ public class ResourceAddingFrame extends JFrame {
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

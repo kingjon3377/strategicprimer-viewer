@@ -4,14 +4,17 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.listeners.SelectionChangeListener;
 import model.listeners.VersionChangeListener;
 import model.map.Point;
 import model.misc.IDriverModel;
-import org.eclipse.jdt.annotation.Nullable;
 import view.map.key.KeyPanel;
 import view.util.BorderedPanel;
 
@@ -109,6 +112,7 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -118,6 +122,7 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

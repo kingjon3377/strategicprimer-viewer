@@ -1,23 +1,25 @@
 package view.util;
 
+import static view.util.MenuItemCreator.createHotkey;
+import static view.util.MenuItemCreator.createMenuItem;
+import static view.util.MenuItemCreator.createShiftHotkey;
+
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import javax.swing.InputMap;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
+
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
-
-import static view.util.MenuItemCreator.createHotkey;
-import static view.util.MenuItemCreator.createMenuItem;
-import static view.util.MenuItemCreator.createShiftHotkey;
 
 /**
  * A common superclass for application-specific menu bars.
@@ -240,6 +242,7 @@ public class SPMenu extends JMenuBar {
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -249,6 +252,7 @@ public class SPMenu extends JMenuBar {
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

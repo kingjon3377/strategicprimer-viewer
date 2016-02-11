@@ -1,13 +1,16 @@
 package view.map.main;
 
-import controller.map.misc.IOHandler;
-import java.awt.*;
+import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.*;
+
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+
+import controller.map.misc.IOHandler;
 import model.viewer.IViewerModel;
 import view.map.details.DetailPanelNG;
 import view.util.SplitWithWeights;
@@ -115,6 +118,7 @@ public final class ViewerFrame extends JFrame {
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -124,6 +128,7 @@ public final class ViewerFrame extends JFrame {
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

@@ -5,12 +5,15 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
+
 import javax.swing.DefaultListModel;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A unit list model for the exploration GUI.
@@ -68,6 +71,7 @@ public final class ExplorationUnitListModel extends DefaultListModel<@NonNull IU
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -77,6 +81,7 @@ public final class ExplorationUnitListModel extends DefaultListModel<@NonNull IU
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

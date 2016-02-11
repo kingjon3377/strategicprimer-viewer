@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.InputMap;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,6 +26,9 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
 import model.listeners.CompletionListener;
@@ -35,7 +39,6 @@ import model.listeners.SelectionChangeSupport;
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
-import org.eclipse.jdt.annotation.Nullable;
 import util.IsNumeric;
 import util.NullCleaner;
 import util.Pair;
@@ -356,6 +359,7 @@ public final class ExplorationPanel extends BorderedPanel
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -365,6 +369,7 @@ public final class ExplorationPanel extends BorderedPanel
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

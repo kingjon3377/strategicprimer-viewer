@@ -14,12 +14,17 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
+
 import javax.swing.AbstractAction;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.listeners.SelectionChangeListener;
 import model.map.Player;
 import model.map.Point;
@@ -29,8 +34,6 @@ import model.viewer.CurriedFixtureTransferable;
 import model.viewer.FixtureListDropListener;
 import model.viewer.FixtureListModel;
 import model.viewer.FixtureTransferable;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**
@@ -88,13 +91,16 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 			public void actionPerformed(@Nullable final ActionEvent event) {
 				((FixtureListModel) getModel()).removeAll(getSelectedValuesList());
 			}
+			@SuppressWarnings({ "unused" })
 			private void writeObject(final ObjectOutputStream out) throws IOException {
 				throw new NotSerializableException("Serialization is not allowed");
 			}
+			@SuppressWarnings({ "unused" })
 			private void readObject(final ObjectInputStream in)
 					throws IOException, ClassNotFoundException {
 				throw new NotSerializableException("Serialization is not allowed");
 			}
+			@Override
 			@SuppressWarnings("CloneReturnsClassType")
 			public Object clone() throws CloneNotSupportedException {
 				throw new CloneNotSupportedException("Cloning is not allowed.");
@@ -239,6 +245,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -248,6 +255,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");

@@ -7,7 +7,11 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
+
 import javax.swing.DefaultListModel;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.listeners.AddRemoveListener;
 import model.listeners.CompletionListener;
 import model.listeners.CompletionSource;
@@ -16,7 +20,6 @@ import model.listeners.LevelGainListener;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Skill;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A list model for a list of the skills associated with a Job.
@@ -133,6 +136,7 @@ public final class SkillListModel extends DefaultListModel<ISkill> implements
 	 * @param out ignored
 	 * @throws IOException always
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void writeObject(final ObjectOutputStream out) throws IOException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
@@ -142,6 +146,7 @@ public final class SkillListModel extends DefaultListModel<ISkill> implements
 	 * @throws IOException always
 	 * @throws ClassNotFoundException never
 	 */
+	@SuppressWarnings({ "unused", "static-method" })
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
