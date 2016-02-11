@@ -14,6 +14,8 @@
 	</contentEntry>
 	<levels>
 		<level name="WindowMenu" value="project"/>
-		<level name="JDT Annotations (Java 8)" value="project"/>
+		<level name="AntContrib" value="project"/>
+		<level name="Hamcrest" value="project"/>
+		<level name="JDT Java8 Annotations" value="project"/>
 	</levels>
 </component>
