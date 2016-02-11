@@ -1,10 +1,12 @@
 package model.report;
 
 import javax.swing.tree.MutableTreeNode;
-import model.map.Point;
-import model.map.PointFactory;
+
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+
+import model.map.Point;
+import model.map.PointFactory;
 
 /**
  * An interface for report nodes.

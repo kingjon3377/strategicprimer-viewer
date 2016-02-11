@@ -23,6 +23,10 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.IMapNG;
 import model.map.Point;
@@ -36,8 +40,6 @@ import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.viewer.FixtureComparator;
 import model.viewer.ZOrderFilter;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 import util.ImageLoader;
 import util.NullCleaner;
 import util.TypesafeLogger;
@@ -540,7 +542,9 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		public TileFixture next() {
 			if (hasNext()) {
 				hasCached = false;
-				return cached;
+				final TileFixture temp = cached;
+				assert temp != null;
+				return temp;
 			} else {
 				throw new NoSuchElementException("No next element");
 			}

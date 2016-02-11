@@ -3,6 +3,9 @@ package model.resources;
 import java.io.File;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
@@ -70,7 +73,7 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void addResource(@SuppressWarnings("TypeMayBeWeakened")
 							final FortressMember resource, final Player player) {
-		for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
+		for (final Pair<@NonNull IMutableMapNG, @NonNull File> pair : getAllMaps()) {
 			final IMutableMapNG map = pair.first();
 			final Player currP = map.getCurrentPlayer();
 			if (currP.isIndependent() || (currP.getPlayerId() < 0) ||

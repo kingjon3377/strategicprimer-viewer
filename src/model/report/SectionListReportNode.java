@@ -6,11 +6,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Enumeration;
 import java.util.Iterator;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
-import model.map.Point;
+
 import org.eclipse.jdt.annotation.Nullable;
+
+import model.map.Point;
 import util.EnumerationWrapper;
 import util.NullCleaner;
 
@@ -83,6 +86,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	public SectionListReportNode(final Point pt, final int lvl,
 	                             final String header) {
 		super(header);
+		text = header; // required by Eclipse
 		setText(header);
 		point = pt;
 		level = lvl;
@@ -97,6 +101,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	 */
 	public SectionListReportNode(final int lvl, final String header) {
 		super(header);
+		text = header; // required by Eclipse
 		setText(header);
 		point = null;
 		level = lvl;
@@ -238,9 +243,11 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	 * @param txt the new text for the node
 	 */
 	@Override
-	public final void setText(final String txt) {
-		text = txt;
-		setUserObject(text);
+	public final void setText(@Nullable final String txt) {
+		if (txt != null) {
+			text = txt;
+			setUserObject(text);
+		}
 	}
 
 	/**

@@ -11,6 +11,10 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
@@ -21,7 +25,6 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
 import model.misc.SimpleMultiMapModel;
-import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.Pair;
 import view.util.SystemOut;
@@ -121,7 +124,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 * @param player a player
 	 * @return a list of the members of the sequence that are units owned by the player
 	 */
-	private static Stream<IUnit> getUnits(final Stream<? super Unit> iter,
+	private static Stream<IUnit> getUnits(final Stream<@NonNull ? super Unit> iter,
 											  final Player player) {
 		return iter.flatMap(item -> {
 			if (item instanceof Fortress) {

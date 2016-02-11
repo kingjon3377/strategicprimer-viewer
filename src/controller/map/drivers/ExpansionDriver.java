@@ -1,6 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.drivers.DriverUsage.ParamCount;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,6 +11,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import org.eclipse.jdt.annotation.Nullable;
+
+import controller.map.drivers.DriverUsage.ParamCount;
 import model.exploration.SurroundingPointIterable;
 import model.map.HasOwner;
 import model.map.IFixture;
@@ -260,7 +263,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 			}
 
 			@Override
-			public boolean equals(final Object obj) {
+			public boolean equals(@Nullable final Object obj) {
 				throw ise;
 			}
 

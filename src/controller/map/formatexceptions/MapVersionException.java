@@ -2,6 +2,8 @@ package controller.map.formatexceptions;
 
 import javax.xml.stream.Location;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * An exception to throw when the map's version is too old.
  *
@@ -80,6 +82,7 @@ public final class MapVersionException extends SPFormatException {
 		 */
 		@SuppressWarnings("ReturnOfNull")
 		@Override
+		@Nullable
 		public String getPublicId() {
 			return null;
 		}
@@ -89,6 +92,7 @@ public final class MapVersionException extends SPFormatException {
 		 */
 		@SuppressWarnings("ReturnOfNull")
 		@Override
+		@Nullable
 		public String getSystemId() {
 			return null;
 		}

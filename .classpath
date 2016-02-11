@@ -4,8 +4,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/WindowMenu"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JDT Annotations (Java 8)"/>
-	<classpathentry kind="var" path="APPLICATION_HOME_DIR/lib/hamcrest-core-1.3.jar"/>
-	<classpathentry kind="lib" path="/usr/local/Cellar/ant-contrib/1.0b3/share/ant/ant-contrib-1.0b3.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/AntContrib"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Hamcrest"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JDT Java8 Annotations"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

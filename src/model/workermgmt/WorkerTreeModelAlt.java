@@ -13,10 +13,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasKind;
 import model.map.HasName;
 import model.map.Player;
@@ -24,7 +28,6 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.ProxyFor;
 import model.map.fixtures.mobile.ProxyUnit;
-import org.eclipse.jdt.annotation.Nullable;
 import util.EnumerationWrapper;
 import util.NullCleaner;
 
@@ -245,7 +248,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * @param userObj the new user-object for the node, which must be a Player
 		 */
 		@Override
-		public void setUserObject(final Object userObj) {
+		public void setUserObject(@Nullable final Object userObj) {
 			if (userObj instanceof Player) {
 				super.setUserObject(userObj);
 			} else {
@@ -309,7 +312,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * @param userObj the user object for the node, which must be a String
 		 */
 		@Override
-		public void setUserObject(final Object userObj) {
+		public void setUserObject(@Nullable final Object userObj) {
 			if (userObj instanceof String) {
 				super.setUserObject(userObj);
 			} else {
@@ -372,7 +375,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * @param userObj the new user object for the node, which must be an IUnit
 		 */
 		@Override
-		public void setUserObject(final Object userObj) {
+		public void setUserObject(@Nullable final Object userObj) {
 			if (userObj instanceof IUnit) {
 				super.setUserObject(userObj);
 			} else {
@@ -430,7 +433,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * @param userObj the new user-object for the node, which must be a UnitMember
 		 */
 		@Override
-		public void setUserObject(final Object userObj) {
+		public void setUserObject(@Nullable final Object userObj) {
 			if (userObj instanceof UnitMember) {
 				super.setUserObject(userObj);
 			} else {
@@ -466,19 +469,21 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	@Override
 	public void addUnit(final IUnit unit) {
 		model.addUnit(unit);
-		final MutableTreeNode node =
-				new UnitNode(model.getUnitByID(((PlayerNode) root).getUserObject(),
-						unit.getID()));
-		final String kind = unit.getKind();
-		//noinspection unchecked
-		for (final TreeNode child : (Iterable<TreeNode>) root) {
-			if ((child instanceof KindNode)
-						&& kind.equals(((KindNode) child).getUserObject())) {
-				((KindNode) child).add(node);
-				fireTreeNodesInserted(this, getPathToRoot(node),
-						new int[]{child.getChildCount() - 1},
-						new Object[]{node});
-				break;
+		final IUnit matchingUnit = model
+				.getUnitByID(((PlayerNode) root).getUserObject(), unit.getID());
+		if (matchingUnit != null) {
+			final MutableTreeNode node = new UnitNode(matchingUnit);
+			final String kind = unit.getKind();
+			//noinspection unchecked
+			for (final TreeNode child : (Iterable<TreeNode>) root) {
+				if ((child instanceof KindNode)
+							&& kind.equals(((KindNode) child).getUserObject())) {
+					((KindNode) child).add(node);
+					fireTreeNodesInserted(this, getPathToRoot(node),
+							new int[]{child.getChildCount() - 1},
+							new Object[]{node});
+					break;
+				}
 			}
 		}
 	}

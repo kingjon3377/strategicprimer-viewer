@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -21,6 +22,10 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasImage;
 import model.map.TileFixture;
 import util.ImageLoader;
@@ -49,7 +54,7 @@ import util.TypesafeLogger;
  *
  * @author Jonathan Lovelace
  */
-public final class FixtureCellRenderer implements ListCellRenderer<TileFixture> {
+public final class FixtureCellRenderer implements ListCellRenderer<@NonNull TileFixture> {
 	/**
 	 * Logger.
 	 */
@@ -75,12 +80,13 @@ public final class FixtureCellRenderer implements ListCellRenderer<TileFixture> 
 	 * @return a component representing the cell
 	 */
 	@Override
-	public Component getListCellRendererComponent(final JList<? extends TileFixture>
+	public Component getListCellRendererComponent(@Nullable final JList<? extends TileFixture>
 			                                                  list,
 	                                              final TileFixture value,
 	                                              final int index,
 	                                              final boolean isSelected,
 	                                              final boolean cellHasFocus) {
+		assert list != null;
 		final Component component = LIST_DEFAULT.getListCellRendererComponent(
 				list, value, index, isSelected, cellHasFocus);
 		((JLabel) component).setText("<html><p>" + value.toString()

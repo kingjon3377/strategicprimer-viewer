@@ -7,11 +7,14 @@ import java.io.ObjectOutputStream;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.Point;
 import model.map.PointFactory;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A node to replace usages of null.
@@ -164,7 +167,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	 * @param pt the point, if any, in the map that this represents something on
 	 */
 	@Override
-	public void setPoint(final Point pt) {
+	public void setPoint(@Nullable final Point pt) {
 		// Do nothing
 	}
 

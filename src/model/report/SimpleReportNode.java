@@ -8,10 +8,13 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
-import model.map.Point;
+
 import org.eclipse.jdt.annotation.Nullable;
+
+import model.map.Point;
 import util.EnumerationWrapper;
 import util.NullCleaner;
 
@@ -56,6 +59,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 */
 	private SimpleReportNode(final String concatenated) {
 		super(concatenated);
+		text = concatenated; // required by Eclipse
 		setText(concatenated);
 	}
 	/**
@@ -170,8 +174,10 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public void setText(final String txt) {
-		text = txt;
-		setUserObject(text);
+		if (txt != null) {
+			text = txt;
+			setUserObject(text);
+		}
 	}
 
 	/**

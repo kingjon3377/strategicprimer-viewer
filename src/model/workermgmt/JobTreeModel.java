@@ -5,12 +5,16 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
+
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.listeners.AddRemoveListener;
 import model.listeners.UnitMemberListener;
 import model.map.HasName;
@@ -20,7 +24,6 @@ import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
-import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.TypesafeLogger;
 
@@ -148,6 +151,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	@Override
 	public int getChildCount(@Nullable final Object parent) {
 		if ((parent instanceof IWorker) || (parent instanceof IJob)) {
+			assert parent != null;
 			return (int) StreamSupport.stream(((Iterable<?>) parent).spliterator(),
 					false)
 								 .count();
@@ -190,6 +194,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 		if ((parent instanceof IWorker) || (parent instanceof IJob)) {
 			// TODO: Ought to be able to do this with the Stream API
 			int index = 0;
+			assert parent != null;
 			for (final Object item : (Iterable<?>) parent) {
 				if (item.equals(child)) {
 					return index; // NOPMD

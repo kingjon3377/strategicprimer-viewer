@@ -7,12 +7,14 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Logger;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.IFixture;
 import model.map.Player;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.ProxyWorker;
-import org.eclipse.jdt.annotation.Nullable;
 import util.EmptyIterator;
 import util.NullCleaner;
 
@@ -626,7 +628,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 * @return whether it's the same as this one
 	 */
 	@Override
-	public boolean equals(final Object obj) {
+	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof ProxyUnit) &&
 				                         (parallel == ((ProxyUnit) obj).parallel) &&
 				                         (id == ((ProxyUnit) obj).id) &&

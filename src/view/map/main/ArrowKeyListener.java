@@ -1,5 +1,9 @@
 package view.map.main;
 
+import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
+import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
+import static javax.swing.KeyStroke.getKeyStroke;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -12,9 +16,7 @@ import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 
-import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
-import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
-import static javax.swing.KeyStroke.getKeyStroke;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A class to handle setting up listeners for the arrow keys.
@@ -240,7 +242,7 @@ public final class ArrowKeyListener {
 		 * @param e the event to pass to the wrapped ActionListener
 		 */
 		@Override
-		public void actionPerformed(final ActionEvent e) {
+		public void actionPerformed(@Nullable final ActionEvent e) {
 			for (int i = 0; i < count; i++) {
 				wrapped.actionPerformed(e);
 			}

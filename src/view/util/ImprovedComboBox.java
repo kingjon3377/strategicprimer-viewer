@@ -7,7 +7,10 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import javax.swing.JComboBox;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * An improved combo-box, improved by making the Tab key do what one
@@ -47,7 +50,10 @@ public class ImprovedComboBox<T> extends JComboBox<T> {
 	 * @param evt the event to process
 	 */
 	@Override
-	public void processKeyEvent(final KeyEvent evt) {
+	public void processKeyEvent(@Nullable final KeyEvent evt) {
+		if (evt == null) {
+			return;
+		}
 		if ((evt.getID() != KeyEvent.KEY_PRESSED)
 				    || (evt.getKeyCode() != KeyEvent.VK_TAB)) {
 			super.processKeyEvent(evt);

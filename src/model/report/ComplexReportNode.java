@@ -6,11 +6,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Enumeration;
 import java.util.Iterator;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
-import model.map.Point;
+
 import org.eclipse.jdt.annotation.Nullable;
+
+import model.map.Point;
 import util.EnumerationWrapper;
 import util.NullCleaner;
 
@@ -59,6 +62,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	 */
 	public ComplexReportNode(final Point pt, final String txt) {
 		super(txt);
+		text = txt; // required by Eclipse
 		setText(txt);
 		point = pt;
 	}
@@ -68,6 +72,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	 */
 	public ComplexReportNode(final String txt) {
 		super(txt);
+		text = txt; // required by Eclipse
 		setText(txt);
 		point = null;
 	}
@@ -76,6 +81,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	 */
 	public ComplexReportNode() {
 		super("");
+		text = ""; // required by Eclipse
 		setText("");
 		point = null;
 	}

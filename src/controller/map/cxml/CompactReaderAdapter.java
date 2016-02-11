@@ -12,6 +12,11 @@ import java.util.logging.Level;
 import javax.xml.XMLConstants;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+
+import org.eclipse.jdt.annotation.NonNull;
+
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.River;
 import model.map.fixtures.RiverFixture;
@@ -58,7 +63,7 @@ public final class CompactReaderAdapter {
 	/**
 	 * The set of readers.
 	 */
-	private static final Set<CompactReader<?>> READERS =
+	private static final Set<CompactReader<@NonNull ?>> READERS =
 			new HashSet<>(Arrays.asList(CompactAdventureReader.READER,
 					CompactExplorableReader.READER, CompactGroundReader.READER,
 					CompactImplementReader.READER, CompactMapNGReader.READER,
@@ -94,7 +99,7 @@ public final class CompactReaderAdapter {
 		if ("river".equals(tag) || "lake".equals(tag)) {
 			return CompactMapNGReader.parseRiver(element, warner);
 		}
-		for (final CompactReader<?> reader : READERS) {
+		for (final CompactReader<@NonNull ?> reader : READERS) {
 			if (reader.isSupportedTag(tag)) {
 				return reader.read(element, stream, players, warner, idFactory);
 			}
@@ -137,7 +142,7 @@ public final class CompactReaderAdapter {
 						                                "objects)");
 			}
 		} else {
-			for (final CompactReader<?> reader : READERS) {
+			for (final CompactReader<@NonNull ?> reader : READERS) {
 				if (reader.canWrite(obj)) {
 					reader.writeRaw(ostream, obj, indent);
 					return;

@@ -1,6 +1,5 @@
 package controller.map.misc;
 
-import controller.map.formatexceptions.SPFormatException;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -15,11 +14,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
 import javax.xml.stream.XMLStreamException;
+
+import org.eclipse.jdt.annotation.Nullable;
+
+import controller.map.formatexceptions.SPFormatException;
 import model.listeners.PlayerChangeListener;
 import model.listeners.PlayerChangeSource;
 import model.map.IMapNG;
@@ -31,7 +35,6 @@ import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
-import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
@@ -459,7 +462,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 * @return a FindDialog if the driver model is for a map viewer, or null otherwise
 	 */
 	@Nullable
-	private synchronized FindDialog getFindDialog(final Component component) {
+	private synchronized FindDialog getFindDialog(@Nullable final Component component) {
 		final Frame window = getContainingFrame(component);
 		if ((model instanceof IViewerModel) && (window != null)) {
 			if (finder == null) {
@@ -540,7 +543,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 * @return the frame containing it, if any
 	 */
 	@Nullable
-	private static Frame getContainingFrame(final Component component) {
+	private static Frame getContainingFrame(@Nullable final Component component) {
 		Component temp = component;
 		while (temp != null) {
 			if (temp instanceof Frame) {

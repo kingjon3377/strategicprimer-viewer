@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.listeners.MovementCostListener;
 import model.listeners.SelectionChangeListener;
 import model.map.FixtureIterable;
@@ -32,8 +36,6 @@ import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
 import model.misc.SimpleMultiMapModel;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 import util.Pair;
 import view.util.SystemOut;
 
@@ -131,7 +133,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @param player a player
 	 * @return a list of the members of the sequence that are units owned by the player
 	 */
-	private static Stream<IUnit> getUnits(final Stream<? super Unit> stream,
+	private static Stream<IUnit> getUnits(final Stream<@NonNull ? super Unit> stream,
 											  final Player player) {
 		return stream.flatMap(obj -> {
 			if (obj instanceof Fortress) {
