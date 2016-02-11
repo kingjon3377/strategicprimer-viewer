@@ -136,6 +136,9 @@ public final class ReportGenerator {
 		builder.append(new TownReportGenerator(comparator).produce(fixtures, map,
 				player));
 		fixtures.coalesce();
+		builder.append(new FortressMemberReportGenerator(comparator)
+				               .produce(fixtures, map, player));
+		fixtures.coalesce();
 		builder.append(new ExplorableReportGenerator(comparator).produce(fixtures, map,
 				player));
 		fixtures.coalesce();
@@ -213,6 +216,9 @@ public final class ReportGenerator {
 		builder.append(new HarvestableReportGenerator(comparator).produce(fixtures,
 				map, player));
 		fixtures.coalesce();
+		builder.append(new FortressMemberReportGenerator(comparator)
+				               .produce(fixtures, map, player));
+		fixtures.coalesce();
 		builder.append(new AnimalReportGenerator(comparator).produce(fixtures, map,
 				player));
 		fixtures.coalesce();
@@ -258,6 +264,9 @@ public final class ReportGenerator {
 		fixtures.coalesce();
 		retval.add(new HarvestableReportGenerator(comparator).produceRIR(fixtures, map,
 				player));
+		fixtures.coalesce();
+		retval.add(new FortressMemberReportGenerator(comparator)
+				           .produceRIR(fixtures, map, player));
 		fixtures.coalesce();
 		retval.add(new AnimalReportGenerator(comparator).produceRIR(fixtures, map,
 				player));
@@ -313,6 +322,9 @@ public final class ReportGenerator {
 		fixtures.coalesce();
 		retval.add(new HarvestableReportGenerator(comparator).produceRIR(fixtures, map,
 				player));
+		fixtures.coalesce();
+		retval.add(new FortressMemberReportGenerator(comparator)
+				           .produceRIR(fixtures, map, player));
 		fixtures.coalesce();
 		retval.add(new AnimalReportGenerator(comparator).produceRIR(fixtures, map,
 				player));
