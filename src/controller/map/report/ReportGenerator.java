@@ -2,9 +2,10 @@ package controller.map.report;
 
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import model.map.DistanceComparator;
 import model.map.FixtureIterable;
 import model.map.HasOwner;
@@ -14,7 +15,6 @@ import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
 import model.map.TileFixture;
-import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Oasis;
@@ -351,33 +351,32 @@ public final class ReportGenerator {
 		for (final Point point : map.locations()) {
 			// Because neither Forests, Mountains, nor Ground have positive IDs,
 			// we can ignore everything but the "other" fixtures.
-			for (final IFixture fix : getFixtures(map.getOtherFixtures(point))) {
-				if (fix.getID() >= 0) {
-					retval.put(NullCleaner.assertNotNull(Integer
-																 .valueOf(fix.getID())),
-							Pair.of(point, fix));
-				} else if (fix instanceof TextFixture) {
-					retval.put(NullCleaner.assertNotNull(Integer.valueOf(idf.createID())),
-							Pair.of(point, fix));
+			retval.putAll(getFixtures(map.streamOtherFixtures(point)).filter(fix -> fix instanceof TileFixture || fix.getID() > 0).collect(Collectors.toMap(fix -> {
+				if (fix instanceof TileFixture) {
+					return Integer.valueOf(idf.createID());
+				} else {
+					return Integer.valueOf(fix.getID());
 				}
-			}
+			}, fix -> Pair.of(point, fix))));
 		}
 		return retval;
 	}
 
 	/**
-	 * @param iter a source of tile-fixtures
+	 * @param stream a source of tile-fixtures
 	 * @return all the tile-fixtures in it, recursively.
 	 */
-	private static Collection<IFixture> getFixtures(
-														   final Iterable<? extends IFixture> iter) {
-		final Collection<IFixture> retval = new ArrayList<>();
-		for (final IFixture fix : iter) {
-			retval.add(fix);
+	private static Stream<IFixture> getFixtures(
+														   final Stream<? extends IFixture> stream) {
+		return stream.flatMap(fix -> {
 			if (fix instanceof FixtureIterable) {
-				retval.addAll(getFixtures((FixtureIterable<@NonNull ?>) fix));
+				return Stream.concat(Stream.of(fix), getFixtures(StreamSupport
+						                                     .stream(((FixtureIterable<@NonNull ?>) fix)
+								                                             .spliterator(),
+								                                     false)));
+			} else {
+				return Stream.of(fix);
 			}
-		}
-		return retval;
+		});
 	}
 }
