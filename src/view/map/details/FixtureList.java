@@ -91,11 +91,11 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 			public void actionPerformed(@Nullable final ActionEvent event) {
 				((FixtureListModel) getModel()).removeAll(getSelectedValuesList());
 			}
-			@SuppressWarnings({ "unused" })
+			@SuppressWarnings("unused")
 			private void writeObject(final ObjectOutputStream out) throws IOException {
 				throw new NotSerializableException("Serialization is not allowed");
 			}
-			@SuppressWarnings({ "unused" })
+			@SuppressWarnings("unused")
 			private void readObject(final ObjectInputStream in)
 					throws IOException, ClassNotFoundException {
 				throw new NotSerializableException("Serialization is not allowed");
