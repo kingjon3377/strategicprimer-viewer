@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
@@ -478,8 +479,11 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 							" " +
 							"column=\"0\" kind=\"steppe\" /></row></map>");
 			fail("Map in an unsupported namespace shouldn't be accepted");
-		} catch (final UnwantedChildException ignored) {
-			// do nothing
+		} catch (final UnwantedChildException except) {
+			assertEquals("'Tag' that had the unwanted child was what we expected",
+					new QName("unknown"), except.getTag());
+			assertEquals("Unwanted child was hte one we expected",
+					new QName("xyzzy", "map"), except.getChild());
 		}
 	}
 
