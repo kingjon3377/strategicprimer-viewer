@@ -1,6 +1,14 @@
 package model.map;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static util.NullStream.DEV_NULL;
+
 import java.io.IOException;
+
+import org.junit.Test;
+
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
@@ -13,12 +21,6 @@ import model.map.fixtures.towns.Fortification;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static util.NullStream.DEV_NULL;
 
 /**
  * Tests for Subsettable functionality.
@@ -225,6 +227,7 @@ public final class TestSubsets {
 	 *
 	 * @throws IOException on I/O writing to bit bucket
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testSubsetsAndCopy() throws IOException {
 		final IMutableMapNG firstMap =

@@ -41,6 +41,7 @@ public class TestCLIHelper {
 	 * Test chooseFromList().
 	 * @throws IOException on I/O error causing test failure
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testChooseFromList() throws IOException {
 		try (StringWriter out = new StringWriter()) {
@@ -97,6 +98,7 @@ public class TestCLIHelper {
 	 * Test inputNumber().
 	 * @throws IOException on I/O error causing test failure
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testInputNumber() throws IOException {
 		try (StringWriter out = new StringWriter()) {
@@ -124,6 +126,7 @@ public class TestCLIHelper {
 	 * Test for inputString().
 	 * @throws IOException on I/O error causing test failure
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testInputString() throws IOException {
 		try (StringWriter out = new StringWriter()) {
@@ -149,7 +152,7 @@ public class TestCLIHelper {
 	 * Test for inputBoolean().
 	 * @throws IOException on I/O error causing test failure
 	 */
-	@SuppressWarnings("boxing")
+	@SuppressWarnings({ "boxing", "static-method" })
 	@Test
 	public void testInputBoolean() throws IOException {
 		try (StringWriter out = new StringWriter()) {
@@ -214,6 +217,7 @@ public class TestCLIHelper {
 	 * Test chooseStringFromList().
 	 * @throws IOException on I/O error causing test failure
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testStringChooseFromList() throws IOException {
 		try (StringWriter out = new StringWriter()) {

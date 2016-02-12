@@ -136,7 +136,7 @@ public final class TestConverter {
 	 *
 	 * TODO: Make the converter (and the tests) pass the map size to the encounter tables.
 	 */
-	@SuppressWarnings({"deprecation", "boxing"})
+	@SuppressWarnings({"deprecation", "boxing", "static-method"})
 	@Test
 	public void testOneToTwoConversion() throws IOException {
 		final IMutableMapNG original =
@@ -402,7 +402,7 @@ public final class TestConverter {
 	 * @throws XMLStreamException on malformed XML in tests
 	 * @throws SPFormatException on malformed SP XML in tests
 	 */
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({ "deprecation", "static-method" })
 	@Test
 	public void testZeroToOneConversion()
 			throws XMLStreamException, IOException, SPFormatException {
