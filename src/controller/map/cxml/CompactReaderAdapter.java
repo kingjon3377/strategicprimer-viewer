@@ -1,14 +1,12 @@
 package controller.map.cxml;
 
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.iointerfaces.ISPReader;
-import controller.map.misc.IDFactory;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
+
 import javax.xml.XMLConstants;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
@@ -16,6 +14,7 @@ import javax.xml.stream.events.XMLEvent;
 import org.eclipse.jdt.annotation.NonNull;
 
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.River;
