@@ -128,6 +128,7 @@ public final class MapReaderAdapter {
 	 * @return a driver model containing the maps described by those files
 	 * @throws DriverFailedException on any error
 	 */
+	@SuppressWarnings("TypeMayBeWeakened")
 	public IMultiMapModel readMultiMapModel(final Warning warner, final File master,
 	                                        final File... files)
 			throws DriverFailedException {
