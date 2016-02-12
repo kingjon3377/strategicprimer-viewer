@@ -253,7 +253,7 @@ public final class HarvestableReportGenerator
 	 * @param children nodes to add iff they have children of their own
 	 * @return whether any of them was added
 	 */
-	public static boolean maybeAdd(final DefaultMutableTreeNode parent,
+	private static boolean maybeAdd(final DefaultMutableTreeNode parent,
 								   final MutableTreeNode... children) {
 		boolean retval = false;
 		for (final MutableTreeNode child : children) {
