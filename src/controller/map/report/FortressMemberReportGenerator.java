@@ -169,6 +169,7 @@ public final class FortressMemberReportGenerator extends AbstractReportGenerator
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return a sub-report on the item; calls UnitReportGenerator for units.
 	 */
+	@Override
 	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
 			                      fixtures,
 	                      final IMapNG map, final Player currentPlayer,
