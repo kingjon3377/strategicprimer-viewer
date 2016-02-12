@@ -13,10 +13,7 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -452,118 +449,5 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	@Override
 	public String toString() {
 		return "Ver2TileDrawHelper";
-	}
-
-	/**
-	 * A filtered iterator. Only returns items that should be displayed.
-	 *
-	 * @author Jonathan Lovelace
-	 */
-	private static final class FilteredIterator implements Iterator<TileFixture> {
-		/**
-		 * The wrapped iterator.
-		 */
-		private final Iterator<TileFixture> wrapped;
-		/**
-		 * The filter to use.
-		 */
-		private final ZOrderFilter zof;
-		/**
-		 * The next item.
-		 */
-		@Nullable
-		private TileFixture cached;
-		/**
-		 * Whether we have a cached next item.
-		 */
-		private boolean hasCached;
-
-		/**
-		 * @return a hash value for the object
-		 */
-		@Override
-		public int hashCode() {
-			return wrapped.hashCode() | zof.hashCode();
-		}
-
-		/**
-		 * @param obj an object
-		 * @return whether it's the same as this
-		 */
-		@Override
-		public boolean equals(@Nullable final Object obj) {
-			return (this == obj) || ((obj instanceof FilteredIterator)
-											 &&
-											 wrapped.equals(((FilteredIterator) obj)
-																	.wrapped)
-											 && zof.equals(((FilteredIterator) obj).zof));
-		}
-
-		/**
-		 * Constructor.
-		 *
-		 * @param iter   the iterator to wrap
-		 * @param zofilt the filter to use
-		 */
-		protected FilteredIterator(final Iterator<TileFixture> iter,
-								   final ZOrderFilter zofilt) {
-			wrapped = iter;
-			zof = zofilt;
-			hasCached = false;
-			cached = null;
-			hasNext();
-		}
-
-		/**
-		 * @return whether there is a next item in the iterator
-		 */
-		@Override
-		public boolean hasNext() {
-			if (hasCached) {
-				return true; // NOPMD
-			} else {
-				while (wrapped.hasNext()) {
-					@Nullable
-					final TileFixture tempCached = wrapped.next();
-					if ((tempCached != null) && zof.shouldDisplay(tempCached)) {
-						cached = tempCached;
-						hasCached = true;
-						return true; // NOPMD
-					}
-				}
-				return false;
-			}
-		}
-
-		/**
-		 * @return the next element
-		 */
-		@Override
-		public TileFixture next() {
-			if (hasNext()) {
-				hasCached = false;
-				final TileFixture temp = cached;
-				assert temp != null;
-				return temp;
-			} else {
-				throw new NoSuchElementException("No next element");
-			}
-		}
-
-		/**
-		 * Implemented only if wrapped iterator does.
-		 */
-		@Override
-		public void remove() {
-			wrapped.remove();
-		}
-
-		/**
-		 * @return a String representation of the object
-		 */
-		@Override
-		public String toString() {
-			return "FilteredIterator with next item " + Objects.toString(cached);
-		}
 	}
 }
