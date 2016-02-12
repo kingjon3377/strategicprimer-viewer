@@ -20,6 +20,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
@@ -118,7 +120,7 @@ public class ResourceAddingFrame extends JFrame {
 				new JLabel(String.format("Add resource for %s:", current.getName()));
 		implementLabel =
 				new JLabel(String.format("Add equipment for %s:", current.getName()));
-		ioh.addPlayerChangeListener((old, newPlayer) -> {
+		ioh.addPlayerChangeListener((final Player old, @Nullable final Player newPlayer) -> {
 			if (newPlayer == null) {
 				current = new Player(-1, "");
 			} else {
