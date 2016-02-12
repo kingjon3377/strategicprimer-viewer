@@ -29,13 +29,6 @@ import model.map.TileFixture;
  * @author Jonathan Lovelace
  */
 public interface ITownFixture extends TileFixture, HasName, HasOwner {
-
-	/**
-	 * @return the name of the town, fortress, or city.
-	 */
-	@Override
-	String getName();
-
 	/**
 	 * @return the status of the town, fortress, or city
 	 */
@@ -50,11 +43,4 @@ public interface ITownFixture extends TileFixture, HasName, HasOwner {
 	 * @return a description of what kind of 'town' this is.
 	 */
 	String kind();
-
-	/**
-	 * @return the player that owns the town, fortress, or city
-	 */
-	@Override
-	Player getOwner();
-
 }
