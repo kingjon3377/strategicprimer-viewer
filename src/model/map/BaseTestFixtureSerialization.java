@@ -86,7 +86,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws SPFormatException  on unexpected SP format error
 	 * @throws XMLStreamException on XML format error
 	 */
-	protected void assertUnwantedChild(final String xml,
+	protected final void assertUnwantedChild(final String xml,
 									   final Class<?> desideratum, final boolean warning)
 			throws XMLStreamException, SPFormatException {
 		assertUnwantedChild(oldReader, xml, desideratum, warning);
@@ -105,7 +105,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws SPFormatException  on unexpected SP format error
 	 * @throws XMLStreamException on XML format error
 	 */
-	protected void assertUnsupportedTag(final String xml,
+	protected final void assertUnsupportedTag(final String xml,
 										final Class<?> desideratum, final String tag,
 										final boolean warning)
 			throws XMLStreamException, SPFormatException {
@@ -210,7 +210,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws SPFormatException  on unexpected SP format error
 	 * @throws XMLStreamException on XML format error
 	 */
-	protected void assertMissingProperty(final String xml,
+	protected final void assertMissingProperty(final String xml,
 										 final Class<?> desideratum,
 										 final String property,
 										 final boolean warning)
@@ -279,7 +279,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws SPFormatException  on unexpected SP format error
 	 * @throws XMLStreamException on XML format error
 	 */
-	protected void assertDeprecatedProperty(final String xml,
+	protected final void assertDeprecatedProperty(final String xml,
 											final Class<?> desideratum,
 											final String deprecated,
 											final boolean warning)
@@ -349,7 +349,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML reading problem
 	 * @throws IOException        on I/O error creating serialized form
 	 */
-	protected void assertSerialization(final String message, final Object obj)
+	protected final void assertSerialization(final String message, final Object obj)
 			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization(message, obj, Warning.Die);
 	}
@@ -365,7 +365,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML reading problem
 	 * @throws IOException        on I/O error creating serialized form
 	 */
-	protected void assertSerialization(final String message, final Object obj,
+	protected final void assertSerialization(final String message, final Object obj,
 	                                   final Warning warning)
 			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization(message, oldReader, obj, warning);
@@ -417,7 +417,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws SPFormatException  on SP format error
 	 * @throws XMLStreamException on XML format error
 	 */
-	protected void assertDeprecatedDeserialization(final String message,
+	protected final void assertDeprecatedDeserialization(final String message,
 	                                               final Object expected,
 	                                               final String xml,
 	                                               final String property)
@@ -452,7 +452,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws SPFormatException  on SP format error
 	 * @throws XMLStreamException on XML format error
 	 */
-	protected void assertMissingPropertyDeserialization(
+	protected final void assertMissingPropertyDeserialization(
 																   final String message,
 																   final Object expected,
 																   final String xml,
@@ -488,7 +488,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws SPFormatException  on SP format error
 	 * @throws XMLStreamException on XML format error
 	 */
-	protected void assertForwardDeserialization(final String message,
+	protected final void assertForwardDeserialization(final String message,
 	                                            final Object expected, final String xml)
 			throws XMLStreamException, SPFormatException {
 		try (StringReader sreader = new StringReader(xml)) {
@@ -523,7 +523,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws SPFormatException  on SP format error
 	 * @throws XMLStreamException on XML format error
 	 */
-	protected <T> void assertEquivalentForms(final String message,
+	protected final <T> void assertEquivalentForms(final String message,
 											 final String firstForm,
 											 final String secondForm, final Class<T>
 																			  type,
@@ -578,7 +578,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws SPFormatException  on unexpected SP format error
 	 * @throws XMLStreamException on XML format error
 	 */
-	protected void assertMissingChild(final String xml,
+	protected final void assertMissingChild(final String xml,
 									  final Class<?> desideratum)
 			throws XMLStreamException, SPFormatException {
 		assertMissingChild(oldReader, xml, desideratum);
@@ -620,7 +620,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 *                            SP format error
 	 * @throws XMLStreamException on XML format error
 	 */
-	protected void assertMapDeserialization(final String message,
+	protected final void assertMapDeserialization(final String message,
 											final IMapNG expected, final String xml)
 			throws XMLStreamException, SPFormatException {
 		assertEquals(message, expected, ((IMapReader) oldReader).readMap(
@@ -652,7 +652,7 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML reading problem
 	 * @throws IOException        on I/O error creating serialized form
 	 */
-	protected void assertImageSerialization(final String message, final HasImage obj)
+	protected final void assertImageSerialization(final String message, final HasImage obj)
 			throws XMLStreamException, SPFormatException, IOException {
 		final String origImage = obj.getImage();
 		obj.setImage("imageForSerialization");
