@@ -1,10 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.drivers.DriverUsage.ParamCount;
-import controller.map.misc.CLIHelper;
-import controller.map.misc.ICLIHelper;
-import controller.map.misc.IDFactory;
-import controller.map.misc.IDFactoryFiller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +9,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import controller.map.drivers.DriverUsage.ParamCount;
+import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
+import controller.map.misc.IDFactory;
+import controller.map.misc.IDFactoryFiller;
 import model.map.Player;
 import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
@@ -69,8 +70,7 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 				StreamSupport.stream(dmodel.getPlayers().spliterator(), false).collect(
 						Collectors.toList());
 		final IDFactory idf = IDFactoryFiller.createFactory(dmodel);
-		try {
-			final ICLIHelper cli = new CLIHelper();
+		try (ICLIHelper cli = new CLIHelper()) {
 			final String desc = "Players in the maps:";
 			final String none = "No players found.";
 			final String prpt = "Player to add resources for: ";
