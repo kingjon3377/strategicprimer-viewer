@@ -351,7 +351,10 @@ public final class ReportGenerator {
 		for (final Point point : map.locations()) {
 			// Because neither Forests, Mountains, nor Ground have positive IDs,
 			// we can ignore everything but the "other" fixtures.
-			retval.putAll(getFixtures(map.streamOtherFixtures(point)).filter(fix -> fix instanceof TileFixture || fix.getID() > 0).collect(Collectors.toMap(fix -> {
+			retval.putAll(getFixtures(map.streamOtherFixtures(point))
+					              .filter(fix -> (fix instanceof TileFixture) ||
+							                             (fix.getID() > 0))
+					              .collect(Collectors.toMap(fix -> {
 				if (fix instanceof TileFixture) {
 					return Integer.valueOf(idf.createID());
 				} else {
