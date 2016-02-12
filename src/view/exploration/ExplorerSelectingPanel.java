@@ -15,6 +15,9 @@ import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.text.Document;
 
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.exploration.ExplorationModel;
 import model.exploration.ExplorationUnitListModel;
 import model.exploration.PlayerListModel;
@@ -124,8 +127,10 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 																						   emodel);
 		addPlayerChangeListener(unitListModel);
 		unitList = new JList<>(unitListModel);
-		unitList.setCellRenderer((list, value, index, isSelected, cellHasFocus) -> {
-			final ListCellRenderer<Object> defRenderer = new DefaultListCellRenderer();
+		unitList.setCellRenderer((final JList<? extends @NonNull IUnit> list,
+				@Nullable final IUnit value, final int index,
+				final boolean isSelected, final boolean cellHasFocus) -> {
+			final ListCellRenderer<@Nullable Object> defRenderer = new DefaultListCellRenderer();
 			final Component retval =
 					defRenderer.getListCellRendererComponent(
 							NullCleaner.assertNotNull(list), value, index,
