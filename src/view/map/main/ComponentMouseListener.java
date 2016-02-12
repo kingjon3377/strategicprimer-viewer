@@ -6,6 +6,9 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
 import model.map.IMapNG;
@@ -17,11 +20,9 @@ import model.map.TileFixture;
 import model.map.fixtures.Ground;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
-import model.viewer.FixtureComparator;
 import model.viewer.IViewerModel;
 import model.viewer.TileViewSize;
 import model.viewer.VisibleDimensions;
-import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
 import util.NullCleaner;
 
@@ -49,11 +50,6 @@ import util.NullCleaner;
  */
 public final class ComponentMouseListener extends MouseAdapter implements
 		SelectionChangeSource {
-	/**
-	 * Comparator to find which fixture is on top of a tile.
-	 */
-	private final FixtureComparator fixComp = new FixtureComparator();
-
 	/**
 	 * The terrain-changing menu.
 	 */
