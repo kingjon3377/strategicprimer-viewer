@@ -37,6 +37,7 @@ import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
 import org.junit.Test;
 import util.IteratorWrapper;
+import util.NullStream;
 import util.Warning;
 
 import static org.junit.Assert.assertEquals;
@@ -379,7 +380,7 @@ public final class TestConverter {
 					outTwo.toString());
 		}
 		assertTrue("Actual is at least subset of expected converted", converted.isSubset(
-				new OneToTwoConverter().convert(original, true), System.out, ""));
+				new OneToTwoConverter().convert(original, true), NullStream.DEV_NULL, ""));
 	}
 	/**
 	 * Test whether an item is in a Stream. Note that this is a stream-modifying operation.
