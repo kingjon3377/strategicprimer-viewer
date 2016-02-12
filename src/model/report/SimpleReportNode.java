@@ -173,7 +173,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 * @param txt the new text for the node
 	 */
 	@Override
-	public void setText(final String txt) {
+	public void setText(@Nullable final String txt) {
 		if (txt != null) {
 			text = txt;
 			setUserObject(text);
