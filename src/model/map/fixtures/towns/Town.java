@@ -24,6 +24,7 @@ import model.map.Player;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 public final class Town extends AbstractTown {
 	/**
 	 * Constructor.

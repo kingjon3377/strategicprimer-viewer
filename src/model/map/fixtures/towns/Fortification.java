@@ -26,6 +26,7 @@ import model.map.Player;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 public final class Fortification extends AbstractTown {
 	/**
 	 * Constructor.
