@@ -49,7 +49,7 @@ public final class MapVersionException extends SPFormatException {
 	/**
 	 * The location of the start of the document.
 	 */
-	private static class ZeroLocation implements Location {
+	protected static class ZeroLocation implements Location {
 		/**
 		 * @return zero
 		 */
