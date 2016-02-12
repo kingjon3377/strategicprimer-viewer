@@ -205,6 +205,7 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public boolean inputBoolean(final String prompt) throws IOException {
+		//noinspection ForLoopWithMissingComponent
 		for (String input = lower(inputString(prompt)); ;
 				input = lower(inputString(prompt))) {
 			if (EqualsAny.equalsAny(input, "yes", "true", "y", "t")) {
