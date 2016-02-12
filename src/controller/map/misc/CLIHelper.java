@@ -13,10 +13,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.HasName;
+import org.eclipse.jdt.annotation.NonNull;
 import util.EqualsAny;
 import util.IsNumeric;
 import util.NullCleaner;
@@ -191,7 +189,13 @@ public final class CLIHelper implements ICLIHelper {
 			return NullCleaner.assertNotNull(line.trim());
 		}
 	}
-
+	/**
+	 * @param str a string
+	 * @return its lower case equivalent
+	 */
+	private static String lower(final String str) {
+		return NullCleaner.assertNotNull(str.toLowerCase(Locale.US));
+	}
 	/**
 	 * Ask the user a yes-or-no question.
 	 *
@@ -201,13 +205,8 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public boolean inputBoolean(final String prompt) throws IOException {
-		for (String input = NullCleaner.assertNotNull(
-				inputString(prompt).toLowerCase(Locale.US)); ; input = NullCleaner
-						                                                       .assertNotNull(
-								                                                       inputString(
-										                                                       prompt)
-										                                                       .toLowerCase(
-												                                                       Locale.US))) {
+		for (String input = lower(inputString(prompt)); ;
+				input = lower(inputString(prompt))) {
 			if (EqualsAny.equalsAny(input, "yes", "true", "y", "t")) {
 				return true; // NOPMD
 			} else if (EqualsAny.equalsAny(input, "no", "false", "n", "f")) {
