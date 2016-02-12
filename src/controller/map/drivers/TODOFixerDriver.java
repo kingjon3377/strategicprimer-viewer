@@ -50,6 +50,8 @@ public final class TODOFixerDriver {
 	private final IMutableMapNG map;
 	/**
 	 * A helper to get strings from the user.
+	 *
+	 * TODO: Make this and stdout parameters rather than fields, so we can test this class
 	 */
 	private final ICLIHelper helper = new CLIHelper();
 	/**

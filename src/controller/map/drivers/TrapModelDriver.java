@@ -69,6 +69,8 @@ public final class TrapModelDriver implements SimpleDriver {
 
 	/**
 	 * Helper to get numbers from the user, etc.
+	 *
+	 * TODO: Make a paramter, so we can test this class.
 	 */
 	private final ICLIHelper helper = new CLIHelper();
 
