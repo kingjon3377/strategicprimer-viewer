@@ -1,9 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.CLIHelper;
-import controller.map.misc.ICLIHelper;
-import controller.map.misc.MapReaderAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,7 +7,13 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.xml.stream.XMLStreamException;
+
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
+import controller.map.misc.MapReaderAdapter;
 import model.map.IMutableMapNG;
 import model.map.Point;
 import model.map.fixtures.mobile.Unit;
@@ -86,7 +88,22 @@ public final class TODOFixerDriver {
 	 * Possible kinds of terrain.
 	 */
 	private enum SimpleTerrain {
-		Unforested, Forested, Ocean, Other
+		/**
+		 * Plains, desert, and mountains.
+		 */
+		Unforested,
+		/**
+		 * Temperate, forest, boreal forest, and steppe.
+		 */
+		Forested,
+		/**
+		 * Ocean.
+		 */
+		Ocean,
+		/**
+		 * Anything else.
+		 */
+		Other
 	}
 	/**
 	 * Fix a stubbed-out kind for a unit.

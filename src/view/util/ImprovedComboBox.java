@@ -36,6 +36,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
+ * @param <T> the type of thing listed in the combo box
  */
 public class ImprovedComboBox<T> extends JComboBox<T> {
 	/**

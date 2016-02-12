@@ -197,7 +197,11 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 			return null;
 		}
 	}
-
+	/**
+	 * Add a unit at the given location in all maps.
+	 * @param unit the unit to add
+	 * @param location where to add it
+	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void addUnitAtLocation(final IUnit unit, final Point location) {
 		if (getSubordinateMaps().iterator().hasNext()) {

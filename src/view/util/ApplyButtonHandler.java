@@ -2,6 +2,7 @@ package view.util;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -40,6 +41,7 @@ public final class ApplyButtonHandler implements ActionListener {
 	 * Constructor.
 	 *
 	 * @param app the Applyable that does the heavy lifting.
+	 * @param rev the Revertible that does the other heavy lifting
 	 */
 	public ApplyButtonHandler(final Applyable app, final Revertible rev) {
 		objOne = app;

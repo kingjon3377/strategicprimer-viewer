@@ -160,6 +160,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 
 	/**
 	 * A base class for our nodes.
+	 * @param <T> the type of thing stored in the node
 	 */
 	@SuppressWarnings("CloneableClassInSecureContext")
 	public static class WorkerTreeNode<T> extends

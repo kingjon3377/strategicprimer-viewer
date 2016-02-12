@@ -1,15 +1,22 @@
 package controller.map.converter;
 
-import controller.map.cxml.CompactXMLWriter;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.MapReaderAdapter;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Objects;
 import java.util.stream.Stream;
+
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
+
+import org.junit.Test;
+
+import controller.map.cxml.CompactXMLWriter;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.MapReaderAdapter;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.MapDimensions;
@@ -35,12 +42,8 @@ import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
-import org.junit.Test;
 import util.IteratorWrapper;
 import util.Warning;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * The test case for map-conversion code paths.
@@ -128,6 +131,8 @@ public final class TestConverter {
 	}
 	/**
 	 * Test version-1 to version-2 conversion.
+	 *
+	 * @throws IOException on I/O error causing test failure
 	 *
 	 * TODO: Make the converter (and the tests) pass the map size to the encounter tables.
 	 */
@@ -393,6 +398,9 @@ public final class TestConverter {
 
 	/**
 	 * Test version-0 to version-1 conversion.
+	 * @throws IOException on I/O error causing test failure
+	 * @throws XMLStreamException on malformed XML in tests
+	 * @throws SPFormatException on malformed SP XML in tests
 	 */
 	@SuppressWarnings("deprecation")
 	@Test

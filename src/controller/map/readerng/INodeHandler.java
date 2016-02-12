@@ -1,5 +1,16 @@
 package controller.map.readerng;
 
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+
+import org.eclipse.jdt.annotation.NonNull;
+
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -8,18 +19,10 @@ import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.List;
-import javax.xml.namespace.QName;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
 import model.map.HasImage;
 import model.map.IMutablePlayerCollection;
 import model.map.IPlayerCollection;
 import model.map.Player;
-import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
 import util.Warning;
 
@@ -305,6 +308,7 @@ public interface INodeHandler<@NonNull T> {
 	 * @param attr         the attribute we want
 	 * @param defaultValue the default value if the element doesn't have the attribute
 	 * @return the value of attribute if it exists, or the default
+	 * @throws SPFormatException on malformed XML (not an integer)
 	 */
 	default int getIntegerAttribute(final StartElement elem, final String attr,
 	                                      final int defaultValue)

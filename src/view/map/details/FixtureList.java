@@ -172,6 +172,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		 * Constructor.
 		 *
 		 * @param playerColl the collection of players in the map
+		 * @param theList the list to listen on
 		 */
 		protected FixtureMouseListener(final Iterable<Player> playerColl, final
 		JList<TileFixture> theList) {

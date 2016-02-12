@@ -4,15 +4,18 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.exploration.IExplorationModel;
 import model.map.TileFixture;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import view.map.details.FixtureList;
 
@@ -201,6 +204,7 @@ public final class ExplorationListListener implements ListDataListener {
 	}
 	/**
 	 * A wrapper around a ListModel.
+	 * @param <E> the type of thing in the list model.
 	 */
 	private static class ListModelWrapper<E> extends AbstractList<E> {
 		/**

@@ -13,8 +13,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import model.map.HasName;
+
 import org.eclipse.jdt.annotation.NonNull;
+
+import model.map.HasName;
 import util.EqualsAny;
 import util.IsNumeric;
 import util.NullCleaner;
@@ -68,6 +70,7 @@ public final class CLIHelper implements ICLIHelper {
 	 * Constructor.
 	 *
 	 * @param in the stream to read from.
+	 * @param out the writer to write to
 	 */
 	public CLIHelper(final Reader in, final Writer out) { // NOPMD
 		istream = new BufferedReader(in);

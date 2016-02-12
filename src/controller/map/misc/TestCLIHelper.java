@@ -1,16 +1,18 @@
 package controller.map.misc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Collections;
-import model.map.Player;
+
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import model.map.Player;
 
 /**
  * Tests for CLIHelper
@@ -37,6 +39,7 @@ import static org.junit.Assert.assertTrue;
 public class TestCLIHelper {
 	/**
 	 * Test chooseFromList().
+	 * @throws IOException on I/O error causing test failure
 	 */
 	@Test
 	public void testChooseFromList() throws IOException {
@@ -92,6 +95,7 @@ public class TestCLIHelper {
 	}
 	/**
 	 * Test inputNumber().
+	 * @throws IOException on I/O error causing test failure
 	 */
 	@Test
 	public void testInputNumber() throws IOException {
@@ -118,6 +122,7 @@ public class TestCLIHelper {
 	}
 	/**
 	 * Test for inputString().
+	 * @throws IOException on I/O error causing test failure
 	 */
 	@Test
 	public void testInputString() throws IOException {
@@ -142,6 +147,7 @@ public class TestCLIHelper {
 	}
 	/**
 	 * Test for inputBoolean().
+	 * @throws IOException on I/O error causing test failure
 	 */
 	@SuppressWarnings("boxing")
 	@Test
@@ -206,6 +212,7 @@ public class TestCLIHelper {
 	}
 	/**
 	 * Test chooseStringFromList().
+	 * @throws IOException on I/O error causing test failure
 	 */
 	@Test
 	public void testStringChooseFromList() throws IOException {

@@ -204,6 +204,7 @@ public class SPMenu extends JMenuBar {
 	 * Create the "view" menu.
 	 *
 	 * @return the "edit" menu
+	 * @param handler the listener to handle item selections
 	 */
 	protected static JMenu createViewMenu(final ActionListener handler) {
 		final JMenu viewtMenu = new JMenu("View");

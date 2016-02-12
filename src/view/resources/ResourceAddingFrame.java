@@ -206,6 +206,12 @@ public class ResourceAddingFrame extends JFrame {
 	 * Extends ImprovedComboBox to keep a running collection of values.
 	 */
 	private static class UpdatedComboBox extends ImprovedComboBox<String> {
+		/**
+		 * Constructor. We need it to be neither private nor public for this to
+		 * work with as few warnings as possible as a private inner class, and
+		 * it needs to do something to not be an empty method, so we moved the
+		 * initialization of the collection here.
+		 */
 		protected UpdatedComboBox() {
 			values = new HashSet<>();
 		}

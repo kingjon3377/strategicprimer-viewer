@@ -38,6 +38,7 @@ public final class SplitWithWeights extends JSplitPane {
 	 * @param resWeight the resize weight
 	 * @param left      the left or top component
 	 * @param right     the right or bottom component
+	 * @return a JSPlitPane split vertically
 	 */
 	public static JSplitPane vertical(final double divLoc, final double resWeight,
 	                           final Component left, final Component right) {
@@ -49,6 +50,7 @@ public final class SplitWithWeights extends JSplitPane {
 	 * @param resWeight the resize weight
 	 * @param left      the left or top component
 	 * @param right     the right or bottom component
+	 * @return a JSplitPane split horizontally
 	 */
 	public static JSplitPane horizontal(final double divLoc, final double resWeight,
 	                             final Component left, final Component right) {

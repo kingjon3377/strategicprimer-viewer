@@ -257,6 +257,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		}
 		/**
 		 * Update the label.
+		 * @param stats the stats to show
 		 */
 		public void recache(@Nullable final WorkerStats stats) {
 			if (stats == null) {
