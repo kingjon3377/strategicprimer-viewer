@@ -385,6 +385,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @param indent the indentation level
 	 * @throws IOException on I/O error writing to stream
 	 */
+	@SuppressWarnings("TypeMayBeWeakened")
 	protected static void writeTag(final Appendable ostream, final String tag,
 	                               final int indent) throws IOException {
 		indent(ostream, indent);
