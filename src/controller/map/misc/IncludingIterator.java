@@ -225,7 +225,12 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	 */
 	@Override
 	public String toString() {
-		return "IncludingIterator";
+		final Pair<String, ComparableIterator<XMLEvent>> top = stack.peekFirst();
+		if (top != null) {
+			return "IncludingIterator, currently on " + top.first();
+		} else {
+			return "Empty IncludingIterator";
+		}
 	}
 
 	/**
