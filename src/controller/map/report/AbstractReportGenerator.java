@@ -171,6 +171,15 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		public int size() {
 			return wrapped.size();
 		}
+		/**
+		 * Add an item to the list.
+		 * @param element the item to add
+		 * @param index where to add it
+		 */
+		@Override
+		public void add(final int index, final String element) {
+			wrapped.add(index, element);
+		}
 	}
 	/**
 	 * @param point a point
