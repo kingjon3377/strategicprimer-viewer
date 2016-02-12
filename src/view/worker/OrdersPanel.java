@@ -136,13 +136,15 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 		final ActionMap actionMap = getActionMap();
 		assert (inputMap != null) && (actionMap != null);
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, keyMask), "openOrders");
+		// Prevent synthetic access warning
+		final JTextArea localArea = area;
 		actionMap.put("openOrders", new AbstractAction() {
 			@Override
 			public void actionPerformed(@Nullable final ActionEvent evt) {
-				final boolean newlyGainingFocus = !area.isFocusOwner();
-				area.requestFocusInWindow();
+				final boolean newlyGainingFocus = !localArea.isFocusOwner();
+				localArea.requestFocusInWindow();
 				if (newlyGainingFocus) {
-					area.selectAll();
+					localArea.selectAll();
 				}
 			}
 			@SuppressWarnings({ "unused" })
