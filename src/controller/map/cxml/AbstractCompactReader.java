@@ -56,11 +56,6 @@ import util.Warning;
 public abstract class AbstractCompactReader<@NonNull T>
 		implements CompactReader<@NonNull T> {
 	/**
-	 * The string to use instead of the tag in exceptions when the tag is null.
-	 */
-	private static final String NULL_TAG = "a null tag";
-
-	/**
 	 * Do not instantiate directly.
 	 */
 	protected AbstractCompactReader() {
