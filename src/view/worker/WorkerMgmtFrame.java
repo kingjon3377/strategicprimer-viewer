@@ -1,11 +1,10 @@
 package view.worker;
 
-import static java.util.logging.Level.SEVERE;
-import static javax.swing.JFileChooser.APPROVE_OPTION;
-
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Frame;
+import com.bric.window.WindowList;
+import controller.map.misc.IDFactoryFiller;
+import controller.map.misc.IOHandler;
+import controller.map.report.ReportGenerator;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -22,34 +21,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
-
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
-import com.bric.window.WindowList;
-
-import controller.map.misc.IDFactoryFiller;
-import controller.map.misc.IOHandler;
-import controller.map.report.ReportGenerator;
 import model.listeners.MapChangeListener;
 import model.listeners.PlayerChangeListener;
 import model.map.DistanceComparator;
@@ -73,6 +50,8 @@ import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
 import model.workermgmt.WorkerTreeModelAlt;
 import model.workermgmt.WorkerTreeModelAlt.PlayerNode;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import view.map.main.ViewerFrame;
@@ -80,6 +59,9 @@ import view.util.BorderedPanel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
 import view.util.SystemOut;
+
+import static java.util.logging.Level.SEVERE;
+import static javax.swing.JFileChooser.APPROVE_OPTION;
 
 /**
  * A window to let the player manage units.
@@ -644,6 +626,13 @@ public final class WorkerMgmtFrame extends JFrame {
 			RGT_LOGGER.info("Finished generating report");
 			SwingUtilities.invokeLater(() -> tmodel.setRoot(report));
 		}
+		/**
+		 * @return a String representation of the thread
+		 */
+		@Override
+		public String toString() {
+			return "Generating report for " + player;
+		}
 	}
 
 	/**
@@ -698,6 +687,13 @@ public final class WorkerMgmtFrame extends JFrame {
 		@Override
 		public final FocusRequester clone() throws CloneNotSupportedException {
 			throw new CloneNotSupportedException("Cloning is not allowed.");
+		}
+		/**
+		 * @return a String representation of the action
+		 */
+		@Override
+		public String toString() {
+			return "Requesting focus in a " + component.getClass().getSimpleName();
 		}
 	}
 
