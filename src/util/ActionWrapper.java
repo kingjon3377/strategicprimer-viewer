@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.*;
+import javax.swing.AbstractAction;
 
 /**
  * A wrapper around an ActionListener that extends AbstractAction, for the exceedingly

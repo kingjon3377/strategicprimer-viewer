@@ -1,6 +1,5 @@
 package view.map.main;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -8,8 +7,8 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.*;
-import org.eclipse.jdt.annotation.Nullable;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import util.ActionWrapper;
 
 import static java.awt.event.InputEvent.CTRL_DOWN_MASK;

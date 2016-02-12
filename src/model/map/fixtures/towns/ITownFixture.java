@@ -2,7 +2,6 @@ package model.map.fixtures.towns;
 
 import model.map.HasName;
 import model.map.HasOwner;
-import model.map.Player;
 import model.map.TileFixture;
 
 /**
