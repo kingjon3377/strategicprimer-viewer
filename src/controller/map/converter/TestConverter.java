@@ -1,22 +1,15 @@
 package controller.map.converter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
+import controller.map.cxml.CompactXMLWriter;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.MapReaderAdapter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Objects;
 import java.util.stream.Stream;
-
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
-
-import org.junit.Test;
-
-import controller.map.cxml.CompactXMLWriter;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.MapReaderAdapter;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.MapDimensions;
@@ -42,8 +35,12 @@ import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
+import org.junit.Test;
 import util.IteratorWrapper;
 import util.Warning;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * The test case for map-conversion code paths.
@@ -370,15 +367,17 @@ public final class TestConverter {
 		converted.setBaseTerrain(PointFactory.point(7, 7), TileType.Plains);
 		converted.setGround(PointFactory.point(7, 7), new Ground(ROCK_TYPE, false));
 
-		final StringWriter outOne = new StringWriter();
-		final StringWriter outTwo = new StringWriter();
-		assertEquals("Products of two runs are both or neither subsets of expected",
-				converted.isSubset(
-						new OneToTwoConverter().convert(original, true), outOne, ""),
-				converted.isSubset(
-						new OneToTwoConverter().convert(original, true), outTwo, ""));
-		assertEquals("Two runs produce identical results", outOne.toString(),
-				outTwo.toString());
+
+		try (StringWriter outOne = new StringWriter(); StringWriter outTwo = new StringWriter()) {
+
+			assertEquals("Products of two runs are both or neither subsets of expected",
+					converted.isSubset(
+							new OneToTwoConverter().convert(original, true), outOne, ""),
+					converted.isSubset(
+							new OneToTwoConverter().convert(original, true), outTwo, ""));
+			assertEquals("Two runs produce identical results", outOne.toString(),
+					outTwo.toString());
+		}
 		assertTrue("Actual is at least subset of expected converted", converted.isSubset(
 				new OneToTwoConverter().convert(original, true), System.out, ""));
 	}
