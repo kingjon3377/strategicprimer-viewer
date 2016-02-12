@@ -217,7 +217,7 @@ public final class FortressMemberReportGenerator extends AbstractReportGenerator
 	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point,
 			                                                                        IFixture>> fixtures,
 
-	                                   final IMapNG map, Player currentPlayer,
+	                                   final IMapNG map, final Player currentPlayer,
 	                                   final FortressMember item, final Point loc) {
 		if (item instanceof Unit) {
 			return new UnitReportGenerator(pairComparator).produceRIR(fixtures, map, currentPlayer,
