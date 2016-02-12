@@ -439,11 +439,10 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 *
 	 * @throws SPFormatException  on SP format error
 	 * @throws XMLStreamException on XML reading error
-	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
 	public void testNamespacedSerialization() throws XMLStreamException,
-			                                           SPFormatException, IOException {
+			                                           SPFormatException {
 		final Player player = new Player(1, "playerOne");
 		player.setCurrent(true);
 		final IMutableMapNG firstMap =
