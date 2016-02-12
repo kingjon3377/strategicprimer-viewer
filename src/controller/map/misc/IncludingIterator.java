@@ -239,6 +239,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 				new QName(ISPReader.NAMESPACE, FILE_ATTR_NAME));
 		final String namespacedValue;
 		if (namespacedAttr == null) {
+			//noinspection AssignmentToNull
 			namespacedValue = null;
 		} else {
 			namespacedValue = namespacedAttr.getValue();
