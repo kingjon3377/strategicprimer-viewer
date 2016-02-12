@@ -240,7 +240,7 @@ public final class HarvestableReportGenerator
 			shrubsNode.add(entry.getValue());
 		}
 		final SectionReportNode retval = new SectionReportNode(4, "Resource Sources");
-		if (maybeAdd(retval, caches, groves, meadows, mines, minerals, stone,
+		if (addAllNonEmpty(retval, caches, groves, meadows, mines, minerals, stone,
 				shrubsNode)) {
 			return retval; // NOPMD
 		} else {
@@ -253,8 +253,8 @@ public final class HarvestableReportGenerator
 	 * @param children nodes to add iff they have children of their own
 	 * @return whether any of them was added
 	 */
-	private static boolean maybeAdd(final DefaultMutableTreeNode parent,
-								   final MutableTreeNode... children) {
+	private static boolean addAllNonEmpty(final DefaultMutableTreeNode parent,
+	                                      final MutableTreeNode... children) {
 		boolean retval = false;
 		for (final MutableTreeNode child : children) {
 			if (child.getChildCount() != 0) {
