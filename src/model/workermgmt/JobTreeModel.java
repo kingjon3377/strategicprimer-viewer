@@ -193,8 +193,8 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 							   @Nullable final Object child) {
 		if ((parent instanceof IWorker) || (parent instanceof IJob)) {
 			// TODO: Ought to be able to do this with the Stream API
-			int index = 0;
 			assert parent != null;
+			int index = 0;
 			for (final Object item : (Iterable<?>) parent) {
 				if (item.equals(child)) {
 					return index; // NOPMD

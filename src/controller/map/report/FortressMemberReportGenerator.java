@@ -81,10 +81,10 @@ public final class FortressMemberReportGenerator extends AbstractReportGenerator
 		final StringBuilder eqBuilder =
 				new StringBuilder(1024).append(OPEN_LIST_ITEM).append("Equipment:")
 						.append(OPEN_LIST);
-		boolean anyResources = false;
-		boolean anyEquipment = false;
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
+		boolean anyResources = false;
+		boolean anyEquipment = false;
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof ResourcePile) {
 				anyResources = true;
