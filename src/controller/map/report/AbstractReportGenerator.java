@@ -1,22 +1,17 @@
 package controller.map.report;
 
-import java.io.IOException;
-import java.io.NotSerializableException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.DistanceComparator;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.Point;
 import model.map.PointFactory;
+import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
 import util.Pair;
 import util.PairComparator;
@@ -104,19 +99,16 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		 */
 		String getHeader();
 	}
-
 	/**
 	 * A list that produces HTML in its toString().
-	 *
 	 * @author Jonathan Lovelace
 	 */
-	@SuppressWarnings("CloneableClassInSecureContext")
-	protected static final class HtmlList extends ArrayList<@NonNull String>
+	protected static final class HtmlList extends AbstractList<@NonNull String>
 			implements HeadedList<@NonNull String> {
 		/**
-		 * Version UID for serialization.
+		 * Actually stores list items.
 		 */
-		private static final long serialVersionUID = 1L;
+		private final List<@NonNull String> wrapped = new ArrayList<>();
 		/**
 		 * The header: what to print before opening the list.
 		 */
@@ -162,28 +154,24 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 				return NullCleaner.valueOrDefault(retval, "");
 			}
 		}
+
 		/**
-		 * Prevent serialization.
-		 * @param out ignored
-		 * @throws IOException always
+		 * @param index an index
+		 * @return the item at that index
 		 */
-		@SuppressWarnings({ "unused", "static-method" })
-		private void writeObject(final ObjectOutputStream out) throws IOException {
-			throw new NotSerializableException("Serialization is not allowed");
+		@Override
+		public String get(final int index) {
+			return wrapped.get(index);
 		}
+
 		/**
-		 * Prevent serialization
-		 * @param in ignored
-		 * @throws IOException always
-		 * @throws ClassNotFoundException never
+		 * @return the number of items in the list
 		 */
-		@SuppressWarnings({ "unused", "static-method" })
-		private void readObject(final ObjectInputStream in)
-				throws IOException, ClassNotFoundException {
-			throw new NotSerializableException("Serialization is not allowed");
+		@Override
+		public int size() {
+			return wrapped.size();
 		}
 	}
-
 	/**
 	 * @param point a point
 	 * @return the string "At " followed by the point's location
