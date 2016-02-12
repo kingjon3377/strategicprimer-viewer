@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -87,7 +88,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * Comparator to find which fixture to draw.
 	 */
-	private final FixtureComparator fixComp = new FixtureComparator();
+	private final Comparator<@NonNull TileFixture> fixComp = new FixtureComparator();
 
 	/**
 	 * @return a hash value forthe object
