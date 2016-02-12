@@ -66,6 +66,7 @@ import model.workermgmt.WorkerTreeModelAlt;
 import model.workermgmt.WorkerTreeModelAlt.PlayerNode;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+import util.ActionWrapper;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import view.map.main.ViewerFrame;
@@ -652,28 +653,20 @@ public final class WorkerMgmtFrame extends JFrame {
 	/**
 	 * An action to request focus in a component.
 	 */
-	private static class FocusRequester extends AbstractAction {
+	private static class FocusRequester extends ActionWrapper {
 		/**
-		 * The component we care about.
+		 * The type of component we're handling.
 		 */
-		private final JComponent component;
-
+		private final String type;
 		/**
 		 * Constructor.
 		 * @param comp The component to request focus in.
 		 */
 		protected FocusRequester(final WorkerTree comp) {
-			component = comp;
+			super(evt -> comp.requestFocusInWindow());
+			type = comp.getClass().getSimpleName();
 		}
 
-		/**
-		 * Handle the menu item click.
-		 * @param evt the event to handle
-		 */
-		@Override
-		public void actionPerformed(final @Nullable ActionEvent evt) {
-			component.requestFocusInWindow();
-		}
 		/**
 		 * Prevent serialization.
 		 * @param out ignored
@@ -695,19 +688,11 @@ public final class WorkerMgmtFrame extends JFrame {
 			throw new NotSerializableException("Serialization is not allowed");
 		}
 		/**
-		 * Prevent cloning.
-		 */
-		@SuppressWarnings({"UseOfClone", "CloneDoesntCallSuperClone"})
-		@Override
-		public final FocusRequester clone() throws CloneNotSupportedException {
-			throw new CloneNotSupportedException("Cloning is not allowed.");
-		}
-		/**
 		 * @return a String representation of the action
 		 */
 		@Override
 		public String toString() {
-			return "Requesting focus in a " + component.getClass().getSimpleName();
+			return "Requesting focus in a " + type;
 		}
 	}
 

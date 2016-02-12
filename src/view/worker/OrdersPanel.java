@@ -8,26 +8,18 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.ProxyUnit;
 import model.workermgmt.IWorkerModel;
+import org.eclipse.jdt.annotation.Nullable;
+import util.ActionWrapper;
 import util.NullCleaner;
 import view.util.Applyable;
 import view.util.BorderedPanel;
@@ -138,30 +130,13 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, keyMask), "openOrders");
 		// Prevent synthetic access warning
 		final JTextArea localArea = area;
-		actionMap.put("openOrders", new AbstractAction() {
-			@Override
-			public void actionPerformed(@Nullable final ActionEvent evt) {
+		actionMap.put("openOrders", new ActionWrapper(evt ->  {
 				final boolean newlyGainingFocus = !localArea.isFocusOwner();
 				localArea.requestFocusInWindow();
 				if (newlyGainingFocus) {
 					localArea.selectAll();
 				}
-			}
-			@SuppressWarnings("unused")
-			private void writeObject(final ObjectOutputStream out) throws IOException {
-				throw new NotSerializableException("Serialization is not allowed");
-			}
-			@SuppressWarnings("unused")
-			private void readObject(final ObjectInputStream in)
-					throws IOException, ClassNotFoundException {
-				throw new NotSerializableException("Serialization is not allowed");
-			}
-			@SuppressWarnings("CloneReturnsClassType")
-			@Override
-			public Object clone() throws CloneNotSupportedException {
-				throw new CloneNotSupportedException("Cloning is not allowed.");
-			}
-		});
+			}));
 	}
 
 	/**

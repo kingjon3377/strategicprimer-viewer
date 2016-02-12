@@ -1,9 +1,5 @@
 package view.map.main;
 
-import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
-import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
-import static javax.swing.KeyStroke.getKeyStroke;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -12,12 +8,13 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.swing.AbstractAction;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-
+import javax.swing.*;
 import org.eclipse.jdt.annotation.Nullable;
+import util.ActionWrapper;
+
+import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
+import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
+import static javax.swing.KeyStroke.getKeyStroke;
 
 /**
  * A class to handle setting up listeners for the arrow keys.
@@ -215,7 +212,7 @@ public final class ArrowKeyListener {
 	/**
 	 * A listener to move the cursor in a direction. Wraps an ActionListener.
 	 */
-	private static class DirectionListener extends AbstractAction {
+	private static class DirectionListener extends ActionWrapper {
 		/**
 		 * The wrapped action.
 		 */
@@ -229,6 +226,11 @@ public final class ArrowKeyListener {
 		 * @param num how many times to repeat it on each user action
 		 */
 		protected DirectionListener(final ActionListener action, final int num) {
+			super(evt -> {
+				for (int i = 0; i < num; i++) {
+					action.actionPerformed(evt);
+				}
+			});
 			wrapped = action;
 			count = num;
 		}
@@ -237,16 +239,6 @@ public final class ArrowKeyListener {
 		 */
 		protected DirectionListener(final ActionListener action) {
 			this(action, 1);
-		}
-
-		/**
-		 * @param e the event to pass to the wrapped ActionListener
-		 */
-		@Override
-		public void actionPerformed(@Nullable final ActionEvent e) {
-			for (int i = 0; i < count; i++) {
-				wrapped.actionPerformed(e);
-			}
 		}
 		/**
 		 * Prevent serialization.
@@ -267,14 +259,6 @@ public final class ArrowKeyListener {
 		private void readObject(final ObjectInputStream in)
 				throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("Serialization is not allowed");
-		}
-		/**
-		 * Prevent cloning.
-		 */
-		@SuppressWarnings({"UseOfClone", "CloneDoesntCallSuperClone"})
-		@Override
-		public final DirectionListener clone() throws CloneNotSupportedException {
-			throw new CloneNotSupportedException("Cloning is not allowed.");
 		}
 	}
 

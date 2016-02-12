@@ -5,7 +5,6 @@ import java.awt.dnd.DragGestureEvent;
 import java.awt.dnd.DragGestureListener;
 import java.awt.dnd.DragSource;
 import java.awt.dnd.DropTarget;
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -14,17 +13,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
-
-import javax.swing.AbstractAction;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.JList;
-import javax.swing.KeyStroke;
-import javax.swing.ListSelectionModel;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
+import javax.swing.*;
 import model.listeners.SelectionChangeListener;
 import model.map.Player;
 import model.map.Point;
@@ -34,6 +23,9 @@ import model.viewer.CurriedFixtureTransferable;
 import model.viewer.FixtureListDropListener;
 import model.viewer.FixtureListModel;
 import model.viewer.FixtureTransferable;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+import util.ActionWrapper;
 import util.NullCleaner;
 
 /**
@@ -86,26 +78,9 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "delete");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0),
 				"delete");
-		getActionMap().put("delete", new AbstractAction() {
-			@Override
-			public void actionPerformed(@Nullable final ActionEvent event) {
-				((FixtureListModel) getModel()).removeAll(getSelectedValuesList());
-			}
-			@SuppressWarnings("unused")
-			private void writeObject(final ObjectOutputStream out) throws IOException {
-				throw new NotSerializableException("Serialization is not allowed");
-			}
-			@SuppressWarnings("unused")
-			private void readObject(final ObjectInputStream in)
-					throws IOException, ClassNotFoundException {
-				throw new NotSerializableException("Serialization is not allowed");
-			}
-			@Override
-			@SuppressWarnings("CloneReturnsClassType")
-			public Object clone() throws CloneNotSupportedException {
-				throw new CloneNotSupportedException("Cloning is not allowed.");
-			}
-		});
+		getActionMap().put("delete",
+				new ActionWrapper(event -> ((FixtureListModel) getModel())
+						                           .removeAll(getSelectedValuesList())));
 		addMouseListener(new FixtureMouseListener(players, this));
 	}
 

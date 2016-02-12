@@ -12,15 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.swing.AbstractAction;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.ListModel;
-import javax.swing.SwingUtilities;
-
-import org.eclipse.jdt.annotation.Nullable;
-
+import javax.swing.*;
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
 import model.listeners.MovementCostListener;
@@ -40,6 +32,7 @@ import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
@@ -66,6 +59,10 @@ import view.map.details.FixtureList;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
+ *
+ * This can't extend ActionWrapper because it'd need to pass a method reference on
+ * 'this' in the lambda it passed to ActionWrapper constructor, which is of course not
+ * allowed.
  */
 public final class ExplorationClickListener extends AbstractAction implements
 		MovementCostSource, SelectionChangeSource {
