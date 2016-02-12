@@ -47,6 +47,10 @@ import static controller.map.misc.FileOpener.createReader;
  */
 public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	/**
+	 * The attribute on include tags that tells what file to include.
+	 */
+	public static final String FILE_ATTR_NAME = "file";
+	/**
 	 * The stack of iterators we're working with.
 	 */
 	private final Deque<Pair<String, ComparableIterator<XMLEvent>>> stack;
@@ -231,8 +235,8 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	 */
 	private static String getFileAttribute(final StartElement startElement)
 			throws SPFormatException {
-		final Attribute namespacedAttr =
-				startElement.getAttributeByName(new QName(ISPReader.NAMESPACE, "file"));
+		final Attribute namespacedAttr = startElement.getAttributeByName(
+				new QName(ISPReader.NAMESPACE, FILE_ATTR_NAME));
 		final String namespacedValue;
 		if (namespacedAttr == null) {
 			namespacedValue = null;
@@ -241,13 +245,13 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 		}
 		if (namespacedValue == null) {
 			final Attribute defaultAttr =
-					startElement.getAttributeByName(new QName("file"));
+					startElement.getAttributeByName(new QName(FILE_ATTR_NAME));
 			if (defaultAttr == null) {
-				throw new MissingPropertyException(startElement, "file");
+				throw new MissingPropertyException(startElement, FILE_ATTR_NAME);
 			}
 			final String value = defaultAttr.getValue();
 			if (value == null) {
-				throw new MissingPropertyException(startElement, "file");
+				throw new MissingPropertyException(startElement, FILE_ATTR_NAME);
 			} else {
 				return value;
 			}
