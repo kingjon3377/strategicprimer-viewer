@@ -220,7 +220,6 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	}
 
 	/**
-	 * TODO: show diagnostics
 	 * @return a String representation of the object
 	 */
 	@Override
