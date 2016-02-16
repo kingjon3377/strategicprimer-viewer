@@ -186,7 +186,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	@Override
 	public String getDefaultImage() {
 		String retval = "";
-		for (IUnit unit : proxied) {
+		for (final IUnit unit : proxied) {
 			if (retval.isEmpty()) {
 				retval = unit.getDefaultImage();
 			} else if (!retval.equals(unit.getDefaultImage())) {
@@ -351,7 +351,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	@Override
 	public Player getOwner() {
 		@Nullable Player retval = null;
-		for (IUnit unit : proxied) {
+		for (final IUnit unit : proxied) {
 			if (retval == null) {
 				retval = unit.getOwner();
 			} else if (!retval.equals(unit.getOwner())) {

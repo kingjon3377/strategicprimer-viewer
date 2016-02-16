@@ -248,7 +248,7 @@ public final class WorkerMgmtFrame extends JFrame {
 															                                                                                                                 JFileChooser.SAVE_DIALOG);
 											                                                                                                  try {
 												                                                                                                  strategyExporter.writeStrategy(chooser.getFile());
-											                                                                                                  } catch (ChoiceInterruptedException except) {
+											                                                                                                  } catch (final ChoiceInterruptedException except) {
 												                                                                                                  LOGGER.log(
 														                                                                                                  Level.INFO,
 														                                                                                                  "Choice interrupted or user failed to choose",
@@ -486,7 +486,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		public void writeStrategy(final File file) {
 			try (final FileWriter writer = new FileWriter(file)) {
 				writer.append(createStrategy());
-			} catch (IOException except) {
+			} catch (final IOException except) {
 				LOGGER.log(SEVERE, "I/O error exporting strategy", except);
 			}
 		}
