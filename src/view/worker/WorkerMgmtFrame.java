@@ -647,6 +647,7 @@ public final class WorkerMgmtFrame extends JFrame {
 	/**
 	 * An action to request focus in a component.
 	 */
+	@SuppressWarnings("CloneableClassInSecureContext")
 	private static class FocusRequester extends ActionWrapper {
 		/**
 		 * The type of component we're handling.

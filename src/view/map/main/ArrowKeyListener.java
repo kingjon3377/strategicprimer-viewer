@@ -211,6 +211,7 @@ public final class ArrowKeyListener {
 	/**
 	 * A listener to move the cursor in a direction. Wraps an ActionListener.
 	 */
+	@SuppressWarnings("CloneableClassInSecureContext")
 	private static class DirectionListener extends ActionWrapper {
 		/**
 		 * The wrapped action.
