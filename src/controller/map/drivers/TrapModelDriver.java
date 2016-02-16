@@ -18,10 +18,11 @@ import util.NullCleaner;
 import util.TypesafeLogger;
 
 import static model.map.PointFactory.point;
-import static view.util.SystemOut.SYS_OUT;
 
 /**
  * A driver to run a player's trapping activity.
+ *
+ * TODO: Tests
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -66,13 +67,6 @@ public final class TrapModelDriver implements SimpleDriver {
 	 * The number of minutes in an hour.
 	 */
 	private static final int MINS_PER_HOUR = 60;
-
-	/**
-	 * Helper to get numbers from the user, etc.
-	 *
-	 * TODO: Make a paramter, so we can test this class.
-	 */
-	private final ICLIHelper helper = new CLIHelper();
 
 	/**
 	 * How many minutes a fruitless check of a fishing trap takes.
@@ -150,22 +144,22 @@ public final class TrapModelDriver implements SimpleDriver {
 	 * @param map     the map to explore
 	 * @param ostream the stream to write output to
 	 */
-	private void repl(final IMapNG map, final Appendable ostream) {
+	private void repl(final IMapNG map, final ICLIHelper cli) {
 		try {
 			final HuntingModel hmodel = new HuntingModel(map);
-			final boolean fishing = helper.inputBoolean(FISH_OR_TRAP);
+			final boolean fishing = cli.inputBoolean(FISH_OR_TRAP);
 			final String name; // NOPMD
 			if (fishing) {
 				name = "fisherman";
 			} else {
 				name = "trapper";
 			}
-			int minutes = helper.inputNumber("How many hours will the " + name
+			int minutes = cli.inputNumber("How many hours will the " + name
 					                                 + " work? ")
 					              * MINS_PER_HOUR;
-			final int row = helper.inputNumber("Row of the tile where the "
+			final int row = cli.inputNumber("Row of the tile where the "
 					                                   + name + " is working: ");
-			final int col = helper.inputNumber("Column of that tile: ");
+			final int col = cli.inputNumber("Column of that tile: ");
 			final Point point = point(row, col);
 			final List<String> fixtures; // NOPMD
 			if (fishing) {
@@ -179,15 +173,15 @@ public final class TrapModelDriver implements SimpleDriver {
 					final TrapperCommand command =
 							NullCleaner
 									.assertNotNull(TrapperCommand.values()[input]);
-					minutes -= handleCommand(fixtures, ostream,
+					minutes -= handleCommand(fixtures, cli,
 							command, fishing);
-					ostream.append(inHours(minutes));
-					ostream.append(" remaining\n");
+					cli.print(inHours(minutes));
+					cli.println(" remaining");
 					if (command == TrapperCommand.Quit) {
 						break;
 					}
 				}
-				input = helper.chooseFromList(COMMANDS, "What should the "
+				input = cli.chooseFromList(COMMANDS, "What should the "
 						                                        + name + " do next?",
 						"Oops! No commands",
 						"Next action: ", false);
@@ -224,24 +218,23 @@ public final class TrapModelDriver implements SimpleDriver {
 	 * @throws IOException on I/O error interacting with user
 	 */
 	private int handleCommand(final List<String> fixtures,
-	                          final Appendable ostream, final TrapperCommand command,
+	                          final ICLIHelper cli, final TrapperCommand command,
 	                          final boolean fishing) throws IOException {
 		switch (command) {
 		case Check: // TODO: extract method?
 			final String top = fixtures.remove(0);
 			if (HuntingModel.NOTHING.equals(top)) {
-				ostream.append("Nothing in the trap\n");
+				cli.println("Nothing in the trap");
 				if (fishing) {
 					return FRUITLESS_FISH_TRAP; // NOPMD
 				} else {
 					return FRUITLESS_TRAP; // NOPMD
 				}
 			} else {
-				ostream.append("Found either ");
-				ostream.append(top);
-				ostream.append(" or evidence of it escaping.\n");
-				return helper//NOPMD
-						       .inputNumber("How long to check and deal with animal? ");
+				cli.print("Found either ");
+				cli.print(top);
+				cli.println(" or evidence of it escaping.");
+				return cli.inputNumber("How long to check and deal with animal? ");
 			}
 		case EasyReset:
 			if (fishing) {
@@ -271,7 +264,7 @@ public final class TrapModelDriver implements SimpleDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel model) {
-		repl(model.getMap(), SYS_OUT);
+		repl(model.getMap(), new CLIHelper());
 	}
 
 	/**
