@@ -210,8 +210,6 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	}
 
 	/**
-	 * TODO: pass through to proxied units.
-	 *
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override
