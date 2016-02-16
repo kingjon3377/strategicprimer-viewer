@@ -163,7 +163,7 @@ public final class QueryCLI implements SimpleDriver {
 					count += StreamSupport.stream(((IUnit) fix).spliterator(), false)
 							         .filter(IWorker.class::isInstance).count();
 				} else if (fix instanceof Fortress) {
-					StreamSupport.stream(((Fortress) fix).spliterator(), false)
+					count += StreamSupport.stream(((Fortress) fix).spliterator(), false)
 							.filter(IUnit.class::isInstance).map(IUnit.class::cast)
 							.filter(unit -> player.equals(unit.getOwner()))
 							.flatMap(unit -> StreamSupport
