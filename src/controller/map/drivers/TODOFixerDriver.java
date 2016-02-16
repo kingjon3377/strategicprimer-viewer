@@ -1,5 +1,9 @@
 package controller.map.drivers;
 
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
+import controller.map.misc.MapReaderAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,22 +11,17 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.xml.stream.XMLStreamException;
-
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.CLIHelper;
-import controller.map.misc.ICLIHelper;
-import controller.map.misc.MapReaderAdapter;
 import model.map.IMutableMapNG;
 import model.map.Point;
 import model.map.fixtures.mobile.Unit;
 import util.NullCleaner;
 import util.Warning;
-import view.util.SystemOut;
 
 /**
  * A hackish class to help fix TODOs (missing content) in the map.
+ *
+ * TODO: Add tests of this functionality.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -49,12 +48,6 @@ public final class TODOFixerDriver {
 	 */
 	private final IMutableMapNG map;
 	/**
-	 * A helper to get strings from the user.
-	 *
-	 * TODO: Make this and stdout parameters rather than fields, so we can test this class
-	 */
-	private final ICLIHelper helper = new CLIHelper();
-	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = NullCleaner
@@ -71,14 +64,15 @@ public final class TODOFixerDriver {
 
 	/**
 	 * Search for and fix units with kinds missing.
+	 * @param cli the interface to the user
 	 */
-	public void fixAllUnits() {
+	public void fixAllUnits(final ICLIHelper cli) {
 		// TODO: How to make this use Stream API instead of loop?
 		for (final Point point : map.locations()) {
 			final SimpleTerrain terrain = getTerrain(point);
 			map.streamOtherFixtures(point).filter(Unit.class::isInstance)
 					.map(Unit.class::cast).filter(unit -> "TODO".equals(unit.getKind()))
-					.forEach(unit -> fixUnit(unit, terrain));
+					.forEach(unit -> fixUnit(unit, terrain, cli));
 		}
 	}
 
@@ -112,8 +106,9 @@ public final class TODOFixerDriver {
 	 *
 	 * @param unit    the unit to fix
 	 * @param terrain the terrain the unit is in
+	 * @param cli the helper to get input from the user
 	 */
-	private void fixUnit(final Unit unit, final SimpleTerrain terrain) {
+	private void fixUnit(final Unit unit, final SimpleTerrain terrain, final ICLIHelper cli) {
 		final Random random = new Random(unit.getID());
 		count++;
 		final Collection<String> jobList;
@@ -138,7 +133,7 @@ public final class TODOFixerDriver {
 		}
 		for (final String job : jobList) {
 			if (random.nextBoolean()) {
-				SystemOut.SYS_OUT.printf(
+				cli.printf(
 						"Setting unit with ID #%d (%d / 5328) to kind %s%n",
 						Integer.valueOf(unit.getID()), Integer.valueOf(count), job);
 				unit.setKind(job);
@@ -147,7 +142,7 @@ public final class TODOFixerDriver {
 		}
 		try {
 			final String kind =
-					helper.inputString("What's the next possible kind for "
+					cli.inputString("What's the next possible kind for "
 							                   + desc + "? ");
 			unit.setKind(kind);
 			jobList.add(kind);
@@ -208,6 +203,7 @@ public final class TODOFixerDriver {
 	 */
 	public static void main(final String... args) {
 		final MapReaderAdapter reader = new MapReaderAdapter();
+		final ICLIHelper cli = new CLIHelper();
 		for (final String arg : args) {
 			if (arg == null) {
 				continue;
@@ -221,7 +217,7 @@ public final class TODOFixerDriver {
 				continue;
 			}
 			final TODOFixerDriver driver = new TODOFixerDriver(map);
-			driver.fixAllUnits();
+			driver.fixAllUnits(cli);
 			try {
 				reader.write(file, map);
 			} catch (final IOException e) {
