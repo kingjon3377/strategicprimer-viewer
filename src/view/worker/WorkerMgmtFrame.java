@@ -228,37 +228,39 @@ public final class WorkerMgmtFrame extends JFrame {
 				                                                               .vertical(
 						                                                               TWO_THIRDS,
 						                                                               TWO_THIRDS,
-						                                                               new BorderedPanel(new JScrollPane(tree),
-								                                                                                plabl,
-								                                                                                null,
-								                                                                                null,
-								                                                                                null),
+						                                                               BorderedPanel
+								                                                               .vertical(
+										                                                               plabl,
+										                                                               new JScrollPane(tree),
+										                                                               null),
 
-						                                                               new BorderedPanel(ordersPanel,
-								                                                                                new ListenedButton("Add New Unit",
-										                                                                                                  evt -> newUnitFrame
-												                                                                                                         .setVisible(
-														                                                                                                         true)),
-								                                                                                new ListenedButton("Export a proto-strategy from units' orders",
-										                                                                                                  evt -> {
-											                                                                                                  final FileChooser
-													                                                                                                  chooser =
-													                                                                                                  new FileChooser(new File(""),
-															                                                                                                                 new JFileChooser("."),
-															                                                                                                                 JFileChooser.SAVE_DIALOG);
-											                                                                                                  try {
-												                                                                                                  strategyExporter.writeStrategy(chooser.getFile());
-											                                                                                                  } catch (final ChoiceInterruptedException except) {
-												                                                                                                  LOGGER.log(
-														                                                                                                  Level.INFO,
-														                                                                                                  "Choice interrupted or user failed to choose",
-														                                                                                                  except);
-											                                                                                                  }
-										                                                                                                  }),
-								                                                                                null,
-								                                                                                null)),
-				new BorderedPanel(new JScrollPane(report), new JLabel(RPT_HDR), mdp, null,
-						                 null)));
+						                                                               BorderedPanel
+								                                                               .vertical(
+										                                                               new ListenedButton("Add New Unit",
+												                                                                                 evt -> newUnitFrame
+														                                                                                        .setVisible(
+																                                                                                        true)),
+										                                                               ordersPanel,
+										                                                               new ListenedButton("Export a proto-strategy from units' orders",
+												                                                                                 evt -> {
+													                                                                                 final FileChooser
+															                                                                                 chooser =
+															                                                                                 new FileChooser(new File(""),
+																	                                                                                                new JFileChooser("."),
+																	                                                                                                JFileChooser.SAVE_DIALOG);
+													                                                                                 try {
+														                                                                                 strategyExporter
+																                                                                                 .writeStrategy(
+																		                                                                                 chooser.getFile());
+													                                                                                 } catch (final ChoiceInterruptedException except) {
+														                                                                                 LOGGER.log(
+																                                                                                 Level.INFO,
+																                                                                                 "Choice interrupted or user failed to choose",
+																                                                                                 except);
+													                                                                                 }
+												                                                                                 }))),
+				BorderedPanel
+						.vertical(new JLabel(RPT_HDR), new JScrollPane(report), mdp)));
 		ioHandler.addTreeExpansionListener(new TreeExpansionHandler(tree));
 		setJMenuBar(new WorkerMenu(ioHandler, this, model));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

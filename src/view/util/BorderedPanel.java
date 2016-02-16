@@ -6,9 +6,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
 import javax.swing.JPanel;
-
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -138,5 +136,29 @@ public class BorderedPanel extends JPanel {
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
+	}
+	/**
+	 * Factory method. Handles the common case of two or three components in a vertical
+	 * line.
+	 * @param pageStart the component to put at page start
+	 * @param center the component to put at the center
+	 * @param pageEnd the component to put at page end
+	 */
+	public static BorderedPanel vertical(@Nullable final Component pageStart,
+	                                     @Nullable final Component center,
+	                                     @Nullable final Component pageEnd) {
+		return new BorderedPanel(center, pageStart, pageEnd, null, null);
+	}
+	/**
+	 * Factory method. Handles the common case of two or three components in a
+	 * horizontal line.
+	 * @param lineStart the component to put at line start
+	 * @param center the component to put at the center
+	 * @param lineEnd the component to put at line end
+	 */
+	public static BorderedPanel horizontal(@Nullable final Component lineStart,
+	                                     @Nullable final Component center,
+	                                     @Nullable final Component lineEnd) {
+		return new BorderedPanel(center, null, null, lineEnd, lineStart);
 	}
 }
