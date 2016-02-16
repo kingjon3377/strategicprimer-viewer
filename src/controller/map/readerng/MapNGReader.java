@@ -312,7 +312,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					                                                stream,
 			                                                final StartElement parent)
 			throws SPFormatException {
-		return NullCleaner.assertNotNull(StreamSupport
+		final StartElement retval = StreamSupport
 				.stream(stream.spliterator(), false)
 				.filter(XMLEvent::isStartElement).map(XMLEvent::asStartElement)
 				.filter(elem -> EqualsAny.equalsAny(
@@ -320,7 +320,9 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 								elem.getName().getNamespaceURI()),
 						ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI))
 				.findFirst()
-				.orElseThrow(() -> new MissingChildException(parent)));
+				.orElseThrow(() -> new MissingChildException(parent));
+		assert retval != null;
+		return retval;
 	}
 	/**
 	 * Create an intermediate representation of the map to convert it to XML.
