@@ -83,10 +83,10 @@ public final class ExplorationFrame extends JFrame {
 		}
 
 		/**
-		 * @param end ignored
+		 * Swap panels.
 		 */
 		@Override
-		public void stopWaitingOn(final boolean end) {
+		public void finished() {
 			compList.forEach(Component::validate);
 			if (first) {
 				layout.next(parent);

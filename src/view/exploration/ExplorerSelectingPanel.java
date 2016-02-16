@@ -161,8 +161,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 														                                                                            model.selectUnit(
 																                                                                            selectedValue);
 														                                                                            for (final CompletionListener list : cListeners) {
-															                                                                            list.stopWaitingOn(
-																	                                                                            true);
+															                                                                            list.finished();
 														                                                                            }
 													                                                                            }
 												                                                                            }),

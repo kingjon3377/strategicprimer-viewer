@@ -32,9 +32,6 @@ import java.util.EventListener;
 public interface CompletionListener extends EventListener {
 	/**
 	 * Stop waiting for the thing being listened to, because it's finished.
-	 *
-	 * @param end whether a list should be scrolled to the end or (if false) reset to the
-	 *            beginning
 	 */
-	void stopWaitingOn(boolean end);
+	void finished();
 }

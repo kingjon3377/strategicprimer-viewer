@@ -176,7 +176,7 @@ public final class ExplorationPanel extends BorderedPanel
 		final BoxPanel headerPanel = new BoxPanel(true);
 		headerPanel.add(new ListenedButton("Select a different explorer", evt -> {
 			for (final CompletionListener list : cListeners) {
-				list.stopWaitingOn(true);
+				list.finished();
 			}
 		}));
 		headerPanel.add(locLabel);
