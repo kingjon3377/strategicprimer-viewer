@@ -335,7 +335,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					                                                stream,
 			                                                final StartElement parent)
 			throws SPFormatException {
-		return NullCleaner.assertNotNull(StreamSupport
+		final StartElement retval = StreamSupport
 				.stream(stream.spliterator(), false)
 				.filter(XMLEvent::isStartElement).map(XMLEvent::asStartElement)
 				.filter(elem -> EqualsAny.equalsAny(
@@ -343,7 +343,9 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 								elem.getName().getNamespaceURI()),
 						ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI))
 				.findFirst()
-				.orElseThrow(() -> new MissingChildException(parent)));
+				.orElseThrow(() -> new MissingChildException(parent));
+		assert retval != null;
+		return retval;
 	}
 	/**
 	 * @param obj     a map
