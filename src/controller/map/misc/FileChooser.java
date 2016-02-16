@@ -1,16 +1,20 @@
 package controller.map.misc;
 
+import static javax.swing.JFileChooser.APPROVE_OPTION;
+import static util.NullCleaner.assertNotNull;
+
 import java.awt.Component;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.ToIntFunction;
+
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import util.NullCleaner;
 import view.util.FilteredFileChooser;
-
-import static javax.swing.JFileChooser.APPROVE_OPTION;
-import static util.NullCleaner.assertNotNull;
 
 /**
  * A class to hide the details of choosing a file from the caller.
@@ -52,7 +56,7 @@ public final class FileChooser {
 	/**
 	 * The method to call to ask the user to choose a file.
 	 */
-	private final ToIntFunction<Component> chooserFunc;
+	private final ToIntFunction<@Nullable Component> chooserFunc;
 	/**
 	 * Constructor allowing the caller to pass in a file-chooser to have the user choose
 	 * with.

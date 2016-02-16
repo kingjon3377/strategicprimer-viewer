@@ -6,7 +6,10 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import javax.swing.AbstractAction;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A wrapper around an ActionListener that extends AbstractAction, for the exceedingly
@@ -50,7 +53,7 @@ public class ActionWrapper extends AbstractAction {
 	 * @param evt the event to handle
 	 */
 	@Override
-	public final void actionPerformed(final ActionEvent evt) {
+	public final void actionPerformed(@Nullable final ActionEvent evt) {
 		wrapped.actionPerformed(evt);
 	}
 
