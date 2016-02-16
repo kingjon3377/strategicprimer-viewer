@@ -7,14 +7,12 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Logger;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.IFixture;
 import model.map.Player;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.ProxyWorker;
+import org.eclipse.jdt.annotation.Nullable;
 import util.EmptyIterator;
 import util.NullCleaner;
 
@@ -347,17 +345,23 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	}
 
 	/**
-	 * TODO: handle this like we handle 'name' and 'kind'.
-	 *
-	 * @return the owner of the first unit
+	 * @return the owner of the proxied units, or a dummy value if the proxied units are
+	 * not all owned by the same player
 	 */
 	@Override
 	public Player getOwner() {
-		final Iterator<IUnit> iter = proxied.iterator();
-		if (iter.hasNext()) {
-			return iter.next().getOwner();
-		} else {
+		@Nullable Player retval = null;
+		for (IUnit unit : proxied) {
+			if (retval == null) {
+				retval = unit.getOwner();
+			} else if (!retval.equals(unit.getOwner())) {
+				return new Player(-1, "proxied");
+			}
+		}
+		if (retval == null) {
 			return new Player(-1, "proxied");
+		} else {
+			return retval;
 		}
 	}
 
