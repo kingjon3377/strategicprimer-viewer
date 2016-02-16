@@ -6,9 +6,7 @@ import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
 import controller.map.report.ReportGenerator;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -26,18 +24,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
@@ -259,19 +246,12 @@ public final class WorkerMgmtFrame extends JFrame {
 													                                                                                                  new FileChooser(new File(""),
 															                                                                                                                 new JFileChooser("."),
 															                                                                                                                 JFileChooser.SAVE_DIALOG);
-											                                                                                                  try (final FileWriter writer = new FileWriter(chooser.getFile())) {
-												                                                                                                  writer.append(
-														                                                                                                  strategyExporter
-																                                                                                                  .createStrategy());
+											                                                                                                  try {
+												                                                                                                  strategyExporter.writeStrategy(chooser.getFile());
 											                                                                                                  } catch (ChoiceInterruptedException except) {
 												                                                                                                  LOGGER.log(
 														                                                                                                  Level.INFO,
 														                                                                                                  "Choice interrupted or user failed to choose",
-														                                                                                                  except);
-											                                                                                                  } catch (IOException except) {
-												                                                                                                  LOGGER.log(
-														                                                                                                  SEVERE,
-														                                                                                                  "I/O error exporting strategy",
 														                                                                                                  except);
 											                                                                                                  }
 										                                                                                                  }),
@@ -499,7 +479,17 @@ public final class WorkerMgmtFrame extends JFrame {
 			}
 			return NullCleaner.assertNotNull(builder.toString());
 		}
-
+		/**
+		 * Write the strategy to file.
+		 * @param file a file (name) to write to
+		 */
+		public void writeStrategy(final File file) {
+			try (final FileWriter writer = new FileWriter(file)) {
+				writer.append(createStrategy());
+			} catch (IOException except) {
+				LOGGER.log(SEVERE, "I/O error exporting strategy", except);
+			}
+		}
 		/**
 		 * @param unit a unit
 		 * @return the size of string needed to represent its members
