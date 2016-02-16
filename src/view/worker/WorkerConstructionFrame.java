@@ -255,6 +255,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	 * @param strings a collection of strings
 	 * @return true if any of them is nonnumeric
 	 */
+	@SuppressWarnings("QuestionableName")
 	private static boolean areAnyNonNumeric(final String... strings) {
 		return Stream.of(strings)
 					   .anyMatch(string -> (string == null) || !isNumeric(string));
