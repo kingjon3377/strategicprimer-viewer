@@ -2,6 +2,7 @@ package controller.map.misc;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import util.NullCleaner;
 import view.util.FilteredFileChooser;
@@ -45,8 +46,18 @@ public final class FileChooser {
 	/**
 	 * A file chooser.
 	 */
-	private final FilteredFileChooser chooser = new FilteredFileChooser();
-
+	private final JFileChooser chooser;
+	/**
+	 * Constructor allowing the caller to pass in a file-chooser to have the user choose
+	 * with.
+	 * @param loc the file to return
+	 * @param fchooser the file-chooser to use
+	 */
+	public FileChooser(final File loc, final JFileChooser fchooser) {
+		file = new File("");
+		setFile(loc);
+		chooser = fchooser;
+	}
 	/**
 	 * Constructor. When the filename is asked for, if the given value is valid, we'll
 	 * return it instead of showing a dialog.
@@ -54,8 +65,7 @@ public final class FileChooser {
 	 * @param loc the file to return.
 	 */
 	public FileChooser(final File loc) {
-		file = new File("");
-		setFile(loc);
+		this(loc, new FilteredFileChooser());
 	}
 
 	/**
@@ -82,7 +92,7 @@ public final class FileChooser {
 					setFile(assertNotNull(chooser.getSelectedFile()));
 				}
 			} else {
-				final FilteredFileChooser fileChooser = chooser;
+				final JFileChooser fileChooser = chooser;
 				invoke(() -> {
 					if (fileChooser.showOpenDialog(null) == APPROVE_OPTION) {
 						setFile(NullCleaner
