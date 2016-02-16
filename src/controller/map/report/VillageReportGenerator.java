@@ -7,6 +7,9 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -17,8 +20,8 @@ import model.report.IReportNode;
 import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
-import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
+import util.NullCleaner;
 import util.Pair;
 
 /**
@@ -103,7 +106,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 			retval.append("<h4>Other villages you know about:</h4>\n");
 			others.values().stream().map(Object::toString).forEach(retval::append);
 		}
-		return retval.toString();
+		return NullCleaner.assertNotNull(retval.toString());
 	}
 
 	/**

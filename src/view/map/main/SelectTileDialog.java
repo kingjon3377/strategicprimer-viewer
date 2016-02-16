@@ -119,7 +119,7 @@ public final class SelectTileDialog extends JDialog {
 		buttonPanel.addGlue();
 		contentPane.add(buttonPanel);
 		setContentPane(contentPane);
-		map = model;
+		map = NullCleaner.assertNotNull(model);
 		pack();
 	}
 

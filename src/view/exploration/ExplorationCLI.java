@@ -1,6 +1,7 @@
 package view.exploration;
 
-import controller.map.misc.ICLIHelper;
+import static util.NullCleaner.assertNotNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +11,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
+
+import org.eclipse.jdt.annotation.Nullable;
+
+import controller.map.misc.ICLIHelper;
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
 import model.map.HasOwner;
@@ -25,10 +30,8 @@ import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
-import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
 import util.Pair;
-
-import static util.NullCleaner.assertNotNull;
 
 /**
  * A CLI to help running exploration. Now separated from the "driver" bits, to simplify
@@ -235,7 +238,7 @@ public final class ExplorationCLI {
 	                                     @Nullable final TileFixture fix,
 	                                     final HasOwner mover) {
 		if (fix != null) {
-			helper.println(fix.toString());
+			helper.println(NullCleaner.assertNotNull(fix.toString()));
 			final boolean zero = (fix instanceof HasOwner) && !((HasOwner) fix)
 					                                                   .getOwner()
 					                                                   .equals(mover

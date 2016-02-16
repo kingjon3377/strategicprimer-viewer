@@ -1,5 +1,21 @@
 package controller.map.readerng;
 
+import static util.NullCleaner.assertNotNull;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.StreamSupport;
+
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -7,15 +23,6 @@ import controller.map.formatexceptions.UnsupportedTagException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.regex.Pattern;
-import java.util.stream.StreamSupport;
-import javax.xml.XMLConstants;
-import javax.xml.namespace.QName;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.IMutablePlayerCollection;
@@ -32,13 +39,10 @@ import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
+import util.NullCleaner;
 import util.Pair;
 import util.Warning;
-
-import static util.NullCleaner.assertNotNull;
 
 /**
  * A reader to read new-API maps from XML and turn them into XML.
@@ -86,14 +90,13 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	/**
 	 * The tags we know how to deal with.
 	 */
-	private static final List<String> tags =
-			Collections.unmodifiableList(Arrays.asList("map", "view"));
+	private static final List<String> tags = NullCleaner.assertNotNull(
+			Collections.unmodifiableList(Arrays.asList("map", "view")));
 	/**
 	 * Pre-compiled pattern for exceptions we want to wrap.
 	 */
-	private static final Pattern EXCEPT_PATTERN =
-			Pattern.compile("^Wanted [^ ]*, was [^ " +
-									"]*$");
+	private static final Pattern EXCEPT_PATTERN = NullCleaner
+			.assertNotNull(Pattern.compile("^Wanted [^ ]*, was [^ ]*$"));
 
 	/**
 	 * @return a list of the tags this reader understands
@@ -127,7 +130,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 			currentTurn = getIntegerAttribute(element, "current_turn");
 			mapTag = getFirstStartElement(stream, element);
 			if (!"map".equals(mapTag.getName().getLocalPart())) {
-				throw new UnwantedChildException(element.getName(), mapTag);
+				throw new UnwantedChildException(NullCleaner.assertNotNull(element.getName()), mapTag);
 			}
 		} else if ("map".equalsIgnoreCase(outerTag)) {
 			currentTurn = 0;
@@ -144,7 +147,8 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 		Point point = nullPoint;
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && EqualsAny.equalsAny(
-					event.asStartElement().getName().getNamespaceURI(),
+					NullCleaner.assertNotNull(
+							event.asStartElement().getName().getNamespaceURI()),
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				final StartElement current = event.asStartElement();
 				final String type = current.getName().getLocalPart();
@@ -180,7 +184,9 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					warner.warn(new UnsupportedTagException(current));
 				} else if (nullPoint.equals(point)) {
 					// fixture outside tile
-					throw new UnwantedChildException(mapTag.getName(), current);
+					throw new UnwantedChildException(
+							NullCleaner.assertNotNull(mapTag.getName()),
+							current);
 				} else if ("lake".equalsIgnoreCase(type)
 								   || "river".equalsIgnoreCase(type)) {
 					retval.addRivers(point, RIVER_READER.parse(current, stream,
@@ -203,15 +209,17 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 								TileFixture.class));
 					} catch (final UnwantedChildException except) {
 						if ("unknown".equals(except.getTag().getLocalPart())) {
-							throw new UnwantedChildException(mapTag.getName(),
-									                                except);
+							throw new UnwantedChildException(
+									NullCleaner.assertNotNull(mapTag.getName()),
+									except);
 						} else {
 							throw except;
 						}
 					} catch (final IllegalStateException except) {
 						if (EXCEPT_PATTERN.matcher(except.getMessage()).matches()) {
-							throw new UnwantedChildException(mapTag.getName(), current,
-									                                except);
+							throw new UnwantedChildException(
+									NullCleaner.assertNotNull(mapTag.getName()),
+									current, except);
 						} else {
 							throw except;
 						}
@@ -304,12 +312,15 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					                                                stream,
 			                                                final StartElement parent)
 			throws SPFormatException {
-		return StreamSupport.stream(stream.spliterator(), false)
-				       .filter(XMLEvent::isStartElement).map(XMLEvent::asStartElement)
-				       .filter(elem -> EqualsAny.equalsAny(
-						       elem.getName().getNamespaceURI(), ISPReader.NAMESPACE,
-						       XMLConstants.NULL_NS_URI)).findFirst()
-				       .orElseThrow(() -> new MissingChildException(parent));
+		return NullCleaner.assertNotNull(StreamSupport
+				.stream(stream.spliterator(), false)
+				.filter(XMLEvent::isStartElement).map(XMLEvent::asStartElement)
+				.filter(elem -> EqualsAny.equalsAny(
+						NullCleaner.assertNotNull(
+								elem.getName().getNamespaceURI()),
+						ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI))
+				.findFirst()
+				.orElseThrow(() -> new MissingChildException(parent)));
 	}
 	/**
 	 * Create an intermediate representation of the map to convert it to XML.

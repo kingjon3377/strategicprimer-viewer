@@ -1,10 +1,18 @@
 package model.map.fixtures;
 
-import controller.map.formatexceptions.SPFormatException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.xml.stream.XMLStreamException;
+
+import org.junit.Test;
+
+import controller.map.formatexceptions.SPFormatException;
 import model.map.BaseTestFixtureSerialization;
 import model.map.HasImage;
 import model.map.IMutableMapNG;
@@ -32,13 +40,8 @@ import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
-import org.junit.Test;
 import util.NullCleaner;
 import util.Warning;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 /**
  * Another class to test serialization of TileFixtures.
@@ -87,8 +90,8 @@ public final class TestMoreFixtureSerialization extends
 	/**
 	 * Pre-compiled pattern for matching "kind".
 	 */
-	private static final Pattern KIND_PATTERN =
-			Pattern.compile(KIND_PROPERTY, Pattern.LITERAL);
+	private static final Pattern KIND_PATTERN = NullCleaner
+			.assertNotNull(Pattern.compile(KIND_PROPERTY, Pattern.LITERAL));
 
 	/**
 	 * Test serialization of Groves.

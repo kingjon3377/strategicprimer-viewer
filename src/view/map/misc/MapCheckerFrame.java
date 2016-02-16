@@ -71,7 +71,8 @@ public final class MapCheckerFrame extends JFrame {
 	 */
 	public MapCheckerFrame() {
 		super("Strategic Primer Map Checker");
-		Warning.Custom.setCustomPrinter(str -> printParagraph(str, LabelTextColor.yellow));
+		Warning.Custom.setCustomPrinter(str -> printParagraph(str,
+				NullCleaner.assertNotNull(LabelTextColor.yellow)));
 		setBackground(Color.black);
 		setMinimumSize(new Dimension(640, 320));
 		setContentPane(new JScrollPane(label));

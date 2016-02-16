@@ -312,7 +312,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 * @param fchooser the file chooser
 	 */
 	public IOHandler(final IDriverModel map, final JFileChooser fchooser) {
-		model = map;
+		model = NullCleaner.assertNotNull(map);
 		chooser = fchooser;
 		if (model instanceof IViewerModel) {
 			zoomer = new ZoomListener((IViewerModel) model);

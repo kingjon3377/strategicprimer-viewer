@@ -1,14 +1,16 @@
 package controller.map.cxml;
 
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.IDFactory;
 import model.map.HasImage;
 import model.map.IMutablePlayerCollection;
 import model.map.TerrainFixture;
@@ -52,9 +54,9 @@ public final class CompactTerrainReader extends
 	/**
 	 * List of supported tags.
 	 */
-	private static final Set<String> SUPP_TAGS = Collections.unmodifiableSet(
-			new HashSet<>(Arrays.asList("forest", "hill", "mountain", "oasis",
-					"sandbar")));
+	private static final Set<String> SUPP_TAGS = NullCleaner.assertNotNull(
+			Collections.unmodifiableSet(new HashSet<>(Arrays.asList("forest",
+					"hill", "mountain", "oasis", "sandbar"))));
 
 	/**
 	 * Singleton.

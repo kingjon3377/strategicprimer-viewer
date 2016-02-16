@@ -202,7 +202,8 @@ public interface INodeHandler<@NonNull T> {
 			throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement()) {
-				throw new UnwantedChildException(tag, event.asStartElement());
+				throw new UnwantedChildException(tag,
+						NullCleaner.assertNotNull(event.asStartElement()));
 			} else if (event.isEndElement()
 					           && tag.equals(event.asEndElement().getName())) {
 				break;
@@ -296,7 +297,8 @@ public interface INodeHandler<@NonNull T> {
 			return NullCleaner.assertNotNull(NumberFormat.getIntegerInstance())
 					       .parse(getAttribute(startElement, attribute)).intValue();
 		} catch (final ParseException e) {
-			throw new SPMalformedInputException(startElement.getLocation(), e);
+			throw new SPMalformedInputException(
+					NullCleaner.assertNotNull(startElement.getLocation()), e);
 		}
 	}
 	/**
@@ -321,7 +323,8 @@ public interface INodeHandler<@NonNull T> {
 				return NullCleaner.assertNotNull(NumberFormat.getIntegerInstance())
 						       .parse(value).intValue();
 			} catch (final ParseException e) {
-				throw new SPMalformedInputException(elem.getLocation(), e);
+				throw new SPMalformedInputException(
+						NullCleaner.assertNotNull(elem.getLocation()), e);
 			}
 		}
 	}

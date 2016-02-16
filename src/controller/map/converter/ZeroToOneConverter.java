@@ -1,6 +1,5 @@
 package controller.map.converter;
 
-import controller.map.iointerfaces.ISPReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,6 +13,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
@@ -22,10 +22,14 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+
 import org.eclipse.jdt.annotation.Nullable;
+
+import controller.map.iointerfaces.ISPReader;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.TypesafeLogger;
+import view.util.SystemOut;
 
 /**
  * A class to convert a version-0 map to a version-1 map. As no reader currently in the
@@ -85,11 +89,14 @@ public final class ZeroToOneConverter {
 			if (event.isStartElement()) {
 				final StartElement selement =
 						NullCleaner.assertNotNull(event.asStartElement());
-				if (isSpecifiedTag(selement.getName(), "tile")) {
+				if (isSpecifiedTag(
+						NullCleaner.assertNotNull(selement.getName()),
+						"tile")) {
 					//noinspection unchecked
 					convertTile(ostream, selement,
 							iFactory(selement.getAttributes()));
-				} else if (isSpecifiedTag(selement.getName(), "map")) {
+				} else if (isSpecifiedTag(
+						NullCleaner.assertNotNull(selement.getName()), "map")) {
 					//noinspection unchecked
 					convertMap(ostream, selement,
 							iFactory(selement.getAttributes()));
@@ -328,7 +335,7 @@ public final class ZeroToOneConverter {
 				//noinspection unchecked
 				convert(new IteratorWrapper<>(XMLInputFactory.newInstance()
 						                              .createXMLEventReader(reader)),
-						System.out);
+						SystemOut.SYS_OUT);
 			} catch (final FileNotFoundException except) {
 				LOGGER.log(Level.SEVERE, "File " + arg + " not found", except);
 			} catch (final XMLStreamException except) {

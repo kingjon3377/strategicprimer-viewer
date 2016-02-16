@@ -8,10 +8,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import model.map.fixtures.mobile.IWorker;
-import model.map.fixtures.mobile.ProxyFor;
+
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+
+import model.map.fixtures.mobile.IWorker;
+import model.map.fixtures.mobile.ProxyFor;
 import util.NullCleaner;
 
 /**
@@ -104,8 +106,9 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 						                          .toArray(new IJob[proxiedJobs.size()
 								                                   ]));
 		proxied.addAll(skillNames.stream()
-				               .map(skill -> new ProxySkill(skill, parallel, jobsArray))
-				               .collect(Collectors.toList()));
+				.map(skill -> new ProxySkill(skill, parallel,
+						NullCleaner.assertNotNull(jobsArray)))
+				.collect(Collectors.toList()));
 	}
 
 	/**

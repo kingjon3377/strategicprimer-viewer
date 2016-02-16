@@ -10,6 +10,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.IMapNG;
@@ -33,7 +36,6 @@ import model.report.IReportNode;
 import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
-import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
@@ -403,7 +405,7 @@ public final class ImmortalsReportGenerator
 			points = mapping.get(item.toString());
 		} else {
 			points = new ArrayList<>();
-			mapping.put(item.toString(), points);
+			mapping.put(NullCleaner.assertNotNull(item.toString()), points);
 		}
 		points.add(point);
 	}
@@ -426,7 +428,7 @@ public final class ImmortalsReportGenerator
 		} else {
 			final IReportNode retval =
 					new ListReportNode(NullCleaner.assertNotNull(item.toString()));
-			mapping.put(item.toString(), retval);
+			mapping.put(NullCleaner.assertNotNull(item.toString()), retval);
 			return retval;
 		}
 	}

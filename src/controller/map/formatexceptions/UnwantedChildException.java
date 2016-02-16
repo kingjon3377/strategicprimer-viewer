@@ -3,6 +3,8 @@ package controller.map.formatexceptions;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 
+import util.NullCleaner;
+
 /**
  * A custom exception for when a tag has a child tag it can't handle.
  *
@@ -42,10 +44,11 @@ public final class UnwantedChildException extends SPFormatException {
 	 * @param child     the unwanted child
 	 */
 	public UnwantedChildException(final QName parent, final StartElement child) {
-		super("Unexpected child " + child.getName().getLocalPart() + " in tag " +
-				      parent.getLocalPart(), child.getLocation());
+		super("Unexpected child " + child.getName().getLocalPart() + " in tag "
+				+ parent.getLocalPart(),
+				NullCleaner.assertNotNull(child.getLocation()));
 		tag = parent;
-		chld = child.getName();
+		chld = NullCleaner.assertNotNull(child.getName());
 	}
 
 	/**
@@ -55,10 +58,11 @@ public final class UnwantedChildException extends SPFormatException {
 	 */
 	public UnwantedChildException(final QName parent, final StartElement child,
 	                              final Throwable cause) {
-		super("Unexpected child " + child.getName().getLocalPart() + " in tag " +
-				      parent.getLocalPart(), child.getLocation(), cause);
+		super("Unexpected child " + child.getName().getLocalPart() + " in tag "
+				+ parent.getLocalPart(),
+				NullCleaner.assertNotNull(child.getLocation()), cause);
 		tag = parent;
-		chld = child.getName();
+		chld = NullCleaner.assertNotNull(child.getName());
 	}
 	/**
 	 * Copy-constructor-with-replacement, for cases where the original thrower didn't

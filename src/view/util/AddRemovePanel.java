@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import model.listeners.AddRemoveListener;
+import util.NullCleaner;
 
 /**
  * A panel to be the GUI to add or remove items from a list.
@@ -86,7 +87,7 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 		final BoxPanel second = new BoxPanel(false);
 		second.add(field);
 		final ActionListener okListener = evt -> {
-			final String text = field.getText();
+			final String text = NullCleaner.assertNotNull(field.getText());
 			for (final AddRemoveListener listener : arListeners) {
 				listener.add(category, text);
 			}

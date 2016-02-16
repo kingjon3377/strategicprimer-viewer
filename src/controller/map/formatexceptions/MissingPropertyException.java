@@ -3,6 +3,8 @@ package controller.map.formatexceptions;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 
+import util.NullCleaner;
+
 /**
  * An exception for cases where a parameter is required (or, if this is merely logged,
  * recommended) but missing.
@@ -45,8 +47,8 @@ public final class MissingPropertyException extends SPFormatException {
 	public MissingPropertyException(final StartElement tag, final String parameter,
 	                                final Throwable cause) {
 		super("Missing parameter " + parameter + " in tag " + tag.getName(),
-				tag.getLocation(), cause);
-		context = tag.getName();
+				NullCleaner.assertNotNull(tag.getLocation()), cause);
+		context = NullCleaner.assertNotNull(tag.getName());
 		param = parameter;
 	}
 	/**
@@ -54,8 +56,9 @@ public final class MissingPropertyException extends SPFormatException {
 	 * @param parameter the missing parameter
 	 */
 	public MissingPropertyException(final StartElement tag, final String parameter) {
-		super("Missing parameter " + parameter + " in tag " + tag.getName(), tag.getLocation());
-		context = tag.getName();
+		super("Missing parameter " + parameter + " in tag " + tag.getName(),
+				NullCleaner.assertNotNull(tag.getLocation()));
+		context = NullCleaner.assertNotNull(tag.getName());
 		param = parameter;
 	}
 	/**

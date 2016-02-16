@@ -1,5 +1,23 @@
 package controller.map.cxml;
 
+import static java.lang.String.format;
+
+import java.io.IOException;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
+import javax.xml.stream.Location;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -7,25 +25,10 @@ import controller.map.formatexceptions.SPMalformedInputException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
-import java.io.IOException;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import javax.xml.XMLConstants;
-import javax.xml.namespace.QName;
-import javax.xml.stream.Location;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
 import model.map.HasImage;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
 import util.NullCleaner;
 import util.Warning;
-
-import static java.lang.String.format;
 
 /**
  * A superclass to provide helper methods.
@@ -67,9 +70,9 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 */
 	protected static void requireTag(final StartElement element,
 									 final String... tags) {
-		if (!EqualsAny.equalsAny(element.getName().getNamespaceURI(), ISPReader
-				                                                              .NAMESPACE,
-				XMLConstants.NULL_NS_URI)) {
+		if (!EqualsAny.equalsAny(
+				NullCleaner.assertNotNull(element.getName().getNamespaceURI()),
+				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 			throw new IllegalArgumentException("requireTag given a tag that is in " +
 					                                   "neither our namespace nor the " +
 					                                   "default namespace");
@@ -172,9 +175,11 @@ public abstract class AbstractCompactReader<@NonNull T>
 			throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement() && EqualsAny.equalsAny(
-					event.asStartElement().getName().getNamespaceURI(),
+					NullCleaner.assertNotNull(
+							event.asStartElement().getName().getNamespaceURI()),
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
-				throw new UnwantedChildException(tag, event.asStartElement());
+				throw new UnwantedChildException(tag,
+						NullCleaner.assertNotNull(event.asStartElement()));
 			} else if (event.isEndElement()
 							   && tag.equals(event.asEndElement().getName())) {
 				break;
@@ -347,7 +352,8 @@ public abstract class AbstractCompactReader<@NonNull T>
 	protected static int getIntegerParameter(final StartElement tag,
 											 final String parameter)
 			throws SPFormatException {
-		return parseInt(getParameter(tag, parameter), tag.getLocation());
+		return parseInt(getParameter(tag, parameter),
+				NullCleaner.assertNotNull(tag.getLocation()));
 	}
 
 	/**
@@ -372,7 +378,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 		if ((val == null) || val.isEmpty()) {
 			return defaultValue;
 		} else {
-			return parseInt(val, tag.getLocation());
+			return parseInt(val, NullCleaner.assertNotNull(tag.getLocation()));
 		}
 	}
 	/**

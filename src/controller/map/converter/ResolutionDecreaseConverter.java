@@ -9,6 +9,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.IMapNG;
 import model.map.MapDimensions;
 import model.map.PlayerCollection;
@@ -20,7 +23,6 @@ import model.map.TileType;
 import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.terrain.Forest;
-import org.eclipse.jdt.annotation.NonNull;
 import util.EnumCounter;
 import util.NullCleaner;
 
@@ -77,10 +79,11 @@ public final class ResolutionDecreaseConverter {
 								old.getBaseTerrain(fourthSub)));
 				for (final Point oldPoint : Arrays.asList(firstSub, secondSub, thirdSub,
 						fourthSub)) {
-					if (old.isMountainous(oldPoint)) {
+					if (old.isMountainous(NullCleaner.assertNotNull(oldPoint))) {
 						retval.setMountainous(point, true);
 					}
-					final Ground ground = old.getGround(oldPoint);
+					final Ground ground =
+							old.getGround(NullCleaner.assertNotNull(oldPoint));
 					if (ground != null) {
 						if (retval.getGround(point) == null) {
 							retval.setGround(point, ground);
@@ -88,7 +91,8 @@ public final class ResolutionDecreaseConverter {
 							retval.addFixture(point, ground);
 						}
 					}
-					final Forest forest = old.getForest(oldPoint);
+					final Forest forest =
+							old.getForest(NullCleaner.assertNotNull(oldPoint));
 					if (forest != null) {
 						if (retval.getForest(point) == null) {
 							retval.setForest(point, forest);
@@ -96,7 +100,7 @@ public final class ResolutionDecreaseConverter {
 							retval.addFixture(point, forest);
 						}
 					}
-					old.streamOtherFixtures(oldPoint)
+					old.streamOtherFixtures(NullCleaner.assertNotNull(oldPoint))
 							.forEach(fixture -> retval.addFixture(point, fixture));
 					final Set<River> upperLeftRivers = getRivers(old, firstSub);
 					final Set<River> upperRightRivers = getRivers(old, secondSub);

@@ -1,10 +1,14 @@
 package model.map;
 
-import controller.map.formatexceptions.SPFormatException;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.xml.stream.XMLStreamException;
+
+import org.junit.Test;
+
+import controller.map.formatexceptions.SPFormatException;
 import model.map.fixtures.explorable.Battlefield;
 import model.map.fixtures.explorable.Cave;
 import model.map.fixtures.resources.MineralVein;
@@ -15,7 +19,6 @@ import model.map.fixtures.towns.Fortification;
 import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
-import org.junit.Test;
 import util.NullCleaner;
 import util.Warning;
 
@@ -53,8 +56,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	/**
 	 * Compiled pattern of it.
 	 */
-	private static final Pattern KIND_PATTERN =
-			Pattern.compile(KIND_PROPERTY, Pattern.LITERAL);
+	private static final Pattern KIND_PATTERN = NullCleaner
+			.assertNotNull(Pattern.compile(KIND_PROPERTY, Pattern.LITERAL));
 	/**
 	 * Extracted constant.
 	 */

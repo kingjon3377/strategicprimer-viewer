@@ -27,6 +27,7 @@ import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
+import util.NullCleaner;
 import util.TypesafeLogger;
 
 /**
@@ -317,7 +318,7 @@ public final class QueryCLI implements SimpleDriver {
 	private static void fortressInfo(final IMapNG map, final Point location,
 	                                 final ICLIHelper cli) {
 		cli.print("Terrain is ");
-		cli.println(map.getBaseTerrain(location).toString());
+		cli.println(NullCleaner.assertNotNull(map.getBaseTerrain(location).toString()));
 		final List<TileFixture> fixtures =
 				map.streamOtherFixtures(location).collect(Collectors.toList());
 		final Collection<Ground> ground = new ArrayList<>();

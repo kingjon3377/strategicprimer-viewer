@@ -139,7 +139,8 @@ public final class ExplorationFrame extends JFrame {
 		add(esp);
 		add(explorationPanel);
 
-		setJMenuBar(new ExplorationMenu(ioHandler, emodel, this));
+		setJMenuBar(new ExplorationMenu(NullCleaner.assertNotNull(ioHandler),
+				emodel, this));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
 	}

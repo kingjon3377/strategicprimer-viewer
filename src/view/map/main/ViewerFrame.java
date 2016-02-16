@@ -12,6 +12,7 @@ import javax.swing.WindowConstants;
 
 import controller.map.misc.IOHandler;
 import model.viewer.IViewerModel;
+import util.NullCleaner;
 import view.map.details.DetailPanelNG;
 import view.util.SplitWithWeights;
 
@@ -102,7 +103,8 @@ public final class ViewerFrame extends JFrame {
 		addWindowListener(mwsl);
 		addWindowStateListener(mwsl);
 
-		setJMenuBar(new ViewerMenu(ioHandler, this, map));
+		setJMenuBar(new ViewerMenu(NullCleaner.assertNotNull(ioHandler), this,
+				map));
 		getJMenuBar().add(ffmenu);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}

@@ -1,5 +1,7 @@
 package model.map;
 
+import static java.util.Collections.unmodifiableSet;
+
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -8,10 +10,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.eclipse.jdt.annotation.NonNull;
-import util.NullCleaner;
 
-import static java.util.Collections.unmodifiableSet;
+import org.eclipse.jdt.annotation.NonNull;
+
+import util.NullCleaner;
 
 /**
  * Possible tile types.
@@ -112,11 +114,12 @@ public enum TileType {
 		final Integer boxedVer = NullCleaner.assertNotNull(Integer.valueOf(ver));
 		synchronized (VALS_BY_VER) {
 			if (!VALS_BY_VER.containsKey(boxedVer)) {
-				final Set<@NonNull TileType> set = EnumSet.copyOf(
-						Stream.of(values()).filter(type -> type.isSupportedByVersion
-								                                        (ver))
-								.collect(
-										Collectors.toSet()));
+				final Set<@NonNull TileType> set =
+						NullCleaner.assertNotNull(
+								EnumSet.copyOf(Stream.of(values())
+										.filter(type -> type
+												.isSupportedByVersion(ver))
+								.collect(Collectors.toSet())));
 				VALS_BY_VER.put(boxedVer, set);
 			}
 		}

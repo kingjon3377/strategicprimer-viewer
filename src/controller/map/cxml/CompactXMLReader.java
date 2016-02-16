@@ -1,23 +1,27 @@
 package controller.map.cxml;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.XMLEvent;
+
+import org.eclipse.jdt.annotation.NonNull;
+
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
 import controller.map.misc.TypesafeXMLEventReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.XMLEvent;
 import model.map.IMutableMapNG;
 import model.map.IMutablePlayerCollection;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
-import org.eclipse.jdt.annotation.NonNull;
 import util.IteratorWrapper;
+import util.NullCleaner;
 import util.Warning;
 
 /**
@@ -65,9 +69,9 @@ public final class CompactXMLReader implements IMapReader, ISPReader {
 		final IDFactory idFactory = new IDFactory();
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
-				final Object retval = CompactReaderAdapter
-						                      .parse(event.asStartElement(), eventReader,
-								                      players, warner, idFactory);
+				final Object retval = CompactReaderAdapter.parse(
+						NullCleaner.assertNotNull(event.asStartElement()),
+						eventReader, players, warner, idFactory);
 				if (type.isAssignableFrom(retval.getClass())) {
 					//noinspection unchecked
 					return (T) retval;

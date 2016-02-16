@@ -6,6 +6,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -21,7 +24,6 @@ import model.report.IReportNode;
 import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
-import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
@@ -64,7 +66,7 @@ public final class ExplorableReportGenerator
 	 * A common string in this class.
 	 */
 	private static final Pattern COLON_COMMA_PATTERN =
-			Pattern.compile(": , ", Pattern.LITERAL);
+			NullCleaner.assertNotNull(Pattern.compile(": , ", Pattern.LITERAL));
 
 	/**
 	 * Produce the sub-report on non-town things that can be explored. All fixtures

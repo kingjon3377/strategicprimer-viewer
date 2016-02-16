@@ -1,14 +1,16 @@
 package controller.map.readerng;
 
+import java.util.Collections;
+import java.util.List;
+
+import javax.xml.XMLConstants;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
-import java.util.Collections;
-import java.util.List;
-import javax.xml.XMLConstants;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.TextFixture;
 import util.EqualsAny;
@@ -65,10 +67,10 @@ public final class TextReader implements INodeHandler<TextFixture> {
 		final StringBuilder sbuild = new StringBuilder(2048); // NOPMD
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && EqualsAny.equalsAny(
-					event.asStartElement().getName().getNamespaceURI(),
+					NullCleaner.assertNotNull(event.asStartElement().getName().getNamespaceURI()),
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
-				throw new UnwantedChildException(element.getName(),
-						                                event.asStartElement());
+				throw new UnwantedChildException(NullCleaner.assertNotNull(element.getName()),
+						NullCleaner.assertNotNull(event.asStartElement()));
 			} else if (event.isCharacters()) {
 				sbuild.append(event.asCharacters().getData());
 			} else if (event.isEndElement()

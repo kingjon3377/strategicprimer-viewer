@@ -1,16 +1,20 @@
 package controller.map.cxml;
 
-import controller.map.formatexceptions.DeprecatedPropertyException;
-import controller.map.formatexceptions.MissingPropertyException;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
+import static java.lang.Boolean.parseBoolean;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+
+import controller.map.formatexceptions.DeprecatedPropertyException;
+import controller.map.formatexceptions.MissingPropertyException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.IDFactory;
 import model.map.IEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.resources.CacheFixture;
@@ -27,8 +31,6 @@ import model.map.fixtures.towns.TownStatus;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
-
-import static java.lang.Boolean.parseBoolean;
 
 /**
  * A reader for resource-bearing TileFixtures.
@@ -74,9 +76,10 @@ public final class CompactResourceReader extends
 	/**
 	 * List of supported tags.
 	 */
-	private static final Set<String> SUPP_TAGS = Collections.unmodifiableSet(
-			new HashSet<>(Arrays.asList("cache", "grove", "orchard", "field", "meadow",
-					"mine", "mineral", "shrub", "stone")));
+	private static final Set<String> SUPP_TAGS =
+			NullCleaner.assertNotNull(Collections.unmodifiableSet(new HashSet<>(
+					Arrays.asList("cache", "grove", "orchard", "field",
+							"meadow", "mine", "mineral", "shrub", "stone"))));
 
 	/**
 	 * Singleton.

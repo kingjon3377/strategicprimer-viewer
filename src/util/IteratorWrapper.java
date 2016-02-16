@@ -3,6 +3,7 @@ package util;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.PriorityQueue;
+
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -65,7 +66,7 @@ public final class IteratorWrapper<@NonNull T> implements Iterable<@NonNull T> {
 		while (iterator.hasNext()) {
 			queue.add(iterator.next());
 		}
-		iter = queue.iterator();
+		iter = NullCleaner.assertNotNull(queue.iterator());
 	}
 
 	/**

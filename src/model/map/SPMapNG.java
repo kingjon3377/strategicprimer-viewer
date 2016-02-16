@@ -14,6 +14,10 @@ import java.util.Spliterators;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.fixtures.Ground;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
@@ -21,8 +25,6 @@ import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.viewer.PointIterator;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
 import util.EmptyIterator;
 import util.IteratorWrapper;
@@ -328,8 +330,10 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public Stream<@NonNull Point> locationStream() {
-		return StreamSupport.stream(Spliterators.spliteratorUnknownSize(
-				new PointIterator(dimensions(), null, true, true), 0), false);
+		return NullCleaner.assertNotNull(StreamSupport.stream(
+				Spliterators.spliteratorUnknownSize(
+						new PointIterator(dimensions(), null, true, true), 0),
+				false));
 	}
 	/**
 	 * @param location a location
@@ -362,7 +366,7 @@ public class SPMapNG implements IMutableMapNG {
 		if (rivers.containsKey(location)) {
 			return NullCleaner.assertNotNull(rivers.get(location)); // NOPMD
 		} else {
-			return EnumSet.noneOf(River.class);
+			return NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
 		}
 	}
 
@@ -405,9 +409,9 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public Stream<TileFixture> streamOtherFixtures(final Point location) {
 		if (fixtures.containsKey(location)) {
-			return NullCleaner.assertNotNull(fixtures.get(location)).stream();
+			return NullCleaner.assertNotNull(NullCleaner.assertNotNull(fixtures.get(location)).stream());
 		} else {
-			return Stream.empty();
+			return NullCleaner.assertNotNull(Stream.empty());
 		}
 	}
 	/**
@@ -614,7 +618,7 @@ public class SPMapNG implements IMutableMapNG {
 		if (rivers.containsKey(location)) {
 			localRivers = rivers.get(location);
 		} else {
-			localRivers = EnumSet.noneOf(River.class);
+			localRivers = NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
 			rivers.put(location, localRivers);
 		}
 		Collections.addAll(localRivers, rvrs);

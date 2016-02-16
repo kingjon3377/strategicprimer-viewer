@@ -292,7 +292,8 @@ public final class ExplorationPanel extends BorderedPanel
 	public void deduct(final int cost) {
 		final String mpText;
 		try {
-			mpText = mpDocument.getText(0, mpDocument.getLength()).trim();
+			mpText = NullCleaner.assertNotNull(
+					mpDocument.getText(0, mpDocument.getLength()).trim());
 		} catch (final BadLocationException except) {
 			LOGGER.log(Level.SEVERE, "Exception trying to update MP counter", except);
 			return;

@@ -1,15 +1,19 @@
 package controller.map.cxml;
 
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+
+import org.eclipse.jdt.annotation.NonNull;
+
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.IDFactory;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.IMutablePlayerCollection;
@@ -28,7 +32,6 @@ import model.map.fixtures.mobile.Simurgh;
 import model.map.fixtures.mobile.Sphinx;
 import model.map.fixtures.mobile.Troll;
 import model.map.fixtures.mobile.Unit;
-import org.eclipse.jdt.annotation.NonNull;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
@@ -153,7 +156,8 @@ public final class CompactMobileReader extends
 					warner, idFactory));
 			break;
 		default:
-			retval = readSimple(element.getName().getLocalPart(),
+			retval = readSimple(
+					NullCleaner.assertNotNull(element.getName().getLocalPart()),
 					getOrGenerateID(element, warner, idFactory));
 			break;
 		}

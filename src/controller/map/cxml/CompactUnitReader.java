@@ -1,28 +1,31 @@
 package controller.map.cxml;
 
+import static java.util.Collections.unmodifiableList;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+
+import org.eclipse.jdt.annotation.NonNull;
+
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import javax.xml.XMLConstants;
-import javax.xml.namespace.QName;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
 import model.map.IFixture;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
-import org.eclipse.jdt.annotation.NonNull;
 import util.EqualsAny;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
-
-import static java.util.Collections.unmodifiableList;
 
 /**
  * A reader for tiles, including rivers.
@@ -104,7 +107,8 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 		final StringBuilder orders = new StringBuilder(512);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && EqualsAny.equalsAny(
-					event.asStartElement().getName().getNamespaceURI(),
+					NullCleaner.assertNotNull(
+							event.asStartElement().getName().getNamespaceURI()),
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				retval.addMember(parseChild(
 						NullCleaner.assertNotNull(event.asStartElement()),

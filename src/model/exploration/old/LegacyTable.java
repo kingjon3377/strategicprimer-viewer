@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
+
 import model.map.IEvent;
 import model.map.Player;
 import model.map.Point;
@@ -21,6 +22,7 @@ import model.map.fixtures.towns.Fortification;
 import model.map.fixtures.towns.Town;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
+import util.NullCleaner;
 
 /**
  * A table for legacy "events".
@@ -58,7 +60,7 @@ public final class LegacyTable implements EncounterTable {
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void addData(final IEvent event) {
-		data.add(event.toString());
+		data.add(NullCleaner.assertNotNull(event.toString()));
 	}
 
 	/**

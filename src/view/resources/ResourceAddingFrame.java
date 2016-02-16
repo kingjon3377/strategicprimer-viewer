@@ -29,6 +29,7 @@ import model.map.Player;
 import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
 import model.resources.ResourceManagementDriver;
+import util.NullCleaner;
 import view.util.BoxPanel;
 import view.util.ErrorShower;
 import view.util.ImprovedComboBox;
@@ -82,7 +83,8 @@ public class ResourceAddingFrame extends JFrame {
 	/**
 	 * The parser for integers.
 	 */
-	private final NumberFormat nf = NumberFormat.getIntegerInstance();
+	private final NumberFormat nf =
+			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
 	/**
 	 * The text field for the turn resources were created
 	 */
@@ -144,9 +146,12 @@ public class ResourceAddingFrame extends JFrame {
 		final Component outer = this;
 		resourceButton.addActionListener(evt -> {
 			try {
-				final String kind = resKindBox.getSelectedItem().toString().trim();
-				final String resource = resourceBox.getSelectedItem().toString().trim();
-				final String units = resUnitsBox.getSelectedItem().toString().trim();
+				final String kind = NullCleaner.assertNotNull(
+						resKindBox.getSelectedItem().toString().trim());
+				final String resource = NullCleaner.assertNotNull(
+						resourceBox.getSelectedItem().toString().trim());
+				final String units = NullCleaner.assertNotNull(
+						resUnitsBox.getSelectedItem().toString().trim());
 				final ResourcePile pile = new ResourcePile(idf.createID(), kind, resource,
 															nf.parse(resQtyField
 																			 .getText()
@@ -172,7 +177,8 @@ public class ResourceAddingFrame extends JFrame {
 		secondPanel.add(implKindBox);
 		final JButton implButton = new JButton("Add Equipment");
 		implButton.addActionListener(evt -> {
-			final String kind = implKindBox.getSelectedItem().toString().trim();
+			final String kind = NullCleaner.assertNotNull(
+					implKindBox.getSelectedItem().toString().trim());
 			model.addResource(new Implement(idf.createID(), kind), current);
 			implKindBox.checkAndClear();
 			implKindBox.requestFocusInWindow();
@@ -227,7 +233,7 @@ public class ResourceAddingFrame extends JFrame {
 		 */
 		@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 		public void checkAndClear() {
-			final String item = getSelectedItem().toString().trim();
+			final String item = NullCleaner.assertNotNull(getSelectedItem().toString().trim());
 			if (!values.contains(item)) {
 				values.add(item);
 				addItem(item);

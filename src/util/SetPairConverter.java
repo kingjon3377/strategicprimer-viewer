@@ -2,6 +2,7 @@ package util;
 
 import java.util.Iterator;
 import java.util.Map;
+
 import org.eclipse.jdt.annotation.NonNull;
 
 /**
@@ -49,7 +50,8 @@ public final class SetPairConverter<@NonNull I, @NonNull K>
 
 	@Override
 	public Iterator<Pair<I, K>> iterator() {
-		return new IteratorImpl<>(theMap.entrySet().iterator());
+		return new IteratorImpl<>(
+				NullCleaner.assertNotNull(theMap.entrySet().iterator()));
 	}
 
 	/**

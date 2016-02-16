@@ -129,7 +129,8 @@ public final class AppChooserFrame extends JFrame {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		final JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
-		buttonPanel.add(button("Map Viewer", model, ViewerStart.class));
+		buttonPanel.add(button("Map Viewer", NullCleaner.assertNotNull(model),
+				ViewerStart.class));
 		buttonPanel.add(button("Worker Skill Advancement", model,
 				AdvancementStart.class));
 		buttonPanel.add(button("Unit Orders and Worker Management", model,

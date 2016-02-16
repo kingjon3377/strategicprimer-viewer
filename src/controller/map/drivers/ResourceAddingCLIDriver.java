@@ -20,6 +20,7 @@ import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
 import model.misc.IDriverModel;
 import model.resources.ResourceManagementDriver;
+import util.NullCleaner;
 
 /**
  * A driver to let the user enter resources etc.
@@ -74,9 +75,12 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 			final String desc = "Players in the maps:";
 			final String none = "No players found.";
 			final String prpt = "Player to add resources for: ";
-			for (int playerNum = cli.chooseFromList(players, desc, none, prpt, false);
-					(playerNum >= 0) && (playerNum < players.size());
-					playerNum = cli.chooseFromList(players, desc, none, prpt, false)) {
+			for (int playerNum =
+					cli.chooseFromList(NullCleaner.assertNotNull(players), desc,
+							none, prpt, false); (playerNum >= 0)
+									&& (playerNum < players.size()); playerNum =
+											cli.chooseFromList(players, desc,
+													none, prpt, false)) {
 				final Player player = players.get(playerNum);
 				while (cli.inputBoolean("Keep going? ")) {
 					if (cli.inputBoolean("Enter a (quantified) resource? ")) {
@@ -108,12 +112,10 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 		if (cli.inputBoolean("Qualify the particular resource with a prefix? ")) {
 			contents = cli.inputString("Prefix to use: ").trim() + ' ' + contents;
 		}
-		model.addResource(
-				new ResourcePile(idf.createID(), kind, contents,
-										cli.inputNumber(
-												String.format("Quantity in %s? ",
-														units)),
-										units), player);
+		model.addResource(new ResourcePile(idf.createID(), kind, contents,
+				cli.inputNumber(NullCleaner.assertNotNull(
+						String.format("Quantity in %s? ", units))),
+				units), player);
 	}
 
 	/**
@@ -180,7 +182,8 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 		}
 		final List<String> list = new ArrayList<>(set);
 		final int num = cli.chooseStringFromList(list,
-				String.format("Possible resources in the %s category:", kind),
+				NullCleaner.assertNotNull(String.format(
+						"Possible resources in the %s category:", kind)),
 				"No resources entered yet", "Choose resource: ", false);
 		if ((num >= 0) && (num < list.size())) {
 			return list.get(num);
@@ -207,13 +210,13 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 			throws IOException {
 		if (resourceUnits.containsKey(resource)) {
 			final String unit = resourceUnits.get(resource);
-			if (cli.inputBoolean(
-					String.format("Is %s the correct units for %s? ", unit, resource))) {
+			if (cli.inputBoolean(NullCleaner.assertNotNull(String.format(
+					"Is %s the correct units for %s? ", unit, resource)))) {
 				return unit;
 			}
 		}
-		final String retval =
-				cli.inputString(String.format("Unit to use for %s: ", resource));
+		final String retval = cli.inputString(NullCleaner.assertNotNull(
+				String.format("Unit to use for %s: ", resource)));
 		resourceUnits.put(resource, retval);
 		return retval;
 	}

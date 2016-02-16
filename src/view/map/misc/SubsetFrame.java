@@ -90,7 +90,8 @@ public final class SubsetFrame extends JFrame {
 		/**
 		 * Pre-compiled pattern for matching newlines.
 		 */
-		private static final Pattern NEWLINE = Pattern.compile("\n");
+		private static final Pattern NEWLINE =
+				NullCleaner.assertNotNull(Pattern.compile("\n"));
 		/**
 		 * Whether we're at the start of a line.
 		 */

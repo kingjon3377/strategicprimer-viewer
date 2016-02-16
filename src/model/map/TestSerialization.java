@@ -1,28 +1,5 @@
 package model.map;
 
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.formatexceptions.UnwantedChildException;
-import controller.map.iointerfaces.ISPReader;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import model.map.fixtures.RiverFixture;
-import model.map.fixtures.TextFixture;
-import model.map.fixtures.mobile.Griffin;
-import model.map.fixtures.mobile.Ogre;
-import model.map.fixtures.mobile.Unit;
-import model.map.fixtures.terrain.Forest;
-import model.map.fixtures.towns.Fortress;
-import org.junit.Test;
-import util.Pair;
-import util.Warning;
-
 import static model.map.PointFactory.point;
 import static model.map.River.Lake;
 import static model.map.TileType.Desert;
@@ -33,6 +10,33 @@ import static model.map.TileType.Steppe;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static util.NullCleaner.assertNotNull;
+
+import java.io.IOException;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+
+import org.junit.Test;
+
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.iointerfaces.ISPReader;
+import model.map.fixtures.RiverFixture;
+import model.map.fixtures.TextFixture;
+import model.map.fixtures.mobile.Griffin;
+import model.map.fixtures.mobile.Ogre;
+import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.terrain.Forest;
+import model.map.fixtures.towns.Fortress;
+import util.NullCleaner;
+import util.Pair;
+import util.Warning;
 
 /**
  * A class to test the serialization of XMLWritable objects other than Fixtures.
@@ -64,8 +68,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	/**
 	 * Pre-compiled pattern for matching "kind".
 	 */
-	private static final Pattern KIND_PATTERN =
-			Pattern.compile(KIND_PROPERTY, Pattern.LITERAL);
+	private static final Pattern KIND_PATTERN = NullCleaner
+			.assertNotNull(Pattern.compile(KIND_PROPERTY, Pattern.LITERAL));
 
 	/**
 	 * Test Player serialization.
@@ -103,7 +107,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				new SPMapNG(new MapDimensions(point.row + 1, point.col + 1, 2),
 								   new PlayerCollection(), -1);
 		retval.setBaseTerrain(point, Plains);
-		retval.addRivers(point, rivers);
+		retval.addRivers(point, NullCleaner.assertNotNull(rivers));
 		return retval;
 	}
 

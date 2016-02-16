@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
-import model.map.fixtures.mobile.ProxyFor;
+
 import org.eclipse.jdt.annotation.NonNull;
+
+import model.map.fixtures.mobile.ProxyFor;
+import util.NullCleaner;
 
 /**
  * An implementation of ISkill whose operations act on multiple workers at once.
@@ -55,7 +58,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	public ProxySkill(final String nomen, final boolean parall,
 	                  final @NonNull IJob @NonNull ... jobs) {
 		parallel = parall;
-		name = nomen;
+		name = NullCleaner.assertNotNull(nomen);
 		Collections.addAll(proxied, jobs);
 	}
 

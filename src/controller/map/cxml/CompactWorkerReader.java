@@ -1,15 +1,19 @@
 package controller.map.cxml;
 
+import java.io.IOException;
+
+import javax.xml.XMLConstants;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnsupportedPropertyException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
-import java.io.IOException;
-import javax.xml.XMLConstants;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
@@ -17,7 +21,6 @@ import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.mobile.worker.WorkerStats;
-import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
 import util.IteratorWrapper;
 import util.NullCleaner;
@@ -79,7 +82,8 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 		retval.setImage(getParameter(element, "image", ""));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && EqualsAny.equalsAny(
-					event.asStartElement().getName().getNamespaceURI(),
+					NullCleaner.assertNotNull(
+							event.asStartElement().getName().getNamespaceURI()),
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				if ("job".equalsIgnoreCase(NullCleaner.assertNotNull(event
 																			 .asStartElement()
@@ -98,8 +102,9 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 							NullCleaner.assertNotNull(event.asStartElement()),
 							stream));
 				} else {
-					throw new UnwantedChildException(element.getName(),
-							                                event.asStartElement());
+					throw new UnwantedChildException(
+							NullCleaner.assertNotNull(element.getName()),
+							NullCleaner.assertNotNull(event.asStartElement()));
 				}
 			} else if (event.isEndElement()
 							   &&
@@ -157,7 +162,8 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 		}
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && EqualsAny.equalsAny(
-					event.asStartElement().getName().getNamespaceURI(),
+					NullCleaner.assertNotNull(
+							event.asStartElement().getName().getNamespaceURI()),
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				if ("skill".equalsIgnoreCase(NullCleaner.assertNotNull(event
 																			   .asStartElement()
@@ -169,8 +175,8 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 					spinUntilEnd(NullCleaner.assertNotNull(event.asStartElement()
 																   .getName()), stream);
 				} else {
-					throw new UnwantedChildException(element.getName(),
-							                                event.asStartElement());
+					throw new UnwantedChildException(NullCleaner.assertNotNull(element.getName()),
+							NullCleaner.assertNotNull(event.asStartElement()));
 				}
 			} else if (event.isEndElement()
 							   &&

@@ -120,11 +120,13 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 			throw new NoSuchElementException();
 		}
 		XMLEvent retval = stack.peekFirst().second().next();
-		while (retval.isStartElement() && EqualsAny.equalsAny(
-				retval.asStartElement().getName().getNamespaceURI(), ISPReader.NAMESPACE,
-				XMLConstants.NULL_NS_URI) && "include".equals(retval.asStartElement()
-						                                              .getName()
-						                                              .getLocalPart())) {
+		while (retval.isStartElement()
+				&& EqualsAny.equalsAny(
+						NullCleaner.assertNotNull(retval.asStartElement()
+								.getName().getNamespaceURI()),
+				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)
+				&& "include".equals(
+						retval.asStartElement().getName().getLocalPart())) {
 			handleInclude(NullCleaner.assertNotNull(retval.asStartElement()));
 			removeEmptyIterators();
 			if (stack.isEmpty()) {

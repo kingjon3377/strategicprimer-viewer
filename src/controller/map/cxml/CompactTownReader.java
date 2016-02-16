@@ -1,16 +1,18 @@
 package controller.map.cxml;
 
+import java.io.IOException;
+import java.util.Random;
+import java.util.logging.Logger;
+
+import javax.xml.XMLConstants;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
-import java.io.IOException;
-import java.util.Random;
-import java.util.logging.Logger;
-import javax.xml.XMLConstants;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.IPlayerCollection;
 import model.map.Player;
@@ -244,7 +246,8 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 															idFactory));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && EqualsAny.equalsAny(
-					event.asStartElement().getName().getNamespaceURI(),
+					NullCleaner.assertNotNull(
+							event.asStartElement().getName().getNamespaceURI()),
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				final String memberTag = event.asStartElement().getName()
 												 .getLocalPart().toLowerCase();
@@ -261,8 +264,9 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 							NullCleaner.assertNotNull(event.asStartElement()),
 							stream, players, warner, idFactory));
 				} else {
-					throw new UnwantedChildException(element.getName(),
-							                                event.asStartElement());
+					throw new UnwantedChildException(
+							NullCleaner.assertNotNull(element.getName()),
+							NullCleaner.assertNotNull(event.asStartElement()));
 				}
 			} else if (event.isEndElement()
 							   &&

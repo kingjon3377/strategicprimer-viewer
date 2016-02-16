@@ -246,11 +246,11 @@ public final class FindDialog extends JDialog {
 		if (matchesSimple(pattern, idNum, fix, csen)) {
 			return true; // NOPMD
 		} else if (fix instanceof FixtureIterable) {
-			return StreamSupport.stream(((FixtureIterable<@NonNull ?>) fix)
-												.spliterator(),
-					false)
-						   .anyMatch((final IFixture member) -> matches(pattern, idNum, member,
-								   csen));
+			return StreamSupport
+					.stream(((FixtureIterable<@NonNull ?>) fix).spliterator(),
+							false)
+					.anyMatch((final IFixture member) -> matches(pattern, idNum,
+							NullCleaner.assertNotNull(member), csen));
 		} else {
 			return false;
 		}

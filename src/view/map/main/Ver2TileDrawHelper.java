@@ -254,7 +254,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			temp.add(new Mountain());
 		}
 		map.streamOtherFixtures(location).forEach(temp::add);
-		return temp.stream().filter(zof::shouldDisplay).sorted(fixComp);
+		return NullCleaner.assertNotNull(temp.stream().filter(zof::shouldDisplay).sorted(fixComp));
 	}
 
 	/**
@@ -378,7 +378,8 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * Create the mapping from river-sets to filenames.
 	 */
 	private void createRiverFiles() {
-		riverFiles.put(EnumSet.noneOf(River.class), "riv00.png");
+		riverFiles.put(NullCleaner.assertNotNull(EnumSet.noneOf(River.class)),
+				"riv00.png");
 		riverFiles.put(createRiverSet(River.North), "riv01.png");
 		riverFiles.put(createRiverSet(River.East), "riv02.png");
 		riverFiles.put(createRiverSet(River.South), "riv03.png");
@@ -429,7 +430,8 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		riverFiles
 				.put(createRiverSet(River.East, River.South, River.West,
 						River.Lake), "riv30.png");
-		riverFiles.put(EnumSet.allOf(River.class), "riv31.png");
+		riverFiles.put(NullCleaner.assertNotNull(EnumSet.allOf(River.class)),
+				"riv31.png");
 	}
 
 	/**
@@ -437,8 +439,8 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return a set containing them
 	 */
 	private static Set<River> createRiverSet(final @NonNull River @NonNull ... rivers) {
-		final Set<@NonNull River> set =
-				EnumSet.noneOf(NullCleaner.assertNotNull(River.class));
+		final Set<@NonNull River> set = NullCleaner.assertNotNull(
+				EnumSet.noneOf(NullCleaner.assertNotNull(River.class)));
 		Collections.addAll(set, rivers);
 		return set;
 	}

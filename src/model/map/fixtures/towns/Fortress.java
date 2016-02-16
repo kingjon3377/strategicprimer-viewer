@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.FixtureIterable;
 import model.map.HasImage;
 import model.map.IFixture;
@@ -13,7 +17,6 @@ import model.map.Player;
 import model.map.SubsettableFixture;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.mobile.IUnit;
-import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**
@@ -42,7 +45,7 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  */
 public class Fortress implements HasImage, ITownFixture,
-										 FixtureIterable<FortressMember>,
+										 FixtureIterable<@NonNull FortressMember>,
 										 SubsettableFixture {
 	/**
 	 * The name of an image to use for this particular fixture.

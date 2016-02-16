@@ -1,10 +1,7 @@
 package controller.map.converter; // NOPMD
 
-import controller.exploration.TableLoader;
-import controller.map.formatexceptions.MapVersionException;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
-import controller.map.misc.MapReaderAdapter;
+import static util.NullCleaner.assertNotNull;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,7 +14,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import javax.xml.stream.XMLStreamException;
+
+import org.eclipse.jdt.annotation.Nullable;
+
+import controller.exploration.TableLoader;
+import controller.map.formatexceptions.MapVersionException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.IDFactory;
+import controller.map.misc.MapReaderAdapter;
 import model.exploration.old.ExplorationRunner;
 import model.exploration.old.MissingTableException;
 import model.map.IMapNG;
@@ -45,12 +51,10 @@ import model.map.fixtures.towns.ITownFixture;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
 import model.workermgmt.RaceFactory;
-import org.eclipse.jdt.annotation.Nullable;
+import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 import view.util.DriverQuit;
-
-import static util.NullCleaner.assertNotNull;
 
 /**
  * A class to convert a version-1 map to a version-2 map with greater resolution.
@@ -518,10 +522,15 @@ public final class OneToTwoConverter { // NOPMD
 	private static Stream<Point> getNeighbors(final Point point) {
 		final int row = point.row;
 		final int col = point.col;
-		return Stream.of(PointFactory.point(row - 1, col - 1), PointFactory.point(row - 1, col),
-				PointFactory.point(row - 1, col + 1), PointFactory.point(row, col - 1),
-				PointFactory.point(row, col + 1), PointFactory.point(row + 1, col - 1),
-				PointFactory.point(row + 1, col), PointFactory.point(row + 1, col + 1));
+		return NullCleaner
+				.assertNotNull(Stream.of(PointFactory.point(row - 1, col - 1),
+						PointFactory.point(row - 1, col),
+						PointFactory.point(row - 1, col + 1),
+						PointFactory.point(row, col - 1),
+						PointFactory.point(row, col + 1),
+						PointFactory.point(row + 1, col - 1),
+						PointFactory.point(row + 1, col),
+						PointFactory.point(row + 1, col + 1)));
 	}
 
 	/**

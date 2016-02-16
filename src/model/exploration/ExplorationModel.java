@@ -36,6 +36,7 @@ import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
 import model.misc.SimpleMultiMapModel;
+import util.NullCleaner;
 import util.Pair;
 import view.util.SystemOut;
 
@@ -114,7 +115,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 					StreamSupport.stream(pair.first().players().spliterator(), false)
 							.collect(Collectors.toList()));
 		}
-		return retval;
+		return NullCleaner.assertNotNull(retval);
 	}
 
 	/**
@@ -135,14 +136,14 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	private static Stream<IUnit> getUnits(final Stream<@NonNull ? super Unit> stream,
 											  final Player player) {
-		return stream.flatMap(obj -> {
+		return NullCleaner.assertNotNull(stream.flatMap(obj -> {
 			if (obj instanceof Fortress) {
 				return StreamSupport.stream(((Fortress) obj).spliterator(), false);
 			} else {
 				return Stream.of(obj);
 			}
 		}).filter(IUnit.class::isInstance).map(IUnit.class::cast)
-				       .filter(unit -> unit.getOwner().equals(player));
+				       .filter(unit -> unit.getOwner().equals(player)));
 	}
 
 	/**
@@ -443,9 +444,9 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 			}
 			if (source.streamOtherFixtures(point).flatMap(item -> {
 				if (item instanceof FixtureIterable) {
-					return StreamSupport
+					return NullCleaner.assertNotNull(StreamSupport
 							       .stream(((FixtureIterable<@NonNull ?>) item)
-									               .spliterator(), false);
+									               .spliterator(), false));
 				} else {
 					return Stream.of(item);
 				}

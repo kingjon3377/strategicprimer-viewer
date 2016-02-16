@@ -1,11 +1,13 @@
 package controller.map.cxml;
 
+import java.io.IOException;
+
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
-import java.io.IOException;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.TextFixture;
 import util.IteratorWrapper;
@@ -75,8 +77,9 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 		final StringBuilder sbuild = new StringBuilder(2048); // NOPMD
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				throw new UnwantedChildException(element.getName(),
-						                                event.asStartElement());
+				throw new UnwantedChildException(
+						NullCleaner.assertNotNull(element.getName()),
+						NullCleaner.assertNotNull(event.asStartElement()));
 			} else if (event.isCharacters()) {
 				sbuild.append(event.asCharacters().getData());
 			} else if (event.isEndElement()

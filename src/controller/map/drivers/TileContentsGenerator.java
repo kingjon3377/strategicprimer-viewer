@@ -1,9 +1,7 @@
 package controller.map.drivers;
 
-import controller.exploration.TableLoader;
-import controller.map.formatexceptions.MapVersionException;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.MapReaderAdapter;
+import static view.util.SystemOut.SYS_OUT;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -14,7 +12,13 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
+
 import javax.xml.stream.XMLStreamException;
+
+import controller.exploration.TableLoader;
+import controller.map.formatexceptions.MapVersionException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.MapReaderAdapter;
 import model.exploration.old.ExplorationRunner;
 import model.exploration.old.MissingTableException;
 import model.map.IMapNG;
@@ -25,8 +29,6 @@ import util.NullCleaner;
 import util.SingletonRandom;
 import util.TypesafeLogger;
 import util.Warning;
-
-import static view.util.SystemOut.SYS_OUT;
 
 /**
  * A class to non-interactively generate a tile's contents.
@@ -125,7 +127,7 @@ public final class TileContentsGenerator {
 		final int reps = SingletonRandom.RANDOM.nextInt(4) + 1;
 		for (int i = 0; i < reps; i++) {
 			println(runner.recursiveConsultTable("fisher", point,
-					terrain, Stream.empty()));
+					terrain, NullCleaner.assertNotNull(Stream.empty())));
 		}
 	}
 

@@ -225,11 +225,11 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	private static void enterStats(final IMultiMapModel model,
 			final Iterable<UnitMember> unit, final ICLIHelper cli)
 					throws IOException {
-		final List<Worker> workers = StreamSupport.stream(unit.spliterator(), false)
-				                             .filter(Worker.class::isInstance)
-				                             .map(Worker.class::cast)
-				                             .filter(wkr -> wkr.getStats() == null)
-				                             .collect(Collectors.toList());
+		final List<Worker> workers = NullCleaner.assertNotNull(StreamSupport
+				.stream(unit.spliterator(), false)
+				.filter(Worker.class::isInstance).map(Worker.class::cast)
+				.filter(wkr -> wkr.getStats() == null)
+				.collect(Collectors.toList()));
 		final String hdr = "Which worker do you want to enter stats for?";
 		final String none = "There are no owkers without stats in that unit.";
 		final String prpt = "Worker to modify: ";
@@ -448,7 +448,8 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String filename = cli.inputString("Filename to load names from: ");
 		final List<String> names;
 		try (final FileSystem fsys = FileSystems.getDefault()) {
-			names = Files.readAllLines(fsys.getPath(filename), Charset.defaultCharset());
+			names = NullCleaner.assertNotNull(Files.readAllLines(
+					fsys.getPath(filename), Charset.defaultCharset()));
 		}
 		for (int i = 0; i < count; i++) {
 			final Worker worker =

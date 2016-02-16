@@ -15,6 +15,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.Point;
 import model.map.PointFactory;
+import util.NullCleaner;
 
 /**
  * A node to replace usages of null.
@@ -128,7 +129,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public Iterator<IReportNode> iterator() {
-		return Collections.emptyIterator();
+		return NullCleaner.assertNotNull(Collections.emptyIterator());
 	}
 
 	/**
@@ -136,7 +137,7 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public Enumeration<IReportNode> children() {
-		return Collections.emptyEnumeration();
+		return NullCleaner.assertNotNull(Collections.emptyEnumeration());
 	}
 
 	/**

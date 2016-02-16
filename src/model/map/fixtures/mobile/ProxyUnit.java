@@ -7,12 +7,14 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Logger;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.IFixture;
 import model.map.Player;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.ProxyWorker;
-import org.eclipse.jdt.annotation.Nullable;
 import util.EmptyIterator;
 import util.NullCleaner;
 
@@ -593,7 +595,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 		public String toString() {
 			final Iterator<UnitMember> iter = proxiedMembers.iterator();
 			if (iter.hasNext()) {
-				return iter.next().toString();
+				return NullCleaner.assertNotNull(iter.next().toString());
 			} else {
 				return "a proxy for no unit members";
 			}

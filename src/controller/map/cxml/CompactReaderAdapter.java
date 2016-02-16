@@ -24,6 +24,7 @@ import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import util.EqualsAny;
 import util.IteratorWrapper;
+import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 
@@ -87,13 +88,14 @@ public final class CompactReaderAdapter {
 	                           final IMutablePlayerCollection players,
 	                           final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		if (!EqualsAny.equalsAny(element.getName().getNamespaceURI(), ISPReader.NAMESPACE,
-				XMLConstants.NULL_NS_URI)) {
+		if (!EqualsAny.equalsAny(
+				NullCleaner.assertNotNull(element.getName().getNamespaceURI()),
+				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 			throw new IllegalArgumentException("CompactReaderAdapter can only parse " +
 					                                   "objects in either our namespace " +
 					                                   "or the default namespace");
 		}
-		final String tag = element.getName().getLocalPart();
+		final String tag = NullCleaner.assertNotNull(element.getName().getLocalPart());
 		// Handle rivers specially.
 		if ("river".equals(tag) || "lake".equals(tag)) {
 			return CompactMapNGReader.parseRiver(element, warner);

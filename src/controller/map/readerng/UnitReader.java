@@ -1,13 +1,15 @@
 package controller.map.readerng;
 
+import java.util.Collections;
+import java.util.List;
+
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
-import java.util.Collections;
-import java.util.List;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
@@ -81,7 +83,9 @@ public final class UnitReader implements INodeHandler<Unit> {
 				if (result instanceof UnitMember) {
 					fix.addMember((UnitMember) result);
 				} else {
-					throw new UnwantedChildException(element.getName(), selem);
+					throw new UnwantedChildException(
+							NullCleaner.assertNotNull(element.getName()),
+							selem);
 				}
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());

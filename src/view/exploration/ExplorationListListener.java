@@ -174,7 +174,8 @@ public final class ExplorationListListener implements ListDataListener {
 			final List<IntPair<TileFixture>> constants = new ArrayList<>();
 			final List<IntPair<TileFixture>> possibles = new ArrayList<>();
 			int i = 0;
-			for (final TileFixture fix : new ListModelWrapper<>(list.getModel())) {
+			for (final TileFixture fix : new ListModelWrapper<>(
+					NullCleaner.assertNotNull(list.getModel()))) {
 				if (SimpleMovement.shouldAlwaysNotice(selUnit, fix)) {
 					constants.add(IntPair.of(i, fix));
 				} else if (SimpleMovement.mightNotice(selUnit, fix)) {

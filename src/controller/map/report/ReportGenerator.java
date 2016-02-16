@@ -1,11 +1,14 @@
 package controller.map.report;
 
-import controller.map.misc.IDFactory;
-import controller.map.misc.IDFactoryFiller;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import org.eclipse.jdt.annotation.NonNull;
+
+import controller.map.misc.IDFactory;
+import controller.map.misc.IDFactoryFiller;
 import model.map.DistanceComparator;
 import model.map.FixtureIterable;
 import model.map.HasOwner;
@@ -22,7 +25,6 @@ import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.Fortress;
 import model.report.IReportNode;
 import model.report.RootReportNode;
-import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
 import util.IntMap;
 import util.NullCleaner;
@@ -351,16 +353,17 @@ public final class ReportGenerator {
 		for (final Point point : map.locations()) {
 			// Because neither Forests, Mountains, nor Ground have positive IDs,
 			// we can ignore everything but the "other" fixtures.
-			retval.putAll(getFixtures(map.streamOtherFixtures(point))
-					              .filter(fix -> (fix instanceof TileFixture) ||
-							                             (fix.getID() > 0))
-					              .collect(Collectors.toMap(fix -> {
-				if (fix instanceof TileFixture) {
-					return Integer.valueOf(idf.createID());
-				} else {
-					return Integer.valueOf(fix.getID());
-				}
-			}, fix -> Pair.of(point, fix))));
+			retval.putAll(NullCleaner
+					.assertNotNull(getFixtures(map.streamOtherFixtures(point))
+							.filter(fix -> (fix instanceof TileFixture)
+									|| (fix.getID() > 0))
+							.collect(Collectors.toMap(fix -> {
+								if (fix instanceof TileFixture) {
+									return Integer.valueOf(idf.createID());
+								} else {
+									return Integer.valueOf(fix.getID());
+								}
+							} , fix -> Pair.of(point, fix)))));
 		}
 		return retval;
 	}
@@ -371,15 +374,15 @@ public final class ReportGenerator {
 	 */
 	private static Stream<IFixture> getFixtures(
 														   final Stream<? extends IFixture> stream) {
-		return stream.flatMap(fix -> {
+		return NullCleaner.assertNotNull(stream.flatMap(fix -> {
 			if (fix instanceof FixtureIterable) {
-				return Stream.concat(Stream.of(fix), getFixtures(StreamSupport
+				return Stream.concat(Stream.of(fix), getFixtures(NullCleaner.assertNotNull(StreamSupport
 						                                     .stream(((FixtureIterable<@NonNull ?>) fix)
 								                                             .spliterator(),
-								                                     false)));
+								                                     false))));
 			} else {
 				return Stream.of(fix);
 			}
-		});
+		}));
 	}
 }

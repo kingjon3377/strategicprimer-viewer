@@ -74,7 +74,7 @@ public final class TODOFixerDriver {
 			final SimpleTerrain terrain = getTerrain(point);
 			map.streamOtherFixtures(point).filter(Unit.class::isInstance)
 					.map(Unit.class::cast).filter(unit -> "TODO".equals(unit.getKind()))
-					.forEach(unit -> fixUnit(unit, terrain, cli));
+					.forEach(unit -> fixUnit(NullCleaner.assertNotNull(unit), terrain, cli));
 		}
 	}
 
