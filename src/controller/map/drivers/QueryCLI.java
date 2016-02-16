@@ -27,8 +27,6 @@ import model.misc.IDriverModel;
 import org.eclipse.jdt.annotation.Nullable;
 import util.TypesafeLogger;
 
-import static view.util.SystemOut.SYS_OUT;
-
 /**
  * A driver for running exploration results, etc., using the new model.
  *
@@ -66,10 +64,6 @@ public final class QueryCLI implements SimpleDriver {
 	 */
 	private static final Logger LOGGER = TypesafeLogger
 			                                     .getLogger(QueryCLI.class);
-	/**
-	 * Helper to get numbers from the user, etc.
-	 */
-	private final ICLIHelper helper = new CLIHelper();
 
 	/**
 	 * How many hours we assume a working day is for a hunter or such.
@@ -82,15 +76,15 @@ public final class QueryCLI implements SimpleDriver {
 
 	/**
 	 * @param model   the driver model containing the map to explore
-	 * @param ostream the stream to write output to
+	 * @param cli the interface to the user
 	 */
-	private void repl(final IDriverModel model, final Appendable ostream) {
+	private void repl(final IDriverModel model, final ICLIHelper cli) {
 		final HuntingModel hmodel = new HuntingModel(model.getMap());
 		try {
-			String input = helper.inputString("Command: ");
+			String input = cli.inputString("Command: ");
 			while (!input.isEmpty() && (input.charAt(0) != 'q')) {
-				handleCommand(model, hmodel, ostream, input.charAt(0));
-				input = helper.inputString("Command: ");
+				handleCommand(model, hmodel, cli, input.charAt(0));
+				input = cli.inputString("Command: ");
 			}
 		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O exception", except);
@@ -100,46 +94,46 @@ public final class QueryCLI implements SimpleDriver {
 	/**
 	 * @param model   the driver model
 	 * @param hmodel  the hunting model
-	 * @param ostream the stream to write to
+	 * @param cli the interface to the user
 	 * @param input   the command
 	 * @throws IOException           on I/O error
 	 */
 	public void handleCommand(final IDriverModel model, final HuntingModel hmodel,
-	                          final Appendable ostream, final char input)
+	                          final ICLIHelper cli, final char input)
 			throws IOException {
 		switch (input) {
 		case '?':
-			usage(ostream);
+			usage(cli);
 			break;
 		case 'f':
-			fortressInfo(model.getMap(), selectPoint(), ostream);
+			fortressInfo(model.getMap(), selectPoint(cli), cli);
 			break;
 		case 'h':
-			hunt(hmodel, selectPoint(), true, ostream, HUNTER_HOURS
+			hunt(hmodel, selectPoint(cli), true, cli, HUNTER_HOURS
 					                                           * HOURLY_ENCOUNTERS);
 			break;
 		case 'i':
-			hunt(hmodel, selectPoint(), false, ostream, HUNTER_HOURS
+			hunt(hmodel, selectPoint(cli), false, cli, HUNTER_HOURS
 					                                            * HOURLY_ENCOUNTERS);
 			break;
 		case 'g':
-			gather(hmodel, selectPoint(), ostream, HUNTER_HOURS
+			gather(hmodel, selectPoint(cli), cli, HUNTER_HOURS
 					                                       * HOURLY_ENCOUNTERS);
 			break;
 		case 'e':
-			herd(ostream);
+			herd(cli);
 			break;
 		case 't':
 			new TrapModelDriver().startDriver(model);
 			break;
 		case 'd':
-			distance(model.getMapDimensions(), ostream);
+			distance(model.getMapDimensions(), cli);
 			break;
 		case 'c':
-			count(model.getMap(), CLIHelper.toList(model.getMap().players()), ostream);
+			count(model.getMap(), CLIHelper.toList(model.getMap().players()), cli);
 			break;
 		default:
-			ostream.append("Unknown command.\n");
+			cli.println("Unknown command.");
 			break;
 		}
 	}
@@ -149,12 +143,12 @@ public final class QueryCLI implements SimpleDriver {
 	 *
 	 * @param map     the map
 	 * @param players the list of players in the map
-	 * @param ostream the stream to write results to
+	 * @param cli the interface to the user
 	 * @throws IOException on I/O error interacting with user
 	 */
 	private void count(final IMapNG map, final List<Player> players,
-	                   final Appendable ostream) throws IOException {
-		final int playerNum = helper.chooseFromList(players,
+	                   final ICLIHelper cli) throws IOException {
+		final int playerNum = cli.chooseFromList(players,
 				"Players in the map:", "Map contains no players",
 				"Owner of workers to count: ", true);
 		if ((playerNum < 0) || (playerNum >= players.size())) {
@@ -178,10 +172,7 @@ public final class QueryCLI implements SimpleDriver {
 				}
 			}
 		}
-		ostream.append(player.getName());
-		ostream.append(" has ");
-		ostream.append(Integer.toString(count));
-		ostream.append(" workers.\n");
+		cli.printf("%s has %i workers.%n", player.getName(), count);
 	}
 
 	/**
@@ -190,15 +181,15 @@ public final class QueryCLI implements SimpleDriver {
 	 * TODO: use some sort of pathfinding
 	 *
 	 * @param dims    the dimensions of the map
-	 * @param ostream the stream to write to
+	 * @param cli the interface to the user
 	 * @throws IOException on I/O error dealing with user input
 	 */
-	private void distance(final MapDimensions dims, final Appendable ostream)
+	private void distance(final MapDimensions dims, final ICLIHelper cli)
 			throws IOException {
-		ostream.append("Starting point:\t");
-		final Point start = selectPoint();
-		ostream.append("Destination:\t");
-		final Point end = selectPoint();
+		cli.print("Starting point:\t");
+		final Point start = selectPoint(cli);
+		cli.print("Destination:\t");
+		final Point end = selectPoint(cli);
 		final int rawXdiff = start.row - end.row;
 		final int rawYdiff = start.col - end.col;
 		final int xdiff;
@@ -213,31 +204,29 @@ public final class QueryCLI implements SimpleDriver {
 		} else {
 			ydiff = dims.cols - rawYdiff;
 		}
-		ostream.append("Distance (as the crow flies, in tiles):\t");
-		ostream.append(Long.toString(Math.round(Math.sqrt((xdiff
-				                                                   * xdiff) +
-				                                                  (ydiff * ydiff)))));
+		cli.printf("Distance (as the crow flies, in tiles):\t%i%n",
+				Math.round(Math.sqrt((xdiff * xdiff) + (ydiff * ydiff))));
 	}
 
 	/**
 	 * Run herding. TODO: Move the logic here into the HuntingModel or a similar class.
 	 *
-	 * @param ostream the stream to write to
+	 * @param cli the interface to the user
 	 * @throws IOException on I/O error dealing with user input
 	 */
-	private void herd(final Appendable ostream) throws IOException {
+	private void herd(final ICLIHelper cli) throws IOException {
 		final double rate; // The amount of milk per animal
 		final int time; // How long it takes to milk one animal, in minutes.
 		final boolean poultry;
-		if (helper.inputBoolean("Are these small animals, like sheep?\t")) {
+		if (cli.inputBoolean("Are these small animals, like sheep?\t")) {
 			rate = 1.5;
 			time = 15;
 			poultry = false;
-		} else if (helper.inputBoolean("Are these dairy cattle?\t")) {
+		} else if (cli.inputBoolean("Are these dairy cattle?\t")) {
 			rate = 4;
 			time = 20;
 			poultry = false;
-		} else if (helper.inputBoolean("Are these chickens?\t")) {
+		} else if (cli.inputBoolean("Are these chickens?\t")) {
 			// TODO: Support other poultry
 			rate = 0.75;
 			time = 12;
@@ -247,44 +236,38 @@ public final class QueryCLI implements SimpleDriver {
 			time = 20;
 			poultry = false;
 		}
-		final int count = helper.inputNumber("How many animals?\t");
+		final int count = cli.inputNumber("How many animals?\t");
 		if (count == 0) {
-			ostream.append("With no animals, no cost and no gain.\n");
+			cli.println("With no animals, no cost and no gain.");
 			return; // NOPMD
 		} else if (count < 0) {
-			ostream.append("Can't have a negative number of animals.\n");
+			cli.println("Can't have a negative number of animals.");
 			return; // NOPMD
 		} else {
-			final int herders = helper.inputNumber("How many herders?\t");
+			final int herders = cli.inputNumber("How many herders?\t");
 			if (herders <= 0) {
-				ostream.append("Can't herd with no herders.\n");
+				cli.println("Can't herd with no herders.");
 				return; // NOPMD
 			}
 			final int animalsPerHerder = ((count + herders) - 1) / herders;
 			if (poultry) {
-				ostream.append("Gathering eggs takes ");
-				ostream.append(Integer.toString(animalsPerHerder * 2));
-				ostream.append(" minutes; cleaning up after them,\n");
-				ostream.append(String.format(
-						"which should be done every third turn at least, takes %.1f hours" +
-
-								".%n",
-						Double.valueOf(animalsPerHerder * 0.5)));
-				ostream.append(String.format(
-						"This produces %.0f eggs, totaling %.1f oz.%n",
+				cli.printf("Gathering eggs takes %i minutes; cleaning up after them,%n",
+						animalsPerHerder * 2);
+				cli.printf(
+						"which should be done every third turn at least, takes %.1f " +
+								"hours.%n",
+						Double.valueOf(animalsPerHerder * 0.5));
+				cli.printf("This produces %.0f eggs, totaling %.1f oz.%n",
 						Double.valueOf(rate * count),
-						Double.valueOf(rate * 2.0 * count)));
+						Double.valueOf(rate * 2.0 * count));
 			} else {
-				ostream.append("Tending the animals takes ");
-				ostream.append(Integer.toString(animalsPerHerder * time));
-				ostream.append(" minutes, or ");
-				ostream.append(Integer.toString(animalsPerHerder * (time - 5)));
-				ostream.append(" minutes with expert herders, twice daily.\n");
-				ostream.append("Gathering them for each milking takes 30 min more.\n");
-				ostream.append(String.format(
-						"This produces %,.1f gallons, %,.1f lbs, of milk per day.%n",
+				cli.printf("Tending the animals takes %i minutes, or %i minutes with ",
+						animalsPerHerder * time, animalsPerHerder * (time - 5));
+				cli.println("expert herders, twice daily.");
+				cli.println("Gathering them for each milking takes 30 min more.");
+				cli.printf("This produces %,.1f gallons, %,.1f lbs, of milk per day.%n",
 						Double.valueOf(rate * count),
-						Double.valueOf(rate * 8.6 * count)));
+						Double.valueOf(rate * 8.6 * count));
 			}
 		}
 	}
@@ -295,24 +278,18 @@ public final class QueryCLI implements SimpleDriver {
 	 * @param hmodel     the hunting model
 	 * @param point      where to hunt or fish
 	 * @param land       true if this is hunting, false if fishing
-	 * @param ostream    the stream to write to
+	 * @param cli the interface to the user
 	 * @param encounters how many encounters to show
 	 * @throws IOException on I/O error writing to stream
 	 */
 	private static void hunt(final HuntingModel hmodel, final Point point,
-	                         final boolean land, final Appendable ostream,
+	                         final boolean land, final ICLIHelper cli,
 	                         final int encounters)
 			throws IOException {
 		if (land) {
-			for (final String item : hmodel.hunt(point, encounters)) {
-				ostream.append(item);
-				ostream.append('\n');
-			}
+			hmodel.hunt(point, encounters).forEach(cli::println);
 		} else {
-			for (final String item : hmodel.fish(point, encounters)) {
-				ostream.append(item);
-				ostream.append('\n');
-			}
+			hmodel.fish(point, encounters).forEach(cli::println);
 		}
 	}
 
@@ -321,17 +298,14 @@ public final class QueryCLI implements SimpleDriver {
 	 *
 	 * @param hmodel     the hunting model to get results from
 	 * @param point      around where to gather
-	 * @param ostream    the stream to write to
+	 * @param cli the interface to the user
 	 * @param encounters how many encounters to show
 	 * @throws IOException on I/O error writing to stream
 	 */
 	private static void gather(final HuntingModel hmodel, final Point point,
-	                           final Appendable ostream, final int encounters)
+	                           final ICLIHelper cli, final int encounters)
 			throws IOException {
-		for (final String item : hmodel.gather(point, encounters)) {
-			ostream.append(item);
-			ostream.append('\n');
-		}
+		hmodel.gather(point, encounters).forEach(cli::println);
 	}
 
 	/**
@@ -340,14 +314,13 @@ public final class QueryCLI implements SimpleDriver {
 	 *
 	 * @param map      the map
 	 * @param location the selected location
-	 * @param ostream  the stream to print results to
+	 * @param cli the interface to the user
 	 * @throws IOException on I/O error writing to stream
 	 */
 	private static void fortressInfo(final IMapNG map, final Point location,
-	                                 final Appendable ostream) throws IOException {
-		ostream.append("Terrain is ");
-		ostream.append(map.getBaseTerrain(location).toString());
-		ostream.append('\n');
+	                                 final ICLIHelper cli) throws IOException {
+		cli.print("Terrain is ");
+		cli.println(map.getBaseTerrain(location).toString());
 		final List<TileFixture> fixtures =
 				map.streamOtherFixtures(location).collect(Collectors.toList());
 		final Collection<Ground> ground = new ArrayList<>();
@@ -370,28 +343,23 @@ public final class QueryCLI implements SimpleDriver {
 			}
 		}
 		if (!ground.isEmpty()) {
-			ostream.append("Kind(s) of ground (rock) on the tile:\n");
-			for (final Ground fix : ground) {
-				ostream.append(fix.toString());
-				ostream.append('\n');
-			}
+			cli.println("Kind(s) of ground (rock) on the tile:");
+			ground.stream().map(Object::toString).forEach(cli::println);
 		}
 		if (!forests.isEmpty()) {
-			ostream.append("Kind(s) of forests on the tile:\n");
-			for (final Forest fix : forests) {
-				ostream.append(fix.toString());
-				ostream.append('\n');
-			}
+			cli.println("Kind(s) of forests on the tile:");
+			forests.stream().map(Object::toString).forEach(cli::println);
 		}
 	}
 
 	/**
+	 * @param cli the interface to the user
 	 * @return the poin the user specifies.
 	 * @throws IOException on I/O error.
 	 */
-	private Point selectPoint() throws IOException {
-		return PointFactory.point(helper.inputNumber("Row: "),
-				helper.inputNumber("Column: "));
+	private Point selectPoint(final ICLIHelper cli) throws IOException {
+		return PointFactory.point(cli.inputNumber("Row: "),
+				cli.inputNumber("Column: "));
 	}
 
 	/**
@@ -406,39 +374,40 @@ public final class QueryCLI implements SimpleDriver {
 	/**
 	 * Prints a usage message.
 	 *
-	 * @param ostream the stream to write it to.
+	 * @param cli the interface to the user
 	 * @throws IOException on I/O error writing to stream
 	 */
-	public static void usage(final Appendable ostream) throws IOException {
-		ostream.append("The following commands are supported:\n");
-		ostream.append("Fortress: Print what a player automatically knows ");
-		ostream.append("about his fortress's tile.\n");
-		final String encounters =
-				Integer.toString(HUNTER_HOURS * HOURLY_ENCOUNTERS);
-		ostream.append("Hunt/fIsh: Generates up to ");
-		ostream.append(encounters);
-		ostream.append(" encounters with animals.\n");
-		ostream.append("Gather: Generates up to ");
-		ostream.append(encounters);
-		ostream.append(" encounters with fields, meadows, groves, ");
-		ostream.append("orchards, or shrubs.\n");
-		ostream.append("hErd: Determine the output from and time required for ");
-		ostream.append("maintaining a herd.\n");
-		ostream.append("Trap: Switch to the trap-modeling program ");
-		ostream.append("to run trapping or fish-trapping.\n");
-		ostream.append("Distance: Report the distance between two points.\n");
-		ostream.append("Count: Count how many workers belong to a player.\n");
-		ostream.append("Quit: Exit the program.\n");
+	public static void usage(final ICLIHelper cli) throws IOException {
+		cli.println("The following commands are supported:");
+		cli.print("Fortress: Print what a player automatically knows ");
+		cli.println("about his fortress's tile.");
+		final int encounters = HUNTER_HOURS * HOURLY_ENCOUNTERS;
+		cli.printf("Hunt/fIsh: Generates up to %i encounters with animals.%n", encounters);
+		cli.printf("Gather: Generates up to %i encounters with fields, meadows, ",
+				encounters);
+		cli.println("groves, orchards, or shrubs.");
+		cli.print("hErd: Determine the output from and time required for ");
+		cli.println("maintaining a herd.");
+		cli.print("Trap: Switch to the trap-modeling program ");
+		cli.println("to run trapping or fish-trapping.");
+		cli.println("Distance: Report the distance between two points.");
+		cli.println("Count: Count how many workers belong to a player.");
+		cli.println("Quit: Exit the program.");
 	}
 
 	/**
 	 * Run the driver.
 	 *
 	 * @param model the driver model
+	 * @throws DriverFailedException on I/O error
 	 */
 	@Override
-	public void startDriver(final IDriverModel model) {
-		repl(model, SYS_OUT);
+	public void startDriver(final IDriverModel model) throws DriverFailedException {
+		try (final ICLIHelper cli = new CLIHelper()) {
+			repl(model, cli);
+		} catch (final IOException except) {
+			throw new DriverFailedException("I/O error closing CLIHelper", except);
+		}
 	}
 
 	/**
