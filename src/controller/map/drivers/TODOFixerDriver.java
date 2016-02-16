@@ -1,9 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.CLIHelper;
-import controller.map.misc.ICLIHelper;
-import controller.map.misc.MapReaderAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,7 +7,13 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.xml.stream.XMLStreamException;
+
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
+import controller.map.misc.MapReaderAdapter;
 import model.map.IMutableMapNG;
 import model.map.Point;
 import model.map.fixtures.mobile.Unit;
@@ -203,26 +205,29 @@ public final class TODOFixerDriver {
 	 */
 	public static void main(final String... args) {
 		final MapReaderAdapter reader = new MapReaderAdapter();
-		final ICLIHelper cli = new CLIHelper();
-		for (final String arg : args) {
-			if (arg == null) {
-				continue;
+		try (final ICLIHelper cli = new CLIHelper()) {
+			for (final String arg : args) {
+				if (arg == null) {
+					continue;
+				}
+				final IMutableMapNG map;
+				final File file = new File(arg);
+				try {
+					map = reader.readMap(file, Warning.DEFAULT);
+				} catch (final IOException | XMLStreamException | SPFormatException e) {
+					LOGGER.log(Level.SEVERE, "Error reading map " + arg, e);
+					continue;
+				}
+				final TODOFixerDriver driver = new TODOFixerDriver(map);
+				driver.fixAllUnits(cli);
+				try {
+					reader.write(file, map);
+				} catch (final IOException e) {
+					LOGGER.log(Level.SEVERE, "I/O error writing map to " + arg, e);
+				}
 			}
-			final IMutableMapNG map;
-			final File file = new File(arg);
-			try {
-				map = reader.readMap(file, Warning.DEFAULT);
-			} catch (final IOException | XMLStreamException | SPFormatException e) {
-				LOGGER.log(Level.SEVERE, "Error reading map " + arg, e);
-				continue;
-			}
-			final TODOFixerDriver driver = new TODOFixerDriver(map);
-			driver.fixAllUnits(cli);
-			try {
-				reader.write(file, map);
-			} catch (final IOException e) {
-				LOGGER.log(Level.SEVERE, "I/O error writing map to " + arg, e);
-			}
+		} catch (IOException except) {
+			LOGGER.log(Level.SEVERE, "I/O error closing CLIHelper", except);
 		}
 	}
 
