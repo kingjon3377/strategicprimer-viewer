@@ -1,12 +1,15 @@
 package controller.map.drivers;
 
-import controller.map.drivers.DriverUsage.ParamCount;
-import controller.map.misc.CLIHelper;
-import controller.map.misc.ICLIHelper;
+import static view.util.SystemOut.SYS_OUT;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import controller.map.drivers.DriverUsage.ParamCount;
+import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
@@ -22,8 +25,6 @@ import model.workermgmt.WorkerModel;
 import util.NullCleaner;
 import util.SingletonRandom;
 import view.util.DriverQuit;
-
-import static view.util.SystemOut.SYS_OUT;
 
 /**
  * A driver to let the user add hours of experience to a player's workers from the command
@@ -140,8 +141,8 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	 * @param cli the interface to the user
 	 * @throws IOException on I/O error getting input from user
 	 */
-	private void advanceWorkers(final IWorkerModel model, final Player player,
-	                            final ICLIHelper cli) throws IOException {
+	private static void advanceWorkers(final IWorkerModel model,
+			final Player player, final ICLIHelper cli) throws IOException {
 		final boolean proxy =
 				!cli.inputBoolean("Add experience to workers individually? ");
 		final List<IUnit> units = model.getUnits(player);
@@ -173,8 +174,8 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	 * @param cli the interface to the user
 	 * @throws IOException on I/O error getting input from user
 	 */
-	private void advanceWorkersInUnit(final Iterable<UnitMember> unit,
-	                                  final ICLIHelper cli) throws IOException {
+	private static void advanceWorkersInUnit(final Iterable<UnitMember> unit,
+			final ICLIHelper cli) throws IOException {
 		final List<IWorker> workers = StreamSupport.stream(unit.spliterator(), false)
 											  .filter(IWorker.class::isInstance)
 											  .map(IWorker.class::cast)
@@ -198,8 +199,8 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	 * @param cli the interface to the user
 	 * @throws IOException on I/O error getting input from user
 	 */
-	private void advanceSingleWorker(final IWorker worker, final ICLIHelper cli)
-			throws IOException {
+	private static void advanceSingleWorker(final IWorker worker,
+			final ICLIHelper cli) throws IOException {
 		final List<IJob> jobs = CLIHelper.toList(worker);
 		final String hdr = "Jobs in worker:";
 		final String none = "No existing jobs.";
@@ -230,7 +231,8 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	 * @param cli the interface to the user
 	 * @throws IOException on I/O error getting input from user
 	 */
-	private void advanceJob(final IJob job, final ICLIHelper cli) throws IOException {
+	private static void advanceJob(final IJob job, final ICLIHelper cli)
+			throws IOException {
 		final List<ISkill> skills = CLIHelper.toList(job);
 		final String hdr = "Jobs in worker:";
 		final String none = "No existing jobs.";

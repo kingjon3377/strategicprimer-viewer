@@ -1,14 +1,17 @@
 package controller.map.drivers;
 
-import controller.map.drivers.DriverUsage.ParamCount;
-import controller.map.misc.CLIHelper;
-import controller.map.misc.ICLIHelper;
+import static model.map.PointFactory.point;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import controller.map.drivers.DriverUsage.ParamCount;
+import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
 import model.exploration.HuntingModel;
 import model.map.HasName;
 import model.map.IMapNG;
@@ -16,8 +19,6 @@ import model.map.Point;
 import model.misc.IDriverModel;
 import util.NullCleaner;
 import util.TypesafeLogger;
-
-import static model.map.PointFactory.point;
 
 /**
  * A driver to run a player's trapping activity.
@@ -144,7 +145,7 @@ public final class TrapModelDriver implements SimpleDriver {
 	 * @param map     the map to explore
 	 * @param cli the interface to interact with the user
 	 */
-	private void repl(final IMapNG map, final ICLIHelper cli) {
+	private static void repl(final IMapNG map, final ICLIHelper cli) {
 		try {
 			final HuntingModel hmodel = new HuntingModel(map);
 			final boolean fishing = cli.inputBoolean(FISH_OR_TRAP);
@@ -217,9 +218,9 @@ public final class TrapModelDriver implements SimpleDriver {
 	 * @return how many minutes it took to execute the command
 	 * @throws IOException on I/O error interacting with user
 	 */
-	private int handleCommand(final List<String> fixtures,
-	                          final ICLIHelper cli, final TrapperCommand command,
-	                          final boolean fishing) throws IOException {
+	private static int handleCommand(final List<String> fixtures,
+			final ICLIHelper cli, final TrapperCommand command,
+			final boolean fishing) throws IOException {
 		switch (command) {
 		case Check: // TODO: extract method?
 			final String top = fixtures.remove(0);

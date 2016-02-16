@@ -80,7 +80,7 @@ public final class QueryCLI implements SimpleDriver {
 	 * @param model   the driver model containing the map to explore
 	 * @param cli the interface to the user
 	 */
-	private void repl(final IDriverModel model, final ICLIHelper cli) {
+	private static void repl(final IDriverModel model, final ICLIHelper cli) {
 		final HuntingModel hmodel = new HuntingModel(model.getMap());
 		try {
 			String input = cli.inputString("Command: ");
@@ -100,9 +100,9 @@ public final class QueryCLI implements SimpleDriver {
 	 * @param input   the command
 	 * @throws IOException           on I/O error
 	 */
-	public void handleCommand(final IDriverModel model, final HuntingModel hmodel,
-	                          final ICLIHelper cli, final char input)
-			throws IOException {
+	public static void handleCommand(final IDriverModel model,
+			final HuntingModel hmodel, final ICLIHelper cli, final char input)
+					throws IOException {
 		switch (input) {
 		case '?':
 			usage(cli);
@@ -148,7 +148,7 @@ public final class QueryCLI implements SimpleDriver {
 	 * @param cli the interface to the user
 	 * @throws IOException on I/O error interacting with user
 	 */
-	private void count(final IMapNG map, final List<Player> players,
+	private static void count(final IMapNG map, final List<Player> players,
 	                   final ICLIHelper cli) throws IOException {
 		final int playerNum = cli.chooseFromList(players,
 				"Players in the map:", "Map contains no players",
@@ -186,7 +186,7 @@ public final class QueryCLI implements SimpleDriver {
 	 * @param cli the interface to the user
 	 * @throws IOException on I/O error dealing with user input
 	 */
-	private void distance(final MapDimensions dims, final ICLIHelper cli)
+	private static void distance(final MapDimensions dims, final ICLIHelper cli)
 			throws IOException {
 		cli.print("Starting point:\t");
 		final Point start = selectPoint(cli);
@@ -216,7 +216,7 @@ public final class QueryCLI implements SimpleDriver {
 	 * @param cli the interface to the user
 	 * @throws IOException on I/O error dealing with user input
 	 */
-	private void herd(final ICLIHelper cli) throws IOException {
+	private static void herd(final ICLIHelper cli) throws IOException {
 		final double rate; // The amount of milk per animal
 		final int time; // How long it takes to milk one animal, in minutes.
 		final boolean poultry;
@@ -354,7 +354,7 @@ public final class QueryCLI implements SimpleDriver {
 	 * @return the poin the user specifies.
 	 * @throws IOException on I/O error.
 	 */
-	private Point selectPoint(final ICLIHelper cli) throws IOException {
+	private static Point selectPoint(final ICLIHelper cli) throws IOException {
 		return PointFactory.point(cli.inputNumber("Row: "),
 				cli.inputNumber("Column: "));
 	}
