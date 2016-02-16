@@ -9,7 +9,7 @@ import model.listeners.SelectionChangeSupport;
 import model.map.IMutableMapNG;
 import model.map.Point;
 import model.map.PointFactory;
-import model.misc.AbstractDriverModel;
+import model.misc.SimpleDriverModel;
 import model.misc.IDriverModel;
 
 /**
@@ -36,7 +36,7 @@ import model.misc.IDriverModel;
  *
  * @author Jonathan Lovelace
  */
-public final class ViewerModel extends AbstractDriverModel implements
+public final class ViewerModel extends SimpleDriverModel implements
 		IViewerModel {
 	/**
 	 * The current zoom level.

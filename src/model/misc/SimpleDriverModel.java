@@ -32,7 +32,7 @@ import model.map.SPMapNG;
  *
  * @author Jonathan Lovelace
  */
-public abstract class AbstractDriverModel implements IDriverModel {
+public class SimpleDriverModel implements IDriverModel {
 	/**
 	 * The list of map-change listeners.
 	 */

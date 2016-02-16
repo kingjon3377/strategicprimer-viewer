@@ -32,7 +32,7 @@ import util.SetPairConverter;
  *
  * @author Jonathan Lovelace
  */
-public class SimpleMultiMapModel extends AbstractDriverModel
+public class SimpleMultiMapModel extends SimpleDriverModel
 		implements IMultiMapModel {
 	/**
 	 * @param map  the map we're wrapping
