@@ -262,10 +262,15 @@ public final class TrapModelDriver implements SimpleDriver {
 	 * Start the driver.
 	 *
 	 * @param model the driver model to operate on
+	 * @throws DriverFailedException on I/O error
 	 */
 	@Override
-	public void startDriver(final IDriverModel model) {
-		repl(model.getMap(), new CLIHelper());
+	public void startDriver(final IDriverModel model) throws DriverFailedException {
+		try (final ICLIHelper cli = new CLIHelper()) {
+			repl(model.getMap(), cli);
+		} catch (final IOException except) {
+			throw new DriverFailedException("I/O error closing CLIHelper", except);
+		}
 	}
 
 	/**

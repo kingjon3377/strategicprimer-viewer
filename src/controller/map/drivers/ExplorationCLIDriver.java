@@ -1,16 +1,18 @@
 package controller.map.drivers;
 
+import static view.util.SystemOut.SYS_OUT;
+
+import java.io.IOException;
+
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
-import java.io.IOException;
+import controller.map.misc.ICLIHelper;
 import model.exploration.ExplorationModel;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
 import model.misc.IDriverModel;
 import view.exploration.ExplorationCLI;
 import view.util.DriverQuit;
-
-import static view.util.SystemOut.SYS_OUT;
 
 /**
  * A CLI to help running exploration.
@@ -58,8 +60,8 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 		} else {
 			model = new ExplorationModel(dmodel);
 		}
-		final ExplorationCLI cli = new ExplorationCLI(model, new CLIHelper());
-		try {
+		try (final ICLIHelper clih = new CLIHelper()) {
+			final ExplorationCLI cli = new ExplorationCLI(model, clih);
 			final Player player = cli.choosePlayer();
 			if (player == null) {
 				return;
