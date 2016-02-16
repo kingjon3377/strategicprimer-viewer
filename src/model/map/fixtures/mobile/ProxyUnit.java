@@ -183,18 +183,19 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	}
 
 	/**
-	 * TODO: pass through to proxied units.
-	 *
 	 * @return the name of an image to represent the unit
 	 */
 	@Override
 	public String getDefaultImage() {
-		final Iterator<IUnit> iter = proxied.iterator();
-		if (iter.hasNext()) {
-			return iter.next().getDefaultImage();
-		} else {
-			return "unit.png";
+		String retval = "";
+		for (IUnit unit : proxied) {
+			if (retval.isEmpty()) {
+				retval = unit.getDefaultImage();
+			} else if (!retval.equals(unit.getDefaultImage())) {
+				return "unit.png";
+			}
 		}
+		return retval;
 	}
 
 	/**
