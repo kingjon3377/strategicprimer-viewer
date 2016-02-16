@@ -151,6 +151,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	@Override
 	public int getChildCount(@Nullable final Object parent) {
 		if ((parent instanceof IWorker) || (parent instanceof IJob)) {
+			//noinspection ConstantConditions
 			assert parent != null;
 			return (int) StreamSupport.stream(((Iterable<?>) parent).spliterator(),
 					false)
@@ -193,6 +194,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 							   @Nullable final Object child) {
 		if ((parent instanceof IWorker) || (parent instanceof IJob)) {
 			// TODO: Ought to be able to do this with the Stream API
+			//noinspection ConstantConditions
 			assert parent != null;
 			int index = 0;
 			for (final Object item : (Iterable<?>) parent) {

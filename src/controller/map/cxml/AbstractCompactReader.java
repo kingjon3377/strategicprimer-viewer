@@ -257,6 +257,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 		if ((prefProp == null) && (deprProp == null)) {
 			throw exception;
 		} else if (prefProp == null) {
+			//noinspection ConstantConditions
 			assert deprProp != null;
 			warner.warn(new DeprecatedPropertyException(element, deprecated, preferred));
 			final String value = deprProp.getValue();
