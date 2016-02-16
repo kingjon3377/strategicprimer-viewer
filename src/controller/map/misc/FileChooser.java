@@ -1,7 +1,9 @@
 package controller.map.misc;
 
+import java.awt.Component;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.function.ToIntFunction;
 import javax.swing.JFileChooser;
 import javax.swing.SwingUtilities;
 import util.NullCleaner;
@@ -48,15 +50,33 @@ public final class FileChooser {
 	 */
 	private final JFileChooser chooser;
 	/**
+	 * The method to call to ask the user to choose a file.
+	 */
+	private final ToIntFunction<Component> chooserFunc;
+	/**
 	 * Constructor allowing the caller to pass in a file-chooser to have the user choose
 	 * with.
 	 * @param loc the file to return
 	 * @param fchooser the file-chooser to use
+	 * @param operation which operation to use. Must be one of the two defined in
+	 *                     JFileChooser (OPEN_DIALOG or SAVE_DIALOG; CUSTOM_DIALOG is
+	 *                     not yet supported)
 	 */
-	public FileChooser(final File loc, final JFileChooser fchooser) {
+	public FileChooser(final File loc, final JFileChooser fchooser, final int operation) {
 		file = new File("");
 		setFile(loc);
 		chooser = fchooser;
+		switch (operation) {
+		case JFileChooser.OPEN_DIALOG:
+			chooserFunc = fchooser::showOpenDialog;
+			break;
+		case JFileChooser.SAVE_DIALOG:
+			chooserFunc = fchooser::showSaveDialog;
+			break;
+		default:
+			throw new IllegalArgumentException("Only OPEN_DIALOG and SAVE_DIALOG " +
+					                                   "operations are supported");
+		}
 	}
 	/**
 	 * Constructor. When the filename is asked for, if the given value is valid, we'll
@@ -65,7 +85,7 @@ public final class FileChooser {
 	 * @param loc the file to return.
 	 */
 	public FileChooser(final File loc) {
-		this(loc, new FilteredFileChooser());
+		this(loc, new FilteredFileChooser(), JFileChooser.OPEN_DIALOG);
 	}
 
 	/**
@@ -88,13 +108,13 @@ public final class FileChooser {
 	public File getFile() throws ChoiceInterruptedException {
 		if (shouldWait) {
 			if (SwingUtilities.isEventDispatchThread()) {
-				if (chooser.showOpenDialog(null) == APPROVE_OPTION) {
+				if (chooserFunc.applyAsInt(null) == APPROVE_OPTION) {
 					setFile(assertNotNull(chooser.getSelectedFile()));
 				}
 			} else {
 				final JFileChooser fileChooser = chooser;
 				invoke(() -> {
-					if (fileChooser.showOpenDialog(null) == APPROVE_OPTION) {
+					if (chooserFunc.applyAsInt(null) == APPROVE_OPTION) {
 						setFile(NullCleaner
 								        .valueOrDefault(
 										        fileChooser.getSelectedFile(),
