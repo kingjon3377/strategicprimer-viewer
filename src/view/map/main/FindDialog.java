@@ -159,7 +159,7 @@ public final class FindDialog extends JDialog {
 		contentPane.add(buttonPanel);
 		ffl = new FixtureFilterList();
 		SwingUtilities.invokeLater(new FilterPopulator(ffl, model));
-		setContentPane(SplitWithWeights.horizontal(FILTER_PROPORTION, FILTER_PROPORTION,
+		setContentPane(SplitWithWeights.horizontalSplit(FILTER_PROPORTION, FILTER_PROPORTION,
 				contentPane, new BorderedPanel(new JScrollPane(ffl,
 						                                              ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 						                                              ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER),

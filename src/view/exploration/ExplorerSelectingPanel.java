@@ -143,7 +143,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 			}
 			return NullCleaner.assertNotNull(retval);
 		});
-		setCenter(SplitWithWeights.horizontal(PROPORTION, PROPORTION,
+		setCenter(SplitWithWeights.horizontalSplit(PROPORTION, PROPORTION,
 				new BorderedPanel(playerList, label("Players in all maps:"), null, null,
 						                 null), new BorderedPanel(unitList, label(html(
 						"Units belonging to that player:",

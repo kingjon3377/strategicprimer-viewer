@@ -61,10 +61,11 @@ import util.TypesafeLogger;
 import view.map.main.ViewerFrame;
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
-import view.util.SplitWithWeights;
 import view.util.SystemOut;
 
 import static java.util.logging.Level.SEVERE;
+import static view.util.SplitWithWeights.horizontalSplit;
+import static view.util.SplitWithWeights.verticalSplit;
 
 /**
  * A window to let the player manage units.
@@ -224,43 +225,36 @@ public final class WorkerMgmtFrame extends JFrame {
 		final StrategyExporter strategyExporter = new StrategyExporter(model, wtmodel);
 		// TODO: Make a JFileChooser subclass or wrapper that takes what to do with the
 		// chosen file as a parameter
-		setContentPane(SplitWithWeights.horizontal(HALF_WAY, HALF_WAY, SplitWithWeights
-				                                                               .vertical(
-						                                                               TWO_THIRDS,
-						                                                               TWO_THIRDS,
-						                                                               BorderedPanel
-								                                                               .vertical(
-										                                                               plabl,
-										                                                               new JScrollPane(tree),
-										                                                               null),
+		setContentPane(horizontalSplit(HALF_WAY, HALF_WAY,
+				verticalSplit(TWO_THIRDS, TWO_THIRDS,
+						BorderedPanel.vertical(plabl, new JScrollPane(tree), null),
+						BorderedPanel.vertical(new ListenedButton("Add New Unit",
+								                                         evt ->
+										                                         newUnitFrame
+										                                                .setVisible(
+												                                                true)),
+								ordersPanel,
+								new ListenedButton("Export a proto-strategy from units' " +
+										                   "orders",
+										                  evt -> {
+											                  final FileChooser chooser =
+													                  new FileChooser
+															                  (new File
+																	                   (""),
 
-						                                                               BorderedPanel
-								                                                               .vertical(
-										                                                               new ListenedButton("Add New Unit",
-												                                                                                 evt -> newUnitFrame
-														                                                                                        .setVisible(
-																                                                                                        true)),
-										                                                               ordersPanel,
-										                                                               new ListenedButton("Export a proto-strategy from units' orders",
-												                                                                                 evt -> {
-													                                                                                 final FileChooser
-															                                                                                 chooser =
-															                                                                                 new FileChooser(new File(""),
-																	                                                                                                new JFileChooser("."),
-																	                                                                                                JFileChooser.SAVE_DIALOG);
-													                                                                                 try {
-														                                                                                 strategyExporter
-																                                                                                 .writeStrategy(
-																		                                                                                 chooser.getFile());
-													                                                                                 } catch (final ChoiceInterruptedException except) {
-														                                                                                 LOGGER.log(
-																                                                                                 Level.INFO,
-																                                                                                 "Choice interrupted or user failed to choose",
-																                                                                                 except);
-													                                                                                 }
-												                                                                                 }))),
-				BorderedPanel
-						.vertical(new JLabel(RPT_HDR), new JScrollPane(report), mdp)));
+																	                  new JFileChooser("."),
+															                                 JFileChooser.SAVE_DIALOG);
+											                  try {
+												                  strategyExporter
+														                  .writeStrategy(
+																                  chooser.getFile());
+											                  } catch (final ChoiceInterruptedException except) {
+												                  LOGGER.log(Level.INFO,
+														                  "Choice interrupted or user failed to choose",
+														                  except);
+											                  }
+										                  }))), BorderedPanel.vertical(
+						new JLabel(RPT_HDR), new JScrollPane(report), mdp)));
 		ioHandler.addTreeExpansionListener(new TreeExpansionHandler(tree));
 		setJMenuBar(new WorkerMenu(ioHandler, this, model));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

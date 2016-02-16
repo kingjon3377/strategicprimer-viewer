@@ -99,12 +99,12 @@ public final class AdvancementFrame extends JFrame {
 		sapanel.addLevelGainListener(llist);
 		final JLabel newJobText = htmlize("Add a job to the Worker:");
 		final JLabel newSkillText = htmlize("Add a Skill to the selected Job:");
-		setContentPane(SplitWithWeights.horizontal(HALF_WAY, HALF_WAY,
+		setContentPane(SplitWithWeights.horizontalSplit(HALF_WAY, HALF_WAY,
 				new BorderedPanel(new JScrollPane(tree), plabel,
 						                 new ListenedButton("Add worker to selected unit" +
 								                                    " ...",
 								                                   nwl), null, null),
-				SplitWithWeights.vertical(HALF_WAY, RES_WEIGHT,
+				SplitWithWeights.verticalSplit(HALF_WAY, RES_WEIGHT,
 						new BorderedPanel(new JScrollPane(jobsTree),
 								                 htmlize("Worker's Jobs and Skills:"),
 								                 null, null, null),

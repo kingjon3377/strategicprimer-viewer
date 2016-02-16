@@ -93,7 +93,7 @@ public final class ViewerFrame extends JFrame {
 																   map);
 		map.addVersionChangeListener(detailPanel);
 		map.addSelectionChangeListener(detailPanel);
-		setContentPane(SplitWithWeights.vertical(MAP_PROPORTION, MAP_PROPORTION,
+		setContentPane(SplitWithWeights.verticalSplit(MAP_PROPORTION, MAP_PROPORTION,
 				new MapScrollPanel(map, mapPanel), detailPanel));
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		pack();
