@@ -439,8 +439,6 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	/**
 	 * Add a member to a unit.
 	 *
-	 * FIXME: This shouldn't add the *same* object to multiple proxied units!
-	 *
 	 * @param member the member to add
 	 */
 	@Override
@@ -455,7 +453,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 					}
 				}
 				if (shouldAdd) {
-					unit.addMember(member);
+					unit.addMember(member.copy(false));
 				}
 			}
 		} else {
