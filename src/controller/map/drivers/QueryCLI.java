@@ -1,8 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.drivers.DriverUsage.ParamCount;
-import controller.map.misc.CLIHelper;
-import controller.map.misc.ICLIHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,6 +8,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import org.eclipse.jdt.annotation.Nullable;
+
+import controller.map.drivers.DriverUsage.ParamCount;
+import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
 import model.exploration.HuntingModel;
 import model.map.IMapNG;
 import model.map.MapDimensions;
@@ -24,7 +27,6 @@ import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
-import org.eclipse.jdt.annotation.Nullable;
 import util.TypesafeLogger;
 
 /**
@@ -280,12 +282,10 @@ public final class QueryCLI implements SimpleDriver {
 	 * @param land       true if this is hunting, false if fishing
 	 * @param cli the interface to the user
 	 * @param encounters how many encounters to show
-	 * @throws IOException on I/O error writing to stream
 	 */
 	private static void hunt(final HuntingModel hmodel, final Point point,
 	                         final boolean land, final ICLIHelper cli,
-	                         final int encounters)
-			throws IOException {
+	                         final int encounters) {
 		if (land) {
 			hmodel.hunt(point, encounters).forEach(cli::println);
 		} else {
@@ -300,11 +300,9 @@ public final class QueryCLI implements SimpleDriver {
 	 * @param point      around where to gather
 	 * @param cli the interface to the user
 	 * @param encounters how many encounters to show
-	 * @throws IOException on I/O error writing to stream
 	 */
 	private static void gather(final HuntingModel hmodel, final Point point,
-	                           final ICLIHelper cli, final int encounters)
-			throws IOException {
+	                           final ICLIHelper cli, final int encounters) {
 		hmodel.gather(point, encounters).forEach(cli::println);
 	}
 
@@ -315,10 +313,9 @@ public final class QueryCLI implements SimpleDriver {
 	 * @param map      the map
 	 * @param location the selected location
 	 * @param cli the interface to the user
-	 * @throws IOException on I/O error writing to stream
 	 */
 	private static void fortressInfo(final IMapNG map, final Point location,
-	                                 final ICLIHelper cli) throws IOException {
+	                                 final ICLIHelper cli) {
 		cli.print("Terrain is ");
 		cli.println(map.getBaseTerrain(location).toString());
 		final List<TileFixture> fixtures =
@@ -375,9 +372,8 @@ public final class QueryCLI implements SimpleDriver {
 	 * Prints a usage message.
 	 *
 	 * @param cli the interface to the user
-	 * @throws IOException on I/O error writing to stream
 	 */
-	public static void usage(final ICLIHelper cli) throws IOException {
+	public static void usage(final ICLIHelper cli) {
 		cli.println("The following commands are supported:");
 		cli.print("Fortress: Print what a player automatically knows ");
 		cli.println("about his fortress's tile.");
