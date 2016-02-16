@@ -158,7 +158,6 @@ public final class WorkerMgmtFrame extends JFrame {
 		ioHandler.addPlayerChangeListener(ordersPanel);
 		ordersPanel.playerChanged(null, model.getMap().getCurrentPlayer());
 		tree.addTreeSelectionListener(ordersPanel);
-		final Component outer = this;
 		final DefaultTreeModel reportModel =
 				new DefaultTreeModel(new SimpleReportNode("Please wait, loading report " +
 																  "..."));
