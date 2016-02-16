@@ -1,5 +1,9 @@
 package view.map.main;
 
+import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
+import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
+import static javax.swing.KeyStroke.getKeyStroke;
+
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -7,13 +11,11 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
-import util.ActionWrapper;
 
-import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
-import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
-import static javax.swing.KeyStroke.getKeyStroke;
+import util.ActionWrapper;
 
 /**
  * A class to handle setting up listeners for the arrow keys.
@@ -214,14 +216,6 @@ public final class ArrowKeyListener {
 	@SuppressWarnings("CloneableClassInSecureContext")
 	private static class DirectionListener extends ActionWrapper {
 		/**
-		 * The wrapped action.
-		 */
-		private final ActionListener wrapped;
-		/**
-		 * How many times to repeat the action on each user action.
-		 */
-		private final int count;
-		/**
 		 * @param action the wrapped action
 		 * @param num how many times to repeat it on each user action
 		 */
@@ -231,8 +225,6 @@ public final class ArrowKeyListener {
 					action.actionPerformed(evt);
 				}
 			});
-			wrapped = action;
-			count = num;
 		}
 		/**
 		 * @param action the wrapped action
