@@ -4,11 +4,9 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
-
-import view.map.main.MapFileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * A JFileChooser that takes a FileFilter in its constructor.
@@ -34,6 +32,11 @@ import view.map.main.MapFileFilter;
  */
 public final class FilteredFileChooser extends JFileChooser {
 	/**
+	 * A file filter for maps.
+	 */
+	public static final FileFilter MAPS =
+			new FileNameExtensionFilter("Strategic Primer world map files", "map", "xml");
+	/**
 	 * Constructor.
 	 *
 	 * @param current the current directory
@@ -47,7 +50,7 @@ public final class FilteredFileChooser extends JFileChooser {
 	 * Constructor, setting the default location to the current directory.
 	 */
 	public FilteredFileChooser() {
-		this(".", MapFileFilter.FILTER);
+		this(".", MAPS);
 	}
 	/**
 	 * Prevent serialization.
