@@ -142,7 +142,7 @@ public final class TrapModelDriver implements SimpleDriver {
 
 	/**
 	 * @param map     the map to explore
-	 * @param ostream the stream to write output to
+	 * @param cli the interface to interact with the user
 	 */
 	private void repl(final IMapNG map, final ICLIHelper cli) {
 		try {
@@ -210,7 +210,7 @@ public final class TrapModelDriver implements SimpleDriver {
 	 * Handle a command.
 	 *
 	 * @param fixtures the animals generated from the tile and surrounding tiles.
-	 * @param ostream  the output stream to write to
+	 * @param cli  the interface to interact with the user
 	 * @param command  the command to handle
 	 * @param fishing  whether we're dealing with *fish* traps .. which take different
 	 *                 amounts of time
