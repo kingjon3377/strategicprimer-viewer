@@ -107,57 +107,55 @@ public final class ExplorationPanel extends BorderedPanel
 	 */
 	private final Map<Direction, DualTileButton> buttons = new EnumMap<>(Direction
 			                                                                     .class);
-	/**
-	 * Key-bindings for dual-tile buttons: arrow keys.
-	 */
-	private static final Map<Direction, KeyStroke> ARROW_KEYS =
-			new EnumMap<>(Direction.class);
-	/**
-	 * Key bindings for dual-tile buttons: numeric keypad.
-	 */
-	private static final Map<Direction, KeyStroke> NUM_KPAD =
-			new EnumMap<>(Direction.class);
 
-	static {
-		ARROW_KEYS.put(Direction.North, NullCleaner
-				                                .assertNotNull(KeyStroke.getKeyStroke(
-						                                KeyEvent.VK_UP, 0)));
-		ARROW_KEYS.put(Direction.South, NullCleaner
-				                                .assertNotNull(KeyStroke.getKeyStroke(
-						                                KeyEvent.VK_DOWN, 0)));
-		ARROW_KEYS.put(Direction.West, NullCleaner
-				                               .assertNotNull(KeyStroke.getKeyStroke(
-						                               KeyEvent.VK_LEFT, 0)));
-		ARROW_KEYS.put(Direction.East, NullCleaner
-				                               .assertNotNull(KeyStroke.getKeyStroke(
-						                               KeyEvent.VK_RIGHT, 0)));
-		NUM_KPAD.put(Direction.North, NullCleaner
-				                              .assertNotNull(KeyStroke.getKeyStroke(
-						                              KeyEvent.VK_NUMPAD8, 0)));
-		NUM_KPAD.put(Direction.South, NullCleaner
-				                              .assertNotNull(KeyStroke.getKeyStroke(
-						                              KeyEvent.VK_NUMPAD2, 0)));
-		NUM_KPAD.put(Direction.West, NullCleaner
-				                             .assertNotNull(KeyStroke.getKeyStroke(
-						                             KeyEvent.VK_NUMPAD4, 0)));
-		NUM_KPAD.put(Direction.East, NullCleaner
-				                             .assertNotNull(KeyStroke.getKeyStroke(
-						                             KeyEvent.VK_NUMPAD6, 0)));
-		NUM_KPAD.put(Direction.Northeast, NullCleaner
-				                                  .assertNotNull(KeyStroke.getKeyStroke(
-						                                  KeyEvent.VK_NUMPAD9, 0)));
-		NUM_KPAD.put(Direction.Northwest, NullCleaner
-				                                  .assertNotNull(KeyStroke.getKeyStroke(
-						                                  KeyEvent.VK_NUMPAD7, 0)));
-		NUM_KPAD.put(Direction.Southeast, NullCleaner
-				                                  .assertNotNull(KeyStroke.getKeyStroke(
-						                                  KeyEvent.VK_NUMPAD3, 0)));
-		NUM_KPAD.put(Direction.Southwest, NullCleaner
-				                                  .assertNotNull(KeyStroke.getKeyStroke(
-						                                  KeyEvent.VK_NUMPAD1, 0)));
-		NUM_KPAD.put(Direction.Nowhere, NullCleaner
-				                                .assertNotNull(KeyStroke.getKeyStroke(
-						                                KeyEvent.VK_NUMPAD5, 0)));
+	/**
+	 * @param direction a direction
+	 * @return the corresponding arrow key, or null if not supported
+	 */
+	@Nullable
+	private static KeyStroke getArrowKey(final Direction direction) {
+		switch (direction) {
+		case North:
+			return KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0);
+		case South:
+			return KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0);
+		case West:
+			return KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0);
+		case East:
+			return KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0);
+		default:
+			return null;
+		}
+	}
+
+	/**
+	 * @param direction a direction
+	 * @return the corresponding numeric-keypad key, or null if not supported
+	 */
+	@Nullable
+	private static KeyStroke getNumpadKey(final Direction direction) {
+		switch (direction) {
+		case North:
+			return KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD8, 0);
+		case South:
+			return KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD2, 0);
+		case West:
+			return KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD4, 0);
+		case East:
+			return KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD6, 0);
+		case Northeast:
+			return KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD9, 0);
+		case Northwest:
+			return KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD7, 0);
+		case Southeast:
+			return KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD3, 0);
+		case Southwest:
+			return KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD1, 0);
+		case Nowhere:
+			return KeyStroke.getKeyStroke(KeyEvent.VK_NUMPAD5, 0);
+		default:
+			return null;
+		}
 	}
 
 	/**
@@ -245,8 +243,14 @@ public final class ExplorationPanel extends BorderedPanel
 				                                                                 mainList);
 		dtb.addActionListener(ecl);
 		final InputMap dtbIMap = dtb.getInputMap(WHEN_IN_FOCUSED_WINDOW);
-		dtbIMap.put(ARROW_KEYS.get(direction), direction.toString());
-		dtbIMap.put(NUM_KPAD.get(direction), direction.toString());
+		KeyStroke arrowKey = getArrowKey(direction);
+		if (arrowKey != null) {
+			dtbIMap.put(arrowKey, direction.toString());
+		}
+		KeyStroke numpadKey = getNumpadKey(direction);
+		if (numpadKey != null) {
+			dtbIMap.put(numpadKey, direction.toString());
+		}
 		dtb.getActionMap().put(direction.toString(), ecl);
 		ecl.addSelectionChangeListener(this);
 		ecl.addMovementCostListener(this);
