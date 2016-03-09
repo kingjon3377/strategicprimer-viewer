@@ -129,15 +129,14 @@ public final class SPIntermediateRepresentation {
 	}
 
 	/**
-	 * Remove an attribute and return its value.
+	 * Get the value of the 'text-contents' attribute, and remove it.
 	 *
-	 * @param name an attribute name
 	 * @return its value, or "" if it's not there
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	private String removeAttribute(final String name) {
-		if (attrs.contains(name)) {
-			final int index = attrs.indexOf(name);
+	private String getTextContents() {
+		if (attrs.contains("text-contents")) {
+			final int index = attrs.indexOf("text-contents");
 			attrs.remove(index);
 			return NullCleaner.valueOrDefault(vals.remove(index), ""); // NOPMD
 		} else {
@@ -181,7 +180,7 @@ public final class SPIntermediateRepresentation {
 			}
 			// final String text = "text".equals(tag) ? attrs
 			// .remove("text-contents") : "";
-			final String text = removeAttribute("text-contents");
+			final String text = getTextContents();
 			// for (String attr : attrs.keySet()) {
 			// for (Pair<String, String> attr : attrs) {
 			for (int index = 0; index < attrs.size(); index++) {
