@@ -238,7 +238,7 @@ public final class ExplorationCLI {
 	                                     @Nullable final TileFixture fix,
 	                                     final HasOwner mover) {
 		if (fix != null) {
-			helper.println(NullCleaner.assertNotNull(fix.toString()));
+			helper.println(assertNotNull(fix.toString()));
 			final boolean zero = (fix instanceof HasOwner) && !((HasOwner) fix)
 					                                                   .getOwner()
 					                                                   .equals(mover

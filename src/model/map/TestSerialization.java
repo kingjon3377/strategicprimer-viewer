@@ -68,8 +68,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	/**
 	 * Pre-compiled pattern for matching "kind".
 	 */
-	private static final Pattern KIND_PATTERN = NullCleaner
-			.assertNotNull(Pattern.compile(KIND_PROPERTY, Pattern.LITERAL));
+	private static final Pattern KIND_PATTERN =
+			assertNotNull(Pattern.compile(KIND_PROPERTY, Pattern.LITERAL));
 
 	/**
 	 * Test Player serialization.
@@ -107,7 +107,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				new SPMapNG(new MapDimensions(point.row + 1, point.col + 1, 2),
 								   new PlayerCollection(), -1);
 		retval.setBaseTerrain(point, Plains);
-		retval.addRivers(point, NullCleaner.assertNotNull(rivers));
+		retval.addRivers(point, assertNotNull(rivers));
 		return retval;
 	}
 

@@ -522,8 +522,8 @@ public final class OneToTwoConverter { // NOPMD
 	private static Stream<Point> getNeighbors(final Point point) {
 		final int row = point.row;
 		final int col = point.col;
-		return NullCleaner
-				.assertNotNull(Stream.of(PointFactory.point(row - 1, col - 1),
+		return
+				assertNotNull(Stream.of(PointFactory.point(row - 1, col - 1),
 						PointFactory.point(row - 1, col),
 						PointFactory.point(row - 1, col + 1),
 						PointFactory.point(row, col - 1),

@@ -90,13 +90,13 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	/**
 	 * The tags we know how to deal with.
 	 */
-	private static final List<String> tags = NullCleaner.assertNotNull(
+	private static final List<String> tags = assertNotNull(
 			Collections.unmodifiableList(Arrays.asList("map", "view")));
 	/**
 	 * Pre-compiled pattern for exceptions we want to wrap.
 	 */
-	private static final Pattern EXCEPT_PATTERN = NullCleaner
-			.assertNotNull(Pattern.compile("^Wanted [^ ]*, was [^ ]*$"));
+	private static final Pattern EXCEPT_PATTERN =
+			assertNotNull(Pattern.compile("^Wanted [^ ]*, was [^ ]*$"));
 
 	/**
 	 * @return a list of the tags this reader understands
@@ -130,7 +130,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 			currentTurn = getIntegerAttribute(element, "current_turn");
 			mapTag = getFirstStartElement(stream, element);
 			if (!"map".equals(mapTag.getName().getLocalPart())) {
-				throw new UnwantedChildException(NullCleaner.assertNotNull(element.getName()), mapTag);
+				throw new UnwantedChildException(assertNotNull(element.getName()), mapTag);
 			}
 		} else if ("map".equalsIgnoreCase(outerTag)) {
 			currentTurn = 0;
@@ -147,7 +147,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 		Point point = nullPoint;
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && EqualsAny.equalsAny(
-					NullCleaner.assertNotNull(
+					assertNotNull(
 							event.asStartElement().getName().getNamespaceURI()),
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				final StartElement current = event.asStartElement();
@@ -185,7 +185,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 				} else if (nullPoint.equals(point)) {
 					// fixture outside tile
 					throw new UnwantedChildException(
-							NullCleaner.assertNotNull(mapTag.getName()),
+							assertNotNull(mapTag.getName()),
 							current);
 				} else if ("lake".equalsIgnoreCase(type)
 								   || "river".equalsIgnoreCase(type)) {
@@ -210,7 +210,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					} catch (final UnwantedChildException except) {
 						if ("unknown".equals(except.getTag().getLocalPart())) {
 							throw new UnwantedChildException(
-									NullCleaner.assertNotNull(mapTag.getName()),
+									assertNotNull(mapTag.getName()),
 									except);
 						} else {
 							throw except;
@@ -218,7 +218,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					} catch (final IllegalStateException except) {
 						if (EXCEPT_PATTERN.matcher(except.getMessage()).matches()) {
 							throw new UnwantedChildException(
-									NullCleaner.assertNotNull(mapTag.getName()),
+									assertNotNull(mapTag.getName()),
 									current, except);
 						} else {
 							throw except;
@@ -316,7 +316,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 				.stream(stream.spliterator(), false)
 				.filter(XMLEvent::isStartElement).map(XMLEvent::asStartElement)
 				.filter(elem -> EqualsAny.equalsAny(
-						NullCleaner.assertNotNull(
+						assertNotNull(
 								elem.getName().getNamespaceURI()),
 						ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI))
 				.findFirst()

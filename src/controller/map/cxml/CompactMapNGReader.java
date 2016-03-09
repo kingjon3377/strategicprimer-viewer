@@ -1,20 +1,5 @@
 package controller.map.cxml;
 
-import static java.util.Collections.unmodifiableList;
-import static util.NullCleaner.assertNotNull;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Pattern;
-import java.util.stream.StreamSupport;
-
-import javax.xml.XMLConstants;
-import javax.xml.namespace.QName;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -22,6 +7,16 @@ import controller.map.formatexceptions.UnsupportedTagException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.StreamSupport;
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.IMutablePlayerCollection;
@@ -40,8 +35,10 @@ import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import util.EqualsAny;
 import util.IteratorWrapper;
-import util.NullCleaner;
 import util.Warning;
+
+import static java.util.Collections.unmodifiableList;
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A reader for new-API maps.
@@ -74,8 +71,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * Pre-compiled pattern for the regular expression to detect the exceptions we want
 	 * to wrap.
 	 */
-	private static final Pattern EXCEPT_PATTERN = NullCleaner
-			.assertNotNull(Pattern.compile("^Wanted [^ ]*, was [^ ]*$"));
+	private static final Pattern EXCEPT_PATTERN =
+			assertNotNull(Pattern.compile("^Wanted [^ ]*, was [^ ]*$"));
 	/**
 	 * List of readers we'll try subtags on.
 	 */
@@ -122,7 +119,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			mapTag = getFirstStartElement(stream, element);
 			if (!"map".equalsIgnoreCase(mapTag.getName().getLocalPart())) {
 				throw new UnwantedChildException(
-						NullCleaner.assertNotNull(element.getName()), mapTag);
+						assertNotNull(element.getName()), mapTag);
 			}
 		} else if ("map".equalsIgnoreCase(outerTag)) {
 			currentTurn = 0;
@@ -142,7 +139,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				final StartElement current = event.asStartElement();
 				final String type = current.getName().getLocalPart();
 				if ((type == null) || !EqualsAny.equalsAny(
-						NullCleaner.assertNotNull(
+						assertNotNull(
 								current.getName().getNamespaceURI()),
 						ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 					continue;
@@ -181,7 +178,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				} else if (nullPoint.equals(point)) {
 					// fixture outside tile
 					throw new UnwantedChildException(
-							NullCleaner.assertNotNull(mapTag.getName()),
+							assertNotNull(mapTag.getName()),
 							current);
 				} else if ("lake".equalsIgnoreCase(type)
 								   || "river".equalsIgnoreCase(type)) {
@@ -205,7 +202,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					} catch (final UnwantedChildException except) {
 						if ("unknown".equals(except.getTag().getLocalPart())) {
 							throw new UnwantedChildException(
-									NullCleaner.assertNotNull(mapTag.getName()),
+									assertNotNull(mapTag.getName()),
 									except);
 						} else {
 							throw except;
@@ -213,7 +210,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					} catch (final IllegalStateException except) {
 						if (EXCEPT_PATTERN.matcher(except.getMessage()).matches()) {
 							throw new UnwantedChildException(
-									NullCleaner.assertNotNull(mapTag.getName()),
+									assertNotNull(mapTag.getName()),
 									current, except);
 						} else {
 							throw except;
@@ -339,7 +336,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				.stream(stream.spliterator(), false)
 				.filter(XMLEvent::isStartElement).map(XMLEvent::asStartElement)
 				.filter(elem -> EqualsAny.equalsAny(
-						NullCleaner.assertNotNull(
+						assertNotNull(
 								elem.getName().getNamespaceURI()),
 						ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI))
 				.findFirst()
