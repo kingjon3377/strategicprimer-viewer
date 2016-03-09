@@ -54,14 +54,6 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 * The color of the icon used to show that a tile has an event or associated text.
 	 */
 	protected static final Color EVENT_COLOR = NullCleaner.assertNotNull(Color.pink);
-	/**
-	 * The color of the icon used to show that a tile has a forest.
-	 */
-	protected static final Color FOREST_COLOR = new Color(0, 117, 0);
-	/**
-	 * The color of the icon used to show that a tile has a mountain.
-	 */
-	protected static final Color MTN_COLOR = new Color(249, 137, 28);
 
 	/**
 	 * @param ver  the map version
