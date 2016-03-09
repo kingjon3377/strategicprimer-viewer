@@ -204,8 +204,8 @@ public final class TODOFixerDriver {
 	 * @param args maps to run on
 	 */
 	public static void main(final String... args) {
-		final MapReaderAdapter reader = new MapReaderAdapter();
 		try (final ICLIHelper cli = new CLIHelper()) {
+			final MapReaderAdapter reader = new MapReaderAdapter();
 			for (final String arg : args) {
 				if (arg == null) {
 					continue;
