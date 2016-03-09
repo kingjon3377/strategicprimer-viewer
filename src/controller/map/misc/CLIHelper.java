@@ -41,6 +41,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("resource")
 public final class CLIHelper implements ICLIHelper {
 	/**
 	 * The input stream we'll read from.
