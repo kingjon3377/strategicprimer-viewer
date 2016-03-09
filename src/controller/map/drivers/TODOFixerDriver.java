@@ -226,7 +226,7 @@ public final class TODOFixerDriver {
 					LOGGER.log(Level.SEVERE, "I/O error writing map to " + arg, e);
 				}
 			}
-		} catch (IOException except) {
+		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error closing CLIHelper", except);
 		}
 	}
