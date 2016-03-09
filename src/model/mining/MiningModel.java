@@ -50,6 +50,7 @@ public final class MiningModel {
 	 * @param initial the status to give to the mine's starting point
 	 * @param seed    a number to seed the RNG
 	 */
+	@SuppressWarnings("resource")
 	public MiningModel(final LodeStatus initial, final long seed) {
 		final Map<Point, LodeStatus> unnormalized = new HashMap<>();
 		unnormalized.put(PointFactory.point(0, 0), initial);

@@ -58,6 +58,7 @@ public final class LevelListener implements LevelGainListener,
 	/**
 	 * Handle level gain notification.
 	 */
+	@SuppressWarnings("resource")
 	@Override
 	public void level() {
 		final UnitMember wkr = worker;
