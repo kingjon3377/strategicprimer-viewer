@@ -203,6 +203,7 @@ public final class TODOFixerDriver {
 	 *
 	 * @param args maps to run on
 	 */
+	@SuppressWarnings("NestedTryStatement")
 	public static void main(final String... args) {
 		try (final ICLIHelper cli = new CLIHelper()) {
 			final MapReaderAdapter reader = new MapReaderAdapter();
