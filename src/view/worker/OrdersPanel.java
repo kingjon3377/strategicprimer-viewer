@@ -222,4 +222,11 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+	/**
+	 * @return a quasi-diagnostic String
+	 */
+	@Override
+	public String toString() {
+		return "OrdersPanel for player " + player.toString();
+	}
 }

@@ -77,4 +77,11 @@ public final class PlayerListModel extends DefaultListModel<@NonNull Player> imp
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+	/**
+	 * @return a quasi-diagnostic String
+	 */
+	@Override
+	public String toString() {
+		return "PlayerListModel with " + size() + " items";
+	}
 }

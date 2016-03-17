@@ -1,24 +1,18 @@
 package view.map.key;
 
-import static model.viewer.ViewerModel.DEF_ZOOM_LEVEL;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-
-import org.eclipse.jdt.annotation.Nullable;
-
+import javax.swing.*;
 import model.map.TileType;
 import model.viewer.TileViewSize;
+import org.eclipse.jdt.annotation.Nullable;
 import view.map.main.TileUIHelper;
 import view.util.BoxPanel;
+
+import static model.viewer.ViewerModel.DEF_ZOOM_LEVEL;
 
 /**
  * An element of the key.
@@ -151,6 +145,13 @@ public final class KeyElement extends BoxPanel {
 		private void readObject(final ObjectInputStream in)
 				throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("Serialization is not allowed");
+		}
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "KeyElementComponent with color " + color.toString();
 		}
 	}
 	/**

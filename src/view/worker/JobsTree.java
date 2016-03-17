@@ -154,5 +154,11 @@ public final class JobsTree extends JTree implements SkillSelectionSource {
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
-
+	/**
+	 * @return a quasi-diagnostic String
+	 */
+	@Override
+	public String toString() {
+		return "JobsTree with " + ssListeners.size() + " listeners";
+	}
 }

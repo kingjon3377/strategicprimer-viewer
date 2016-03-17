@@ -100,4 +100,11 @@ public final class PlayerLabel extends JLabel implements PlayerChangeListener {
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "PlayerLabel showing " + getText();
+	}
 }

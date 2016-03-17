@@ -191,4 +191,11 @@ public final class MapCheckerFrame extends JFrame {
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+	/**
+	 * @return a diagnostic String
+	 */
+	@Override
+	public String toString() {
+		return "MapCheckerFrame showing: " + label.getText();
+	}
 }

@@ -228,4 +228,11 @@ public final class NewUnitDialog extends JFrame implements NewUnitSource,
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+	/**
+	 * @return a quasi-diagnostic String
+	 */
+	@Override
+	public String toString() {
+		return "NewUnitDialog for player " + owner.toString();
+	}
 }
