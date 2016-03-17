@@ -1,11 +1,14 @@
 package view.map.key;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import model.map.TileType;
 import model.viewer.TileViewSize;
 import org.eclipse.jdt.annotation.Nullable;
