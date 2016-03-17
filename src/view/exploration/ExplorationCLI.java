@@ -1,7 +1,6 @@
 package view.exploration;
 
-import static util.NullCleaner.assertNotNull;
-
+import controller.map.misc.ICLIHelper;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,10 +10,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import controller.map.misc.ICLIHelper;
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
 import model.map.HasOwner;
@@ -30,8 +25,10 @@ import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
-import util.NullCleaner;
+import org.eclipse.jdt.annotation.Nullable;
 import util.Pair;
+
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A CLI to help running exploration. Now separated from the "driver" bits, to simplify

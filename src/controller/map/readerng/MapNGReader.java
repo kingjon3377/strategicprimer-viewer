@@ -1,21 +1,5 @@
 package controller.map.readerng;
 
-import static util.NullCleaner.assertNotNull;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.regex.Pattern;
-import java.util.stream.StreamSupport;
-
-import javax.xml.XMLConstants;
-import javax.xml.namespace.QName;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -23,6 +7,15 @@ import controller.map.formatexceptions.UnsupportedTagException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.StreamSupport;
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.IMutablePlayerCollection;
@@ -39,10 +32,13 @@ import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
-import util.NullCleaner;
 import util.Pair;
 import util.Warning;
+
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A reader to read new-API maps from XML and turn them into XML.
