@@ -38,8 +38,7 @@ import model.map.fixtures.mobile.IUnit;
  * @author Jonathan Lovelace
  */
 public final class ExplorationUnitListModel extends DefaultListModel<@NonNull IUnit>
-		implements
-		PlayerChangeListener {
+		implements PlayerChangeListener {
 	/**
 	 * The exploration model to work from.
 	 */
@@ -85,5 +84,12 @@ public final class ExplorationUnitListModel extends DefaultListModel<@NonNull IU
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
+	}
+	/**
+	 * @return a diagnostic String
+	 */
+	@Override
+	public String toString() {
+		return "ExplorationUnitListModel wrapping " + model.toString();
 	}
 }

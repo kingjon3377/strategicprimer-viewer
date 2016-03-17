@@ -1,23 +1,14 @@
 package view.exploration;
 
-import java.awt.Component;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
+import javax.swing.*;
 import javax.swing.text.Document;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.exploration.ExplorationModel;
 import model.exploration.ExplorationUnitListModel;
 import model.exploration.PlayerListModel;
@@ -27,6 +18,8 @@ import model.listeners.PlayerChangeListener;
 import model.listeners.PlayerChangeSource;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
@@ -253,5 +246,13 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
+	}
+	/**
+	 * @return a quasi-diagnostic String
+	 */
+	@Override
+	public String toString() {
+		return "ExplorerSelectingPanel including " + unitList.getModel().getSize() +
+				       " units";
 	}
 }

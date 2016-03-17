@@ -127,4 +127,11 @@ public final class DualTileButton extends JButton {
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+	/**
+	 * @return a diagnostic String
+	 */
+	@Override
+	public String toString() {
+		return "DualTileButton for " + point.toString();
+	}
 }

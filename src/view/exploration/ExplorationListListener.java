@@ -235,5 +235,12 @@ public final class ExplorationListListener implements ListDataListener {
 		public int size() {
 			return wrapped.getSize();
 		}
+		/**
+		 * @return a diagnostic String
+		 */
+		@Override
+		public String toString() {
+			return "Wrapper around the following ListModel:\n" + wrapped.toString();
+		}
 	}
 }

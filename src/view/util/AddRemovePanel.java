@@ -153,4 +153,11 @@ public final class AddRemovePanel extends JPanel implements AddRemoveSource {
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+	/**
+	 * @return a String diagnostic
+	 */
+	@Override
+	public String toString() {
+		return "AddRemovePanel: Field currently has " + field.getText();
+	}
 }

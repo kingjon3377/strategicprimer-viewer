@@ -1,21 +1,5 @@
 package model.map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.StreamSupport;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-
 import controller.map.cxml.CompactXMLWriter;
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingChildException;
@@ -27,10 +11,24 @@ import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.iointerfaces.TestReaderFactory;
 import controller.map.readerng.ReaderAdapter;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.StreamSupport;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import util.FatalWarningException;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
  * An abstract base class for this helper method.
@@ -54,7 +52,7 @@ import util.Warning;
  *
  * @author Jonathan Lovelace
  */
-@SuppressWarnings("ElementOnlyUsedFromTestCode")
+@SuppressWarnings({"ElementOnlyUsedFromTestCode", "ClassHasNoToStringMethod"})
 public abstract class BaseTestFixtureSerialization { // NOPMD
 	/**
 	 * The "filename" to pass to the readers.

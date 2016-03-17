@@ -100,4 +100,14 @@ public class BoxPanel extends JPanel {
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	public String toString() {
+		if (horizontal) {
+			return "Horizontal BoxPanel";
+		} else {
+			return "Vertical BoxPanel";
+		}
+	}
 }

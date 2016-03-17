@@ -41,6 +41,7 @@ import util.PairComparator;
  * @param <T> the type of thing the class knows how to generate a report on
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> {
 	/**
 	 * A comparator for pairs of Points and fixtures.

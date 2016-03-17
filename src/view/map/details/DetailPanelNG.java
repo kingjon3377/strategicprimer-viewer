@@ -127,4 +127,11 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+	/**
+	 * @return a diagnostic String
+	 */
+	@Override
+	public String toString() {
+		return "DetailPanelNG: Header currently reads " + header.getText();
+	}
 }

@@ -1,11 +1,5 @@
 package view.map.details;
 
-import static javax.swing.JOptionPane.PLAIN_MESSAGE;
-import static javax.swing.JOptionPane.YES_NO_OPTION;
-import static javax.swing.JOptionPane.YES_OPTION;
-import static javax.swing.JOptionPane.showConfirmDialog;
-import static javax.swing.JOptionPane.showInputDialog;
-
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
@@ -18,13 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-
-import org.eclipse.jdt.annotation.NonNull;
-
+import javax.swing.*;
 import model.map.HasKind;
 import model.map.HasMutableKind;
 import model.map.HasName;
@@ -34,7 +22,14 @@ import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.fixtures.UnitMember;
 import model.workermgmt.IWorkerTreeModel;
+import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
+
+import static javax.swing.JOptionPane.PLAIN_MESSAGE;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
+import static javax.swing.JOptionPane.showConfirmDialog;
+import static javax.swing.JOptionPane.showInputDialog;
 
 /**
  * A pop-up menu to let the user edit a fixture.
@@ -190,5 +185,12 @@ public final class FixtureEditMenu extends JPopupMenu {
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
+	}
+	/**
+	 * @return a diagnostic String
+	 */
+	@Override
+	public String toString() {
+		return "FixtureEditMenu with " + getComponentCount() + " menu items";
 	}
 }

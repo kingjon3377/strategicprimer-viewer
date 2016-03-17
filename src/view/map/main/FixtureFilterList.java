@@ -146,4 +146,11 @@ public final class FixtureFilterList extends JList<Class<? extends TileFixture>>
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+	/**
+	 * @return a quasi-diagnostic String
+	 */
+	@Override
+	public String toString() {
+		return "FixtureFilterList containing " + getComponentCount() + " items";
+	}
 }

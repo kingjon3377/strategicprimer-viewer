@@ -1,6 +1,6 @@
 package view.exploration;
 
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -16,19 +16,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.swing.InputMap;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
 import model.listeners.CompletionListener;
@@ -39,6 +29,7 @@ import model.listeners.SelectionChangeSupport;
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
+import org.eclipse.jdt.annotation.Nullable;
 import util.IsNumeric;
 import util.NullCleaner;
 import util.Pair;
@@ -378,5 +369,17 @@ public final class ExplorationPanel extends BorderedPanel
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
+	}
+	/**
+	 * @return a diagnostic String
+	 */
+	@Override
+	public String toString() {
+		try {
+			return "ExplorationPanel with remaining MP: " +
+					       mpDocument.getText(0, mpDocument.getLength());
+		} catch (final BadLocationException ignored) {
+			return "ExplorationPanel";
+		}
 	}
 }

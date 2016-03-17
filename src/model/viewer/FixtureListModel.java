@@ -211,4 +211,11 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+	/**
+	 * @return a diagnostic String
+	 */
+	@Override
+	public String toString() {
+		return "FixtureListModel for point " + point.toString();
+	}
 }

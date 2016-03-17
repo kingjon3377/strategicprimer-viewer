@@ -127,4 +127,11 @@ public class DriverUsage { // $codepro.audit.disable
 	public Class<? extends ISPDriver> getDriverClass() {
 		return driverClass;
 	}
+	/**
+	 * @return a description of the driver
+	 */
+	@Override
+	public String toString() {
+		return shortDescription;
+	}
 }

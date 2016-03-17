@@ -88,4 +88,11 @@ public class ActionWrapper extends AbstractAction {
 	public final ActionWrapper clone() throws CloneNotSupportedException {
 		throw new CloneNotSupportedException("Cloning is not allowed.");
 	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		return "ActionWrapper around " + wrapped.toString();
+	}
 }

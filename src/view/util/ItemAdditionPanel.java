@@ -148,4 +148,11 @@ public class ItemAdditionPanel extends JPanel implements AddRemoveSource {
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+	/**
+	 * @return a diagnostic String
+	 */
+	@Override
+	public String toString() {
+		return "ItemAdditionPanel: Field currently contains " + field.getText();
+	}
 }
