@@ -240,11 +240,11 @@ public final class ExplorationPanel extends BorderedPanel
 				                                                                 mainList);
 		dtb.addActionListener(ecl);
 		final InputMap dtbIMap = dtb.getInputMap(WHEN_IN_FOCUSED_WINDOW);
-		KeyStroke arrowKey = getArrowKey(direction);
+		final KeyStroke arrowKey = getArrowKey(direction);
 		if (arrowKey != null) {
 			dtbIMap.put(arrowKey, direction.toString());
 		}
-		KeyStroke numpadKey = getNumpadKey(direction);
+		final KeyStroke numpadKey = getNumpadKey(direction);
 		if (numpadKey != null) {
 			dtbIMap.put(numpadKey, direction.toString());
 		}
