@@ -113,6 +113,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 * @param str a string
 	 * @return it, encapsulated.
 	 */
+	@SuppressWarnings("StringBufferReplaceableByString")
 	private static String encapsulateTileString(final String str) {
 		final StringBuilder builder = new StringBuilder(55 + str.length());
 		builder.append("<map version=\"2\" rows=\"2\" columns=\"2\">");
