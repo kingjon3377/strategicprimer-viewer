@@ -7,9 +7,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -20,6 +17,7 @@ import model.report.IReportNode;
 import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
+import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
@@ -97,11 +95,17 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 				others.put(village.getOwner(), coll);
 			}
 		});
+		final String ownString = own.toString();
+		final String independentsString = independents.toString();
 		// TODO: Size?
-		final StringBuilder retval = new StringBuilder();
+		final StringBuilder retval =
+				new StringBuilder(40 + ownString.length() + independentsString.length() +
+						                  others.values().stream()
+								                  .mapToInt(Collection::size).sum() *
+								                  512);
 		// HtmlLists will return the empty string if they are empty.
-		retval.append(own.toString());
-		retval.append(independents.toString());
+		retval.append(ownString);
+		retval.append(independentsString);
 		if (!others.isEmpty()) {
 			retval.append("<h4>Other villages you know about:</h4>\n");
 			others.values().stream().map(Object::toString).forEach(retval::append);
