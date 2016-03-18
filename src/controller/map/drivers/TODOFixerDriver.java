@@ -185,18 +185,22 @@ public final class TODOFixerDriver {
 		case Ocean:
 			return SimpleTerrain.Ocean;
 		case Plains:
-			if (map.isMountainous(location)) {
-				return SimpleTerrain.Unforested;
-			} else if (map.getForest(location) != null) {
-				return SimpleTerrain.Forested;
-			} else {
-				return SimpleTerrain.Unforested;
-			}
+			return getPlainsTerrain(location);
 		default:
 			return SimpleTerrain.Unforested; // Should never get here, but ...
 		}
 	}
-
+	/**
+	 * @param location a location
+	 * @return the appropriate terrain for it if it is plains
+	 */
+	private SimpleTerrain getPlainsTerrain(final Point location) {
+		if (map.isMountainous(location) || map.getForest(location) == null) {
+			return SimpleTerrain.Unforested;
+		} else {
+			return SimpleTerrain.Forested;
+		}
+	}
 	/**
 	 * Run the driver.
 	 *
