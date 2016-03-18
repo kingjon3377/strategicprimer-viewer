@@ -47,6 +47,12 @@ import util.Pair;
  */
 public final class TownReportGenerator extends AbstractReportGenerator<ITownFixture> {
 	/**
+	 * Header for the 'towns' section.
+	 */
+	public static final String TOWN_HDR =
+			"Cities, towns, and/or fortifications you know about:";
+
+	/**
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public TownReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull
@@ -134,8 +140,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 						        .add(produceRIR(fixtures, map, currentPlayer,
 								        (ITownFixture) pair.second(), pair.first())));
 
-		final IReportNode retval = new SectionListReportNode(4,
-				                                                    "Cities, towns, and/or fortifications you know about:");
+		final IReportNode retval = new SectionListReportNode(4, TOWN_HDR);
 		Arrays.asList(TownStatus.Active, TownStatus.Abandoned, TownStatus.Ruined,
 				TownStatus.Burned).stream().map(separated::get)
 				.filter(node -> node.getChildCount() != 0).forEach(retval::add);
