@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
-
 import model.map.IEvent;
 import model.map.Player;
 import model.map.Point;
@@ -89,13 +88,8 @@ public final class LegacyTable implements EncounterTable {
 			addData(new MineralVein(mineral.toString(), false, 0, 0));
 		}
 		data.add("Nothing interesting here ...");
-		// TODO: Replace loop with Streams usage
-		for (final StoneKind stone : StoneKind.values()) {
-			if (stone != null) {
-				//noinspection ObjectAllocationInLoop
-				addData(new StoneDeposit(stone, 0, 0)); // NOPMD
-			}
-		}
+		Stream.of(StoneKind.values()).map(stone -> new StoneDeposit(stone, 0, 0))
+				.forEach(this::addData);
 	}
 
 	/**
