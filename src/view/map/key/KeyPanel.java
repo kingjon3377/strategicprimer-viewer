@@ -1,14 +1,12 @@
 package view.map.key;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.swing.JPanel;
-
+import java.util.stream.StreamSupport;
+import javax.swing.*;
 import model.listeners.VersionChangeListener;
 import model.map.TileType;
 
@@ -57,11 +55,8 @@ public final class KeyPanel extends JPanel implements VersionChangeListener {
 	 */
 	private void updateForVersion(final int version) {
 		removeAll();
-		// TODO: Replace with Streams API use
-		for (final TileType type : TileType.valuesForVersion(version)) {
-			//noinspection ObjectAllocationInLoop
-			add(new KeyElement(version, type)); // NOPMD
-		}
+		StreamSupport.stream(TileType.valuesForVersion(version).spliterator(), false)
+				.map(type -> new KeyElement(version, type)).forEach(this::add);
 	}
 
 	/**
