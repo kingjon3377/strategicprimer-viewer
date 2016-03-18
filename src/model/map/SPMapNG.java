@@ -174,6 +174,7 @@ public class SPMapNG implements IMutableMapNG {
 					// campaign with a different data representation---perhaps a
 					// database---we should remove this
 					// check. Except for the 'exposed' bit.
+					//noinspection StatementWithEmptyBody
 					if ((ourGround != null)
 								&& ourGround.getKind().equals(theirGround.getKind())
 								&& ourGround.isExposed()) {
