@@ -27,6 +27,11 @@ import model.misc.IDriverModel;
 @FunctionalInterface
 public interface UtilityDriver extends ISPDriver {
 	/**
+	 * String to throw if utility driver called with driver model.
+	 */
+	String ERR_STR = "A utility driver can't operate on a driver model";
+
+	/**
 	 * Try to start the driver. This default method always throws, because a utility
 	 * driver most often can't operate on a driver model.
 	 * @param model the driver-model that should be used by the app
@@ -35,6 +40,6 @@ public interface UtilityDriver extends ISPDriver {
 	 */
 	@Override
 	default void startDriver(final IDriverModel model) throws DriverFailedException {
-		throw new DriverFailedException(new IllegalStateException("A utility driver can't operate on a driver model"));
+		throw new DriverFailedException(new IllegalStateException(ERR_STR));
 	}
 }
