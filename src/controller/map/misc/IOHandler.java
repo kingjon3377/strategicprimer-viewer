@@ -462,6 +462,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 * @param component a component
 	 * @return a FindDialog if the driver model is for a map viewer, or null otherwise
 	 */
+	@SuppressWarnings("SynchronizedMethod")
 	@Nullable
 	private synchronized FindDialog getFindDialog(@Nullable final Component component) {
 		final Frame window = getContainingFrame(component);
