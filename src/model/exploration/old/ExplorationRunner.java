@@ -198,6 +198,7 @@ public final class ExplorationRunner { // NOPMD
 	 * @return whether that table, or any table it calls, calls a table that doesn't
 	 * exist.
 	 */
+	@SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
 	public boolean recursiveCheck(final String table) {
 		return recursiveCheck(table, new HashSet<>());
 	}
@@ -210,6 +211,7 @@ public final class ExplorationRunner { // NOPMD
 	 * @return whether the table, or any it calls, calls a table that doesn't exist.
 	 */
 	// $codepro.audit.disable booleanMethodNamingConvention
+	@SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
 	private boolean recursiveCheck(final String table, final Set<String> state) {
 		if (state.contains(table)) {
 			return false; // NOPMD
@@ -242,6 +244,7 @@ public final class ExplorationRunner { // NOPMD
 	 *
 	 * @return whether any table contains recursive calls to a nonexistent table.
 	 */
+	@SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
 	public boolean recursiveCheck() {
 		final Set<String> state = new HashSet<>(); // NOPMD
 		for (final String table : tables.keySet()) {
