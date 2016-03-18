@@ -1,7 +1,6 @@
 package view.worker;
 
-import static util.IsNumeric.isNumeric;
-
+import controller.map.misc.IDFactory;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.IOException;
@@ -16,15 +15,12 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
-
-import controller.map.misc.IDFactory;
 import model.listeners.NewWorkerListener;
 import model.listeners.NewWorkerSource;
 import model.map.fixtures.mobile.Worker;
@@ -37,6 +33,8 @@ import util.TypesafeLogger;
 import view.util.BorderedPanel;
 import view.util.ErrorShower;
 import view.util.ListenedButton;
+
+import static util.IsNumeric.isNumeric;
 
 /**
  * A window to let the user add a new worker. As this is a dialog, we do *not* extend
@@ -61,6 +59,7 @@ import view.util.ListenedButton;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 public final class WorkerConstructionFrame extends JFrame implements NewWorkerSource {
 	/**
 	 * Logger.

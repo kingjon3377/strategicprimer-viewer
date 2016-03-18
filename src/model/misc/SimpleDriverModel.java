@@ -134,4 +134,11 @@ public class SimpleDriverModel implements IDriverModel {
 			                                             final VersionChangeListener list) {
 		vcListeners.remove(list);
 	}
+	/**
+	 * @return a diagnostic String
+	 */
+	@Override
+	public String toString() {
+		return "SimpleDriverModel representing map in " + file.getPath();
+	}
 }

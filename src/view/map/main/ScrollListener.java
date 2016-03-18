@@ -265,5 +265,16 @@ public final class ScrollListener implements MapChangeListener,
 						   && isInRange(0, ((JScrollBar) input).getValue(),
 					dimension() - visibleDimension() - 1);
 		}
+		/**
+		 * @return a quasi-diagnostic String
+		 */
+		@Override
+		public String toString() {
+			if (horiz) {
+				return "LocalInputVerifier for horizontal scrollbar";
+			} else {
+				return "LocalInputVerifier for vertical scrollbar";
+			}
+		}
 	}
 }

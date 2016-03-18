@@ -13,17 +13,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.listeners.LevelGainListener;
 import model.listeners.LevelGainSource;
 import model.listeners.SkillSelectionListener;
 import model.map.fixtures.mobile.worker.ISkill;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.SingletonRandom;
 import util.TypesafeLogger;
@@ -183,5 +180,17 @@ public final class SkillAdvancementPanel extends BoxPanel
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
+	}
+	/**
+	 * @return a String representation of the object
+	 */
+	@Override
+	public String toString() {
+		final @Nullable ISkill locSkill = skill;
+		if (locSkill == null) {
+			return "SkillAdvancementPanel displaying null";
+		} else {
+			return "SkillAdvancementPanel displaying " + locSkill.getName();
+		}
 	}
 }

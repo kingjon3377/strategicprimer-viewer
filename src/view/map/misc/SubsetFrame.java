@@ -55,6 +55,7 @@ import view.util.StreamingLabel.LabelTextColor;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 public final class SubsetFrame extends JFrame {
 	/**
 	 * Logger.

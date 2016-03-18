@@ -263,4 +263,11 @@ public final class SelectTileDialog extends JDialog {
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+	/**
+	 * @return a quasi-diagnostic String
+	 */
+	@Override
+	public String toString() {
+		return "SelectTileDialog: current or last message is " + errorLabel.toString();
+	}
 }

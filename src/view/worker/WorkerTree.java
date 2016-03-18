@@ -1,8 +1,5 @@
 package view.worker;
 
-import static java.lang.String.format;
-import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -11,7 +8,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-
 import javax.swing.JTree;
 import javax.swing.ToolTipManager;
 import javax.swing.event.TreeModelEvent;
@@ -19,9 +15,6 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.listeners.UnitMemberListener;
 import model.listeners.UnitMemberSelectionSource;
 import model.listeners.UnitSelectionListener;
@@ -35,8 +28,12 @@ import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.ProxyWorker;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import model.workermgmt.IWorkerTreeModel;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import view.map.details.FixtureEditMenu;
+
+import static java.lang.String.format;
+import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
 
 /**
  * A tree of a player's units.
@@ -462,5 +459,12 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
+	}
+	/**
+	 * @return a quasi-diagnostic String.
+	 */
+	@Override
+	public String toString() {
+		return "WorkerTree showing " + getRowCount() + " rows";
 	}
 }

@@ -34,6 +34,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 public final class StreamingLabel extends JLabel {
 	/**
 	 * Colors to use on a StreamingLabel. Enumerated to appease XSS-possibility warnings.

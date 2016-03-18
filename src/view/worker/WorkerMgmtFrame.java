@@ -708,6 +708,7 @@ public final class WorkerMgmtFrame extends JFrame {
 	/**
 	 * Handler for mouse clicks in the report tree.
 	 */
+	@SuppressWarnings("ClassHasNoToStringMethod")
 	private static class reportMouseHandler extends MouseAdapter {
 		/**
 		 * The report tree.

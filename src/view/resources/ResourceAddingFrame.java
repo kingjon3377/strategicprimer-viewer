@@ -260,6 +260,13 @@ public class ResourceAddingFrame extends JFrame {
 				throws IOException, ClassNotFoundException {
 			throw new NotSerializableException("Serialization is not allowed");
 		}
+		/**
+		 * @return a quasi-diagnostic String
+		 */
+		@Override
+		public String toString() {
+			return "UpdatedComboBox with " + values.size() + " items";
+		}
 	}
 	/**
 	 * Prevent serialization.
@@ -280,5 +287,12 @@ public class ResourceAddingFrame extends JFrame {
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
+	}
+	/**
+	 * @return a quasi-diagnostic String
+	 */
+	@Override
+	public String toString() {
+		return "ResourceAddingFrame with current player " + current.toString();
 	}
 }

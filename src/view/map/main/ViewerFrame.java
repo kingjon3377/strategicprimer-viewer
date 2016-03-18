@@ -135,4 +135,11 @@ public final class ViewerFrame extends JFrame {
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+	/**
+	 * @return a quasi-diagnostic String
+	 */
+	@Override
+	public String toString() {
+		return "ViewerFrame showing map in " + model.getMapFile().getPath();
+	}
 }

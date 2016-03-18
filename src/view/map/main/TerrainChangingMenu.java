@@ -169,4 +169,11 @@ public final class TerrainChangingMenu extends JPopupMenu
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
 	}
+	/**
+	 * @return a quasi-diagnostic String
+	 */
+	@Override
+	public String toString() {
+		return "TerrainChangingMenu for " + point.toString();
+	}
 }
