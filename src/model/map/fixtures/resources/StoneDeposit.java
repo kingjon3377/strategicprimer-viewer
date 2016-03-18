@@ -176,11 +176,11 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasMutabl
 	/**
 	 * TODO: Allow arbitrary-text.
 	 *
-	 * @param kind the new kind
+	 * @param nKind the new kind
 	 */
 	@Override
-	public void setKind(final String kind) {
-		stone = StoneKind.parseStoneKind(kind);
+	public void setKind(final String nKind) {
+		stone = StoneKind.parseStoneKind(nKind);
 	}
 
 	/**

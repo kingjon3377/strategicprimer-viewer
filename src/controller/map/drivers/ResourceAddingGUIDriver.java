@@ -55,19 +55,19 @@ public class ResourceAddingGUIDriver implements SimpleDriver {
 	 * Run the driver. This form is, at the moment, primarily for use in test code, but
 	 * that may change.
 	 *
-	 * @param dmodel the driver-model that should be used by the app
+	 * @param model the driver-model that should be used by the app
 	 * @throws DriverFailedException if the driver fails for some reason
 	 */
 	@Override
-	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
-		final ResourceManagementDriver model;
-		if (dmodel instanceof ResourceManagementDriver) {
-			model = (ResourceManagementDriver) dmodel;
+	public void startDriver(final IDriverModel model) throws DriverFailedException {
+		final ResourceManagementDriver rmmodel;
+		if (model instanceof ResourceManagementDriver) {
+			rmmodel = (ResourceManagementDriver) model;
 		} else {
-			model = new ResourceManagementDriver(dmodel);
+			rmmodel = new ResourceManagementDriver(model);
 		}
 		SwingUtilities.invokeLater(
-				() -> new ResourceAddingFrame(model, new IOHandler(model))
+				() -> new ResourceAddingFrame(rmmodel, new IOHandler(rmmodel))
 						      .setVisible(true));
 	}
 

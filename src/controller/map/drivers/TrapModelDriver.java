@@ -1,17 +1,14 @@
 package controller.map.drivers;
 
-import static model.map.PointFactory.point;
-
+import controller.map.drivers.DriverUsage.ParamCount;
+import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import controller.map.drivers.DriverUsage.ParamCount;
-import controller.map.misc.CLIHelper;
-import controller.map.misc.ICLIHelper;
 import model.exploration.HuntingModel;
 import model.map.HasName;
 import model.map.IMapNG;
@@ -19,6 +16,8 @@ import model.map.Point;
 import model.misc.IDriverModel;
 import util.NullCleaner;
 import util.TypesafeLogger;
+
+import static model.map.PointFactory.point;
 
 /**
  * A driver to run a player's trapping activity.
@@ -133,10 +132,10 @@ public final class TrapModelDriver implements SimpleDriver {
 		}
 
 		/**
-		 * @param tname ignored
+		 * @param nomen ignored
 		 */
 		@Override
-		public void setName(final String tname) {
+		public void setName(final String nomen) {
 			throw new IllegalStateException("Can't rename");
 		}
 	}

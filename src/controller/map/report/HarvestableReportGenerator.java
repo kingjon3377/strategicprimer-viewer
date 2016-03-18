@@ -74,7 +74,7 @@ public final class HarvestableReportGenerator
 	 *
 	 * @param fixtures the set of fixtures
 	 * @param map      ignored
-	 * @param player   the player for whom the report is being produced
+	 * @param currentPlayer   the player for whom the report is being produced
 	 * @return the part of the report listing things that can be harvested.
 	 */
 	@Override
@@ -82,7 +82,7 @@ public final class HarvestableReportGenerator
 						  final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
 								  fixtures,
 						  //NOPMD
-						  final IMapNG map, final Player player) {
+						  final IMapNG map, final Player currentPlayer) {
 		// TODO: Use Guava Multimaps to reduce cyclomatic complexity
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
@@ -109,18 +109,18 @@ public final class HarvestableReportGenerator
 			final IFixture item = pair.second();
 			final Point point = pair.first();
 			if (item instanceof CacheFixture) {
-				caches.add(produce(fixtures, map, player,
+				caches.add(produce(fixtures, map, currentPlayer,
 						(CacheFixture) item, point));
 			} else if (item instanceof Grove) {
-				groves.add(produce(fixtures, map, player, (Grove) item, point));
+				groves.add(produce(fixtures, map, currentPlayer, (Grove) item, point));
 			} else if (item instanceof Meadow) {
-				meadows.add(produce(fixtures, map, player, (Meadow) item,
+				meadows.add(produce(fixtures, map, currentPlayer, (Meadow) item,
 						point));
 			} else if (item instanceof Mine) {
-				mines.add(produce(fixtures, map, player, (Mine) item, point));
+				mines.add(produce(fixtures, map, currentPlayer, (Mine) item, point));
 			} else if (item instanceof MineralVein) {
 				// TODO: Handle these like shrubs.
-				minerals.add(produce(fixtures, map, player,
+				minerals.add(produce(fixtures, map, currentPlayer,
 						(MineralVein) item, point));
 			} else if (item instanceof Shrub) {
 				// TODO: Use a Guava Multimap
@@ -135,7 +135,7 @@ public final class HarvestableReportGenerator
 				fixtures.remove(Integer.valueOf(item.getID()));
 			} else if (item instanceof StoneDeposit) {
 				// TODO: Handle these like shrubs.
-				stone.add(produce(fixtures, map, player, (StoneDeposit) item,
+				stone.add(produce(fixtures, map, currentPlayer, (StoneDeposit) item,
 						point));
 			}
 		}
@@ -179,14 +179,14 @@ public final class HarvestableReportGenerator
 	 *
 	 * @param fixtures the set of fixtures
 	 * @param map      ignored
-	 * @param player   the player for whom the report is being produced
+	 * @param currentPlayer   the player for whom the report is being produced
 	 * @return the part of the report listing things that can be harvested.
 	 */
 	@Override
 	public IReportNode produceRIR(
 												final DelayedRemovalMap<Integer,
 																			   Pair<Point, IFixture>> fixtures,
-												final IMapNG map, final Player player) {
+												final IMapNG map, final Player currentPlayer) {
 		//  TODO: Use Guava Multimaps to reduce cyclomatic complexity
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
@@ -207,16 +207,16 @@ public final class HarvestableReportGenerator
 				final HarvestableFixture item = (HarvestableFixture) pair.second();
 				final Point loc = pair.first();
 				if (item instanceof CacheFixture) {
-					caches.add(produceRIR(fixtures, map, player, item, loc));
+					caches.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 				} else if (item instanceof Grove) {
-					groves.add(produceRIR(fixtures, map, player, item, loc));
+					groves.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 				} else if (item instanceof Meadow) {
-					meadows.add(produceRIR(fixtures, map, player, item, loc));
+					meadows.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 				} else if (item instanceof Mine) {
-					mines.add(produceRIR(fixtures, map, player, item, loc));
+					mines.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 				} else if (item instanceof MineralVein) {
 					// TODO: Handle these like shrubs.
-					minerals.add(produceRIR(fixtures, map, player, item,
+					minerals.add(produceRIR(fixtures, map, currentPlayer, item,
 							loc));
 				} else if (item instanceof Shrub) {
 					final IReportNode collection; // NOPMD
@@ -226,11 +226,11 @@ public final class HarvestableReportGenerator
 						collection = new ListReportNode(((Shrub) item).getKind());
 						shrubs.put(((Shrub) item).getKind(), collection);
 					}
-					collection.add(produceRIR(fixtures, map, player, item, loc));
+					collection.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 					fixtures.remove(Integer.valueOf(item.getID()));
 				} else if (item instanceof StoneDeposit) {
 					// TODO: Handle these like shrubs.
-					stone.add(produceRIR(fixtures, map, player, item, loc));
+					stone.add(produceRIR(fixtures, map, currentPlayer, item, loc));
 				}
 			}
 		}

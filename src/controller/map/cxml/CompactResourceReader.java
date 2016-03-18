@@ -1,20 +1,16 @@
 package controller.map.cxml;
 
-import static java.lang.Boolean.parseBoolean;
-
+import controller.map.formatexceptions.DeprecatedPropertyException;
+import controller.map.formatexceptions.MissingPropertyException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.IDFactory;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-
-import controller.map.formatexceptions.DeprecatedPropertyException;
-import controller.map.formatexceptions.MissingPropertyException;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
 import model.map.IEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.resources.CacheFixture;
@@ -31,6 +27,8 @@ import model.map.fixtures.towns.TownStatus;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
+
+import static java.lang.Boolean.parseBoolean;
 
 /**
  * A reader for resource-bearing TileFixtures.
@@ -98,7 +96,7 @@ public final class CompactResourceReader extends
 	}
 
 	/**
-	 * @param elem      the XML element to parse
+	 * @param element      the XML element to parse
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -108,60 +106,60 @@ public final class CompactResourceReader extends
 	 */
 	@Override
 	public HarvestableFixture read(// $codepro.audit.disable cyclomaticComplexity
-								   final StartElement elem,
+								   final StartElement element,
 								   final IteratorWrapper<XMLEvent> stream,
 								   final IMutablePlayerCollection players,
 								   final Warning warner,
 								   final IDFactory idFactory) throws SPFormatException {
-		requireTag(elem, "cache", "grove", "orchard",
+		requireTag(element, "cache", "grove", "orchard",
 				"field", "meadow", "mine", "mineral", "shrub", "stone");
-		final int idNum = getOrGenerateID(elem, warner, idFactory);
+		final int idNum = getOrGenerateID(element, warner, idFactory);
 		final HarvestableFixture retval; // NOPMD
-		switch (elem.getName().getLocalPart().toLowerCase()) {
+		switch (element.getName().getLocalPart().toLowerCase()) {
 		case "cache":
-			retval = new CacheFixture(getParameter(elem, KIND_PAR),
-											 getParameter(elem, "contents"), idNum);
+			retval = new CacheFixture(getParameter(element, KIND_PAR),
+											 getParameter(element, "contents"), idNum);
 			break;
 		case "field":
-			retval = createMeadow(elem, true, idNum, warner);
+			retval = createMeadow(element, true, idNum, warner);
 			break;
 		case "grove":
-			retval = createGrove(elem, false, idNum, warner);
+			retval = createGrove(element, false, idNum, warner);
 			break;
 		case "meadow":
-			retval = createMeadow(elem, false, idNum, warner);
+			retval = createMeadow(element, false, idNum, warner);
 			break;
 		case "mine":
-			retval = new Mine(getParamWithDeprecatedForm(elem, KIND_PAR,
+			retval = new Mine(getParamWithDeprecatedForm(element, KIND_PAR,
 					"product", warner),
 									 TownStatus.parseTownStatus(
-											 getParameter(elem, STATUS_PAR)),
+											 getParameter(element, STATUS_PAR)),
 									 idNum);
 			break;
 		case "mineral":
-			retval = new MineralVein(getParamWithDeprecatedForm(elem, KIND_PAR,
-					"mineral", warner), parseBoolean(getParameter(elem,
-					"exposed")), getDC(elem), idNum);
+			retval = new MineralVein(getParamWithDeprecatedForm(element, KIND_PAR,
+					"mineral", warner), parseBoolean(getParameter(element,
+					"exposed")), getDC(element), idNum);
 			break;
 		case "orchard":
-			retval = createGrove(elem, true, idNum, warner);
+			retval = createGrove(element, true, idNum, warner);
 			break;
 		case "shrub":
-			retval = new Shrub(getParamWithDeprecatedForm(elem, KIND_PAR,
+			retval = new Shrub(getParamWithDeprecatedForm(element, KIND_PAR,
 					"shrub", warner), idNum);
 			break;
 		case "stone":
 			retval = new StoneDeposit(
 											 StoneKind.parseStoneKind(
-													 getParamWithDeprecatedForm(elem,
+													 getParamWithDeprecatedForm(element,
 															 KIND_PAR, "stone", warner)),
-											 getDC(elem), idNum);
+											 getDC(element), idNum);
 			break;
 		default:
 			throw new IllegalArgumentException("Unhandled harvestable tag");
 		}
-		spinUntilEnd(NullCleaner.assertNotNull(elem.getName()), stream);
-		retval.setImage(getParameter(elem, "image", ""));
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}
 

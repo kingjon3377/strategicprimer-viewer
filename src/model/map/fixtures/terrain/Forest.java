@@ -160,11 +160,11 @@ public class Forest implements TerrainFixture, HasImage, HasMutableKind {
 	}
 
 	/**
-	 * @param kind the new kind
+	 * @param nKind the new kind
 	 */
 	@Override
-	public final void setKind(final String kind) {
-		trees = kind;
+	public final void setKind(final String nKind) {
+		trees = nKind;
 	}
 
 	/**

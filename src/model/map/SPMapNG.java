@@ -105,24 +105,24 @@ public class SPMapNG implements IMutableMapNG {
 
 	/**
 	 * @param obj     another map
-	 * @param out     the stream to write verbose results to
+	 * @param ostream     the stream to write verbose results to
 	 * @param context a string to print before every line of output, describing the
 	 *                context
 	 * @return whether the other map is a subset of this one
 	 * @throws IOException on I/O error writing output to the stream
 	 */
 	@Override
-	public boolean isSubset(final IMapNG obj, final Appendable out,
+	public boolean isSubset(final IMapNG obj, final Appendable ostream,
 							final String context) throws IOException {
 		if (dimensions().equals(obj.dimensions())) {
 			// TODO: We should probably delegate this to the PlayerCollection.
 			boolean retval = true;
 			for (final Player player : obj.players()) {
 				if (!playerCollection.contains(player)) {
-					out.append(context);
-					out.append("\tExtra player ");
-					out.append(player.toString());
-					out.append('\n');
+					ostream.append(context);
+					ostream.append("\tExtra player ");
+					ostream.append(player.toString());
+					ostream.append('\n');
 					retval = false;
 					// return false;
 				}
@@ -132,19 +132,19 @@ public class SPMapNG implements IMutableMapNG {
 						context + " At " + Objects.toString(point) + ':';
 				if ((getBaseTerrain(point) != obj.getBaseTerrain(point))
 							&& (TileType.NotVisible != obj.getBaseTerrain(point))) {
-					out.append(ctxt);
+					ostream.append(ctxt);
 					if (TileType.NotVisible == getBaseTerrain(point)) {
-						out.append("\tHas terrain information we don't\n");
+						ostream.append("\tHas terrain information we don't\n");
 					} else {
-						out.append("\tBase terrain differs\n");
+						ostream.append("\tBase terrain differs\n");
 					}
 					retval = false;
 					continue;
 					// return false;
 				}
 				if (obj.isMountainous(point) && !isMountainous(point)) {
-					out.append(ctxt);
-					out.append("\tHas mountains we don't\n");
+					ostream.append(ctxt);
+					ostream.append("\tHas mountains we don't\n");
 					retval = false;
 					// return false;
 				}
@@ -158,8 +158,8 @@ public class SPMapNG implements IMutableMapNG {
 					// database---we should remove this
 					// check.
 					if (!fixtures.containsKey(point) || !fixtures.get(point).contains(forest)) {
-						out.append(ctxt);
-						out.append(
+						ostream.append(ctxt);
+						ostream.append(
 								"\tHas forest we don't, or different primary forest\n");
 						retval = false;
 					}
@@ -186,8 +186,8 @@ public class SPMapNG implements IMutableMapNG {
 											   point)
 												.contains(
 														theirGround)) {
-						out.append(ctxt);
-						out.append(
+						ostream.append(ctxt);
+						ostream.append(
 								"\tHas different primary ground, or ground we don't\n");
 						retval = false;
 						// return false;
@@ -227,19 +227,19 @@ public class SPMapNG implements IMutableMapNG {
 																						 .getID
 																							 ()))) {
 						retval &= ourUnits.get(Integer.valueOf(fix.getID()))
-										  .isSubset(fix, out, ctxt);
+										  .isSubset(fix, ostream, ctxt);
 					} else if ((fix instanceof SubsettableFixture) && ourSubsettables
 																			  .containsKey(
 																					  Integer.valueOf(
 																							  fix.getID()))) {
 						retval &= ourSubsettables
 										  .get(Integer.valueOf(fix.getID()))
-										  .isSubset(fix, out, ctxt);
+										  .isSubset(fix, ostream, ctxt);
 					} else {
-						out.append(ctxt);
-						out.append(" Extra fixture:\t");
-						out.append(fix.toString());
-						out.append('\n');
+						ostream.append(ctxt);
+						ostream.append(" Extra fixture:\t");
+						ostream.append(fix.toString());
+						ostream.append('\n');
 						retval = false;
 						break;
 						// return false;
@@ -249,8 +249,8 @@ public class SPMapNG implements IMutableMapNG {
 				final Iterable<River> theirRivers = obj.getRivers(point);
 				for (final River river : theirRivers) {
 					if (!ourRivers.contains(river)) {
-						out.append(ctxt);
-						out.append("\tExtra river\n");
+						ostream.append(ctxt);
+						ostream.append("\tExtra river\n");
 						retval = false;
 						break;
 						// return false;
@@ -259,8 +259,8 @@ public class SPMapNG implements IMutableMapNG {
 			}
 			return retval; // NOPMD
 		} else {
-			out.append(context);
-			out.append("\tDimension mismatch\n");
+			ostream.append(context);
+			ostream.append("\tDimension mismatch\n");
 			return false; // NOPMD
 		}
 	}

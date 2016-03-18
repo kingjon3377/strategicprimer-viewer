@@ -140,10 +140,10 @@ public final class Player implements Comparable<Player>, HasName {
 	}
 
 	/**
-	 * @param name the player's new name
+	 * @param nomen the player's new name
 	 */
 	@Override
-	public void setName(final String name) {
-		playerName = name;
+	public void setName(final String nomen) {
+		playerName = nomen;
 	}
 }

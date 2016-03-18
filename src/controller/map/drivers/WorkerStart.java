@@ -56,18 +56,18 @@ public final class WorkerStart implements SimpleDriver {
 	 * Run the driver. This form is, at the moment, primarily for use in test code, but
 	 * that may change.
 	 *
-	 * @param dmodel the driver-model that should be used by the app
+	 * @param model the driver-model that should be used by the app
 	 */
 	@Override
-	public void startDriver(final IDriverModel dmodel) {
-		final IWorkerModel model;
-		if (dmodel instanceof IWorkerModel) {
-			model = (IWorkerModel) dmodel;
+	public void startDriver(final IDriverModel model) {
+		final IWorkerModel wmodel;
+		if (model instanceof IWorkerModel) {
+			wmodel = (IWorkerModel) model;
 		} else {
-			model = new WorkerModel(dmodel);
+			wmodel = new WorkerModel(model);
 		}
 		SwingUtilities.invokeLater(
-				() -> new WorkerMgmtFrame(model, new IOHandler(model)).setVisible(true));
+				() -> new WorkerMgmtFrame(wmodel, new IOHandler(wmodel)).setVisible(true));
 	}
 
 	/**

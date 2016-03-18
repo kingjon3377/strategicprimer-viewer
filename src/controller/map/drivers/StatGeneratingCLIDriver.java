@@ -1,7 +1,10 @@
 package controller.map.drivers;
 
-import static util.SingletonRandom.RANDOM;
-
+import controller.map.drivers.DriverUsage.ParamCount;
+import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
+import controller.map.misc.IDFactory;
+import controller.map.misc.IDFactoryFiller;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -13,15 +16,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
-import controller.map.drivers.DriverUsage.ParamCount;
-import controller.map.misc.CLIHelper;
-import controller.map.misc.ICLIHelper;
-import controller.map.misc.IDFactory;
-import controller.map.misc.IDFactoryFiller;
 import model.exploration.ExplorationModel;
 import model.exploration.IExplorationModel;
 import model.map.FixtureIterable;
@@ -41,8 +35,12 @@ import model.map.fixtures.mobile.worker.WorkerStats;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.workermgmt.RaceFactory;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.Pair;
+
+import static util.SingletonRandom.RANDOM;
 
 /**
  * A driver to let the user enter pregenerated stats for existing workers or generate new
@@ -107,22 +105,22 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	/**
 	 * Run the driver.
 	 *
-	 * @param dmodel the driver model
+	 * @param model the driver model
 	 * @throws DriverFailedException on error
 	 */
 	@Override
-	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
-		final IExplorationModel model;
-		if (dmodel instanceof IExplorationModel) {
-			model = (IExplorationModel) dmodel;
+	public void startDriver(final IDriverModel model) throws DriverFailedException {
+		final IExplorationModel emodel;
+		if (model instanceof IExplorationModel) {
+			emodel = (IExplorationModel) model;
 		} else {
-			model = new ExplorationModel(dmodel);
+			emodel = new ExplorationModel(model);
 		}
 		try (final ICLIHelper cli = new CLIHelper()) {
 			if (cli.inputBoolean(PREGEN_PROMPT)) {
-				enterStats(model, cli);
+				enterStats(emodel, cli);
 			} else {
-				createWorkers(model, IDFactoryFiller.createFactory(model), cli);
+				createWorkers(emodel, IDFactoryFiller.createFactory(emodel), cli);
 			}
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error interacting with user", except);

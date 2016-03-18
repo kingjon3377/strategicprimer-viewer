@@ -57,12 +57,12 @@ public final class FixtureTransferable implements Transferable {
 	}
 
 	/**
-	 * @param dflavor a DataFlavor
+	 * @param flavor a DataFlavor
 	 * @return whether it's the one we support
 	 */
 	@Override
-	public boolean isDataFlavorSupported(@Nullable final DataFlavor dflavor) {
-		return FLAVOR.equals(dflavor);
+	public boolean isDataFlavorSupported(@Nullable final DataFlavor flavor) {
+		return FLAVOR.equals(flavor);
 	}
 
 	/**
@@ -70,17 +70,17 @@ public final class FixtureTransferable implements Transferable {
 	 * part
 	 * of a hack to disallow intra-component drops.
 	 *
-	 * @param dflavor a DataFlavor
+	 * @param flavor a DataFlavor
 	 * @return our underlying data if they want it in the flavor we support
 	 * @throws UnsupportedFlavorException if they want an unsupported flavor
 	 */
 	@Override
-	public TileFixture getTransferData(@Nullable final DataFlavor dflavor)
+	public TileFixture getTransferData(@Nullable final DataFlavor flavor)
 			throws UnsupportedFlavorException {
-		if (FLAVOR.equals(dflavor)) {
+		if (FLAVOR.equals(flavor)) {
 			return data; // NOPMD
 		} else {
-			throw new UnsupportedFlavorException(dflavor);
+			throw new UnsupportedFlavorException(flavor);
 		}
 	}
 

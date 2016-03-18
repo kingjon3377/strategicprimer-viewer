@@ -1,18 +1,17 @@
 package controller.map.drivers;
 
-import static view.util.SystemOut.SYS_OUT;
-
-import java.io.IOException;
-
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
+import java.io.IOException;
 import model.exploration.ExplorationModel;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
 import model.misc.IDriverModel;
 import view.exploration.ExplorationCLI;
 import view.util.DriverQuit;
+
+import static view.util.SystemOut.SYS_OUT;
 
 /**
  * A CLI to help running exploration.
@@ -49,19 +48,19 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 	/**
 	 * Run the driver.
 	 *
-	 * @param dmodel the driver model
+	 * @param model the driver model
 	 * @throws DriverFailedException on error
 	 */
 	@Override
-	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
-		final ExplorationModel model;
-		if (dmodel instanceof ExplorationModel) {
-			model = (ExplorationModel) dmodel;
+	public void startDriver(final IDriverModel model) throws DriverFailedException {
+		final ExplorationModel emodel;
+		if (model instanceof ExplorationModel) {
+			emodel = (ExplorationModel) model;
 		} else {
-			model = new ExplorationModel(dmodel);
+			emodel = new ExplorationModel(model);
 		}
 		try (final ICLIHelper clih = new CLIHelper()) {
-			final ExplorationCLI cli = new ExplorationCLI(model, clih);
+			final ExplorationCLI cli = new ExplorationCLI(emodel, clih);
 			final Player player = cli.choosePlayer();
 			if (player == null) {
 				return;
@@ -70,7 +69,7 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 			if (unit == null) {
 				return;
 			} else {
-				model.selectUnit(unit);
+				emodel.selectUnit(unit);
 				cli.moveUntilDone();
 			}
 		} catch (final IOException except) {

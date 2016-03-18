@@ -45,18 +45,18 @@ public final class ExplorationGUI implements SimpleDriver {
 	/**
 	 * Run the driver.
 	 *
-	 * @param dmodel the driver model
+	 * @param model the driver model
 	 */
 	@Override
-	public void startDriver(final IDriverModel dmodel) {
-		final ExplorationModel model;
-		if (dmodel instanceof ExplorationModel) {
-			model = (ExplorationModel) dmodel;
+	public void startDriver(final IDriverModel model) {
+		final ExplorationModel emodel;
+		if (model instanceof ExplorationModel) {
+			emodel = (ExplorationModel) model;
 		} else {
-			model = new ExplorationModel(dmodel);
+			emodel = new ExplorationModel(model);
 		}
 		SwingUtilities.invokeLater(
-				() -> new ExplorationFrame(model, new IOHandler(model)).setVisible(true));
+				() -> new ExplorationFrame(emodel, new IOHandler(emodel)).setVisible(true));
 	}
 
 	/**

@@ -216,11 +216,11 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	}
 
 	/**
-	 * @param kind the new kind
+	 * @param nKind the new kind
 	 */
 	@Override
-	public void setKind(final String kind) {
-		mineral = kind;
+	public void setKind(final String nKind) {
+		mineral = nKind;
 	}
 
 	/**

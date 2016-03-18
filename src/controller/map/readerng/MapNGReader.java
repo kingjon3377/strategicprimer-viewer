@@ -109,7 +109,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	 * @param stream  the XML tags we haven't gotten to yet
 	 * @param players the collection of players
 	 * @param warner  the Warning instance to use for warnings
-	 * @param factory the factory to use to register ID numbers and generate new ones
+	 * @param idFactory the factory to use to register ID numbers and generate new ones
 	 * @return the produced map
 	 * @throws SPFormatException on format problems
 	 */
@@ -118,7 +118,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 							   final Iterable<XMLEvent> stream,
 							   final IMutablePlayerCollection players,
 							   final Warning warner,
-							   final IDFactory factory) throws SPFormatException {
+							   final IDFactory idFactory) throws SPFormatException {
 		final int currentTurn;
 		final StartElement mapTag;
 		final String outerTag = assertNotNull(element.getName().getLocalPart());
@@ -152,7 +152,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					continue;
 				} else if ("player".equalsIgnoreCase(type)) {
 					retval.addPlayer(PLAYER_READER.parse(current, stream,
-							players, warner, factory));
+							players, warner, idFactory));
 				} else if ("row".equalsIgnoreCase(type)) {
 					// Deliberately ignore "row"s.
 					continue;
@@ -186,14 +186,14 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 				} else if ("lake".equalsIgnoreCase(type)
 								   || "river".equalsIgnoreCase(type)) {
 					retval.addRivers(point, RIVER_READER.parse(current, stream,
-							players, warner, factory));
+							players, warner, idFactory));
 				} else if ("ground".equalsIgnoreCase(type)) {
 					final Ground ground = GROUND_READER.parse(current, stream,
-							players, warner, factory);
+							players, warner, idFactory);
 					addFixture(retval, point, ground);
 				} else if ("forest".equalsIgnoreCase(type)) {
 					final Forest forest = FOREST_READER.parse(current, stream,
-							players, warner, factory);
+							players, warner, idFactory);
 					addFixture(retval, point, forest);
 				} else if ("mountain".equalsIgnoreCase(type)) {
 					retval.setMountainous(point, true);
@@ -201,7 +201,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					try {
 						retval.addFixture(point, ReaderAdapter.checkedCast(
 								ReaderAdapter.ADAPTER.parse(current, stream,
-										players, warner, factory),
+										players, warner, idFactory),
 								TileFixture.class));
 					} catch (final UnwantedChildException except) {
 						if ("unknown".equals(except.getTag().getLocalPart())) {

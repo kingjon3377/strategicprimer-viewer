@@ -230,17 +230,17 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 	}
 
 	/**
-	 * @param evt an event indicating the mouse cursor
+	 * @param event an event indicating the mouse cursor
 	 * @return a tooltip if over a worker, null otherwise
 	 */
 	@SuppressWarnings("ReturnOfNull")
 	@Override
 	@Nullable
-	public String getToolTipText(@Nullable final MouseEvent evt) {
-		if ((evt == null) || (getRowForLocation(evt.getX(), evt.getY()) == -1)) {
+	public String getToolTipText(@Nullable final MouseEvent event) {
+		if ((event == null) || (getRowForLocation(event.getX(), event.getY()) == -1)) {
 			return null; // NOPMD
 		}
-		final TreePath path = getPathForLocation(evt.getX(), evt.getY());
+		final TreePath path = getPathForLocation(event.getX(), event.getY());
 		if (path == null) {
 			return null;
 		}

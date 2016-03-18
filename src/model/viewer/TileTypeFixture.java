@@ -66,16 +66,16 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	}
 
 	/**
-	 * @param obj another TileFixture
+	 * @param fix another TileFixture
 	 * @return the result of a comparison
 	 * @deprecated This class should only ever be in a FixtureListModel, so this method
 	 * should never be called.
 	 */
 	@Deprecated
 	@Override
-	public int compareTo(final TileFixture obj) {
+	public int compareTo(final TileFixture fix) {
 		LOGGER.warning("TileTypeFixture#compareTo() called");
-		return TileFixture.super.compareTo(obj);
+		return TileFixture.super.compareTo(fix);
 	}
 
 	/**

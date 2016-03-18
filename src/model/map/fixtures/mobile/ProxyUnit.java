@@ -80,18 +80,18 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	private final Collection<IUnit> proxied = new ArrayList<>();
 
 	/**
-	 * @param unit a unit to start proxying
+	 * @param item a unit to start proxying
 	 */
 	@Override
-	public void addProxied(final IUnit unit) {
-		if (unit == this) {
+	public void addProxied(final IUnit item) {
+		if (item == this) {
 			return;
-		} else if (parallel && (unit.getID() != id)) {
+		} else if (parallel && (item.getID() != id)) {
 			throw new IllegalArgumentException("Expected unit with ID #" + id);
-		} else if (!parallel && !kind.equals(unit.getKind())) {
+		} else if (!parallel && !kind.equals(item.getKind())) {
 			throw new IllegalArgumentException("Expected unit of kind " + kind);
 		} else {
-			proxied.add(unit);
+			proxied.add(item);
 		}
 	}
 

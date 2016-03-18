@@ -96,20 +96,20 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	/**
 	 * Run the driver.
 	 *
-	 * @param dmodel the driver model
+	 * @param model the driver model
 	 */
 	@Override
-	public void startDriver(final IDriverModel dmodel) {
-		final IMultiMapModel model;
-		if (dmodel instanceof IMultiMapModel) {
-			model = (IMultiMapModel) dmodel;
+	public void startDriver(final IDriverModel model) {
+		final IMultiMapModel mmodel;
+		if (model instanceof IMultiMapModel) {
+			mmodel = (IMultiMapModel) model;
 		} else {
 			LOGGER.warning(
 					"Expansion on a master map with no subordinate maps does nothing");
-			model = new SimpleMultiMapModel(dmodel);
+			mmodel = new SimpleMultiMapModel(model);
 		}
-		for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
-			expand(model.getMap(), pair.first());
+		for (final Pair<IMutableMapNG, File> pair : mmodel.getSubordinateMaps()) {
+			expand(mmodel.getMap(), pair.first());
 		}
 	}
 
@@ -172,7 +172,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 			}
 
 			@Override
-			public int compareTo(final TileFixture o) {
+			public int compareTo(final TileFixture fix) {
 				throw ise;
 			}
 
@@ -222,7 +222,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 			}
 
 			@Override
-			public void setOwner(final Player playr) {
+			public void setOwner(final Player player) {
 				throw ise;
 			}
 

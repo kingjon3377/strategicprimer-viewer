@@ -104,11 +104,11 @@ public final class ViewerModel extends SimpleDriverModel implements
 
 	/**
 	 * @param newMap the new map
-	 * @param file   the file the map was loaded from or should be saved to
+	 * @param origin   the file the map was loaded from or should be saved to
 	 */
 	@Override
-	public void setMap(final IMutableMapNG newMap, final File file) {
-		super.setMap(newMap, file);
+	public void setMap(final IMutableMapNG newMap, final File origin) {
+		super.setMap(newMap, origin);
 		clearSelection();
 		setDimensions(new VisibleDimensions(0, newMap.dimensions().rows - 1,
 				                                   0, newMap.dimensions().cols - 1));

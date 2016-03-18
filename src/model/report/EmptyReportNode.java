@@ -117,10 +117,10 @@ public final class EmptyReportNode extends DefaultMutableTreeNode
 	/**
 	 * Add a node. Do nothing if null, rather than crashing.
 	 *
-	 * @param node the node to add
+	 * @param newChild the node to add
 	 */
 	@Override
-	public void add(final @Nullable MutableTreeNode node) {
+	public void add(final @Nullable MutableTreeNode newChild) {
 		// Do nothing.
 	}
 

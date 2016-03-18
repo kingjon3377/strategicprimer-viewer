@@ -280,11 +280,11 @@ public class Worker implements IWorker {
 	}
 
 	/**
-	 * @param kind the worker's new race
+	 * @param nKind the worker's new race
 	 */
 	@Override
-	public void setKind(final String kind) {
-		race = kind;
+	public void setKind(final String nKind) {
+		race = nKind;
 	}
 
 	/**

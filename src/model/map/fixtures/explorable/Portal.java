@@ -179,15 +179,15 @@ public class Portal implements ExplorableFixture {
 	}
 
 	/**
-	 * @param obj a fixture
+	 * @param fix a fixture
 	 * @return whether it would be equal to this one if its ID # were not considered
 	 */
 	@Override
-	public boolean equalsIgnoringID(final IFixture obj) {
-		return (obj instanceof Portal)
-				       && destinationWorld.equals(((Portal) obj).destinationWorld)
+	public boolean equalsIgnoringID(final IFixture fix) {
+		return (fix instanceof Portal)
+				       && destinationWorld.equals(((Portal) fix).destinationWorld)
 				       && destinationCoordinates
-						          .equals(((Portal) obj).destinationCoordinates);
+						          .equals(((Portal) fix).destinationCoordinates);
 	}
 
 	/**

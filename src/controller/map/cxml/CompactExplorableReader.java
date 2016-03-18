@@ -79,7 +79,7 @@ public final class CompactExplorableReader
 	}
 
 	/**
-	 * @param elem      the XML element to parse
+	 * @param element      the XML element to parse
 	 * @param stream    the stream to read more elements from
 	 * @param players   the collection of players
 	 * @param warner    the Warning instance to use for warnings
@@ -89,24 +89,24 @@ public final class CompactExplorableReader
 	 */
 	@Override
 	public ExplorableFixture read(// $codepro.audit.disable cyclomaticComplexity
-	                              final StartElement elem,
+	                              final StartElement element,
 	                              final IteratorWrapper<XMLEvent> stream,
 	                              final IMutablePlayerCollection players,
 	                              final Warning warner,
 	                              final IDFactory idFactory) throws SPFormatException {
-		requireTag(elem, "battlefield", "cave");
-		final int idNum = getOrGenerateID(elem, warner, idFactory);
+		requireTag(element, "battlefield", "cave");
+		final int idNum = getOrGenerateID(element, warner, idFactory);
 		final ExplorableFixture retval;
-		final String tag = elem.getName().getLocalPart();
+		final String tag = element.getName().getLocalPart();
 		if ("battlefield".equalsIgnoreCase(tag)) {
-			retval = new Battlefield(getDC(elem), idNum);
+			retval = new Battlefield(getDC(element), idNum);
 		} else if ("cave".equalsIgnoreCase(tag)) {
-			retval = new Cave(getDC(elem), idNum);
+			retval = new Cave(getDC(element), idNum);
 		} else {
-			throw new UnsupportedTagException(elem);
+			throw new UnsupportedTagException(element);
 		}
-		spinUntilEnd(NullCleaner.assertNotNull(elem.getName()), stream);
-		retval.setImage(getParameter(elem, "image", ""));
+		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}
 

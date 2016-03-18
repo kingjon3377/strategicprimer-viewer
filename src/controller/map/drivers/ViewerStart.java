@@ -49,25 +49,25 @@ public final class ViewerStart implements SimpleDriver {
 	/**
 	 * Run the driver.
 	 *
-	 * @param dmodel the driver model
+	 * @param model the driver model
 	 * @throws DriverFailedException on error
 	 */
 	@Override
-	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
-		final IViewerModel model;
-		if (dmodel instanceof IViewerModel) {
-			model = (IViewerModel) dmodel;
-		} else if (dmodel instanceof IMultiMapModel) {
-			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) dmodel)
+	public void startDriver(final IDriverModel model) throws DriverFailedException {
+		final IViewerModel vmodel;
+		if (model instanceof IViewerModel) {
+			vmodel = (IViewerModel) model;
+		} else if (model instanceof IMultiMapModel) {
+			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model)
 																.getAllMaps()) {
 				startDriver(new ViewerModel(pair.first(), pair.second()));
 			}
 			return;
 		} else {
-			model = new ViewerModel(dmodel);
+			vmodel = new ViewerModel(model);
 		}
 		SwingUtilities.invokeLater(
-				() -> new ViewerFrame(model, new IOHandler(model)).setVisible(true));
+				() -> new ViewerFrame(vmodel, new IOHandler(vmodel)).setVisible(true));
 	}
 
 	/**

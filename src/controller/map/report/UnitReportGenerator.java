@@ -74,33 +74,33 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 *                         members
 	 *                      from it.
 	 * @param map           ignored
-	 * @param unit          a unit
+	 * @param item          a unit
 	 * @param loc           the unit's location
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return a sub-report on the unit
 	 */
 	@Override
 	public String produce(
-								 final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+			                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
 										 fixtures,
-								 final IMapNG map, final Player currentPlayer,
-								 final Unit unit, final Point loc) {
+			                     final IMapNG map, final Player currentPlayer,
+			                     final Unit item, final Point loc) {
 		final StringBuilder builder =
-				new StringBuilder(52 + unit.getKind().length()
-										  + unit.getName().length()
-										  + unit.getOwner().getName().length());
+				new StringBuilder(52 + item.getKind().length()
+										  + item.getName().length()
+										  + item.getOwner().getName().length());
 		builder.append("Unit of type ");
-		builder.append(unit.getKind());
+		builder.append(item.getKind());
 		builder.append(", named ");
-		builder.append(unit.getName());
-		if (unit.getOwner().isIndependent()) {
+		builder.append(item.getName());
+		if (item.getOwner().isIndependent()) {
 			builder.append(", independent");
 		} else {
 			builder.append(", owned by ");
-			builder.append(playerNameOrYou(unit.getOwner()));
+			builder.append(playerNameOrYou(item.getOwner()));
 		}
 		boolean hasMembers = false;
-		for (final UnitMember member : unit) {
+		for (final UnitMember member : item) {
 			if (!hasMembers) {
 				hasMembers = true;
 				builder.append(". Members of the unit:\n<ul>\n");
@@ -108,7 +108,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			builder.append(OPEN_LIST_ITEM);
 			if (member instanceof Worker) {
 				builder.append(workerReport((Worker) member,
-						currentPlayer.equals(unit.getOwner())));
+						currentPlayer.equals(item.getOwner())));
 			} else {
 				builder.append(member.toString());
 			}
@@ -118,7 +118,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		if (hasMembers) {
 			builder.append(CLOSE_LIST);
 		}
-		fixtures.remove(Integer.valueOf(unit.getID()));
+		fixtures.remove(Integer.valueOf(item.getID()));
 		return NullCleaner.assertNotNull(builder.toString());
 	}
 
@@ -129,36 +129,36 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 *                         members
 	 *                      from it.
 	 * @param map           ignored
-	 * @param unit          a unit
+	 * @param item          a unit
 	 * @param loc           the unit's location
 	 * @param currentPlayer the player for whom the report is being produced
 	 * @return a sub-report on the unit
 	 */
 	@Override
 	public IReportNode produceRIR(
-												final DelayedRemovalMap<Integer,
+			                             final DelayedRemovalMap<Integer,
 																			   Pair<Point, IFixture>> fixtures,
-												final IMapNG map,
-												final Player currentPlayer,
-												final Unit unit, final Point loc) {
+			                             final IMapNG map,
+			                             final Player currentPlayer,
+			                             final Unit item, final Point loc) {
 		final String simple; // NOPMD
-		if (unit.getOwner().isIndependent()) {
-			simple = concat("Unit of type ", unit.getKind(), ", named ",
-					unit.getName(), ", independent");
+		if (item.getOwner().isIndependent()) {
+			simple = concat("Unit of type ", item.getKind(), ", named ",
+					item.getName(), ", independent");
 		} else {
-			simple = concat("Unit of type ", unit.getKind(), ", named ",
-					unit.getName(),
-					", owned by " + playerNameOrYou(unit.getOwner()));
+			simple = concat("Unit of type ", item.getKind(), ", named ",
+					item.getName(),
+					", owned by " + playerNameOrYou(item.getOwner()));
 		}
-		fixtures.remove(Integer.valueOf(unit.getID()));
-		if (unit.iterator().hasNext()) {
+		fixtures.remove(Integer.valueOf(item.getID()));
+		if (item.iterator().hasNext()) {
 			final IReportNode retval = new ListReportNode(loc,
 																		concat(simple,
 																				". Members of the unit:"));
-			for (final UnitMember member : unit) {
+			for (final UnitMember member : item) {
 				if (member instanceof Worker) {
 					retval.add(produceWorkerRIR(loc, (Worker) member,
-							currentPlayer.equals(unit.getOwner())));
+							currentPlayer.equals(item.getOwner())));
 				} else {
 					// TODO: what about others?
 					retval.add(new SimpleReportNode(loc, member.toString()));

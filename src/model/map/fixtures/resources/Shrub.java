@@ -140,11 +140,11 @@ public class Shrub implements HarvestableFixture, HasMutableKind {
 	}
 
 	/**
-	 * @param kind the new kind
+	 * @param nKind the new kind
 	 */
 	@Override
-	public final void setKind(final String kind) {
-		description = kind;
+	public final void setKind(final String nKind) {
+		description = nKind;
 	}
 
 	/**

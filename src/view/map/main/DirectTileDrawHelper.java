@@ -50,57 +50,58 @@ public final class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 * @param pen      the graphics context.
 	 * @param map      the map to draw the tile from
 	 * @param location the location to draw
-	 * @param position the coordinates of the tile's upper-left corner
-	 * @param dims     the width (X) and height (Y) of the tile
+	 * @param coordinates the coordinates of the tile's upper-left corner
+	 * @param dimensions     the width (X) and height (Y) of the tile
 	 */
 	@Override
 	public void drawTile(final Graphics pen, final IMapNG map,
-	                     final Point location, final Coordinate position,
-	                     final Coordinate dims) {
+	                     final Point location, final Coordinate coordinates,
+	                     final Coordinate dimensions) {
 		final Graphics context = pen.create();
 		try {
 			context.setColor(getTileColor(1, map.getBaseTerrain(location)));
-			context.fillRect(position.x, position.y, dims.x, dims.y);
+			context.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
 			context.setColor(Color.black);
-			context.drawRect(position.x, position.y, dims.x, dims.y);
+			context.drawRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
 			if (TileType.NotVisible == map.getBaseTerrain(location)) {
 				return;
 			}
 			context.setColor(Color.blue);
 			for (final River river : map.getRivers(location)) {
-				drawRiver(context, river, position.x, position.y, dims.x,
-						dims.y);
+				drawRiver(context, river, coordinates.x, coordinates.y, dimensions.x,
+						dimensions.y);
 			}
 			if (hasAnyForts(map, location)) {
 				context.setColor(FORT_COLOR);
-				context.fillRect(((int) Math.round(dims.x * FortStart.constant)
-						                  - 1) + position.x,
-						((int) Math.round(dims.y * FortStart.constant) - 1)
-								+ position.y,
-						(int) Math.round(dims.x * FortSize.constant),
-						(int) Math.round(dims.y * FortSize.constant));
+				context.fillRect(((int) Math.round(dimensions.x * FortStart.constant)
+						                  - 1) + coordinates.x,
+						((int) Math.round(dimensions.y * FortStart.constant) - 1)
+								+ coordinates.y,
+						(int) Math.round(dimensions.x * FortSize.constant),
+						(int) Math.round(dimensions.y * FortSize.constant));
 			}
 			if (hasAnyUnits(map, location)) {
 				context.setColor(UNIT_COLOR);
-				context.fillOval((int) Math.round(dims.x * UnitSize.constant)
-						                 + position.x, (int) Math.round(dims.y * UnitSize.constant)
-								                               + position.y,
-						(int) Math.round(dims.x * UnitSize.constant),
-						(int) Math.round(dims.y * UnitSize.constant));
+				context.fillOval((int) Math.round(dimensions.x * UnitSize.constant)
+						                 + coordinates.x, (int) Math.round(
+						dimensions.y * UnitSize.constant)
+								                               + coordinates.y,
+						(int) Math.round(dimensions.x * UnitSize.constant),
+						(int) Math.round(dimensions.y * UnitSize.constant));
 			} else if (hasEvent(map, location)) {
 				context.setColor(EVENT_COLOR);
 				context.fillPolygon(
 						new int[]{
-								(int) Math.round(dims.x * EventStart.constant)
-										+ position.x,
-								(int) Math.round(dims.x * EventOther.constant)
-										+ position.x, dims.x + position.x},
+								(int) Math.round(dimensions.x * EventStart.constant)
+										+ coordinates.x,
+								(int) Math.round(dimensions.x * EventOther.constant)
+										+ coordinates.x, dimensions.x + coordinates.x},
 						new int[]{
-								position.y,
-								(int) Math.round(dims.y * EventOther.constant)
-										+ position.y,
-								(int) Math.round(dims.y * EventOther.constant)
-										+ position.y}, MISC_EVENT_SIDES);
+								coordinates.y,
+								(int) Math.round(dimensions.y * EventOther.constant)
+										+ coordinates.y,
+								(int) Math.round(dimensions.y * EventOther.constant)
+										+ coordinates.y}, MISC_EVENT_SIDES);
 			}
 		} finally {
 			context.dispose();
