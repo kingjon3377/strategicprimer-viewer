@@ -82,6 +82,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	/**
 	 * @param item a unit to start proxying
 	 */
+	@SuppressWarnings("ObjectEquality")
 	@Override
 	public void addProxied(final IUnit item) {
 		if (item == this) {

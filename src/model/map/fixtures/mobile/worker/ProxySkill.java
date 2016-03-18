@@ -93,6 +93,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	/**
 	 * @return the lowest level any of the proxied Jobs has the skill
 	 */
+	@SuppressWarnings("ObjectEquality")
 	@Override
 	public int getLevel() {
 		int level = Integer.MAX_VALUE;
@@ -118,6 +119,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	/**
 	 * @return the most hours any of the proxied Jobs has for the skill
 	 */
+	@SuppressWarnings("ObjectEquality")
 	@Override
 	public int getHours() {
 		int hours = 0;
@@ -140,6 +142,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	 * @param hrs       how many hours to add
 	 * @param condition the seed to randomly generate conditions for the proxied skills
 	 */
+	@SuppressWarnings("ObjectEquality")
 	@Override
 	public void addHours(final int hrs, final int condition) {
 		final Random random = new Random(condition);
@@ -222,6 +225,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	/**
 	 * @return whther any of the proxied Skills is "empty"
 	 */
+	@SuppressWarnings("ObjectEquality")
 	@Override
 	public boolean isEmpty() {
 		for (final IJob job : proxied) {

@@ -204,6 +204,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	 *
 	 * @param item the job to proxy for
 	 */
+	@SuppressWarnings("ObjectEquality")
 	@Override
 	public void addProxied(final IJob item) {
 		if ((item == this) || !name.equals(item.getName())) {
