@@ -250,6 +250,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		/**
 		 * @param userObj the new user-object for the node, which must be a Player
 		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override
 		public void setUserObject(@Nullable final Object userObj) {
 			if (userObj instanceof Player) {
@@ -316,6 +317,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		/**
 		 * @param userObj the user object for the node, which must be a String
 		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override
 		public void setUserObject(@Nullable final Object userObj) {
 			if (userObj instanceof String) {
@@ -381,6 +383,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		/**
 		 * @param userObj the new user object for the node, which must be an IUnit
 		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override
 		public void setUserObject(@Nullable final Object userObj) {
 			if (userObj instanceof IUnit) {
@@ -441,6 +444,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		/**
 		 * @param userObj the new user-object for the node, which must be a UnitMember
 		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override
 		public void setUserObject(@Nullable final Object userObj) {
 			if (userObj instanceof UnitMember) {
