@@ -147,9 +147,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 											unitList.getSelectedValue();
 									if (!unitList.isSelectionEmpty()) {
 										model.selectUnit(selectedValue);
-										for (final CompletionListener list : cListeners) {
-											list.finished();
-										}
+										cListeners.forEach(CompletionListener::finished);
 									}
 								})))));
 	}
