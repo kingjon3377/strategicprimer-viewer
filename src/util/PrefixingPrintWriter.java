@@ -47,6 +47,7 @@ public final class PrefixingPrintWriter extends PrintWriter {
 	 *
 	 * @param str the line
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void println(@Nullable final String str) {
 		print(pref);

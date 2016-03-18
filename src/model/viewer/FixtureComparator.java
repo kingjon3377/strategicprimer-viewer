@@ -37,6 +37,7 @@ public final class FixtureComparator implements Comparator<@NonNull TileFixture>
 	 * @param secondFixture The second fixture
 	 * @return the result of the comparison.
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public int compare(final TileFixture firstFixture, final TileFixture secondFixture) {
 		final int oneValue = firstFixture.getZValue();

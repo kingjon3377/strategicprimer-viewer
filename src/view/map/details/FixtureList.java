@@ -162,6 +162,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		/**
 		 * @param event the event to handle
 		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override
 		public void mouseClicked(@Nullable final MouseEvent event) {
 			handleMouseEvent(event);
@@ -170,6 +171,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		/**
 		 * @param event the event to handle
 		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override
 		public void mousePressed(@Nullable final MouseEvent event) {
 			handleMouseEvent(event);
@@ -178,6 +180,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		/**
 		 * @param event the event to handle
 		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override
 		public void mouseReleased(@Nullable final MouseEvent event) {
 			handleMouseEvent(event);

@@ -50,6 +50,7 @@ public final class MapWindowSizeListener extends WindowAdapter {
 	 *
 	 * @param evt the event to handle
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void windowDeiconified(@Nullable final WindowEvent evt) {
 		final int addend;
@@ -68,6 +69,7 @@ public final class MapWindowSizeListener extends WindowAdapter {
 	 *
 	 * @param evt the event to handle
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void windowStateChanged(@Nullable final WindowEvent evt) {
 		final int addend;

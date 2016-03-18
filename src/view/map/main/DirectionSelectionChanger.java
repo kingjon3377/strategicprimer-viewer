@@ -169,6 +169,7 @@ public final class DirectionSelectionChanger implements MouseWheelListener {
 	 *
 	 * @param evt the event to handle
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void mouseWheelMoved(@Nullable final MouseWheelEvent evt) {
 		if (evt == null) {

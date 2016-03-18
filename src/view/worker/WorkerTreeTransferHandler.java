@@ -84,7 +84,8 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	 * @param component ignored
 	 * @return the actions we support
 	 */
-	@SuppressWarnings("MethodReturnAlwaysConstant")
+	@SuppressWarnings(
+			{"MethodReturnAlwaysConstant", "ParameterNameDiffersFromOverriddenParameter"})
 	@Override
 	public int getSourceActions(@Nullable final JComponent component) {
 		return TransferHandler.MOVE;
@@ -94,6 +95,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	 * @param component the component being dragged from? In any case, ignored.
 	 * @return a Transferable representing the selected node, or null if none selected
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	@Nullable
 	protected UnitMemberTransferable createTransferable(

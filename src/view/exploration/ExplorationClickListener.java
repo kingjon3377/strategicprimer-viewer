@@ -115,6 +115,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	/**
 	 * @param evt the event to handle.
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void actionPerformed(@Nullable final ActionEvent evt) {
 		SwingUtilities.invokeLater(this::handleMove);
@@ -256,6 +257,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	/**
 	 * @param listener the listener to add
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void addSelectionChangeListener(
 			                                      final SelectionChangeListener
@@ -266,6 +268,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	/**
 	 * @param listener the listener to remove
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void removeSelectionChangeListener(
 			                                         final SelectionChangeListener
@@ -276,6 +279,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	/**
 	 * @param listener the listener to add
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void addMovementCostListener(final MovementCostListener listener) {
 		mcListeners.add(listener);
@@ -284,6 +288,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	/**
 	 * @param listener the listener to remove
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void removeMovementCostListener(final MovementCostListener listener) {
 		mcListeners.remove(listener);

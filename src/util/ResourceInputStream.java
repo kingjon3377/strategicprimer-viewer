@@ -78,6 +78,7 @@ public final class ResourceInputStream extends InputStream {
 	 * @return the number of bytes read
 	 * @throws IOException when thrown by wrapped stream
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public int read(final byte @Nullable [] buf) throws IOException {
 		return wrapped.read(buf);
@@ -90,6 +91,7 @@ public final class ResourceInputStream extends InputStream {
 	 * @return the total number of bytes read into the buffer, or 1 if EOF
 	 * @throws IOException when thrown by wrapped implementation
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public int read(final byte @Nullable [] buf, final int off, final int len)
 			throws IOException {
@@ -101,6 +103,7 @@ public final class ResourceInputStream extends InputStream {
 	 * @return the actual number of bytes skipped
 	 * @throws IOException if thrown by wrapped implementation.
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public long skip(final long num) throws IOException {
 		return wrapped.skip(num);

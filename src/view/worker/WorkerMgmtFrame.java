@@ -741,6 +741,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		 * Handle a mouse press.
 		 * @param evt the event to handle
 		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override
 		public void mousePressed(final @Nullable MouseEvent evt) {
 			if (evt == null) {

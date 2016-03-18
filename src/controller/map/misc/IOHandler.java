@@ -153,6 +153,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 *
 	 * @param event the event to handle
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void actionPerformed(@Nullable final ActionEvent event) {
 		if (event != null) { // it wouldn't be @Nullable except that the JDK

@@ -212,6 +212,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	/**
 	 * @param list something to listen for tree model changes
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void addTreeModelListener(@Nullable final TreeModelListener list) {
 		if (list != null) {
@@ -222,6 +223,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	/**
 	 * @param list something that doesn't want to listen for tree model changes anymore
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void removeTreeModelListener(@Nullable final TreeModelListener list) {
 		listeners.remove(list);

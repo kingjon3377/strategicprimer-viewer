@@ -116,6 +116,7 @@ public final class KeyElement extends BoxPanel {
 		/**
 		 * @param pen the graphics context
 		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override
 		public void paint(@Nullable final Graphics pen) {
 			if (pen == null) {

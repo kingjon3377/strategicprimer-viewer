@@ -91,6 +91,7 @@ public final class Player implements Comparable<Player>, HasName {
 	 * @param player the Player to compare to
 	 * @return the result of the comparison
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public int compareTo(final Player player) {
 		final int theirs = player.hashCode();

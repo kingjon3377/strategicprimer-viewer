@@ -47,6 +47,7 @@ public final class ComparablePair<K extends Comparable<K>, V extends Comparable<
 	 * @param other the other pair
 	 * @return the result of the comparison.
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public int compareTo(final ComparablePair<K, V> other) {
 		final int cmp = first().compareTo(other.first());

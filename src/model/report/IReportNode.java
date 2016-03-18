@@ -111,6 +111,7 @@ public interface IReportNode
 	 * @param obj an object to compare to.
 	 * @return the result of the comparison
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	default int compareTo(final IReportNode obj) {
 		return produce().compareTo(obj.produce());

@@ -104,6 +104,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 		addComponentListener(new MapSizeListener(model));
 		setToolTipText("");
 		addMouseMotionListener(new MouseMotionAdapter() {
+			@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 			@Override
 			public void mouseMoved(@Nullable final MouseEvent evt) {
 				repaint();
@@ -132,6 +133,7 @@ public final class MapComponent extends JComponent implements MapGUI,
 	 *
 	 * @param pen the graphics context
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void paint(@Nullable final Graphics pen) {
 		if (pen == null) {

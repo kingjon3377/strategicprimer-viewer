@@ -171,6 +171,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		/**
 		 * @param event the event to handle
 		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override
 		public void mouseClicked(@Nullable final MouseEvent event) {
 			handleMouseEvent(event);
@@ -179,6 +180,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		/**
 		 * @param event the event to handle
 		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override
 		public void mousePressed(@Nullable final MouseEvent event) {
 			handleMouseEvent(event);
@@ -187,6 +189,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		/**
 		 * @param event the event to handle
 		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override
 		public void mouseReleased(@Nullable final MouseEvent event) {
 			handleMouseEvent(event);
@@ -327,6 +330,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 		/**
 		 * @param evt the event to handle
 		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override
 		public void valueChanged(@Nullable final TreeSelectionEvent evt) {
 			if (evt != null) {

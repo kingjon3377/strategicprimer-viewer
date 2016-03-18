@@ -52,6 +52,7 @@ public class ActionWrapper extends AbstractAction {
 	 * Handle an event by passing it to the wrapped listener.
 	 * @param evt the event to handle
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public final void actionPerformed(@Nullable final ActionEvent evt) {
 		wrapped.actionPerformed(evt);

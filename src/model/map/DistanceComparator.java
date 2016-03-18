@@ -28,6 +28,7 @@ public final class DistanceComparator implements Comparator<@NonNull Point> {
 	 * @param secondPoint the second point
 	 * @return the result of the comparison
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public int compare(final Point firstPoint, final Point secondPoint) {
 		final int distOne = distance(firstPoint);

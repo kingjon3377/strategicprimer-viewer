@@ -126,6 +126,7 @@ public final class IntMap<V> implements DelayedRemovalMap<@NonNull Integer, V> {
 	 *
 	 * @param map the map to insert
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void putAll(@Nullable final Map<? extends Integer, ? extends V> map) {
 		if (map != null) {

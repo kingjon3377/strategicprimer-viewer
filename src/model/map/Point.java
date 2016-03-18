@@ -82,6 +82,7 @@ public final class Point implements Comparable<@NonNull Point> {
 	 * @param point another point
 	 * @return the result of a comparison with that point
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public int compareTo(final Point point) {
 		if (row > point.row) {

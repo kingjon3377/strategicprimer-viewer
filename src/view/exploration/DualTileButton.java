@@ -78,6 +78,7 @@ public final class DualTileButton extends JButton {
 	 *
 	 * @param pen the Graphics object to draw with.
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	protected void paintComponent(@Nullable final Graphics pen) {
 		if (pen == null) {

@@ -116,6 +116,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 				}
 			}
 
+			@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 			@Override
 			public void keyPressed(@Nullable final KeyEvent evt) {
 				if ((evt != null) && (evt.getKeyCode() == KeyEvent.VK_ENTER)
@@ -173,6 +174,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	/**
 	 * @param evt the event to handle
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void valueChanged(@Nullable final TreeSelectionEvent evt) {
 		if (evt != null) {

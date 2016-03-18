@@ -131,6 +131,7 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	 * @return a negative integer if the first is "less" than the second, zero if they're
 	 * the same, and a positive integer if the first is "greater" than the second.
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public int compare(final AbstractTown townOne,
 	                   final AbstractTown townTwo) {

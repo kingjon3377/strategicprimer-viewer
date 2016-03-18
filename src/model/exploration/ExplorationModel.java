@@ -510,6 +510,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	/**
 	 * @param listener the listener to add
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void addMovementCostListener(final MovementCostListener listener) {
 		mcListeners.add(listener);
@@ -518,6 +519,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	/**
 	 * @param listener the listener to remove
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void removeMovementCostListener(
 												  final MovementCostListener listener) {

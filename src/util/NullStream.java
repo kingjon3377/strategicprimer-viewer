@@ -39,6 +39,7 @@ public final class NullStream extends OutputStream {
 	 *
 	 * @param byt ignored
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void write(final int byt) {
 		// Do nothing.

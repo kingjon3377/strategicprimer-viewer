@@ -48,6 +48,7 @@ public final class PairComparator<@NonNull T, @NonNull U>
 	 * @param firstPair  the first pair
 	 * @param secondPair the second pair
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public int compare(final Pair<T, U> firstPair,
 	                   final Pair<T, U> secondPair) {

@@ -269,6 +269,7 @@ public class SPMapNG implements IMutableMapNG {
 	 * @param other another map
 	 * @return the result of a comparison between us and it.
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public int compareTo(final IMapNG other) {
 		if (equals(other)) {

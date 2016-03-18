@@ -50,6 +50,7 @@ public class ImprovedComboBox<T> extends JComboBox<T> {
 	 *
 	 * @param evt the event to process
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void processKeyEvent(@Nullable final KeyEvent evt) {
 		if (evt == null) {

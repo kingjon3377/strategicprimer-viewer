@@ -67,6 +67,7 @@ public final class ExplorationListListener implements ListDataListener {
 	/**
 	 * @param evt an event indicating items were removed from the list
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void intervalRemoved(@Nullable final ListDataEvent evt) {
 		randomizeSelection();
@@ -75,6 +76,7 @@ public final class ExplorationListListener implements ListDataListener {
 	/**
 	 * @param evt an event indicating items were added to the list
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void intervalAdded(@Nullable final ListDataEvent evt) {
 		randomizeSelection();
@@ -83,6 +85,7 @@ public final class ExplorationListListener implements ListDataListener {
 	/**
 	 * @param evt an event indicating items were changed in the list
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void contentsChanged(@Nullable final ListDataEvent evt) {
 		randomizeSelection();

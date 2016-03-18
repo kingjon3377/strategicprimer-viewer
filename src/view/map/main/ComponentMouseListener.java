@@ -146,6 +146,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	 *
 	 * @param event the event to handle
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void mouseClicked(@Nullable final MouseEvent event) {
 		if (event != null) {
@@ -173,6 +174,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	 *
 	 * @param event the event to handle
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void mousePressed(@Nullable final MouseEvent event) {
 		if ((event != null) && event.isPopupTrigger()) {
@@ -185,6 +187,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 	 *
 	 * @param event the event to handle
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void mouseReleased(@Nullable final MouseEvent event) {
 		if ((event != null) && event.isPopupTrigger()) {

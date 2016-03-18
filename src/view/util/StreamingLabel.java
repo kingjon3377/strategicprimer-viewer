@@ -101,6 +101,7 @@ public final class StreamingLabel extends JLabel {
 		 *
 		 * @param str the string to print
 		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override
 		public void print(@Nullable final String str) {
 			super.print(str);
@@ -112,6 +113,7 @@ public final class StreamingLabel extends JLabel {
 		 *
 		 * @param str the string to print
 		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override
 		public void println(@Nullable final String str) {
 			super.println(str);

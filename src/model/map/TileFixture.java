@@ -59,6 +59,7 @@ public interface TileFixture extends IFixture, Comparable<@NonNull TileFixture> 
 	 * @param fix A TileFixture to compare to
 	 * @return the result of the comparison
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	default int compareTo(final TileFixture fix) {
 		final int ours = hashCode();

@@ -49,6 +49,7 @@ public final class ComparableIterator<@NonNull T> implements Iterator<@NonNull T
 	 * @param obj another iterator
 	 * @return the result of a comparison between them.
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public int compareTo(final ComparableIterator<T> obj) {
 		final int theirs = Objects.hashCode(obj);

@@ -90,6 +90,7 @@ public final class WorkerCreationListener implements ActionListener,
 	 *
 	 * @param evt the event to handle.
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public void actionPerformed(@Nullable final ActionEvent evt) {
 		if ((evt != null) &&

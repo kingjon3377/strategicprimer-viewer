@@ -62,6 +62,7 @@ public final class ArraySet<T> implements Set<T> {
 	 * @param obj an object
 	 * @return whether we contain it
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public boolean contains(@Nullable final Object obj) {
 		return impl.contains(obj);
@@ -88,7 +89,8 @@ public final class ArraySet<T> implements Set<T> {
 	 * @param array  an array of that type
 	 * @return the contents of the set in that array
 	 */
-	@SuppressWarnings("SuspiciousToArrayCall")
+	@SuppressWarnings(
+			{"SuspiciousToArrayCall", "ParameterNameDiffersFromOverriddenParameter"})
 	@Override
 	public <TYPE> TYPE[] toArray(final TYPE @Nullable [] array) {
 		return NullCleaner.assertNotNullArray(impl.toArray(array));
@@ -98,6 +100,7 @@ public final class ArraySet<T> implements Set<T> {
 	 * @param elem an element
 	 * @return the result of adding it to the set.
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public boolean add(final T elem) {
 		if (contains(elem)) {
@@ -113,6 +116,7 @@ public final class ArraySet<T> implements Set<T> {
 	 * @param obj an object
 	 * @return the result of removing it from the set
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public boolean remove(@Nullable final Object obj) {
 		final boolean retval = impl.remove(obj);
@@ -126,6 +130,7 @@ public final class ArraySet<T> implements Set<T> {
 	 * @param coll a collection
 	 * @return whether the set contains all its elements
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public boolean containsAll(@Nullable final Collection<?> coll) {
 		return impl.containsAll(NullCleaner.assertNotNull(coll));
@@ -135,6 +140,7 @@ public final class ArraySet<T> implements Set<T> {
 	 * @param coll a collection
 	 * @return the result of adding all of them
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public boolean addAll(@Nullable final Collection<? extends T> coll) {
 		boolean retval = false;
@@ -152,6 +158,7 @@ public final class ArraySet<T> implements Set<T> {
 	 * @param coll a collection
 	 * @return the result of removing everything not in it
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public boolean retainAll(@Nullable final Collection<?> coll) {
 		final boolean retval = impl.retainAll(coll);
@@ -166,6 +173,7 @@ public final class ArraySet<T> implements Set<T> {
 	 * @param coll a collection
 	 * @return the result of removing everything in it
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public boolean removeAll(@Nullable final Collection<?> coll) {
 		final boolean retval = impl.removeAll(coll);
