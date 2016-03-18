@@ -628,9 +628,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 */
 	private static boolean areTreeObjectsEqual(final TreeNode node, final Object obj) {
 		return (node instanceof DefaultMutableTreeNode) &&
-					   ((obj == ((DefaultMutableTreeNode) node).getUserObject()) ||
-								obj.equals(
-										((DefaultMutableTreeNode) node).getUserObject()));
+					   Objects.equals(obj, ((DefaultMutableTreeNode) node).getUserObject());
 	}
 
 	/**
