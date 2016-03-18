@@ -494,6 +494,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		 */
 		public void writeStrategy(final File file) {
 			try (final FileWriter writer = new FileWriter(file)) {
+				//noinspection resource
 				writer.append(createStrategy());
 			} catch (final IOException except) {
 				LOGGER.log(SEVERE, "I/O error exporting strategy", except);
