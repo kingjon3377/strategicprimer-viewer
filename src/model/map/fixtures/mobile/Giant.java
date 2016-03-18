@@ -152,7 +152,7 @@ public class Giant implements MobileFixture, HasImage, HasMutableKind, UnitMembe
 	                        final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Giant) {
-				return areItemsEqual(ostream, kind, ((Giant) obj).kind, context,
+				return areObjectsEqual(ostream, kind, ((Giant) obj).kind, context,
 						"\tDifferent kinds of giant for ID #", Integer.toString(id),
 						"\n");
 			} else {

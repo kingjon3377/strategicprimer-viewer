@@ -53,8 +53,8 @@ public interface Subsettable<T> {
 	 * @return whether the two items are equal
 	 * @throws IOException on error writing to the stream
 	 */
-	default boolean areItemsEqual(final Appendable ostream, @Nullable final Object first,
-	                              @Nullable final Object second, final String... messages)
+	default boolean areObjectsEqual(final Appendable ostream, @Nullable final Object first,
+	                                @Nullable final Object second, final String... messages)
 			throws IOException {
 		if (Objects.equals(first, second)) {
 			return true;

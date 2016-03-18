@@ -387,10 +387,10 @@ public class Unit implements IUnit {
 		} else if (areIntItemsEqual(ostream, owner.getPlayerId(),
 				((IUnit) obj).getOwner().getPlayerId(), context, " Unit of ID #",
 				Integer.toString(id), ":\tOwners differ.\n") &&
-				           areItemsEqual(ostream, name, ((IUnit) obj).getName(), context,
+				           areObjectsEqual(ostream, name, ((IUnit) obj).getName(), context,
 						           " Unit of ID #", Integer.toString(id),
 						           ":\tNames differ\n") &&
-				           areItemsEqual(ostream, kind, ((IUnit) obj).getKind(), context,
+				           areObjectsEqual(ostream, kind, ((IUnit) obj).getKind(), context,
 						           " Unit of ID #", Integer.toString(id),
 						           ":\tKinds differ\n")) {
 			final Iterable<UnitMember> other = (IUnit) obj;

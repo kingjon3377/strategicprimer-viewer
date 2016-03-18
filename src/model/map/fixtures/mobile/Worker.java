@@ -220,11 +220,11 @@ public class Worker implements IWorker {
 				final String ctxt =
 						context + " In worker " + ((Worker) obj).name
 								+ " (ID #" + Integer.toString(id) + "):";
-				if (areItemsEqual(ostream, name, ((Worker) obj).name, ctxt,
+				if (areObjectsEqual(ostream, name, ((Worker) obj).name, ctxt,
 						"\tNames differ\n") &&
-						    areItemsEqual(ostream, race, ((Worker) obj).race, ctxt,
+						    areObjectsEqual(ostream, race, ((Worker) obj).race, ctxt,
 								    ":\tRaces differ\n") &&
-						    areItemsEqual(ostream, stats, ((Worker) obj).stats, ctxt,
+						    areObjectsEqual(ostream, stats, ((Worker) obj).stats, ctxt,
 								    ":\tStats differ\n")) {
 					final Map<String, IJob> ours = new HashMap<>();
 					for (final IJob job : jobSet) {

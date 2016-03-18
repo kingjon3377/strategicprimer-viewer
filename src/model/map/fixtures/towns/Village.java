@@ -291,13 +291,13 @@ public class Village implements ITownFixture, HasImage, SubsettableFixture {
 			final Village village = (Village) obj;
 			return !(!areIntItemsEqual(ostream, id, village.id, context,
 					"\tIDs differ\n") ||
-					         !areItemsEqual(ostream, status, village.status, context,
+					         !areObjectsEqual(ostream, status, village.status, context,
 							         " In village (ID #", Integer.toString(id),
 							         "):\tVillage status differs\n") ||
-					         !areItemsEqual(ostream, name, village.name, context,
+					         !areObjectsEqual(ostream, name, village.name, context,
 							         " In village (ID #", Integer.toString(id),
 							         "):\tVillage name differs\n") ||
-					         !areItemsEqual(ostream, race, village.race, context,
+					         !areObjectsEqual(ostream, race, village.race, context,
 							         " In village ", name, " (ID #", Integer.toString
 									                                                 (id),
 							         "):\tDominant race differs\n") ||

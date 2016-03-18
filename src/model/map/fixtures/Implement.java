@@ -85,7 +85,7 @@ public class Implement implements UnitMember, FortressMember, HasMutableKind, Ha
 			ostream.append("\tIDs differ");
 			return false;
 		} else if (obj instanceof Implement) {
-			return areItemsEqual(ostream, kind, ((Implement) obj).kind, context,
+			return areObjectsEqual(ostream, kind, ((Implement) obj).kind, context,
 					"\tIn Implement ID #", Integer.toString(id), ": Kinds differ\n");
 		} else {
 			ostream.append(context);

@@ -148,7 +148,7 @@ public class Centaur implements MobileFixture, HasImage, HasMutableKind, UnitMem
 	                        final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Centaur) {
-				return areItemsEqual(ostream, kind, ((Centaur) obj).kind, context,
+				return areObjectsEqual(ostream, kind, ((Centaur) obj).kind, context,
 						"\tDifferent kinds of centaur for ID #", Integer.toString(id),
 						"\n");
 			} else {

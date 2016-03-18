@@ -180,7 +180,7 @@ public class Animal implements MobileFixture, HasImage, HasMutableKind, UnitMemb
 	                        final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Animal) {
-				return areItemsEqual(ostream, kind, ((Animal) obj).kind, context,
+				return areObjectsEqual(ostream, kind, ((Animal) obj).kind, context,
 						"\tDifferent kinds of animal for ID #", Integer.toString(id),
 						"\n") && isConditionTrue(ostream,
 						talking || !((Animal) obj).talking, context, "\tIn animal ID #",
@@ -189,7 +189,7 @@ public class Animal implements MobileFixture, HasImage, HasMutableKind, UnitMemb
 						       isConditionTrue(ostream, !traces || ((Animal) obj).traces,
 								       context, "\tIn animal ID #", Integer.toString(id),
 								       ":\tSubmap has animal and master only tracks\n") &&
-						       areItemsEqual(ostream, status, ((Animal) obj).status,
+						       areObjectsEqual(ostream, status, ((Animal) obj).status,
 								       context,
 								       "\tDomestication status of animal differs at ID #",
 								       Integer.toString(id), "\n");

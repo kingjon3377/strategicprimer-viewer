@@ -143,7 +143,7 @@ public class Job implements IJob { // NOPMD
 	@Override
 	public boolean isSubset(final IJob obj, final Appendable ostream,
 	                        final String context) throws IOException {
-		if (!areItemsEqual(ostream, name, obj.getName(), context,
+		if (!areObjectsEqual(ostream, name, obj.getName(), context,
 				"\tPassed Jobs with different names\n") ||
 				    !isConditionTrue(ostream, level >= obj.getLevel(), context,
 						    "\tSubmap has higher level for Job ", name, "\n")) {
