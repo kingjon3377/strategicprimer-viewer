@@ -491,7 +491,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			}
 		}
 		if (levels > 1) {
-			cli.printf("Worker has %i job levels%n", levels);
+			cli.printf("Worker has %i job levels%n", Integer.valueOf(levels));
 		} else if (levels == 1) {
 			cli.println("Worker has 1 job level");
 		}

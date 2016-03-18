@@ -1,5 +1,8 @@
 package controller.map.drivers;
 
+import controller.map.drivers.DriverUsage.ParamCount;
+import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,12 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import controller.map.drivers.DriverUsage.ParamCount;
-import controller.map.misc.CLIHelper;
-import controller.map.misc.ICLIHelper;
 import model.exploration.HuntingModel;
 import model.map.IMapNG;
 import model.map.MapDimensions;
@@ -27,6 +24,7 @@ import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.TypesafeLogger;
 
@@ -176,7 +174,7 @@ public final class QueryCLI implements SimpleDriver {
 				}
 			}
 		}
-		cli.printf("%s has %i workers.%n", player.getName(), count);
+		cli.printf("%s has %i workers.%n", player.getName(), Integer.valueOf(count));
 	}
 
 	/**
@@ -209,7 +207,7 @@ public final class QueryCLI implements SimpleDriver {
 			ydiff = dims.cols - rawYdiff;
 		}
 		cli.printf("Distance (as the crow flies, in tiles):\t%i%n",
-				Math.round(Math.sqrt((xdiff * xdiff) + (ydiff * ydiff))));
+				Double.valueOf(Math.round(Math.sqrt((xdiff * xdiff) + (ydiff * ydiff)))));
 	}
 
 	/**
@@ -256,7 +254,7 @@ public final class QueryCLI implements SimpleDriver {
 			final int animalsPerHerder = ((count + herders) - 1) / herders;
 			if (poultry) {
 				cli.printf("Gathering eggs takes %i minutes; cleaning up after them,%n",
-						animalsPerHerder * 2);
+						Integer.valueOf(animalsPerHerder * 2));
 				cli.printf(
 						"which should be done every third turn at least, takes %.1f " +
 								"hours.%n",
@@ -266,7 +264,8 @@ public final class QueryCLI implements SimpleDriver {
 						Double.valueOf(rate * 2.0 * count));
 			} else {
 				cli.printf("Tending the animals takes %i minutes, or %i minutes with ",
-						animalsPerHerder * time, animalsPerHerder * (time - 5));
+						Integer.valueOf(animalsPerHerder * time),
+						Integer.valueOf(animalsPerHerder * (time - 5)));
 				cli.println("expert herders, twice daily.");
 				cli.println("Gathering them for each milking takes 30 min more.");
 				cli.printf("This produces %,.1f gallons, %,.1f lbs, of milk per day.%n",
@@ -379,7 +378,7 @@ public final class QueryCLI implements SimpleDriver {
 		cli.println("The following commands are supported:");
 		cli.print("Fortress: Print what a player automatically knows ");
 		cli.println("about his fortress's tile.");
-		final int encounters = HUNTER_HOURS * HOURLY_ENCOUNTERS;
+		final Integer encounters = Integer.valueOf(HUNTER_HOURS * HOURLY_ENCOUNTERS);
 		cli.printf("Hunt/fIsh: Generates up to %i encounters with animals.%n", encounters);
 		cli.printf("Gather: Generates up to %i encounters with fields, meadows, ",
 				encounters);
