@@ -1,6 +1,6 @@
 package view.worker;
 
-import java.awt.GridLayout;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -10,20 +10,18 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.function.ToIntFunction;
-import javax.swing.GroupLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import model.listeners.UnitMemberListener;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.ProxyFor;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
-import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import org.eclipse.jdt.annotation.Nullable;
 
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.StreamSupport.stream;
 import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
 
 /**
@@ -317,23 +315,12 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			for (final IJob job : (Worker) local) {
 				//noinspection ObjectAllocationInLoop
 				final JLabel label = new JLabel(job.getName() + ' ' + job.getLevel());
-				// TODO: Use Streams instead of a StringBuilder here
-				//noinspection ObjectAllocationInLoop
-				final StringBuilder builder = new StringBuilder(2048);
-				boolean first = true;
-				for (final ISkill skill : job) {
-					if (first) {
-						first = false;
-						builder.append("Skills: ");
-					} else {
-						builder.append(", ");
-					}
-					builder.append(skill.getName());
-					builder.append(' ');
-					builder.append(skill.getLevel());
-				}
-				if (!first) {
-					label.setToolTipText(builder.toString());
+				String skills = stream(job.spliterator(), false)
+						                .map(skill -> skill.getName() + ' ' +
+								                              skill.getLevel())
+						                .collect(joining(", ", "Skills: ", ""));
+				if ("Skills: ".length() != skills.length()) {
+					label.setToolTipText(skills);
 				}
 				jobsPanel.add(label);
 			}
