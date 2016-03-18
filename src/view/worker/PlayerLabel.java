@@ -78,7 +78,7 @@ public final class PlayerLabel extends JLabel implements PlayerChangeListener {
 	 */
 	@Override
 	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
-		setText(htmlize(before + newPlayer.getName() + after));
+		setText(htmlize(before + ' ' + newPlayer.getName() + after));
 	}
 	/**
 	 * Prevent serialization.
