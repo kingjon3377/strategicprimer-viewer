@@ -171,9 +171,11 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 																			 "type",
 																			 warner)));
 					} else {
+						//noinspection ObjectAllocationInLoop
 						warner.warn(new MissingPropertyException(current, "kind"));
 					}
 				} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) {
+					//noinspection ObjectAllocationInLoop
 					warner.warn(new UnsupportedTagException(current));
 				} else if (nullPoint.equals(point)) {
 					// fixture outside tile
@@ -228,6 +230,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				final String data =
 						assertNotNull(event.asCharacters().getData().trim());
 				if (!data.isEmpty()) {
+					//noinspection ObjectAllocationInLoop
 					retval.addFixture(point, new TextFixture(data, -1));
 				}
 			}

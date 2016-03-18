@@ -220,12 +220,15 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 						});
 			} else {
 				jobNames.add(name);
+				//noinspection ObjectAllocationInLoop
 				proxyJobs.add(new ProxyJob(name, parallel, workerArray));
 			}
 			jobNames.add(job.getName());
 		}
 		for (final IJob proxyJob : proxyJobs) {
+			// FIXME: This can't be right!
 			final String name = proxyJob.getName();
+			//noinspection ObjectAllocationInLoop
 			final IJob job = new Job(name, 0);
 			//noinspection unchecked
 			((ProxyFor<IJob>) proxyJob).addProxied(job);

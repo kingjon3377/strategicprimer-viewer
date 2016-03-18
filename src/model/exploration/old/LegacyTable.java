@@ -74,18 +74,25 @@ public final class LegacyTable implements EncounterTable {
 			assert status != null;
 			for (final TownSize size : TownSize.values()) {
 				assert size != null;
+				//noinspection ObjectAllocationInLoop
 				addData(new City(status, size, 0, "", 0, player)); // NOPMD
+				//noinspection ObjectAllocationInLoop
 				addData(new Fortification(status, size, 0, "", 0, player)); // NOPMD
+				//noinspection ObjectAllocationInLoop
 				addData(new Town(status, size, 0, "", 0, player)); // NOPMD
 			}
 		}
 		for (final MineralKind mineral : MineralKind.values()) {
+			//noinspection ObjectAllocationInLoop
 			addData(new MineralVein(mineral.toString(), true, 0, 0)); // NOPMD
+			//noinspection ObjectAllocationInLoop
 			addData(new MineralVein(mineral.toString(), false, 0, 0));
 		}
 		data.add("Nothing interesting here ...");
+		// TODO: Replace loop with Streams usage
 		for (final StoneKind stone : StoneKind.values()) {
 			if (stone != null) {
+				//noinspection ObjectAllocationInLoop
 				addData(new StoneDeposit(stone, 0, 0)); // NOPMD
 			}
 		}

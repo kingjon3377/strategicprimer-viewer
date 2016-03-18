@@ -161,6 +161,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 							currentPlayer.equals(item.getOwner())));
 				} else {
 					// TODO: what about others?
+					//noinspection ObjectAllocationInLoop
 					retval.add(new SimpleReportNode(loc, member.toString()));
 				}
 				fixtures.remove(Integer.valueOf(member.getID()));

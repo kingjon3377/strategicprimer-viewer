@@ -231,6 +231,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			final List<String> kinds = workerModel.getUnitKinds(player);
 			int index = 0;
 			for (final String kind : kinds) {
+				//noinspection ObjectAllocationInLoop
 				insert(new KindNode(kind, workerModel.getUnits(player, kind)), // NOPMD
 						index);
 				index++;
@@ -299,6 +300,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			super(kind);
 			int index = 0;
 			for (final IUnit unit : units) {
+				//noinspection ObjectAllocationInLoop
 				insert(new UnitNode(unit), index); // NOPMD
 				index++;
 			}
@@ -365,6 +367,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			super(unit);
 			int index = 0;
 			for (final UnitMember member : unit) {
+				//noinspection ObjectAllocationInLoop
 				insert(new UnitMemberNode(member), index); // NOPMD
 				index++;
 			}

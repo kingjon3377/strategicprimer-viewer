@@ -80,6 +80,8 @@ public final class ReaderComparator implements UtilityDriver {
 				continue;
 			}
 			try {
+				// TODO: Handle exceptions in called method so we can use Streams here
+				//noinspection ObjectAllocationInLoop
 				compareReaders(new File(arg));
 			} catch (final XMLStreamException e) {
 				LOGGER.log(Level.SEVERE,

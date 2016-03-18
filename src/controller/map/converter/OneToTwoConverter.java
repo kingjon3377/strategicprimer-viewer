@@ -258,6 +258,7 @@ public final class OneToTwoConverter { // NOPMD
 					final Point subtile = assertNotNull(initial.get(0));
 					newMap.addFixture(subtile,
 							assertNotNull(fixtures.remove(0)));
+					//noinspection ObjectAllocationInLoop
 					newMap.addFixture(subtile, new TextFixture(//NOPMD
 																	  "FIXME: A fixture " +
 																			  "here was " +
@@ -648,6 +649,7 @@ public final class OneToTwoConverter { // NOPMD
 				if (arg == null) {
 					continue;
 				}
+				//noinspection ObjectAllocationInLoop
 				final File file = new File(arg);
 				final IMapNG old;
 				try {
@@ -664,6 +666,7 @@ public final class OneToTwoConverter { // NOPMD
 				}
 				final IMapNG newMap = converter.convert(old, first);
 				try {
+					//noinspection ObjectAllocationInLoop
 					reader.write(new File(arg + ".converted.xml"), newMap);
 				} catch (final IOException except) {
 					LOGGER.log(Level.SEVERE,

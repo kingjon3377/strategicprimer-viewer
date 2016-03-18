@@ -303,8 +303,10 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 						}
 					} else {
 						if (member instanceof IWorker) {
+							//noinspection ObjectAllocationInLoop
 							proxy = new ProxyWorker((IWorker) member);
 						} else {
+							//noinspection ObjectAllocationInLoop
 							proxy = new ProxyMember(member);
 						}
 						map.put(memberID, (UnitMember) proxy);

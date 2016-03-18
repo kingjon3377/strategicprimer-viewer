@@ -86,6 +86,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 				}
 			}
 			if (unmodified) {
+				//noinspection ObjectAllocationInLoop
 				final IJob job = new Job(nomen, 0);
 				worker.addJob(job);
 				boolean absent = true;
@@ -221,6 +222,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 								                                   ]));
 		for (final ISkill skill : item) {
 			if (!skillNames.contains(skill.getName())) {
+				//noinspection ObjectAllocationInLoop
 				proxied.add(new ProxySkill(skill.getName(), parallel, jobsArray));
 			}
 		}

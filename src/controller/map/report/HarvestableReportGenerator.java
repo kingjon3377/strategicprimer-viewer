@@ -128,6 +128,7 @@ public final class HarvestableReportGenerator
 				if (shrubs.containsKey(((Shrub) item).getKind())) {
 					shrubPoints = shrubs.get(((Shrub) item).getKind());
 				} else {
+					//noinspection ObjectAllocationInLoop
 					shrubPoints = new ArrayList<>(); // NOPMD
 					shrubs.put(((Shrub) item).getKind(), shrubPoints);
 				}
@@ -223,6 +224,7 @@ public final class HarvestableReportGenerator
 					if (shrubs.containsKey(((Shrub) item).getKind())) {
 						collection = shrubs.get(((Shrub) item).getKind());
 					} else {
+						//noinspection ObjectAllocationInLoop
 						collection = new ListReportNode(((Shrub) item).getKind());
 						shrubs.put(((Shrub) item).getKind(), collection);
 					}

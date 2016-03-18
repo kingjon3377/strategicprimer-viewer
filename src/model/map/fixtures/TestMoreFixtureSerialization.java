@@ -1,18 +1,10 @@
 package model.map.fixtures;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
+import controller.map.formatexceptions.SPFormatException;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.xml.stream.XMLStreamException;
-
-import org.junit.Test;
-
-import controller.map.formatexceptions.SPFormatException;
 import model.map.BaseTestFixtureSerialization;
 import model.map.HasImage;
 import model.map.IMutableMapNG;
@@ -40,8 +32,13 @@ import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.TownStatus;
 import model.map.fixtures.towns.Village;
+import org.junit.Test;
 import util.NullCleaner;
 import util.Warning;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Another class to test serialization of TileFixtures.
@@ -274,6 +271,7 @@ public final class TestMoreFixtureSerialization extends
 	 * @throws XMLStreamException on XML reader error
 	 * @throws IOException        on I/O error creating serialized form
 	 */
+	@SuppressWarnings("ObjectAllocationInLoop")
 	@Test
 	public void testVillageSerialization() throws XMLStreamException,
 														  SPFormatException,

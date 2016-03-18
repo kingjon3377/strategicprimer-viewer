@@ -421,6 +421,7 @@ public final class WorkerMgmtFrame extends JFrame {
 				if (unitsByKind.containsKey(unit.getKind())) {
 					list = unitsByKind.get(unit.getKind());
 				} else {
+					//noinspection ObjectAllocationInLoop
 					list = new ArrayList<>(); // NOPMD
 					unitsByKind.put(unit.getKind(), list);
 				}

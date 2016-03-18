@@ -65,6 +65,7 @@ public final class ImageLoader {
 		final TileUIHelper colors = new TileUIHelper();
 		for (final TileType type : TileType.values()) {
 			assert type != null;
+			//noinspection ObjectAllocationInLoop
 			final BufferedImage buf = new BufferedImage(ICON_SIZE, ICON_SIZE, //NOPMD
 					                                           BufferedImage
 							                                           .TYPE_INT_ARGB);
@@ -74,6 +75,7 @@ public final class ImageLoader {
 			}
 			pen.fillRect(0, 0, buf.getWidth(), buf.getHeight());
 			pen.dispose();
+			//noinspection ObjectAllocationInLoop
 			iconCache.put(type.toXML() + ".png", new ImageIcon(buf)); // NOPMD
 		}
 	}

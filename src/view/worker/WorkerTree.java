@@ -363,6 +363,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 					list.selectUnit((IUnit) sel);
 				}
 				for (final UnitMemberListener list : umListeners) {
+					//noinspection ObjectAllocationInLoop
 					list.memberSelected(null, new ProxyWorker((IUnit) sel));
 				}
 			} else if (sel == null) {

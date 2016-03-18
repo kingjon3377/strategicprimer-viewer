@@ -386,6 +386,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 				final Point point = PointFactory.point(
 						cli.inputNumber("Row to put new unit: "),
 						cli.inputNumber("Column to put new unit: "));
+				//noinspection ObjectAllocationInLoop
 				final TileFixture unit = new Unit(player, // NOPMD
 														 cli.inputString(
 																 "Kind of unit: "),
@@ -514,6 +515,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			}
 		}
 		for (int i = 0; i < levels; i++) {
+			//noinspection ObjectAllocationInLoop
 			retval.addJob(
 					new Job(cli.inputString("Which Job does worker have a level in? "),
 								   1));
@@ -568,6 +570,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			cli.print(stats.toString());
 		}
 		for (int i = 0; i < levels; i++) {
+			//noinspection ObjectAllocationInLoop
 			retval.addJob(new Job(// NOPMD
 										 cli.inputString(
 												 "Which Job does worker have a level in? "),

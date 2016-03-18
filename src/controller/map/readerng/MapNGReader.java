@@ -174,9 +174,11 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 								getAttributeWithDeprecatedForm(current, "kind", "type",
 										warner)));
 					} else {
+						//noinspection ObjectAllocationInLoop
 						warner.warn(new MissingPropertyException(current, "kind"));
 					}
 				} else if (EqualsAny.equalsAny(type, ISPReader.FUTURE)) {
+					//noinspection ObjectAllocationInLoop
 					warner.warn(new UnsupportedTagException(current));
 				} else if (nullPoint.equals(point)) {
 					// fixture outside tile
@@ -232,6 +234,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 				final String data =
 						assertNotNull(event.asCharacters().getData().trim());
 				if (!data.isEmpty()) {
+					//noinspection ObjectAllocationInLoop
 					retval.addFixture(point, new TextFixture(data, -1));
 				}
 			}
@@ -355,6 +358,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 			mapTag.addChild(PLAYER_READER.write(player));
 		}
 		for (int i = 0; i < dim.rows; i++) {
+			//noinspection ObjectAllocationInLoop
 			final SPIntermediateRepresentation row =
 					new SPIntermediateRepresentation("row", Pair.of("index",
 							assertNotNull(Integer.toString(i))));

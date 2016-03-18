@@ -74,6 +74,7 @@ public final class WorkerReportDriver implements ISPDriver {
 			try {
 				// When we developed createReportIR, it was unacceptably slower, so we
 				// left this using the original.
+				//noinspection ObjectAllocationInLoop
 				report =
 						ReportGenerator.createReport(reader.readMap(new File(
 								                                                    filename),
@@ -98,6 +99,7 @@ public final class WorkerReportDriver implements ISPDriver {
 						                                " didn't contain a valid SP map",
 						                               except);
 			}
+			//noinspection ObjectAllocationInLoop
 			try (final FileWriter writer = new FileWriter(filename // NOPMD
 					                                              + ".report.html")) {
 				writer.write(report);

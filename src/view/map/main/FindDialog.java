@@ -388,9 +388,11 @@ public final class FindDialog extends JDialog {
 				populate(map.getGround(point));
 				populate(map.getForest(point));
 				if (map.isMountainous(point)) {
+					//noinspection ObjectAllocationInLoop
 					populate(new Mountain());
 				}
 				if (map.getRivers(point).iterator().hasNext()) {
+					//noinspection ObjectAllocationInLoop
 					populate(new RiverFixture());
 				}
 				populate(map.streamOtherFixtures(point));

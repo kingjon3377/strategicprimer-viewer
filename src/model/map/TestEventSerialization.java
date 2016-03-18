@@ -93,6 +93,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 * @throws XMLStreamException on XML reading problems
 	 * @throws IOException        on I/O error creating serialized form
 	 */
+	@SuppressWarnings("ObjectAllocationInLoop")
 	@Test
 	public void testCitySerialization() throws XMLStreamException,
 			                                           SPFormatException, IOException {
@@ -139,6 +140,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 * @throws XMLStreamException on XML reading problems
 	 * @throws IOException        on I/O error creating serialized form
 	 */
+	@SuppressWarnings("ObjectAllocationInLoop")
 	@Test
 	public void testFortificationSerialization() throws XMLStreamException,
 			                                                    SPFormatException,
@@ -233,6 +235,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 * @throws XMLStreamException on XML reading problems
 	 * @throws IOException        on I/O error creating serialized form
 	 */
+	@SuppressWarnings("ObjectAllocationInLoop")
 	@Test
 	public void testStoneSerialization() throws XMLStreamException,
 			                                            SPFormatException, IOException {
@@ -276,6 +279,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 * @throws XMLStreamException on XML reading problems
 	 * @throws IOException        on I/O error creating serialized form
 	 */
+	@SuppressWarnings("ObjectAllocationInLoop")
 	@Test
 	public void testTownSerialization() throws XMLStreamException,
 			                                           SPFormatException, IOException {

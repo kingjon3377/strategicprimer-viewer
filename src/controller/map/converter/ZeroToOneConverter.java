@@ -331,8 +331,9 @@ public final class ZeroToOneConverter {
 	 */
 	public static void main(final String... args) {
 		for (final String arg : args) {
+			//noinspection ObjectAllocationInLoop
 			try (final Reader reader = new FileReader(arg)) { // NOPMD
-				//noinspection unchecked
+				//noinspection unchecked,ObjectAllocationInLoop
 				convert(new IteratorWrapper<>(XMLInputFactory.newInstance()
 						                              .createXMLEventReader(reader)),
 						SystemOut.SYS_OUT);

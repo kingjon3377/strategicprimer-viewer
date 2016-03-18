@@ -215,6 +215,7 @@ public final class TODOFixerDriver {
 					continue;
 				}
 				final IMutableMapNG map;
+				//noinspection ObjectAllocationInLoop
 				final File file = new File(arg);
 				try {
 					map = reader.readMap(file, Warning.DEFAULT);
@@ -222,6 +223,7 @@ public final class TODOFixerDriver {
 					LOGGER.log(Level.SEVERE, "Error reading map " + arg, e);
 					continue;
 				}
+				//noinspection ObjectAllocationInLoop
 				final TODOFixerDriver driver = new TODOFixerDriver(map);
 				driver.fixAllUnits(cli);
 				try {

@@ -151,6 +151,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 					"No unadvanced units remain.", "Chosen unit: ", false);
 			if ((unitNum >= 0) && (unitNum < units.size())) {
 				if (proxy) {
+					//noinspection ObjectAllocationInLoop
 					advanceSingleWorker(new ProxyWorker(
 															   NullCleaner.assertNotNull(
 																	   units.remove(

@@ -84,6 +84,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 				if (items.containsKey(desc)) {
 					points = items.get(desc);
 				} else {
+					//noinspection ObjectAllocationInLoop
 					points = new ArrayList<>(); // NOPMD
 					items.put(desc, points);
 				}
@@ -133,6 +134,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 				if (items.containsKey(animalKind)) {
 					collection = items.get(animalKind);
 				} else {
+					//noinspection ObjectAllocationInLoop
 					collection = new ListReportNode(animalKind); // NOPMD
 					items.put(animalKind, collection);
 				}

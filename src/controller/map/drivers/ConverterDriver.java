@@ -79,11 +79,13 @@ public final class ConverterDriver implements UtilityDriver {
 			SYS_OUT.print("Reading ");
 			SYS_OUT.print(filename);
 			SYS_OUT.print(" ... ");
+			//noinspection ObjectAllocationInLoop
 			final File file = new File(filename);
 			try {
 				final IMapNG old = READER.readMap(file, Warning.DEFAULT);
 				SYS_OUT.println(" ... Converting ... ");
 				final String newFilename = filename + ".new";
+				//noinspection ObjectAllocationInLoop
 				final File newFile = new File(newFilename);
 				final IMapNG map = ResolutionDecreaseConverter.convert(old);
 				SYS_OUT.print("About to write ");

@@ -158,6 +158,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 					}
 				}
 				if (unmodified) {
+					//noinspection ObjectAllocationInLoop
 					final ISkill skill = new Skill(name, 0, 0);
 					skill.addHours(hrs, condition);
 					job.addSkill(skill);
@@ -175,6 +176,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 					}
 				}
 				if (unmodified) {
+					//noinspection ObjectAllocationInLoop
 					final ISkill skill = new Skill(name, 0, 0);
 					job.addSkill(skill);
 					boolean absent = true;

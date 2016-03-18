@@ -57,7 +57,9 @@ public final class KeyPanel extends JPanel implements VersionChangeListener {
 	 */
 	private void updateForVersion(final int version) {
 		removeAll();
+		// TODO: Replace with Streams API use
 		for (final TileType type : TileType.valuesForVersion(version)) {
+			//noinspection ObjectAllocationInLoop
 			add(new KeyElement(version, type)); // NOPMD
 		}
 	}
