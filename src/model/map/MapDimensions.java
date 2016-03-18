@@ -1,7 +1,6 @@
 package model.map;
 
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 /**
  * An encapsulation of a map's dimensions (and its map version as well).
@@ -106,13 +105,7 @@ public final class MapDimensions {
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder(60);
-		builder.append("Map dimensions: ");
-		builder.append(rows);
-		builder.append(" rows x ");
-		builder.append(cols);
-		builder.append(" cols; map version ");
-		builder.append(version);
-		return NullCleaner.assertNotNull(builder.toString());
+		return String.format("Map dimensions: %d rows x %d cols; map version %d",
+				Integer.valueOf(rows), Integer.valueOf(cols), Integer.valueOf(version));
 	}
 }

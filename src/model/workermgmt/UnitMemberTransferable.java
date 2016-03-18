@@ -6,7 +6,6 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 /**
  * A class to transfer a UnitMember.
@@ -75,17 +74,7 @@ public final class UnitMemberTransferable implements Transferable {
 		public String toString() {
 			final String memberStr = member.toString();
 			final String unitStr = unit.toString();
-			final StringBuilder builder = new StringBuilder(22
-																	+ memberStr.length
-																						() +
-
-																	unitStr.length());
-			builder.append("UnitMemberPair: (");
-			builder.append(memberStr);
-			builder.append(", ");
-			builder.append(unitStr);
-			builder.append(')');
-			return NullCleaner.assertNotNull(builder.toString());
+			return String.format("UnitMemberPair: (%s, %s)", memberStr, unitStr);
 		}
 
 	}

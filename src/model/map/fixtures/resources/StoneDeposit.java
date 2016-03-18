@@ -5,7 +5,6 @@ import model.map.IEvent;
 import model.map.IFixture;
 import model.map.TileFixture;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 /**
  * A deposit (always exposed for now) of stone.
@@ -90,11 +89,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasMutabl
 	@Override
 	public String getText() {
 		final String stoneStr = stone.toString();
-		final StringBuilder build = new StringBuilder(40 + stoneStr.length())
-				                            .append("There is an exposed ");
-		build.append(stoneStr);
-		build.append(" deposit here.");
-		return NullCleaner.assertNotNull(build.toString());
+		return String.format("There is an exposed %s deposit here.", stoneStr);
 	}
 
 	/**

@@ -5,16 +5,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
-
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.listeners.AddRemoveListener;
 import model.listeners.UnitMemberListener;
 import model.map.HasName;
@@ -24,7 +20,7 @@ import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
-import util.NullCleaner;
+import org.eclipse.jdt.annotation.Nullable;
 import util.TypesafeLogger;
 
 /**
@@ -332,9 +328,6 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	@Override
 	public String toString() {
 		final String workerString = String.valueOf(root);
-		final StringBuilder builder = new StringBuilder(30 + workerString.length());
-		builder.append("JobTreeModel showing worker ");
-		builder.append(workerString);
-		return NullCleaner.assertNotNull(builder.toString());
+		return String.format("JobTreeModel showing worker %s", workerString);
 	}
 }

@@ -81,10 +81,7 @@ public final class FixtureFilterListModel extends
 	@Override
 	public String toString() {
 		final String listString = backing.toString();
-		final StringBuilder builder = new StringBuilder(25 + listString.length());
-		builder.append("FixtureFilterListModel: ");
-		builder.append(listString);
-		return NullCleaner.assertNotNull(builder.toString());
+		return String.format("FixtureFilterListModel: %s", listString);
 	}
 	/**
 	 * Prevent serialization.

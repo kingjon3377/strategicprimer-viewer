@@ -3,7 +3,6 @@ package model.map.fixtures.resources;
 import model.map.HasMutableKind;
 import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 
 /**
  * A cache (of vegetables, or a hidden treasure, or ...) on a tile.
@@ -100,11 +99,7 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	 */
 	@Override
 	public String toString() {
-		return NullCleaner.assertNotNull(new StringBuilder(24 + kind.length()
-				                                                   + contents.length())
-				                                 .append("a cache of ").append(kind)
-				                                 .append(" containing ").append(contents)
-				                                 .toString());
+		return String.format("a cache of %s containing %s", kind, contents);
 	}
 
 	/**

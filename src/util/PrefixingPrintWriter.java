@@ -59,10 +59,6 @@ public final class PrefixingPrintWriter extends PrintWriter {
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder(36 + pref.length());
-		builder.append("PrefixingPrintWriter with prefix '");
-		builder.append(pref);
-		builder.append('\'');
-		return NullCleaner.assertNotNull(builder.toString());
+		return String.format("PrefixingPrintWriter with prefix '%s'", pref);
 	}
 }

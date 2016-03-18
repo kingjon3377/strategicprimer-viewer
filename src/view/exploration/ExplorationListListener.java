@@ -156,13 +156,7 @@ public final class ExplorationListListener implements ListDataListener {
 		@Override
 		public String toString() {
 			final String objStr = object.toString();
-			final StringBuilder builder = new StringBuilder(16 + objStr.length());
-			builder.append('(');
-			builder.append(number);
-			builder.append(", ");
-			builder.append(objStr);
-			builder.append(')');
-			return NullCleaner.assertNotNull(builder.toString());
+			return String.format("(%d, %s)", Integer.valueOf(number), objStr);
 		}
 	}
 
