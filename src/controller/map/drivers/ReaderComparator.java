@@ -119,24 +119,20 @@ public final class ReaderComparator implements UtilityDriver {
 		final long startOne = System.nanoTime();
 		final IMapNG map1;
 		try (StringReader reader = new StringReader(contents)) {
-			try {
-				map1 = oldReader.readMap(arg, reader, Warning.Ignore);
-			} catch (XMLStreamException | SPFormatException except) {
-				handleException(except, arg.getPath());
-				return;
-			}
+			map1 = oldReader.readMap(arg, reader, Warning.Ignore);
+		} catch (XMLStreamException | SPFormatException except) {
+			handleException(except, arg.getPath());
+			return;
 		}
 		final long endOne = System.nanoTime();
 		printElapsed("Old", endOne - startOne);
 		final long startTwo = System.nanoTime();
 		final IMapNG map2;
 		try (StringReader reader = new StringReader(contents)) {
-			try {
-				map2 = newReader.readMap(arg, reader, Warning.Ignore);
-			} catch (XMLStreamException | SPFormatException except) {
-				handleException(except, arg.getPath());
-				return;
-			}
+			map2 = newReader.readMap(arg, reader, Warning.Ignore);
+		} catch (XMLStreamException | SPFormatException except) {
+			handleException(except, arg.getPath());
+			return;
 		}
 		final long endTwo = System.nanoTime();
 		printElapsed("New", endTwo - startTwo);
