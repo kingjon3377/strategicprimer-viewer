@@ -83,6 +83,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	 *
 	 * @param wmodel the worker model
 	 */
+	@SuppressWarnings("StringConcatenationMissingWhitespace")
 	public OrdersPanel(final IWorkerModel wmodel) {
 		// Can't use the multi-arg constructor, because of the references to
 		// 'this' below.

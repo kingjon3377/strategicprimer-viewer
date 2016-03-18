@@ -81,6 +81,7 @@ public final class TableDebugger {
 	 * @throws MissingTableException if a table is missing
 	 * @throws IOException           on I/O error writing to the stream
 	 */
+	@SuppressWarnings("StringConcatenationMissingWhitespace")
 	private void debugSingleTable(final String before, final String after,
 	                              final EncounterTable table,
 	                              @SuppressWarnings("TypeMayBeWeakened")

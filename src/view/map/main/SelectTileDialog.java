@@ -211,6 +211,7 @@ public final class SelectTileDialog extends JDialog {
 	 * @param rowText the text in the row box
 	 * @param colText the text in the column box
 	 */
+	@SuppressWarnings("StringConcatenationMissingWhitespace")
 	private void handleOK(final String rowText, final String colText) {
 		errorLabel.setText("");
 		final MapDimensions dim = map.getMapDimensions();

@@ -64,6 +64,7 @@ public final class PlayerLabel extends JLabel implements PlayerChangeListener {
 	 *                delimiting space, since the first character after the name might be
 	 *                punctuation instead.
 	 */
+	@SuppressWarnings("StringConcatenationMissingWhitespace")
 	public PlayerLabel(final String prefix,
 	                   @SuppressWarnings("TypeMayBeWeakened") final Player player,
 	                   final String postfix) {
@@ -76,6 +77,7 @@ public final class PlayerLabel extends JLabel implements PlayerChangeListener {
 	 * @param old       the old current player
 	 * @param newPlayer the new current player
 	 */
+	@SuppressWarnings("StringConcatenationMissingWhitespace")
 	@Override
 	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		setText(htmlize(before + ' ' + newPlayer.getName() + after));
