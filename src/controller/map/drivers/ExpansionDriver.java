@@ -337,7 +337,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 					continue;
 				} else if (SimpleMovement.shouldAlwaysNotice(owned, fix)) {
 					neighborFixtures.add(fix);
-				} else if (SimpleMovement.mightNotice(owned, fix)
+				} else if (SimpleMovement.shouldSometimesNotice(owned, fix)
 								   && !(fix instanceof CacheFixture)) {
 					possibilities.add(fix);
 				}

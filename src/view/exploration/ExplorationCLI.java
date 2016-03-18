@@ -184,7 +184,7 @@ public final class ExplorationCLI {
 		if (ground != null) {
 			if (SimpleMovement.shouldAlwaysNotice(mover, ground)) {
 				constants.add(ground);
-			} else if (SimpleMovement.mightNotice(mover, ground)) {
+			} else if (SimpleMovement.shouldSometimesNotice(mover, ground)) {
 				allFixtures.add(ground);
 			}
 		}
@@ -192,14 +192,14 @@ public final class ExplorationCLI {
 		if (forest != null) {
 			if (SimpleMovement.shouldAlwaysNotice(mover, forest)) {
 				constants.add(forest);
-			} else if (SimpleMovement.mightNotice(mover, forest)) {
+			} else if (SimpleMovement.shouldSometimesNotice(mover, forest)) {
 				allFixtures.add(forest);
 			}
 		}
 		for (final TileFixture fix : map.getOtherFixtures(dPoint)) {
 			if (SimpleMovement.shouldAlwaysNotice(mover, fix)) {
 				constants.add(fix);
-			} else if (SimpleMovement.mightNotice(mover, fix)) {
+			} else if (SimpleMovement.shouldSometimesNotice(mover, fix)) {
 				allFixtures.add(fix);
 			}
 		}

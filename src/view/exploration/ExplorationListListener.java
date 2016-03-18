@@ -178,7 +178,7 @@ public final class ExplorationListListener implements ListDataListener {
 					NullCleaner.assertNotNull(list.getModel()))) {
 				if (SimpleMovement.shouldAlwaysNotice(selUnit, fix)) {
 					constants.add(IntPair.of(i, fix));
-				} else if (SimpleMovement.mightNotice(selUnit, fix)) {
+				} else if (SimpleMovement.shouldSometimesNotice(selUnit, fix)) {
 					possibles.add(IntPair.of(i, fix));
 				}
 				i++;
