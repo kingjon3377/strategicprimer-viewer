@@ -1,14 +1,11 @@
 package controller.map.report;
 
+import controller.map.misc.IDFactory;
+import controller.map.misc.IDFactoryFiller;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import org.eclipse.jdt.annotation.NonNull;
-
-import controller.map.misc.IDFactory;
-import controller.map.misc.IDFactoryFiller;
 import model.map.DistanceComparator;
 import model.map.FixtureIterable;
 import model.map.HasOwner;
@@ -25,11 +22,13 @@ import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.Fortress;
 import model.report.IReportNode;
 import model.report.RootReportNode;
+import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
 import util.IntMap;
-import util.NullCleaner;
 import util.Pair;
 import util.PairComparator;
+
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A class to produce a report based on a map for a player.
@@ -94,7 +93,7 @@ public final class ReportGenerator {
 		Point retval = PointFactory.point(-1, -1);
 		for (final Point location : map.locations()) {
 			for (final TileFixture fixture : map.getOtherFixtures(
-					NullCleaner.assertNotNull(location))) {
+					assertNotNull(location))) {
 				if ((fixture instanceof Fortress) &&
 							((Fortress) fixture).getOwner().equals(player)) {
 					if ("HQ".equals(((Fortress) fixture).getName())) {
@@ -167,7 +166,7 @@ public final class ReportGenerator {
 			System.out.print("Unhandled fixture:\t");
 			System.out.println(fix);
 		}
-		return NullCleaner.assertNotNull(builder.toString());
+		return assertNotNull(builder.toString());
 	}
 
 	/**
@@ -231,7 +230,7 @@ public final class ReportGenerator {
 				player));
 		fixtures.coalesce();
 		builder.append("</body>\n</html>\n");
-		return NullCleaner.assertNotNull(builder.toString());
+		return assertNotNull(builder.toString());
 	}
 
 	/**
@@ -353,8 +352,8 @@ public final class ReportGenerator {
 		for (final Point point : map.locations()) {
 			// Because neither Forests, Mountains, nor Ground have positive IDs,
 			// we can ignore everything but the "other" fixtures.
-			retval.putAll(NullCleaner
-					.assertNotNull(getFixtures(map.streamOtherFixtures(point))
+			retval.putAll(
+					assertNotNull(getFixtures(map.streamOtherFixtures(point))
 							.filter(fix -> (fix instanceof TileFixture)
 									|| (fix.getID() > 0))
 							.collect(Collectors.toMap(fix -> {
@@ -374,12 +373,12 @@ public final class ReportGenerator {
 	 */
 	private static Stream<IFixture> getFixtures(
 														   final Stream<? extends IFixture> stream) {
-		return NullCleaner.assertNotNull(stream.flatMap(fix -> {
+		return assertNotNull(stream.flatMap(fix -> {
 			if (fix instanceof FixtureIterable) {
-				return Stream.concat(Stream.of(fix), getFixtures(NullCleaner.assertNotNull(StreamSupport
-						                                     .stream(((FixtureIterable<@NonNull ?>) fix)
-								                                             .spliterator(),
-								                                     false))));
+				return Stream.concat(Stream.of(fix), getFixtures(assertNotNull(
+						StreamSupport
+								.stream(((FixtureIterable<@NonNull ?>) fix).spliterator(),
+										false))));
 			} else {
 				return Stream.of(fix);
 			}
