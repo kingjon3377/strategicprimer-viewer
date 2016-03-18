@@ -177,7 +177,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	@Override
 	public int getIndexOfChild(@Nullable final Object parent,
 							   @Nullable final Object child) {
-		if ((parent instanceof Player) && parent.equals(root)) {
+		if ((parent instanceof Player) && parent.equals(root) && child instanceof IUnit) {
 			return model.getUnits(root).indexOf(child);
 		} else if (parent instanceof IUnit) {
 			// FIXME: There ought to be a way to do this using the Streams API
