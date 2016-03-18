@@ -229,7 +229,7 @@ public final class WorkerMgmtFrame extends JFrame {
 					return retval;
 				});
 		ToolTipManager.sharedInstance().registerComponent(report);
-		report.addMouseListener(new reportMouseHandler(report, model, ioHandler));
+		report.addMouseListener(new ReportMouseHandler(report, model, ioHandler));
 		ioHandler.addPlayerChangeListener(reportUpdater);
 		model.addMapChangeListener(reportUpdater);
 		final MemberDetailPanel mdp = new MemberDetailPanel();
@@ -709,7 +709,7 @@ public final class WorkerMgmtFrame extends JFrame {
 	 * Handler for mouse clicks in the report tree.
 	 */
 	@SuppressWarnings("ClassHasNoToStringMethod")
-	private static class reportMouseHandler extends MouseAdapter {
+	private static class ReportMouseHandler extends MouseAdapter {
 		/**
 		 * The report tree.
 		 */
@@ -729,7 +729,7 @@ public final class WorkerMgmtFrame extends JFrame {
 		 * @param workerModel the driver model
 		 * @param ioHandler the menu-item handler
 		 */
-		protected reportMouseHandler(final JTree reportTree,
+		protected ReportMouseHandler(final JTree reportTree,
 									 final IWorkerModel workerModel,
 									 final IOHandler ioHandler) {
 			report = reportTree;
