@@ -14,10 +14,6 @@ import java.util.Spliterators;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.fixtures.Ground;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
@@ -25,10 +21,13 @@ import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.viewer.PointIterator;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
 import util.EmptyIterator;
 import util.IteratorWrapper;
-import util.NullCleaner;
+
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A proper implementation of IMapNG.
@@ -201,7 +200,7 @@ public class SPMapNG implements IMutableMapNG {
 				final Map<Integer, IUnit> ourUnits = new HashMap<>();
 				for (final TileFixture fix : getOtherFixtures(point)) {
 					final Integer idNum =
-							NullCleaner.assertNotNull(Integer.valueOf(fix.getID()));
+							assertNotNull(Integer.valueOf(fix.getID()));
 					if (fix instanceof IUnit) {
 						ourUnits.put(idNum, (IUnit) fix);
 					} else if (fix instanceof SubsettableFixture) {
@@ -331,7 +330,7 @@ public class SPMapNG implements IMutableMapNG {
 	 */
 	@Override
 	public Stream<@NonNull Point> locationStream() {
-		return NullCleaner.assertNotNull(StreamSupport.stream(
+		return assertNotNull(StreamSupport.stream(
 				Spliterators.spliteratorUnknownSize(
 						new PointIterator(dimensions(), null, true, true), 0),
 				false));
@@ -343,7 +342,7 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public TileType getBaseTerrain(final Point location) {
 		if (terrain.containsKey(location)) {
-			return NullCleaner.assertNotNull(terrain.get(location)); // NOPMD
+			return assertNotNull(terrain.get(location)); // NOPMD
 		} else {
 			return TileType.NotVisible;
 		}
@@ -365,9 +364,9 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public Iterable<River> getRivers(final Point location) {
 		if (rivers.containsKey(location)) {
-			return NullCleaner.assertNotNull(rivers.get(location)); // NOPMD
+			return assertNotNull(rivers.get(location)); // NOPMD
 		} else {
-			return NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
+			return assertNotNull(EnumSet.noneOf(River.class));
 		}
 	}
 
@@ -398,7 +397,7 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public Iterable<TileFixture> getOtherFixtures(final Point location) {
 		if (fixtures.containsKey(location)) {
-			return NullCleaner.assertNotNull(fixtures.get(location)); // NOPMD
+			return assertNotNull(fixtures.get(location)); // NOPMD
 		} else {
 			return new IteratorWrapper<>(new EmptyIterator<>());
 		}
@@ -410,9 +409,9 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public Stream<TileFixture> streamOtherFixtures(final Point location) {
 		if (fixtures.containsKey(location)) {
-			return NullCleaner.assertNotNull(NullCleaner.assertNotNull(fixtures.get(location)).stream());
+			return assertNotNull(assertNotNull(fixtures.get(location)).stream());
 		} else {
-			return NullCleaner.assertNotNull(Stream.empty());
+			return assertNotNull(Stream.empty());
 		}
 	}
 	/**
@@ -576,7 +575,7 @@ public class SPMapNG implements IMutableMapNG {
 				// builder.append(")");
 			}
 		}
-		return NullCleaner.assertNotNull(builder.toString());
+		return assertNotNull(builder.toString());
 	}
 
 	/**
@@ -619,7 +618,7 @@ public class SPMapNG implements IMutableMapNG {
 		if (rivers.containsKey(location)) {
 			localRivers = rivers.get(location);
 		} else {
-			localRivers = NullCleaner.assertNotNull(EnumSet.noneOf(River.class));
+			localRivers = assertNotNull(EnumSet.noneOf(River.class));
 			rivers.put(location, localRivers);
 		}
 		Collections.addAll(localRivers, rvrs);
