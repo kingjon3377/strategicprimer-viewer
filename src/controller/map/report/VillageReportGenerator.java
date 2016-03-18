@@ -97,7 +97,6 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 		});
 		final String ownString = own.toString();
 		final String independentsString = independents.toString();
-		// TODO: Size?
 		final StringBuilder retval =
 				new StringBuilder(40 + ownString.length() + independentsString.length() +
 						                  others.values().stream()
