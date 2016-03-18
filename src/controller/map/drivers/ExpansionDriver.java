@@ -182,7 +182,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 			}
 
 			@Override
-			public void setImage(final String image) {
+			public void setImage(final String img) {
 				throw ise;
 			}
 
