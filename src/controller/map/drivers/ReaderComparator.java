@@ -14,6 +14,7 @@ import java.io.StringReader;
 import java.nio.CharBuffer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import javax.xml.stream.XMLStreamException;
 import model.map.IMapNG;
 import util.NullCleaner;
@@ -75,38 +76,34 @@ public final class ReaderComparator implements UtilityDriver {
 	 * @param args The list of specified files to compare them on
 	 */
 	public void compareReaders(final String... args) {
-		for (final String arg : args) {
-			if (arg == null) {
-				continue;
-			}
-			try {
-				// TODO: Handle exceptions in called method so we can use Streams here
-				//noinspection ObjectAllocationInLoop
-				compareReaders(new File(arg));
-			} catch (final XMLStreamException e) {
-				LOGGER.log(Level.SEVERE,
-						"XMLStreamException (probably badly formed input) in "
-								+ arg, e);
-			} catch (final MapVersionException e) {
-				LOGGER.log(Level.SEVERE,
-						"Map version too old for old-style reader in file "
-								+ arg, e);
-			} catch (final SPFormatException e) {
-				LOGGER.log(Level.SEVERE,
-						"New reader claims invalid SP map data in " + arg, e);
-			}
+		Stream.of(args).map(File::new).forEach(this::compareReaders);
+	}
+	/**
+	 * Handle (log appropriately) an exception.
+	 * @param except the exception to handle
+	 * @param file the name of the file being read
+	 */
+	private static void handleException(final Exception except, final String file) {
+		if (except instanceof XMLStreamException) {
+			LOGGER.log(Level.SEVERE,
+					"XMLStreamException (probably badly formed input) in " + file,
+					except);
+		} else if (except instanceof MapVersionException) {
+			LOGGER.log(Level.SEVERE,
+					"Map version too old for old-style reader in file " + file, except);
+		} else if (except instanceof SPFormatException) {
+			LOGGER.log(Level.SEVERE, "New reader claims invalid SP map data in " + file,
+					except);
+		} else {
+			LOGGER.log(Level.SEVERE, "Unhandled exception type", except);
 		}
 	}
-
 	/**
 	 * Compare the two readers on a file.
 	 *
 	 * @param arg the file to have each read.
-	 * @throws XMLStreamException if either reader claims badly formed input
-	 * @throws SPFormatException  if either reader claims invalid data
 	 */
-	public void compareReaders(final File arg) throws XMLStreamException,
-															  SPFormatException {
+	public void compareReaders(final File arg) {
 		SYS_OUT.print(arg);
 		SYS_OUT.println(':');
 		final String contents;
@@ -122,14 +119,24 @@ public final class ReaderComparator implements UtilityDriver {
 		final long startOne = System.nanoTime();
 		final IMapNG map1;
 		try (StringReader reader = new StringReader(contents)) {
-			map1 = oldReader.readMap(arg, reader, Warning.Ignore);
+			try {
+				map1 = oldReader.readMap(arg, reader, Warning.Ignore);
+			} catch (XMLStreamException | SPFormatException except) {
+				handleException(except, arg.getPath());
+				return;
+			}
 		}
 		final long endOne = System.nanoTime();
 		printElapsed("Old", endOne - startOne);
 		final long startTwo = System.nanoTime();
 		final IMapNG map2;
 		try (StringReader reader = new StringReader(contents)) {
-			map2 = newReader.readMap(arg, reader, Warning.Ignore);
+			try {
+				map2 = newReader.readMap(arg, reader, Warning.Ignore);
+			} catch (XMLStreamException | SPFormatException except) {
+				handleException(except, arg.getPath());
+				return;
+			}
 		}
 		final long endTwo = System.nanoTime();
 		printElapsed("New", endTwo - startTwo);
