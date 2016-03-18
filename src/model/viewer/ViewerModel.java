@@ -9,8 +9,9 @@ import model.listeners.SelectionChangeSupport;
 import model.map.IMutableMapNG;
 import model.map.Point;
 import model.map.PointFactory;
-import model.misc.SimpleDriverModel;
 import model.misc.IDriverModel;
+import model.misc.SimpleDriverModel;
+import util.Pair;
 
 /**
  * A class to encapsulate the various model-type things views need to do with maps.
@@ -84,7 +85,14 @@ public final class ViewerModel extends SimpleDriverModel implements
 		selPoint = PointFactory.point(-1, -1);
 		setMap(firstMap, file);
 	}
-
+	/**
+	 * Constructor.
+	 * @param pair a Pair of the initial map and the name it was loaded from or should
+	 *                be saved to
+	 */
+	public ViewerModel(final Pair<IMutableMapNG, File> pair) {
+		this(pair.first(), pair.second());
+	}
 	/**
 	 * Copy constructor.
 	 *

@@ -5,13 +5,12 @@ import controller.map.misc.FileChooser;
 import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
 import java.io.File;
-import javax.swing.SwingUtilities;
-import model.map.IMutableMapNG;
+import java.util.stream.StreamSupport;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
-import util.Pair;
 import view.map.main.ViewerFrame;
 
 /**
@@ -50,18 +49,16 @@ public final class ViewerStart implements SimpleDriver {
 	 * Run the driver.
 	 *
 	 * @param model the driver model
-	 * @throws DriverFailedException on error
 	 */
 	@Override
-	public void startDriver(final IDriverModel model) throws DriverFailedException {
+	public void startDriver(final IDriverModel model) {
 		final IViewerModel vmodel;
 		if (model instanceof IViewerModel) {
 			vmodel = (IViewerModel) model;
 		} else if (model instanceof IMultiMapModel) {
-			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model)
-																.getAllMaps()) {
-				startDriver(new ViewerModel(pair.first(), pair.second()));
-			}
+			StreamSupport
+					.stream(((IMultiMapModel) model).getAllMaps().spliterator(), false)
+					.map(ViewerModel::new).forEach(this::startDriver);
 			return;
 		} else {
 			vmodel = new ViewerModel(model);
