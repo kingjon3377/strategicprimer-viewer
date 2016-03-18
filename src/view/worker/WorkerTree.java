@@ -280,6 +280,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 					if (stats == null) {
 						continue;
 					} else {
+						//noinspection TailRecursion
 						return getStatsToolTip(worker);
 					}
 				} else {
