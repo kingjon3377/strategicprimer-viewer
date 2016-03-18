@@ -135,7 +135,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 * @param map    a player's map, to be expanded
 	 */
 	private static void expand(final IMapNG master, final IMutableMapNG map) {
-		final Player player = map.getCurrentPlayer();
+		final Player currentPlayer = map.getCurrentPlayer();
 		final IllegalStateException ise =
 				new IllegalStateException(
 												 "Unsupported method called on mock " +
@@ -143,7 +143,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 		final Collection<Point> villagePoints = map.locationStream()
 				                                        .filter(point ->
 						                                                containsSwornVillage(
-						                                        master, point, player))
+						                                        master, point, currentPlayer))
 				                                        .collect(Collectors.toSet());
 		final IUnit mock = new IUnit() {
 			@Override
@@ -218,7 +218,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 
 			@Override
 			public Player getOwner() {
-				return player;
+				return currentPlayer;
 			}
 
 			@Override
@@ -296,7 +296,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 				if (fix instanceof HasOwner) {
 					map.addFixture(point, fix
 												  .copy(!((HasOwner) fix).getOwner()
-																 .equals(player)));
+																 .equals(currentPlayer)));
 				} else {
 					map.addFixture(point, fix.copy(true));
 				}
