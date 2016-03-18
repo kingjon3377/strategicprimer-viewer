@@ -1,8 +1,6 @@
 package view.map.main;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.FileNotFoundException;
@@ -21,10 +19,6 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import model.map.IMapNG;
 import model.map.Point;
@@ -38,6 +32,8 @@ import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.viewer.FixtureComparator;
 import model.viewer.ZOrderFilter;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import util.ImageLoader;
 import util.NullCleaner;
 import util.TypesafeLogger;
@@ -254,7 +250,8 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			temp.add(new Mountain());
 		}
 		map.streamOtherFixtures(location).forEach(temp::add);
-		return NullCleaner.assertNotNull(temp.stream().filter(zof::shouldDisplay).sorted(fixComp));
+		return NullCleaner.assertNotNull(
+				temp.stream().filter(zof::shouldDisplay).sorted(fixComp));
 	}
 
 	/**

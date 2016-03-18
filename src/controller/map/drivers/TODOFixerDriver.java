@@ -1,5 +1,9 @@
 package controller.map.drivers;
 
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
+import controller.map.misc.MapReaderAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,13 +11,7 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.xml.stream.XMLStreamException;
-
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.CLIHelper;
-import controller.map.misc.ICLIHelper;
-import controller.map.misc.MapReaderAdapter;
 import model.map.IMutableMapNG;
 import model.map.Point;
 import model.map.fixtures.mobile.Unit;
@@ -110,7 +108,8 @@ public final class TODOFixerDriver {
 	 * @param terrain the terrain the unit is in
 	 * @param cli the helper to get input from the user
 	 */
-	private void fixUnit(final Unit unit, final SimpleTerrain terrain, final ICLIHelper cli) {
+	private void fixUnit(final Unit unit, final SimpleTerrain terrain,
+	                     final ICLIHelper cli) {
 		final Random random = new Random(unit.getID());
 		count++;
 		final Collection<String> jobList;

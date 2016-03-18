@@ -369,8 +369,8 @@ public final class TestConverter {
 		converted.setGround(PointFactory.point(7, 7), new Ground(ROCK_TYPE, false));
 
 
-		try (StringWriter outOne = new StringWriter(); StringWriter outTwo = new StringWriter()) {
-
+		try (StringWriter outOne = new StringWriter();
+		     StringWriter outTwo = new StringWriter()) {
 			assertEquals("Products of two runs are both or neither subsets of expected",
 					converted.isSubset(
 							new OneToTwoConverter().convert(original, true), outOne, ""),
