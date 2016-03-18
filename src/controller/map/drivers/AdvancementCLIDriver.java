@@ -1,15 +1,12 @@
 package controller.map.drivers;
 
-import static view.util.SystemOut.SYS_OUT;
-
+import controller.map.drivers.DriverUsage.ParamCount;
+import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import controller.map.drivers.DriverUsage.ParamCount;
-import controller.map.misc.CLIHelper;
-import controller.map.misc.ICLIHelper;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
@@ -25,6 +22,8 @@ import model.workermgmt.WorkerModel;
 import util.NullCleaner;
 import util.SingletonRandom;
 import view.util.DriverQuit;
+
+import static view.util.SystemOut.SYS_OUT;
 
 /**
  * A driver to let the user add hours of experience to a player's workers from the command
@@ -82,18 +81,18 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	 * Run the driver. This form is, at the moment, primarily for use in test code, but
 	 * that may change.
 	 *
-	 * @param dmodel the driver-model that should be used by the app
+	 * @param model the driver-model that should be used by the app
 	 * @throws DriverFailedException if the driver fails for some reason
 	 */
 	@Override
-	public void startDriver(final IDriverModel dmodel) throws DriverFailedException {
-		final IWorkerModel model;
-		if (dmodel instanceof IWorkerModel) {
-			model = (IWorkerModel) dmodel;
+	public void startDriver(final IDriverModel model) throws DriverFailedException {
+		final IWorkerModel wmodel;
+		if (model instanceof IWorkerModel) {
+			wmodel = (IWorkerModel) model;
 		} else {
-			model = new WorkerModel(dmodel);
+			wmodel = new WorkerModel(model);
 		}
-		final List<Player> playerList = model.getPlayers();
+		final List<Player> playerList = wmodel.getPlayers();
 		try (final ICLIHelper cli = new CLIHelper()) {
 			final String hdr = "Available players:";
 			final String none = "No players found.";
@@ -107,7 +106,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 																								  none,
 																								  prpt,
 																								  false)) {
-				advanceWorkers(model,
+				advanceWorkers(wmodel,
 						NullCleaner.assertNotNull(playerList.remove(playerNum)), cli);
 			}
 		} catch (final IOException except) {

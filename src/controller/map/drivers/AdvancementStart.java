@@ -50,18 +50,18 @@ public final class AdvancementStart implements SimpleDriver {
 	/**
 	 * Run the driver
 	 *
-	 * @param dmodel the driver model
+	 * @param model the driver model
 	 */
 	@Override
-	public void startDriver(final IDriverModel dmodel) {
-		final IWorkerModel model;
-		if (dmodel instanceof IWorkerModel) {
-			model = (IWorkerModel) dmodel;
+	public void startDriver(final IDriverModel model) {
+		final IWorkerModel wmodel;
+		if (model instanceof IWorkerModel) {
+			wmodel = (IWorkerModel) model;
 		} else {
-			model = new WorkerModel(dmodel);
+			wmodel = new WorkerModel(model);
 		}
 		SwingUtilities.invokeLater(
-				() -> new AdvancementFrame(model, new IOHandler(model)).setVisible(true));
+				() -> new AdvancementFrame(wmodel, new IOHandler(wmodel)).setVisible(true));
 	}
 
 	/**
