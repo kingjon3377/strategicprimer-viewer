@@ -213,6 +213,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	 * @param old      what the caller thinks was the previously selected member
 	 * @param selected the newly selected unit member
 	 */
+	@SuppressWarnings("ObjectEquality")
 	@Override
 	public void memberSelected(@Nullable final UnitMember old,
 							   @Nullable final UnitMember selected) {
