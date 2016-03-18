@@ -269,9 +269,9 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 		final TreePath path = new TreePath(root);
 		final int[] indices = singletonInt(model.getUnits(root).size());
 		final Object[] children = singletonObj(unit);
+		final TreeModelEvent event = new TreeModelEvent(this, path, indices, children);
 		for (final TreeModelListener listener : listeners) {
-			listener.treeNodesInserted(new TreeModelEvent(this, path, // NOPMD
-																 indices, children));
+			listener.treeNodesInserted(event);
 		}
 	}
 
@@ -312,8 +312,9 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	public void mapChanged() {
 		root = model.getMap().getCurrentPlayer();
 		final TreePath path = new TreePath(root);
+		final TreeModelEvent event = new TreeModelEvent(this, path);
 		for (final TreeModelListener listener : listeners) {
-			listener.treeNodesChanged(new TreeModelEvent(this, path)); // NOPMD
+			listener.treeNodesChanged(event);
 		}
 	}
 
@@ -325,8 +326,9 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		root = newPlayer;
 		final TreePath path = new TreePath(root);
+		final TreeModelEvent event = new TreeModelEvent(this, path);
 		for (final TreeModelListener listener : listeners) {
-			listener.treeNodesChanged(new TreeModelEvent(this, path)); // NOPMD
+			listener.treeNodesChanged(event);
 		}
 	}
 
@@ -351,9 +353,9 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 		final TreePath path = new TreePath(new Object[]{root, unit});
 		final int[] indices = {getIndexOfChild(unit, member)};
 		final Object[] children = {member};
+		final TreeModelEvent event = new TreeModelEvent(this, path, indices, children);
 		for (final TreeModelListener listener : listeners) {
-			listener.treeNodesInserted(new TreeModelEvent(this, path, // NOPMD
-																 indices, children));
+			listener.treeNodesInserted(event);
 		}
 	}
 
@@ -401,9 +403,9 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			// Probably the player. In any case, ignore.
 			return;
 		}
+		final TreeModelEvent event = new TreeModelEvent(this, path, indices, children);
 		for (final TreeModelListener listener : listeners) {
-			listener.treeNodesChanged(new TreeModelEvent(this, path, // NOPMD
-																indices, children));
+			listener.treeNodesChanged(event);
 		}
 	}
 
@@ -442,9 +444,9 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			// Impossible at present, so ignore
 			return;
 		}
+		final TreeModelEvent event = new TreeModelEvent(this, path, indices, children);
 		for (final TreeModelListener listener : listeners) {
-			listener.treeNodesChanged(new TreeModelEvent(this, path, // NOPMD
-																indices, children));
+			listener.treeNodesChanged(event);
 		}
 	}
 
@@ -461,15 +463,20 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 					final int index = getIndexOfChild(unit, item);
 					dismissedMembers.add(member);
 					unit.removeMember(member);
+					// TODO: Make Object-array-creation method to improve formatting here
+					final TreeModelEvent evt = new TreeModelEvent(this,
+							                                             new TreePath
+									                                             (new
+											                                              Object[]{
+
+											                                             root,
+									                                             unit}),
+							                                             singletonInt(
+									                                             index),
+							                                             singletonObj(
+									                                             member));
 					for (final TreeModelListener listener : listeners) {
-						listener.treeNodesRemoved(new TreeModelEvent(this,
-																			new TreePath(new Object[]{
-																					root,
-																					unit}),
-																			singletonInt(
-																					index),
-																			singletonObj(
-																					member)));
+						listener.treeNodesRemoved(evt);
 					}
 					break;
 				}
