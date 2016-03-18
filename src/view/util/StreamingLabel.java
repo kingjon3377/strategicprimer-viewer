@@ -61,6 +61,7 @@ public final class StreamingLabel extends JLabel {
 	/**
 	 * The writer that can be printed to.
 	 */
+	@SuppressWarnings({"IOResourceOpenedButNotSafelyClosed", "resource"})
 	private final PrintWriter writer = new StreamingLabelWriter(new StringWriter(), this);
 
 	/**

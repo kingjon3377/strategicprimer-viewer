@@ -31,6 +31,7 @@ public final class NullStream extends OutputStream {
 	/**
 	 * A bit-bucket to send subset output to.
 	 */
+	@SuppressWarnings("IOResourceOpenedButNotSafelyClosed")
 	public static final Appendable DEV_NULL =
 			new PrintWriter(new OutputStreamWriter(new NullStream()));
 
