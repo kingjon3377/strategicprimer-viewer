@@ -37,6 +37,7 @@ public final class DriverQuit {
 	 *
 	 * @param code The exit code.
 	 */
+	@SuppressWarnings("CallToSystemExit")
 	public static void quit(final int code) {
 		System.exit(code);
 	}
