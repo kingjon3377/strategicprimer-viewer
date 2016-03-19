@@ -46,6 +46,7 @@ public final class UnitMemberTransferable implements Transferable {
 	 *
 	 * @author Jonathan Lovelace
 	 */
+	@SuppressWarnings("PublicField")
 	public static final class UnitMemberPair {
 		/**
 		 * The unit member.
