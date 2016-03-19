@@ -6,7 +6,7 @@ import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
 import java.io.File;
 import java.util.stream.StreamSupport;
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
