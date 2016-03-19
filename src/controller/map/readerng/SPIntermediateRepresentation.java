@@ -64,22 +64,13 @@ public final class SPIntermediateRepresentation {
 	/**
 	 * Constructor.
 	 *
-	 * @param name the tag this represents.
-	 */
-	public SPIntermediateRepresentation(final String name) {
-		tag = name;
-	}
-
-	/**
-	 * Secondary constructor.
-	 *
 	 * @param name       the tag this represents
 	 * @param attributes a list of attributes to add.
 	 */
 	@SafeVarargs
 	public SPIntermediateRepresentation(final String name,
 	                                    final Pair<String, String>... attributes) {
-		this(name);
+		tag = name;
 		for (final Pair<String, String> attr : attributes) {
 			addAttribute(attr.first(), attr.second());
 			// attrs.add(attr);
