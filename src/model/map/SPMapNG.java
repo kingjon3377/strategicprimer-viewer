@@ -126,6 +126,13 @@ public class SPMapNG implements IMutableMapNG {
 					// return false;
 				}
 			}
+			// Declared here to avoid object allocations in the loop.
+			final Collection<TileFixture> ourFixtures = new ArrayList<>();
+			final Map<Integer, SubsettableFixture> ourSubsettables =
+					new HashMap<>();
+			// Because IUnit is Subsettable<IUnit> and thus incompatible
+			// with SubsettableFixture
+			final Map<Integer, IUnit> ourUnits = new HashMap<>();
 			for (final Point point : locations()) {
 				final String ctxt =
 						context + " At " + Objects.toString(point) + ':';
@@ -193,12 +200,9 @@ public class SPMapNG implements IMutableMapNG {
 						// return false;
 					}
 				}
-				final Collection<TileFixture> ourFixtures = new ArrayList<>();
-				final Map<Integer, SubsettableFixture> ourSubsettables =
-						new HashMap<>();
-				// Because IUnit is Subsettable<IUnit> and thus incompatible
-				// with SubsettableFixture
-				final Map<Integer, IUnit> ourUnits = new HashMap<>();
+				ourFixtures.clear();
+				ourSubsettables.clear();
+				ourUnits.clear();
 				for (final TileFixture fix : getOtherFixtures(point)) {
 					final Integer idNum =
 							assertNotNull(Integer.valueOf(fix.getID()));
