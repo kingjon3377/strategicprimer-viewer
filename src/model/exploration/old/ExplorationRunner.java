@@ -221,9 +221,9 @@ public final class ExplorationRunner { // NOPMD
 				try {
 					for (final String value : getTable(table).allEvents()) {
 						if (value.contains("#")) {
-							final String splitVal = value.split("#", 3)[1];
-							if ((splitVal != null)
-									    && recursiveCheck(splitVal, state)) {
+							final String splitVal =
+									NullCleaner.assertNotNull(value.split("#", 3)[1]);
+							if (recursiveCheck(splitVal, state)) {
 								return true; // NOPMD
 							}
 						}
@@ -285,11 +285,9 @@ public final class ExplorationRunner { // NOPMD
 				try {
 					for (final String value : getTable(table).allEvents()) {
 						if (value.contains("#")) {
-							final String splitVal = value.split("#", 3)[1];
-							if (splitVal != null) {
-								verboseRecursiveCheck(splitVal,
-										ostream, state);
-							}
+							final String splitVal =
+									NullCleaner.assertNotNull(value.split("#", 3)[1]);
+							verboseRecursiveCheck(splitVal, ostream, state);
 						}
 					}
 				} catch (final MissingTableException e) {
