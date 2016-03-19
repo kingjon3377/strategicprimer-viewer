@@ -66,6 +66,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	 * @param pt the point, if any, in the map that this represents something on
 	 * @param texts a number of strings to concatenate and make the text of the node.
 	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
 	public SimpleReportNode(final Point pt, final String... texts) {
 		this(concat(texts));
 		point = pt;
@@ -74,6 +75,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	/**
 	 * @param texts a number of strings to concatenate and make the text of the node.
 	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
 	public SimpleReportNode(final String... texts) {
 		this(concat(texts));
 		point = null;
