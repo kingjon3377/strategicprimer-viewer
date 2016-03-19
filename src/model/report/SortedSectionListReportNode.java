@@ -47,12 +47,12 @@ public final class SortedSectionListReportNode extends SectionListReportNode {
 	/**
 	 * Add a node, then sort.
 	 *
-	 * @param node the node to add
+	 * @param newChild the node to add
 	 */
 	@SuppressWarnings("unchecked") // Nothing we can do about it ...
 	@Override
-	public void add(@Nullable final MutableTreeNode node) {
-		super.add(node);
+	public void add(@Nullable final MutableTreeNode newChild) {
+		super.add(newChild);
 		Collections.sort(children);
 	}
 	/**
