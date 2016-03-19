@@ -66,8 +66,8 @@ public interface IJob
 	/**
 	 * TODO: Should we add and return a new Skill in the not-present case?
 	 *
-	 * @param name the name of a Skill
+	 * @param skillName the name of a Skill
 	 * @return the Skill by that name in the Job, or none if not present
 	 */
-	@Nullable ISkill getSkill(String name);
+	@Nullable ISkill getSkill(String skillName);
 }
