@@ -42,6 +42,7 @@ public final class MapCheckerGUI implements UtilityDriver {
 	 *
 	 * @param args command-line arguments
 	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	public void startDriver(final String... args) {
 		final MapCheckerFrame window = new MapCheckerFrame();

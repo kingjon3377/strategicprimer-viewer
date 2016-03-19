@@ -83,6 +83,7 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 	 * @param args the command-line arguments
 	 * @throws DriverFailedException on error.
 	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 0) {

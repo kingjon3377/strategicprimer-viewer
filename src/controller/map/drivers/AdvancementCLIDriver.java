@@ -121,6 +121,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	 * @param args the command-line arguments (map files)
 	 * @throws DriverFailedException if the driver fails to start
 	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 0) {

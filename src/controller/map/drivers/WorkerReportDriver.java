@@ -63,6 +63,7 @@ public final class WorkerReportDriver implements ISPDriver {
 	 * @param args command-line arguments
 	 * @throws DriverFailedException on fatal error
 	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		final MapReaderAdapter reader = new MapReaderAdapter();

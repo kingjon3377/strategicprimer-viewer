@@ -34,6 +34,7 @@ public interface ISPDriver extends HasName {
 	 * @param args any command-line arguments that should be passed to the driver.
 	 * @throws DriverFailedException if it's impossible for the driver to start.
 	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
 	void startDriver(String... args) throws DriverFailedException;
 
 	/**

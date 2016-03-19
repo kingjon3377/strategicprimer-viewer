@@ -121,6 +121,7 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 	 * @param args command-line arguments
 	 * @throws DriverFailedException if something goes wrong
 	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length != 1) {

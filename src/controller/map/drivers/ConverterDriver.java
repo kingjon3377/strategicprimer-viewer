@@ -65,6 +65,7 @@ public final class ConverterDriver implements UtilityDriver {
 	 * @param args command-line argument
 	 * @throws DriverFailedException on fatal error
 	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length < 1) {

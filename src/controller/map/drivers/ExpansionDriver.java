@@ -119,6 +119,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 * @param args command-line arguments
 	 * @throws DriverFailedException on error
 	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length < 2) {

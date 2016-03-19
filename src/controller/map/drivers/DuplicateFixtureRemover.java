@@ -139,6 +139,7 @@ public final class DuplicateFixtureRemover implements SimpleCLIDriver {
 	 * @param args Command-line arguments
 	 * @throws DriverFailedException on error
 	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 0) {

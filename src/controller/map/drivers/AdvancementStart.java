@@ -70,6 +70,7 @@ public final class AdvancementStart implements SimpleDriver {
 	 * @param args Command-line arguments.
 	 * @throws DriverFailedException if the driver failed to run.
 	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		try {

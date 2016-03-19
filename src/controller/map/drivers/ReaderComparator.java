@@ -188,6 +188,7 @@ public final class ReaderComparator implements UtilityDriver {
 	 *
 	 * @param args The files to test on
 	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	public void startDriver(final String... args) {
 		compareReaders(args);

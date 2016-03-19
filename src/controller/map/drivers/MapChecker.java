@@ -64,6 +64,7 @@ public final class MapChecker implements UtilityDriver {
 	 * @param args command-line arguments
 	 * @throws DriverFailedException if not enough arguments
 	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length < 1) {

@@ -80,6 +80,7 @@ public final class SubsetGUIDriver implements ISPDriver {
 	 * @param args command-line arguments
 	 * @throws DriverFailedException if the main map fails to load
 	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length < 2) {

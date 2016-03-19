@@ -157,6 +157,7 @@ public final class AppStarter implements ISPDriver {
 	 * @param args command-line arguments
 	 * @throws DriverFailedException on fatal error.
 	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		final Collection<String> options = new ArrayList<>();
