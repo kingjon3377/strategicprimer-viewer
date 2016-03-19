@@ -28,10 +28,10 @@ import model.map.fixtures.mobile.Worker;
 @FunctionalInterface
 public interface NewWorkerListener extends EventListener {
 	/**
-	 * Add the new unit.
+	 * Add the new worker.
 	 *
-	 * @param unit the unit to add
+	 * @param worker the worker to add
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	void addNewWorker(Worker unit);
+	void addNewWorker(Worker worker);
 }
