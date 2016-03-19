@@ -64,8 +64,8 @@ public interface IWorker extends UnitMember, Iterable<@NonNull IJob>, HasName,
 	/**
 	 * TODO: Should we create and return a new Job instead of null if not present?
 	 *
-	 * @param name the name of a Job
+	 * @param jobName the name of a Job
 	 * @return the Job by that name the worker has, or null if it has none
 	 */
-	@Nullable IJob getJob(String name);
+	@Nullable IJob getJob(String jobName);
 }

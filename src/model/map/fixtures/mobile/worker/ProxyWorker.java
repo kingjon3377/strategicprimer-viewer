@@ -360,14 +360,14 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	/**
 	 * TODO: Should we add and return a new Job instead of null if not present?
 	 *
-	 * @param name the name of a Job
+	 * @param jobName the name of a Job
 	 * @return the Job by that name the worker has, or null if it has none
 	 */
 	@Nullable
 	@Override
-	public IJob getJob(final String name) {
+	public IJob getJob(final String jobName) {
 		for (final IJob job : proxyJobs) {
-			if (name.equals(job.getName())) {
+			if (jobName.equals(job.getName())) {
 				return job;
 			}
 		}
