@@ -44,6 +44,7 @@ public final class EqualsAny {
 	 * @param values  the values to compare to it
 	 * @return true if any of theme equal it, false otherwise.
 	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
 	@SafeVarargs
 	public static <TYPE> boolean equalsAny(final TYPE against,
 	                                       final TYPE... values) {
