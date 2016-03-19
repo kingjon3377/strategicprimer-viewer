@@ -75,6 +75,7 @@ public final class ReaderComparator implements UtilityDriver {
 	 *
 	 * @param args The list of specified files to compare them on
 	 */
+	@SuppressWarnings("OverloadedVarargsMethod")
 	public void compareReaders(final String... args) {
 		Stream.of(args).map(File::new).forEach(this::compareReaders);
 	}
