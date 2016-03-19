@@ -606,7 +606,7 @@ public final class WorkerMgmtFrame extends JFrame {
 	/**
 	 * A thread to generate the report tree in the background.
 	 */
-	protected static final class ReportGeneratorThread implements Runnable {
+	private static final class ReportGeneratorThread implements Runnable {
 		/**
 		 * A logger for the thread.
 		 */
