@@ -215,27 +215,26 @@ public final class ExplorationRunner { // NOPMD
 	private boolean recursiveCheck(final String table, final Set<String> state) {
 		if (state.contains(table)) {
 			return false; // NOPMD
-		} else {
-			state.add(table);
-			if (tables.keySet().contains(table)) {
-				try {
-					for (final String value : getTable(table).allEvents()) {
-						if (value.contains("#")) {
-							final String splitVal =
-									NullCleaner.assertNotNull(value.split("#", 3)[1]);
-							if (recursiveCheck(splitVal, state)) {
-								return true; // NOPMD
-							}
+		} // else
+		state.add(table);
+		if (tables.keySet().contains(table)) {
+			try {
+				for (final String value : getTable(table).allEvents()) {
+					if (value.contains("#")) {
+						final String splitVal =
+								NullCleaner.assertNotNull(value.split("#", 3)[1]);
+						if (recursiveCheck(splitVal, state)) {
+							return true; // NOPMD
 						}
 					}
-				} catch (final MissingTableException e) {
-					LOGGER.log(Level.INFO, "Missing table " + table, e);
-					return true; // NOPMD
 				}
-				return false; // NOPMD
-			} else {
-				return true;
+			} catch (final MissingTableException e) {
+				LOGGER.log(Level.INFO, "Missing table " + table, e);
+				return true; // NOPMD
 			}
+			return false; // NOPMD
+		} else {
+			return true;
 		}
 	}
 
