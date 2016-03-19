@@ -110,15 +110,15 @@ public final class SubsetFrame extends JFrame {
 		/**
 		 * Start or continue a line.
 		 *
-		 * @param str the string to print
+		 * @param csq the string to print
 		 * @return this
 		 * @throws IOException on I/O error
 		 */
 		@SuppressWarnings({"ReturnOfThis", "StandardVariableNames"})
 		@Override
-		public Writer append(@Nullable final CharSequence str) throws IOException {
+		public Writer append(@Nullable final CharSequence csq) throws IOException {
 			final String local =
-					NullCleaner.valueOrDefault(str, "null").toString();
+					NullCleaner.valueOrDefault(csq, "null").toString();
 			if (lineStart) {
 				super.append("<p style=\"color:white\">");
 			}
