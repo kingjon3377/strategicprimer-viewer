@@ -77,12 +77,12 @@ public final class SkillAdvancementPanel extends BoxPanel
 	private ISkill skill = null;
 
 	/**
-	 * @param nSkill the newly selected skill.
+	 * @param selectedSkill the newly selected skill.
 	 */
 	@SuppressWarnings("VariableNotUsedInsideIf")
 	@Override
-	public void selectSkill(@Nullable final ISkill nSkill) {
-		skill = nSkill;
+	public void selectSkill(@Nullable final ISkill selectedSkill) {
+		skill = selectedSkill;
 		if (skill != null) {
 			hours.requestFocusInWindow();
 		}

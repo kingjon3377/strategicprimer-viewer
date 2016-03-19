@@ -48,11 +48,11 @@ public final class LevelListener implements LevelGainListener,
 	private ISkill skill = null;
 
 	/**
-	 * @param nSkill the newly selected skill
+	 * @param selectedSkill the newly selected skill
 	 */
 	@Override
-	public void selectSkill(@Nullable final ISkill nSkill) {
-		skill = nSkill;
+	public void selectSkill(@Nullable final ISkill selectedSkill) {
+		skill = selectedSkill;
 	}
 
 	/**
