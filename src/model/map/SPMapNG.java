@@ -593,11 +593,11 @@ public class SPMapNG implements IMutableMapNG {
 
 	/**
 	 * @param location a location
-	 * @param ttype    the terrain there
+	 * @param terrainType    the terrain there
 	 */
 	@Override
-	public void setBaseTerrain(final Point location, final TileType ttype) {
-		terrain.put(location, ttype);
+	public void setBaseTerrain(final Point location, final TileType terrainType) {
+		terrain.put(location, terrainType);
 	}
 
 	/**
@@ -615,10 +615,10 @@ public class SPMapNG implements IMutableMapNG {
 
 	/**
 	 * @param location a location
-	 * @param rvrs     rivers to add to that location
+	 * @param addedRivers     rivers to add to that location
 	 */
 	@Override
-	public void addRivers(final Point location, final @NonNull River @NonNull ... rvrs) {
+	public void addRivers(final Point location, final @NonNull River @NonNull ... addedRivers) {
 		final EnumSet<@NonNull River> localRivers;
 		if (rivers.containsKey(location)) {
 			localRivers = rivers.get(location);
@@ -626,17 +626,17 @@ public class SPMapNG implements IMutableMapNG {
 			localRivers = assertNotNull(EnumSet.noneOf(River.class));
 			rivers.put(location, localRivers);
 		}
-		Collections.addAll(localRivers, rvrs);
+		Collections.addAll(localRivers, addedRivers);
 	}
 
 	/**
 	 * @param location a location
-	 * @param rvrs     rivers to remove from it
+	 * @param removedRivers     rivers to remove from it
 	 */
 	@Override
-	public void removeRivers(final Point location, final River... rvrs) {
+	public void removeRivers(final Point location, final River... removedRivers) {
 		if (rivers.containsKey(location)) {
-			Stream.of(rvrs).forEach(rivers.get(location)::remove);
+			Stream.of(removedRivers).forEach(rivers.get(location)::remove);
 		}
 	}
 
@@ -655,14 +655,14 @@ public class SPMapNG implements IMutableMapNG {
 
 	/**
 	 * @param location a location
-	 * @param grnd     what the ground there should be, if any
+	 * @param newGround     what the ground there should be, if any
 	 */
 	@Override
-	public void setGround(final Point location, @Nullable final Ground grnd) {
-		if (grnd == null) {
+	public void setGround(final Point location, @Nullable final Ground newGround) {
+		if (newGround == null) {
 			ground.remove(location);
 		} else {
-			ground.put(location, grnd);
+			ground.put(location, newGround);
 		}
 	}
 
@@ -703,11 +703,11 @@ public class SPMapNG implements IMutableMapNG {
 	}
 
 	/**
-	 * @param curr the new current turn
+	 * @param currentTurn the new current turn
 	 */
 	@Override
-	public void setCurrentTurn(final int curr) {
-		turn = curr;
+	public void setCurrentTurn(final int currentTurn) {
+		turn = currentTurn;
 	}
 
 	/**

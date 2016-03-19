@@ -36,9 +36,9 @@ public interface IMutableMapNG extends IMapNG {
 
 	/**
 	 * @param location a location
-	 * @param terrain  the new "base terrain" at that location
+	 * @param terrainType  the new "base terrain" at that location
 	 */
-	void setBaseTerrain(Point location, TileType terrain);
+	void setBaseTerrain(Point location, TileType terrainType);
 
 	/**
 	 * @param location a location
@@ -48,17 +48,17 @@ public interface IMutableMapNG extends IMapNG {
 
 	/**
 	 * @param location a location
-	 * @param rivers   rivers to add there
+	 * @param addedRivers   rivers to add there
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	void addRivers(Point location, @NonNull River @NonNull ... rivers);
+	void addRivers(Point location, @NonNull River @NonNull ... addedRivers);
 
 	/**
 	 * @param location a location
-	 * @param rivers   rivers to remove there
+	 * @param removedRivers   rivers to remove there
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	void removeRivers(Point location, @NonNull River @NonNull ... rivers);
+	void removeRivers(Point location, @NonNull River @NonNull ... removedRivers);
 
 	/**
 	 * @param location a location
@@ -69,9 +69,9 @@ public interface IMutableMapNG extends IMapNG {
 
 	/**
 	 * @param location a location
-	 * @param ground   the Ground at that location; null to remove any that is there
+	 * @param newGround   the Ground at that location; null to remove any that is there
 	 */
-	void setGround(Point location, @Nullable Ground ground);
+	void setGround(Point location, @Nullable Ground newGround);
 
 	/**
 	 * Note that this is not necessarily related to the other querying methods; it's
@@ -99,7 +99,7 @@ public interface IMutableMapNG extends IMapNG {
 	void setCurrentPlayer(Player player);
 
 	/**
-	 * @param turn the new current turn
+	 * @param currentTurn the new current turn
 	 */
-	void setCurrentTurn(int turn);
+	void setCurrentTurn(int currentTurn);
 }
