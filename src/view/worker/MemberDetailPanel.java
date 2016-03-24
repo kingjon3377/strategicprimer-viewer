@@ -318,7 +318,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			for (final IJob job : (Worker) local) {
 				//noinspection ObjectAllocationInLoop
 				final JLabel label = new JLabel(job.getName() + ' ' + job.getLevel());
-				String skills = stream(job.spliterator(), false)
+				final String skills = stream(job.spliterator(), false)
 						                .map(skill -> skill.getName() + ' ' +
 								                              skill.getLevel())
 						                .collect(joining(", ", "Skills: ", ""));
