@@ -803,7 +803,6 @@
     <inspection_tool class="UnnecessaryContinue" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoreInThenBranch" value="true" />
     </inspection_tool>
-    <inspection_tool class="UnnecessaryDefault" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="UnnecessaryExplicitNumericCast" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="UnnecessaryFinalOnLocalVariableOrParameter" enabled="false" level="WARNING" enabled_by_default="false">
       <option name="reportLocalVariables" value="false" />
