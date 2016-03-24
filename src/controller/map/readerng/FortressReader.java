@@ -87,19 +87,23 @@ public final class FortressReader implements INodeHandler<Fortress> {
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				final String memberTag = event.asStartElement().getName()
 												 .getLocalPart().toLowerCase();
-				if ("unit".equals(memberTag)) {
+				switch (memberTag) {
+				case "unit":
 					fort.addMember(UNIT_READER.parse(
 							NullCleaner.assertNotNull(event.asStartElement()),
 							stream, players, warner, idFactory));
-				} else if ("implement".equals(memberTag)) {
+					break;
+				case "implement":
 					fort.addMember(IMPL_READER.parse(
 							NullCleaner.assertNotNull(event.asStartElement()),
 							stream, players, warner, idFactory));
-				} else if ("resource".equals(memberTag)) {
+					break;
+				case "resource":
 					fort.addMember(RES_READER.parse(
 							NullCleaner.assertNotNull(event.asStartElement()),
 							stream, players, warner, idFactory));
-				} else {
+					break;
+				default:
 					throw new UnwantedChildException(
 							NullCleaner.assertNotNull(element.getName()),
 							NullCleaner.assertNotNull(event.asStartElement()));

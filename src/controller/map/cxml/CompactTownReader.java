@@ -251,19 +251,23 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				final String memberTag = event.asStartElement().getName()
 												 .getLocalPart().toLowerCase();
-				if ("unit".equals(memberTag)) {
+				switch (memberTag) {
+				case "unit":
 					retval.addMember(CompactUnitReader.READER.read(
 							NullCleaner.assertNotNull(event.asStartElement()),
 							stream, players, warner, idFactory));
-				} else if ("implement".equals(memberTag)) {
+					break;
+				case "implement":
 					retval.addMember(CompactImplementReader.READER.read(
 							NullCleaner.assertNotNull(event.asStartElement()),
 							stream, players, warner, idFactory));
-				} else if ("resource".equals(memberTag)) {
+					break;
+				case "resource":
 					retval.addMember(CompactResourcePileReader.READER.read(
 							NullCleaner.assertNotNull(event.asStartElement()),
 							stream, players, warner, idFactory));
-				} else {
+					break;
+				default:
 					throw new UnwantedChildException(
 							NullCleaner.assertNotNull(element.getName()),
 							NullCleaner.assertNotNull(event.asStartElement()));

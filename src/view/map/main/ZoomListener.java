@@ -7,6 +7,7 @@ import model.map.Point;
 import model.viewer.IViewerModel;
 import model.viewer.VisibleDimensions;
 import org.eclipse.jdt.annotation.Nullable;
+import util.TypesafeLogger;
 
 /**
  * A class to listen for zoom menu events.
@@ -53,33 +54,44 @@ public final class ZoomListener implements ActionListener {
 	public void actionPerformed(@Nullable final ActionEvent evt) {
 		if (evt == null) {
 			return;
-		} else if ("zoom in".equalsIgnoreCase(evt.getActionCommand())) {
-			model.zoomIn();
-		} else if ("zoom out".equalsIgnoreCase(evt.getActionCommand())) {
-			model.zoomOut();
-		} else if ("center".equalsIgnoreCase(evt.getActionCommand())) {
-			final Point selection = model.getSelectedPoint();
-			final MapDimensions dims = model.getMapDimensions();
-			final VisibleDimensions vDims = model.getDimensions();
-			final int topRow;
-			if ((selection.row - (vDims.getHeight() / 2)) <= 0) {
-				topRow = 0;
-			} else if ((selection.row + (vDims.getHeight() / 2)) >= dims.getRows()) {
-				topRow = dims.getRows() - vDims.getHeight();
-			} else {
-				topRow = selection.row - (vDims.getHeight() / 2);
+		} else {
+			switch (evt.getActionCommand().toLowerCase()) {
+			case "zoom in":
+				model.zoomIn();
+				break;
+			case "zoom out":
+				model.zoomOut();
+				break;
+			case "center":
+				final Point selection = model.getSelectedPoint();
+				final MapDimensions dims = model.getMapDimensions();
+				final VisibleDimensions vDims = model.getDimensions();
+				final int topRow;
+				if ((selection.row - (vDims.getHeight() / 2)) <= 0) {
+					topRow = 0;
+				} else if ((selection.row + (vDims.getHeight() / 2)) >= dims.getRows()) {
+					topRow = dims.getRows() - vDims.getHeight();
+				} else {
+					topRow = selection.row - (vDims.getHeight() / 2);
+				}
+				final int leftColumn;
+				if ((selection.col - (vDims.getWidth() / 2)) <= 0) {
+					leftColumn = 0;
+				} else if ((selection.col + (vDims.getWidth() / 2)) >=
+						           dims.getColumns()) {
+					leftColumn = dims.getColumns() - vDims.getWidth();
+				} else {
+					leftColumn = selection.col - (vDims.getWidth() / 2);
+				}
+				model.setDimensions(
+						new VisibleDimensions(topRow, topRow + dims.getRows(), leftColumn,
+
+								                     leftColumn + dims.getColumns()));
+				break;
+			default:
+				TypesafeLogger.getLogger(ZoomListener.class)
+						.info("Unhandled action in ZoomListener");
 			}
-			final int leftColumn;
-			if ((selection.col - (vDims.getWidth() / 2)) <= 0) {
-				leftColumn = 0;
-			} else if ((selection.col + (vDims.getWidth() / 2)) >= dims.getColumns()) {
-				leftColumn = dims.getColumns() - vDims.getWidth();
-			} else {
-				leftColumn = selection.col - (vDims.getWidth() / 2);
-			}
-			model.setDimensions(
-					new VisibleDimensions(topRow, topRow + dims.getRows(), leftColumn,
-							                     leftColumn + dims.getColumns()));
 		}
 	}
 
