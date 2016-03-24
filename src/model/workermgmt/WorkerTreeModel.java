@@ -180,7 +180,6 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 		if ((parent instanceof Player) && parent.equals(root) && child instanceof IUnit) {
 			return model.getUnits(root).indexOf(child);
 		} else if (parent instanceof IUnit) {
-			// FIXME: There ought to be a way to do this using the Streams API
 			int index = 0;
 			for (final UnitMember member : (IUnit) parent) {
 				if (member.equals(child)) {

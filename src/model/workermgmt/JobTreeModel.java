@@ -189,7 +189,6 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	public int getIndexOfChild(@Nullable final Object parent,
 							   @Nullable final Object child) {
 		if ((parent instanceof IWorker) || (parent instanceof IJob)) {
-			// TODO: Ought to be able to do this with the Stream API
 			//noinspection ConstantConditions
 			assert parent != null;
 			int index = 0;
