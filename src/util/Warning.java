@@ -94,6 +94,10 @@ public enum Warning {
 			} else {
 				customHandle.accept("Warning: " + warning.getLocalizedMessage());
 			}
+		default:
+			TypesafeLogger.getLogger(Warning.class)
+					.warning("Got to default case in Warning switch");
+			Warn.warn(warning);
 		}
 	}
 	/**

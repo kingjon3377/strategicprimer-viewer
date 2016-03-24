@@ -272,7 +272,11 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 				treeExpansionListeners.forEach(listener -> listener.expandSome(2));
 				break;
 			case "quit":
-				DriverQuit.quit(0);
+				DriverQuit.quit(0); // Does not return, but no way of telling javac
+				break;
+			default:
+				LOGGER.log(Level.INFO, "Unhandled command in IOHandler");
+				break;
 			}
 		}
 	}
