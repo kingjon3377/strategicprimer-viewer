@@ -37,6 +37,7 @@ public interface AddRemoveListener extends EventListener {
 	 *
 	 * @param category what kind of thing is being removed
 	 */
-	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
+	@SuppressWarnings({"NonBooleanMethodNameMayNotStartWithQuestion",
+			                  "UnusedParameters"})
 	void remove(String category);
 }
