@@ -226,32 +226,22 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 						   final IUnit newOwner) {
 		final int oldIndex = getIndexOfChild(old, member);
 		old.removeMember(member);
-		final TreeModelEvent removedEvent = new TreeModelEvent(this,
-																	  new TreePath(new
-																						   Object[]{
-																			  root,
-																			  old}),
-																	  new
-																			  int[]{oldIndex},
-																	  new Object[]{
-																			  member});
-		final TreeModelEvent removedChEvent = new TreeModelEvent(this,
-																		new TreePath(new
-																							 Object[]{
-																				root,
-																				old}));
+		final TreeModelEvent removedEvent =
+				new TreeModelEvent(this, new TreePath(asArray(root, old)),
+						                  singletonInt(oldIndex), singletonObj(member));
+		final TreeModelEvent removedChEvent =
+				new TreeModelEvent(this, new TreePath(asArray(root, old)));
 		for (final TreeModelListener listener : listeners) {
 			listener.treeNodesRemoved(removedEvent);
 			listener.treeStructureChanged(removedChEvent);
 		}
 		newOwner.addMember(member);
 		final TreeModelEvent insertedEvent =
-				new TreeModelEvent(this, new TreePath(new Object[]{root, newOwner}),
-						                  new int[]{getIndexOfChild(newOwner, member)},
-						                  new Object[]{member});
+				new TreeModelEvent(this, new TreePath(asArray(root, newOwner)),
+						                  singletonInt(getIndexOfChild(newOwner, member)),
+						                  singletonObj(member));
 		final TreeModelEvent insertedChEvent =
-				new TreeModelEvent(this, new TreePath(new Object[]{root,
-						newOwner}));
+				new TreeModelEvent(this, new TreePath(asArray(root, newOwner)));
 		for (final TreeModelListener listener : listeners) {
 			listener.treeNodesInserted(insertedEvent);
 			listener.treeStructureChanged(insertedChEvent);
@@ -350,9 +340,9 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	@Override
 	public void addUnitMember(final IUnit unit, final UnitMember member) {
 		unit.addMember(member);
-		final TreePath path = new TreePath(new Object[]{root, unit});
-		final int[] indices = {getIndexOfChild(unit, member)};
-		final Object[] children = {member};
+		final TreePath path = new TreePath(asArray(root, unit));
+		final int[] indices = singletonInt(getIndexOfChild(unit, member));
+		final Object[] children = singletonObj(member);
 		final TreeModelEvent event = new TreeModelEvent(this, path, indices, children);
 		for (final TreeModelListener listener : listeners) {
 			listener.treeNodesInserted(event);
@@ -396,7 +386,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			if (!found) {
 				return;
 			}
-			path = new TreePath(new Object[]{root, parent});
+			path = new TreePath(asArray(root, parent));
 			indices = singletonInt(getIndexOfChild(parent, item));
 			children = singletonObj(item);
 		} else {
@@ -437,7 +427,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			if (parent == null) {
 				return;
 			}
-			path = new TreePath(new Object[]{root, parent});
+			path = new TreePath(asArray(root, parent));
 			indices = singletonInt(getIndexOfChild(parent, item));
 			children = singletonObj(item);
 		} else {
@@ -449,7 +439,13 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			listener.treeNodesChanged(event);
 		}
 	}
-
+	/**
+	 * @param args a series of objects
+	 * @return them as an array
+	 */
+	private static Object[] asArray(final Object... args) {
+		return args;
+	}
 	/**
 	 * Dismiss a member from a unit and the player's service.
 	 *
@@ -463,18 +459,10 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 					final int index = getIndexOfChild(unit, item);
 					dismissedMembers.add(member);
 					unit.removeMember(member);
-					// TODO: Make Object-array-creation method to improve formatting here
-					final TreeModelEvent evt = new TreeModelEvent(this,
-							                                             new TreePath
-									                                             (new
-											                                              Object[]{
-
-											                                             root,
-									                                             unit}),
-							                                             singletonInt(
-									                                             index),
-							                                             singletonObj(
-									                                             member));
+					final TreeModelEvent evt =
+							new TreeModelEvent(this, new TreePath(asArray(root, unit)),
+									                  singletonInt(index),
+									                  singletonObj(member));
 					for (final TreeModelListener listener : listeners) {
 						listener.treeNodesRemoved(evt);
 					}
