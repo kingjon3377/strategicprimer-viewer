@@ -99,9 +99,9 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 		final String independentsString = independents.toString();
 		final StringBuilder retval =
 				new StringBuilder(40 + ownString.length() + independentsString.length() +
-						                  others.values().stream()
-								                  .mapToInt(Collection::size).sum() *
-								                  512);
+						                  (others.values().stream()
+								                   .mapToInt(Collection::size).sum() *
+								                   512));
 		// HtmlLists will return the empty string if they are empty.
 		retval.append(ownString);
 		retval.append(independentsString);

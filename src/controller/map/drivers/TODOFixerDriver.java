@@ -195,7 +195,7 @@ public final class TODOFixerDriver {
 	 * @return the appropriate terrain for it if it is plains
 	 */
 	private SimpleTerrain getPlainsTerrain(final Point location) {
-		if (map.isMountainous(location) || map.getForest(location) == null) {
+		if (map.isMountainous(location) || (map.getForest(location) == null)) {
 			return SimpleTerrain.Unforested;
 		} else {
 			return SimpleTerrain.Forested;
