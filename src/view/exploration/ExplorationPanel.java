@@ -109,6 +109,7 @@ public final class ExplorationPanel extends BorderedPanel
 	 * @param direction a direction
 	 * @return the corresponding arrow key, or null if not supported
 	 */
+	@SuppressWarnings("EnumSwitchStatementWhichMissesCases")
 	@Nullable
 	private static KeyStroke getArrowKey(final Direction direction) {
 		switch (direction) {
