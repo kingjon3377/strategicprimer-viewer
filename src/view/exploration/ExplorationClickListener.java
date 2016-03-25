@@ -36,6 +36,7 @@ import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
+import model.viewer.TileTypeFixture;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.Pair;
@@ -156,7 +157,11 @@ public final class ExplorationClickListener extends AbstractAction implements
 				map.setBaseTerrain(dPoint, model.getMap()
 						                           .getBaseTerrain(dPoint));
 				for (final TileFixture fix : fixtures) {
-					if ((fix instanceof Ground) && (map.getGround(dPoint) == null)) {
+					if (fix instanceof TileTypeFixture) {
+						// skip it! It'll corrupt the output XML!
+						continue;
+					} else if ((fix instanceof Ground) &&
+							           (map.getGround(dPoint) == null)) {
 						map.setGround(dPoint, ((Ground) fix).copy(false));
 					} else if ((fix instanceof Ground)
 							           &&
