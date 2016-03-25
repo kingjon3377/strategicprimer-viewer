@@ -174,7 +174,7 @@ public final class QueryCLI implements SimpleDriver {
 				}
 			}
 		}
-		cli.printf("%s has %i workers.%n", player.getName(), Integer.valueOf(count));
+		cli.printf("%s has %d workers.%n", player.getName(), Integer.valueOf(count));
 	}
 
 	/**
@@ -206,7 +206,7 @@ public final class QueryCLI implements SimpleDriver {
 		} else {
 			ydiff = dims.cols - rawYdiff;
 		}
-		cli.printf("Distance (as the crow flies, in tiles):\t%i%n",
+		cli.printf("Distance (as the crow flies, in tiles):\t%d%n",
 				Double.valueOf(Math.round(Math.sqrt((xdiff * xdiff) + (ydiff * ydiff)))));
 	}
 
@@ -253,7 +253,7 @@ public final class QueryCLI implements SimpleDriver {
 			}
 			final int animalsPerHerder = ((count + herders) - 1) / herders;
 			if (poultry) {
-				cli.printf("Gathering eggs takes %i minutes; cleaning up after them,%n",
+				cli.printf("Gathering eggs takes %d minutes; cleaning up after them,%n",
 						Integer.valueOf(animalsPerHerder * 2));
 				cli.printf(
 						"which should be done every third turn at least, takes %.1f " +
@@ -263,7 +263,7 @@ public final class QueryCLI implements SimpleDriver {
 						Double.valueOf(rate * count),
 						Double.valueOf(rate * 2.0 * count));
 			} else {
-				cli.printf("Tending the animals takes %i minutes, or %i minutes with ",
+				cli.printf("Tending the animals takes %d minutes, or %d minutes with ",
 						Integer.valueOf(animalsPerHerder * time),
 						Integer.valueOf(animalsPerHerder * (time - 5)));
 				cli.println("expert herders, twice daily.");
@@ -379,8 +379,8 @@ public final class QueryCLI implements SimpleDriver {
 		cli.print("Fortress: Print what a player automatically knows ");
 		cli.println("about his fortress's tile.");
 		final Integer encounters = Integer.valueOf(HUNTER_HOURS * HOURLY_ENCOUNTERS);
-		cli.printf("Hunt/fIsh: Generates up to %i encounters with animals.%n", encounters);
-		cli.printf("Gather: Generates up to %i encounters with fields, meadows, ",
+		cli.printf("Hunt/fIsh: Generates up to %d encounters with animals.%n", encounters);
+		cli.printf("Gather: Generates up to %d encounters with fields, meadows, ",
 				encounters);
 		cli.println("groves, orchards, or shrubs.");
 		cli.print("hErd: Determine the output from and time required for ");
