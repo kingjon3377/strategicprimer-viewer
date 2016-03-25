@@ -444,9 +444,9 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 			}
 			if (source.streamOtherFixtures(point).flatMap(item -> {
 				if (item instanceof FixtureIterable) {
-					return NullCleaner.assertNotNull(StreamSupport
+					return NullCleaner.assertNotNull(Stream.concat(Stream.of(item), StreamSupport
 							       .stream(((FixtureIterable<@NonNull ?>) item)
-									               .spliterator(), false));
+									               .spliterator(), false)));
 				} else {
 					return Stream.of(item);
 				}
