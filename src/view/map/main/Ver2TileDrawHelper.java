@@ -33,6 +33,7 @@ import model.map.fixtures.RiverFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.viewer.FixtureComparator;
+import model.viewer.TileTypeFixture;
 import model.viewer.ZOrderFilter;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
@@ -253,7 +254,8 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		}
 		map.streamOtherFixtures(location).forEach(temp::add);
 		return NullCleaner.assertNotNull(
-				temp.stream().filter(zof::shouldDisplay).sorted(fixComp));
+				temp.stream().filter(fix -> !(fix instanceof TileTypeFixture))
+						.filter(zof::shouldDisplay).sorted(fixComp));
 	}
 
 	/**
