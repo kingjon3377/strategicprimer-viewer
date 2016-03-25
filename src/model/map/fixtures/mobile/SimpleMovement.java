@@ -4,10 +4,15 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import model.map.HasOwner;
+import model.map.IEvent;
 import model.map.TileFixture;
 import model.map.TileType;
 import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
+import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.worker.IJob;
+import model.map.fixtures.mobile.worker.ISkill;
+import model.map.fixtures.mobile.worker.WorkerStats;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
@@ -136,6 +141,8 @@ public final class SimpleMovement {
 	/**
 	 * FIXME: *Some* explorers *would* notice even unexposed ground.
 	 *
+	 * TODO: We now check DCs on Events, but ignore relevant skills other than Perception
+	 *
 	 * @param unit a unit
 	 * @param fix  a fixture
 	 * @return whether the unit might notice it. Units do not notice themselves, and do
@@ -143,10 +150,69 @@ public final class SimpleMovement {
 	 */
 	public static boolean shouldSometimesNotice(final IUnit unit,
 	                                            @Nullable final TileFixture fix) {
-		return ((fix instanceof Ground) && ((Ground) fix).isExposed())
-				       || !((fix instanceof Ground) || unit.equals(fix));
+		if (fix instanceof Ground) {
+			if (((Ground) fix).isExposed()) {
+				return true;
+			} else {
+				return false;
+			}
+		} else if (unit.equals(fix)) {
+			return true;
+		} else if (fix instanceof IEvent) {
+			if (getHighestPerception(unit) + 15 >= ((IEvent) fix).getDC()) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return true;
+		}
 	}
-
+	/**
+	 * TODO: This does not properly handle the unusual case of a very unobservant unit.
+	 * @param unit a unit
+	 * @return the highest Perception score of any member, or 0 if no members
+	 */
+	private static int getHighestPerception(final IUnit unit) {
+		int retval = 0;
+		for (final UnitMember member : unit) {
+			if (member instanceof IWorker) {
+				final int percep = getPerception((IWorker) member);
+				if (percep > retval) {
+					retval = percep;
+				}
+			}
+		}
+		return retval;
+	}
+	/**
+	 * @param worker a worker
+	 * @return the worker's Perception score
+	 */
+	private static int getPerception(final IWorker worker) {
+		final int ability;
+		final WorkerStats stats;
+		if (worker instanceof Worker) {
+			stats = ((Worker) worker).getStats();
+		} else {
+			stats = null;
+		}
+		if (stats != null) {
+			// TODO: Make helper method instead of duplicating the arithmetic from getModifierString
+			ability = (stats.getWisdom() - 10) / 2;
+		} else {
+			ability = 0;
+		}
+		int ranks = 0;
+		for (final IJob job : worker) {
+			for (final ISkill skill : job) {
+				if ("perception".equalsIgnoreCase(skill.getName())) {
+					ranks += skill.getLevel();
+				}
+			}
+		}
+		return ability + ranks * 2;
+	}
 	/**
 	 * @param unit a unit
 	 * @param fix  a fixture
