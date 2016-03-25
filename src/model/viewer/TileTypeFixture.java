@@ -62,7 +62,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	@Deprecated
 	@Override
 	public TileTypeFixture copy(final boolean zero) {
-		LOGGER.warning("TileTypeFixture#copy() called");
+		LOGGER.log(Level.WARNING, "TileTypeFixture#copy() called", new Exception());
 		return new TileTypeFixture(ttype);
 	}
 
