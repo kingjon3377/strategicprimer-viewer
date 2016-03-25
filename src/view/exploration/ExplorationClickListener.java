@@ -146,12 +146,12 @@ public final class ExplorationClickListener extends AbstractAction implements
 					break;
 				}
 			}
+			final List<TileFixture> fixtures = getSelectedValuesList();
 			model.move(direction);
 			final Point dPoint = model.getSelectedUnitLocation();
 			final Player player =
 					NullCleaner.assertNotNull(model.getSelectedUnit()).getOwner();
 			final Collection<CacheFixture> caches = new HashSet<>();
-			final List<TileFixture> fixtures = getSelectedValuesList();
 			for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 				final IMutableMapNG map = pair.first();
 				map.setBaseTerrain(dPoint, model.getMap()
