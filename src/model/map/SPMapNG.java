@@ -685,6 +685,10 @@ public class SPMapNG implements IMutableMapNG {
 			local = new ArraySet<>();
 			fixtures.put(location, local);
 		}
+		if (Objects.equals(fix, getForest(location)) ||
+				    Objects.equals(fix, getGround(location))) {
+			return;
+		}
 		if (fix.getID() >= 0) {
 			final Predicate<TileFixture> matcher = item -> item.getID() == fix.getID();
 			final boolean found =
