@@ -10,6 +10,7 @@ import java.util.Collection;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.text.Document;
@@ -144,7 +145,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 				vertical(label("Players in all maps:"), playerList, null), vertical(
 						label(html("Units belonging to that player:",
 								"(Selected unit will be used for exploration.)")),
-						unitList, vertical(null,
+						new JScrollPane(unitList), vertical(null,
 								horizontal(label("Unit's Movement Points"), null,
 										mpField), new ListenedButton(BUTTON_TEXT, evt -> {
 									final IUnit selectedValue =
