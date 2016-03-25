@@ -214,7 +214,7 @@ public final class ExplorationCLI {
 			helper.println("The following fixtures were automatically noticed:");
 		} else {
 			helper.print("The following fixtures were noticed, all but the ");
-			helper.println("last automtically:");
+			helper.println("last automatically:");
 			Collections.shuffle(allFixtures);
 			constants.add(allFixtures.get(0));
 		}
