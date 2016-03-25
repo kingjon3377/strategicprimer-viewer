@@ -11,6 +11,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.Spliterators;
+import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -26,6 +29,8 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
 import util.EmptyIterator;
 import util.IteratorWrapper;
+import util.NullStream;
+import util.TypesafeLogger;
 
 import static util.NullCleaner.assertNotNull;
 
@@ -52,6 +57,7 @@ import static util.NullCleaner.assertNotNull;
  * @author Jonathan Lovelace
  */
 public class SPMapNG implements IMutableMapNG {
+	public static final Logger LOGGER = TypesafeLogger.getLogger(SPMapNG.class);
 	/**
 	 * The set of mountainous places.
 	 */
@@ -679,7 +685,38 @@ public class SPMapNG implements IMutableMapNG {
 			local = new ArraySet<>();
 			fixtures.put(location, local);
 		}
-		local.add(fix);
+		if (fix.getID() >= 0) {
+			final Predicate<TileFixture> matcher = item -> item.getID() == fix.getID();
+			final boolean found =
+					local.stream().anyMatch(matcher);
+			if (found) {
+				final TileFixture existing = local.stream().filter(matcher).findAny()
+						                             .orElseThrow(
+								                             () -> new IllegalStateException("Fixture vanished"));
+
+				try {
+					if ((existing.equals(fix)) || (existing instanceof SubsettableFixture &&
+							     ((SubsettableFixture) existing).isSubset(fix, NullStream.DEV_NULL, "")) ||
+							    (fix instanceof SubsettableFixture &&
+									     ((SubsettableFixture) fix).isSubset(existing, NullStream.DEV_NULL, ""))) {
+						local.remove(existing);
+						local.add(fix);
+					} else {
+						local.add(fix);
+						LOGGER.log(Level.WARNING,
+								"Inserted duplicate-ID fixture at " + location, new Exception());
+						LOGGER.info("Existing fixture was: " + existing.shortDesc());
+						LOGGER.info("Added: " + fix.shortDesc());
+					}
+				} catch (final IOException except) {
+					LOGGER.log(Level.SEVERE, "I/O error on bit bucket", except);
+				}
+			} else {
+				local.add(fix);
+			}
+		} else {
+			local.add(fix);
+		}
 	}
 
 	/**
