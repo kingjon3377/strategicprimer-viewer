@@ -398,7 +398,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @return either num + 1, if max or lower, or 0.
 	 */
 	private static int increment(final int num, final int max) {
-		if (num >= (max - 1)) {
+		if (num >= max) {
 			return 0; // NOPMD
 		} else {
 			return num + 1;

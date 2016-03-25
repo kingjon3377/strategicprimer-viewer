@@ -118,6 +118,7 @@
       <test name="controller.map.converter.TestConverter" todir="${junit.output.dir}" />
       <test name="model.map.fixtures.mobile.worker.TestProxyWorker"
             todir="${junit.output.dir}" />
+      <test name="model.exploration.TestDirection" todir="${junit.output.dir}" />
       <classpath refid="viewer.classpath" />
     </junit>
     <fail if="junit.failure" message="Unit test(s) failed. See reports." />
