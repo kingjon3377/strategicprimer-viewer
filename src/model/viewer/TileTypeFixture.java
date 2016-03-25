@@ -1,5 +1,6 @@
 package model.viewer;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.map.HasImage;
 import model.map.IFixture;
@@ -86,7 +87,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	@Deprecated
 	@Override
 	public int getZValue() {
-		LOGGER.warning("TileTypeFixture#getZValue() called");
+		LOGGER.log(Level.WARNING, "TileTypeFixture#getZValue() called", new Exception());
 		return Integer.MIN_VALUE;
 	}
 
