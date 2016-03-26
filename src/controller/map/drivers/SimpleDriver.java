@@ -1,7 +1,11 @@
 package controller.map.drivers;
 
+import controller.map.drivers.DriverUsage.ParamCount;
+import controller.map.misc.FileChooser;
+import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.MapReaderAdapter;
 import java.io.File;
+import util.EqualsAny;
 import util.Warning;
 
 /**
@@ -34,17 +38,38 @@ public interface SimpleDriver extends ISPDriver {
 	 * default implementation does not write to file after running the driver on the
 	 * driver model.
 	 *
-	 * TODO: Check if there are enough arguments, and open a file chooser if not
-	 *
 	 * @param args any command-line arguments that should be passed to the driver.
 	 * @throws DriverFailedException if it's impossible for the driver to start.
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	default void startDriver(final String... args) throws DriverFailedException {
-		// FIXME: This blows up if args.length == 0
-		startDriver(new MapReaderAdapter()
-				            .readMultiMapModel(Warning.DEFAULT, new File(args[0]),
-						            MapReaderAdapter.namesToFiles(true, args)));
+		// TODO: Handle no-args, no-args-needed case
+		if (args.length == 0) {
+			startDriver(new MapReaderAdapter()
+					            .readMultiMapModel(Warning.DEFAULT, askUserForFile()));
+		} else if (args.length == 1 && EqualsAny.equalsAny(usage().getParamsWanted(),
+				ParamCount.Two, ParamCount.AtLeastTwo)) {
+			startDriver(new MapReaderAdapter()
+					            .readMultiMapModel(Warning.DEFAULT, new File(args[0]),
+							            askUserForFile()));
+		} else {
+			startDriver(new MapReaderAdapter()
+					            .readMultiMapModel(Warning.DEFAULT, new File(args[0]),
+							            MapReaderAdapter.namesToFiles(true, args)));
+		}
+	}
+	/**
+	 * Ask the user to choose a file.
+	 * @return the file chosen
+	 * @throws DriverFailedException if the user fails to choose
+	 */
+	default File askUserForFile() throws DriverFailedException {
+		try {
+			return new FileChooser(new File("")).getFile();
+		} catch (final ChoiceInterruptedException except) {
+			throw new DriverFailedException("Choice interrupted or user didn't choose",
+					                               except);
+		}
 	}
 }

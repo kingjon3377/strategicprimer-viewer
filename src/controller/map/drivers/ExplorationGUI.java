@@ -58,21 +58,6 @@ public final class ExplorationGUI implements SimpleDriver {
 	}
 
 	/**
-	 * Run the driver.
-	 *
-	 * @param args command-line arguments
-	 * @throws DriverFailedException if the driver failed to run
-	 */
-	@SuppressWarnings("OverloadedVarargsMethod")
-	@Override
-	public void startDriver(final String... args) throws DriverFailedException {
-		if (args.length == 0) {
-			throw new IncorrectUsageException(usage());
-		}
-		SimpleDriver.super.startDriver(args);
-	}
-
-	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
 	@Override

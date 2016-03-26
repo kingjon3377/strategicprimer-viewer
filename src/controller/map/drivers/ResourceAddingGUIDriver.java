@@ -1,12 +1,8 @@
 package controller.map.drivers;
 
 import controller.map.drivers.DriverUsage.ParamCount;
-import controller.map.misc.FileChooser;
-import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
-import java.io.File;
-import java.io.IOException;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.resources.ResourceManagementDriver;
 import view.resources.ResourceAddingFrame;
@@ -69,33 +65,6 @@ public class ResourceAddingGUIDriver implements SimpleDriver {
 		SwingUtilities.invokeLater(
 				() -> new ResourceAddingFrame(rmmodel, new IOHandler(rmmodel))
 						      .setVisible(true));
-	}
-
-	/**
-	 * Run the driver.
-	 *
-	 * @param args Command-line arguments.
-	 * @throws DriverFailedException if the driver failed to run.
-	 */
-	@SuppressWarnings("OverloadedVarargsMethod")
-	@Override
-	public void startDriver(final String... args) throws DriverFailedException {
-		// TODO: File-choosing like this should be handled in SimpleDriver, for drivers
-		// that need files.
-		try {
-			if (args.length == 0) {
-				SimpleDriver.super.startDriver(
-						new FileChooser(new File("")).getFile().getCanonicalPath());
-			} else {
-				SimpleDriver.super.startDriver(args);
-			}
-		} catch (final ChoiceInterruptedException except) {
-			throw new DriverFailedException("File choice was interrupted or user didn't choose",
-					                               except);
-		} catch (final IOException except) {
-			throw new DriverFailedException("I/O error getting path of the chosen file",
-					                               except);
-		}
 	}
 
 	/**

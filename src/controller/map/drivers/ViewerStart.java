@@ -1,12 +1,9 @@
 package controller.map.drivers;
 
 import controller.map.drivers.DriverUsage.ParamCount;
-import controller.map.misc.FileChooser;
-import controller.map.misc.FileChooser.ChoiceInterruptedException;
 import controller.map.misc.IOHandler;
-import java.io.File;
 import java.util.stream.StreamSupport;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
@@ -46,7 +43,7 @@ public final class ViewerStart implements SimpleDriver {
 								   ViewerStart.class);
 
 	/**
-	 * Run the driver.
+	 * Run the driver. If the model is a multi-map model, we open one window per map.
 	 *
 	 * @param model the driver model
 	 */
@@ -65,31 +62,6 @@ public final class ViewerStart implements SimpleDriver {
 		}
 		SwingUtilities.invokeLater(
 				() -> new ViewerFrame(vmodel, new IOHandler(vmodel)).setVisible(true));
-	}
-
-	/**
-	 * Run the driver.
-	 *
-	 * @param args Command-line arguments.
-	 * @throws DriverFailedException if the driver failed to run.
-	 */
-	@SuppressWarnings("OverloadedVarargsMethod")
-	@Override
-	public void startDriver(final String... args) throws DriverFailedException {
-		if (args.length == 0) {
-			try {
-				startDriver(new FileChooser(new File("")).getFile().getPath());
-			} catch (final ChoiceInterruptedException except) {
-				throw new DriverFailedException("File choice was interrupted or user " +
-														"didn't choose",
-													   except);
-			}
-		} else {
-			// We allow the default implementation to get a MultiMapModel so the
-			// overload that takes a map-model can start one window for each map,
-			// without having to make multiple calls to the reader.
-			SimpleDriver.super.startDriver(args);
-		}
 	}
 
 	/**
