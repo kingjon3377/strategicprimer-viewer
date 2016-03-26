@@ -11,6 +11,7 @@ import java.nio.charset.Charset;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -471,8 +472,6 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * five 1-in-20 chances of starting with a level in some Job, and the user will be
 	 * prompted for what Job for each.
 	 *
-	 * TODO: racial adjustments to stats.
-	 *
 	 * @param idf the ID factory
 	 * @param cli the interface to the user
 	 * @return the generated worker
@@ -500,14 +499,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		if (pregenStats) {
 			retval.setStats(enterStats(cli));
 		} else {
-			final int constitution = threeDeeSix();
-			final int conBonus = (constitution - STAT_BASIS) / 2;
-			final int hitp = 8 + conBonus + rollDeeEight(levels, conBonus);
-			final WorkerStats stats = new WorkerStats(hitp, hitp, threeDeeSix(),
-															 threeDeeSix(), constitution,
-															 threeDeeSix(),
-															 threeDeeSix(),
-															 threeDeeSix());
+			final WorkerStats stats = createWorkerStats(race, levels, cli);
 			retval.setStats(stats);
 			if (levels > 0) {
 				cli.println("Generated stats:");
@@ -522,7 +514,132 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		}
 		return retval;
 	}
-
+	/**
+	 * Create randomly-generated stats for a worker, with racial adjustments applied.
+	 * @param race the worker's race
+	 * @param levels how many Job levels the worker has
+	 * @param cli to ask any questions of the user
+	 * @throws IOException on I/O error interacting with user
+	 * @return the stats
+	 */
+	private static WorkerStats createWorkerStats(final String race, final int levels,
+	                                             final ICLIHelper cli)
+			throws IOException {
+		final int racialStrBonus;
+		final int racialDexBonus;
+		final int racialConBonus;
+		final int racialIntBonus;
+		final int racialWisBonus;
+		final int racialChaBonus;
+		switch (race) {
+		case "dwarf":
+			racialDexBonus = 0;
+			racialStrBonus = 2;
+			racialChaBonus = -2;
+			racialConBonus = 2;
+			racialIntBonus = 0;
+			racialWisBonus = 0;
+			break;
+		case "elf":
+			racialDexBonus = 2;
+			racialStrBonus = -1;
+			racialIntBonus = 1;
+			racialConBonus = 0;
+			racialWisBonus = 0;
+			racialChaBonus = 0;
+			break;
+		case "gnome":
+			racialIntBonus = 2;
+			racialStrBonus = -2;
+			racialConBonus = 1;
+			racialDexBonus = 1;
+			racialWisBonus = 0;
+			racialChaBonus = 0;
+			break;
+		case "half-elf":
+			racialDexBonus = 1;
+			racialIntBonus = 1;
+			racialStrBonus = 0;
+			racialConBonus = 0;
+			racialWisBonus = 0;
+			racialChaBonus = 0;
+			break;
+		case "Danan":
+			racialStrBonus = -2;
+			racialDexBonus = 1;
+			racialWisBonus = -2;
+			racialConBonus = 1;
+			racialIntBonus = 1;
+			racialChaBonus = 1;
+			break;
+		case "human": // fall through; treat undefined as human
+		default:
+			switch (cli.chooseStringFromList(
+					Arrays.asList("Strength", "Dexterity", "Constitution",
+							"Intelligence", "Wisdom", "Charisma"),
+					"Character is a " + race + "; which stat should get a +2 bonus?",
+					"", "Stat for bonus: ", false)) {
+			case 0:
+				racialStrBonus = 2;
+				racialDexBonus = 0;
+				racialConBonus = 0;
+				racialIntBonus = 0;
+				racialWisBonus = 0;
+				racialChaBonus = 0;
+				break;
+			case 1:
+				racialStrBonus = 0;
+				racialDexBonus = 2;
+				racialConBonus = 0;
+				racialIntBonus = 0;
+				racialWisBonus = 0;
+				racialChaBonus = 0;
+				break;
+			case 2:
+				racialStrBonus = 0;
+				racialDexBonus = 0;
+				racialConBonus = 2;
+				racialIntBonus = 0;
+				racialWisBonus = 0;
+				racialChaBonus = 0;
+				break;
+			case 3:
+				racialStrBonus = 0;
+				racialDexBonus = 0;
+				racialConBonus = 0;
+				racialIntBonus = 2;
+				racialWisBonus = 0;
+				racialChaBonus = 0;
+				break;
+			case 4:
+				racialStrBonus = 0;
+				racialDexBonus = 0;
+				racialConBonus = 0;
+				racialIntBonus = 0;
+				racialWisBonus = 2;
+				racialChaBonus = 0;
+				break;
+			case 5: // handle default to appease compiler
+			default:
+				racialStrBonus = 0;
+				racialDexBonus = 0;
+				racialConBonus = 0;
+				racialIntBonus = 0;
+				racialWisBonus = 0;
+				racialChaBonus = 2;
+				break;
+			}
+			break;
+		}
+		final int constitution = threeDeeSix() + racialConBonus;
+		final int conBonus = (constitution - STAT_BASIS) / 2;
+		final int hitp = 8 + conBonus + rollDeeEight(levels, conBonus);
+		return new WorkerStats(hitp, hitp, threeDeeSix() + racialStrBonus,
+				                      threeDeeSix() + racialDexBonus, constitution,
+				                      threeDeeSix() + racialIntBonus,
+				                      threeDeeSix() + racialWisBonus,
+				                      threeDeeSix() + racialChaBonus);
+	}
 	/**
 	 * Create a randomly-generated worker using a name from file, asking the user for
 	 * Jobs
@@ -532,8 +649,6 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * are
 	 * five 1-in-20 chances of starting with a level in some Job, and the user will be
 	 * prompted for what Job for each.
-	 *
-	 * TODO: racial adjustments to stats.
 	 *
 	 * @param name the name of the worker
 	 * @param idf  the ID factory
@@ -552,13 +667,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 				levels++;
 			}
 		}
-		final int constitution = threeDeeSix();
-		final int conBonus = (constitution - STAT_BASIS) / 2;
-		final int hitp = 8 + conBonus + rollDeeEight(levels, conBonus);
-		final WorkerStats stats = new WorkerStats(hitp, hitp, threeDeeSix(),
-														 threeDeeSix(), constitution,
-														 threeDeeSix(), threeDeeSix(),
-														 threeDeeSix());
+		final WorkerStats stats = createWorkerStats(race, levels, cli);
 		retval.setStats(stats);
 		if (levels > 1) {
 			cli.printf("Worker has %d Job levels.%n", Integer.valueOf(levels));
