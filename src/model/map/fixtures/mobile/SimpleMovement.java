@@ -191,15 +191,14 @@ public final class SimpleMovement {
 	 */
 	private static int getPerception(final IWorker worker) {
 		final int ability;
-		final WorkerStats stats;
 		if (worker instanceof Worker) {
-			stats = ((Worker) worker).getStats();
-		} else {
-			stats = null;
-		}
-		if (stats != null) {
-			// TODO: Make helper method instead of duplicating the arithmetic from getModifierString
-			ability = (stats.getWisdom() - 10) / 2;
+			final WorkerStats stats = ((Worker) worker).getStats();
+			if (stats != null) {
+				// TODO: Make helper method instead of duplicating the arithmetic from getModifierString
+				ability = (stats.getWisdom() - 10) / 2;
+			} else {
+				ability = 0;
+			}
 		} else {
 			ability = 0;
 		}
