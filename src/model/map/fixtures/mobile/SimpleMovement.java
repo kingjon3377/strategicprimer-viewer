@@ -159,7 +159,7 @@ public final class SimpleMovement {
 		} else if (unit.equals(fix)) {
 			return false;
 		} else if (fix instanceof IEvent) {
-			if (getHighestPerception(unit) + 15 >= ((IEvent) fix).getDC()) {
+			if ((getHighestPerception(unit) + 15) >= ((IEvent) fix).getDC()) {
 				return true;
 			} else {
 				return false;
@@ -210,7 +210,7 @@ public final class SimpleMovement {
 				}
 			}
 		}
-		return ability + ranks * 2;
+		return ability + (ranks * 2);
 	}
 	/**
 	 * @param unit a unit

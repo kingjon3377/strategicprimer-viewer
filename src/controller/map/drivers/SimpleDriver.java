@@ -48,7 +48,7 @@ public interface SimpleDriver extends ISPDriver {
 		if (args.length == 0) {
 			startDriver(new MapReaderAdapter()
 					            .readMultiMapModel(Warning.DEFAULT, askUserForFile()));
-		} else if (args.length == 1 && EqualsAny.equalsAny(usage().getParamsWanted(),
+		} else if ((args.length == 1) && EqualsAny.equalsAny(usage().getParamsWanted(),
 				ParamCount.Two, ParamCount.AtLeastTwo)) {
 			startDriver(new MapReaderAdapter()
 					            .readMultiMapModel(Warning.DEFAULT, new File(args[0]),
