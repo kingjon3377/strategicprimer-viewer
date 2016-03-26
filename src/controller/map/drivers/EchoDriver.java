@@ -39,7 +39,7 @@ public final class EchoDriver implements UtilityDriver {
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE =
-			new DriverUsage(false, "-e", "--echo", ParamCount.One,
+			new DriverUsage(false, "-e", "--echo", ParamCount.Two,
 					               "Read, then write a map.",
 					               "Read and write a map, correcting deprecated syntax.",
 					               EchoDriver.class);
@@ -54,10 +54,7 @@ public final class EchoDriver implements UtilityDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length != 2) {
-			// FIXME: As soon as ParamCount covers this usage, switch to IncorrectUsageException
-			System.err.println("Usage: EchoDriver in-file out-file");
-			throw new DriverFailedException("Wrong number of arguments",
-					                               new IllegalArgumentException("Need exactly two arguments"));
+			throw new IncorrectUsageException(usage());
 		}
 		final IMapNG map; // NOPMD
 		final File infile = new File(args[0]);

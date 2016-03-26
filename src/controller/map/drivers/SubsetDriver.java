@@ -103,10 +103,8 @@ public final class SubsetDriver implements SimpleDriver {
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
-		// FIXME: Switch to IncorrectUsageException as soon as ParamCount supports at-least-two
 		if (args.length < 2) {
-			SYS_OUT.println("Usage: SubsetDriver mainMap playerMap [playerMap ...]");
-			return;
+			throw new IncorrectUsageException(usage());
 		}
 		SimpleDriver.super.startDriver(args);
 	}

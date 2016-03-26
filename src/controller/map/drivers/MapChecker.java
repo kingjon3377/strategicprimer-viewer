@@ -43,7 +43,7 @@ public final class MapChecker implements UtilityDriver {
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE =
-			new DriverUsage(false, "-k", "--check", ParamCount.One,
+			new DriverUsage(false, "-k", "--check", ParamCount.AtLeastOne,
 					               "Check map for errors",
 					               "Check a map file for errors, deprecated syntax, etc.",
 					               MapChecker.class);
@@ -67,7 +67,6 @@ public final class MapChecker implements UtilityDriver {
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
-		// TODO: Switch this to at-least-one once ParamCount supports it
 		if (args.length < 1) {
 			throw new IncorrectUsageException(usage());
 		}
