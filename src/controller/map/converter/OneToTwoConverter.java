@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.xml.stream.XMLStreamException;
 import model.exploration.old.ExplorationRunner;
@@ -368,13 +367,8 @@ public final class OneToTwoConverter { // NOPMD
 	private static void changeFor(final IMutableMapNG map, final Point point,
 								  final TileFixture fix) {
 		if ((fix instanceof Village) || (fix instanceof ITownFixture)) {
-			final Collection<TileFixture> forests =
-					map.streamOtherFixtures(point).filter(Forest.class::isInstance)
-							.collect(Collectors.toList());
-			// TODO: Can we safely get rid of the intermediate loop?
-			for (final TileFixture fixture : forests) {
-				map.removeFixture(point, fixture);
-			}
+			map.streamOtherFixtures(point).filter(Forest.class::isInstance)
+							.forEach(fixture -> map.removeFixture(point, fixture));
 			map.setForest(point, null);
 		}
 	}
