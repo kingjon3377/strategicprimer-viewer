@@ -699,7 +699,7 @@ public class SPMapNG implements IMutableMapNG {
 								                             () -> new IllegalStateException("Fixture vanished"));
 
 				try {
-					if ((existing.equals(fix)) || (existing instanceof SubsettableFixture &&
+					if (existing.equals(fix) || (existing instanceof SubsettableFixture &&
 							     ((SubsettableFixture) existing).isSubset(fix, NullStream.DEV_NULL, "")) ||
 							    (fix instanceof SubsettableFixture &&
 									     ((SubsettableFixture) fix).isSubset(existing, NullStream.DEV_NULL, ""))) {
