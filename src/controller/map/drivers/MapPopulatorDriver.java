@@ -116,21 +116,6 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 	}
 
 	/**
-	 * Run the driver.
-	 *
-	 * @param args command-line arguments
-	 * @throws DriverFailedException if something goes wrong
-	 */
-	@SuppressWarnings("OverloadedVarargsMethod")
-	@Override
-	public void startDriver(final String... args) throws DriverFailedException {
-		if (args.length != 1) {
-			throw new IncorrectUsageException(usage());
-		}
-		SimpleCLIDriver.super.startDriver(args);
-	}
-
-	/**
 	 * Add populations to the map.
 	 *
 	 * @param map the map

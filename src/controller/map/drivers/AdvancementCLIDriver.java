@@ -115,21 +115,6 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	}
 
 	/**
-	 * Run the driver.
-	 *
-	 * @param args the command-line arguments (map files)
-	 * @throws DriverFailedException if the driver fails to start
-	 */
-	@SuppressWarnings("OverloadedVarargsMethod")
-	@Override
-	public void startDriver(final String... args) throws DriverFailedException {
-		if (args.length == 0) {
-			throw new IncorrectUsageException(usage());
-		}
-		SimpleCLIDriver.super.startDriver(args);
-	}
-
-	/**
 	 * Let the user add experience to a player's workers.
 	 *
 	 * @param model  the driver model

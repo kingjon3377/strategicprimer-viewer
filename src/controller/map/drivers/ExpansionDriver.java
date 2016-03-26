@@ -114,25 +114,6 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	}
 
 	/**
-	 * Run the driver.
-	 *
-	 * @param args command-line arguments
-	 * @throws DriverFailedException on error
-	 */
-	@SuppressWarnings("OverloadedVarargsMethod")
-	@Override
-	public void startDriver(final String... args) throws DriverFailedException {
-		if (args.length < 2) {
-			// FIXME: As soon as ParamCount covers this usage, switch to IncorrectUsageException
-			System.err.println("Usage: ExpansionDriver master player [player ...]");
-			throw new DriverFailedException("Not enough arguments",
-												   new IllegalArgumentException("Need at" +
-																						" least two arguments"));
-		}
-		SimpleCLIDriver.super.startDriver(args);
-	}
-
-	/**
 	 * @param master the master map
 	 * @param map    a player's map, to be expanded
 	 */
