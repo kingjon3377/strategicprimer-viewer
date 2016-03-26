@@ -39,7 +39,7 @@ public final class WorkerStart implements SimpleDriver {
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE =
-			new DriverUsage(true, "-w", "--worker", ParamCount.Many,
+			new DriverUsage(true, "-w", "--worker", ParamCount.AtLeastOne,
 					               "Manage a player's workers in units",
 					               "Organize the members of a player's units.",
 					               WorkerStart.class);

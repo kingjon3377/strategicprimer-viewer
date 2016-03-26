@@ -39,7 +39,7 @@ public final class AdvancementStart implements SimpleDriver {
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE =
-			new DriverUsage(true, "-a", "--adv", ParamCount.Many,
+			new DriverUsage(true, "-a", "--adv", ParamCount.AtLeastOne,
 								   "View a player's workers and manage their " +
 										   "advancement",
 								   "View a player's units, the workers in those units, " +

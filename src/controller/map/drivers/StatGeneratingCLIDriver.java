@@ -88,7 +88,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE =
-			new DriverUsage(false, "-t", "--stats", ParamCount.Many,
+			new DriverUsage(false, "-t", "--stats", ParamCount.AtLeastOne,
 								   "Enter worker stats or generate new workers.",
 								   "Enter stats for existing workers or generate new " +
 										   "workers randomly.",

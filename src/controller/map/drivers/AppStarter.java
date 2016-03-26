@@ -54,7 +54,7 @@ public final class AppStarter implements ISPDriver {
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE =
-			new DriverUsage(true, "-p", "--app-starter", ParamCount.Many, "App Chooser",
+			new DriverUsage(true, "-p", "--app-starter", ParamCount.AnyNumber, "App Chooser",
 					               "Let the user choose an app to start, or handle options.",
 					               AppStarter.class);
 
@@ -310,7 +310,6 @@ public final class AppStarter implements ISPDriver {
 			SystemOut.SYS_OUT.print(usage.getShortOption());
 			SystemOut.SYS_OUT.print('|');
 			SystemOut.SYS_OUT.print(usage.getLongOption());
-			// FIXME: These don't cover all possibilities
 			switch (usage.getParamsWanted()) {
 			case None:
 				SystemOut.SYS_OUT.println();
@@ -318,7 +317,16 @@ public final class AppStarter implements ISPDriver {
 			case One:
 				SystemOut.SYS_OUT.println(" filename.xml");
 				break;
-			case Many:
+			case AtLeastOne:
+				SystemOut.SYS_OUT.println(" filename.xml [filename.xml ...]");
+				break;
+			case Two:
+				SystemOut.SYS_OUT.println(" filename.xml filename.xml");
+				break;
+			case AtLeastTwo:
+				SystemOut.SYS_OUT.println(" filename.xml filename.xml [filename.xml ...]");
+				break;
+			case AnyNumber:
 				SystemOut.SYS_OUT.println(" [filename.xml ...]");
 				break;
 			}

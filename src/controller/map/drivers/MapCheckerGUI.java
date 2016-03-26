@@ -32,7 +32,7 @@ public final class MapCheckerGUI implements UtilityDriver {
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE =
-			new DriverUsage(true, "-k", "--check", ParamCount.Many,
+			new DriverUsage(true, "-k", "--check", ParamCount.AtLeastOne,
 					               "Check map for errors",
 					               "Check a map file for errors, deprecated syntax, etc.",
 					               MapCheckerGUI.class);

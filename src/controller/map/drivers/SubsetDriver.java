@@ -43,7 +43,7 @@ public final class SubsetDriver implements SimpleDriver {
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE =
-			new DriverUsage(false, "-s", "--subset", ParamCount.Many,
+			new DriverUsage(false, "-s", "--subset", ParamCount.AtLeastTwo,
 								   "Check players' maps against master",
 								   "Check that subordinate maps are subsets of the main " +
 										   "map, containing nothing that it does not " +

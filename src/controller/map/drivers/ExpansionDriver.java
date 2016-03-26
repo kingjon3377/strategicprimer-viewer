@@ -66,7 +66,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE =
-			new DriverUsage(false, "-n", "--expand", ParamCount.Many,
+			new DriverUsage(false, "-n", "--expand", ParamCount.AtLeastTwo,
 								   "Expand a player's map.",
 								   "Ensure a player's map covers all terrain allied villages can see.",
 								   ExpansionDriver.class);

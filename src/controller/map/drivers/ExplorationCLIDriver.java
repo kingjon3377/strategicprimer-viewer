@@ -37,10 +37,11 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE =
-			new DriverUsage(false, "-x", "--explore", ParamCount.Many, "Run exploration.",
-								   "Move a unit around the map, updating the player's " +
-										   "map with what it sees.",
-								   ExplorationCLIDriver.class);
+			new DriverUsage(false, "-x", "--explore", ParamCount.AtLeastOne,
+					               "Run exploration.",
+					               "Move a unit around the map, updating the player's " +
+							               "map with what it sees.",
+					               ExplorationCLIDriver.class);
 
 	/**
 	 * Run the driver.
@@ -83,7 +84,6 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
-		// FIXME: ParamCount should cover 'at-least-one'
 		if (args.length == 0) {
 			throw new IncorrectUsageException(usage());
 		}

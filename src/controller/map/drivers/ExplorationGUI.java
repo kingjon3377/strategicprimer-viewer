@@ -34,7 +34,8 @@ public final class ExplorationGUI implements SimpleDriver {
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE =
-			new DriverUsage(true, "-x", "--explore", ParamCount.Many, "Run exploration.",
+			new DriverUsage(true, "-x", "--explore", ParamCount.AtLeastOne,
+					               "Run exploration.",
 								   "Move a unit around the map, updating the player's " +
 										   "map with what it sees.",
 								   ExplorationGUI.class);

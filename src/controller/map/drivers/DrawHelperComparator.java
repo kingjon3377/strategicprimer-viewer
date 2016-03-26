@@ -70,7 +70,7 @@ public final class DrawHelperComparator implements SimpleDriver { // NOPMD
 	 * ReaderComparator.
 	 */
 	private static final DriverUsage USAGE =
-			new DriverUsage(true, "-t", "--test", ParamCount.Many,
+			new DriverUsage(true, "-t", "--test", ParamCount.AtLeastOne,
 								   "Test drawing performance",
 								   "Test the performance of the TileDrawHelper " +
 										   "classes---which do the heavy lifting of " +

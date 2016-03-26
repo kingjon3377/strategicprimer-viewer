@@ -49,7 +49,7 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE =
-			new DriverUsage(false, "-d", "--add-resource", ParamCount.Many,
+			new DriverUsage(false, "-d", "--add-resource", ParamCount.AtLeastOne,
 								   "Add resources to maps",
 								   "Add resources for players to maps",
 								   ResourceAddingCLIDriver.class);

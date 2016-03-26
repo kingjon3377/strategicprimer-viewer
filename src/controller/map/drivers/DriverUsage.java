@@ -49,9 +49,21 @@ public class DriverUsage { // $codepro.audit.disable
 		 */
 		One,
 		/**
+		 * Exactly two.
+		 */
+		Two,
+		/**
+		 * At least one.
+		 */
+		AtLeastOne,
+		/**
 		 * At least two.
 		 */
-		Many
+		AtLeastTwo,
+		/**
+		 * Any number, zero oro more.
+		 */
+		AnyNumber
 	}
 
 	/**
