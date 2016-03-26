@@ -2,7 +2,7 @@ package controller.map.drivers;
 
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.IOHandler;
-import javax.swing.*;
+import javax.swing.SwingUtilities;
 import model.exploration.ExplorationModel;
 import model.misc.IDriverModel;
 import view.exploration.ExplorationFrame;
