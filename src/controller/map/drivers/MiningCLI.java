@@ -16,6 +16,8 @@ import util.NullCleaner;
 /**
  * A driver to create a spreadsheet model of a mine.
  *
+ * TODO: Convert to an ISPDriver and hook into AppStarter.
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *

@@ -21,7 +21,6 @@ import model.workermgmt.IWorkerModel;
 import model.workermgmt.WorkerModel;
 import util.NullCleaner;
 import util.SingletonRandom;
-import view.util.DriverQuit;
 
 import static view.util.SystemOut.SYS_OUT;
 
@@ -125,10 +124,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 0) {
-			SYS_OUT.print("Usage: ");
-			SYS_OUT.print(getClass().getSimpleName());
-			SYS_OUT.println(" map [map ...]");
-			DriverQuit.quit(1);
+			throw new IncorrectUsageException(usage());
 		}
 		SimpleCLIDriver.super.startDriver(args);
 	}

@@ -34,6 +34,8 @@ public interface SimpleDriver extends ISPDriver {
 	 * default implementation does not write to file after running the driver on the
 	 * driver model.
 	 *
+	 * TODO: Check if there are enough arguments, and open a file chooser if not
+	 *
 	 * @param args any command-line arguments that should be passed to the driver.
 	 * @throws DriverFailedException if it's impossible for the driver to start.
 	 */

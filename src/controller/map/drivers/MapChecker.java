@@ -67,9 +67,9 @@ public final class MapChecker implements UtilityDriver {
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
+		// TODO: Switch this to at-least-one once ParamCount supports it
 		if (args.length < 1) {
-			final String msg = "Need at least one argument";
-			throw new DriverFailedException(msg, new IllegalArgumentException(msg));
+			throw new IncorrectUsageException(usage());
 		}
 		Stream.of(args).map(File::new).forEach(this::check);
 	}

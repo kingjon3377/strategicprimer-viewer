@@ -80,6 +80,8 @@ public class ResourceAddingGUIDriver implements SimpleDriver {
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
+		// TODO: File-choosing like this should be handled in SimpleDriver, for drivers
+		// that need files.
 		try {
 			if (args.length == 0) {
 				SimpleDriver.super.startDriver(

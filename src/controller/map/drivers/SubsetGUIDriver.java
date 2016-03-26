@@ -84,9 +84,7 @@ public final class SubsetGUIDriver implements ISPDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length < 2) {
-			throw new DriverFailedException("Need at least two arguments",
-												   new IllegalArgumentException("Need at" +
-																						" least two arguments"));
+			throw new IncorrectUsageException(usage());
 		}
 		final SubsetFrame frame = new SubsetFrame();
 		SwingUtilities.invokeLater(() -> frame.setVisible(true));

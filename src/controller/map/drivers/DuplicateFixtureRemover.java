@@ -143,9 +143,7 @@ public final class DuplicateFixtureRemover implements SimpleCLIDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 0) {
-			SYS_OUT.println("Usage: DuplicateFixtureRemover map [map ...]");
-			throw new DriverFailedException("Not enough arguments",
-												   new IllegalArgumentException("Need at least one argument"));
+			throw new IncorrectUsageException(usage());
 		}
 		SimpleCLIDriver.super.startDriver(args);
 	}

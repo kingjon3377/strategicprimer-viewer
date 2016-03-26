@@ -123,6 +123,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length < 2) {
+			// FIXME: As soon as ParamCount covers this usage, switch to IncorrectUsageException
 			System.err.println("Usage: ExpansionDriver master player [player ...]");
 			throw new DriverFailedException("Not enough arguments",
 												   new IllegalArgumentException("Need at" +

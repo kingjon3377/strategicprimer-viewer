@@ -2,13 +2,10 @@ package controller.map.drivers;
 
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.IOHandler;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.exploration.ExplorationModel;
 import model.misc.IDriverModel;
 import view.exploration.ExplorationFrame;
-import view.util.DriverQuit;
-
-import static view.util.SystemOut.SYS_OUT;
 
 /**
  * A class to start the exploration GUI.
@@ -69,10 +66,7 @@ public final class ExplorationGUI implements SimpleDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 0) {
-			SYS_OUT.print("Usage: ");
-			SYS_OUT.print(getClass().getSimpleName());
-			SYS_OUT.println(" master-map [player-map ...]");
-			DriverQuit.quit(1);
+			throw new IncorrectUsageException(usage());
 		}
 		SimpleDriver.super.startDriver(args);
 	}

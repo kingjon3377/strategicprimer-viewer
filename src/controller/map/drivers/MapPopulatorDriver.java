@@ -125,8 +125,7 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length != 1) {
-			throw new DriverFailedException("Need one argument",
-					                               new IllegalArgumentException("Need one argument"));
+			throw new IncorrectUsageException(usage());
 		}
 		SimpleCLIDriver.super.startDriver(args);
 	}

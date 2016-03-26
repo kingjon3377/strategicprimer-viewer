@@ -282,8 +282,7 @@ public final class TrapModelDriver implements SimpleDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 0) {
-			throw new DriverFailedException("Need one argument",
-					                               new IllegalArgumentException("Need one argument"));
+			throw new IncorrectUsageException(usage());
 		}
 		SimpleDriver.super.startDriver(args);
 	}

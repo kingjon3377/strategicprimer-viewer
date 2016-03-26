@@ -47,6 +47,9 @@ public final class WorkerReportDriver implements ISPDriver {
 	/**
 	 * Run the driver.
 	 *
+	 * TODO: Implement properly? It doesn't have to interact with *map* files, and I can
+	 * imagine a caller wanting to write to a custom filename ...
+	 *
 	 * @param model ignored
 	 * @throws DriverFailedException always: this driver has to write to the filesystem
 	 */

@@ -31,6 +31,8 @@ import util.TypesafeLogger;
 /**
  * A driver for running exploration results, etc., using the new model.
  *
+ * TODO: Find something else to be "-c -m" so this can be "--query|-q"
+ *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
@@ -206,7 +208,7 @@ public final class QueryCLI implements SimpleDriver {
 		} else {
 			ydiff = dims.cols - rawYdiff;
 		}
-		cli.printf("Distance (as the crow flies, in tiles):\t%d%n",
+		cli.printf("Distance (as the crow flies, in tiles):\t%.0f%n",
 				Double.valueOf(Math.round(Math.sqrt((xdiff * xdiff) + (ydiff * ydiff)))));
 	}
 
@@ -417,8 +419,7 @@ public final class QueryCLI implements SimpleDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length == 0) {
-			throw new DriverFailedException("Need one argument",
-					                               new IllegalArgumentException("Need one argument"));
+			throw new IncorrectUsageException(usage());
 		}
 		SimpleDriver.super.startDriver(args);
 	}

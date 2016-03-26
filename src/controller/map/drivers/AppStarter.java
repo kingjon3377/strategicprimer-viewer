@@ -3,7 +3,7 @@ package controller.map.drivers;
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
-import java.awt.GraphicsEnvironment;
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,16 +14,16 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.*;
 import model.misc.IDriverModel;
 import util.EqualsAny;
 import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
 import view.util.AppChooserFrame;
+import view.util.DriverQuit;
 import view.util.ErrorShower;
+import view.util.SystemOut;
 
 /**
  * A driver to start other drivers. At first it just starts one.
@@ -297,9 +297,37 @@ public final class AppStarter implements ISPDriver {
 		System.setProperty("apple.laf.useScreenMenuBar", "true");
 		try {
 			new AppStarter().startDriver(args);
+		} catch (final IncorrectUsageException except) {
+			// TODO: Should this be stderr?
+			SystemOut.SYS_OUT.print("Usage: java ");
+			SystemOut.SYS_OUT.print(AppStarter.class.getCanonicalName());
+			final DriverUsage usage = except.getCorrectUsage();
+			if (usage.isGraphical()) {
+				SystemOut.SYS_OUT.print(" [-g|--gui] ");
+			} else {
+				SystemOut.SYS_OUT.print(" -c|--cli ");
+			}
+			SystemOut.SYS_OUT.print(usage.getShortOption());
+			SystemOut.SYS_OUT.print('|');
+			SystemOut.SYS_OUT.print(usage.getLongOption());
+			// FIXME: These don't cover all possibilities
+			switch (usage.getParamsWanted()) {
+			case None:
+				SystemOut.SYS_OUT.println();
+				break;
+			case One:
+				SystemOut.SYS_OUT.println(" filename.xml");
+				break;
+			case Many:
+				SystemOut.SYS_OUT.println(" [filename.xml ...]");
+				break;
+			}
+			SystemOut.SYS_OUT.println(usage.getShortDescription());
+			DriverQuit.quit(1);
 		} catch (final DriverFailedException except) {
 			LOGGER.log(Level.SEVERE, except.getLocalizedMessage(),
 					except.getCause());
+			DriverQuit.quit(2);
 		}
 	}
 

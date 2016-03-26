@@ -9,9 +9,6 @@ import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
 import model.misc.IDriverModel;
 import view.exploration.ExplorationCLI;
-import view.util.DriverQuit;
-
-import static view.util.SystemOut.SYS_OUT;
 
 /**
  * A CLI to help running exploration.
@@ -86,11 +83,9 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
+		// FIXME: ParamCount should cover 'at-least-one'
 		if (args.length == 0) {
-			SYS_OUT.print("Usage: ");
-			SYS_OUT.print(getClass().getSimpleName());
-			SYS_OUT.println(" master-map [player-map ...]");
-			DriverQuit.quit(1);
+			throw new IncorrectUsageException(usage());
 		}
 		SimpleCLIDriver.super.startDriver(args);
 	}

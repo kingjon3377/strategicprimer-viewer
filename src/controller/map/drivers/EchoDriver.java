@@ -54,6 +54,7 @@ public final class EchoDriver implements UtilityDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length != 2) {
+			// FIXME: As soon as ParamCount covers this usage, switch to IncorrectUsageException
 			System.err.println("Usage: EchoDriver in-file out-file");
 			throw new DriverFailedException("Wrong number of arguments",
 					                               new IllegalArgumentException("Need exactly two arguments"));

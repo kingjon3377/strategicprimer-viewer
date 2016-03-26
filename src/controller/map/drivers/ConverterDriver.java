@@ -69,9 +69,7 @@ public final class ConverterDriver implements UtilityDriver {
 	@Override
 	public void startDriver(final String... args) throws DriverFailedException {
 		if (args.length < 1) {
-			SYS_OUT.println("Usage: ConverterDriver filename [filename ...]");
-			throw new DriverFailedException("Need files to convert",
-					                               new IllegalArgumentException("Not enough arguments"));
+			throw new IncorrectUsageException(usage());
 		}
 		for (final String filename : args) {
 			if (filename == null) {

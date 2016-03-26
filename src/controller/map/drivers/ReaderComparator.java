@@ -51,7 +51,7 @@ public final class ReaderComparator implements UtilityDriver {
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE =
-			new DriverUsage(false, "-t", "--test", ParamCount.One, "Test map readers",
+			new DriverUsage(false, "-t", "--test", ParamCount.Many, "Test map readers",
 								   "Test the two map-reading implementations by " +
 										   "comparing their results on the same file.",
 								   ReaderComparator.class);
