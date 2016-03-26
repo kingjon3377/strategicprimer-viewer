@@ -20,8 +20,6 @@ import util.EqualsAny;
 import util.NullCleaner;
 import util.Pair;
 
-import static controller.map.misc.FileOpener.createReader;
-
 /**
  * An extension to the IteratorWrapper we previously used in MapReaderNG that
  * automatically handles "include" tags.
@@ -173,7 +171,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 		try {
 			final String file = getFileAttribute(tag);
 			stack.addFirst(Pair.of(file,
-					new ComparableIterator<>(new TypesafeXMLEventReader(createReader(
+					new ComparableIterator<>(new TypesafeXMLEventReader(new MagicReader(
 							file)))));
 		} catch (final FileNotFoundException e) {
 			throw new NoSuchElementBecauseException(
