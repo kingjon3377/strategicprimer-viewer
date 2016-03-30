@@ -1,6 +1,6 @@
 package model.map.fixtures.mobile.worker;
 
-import model.map.HasName;
+import model.map.HasMutableName;
 
 /**
  * An interface for Skills.
@@ -24,7 +24,7 @@ import model.map.HasName;
  *
  * @author Jonathan Lovelace
  */
-public interface ISkill extends HasName {
+public interface ISkill extends HasMutableName {
 	/**
 	 * @return how many levels the worker has in the skill
 	 */

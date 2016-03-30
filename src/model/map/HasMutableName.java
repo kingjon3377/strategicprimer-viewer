@@ -1,17 +1,12 @@
-package model.map.fixtures.towns;
-
-import model.map.HasMutableName;
-import model.map.HasOwner;
-import model.map.TileFixture;
+package model.map;
 
 /**
- * An interface for towns and similar fixtures. Needed because we don't want fortresses
- * and villages to be Events.
+ * An interface for things that have a name that can change.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
- * Copyright (C) 2013-2013 Jonathan Lovelace
+ * Copyright (C) 2012-2016 Jonathan Lovelace
  *
  * This program is free software: you can redistribute it and/or modify it under the terms
  * of version 3 of the GNU General Public License as published by the Free Software
@@ -27,19 +22,9 @@ import model.map.TileFixture;
  *
  * @author Jonathan Lovelace
  */
-public interface ITownFixture extends TileFixture, HasMutableName, HasOwner {
+public interface HasMutableName extends HasName {
 	/**
-	 * @return the status of the town, fortress, or city
+	 * @param nomen the thing's new name
 	 */
-	TownStatus status();
-
-	/**
-	 * @return the size of the town, fortress, or city
-	 */
-	TownSize size();
-
-	/**
-	 * @return a description of what kind of 'town' this is.
-	 */
-	String kind();
+	void setName(String nomen);
 }

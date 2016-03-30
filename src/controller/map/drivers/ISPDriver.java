@@ -60,12 +60,4 @@ public interface ISPDriver extends HasName {
 	default String getName() {
 		return usage().getShortDescription();
 	}
-
-	/**
-	 * @param nomen ignored
-	 */
-	@Override
-	default void setName(final String nomen) {
-		throw new IllegalStateException("Can't rename a driver");
-	}
 }

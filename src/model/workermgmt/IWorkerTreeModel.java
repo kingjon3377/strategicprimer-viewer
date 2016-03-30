@@ -5,7 +5,7 @@ import model.listeners.MapChangeListener;
 import model.listeners.NewUnitListener;
 import model.listeners.PlayerChangeListener;
 import model.map.HasKind;
-import model.map.HasName;
+import model.map.HasMutableName;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 
@@ -73,7 +73,7 @@ public interface IWorkerTreeModel extends TreeModel, NewUnitListener,
 	 *
 	 * @param item the item that has changed
 	 */
-	void renameItem(HasName item);
+	void renameItem(HasMutableName item);
 
 	/**
 	 * Change a unit's (or other member's) kind. If a unit, this means it has moved in

@@ -22,7 +22,7 @@ import javax.swing.tree.TreeNode;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.HasKind;
-import model.map.HasName;
+import model.map.HasMutableName;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
@@ -638,7 +638,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * @param item the newly renamed item
 	 */
 	@Override
-	public void renameItem(final HasName item) {
+	public void renameItem(final HasMutableName item) {
 		final TreeNode node = getNode(item);
 		if (node == null) {
 			return;

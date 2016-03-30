@@ -130,14 +130,6 @@ public final class TrapModelDriver implements SimpleDriver {
 		public String getName() {
 			return name;
 		}
-
-		/**
-		 * @param nomen ignored
-		 */
-		@Override
-		public void setName(final String nomen) {
-			throw new IllegalStateException("Can't rename");
-		}
 	}
 
 	/**

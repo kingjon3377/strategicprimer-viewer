@@ -3,12 +3,10 @@ package model.map;
 /**
  * An interface for things that have a name.
  *
- * TODO: Split mutator into separate interface
- *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
- * Copyright (C) 2012-2014 Jonathan Lovelace
+ * Copyright (C) 2012-2016 Jonathan Lovelace
  *
  * This program is free software: you can redistribute it and/or modify it under the terms
  * of version 3 of the GNU General Public License as published by the Free Software
@@ -29,9 +27,4 @@ public interface HasName {
 	 * @return the name
 	 */
 	String getName();
-
-	/**
-	 * @param nomen the thing's new name
-	 */
-	void setName(String nomen);
 }

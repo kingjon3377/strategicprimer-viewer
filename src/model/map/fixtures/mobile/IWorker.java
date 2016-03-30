@@ -2,7 +2,7 @@ package model.map.fixtures.mobile;
 
 import model.map.HasImage;
 import model.map.HasMutableKind;
-import model.map.HasName;
+import model.map.HasMutableName;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.IJob;
 import org.eclipse.jdt.annotation.NonNull;
@@ -30,7 +30,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public interface IWorker extends UnitMember, Iterable<@NonNull IJob>, HasName,
+public interface IWorker extends UnitMember, Iterable<@NonNull IJob>, HasMutableName,
 		                                 HasMutableKind,
 		                                 HasImage {
 	/**

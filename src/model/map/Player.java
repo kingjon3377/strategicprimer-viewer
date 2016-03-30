@@ -24,7 +24,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author jsl7
  */
-public final class Player implements Comparable<Player>, HasName {
+public final class Player implements Comparable<Player>, HasMutableName {
 	/**
 	 * The player's number.
 	 */

@@ -17,7 +17,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import model.map.HasKind;
 import model.map.HasMutableKind;
-import model.map.HasName;
+import model.map.HasMutableName;
 import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.Player;
@@ -76,16 +76,16 @@ public final class FixtureEditMenu extends JPopupMenu {
 		Collections.addAll(listeners, changeListeners);
 		boolean immutable = true;
 		final FixtureEditMenu outer = this;
-		if (fixture instanceof HasName) {
+		if (fixture instanceof HasMutableName) {
 			addMenuItem(new JMenuItem("Rename", KeyEvent.VK_N), event -> {
 				final String result = (String) showInputDialog(outer,
 						"Fixture's new name:", "Rename Fixture",
 						PLAIN_MESSAGE, null, null,
-						((HasName) fixture).getName());
-				if ((result != null) && !result.equals(((HasName) fixture).getName())) {
-					((HasName) fixture).setName(result);
+						((HasMutableName) fixture).getName());
+				if ((result != null) && !result.equals(((HasMutableName) fixture).getName())) {
+					((HasMutableName) fixture).setName(result);
 					for (final IWorkerTreeModel listener : listeners) {
-						listener.renameItem((HasName) fixture);
+						listener.renameItem((HasMutableName) fixture);
 					}
 				}
 			});

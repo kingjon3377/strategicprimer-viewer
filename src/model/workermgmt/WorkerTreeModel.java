@@ -10,7 +10,7 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 import model.map.HasKind;
-import model.map.HasName;
+import model.map.HasMutableName;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
@@ -360,7 +360,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 * @param item the item that has changed
 	 */
 	@Override
-	public void renameItem(final HasName item) {
+	public void renameItem(final HasMutableName item) {
 		final TreePath path;
 		final int[] indices;
 		final Object[] children;
