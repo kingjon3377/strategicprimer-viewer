@@ -1,6 +1,6 @@
 package model.map.fixtures.terrain;
 
-import model.map.HasImage;
+import model.map.HasMutableImage;
 import model.map.IFixture;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
@@ -29,7 +29,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Hill implements TerrainFixture, HasImage {
+public class Hill implements TerrainFixture, HasMutableImage {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */

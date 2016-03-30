@@ -1,7 +1,7 @@
 package model.map.fixtures.towns;
 
 import java.io.IOException;
-import model.map.HasImage;
+import model.map.HasMutableImage;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.SubsettableFixture;
@@ -30,7 +30,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public class Village implements ITownFixture, HasImage, SubsettableFixture {
+public class Village implements ITownFixture, HasMutableImage, SubsettableFixture {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */

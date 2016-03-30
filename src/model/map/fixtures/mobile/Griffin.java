@@ -1,7 +1,7 @@
 package model.map.fixtures.mobile;
 
 import java.io.IOException;
-import model.map.HasImage;
+import model.map.HasMutableImage;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
@@ -29,7 +29,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Griffin implements MobileFixture, HasImage, UnitMember {
+public class Griffin implements MobileFixture, HasMutableImage, UnitMember {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */

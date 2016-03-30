@@ -165,14 +165,6 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	}
 
 	/**
-	 * @param img the name of an image to use for this particular fixture
-	 */
-	@Override
-	public void setImage(final String img) {
-		LOGGER.severe("TileTypeFixture#setImage() called");
-	}
-
-	/**
 	 * @return the name of an image to use for this particular fixture.
 	 */
 	@Override

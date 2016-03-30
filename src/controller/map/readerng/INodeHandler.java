@@ -19,7 +19,7 @@ import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
-import model.map.HasImage;
+import model.map.HasMutableImage;
 import model.map.IMutablePlayerCollection;
 import model.map.IPlayerCollection;
 import model.map.Player;
@@ -351,7 +351,7 @@ public interface INodeHandler<@NonNull T> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	default void addImage(final StartElement element, final HasImage obj)
+	default void addImage(final StartElement element, final HasMutableImage obj)
 			throws SPFormatException {
 		if (hasAttribute(element, "image")) {
 			obj.setImage(getAttribute(element, "image"));

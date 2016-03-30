@@ -1,6 +1,6 @@
 package model.map.fixtures;
 
-import model.map.HasImage;
+import model.map.HasMutableImage;
 import model.map.IFixture;
 import model.map.TileFixture;
 import org.eclipse.jdt.annotation.Nullable;
@@ -29,7 +29,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class TextFixture implements TileFixture, HasImage {
+public class TextFixture implements TileFixture, HasMutableImage {
 	/**
 	 * The text.
 	 */

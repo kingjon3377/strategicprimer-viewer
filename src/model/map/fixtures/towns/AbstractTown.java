@@ -1,6 +1,6 @@
 package model.map.fixtures.towns;
 
-import model.map.HasImage;
+import model.map.HasMutableImage;
 import model.map.IEvent;
 import model.map.IFixture;
 import model.map.Player;
@@ -30,7 +30,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public abstract class AbstractTown implements IEvent, HasImage, ITownFixture {
+public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixture {
 	/**
 	 * The size of the town, fortress, or city.
 	 */

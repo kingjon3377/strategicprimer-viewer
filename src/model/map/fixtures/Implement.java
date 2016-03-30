@@ -1,7 +1,7 @@
 package model.map.fixtures;
 
 import java.io.IOException;
-import model.map.HasImage;
+import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
@@ -30,7 +30,8 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  *         TODO: more members
  */
-public class Implement implements UnitMember, FortressMember, HasMutableKind, HasImage {
+public class Implement implements UnitMember, FortressMember, HasMutableKind,
+		                                  HasMutableImage {
 	/**
 	 * The ID # of the implement.
 	 */

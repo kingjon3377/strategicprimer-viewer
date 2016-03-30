@@ -1,6 +1,6 @@
 package model.map.fixtures.terrain;
 
-import model.map.HasImage;
+import model.map.HasMutableImage;
 import model.map.IFixture;
 import model.map.TerrainFixture;
 import org.eclipse.jdt.annotation.Nullable;
@@ -27,7 +27,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public final class Mountain implements TerrainFixture, HasImage {
+public final class Mountain implements TerrainFixture, HasMutableImage {
 	/**
 	 * Even though Mountains have no state other than their image, we still copy because
 	 * they might eventually.

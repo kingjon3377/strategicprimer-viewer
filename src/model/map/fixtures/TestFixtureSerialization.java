@@ -4,7 +4,7 @@ import controller.map.formatexceptions.SPFormatException;
 import java.io.IOException;
 import javax.xml.stream.XMLStreamException;
 import model.map.BaseTestFixtureSerialization;
-import model.map.HasImage;
+import model.map.HasMutableImage;
 import model.map.IMutableMapNG;
 import model.map.MapDimensions;
 import model.map.Player;
@@ -81,7 +81,8 @@ public final class TestFixtureSerialization extends
 				new Animal("animalTwo", false, true, "semi-domesticated", 1));
 		assertSerialization("Third test of Animal serialization",
 				new Animal("animalThree", true, false, "domesticated", 2));
-		final HasImage fourthAnimal = new Animal("animalFour", true, true, "status", 3);
+		final HasMutableImage
+				fourthAnimal = new Animal("animalFour", true, true, "status", 3);
 		assertSerialization("Fourth test of Animal serialization", fourthAnimal);
 		assertUnwantedChild("<animal kind=\"animal\"><troll /></animal>",
 				Animal.class, false);

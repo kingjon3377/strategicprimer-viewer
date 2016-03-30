@@ -12,6 +12,7 @@ import javax.xml.stream.events.XMLEvent;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.misc.IDFactory;
 import model.map.HasImage;
+import model.map.HasMutableImage;
 import model.map.IMutablePlayerCollection;
 import model.map.TerrainFixture;
 import model.map.fixtures.terrain.Forest;
@@ -113,7 +114,7 @@ public final class CompactTerrainReader extends
 					                                   element.getName().getLocalPart());
 		}
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		((HasImage) retval).setImage(getParameter(element, "image", ""));
+		((HasMutableImage) retval).setImage(getParameter(element, "image", ""));
 		return retval;
 	}
 

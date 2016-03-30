@@ -11,7 +11,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import model.map.FixtureIterable;
-import model.map.HasImage;
+import model.map.HasMutableImage;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.SubsettableFixture;
@@ -44,7 +44,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public class Fortress implements HasImage, ITownFixture,
+public class Fortress implements HasMutableImage, ITownFixture,
 										 FixtureIterable<@NonNull FortressMember>,
 										 SubsettableFixture {
 	/**

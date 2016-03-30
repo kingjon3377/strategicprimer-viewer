@@ -1,6 +1,6 @@
 package model.map.fixtures.explorable;
 
-import model.map.HasImage;
+import model.map.HasMutableImage;
 import model.map.TileFixture;
 
 /**
@@ -27,6 +27,6 @@ import model.map.TileFixture;
  *
  * @author Jonathan Lovelace
  */
-public interface ExplorableFixture extends TileFixture, HasImage {
+public interface ExplorableFixture extends TileFixture, HasMutableImage {
 	// Marker interface
 }

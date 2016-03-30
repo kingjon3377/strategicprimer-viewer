@@ -1,6 +1,6 @@
 package model.map.fixtures.mobile;
 
-import model.map.HasImage;
+import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.HasMutableName;
 import model.map.fixtures.UnitMember;
@@ -32,7 +32,7 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public interface IWorker extends UnitMember, Iterable<@NonNull IJob>, HasMutableName,
 		                                 HasMutableKind,
-		                                 HasImage {
+		                                 HasMutableImage {
 	/**
 	 * Add a job.
 	 *

@@ -5,12 +5,10 @@ package model.map;
  * This interface should really be in model.viewer, but that would, I think, introduce
  * circular dependencies between packages.
  *
- * TODO: Split mutator into separate interface
- *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
- * Copyright (C) 2011-2014 Jonathan Lovelace
+ * Copyright (C) 2011-2016 Jonathan Lovelace
  *
  * This program is free software: you can redistribute it and/or modify it under the terms
  * of version 3 of the GNU General Public License as published by the Free Software
@@ -37,12 +35,6 @@ public interface HasImage {
 	 * @return the name of an image to represent this kind of fixture.
 	 */
 	String getDefaultImage();
-
-	/**
-	 * @param img the new image for this *individual* fixture. If null or the empty
-	 *              string, the default image will be used.
-	 */
-	void setImage(String img);
 
 	/**
 	 * @return the name of an image to represent this individual fixture.

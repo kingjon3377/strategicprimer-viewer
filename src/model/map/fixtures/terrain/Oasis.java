@@ -1,6 +1,6 @@
 package model.map.fixtures.terrain;
 
-import model.map.HasImage;
+import model.map.HasMutableImage;
 import model.map.IFixture;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
@@ -28,7 +28,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Oasis implements TerrainFixture, HasImage {
+public class Oasis implements TerrainFixture, HasMutableImage {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */

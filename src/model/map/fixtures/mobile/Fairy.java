@@ -1,7 +1,7 @@
 package model.map.fixtures.mobile;
 
 import java.io.IOException;
-import model.map.HasImage;
+import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
@@ -29,7 +29,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class Fairy implements MobileFixture, HasImage, HasMutableKind, UnitMember {
+public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, UnitMember {
 	/**
 	 * What kind of fairy (great, lesser, snow ...).
 	 */

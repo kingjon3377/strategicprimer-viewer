@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.xml.stream.XMLStreamException;
 import model.map.BaseTestFixtureSerialization;
-import model.map.HasImage;
+import model.map.HasMutableImage;
 import model.map.IMutableMapNG;
 import model.map.MapDimensions;
 import model.map.Player;
@@ -182,7 +182,7 @@ public final class TestMoreFixtureSerialization extends
 				new Mine("two", TownStatus.Abandoned, 2));
 		assertSerialization("Third test of Mine serialization",
 				new Mine("three", TownStatus.Burned, 3));
-		final HasImage fourthMine = new Mine("four", TownStatus.Ruined, 4);
+		final HasMutableImage fourthMine = new Mine("four", TownStatus.Ruined, 4);
 		assertSerialization("Fourth test of Mine serialization", fourthMine);
 		final String oldKindProperty = "product"; // NOPMD
 		assertDeprecatedDeserialization("Deprecated Mine idiom", fourthMine,
@@ -219,7 +219,7 @@ public final class TestMoreFixtureSerialization extends
 	public void testShrubSerialization() throws XMLStreamException,
 														SPFormatException, IOException {
 		assertSerialization("First test of Shrub serialization", new Shrub("one", 1));
-		final HasImage secondShrub = new Shrub("two", 2);
+		final HasMutableImage secondShrub = new Shrub("two", 2);
 		assertSerialization("Second test of Shrub serialization", secondShrub);
 		final String oldKindProperty = "shrub"; // NOPMD
 		assertDeprecatedDeserialization("Deserialization of mangled shrub",
@@ -256,7 +256,7 @@ public final class TestMoreFixtureSerialization extends
 		final TextFixture secondText = new TextFixture("two", 2);
 		assertSerialization("Second test of TextFixture serialization, reflection",
 				secondText);
-		final HasImage thirdText = new TextFixture("three", 10);
+		final HasMutableImage thirdText = new TextFixture("three", 10);
 		assertSerialization("Third test of TextFixture serialization, reflection",
 				thirdText);
 		assertUnwantedChild("<text turn=\"1\"><troll /></text>",
@@ -288,7 +288,8 @@ public final class TestMoreFixtureSerialization extends
 			assertSerialization("2nd Village serialization test,  " + status,
 					secondVillage);
 		}
-		final HasImage thirdVillage = new Village(TownStatus.Abandoned, "", 3, owner,
+		final HasMutableImage
+				thirdVillage = new Village(TownStatus.Abandoned, "", 3, owner,
 														"elf");
 		assertMissingPropertyDeserialization(
 				"Village serialization with no or empty name does The Right Thing",
