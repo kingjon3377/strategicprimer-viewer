@@ -4,13 +4,15 @@ import model.map.FixtureIterable;
 import model.map.HasImage;
 import model.map.HasMutableKind;
 import model.map.HasMutableName;
-import model.map.HasOwner;
+import model.map.HasMutableOwner;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.UnitMember;
 import org.eclipse.jdt.annotation.NonNull;
 
 /**
  * An interface for units.
+ *
+ * TODO: Should mutability of name and owner be pushed down to implementations?
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -34,7 +36,7 @@ import org.eclipse.jdt.annotation.NonNull;
 public interface IUnit extends MobileFixture, HasImage, HasMutableKind,
 		                               FixtureIterable<@NonNull UnitMember>,
 		                               HasMutableName,
-		                               HasOwner, FortressMember {
+		                               HasMutableOwner, FortressMember {
 	/**
 	 * @return the unit's orders
 	 */

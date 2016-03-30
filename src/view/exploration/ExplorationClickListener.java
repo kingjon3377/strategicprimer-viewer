@@ -12,17 +12,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.AbstractAction;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.ListModel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
 import model.listeners.MovementCostListener;
 import model.listeners.MovementCostSource;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
+import model.map.HasMutableOwner;
 import model.map.HasOwner;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -184,11 +181,9 @@ public final class ExplorationClickListener extends AbstractAction implements
 					} else if (fix instanceof Mountain) {
 						map.setMountainous(dPoint, true);
 					} else if (!hasFixture(map, dPoint, fix)) {
-						final boolean zero =
-								(fix instanceof HasOwner) && !((HasOwner) fix)
-										                              .getOwner()
-										                              .equals
-												                               (player);
+						final boolean zero = (fix instanceof HasOwner) &&
+								                     !((HasOwner) fix).getOwner()
+										                      .equals(player);
 						map.addFixture(dPoint, fix.copy(zero));
 						if (fix instanceof CacheFixture) {
 							caches.add((CacheFixture) fix);
@@ -233,7 +228,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 			final IUnit mover = model.getSelectedUnit();
 			if (mover != null) {
 				map.streamOtherFixtures(model.getSelectedUnitLocation())
-						.filter(Village.class::isInstance).map(HasOwner.class::cast)
+						.filter(Village.class::isInstance).map(HasMutableOwner.class::cast)
 						.forEach(fix -> fix.setOwner(mover.getOwner()));
 			}
 		}

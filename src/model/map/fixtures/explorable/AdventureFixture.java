@@ -1,6 +1,6 @@
 package model.map.fixtures.explorable;
 
-import model.map.HasOwner;
+import model.map.HasMutableOwner;
 import model.map.IFixture;
 import model.map.Player;
 import org.eclipse.jdt.annotation.Nullable;
@@ -27,7 +27,7 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public class AdventureFixture implements ExplorableFixture, HasOwner {
+public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */

@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import controller.map.drivers.DriverUsage.ParamCount;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,10 +12,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import controller.map.drivers.DriverUsage.ParamCount;
 import model.exploration.SurroundingPointIterable;
 import model.map.HasOwner;
 import model.map.IFixture;
@@ -34,6 +31,7 @@ import model.map.fixtures.towns.ITownFixture;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.misc.SimpleMultiMapModel;
+import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
 import util.NullCleaner;
 import util.Pair;
@@ -277,9 +275,8 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 			final Point point = NullCleaner.assertNotNull(entry.getKey());
 			for (final TileFixture fix : entry.getValue()) {
 				if (fix instanceof HasOwner) {
-					map.addFixture(point, fix
-												  .copy(!((HasOwner) fix).getOwner()
-																 .equals(currentPlayer)));
+					map.addFixture(point,
+							fix.copy(!((HasOwner) fix).getOwner().equals(currentPlayer)));
 				} else {
 					map.addFixture(point, fix.copy(true));
 				}

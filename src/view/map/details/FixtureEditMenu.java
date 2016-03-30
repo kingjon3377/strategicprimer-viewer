@@ -12,12 +12,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
+import javax.swing.*;
 import model.map.HasKind;
 import model.map.HasMutableKind;
 import model.map.HasMutableName;
+import model.map.HasMutableOwner;
 import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.Player;
@@ -109,7 +108,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 					});
 			immutable = false;
 		}
-		if (fixture instanceof HasOwner) {
+		if (fixture instanceof HasMutableOwner) {
 			addMenuItem(new JMenuItem("Change owner", KeyEvent.VK_O),
 					event -> {
 						final Player result =
@@ -120,7 +119,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 										playersAsArray(players),
 										((HasOwner) fixture).getOwner());
 						if (result != null) {
-							((HasOwner) fixture).setOwner(result);
+							((HasMutableOwner) fixture).setOwner(result);
 						}
 					});
 			immutable = false;

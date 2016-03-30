@@ -3,12 +3,10 @@ package model.map;
 /**
  * An interface for things that are owned by a player.
  *
- * TODO: Split mutator into separate interface
- *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
- * Copyright (C) 2013-2014 Jonathan Lovelace
+ * Copyright (C) 2013-2016 Jonathan Lovelace
  *
  * This program is free software: you can redistribute it and/or modify it under the terms
  * of version 3 of the GNU General Public License as published by the Free Software
@@ -29,9 +27,4 @@ public interface HasOwner {
 	 * @return The player that owns whatever this is.
 	 */
 	Player getOwner();
-
-	/**
-	 * @param player the player that should now own it.
-	 */
-	void setOwner(Player player);
 }
