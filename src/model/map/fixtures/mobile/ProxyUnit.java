@@ -73,7 +73,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	 * The kind of the units we are a proxy for, if we're not proxying parallel units of
 	 * the same ID.
 	 */
-	private final String kind;
+	private String kind;
 	/**
 	 * The units we're a proxy for.
 	 */
@@ -255,18 +255,16 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	}
 
 	/**
+	 * TODO: If there's already a ProxyUnit for that kind, these should join it ...
 	 * @param nKind the new kind of the proxied units
 	 */
 	@Override
 	public void setKind(final String nKind) {
-		if (parallel) {
-			for (final IUnit unit : proxied) {
-				unit.setKind(nKind);
-			}
-		} else {
-			// FIXME: This restriction isn't really reasonable or discoverable
-			throw new IllegalStateException("Can't change kind of a proxy-unit " +
-					                                "proxying units of the same kind");
+		if (!parallel) {
+			kind = nKind;
+		}
+		for (final IUnit unit : proxied) {
+			unit.setKind(nKind);
 		}
 	}
 
