@@ -7,14 +7,16 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Logger;
-
-import org.eclipse.jdt.annotation.Nullable;
-
+import model.map.HasMutableImage;
+import model.map.HasMutableKind;
+import model.map.HasMutableName;
+import model.map.HasMutableOwner;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.ProxyWorker;
+import org.eclipse.jdt.annotation.Nullable;
 import util.EmptyIterator;
 import util.NullCleaner;
 
@@ -40,7 +42,9 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
+public final class ProxyUnit implements IUnit, ProxyFor<IUnit>, HasMutableKind,
+		                                        HasMutableImage, HasMutableName,
+		                                        HasMutableOwner {
 	/**
 	 * Logger.
 	 */
@@ -206,7 +210,11 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	public void setImage(final String img) {
 		LOGGER.warning("setImage() called on a ProxyUnit");
 		for (final IUnit unit : proxied) {
-			unit.setImage(img);
+			if (unit instanceof HasMutableImage) {
+				((HasMutableImage) unit).setImage(img);
+			} else {
+				LOGGER.warning("setImage() skipped unit with immutable image");
+			}
 		}
 	}
 
@@ -264,7 +272,11 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 			kind = nKind;
 		}
 		for (final IUnit unit : proxied) {
-			unit.setKind(nKind);
+			if (unit instanceof HasMutableKind) {
+				((HasMutableKind) unit).setKind(nKind);
+			} else {
+				LOGGER.severe("ProxyUnit.setKind skipped unit with immutable kind");
+			}
 		}
 	}
 
@@ -343,7 +355,11 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	@Override
 	public void setName(final String nomen) {
 		for (final IUnit unit : proxied) {
-			unit.setName(nomen);
+			if (unit instanceof HasMutableName) {
+				((HasMutableName) unit).setName(nomen);
+			} else {
+				LOGGER.severe("ProxyUnit.setName skipped unit with immutable name");
+			}
 		}
 	}
 
@@ -374,7 +390,11 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit> {
 	@Override
 	public void setOwner(final Player player) {
 		for (final IUnit unit : proxied) {
-			unit.setOwner(player);
+			if (unit instanceof HasMutableOwner) {
+				((HasMutableOwner) unit).setOwner(player);
+			} else {
+				LOGGER.severe("ProxyUnit.setOwner skipped unit with immutable owner");
+			}
 		}
 	}
 

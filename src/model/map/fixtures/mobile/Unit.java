@@ -8,6 +8,10 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import model.map.HasMutableImage;
+import model.map.HasMutableKind;
+import model.map.HasMutableName;
+import model.map.HasMutableOwner;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
@@ -39,7 +43,8 @@ import util.TypesafeLogger;
  *
  * @author Jonathan Lovelace
  */
-public class Unit implements IUnit {
+public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableImage,
+		                             HasMutableOwner {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */

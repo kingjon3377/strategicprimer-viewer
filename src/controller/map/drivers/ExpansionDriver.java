@@ -163,22 +163,12 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 			}
 
 			@Override
-			public void setImage(final String img) {
-				throw ise;
-			}
-
-			@Override
 			public String getImage() {
 				throw ise;
 			}
 
 			@Override
 			public String getKind() {
-				throw ise;
-			}
-
-			@Override
-			public void setKind(final String nKind) {
 				throw ise;
 			}
 
@@ -193,18 +183,8 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 			}
 
 			@Override
-			public void setName(final String nomen) {
-				throw ise;
-			}
-
-			@Override
 			public Player getOwner() {
 				return currentPlayer;
-			}
-
-			@Override
-			public void setOwner(final Player player) {
-				throw ise;
 			}
 
 			@Override
