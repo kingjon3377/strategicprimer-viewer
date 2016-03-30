@@ -244,7 +244,7 @@ public class WorkerStats {
 	 * @return a String representing the modifier it conveys.
 	 */
 	public static String getModifierString(final int stat) {
-		final int modifier = (stat - STAT_BASIS) / 2;
+		final int modifier = getModifier(stat);
 		final String modStr = NullCleaner.assertNotNull(Integer.toString(modifier));
 		if (modifier >= 0) {
 			return '+' + modStr; // NOPMD
@@ -252,7 +252,13 @@ public class WorkerStats {
 			return modStr;
 		}
 	}
-
+	/**
+	 * @param stat a stat
+	 * @return the modifier it conveys
+	 */
+	public static int getModifier(final int stat) {
+		return (stat - STAT_BASIS) / 2;
+	}
 	/**
 	 * @return a String representation of the object
 	 */

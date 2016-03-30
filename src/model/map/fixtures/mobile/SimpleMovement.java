@@ -194,8 +194,7 @@ public final class SimpleMovement {
 		if (worker instanceof Worker) {
 			final WorkerStats stats = ((Worker) worker).getStats();
 			if (stats != null) {
-				// TODO: Make helper method instead of duplicating the arithmetic from getModifierString
-				ability = (stats.getWisdom() - 10) / 2;
+				ability = WorkerStats.getModifier(stats.getWisdom());
 			} else {
 				ability = 0;
 			}
