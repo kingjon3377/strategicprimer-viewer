@@ -52,7 +52,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	 * An object indicating how to use and invoke this driver.
 	 */
 	private static final DriverUsage USAGE =
-			new DriverUsage(false, "-a", "--adv", ParamCount.One,
+			new DriverUsage(false, "-a", "--adv", ParamCount.AtLeastOne,
 								   "View a player's workers and manage their " +
 										   "advancement",
 								   "View a player's units, the workers in those units, " +
