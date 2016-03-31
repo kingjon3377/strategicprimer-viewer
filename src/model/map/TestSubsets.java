@@ -1,14 +1,7 @@
 package model.map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static util.NullStream.DEV_NULL;
-
 import java.io.IOException;
-
-import org.junit.Test;
-
+import java.util.function.Consumer;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.mobile.Animal;
@@ -16,11 +9,18 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.resources.CacheFixture;
+import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.Fortification;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static util.NullStream.DEV_NULL;
 
 /**
  * Tests for Subsettable functionality.
@@ -221,7 +221,65 @@ public final class TestSubsets {
 		assertTrue("Subset calculation ignores animal tracks",
 				secondMap.isSubset(firstMap, DEV_NULL, ""));
 	}
+	/**
+	 * Test map subsets to ensure off-by-one errors are caught.
+	 * @throws IOException on I/O error writing to bit bucket
+	 */
+	@Test
+	public void testMapOffByOne() throws IOException {
+		final SPMapNG baseMap =
+				new SPMapNG(new MapDimensions(3, 3, 2), new PlayerCollection(), -1);
+		baseMap.locationStream()
+				.forEach(point -> baseMap.setBaseTerrain(point, TileType.Plains));
+		baseMap.setForest(PointFactory.point(1, 1), new Forest("elm", false));
+		baseMap.addFixture(PointFactory.point(1, 1),
+				new Animal("skunk", false, false, "wild", 1));
+		baseMap.addRivers(PointFactory.point(1, 1), River.East);
 
+		final SPMapNG testMap =
+				new SPMapNG(baseMap.dimensions(), new PlayerCollection(), -1);
+		testMap.locationStream()
+				.forEach(point -> testMap.setBaseTerrain(point, TileType.Plains));
+		final Forest forest = new Forest("elm", false);
+		final Animal animal = new Animal("skunk", false, false, "wild", 1);
+		Consumer<SPMapNG> testTrue =
+				map -> {
+					try {
+						assertTrue("Subset holds when fixture(s) placed correctly",
+								baseMap.isSubset(map, DEV_NULL, ""));
+					} catch (IOException ignored) {
+
+					}
+				};
+		Consumer<SPMapNG> testFalse = map -> {
+			try {
+				assertFalse("Subset fails when fixture(s) off by one", baseMap.isSubset(map, DEV_NULL, ""));
+			} catch (IOException ignored) {
+
+			}
+		};
+		for (final Point point : testMap.locations()) {
+			assertTrue("Subset invariant before attempt using " + point,
+					baseMap.isSubset(testMap, DEV_NULL, ""));
+			final Consumer<SPMapNG> test;
+			if (PointFactory.point(1, 1).equals(point)) {
+				test = testTrue;
+			} else {
+				test = testFalse;
+			}
+			testMap.setForest(point, forest);
+			test.accept(testMap);
+			testMap.setForest(point, null);
+			testMap.addFixture(point, animal);
+			test.accept(testMap);
+			testMap.removeFixture(point, animal);
+			testMap.addRivers(point, River.East);
+			test.accept(testMap);
+			testMap.removeRivers(point, River.East);
+			assertTrue("Subset invariant after attempt using " + point,
+					baseMap.isSubset(testMap, DEV_NULL, ""));
+		}
+	}
 	/**
 	 * Test subsets' interaction with copy().
 	 *
