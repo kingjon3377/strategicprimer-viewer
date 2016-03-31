@@ -216,9 +216,9 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	private static void advanceJob(final IJob job, final ICLIHelper cli)
 			throws IOException {
 		final List<ISkill> skills = CLIHelper.toList(job);
-		final String hdr = "Jobs in worker:";
-		final String none = "No existing jobs.";
-		final String prpt = "Job to advance: ";
+		final String hdr = "Skills in Job:";
+		final String none = "No existing skills.";
+		final String prpt = "Skill to advance: ";
 		for (int skillNum = cli.chooseFromList(skills, hdr, none, prpt, false);
 				skillNum <= skills
 									.size();
