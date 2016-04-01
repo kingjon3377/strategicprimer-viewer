@@ -194,8 +194,20 @@ public final class QueryCLI implements SimpleDriver {
 		final Point start = selectPoint(cli);
 		cli.print("Destination:\t");
 		final Point end = selectPoint(cli);
-		final int rawXdiff = start.row - end.row;
-		final int rawYdiff = start.col - end.col;
+		cli.printf("Distance (as the crow flies, in tiles):\t%.0f%n",
+				Double.valueOf(distance(start, end, dims)));
+	}
+
+	/**
+	 * @param one a first point
+	 * @param two a second point
+	 * @param dims the dimensions of the map
+	 * @return the distance between the two points
+	 */
+	private static double distance(final Point one, final Point two,
+	                               final MapDimensions dims) {
+		final int rawXdiff = one.row - two.row;
+		final int rawYdiff = one.col - two.col;
 		final int xdiff;
 		if (rawXdiff < (dims.rows / 2)) {
 			xdiff = rawXdiff;
@@ -208,10 +220,9 @@ public final class QueryCLI implements SimpleDriver {
 		} else {
 			ydiff = dims.cols - rawYdiff;
 		}
-		cli.printf("Distance (as the crow flies, in tiles):\t%.0f%n",
-				Double.valueOf(Math.round(Math.sqrt((xdiff * xdiff) + (ydiff * ydiff)))));
-	}
+		return Math.round(Math.sqrt((xdiff * xdiff) + (ydiff * ydiff)));
 
+	}
 	/**
 	 * Run herding. TODO: Move the logic here into the HuntingModel or a similar class.
 	 *
