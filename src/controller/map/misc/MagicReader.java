@@ -84,6 +84,7 @@ public class MagicReader extends Reader {
 	 * @return the character read, or -1 on EOF
 	 * @throws IOException on I/O error
 	 */
+	@Override
 	public int read() throws IOException {
 		return delegate.read();
 	}
@@ -91,6 +92,7 @@ public class MagicReader extends Reader {
 	/**
 	 * @return whether the stream supports mark()
 	 */
+	@Override
 	public boolean markSupported() {
 		return delegate.markSupported();
 	}
@@ -101,6 +103,7 @@ public class MagicReader extends Reader {
 	 *                         read while still preserving the mark.
 	 * @throws IOException on I/O error
 	 */
+	@Override
 	public void mark(int readAheadLimit) throws IOException {
 		delegate.mark(readAheadLimit);
 	}
@@ -109,6 +112,7 @@ public class MagicReader extends Reader {
 	 * Reset the stream if the delegate supports it.
 	 * @throws IOException on I/O error
 	 */
+	@Override
 	public void reset() throws IOException {
 		delegate.reset();
 	}
