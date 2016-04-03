@@ -199,15 +199,15 @@ public final class QueryCLI implements SimpleDriver {
 	}
 
 	/**
-	 * @param one a first point
-	 * @param two a second point
+	 * @param base a first point
+	 * @param dest a second point
 	 * @param dims the dimensions of the map
 	 * @return the distance between the two points
 	 */
-	private static double distance(final Point one, final Point two,
+	private static double distance(final Point base, final Point dest,
 	                               final MapDimensions dims) {
-		final int rawXdiff = one.row - two.row;
-		final int rawYdiff = one.col - two.col;
+		final int rawXdiff = base.row - dest.row;
+		final int rawYdiff = base.col - dest.col;
 		final int xdiff;
 		if (rawXdiff < (dims.rows / 2)) {
 			xdiff = rawXdiff;
