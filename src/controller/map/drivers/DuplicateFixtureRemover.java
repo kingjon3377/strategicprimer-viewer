@@ -85,18 +85,12 @@ public final class DuplicateFixtureRemover implements SimpleCLIDriver {
 		// We ignore ground and forests because they don't have IDs.
 		// TODO: Try to use Streams API instead of complicated loop
 		for (final TileFixture fix : map.getOtherFixtures(location)) {
-			boolean already = false;
-			for (final TileFixture keptFixture : fixtures) {
-				if (((fix instanceof IUnit)
-							 && ((IUnit) fix).getKind().contains("TODO"))
-							|| (fix instanceof CacheFixture)) {
-					break;
-				} else if (keptFixture.equalsIgnoringID(fix)) {
-					already = true;
-					break;
-				}
+			if (((fix instanceof IUnit) && ((IUnit) fix).getKind().contains("TODO")) ||
+					    (fix instanceof CacheFixture)) {
+				continue;
 			}
-			if (already) {
+			if (fixtures.stream()
+					    .anyMatch(keptFixture -> keptFixture.equalsIgnoringID(fix))) {
 				ostream.append(fix.getClass().getName());
 				ostream.append(' ');
 				ostream.append(Integer.toString(fix.getID()));
