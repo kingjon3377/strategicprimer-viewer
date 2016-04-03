@@ -1,23 +1,24 @@
 package controller.map.readerng;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
-import org.eclipse.jdt.annotation.NonNull;
-
+import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnsupportedPropertyException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
+import java.util.Collections;
+import java.util.List;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
+import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
+import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
 import util.Warning;
+
+import static util.EqualsAny.equalsAny;
 
 /**
  * A reader for Jobs.
@@ -91,6 +92,9 @@ public final class JobReader implements INodeHandler<@NonNull Job> {
 		}
 		final Job retval = new Job(getAttribute(element, "name"),
 				                          getIntegerAttribute(element, "level"));
+		StartElement lastSkill = element;
+		boolean anySkills = false;
+		boolean onlyOneSkill = true;
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final Object result =
@@ -101,7 +105,13 @@ public final class JobReader implements INodeHandler<@NonNull Job> {
 								stream,
 								players, warner, idFactory);
 				if (result instanceof Skill) {
+					if (anySkills) {
+						onlyOneSkill = false;
+					} else {
+						anySkills = true;
+					}
 					retval.addSkill((Skill) result);
+					lastSkill = event.asStartElement();
 				} else {
 					throw new UnwantedChildException(NullCleaner.assertNotNull(element.getName()),
 							NullCleaner.assertNotNull(event.asStartElement()));
@@ -111,6 +121,12 @@ public final class JobReader implements INodeHandler<@NonNull Job> {
 							   element.getName().equals(event.asEndElement().getName())) {
 				break;
 			}
+		}
+		if (onlyOneSkill && equalsAny(retval.iterator().next().getName(),
+						    IJob.SUSPICIOUS_SKILLS)) {
+			warner.warn(new UnwantedChildException(element.getName(),
+					        lastSkill, new DeprecatedPropertyException(lastSkill,
+							           retval.iterator().next().getName(), "miscellaneous")));
 		}
 		return retval;
 	}

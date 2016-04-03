@@ -1,19 +1,15 @@
 package controller.map.cxml;
 
-import java.io.IOException;
-
-import javax.xml.XMLConstants;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnsupportedPropertyException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
+import java.io.IOException;
+import javax.xml.XMLConstants;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
@@ -21,10 +17,13 @@ import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.mobile.worker.WorkerStats;
+import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
+
+import static util.EqualsAny.equalsAny;
 
 /**
  * A reader for Workers.
@@ -160,6 +159,9 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 		if (hasParameter(element, "hours")) {
 			warner.warn(new UnsupportedPropertyException(element, "hours"));
 		}
+		StartElement lastSkill = element;
+		boolean anySkills = false;
+		boolean onlyOneSkill = true;
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && EqualsAny.equalsAny(
 					NullCleaner.assertNotNull(
@@ -172,6 +174,11 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 					retval.addSkill(parseSkill(
 							NullCleaner.assertNotNull(event.asStartElement()),
 							warner));
+					if (anySkills) {
+						onlyOneSkill = false;
+					} else {
+						anySkills = true;
+					}
 					spinUntilEnd(NullCleaner.assertNotNull(event.asStartElement()
 																   .getName()), stream);
 				} else {
@@ -184,6 +191,12 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 							   )) {
 				break;
 			}
+		}
+		if (onlyOneSkill && equalsAny(retval.iterator().next().getName(),
+						    IJob.SUSPICIOUS_SKILLS)) {
+			warner.warn(new UnwantedChildException(element.getName(),
+					                                      lastSkill, new DeprecatedPropertyException(lastSkill,
+							                                                                                retval.iterator().next().getName(), "miscellaneous")));
 		}
 		return retval;
 	}
