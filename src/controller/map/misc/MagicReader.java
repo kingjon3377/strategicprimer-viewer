@@ -64,6 +64,7 @@ public class MagicReader extends Reader {
 	 * @return how much was read
 	 * @throws IOException on I/O error reading
 	 */
+	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	public int read(final char[] buffer, final int offset, final int length) throws IOException {
 		return delegate.read(buffer, offset, length);
