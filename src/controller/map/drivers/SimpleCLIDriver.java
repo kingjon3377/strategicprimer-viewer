@@ -44,9 +44,19 @@ public interface SimpleCLIDriver extends SimpleDriver {
 	default void startDriver(final String... args) throws DriverFailedException {
 		switch (usage().getParamsWanted()) {
 		case None:
-			// TODO: Handle no-args, no-args-needed case
+			if (args.length == 0) {
+				startDriver();
+				return;
+			} else {
+				throw new IncorrectUsageException(usage());
+			}
 		case AnyNumber:
-			// TODO: Handle no-args, no-args-needed case
+			if (args.length == 0) {
+				startDriver();
+				return;
+			} else {
+				break;
+			}
 		case AtLeastOne: // Fall through
 			if (args.length == 0) {
 				throw new IncorrectUsageException(usage());

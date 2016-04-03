@@ -33,6 +33,15 @@ import util.Warning;
 @FunctionalInterface
 public interface SimpleDriver extends ISPDriver {
 	/**
+	 * (Try to) run the driver. If the driver does not need arguments, it should
+	 * override this default method to support that; otherwise, this will throw,
+	 * because nearly all drivers do need arguments.
+	 */
+	default void startDriver() throws DriverFailedException {
+		throw new DriverFailedException("Driver does not support no-arg operation",
+				                               new IllegalStateException("Driver does not support no-arg operation"));
+	}
+	/**
 	 * Run the driver. If the driver is a GUIDriver, this should use
 	 * SwingUtilities.invokeLater(); if it's a CLIDriver, that's not necessary. This
 	 * default implementation does not write to file after running the driver on the
@@ -44,10 +53,16 @@ public interface SimpleDriver extends ISPDriver {
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@Override
 	default void startDriver(final String... args) throws DriverFailedException {
-		// TODO: Handle no-args, no-args-needed case
 		if (args.length == 0) {
-			startDriver(new MapReaderAdapter()
-					            .readMultiMapModel(Warning.DEFAULT, askUserForFile()));
+			if (EqualsAny.equalsAny(usage().getParamsWanted(), ParamCount.None,
+					ParamCount.AnyNumber)) {
+				startDriver();
+			} else {
+				startDriver(new MapReaderAdapter().readMultiMapModel(Warning.DEFAULT,
+						askUserForFile()));
+			}
+		} else if (ParamCount.None == usage().getParamsWanted()) {
+			throw new IncorrectUsageException(usage());
 		} else if ((args.length == 1) && EqualsAny.equalsAny(usage().getParamsWanted(),
 				ParamCount.Two, ParamCount.AtLeastTwo)) {
 			startDriver(new MapReaderAdapter()
