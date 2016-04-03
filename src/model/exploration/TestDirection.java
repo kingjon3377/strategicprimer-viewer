@@ -33,6 +33,7 @@ import static org.junit.Assert.assertEquals;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 public class TestDirection {
 	/**
 	 * The object under test. Because the method in question is required by the
