@@ -169,8 +169,12 @@ public final class ReaderComparator implements UtilityDriver {
 	private static String readIntoBuffer(final File file)
 			throws IOException {
 		try (final FileReader reader = new FileReader(file)) {
-			final CharBuffer buffer = CharBuffer.allocate((int) file.length());
-			reader.read(buffer);
+			final int len = (int) file.length();
+			final CharBuffer buffer = CharBuffer.allocate(len);
+			final int charsRead = reader.read(buffer);
+			if (len != charsRead) {
+				LOGGER.warning("Reading " + file.getPath() + " didn't use whole buffer");
+			}
 			buffer.position(0);
 			return NullCleaner.assertNotNull(buffer.toString());
 		}
