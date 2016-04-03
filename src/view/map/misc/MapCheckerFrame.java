@@ -22,6 +22,7 @@ import controller.map.misc.MapReaderAdapter;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
+import view.util.ISPWindow;
 import view.util.StreamingLabel;
 import view.util.StreamingLabel.LabelTextColor;
 
@@ -47,7 +48,7 @@ import view.util.StreamingLabel.LabelTextColor;
  *
  * @author Jonathan Lovelace
  */
-public final class MapCheckerFrame extends JFrame {
+public final class MapCheckerFrame extends JFrame implements ISPWindow {
 	/**
 	 * The color to use for errors.
 	 */
@@ -197,5 +198,13 @@ public final class MapCheckerFrame extends JFrame {
 	@Override
 	public String toString() {
 		return "MapCheckerFrame showing: " + label.getText();
+	}
+
+	/**
+	 * @return the title of this app
+	 */
+	@Override
+	public String getWindowName() {
+		return "Map Checker";
 	}
 }

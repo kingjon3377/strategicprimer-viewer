@@ -73,6 +73,7 @@ import util.NullCleaner;
 import util.TypesafeLogger;
 import view.map.main.ViewerFrame;
 import view.util.BorderedPanel;
+import view.util.ISPWindow;
 import view.util.ListenedButton;
 import view.util.SystemOut;
 
@@ -102,7 +103,7 @@ import static view.util.SplitWithWeights.verticalSplit;
  *
  * @author Jonathan Lovelace
  */
-public final class WorkerMgmtFrame extends JFrame {
+public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 	/**
 	 * The logger.
 	 */
@@ -786,5 +787,13 @@ public final class WorkerMgmtFrame extends JFrame {
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
+	}
+
+	/**
+	 * @return the title of this app
+	 */
+	@Override
+	public String getWindowName() {
+		return "Worker Management";
 	}
 }

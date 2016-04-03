@@ -47,6 +47,7 @@ import view.util.AboutDialog;
 import view.util.DriverQuit;
 import view.util.ErrorShower;
 import view.util.FilteredFileChooser;
+import view.util.ISPWindow;
 import view.util.TreeExpansionOrderListener;
 
 /**
@@ -175,8 +176,13 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 				startNewViewerWindow();
 				break;
 			case "about":
-				// FIXME: This should use the title of whatever app it was called from
-				new AboutDialog(source, "Exploration Helper").setVisible(true);
+				final String title ;
+				if (parent instanceof ISPWindow) {
+					title = ((ISPWindow) parent).getWindowName();
+				} else {
+					title = "Exploration";
+				}
+				new AboutDialog(source, title).setVisible(true);
 				break;
 			case "load secondary":
 				handleSecondaryLoadMenu(source);

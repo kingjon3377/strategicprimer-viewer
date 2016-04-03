@@ -14,6 +14,7 @@ import controller.map.misc.IOHandler;
 import model.viewer.IViewerModel;
 import util.NullCleaner;
 import view.map.details.DetailPanelNG;
+import view.util.ISPWindow;
 import view.util.SplitWithWeights;
 
 /**
@@ -38,7 +39,7 @@ import view.util.SplitWithWeights;
  *
  * @author Jonathan Lovelace
  */
-public final class ViewerFrame extends JFrame {
+public final class ViewerFrame extends JFrame implements ISPWindow {
 	/**
 	 * Default width of the Frame.
 	 */
@@ -141,5 +142,13 @@ public final class ViewerFrame extends JFrame {
 	@Override
 	public String toString() {
 		return "ViewerFrame showing map in " + model.getMapFile().getPath();
+	}
+
+	/**
+	 * @return the title of this app
+	 */
+	@Override
+	public String getWindowName() {
+		return "Map Viewer";
 	}
 }

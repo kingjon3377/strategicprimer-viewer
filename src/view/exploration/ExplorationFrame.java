@@ -19,6 +19,7 @@ import controller.map.misc.IOHandler;
 import model.exploration.ExplorationModel;
 import model.listeners.CompletionListener;
 import util.NullCleaner;
+import view.util.ISPWindow;
 
 /**
  * The main window for the exploration GUI.
@@ -42,7 +43,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public final class ExplorationFrame extends JFrame {
+public final class ExplorationFrame extends JFrame implements ISPWindow {
 	/**
 	 * A listener to swap the panels when 'completion' is signalled.
 	 *
@@ -163,5 +164,13 @@ public final class ExplorationFrame extends JFrame {
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
+	}
+
+	/**
+	 * @return the title of this app
+	 */
+	@Override
+	public String getWindowName() {
+		return "Exploration";
 	}
 }

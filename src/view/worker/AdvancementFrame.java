@@ -21,6 +21,7 @@ import model.workermgmt.IWorkerTreeModel;
 import model.workermgmt.JobTreeModel;
 import model.workermgmt.WorkerTreeModelAlt;
 import view.util.BorderedPanel;
+import view.util.ISPWindow;
 import view.util.ItemAdditionPanel;
 import view.util.ListenedButton;
 import view.util.SplitWithWeights;
@@ -47,7 +48,7 @@ import view.util.SplitWithWeights;
  *
  * @author Jonathan Lovelace
  */
-public final class AdvancementFrame extends JFrame {
+public final class AdvancementFrame extends JFrame implements ISPWindow {
 	/**
 	 * Dividers start at half-way.
 	 */
@@ -163,5 +164,13 @@ public final class AdvancementFrame extends JFrame {
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
+	}
+
+	/**
+	 * @return the title of this app
+	 */
+	@Override
+	public String getWindowName() {
+		return "Worker Advancement";
 	}
 }

@@ -32,6 +32,7 @@ import model.resources.ResourceManagementDriver;
 import util.NullCleaner;
 import view.util.BoxPanel;
 import view.util.ErrorShower;
+import view.util.ISPWindow;
 import view.util.ImprovedComboBox;
 import view.worker.WorkerMenu;
 
@@ -58,7 +59,7 @@ import view.worker.WorkerMenu;
  *
  * @author Jonathan Lovelace
  */
-public class ResourceAddingFrame extends JFrame {
+public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	/**
 	 * The driver model.
 	 */
@@ -294,5 +295,13 @@ public class ResourceAddingFrame extends JFrame {
 	@Override
 	public String toString() {
 		return "ResourceAddingFrame with current player " + current.toString();
+	}
+
+	/**
+	 * @return the title of this app
+	 */
+	@Override
+	public String getWindowName() {
+		return "Resource Entry";
 	}
 }

@@ -1,6 +1,9 @@
 package view.map.misc;
 
-import java.awt.Dimension;
+import controller.map.formatexceptions.MapVersionException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.MapReaderAdapter;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilterWriter;
@@ -13,23 +16,17 @@ import java.io.Writer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
-
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import controller.map.formatexceptions.MapVersionException;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.MapReaderAdapter;
 import model.map.IMapNG;
 import model.map.MapDimensions;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
+import view.util.ISPWindow;
 import view.util.StreamingLabel;
 import view.util.StreamingLabel.LabelTextColor;
 
@@ -56,7 +53,7 @@ import view.util.StreamingLabel.LabelTextColor;
  * @author Jonathan Lovelace
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
-public final class SubsetFrame extends JFrame {
+public final class SubsetFrame extends JFrame implements ISPWindow {
 	/**
 	 * Logger.
 	 */
@@ -338,5 +335,13 @@ public final class SubsetFrame extends JFrame {
 	private void readObject(final ObjectInputStream in)
 			throws IOException, ClassNotFoundException {
 		throw new NotSerializableException("Serialization is not allowed");
+	}
+
+	/**
+	 * @return the title of this app
+	 */
+	@Override
+	public String getWindowName() {
+		return "Subset Tester";
 	}
 }
