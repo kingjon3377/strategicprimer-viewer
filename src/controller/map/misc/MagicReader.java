@@ -104,7 +104,7 @@ public class MagicReader extends Reader {
 	 * @throws IOException on I/O error
 	 */
 	@Override
-	public void mark(int readAheadLimit) throws IOException {
+	public void mark(final int readAheadLimit) throws IOException {
 		delegate.mark(readAheadLimit);
 	}
 

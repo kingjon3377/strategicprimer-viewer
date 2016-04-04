@@ -242,19 +242,19 @@ public final class TestSubsets {
 				.forEach(point -> testMap.setBaseTerrain(point, TileType.Plains));
 		final Forest forest = new Forest("elm", false);
 		final Animal animal = new Animal("skunk", false, false, "wild", 1);
-		Consumer<SPMapNG> testTrue =
+		final Consumer<SPMapNG> testTrue =
 				map -> {
 					try {
 						assertTrue("Subset holds when fixture(s) placed correctly",
 								baseMap.isSubset(map, DEV_NULL, ""));
-					} catch (IOException ignored) {
+					} catch (final IOException ignored) {
 
 					}
 				};
-		Consumer<SPMapNG> testFalse = map -> {
+		final Consumer<SPMapNG> testFalse = map -> {
 			try {
 				assertFalse("Subset fails when fixture(s) off by one", baseMap.isSubset(map, DEV_NULL, ""));
-			} catch (IOException ignored) {
+			} catch (final IOException ignored) {
 
 			}
 		};
