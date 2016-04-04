@@ -171,7 +171,7 @@ public final class HarvestableReportGenerator
 	 */
 	@SafeVarargs
 	private static void sortAll(final List<String>... collections) {
-		Stream.of(collections).forEach(Collections::sort);
+		Stream.of(collections).map(ArrayList::new).forEach(Collections::sort);
 	}
 
 	/**
