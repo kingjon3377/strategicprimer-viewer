@@ -18,7 +18,6 @@ import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import org.eclipse.jdt.annotation.Nullable;
-import util.EqualsAny;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
@@ -80,9 +79,8 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 														element, warner, idFactory));
 		retval.setImage(getParameter(element, "image", ""));
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement() && EqualsAny.equalsAny(
-					NullCleaner.assertNotNull(
-							event.asStartElement().getName().getNamespaceURI()),
+			if (event.isStartElement() && equalsAny(NullCleaner.assertNotNull(
+					event.asStartElement().getName().getNamespaceURI()),
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				if ("job".equalsIgnoreCase(NullCleaner.assertNotNull(event
 																			 .asStartElement()
@@ -163,9 +161,8 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 		boolean anySkills = false;
 		boolean onlyOneSkill = true;
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement() && EqualsAny.equalsAny(
-					NullCleaner.assertNotNull(
-							event.asStartElement().getName().getNamespaceURI()),
+			if (event.isStartElement() && equalsAny(NullCleaner.assertNotNull(
+					event.asStartElement().getName().getNamespaceURI()),
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				if ("skill".equalsIgnoreCase(NullCleaner.assertNotNull(event
 																			   .asStartElement()
