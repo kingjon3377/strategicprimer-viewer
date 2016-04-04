@@ -3,12 +3,10 @@ package model.misc;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import util.Pair;
-import util.SetPairConverter;
 
 /**
  * A superclass for implementations of interfaces inheriting from IMultiMapModel.
@@ -62,7 +60,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel
 	/**
 	 * The collection of subordinate maps.
 	 */
-	private final Map<IMutableMapNG, File> subordinateMaps = new HashMap<>();
+	private final List<Pair<IMutableMapNG, File>> subordinateMaps = new ArrayList<>();
 
 	/**
 	 * @param map  the subordinate map to add
@@ -70,7 +68,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel
 	 */
 	@Override
 	public final void addSubordinateMap(final IMutableMapNG map, final File file) {
-		subordinateMaps.put(map, file);
+		subordinateMaps.add(Pair.of(map, file));
 	}
 
 	/**
@@ -87,7 +85,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel
 	 */
 	@Override
 	public final Iterable<Pair<IMutableMapNG, File>> getSubordinateMaps() {
-		return new SetPairConverter<>(subordinateMaps);
+		return new ArrayList<>(subordinateMaps);
 	}
 
 	/**
