@@ -11,6 +11,7 @@ import java.nio.charset.Charset;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -446,10 +447,12 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 					throws IOException {
 		final int count = cli.inputNumber("How many workers to generate? ");
 		final String filename = cli.inputString("Filename to load names from: ");
-		final List<String> names;
+		final List<String> names = new ArrayList<>();
 		try (final FileSystem fsys = FileSystems.getDefault()) {
-			names = NullCleaner.assertNotNull(Files.readAllLines(
-					fsys.getPath(filename), Charset.defaultCharset()));
+			names.addAll(
+					Files.readAllLines(fsys.getPath(filename), Charset.defaultCharset()));
+		} catch (final UnsupportedOperationException ignored) {
+			// Can't close a FileSystem, but IDEA screams if we don't use try-with-res ...
 		}
 		for (int i = 0; i < count; i++) {
 			final Worker worker =
@@ -551,7 +554,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		case "gnome":
 			racialIntBonus = 2;
 			racialStrBonus = -2;
-			racialConBonus = 1;
+			racialConBonus = -1;
 			racialDexBonus = 1;
 			racialWisBonus = 0;
 			racialChaBonus = 0;
