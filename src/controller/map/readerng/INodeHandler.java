@@ -1,16 +1,5 @@
 package controller.map.readerng;
 
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.events.Attribute;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -19,10 +8,19 @@ import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.List;
+import javax.xml.namespace.QName;
+import javax.xml.stream.events.Attribute;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.HasMutableImage;
+import model.map.HasPortrait;
 import model.map.IMutablePlayerCollection;
 import model.map.IPlayerCollection;
 import model.map.Player;
+import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
 import util.Warning;
 
@@ -355,6 +353,21 @@ public interface INodeHandler<@NonNull T> {
 			throws SPFormatException {
 		if (hasAttribute(element, "image")) {
 			obj.setImage(getAttribute(element, "image"));
+		}
+	}
+	/**
+	 * If there is a portrait image on the element, add that to the object being
+	 * constructed. If not, do nothing.
+	 *
+	 * @param element the XML element being read
+	 * @param obj     the object being constructed.
+	 * @throws SPFormatException on SP format error
+	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
+	default void addPortrait(final StartElement element, final HasPortrait obj)
+			throws SPFormatException {
+		if (hasAttribute(element, "portrait")) {
+			obj.setPortrait(getAttribute(element, "portrait"));
 		}
 	}
 	// FIXME: Add and use parsePoint(String rowTag, String colTag)

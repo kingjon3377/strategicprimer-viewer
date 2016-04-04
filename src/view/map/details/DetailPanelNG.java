@@ -1,22 +1,29 @@
 package view.map.details;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-
-import org.eclipse.jdt.annotation.Nullable;
-
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import model.listeners.SelectionChangeListener;
 import model.listeners.VersionChangeListener;
+import model.map.HasPortrait;
 import model.map.Point;
+import model.map.TileFixture;
 import model.misc.IDriverModel;
+import org.eclipse.jdt.annotation.Nullable;
+import util.ImageLoader;
+import util.TypesafeLogger;
 import view.map.key.KeyPanel;
 import view.util.BorderedPanel;
+import view.util.SplitWithWeights;
 
 /**
  * A panel to show the details of a tile, using a tree rather than subpanels with chits
@@ -64,7 +71,10 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 			                                        "<html><body><p>Contents of the tile" +
 					                                        " at (-1, -1)" +
 					                                        ":</p></body></html>");
-
+	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER = TypesafeLogger.getLogger(DetailPanelNG.class);
 	/**
 	 * Constructor.
 	 *
@@ -75,13 +85,15 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 		super(HORIZONTAL_SPLIT, true);
 
 		fixList = new FixtureList(this, model, model.getMap().players());
+		final PortraitPanel portrait = new PortraitPanel(fixList);
+		fixList.addListSelectionListener(portrait);
 		final BorderedPanel listPanel = new BorderedPanel(new JScrollPane(
 				                                                                 fixList),
 				                                                 header, null, null,
 				                                                 null);
 
 		keyPanel = new KeyPanel(version);
-		setLeftComponent(listPanel);
+		setLeftComponent(SplitWithWeights.horizontalSplit(.5, .5, listPanel, portrait));
 		setRightComponent(keyPanel);
 		setResizeWeight(DIVIDER_LOCATION);
 		setDividerLocation(DIVIDER_LOCATION);
@@ -133,5 +145,75 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 	@Override
 	public String toString() {
 		return "DetailPanelNG: Header currently reads " + header.getText();
+	}
+	/**
+	 * A component to show a fixture's portrait.
+	 */
+	private static class PortraitPanel extends JComponent
+			implements ListSelectionListener {
+		/**
+		 * Constructor.
+		 * @param flist The list to watch.
+		 */
+		protected PortraitPanel(final JList<TileFixture> flist) {
+			list = flist;
+		}
+
+		/**
+		 * The list we're watching.
+		 */
+		private final JList<TileFixture> list;
+		/**
+		 * The image to show when there is no portrait to show.
+		 */
+		private final BufferedImage blankPortrait =
+				new BufferedImage(1, 1, BufferedImage.TYPE_BYTE_GRAY);
+		/**
+		 * The current portrait.
+		 */
+		@Nullable
+		private Image portrait;
+		/**
+		 * A reference to the image loading utility class.
+		 */
+		private final ImageLoader loader = ImageLoader.getLoader();
+
+		/**
+		 * Draw the portrait, if any.
+		 * @param pen the graphics context
+		 */
+		@Override
+		protected void paintComponent(final Graphics pen) {
+			super.paintComponent(pen);
+			final Image local = portrait;
+			if (local != null) {
+				pen.drawImage(local, 0, 0, getWidth(), getHeight(), this);
+			}
+		}
+
+		/**
+		 * Handle a selection change
+		 * @param event ignored (we go straight to the list)
+		 */
+		@Override
+		public void valueChanged(final ListSelectionEvent event) {
+			final List<TileFixture> selections = list.getSelectedValuesList();
+			portrait = null;
+			if (!selections.isEmpty() && selections.size() == 1) {
+				final TileFixture selectedValue = selections.get(0);
+				if (selectedValue instanceof HasPortrait) {
+					final String portraitName = ((HasPortrait) selectedValue).getPortrait();
+					if (!portraitName.isEmpty()) {
+						try {
+							portrait = loader.loadImage(portraitName);
+							repaint();
+						} catch (IOException except) {
+							LOGGER.log(Level.WARNING, "I/O error loading portrait",
+									except);
+						}
+					}
+				}
+			}
+		}
 	}
 }

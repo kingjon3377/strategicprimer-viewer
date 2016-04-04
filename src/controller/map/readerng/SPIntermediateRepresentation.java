@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
 import model.map.HasImage;
+import model.map.HasPortrait;
 import util.EqualsAny;
 import util.NullCleaner;
 import util.Pair;
@@ -272,6 +273,19 @@ public final class SPIntermediateRepresentation {
 		}
 	}
 
+	/**
+	 * If the object's portrait attribute is empty, do nothing; if
+	 * not, add the portrait attribute to this representation.
+	 *
+	 * @param obj the object to consider.
+	 */
+	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
+	public void addPortraitAttribute(final HasPortrait obj) {
+		final String portrait = obj.getPortrait();
+		if (!portrait.isEmpty()) {
+			addAttribute("portrait", portrait);
+		}
+	}
 	/**
 	 * Add an ID attribute. This is so we only have to assert that Integer.toString
 	 * doesn't return null in one place.

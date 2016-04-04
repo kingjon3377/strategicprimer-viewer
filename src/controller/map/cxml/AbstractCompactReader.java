@@ -19,6 +19,7 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.HasImage;
+import model.map.HasPortrait;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
@@ -311,7 +312,19 @@ public abstract class AbstractCompactReader<@NonNull T>
 			return " image=\"" + image + '"';
 		}
 	}
-
+	/**
+	 * @param obj an object being written out that might have a custom portrait
+	 * @return the XML for the portrait if it does, or the empty string if not
+	 */
+	@SuppressWarnings("TypeMayBeWeakened")
+	protected static String portraitXML(final HasPortrait obj) {
+		final String portrait = obj.getPortrait();
+		if (portrait.isEmpty()) {
+			return "";
+		} else {
+			return " portrait=\"" + portrait + '"';
+		}
+	}
 	/**
 	 * A parser for numeric data.
 	 */

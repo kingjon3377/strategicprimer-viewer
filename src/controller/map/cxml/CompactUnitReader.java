@@ -1,31 +1,29 @@
 package controller.map.cxml;
 
-import static java.util.Collections.unmodifiableList;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.XMLConstants;
-import javax.xml.namespace.QName;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IFixture;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
+import org.eclipse.jdt.annotation.NonNull;
 import util.EqualsAny;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
+import view.util.SystemOut;
+
+import static java.util.Collections.unmodifiableList;
 
 /**
  * A reader for tiles, including rivers.
@@ -104,6 +102,10 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 				warner), getParameter(element, "name", ""),
 											getOrGenerateID(element, warner, idFactory));
 		retval.setImage(getParameter(element, "image", ""));
+		retval.setPortrait(getParameter(element, "portrait", ""));
+		if (!retval.getPortrait().isEmpty()) {
+			SystemOut.SYS_OUT.println("Portrait is " + retval.getPortrait());
+		}
 		final StringBuilder orders = new StringBuilder(512);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && EqualsAny.equalsAny(
@@ -218,6 +220,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 		ostream.append(Integer.toString(obj.getID()));
 		ostream.append('"');
 		ostream.append(imageXML(obj));
+		ostream.append(portraitXML(obj));
 		if (obj.iterator().hasNext() || !obj.getOrders().trim().isEmpty()) {
 			ostream.append('>').append(obj.getOrders().trim()).append('\n');
 			for (final UnitMember member : obj) {

@@ -12,6 +12,7 @@ import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.HasMutableName;
 import model.map.HasMutableOwner;
+import model.map.HasPortrait;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
@@ -44,7 +45,7 @@ import util.TypesafeLogger;
  * @author Jonathan Lovelace
  */
 public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableImage,
-		                             HasMutableOwner {
+		                             HasMutableOwner, HasPortrait {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -437,5 +438,15 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 		} else {
 			return false; // NOPMD
 		}
+	}
+	private String portraitName = "";
+	@Override
+	public String getPortrait() {
+		return portraitName;
+	}
+
+	@Override
+	public void setPortrait(final String portrait) {
+		portraitName = portrait;
 	}
 }

@@ -73,6 +73,7 @@ public final class UnitReader implements INodeHandler<Unit> {
 						        getAttribute(element, "name", ""),
 						        getOrGenerateID(element, warner, idFactory));
 		addImage(element, fix);
+		addPortrait(element, fix);
 		final StringBuilder orders = new StringBuilder(512);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
