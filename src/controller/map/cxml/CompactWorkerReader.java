@@ -179,6 +179,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 					} else {
 						anySkills = true;
 					}
+					lastSkill = event.asStartElement();
 					spinUntilEnd(NullCleaner.assertNotNull(event.asStartElement()
 																   .getName()), stream);
 				} else {
