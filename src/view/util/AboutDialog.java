@@ -108,7 +108,6 @@ public final class AboutDialog extends JDialog {
 			setVisible(false);
 			dispose();
 		});
-		System.out.println(builder.toString());
 		pack();
 	}
 
