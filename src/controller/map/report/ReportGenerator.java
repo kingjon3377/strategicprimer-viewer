@@ -27,6 +27,7 @@ import util.DelayedRemovalMap;
 import util.IntMap;
 import util.Pair;
 import util.PairComparator;
+import view.util.SystemOut;
 
 import static util.NullCleaner.assertNotNull;
 
@@ -163,8 +164,8 @@ public final class ReportGenerator {
 				fixtures.remove(Integer.valueOf(fix.getID()));
 				continue;
 			}
-			System.out.print("Unhandled fixture:\t");
-			System.out.println(fix);
+			SystemOut.SYS_OUT.print("Unhandled fixture:\t");
+			SystemOut.SYS_OUT.println(fix);
 		}
 		return assertNotNull(builder.toString());
 	}

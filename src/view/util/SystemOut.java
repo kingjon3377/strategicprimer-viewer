@@ -1,16 +1,17 @@
 package view.util;
 
+import java.io.FilterOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
-import util.NullCleaner;
 
 /**
- * A class to get around Eclipse's insistence that System.out might be null. (FIXME:
- * Remove this if it's no longer necessary.)
+ * Originally a class to get around Eclipse's insistence that System.out might be null,
+ * now extends it to ensure that stdout cannot be closed.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
- * Copyright (C) 2011-2014 Jonathan Lovelace
+ * Copyright (C) 2011-2016 Jonathan Lovelace
  *
  * This program is free software: you can redistribute it and/or modify it under the terms
  * of version 3 of the GNU General Public License as published by the Free Software
@@ -26,18 +27,25 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public final class SystemOut {
+public final class SystemOut extends FilterOutputStream {
 	/**
 	 * The singleton object.
 	 */
 	@SuppressWarnings("resource")
-	public static final PrintStream SYS_OUT = NullCleaner.assertNotNull(System.out);
+	public static final PrintStream SYS_OUT = new PrintStream(new SystemOut());
 
 	/**
 	 * Constructor.
 	 */
 	private SystemOut() {
-		// Do not instantiate.
+		super(System.out);
+	}
+	/**
+	 * Do *not* close; this is stdout. However, flush the stream.
+	 */
+	@Override
+	public void close() throws IOException {
+		flush();
 	}
 
 	/**

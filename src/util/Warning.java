@@ -5,6 +5,7 @@ import controller.map.misc.DuplicateIDException;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import view.util.SystemOut;
 
 /**
  * A class to log warnings.
@@ -50,7 +51,7 @@ public enum Warning {
 	 * The output stream to log to. Used only by Custom.
 	 */
 	@SuppressWarnings("NonFinalFieldInEnum")
-	private Consumer<String> customHandle = System.out::println;
+	private Consumer<String> customHandle = SystemOut.SYS_OUT::println;
 	/**
 	 * In Custom, set the custom printing method. In others, throw.
 	 * @param printer the printing method to use

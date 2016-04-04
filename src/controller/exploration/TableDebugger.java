@@ -10,6 +10,7 @@ import model.exploration.old.ExplorationRunner;
 import model.exploration.old.MissingTableException;
 import util.NullCleaner;
 import util.TypesafeLogger;
+import view.util.SystemOut;
 
 /**
  * A driver to help debug exploration tables.
@@ -139,8 +140,7 @@ public final class TableDebugger {
 		final ExplorationRunner runner = new ExplorationRunner();
 		TableLoader.loadAllTables("tables", runner);
 		try {
-			new TableDebugger(runner).debugTables(NullCleaner
-					                                      .assertNotNull(System.out));
+			new TableDebugger(runner).debugTables(SystemOut.SYS_OUT);
 		} catch (final MissingTableException e) {
 			LOGGER.log(Level.SEVERE, "Missing table", e);
 			System.exit(1);

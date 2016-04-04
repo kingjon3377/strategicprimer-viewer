@@ -18,6 +18,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import util.EqualsAny;
 import util.IsNumeric;
 import util.NullCleaner;
+import view.util.SystemOut;
 
 /**
  * A helper class to let help CLIs interact with the user.
@@ -62,7 +63,8 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@SuppressWarnings("null") // System.in cannot be null
 	public CLIHelper() {
-		this(new InputStreamReader(System.in), new OutputStreamWriter(System.out));
+		this(new InputStreamReader(System.in), new OutputStreamWriter(SystemOut
+				                                                              .SYS_OUT));
 	}
 
 	/**

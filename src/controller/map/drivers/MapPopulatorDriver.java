@@ -10,6 +10,7 @@ import model.map.TileType;
 import model.map.fixtures.mobile.Animal;
 import model.misc.IDriverModel;
 import util.SingletonRandom;
+import view.util.SystemOut;
 
 /**
  * A driver to add some kind of fixture to suitable tiles throughout the map. Customize
@@ -111,7 +112,7 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 	@Override
 	public void startDriver(final IDriverModel model) {
 		populate(model.getMap());
-		System.out.printf("%d out of %d suitable locations were changed",
+		SystemOut.SYS_OUT.printf("%d out of %d suitable locations were changed",
 				Integer.valueOf(changedCount), Integer.valueOf(suitableCount));
 	}
 

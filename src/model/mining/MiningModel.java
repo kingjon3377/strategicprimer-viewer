@@ -63,9 +63,9 @@ public final class MiningModel {
 			final Point point = queue.remove();
 			counter++;
 			if ((counter % 100000) == 0) {
-				System.out.println(point);
+				SystemOut.SYS_OUT.println(point);
 			} else if ((counter % 1000) == 0) {
-				System.out.append('.');
+				SystemOut.SYS_OUT.append('.');
 			}
 			// Limit the size of the output spreadsheet
 			if ((Math.abs(point.row) > 400) || (Math.abs(point.col) > 300)) {
