@@ -62,7 +62,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	@Deprecated
 	@Override
 	public TileTypeFixture copy(final boolean zero) {
-		LOGGER.log(Level.WARNING, "TileTypeFixture#copy() called", new Exception());
+		LOGGER.log(Level.WARNING, "TileTypeFixture#copy() called", new Exception("dummy"));
 		return new TileTypeFixture(ttype);
 	}
 
@@ -87,7 +87,8 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	@Deprecated
 	@Override
 	public int getZValue() {
-		LOGGER.log(Level.WARNING, "TileTypeFixture#getZValue() called", new Exception());
+		LOGGER.log(Level.WARNING, "TileTypeFixture#getZValue() called",
+				new Exception("dummy"));
 		return Integer.MIN_VALUE;
 	}
 
