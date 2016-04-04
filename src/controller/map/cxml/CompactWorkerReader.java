@@ -190,7 +190,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 				break;
 			}
 		}
-		if (onlyOneSkill && equalsAny(retval.iterator().next().getName(),
+		if (anySkills && onlyOneSkill && equalsAny(retval.iterator().next().getName(),
 						    IJob.SUSPICIOUS_SKILLS)) {
 			warner.warn(new UnwantedChildException(element.getName(),
 					                                      lastSkill, new DeprecatedPropertyException(lastSkill,

@@ -431,6 +431,8 @@ public final class TestMoreFixtureSerialization extends
 		secondWorker.setStats(new WorkerStats(0, 0, 1, 2, 3, 4, 5, 6));
 		assertSerialization("Worker can have skills", secondWorker);
 		assertImageSerialization("Worker image property is preserved", secondWorker);
+		secondWorker.addJob(new Job("seventh", 1));
+		assertSerialization("Worker can have a Job with no skills yet", secondWorker);
 	}
 
 	/**
