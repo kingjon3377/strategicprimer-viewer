@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.DoubleToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -125,7 +126,7 @@ public final class QueryCLI implements SimpleDriver {
 					                                       * HOURLY_ENCOUNTERS);
 			break;
 		case 'e':
-			herd(cli);
+			herd(cli, hmodel);
 			break;
 		case 't':
 			new TrapModelDriver().startDriver(model);
@@ -227,9 +228,10 @@ public final class QueryCLI implements SimpleDriver {
 	 * Run herding. TODO: Move the logic here into the HuntingModel or a similar class.
 	 *
 	 * @param cli the interface to the user
+	 * @param hmodel the hunting model (used for hours remaining after herding is done)
 	 * @throws IOException on I/O error dealing with user input
 	 */
-	private static void herd(final ICLIHelper cli) throws IOException {
+	private static void herd(final ICLIHelper cli, final HuntingModel hmodel) throws IOException {
 		final double rate; // The amount of milk per animal
 		final int time; // How long it takes to milk one animal, in minutes.
 		final boolean poultry;
@@ -265,6 +267,8 @@ public final class QueryCLI implements SimpleDriver {
 				return; // NOPMD
 			}
 			final int animalsPerHerder = ((count + herders) - 1) / herders;
+			DoubleToIntFunction round = dbl -> (int) (Math.ceil(dbl) + .1);
+			final int hours;
 			if (poultry) {
 				cli.printf("Gathering eggs takes %d minutes; cleaning up after them,%n",
 						Integer.valueOf(animalsPerHerder * 2));
@@ -275,6 +279,11 @@ public final class QueryCLI implements SimpleDriver {
 				cli.printf("This produces %.0f eggs, totaling %.1f oz.%n",
 						Double.valueOf(rate * count),
 						Double.valueOf(rate * 2.0 * count));
+				if (cli.inputBoolean("Do they do the cleaning this turn? ")) {
+					hours = round.applyAsInt((animalsPerHerder / 30.0) + (animalsPerHerder * 0.5));
+				} else {
+					hours = round.applyAsInt(animalsPerHerder / 30.0);
+				}
 			} else {
 				cli.printf("Tending the animals takes %d minutes, or %d minutes with ",
 						Integer.valueOf(animalsPerHerder * time),
@@ -284,6 +293,15 @@ public final class QueryCLI implements SimpleDriver {
 				cli.printf("This produces %,.1f gallons, %,.1f lbs, of milk per day.%n",
 						Double.valueOf(rate * count),
 						Double.valueOf(rate * 8.6 * count));
+				if (cli.inputBoolean("Are the herders experts? ")) {
+					hours = round.applyAsInt(animalsPerHerder * (time - 5) / 60.0);
+				} else {
+					hours = round.applyAsInt(animalsPerHerder * time / 60.0);
+				}
+			}
+			if (hours < HUNTER_HOURS &&
+					    cli.inputBoolean("Spend remaining time as Food Gatherers? ")) {
+				gather(hmodel, selectPoint(cli), cli, HUNTER_HOURS - hours);
 			}
 		}
 	}
