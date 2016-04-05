@@ -1,6 +1,6 @@
 package view.worker;
 
-import java.awt.GridLayout;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -10,11 +10,11 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.function.ToIntFunction;
-import javax.swing.GroupLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.*;
 import model.listeners.UnitMemberListener;
+import model.map.HasPortrait;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.ProxyFor;
@@ -22,6 +22,9 @@ import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import org.eclipse.jdt.annotation.Nullable;
+import util.ImageLoader;
+import util.TypesafeLogger;
+import view.util.SplitWithWeights;
 
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.StreamSupport.stream;
@@ -51,10 +54,25 @@ import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
  */
 public final class MemberDetailPanel extends JPanel implements UnitMemberListener {
 	/**
+	 * Logger.
+	 */
+	private static final Logger LOGGER =
+			TypesafeLogger.getLogger(MemberDetailPanel.class);
+	/**
 	 * The currently selected unit member, or null if no selection.
 	 */
 	@Nullable
 	private UnitMember current = null;
+	/**
+	 * The image of the portrait of the currently selected unit member, or null if it can't
+	 * or doesn't have one.
+	 */
+	@Nullable
+	private Image portrait = null;
+	/**
+	 * The component displaying the portrait.
+	 */
+	private final PortraitComponent portraitComponent = new PortraitComponent();
 	/**
 	 * The label to say what kind of unit member this is.
 	 */
@@ -80,8 +98,11 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	 * Constructor: lay out, then clear, the panel.
 	 */
 	public MemberDetailPanel() {
-		final GroupLayout layout = new GroupLayout(this);
-		setLayout(layout);
+		super(new BorderLayout());
+		final JPanel groupedPanel = new JPanel();
+		final GroupLayout layout = new GroupLayout(groupedPanel);
+		groupedPanel.setLayout(layout);
+		groupedPanel.setBorder(BorderFactory.createEmptyBorder());
 		layout.setAutoCreateGaps(true);
 		layout.setAutoCreateContainerGaps(true);
 		final StatLabel strLabel = new StatLabel(WorkerStats::getStrength);
@@ -92,7 +113,8 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		final StatLabel chaLabel = new StatLabel(WorkerStats::getCharisma);
 		statLabels.addAll(Arrays.asList(strLabel, dexLabel, conLabel, intLabel, wisLabel,
 				chaLabel));
-		final JLabel header = new JLabel("<html><h2>Unit Member Details:</h2></html>");
+		add(new JLabel("<html><h2>Unit Member Details:</h2></html>"),
+				BorderLayout.PAGE_START);
 		final JLabel typeCaption = new JLabel("<html><b>Member Type:</b></html>");
 		final JLabel nameCaption = new JLabel("<html><b>Name:</b></html>");
 		final JLabel kindCaption = new JLabel("<html><b>Race or Kind:</b></html>");
@@ -104,7 +126,6 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		final JLabel chaCaption = new JLabel("<html><b>Cha:</b></html>");
 		final JLabel jobsCaption = new JLabel("<html><b>Job Levels:</b></html>");
 		layout.setVerticalGroup(layout.createSequentialGroup()
-										.addComponent(header)
 										.addGroup(layout.createParallelGroup()
 														  .addComponent(typeCaption)
 														  .addComponent(typeLabel))
@@ -133,7 +154,6 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 														  .addComponent(jobsCaption)
 														  .addComponent(jobsPanel)));
 		layout.setHorizontalGroup(layout.createParallelGroup()
-										  .addComponent(header)
 										  .addGroup(layout.createSequentialGroup()
 															.addGroup(
 																	layout
@@ -204,6 +224,9 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		layout.linkSize(SwingConstants.VERTICAL, typeCaption, typeLabel);
 		layout.linkSize(SwingConstants.VERTICAL, nameCaption, nameLabel);
 		layout.linkSize(SwingConstants.VERTICAL, kindCaption, kindLabel);
+		final JComponent split = SplitWithWeights.horizontalSplit(0.6, 0.6, groupedPanel, portraitComponent);
+		split.setBorder(BorderFactory.createEmptyBorder());
+		add(split);
 		recache();
 	}
 
@@ -344,6 +367,18 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			}
 			jobsPanel.removeAll();
 		}
+		portrait = null;
+		if (local instanceof HasPortrait) {
+			final String portraitName = ((HasPortrait) local).getPortrait();
+			if (!portraitName.isEmpty()) {
+				try {
+					portrait = ImageLoader.getLoader().loadImage(portraitName);
+				} catch (IOException except) {
+					LOGGER.log(Level.WARNING, "Failed to load portrait", except);
+				}
+			}
+		}
+		portraitComponent.repaint();
 	}
 	/**
 	 * Prevent serialization.
@@ -371,5 +406,18 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	@Override
 	public String toString() {
 		return "MemberDetailPanel, currently showing a " + typeLabel.getText();
+	}
+	/**
+	 * A component to show the portrait of the currently selected member.
+	 */
+	private class PortraitComponent extends JComponent {
+		@Override
+		protected void paintComponent(final Graphics pen) {
+			super.paintComponent(pen);
+			final Image local = portrait;
+			if (local != null) {
+				pen.drawImage(local, 0, 0, getWidth(), getHeight(), this);
+			}
+		}
 	}
 }
