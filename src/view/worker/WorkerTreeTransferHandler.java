@@ -6,22 +6,22 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.swing.JComponent;
 import javax.swing.JTree;
 import javax.swing.TransferHandler;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.workermgmt.IWorkerTreeModel;
 import model.workermgmt.UnitMemberTransferable;
-import model.workermgmt.UnitMemberTransferable.UnitMemberPair;
+import model.workermgmt.UnitMemberTransferable.UnitMemberPairList;
+import org.eclipse.jdt.annotation.Nullable;
+import util.Pair;
 import util.TypesafeLogger;
 
 /**
@@ -102,19 +102,30 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 			                                                   @Nullable
 			                                                   final JComponent
 					                                                   component) {
-		final TreePath path = smodel.getSelectionPath();
-		final Object last = path
-				                    .getLastPathComponent();
-		final Object parentPath = path.getPathComponent(path
-				                                                .getPathCount() - 2);
-		if ((last == null) || (parentPath == null)) {
-			return null; // NOPMD
+		final TreePath[] paths = smodel.getSelectionPaths();
+		List<Pair<UnitMember, IUnit>> toTransfer = new ArrayList<>();
+		for (TreePath path : paths) {
+			final Object last = path.getLastPathComponent();
+			final TreePath parentPath = path.getParentPath();
+			if (parentPath == null) {
+				// Should be impossible, since we hide the root.
+				LOGGER.warning("A selected path had no parent path; skipping.");
+				continue;
+			}
+			final Object parentObj = parentPath.getLastPathComponent();
+			if (last == null || parentObj == null) {
+				continue;
+			}
+			final Object selection = model.getModelObject(last);
+			final Object parent = model.getModelObject(parentObj);
+			if (selection instanceof UnitMember && parent instanceof IUnit) {
+				toTransfer.add(Pair.of((UnitMember) selection, (IUnit) parent));
+			} else {
+				LOGGER.info("Selection included a non-UnitMember; skipping ...");
+			}
 		}
-		final Object selection = model.getModelObject(last);
-		final Object parent = model.getModelObject(parentPath);
-		if ((selection instanceof UnitMember) && (parent instanceof IUnit)) {
-			return new UnitMemberTransferable((UnitMember) selection, // NOPMD
-					                                 (IUnit) parent);
+		if (!toTransfer.isEmpty()) {
+			return new UnitMemberTransferable(toTransfer);
 		} else {
 			return null;
 		}
@@ -165,12 +176,14 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 			if (tempTarget instanceof IUnit) {
 				try {
 					final Transferable trans = support.getTransferable();
-					final UnitMemberTransferable.UnitMemberPair pair =
-							(UnitMemberPair) trans
+					final UnitMemberTransferable.UnitMemberPairList list =
+							(UnitMemberPairList) trans
 									                 .getTransferData(
 											                 UnitMemberTransferable
 													                 .FLAVOR);
-					model.moveMember(pair.member, pair.unit, (IUnit) tempTarget);
+					for (Pair<UnitMember, IUnit> pair : list) {
+						model.moveMember(pair.first(), pair.second(), (IUnit) tempTarget);
+					}
 					return true; // NOPMD
 				} catch (final UnsupportedFlavorException except) {
 					LOGGER.log(Level.SEVERE,

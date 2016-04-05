@@ -3,9 +3,13 @@ package model.workermgmt;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.List;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import org.eclipse.jdt.annotation.Nullable;
+import util.Pair;
 
 /**
  * A class to transfer a UnitMember.
@@ -33,61 +37,58 @@ public final class UnitMemberTransferable implements Transferable {
 	/**
 	 * The object we're transfering.
 	 */
-	private final UnitMemberPair data;
+	private final UnitMemberPairList data;
 	/**
 	 * a DataFlavor representing its class.
 	 */
-	public static final DataFlavor FLAVOR = new DataFlavor(
-																  UnitMemberPair.class,
-																  "Worker");
-
+	public static final DataFlavor FLAVOR =
+			new DataFlavor(UnitMemberPairList.class, "List<Worker>");
 	/**
-	 * A pair of a unit member and its containing unit.
-	 *
+	 * A list of pairs of unit members and their containing units. The purpose of this
+	 * class is to fix the type parameters in the type hierarchy, avoiding unchecked-cast
+	 * warnings later.
 	 * @author Jonathan Lovelace
 	 */
 	@SuppressWarnings("PublicField")
-	public static final class UnitMemberPair {
+	public static final class UnitMemberPairList extends
+			AbstractList<Pair<UnitMember, IUnit>> {
 		/**
-		 * The unit member.
+		 * The list we wrap.
 		 */
-		public final UnitMember member;
-		/**
-		 * The unit containing it.
-		 */
-		public final IUnit unit;
-
+		private final List<Pair<UnitMember, IUnit>> wrapped;
 		/**
 		 * Constructor.
-		 *
-		 * @param theMember the first element
-		 * @param theUnit   the second element
+		 * @param list the list to wrap
 		 */
-		public UnitMemberPair(final UnitMember theMember, final IUnit theUnit) {
-			member = theMember;
-			unit = theUnit;
+		public UnitMemberPairList(final List<Pair<UnitMember, IUnit>> list) {
+			wrapped = new ArrayList<>(list);
 		}
 
 		/**
-		 * @return a String representation of the object
+		 * @param index an index into the list
+		 * @return the item at that index
 		 */
 		@Override
-		public String toString() {
-			final String memberStr = member.toString();
-			final String unitStr = unit.toString();
-			return String.format("UnitMemberPair: (%s, %s)", memberStr, unitStr);
+		public Pair<UnitMember, IUnit> get(final int index) {
+			return wrapped.get(index);
 		}
 
+		/**
+		 * @return the size of the list
+		 */
+		@Override
+		public int size() {
+			return wrapped.size();
+		}
 	}
 
 	/**
 	 * Constructor.
 	 *
-	 * @param theData   the object
-	 * @param theParent its containing object
+	 * @param list the list of pairs of unit members and their parents to convey
 	 */
-	public UnitMemberTransferable(final UnitMember theData, final IUnit theParent) {
-		data = new UnitMemberPair(theData, theParent);
+	public UnitMemberTransferable(final List<Pair<UnitMember, IUnit>> list) {
+		data = new UnitMemberPairList(list);
 	}
 
 	/**
@@ -117,7 +118,7 @@ public final class UnitMemberTransferable implements Transferable {
 	 * @throws UnsupportedFlavorException if they want an unsupported flavor
 	 */
 	@Override
-	public UnitMemberPair getTransferData(@Nullable final DataFlavor flavor)
+	public UnitMemberPairList getTransferData(@Nullable final DataFlavor flavor)
 			throws UnsupportedFlavorException {
 		if (FLAVOR.equals(flavor)) {
 			return data; // NOPMD
@@ -131,7 +132,7 @@ public final class UnitMemberTransferable implements Transferable {
 	 */
 	@Override
 	public String toString() {
-		return "UnitMemberTransferable conveying " + data.member.toString();
+		return "UnitMemberTransferable conveying " + data.size() + " member(s)";
 	}
 
 	/**
