@@ -439,12 +439,22 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 			return false; // NOPMD
 		}
 	}
+
+	/**
+	 * The filename of an image to use as a portrait for the unit.
+	 */
 	private String portraitName = "";
+	/**
+	 * @return The filename of an image to use as a portrait for the unit.
+	 */
 	@Override
 	public String getPortrait() {
 		return portraitName;
 	}
 
+	/**
+	 * @param portrait The filename of an image to use as a portrait for the unit.
+	 */
 	@Override
 	public void setPortrait(final String portrait) {
 		portraitName = portrait;
