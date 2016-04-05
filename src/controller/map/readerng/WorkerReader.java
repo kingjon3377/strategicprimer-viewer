@@ -82,6 +82,7 @@ public final class WorkerReader implements INodeHandler<@NonNull Worker> {
 				                                getOrGenerateID(element, warner,
 						                                idFactory));
 		addImage(element, retval);
+		addPortrait(element, retval);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final Object result =
@@ -128,6 +129,7 @@ public final class WorkerReader implements INodeHandler<@NonNull Worker> {
 			retval.addChild(STATS_READER.write(stats));
 		}
 		retval.addImageAttribute(obj);
+		retval.addPortraitAttribute(obj);
 		for (final IJob job : obj) {
 			if ((job instanceof Job)
 						&& ((job.getLevel() > 0) || job.iterator().hasNext())) {

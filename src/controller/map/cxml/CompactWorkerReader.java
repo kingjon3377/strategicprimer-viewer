@@ -78,6 +78,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 												getOrGenerateID(
 														element, warner, idFactory));
 		retval.setImage(getParameter(element, "image", ""));
+		retval.setPortrait(getParameter(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && equalsAny(NullCleaner.assertNotNull(
 					event.asStartElement().getName().getNamespaceURI()),
@@ -243,6 +244,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 		ostream.append(Integer.toString(obj.getID()));
 		ostream.append('"');
 		ostream.append(imageXML(obj));
+		ostream.append(portraitXML(obj));
 		if (obj.iterator().hasNext() || (obj.getStats() != null)) {
 			ostream.append(">\n");
 			writeStats(ostream, obj.getStats(), indent + 1);

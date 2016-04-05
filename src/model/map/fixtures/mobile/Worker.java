@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import model.map.HasPortrait;
 import model.map.IFixture;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
@@ -40,7 +41,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public class Worker implements IWorker {
+public class Worker implements IWorker, HasPortrait {
 	/**
 	 * The worker's name.
 	 */
@@ -371,5 +372,24 @@ public class Worker implements IWorker {
 			}
 		}
 		return null;
+	}
+	/**
+	 * The filename of an image to use as a portrait for the unit.
+	 */
+	private String portraitName = "";
+	/**
+	 * @return The filename of an image to use as a portrait for the unit.
+	 */
+	@Override
+	public String getPortrait() {
+		return portraitName;
+	}
+
+	/**
+	 * @param portrait The filename of an image to use as a portrait for the unit.
+	 */
+	@Override
+	public void setPortrait(final String portrait) {
+		portraitName = portrait;
 	}
 }
