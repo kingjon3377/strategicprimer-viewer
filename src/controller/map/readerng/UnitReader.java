@@ -160,6 +160,7 @@ public final class UnitReader implements INodeHandler<Unit> {
 			retval.addAttribute("text-contents", obj.getOrders().trim() + '\n');
 		}
 		retval.addImageAttribute(obj);
+		retval.addPortraitAttribute(obj);
 		return retval;
 	}
 
