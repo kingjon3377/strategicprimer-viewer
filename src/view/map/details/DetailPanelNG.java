@@ -172,7 +172,7 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 		 * The current portrait.
 		 */
 		@Nullable
-		private Image portrait;
+		private Image portrait = null;
 		/**
 		 * A reference to the image loading utility class.
 		 */
