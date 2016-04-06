@@ -33,7 +33,7 @@ public class MagicReader extends Reader {
 	/**
 	 * The Reader we delegate to.
 	 */
-	final Reader delegate;
+	private final Reader delegate;
 	/**
 	 * The name of the file we're reading, or "a string" if reading from a string.
 	 */
