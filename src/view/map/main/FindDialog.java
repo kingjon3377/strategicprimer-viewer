@@ -1,7 +1,6 @@
 package view.map.main;
 
-import java.awt.Dimension;
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -13,12 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import javax.swing.JCheckBox;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.map.FixtureIterable;
 import model.map.HasKind;
 import model.map.HasName;
@@ -84,13 +78,6 @@ public final class FindDialog extends JDialog {
 	 */
 	private final IViewerModel map;
 	/**
-	 * A label to display error messages.
-	 */
-	private final JLabel errorLabel = new JLabel(
-														"This text should vanish from " +
-																"this label before the " +
-																"constructor ends.");
-	/**
 	 * The checkbox for searching backwards.
 	 */
 	private final JCheckBox backwards = new JCheckBox("Search backwards");
@@ -133,10 +120,6 @@ public final class FindDialog extends JDialog {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		search.addActionListener(okListener);
 		search.setActionCommand("OK");
-		errorLabel.setText("");
-		errorLabel.setMinimumSize(new Dimension(200, 15));
-		errorLabel.setAlignmentX(CENTER_ALIGNMENT);
-		errorLabel.setAlignmentY(TOP_ALIGNMENT);
 
 		final BoxPanel contentPane = new BoxPanel(false);
 		contentPane.add(search);
