@@ -164,11 +164,6 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 		 */
 		private final JList<TileFixture> list;
 		/**
-		 * The image to show when there is no portrait to show.
-		 */
-		private final BufferedImage blankPortrait =
-				new BufferedImage(1, 1, BufferedImage.TYPE_BYTE_GRAY);
-		/**
 		 * The current portrait.
 		 */
 		@Nullable
