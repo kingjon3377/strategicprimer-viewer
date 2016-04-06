@@ -148,8 +148,13 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 				return false; // NOPMD
 			} else {
 				final Object pathLast = path.getLastPathComponent();
-				return (pathLast != null) // NOPMD
-						       && (model.getModelObject(pathLast) instanceof IUnit);
+				if (pathLast != null) {
+					Object pathLastObj = model.getModelObject(pathLast);
+					if (pathLastObj instanceof IUnit || pathLastObj instanceof UnitMember) {
+						return true;
+					}
+				}
+				return false;
 			}
 		} else {
 			return false;
@@ -172,7 +177,15 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 			if (pathLast == null) {
 				return false; // NOPMD
 			}
-			final Object tempTarget = model.getModelObject(pathLast);
+			Object local = model.getModelObject(pathLast);
+			final Object tempTarget;
+			if (local instanceof UnitMember) {
+				final TreePath pathParent = path.getParentPath();
+				final Object parentComponent = pathParent.getLastPathComponent();
+				tempTarget = model.getModelObject(parentComponent);
+			} else {
+				tempTarget = local;
+			}
 			if (tempTarget instanceof IUnit) {
 				try {
 					final Transferable trans = support.getTransferable();
