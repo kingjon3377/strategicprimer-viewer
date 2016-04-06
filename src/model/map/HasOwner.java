@@ -22,6 +22,7 @@ package model.map;
  *
  * @author Jonathan Lovelace
  */
+@FunctionalInterface
 public interface HasOwner {
 	/**
 	 * @return The player that owns whatever this is.

@@ -22,6 +22,7 @@ package model.map;
  *
  * @author Jonathan Lovelace
  */
+@FunctionalInterface
 public interface HasName {
 	/**
 	 * @return the name
