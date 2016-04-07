@@ -40,7 +40,8 @@ public interface IJob
 			Collections.unmodifiableList(
 					Arrays.asList("hunter", "hunting", "explorer", "exploration",
 							"research", "carpentry", "woodcutting", "farming",
-							"food gathering")));
+							"food gathering", "scientist", "woodcutter", "farmer",
+							"brickmaker", "brickmaking")));
 	/**
 	 * Add a skill.
 	 *
