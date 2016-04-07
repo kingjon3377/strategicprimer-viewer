@@ -8,6 +8,7 @@ import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import java.io.IOException;
 import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
@@ -191,11 +192,18 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 				break;
 			}
 		}
-		if (anySkills && onlyOneSkill && equalsAny(retval.iterator().next().getName(),
-						    IJob.SUSPICIOUS_SKILLS)) {
-			warner.warn(new UnwantedChildException(element.getName(),
-					                                      lastSkill, new DeprecatedPropertyException(lastSkill,
-							                                                                                retval.iterator().next().getName(), "miscellaneous")));
+		if (anySkills && onlyOneSkill) {
+			final String skill = retval.iterator().next().getName();
+			if (equalsAny(skill, IJob.SUSPICIOUS_SKILLS)) {
+				warner.warn(new UnwantedChildException(element.getName(),
+															  new QName(ISPReader
+																				.NAMESPACE,
+																			   skill),
+															  lastSkill.getLocation(),
+															  new DeprecatedPropertyException(lastSkill,
+																									 skill,
+																									 "miscellaneous")));
+			}
 		}
 		return retval;
 	}

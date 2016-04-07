@@ -1,8 +1,8 @@
 package controller.map.formatexceptions;
 
 import javax.xml.namespace.QName;
+import javax.xml.stream.Location;
 import javax.xml.stream.events.StartElement;
-
 import util.NullCleaner;
 
 /**
@@ -38,7 +38,21 @@ public final class UnwantedChildException extends SPFormatException {
 	 * The unwanted child.
 	 */
 	private final QName chld;
-
+	/**
+	 * For when the unwanted child isn't an unwanted *tag* but an unwanted tag *with
+	 * some property* that we want to describe using a QName.
+	 * @param parent    the current tag
+	 * @param child     the unwanted child
+	 * @param location  the location where this occurred
+	 * @param cause		why this occurred
+	 */
+	public UnwantedChildException(final QName parent, final QName child,
+								  final Location location, final Throwable cause) {
+		super("Unexpected child " + child.getLocalPart() + " in tag " +
+					  parent.getLocalPart(), location, cause);
+		tag = parent;
+		chld = child;
+	}
 	/**
 	 * @param parent    the current tag
 	 * @param child     the unwanted child
