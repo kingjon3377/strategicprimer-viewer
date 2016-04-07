@@ -194,7 +194,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 		}
 		if (anySkills && onlyOneSkill) {
 			final String skill = retval.iterator().next().getName();
-			if (equalsAny(skill, IJob.SUSPICIOUS_SKILLS)) {
+			if (equalsAny(skill, IJob.SUSPICIOUS_SKILLS) || skill.equals(retval.getName())) {
 				warner.warn(new UnwantedChildException(element.getName(),
 															  new QName(ISPReader
 																				.NAMESPACE,
