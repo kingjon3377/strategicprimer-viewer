@@ -39,7 +39,7 @@ public interface IJob
 	Iterable<String> SUSPICIOUS_SKILLS = NullCleaner.assertNotNull(
 			Collections.unmodifiableList(
 					Arrays.asList("hunter", "hunting", "explorer", "exploration",
-							"research", "carpentry")));
+							"research", "carpentry", "woodcutting")));
 	/**
 	 * Add a skill.
 	 *
