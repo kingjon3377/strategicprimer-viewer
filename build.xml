@@ -99,8 +99,9 @@
     <echo message='If Ant fails to find JUnit task on a Gentoo system,' />
     <echo message='run with ANT_TASKS="ant-junit4 jarbundler" in the environment.' />
     <mkdir dir="${junit.output.dir}" />
-    <junit fork="yes" printsummary="withOutAndErr" failureproperty="junit.failure">
+    <junit fork="yes" failureproperty="junit.failure">
       <formatter type="plain" />
+      <formatter type="brief" usefile="false" />
       <!-- TODO: run all tests, dynamically detected, rather than listing them. -->
       <test name="controller.exploration.TestTableLoader" todir="${junit.output.dir}" />
       <test name="controller.map.misc.TestCLIHelper" todir="${junit.output.dir}" />
