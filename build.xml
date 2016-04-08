@@ -109,6 +109,7 @@
       <test name="model.map.TestSerialization" todir="${junit.output.dir}" />
       <test name="model.map.TestSubsets" todir="${junit.output.dir}" />
       <test name="model.map.TestEventSerialization" todir="${junit.output.dir}" />
+      <test name="model.map.fixtures.towns.TestTownSerialization" todir="${junit.output.dir}" />
       <test name="model.map.fixtures.TestFixtureSerialization"
             todir="${junit.output.dir}" />
       <test name="model.map.fixtures.TestMoreFixtureSerialization"

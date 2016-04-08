@@ -1,26 +1,17 @@
 package model.map;
 
+import controller.map.formatexceptions.SPFormatException;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import javax.xml.stream.XMLStreamException;
-
-import org.junit.Test;
-
-import controller.map.formatexceptions.SPFormatException;
 import model.map.fixtures.explorable.Battlefield;
 import model.map.fixtures.explorable.Cave;
 import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.resources.StoneKind;
-import model.map.fixtures.towns.City;
-import model.map.fixtures.towns.Fortification;
-import model.map.fixtures.towns.Town;
-import model.map.fixtures.towns.TownSize;
-import model.map.fixtures.towns.TownStatus;
+import org.junit.Test;
 import util.NullCleaner;
-import util.Warning;
 
 /**
  * A class to test the serialization of Events.
@@ -48,20 +39,12 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	/**
 	 * Extracted constant.
 	 */
-	private static final String NAME_PROPERTY = "name";
-	/**
-	 * Extracted constant.
-	 */
 	private static final String KIND_PROPERTY = "kind";
 	/**
 	 * Compiled pattern of it.
 	 */
 	private static final Pattern KIND_PATTERN = NullCleaner
 			.assertNotNull(Pattern.compile(KIND_PROPERTY, Pattern.LITERAL));
-	/**
-	 * Extracted constant.
-	 */
-	private static final String STATUS_PROPERTY = "status";
 
 	/**
 	 * Test serialization of CaveEvents.
@@ -84,105 +67,6 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty("<cave />", Cave.class, "dc", false);
 		assertMissingProperty("<cave dc=\"10\" />", Cave.class, "id", true);
 		assertImageSerialization("Cave image property is preserved", new Cave(20, 2));
-	}
-
-	/**
-	 * Test serialization of CityEvents.
-	 *
-	 * @throws SPFormatException  on SP format problems
-	 * @throws XMLStreamException on XML reading problems
-	 * @throws IOException        on I/O error creating serialized form
-	 */
-	@SuppressWarnings("ObjectAllocationInLoop")
-	@Test
-	public void testCitySerialization() throws XMLStreamException,
-			                                           SPFormatException, IOException {
-		final Player owner = new Player(-1, "");
-		for (final TownStatus status : TownStatus.values()) {
-			assert status != null;
-			for (final TownSize size : TownSize.values()) {
-				assert size != null;
-				assertSerialization(
-						"First CityEvent serialization test, status " + status +
-								", size " + size,
-						new City(status, size, 10, "oneCity", 0, owner));
-				assertSerialization(
-						"Second CityEvent serialization test, status " + status +
-								", size " + size,
-						new City(status, size, 40, "twoCity", 1, owner));
-			}
-		}
-		final HasMutableImage
-				thirdCity = new City(TownStatus.Active, TownSize.Small, 30, "",
-				                               3, owner);
-		assertSerialization("Serialization of CityEvent without a name", thirdCity,
-				Warning.Ignore);
-		assertMissingProperty(createSerializedForm(thirdCity, true), City.class,
-				NAME_PROPERTY, true);
-		assertMissingProperty(createSerializedForm(thirdCity, false), City.class,
-				NAME_PROPERTY, true);
-		assertMissingProperty(
-				"<city status=\"active\" size=\"small\" name=\"name\" dc=\"0\" />",
-				City.class, "id", true);
-		assertUnwantedChild(
-				"<city status=\"active\" size=\"small\" name=\"name\" dc=\"0\">"
-						+ "<troll /></city>", City.class, false);
-		assertMissingProperty("<city status=\"active\" size=\"small\" "
-				                      + "name=\"name\" dc=\"0\" id=\"0\" />", City.class,
-				"owner",
-				true);
-		assertImageSerialization("City image property is preserved", thirdCity);
-	}
-
-	/**
-	 * Test serialization of FortificationEvents.
-	 *
-	 * @throws SPFormatException  on SP format problems
-	 * @throws XMLStreamException on XML reading problems
-	 * @throws IOException        on I/O error creating serialized form
-	 */
-	@SuppressWarnings("ObjectAllocationInLoop")
-	@Test
-	public void testFortificationSerialization() throws XMLStreamException,
-			                                                    SPFormatException,
-			                                                    IOException {
-		final Player owner = new Player(-1, "");
-		for (final TownStatus status : TownStatus.values()) {
-			assert status != null;
-			for (final TownSize size : TownSize.values()) {
-				assert size != null;
-				assertSerialization(
-						"Fortification serialization: status " + status + ", size " +
-								size,
-						new Fortification(status, size, 10, "one", 1, owner));
-				assertSerialization("Fortification serialization test, status " +
-						                    status +
-						                    " and size " + size,
-						new Fortification(status, size, 40, "two", 2, owner));
-			}
-		}
-		final HasMutableImage thirdFort = new Fortification(TownStatus.Active,
-				                                                 TownSize.Small, 30, "",
-				                                                 3, owner);
-		assertSerialization(
-				"Serialization of FortificationEvent without a name, reflection",
-				thirdFort, Warning.Ignore);
-		assertMissingProperty(createSerializedForm(thirdFort, true),
-				Fortification.class, NAME_PROPERTY, true);
-		assertMissingProperty(createSerializedForm(thirdFort, false),
-				Fortification.class, NAME_PROPERTY, true);
-		assertMissingProperty("<fortification status=\"active\" "
-				                      + "size=\"small\" name=\"name\" dc=\"0\" />",
-				Fortification.class, "id", true);
-		assertUnwantedChild("<fortification status=\"active\" "
-				                    + "size=\"small\" name=\"name\" dc=\"0\">"
-				                    + "<troll /></fortification>", Fortification.class,
-				false);
-		assertMissingProperty(
-				"<fortification status=\"active\" size=\"small\" name=\"name\""
-						+ " dc=\"0\" id=\"0\"/>", Fortification.class, "owner",
-				true);
-		assertImageSerialization("Fortification image property is preserved", thirdFort);
 	}
 
 	/**
@@ -271,60 +155,6 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty("<stone kind=\"marble\" dc=\"0\" />",
 				StoneDeposit.class, "id", true);
 		assertImageSerialization("Stone image property is preserved", thirdDeposit);
-	}
-
-	/**
-	 * Test serialization of TownEvents.
-	 *
-	 * @throws SPFormatException  on SP format problems
-	 * @throws XMLStreamException on XML reading problems
-	 * @throws IOException        on I/O error creating serialized form
-	 */
-	@SuppressWarnings("ObjectAllocationInLoop")
-	@Test
-	public void testTownSerialization() throws XMLStreamException,
-			                                           SPFormatException, IOException {
-		final Player owner = new Player(-1, "");
-		for (final TownStatus status : TownStatus.values()) {
-			assert status != null;
-			for (final TownSize size : TownSize.values()) {
-				assert size != null;
-				assertSerialization(
-						"First TownEvent serialization test, reflection, status " +
-								status + " and size " + size,
-						new Town(status, size, 10, "one", 1, owner));
-				assertSerialization(
-						"Second TownEvent serialization test, reflection, status " +
-								status + " and size " + size,
-						new Town(status, size, 40, "two", 2, owner));
-			}
-		}
-		final HasMutableImage
-				thirdTown = new Town(TownStatus.Active, TownSize.Small, 30, "",
-				                               3, owner);
-		assertSerialization("Serialization of TownEvent without a name", thirdTown,
-				Warning.Ignore);
-		assertMissingProperty(createSerializedForm(thirdTown, true), Town.class,
-				NAME_PROPERTY, true);
-		assertMissingProperty(createSerializedForm(thirdTown, false), Town.class,
-				NAME_PROPERTY, true);
-		assertMissingProperty("<town status=\"active\" size=\"small\"/>",
-				Town.class, "dc", false);
-		assertMissingProperty("<town dc=\"0\" status=\"active\" />",
-				Town.class, "size", false);
-		assertMissingProperty("<town dc=\"0\" size=\"small\" />", Town.class,
-				STATUS_PROPERTY, false);
-		assertMissingProperty(
-				"<town dc=\"0\" size=\"small\" status=\"active\" name=\"name\" />",
-				Town.class, "id", true);
-		assertUnwantedChild(
-				"<town status=\"active\" size=\"small\" name=\"name\" dc=\"0\">"
-						+ "<troll /></town>", Town.class, false);
-		assertMissingProperty("<town status=\"active\" size=\"small\" "
-				                      + "name=\"name\" dc=\"0\" id=\"0\" />", Town.class,
-				"owner",
-				true);
-		assertImageSerialization("Town image property is preserved", thirdTown);
 	}
 
 	/**
