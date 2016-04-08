@@ -31,7 +31,6 @@ import model.map.fixtures.resources.Mine;
 import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.TownStatus;
-import model.map.fixtures.towns.Village;
 import org.junit.Test;
 import util.NullCleaner;
 import util.Warning;
@@ -264,50 +263,6 @@ public final class TestMoreFixtureSerialization extends
 		assertImageSerialization("Text image property is preserved", thirdText);
 	}
 
-	/**
-	 * Test Village serialization.
-	 *
-	 * @throws SPFormatException  on XML format error
-	 * @throws XMLStreamException on XML reader error
-	 * @throws IOException        on I/O error creating serialized form
-	 */
-	@SuppressWarnings("ObjectAllocationInLoop")
-	@Test
-	public void testVillageSerialization() throws XMLStreamException,
-														  SPFormatException,
-															  IOException {
-		final Player owner = new Player(-1, "");
-		for (final TownStatus status : TownStatus.values()) {
-			assert status != null;
-			final Village firstVillage =
-					new Village(status, "villageOne", 1, owner, "human");
-			assertSerialization("First Village serialization test, " + status,
-					firstVillage);
-			final Village secondVillage =
-					new Village(status, "villageTwo", 2, owner, "dwarf");
-			assertSerialization("2nd Village serialization test,  " + status,
-					secondVillage);
-		}
-		final HasMutableImage
-				thirdVillage = new Village(TownStatus.Abandoned, "", 3, owner,
-														"elf");
-		assertMissingPropertyDeserialization(
-				"Village serialization with no or empty name does The Right Thing",
-				thirdVillage, createSerializedForm(thirdVillage, true), NAME_PROPERTY);
-		assertMissingPropertyDeserialization(
-				"Village serialization with no or empty name does The Right Thing",
-				thirdVillage, createSerializedForm(thirdVillage, false), NAME_PROPERTY);
-		assertUnwantedChild("<village status=\"active\"><village /></village>",
-				Village.class, false);
-		assertMissingProperty("<village />", Village.class, STATUS_PROPERTY,
-				false);
-		assertMissingProperty("<village name=\"name\" status=\"active\" />",
-				Village.class, "id", true);
-		assertMissingProperty(
-				"<village name=\"name\" status=\"active\" id=\"0\" />",
-				Village.class, OWNER_PROPERTY, true);
-		assertImageSerialization("Village image property is preserved", thirdVillage);
-	}
 
 	/**
 	 * Test that a Unit should have an ownerr and kind.

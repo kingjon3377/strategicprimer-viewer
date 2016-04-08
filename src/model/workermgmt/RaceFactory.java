@@ -1,6 +1,8 @@
 package model.workermgmt;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import util.NullCleaner;
@@ -67,5 +69,11 @@ public final class RaceFactory {
 	 */
 	public static String getRace() {
 		return getRace(SingletonRandom.RANDOM);
+	}
+	/**
+	 * @return the collection of races.
+	 */
+	public static Collection<String> getRaces() {
+		return Collections.unmodifiableList(RACES);
 	}
 }
