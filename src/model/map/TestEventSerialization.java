@@ -8,8 +8,6 @@ import javax.xml.stream.XMLStreamException;
 import model.map.fixtures.explorable.Battlefield;
 import model.map.fixtures.explorable.Cave;
 import model.map.fixtures.resources.MineralVein;
-import model.map.fixtures.resources.StoneDeposit;
-import model.map.fixtures.resources.StoneKind;
 import org.junit.Test;
 import util.NullCleaner;
 
@@ -112,51 +110,6 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				MineralVein.class, "id", true);
 		assertImageSerialization("Mineral image property is preserved", secondVein);
 	}
-
-	/**
-	 * Test serialization of StoneDeposits.
-	 *
-	 * @throws SPFormatException  on SP format problems
-	 * @throws XMLStreamException on XML reading problems
-	 * @throws IOException        on I/O error creating serialized form
-	 */
-	@SuppressWarnings("ObjectAllocationInLoop")
-	@Test
-	public void testStoneSerialization() throws XMLStreamException,
-			                                            SPFormatException, IOException {
-		for (final StoneKind kind : StoneKind.values()) {
-			assert kind != null;
-			assertSerialization("First StoneDeposit test, kind: " + kind,
-					new StoneDeposit(kind, 8, 1)); // NOPMD
-			assertSerialization("Second StoneDeposit test, kind: " + kind,
-					new StoneDeposit(kind, 15, 2)); // NOPMD
-		}
-		final HasMutableImage thirdDeposit = new StoneDeposit(StoneKind.Marble, 10, 3);
-		final String oldKindProperty = "stone"; // NOPMD
-		assertDeprecatedDeserialization(
-				"Deserialization of deprecated stone idiom", thirdDeposit,
-				NullCleaner.assertNotNull(
-						KIND_PATTERN.matcher(createSerializedForm(thirdDeposit, true))
-								.replaceAll(Matcher.quoteReplacement(oldKindProperty))),
-				oldKindProperty);
-		assertDeprecatedDeserialization(
-				"Deserialization of deprecated stone idiom", thirdDeposit,
-				NullCleaner.assertNotNull(
-						KIND_PATTERN.matcher(createSerializedForm(thirdDeposit, false))
-								.replaceAll(Matcher.quoteReplacement(oldKindProperty))),
-				oldKindProperty);
-		assertUnwantedChild(
-				"<stone kind=\"marble\" dc=\"10\"><troll /></stone>",
-				StoneDeposit.class, false);
-		assertMissingProperty("<stone kind=\"marble\" />", StoneDeposit.class,
-				"dc", false);
-		assertMissingProperty("<stone dc=\"10\" />", StoneDeposit.class,
-				KIND_PROPERTY, false);
-		assertMissingProperty("<stone kind=\"marble\" dc=\"0\" />",
-				StoneDeposit.class, "id", true);
-		assertImageSerialization("Stone image property is preserved", thirdDeposit);
-	}
-
 	/**
 	 * First test of serialization of BattlefieldEvents.
 	 *
