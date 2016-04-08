@@ -2,10 +2,11 @@ package model.map.fixtures.resources;
 
 import controller.map.formatexceptions.SPFormatException;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.xml.stream.XMLStreamException;
 import model.map.BaseTestFixtureSerialization;
 import model.map.HasMutableImage;
@@ -62,8 +63,9 @@ public class TestStoneSerialization extends BaseTestFixtureSerialization {
 	 * @return a collection of values to use for tests
 	 */
 	@Parameters
-	public static Collection<StoneKind> generateData() {
-		return Arrays.asList(StoneKind.values());
+	public static Collection<Object[]> generateData() {
+		return Stream.of(StoneKind.values()).map(kind -> new Object[]{kind})
+					   .collect(Collectors.toList());
 	}
 	/**
 	 * Test serialization of StoneDeposits.
