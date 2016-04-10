@@ -241,7 +241,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 					});
 				}
 				break;
-			case "Change current player":
+			case "change current player":
 				final Player retval = (Player) JOptionPane.showInputDialog(parent,
 						"Player to view:", "Choose New Player",
 						JOptionPane.PLAIN_MESSAGE, null, playersAsArray(model
