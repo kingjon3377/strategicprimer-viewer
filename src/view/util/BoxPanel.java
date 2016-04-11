@@ -103,6 +103,7 @@ public class BoxPanel extends JPanel {
 	/**
 	 * @return a String representation of the object
 	 */
+	@Override
 	public String toString() {
 		if (horizontal) {
 			return "Horizontal BoxPanel";
