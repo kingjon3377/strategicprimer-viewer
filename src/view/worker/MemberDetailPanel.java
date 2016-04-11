@@ -420,10 +420,10 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	 */
 	private class PortraitComponent extends JComponent {
 		@Override
-		protected void paintComponent(final Graphics pen) {
+		protected void paintComponent(@Nullable final Graphics pen) {
 			super.paintComponent(pen);
 			final Image local = portrait;
-			if (local != null) {
+			if (local != null && pen != null) {
 				pen.drawImage(local, 0, 0, getWidth(), getHeight(), this);
 			}
 		}

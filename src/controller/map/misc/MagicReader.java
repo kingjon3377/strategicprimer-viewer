@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 /**
  * A Reader that delegates to FileReader unless the filename begins "string:<", in which
  * case the "string:" prefix is stripped and we delegate to a StringReader.
@@ -66,7 +68,7 @@ public class MagicReader extends Reader {
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
-	public int read(final char[] buffer, final int offset, final int length) throws IOException {
+	public int read(final char @Nullable [] buffer, final int offset, final int length) throws IOException {
 		return delegate.read(buffer, offset, length);
 	}
 
