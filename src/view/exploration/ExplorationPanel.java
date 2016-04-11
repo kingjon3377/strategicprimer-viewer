@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.swing.InputMap;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,6 +26,9 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
 import model.listeners.CompletionListener;
@@ -35,7 +39,6 @@ import model.listeners.SelectionChangeSupport;
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
-import org.eclipse.jdt.annotation.Nullable;
 import util.IsNumeric;
 import util.NullCleaner;
 import util.Pair;
@@ -330,10 +333,10 @@ public final class ExplorationPanel extends BorderedPanel
 		for (final Direction dir : Direction.values()) {
 			assert dir != null;
 			final Point point = model.getDestination(selPoint, dir);
-			mains.get(dir).fireChanges(selPoint, point);
-			seconds.get(dir).fireChanges(selPoint, point);
-			buttons.get(dir).setPoint(point);
-			buttons.get(dir).repaint();
+			NullCleaner.assertNotNull(mains.get(dir)).fireChanges(selPoint, point);
+			NullCleaner.assertNotNull(seconds.get(dir)).fireChanges(selPoint, point);
+			NullCleaner.assertNotNull(buttons.get(dir)).setPoint(point);
+			NullCleaner.assertNotNull(buttons.get(dir)).repaint();
 		}
 		locLabel.setText("<html><body>Currently exploring "
 				                 + model.getSelectedUnitLocation()

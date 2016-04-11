@@ -250,7 +250,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 						ours.containsKey(Integer.valueOf(unit.getID())), ctxt,
 						"Extra unit:\t", unit.toString(), ", ID #",
 						Integer.toString(unit.getID()), "\n") ||
-						    !ours.get(Integer.valueOf(unit.getID())).isSubset(
+						    !NullCleaner.assertNotNull(ours.get(Integer.valueOf(unit.getID()))).isSubset(
 								    unit, ostream, ctxt)) {
 					retval = false;
 				}

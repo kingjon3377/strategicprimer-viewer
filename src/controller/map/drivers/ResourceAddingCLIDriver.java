@@ -175,7 +175,7 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 			throws IOException {
 		final Set<String> set;
 		if (resourceContents.containsKey(kind)) {
-			set = resourceContents.get(kind);
+			set = NullCleaner.assertNotNull(resourceContents.get(kind));
 		} else {
 			set = new HashSet<>();
 			resourceContents.put(kind, set);
@@ -210,7 +210,7 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 			throws IOException {
 		if (resourceUnits.containsKey(resource)) {
 			final String unit = resourceUnits.get(resource);
-			if (cli.inputBoolean(NullCleaner.assertNotNull(String.format(
+			if (unit != null && cli.inputBoolean(NullCleaner.assertNotNull(String.format(
 					"Is %s the correct units for %s? ", unit, resource)))) {
 				return unit;
 			}

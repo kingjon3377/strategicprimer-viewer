@@ -7,8 +7,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.stream.StreamSupport;
+
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
+
 import util.ArraySet;
 import util.NullCleaner;
 import util.Pair;
@@ -174,7 +176,7 @@ public class Job implements IJob { // NOPMD
 			for (final ISkill skill : obj) {
 				if (ours.containsKey(skill.getName())) {
 					// TODO: Move this logic into Skill?
-					final Pair<Integer, Integer> pair = ours.get(skill.getName());
+					final Pair<Integer, Integer> pair = NullCleaner.assertNotNull(ours.get(skill.getName()));
 					final int lvl = pair.first().intValue();
 					final int hours = pair.second().intValue();
 					if (skill.getLevel() > lvl) {

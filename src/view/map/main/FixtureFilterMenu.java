@@ -88,7 +88,7 @@ public final class FixtureFilterMenu extends JMenu implements ZOrderFilter {
 		} else {
 			final JCheckBoxMenuItem item; // NOPMD
 			if (mapping.containsKey(fix.getClass())) {
-				item = mapping.get(fix.getClass());
+				item = NullCleaner.assertNotNull(mapping.get(fix.getClass()));
 			} else if ("null".equals(fix.shortDesc())) {
 				item = new JCheckBoxMenuItem(fix.plural(), false);
 				mapping.put(localFix.getClass(), item);

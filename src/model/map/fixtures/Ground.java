@@ -1,10 +1,11 @@
 package model.map.fixtures;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.TileFixture;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A TileFixture to represent the basic rock beneath the tile, possibly exposed.

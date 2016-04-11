@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
+
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -151,7 +152,7 @@ public final class ExplorationRunner { // NOPMD
 	public EncounterTable getTable(final String name)
 			throws MissingTableException {
 		if (tables.containsKey(name)) {
-			return tables.get(name);
+			return NullCleaner.assertNotNull(tables.get(name));
 		} else {
 			throw new MissingTableException(name);
 		}

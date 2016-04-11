@@ -6,13 +6,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasPortrait;
 import model.map.IFixture;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
 import util.NullCleaner;
 
@@ -239,7 +241,7 @@ public class Worker implements IWorker, HasPortrait {
 							ostream.append(job.getName());
 							ostream.append('\n');
 							retval = false;
-						} else if (!ours.get(job.getName()).isSubset(job,
+						} else if (!NullCleaner.assertNotNull(ours.get(job.getName())).isSubset(job,
 								ostream, ctxt)) {
 							retval = false;
 						}

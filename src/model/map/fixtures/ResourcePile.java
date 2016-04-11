@@ -1,10 +1,12 @@
 package model.map.fixtures;
 
 import java.io.IOException;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.IFixture;
-import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**

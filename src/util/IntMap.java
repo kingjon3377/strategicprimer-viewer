@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
@@ -82,6 +83,7 @@ public final class IntMap<V> implements DelayedRemovalMap<@NonNull Integer, V> {
 	 * @return the corresponding value in the map, if it exists
 	 */
 	@Override
+	@Nullable
 	public V get(@Nullable final Object key) {
 		return backing.get(key);
 	}
@@ -103,6 +105,7 @@ public final class IntMap<V> implements DelayedRemovalMap<@NonNull Integer, V> {
 	 * @return false, as it isn't actually removed yet.
 	 */
 	@Override
+	@Nullable
 	public V remove(@Nullable final Object key) {
 		if (key instanceof Integer) {
 			toRemove.add((Integer) key);

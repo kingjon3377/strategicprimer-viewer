@@ -402,7 +402,7 @@ public final class ImmortalsReportGenerator
 		// For the three classes we deal with here, we don't want just the kind,
 		// we want the full toString, so we use that instead of getKind.
 		if (mapping.containsKey(item.toString())) {
-			points = mapping.get(item.toString());
+			points = NullCleaner.assertNotNull(mapping.get(item.toString()));
 		} else {
 			points = new ArrayList<>();
 			mapping.put(NullCleaner.assertNotNull(item.toString()), points);

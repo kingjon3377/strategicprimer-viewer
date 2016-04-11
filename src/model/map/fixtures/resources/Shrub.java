@@ -1,8 +1,9 @@
 package model.map.fixtures.resources;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasMutableKind;
 import model.map.IFixture;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A TileFixture to represent shrubs, or their aquatic equivalents, on a tile.

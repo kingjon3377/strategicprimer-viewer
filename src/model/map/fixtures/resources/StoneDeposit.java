@@ -1,10 +1,11 @@
 package model.map.fixtures.resources;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasMutableKind;
 import model.map.IEvent;
 import model.map.IFixture;
 import model.map.TileFixture;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A deposit (always exposed for now) of stone.

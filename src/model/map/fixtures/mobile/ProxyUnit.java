@@ -7,6 +7,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Logger;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.HasMutableName;
@@ -16,7 +19,6 @@ import model.map.Player;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.ProxyWorker;
-import org.eclipse.jdt.annotation.Nullable;
 import util.EmptyIterator;
 import util.NullCleaner;
 
@@ -292,13 +294,12 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit>, HasMutableKind,
 					// Warning suppressed because the type in the map is really
 					// a UnitMember&ProxyFor<IWorker|UnitMember>
 					@SuppressWarnings("unchecked")
-					@Nullable final
-					ProxyFor<? extends UnitMember> proxy;
+					final ProxyFor<? extends UnitMember> proxy;
 					final Integer memberID =
 							NullCleaner.assertNotNull(Integer.valueOf(member.getID()));
 					if (map.containsKey(memberID)) {
 						//noinspection unchecked
-						proxy = (ProxyFor<? extends UnitMember>) map.get(memberID);
+						proxy = (ProxyFor<? extends UnitMember>) NullCleaner.assertNotNull(map.get(memberID));
 						if (proxy instanceof ProxyWorker) {
 							if (member instanceof IWorker) {
 								((ProxyWorker) proxy).addProxied((IWorker) member);

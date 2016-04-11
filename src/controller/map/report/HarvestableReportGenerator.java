@@ -9,8 +9,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
+
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -29,8 +33,8 @@ import model.report.ListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import model.report.SortedSectionListReportNode;
-import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
+import util.NullCleaner;
 import util.Pair;
 
 /**
@@ -126,7 +130,7 @@ public final class HarvestableReportGenerator
 				// TODO: Use a Guava Multimap
 				final List<Point> shrubPoints; // NOPMD
 				if (shrubs.containsKey(((Shrub) item).getKind())) {
-					shrubPoints = shrubs.get(((Shrub) item).getKind());
+					shrubPoints = NullCleaner.assertNotNull(shrubs.get(((Shrub) item).getKind()));
 				} else {
 					//noinspection ObjectAllocationInLoop
 					shrubPoints = new ArrayList<>(); // NOPMD
@@ -222,7 +226,7 @@ public final class HarvestableReportGenerator
 				} else if (item instanceof Shrub) {
 					final IReportNode collection; // NOPMD
 					if (shrubs.containsKey(((Shrub) item).getKind())) {
-						collection = shrubs.get(((Shrub) item).getKind());
+						collection = NullCleaner.assertNotNull(shrubs.get(((Shrub) item).getKind()));
 					} else {
 						//noinspection ObjectAllocationInLoop
 						collection = new ListReportNode(((Shrub) item).getKind());

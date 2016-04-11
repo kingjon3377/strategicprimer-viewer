@@ -1,11 +1,13 @@
 package model.map.fixtures.towns;
 
 import java.io.IOException;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasMutableImage;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.SubsettableFixture;
-import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**

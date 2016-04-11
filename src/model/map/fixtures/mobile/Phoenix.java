@@ -1,11 +1,13 @@
 package model.map.fixtures.mobile;
 
 import java.io.IOException;
+
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasMutableImage;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A phoenix. TODO: should probably be a unit, or something.

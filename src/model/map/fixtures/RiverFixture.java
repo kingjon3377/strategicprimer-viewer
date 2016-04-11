@@ -5,12 +5,14 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
+
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.IFixture;
 import model.map.River;
 import model.map.SubsettableFixture;
 import model.map.TileFixture;
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**

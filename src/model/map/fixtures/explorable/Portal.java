@@ -1,9 +1,10 @@
 package model.map.fixtures.explorable;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.IFixture;
 import model.map.Point;
 import model.map.PointFactory;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A fixture representing a portal to another world.

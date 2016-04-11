@@ -7,6 +7,9 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -17,7 +20,6 @@ import model.report.IReportNode;
 import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
-import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
@@ -87,7 +89,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 			} else if (village.getOwner().isIndependent()) {
 				independents.add(product);
 			} else if (others.containsKey(village.getOwner())) {
-				others.get(village.getOwner()).add(product);
+				NullCleaner.assertNotNull(others.get(village.getOwner())).add(product);
 			} else {
 				final Collection<String> coll = new HtmlList("<h5>Villages sworn to " +
 								             village.getOwner().getName() + "</h5>");
@@ -153,7 +155,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 			} else if (owner.isIndependent()) {
 				independents.add(product);
 			} else if (othersMap.containsKey(owner)) {
-				othersMap.get(owner).add(product);
+				NullCleaner.assertNotNull(othersMap.get(owner)).add(product);
 			} else {
 				final IReportNode node =
 						new SectionListReportNode(6, "Villages sworn to " + owner.getName());

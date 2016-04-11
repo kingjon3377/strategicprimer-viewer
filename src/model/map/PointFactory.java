@@ -1,10 +1,12 @@
 package model.map;
 
+import static util.NullCleaner.assertNotNull;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import view.util.Coordinate;
 
-import static util.NullCleaner.assertNotNull;
+import util.NullCleaner;
+import view.util.Coordinate;
 
 /**
  * A cache for Points.
@@ -89,10 +91,10 @@ public final class PointFactory {
 				POINT_CACHE.put(boxedRow,
 						new ConcurrentHashMap<>());
 			}
-			if (!POINT_CACHE.get(boxedRow).containsKey(boxedCol)) {
-				POINT_CACHE.get(boxedRow).put(boxedCol, new Point(row, col));
+			if (!NullCleaner.assertNotNull(POINT_CACHE.get(boxedRow)).containsKey(boxedCol)) {
+				NullCleaner.assertNotNull(POINT_CACHE.get(boxedRow)).put(boxedCol, new Point(row, col));
 			}
-			return assertNotNull(POINT_CACHE.get(boxedRow).get(boxedCol)); // NOPMD
+			return assertNotNull(NullCleaner.assertNotNull(POINT_CACHE.get(boxedRow)).get(boxedCol)); // NOPMD
 		} else {
 			return new Point(row, col);
 		}
@@ -111,11 +113,11 @@ public final class PointFactory {
 				C_CACHE.put(boxedX,
 						new ConcurrentHashMap<>());
 			}
-			if (!C_CACHE.get(boxedX).containsKey(boxedY)) {
-				C_CACHE.get(boxedX).put(boxedY,
+			if (!NullCleaner.assertNotNull(C_CACHE.get(boxedX)).containsKey(boxedY)) {
+				NullCleaner.assertNotNull(C_CACHE.get(boxedX)).put(boxedY,
 						new Coordinate(xCoord, yCoord));
 			}
-			return C_CACHE.get(boxedX).get(boxedY); // NOPMD
+			return NullCleaner.assertNotNull(NullCleaner.assertNotNull(C_CACHE.get(boxedX)).get(boxedY)); // NOPMD
 		} else {
 			return new Coordinate(xCoord, yCoord);
 		}

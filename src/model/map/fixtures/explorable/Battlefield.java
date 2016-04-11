@@ -1,9 +1,10 @@
 package model.map.fixtures.explorable;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.IEvent;
 import model.map.IFixture;
 import model.map.TileFixture;
-import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * "There are the signs of a long-ago battle here".

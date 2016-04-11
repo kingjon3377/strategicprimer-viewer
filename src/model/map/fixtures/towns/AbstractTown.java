@@ -1,11 +1,12 @@
 package model.map.fixtures.towns;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasMutableImage;
 import model.map.IEvent;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.TileFixture;
-import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**

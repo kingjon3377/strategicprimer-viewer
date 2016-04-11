@@ -1,15 +1,19 @@
 package controller.map.cxml;
 
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.IDFactory;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+
+import org.eclipse.jdt.annotation.NonNull;
+
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.IDFactory;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.HasMutableImage;
@@ -29,7 +33,6 @@ import model.map.fixtures.mobile.Simurgh;
 import model.map.fixtures.mobile.Sphinx;
 import model.map.fixtures.mobile.Troll;
 import model.map.fixtures.mobile.Unit;
-import org.eclipse.jdt.annotation.NonNull;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
@@ -225,7 +228,7 @@ public final class CompactMobileReader extends
 			ostream.append(Integer.toString(obj.getID()));
 			ostream.append('"').append(imageXML((Animal) obj)).append(" />\n");
 		} else {
-			writeTag(ostream, TAG_MAP.get(obj.getClass()), indent);
+			writeTag(ostream, NullCleaner.assertNotNull(TAG_MAP.get(obj.getClass())), indent);
 			if (obj instanceof HasKind) {
 				ostream.append(" kind=\"");
 				ostream.append(((HasKind) obj).getKind());

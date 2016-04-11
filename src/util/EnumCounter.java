@@ -47,7 +47,7 @@ public final class EnumCounter<T extends Enum<T>> {
 	private void count(final T value) {
 		if (map.containsKey(value)) {
 			map.put(value, NullCleaner.assertNotNull(
-					Integer.valueOf(map.get(value).intValue() + 1)));
+					Integer.valueOf(NullCleaner.assertNotNull(map.get(value)).intValue() + 1)));
 		} else {
 			map.put(value, NullCleaner.assertNotNull(Integer.valueOf(1)));
 		}
@@ -71,7 +71,7 @@ public final class EnumCounter<T extends Enum<T>> {
 	 */
 	public int getCount(final T value) {
 		if (map.containsKey(value)) {
-			return map.get(value).intValue(); // NOPMD
+			return NullCleaner.assertNotNull(map.get(value)).intValue(); // NOPMD
 		} else {
 			return 0;
 		}

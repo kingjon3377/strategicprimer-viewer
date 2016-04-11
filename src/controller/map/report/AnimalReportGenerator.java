@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -17,7 +20,6 @@ import model.report.IReportNode;
 import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
-import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
@@ -82,7 +84,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 				}
 				final List<Point> points; // NOPMD
 				if (items.containsKey(desc)) {
-					points = items.get(desc);
+					points = NullCleaner.assertNotNull(items.get(desc));
 				} else {
 					//noinspection ObjectAllocationInLoop
 					points = new ArrayList<>(); // NOPMD
@@ -132,7 +134,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 				final String animalKind = animal.getKind();
 				final IReportNode collection;
 				if (items.containsKey(animalKind)) {
-					collection = items.get(animalKind);
+					collection = NullCleaner.assertNotNull(items.get(animalKind));
 				} else {
 					//noinspection ObjectAllocationInLoop
 					collection = new ListReportNode(animalKind); // NOPMD

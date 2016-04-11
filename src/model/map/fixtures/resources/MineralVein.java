@@ -1,9 +1,10 @@
 package model.map.fixtures.resources;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 import model.map.HasMutableKind;
 import model.map.IEvent;
 import model.map.IFixture;
-import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**

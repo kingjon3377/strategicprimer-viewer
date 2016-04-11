@@ -1,5 +1,7 @@
 package model.exploration;
 
+import static model.map.TileType.Ocean;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -8,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
 import model.map.HasKind;
 import model.map.IMapNG;
 import model.map.MapDimensions;
@@ -18,8 +21,6 @@ import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
 import model.map.fixtures.resources.Shrub;
 import util.NullCleaner;
-
-import static model.map.TileType.Ocean;
 
 /**
  * A class to facilitate a better hunting/fishing driver.
@@ -175,7 +176,7 @@ public final class HuntingModel {
 				StreamSupport
 						.stream(new SurroundingPointIterable(point, dims).spliterator(),
 								false).filter(plants::containsKey)
-						.flatMap(local -> plants.get(local).stream())
+						.flatMap(local -> NullCleaner.assertNotNull(plants.get(local)).stream())
 						.collect(Collectors.toList());
 		final Collection<String> retval = new ArrayList<>();
 		for (int i = 0; i < items; i++) {
@@ -200,7 +201,7 @@ public final class HuntingModel {
 						                                                                 dims)
 						                                     .spliterator(), false)
 				                             .filter(chosenMap::containsKey).flatMap(
-						local -> chosenMap.get(local).stream())
+						local -> NullCleaner.assertNotNull(chosenMap.get(local)).stream())
 				                             .collect(Collectors.toList());
 		final int nothings = choices.size();
 		for (int i = 0; i < nothings; i++) {

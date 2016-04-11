@@ -80,7 +80,7 @@ public final class ReaderAdapter implements INodeHandler<Object> {
 				NullCleaner.assertNotNull(element.getName().getNamespaceURI()),
 				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)
 				&& READ_CACHE.containsKey(iLocal)) {
-			return READ_CACHE.get(iLocal).parse(element, stream, players,
+			return NullCleaner.assertNotNull(READ_CACHE.get(iLocal)).parse(element, stream, players,
 					warner, idFactory);
 		} else {
 			throw new UnwantedChildException(new QName("unknown"), element);
@@ -202,7 +202,7 @@ public final class ReaderAdapter implements INodeHandler<Object> {
 	public <@NonNull S> SPIntermediateRepresentation write(final S obj) {
 		if (WRITERS.containsKey(obj.getClass())) {
 			//noinspection unchecked
-			return ((INodeHandler<S>) WRITERS.get(obj.getClass()))
+			return ((INodeHandler<S>) NullCleaner.assertNotNull(WRITERS.get(obj.getClass())))
 					       .write(obj);
 		} else {
 			for (final Map.Entry<Class<?>, INodeHandler<@NonNull ?>> entry : WRITERS

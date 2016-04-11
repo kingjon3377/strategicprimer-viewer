@@ -1,6 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.drivers.DriverUsage.ParamCount;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,6 +11,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import org.eclipse.jdt.annotation.Nullable;
+
+import controller.map.drivers.DriverUsage.ParamCount;
 import model.exploration.SurroundingPointIterable;
 import model.map.HasOwner;
 import model.map.IFixture;
@@ -31,7 +34,6 @@ import model.map.fixtures.towns.ITownFixture;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.misc.SimpleMultiMapModel;
-import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
 import util.NullCleaner;
 import util.Pair;
@@ -320,7 +322,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	private static <K, V> Set<V> getSetFromMap(final Map<K, Set<V>> map,
 											   final K key) {
 		if (map.containsKey(key)) {
-			return map.get(key);
+			return NullCleaner.assertNotNull(map.get(key));
 		} else {
 			final Set<V> retval = new ArraySet<>();
 			map.put(key, retval);
