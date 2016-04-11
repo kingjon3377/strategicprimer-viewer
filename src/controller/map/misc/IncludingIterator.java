@@ -1,21 +1,24 @@
 package controller.map.misc;
 
-import controller.map.formatexceptions.MissingPropertyException;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.iointerfaces.ISPReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
+
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+
 import org.eclipse.jdt.annotation.NonNull;
+
+import controller.map.formatexceptions.MissingPropertyException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.iointerfaces.ISPReader;
 import util.EqualsAny;
 import util.NullCleaner;
 import util.Pair;
@@ -92,7 +95,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void removeEmptyIterators() {
-		while (!stack.isEmpty() && !stack.peekFirst().second().hasNext()) {
+		while (!stack.isEmpty() && !stack.getFirst().second().hasNext()) {
 			stack.removeFirst();
 		}
 	}
@@ -114,7 +117,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 		if (stack.isEmpty()) {
 			throw new NoSuchElementException();
 		}
-		XMLEvent retval = stack.peekFirst().second().next();
+		XMLEvent retval = stack.getFirst().second().next();
 		while (retval.isStartElement()
 				&& EqualsAny.equalsAny(
 						NullCleaner.assertNotNull(retval.asStartElement()
@@ -127,7 +130,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 			if (stack.isEmpty()) {
 				throw new NoSuchElementException();
 			}
-			retval = stack.peekFirst().second().next();
+			retval = stack.getFirst().second().next();
 		}
 		return retval;
 	}
@@ -204,7 +207,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 		if (stack.isEmpty()) {
 			throw new NoSuchElementException();
 		}
-		stack.peekFirst().second().remove();
+		stack.getFirst().second().remove();
 		removeEmptyIterators();
 	}
 
@@ -216,7 +219,7 @@ public final class IncludingIterator implements Iterator<@NonNull XMLEvent> {
 		if (stack.isEmpty()) {
 			throw new NoSuchElementException("We're not reading at all");
 		}
-		return stack.peekFirst().first();
+		return stack.getFirst().first();
 	}
 
 	/**
