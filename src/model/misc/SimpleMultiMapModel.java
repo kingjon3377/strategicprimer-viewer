@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import util.Pair;
@@ -72,12 +73,20 @@ public class SimpleMultiMapModel extends SimpleDriverModel
 	}
 
 	/**
-	 * @param map the subordinate map to remove
+	 * FIXME: Test this; I fixed the clearly-wrong implementation, but this
+	 * might cause ConcurrentModificationException.
+	 *
+	 * @param map
+	 *            the subordinate map to remove
 	 */
-	@SuppressWarnings("SuspiciousMethodCalls")
 	@Override
 	public final void removeSubordinateMap(final IMapNG map) {
-		subordinateMaps.remove(map);
+		for (final Pair<IMutableMapNG, File> pair : subordinateMaps) {
+			if (map.equals(pair.first())) {
+				subordinateMaps.remove(pair);
+				return;
+			}
+		}
 	}
 
 	/**
