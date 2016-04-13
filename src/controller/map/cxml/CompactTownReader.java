@@ -154,6 +154,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 														  RaceFactory.getRace(
 																  new Random(idNum))));
 		retval.setImage(getParameter(element, "image", ""));
+		retval.setPortrait(getParameter(element, "portrait", ""));
 		return retval;
 	}
 
@@ -193,6 +194,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 		}
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		retval.setImage(getParameter(element, "image", ""));
+		retval.setPortrait(getParameter(element, "portrait", ""));
 		return retval;
 	}
 
@@ -280,6 +282,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			}
 		}
 		retval.setImage(getParameter(element, "image", ""));
+		retval.setPortrait(getParameter(element, "portrait", ""));
 		return retval;
 	}
 
@@ -310,7 +313,9 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			ostream.append(Integer.toString(obj.getOwner().getPlayerId()));
 			ostream.append("\" race=\"");
 			ostream.append(((Village) obj).getRace());
-			ostream.append("\" ").append(imageXML((Village) obj)).append("/>\n");
+			ostream.append("\" ").append(imageXML((Village) obj));
+			ostream.append(portraitXML(obj));
+			ostream.append("/>\n");
 		} else if (obj instanceof Fortress) {
 			writeTag(ostream, "fortress", indent);
 			ostream.append(" owner=\"");
@@ -321,7 +326,9 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 			}
 			ostream.append("\" id=\"");
 			ostream.append(Integer.toString(obj.getID()));
-			ostream.append('"').append(imageXML((Fortress) obj)).append('>');
+			ostream.append('"').append(imageXML((Fortress) obj));
+			ostream.append(portraitXML(obj));
+			ostream.append('>');
 			if (((Fortress) obj).iterator().hasNext()) {
 				ostream.append('\n');
 				for (final FortressMember unit : (Fortress) obj) {
@@ -378,7 +385,9 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 		ostream.append(Integer.toString(obj.getID()));
 		ostream.append("\" owner=\"");
 		ostream.append(Integer.toString(obj.getOwner().getPlayerId()));
-		ostream.append('"').append(imageXML(obj)).append(" />\n");
+		ostream.append('"').append(imageXML(obj));
+		ostream.append(portraitXML(obj));
+		ostream.append(" />\n");
 	}
 
 	/**

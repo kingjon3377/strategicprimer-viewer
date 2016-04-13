@@ -2,6 +2,7 @@ package model.map.fixtures.towns;
 
 import model.map.HasMutableName;
 import model.map.HasMutableOwner;
+import model.map.HasPortrait;
 import model.map.TileFixture;
 
 /**
@@ -27,7 +28,8 @@ import model.map.TileFixture;
  *
  * @author Jonathan Lovelace
  */
-public interface ITownFixture extends TileFixture, HasMutableName, HasMutableOwner {
+public interface ITownFixture
+		extends TileFixture, HasMutableName, HasMutableOwner, HasPortrait {
 	/**
 	 * @return the status of the town, fortress, or city
 	 */

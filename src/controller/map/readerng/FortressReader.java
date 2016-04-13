@@ -80,6 +80,7 @@ public final class FortressReader implements INodeHandler<Fortress> {
 						            getAttribute(element, "name", ""),
 						            getOrGenerateID(element, warner, idFactory));
 		addImage(element, fort);
+		addPortrait(element, fort);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && EqualsAny.equalsAny(
 					NullCleaner.assertNotNull(
@@ -164,6 +165,7 @@ public final class FortressReader implements INodeHandler<Fortress> {
 			}
 		}
 		retval.addImageAttribute(obj);
+		retval.addPortraitAttribute(obj);
 		return retval;
 	}
 

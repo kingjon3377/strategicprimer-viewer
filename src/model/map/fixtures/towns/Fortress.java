@@ -375,4 +375,23 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	public final String kind() {
 		return "fortress";
 	}
+	/**
+	 * The filename of an image to use as a portrait for the fortress.
+	 */
+	private String portraitName = "";
+	/**
+	 * @return The filename of an image to use as a portrait for the fortress.
+	 */
+	@Override
+	public String getPortrait() {
+		return portraitName;
+	}
+
+	/**
+	 * @param portrait The filename of an image to use as a portrait for the fortress.
+	 */
+	@Override
+	public void setPortrait(final String portrait) {
+		portraitName = portrait;
+	}
 }

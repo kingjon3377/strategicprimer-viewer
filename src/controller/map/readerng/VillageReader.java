@@ -71,6 +71,7 @@ public final class VillageReader implements INodeHandler<Village> {
 													   RaceFactory.getRace(
 															   new Random(idNum))));
 		addImage(element, fix);
+		addPortrait(element, fix);
 		return fix;
 	}
 
@@ -102,6 +103,7 @@ public final class VillageReader implements INodeHandler<Village> {
 		retval.addIntegerAttribute("owner", obj.getOwner().getPlayerId());
 		retval.addAttribute("race", obj.getRace());
 		retval.addImageAttribute(obj);
+		retval.addPortraitAttribute(obj);
 		return retval;
 	}
 

@@ -68,6 +68,7 @@ public final class CityReader implements INodeHandler<@NonNull City> {
 						        getOrGenerateID(element, warner, idFactory),
 						        getPlayerOrIndependent(element, warner, players));
 		addImage(element, fix);
+		addPortrait(element, fix);
 		return fix;
 	}
 
@@ -106,6 +107,7 @@ public final class CityReader implements INodeHandler<@NonNull City> {
 		retval.addIdAttribute(obj.getID());
 		retval.addIntegerAttribute("owner", obj.getOwner().getPlayerId());
 		retval.addImageAttribute(obj);
+		retval.addPortraitAttribute(obj);
 		return retval;
 	}
 

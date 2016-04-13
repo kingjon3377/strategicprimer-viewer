@@ -293,4 +293,23 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 		}
 		return NullCleaner.assertNotNull(builder.toString());
 	}
+	/**
+	 * The filename of an image to use as a portrait for the town.
+	 */
+	private String portraitName = "";
+	/**
+	 * @return The filename of an image to use as a portrait for the town.
+	 */
+	@Override
+	public String getPortrait() {
+		return portraitName;
+	}
+
+	/**
+	 * @param portrait The filename of an image to use as a portrait for the town.
+	 */
+	@Override
+	public void setPortrait(final String portrait) {
+		portraitName = portrait;
+	}
 }

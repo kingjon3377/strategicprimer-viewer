@@ -321,4 +321,23 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	public final String kind() {
 		return "village";
 	}
+	/**
+	 * The filename of an image to use as a portrait for the village.
+	 */
+	private String portraitName = "";
+	/**
+	 * @return The filename of an image to use as a portrait for the village.
+	 */
+	@Override
+	public String getPortrait() {
+		return portraitName;
+	}
+
+	/**
+	 * @param portrait The filename of an image to use as a portrait for the village.
+	 */
+	@Override
+	public void setPortrait(final String portrait) {
+		portraitName = portrait;
+	}
 }
