@@ -62,7 +62,7 @@ public final class Cave implements IEvent, ExplorableFixture {
 	}
 
 	/**
-	 * The DC to discover the caves. TODO: Should perhaps be mutable.
+	 * The DC to discover the caves.
 	 */
 	private final int dc; // NOPMD
 

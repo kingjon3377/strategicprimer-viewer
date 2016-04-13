@@ -67,7 +67,7 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	}
 
 	/**
-	 * The DC to discover the battlefield. TODO: Should perhaps be mutable.
+	 * The DC to discover the battlefield.
 	 */
 	private final int dc; // NOPMD
 
