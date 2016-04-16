@@ -301,6 +301,10 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		 */
 		@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 		public void checkAndClear() {
+			final Object raw = getSelectedItem();
+			if (raw == null) {
+				return;
+			}
 			final String item = NullCleaner.assertNotNull(getSelectedItem().toString().trim());
 			if (!values.contains(item)) {
 				values.add(item);
