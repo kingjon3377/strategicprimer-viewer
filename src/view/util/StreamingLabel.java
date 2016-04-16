@@ -144,6 +144,29 @@ public final class StreamingLabel extends JLabel {
 		public String toString() {
 			return "StreamingLabelWriter";
 		}
+
+		/**
+		 * @param csq a string to append
+		 * @return this
+		 */
+		@Override
+		public StreamingLabelWriter append(final CharSequence csq) {
+			super.append(csq);
+			updateText();
+			return this;
+		}
+
+		/**
+		 * @param format a format string
+		 * @param args arguments to place in that string as per the spec
+		 * @return this
+		 */
+		@Override
+		public PrintWriter printf(final String format, final Object... args) {
+			super.printf(format, args);
+			updateText();
+			return this;
+		}
 	}
 
 	/**
