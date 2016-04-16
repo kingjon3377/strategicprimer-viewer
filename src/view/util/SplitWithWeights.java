@@ -36,13 +36,13 @@ public final class SplitWithWeights extends JSplitPane {
 	 * Factory method.
 	 * @param divLoc    the divider location
 	 * @param resWeight the resize weight
-	 * @param left      the left or top component
-	 * @param right     the right or bottom component
+	 * @param top      the left or top component
+	 * @param bottom     the right or bottom component
 	 * @return a JSPlitPane split vertically
 	 */
 	public static JSplitPane verticalSplit(final double divLoc, final double resWeight,
-	                                       final Component left, final Component right) {
-		return new SplitWithWeights(VERTICAL_SPLIT, divLoc, resWeight, left, right);
+	                                       final Component top, final Component bottom) {
+		return new SplitWithWeights(VERTICAL_SPLIT, divLoc, resWeight, top, bottom);
 	}
 	/**
 	 * Factory method.
