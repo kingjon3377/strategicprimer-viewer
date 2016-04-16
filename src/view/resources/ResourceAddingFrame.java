@@ -12,18 +12,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.stream.StreamSupport;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import model.map.Player;
 import model.map.fixtures.Implement;
@@ -32,7 +32,6 @@ import model.resources.ResourceManagementDriver;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import view.util.BoxPanel;
-import view.util.ErrorShower;
 import view.util.ISPWindow;
 import view.util.ImprovedComboBox;
 import view.util.SplitWithWeights;
@@ -85,22 +84,23 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	 */
 	private final UpdatedComboBox resKindBox = new UpdatedComboBox();
 	/**
+	 * The model for the field giving the turn resources were created.
+	 */
+	private final SpinnerNumberModel resCreatedModel = new SpinnerNumberModel(-1, -1, Integer.MAX_VALUE, 1);
+	/**
 	 * The parser for integers.
 	 */
 	private final NumberFormat nf =
 			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
 	/**
-	 * The text field for the turn resources were created
-	 */
-	private final JFormattedTextField resCreatedField = new JFormattedTextField(nf);
-	/**
 	 * The combo box for resource types.
 	 */
 	private final UpdatedComboBox resourceBox = new UpdatedComboBox();
 	/**
-	 * The text field for resource quantities.
+	 * The model for the field for resource quantities.
 	 */
-	private final JFormattedTextField resQtyField = new JFormattedTextField(nf);
+	private final SpinnerNumberModel resQtyModel = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
+
 	/**
 	 * The combo box for resource units.
 	 */
@@ -145,39 +145,34 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		mainPanel.add(resourceLabel);
 		final JPanel panel = new BoxPanel(true);
 		addPair(panel, new JLabel("General Category"), resKindBox);
-		addPair(panel, new JLabel("Turn created"), resCreatedField);
+		addPair(panel, new JLabel("Turn created"), new JSpinner(resCreatedModel));
 		addPair(panel, new JLabel("Specific Resource"), resourceBox);
-		addPair(panel, new JLabel("Quantity"), resQtyField);
+		addPair(panel, new JLabel("Quantity"), new JSpinner(resQtyModel));
 		addPair(panel, new JLabel("Units"), resUnitsBox);
 		final JButton resourceButton = new JButton("Add Resource");
 		addPair(panel, new JLabel(""), resourceButton);
 		final Component outer = this;
 		resourceButton.addActionListener(evt -> {
-			try {
-				final String kind = NullCleaner.assertNotNull(
-						resKindBox.getSelectedItem().toString().trim());
-				final String resource = NullCleaner.assertNotNull(
-						resourceBox.getSelectedItem().toString().trim());
-				final String units = NullCleaner.assertNotNull(
-						resUnitsBox.getSelectedItem().toString().trim());
-				final ResourcePile pile = new ResourcePile(idf.createID(), kind, resource,
-															nf.parse(resQtyField
-																			 .getText()
-																			 .trim())
-																	.intValue(),
-															units);
-				pile.setCreated(nf.parse(resCreatedField.getText().trim()).intValue());
-				model.addResource(pile, current);
-				logAddition(pile.toString());
-				resKindBox.checkAndClear();
-				resCreatedField.setText("");
-				resourceBox.checkAndClear();
-				resQtyField.setText("");
-				resUnitsBox.checkAndClear();
-				resKindBox.requestFocusInWindow();
-			} catch (final ParseException ignored) {
-				ErrorShower.showErrorDialog(outer, "Quantity must be numeric");
-			}
+			final String kind = NullCleaner.assertNotNull(
+					resKindBox.getSelectedItem().toString().trim());
+			final String resource = NullCleaner.assertNotNull(
+					resourceBox.getSelectedItem().toString().trim());
+			final String units = NullCleaner.assertNotNull(
+					resUnitsBox.getSelectedItem().toString().trim());
+			final ResourcePile pile = new ResourcePile(idf.createID(), kind,
+															  resource,
+															  resQtyModel.getNumber()
+																	  .intValue(),
+															  units);
+			pile.setCreated(resCreatedModel.getNumber().intValue());
+			model.addResource(pile, current);
+			logAddition(pile.toString());
+			resKindBox.checkAndClear();
+			resCreatedModel.setValue(-1);
+			resourceBox.checkAndClear();
+			resQtyModel.setValue(0);
+			resUnitsBox.checkAndClear();
+			resKindBox.requestFocusInWindow();
 		});
 		mainPanel.add(panel);
 		mainPanel.add(Box.createVerticalGlue());
