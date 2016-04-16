@@ -6,6 +6,7 @@ import controller.map.misc.IOHandler;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -126,6 +127,21 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	 */
 	private final StreamingLabel logLabel = new StreamingLabel();
 	/**
+	 * Whether we have yet to ask the user to choose a player.
+	 */
+	private boolean playerIsDefault = true;
+	/**
+	 * Ask the user to choose a player, if the current player is unlikely to be what he
+	 * or she wants and we haven't already done so.
+	 * @param ioh the menu handler to use to show the dialog
+	 */
+	private void confirmPlayer(final IOHandler ioh) {
+		if (playerIsDefault && current.getName().trim().isEmpty()) {
+			ioh.actionPerformed(new ActionEvent(this, 1, "change current player"));
+		}
+		playerIsDefault = false;
+	}
+	/**
 	 * Constructor.
 	 * @param dmodel the driver model
 	 * @param ioh the I/O handler for menu items
@@ -173,6 +189,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 			}
 		};
 		resourceButton.addActionListener(evt -> {
+			confirmPlayer(ioh);
 			final String kind = selectedItem.apply(resKindBox);
 			final String resource = selectedItem.apply(resourceBox);
 			final String units = selectedItem.apply(resUnitsBox);
@@ -199,6 +216,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		secondPanel.add(implKindBox);
 		final JButton implButton = new JButton("Add Equipment");
 		implButton.addActionListener(evt -> {
+			confirmPlayer(ioh);
 			final String kind = selectedItem.apply(implKindBox);
 			final int qty = implQtyModel.getNumber().intValue();
 			for (int i = 0; i < qty; i++) {
