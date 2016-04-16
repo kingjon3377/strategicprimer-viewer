@@ -7,9 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-
-import javax.swing.JLabel;
-
+import javax.swing.JEditorPane;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -35,7 +33,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  */
 @SuppressWarnings("ClassHasNoToStringMethod")
-public final class StreamingLabel extends JLabel {
+public final class StreamingLabel extends JEditorPane {
 	/**
 	 * Colors to use on a StreamingLabel. Enumerated to appease XSS-possibility warnings.
 	 */
@@ -68,6 +66,8 @@ public final class StreamingLabel extends JLabel {
 	 * Constructor, to set the background color to black.
 	 */
 	public StreamingLabel() {
+		super("text/html", "<html><body bgcolor=\"#000000\"><p>&nbsp;</p></body></html>");
+		setEditable(false);
 		setBackground(Color.black);
 		setOpaque(true);
 	}
@@ -84,14 +84,14 @@ public final class StreamingLabel extends JLabel {
 		/**
 		 * The label to update when we're written to.
 		 */
-		private final JLabel control;
+		private final JEditorPane control;
 
 		/**
 		 * @param wrapped the writer we wrap
-		 * @param label   the label to update when written to
+		 * @param label   the component to update when written to
 		 */
 		protected StreamingLabelWriter(final StringWriter wrapped,
-		                               final JLabel label) {
+		                               final JEditorPane label) {
 			super(wrapped);
 			swriter = wrapped;
 			control = label;
@@ -133,7 +133,7 @@ public final class StreamingLabel extends JLabel {
 		 * Update the label's text.
 		 */
 		private void updateText() {
-			control.setText("<html>" + swriter.toString() + "</html>");
+			control.setText("<html><body bgcolor=\"#000000\">" + swriter.toString() + "</body></html>");
 		}
 
 		/**

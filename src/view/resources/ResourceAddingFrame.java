@@ -24,7 +24,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
 import model.map.Player;
 import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
@@ -209,7 +208,6 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		mainPanel.add(Box.createVerticalGlue());
 		logLabel.setMinimumSize(new Dimension(getWidth() - 20, 50));
 		logLabel.setPreferredSize(new Dimension(getWidth(), 100));
-		logLabel.setVerticalAlignment(SwingConstants.TOP);
 		final JScrollPane scrolledLog = new JScrollPane(logLabel);
 		scrolledLog.setMinimumSize(logLabel.getMinimumSize());
 		add(SplitWithWeights.verticalSplit(.2, 0.1, mainPanel, scrolledLog));
@@ -227,7 +225,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	 */
 	private void logAddition(final String addend) {
 		try (final PrintWriter writer = logLabel.getWriter()) {
-			writer.printf("<p style=\"color: white\">Added %s for %s</p>%n", addend,
+			writer.printf("<p style=\"color: white; margin-bottom: 0.5em; margin-top: 0.5em;\">Added %s for %s</p>%n", addend,
 					current.getName());
 		}
 	}
