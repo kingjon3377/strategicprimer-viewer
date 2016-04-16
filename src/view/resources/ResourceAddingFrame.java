@@ -1,17 +1,21 @@
 package view.resources;
 
+import controller.map.misc.IDFactory;
+import controller.map.misc.IDFactoryFiller;
+import controller.map.misc.IOHandler;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.stream.StreamSupport;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -19,21 +23,20 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import controller.map.misc.IDFactory;
-import controller.map.misc.IDFactoryFiller;
-import controller.map.misc.IOHandler;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 import model.map.Player;
 import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
 import model.resources.ResourceManagementDriver;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import view.util.BoxPanel;
 import view.util.ErrorShower;
 import view.util.ISPWindow;
 import view.util.ImprovedComboBox;
+import view.util.SplitWithWeights;
+import view.util.StreamingLabel;
 import view.worker.WorkerMenu;
 
 /**
@@ -106,7 +109,10 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	 * The combo box for implement kinds.
 	 */
 	private final UpdatedComboBox implKindBox = new UpdatedComboBox();
-
+	/**
+	 * The label that we use to display diagnostics.
+	 */
+	private final StreamingLabel logLabel = new StreamingLabel();
 	/**
 	 * Constructor.
 	 * @param dmodel the driver model
@@ -134,8 +140,9 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 			implementLabel
 					.setText(String.format("Add equipment for %s:", current.getName()));
 		});
-		setLayout(new BoxLayout(getContentPane(), BoxLayout.PAGE_AXIS));
-		add(resourceLabel);
+		final JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
+		mainPanel.add(resourceLabel);
 		final JPanel panel = new BoxPanel(true);
 		addPair(panel, new JLabel("General Category"), resKindBox);
 		addPair(panel, new JLabel("Turn created"), resCreatedField);
@@ -161,6 +168,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 															units);
 				pile.setCreated(nf.parse(resCreatedField.getText().trim()).intValue());
 				model.addResource(pile, current);
+				logAddition(pile.toString());
 				resKindBox.checkAndClear();
 				resCreatedField.setText("");
 				resourceBox.checkAndClear();
@@ -171,9 +179,9 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 				ErrorShower.showErrorDialog(outer, "Quantity must be numeric");
 			}
 		});
-		add(panel);
-		add(Box.createVerticalGlue());
-		add(implementLabel);
+		mainPanel.add(panel);
+		mainPanel.add(Box.createVerticalGlue());
+		mainPanel.add(implementLabel);
 		final JPanel secondPanel = new BoxPanel(true);
 		secondPanel.add(implKindBox);
 		final JButton implButton = new JButton("Add Equipment");
@@ -181,16 +189,32 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 			final String kind = NullCleaner.assertNotNull(
 					implKindBox.getSelectedItem().toString().trim());
 			model.addResource(new Implement(idf.createID(), kind), current);
+			logAddition(kind);
 			implKindBox.checkAndClear();
 			implKindBox.requestFocusInWindow();
 		});
 		secondPanel.add(implButton);
-		add(secondPanel);
-		add(Box.createVerticalGlue());
+		mainPanel.add(secondPanel);
+		mainPanel.add(Box.createVerticalGlue());
+		logLabel.setMinimumSize(new Dimension(getWidth() - 20, 50));
+		logLabel.setPreferredSize(new Dimension(getWidth(), 100));
+		logLabel.setVerticalAlignment(SwingConstants.TOP);
+		final JScrollPane scrolledLog = new JScrollPane(logLabel);
+		scrolledLog.setMinimumSize(logLabel.getMinimumSize());
+		add(SplitWithWeights.verticalSplit(.2, 0.1, mainPanel, scrolledLog));
 		setJMenuBar(new WorkerMenu(ioh, this, model));
 		pack();
 	}
-
+	/**
+	 * Log the addition of something.
+	 * @param addend what was added
+	 */
+	private void logAddition(final String addend) {
+		try (final PrintWriter writer = logLabel.getWriter()) {
+			writer.printf("<p style=\"color: white\">Added %s for %s</p>%n", addend,
+					current.getName());
+		}
+	}
 	/**
 	 * Add two components in a panel joining them vertically.
 	 * @param container the container to add the panel containing the two components to
