@@ -14,10 +14,12 @@ import java.io.PrintWriter;
 import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.function.Function;
 import java.util.stream.StreamSupport;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -162,13 +164,18 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		final JButton resourceButton = new JButton("Add Resource");
 		addPair(panel, new JLabel(""), resourceButton);
 		final Component outer = this;
+		Function<JComboBox, String> selectedItem = box -> {
+			final Object sel = box.getSelectedItem();
+			if (sel == null) {
+				return "";
+			} else {
+				return NullCleaner.assertNotNull(sel.toString().trim());
+			}
+		};
 		resourceButton.addActionListener(evt -> {
-			final String kind = NullCleaner.assertNotNull(
-					resKindBox.getSelectedItem().toString().trim());
-			final String resource = NullCleaner.assertNotNull(
-					resourceBox.getSelectedItem().toString().trim());
-			final String units = NullCleaner.assertNotNull(
-					resUnitsBox.getSelectedItem().toString().trim());
+			final String kind = selectedItem.apply(resKindBox);
+			final String resource = selectedItem.apply(resourceBox);
+			final String units = selectedItem.apply(resUnitsBox);
 			final ResourcePile pile = new ResourcePile(idf.createID(), kind,
 															  resource,
 															  resQtyModel.getNumber()
@@ -192,8 +199,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		secondPanel.add(implKindBox);
 		final JButton implButton = new JButton("Add Equipment");
 		implButton.addActionListener(evt -> {
-			final String kind = NullCleaner.assertNotNull(
-					implKindBox.getSelectedItem().toString().trim());
+			final String kind = selectedItem.apply(implKindBox);
 			final int qty = implQtyModel.getNumber().intValue();
 			for (int i = 0; i < qty; i++) {
 				model.addResource(new Implement(idf.createID(), kind), current);
