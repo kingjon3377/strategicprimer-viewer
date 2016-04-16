@@ -7,6 +7,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -188,7 +189,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 				return NullCleaner.assertNotNull(sel.toString().trim());
 			}
 		};
-		resourceButton.addActionListener(evt -> {
+		final ActionListener resListener = evt -> {
 			confirmPlayer(ioh);
 			final String kind = selectedItem.apply(resKindBox);
 			final String resource = selectedItem.apply(resourceBox);
@@ -207,7 +208,9 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 			resQtyModel.setValue(0);
 			resUnitsBox.checkAndClear();
 			resKindBox.requestFocusInWindow();
-		});
+		};
+		resourceButton.addActionListener(resListener);
+		resUnitsBox.addActionListener(resListener);
 		mainPanel.add(panel);
 		mainPanel.add(Box.createVerticalGlue());
 		mainPanel.add(implementLabel);
@@ -215,7 +218,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		secondPanel.add(implQtyField);
 		secondPanel.add(implKindBox);
 		final JButton implButton = new JButton("Add Equipment");
-		implButton.addActionListener(evt -> {
+		final ActionListener implListener = evt -> {
 			confirmPlayer(ioh);
 			final String kind = selectedItem.apply(implKindBox);
 			final int qty = implQtyModel.getNumber().intValue();
@@ -226,7 +229,9 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 			implQtyModel.setValue(1);
 			implKindBox.checkAndClear();
 			implQtyField.requestFocusInWindow();
-		});
+		};
+		implButton.addActionListener(implListener);
+		implKindBox.addActionListener(implListener);
 		secondPanel.add(implButton);
 		mainPanel.add(secondPanel);
 		mainPanel.add(Box.createVerticalGlue());
