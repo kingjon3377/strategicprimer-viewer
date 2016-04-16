@@ -84,9 +84,10 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	 */
 	private final UpdatedComboBox resKindBox = new UpdatedComboBox();
 	/**
-	 * The model for the field giving the turn resources were created.
+	 * The model for the field giving the turn resources were created. See end of
+	 * constructor for why the low maximum.
 	 */
-	private final SpinnerNumberModel resCreatedModel = new SpinnerNumberModel(-1, -1, Integer.MAX_VALUE, 1);
+	private final SpinnerNumberModel resCreatedModel = new SpinnerNumberModel(-1, -1, 2000, 1);
 	/**
 	 * The parser for integers.
 	 */
@@ -97,14 +98,24 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	 */
 	private final UpdatedComboBox resourceBox = new UpdatedComboBox();
 	/**
-	 * The model for the field for resource quantities.
+	 * The model for the field for resource quantities. See end of constructor for why
+	 * the low maximum.
 	 */
-	private final SpinnerNumberModel resQtyModel = new SpinnerNumberModel(0, 0, Integer.MAX_VALUE, 1);
+	private final SpinnerNumberModel resQtyModel = new SpinnerNumberModel(0, 0, 2000, 1);
 
 	/**
 	 * The combo box for resource units.
 	 */
 	private final UpdatedComboBox resUnitsBox = new UpdatedComboBox();
+	/**
+	 * The model for the spinner to add more than one identical implement. See end of
+	 * constructor for why the low maximum.
+	 */
+	private final SpinnerNumberModel implQtyModel = new SpinnerNumberModel(1, 1, 2000, 1);
+	/**
+	 * The field to let the user say how many identical implements to add.
+	 */
+	private final JSpinner implQtyField = new JSpinner(implQtyModel);
 	/**
 	 * The combo box for implement kinds.
 	 */
@@ -178,15 +189,20 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		mainPanel.add(Box.createVerticalGlue());
 		mainPanel.add(implementLabel);
 		final JPanel secondPanel = new BoxPanel(true);
+		secondPanel.add(implQtyField);
 		secondPanel.add(implKindBox);
 		final JButton implButton = new JButton("Add Equipment");
 		implButton.addActionListener(evt -> {
 			final String kind = NullCleaner.assertNotNull(
 					implKindBox.getSelectedItem().toString().trim());
-			model.addResource(new Implement(idf.createID(), kind), current);
-			logAddition(kind);
+			final int qty = implQtyModel.getNumber().intValue();
+			for (int i = 0; i < qty; i++) {
+				model.addResource(new Implement(idf.createID(), kind), current);
+			}
+			logAddition(Integer.toString(qty) + " x " + kind);
+			implQtyModel.setValue(1);
 			implKindBox.checkAndClear();
-			implKindBox.requestFocusInWindow();
+			implQtyField.requestFocusInWindow();
 		});
 		secondPanel.add(implButton);
 		mainPanel.add(secondPanel);
@@ -199,6 +215,11 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		add(SplitWithWeights.verticalSplit(.2, 0.1, mainPanel, scrolledLog));
 		setJMenuBar(new WorkerMenu(ioh, this, model));
 		pack();
+		// If we set these at model creation, the fields would (try to) be unnecessarily
+		// large. Not that this helps.
+		resCreatedModel.setMaximum(Integer.MAX_VALUE);
+		resQtyModel.setMaximum(Integer.MAX_VALUE);
+		implQtyModel.setMaximum(Integer.MAX_VALUE);
 	}
 	/**
 	 * Log the addition of something.
