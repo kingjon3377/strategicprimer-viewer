@@ -16,6 +16,7 @@ import java.io.PrintWriter;
 import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.StreamSupport;
 import javax.swing.Box;
@@ -27,6 +28,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import model.map.Player;
 import model.map.fixtures.Implement;
@@ -210,7 +212,17 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 			resKindBox.requestFocusInWindow();
 		};
 		resourceButton.addActionListener(resListener);
-		resUnitsBox.addActionListener(resListener);
+		BiConsumer<JComboBox, ActionListener> addListener = (box, list) -> {
+			final Component inner = box.getEditor().getEditorComponent();
+			if (inner instanceof JTextField) {
+				((JTextField) inner).addActionListener(list);
+			} else {
+				System.out.println("Editor wasn't a text field, but a " + inner.getClass().getCanonicalName());
+			}
+		};
+		// Unfortunately, this would fire every time the "selected item" changed!
+//		resUnitsBox.addActionListener(resListener);
+		addListener.accept(resUnitsBox, resListener);
 		mainPanel.add(panel);
 		mainPanel.add(Box.createVerticalGlue());
 		mainPanel.add(implementLabel);
@@ -231,7 +243,9 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 			implQtyField.requestFocusInWindow();
 		};
 		implButton.addActionListener(implListener);
-		implKindBox.addActionListener(implListener);
+		// Unfortunately, this would fire every time the "selected item" changed!
+//		implKindBox.addActionListener(implListener);
+		addListener.accept(implKindBox, implListener);
 		secondPanel.add(implButton);
 		mainPanel.add(secondPanel);
 		mainPanel.add(Box.createVerticalGlue());
