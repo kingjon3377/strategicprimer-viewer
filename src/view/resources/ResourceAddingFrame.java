@@ -196,6 +196,16 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 			final String kind = selectedItem.apply(resKindBox);
 			final String resource = selectedItem.apply(resourceBox);
 			final String units = selectedItem.apply(resUnitsBox);
+			if (kind.isEmpty()) {
+				resKindBox.requestFocusInWindow();
+				return;
+			} else if (resource.isEmpty()) {
+				resourceBox.requestFocusInWindow();
+				return;
+			} else if (units.isEmpty()) {
+				resUnitsBox.requestFocusInWindow();
+				return;
+			}
 			final ResourcePile pile = new ResourcePile(idf.createID(), kind,
 															  resource,
 															  resQtyModel.getNumber()
@@ -233,6 +243,9 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		final ActionListener implListener = evt -> {
 			confirmPlayer(ioh);
 			final String kind = selectedItem.apply(implKindBox);
+			if (kind.isEmpty()) {
+				return;
+			}
 			final int qty = implQtyModel.getNumber().intValue();
 			for (int i = 0; i < qty; i++) {
 				model.addResource(new Implement(idf.createID(), kind), current);
