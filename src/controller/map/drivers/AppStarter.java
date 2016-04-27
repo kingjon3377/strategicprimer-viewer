@@ -285,6 +285,7 @@ public final class AppStarter implements ISPDriver {
 	 *
 	 * @param args command-line arguments
 	 */
+	@SuppressWarnings("AccessOfSystemProperties")
 	public static void main(final String... args) {
 		System.setProperty("com.apple.mrj.application.apple.menu.about.name",
 				"SP Helpers");
