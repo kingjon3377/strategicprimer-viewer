@@ -1,24 +1,28 @@
 package view.exploration;
 
+import controller.map.misc.IDFactory;
+import controller.map.misc.IDFactoryFiller;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
+import model.exploration.HuntingModel;
 import model.exploration.IExplorationModel;
 import model.map.TileFixture;
+import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
+import model.viewer.FixtureListModel;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.SingletonRandom;
 import view.map.details.FixtureList;
+
+import static model.map.TileType.Ocean;
 
 /**
  * A list-data-listener to select a random but suitable set of fixtures to be 'discovered'
@@ -63,6 +67,8 @@ public final class ExplorationListListener implements ListDataListener {
 	                               final FixtureList mainList) {
 		model = emodel;
 		list = mainList;
+		hmodel = new HuntingModel(model.getMap());
+		idf = IDFactoryFiller.createFactory(model);
 	}
 
 	/**
@@ -160,14 +166,26 @@ public final class ExplorationListListener implements ListDataListener {
 			return String.format("(%d, %s)", Integer.valueOf(number), objStr);
 		}
 	}
-
+	/**
+	 * A "hunting model," to get the animals to have traces of.
+	 */
+	private final HuntingModel hmodel;
+	/**
+	 * An ID number factory for the animal tracks.
+	 */
+	private final IDFactory idf;
+	/**
+	 * Mutex.
+	 */
+	private boolean notRandomizing = true;
 	/**
 	 * Select a suitable but randomized selection of fixtures. Do nothing if there is no
 	 * selected unit.
 	 */
 	private void randomizeSelection() {
 		final IUnit selUnit = model.getSelectedUnit();
-		if (selUnit != null) {
+		if (notRandomizing && selUnit != null) {
+			notRandomizing = false;
 			list.clearSelection();
 			final List<IntPair<TileFixture>> constants = new ArrayList<>();
 			final List<IntPair<TileFixture>> possibles = new ArrayList<>();
@@ -181,6 +199,17 @@ public final class ExplorationListListener implements ListDataListener {
 				}
 				i++;
 			}
+			final String possibleTracks;
+			if (Ocean == model.getMap().getBaseTerrain(model.getSelectedUnitLocation())) {
+				possibleTracks = hmodel.fish(model.getSelectedUnitLocation(), 1).get(0);
+			} else {
+				possibleTracks = hmodel.hunt(model.getSelectedUnitLocation(), 1).get(0);
+			}
+			if (!HuntingModel.NOTHING.equals(possibleTracks)) {
+				final Animal animal = new Animal(possibleTracks, true, false, "wild", idf.createID());
+				((FixtureListModel) list.getModel()).addFixture(animal);
+				possibles.add(IntPair.of(i, animal));
+			}
 			Collections.shuffle(possibles);
 			if (possibles.size() > 1 && SingletonRandom.RANDOM.nextDouble() < .1) {
 				constants.add(possibles.get(0));
@@ -193,6 +222,7 @@ public final class ExplorationListListener implements ListDataListener {
 				indices[index] = constants.get(index).first();
 			}
 			list.setSelectedIndices(indices);
+			notRandomizing = true;
 		}
 	}
 

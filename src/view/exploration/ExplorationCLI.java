@@ -1,6 +1,8 @@
 package view.exploration;
 
 import controller.map.misc.ICLIHelper;
+import controller.map.misc.IDFactory;
+import controller.map.misc.IDFactoryFiller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
+import model.exploration.HuntingModel;
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
 import model.map.HasOwner;
@@ -18,6 +21,7 @@ import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.Ground;
+import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
@@ -31,6 +35,7 @@ import org.eclipse.jdt.annotation.Nullable;
 import util.Pair;
 import util.SingletonRandom;
 
+import static model.map.TileType.Ocean;
 import static util.NullCleaner.assertNotNull;
 
 /**
@@ -90,6 +95,8 @@ public final class ExplorationCLI {
 	                      final ICLIHelper mhelper) {
 		model = emodel;
 		helper = mhelper;
+		hmodel = new HuntingModel(model.getMap());
+		idf = IDFactoryFiller.createFactory(model);
 	}
 
 	/**
@@ -215,6 +222,14 @@ public final class ExplorationCLI {
 		}
 	}
 	/**
+	 * A "hunting model," to get the animals to have traces of.
+	 */
+	private final HuntingModel hmodel;
+	/**
+	 * An ID number factory for the animal tracks.
+	 */
+	private final IDFactory idf;
+	/**
 	 * Have the player move the selected unit. Throws an exception if no unit is
 	 * selected.
 	 *
@@ -271,6 +286,16 @@ public final class ExplorationCLI {
 			} else if (SimpleMovement.shouldSometimesNotice(mover, fix)) {
 				allFixtures.add(fix);
 			}
+		}
+		final String possibleTracks;
+		if (Ocean == model.getMap().getBaseTerrain(model.getSelectedUnitLocation())) {
+			possibleTracks = hmodel.fish(model.getSelectedUnitLocation(), 1).get(0);
+		} else {
+			possibleTracks = hmodel.hunt(model.getSelectedUnitLocation(), 1).get(0);
+		}
+		if (!HuntingModel.NOTHING.equals(possibleTracks)) {
+			allFixtures
+					.add(new Animal(possibleTracks, true, false, "wild", idf.createID()));
 		}
 		if ((Direction.Nowhere == direction)
 				    && helper.inputBoolean(FEALTY_PROMPT)) {
