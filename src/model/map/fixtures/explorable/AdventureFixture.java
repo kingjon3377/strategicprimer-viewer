@@ -120,6 +120,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	/**
 	 * @return a z-value for use in ordering tile icons on a tile
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public int getZValue() {
 		return 25;

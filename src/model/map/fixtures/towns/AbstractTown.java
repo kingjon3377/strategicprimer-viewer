@@ -215,6 +215,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	/**
 	 * @return a z-value for use in determining the top fixture on a tile
 	 */
+	@SuppressWarnings("MagicNumber")
 	@Override
 	public int getZValue() { // NOPMD: Claims this is "empty" and should be abstract
 		return 50;
