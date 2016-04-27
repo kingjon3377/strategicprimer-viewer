@@ -650,7 +650,8 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 	 * @throws XMLStreamException on XML reading problem
 	 * @throws IOException        on I/O error creating serialized form
 	 */
-	protected final void assertImageSerialization(final String message, final HasMutableImage obj)
+	protected final void assertImageSerialization(final String message,
+												  final HasMutableImage obj)
 			throws XMLStreamException, SPFormatException, IOException {
 		final String origImage = obj.getImage();
 		obj.setImage("imageForSerialization");

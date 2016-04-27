@@ -1,13 +1,13 @@
 package view.util;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import javax.swing.JEditorPane;
+import javax.swing.*;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -133,7 +133,8 @@ public final class StreamingLabel extends JEditorPane {
 		 * Update the label's text.
 		 */
 		private void updateText() {
-			control.setText("<html><body bgcolor=\"#000000\">" + swriter.toString() + "</body></html>");
+			control.setText("<html><body bgcolor=\"#000000\">" + swriter.toString() +
+									"</body></html>");
 		}
 
 		/**

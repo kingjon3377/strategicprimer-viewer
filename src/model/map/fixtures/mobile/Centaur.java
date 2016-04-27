@@ -1,13 +1,11 @@
 package model.map.fixtures.mobile;
 
 import java.io.IOException;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A centaur. TODO: Should probably be a kind of unit instead, or something ...
@@ -31,7 +29,8 @@ import model.map.fixtures.UnitMember;
  *
  * @author Jonathan Lovelace
  */
-public class Centaur implements MobileFixture, HasMutableImage, HasMutableKind, UnitMember {
+public class Centaur
+		implements MobileFixture, HasMutableImage, HasMutableKind, UnitMember {
 	/**
 	 * What kind of centaur.
 	 */

@@ -5,7 +5,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -68,7 +67,8 @@ public class MagicReader extends Reader {
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
-	public int read(final char @Nullable [] buffer, final int offset, final int length) throws IOException {
+	public int read(final char @Nullable [] buffer, final int offset, final int length)
+			throws IOException {
 		return delegate.read(buffer, offset, length);
 	}
 

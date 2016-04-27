@@ -55,7 +55,8 @@ public class TestVillageSerialization extends BaseTestFixtureSerialization {
 	 * @param villageStatus the status to use for the village in the test
 	 * @param villageRace the race to use for the village in the test
 	 */
-	public TestVillageSerialization(final TownStatus villageStatus, final String villageRace) {
+	public TestVillageSerialization(final TownStatus villageStatus,
+									final String villageRace) {
 		status = villageStatus;
 		race = villageRace;
 	}

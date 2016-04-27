@@ -1,10 +1,9 @@
 package view.map.main;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
-
 import model.map.SPMapNG;
 import model.map.TileFixture;
 import model.map.TileType;
@@ -110,7 +109,8 @@ public final class TileUIHelper {
 	 */
 	public boolean supportsType(final int version, final TileType type) {
 		final Integer ver = Integer.valueOf(version);
-		return colors.containsKey(ver) && NullCleaner.assertNotNull(colors.get(ver)).containsKey(type);
+		return colors.containsKey(ver) &&
+					   NullCleaner.assertNotNull(colors.get(ver)).containsKey(type);
 	}
 
 	/**

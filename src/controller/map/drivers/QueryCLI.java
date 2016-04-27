@@ -231,7 +231,8 @@ public final class QueryCLI implements SimpleDriver {
 	 * @param hmodel the hunting model (used for hours remaining after herding is done)
 	 * @throws IOException on I/O error dealing with user input
 	 */
-	private static void herd(final ICLIHelper cli, final HuntingModel hmodel) throws IOException {
+	private static void herd(final ICLIHelper cli, final HuntingModel hmodel)
+			throws IOException {
 		final double rate; // The amount of milk per animal
 		final int time; // How long it takes to milk one animal, in minutes.
 		final boolean poultry;

@@ -253,7 +253,8 @@ public final class TestSubsets {
 				};
 		final Consumer<SPMapNG> testFalse = map -> {
 			try {
-				assertFalse("Subset fails when fixture(s) off by one", baseMap.isSubset(map, DEV_NULL, ""));
+				assertFalse("Subset fails when fixture(s) off by one",
+						baseMap.isSubset(map, DEV_NULL, ""));
 			} catch (final IOException ignored) {
 
 			}

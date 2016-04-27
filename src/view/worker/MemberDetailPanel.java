@@ -1,9 +1,6 @@
 package view.worker;
 
-import java.awt.BorderLayout;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Image;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -15,12 +12,7 @@ import java.util.Iterator;
 import java.util.function.ToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
-import javax.swing.GroupLayout;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import model.listeners.UnitMemberListener;
 import model.map.HasPortrait;
 import model.map.fixtures.UnitMember;
@@ -232,7 +224,8 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 		layout.linkSize(SwingConstants.VERTICAL, typeCaption, typeLabel);
 		layout.linkSize(SwingConstants.VERTICAL, nameCaption, nameLabel);
 		layout.linkSize(SwingConstants.VERTICAL, kindCaption, kindLabel);
-		final JComponent split = SplitWithWeights.horizontalSplit(0.6, 0.6, groupedPanel, portraitComponent);
+		final JComponent split = SplitWithWeights.horizontalSplit(0.6, 0.6, groupedPanel,
+				portraitComponent);
 		split.setBorder(BorderFactory.createEmptyBorder());
 		add(split);
 		recache();

@@ -8,10 +8,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.HasMutableName;
@@ -20,6 +16,8 @@ import model.map.HasPortrait;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.fixtures.UnitMember;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
 import util.NullCleaner;
 import util.TypesafeLogger;
@@ -422,8 +420,9 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 					ostream.append(Integer.toString(member.getID()));
 					ostream.append('\n');
 					retval = false;
-				} else if (!NullCleaner.assertNotNull(ours.get(Integer.valueOf(member.getID()))).isSubset(
-						member, ostream, ctxt)) {
+				} else if (!NullCleaner.assertNotNull(
+						ours.get(Integer.valueOf(member.getID())))
+									.isSubset(member, ostream, ctxt)) {
 					retval = false;
 				}
 			}

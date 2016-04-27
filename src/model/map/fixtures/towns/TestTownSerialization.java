@@ -145,8 +145,8 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 		assertMissingProperty("<fortification status=\"" + status + "\" size=\"" + size +
 									  "\" name=\"name\" dc=\"0\" />",
 				Fortification.class, "id", true);
-		assertUnwantedChild("<fortification status=\"" + status + "\" size=\"" + size + "\" name=\"name\" dc=\"0\"><troll " +
-									"/></fortification>",
+		assertUnwantedChild("<fortification status=\"" + status + "\" size=\"" + size +
+									"\" name=\"name\" dc=\"0\"><troll /></fortification>",
 				Fortification.class, false);
 		assertMissingProperty("<fortification status=\"" + status + "\" size=\"" + size +
 									  "\" name=\"name\"" + " dc=\"0\" id=\"0\"/>",

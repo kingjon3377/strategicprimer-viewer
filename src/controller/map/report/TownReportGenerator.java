@@ -6,9 +6,6 @@ import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -22,6 +19,7 @@ import model.report.EmptyReportNode;
 import model.report.IReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
+import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
@@ -90,9 +88,10 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		separated.put(TownStatus.Ruined, new HtmlList("<h5>Ruined Communities</h5>"));
 		fixtures.values().stream().filter(pair -> pair.second() instanceof AbstractTown)
 				.sorted(pairComparator).forEach(
-				pair -> NullCleaner.assertNotNull(separated.get(((ITownFixture) pair.second()).status()))
-						        .add(produce(fixtures, map, currentPlayer,
-								        (ITownFixture) pair.second(), pair.first())));
+				pair -> NullCleaner.assertNotNull(
+						separated.get(((ITownFixture) pair.second()).status()))
+								.add(produce(fixtures, map, currentPlayer,
+										(ITownFixture) pair.second(), pair.first())));
 		final StringBuilder builder =
 				new StringBuilder((separated.values().stream().mapToInt(Collection::size)
 						                   .sum() * 512) + 80);
@@ -101,8 +100,9 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		Arrays.asList(TownStatus.Active, TownStatus.Abandoned, TownStatus.Ruined,
 				TownStatus.Burned).stream().map(separated::get).filter(Objects::nonNull)
 				.filter(coll -> !NullCleaner.assertNotNull(coll).isEmpty()).forEach(
-				coll -> builder.append(OPEN_LIST_ITEM).append(NullCleaner.assertNotNull(coll).toString())
-						        .append(CLOSE_LIST_ITEM));
+				coll -> builder.append(OPEN_LIST_ITEM)
+								.append(NullCleaner.assertNotNull(coll).toString())
+								.append(CLOSE_LIST_ITEM));
 		builder.append(CLOSE_LIST);
 		if (separated.values().stream().allMatch(Collection::isEmpty)) {
 			return "";
@@ -139,9 +139,10 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		separated.put(TownStatus.Ruined, new SectionListReportNode(5, "Ruined Communities"));
 		fixtures.values().stream().filter(pair -> pair.second() instanceof AbstractTown)
 				.sorted(pairComparator).forEach(
-				pair -> NullCleaner.assertNotNull(separated.get(((ITownFixture) pair.second()).status()))
-						        .add(produceRIR(fixtures, map, currentPlayer,
-								        (ITownFixture) pair.second(), pair.first())));
+				pair -> NullCleaner.assertNotNull(
+						separated.get(((ITownFixture) pair.second()).status()))
+								.add(produceRIR(fixtures, map, currentPlayer,
+										(ITownFixture) pair.second(), pair.first())));
 
 		final IReportNode retval = new SectionListReportNode(4, TOWN_HDR);
 		Arrays.asList(TownStatus.Active, TownStatus.Abandoned, TownStatus.Ruined,

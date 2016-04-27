@@ -3,9 +3,7 @@ package view.resources;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -19,17 +17,7 @@ import java.util.HashSet;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.StreamSupport;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.*;
 import model.map.Player;
 import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
@@ -92,7 +80,8 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	 * The model for the field giving the turn resources were created. See end of
 	 * constructor for why the low maximum.
 	 */
-	private final SpinnerNumberModel resCreatedModel = new SpinnerNumberModel(-1, -1, 2000, 1);
+	private final SpinnerNumberModel resCreatedModel =
+			new SpinnerNumberModel(-1, -1, 2000, 1);
 	/**
 	 * The parser for integers.
 	 */
@@ -226,7 +215,8 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 			if (inner instanceof JTextField) {
 				((JTextField) inner).addActionListener(list);
 			} else {
-				System.out.println("Editor wasn't a text field, but a " + inner.getClass().getCanonicalName());
+				System.out.println("Editor wasn't a text field, but a " +
+										   inner.getClass().getCanonicalName());
 			}
 		};
 		// Unfortunately, this would fire every time the "selected item" changed!

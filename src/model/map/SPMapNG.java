@@ -169,7 +169,8 @@ public class SPMapNG implements IMutableMapNG {
 					// campaign with a different data representation---perhaps a
 					// database---we should remove this
 					// check.
-					if (!fixtures.containsKey(point) || !assertNotNull(fixtures.get(point)).contains(forest)) {
+					if (!fixtures.containsKey(point) ||
+								!assertNotNull(fixtures.get(point)).contains(forest)) {
 						ostream.append(ctxt);
 						ostream.append(
 								"\tHas forest we don't, or different primary forest\n");
@@ -624,7 +625,8 @@ public class SPMapNG implements IMutableMapNG {
 	 * @param addedRivers     rivers to add to that location
 	 */
 	@Override
-	public void addRivers(final Point location, final @NonNull River @NonNull ... addedRivers) {
+	public void addRivers(final Point location,
+						  final @NonNull River @NonNull ... addedRivers) {
 		final EnumSet<@NonNull River> localRivers;
 		if (rivers.containsKey(location)) {
 			localRivers = rivers.get(location);

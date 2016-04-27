@@ -1,13 +1,11 @@
 package model.map.fixtures.mobile;
 
 import java.io.IOException;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A dragon. TODO: should probably be a unit, or something.
@@ -31,7 +29,8 @@ import model.map.fixtures.UnitMember;
  *
  * @author Jonathan Lovelace
  */
-public class Dragon implements MobileFixture, HasMutableImage, HasMutableKind, UnitMember {
+public class Dragon
+		implements MobileFixture, HasMutableImage, HasMutableKind, UnitMember {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
