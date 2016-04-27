@@ -86,9 +86,9 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testCitySerialization() throws XMLStreamException,
 													   SPFormatException, IOException {
-		final Player owner = new Player(-1, "");
 		assert status != null;
 		assert size != null;
+		final Player owner = new Player(-1, "");
 		assertSerialization(
 				"First City serialization test, status " + status + ", size " + size,
 				new City(status, size, 10, "oneCity", 0, owner));
@@ -125,9 +125,9 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 	public void testFortificationSerialization() throws XMLStreamException,
 																SPFormatException,
 																IOException {
-		final Player owner = new Player(-1, "");
 		assert status != null;
 		assert size != null;
+		final Player owner = new Player(-1, "");
 		assertSerialization(
 				"Fortification serialization: status " + status + ", size " + size,
 				new Fortification(status, size, 10, "one", 1, owner));
@@ -164,9 +164,9 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 	@Test
 	public void testTownSerialization() throws XMLStreamException,
 													   SPFormatException, IOException {
-		final Player owner = new Player(-1, "");
 		assert status != null;
 		assert size != null;
+		final Player owner = new Player(-1, "");
 		assertSerialization(
 				"First Town serialization test, status " + status + " and size " + size,
 				new Town(status, size, 10, "one", 1, owner));

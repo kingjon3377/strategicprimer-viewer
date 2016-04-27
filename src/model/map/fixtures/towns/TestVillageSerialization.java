@@ -90,9 +90,9 @@ public class TestVillageSerialization extends BaseTestFixtureSerialization {
 	public void testVillageSerialization() throws XMLStreamException,
 														  SPFormatException,
 														  IOException {
-		final Player owner = new Player(-1, "");
 		assert status != null;
 		assert race != null;
+		final Player owner = new Player(-1, "");
 		assertSerialization("First Village serialization test, " + status,
 				new Village(status, "villageOne", 1, owner, race));
 		assertSerialization("2nd Village serialization test,  " + status,
