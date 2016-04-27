@@ -43,7 +43,7 @@ public final class KeyElement extends BoxPanel {
 	/**
 	 * UI helper for the terrain type descriptions and colors.
 	 */
-	private static final TileUIHelper TUIH = new TileUIHelper();
+	private static final TileUIHelper T_UI_H = new TileUIHelper();
 	/**
 	 * Minimum buffer space between elements.
 	 */
@@ -70,11 +70,11 @@ public final class KeyElement extends BoxPanel {
 		final BoxPanel panel = new BoxPanel(false);
 		panel.addRigidArea(4);
 		final int tsize = TileViewSize.scaleZoom(DEF_ZOOM_LEVEL, version);
-		panel.add(new KeyElementComponent(TUIH.get(version, type), MIN_SIZE,
+		panel.add(new KeyElementComponent(T_UI_H.get(version, type), MIN_SIZE,
 				                                 PREF_SIZE, new Dimension(tsize,
 						                                                         tsize)));
 		panel.addRigidArea(4);
-		final JLabel label = new JLabel(TUIH.getDescription(type));
+		final JLabel label = new JLabel(T_UI_H.getDescription(type));
 		panel.add(label);
 		panel.addRigidArea(4);
 		add(panel);

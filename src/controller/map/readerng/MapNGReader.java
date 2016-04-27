@@ -86,7 +86,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	/**
 	 * The tags we know how to deal with.
 	 */
-	private static final List<String> tags = assertNotNull(
+	private static final List<String> MAP_TAGS = assertNotNull(
 			Collections.unmodifiableList(Arrays.asList("map", "view")));
 	/**
 	 * Pre-compiled pattern for exceptions we want to wrap.
@@ -99,7 +99,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	 */
 	@Override
 	public List<String> understands() {
-		return assertNotNull(Collections.unmodifiableList(tags));
+		return assertNotNull(Collections.unmodifiableList(MAP_TAGS));
 	}
 
 	/**

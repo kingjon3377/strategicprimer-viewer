@@ -34,7 +34,7 @@ public final class FilteredFileChooser extends JFileChooser {
 	/**
 	 * A file filter for maps.
 	 */
-	public static final FileFilter MAPS =
+	public static final FileFilter MAP_EXTS =
 			new FileNameExtensionFilter("Strategic Primer world map files", "map", "xml");
 	/**
 	 * Constructor.
@@ -50,7 +50,7 @@ public final class FilteredFileChooser extends JFileChooser {
 	 * Constructor, setting the default location to the current directory.
 	 */
 	public FilteredFileChooser() {
-		this(".", MAPS);
+		this(".", MAP_EXTS);
 	}
 	/**
 	 * Prevent serialization.

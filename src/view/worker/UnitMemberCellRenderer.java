@@ -64,21 +64,21 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	/**
 	 * Default renderer, for cases we don't know how to handle.
 	 */
-	private static final DefaultTreeCellRenderer DFLT =
+	private static final DefaultTreeCellRenderer DEFAULT =
 			new DefaultTreeCellRenderer();
 	/**
 	 * The default background color when selected.
 	 */
 	private static final Color DEF_BKGD_SELECTED = NullCleaner
 			                                               .assertNotNull(
-					                                               DFLT
+					                                               DEFAULT
 							                                               .getBackgroundSelectionColor());
 	/**
 	 * The default background when not selected.
 	 */
 	private static final Color DEF_BKGD_NON_SEL = NullCleaner
 			                                              .assertNotNull(
-					                                              DFLT
+					                                              DEFAULT
 							                                              .getBackgroundNonSelectionColor());
 	/**
 	 * Whether we warn on certain ominous conditions.
@@ -112,7 +112,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 		assert (tree != null) && (value != null) :
 				"UnitMemberCellRenderer passed a null tree or value";
 		final Component component =
-				NullCleaner.assertNotNull(DFLT.getTreeCellRendererComponent(
+				NullCleaner.assertNotNull(DEFAULT.getTreeCellRendererComponent(
 						tree, value, selected, expanded, leaf, row, hasFocus));
 		((DefaultTreeCellRenderer) component)
 				.setBackgroundSelectionColor(DEF_BKGD_SELECTED);
