@@ -17,6 +17,7 @@ import model.map.TileFixture;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
 import util.NullCleaner;
+import util.SingletonRandom;
 import view.map.details.FixtureList;
 
 /**
@@ -181,7 +182,10 @@ public final class ExplorationListListener implements ListDataListener {
 				i++;
 			}
 			Collections.shuffle(possibles);
-			if (!possibles.isEmpty()) {
+			if (possibles.size() > 1 && SingletonRandom.RANDOM.nextDouble() < .1) {
+				constants.add(possibles.get(0));
+				constants.add(possibles.get(1));
+			} else if (!possibles.isEmpty()) {
 				constants.add(possibles.get(0));
 			}
 			final int[] indices = new int[constants.size()];

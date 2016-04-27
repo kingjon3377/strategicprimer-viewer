@@ -29,6 +29,7 @@ import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Village;
 import org.eclipse.jdt.annotation.Nullable;
 import util.Pair;
+import util.SingletonRandom;
 
 import static util.NullCleaner.assertNotNull;
 
@@ -284,6 +285,12 @@ public final class ExplorationCLI {
 				dPoint.toString(), map.getBaseTerrain(dPoint).toString());
 		if (allFixtures.isEmpty()) {
 			helper.println("The following fixtures were automatically noticed:");
+		} else if (allFixtures.size() > 1 && SingletonRandom.RANDOM.nextDouble() < .1) {
+			helper.print("The following fixtures wer noticed, all but the last ");
+			helper.println("two automatically:");
+			Collections.shuffle(allFixtures);
+			constants.add(allFixtures.get(0));
+			constants.add(allFixtures.get(1));
 		} else {
 			helper.print("The following fixtures were noticed, all but the ");
 			helper.println("last automatically:");
