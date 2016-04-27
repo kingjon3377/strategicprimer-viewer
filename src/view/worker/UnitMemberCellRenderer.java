@@ -24,8 +24,9 @@ import model.workermgmt.WorkerTreeModelAlt.KindNode;
 import model.workermgmt.WorkerTreeModelAlt.UnitNode;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ImageLoader;
-import util.NullCleaner;
-import util.TypesafeLogger;
+
+import static util.NullCleaner.assertNotNull;
+import static util.TypesafeLogger.getLogger;
 
 /**
  * A cell renderer for the worker management tree.
@@ -53,9 +54,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger
-			                                     .getLogger(UnitMemberCellRenderer
-					                                                .class);
+	private static final Logger LOGGER = getLogger(UnitMemberCellRenderer.class);
 	/**
 	 * the default fixture icon.
 	 */
@@ -69,17 +68,13 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	/**
 	 * The default background color when selected.
 	 */
-	private static final Color DEF_BKGD_SELECTED = NullCleaner
-			                                               .assertNotNull(
-					                                               DEFAULT
-							                                               .getBackgroundSelectionColor());
+	private static final Color DEF_BKGD_SELECTED =
+			assertNotNull(DEFAULT.getBackgroundSelectionColor());
 	/**
 	 * The default background when not selected.
 	 */
-	private static final Color DEF_BKGD_NON_SEL = NullCleaner
-			                                              .assertNotNull(
-					                                              DEFAULT
-							                                              .getBackgroundNonSelectionColor());
+	private static final Color DEF_BKGD_NON_SEL =
+			assertNotNull(DEFAULT.getBackgroundNonSelectionColor());
 	/**
 	 * Whether we warn on certain ominous conditions.
 	 */
@@ -111,9 +106,9 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	                                              final boolean hasFocus) {
 		assert (tree != null) && (value != null) :
 				"UnitMemberCellRenderer passed a null tree or value";
-		final Component component =
-				NullCleaner.assertNotNull(DEFAULT.getTreeCellRendererComponent(
-						tree, value, selected, expanded, leaf, row, hasFocus));
+		final Component component = assertNotNull(
+				DEFAULT.getTreeCellRendererComponent(tree, value, selected, expanded,
+						leaf, row, hasFocus));
 		((DefaultTreeCellRenderer) component)
 				.setBackgroundSelectionColor(DEF_BKGD_SELECTED);
 		((DefaultTreeCellRenderer) component)
@@ -155,9 +150,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 			boolean shouldErr = false;
 			for (final TreeNode node : (KindNode) value) {
 				if (node instanceof UnitNode) {
-					final IUnit unit = (IUnit) NullCleaner
-							                           .assertNotNull(getNodeValue
-									                                          (node));
+					final IUnit unit = (IUnit) assertNotNull(getNodeValue(node));
 					final String orders = unit.getOrders().toLowerCase();
 					if (orders.contains("fixme") && unit.iterator().hasNext()) {
 						shouldErr = true;
@@ -217,7 +210,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 				builder.append(job.getName()).append(' ').append(job.getLevel());
 			}
 			builder.append(')');
-			return NullCleaner.assertNotNull(builder.toString()); // NOPMD
+			return assertNotNull(builder.toString()); // NOPMD
 		} else {
 			return "";
 		}
