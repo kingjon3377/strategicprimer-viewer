@@ -168,15 +168,16 @@ public final class ExplorationCLI {
 			diggables.add(ground);
 		}
 		mainMap.streamOtherFixtures(point)
-				.filter(fix -> fix instanceof Ground || fix instanceof StoneDeposit ||
-									   fix instanceof MineralVein)
+				.filter(fix -> (fix instanceof Ground) || (fix instanceof
+																   StoneDeposit) ||
+									   (fix instanceof MineralVein))
 				.forEach(diggables::add);
 		if (diggables.isEmpty()) {
 			return;
 		}
 		int i = 0;
 		boolean first = true;
-		while (first || (i < 4 && !(diggables.get(0) instanceof Ground))) {
+		while (first || ((i < 4) && !(diggables.get(0) instanceof Ground))) {
 			Collections.shuffle(diggables);
 			first = false;
 			i++;
@@ -187,7 +188,7 @@ public final class ExplorationCLI {
 			for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
 				final IMutableMapNG map = pair.first();
 				final Ground locGround = map.getGround(point);
-				if (locGround == null || locGround.equals(ground)) {
+				if ((locGround == null) || locGround.equals(ground)) {
 					map.setGround(point, newGround.copy(false));
 				} else if (StreamSupport.stream(map.getOtherFixtures(point).spliterator(),
 						false).anyMatch(fix -> fix.equals(ground))) {
@@ -209,7 +210,7 @@ public final class ExplorationCLI {
 			for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
 				final IMutableMapNG map = pair.first();
 				final Ground locGround = map.getGround(point);
-				if (locGround == null || locGround.equals(oldFix)) {
+				if ((locGround == null) || locGround.equals(oldFix)) {
 					map.setGround(point, (Ground) newFix.copy(notFirst));
 				} else if (StreamSupport.stream(map.getOtherFixtures(point).spliterator(),
 						false).anyMatch(fix -> fix.equals(oldFix))) {
@@ -312,7 +313,8 @@ public final class ExplorationCLI {
 				dPoint.toString(), map.getBaseTerrain(dPoint).toString());
 		if (allFixtures.isEmpty()) {
 			helper.println("The following fixtures were automatically noticed:");
-		} else if (allFixtures.size() > 1 && SingletonRandom.RANDOM.nextDouble() < 0.1) {
+		} else if ((allFixtures.size() > 1) &&
+						   (SingletonRandom.RANDOM.nextDouble() < 0.1)) {
 			helper.print("The following fixtures wer noticed, all but the last ");
 			helper.println("two automatically:");
 			Collections.shuffle(allFixtures);

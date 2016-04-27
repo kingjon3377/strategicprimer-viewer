@@ -294,13 +294,13 @@ public final class QueryCLI implements SimpleDriver {
 						Double.valueOf(rate * count),
 						Double.valueOf(rate * 8.6 * count));
 				if (cli.inputBoolean("Are the herders experts? ")) {
-					hours = round.applyAsInt(animalsPerHerder * (time - 5) / 60.0);
+					hours = round.applyAsInt((animalsPerHerder * (time - 5)) / 60.0);
 				} else {
-					hours = round.applyAsInt(animalsPerHerder * time / 60.0);
+					hours = round.applyAsInt((animalsPerHerder * time) / 60.0);
 				}
 			}
-			if (hours < HUNTER_HOURS &&
-					    cli.inputBoolean("Spend remaining time as Food Gatherers? ")) {
+			if ((hours < HUNTER_HOURS) &&
+						cli.inputBoolean("Spend remaining time as Food Gatherers? ")) {
 				gather(hmodel, selectPoint(cli), cli, HUNTER_HOURS - hours);
 			}
 		}

@@ -186,7 +186,7 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 		protected void paintComponent(@Nullable final Graphics pen) {
 			super.paintComponent(pen);
 			final Image local = portrait;
-			if (local != null && pen != null) {
+			if ((local != null) && (pen != null)) {
 				pen.drawImage(local, 0, 0, getWidth(), getHeight(), this);
 			}
 		}
@@ -200,7 +200,7 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 		public void valueChanged(@Nullable final ListSelectionEvent event) {
 			final List<TileFixture> selections = list.getSelectedValuesList();
 			portrait = null;
-			if (!selections.isEmpty() && selections.size() == 1) {
+			if (!selections.isEmpty() && (selections.size() == 1)) {
 				final TileFixture selectedValue = selections.get(0);
 				if (selectedValue instanceof HasPortrait) {
 					final String portraitName = ((HasPortrait) selectedValue).getPortrait();

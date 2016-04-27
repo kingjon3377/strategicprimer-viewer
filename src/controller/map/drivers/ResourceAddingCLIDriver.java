@@ -210,8 +210,9 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 			throws IOException {
 		if (resourceUnits.containsKey(resource)) {
 			final String unit = resourceUnits.get(resource);
-			if (unit != null && cli.inputBoolean(NullCleaner.assertNotNull(String.format(
-					"Is %s the correct units for %s? ", unit, resource)))) {
+			if ((unit != null) &&
+						cli.inputBoolean(NullCleaner.assertNotNull(String.format(
+								"Is %s the correct units for %s? ", unit, resource)))) {
 				return unit;
 			}
 		}

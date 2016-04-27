@@ -113,12 +113,12 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 				continue;
 			}
 			final Object parentObj = parentPath.getLastPathComponent();
-			if (last == null || parentObj == null) {
+			if ((last == null) || (parentObj == null)) {
 				continue;
 			}
 			final Object selection = model.getModelObject(last);
 			final Object parent = model.getModelObject(parentObj);
-			if (selection instanceof UnitMember && parent instanceof IUnit) {
+			if ((selection instanceof UnitMember) && (parent instanceof IUnit)) {
 				toTransfer.add(Pair.of((UnitMember) selection, (IUnit) parent));
 			} else {
 				LOGGER.info("Selection included a non-UnitMember; skipping ...");
@@ -150,7 +150,8 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 				final Object pathLast = path.getLastPathComponent();
 				if (pathLast != null) {
 					final Object pathLastObj = model.getModelObject(pathLast);
-					if (pathLastObj instanceof IUnit || pathLastObj instanceof UnitMember) {
+					if ((pathLastObj instanceof IUnit) ||
+								(pathLastObj instanceof UnitMember)) {
 						return true;
 					}
 				}
