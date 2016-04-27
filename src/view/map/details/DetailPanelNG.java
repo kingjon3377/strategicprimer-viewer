@@ -97,7 +97,7 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 				                                                 null);
 
 		keyPanel = new KeyPanel(version);
-		setLeftComponent(SplitWithWeights.horizontalSplit(.5, .5, listPanel, portrait));
+		setLeftComponent(SplitWithWeights.horizontalSplit(0.5, 0.5, listPanel, portrait));
 		setRightComponent(keyPanel);
 		setResizeWeight(DIVIDER_LOCATION);
 		setDividerLocation(DIVIDER_LOCATION);

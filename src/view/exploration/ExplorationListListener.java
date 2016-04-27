@@ -212,7 +212,7 @@ public final class ExplorationListListener implements ListDataListener {
 				possibles.add(IntPair.of(i, animal));
 			}
 			Collections.shuffle(possibles);
-			if (possibles.size() > 1 && SingletonRandom.RANDOM.nextDouble() < .1) {
+			if (possibles.size() > 1 && SingletonRandom.RANDOM.nextDouble() < 0.1) {
 				constants.add(possibles.get(0));
 				constants.add(possibles.get(1));
 			} else if (!possibles.isEmpty()) {
