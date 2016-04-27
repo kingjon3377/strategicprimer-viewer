@@ -631,9 +631,8 @@ public final class OneToTwoConverter { // NOPMD
 	 */
 	public static void main(final String... args) {
 		if (args.length == 0) {
-			System.err.print("Usage: ");
-			System.err.print(OneToTwoConverter.class.getSimpleName());
-			System.err.println(" mainmap.xml [playermap.xml ...]");
+			System.err.printf("Usage: %s mainmap.xml [playermap.xml ...]%n",
+					OneToTwoConverter.class.getSimpleName());
 			System.exit(1);
 		} else {
 			boolean first = true;
@@ -683,29 +682,19 @@ public final class OneToTwoConverter { // NOPMD
 	private static void printReadError(final Exception except,
 									   final String filename) {
 		if (except instanceof MapVersionException) {
-			System.err.print("Unsupported map version while reading ");
-			System.err.println(filename);
+			System.err.printf("Unsupported map version while reading %s%n", filename);
 		} else if (except instanceof XMLStreamException) {
-			System.err.println("Malformed XML in ");
-			System.err.println(filename);
+			System.err.printf("Malformed XML in %s%n", filename);
 		} else if (except instanceof FileNotFoundException) {
-			System.err.println("File ");
-			System.err.print(filename);
-			System.err.print(" not found");
+			System.err.printf("File %s not found%n", filename);
 		} else if (except instanceof IOException) {
-			System.err.println("I/O error reading ");
-			System.err.println(filename);
+			System.err.printf("I/O error reading %s%n", filename);
 		} else if (except instanceof SPFormatException) {
-			System.err.println("Bad SP XML in ");
-			System.err.print(filename);
-			System.err.print(" on line ");
-			System.err.print(((SPFormatException) except).getLine());
-			System.err.println(", as explained below:");
+			System.err.printf("Bad SP XML in %s on line %d, as explained below:%n",
+					filename, ((SPFormatException) except).getLine());
 			System.err.println(except.getLocalizedMessage());
 		} else {
-			System.err.print("Unexpected error while reading ");
-			System.err.print(filename);
-			System.err.println(':');
+			System.err.printf("Unexpected error while reading %s:%n", filename);
 			except.printStackTrace(System.err);
 			DriverQuit.quit(3);
 		}
