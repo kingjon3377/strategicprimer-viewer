@@ -178,6 +178,8 @@ public final class ExplorationCLI {
 		boolean first = true;
 		while (first || (i < 4 && !(diggables.get(0) instanceof Ground))) {
 			Collections.shuffle(diggables);
+			first = false;
+			i++;
 		}
 		if (ground == diggables.get(0)) {
 			final Ground newGround = ground.copy(false);
