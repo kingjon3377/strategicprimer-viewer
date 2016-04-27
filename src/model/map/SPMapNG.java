@@ -172,7 +172,7 @@ public class SPMapNG implements IMutableMapNG {
 					// campaign with a different data representation---perhaps a
 					// database---we should remove this
 					// check.
-					if (!fixtures.containsKey(point) || !NullCleaner.assertNotNull(fixtures.get(point)).contains(forest)) {
+					if (!fixtures.containsKey(point) || !assertNotNull(fixtures.get(point)).contains(forest)) {
 						ostream.append(ctxt);
 						ostream.append(
 								"\tHas forest we don't, or different primary forest\n");
@@ -198,7 +198,7 @@ public class SPMapNG implements IMutableMapNG {
 						// ...
 					} else if ((ourGround == null)
 									   ||
-									   !NullCleaner.assertNotNull(fixtures.get(
+									   !assertNotNull(fixtures.get(
 											   point))
 												.contains(
 														theirGround)) {
@@ -239,13 +239,13 @@ public class SPMapNG implements IMutableMapNG {
 																				 fix
 																						 .getID
 																							 ()))) {
-						retval &= NullCleaner.assertNotNull(ourUnits.get(Integer.valueOf(fix.getID())))
+						retval &= assertNotNull(ourUnits.get(Integer.valueOf(fix.getID())))
 										  .isSubset(fix, ostream, ctxt);
 					} else if ((fix instanceof SubsettableFixture) && ourSubsettables
 																			  .containsKey(
 																					  Integer.valueOf(
 																							  fix.getID()))) {
-						retval &= NullCleaner.assertNotNull(ourSubsettables
+						retval &= assertNotNull(ourSubsettables
 										  .get(Integer.valueOf(fix.getID())))
 										  .isSubset(fix, ostream, ctxt);
 					} else {
@@ -645,7 +645,7 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public void removeRivers(final Point location, final River... removedRivers) {
 		if (rivers.containsKey(location)) {
-			final Set<River> localRivers = NullCleaner.assertNotNull(rivers.get(location));
+			final Set<River> localRivers = assertNotNull(rivers.get(location));
 			Stream.of(removedRivers).forEach(localRivers::remove);
 		}
 	}
@@ -684,7 +684,7 @@ public class SPMapNG implements IMutableMapNG {
 	public void addFixture(final Point location, final TileFixture fix) {
 		final Collection<TileFixture> local;
 		if (fixtures.containsKey(location)) {
-			local = NullCleaner.assertNotNull(fixtures.get(location));
+			local = assertNotNull(fixtures.get(location));
 		} else {
 			local = new ArraySet<>();
 			fixtures.put(location, local);
@@ -737,7 +737,7 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public void removeFixture(final Point location, final TileFixture fix) {
 		if (fixtures.containsKey(location)) {
-			NullCleaner.assertNotNull(fixtures.get(location)).remove(fix);
+			assertNotNull(fixtures.get(location)).remove(fix);
 		}
 	}
 
