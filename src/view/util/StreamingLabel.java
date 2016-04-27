@@ -149,6 +149,7 @@ public final class StreamingLabel extends JEditorPane {
 		 * @param csq a string to append
 		 * @return this
 		 */
+		@SuppressWarnings("ReturnOfThis")
 		@Override
 		public StreamingLabelWriter append(final CharSequence csq) {
 			super.append(csq);
@@ -161,6 +162,7 @@ public final class StreamingLabel extends JEditorPane {
 		 * @param args arguments to place in that string as per the spec
 		 * @return this
 		 */
+		@SuppressWarnings("ReturnOfThis")
 		@Override
 		public PrintWriter printf(final String format, final Object... args) {
 			super.printf(format, args);
