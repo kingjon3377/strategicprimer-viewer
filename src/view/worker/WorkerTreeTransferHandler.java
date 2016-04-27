@@ -189,7 +189,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 			if (tempTarget instanceof IUnit) {
 				try {
 					final Transferable trans = support.getTransferable();
-					final UnitMemberTransferable.UnitMemberPairList list =
+					final Iterable<Pair<UnitMember, IUnit>> list =
 							(UnitMemberPairList) trans
 									                 .getTransferData(
 											                 UnitMemberTransferable

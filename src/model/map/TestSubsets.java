@@ -241,7 +241,7 @@ public final class TestSubsets {
 		testMap.locationStream()
 				.forEach(point -> testMap.setBaseTerrain(point, TileType.Plains));
 		final Forest forest = new Forest("elm", false);
-		final Animal animal = new Animal("skunk", false, false, "wild", 1);
+		final TileFixture animal = new Animal("skunk", false, false, "wild", 1);
 		final Consumer<SPMapNG> testTrue =
 				map -> {
 					try {

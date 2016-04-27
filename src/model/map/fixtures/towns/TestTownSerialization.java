@@ -4,7 +4,6 @@ import controller.map.formatexceptions.SPFormatException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import javax.xml.stream.XMLStreamException;
 import model.map.BaseTestFixtureSerialization;
 import model.map.HasMutableImage;
@@ -68,7 +67,7 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 	 */
 	@Parameters
 	public static Collection<Object[]> generateData() {
-		final List<Object[]> retval =
+		final Collection<Object[]> retval =
 				new ArrayList<>(TownSize.values().length * TownStatus.values().length);
 		for (final TownSize size : TownSize.values()) {
 			for (final TownStatus status : TownStatus.values()) {

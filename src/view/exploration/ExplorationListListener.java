@@ -6,7 +6,7 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javax.swing.ListModel;
+import javax.swing.*;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import model.exploration.HuntingModel;
@@ -206,7 +206,8 @@ public final class ExplorationListListener implements ListDataListener {
 				possibleTracks = hmodel.hunt(model.getSelectedUnitLocation(), 1).get(0);
 			}
 			if (!HuntingModel.NOTHING.equals(possibleTracks)) {
-				final Animal animal = new Animal(possibleTracks, true, false, "wild", idf.createID());
+				final TileFixture animal =
+						new Animal(possibleTracks, true, false, "wild", idf.createID());
 				((FixtureListModel) list.getModel()).addFixture(animal);
 				possibles.add(IntPair.of(i, animal));
 			}

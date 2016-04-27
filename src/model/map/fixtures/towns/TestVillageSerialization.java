@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import javax.xml.stream.XMLStreamException;
 import model.map.BaseTestFixtureSerialization;
 import model.map.HasMutableImage;
@@ -72,7 +71,7 @@ public class TestVillageSerialization extends BaseTestFixtureSerialization {
 	public static Collection<Object[]> generateData() {
 		final TownStatus[] statuses = TownStatus.values();
 		final Collection<String> races = new HashSet<>(RaceFactory.getRaces());
-		final List<Object[]> retval = new ArrayList<>(statuses.length * races.size());
+		final Collection<Object[]> retval = new ArrayList<>(statuses.length * races.size());
 		for (TownStatus status : statuses) {
 			for (String race : races) {
 				retval.add(new Object[]{status, race});
