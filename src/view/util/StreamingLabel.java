@@ -167,6 +167,7 @@ public final class StreamingLabel extends JEditorPane {
 			updateText();
 			return this;
 		}
+
 	}
 
 	/**

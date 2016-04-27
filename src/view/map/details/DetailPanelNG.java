@@ -181,6 +181,7 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 		 * Draw the portrait, if any.
 		 * @param pen the graphics context
 		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override
 		protected void paintComponent(@Nullable final Graphics pen) {
 			super.paintComponent(pen);
@@ -194,6 +195,7 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 		 * Handle a selection change
 		 * @param event ignored (we go straight to the list)
 		 */
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override
 		public void valueChanged(@Nullable final ListSelectionEvent event) {
 			final List<TileFixture> selections = list.getSelectedValuesList();

@@ -419,6 +419,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	 * A component to show the portrait of the currently selected member.
 	 */
 	private class PortraitComponent extends JComponent {
+		@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 		@Override
 		protected void paintComponent(@Nullable final Graphics pen) {
 			super.paintComponent(pen);
