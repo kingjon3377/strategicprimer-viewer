@@ -39,29 +39,29 @@ public final class EqualsAny {
 	/**
 	 * Compare a value with a number of other (generally constant) values.
 	 *
-	 * @param <TYPE>  the type of objects we'll be comparing
+	 * @param <T>  the type of objects we'll be comparing
 	 * @param against the value to compare the others to
 	 * @param values  the values to compare to it
 	 * @return true if any of theme equal it, false otherwise.
 	 */
 	@SuppressWarnings("OverloadedVarargsMethod")
 	@SafeVarargs
-	public static <TYPE> boolean equalsAny(final TYPE against,
-	                                       final TYPE... values) {
+	public static <T> boolean equalsAny(final T against,
+										final T... values) {
 		return Stream.of(values).anyMatch(val -> Objects.equals(against, val));
 	}
 
 	/**
 	 * Compare a value with a collection of other (generally constant) values.
 	 *
-	 * @param <TYPE>  the type of objects we'll be comparing
+	 * @param <T>  the type of objects we'll be comparing
 	 * @param against the value to compare the others to
 	 * @param values  the values to compare to it. May be null, in which case we return
 	 *                false.
 	 * @return true if any of theme equal it, false otherwise.
 	 */
-	public static <TYPE> boolean equalsAny(final TYPE against,
-	                                       @Nullable final Iterable<TYPE> values) {
+	public static <T> boolean equalsAny(final T against,
+										@Nullable final Iterable<T> values) {
 		if (values == null) {
 			return false; // NOPMD
 		} else {

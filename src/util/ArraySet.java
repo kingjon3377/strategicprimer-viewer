@@ -29,14 +29,14 @@ import org.eclipse.jdt.annotation.Nullable;
  * program. If not, see
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
- * @param <T> the type of thing stored in the set
+ * @param <U> the type of thing stored in the set
  * @author Jonathan Lovelace
  */
-public final class ArraySet<T> implements Set<T> {
+public final class ArraySet<U> implements Set<U> {
 	/**
 	 * The backing array.
 	 */
-	private final List<T> impl = new ArrayList<>();
+	private final List<U> impl = new ArrayList<>();
 	/**
 	 * The running total of the hash code.
 	 */
@@ -72,7 +72,7 @@ public final class ArraySet<T> implements Set<T> {
 	 * @return an iterator over the set
 	 */
 	@Override
-	public Iterator<T> iterator() {
+	public Iterator<U> iterator() {
 		return NullCleaner.assertNotNull(impl.iterator());
 	}
 
@@ -85,14 +85,14 @@ public final class ArraySet<T> implements Set<T> {
 	}
 
 	/**
-	 * @param <TYPE> the type
+	 * @param <T> the type
 	 * @param array  an array of that type
 	 * @return the contents of the set in that array
 	 */
 	@SuppressWarnings(
 			{"SuspiciousToArrayCall", "ParameterNameDiffersFromOverriddenParameter"})
 	@Override
-	public <TYPE> TYPE[] toArray(final TYPE @Nullable [] array) {
+	public <T> T[] toArray(final T @Nullable [] array) {
 		return NullCleaner.assertNotNullArray(impl.toArray(array));
 	}
 
@@ -102,7 +102,7 @@ public final class ArraySet<T> implements Set<T> {
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
-	public boolean add(final T elem) {
+	public boolean add(final U elem) {
 		if (contains(elem)) {
 			return false; // NOPMD
 		} else {
@@ -142,10 +142,10 @@ public final class ArraySet<T> implements Set<T> {
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
-	public boolean addAll(@Nullable final Collection<? extends T> coll) {
+	public boolean addAll(@Nullable final Collection<? extends U> coll) {
 		boolean retval = false;
 		if (coll != null) {
-			for (final T obj : coll) {
+			for (final U obj : coll) {
 				if (add(obj)) {
 					retval = true;
 				}

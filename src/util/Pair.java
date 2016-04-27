@@ -53,18 +53,14 @@ public class Pair<@NonNull L, @NonNull R> {
 	/**
 	 * Create a pair without having to specify the types.
 	 *
-	 * @param <FIRST>    The type of the first element in the pair
-	 * @param <SECOND>   The type of the second element in the pair
+	 * @param <T>    The type of the first element in the pair
+	 * @param <U>   The type of the second element in the pair
 	 * @param firstItem  The first element in the pair.
 	 * @param secondItem The second element in the pair.
 	 * @return a pair containing the two elements
 	 */
-	public static <@NonNull FIRST, @NonNull SECOND> Pair<FIRST, SECOND> of(final FIRST
-																				   firstItem,
-
-																		   // NOPMD
-																		   final SECOND
-																				   secondItem) {
+	public static <@NonNull T, @NonNull U> Pair<T, U> of(final T firstItem,
+														 final U secondItem) {
 		return new Pair<>(firstItem, secondItem);
 	}
 
