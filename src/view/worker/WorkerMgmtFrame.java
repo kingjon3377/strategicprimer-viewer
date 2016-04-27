@@ -668,7 +668,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 	/**
 	 * An action to request focus in a component.
 	 */
-	@SuppressWarnings("CloneableClassInSecureContext")
+	@SuppressWarnings({"CloneableClassInSecureContext", "CloneableClassWithoutClone"})
 	private static class FocusRequester extends ActionWrapper {
 		/**
 		 * The type of component we're handling.
