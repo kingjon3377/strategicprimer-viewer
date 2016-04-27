@@ -37,7 +37,7 @@ public class Ground implements TileFixture, HasMutableImage, HasMutableKind {
 	/**
 	 * Whether the ground is exposed.
 	 */
-	private final boolean exposed;
+	private boolean exposed;
 
 	/**
 	 * The name of an image to use for this particular fixture.
@@ -157,7 +157,12 @@ public class Ground implements TileFixture, HasMutableImage, HasMutableKind {
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return equals(fix);
 	}
-
+	/**
+	 * @param exp whether the ground is exposed
+	 */
+	public final void setExposed(final boolean exp) {
+		exposed = exp;
+	}
 	/**
 	 * @param nKind the new kind
 	 */

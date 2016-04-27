@@ -33,10 +33,8 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 		                                          HasMutableKind {
 	/**
 	 * Whether the vein is exposed.
-	 *
-	 * TODO: Perhaps this should be mutable and protected by accessor methods?
 	 */
-	private final boolean exposed;
+	private boolean exposed;
 
 	/**
 	 * What kind of mineral this is.
@@ -230,6 +228,12 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	@Override
 	public void setImage(final String img) {
 		image = img;
+	}
+	/**
+	 * @param exp whether the vein is exposed
+	 */
+	public void setExposed(final boolean exp) {
+		exposed = exp;
 	}
 
 	/**
