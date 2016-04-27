@@ -182,7 +182,6 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		addPair(panel, new JLabel("Units"), resUnitsBox);
 		final JButton resourceButton = new JButton("Add Resource");
 		addPair(panel, new JLabel(""), resourceButton);
-		final Component outer = this;
 		final Function<JComboBox, String> selectedItem = box -> {
 			final Object sel = box.getSelectedItem();
 			if (sel == null) {
