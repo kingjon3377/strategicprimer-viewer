@@ -267,7 +267,7 @@ public final class QueryCLI implements SimpleDriver {
 				return; // NOPMD
 			}
 			final int animalsPerHerder = ((count + herders) - 1) / herders;
-			DoubleToIntFunction round = dbl -> (int) (Math.ceil(dbl) + .1);
+			final DoubleToIntFunction round = dbl -> (int) (Math.ceil(dbl) + .1);
 			final int hours;
 			if (poultry) {
 				cli.printf("Gathering eggs takes %d minutes; cleaning up after them,%n",

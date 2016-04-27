@@ -72,8 +72,8 @@ public class TestVillageSerialization extends BaseTestFixtureSerialization {
 		final TownStatus[] statuses = TownStatus.values();
 		final Collection<String> races = new HashSet<>(RaceFactory.getRaces());
 		final Collection<Object[]> retval = new ArrayList<>(statuses.length * races.size());
-		for (TownStatus status : statuses) {
-			for (String race : races) {
+		for (final TownStatus status : statuses) {
+			for (final String race : races) {
 				retval.add(new Object[]{status, race});
 			}
 		}

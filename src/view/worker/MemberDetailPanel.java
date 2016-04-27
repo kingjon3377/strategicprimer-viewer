@@ -381,7 +381,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 			if (!portraitName.isEmpty()) {
 				try {
 					portrait = ImageLoader.getLoader().loadImage(portraitName);
-				} catch (IOException except) {
+				} catch (final IOException except) {
 					LOGGER.log(Level.WARNING, "Failed to load portrait", except);
 				}
 			}

@@ -103,8 +103,8 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 			                                                   final JComponent
 					                                                   component) {
 		final TreePath[] paths = smodel.getSelectionPaths();
-		List<Pair<UnitMember, IUnit>> toTransfer = new ArrayList<>();
-		for (TreePath path : paths) {
+		final List<Pair<UnitMember, IUnit>> toTransfer = new ArrayList<>();
+		for (final TreePath path : paths) {
 			final Object last = path.getLastPathComponent();
 			final TreePath parentPath = path.getParentPath();
 			if (parentPath == null) {
@@ -149,7 +149,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 			} else {
 				final Object pathLast = path.getLastPathComponent();
 				if (pathLast != null) {
-					Object pathLastObj = model.getModelObject(pathLast);
+					final Object pathLastObj = model.getModelObject(pathLast);
 					if (pathLastObj instanceof IUnit || pathLastObj instanceof UnitMember) {
 						return true;
 					}
@@ -177,7 +177,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 			if (pathLast == null) {
 				return false; // NOPMD
 			}
-			Object local = model.getModelObject(pathLast);
+			final Object local = model.getModelObject(pathLast);
 			final Object tempTarget;
 			if (local instanceof UnitMember) {
 				final TreePath pathParent = path.getParentPath();
@@ -194,7 +194,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 									                 .getTransferData(
 											                 UnitMemberTransferable
 													                 .FLAVOR);
-					for (Pair<UnitMember, IUnit> pair : list) {
+					for (final Pair<UnitMember, IUnit> pair : list) {
 						model.moveMember(pair.first(), pair.second(), (IUnit) tempTarget);
 					}
 					return true; // NOPMD

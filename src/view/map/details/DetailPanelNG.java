@@ -206,7 +206,7 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 						try {
 							portrait = loader.loadImage(portraitName);
 							repaint();
-						} catch (IOException except) {
+						} catch (final IOException except) {
 							LOGGER.log(Level.WARNING, "I/O error loading portrait",
 									except);
 						}
