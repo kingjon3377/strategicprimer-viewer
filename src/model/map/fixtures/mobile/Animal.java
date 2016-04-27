@@ -142,7 +142,11 @@ public class Animal implements MobileFixture, HasMutableImage, HasMutableKind, U
 	 */
 	@Override
 	public String getDefaultImage() {
-		return "animal.png";
+		if (traces) {
+			return "tracks.png";
+		} else {
+			return "animal.png";
+		}
 	}
 
 	/**
