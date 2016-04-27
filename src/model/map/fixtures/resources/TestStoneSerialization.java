@@ -64,7 +64,7 @@ public class TestStoneSerialization extends BaseTestFixtureSerialization {
 	 */
 	@Parameters
 	public static Collection<Object[]> generateData() {
-		return Stream.of(StoneKind.values()).map(kind -> new Object[]{kind})
+		return Stream.of(StoneKind.values()).map(stoneKind -> new Object[]{stoneKind})
 					   .collect(Collectors.toList());
 	}
 	/**
