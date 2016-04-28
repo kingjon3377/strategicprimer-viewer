@@ -1,13 +1,13 @@
 package view.util;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import javax.swing.*;
+import javax.swing.JEditorPane;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**

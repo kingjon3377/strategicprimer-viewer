@@ -1,6 +1,6 @@
 package view.map.main;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;

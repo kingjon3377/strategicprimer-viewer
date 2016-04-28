@@ -1,10 +1,11 @@
 package controller.map.misc;
 
-import java.awt.*;
+import java.awt.Component;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.ToIntFunction;
-import javax.swing.*;
+import javax.swing.JFileChooser;
+import javax.swing.SwingUtilities;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import view.util.FilteredFileChooser;

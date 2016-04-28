@@ -1,12 +1,13 @@
 package view.map.key;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.stream.StreamSupport;
-import javax.swing.*;
+import javax.swing.JPanel;
 import model.listeners.VersionChangeListener;
 import model.map.TileType;
 

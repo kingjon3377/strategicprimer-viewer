@@ -1,13 +1,14 @@
 package view.map.main;
 
 import controller.map.misc.IOHandler;
-import java.awt.*;
+import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 import model.viewer.IViewerModel;
 import util.NullCleaner;
 import view.map.details.DetailPanelNG;
