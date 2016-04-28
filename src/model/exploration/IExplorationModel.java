@@ -33,9 +33,8 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public interface IExplorationModel extends IMultiMapModel,
-		                                           SelectionChangeSource,
-		                                           MovementCostSource {
+public interface IExplorationModel
+		extends IMultiMapModel, SelectionChangeSource, MovementCostSource {
 	/**
 	 * An enumeration of directions.
 	 */

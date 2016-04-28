@@ -85,8 +85,8 @@ public final class OneToTwoConverter { // NOPMD
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger
-												 .getLogger(OneToTwoConverter.class);
+	private static final Logger LOGGER =
+			TypesafeLogger.getLogger(OneToTwoConverter.class);
 	/**
 	 * The number of subtiles per tile on each axis.
 	 */
@@ -127,8 +127,8 @@ public final class OneToTwoConverter { // NOPMD
 		final MapDimensions oldDim = old.dimensions();
 		final IMutableMapNG retval =
 				new SPMapNG(new MapDimensions(oldDim.rows * RES_JUMP,
-													 oldDim.cols * RES_JUMP, 2),
-								   new PlayerCollection(), -1);
+													oldDim.cols * RES_JUMP, 2),
+								new PlayerCollection(), -1);
 		Player independent = new Player(-1, "independent");
 		for (final Player player : old.players()) {
 			retval.addPlayer(player);
@@ -160,10 +160,10 @@ public final class OneToTwoConverter { // NOPMD
 	 */
 	private static boolean doesPointHaveContents(final IMapNG map, final Point point) {
 		return (TileType.NotVisible != map.getBaseTerrain(point)) ||
-				       (map.getGround(point) != null) || (map.getForest(point) !=
-						                                          null) ||
-				       map.getRivers(point).iterator().hasNext() ||
-				       map.streamOtherFixtures(point).anyMatch(fix -> true);
+					(map.getGround(point) != null) || (map.getForest(point) !=
+															null) ||
+					map.getRivers(point).iterator().hasNext() ||
+					map.streamOtherFixtures(point).anyMatch(fix -> true);
 	}
 
 	/**
@@ -176,9 +176,9 @@ public final class OneToTwoConverter { // NOPMD
 	 * @return the equivalent higher-resolution points
 	 */
 	private List<Point> createInitialSubtiles(final Point point,
-											  final IMapNG oldMap,
-											  final IMutableMapNG newMap,
-											  final boolean main) {
+											final IMapNG oldMap,
+											final IMutableMapNG newMap,
+											final boolean main) {
 		final List<Point> initial = new LinkedList<>();
 		if (doesPointHaveContents(oldMap, point)) {
 			for (int i = 0; i < RES_JUMP; i++) {
@@ -205,24 +205,19 @@ public final class OneToTwoConverter { // NOPMD
 	 * @return a list of the points we affected in this pass
 	 */
 	private Collection<Point> convertTile(final Point point,
-										  final IMapNG oldMap, final IMutableMapNG
-																	   newMap,
-										  final boolean main,
-										  final IDFactory idFactory,
-										  final Player independentPlayer) {
+										final IMapNG oldMap,
+										final IMutableMapNG newMap,
+										final boolean main,
+										final IDFactory idFactory,
+										final Player independentPlayer) {
 		final List<Point> initial = createInitialSubtiles(point,
 				oldMap, newMap, main);
 		if (doesPointHaveContents(oldMap, point)) {
 			final int idNum = idFactory.createID();
 			if (oldMap instanceof IMutableMapNG) {
-				((IMutableMapNG) oldMap).addFixture(point, new Village(
-																			  TownStatus
-																					  .Active,
-																			  "", idNum,
-																			  independentPlayer,
-																			  RaceFactory
-																					  .getRace(
-																							  new Random(idNum))));
+				((IMutableMapNG) oldMap).addFixture(point,
+						new Village(TownStatus.Active, "", idNum, independentPlayer,
+										RaceFactory.getRace(new Random(idNum))));
 			}
 			final List<TileFixture> fixtures = new LinkedList<>();
 			@Nullable
@@ -242,7 +237,7 @@ public final class OneToTwoConverter { // NOPMD
 			Collections.shuffle(fixtures, random);
 			int iterations;
 			for (iterations = 0; (iterations < MAX_ITERATIONS)
-										 && !fixtures.isEmpty(); iterations++) {
+										&& !fixtures.isEmpty(); iterations++) {
 				if (isSubtileSuitable(newMap, assertNotNull(initial.get(0)))) {
 					final TileFixture fix = assertNotNull(fixtures.remove(0));
 					changeFor(newMap, assertNotNull(initial.get(0)), fix);
@@ -251,18 +246,18 @@ public final class OneToTwoConverter { // NOPMD
 				initial.add(initial.remove(0));
 			}
 			if (iterations == MAX_ITERATIONS) {
-				LOGGER.severe("Maximum number of iterations reached on tile ("
-									  + point.row + ", " + point.col + "); forcing ...");
+				LOGGER.severe(
+						"Maximum number of iterations reached on tile (" + point.row +
+								", " + point.col + "); forcing ...");
 				while (!fixtures.isEmpty()) {
 					final Point subtile = assertNotNull(initial.get(0));
 					newMap.addFixture(subtile,
 							assertNotNull(fixtures.remove(0)));
 					//noinspection ObjectAllocationInLoop
-					newMap.addFixture(subtile, new TextFixture(//NOPMD
-																	  "FIXME: A fixture " +
-																			  "here was " +
-																			  "force-added after MAX_ITER",
-																	  NEXT_TURN));
+					newMap.addFixture(subtile,
+							new TextFixture("FIXME: A fixture here was force-added after" +
+													" MAX_ITER",
+												NEXT_TURN));
 					initial.add(initial.remove(0));
 				}
 			}
@@ -279,8 +274,8 @@ public final class OneToTwoConverter { // NOPMD
 	 * @param newMap  the new map
 	 */
 	private static void separateRivers(final Point point,
-									   final List<Point> initial, final IMapNG oldMap,
-									   final IMutableMapNG newMap) {
+									final List<Point> initial, final IMapNG oldMap,
+									final IMutableMapNG newMap) {
 		for (final River river : oldMap.getRivers(point)) {
 			addRiver(river, initial, newMap);
 		}
@@ -350,10 +345,10 @@ public final class OneToTwoConverter { // NOPMD
 	 * fixtures, false otherwise.
 	 */
 	private static boolean isBackground(final TileFixture fix) {
-		return (fix instanceof Forest) || (fix instanceof Mountain)
-					   || (fix instanceof Ground) || (fix instanceof Sandbar)
-					   || (fix instanceof Shrub) || (fix instanceof Meadow)
-					   || (fix instanceof Hill);
+		return (fix instanceof Forest) || (fix instanceof Mountain) ||
+					(fix instanceof Ground) || (fix instanceof Sandbar) ||
+					(fix instanceof Shrub) || (fix instanceof Meadow) ||
+					(fix instanceof Hill);
 	}
 
 	/**
@@ -365,7 +360,7 @@ public final class OneToTwoConverter { // NOPMD
 	 * @param fix   the fixture to prepare it for
 	 */
 	private static void changeFor(final IMutableMapNG map, final Point point,
-								  final TileFixture fix) {
+								final TileFixture fix) {
 		if ((fix instanceof Village) || (fix instanceof ITownFixture)) {
 			map.streamOtherFixtures(point).filter(Forest.class::isInstance)
 							.forEach(fixture -> map.removeFixture(point, fixture));
@@ -384,8 +379,8 @@ public final class OneToTwoConverter { // NOPMD
 	 * @param idFac  the factory to use to create ID numbers
 	 */
 	private void perturb(final Point point, final IMutableMapNG map,
-						 final Random random, final boolean main, final IDFactory
-																		  idFac) {
+						final Random random, final boolean main,
+						final IDFactory idFac) {
 		if (TileType.Ocean != map.getBaseTerrain(point)) {
 			if (isAdjacentToTown(point, map)
 						&& (random.nextDouble() < SIXTY_PERCENT)) {
@@ -411,8 +406,8 @@ public final class OneToTwoConverter { // NOPMD
 	private static void waterDesert(final IMutableMapNG map, final Point point,
 									final Random random, final boolean watered) {
 		if ((watered && (random.nextDouble() < DESERT_TO_PLAINS)) ||
-				    (!map.getRivers(point).iterator().hasNext() &&
-						     (random.nextDouble() < SIXTY_PERCENT))) {
+					(!map.getRivers(point).iterator().hasNext() &&
+							(random.nextDouble() < SIXTY_PERCENT))) {
 			map.setBaseTerrain(point, TileType.Plains);
 		}
 	}
@@ -430,8 +425,8 @@ public final class OneToTwoConverter { // NOPMD
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void addFieldOrOrchard(final boolean field, final Point point,
-	                               final IMutableMapNG map, final boolean main,
-	                               final IDFactory idFactory) {
+								final IMutableMapNG map, final boolean main,
+								final IDFactory idFactory) {
 		try {
 			final int id = idFactory.createID(); // NOPMD
 			if (field) {
@@ -441,7 +436,7 @@ public final class OneToTwoConverter { // NOPMD
 						new Meadow(runner.recursiveConsultTable("grain", point,
 								map.getBaseTerrain(point),
 								map.streamOtherFixtures(point)), true, true, id,
-										  FieldStatus.random(id)), main);
+										FieldStatus.random(id)), main);
 			} else {
 				addFixture(
 						map,
@@ -466,7 +461,7 @@ public final class OneToTwoConverter { // NOPMD
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void addForest(final Point point, final IMutableMapNG map,
-	                       final boolean main) {
+						final boolean main) {
 		try {
 			addFixture(
 					map,
@@ -490,7 +485,7 @@ public final class OneToTwoConverter { // NOPMD
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addFixture(final IMutableMapNG map, final Point point,
-	                               final TileFixture fix, final boolean main) {
+								final TileFixture fix, final boolean main) {
 		if (main) {
 			if ((fix instanceof Ground) && (map.getGround(point) == null)) {
 				map.setGround(point, (Ground) fix);
@@ -531,7 +526,7 @@ public final class OneToTwoConverter { // NOPMD
 	 */
 	private static boolean isAdjacentToTown(final Point point, final IMapNG map) {
 		return getNeighbors(point).flatMap(map::streamOtherFixtures)
-					   .anyMatch(fix -> fix instanceof ITownFixture);
+					.anyMatch(fix -> fix instanceof ITownFixture);
 	}
 
 	/**
@@ -542,7 +537,7 @@ public final class OneToTwoConverter { // NOPMD
 	private static boolean hasAdjacentWater(final Point point, final IMapNG map) {
 		return getNeighbors(point).anyMatch(
 				npoint -> map.getRivers(npoint).iterator().hasNext() ||
-						          (TileType.Ocean == map.getBaseTerrain(npoint)));
+								(TileType.Ocean == map.getBaseTerrain(npoint)));
 	}
 
 	/**
@@ -552,7 +547,7 @@ public final class OneToTwoConverter { // NOPMD
 	 */
 	private static boolean isPointUnforested(final IMapNG map, final Point point) {
 		return (map.getForest(point) == null) &&
-				       map.streamOtherFixtures(point).noneMatch(Forest.class::isInstance);
+					map.streamOtherFixtures(point).noneMatch(Forest.class::isInstance);
 	}
 
 	/**
@@ -570,11 +565,10 @@ public final class OneToTwoConverter { // NOPMD
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addRiver(final River river,
-	                             final List<Point> points, final IMutableMapNG map) {
+								final List<Point> points, final IMutableMapNG map) {
 		if (RES_JUMP != optSubtilesPerTile()) {
-			throw new IllegalStateException(
-												   "This function is tuned for 4 " +
-														   "subtiles per tile per axis");
+			throw new IllegalStateException("This function is tuned for 4 subtiles per " +
+													"tile per axis");
 		}
 		switch (river) {
 		case East:
@@ -647,8 +641,8 @@ public final class OneToTwoConverter { // NOPMD
 				final IMapNG old;
 				try {
 					old = reader.readMap(file, Warning.DEFAULT);
-				} catch (final IOException | XMLStreamException
-									   | SPFormatException except) {
+				} catch (final IOException | XMLStreamException | SPFormatException
+													except) {
 					printReadError(except, arg);
 					if (first) {
 						System.exit(2);
@@ -680,7 +674,7 @@ public final class OneToTwoConverter { // NOPMD
 	 * @param filename the file being read
 	 */
 	private static void printReadError(final Exception except,
-									   final String filename) {
+									final String filename) {
 		if (except instanceof MapVersionException) {
 			System.err.printf("Unsupported map version while reading %s%n", filename);
 		} else if (except instanceof XMLStreamException) {

@@ -90,7 +90,7 @@ public class Ogre implements MobileFixture, HasMutableImage, UnitMember { // NOP
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Ogre)
-				                         && (id == ((TileFixture) obj).getID()));
+										&& (id == ((TileFixture) obj).getID()));
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class Ogre implements MobileFixture, HasMutableImage, UnitMember { // NOP
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-	                        final String context) throws IOException {
+							final String context) throws IOException {
 		if (obj.getID() == id) {
 			return isConditionTrue(ostream, obj instanceof Ogre, context, "\tFor ID #",
 					Integer.toString(id), ", different kinds of members");

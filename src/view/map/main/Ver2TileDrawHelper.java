@@ -1,8 +1,6 @@
 package view.map.main;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.FileNotFoundException;
@@ -103,10 +101,8 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof Ver2TileDrawHelper)
-										 &&
-										 fixComp.equals(
-												 ((Ver2TileDrawHelper) obj).fixComp));
+		return (this == obj) || ((obj instanceof Ver2TileDrawHelper) && fixComp.equals(
+				((Ver2TileDrawHelper) obj).fixComp));
 	}
 
 	/**
@@ -120,8 +116,8 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger
-												 .getLogger(Ver2TileDrawHelper.class);
+	private static final Logger LOGGER =
+			TypesafeLogger.getLogger(Ver2TileDrawHelper.class);
 	/**
 	 * A fallback image.
 	 */
@@ -133,8 +129,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @param iobs   the class to notify when images finish drawing.
 	 * @param zofilt the class to query about whether to display a fixture
 	 */
-	public Ver2TileDrawHelper(final ImageObserver iobs,
-							  final ZOrderFilter zofilt) {
+	public Ver2TileDrawHelper(final ImageObserver iobs, final ZOrderFilter zofilt) {
 		observer = iobs;
 		zof = zofilt;
 		final String[] files = {"trees.png", "mountain.png"};
@@ -194,7 +189,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	@Override
 	public void drawTile(final Graphics pen, final IMapNG map, final Point location,
-						 final Coordinate coordinates, final Coordinate dimensions) {
+						final Coordinate coordinates, final Coordinate dimensions) {
 		if (needsFixtureColor(map, location)) {
 			pen.setColor(getFixtureColor(map, location));
 		} else {
@@ -225,8 +220,8 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	@Override
 	public void drawTileTranslated(final Graphics pen, final IMapNG map,
-								   final Point location, final int width,
-								   final int height) {
+									final Point location, final int width,
+									final int height) {
 		drawTile(pen, map, location, PointFactory.coordinate(0, 0),
 				PointFactory.coordinate(width, height));
 	}
@@ -237,7 +232,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return an Iterable of the drawable fixtures there
 	 */
 	private Stream<TileFixture> getDrawableFixtures(final IMapNG map,
-	                                                final Point location) {
+													final Point location) {
 		final Collection<TileFixture> temp = new ArrayList<>();
 		@Nullable
 		final Ground ground = map.getGround(location);
@@ -315,7 +310,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private boolean hasTerrainFixture(final IMapNG map, final Point location) {
 		return getDrawableFixtures(map, location)
-				       .anyMatch(fix -> fix instanceof TerrainFixture);
+					.anyMatch(fix -> fix instanceof TerrainFixture);
 	}
 
 	/**
@@ -324,9 +319,10 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return a color to represent the not-on-top terrain feature there.
 	 */
 	private Color getFixtureColor(final IMapNG map, final Point location) {
-		return getDrawableFixtures(map, location).filter(TerrainFixture.class::isInstance)
-				       .map(fix -> getHelper().getFeatureColor(fix)).findFirst()
-				       .orElse(getTileColor(2, map.getBaseTerrain(location)));
+		return getDrawableFixtures(map, location).filter(TerrainFixture
+																.class::isInstance)
+					.map(fix -> getHelper().getFeatureColor(fix)).findFirst()
+					.orElse(getTileColor(2, map.getBaseTerrain(location)));
 	}
 
 	/**
@@ -342,10 +338,9 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 				return getImage(image); // NOPMD
 			}
 		} else if (fix instanceof RiverFixture) {
-			return getImage(NullCleaner.assertNotNull(riverFiles//NOPMD
-															  .get(((RiverFixture) fix)
-																		   .getRivers()
-															  )));
+			// TODO: Statically import assertNotNull
+			return getImage(NullCleaner.assertNotNull(
+					riverFiles.get(((RiverFixture) fix).getRivers())));
 		} else {
 			LOGGER.warning("Using fallback image for unexpected kind of Fixture.");
 			return fallbackImage;
@@ -369,8 +364,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			}
 			return fallbackImage; // NOPMD
 		} catch (final IOException e) {
-			LOGGER.log(Level.SEVERE, "I/O error reading image images/"
-											 + filename, e);
+			LOGGER.log(Level.SEVERE, "I/O error reading image images/" + filename, e);
 			return fallbackImage;
 		}
 	}

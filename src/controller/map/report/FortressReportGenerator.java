@@ -60,8 +60,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public FortressReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
-																		 @NonNull
-																				 IFixture>> comparator) {
+																		@NonNull
+																				IFixture>> comparator) {
 		super(comparator);
 	}
 
@@ -84,14 +84,13 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 * @return the part of the report dealing with fortresses
 	 */
 	@Override
-	public String produce(
-								 final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-										 fixtures,
-								 final IMapNG map, final Player currentPlayer) {
+	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+									fixtures,
+						final IMapNG map, final Player currentPlayer) {
 		// This can get long. We'll give it 16K.
 		final StringBuilder ours = new StringBuilder(16384)
-										   .append("<h4>Your fortresses in the " +
-														   "map:</h4>\n");
+										.append("<h4>Your fortresses in the " +
+														"map:</h4>\n");
 		final StringBuilder builder =
 				new StringBuilder(16384)
 						.append("<h4>Foreign fortresses in the map:</h4>\n");
@@ -134,11 +133,9 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 * @return the part of the report dealing with fortresses
 	 */
 	@Override
-	public IReportNode produceRIR(
-												final DelayedRemovalMap<Integer,
-																			   Pair<Point, IFixture>> fixtures,
-												final IMapNG map,
-												final Player currentPlayer) {
+	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point,
+																				IFixture>> fixtures,
+								final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final IReportNode foreign =
@@ -177,8 +174,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 * @return a String describing the terrain on it
 	 */
 	private static String getTerrain(final IMapNG map, final Point point,
-									 final DelayedRemovalMap<Integer, Pair<Point,
-																				  IFixture>> fixtures) {
+									final DelayedRemovalMap<Integer, Pair<Point,
+																				IFixture>> fixtures) {
 		final StringBuilder builder = new StringBuilder(130).append(
 				"Surrounding terrain: ").append(
 				map.getBaseTerrain(point).toXML().replace('_', ' '));
@@ -228,7 +225,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			builder.append("There is a river on the tile, "); // NOPMD
 			builder.append("flowing through the following borders: ");
 			builder.append(rivers.stream().map(River::getDescription)
-					               .collect(Collectors.joining(", ")));
+								.collect(Collectors.joining(", ")));
 			builder.append(CLOSE_LIST_ITEM);
 		}
 		return NullCleaner.assertNotNull(builder.toString());
@@ -240,20 +237,19 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 * @param rivers the collection of rivers
 	 */
 	private static void riversToNode(final Point loc, final IReportNode parent,
-	                                 final Collection<River> rivers) {
+									final Collection<River> rivers) {
 		if (rivers.contains(River.Lake)) {
 			parent.add(new SimpleReportNode(loc, "There is a nearby lake."));
 			rivers.remove(River.Lake);
 		}
 		if (!rivers.isEmpty()) {
 			parent.add(new SimpleReportNode(loc,
-					                               "There is a river on the tile, " +
-							                               "flowing through the " +
-							                               "following borders: ",
-					                               rivers.stream()
-							                               .map(River::getDescription)
-							                               .collect(Collectors.joining(
-									                               ", "))));
+												"There is a river on the tile, flowing " +
+														"through the following borders: ",
+												rivers.stream()
+														.map(River::getDescription)
+														.collect(Collectors.joining(
+																", "))));
 		}
 	}
 
@@ -268,23 +264,22 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 * @return the part of the report dealing with fortresses
 	 */
 	@Override
-	public String produce(
-								 final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-										 fixtures,
-								 final IMapNG map, final Player currentPlayer,
-								 final Fortress item, final Point loc) {
+	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+									fixtures,
+						final IMapNG map, final Player currentPlayer,
+						final Fortress item, final Point loc) {
 		// This can get long. we'll give it 16K.
 		final StringBuilder builder = new StringBuilder(16384).append("<h5>Fortress ")
-											  .append(item.getName())
-											  .append(" belonging to ")
-											  .append(playerNameOrYou(item.getOwner()))
-											  .append("</h5>\n")
-											  .append(OPEN_LIST).append(OPEN_LIST_ITEM)
-											  .append("Located at ")
-											  .append(loc).append(' ')
-											  .append(distCalculator.distanceString(loc))
-											  .append(CLOSE_LIST_ITEM)
-											  .append(OPEN_LIST_ITEM);
+											.append(item.getName())
+											.append(" belonging to ")
+											.append(playerNameOrYou(item.getOwner()))
+											.append("</h5>\n")
+											.append(OPEN_LIST).append(OPEN_LIST_ITEM)
+											.append("Located at ")
+											.append(loc).append(' ')
+											.append(distCalculator.distanceString(loc))
+											.append(CLOSE_LIST_ITEM)
+											.append(OPEN_LIST_ITEM);
 		builder.append(getTerrain(map, loc, fixtures)).append(CLOSE_LIST_ITEM);
 		if (map.getRivers(loc).iterator().hasNext()) {
 			builder.append(riversToString(
@@ -334,22 +329,14 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 * @return the part of the report dealing with the fortress
 	 */
 	@Override
-	public SectionListReportNode produceRIR(
-												   final DelayedRemovalMap<Integer,
-																				  Pair<Point, IFixture>> fixtures,
-												   final IMapNG map,
-												   final Player currentPlayer,
-												   final Fortress item, final Point
-																				loc) {
-		final SectionListReportNode retval = new SectionListReportNode(loc, 5,
-																			  concat
-																					  ("Fortress ",
-																					  item.getName(),
-																					  " belonging to ",
-																					  playerNameOrYou(
-																							  item.getOwner())));
+	public SectionListReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point,
+																							IFixture>> fixtures,
+											final IMapNG map, final Player currentPlayer,
+											final Fortress item, final Point loc) {
+		final SectionListReportNode retval = new SectionListReportNode(loc, 5, concat("Fortress ",
+				item.getName(), " belonging to ", playerNameOrYou(item.getOwner())));
 		retval.add(new SimpleReportNode(loc, "Located at ", loc.toString(), " ",
-											   distCalculator.distanceString(loc)));
+											distCalculator.distanceString(loc)));
 		retval.add(new SimpleReportNode(loc, getTerrain(map, loc, fixtures)));
 		if (map.getRivers(loc).iterator().hasNext()) {
 			riversToNode(loc, retval,
@@ -358,7 +345,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 		}
 		if (item.iterator().hasNext()) {
 			final IReportNode units = new ListReportNode(loc,
-																	   "Units on the tile:");
+																"Units on the tile:");
 			final IReportNode contents =
 					new ListReportNode(loc, "Other Contents of Fortress:");
 			// TODO: Group resources and equipment separately

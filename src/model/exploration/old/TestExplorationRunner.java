@@ -97,10 +97,9 @@ public final class TestExplorationRunner {
 	@SuppressWarnings("deprecation")
 	@Test
 	public void testGetPrimaryTree() throws MissingTableException {
-		runner.loadTable("boreal_major_tree", new ConstantTable(
-				                                                       "boreal_major_test"));
-		runner.loadTable("temperate_major_tree", new ConstantTable(
-				                                                          "temperate_major_test"));
+		runner.loadTable("boreal_major_tree", new ConstantTable("boreal_major_test"));
+		runner.loadTable("temperate_major_tree",
+				new ConstantTable("temperate_major_test"));
 		final Point point = PointFactory.point(0, 0);
 		assertEquals("primary tree test for boreal forest",
 				"boreal_major_test",
@@ -190,8 +189,7 @@ public final class TestExplorationRunner {
 	public void testDefaultResults() throws MissingTableException {
 		runner.loadTable("major_rock", new ConstantTable("test_rock"));
 		runner.loadTable("boreal_major_tree", new ConstantTable("boreal_tree"));
-		runner.loadTable("temperate_major_tree", new ConstantTable(
-				                                                          "temperate_tree"));
+		runner.loadTable("temperate_major_tree", new ConstantTable("temperate_tree"));
 		final Point point = PointFactory.point(0, 0);
 		assertEquals("defaultResults in non-forest",
 				"The primary rock type here is test_rock.\n",
@@ -219,12 +217,10 @@ public final class TestExplorationRunner {
 				runner.recursiveCheck("existent_table"));
 		runner.loadTable("referent_one", new ConstantTable("#existent_table#"));
 		runner.loadTable("referent_two", new ConstantTable("( #existent_table# )"));
-		runner.loadTable("referent_three", new QuadrantTable(1,
-				                                                    NullCleaner
-						                                                    .assertNotNull(
-								                                                    Arrays.asList(
-										                                                    "#referent_one#",
-										                                                    "#referent_two#"))));
+		// TODO: Statically import assertNotNull
+		runner.loadTable("referent_three", new QuadrantTable(1, NullCleaner
+																		.assertNotNull(
+				Arrays.asList("#referent_one#", "#referent_two#"))));
 		assertFalse("recursive case to exercise cache-hits",
 				runner.recursiveCheck("referent_three"));
 		runner.loadTable("false_referent", new ConstantTable("#nonexistent#"));

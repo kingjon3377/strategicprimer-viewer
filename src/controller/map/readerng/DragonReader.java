@@ -52,14 +52,14 @@ public final class DragonReader implements INodeHandler<Dragon> {
 	 */
 	@Override
 	public Dragon parse(final StartElement element,
-	                    final Iterable<XMLEvent> stream,
-	                    final IMutablePlayerCollection players,
-	                    final Warning warner, final IDFactory idFactory)
+						final Iterable<XMLEvent> stream,
+						final IMutablePlayerCollection players,
+						final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Dragon fix = new Dragon(getAttribute(element, "kind"),
-				                             getOrGenerateID(element, warner,
-						                             idFactory));
+											getOrGenerateID(element, warner,
+													idFactory));
 		addImage(element, fix);
 		return fix;
 	}
@@ -92,7 +92,7 @@ public final class DragonReader implements INodeHandler<Dragon> {
 	public <S extends Dragon> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval =
 				new SPIntermediateRepresentation("dragon",
-						                                Pair.of("kind", obj.getKind()));
+														Pair.of("kind", obj.getKind()));
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

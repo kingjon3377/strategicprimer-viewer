@@ -31,9 +31,8 @@ import model.map.fixtures.mobile.IUnit;
  *
  * @author Jonathan Lovelace
  */
-public interface IWorkerTreeModel extends TreeModel, NewUnitListener,
-		                                          PlayerChangeListener,
-		                                          MapChangeListener {
+public interface IWorkerTreeModel
+		extends TreeModel, NewUnitListener, PlayerChangeListener, MapChangeListener {
 
 	/**
 	 * Move a member between units.

@@ -55,9 +55,9 @@ public final class PointIteratorTest {
 						PointFactory.point(2, 2));
 		final Iterable<Point> iter =
 				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1), null,
-						                                       true, true));
+															true, true));
 		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
-				                                 .collect(Collectors.toList());
+												.collect(Collectors.toList());
 		assertEquals(EXPECTATION, expected, actual);
 	}
 
@@ -69,8 +69,8 @@ public final class PointIteratorTest {
 	public void testFromSelection() {
 		final Iterable<Point> iter =
 				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1),
-						                                       PointFactory.point(1, 1),
-						                                       true, true));
+															PointFactory.point(1, 1),
+															true, true));
 		final Collection<Point> expected =
 				Arrays.asList(PointFactory.point(1, 2), PointFactory.point(2, 0),
 						PointFactory.point(2, 1), PointFactory.point(2, 2),
@@ -78,7 +78,7 @@ public final class PointIteratorTest {
 						PointFactory.point(0, 2), PointFactory.point(1, 0),
 						PointFactory.point(1, 1));
 		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
-				                                 .collect(Collectors.toList());
+												.collect(Collectors.toList());
 		assertEquals(EXPECTATION, expected, actual);
 	}
 
@@ -91,8 +91,8 @@ public final class PointIteratorTest {
 	public void testInitialSelection() {
 		final Iterable<Point> iter =
 				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1),
-						                                       PointFactory.point(-1, -1),
-						                                       true, false));
+															PointFactory.point(-1, -1),
+															true, false));
 		final Collection<Point> expected =
 				Arrays.asList(PointFactory.point(0, 0), PointFactory.point(1, 0),
 						PointFactory.point(2, 0), PointFactory.point(0, 1),
@@ -100,7 +100,7 @@ public final class PointIteratorTest {
 						PointFactory.point(0, 2), PointFactory.point(1, 2),
 						PointFactory.point(2, 2));
 		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
-				                                 .collect(Collectors.toList());
+												.collect(Collectors.toList());
 		assertEquals(EXPECTATION, expected, actual);
 	}
 
@@ -118,9 +118,9 @@ public final class PointIteratorTest {
 						PointFactory.point(2, 2));
 		final Iterable<Point> iter =
 				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1), null,
-						                                       true, false));
+															true, false));
 		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
-				                                 .collect(Collectors.toList());
+												.collect(Collectors.toList());
 		assertEquals(EXPECTATION, expected, actual);
 	}
 
@@ -138,9 +138,9 @@ public final class PointIteratorTest {
 						PointFactory.point(0, 0));
 		final Iterable<Point> iter =
 				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1), null,
-						                                       false, true));
+															false, true));
 		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
-				                                 .collect(Collectors.toList());
+												.collect(Collectors.toList());
 		assertEquals(EXPECTATION, expected, actual);
 	}
 
@@ -158,9 +158,9 @@ public final class PointIteratorTest {
 						PointFactory.point(0, 0));
 		final Iterable<Point> iter =
 				new IteratorWrapper<>(new PointIterator(new MapDimensions(3, 3, 1), null,
-						                                       false, false));
+															false, false));
 		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
-				                                 .collect(Collectors.toList());
+												.collect(Collectors.toList());
 		assertEquals(EXPECTATION, expected, actual);
 	}
 

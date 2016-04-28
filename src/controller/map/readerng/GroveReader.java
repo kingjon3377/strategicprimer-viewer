@@ -58,21 +58,19 @@ public final class GroveReader implements INodeHandler<Grove> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public Grove parse(final StartElement element,
-	                   final Iterable<XMLEvent> stream,
-	                   final IMutablePlayerCollection players,
-	                   final Warning warner, final IDFactory idFactory)
-			throws SPFormatException {
+	public Grove parse(final StartElement element, final Iterable<XMLEvent> stream,
+					final IMutablePlayerCollection players, final Warning warner,
+					final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final boolean cultivated = isCultivated(element, warner);
 		final Grove fix = new Grove(
-										   "orchard".equalsIgnoreCase(
-												   element.getName().getLocalPart()),
-										   cultivated,
-										   getAttributeWithDeprecatedForm(element,
-												   "kind",
-												   "tree", warner),
-										   getOrGenerateID(element, warner, idFactory));
+										"orchard".equalsIgnoreCase(
+												element.getName().getLocalPart()),
+										cultivated,
+										getAttributeWithDeprecatedForm(element,
+												"kind",
+												"tree", warner),
+										getOrGenerateID(element, warner, idFactory));
 		addImage(element, fix);
 		return fix;
 	}
@@ -93,7 +91,7 @@ public final class GroveReader implements INodeHandler<Grove> {
 		} else {
 			if (hasAttribute(element, "wild")) {
 				warner.warn(new DeprecatedPropertyException(element, "wild",
-						                                           CULTIVATED_ATTR));
+																CULTIVATED_ATTR));
 				return !Boolean.parseBoolean(getAttribute(element,
 						"wild")); // NOPMD
 			} else {
@@ -137,7 +135,7 @@ public final class GroveReader implements INodeHandler<Grove> {
 		final SPIntermediateRepresentation retval =
 				new SPIntermediateRepresentation(tag, Pair.of(CULTIVATED_ATTR,
 						NullCleaner.assertNotNull(Boolean.toString(obj
-																		   .isCultivated()))),
+																		.isCultivated()))),
 														Pair.of("kind",
 																obj.getKind()));
 		retval.addIdAttribute(obj.getID());

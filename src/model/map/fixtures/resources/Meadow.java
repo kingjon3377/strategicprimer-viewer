@@ -62,7 +62,7 @@ public class Meadow implements HarvestableFixture, HasMutableKind {
 	 * @param stat  the status of the field, i.e. what season it's in
 	 */
 	public Meadow(final String grain, final boolean fld, final boolean cult,
-	              final int idNum, final FieldStatus stat) {
+				final int idNum, final FieldStatus stat) {
 		kind = grain;
 		field = fld;
 		cultivated = cult;
@@ -169,7 +169,7 @@ public class Meadow implements HarvestableFixture, HasMutableKind {
 	 */
 	private boolean equalsImpl(final Meadow obj) {
 		return kind.equals(obj.kind) && (field == obj.field)
-				       && (cultivated == obj.cultivated) && (id == obj.id);
+					&& (cultivated == obj.cultivated) && (id == obj.id);
 	}
 
 	/**
@@ -200,9 +200,9 @@ public class Meadow implements HarvestableFixture, HasMutableKind {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof Meadow) && kind.equals(((Meadow) fix).kind)
-				       && (field == ((Meadow) fix).field)
-				       && (cultivated == ((Meadow) fix).cultivated)
-				       && (status == ((Meadow) fix).status);
+					&& (field == ((Meadow) fix).field)
+					&& (cultivated == ((Meadow) fix).cultivated)
+					&& (status == ((Meadow) fix).status);
 	}
 
 	/**

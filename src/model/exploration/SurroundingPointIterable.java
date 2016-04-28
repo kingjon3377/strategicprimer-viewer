@@ -49,7 +49,7 @@ public final class SurroundingPointIterable implements Iterable<@NonNull Point> 
 	 * @param dimensions the dimensions of the map
 	 */
 	public SurroundingPointIterable(final Point starting,
-	                                final MapDimensions dimensions) {
+									final MapDimensions dimensions) {
 		this(starting, dimensions, 2);
 	}
 
@@ -58,8 +58,8 @@ public final class SurroundingPointIterable implements Iterable<@NonNull Point> 
 	 * @param dimensions the dimensions of the map
 	 * @param radius     how far from the starting point to go
 	 */
-	public SurroundingPointIterable(final Point starting,
-	                                final MapDimensions dimensions, final int radius) {
+	public SurroundingPointIterable(final Point starting, final MapDimensions dimensions,
+									final int radius) {
 		startingPoint = starting;
 		for (int rad = radius; rad >= 0; rad--) {
 			final int lowerBound = 0 - rad;

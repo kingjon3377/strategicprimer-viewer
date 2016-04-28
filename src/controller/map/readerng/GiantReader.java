@@ -51,14 +51,12 @@ public final class GiantReader implements INodeHandler<Giant> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public Giant parse(final StartElement element,
-	                   final Iterable<XMLEvent> stream,
-	                   final IMutablePlayerCollection players,
-	                   final Warning warner, final IDFactory idFactory)
-			throws SPFormatException {
+	public Giant parse(final StartElement element, final Iterable<XMLEvent> stream,
+					final IMutablePlayerCollection players, final Warning warner,
+					final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Giant fix = new Giant(getAttribute(element, "kind"),
-				                           getOrGenerateID(element, warner, idFactory));
+										getOrGenerateID(element, warner, idFactory));
 		addImage(element, fix);
 		return fix;
 	}

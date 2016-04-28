@@ -79,8 +79,8 @@ public class WorkerStats {
 	 * @param charisma     th worker's charisma
 	 */
 	public WorkerStats(final int hitPoints, final int maxHitPoints,
-	                   final int strengthStat, final int dexterity, final int constitution,
-	                   final int intelligence, final int wisdom, final int charisma) {
+					final int strengthStat, final int dexterity, final int constitution,
+					final int intelligence, final int wisdom, final int charisma) {
 		hp = hitPoints;
 		maxHP = maxHitPoints;
 		strength = strengthStat;
@@ -216,8 +216,8 @@ public class WorkerStats {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (obj == this) || ((obj instanceof WorkerStats)
-				                         && equalsImpl((WorkerStats) obj));
+		return (obj == this) ||
+					((obj instanceof WorkerStats) && equalsImpl((WorkerStats) obj));
 	}
 
 	/**
@@ -225,9 +225,9 @@ public class WorkerStats {
 	 * @return whether it's equal to this.
 	 */
 	private boolean equalsImpl(final WorkerStats obj) {
-		return (hp == obj.hp) && (maxHP == obj.maxHP) && (strength == obj.strength)
-				       && (dex == obj.dex) && (con == obj.con) && (intel == obj.intel)
-				       && (wis == obj.wis) && (cha == obj.cha);
+		return (hp == obj.hp) && (maxHP == obj.maxHP) && (strength == obj.strength) &&
+					(dex == obj.dex) && (con == obj.con) && (intel == obj.intel) &&
+					(wis == obj.wis) && (cha == obj.cha);
 	}
 
 	/**
@@ -235,8 +235,8 @@ public class WorkerStats {
 	 */
 	@Override
 	public int hashCode() {
-		return strength + (dex << 3) + (con << 6) + (intel << 9)
-				       + (wis << 12) + (cha << 15) + (hp << 18) + (maxHP << 22);
+		return strength + (dex << 3) + (con << 6) + (intel << 9) + (wis << 12) +
+					(cha << 15) + (hp << 18) + (maxHP << 22);
 	}
 
 	/**

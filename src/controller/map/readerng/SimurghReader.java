@@ -51,9 +51,9 @@ public final class SimurghReader implements INodeHandler<Simurgh> {
 	 */
 	@Override
 	public Simurgh parse(final StartElement element,
-	                     final Iterable<XMLEvent> stream,
-	                     final IMutablePlayerCollection players,
-	                     final Warning warner, final IDFactory idFactory)
+						final Iterable<XMLEvent> stream,
+						final IMutablePlayerCollection players,
+						final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Simurgh fix = new Simurgh(getOrGenerateID(element, warner,

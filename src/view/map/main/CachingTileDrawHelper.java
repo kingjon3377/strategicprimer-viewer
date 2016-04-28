@@ -64,8 +64,7 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * The shapes representing the rivers on the tile.
 	 */
-	private final Map<River, Shape> rivers = new EnumMap<>(// NOPMD
-			                                                      River.class);
+	private final Map<River, Shape> rivers = new EnumMap<>(River.class);
 	/**
 	 * Shape representing the fortress that might be on the tile.
 	 */
@@ -102,51 +101,49 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private boolean checkCache(final int width, final int height) {
 		if (areFloatsDifferent(backgroundShape.getWidth(), (double) width)
-				    || areFloatsDifferent(backgroundShape.getHeight(), (double) height)) {
+				|| areFloatsDifferent(backgroundShape.getHeight(), (double) height)) {
 			backgroundShape = new Rectangle(0, 0, width, height);
 			rivers.clear();
 			rivers.put(River.East,
 					new Rectangle2D.Double(width * RiverLongDimension.constant,
-							                      height * RiverShortStart.constant,
-							                      width * RiverLongDimension.constant,
-							                      height * RiverShortDimension.constant));
+												height * RiverShortStart.constant,
+												width * RiverLongDimension.constant,
+												height * RiverShortDimension.constant));
 			rivers.put(River.Lake, new Ellipse2D.Double(width * LakeStart.constant,
-					                                           height *
-							                                           LakeStart.constant,
-
-					                                           width *
-							                                           RiverLongDimension.constant,
-					                                           height *
-							                                           RiverLongDimension.constant));
+															height *
+																	LakeStart.constant,
+															width *
+																	RiverLongDimension.constant,
+															height *
+																	RiverLongDimension.constant));
 			rivers.put(River.North,
 					new Rectangle2D.Double(width * RiverShortStart.constant, 0,
-							                      width * RiverShortDimension.constant,
-							                      height * RiverLongDimension.constant));
+												width * RiverShortDimension.constant,
+												height * RiverLongDimension.constant));
 			rivers.put(River.South,
 					new Rectangle2D.Double(width * RiverShortStart.constant,
-							                      height * RiverLongDimension.constant,
-							                      width * RiverShortDimension.constant,
-							                      height * RiverLongDimension.constant));
+												height * RiverLongDimension.constant,
+												width * RiverShortDimension.constant,
+												height * RiverLongDimension.constant));
 			rivers.put(River.West,
 					new Rectangle2D.Double(0, height * RiverShortStart.constant,
-							                      width * RiverLongDimension.constant,
-							                      height * RiverShortDimension.constant));
+												width * RiverLongDimension.constant,
+												height * RiverShortDimension.constant));
 			fort = new Rectangle2D.Double((width * FortStart.constant) - 1.0,
-					                             (height * FortStart.constant) - 1.0,
-					                             width * FortSize.constant,
-					                             height * FortSize.constant);
+												(height * FortStart.constant) - 1.0,
+												width * FortSize.constant,
+												height * FortSize.constant);
 			unit = new Ellipse2D.Double(width * UnitSize.constant,
-					                           height * UnitSize.constant,
-					                           width * UnitSize.constant,
-					                           height * UnitSize.constant);
+											height * UnitSize.constant,
+											width * UnitSize.constant,
+											height * UnitSize.constant);
 			event = new Polygon(new int[]{(int) Math.round(width * EventStart.constant),
 					(int) Math.round(width * EventOther.constant), width},
-					                   new int[]{0, (int) Math.round(
-							                   height * EventOther.constant),
-							                   (int) Math.round(height *
-									                                    EventOther.constant)},
-
-					                   MISC_EVENT_SIDES);
+									new int[]{0, (int) Math.round(
+											height * EventOther.constant),
+											(int) Math.round(height *
+																	EventOther.constant)},
+									MISC_EVENT_SIDES);
 			return true;
 		} else {
 			return false;
@@ -167,13 +164,12 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	@Override
 	public void drawTileTranslated(final Graphics pen, final IMapNG map,
-	                               final Point location, final int width,
-	                               final int height) {
+								final Point location, final int width,
+								final int height) {
 		checkCache(width, height);
 		if (!(pen instanceof Graphics2D)) {
-			throw new IllegalArgumentException(
-					                                  "CachingTileDrawHelper requires " +
-							                                  "Graphics2D");
+			throw new IllegalArgumentException("CachingTileDrawHelper requires " +
+													"Graphics2D");
 		}
 		final Graphics2D pen2d = (Graphics2D) pen;
 		pen2d.setColor(getTileColor(1, map.getBaseTerrain(location)));
@@ -207,8 +203,8 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 * @param secondNum the second value
 	 * @return whether the two are not approximately equal
 	 */
-	private static boolean areFloatsDifferent(final double firstNum, final double
-			                                                             secondNum) {
+	private static boolean areFloatsDifferent(final double firstNum,
+											final double secondNum) {
 		return Math.abs(firstNum - secondNum) > APPROX_ZERO;
 	}
 
@@ -223,13 +219,12 @@ public final class CachingTileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	@Override
 	public void drawTile(final Graphics pen, final IMapNG map,
-	                     final Point location, final Coordinate coordinates,
-	                     final Coordinate dimensions) {
+						final Point location, final Coordinate coordinates,
+						final Coordinate dimensions) {
 		final Graphics context = pen.create(coordinates.x, coordinates.y,
 				dimensions.x, dimensions.y);
 		if (context == null) {
-			throw new IllegalStateException(
-					                               "pen.create() created null Graphics");
+			throw new IllegalStateException("pen.create() created null Graphics");
 		}
 		try {
 			drawTileTranslated(context, map, location, dimensions.x, dimensions.y);

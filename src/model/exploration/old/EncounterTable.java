@@ -41,8 +41,7 @@ public interface EncounterTable {
 	 * @param point    the location of the tile
 	 * @return an appropriate event for that tile
 	 */
-	String generateEvent(Point point, TileType terrain,
-	                     Iterable<TileFixture> fixtures);
+	String generateEvent(Point point, TileType terrain, Iterable<TileFixture> fixtures);
 	/**
 	 * Generates an "encounter." For QuadrantTables this is always the same for each
 	 * tile;
@@ -53,8 +52,7 @@ public interface EncounterTable {
 	 * @param point    the location of the tile
 	 * @return an appropriate event for that tile
 	 */
-	String generateEvent(Point point, TileType terrain,
-	                     Stream<TileFixture> fixtures);
+	String generateEvent(Point point, TileType terrain, Stream<TileFixture> fixtures);
 
 	/**
 	 * For table-debugging purposes.

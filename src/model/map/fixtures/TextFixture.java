@@ -1,10 +1,9 @@
 package model.map.fixtures;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableImage;
 import model.map.IFixture;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A Fixture to encapsulate arbitrary text associated with a tile, so we can improve the
@@ -122,8 +121,8 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof TextFixture)
-				                         && equalsImpl((TextFixture) obj));
+		return (this == obj) ||
+					((obj instanceof TextFixture) && equalsImpl((TextFixture) obj));
 	}
 
 	/**

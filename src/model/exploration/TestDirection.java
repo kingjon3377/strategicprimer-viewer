@@ -41,8 +41,8 @@ public class TestDirection {
 	 */
 	private final IExplorationModel model =
 			new ExplorationModel(new SPMapNG(new MapDimensions(5, 5, 2),
-					                                new PlayerCollection(), 0),
-					                    new File(""));
+													new PlayerCollection(), 0),
+										new File(""));
 	@Test
 	public void testEast() {
 		assertEquals("East of (0, 0) is (0, 1)", point(0, 1),

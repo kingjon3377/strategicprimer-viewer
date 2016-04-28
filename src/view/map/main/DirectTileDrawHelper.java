@@ -55,8 +55,8 @@ public final class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	@Override
 	public void drawTile(final Graphics pen, final IMapNG map,
-	                     final Point location, final Coordinate coordinates,
-	                     final Coordinate dimensions) {
+						final Point location, final Coordinate coordinates,
+						final Coordinate dimensions) {
 		final Graphics context = pen.create();
 		try {
 			context.setColor(getTileColor(1, map.getBaseTerrain(location)));
@@ -74,7 +74,7 @@ public final class DirectTileDrawHelper extends AbstractTileDrawHelper {
 			if (hasAnyForts(map, location)) {
 				context.setColor(FORT_COLOR);
 				context.fillRect(((int) Math.round(dimensions.x * FortStart.constant)
-						                  - 1) + coordinates.x,
+										- 1) + coordinates.x,
 						((int) Math.round(dimensions.y * FortStart.constant) - 1)
 								+ coordinates.y,
 						(int) Math.round(dimensions.x * FortSize.constant),
@@ -83,9 +83,8 @@ public final class DirectTileDrawHelper extends AbstractTileDrawHelper {
 			if (hasAnyUnits(map, location)) {
 				context.setColor(UNIT_COLOR);
 				context.fillOval((int) Math.round(dimensions.x * UnitSize.constant)
-						                 + coordinates.x, (int) Math.round(
-						dimensions.y * UnitSize.constant)
-								                               + coordinates.y,
+										+ coordinates.x, (int) Math.round(
+						dimensions.y * UnitSize.constant) + coordinates.y,
 						(int) Math.round(dimensions.x * UnitSize.constant),
 						(int) Math.round(dimensions.y * UnitSize.constant));
 			} else if (hasEvent(map, location)) {
@@ -120,8 +119,8 @@ public final class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	@Override
 	public void drawTileTranslated(final Graphics pen, final IMapNG map,
-	                               final Point location, final int width,
-	                               final int height) {
+								final Point location, final int width,
+								final int height) {
 		drawTile(pen, map, location, PointFactory.coordinate(0, 0),
 				PointFactory.coordinate(width, height));
 	}
@@ -137,8 +136,8 @@ public final class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 * @param height the height of the tile's drawing-space
 	 */
 	private static void drawRiver(final Graphics pen, final River river,
-	                              final int xCoord, final int yCoord, final int width,
-	                              final int height) {
+								final int xCoord, final int yCoord, final int width,
+								final int height) {
 		switch (river) {
 		case East:
 			pen.fillRect((int) Math.round(width * RiverLongDimension.constant) + xCoord,
@@ -165,7 +164,7 @@ public final class DirectTileDrawHelper extends AbstractTileDrawHelper {
 			break;
 		case West:
 			pen.fillRect(xCoord, (int) Math.round(height * RiverShortStart.constant)
-					                     + yCoord, (int) Math.round(width * RiverLongDimension.constant),
+										+ yCoord, (int) Math.round(width * RiverLongDimension.constant),
 					(int) Math.round(height * RiverShortDimension.constant));
 			break;
 		default:

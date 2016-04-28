@@ -1,9 +1,8 @@
 package model.map.fixtures.resources;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableKind;
 import model.map.IFixture;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**
@@ -55,8 +54,8 @@ public class Grove implements HarvestableFixture, HasMutableKind {
 	 * @param tree            what kind of trees are in the grove
 	 * @param idNum           the ID number.
 	 */
-	public Grove(final boolean fruit, final boolean cultivatedGrove,
-	             final String tree, final int idNum) {
+	public Grove(final boolean fruit, final boolean cultivatedGrove, final String tree,
+				final int idNum) {
 		orchard = fruit;
 		cultivated = cultivatedGrove;
 		kind = tree;
@@ -143,11 +142,11 @@ public class Grove implements HarvestableFixture, HasMutableKind {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof Grove)
-				                         && kind.equals(((Grove) obj).kind)
-				                         && (orchard == ((Grove) obj).orchard)
-				                         && (cultivated == ((Grove) obj).cultivated)
-				                         && (id == ((Grove) obj).id));
+		return (this == obj) ||
+					((obj instanceof Grove) && kind.equals(((Grove) obj).kind) &&
+								(orchard == ((Grove) obj).orchard) &&
+								(cultivated == ((Grove) obj).cultivated) &&
+								(id == ((Grove) obj).id));
 	}
 
 	/**
@@ -177,9 +176,9 @@ public class Grove implements HarvestableFixture, HasMutableKind {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return (fix instanceof Grove) && kind.equals(((Grove) fix).kind)
-				       && (orchard == ((Grove) fix).orchard)
-				       && (cultivated == ((Grove) fix).cultivated);
+		return (fix instanceof Grove) && kind.equals(((Grove) fix).kind) &&
+					(orchard == ((Grove) fix).orchard) &&
+					(cultivated == ((Grove) fix).cultivated);
 	}
 
 	/**

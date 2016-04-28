@@ -41,9 +41,9 @@ public interface ICLIHelper extends Closeable {
 	 * @return the user's selection, or -1 if there are none
 	 * @throws IOException on I/O error getting the user's input
 	 */
-	<T extends HasName> int chooseFromList(List<? extends T> items,
-	                                       String desc, String none, String prompt,
-	                                       boolean auto) throws IOException;
+	<T extends HasName> int chooseFromList(List<? extends T> items, String desc,
+										String none, String prompt, boolean auto)
+			throws IOException;
 
 	/**
 	 * Have the user choose an item from a list.
@@ -56,8 +56,8 @@ public interface ICLIHelper extends Closeable {
 	 * @return the user's selection, or -1 if there are none
 	 * @throws IOException on I/O error getting the user's input
 	 */
-	int chooseStringFromList(List<String> items, String desc, String none,
-	                         String prompt, boolean auto) throws IOException;
+	int chooseStringFromList(List<String> items, String desc, String none, String prompt,
+							boolean auto) throws IOException;
 
 	/**
 	 * Read input from stdin repeatedly until a nonnegative integer is entered, and

@@ -91,7 +91,7 @@ public final class StreamingLabel extends JEditorPane {
 		 * @param label   the component to update when written to
 		 */
 		protected StreamingLabelWriter(final StringWriter wrapped,
-		                               final JEditorPane label) {
+									final JEditorPane label) {
 			super(wrapped);
 			swriter = wrapped;
 			control = label;

@@ -34,8 +34,8 @@ import org.eclipse.jdt.annotation.NonNull;
  * @author Jonathan Lovelace
  */
 public interface IUnit extends MobileFixture, HasImage, HasKind, HasName,
-		                               FixtureIterable<@NonNull UnitMember>,
-		                               HasOwner, FortressMember {
+									FixtureIterable<@NonNull UnitMember>, HasOwner,
+									FortressMember {
 	/**
 	 * @return the unit's orders
 	 */

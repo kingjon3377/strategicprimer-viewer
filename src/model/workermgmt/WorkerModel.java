@@ -11,10 +11,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
@@ -25,6 +21,8 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
 import model.misc.SimpleMultiMapModel;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.Pair;
 import view.util.SystemOut;
@@ -78,8 +76,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	public List<Player> getPlayers() {
 		return new ArrayList<>(StreamSupport.stream(getAllMaps().spliterator(), false).flatMap(
 				pair -> StreamSupport.stream(pair.first().players().spliterator(),
-						false))
-				       .collect(Collectors.toSet()));
+						false)).collect(Collectors.toSet()));
 	}
 
 	/**
@@ -90,8 +87,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	public List<IUnit> getUnits(final Player player) {
 		if (getSubordinateMaps().iterator().hasNext()) {
 			return new ArrayList<>(StreamSupport.stream(getAllMaps().spliterator(),
-					false)
-					                       .map(Pair::first).flatMap(
+					false).map(Pair::first).flatMap(
 							map -> map.locationStream().flatMap(
 									point -> getUnits(map.streamOtherFixtures(point),
 											player))).collect(
@@ -127,7 +123,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 * @return a list of the members of the sequence that are units owned by the player
 	 */
 	private static Stream<IUnit> getUnits(final Stream<@NonNull ? super Unit> iter,
-											  final Player player) {
+										final Player player) {
 		return NullCleaner.assertNotNull(iter.flatMap(item -> {
 			if (item instanceof Fortress) {
 				return StreamSupport.stream(((Fortress) item).spliterator(), false);
@@ -135,7 +131,8 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 				return Stream.of(item);
 			}
 		}).filter(IUnit.class::isInstance).map(IUnit.class::cast)
-				       .filter(unit -> unit.getOwner().equals(player)));
+												.filter(unit -> unit.getOwner()
+																		.equals(player)));
 	}
 
 	/**
@@ -144,16 +141,9 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	 */
 	@Override
 	public List<String> getUnitKinds(final Player player) {
-		return NullCleaner.assertNotNull(Collections
-												 .unmodifiableList(
-														 new ArrayList<>(getUnits(player)
-																				 .stream()
-																				 .map
-																						  (IUnit::getKind)
-
-																				 .collect(
-																						 Collectors
-																								 .toSet()))));
+		return NullCleaner.assertNotNull(Collections.unmodifiableList(
+				new ArrayList<>(getUnits(player).stream().map(IUnit::getKind)
+										.collect(Collectors.toSet()))));
 	}
 
 	/**
@@ -164,7 +154,7 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	@Override
 	public List<IUnit> getUnits(final Player player, final String kind) {
 		return getUnits(player).stream().filter(unit -> kind.equals(unit.getKind()))
-					   .collect(Collectors.toList());
+					.collect(Collectors.toList());
 	}
 
 	/**
@@ -174,9 +164,9 @@ public final class WorkerModel extends SimpleMultiMapModel implements IWorkerMod
 	public void addUnit(final IUnit unit) {
 		for (final Point point : getMap().locations()) {
 			if (getMap().streamOtherFixtures(point).filter(Fortress.class::isInstance)
-					    .map(Fortress.class::cast).anyMatch(
+						.map(Fortress.class::cast).anyMatch(
 							fort -> "HQ".equals(fort.getName()) &&
-									        unit.getOwner().equals(fort.getOwner()))) {
+											unit.getOwner().equals(fort.getOwner()))) {
 					addUnitAtLocation(unit, point);
 					return;
 				}

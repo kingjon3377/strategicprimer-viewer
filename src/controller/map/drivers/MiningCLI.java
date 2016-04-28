@@ -93,8 +93,8 @@ public final class MiningCLI {
 		try (final PrintWriter ostream = new PrintWriter(new FileWriter(out))) {
 			for (int row = 0; row < maxRow; row++) {
 				for (int col = 0; col < maxCol; col++) {
-					ostream.print(model.statusAt(PointFactory.point(row, col))
-							              .getRatio());
+					ostream.print(
+							model.statusAt(PointFactory.point(row, col)).getRatio());
 					ostream.print(',');
 				}
 				ostream.println();

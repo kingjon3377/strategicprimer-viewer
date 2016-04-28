@@ -33,9 +33,9 @@ public final class MapCheckerGUI implements UtilityDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-k", "--check", ParamCount.AtLeastOne,
-					               "Check map for errors",
-					               "Check a map file for errors, deprecated syntax, etc.",
-					               MapCheckerGUI.class);
+								"Check map for errors",
+								"Check a map file for errors, deprecated syntax, etc.",
+								MapCheckerGUI.class);
 
 	/**
 	 * Run the driver.

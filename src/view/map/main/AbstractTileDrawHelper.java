@@ -103,9 +103,9 @@ public abstract class AbstractTileDrawHelper implements TileDrawHelper {
 	 */
 	@Override
 	public abstract void drawTileTranslated(final Graphics pen,
-	                                        final IMapNG map, final Point location,
-	                                        final int width,
-	                                        final int height);
+											final IMapNG map, final Point location,
+											final int width,
+											final int height);
 
 	/**
 	 * @return the UI helper.

@@ -1,11 +1,10 @@
 package model.map.fixtures;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A TileFixture to represent the basic rock beneath the tile, possibly exposed.
@@ -110,9 +109,9 @@ public class Ground implements TileFixture, HasMutableImage, HasMutableKind {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof Ground)
-				                         && kind.equals(((Ground) obj).kind)
-				                         && (exposed == ((Ground) obj).exposed));
+		return (this == obj) ||
+					((obj instanceof Ground) && kind.equals(((Ground) obj).kind) &&
+								(exposed == ((Ground) obj).exposed));
 	}
 
 	/**

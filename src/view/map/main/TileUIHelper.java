@@ -40,9 +40,7 @@ public final class TileUIHelper {
 	/**
 	 * Descriptions of the types.
 	 */
-	private final Map<TileType, String> descriptions = new EnumMap<>(
-			                                                                TileType
-					                                                                .class);
+	private final Map<TileType, String> descriptions = new EnumMap<>(TileType.class);
 
 	/**
 	 * A map from classes of features to the colors they can make the tile be. Used to
@@ -110,7 +108,7 @@ public final class TileUIHelper {
 	public boolean supportsType(final int version, final TileType type) {
 		final Integer ver = Integer.valueOf(version);
 		return colors.containsKey(ver) &&
-					   NullCleaner.assertNotNull(colors.get(ver)).containsKey(type);
+					NullCleaner.assertNotNull(colors.get(ver)).containsKey(type);
 	}
 
 	/**
@@ -125,12 +123,9 @@ public final class TileUIHelper {
 			if (colorMap.containsKey(type)) {
 				return NullCleaner.assertNotNull(colorMap.get(type));
 			} else {
-				throw new IllegalArgumentException(type
-						                                   +
-						                                   " is not a terrain type " +
-						                                   "version " +
-						                                   version
-						                                   + " can handle");
+				throw new IllegalArgumentException(type +
+														" is not a terrain type version "
+														+ version + " can handle");
 			}
 		} else {
 			throw new IllegalArgumentException("Not a version we can handle");
@@ -167,8 +162,7 @@ public final class TileUIHelper {
 		if (featureColors.containsKey(cls)) {
 			return NullCleaner.assertNotNull(featureColors.get(cls));
 		} else {
-			throw new IllegalArgumentException(
-					                                  "Not a kind of fixture we can handle");
+			throw new IllegalArgumentException("Not a kind of fixture we can handle");
 		}
 	}
 }

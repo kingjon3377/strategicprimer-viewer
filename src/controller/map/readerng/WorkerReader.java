@@ -1,21 +1,18 @@
 package controller.map.readerng;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
+import java.util.Collections;
+import java.util.List;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
+import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
 import util.Warning;
 
@@ -73,23 +70,23 @@ public final class WorkerReader implements INodeHandler<@NonNull Worker> {
 	 */
 	@Override
 	public Worker parse(final StartElement element,
-	                    final Iterable<XMLEvent> stream,
-	                    final IMutablePlayerCollection players,
-	                    final Warning warner, final IDFactory idFactory)
+						final Iterable<XMLEvent> stream,
+						final IMutablePlayerCollection players,
+						final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		final Worker retval = new Worker(getAttribute(element, "name"),
-				                                getAttribute(element, "race", "human"),
-				                                getOrGenerateID(element, warner,
-						                                idFactory));
+												getAttribute(element, "race", "human"),
+												getOrGenerateID(element, warner,
+														idFactory));
 		addImage(element, retval);
 		addPortrait(element, retval);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
+				// TODO: Statically import assertNotNull
 				final Object result =
 						ReaderAdapter.ADAPTER.parse(NullCleaner
 															.assertNotNull(
-																	event.asStartElement
-																				  ()),
+																event.asStartElement()),
 								stream,
 								players, warner, idFactory);
 				if (result instanceof Job) {
@@ -101,10 +98,8 @@ public final class WorkerReader implements INodeHandler<@NonNull Worker> {
 							NullCleaner.assertNotNull(element.getName()),
 							NullCleaner.assertNotNull(event.asStartElement()));
 				}
-			} else if (event.isEndElement()
-							   &&
-							   element.getName().equals(event.asEndElement().getName()
-							   )) {
+			} else if (event.isEndElement() &&
+							element.getName().equals(event.asEndElement().getName())) {
 				break;
 			}
 		}

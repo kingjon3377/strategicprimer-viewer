@@ -79,9 +79,8 @@ public final class ViewerModel extends SimpleDriverModel implements
 	 * @param file     the name the map was loaded from or should be saved to
 	 */
 	public ViewerModel(final IMutableMapNG firstMap, final File file) {
-		dimensions = new VisibleDimensions(0,
-				                                  firstMap.dimensions().rows - 1, 0,
-				                                  firstMap.dimensions().cols - 1);
+		dimensions = new VisibleDimensions(0, firstMap.dimensions().rows - 1, 0,
+												firstMap.dimensions().cols - 1);
 		selPoint = PointFactory.point(-1, -1);
 		setMap(firstMap, file);
 	}
@@ -104,7 +103,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 			selPoint = ((IViewerModel) model).getSelectedPoint();
 		} else {
 			dimensions = new VisibleDimensions(0, model.getMapDimensions().rows - 1, 0,
-					                                  model.getMapDimensions().cols - 1);
+													model.getMapDimensions().cols - 1);
 			selPoint = PointFactory.point(-1, -1);
 		}
 		setMap(model.getMap(), model.getMapFile());
@@ -118,8 +117,8 @@ public final class ViewerModel extends SimpleDriverModel implements
 	public void setMap(final IMutableMapNG newMap, final File origin) {
 		super.setMap(newMap, origin);
 		clearSelection();
-		setDimensions(new VisibleDimensions(0, newMap.dimensions().rows - 1,
-				                                   0, newMap.dimensions().cols - 1));
+		setDimensions(new VisibleDimensions(0, newMap.dimensions().rows - 1, 0,
+												newMap.dimensions().cols - 1));
 		resetZoom();
 	}
 

@@ -8,8 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.swing.JTree;
-import javax.swing.ToolTipManager;
+import javax.swing.*;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -57,8 +56,8 @@ import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
  *
  * @author Jonathan Lovelace
  */
-public final class WorkerTree extends JTree implements UnitMemberSelectionSource,
-															   UnitSelectionSource {
+public final class WorkerTree extends JTree
+		implements UnitMemberSelectionSource, UnitSelectionSource {
 	/**
 	 * The format string for creating the stats tooltip.
 	 */
@@ -75,8 +74,8 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 	 * @param orderCheck whether we should visually warn if orders contain "todo" or
 	 *                   "fixme" or if a unit named "unassigned" is nonempty
 	 */
-	public WorkerTree(final IWorkerTreeModel wtModel,
-					  final Iterable<Player> players, final boolean orderCheck) {
+	public WorkerTree(final IWorkerTreeModel wtModel, final Iterable<Player> players,
+					final boolean orderCheck) {
 		setModel(wtModel);
 		final JTree tree = this;
 		wtModel.addTreeModelListener(new TreeModelListener() {
@@ -257,8 +256,7 @@ public final class WorkerTree extends JTree implements UnitMemberSelectionSource
 	 */
 	@Nullable
 	private String getStatsToolTip(final Object node) {
-		final Object localNode = ((IWorkerTreeModel) getModel())
-										 .getModelObject(node);
+		final Object localNode = ((IWorkerTreeModel) getModel()).getModelObject(node);
 		if (localNode instanceof Worker) {
 			final WorkerStats stats = ((Worker) localNode).getStats();
 			if (stats == null) {

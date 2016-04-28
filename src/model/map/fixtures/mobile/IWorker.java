@@ -30,9 +30,9 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public interface IWorker extends UnitMember, Iterable<@NonNull IJob>, HasMutableName,
-		                                 HasMutableKind,
-		                                 HasMutableImage {
+public interface IWorker
+		extends UnitMember, Iterable<@NonNull IJob>, HasMutableName, HasMutableKind,
+						HasMutableImage {
 	/**
 	 * Add a job.
 	 *

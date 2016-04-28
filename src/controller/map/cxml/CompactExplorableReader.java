@@ -88,12 +88,11 @@ public final class CompactExplorableReader
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
-	public ExplorableFixture read(// $codepro.audit.disable cyclomaticComplexity
-	                              final StartElement element,
-	                              final IteratorWrapper<XMLEvent> stream,
-	                              final IMutablePlayerCollection players,
-	                              final Warning warner,
-	                              final IDFactory idFactory) throws SPFormatException {
+	public ExplorableFixture read(final StartElement element,
+								final IteratorWrapper<XMLEvent> stream,
+								final IMutablePlayerCollection players,
+								final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		requireTag(element, "battlefield", "cave");
 		final int idNum = getOrGenerateID(element, warner, idFactory);
 		final ExplorableFixture retval;
@@ -120,7 +119,7 @@ public final class CompactExplorableReader
 	 */
 	@Override
 	public void write(final Appendable ostream, final ExplorableFixture obj,
-	                  final int indent) throws IOException {
+					final int indent) throws IOException {
 		if (obj instanceof Battlefield) {
 			writeTag(ostream, "battlefield", indent);
 		} else if (obj instanceof Cave) {

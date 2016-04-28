@@ -74,8 +74,7 @@ public enum River {
 				return river;
 			}
 		}
-		throw new IllegalArgumentException(
-				                                  "Unrecognized river direction string");
+		throw new IllegalArgumentException("Unrecognized river direction string");
 	}
 
 	/**

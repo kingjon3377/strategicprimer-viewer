@@ -84,16 +84,16 @@ public final class CompactReaderAdapter {
 	 * @throws SPFormatException on SP format problems
 	 */
 	public static Object parse(final StartElement element,
-	                           final IteratorWrapper<XMLEvent> stream,
-	                           final IMutablePlayerCollection players,
-	                           final Warning warner, final IDFactory idFactory)
+							final IteratorWrapper<XMLEvent> stream,
+							final IMutablePlayerCollection players,
+							final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		if (!EqualsAny.equalsAny(
 				NullCleaner.assertNotNull(element.getName().getNamespaceURI()),
 				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 			throw new IllegalArgumentException("CompactReaderAdapter can only parse " +
-					                                   "objects in either our namespace " +
-					                                   "or the default namespace");
+													"objects in either our namespace " +
+													"or the default namespace");
 		}
 		final String tag = NullCleaner.assertNotNull(element.getName().getLocalPart());
 		// Handle rivers specially.
@@ -118,7 +118,7 @@ public final class CompactReaderAdapter {
 	 */
 	@SuppressWarnings("unchecked")
 	public static void write(final Appendable ostream, final Object obj,
-	                         final int indent) throws IOException {
+							final int indent) throws IOException {
 		if (obj instanceof River) {
 			CompactMapNGReader.writeRiver(ostream, (River) obj, indent);
 		} else if (obj instanceof RiverFixture) {
@@ -139,8 +139,8 @@ public final class CompactReaderAdapter {
 				return;
 			} else {
 				throw new IllegalStateException("Don't know how to write this type (a " +
-						                                "proxy not proxying any " +
-						                                "objects)");
+														"proxy not proxying any " +
+														"objects)");
 			}
 		} else {
 			for (final CompactReader<@NonNull ?> reader : READERS) {
@@ -150,8 +150,8 @@ public final class CompactReaderAdapter {
 				}
 			}
 			throw new IllegalArgumentException("After checking " + READERS.size() +
-					                                   " readers, don't know how to write a " +
-					                                   obj.getClass().getSimpleName());
+													" readers, don't know how to write a " +
+													obj.getClass().getSimpleName());
 		}
 	}
 

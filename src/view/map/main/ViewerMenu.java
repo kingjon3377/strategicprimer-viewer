@@ -1,15 +1,12 @@
 package view.map.main;
 
+import com.bric.window.WindowMenu;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.swing.JFrame;
-
-import com.bric.window.WindowMenu;
-
+import javax.swing.*;
 import model.misc.IDriverModel;
 import view.util.SPMenu;
 
@@ -44,7 +41,7 @@ public final class ViewerMenu extends SPMenu {
 	 * @param model   the map model
 	 */
 	public ViewerMenu(final ActionListener handler, final JFrame parent,
-	                  final IDriverModel model) {
+					final IDriverModel model) {
 		add(createFileMenu(handler, model));
 		add(createMapMenu(handler, model));
 		addDisabled(createViewMenu(handler));

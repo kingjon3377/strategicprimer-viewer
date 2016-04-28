@@ -1,19 +1,17 @@
 package controller.map.misc;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Collections;
-
-import org.junit.Test;
-
 import model.map.Player;
+import org.junit.Test;
 import util.NullCleaner;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests for CLIHelper
@@ -125,18 +123,18 @@ public class TestCLIHelper {
 	@Test
 	public void testInputNumber() throws IOException {
 		try (StringWriter out = new StringWriter();
-		     ICLIHelper cli = new CLIHelper(new StringReader("2\n"), out)) {
+				ICLIHelper cli = new CLIHelper(new StringReader("2\n"), out)) {
 			assertEquals("inputNumber works", 2, cli.inputNumber("test prompt"));
 			assertEquals("inputNumber uses given prompt", "test prompt", out.toString());
 		}
 		try (StringWriter out = new StringWriter();
-		     ICLIHelper cli = new CLIHelper(new StringReader("8\n"), out)) {
+				ICLIHelper cli = new CLIHelper(new StringReader("8\n"), out)) {
 			assertEquals("inputNumber works", 8, cli.inputNumber("test prompt two"));
 			assertEquals("inputNumber uses given prompt", "test prompt two",
 					out.toString());
 		}
 		try (StringWriter out = new StringWriter();
-		     ICLIHelper cli = new CLIHelper(new StringReader("-1\n0\n"), out)) {
+				ICLIHelper cli = new CLIHelper(new StringReader("-1\n0\n"), out)) {
 			assertEquals("inputNumber asks again on negative input", 0,
 					cli.inputNumber("test prompt three"));
 			assertEquals("inputNumber asks again on negative input",
@@ -151,19 +149,19 @@ public class TestCLIHelper {
 	@Test
 	public void testInputString() throws IOException {
 		try (StringWriter out = new StringWriter();
-		     ICLIHelper cli = new CLIHelper(new StringReader("first\n"), out)) {
+				ICLIHelper cli = new CLIHelper(new StringReader("first\n"), out)) {
 			assertEquals("inputString returns the inputted string", "first",
 					cli.inputString("string prompt"));
 			assertEquals("inputString displays prompt", "string prompt", out.toString());
 		}
 		try (StringWriter out = new StringWriter();
-		     ICLIHelper cli = new CLIHelper(new StringReader("second\n"), out)) {
+				ICLIHelper cli = new CLIHelper(new StringReader("second\n"), out)) {
 			assertEquals("inputString returns the inputted string", "second",
 					cli.inputString("second prompt"));
 			assertEquals("inputString displays prompt", "second prompt", out.toString());
 		}
 		try (StringWriter out = new StringWriter();
-		     ICLIHelper cli = new CLIHelper(new StringReader(""), out)) {
+				ICLIHelper cli = new CLIHelper(new StringReader(""), out)) {
 			assertEquals("inputString returns empty on EOF", "",
 					cli.inputString("third prompt"));
 			assertEquals("inputString displays prompt", "third prompt", out.toString());
@@ -177,55 +175,55 @@ public class TestCLIHelper {
 	@Test
 	public void testInputBoolean() throws IOException {
 		try (StringWriter out = new StringWriter();
-		     ICLIHelper cli = new CLIHelper(new StringReader("yes\n"), out)) {
+				ICLIHelper cli = new CLIHelper(new StringReader("yes\n"), out)) {
 			assertTrue("inputBoolean returns true on 'yes'",
 					cli.inputBoolean("bool prompt"));
 			assertEquals("inputBoolean displays prompt", "bool prompt", out.toString());
 		}
 		try (StringWriter out = new StringWriter();
-		     ICLIHelper cli = new CLIHelper(new StringReader("true\n"), out)) {
+				ICLIHelper cli = new CLIHelper(new StringReader("true\n"), out)) {
 			assertTrue("inputBoolean returns true on 'true'",
 					cli.inputBoolean("prompt two"));
 			assertEquals("inputBoolean displays prompt", "prompt two", out.toString());
 		}
 		try (StringWriter out = new StringWriter();
-		     ICLIHelper cli = new CLIHelper(new StringReader("y\n"), out)) {
+				ICLIHelper cli = new CLIHelper(new StringReader("y\n"), out)) {
 			assertTrue("inputBoolean returns true on 'y'",
 					cli.inputBoolean("prompt three"));
 			assertEquals("inputBoolean displays prompt", "prompt three", out.toString());
 		}
 		try (StringWriter out = new StringWriter();
-		     ICLIHelper cli = new CLIHelper(new StringReader("t\n"), out)) {
+				ICLIHelper cli = new CLIHelper(new StringReader("t\n"), out)) {
 			assertTrue("inputBoolean returns true on 't'",
 					cli.inputBoolean("prompt four"));
 			assertEquals("inputBoolean displays prompt", "prompt four", out.toString());
 		}
 		try (StringWriter out = new StringWriter();
-		     ICLIHelper cli = new CLIHelper(new StringReader("no\n"), out)) {
+				ICLIHelper cli = new CLIHelper(new StringReader("no\n"), out)) {
 			assertFalse("inputBoolean returns false on 'no'",
 					cli.inputBoolean("prompt five"));
 			assertEquals("inputBoolean displays prompt", "prompt five", out.toString());
 		}
 		try (StringWriter out = new StringWriter();
-		     ICLIHelper cli = new CLIHelper(new StringReader("false\n"), out)) {
+				ICLIHelper cli = new CLIHelper(new StringReader("false\n"), out)) {
 			assertFalse("inputBoolean returns false on 'false'",
 					cli.inputBoolean("prompt six"));
 			assertEquals("inputBoolean displays prompt", "prompt six", out.toString());
 		}
 		try (StringWriter out = new StringWriter();
-		     ICLIHelper cli = new CLIHelper(new StringReader("n\n"), out)) {
+				ICLIHelper cli = new CLIHelper(new StringReader("n\n"), out)) {
 			assertFalse("inputBoolean returns false on 'n'",
 					cli.inputBoolean("prompt seven"));
 			assertEquals("inputBoolean displays prompt", "prompt seven", out.toString());
 		}
 		try (StringWriter out = new StringWriter();
-		     ICLIHelper cli = new CLIHelper(new StringReader("f\n"), out)) {
+				ICLIHelper cli = new CLIHelper(new StringReader("f\n"), out)) {
 			assertFalse("inputBoolean returns false on 'f'",
 					cli.inputBoolean("prompt eight"));
 			assertEquals("inputBoolean displays prompt", "prompt eight", out.toString());
 		}
 		try (StringWriter out = new StringWriter();
-		     ICLIHelper cli = new CLIHelper(new StringReader("xyzzy\nyes\n"), out)) {
+				ICLIHelper cli = new CLIHelper(new StringReader("xyzzy\nyes\n"), out)) {
 			assertTrue("inputBoolean rejects other input",
 					cli.inputBoolean("prompt nine"));
 			assertEquals("inputBoolean gives message on invalid input",

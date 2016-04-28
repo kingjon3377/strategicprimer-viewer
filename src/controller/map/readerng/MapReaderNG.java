@@ -74,7 +74,7 @@ public final class MapReaderNG implements IMapReader, ISPReader {
 	 */
 	@Override
 	public IMutableMapNG readMap(final File file, final Reader istream,
-	                             final Warning warner)
+								final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		return readXML(file, istream, SPMapNG.class, warner);
 	}
@@ -90,11 +90,10 @@ public final class MapReaderNG implements IMapReader, ISPReader {
 	 * @throws SPFormatException  if the data is invalid.
 	 */
 	@Override
-	public <T> T readXML(final File file, final Reader istream,
-	                     final Class<T> type, final Warning warner)
+	public <T> T readXML(final File file, final Reader istream, final Class<T> type,
+						final Warning warner)
 			throws XMLStreamException, SPFormatException {
-		final TypesafeXMLEventReader reader = new TypesafeXMLEventReader(
-				                                                                istream);
+		final TypesafeXMLEventReader reader = new TypesafeXMLEventReader(istream);
 		final Iterable<XMLEvent> eventReader =
 				new IteratorWrapper<>(new IncludingIterator(file, reader));
 		final IDFactory idfac = new IDFactory();
@@ -108,8 +107,7 @@ public final class MapReaderNG implements IMapReader, ISPReader {
 						eventReader, players, warner, idfac), type);
 			}
 		}
-		throw new XMLStreamException(
-				                            "XML stream didn't contain a start element");
+		throw new XMLStreamException("XML stream didn't contain a start element");
 	}
 
 	/**
@@ -126,10 +124,10 @@ public final class MapReaderNG implements IMapReader, ISPReader {
 		if (type.isAssignableFrom(obj.getClass())) {
 			return (T) obj; // NOPMD
 		} else {
-			throw new IllegalArgumentException("We want a node producing "
-					                                   + type.getSimpleName() + ", not "
-					                                   + obj.getClass().getSimpleName() +
-					                                   ", as the top-level tag");
+			throw new IllegalArgumentException("We want a node producing " +
+													type.getSimpleName() + ", not " +
+													obj.getClass().getSimpleName() +
+													", as the top-level tag");
 		}
 	}
 

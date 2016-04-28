@@ -1,13 +1,11 @@
 package model.map.fixtures.mobile;
 
 import java.io.IOException;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A giant. TODO: should probably be a unit, or something.
@@ -107,9 +105,9 @@ public class Giant implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof Giant)
-				                         && ((Giant) obj).kind.equals(kind)
-				                         && (id == ((Giant) obj).id));
+		return (this == obj) ||
+					((obj instanceof Giant) && ((Giant) obj).kind.equals(kind) &&
+								(id == ((Giant) obj).id));
 	}
 
 	/**
@@ -152,7 +150,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-	                        final String context) throws IOException {
+							final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Giant) {
 				return areObjectsEqual(ostream, kind, ((Giant) obj).kind, context,

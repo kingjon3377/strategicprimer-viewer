@@ -52,14 +52,14 @@ public final class CentaurReader implements INodeHandler<Centaur> {
 	 */
 	@Override
 	public Centaur parse(final StartElement element,
-	                     final Iterable<XMLEvent> stream,
-	                     final IMutablePlayerCollection players,
-	                     final Warning warner, final IDFactory idFactory)
+						final Iterable<XMLEvent> stream,
+						final IMutablePlayerCollection players,
+						final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Centaur fix = new Centaur(getAttribute(element, "kind"),
-				                               getOrGenerateID(element, warner,
-						                               idFactory));
+											getOrGenerateID(element, warner,
+													idFactory));
 		addImage(element, fix);
 		return fix;
 	}
@@ -91,8 +91,8 @@ public final class CentaurReader implements INodeHandler<Centaur> {
 	@Override
 	public <S extends Centaur> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval =
-				new SPIntermediateRepresentation("centaur",
-						                                Pair.of("kind", obj.getKind()));
+				new SPIntermediateRepresentation("centaur", Pair.of("kind",
+						obj.getKind()));
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

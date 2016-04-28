@@ -43,11 +43,10 @@ public final class IsNumeric {
 	}
 
 	/**
-	 * The NumberFormat object we use for parsing.
+	 * The NumberFormat object we use for parsing. TODO: Statically impot assertNotNull
 	 */
-	private static final NumberFormat PARSER = NullCleaner
-			                                           .assertNotNull(NumberFormat
-					                                                          .getIntegerInstance());
+	private static final NumberFormat PARSER =
+			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
 
 	/**
 	 * @param input a String
@@ -73,7 +72,7 @@ public final class IsNumeric {
 	 * @return whether the value is between them
 	 */
 	public static boolean isBetween(final int value, final int lower,
-	                                final int upper) {
+									final int upper) {
 		return (value >= lower) && (value < upper);
 	}
 }

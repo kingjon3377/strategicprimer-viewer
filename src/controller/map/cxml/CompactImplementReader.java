@@ -59,13 +59,13 @@ public final class CompactImplementReader extends AbstractCompactReader<Implemen
 	 */
 	@Override
 	public Implement read(final StartElement element,
-	                      final IteratorWrapper<XMLEvent> stream,
-	                      final IMutablePlayerCollection players, final Warning warner,
-	                      final IDFactory idFactory) throws SPFormatException {
+						final IteratorWrapper<XMLEvent> stream,
+						final IMutablePlayerCollection players, final Warning warner,
+						final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "implement");
 		final Implement retval =
 				new Implement(getOrGenerateID(element, warner, idFactory),
-						             getParameter(element, "kind"));
+									getParameter(element, "kind"));
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
@@ -90,7 +90,7 @@ public final class CompactImplementReader extends AbstractCompactReader<Implemen
 	 */
 	@Override
 	public void write(final Appendable ostream, final Implement obj,
-	                  final int indent) throws IOException {
+					final int indent) throws IOException {
 		writeTag(ostream, "implement", indent);
 		ostream.append(" id=\"");
 		ostream.append(Integer.toString(obj.getID()));

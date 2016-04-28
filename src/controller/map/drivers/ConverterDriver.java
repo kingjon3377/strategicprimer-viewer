@@ -45,15 +45,15 @@ public final class ConverterDriver implements UtilityDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-v", "--convert", ParamCount.One,
-					               "Convert a map's format",
-					               "Convert a map. At present, this means reducing its resolution.",
-					               ConverterDriver.class);
+								"Convert a map's format",
+								"Convert a map. At present, this means reducing its resolution.",
+								ConverterDriver.class);
 
 	/**
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			                                     .getLogger(ConverterDriver.class);
+												.getLogger(ConverterDriver.class);
 	/**
 	 * The map reader we'll use.
 	 */
@@ -92,7 +92,7 @@ public final class ConverterDriver implements UtilityDriver {
 				READER.write(newFile, map); //NOPMD
 			} catch (final MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename
-						                         + " not acceptable to reader", e);
+												+ " not acceptable to reader", e);
 			} catch (final FileNotFoundException e) {
 				LOGGER.log(Level.SEVERE, filename + " not found", e);
 			} catch (final IOException e) {
@@ -102,7 +102,7 @@ public final class ConverterDriver implements UtilityDriver {
 						"XML stream error reading " + filename, e);
 			} catch (final SPFormatException e) {
 				LOGGER.log(Level.SEVERE, "SP map format error reading "
-						                         + filename, e);
+												+ filename, e);
 			}
 		}
 	}

@@ -6,10 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.FixtureIterable;
 import model.map.HasMutableImage;
 import model.map.IFixture;
@@ -17,6 +13,8 @@ import model.map.Player;
 import model.map.SubsettableFixture;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.mobile.IUnit;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**
@@ -45,8 +43,8 @@ import util.NullCleaner;
  * @author Jonathan Lovelace
  */
 public class Fortress implements HasMutableImage, ITownFixture,
-										 FixtureIterable<@NonNull FortressMember>,
-										 SubsettableFixture {
+										FixtureIterable<@NonNull FortressMember>,
+										SubsettableFixture {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -141,12 +139,12 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Fortress)
-										 && name.equals(((Fortress) obj).name)
-										 && (((Fortress) obj).owner.getPlayerId() ==
-													 owner.getPlayerId())
-										 && ((Fortress) obj).units.containsAll(units)
-										 && units.containsAll(((Fortress) obj).units)
-										 && (((Fortress) obj).id == id));
+										&& name.equals(((Fortress) obj).name)
+										&& (((Fortress) obj).owner.getPlayerId() ==
+													owner.getPlayerId())
+										&& ((Fortress) obj).units.containsAll(units)
+										&& units.containsAll(((Fortress) obj).units)
+										&& (((Fortress) obj).id == id));
 	}
 
 	/**
@@ -164,8 +162,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	public String toString() {
 		final String ownerStr = owner.toString();
 		// Assume each unit is at least half a K.
-		final int len = 40 + name.length() + ownerStr.length() + (units.size()
-																		  * 512);
+		final int len = 40 + name.length() + ownerStr.length() + (units.size() * 512);
 		final StringBuilder sbuild = new StringBuilder(len).append("Fortress ");
 		sbuild.append(name);
 		sbuild.append(", owned by player ");
@@ -247,12 +244,19 @@ public class Fortress implements HasMutableImage, ITownFixture,
 					context + " In fortress " + name + " (ID #" + id + "):";
 			boolean retval = true;
 			for (final FortressMember unit : fort) {
+				// TODO: Statically import NullCleaner.assertNotNull
 				if (!isConditionTrue(ostream,
 						ours.containsKey(Integer.valueOf(unit.getID())), ctxt,
 						"Extra unit:\t", unit.toString(), ", ID #",
-						Integer.toString(unit.getID()), "\n") ||
-						    !NullCleaner.assertNotNull(ours.get(Integer.valueOf(unit.getID()))).isSubset(
-								    unit, ostream, ctxt)) {
+						Integer.toString(unit.getID()), "\n") || !NullCleaner
+																		.assertNotNull(
+																				ours
+																						.get(
+																						Integer.valueOf(
+																								unit.getID())))
+																		.isSubset(unit,
+																				ostream,
+																				ctxt)) {
 					retval = false;
 				}
 			}
@@ -283,11 +287,11 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (this == fix) || ((fix instanceof Fortress)
-										 && name.equals(((Fortress) fix).name)
-										 && (((Fortress) fix).owner.getPlayerId() ==
-													 owner.getPlayerId())
-										 && ((Fortress) fix).units.containsAll(units)
-										 && units.containsAll(((Fortress) fix).units));
+										&& name.equals(((Fortress) fix).name)
+										&& (((Fortress) fix).owner.getPlayerId() ==
+													owner.getPlayerId())
+										&& ((Fortress) fix).units.containsAll(units)
+										&& units.containsAll(((Fortress) fix).units));
 	}
 
 	/**

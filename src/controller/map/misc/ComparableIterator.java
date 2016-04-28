@@ -30,7 +30,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @author Jonathan Lovelace
  */
 public final class ComparableIterator<@NonNull T> implements Iterator<@NonNull T>,
-		                                                             Comparable<@NonNull ComparableIterator<@NonNull T>> {
+																	Comparable<@NonNull ComparableIterator<@NonNull T>> {
 	/**
 	 * The Iterator we're wrapping.
 	 */
@@ -102,10 +102,9 @@ public final class ComparableIterator<@NonNull T> implements Iterator<@NonNull T
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof ComparableIterator)
-				                         &&
-				                         wrapped.equals(
-						                         ((ComparableIterator) obj).wrapped));
+		return (this == obj) || ((obj instanceof ComparableIterator) &&
+										wrapped.equals(
+												((ComparableIterator) obj).wrapped));
 	}
 
 	/**

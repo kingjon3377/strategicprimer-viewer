@@ -50,9 +50,9 @@ public final class DjinnReader implements INodeHandler<Djinn> {
 	 */
 	@Override
 	public Djinn parse(final StartElement element,
-	                   final Iterable<XMLEvent> stream,
-	                   final IMutablePlayerCollection players,
-	                   final Warning warner, final IDFactory idFactory)
+					final Iterable<XMLEvent> stream,
+					final IMutablePlayerCollection players,
+					final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Djinn fix = new Djinn(getOrGenerateID(element, warner, idFactory));
@@ -87,7 +87,7 @@ public final class DjinnReader implements INodeHandler<Djinn> {
 	@Override
 	public <S extends Djinn> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "djinn");
+																				"djinn");
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

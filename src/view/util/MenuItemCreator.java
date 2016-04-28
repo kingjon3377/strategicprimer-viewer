@@ -42,11 +42,10 @@ public final class MenuItemCreator {
 	 * @param list     the listener to hande when the item is selected.
 	 * @return the configured menu item.
 	 */
-	public static JMenuItem createMenuItem(final String item,
-	                                       final int mnemonic,
-	                                       @Nullable final KeyStroke accel,
-	                                       final String desc, final ActionListener
-			                                                          list) {
+	public static JMenuItem createMenuItem(final String item, final int mnemonic,
+											@Nullable final KeyStroke accel,
+											final String desc,
+											final ActionListener list) {
 		final JMenuItem mitem = new JMenuItem(item, mnemonic);
 		mitem.setAccelerator(accel);
 		mitem.getAccessibleContext().setAccessibleDescription(desc);

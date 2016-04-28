@@ -83,17 +83,12 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 			} else if (event.isCharacters()) {
 				sbuild.append(event.asCharacters().getData());
 			} else if (event.isEndElement()
-							   &&
-							   element.getName().equals(event.asEndElement().getName()
-							   )) {
+							&& element.getName().equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
-		final TextFixture fix = new TextFixture(
-													   NullCleaner.assertNotNull(
-															   sbuild.toString().trim()),
-													   getIntegerParameter(element,
-															   "turn", -1));
+		final TextFixture fix = new TextFixture(NullCleaner.assertNotNull(
+				sbuild.toString().trim()), getIntegerParameter(element, "turn", -1));
 		fix.setImage(getParameter(element, "image", ""));
 		return fix;
 	}
@@ -108,7 +103,7 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 	 */
 	@Override
 	public void write(final Appendable ostream, final TextFixture obj,
-					  final int indent) throws IOException {
+					final int indent) throws IOException {
 		writeTag(ostream, "text", indent);
 		if (obj.getTurn() != -1) {
 			ostream.append(" turn=\"");

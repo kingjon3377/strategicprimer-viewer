@@ -70,7 +70,7 @@ public final class SPIntermediateRepresentation {
 	 */
 	@SafeVarargs
 	public SPIntermediateRepresentation(final String name,
-	                                    final Pair<String, String>... attributes) {
+										final Pair<String, String>... attributes) {
 		tag = name;
 		for (final Pair<String, String> attr : attributes) {
 			addAttribute(attr.first(), attr.second());
@@ -243,8 +243,8 @@ public final class SPIntermediateRepresentation {
 	 * @throws IOException if I/O error in writing
 	 */
 	private void writeIfTagNotEmpty(final Appendable writer,
-	                                @SuppressWarnings("TypeMayBeWeakened") final String
-			                                text) throws IOException {
+									@SuppressWarnings("TypeMayBeWeakened")
+									final String text) throws IOException {
 		if (!tag.isEmpty()) {
 			writer.append(text);
 		}

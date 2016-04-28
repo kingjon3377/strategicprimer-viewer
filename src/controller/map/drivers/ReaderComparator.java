@@ -52,16 +52,16 @@ public final class ReaderComparator implements UtilityDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-t", "--test", ParamCount.AtLeastOne,
-					               "Test map readers",
-								   "Test the two map-reading implementations by " +
-										   "comparing their results on the same file.",
-								   ReaderComparator.class);
+								"Test map readers",
+								"Test the two map-reading implementations by " +
+										"comparing their results on the same file.",
+								ReaderComparator.class);
 
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger
-												 .getLogger(ReaderComparator.class);
+	private static final Logger LOGGER = TypesafeLogger.getLogger(ReaderComparator
+																		.class);
 	/**
 	 * The first reader.
 	 */

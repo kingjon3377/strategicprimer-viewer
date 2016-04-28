@@ -1,12 +1,12 @@
 package view.worker;
 
-import static java.util.logging.Level.SEVERE;
-import static view.util.SplitWithWeights.horizontalSplit;
-import static view.util.SplitWithWeights.verticalSplit;
-
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Frame;
+import com.bric.window.WindowList;
+import controller.map.misc.FileChooser;
+import controller.map.misc.FileChooser.ChoiceInterruptedException;
+import controller.map.misc.IDFactoryFiller;
+import controller.map.misc.IOHandler;
+import controller.map.report.ReportGenerator;
+import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -24,35 +24,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTree;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
-import javax.swing.ToolTipManager;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
-import com.bric.window.WindowList;
-
-import controller.map.misc.FileChooser;
-import controller.map.misc.FileChooser.ChoiceInterruptedException;
-import controller.map.misc.IDFactoryFiller;
-import controller.map.misc.IOHandler;
-import controller.map.report.ReportGenerator;
 import model.listeners.MapChangeListener;
 import model.listeners.PlayerChangeListener;
 import model.map.DistanceComparator;
@@ -76,6 +53,8 @@ import model.workermgmt.IWorkerModel;
 import model.workermgmt.IWorkerTreeModel;
 import model.workermgmt.WorkerTreeModelAlt;
 import model.workermgmt.WorkerTreeModelAlt.PlayerNode;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import util.ActionWrapper;
 import util.NullCleaner;
 import util.TypesafeLogger;
@@ -84,6 +63,10 @@ import view.util.BorderedPanel;
 import view.util.ISPWindow;
 import view.util.ListenedButton;
 import view.util.SystemOut;
+
+import static java.util.logging.Level.SEVERE;
+import static view.util.SplitWithWeights.horizontalSplit;
+import static view.util.SplitWithWeights.verticalSplit;
 
 /**
  * A window to let the player manage units.
@@ -111,8 +94,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 	/**
 	 * The logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger
-												 .getLogger(WorkerMgmtFrame.class);
+	private static final Logger LOGGER = TypesafeLogger.getLogger(WorkerMgmtFrame.class);
 	/**
 	 * The header to put above the report.
 	 */
@@ -143,15 +125,16 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		setMinimumSize(new Dimension(640, 480));
 		final NewUnitDialog newUnitFrame =
 				new NewUnitDialog(model.getMap().getCurrentPlayer(),
-										 IDFactoryFiller.createFactory(model.getMap()));
+										IDFactoryFiller.createFactory(model.getMap()));
 		final IWorkerTreeModel wtmodel =
 				new WorkerTreeModelAlt(model.getMap().getCurrentPlayer(), model);
 		final WorkerTree tree =
 				new WorkerTree(wtmodel, model.getMap().players(), true);
 		ioHandler.addPlayerChangeListener(wtmodel);
 		newUnitFrame.addNewUnitListener(wtmodel);
-		final boolean onMac = System.getProperty("os.name").toLowerCase()
-									  .startsWith("mac os x");
+		// TODO: Make a centralized utility class for this calculation
+		final boolean onMac =
+				System.getProperty("os.name").toLowerCase().startsWith("mac os x");
 		final int keyMask;
 		final String keyDesc;
 		if (onMac) {
@@ -166,10 +149,9 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		assert (inputMap != null) && (actionMap != null);
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_U, keyMask), "openUnits");
 		actionMap.put("openUnits", new FocusRequester(tree));
-		final PlayerLabel plabl = new PlayerLabel("Units belonging to ",
-														  model.getMap()
-																  .getCurrentPlayer(),
-														  keyDesc);
+		final PlayerLabel plabl =
+				new PlayerLabel("Units belonging to ", model.getMap().getCurrentPlayer(),
+									keyDesc);
 		ioHandler.addPlayerChangeListener(plabl);
 		ioHandler.addPlayerChangeListener(newUnitFrame);
 		final OrdersPanel ordersPanel = new OrdersPanel(model);
@@ -177,18 +159,16 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		ordersPanel.playerChanged(null, model.getMap().getCurrentPlayer());
 		tree.addTreeSelectionListener(ordersPanel);
 		final DefaultTreeModel reportModel =
-				new DefaultTreeModel(new SimpleReportNode("Please wait, loading report " +
-																  "..."));
+				new DefaultTreeModel(new SimpleReportNode("Please wait, loading report" +
+																" ..."));
 		new Thread(new ReportGeneratorThread(reportModel, model,
 													model.getMap().getCurrentPlayer()))
 				.start();
 		final JTree report = new JTree(reportModel);
 		report.setRootVisible(false);
-		report.expandPath(new TreePath(((DefaultMutableTreeNode) reportModel
-																		 .getRoot())
-											   .getPath()));
-		final ReportUpdater reportUpdater = new ReportUpdater(model,
-																	 reportModel);
+		report.expandPath(
+				new TreePath(((DefaultMutableTreeNode) reportModel.getRoot()).getPath()));
+		final ReportUpdater reportUpdater = new ReportUpdater(model, reportModel);
 		@NonNull
 		Point hqLoc = PointFactory.point(-1, -1);
 		boolean found = false;
@@ -198,8 +178,8 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 			} else {
 				for (final TileFixture fix : model.getMap().getOtherFixtures(location)) {
 					if ((fix instanceof Fortress) && ((Fortress) fix).getOwner()
-															 .equals(model.getMap()
-																			 .getCurrentPlayer())) {
+															.equals(model.getMap()
+																			.getCurrentPlayer())) {
 						if ("HQ".equals(((Fortress) fix).getName())) {
 							hqLoc = location;
 							found = true;
@@ -224,8 +204,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 						// (-inf, -inf) replaces null
 						if (point.getRow() > Integer.MIN_VALUE) {
 							((JComponent) retval)
-									.setToolTipText(distCalculator.distanceString
-																		   (point));
+									.setToolTipText(distCalculator.distanceString(point));
 						} else {
 							((JComponent) retval).setToolTipText(null);
 						}
@@ -246,33 +225,25 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 				verticalSplit(TWO_THIRDS, TWO_THIRDS,
 						BorderedPanel.vertical(plabl, new JScrollPane(tree), null),
 						BorderedPanel.vertical(new ListenedButton("Add New Unit",
-								                                         evt ->
-										                                         newUnitFrame
-										                                                .setVisible(
-												                                                true)),
+																		evt -> newUnitFrame
+																					.setVisible(
+																							true)),
 								ordersPanel,
 								new ListenedButton("Export a proto-strategy from units' " +
-										                   "orders",
-										                  evt -> {
-											                  try {
-												                  strategyExporter
-														                  .writeStrategy(
-																                  new FileChooser
-																		                  (new
-																				                   File
-																				                   (""),
-
-																				                  new JFileChooser("."),
-																				                  JFileChooser.SAVE_DIALOG)
-
-																		                  .getFile());
-											                  } catch (final ChoiceInterruptedException except) {
-												                  LOGGER.log(Level.INFO,
-														                  "Choice interrupted or user failed to choose",
-														                  except);
-											                  }
-										                  }))), BorderedPanel.vertical(
-						new JLabel(RPT_HDR), new JScrollPane(report), mdp)));
+														"orders", evt -> {
+									try {
+										strategyExporter.writeStrategy(
+												new FileChooser(new File(""),
+																	new JFileChooser("."),
+																	JFileChooser.SAVE_DIALOG)
+																			.getFile());
+									} catch (final ChoiceInterruptedException except) {
+										LOGGER.log(Level.INFO,
+												"Choice interrupted or user failed to choose",
+												except);
+									}
+								}))), BorderedPanel.vertical(new JLabel(RPT_HDR),
+						new JScrollPane(report), mdp)));
 		ioHandler.addTreeExpansionListener(new TreeExpansionHandler(tree));
 		setJMenuBar(new WorkerMenu(ioHandler, this, model));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -291,9 +262,9 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 	protected static IViewerModel getViewerModelFor(final IDriverModel model,
 													final IOHandler ioh) {
 		for (final Frame frame : WindowList.getFrames(false, true, true)) {
-			if ((frame instanceof ViewerFrame) && ((ViewerFrame) frame).getModel()
-														  .getMapFile()
-														  .equals(model.getMapFile())) {
+			if ((frame instanceof ViewerFrame) &&
+						((ViewerFrame) frame).getModel().getMapFile()
+								.equals(model.getMapFile())) {
 				frame.toFront();
 				if (frame.getExtendedState() == Frame.ICONIFIED) {
 					frame.setExtendedState(Frame.NORMAL);
@@ -302,10 +273,10 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 			}
 		}
 		final ViewerFrame frame = new ViewerFrame(
-														 new ViewerModel(model.getMap(),
+														new ViewerModel(model.getMap(),
 																				model
 																						.getMapFile()),
-														 ioh);
+														ioh);
 		frame.setVisible(true);
 		return frame.getModel();
 	}
@@ -344,7 +315,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		@Override
 		public void mapChanged() {
 			new Thread(new ReportGeneratorThread(reportModel, model, model.getMap()
-																			 .getCurrentPlayer()))
+																			.getCurrentPlayer()))
 					.start();
 		}
 
@@ -355,8 +326,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		 * @param newPlayer the new current player
 		 */
 		@Override
-		public void playerChanged(@Nullable final Player old,
-								  final Player newPlayer) {
+		public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 			new Thread(new ReportGeneratorThread(reportModel, model, newPlayer)).start();
 		}
 
@@ -530,8 +500,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		private static String unitMembers(final Iterable<UnitMember> unit) {
 			if (unit.iterator().hasNext()) {
 				// Assume at least two K.
-				final StringBuilder builder = new StringBuilder(2048)
-													  .append(" [");
+				final StringBuilder builder = new StringBuilder(2048).append(" [");
 				boolean first = true;
 				for (final UnitMember member : unit) {
 					if (first) {
@@ -575,8 +544,8 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 			if (member instanceof IWorker) {
 				final IWorker worker = (IWorker) member;
 				// To save calculations, assume a half-K every time.
-				final StringBuilder builder = new StringBuilder(512)
-													  .append(worker.getName());
+				final StringBuilder builder =
+						new StringBuilder(512).append(worker.getName());
 				if (worker.iterator().hasNext()) {
 					builder.append(" (");
 					boolean first = true;
@@ -737,8 +706,8 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		 * @param ioHandler the menu-item handler
 		 */
 		protected ReportMouseHandler(final JTree reportTree,
-									 final IWorkerModel workerModel,
-									 final IOHandler ioHandler) {
+									final IWorkerModel workerModel,
+									final IOHandler ioHandler) {
 			report = reportTree;
 			model = workerModel;
 			ioh = ioHandler;

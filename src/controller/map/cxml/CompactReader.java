@@ -44,7 +44,7 @@ public interface CompactReader<@NonNull T> {
 	 * @throws SPFormatException on SP format errors
 	 */
 	T read(StartElement element, IteratorWrapper<XMLEvent> stream,
-	       IMutablePlayerCollection players, Warning warner, IDFactory idFactory)
+				IMutablePlayerCollection players, Warning warner, IDFactory idFactory)
 			throws SPFormatException;
 
 	/**

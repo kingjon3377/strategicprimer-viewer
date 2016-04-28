@@ -70,9 +70,9 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 */
 	@Override
 	public Worker read(final StartElement element,
-					   final IteratorWrapper<XMLEvent> stream,
-					   final IMutablePlayerCollection players, final Warning warner,
-					   final IDFactory idFactory) throws SPFormatException {
+					final IteratorWrapper<XMLEvent> stream,
+					final IMutablePlayerCollection players, final Warning warner,
+					final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "worker");
 		final Worker retval = new Worker(getParameter(element, "name"),
 												getParameter(element, "race", "human"),
@@ -85,9 +85,9 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 					event.asStartElement().getName().getNamespaceURI()),
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				if ("job".equalsIgnoreCase(NullCleaner.assertNotNull(event
-																			 .asStartElement()
-																			 .getName()
-																			 .getLocalPart()))) {
+																			.asStartElement()
+																			.getName()
+																			.getLocalPart()))) {
 					retval.addJob(parseJob(
 							NullCleaner.assertNotNull(event.asStartElement()),
 							stream, warner));
@@ -106,9 +106,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 							NullCleaner.assertNotNull(event.asStartElement()));
 				}
 			} else if (event.isEndElement()
-							   &&
-							   element.getName().equals(event.asEndElement().getName()
-							   )) {
+							&& element.getName().equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
@@ -124,18 +122,18 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * @throws SPFormatException on SP format problem
 	 */
 	private static WorkerStats parseStats(final StartElement element,
-										  final Iterable<XMLEvent> stream)
+										final Iterable<XMLEvent> stream)
 			throws SPFormatException {
 		requireTag(element, "stats");
 		final WorkerStats retval =
 				new WorkerStats(getIntegerParameter(element, "hp"),
-									   getIntegerParameter(element, "max"),
-									   getIntegerParameter(element, "str"),
-									   getIntegerParameter(element, "dex"),
-									   getIntegerParameter(element, "con"),
-									   getIntegerParameter(element, "int"),
-									   getIntegerParameter(element, "wis"),
-									   getIntegerParameter(element, "cha"));
+									getIntegerParameter(element, "max"),
+									getIntegerParameter(element, "str"),
+									getIntegerParameter(element, "dex"),
+									getIntegerParameter(element, "con"),
+									getIntegerParameter(element, "int"),
+									getIntegerParameter(element, "wis"),
+									getIntegerParameter(element, "cha"));
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		return retval;
 	}
@@ -155,7 +153,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 		requireTag(element, "job");
 		final IJob retval =
 				new Job(getParameter(element, "name"),
-							   getIntegerParameter(element, "level"));
+							getIntegerParameter(element, "level"));
 		if (hasParameter(element, "hours")) {
 			warner.warn(new UnsupportedPropertyException(element, "hours"));
 		}
@@ -167,9 +165,9 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 					event.asStartElement().getName().getNamespaceURI()),
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 				if ("skill".equalsIgnoreCase(NullCleaner.assertNotNull(event
-																			   .asStartElement()
-																			   .getName()
-																			   .getLocalPart()))) {
+																			.asStartElement()
+																			.getName()
+																			.getLocalPart()))) {
 					retval.addSkill(parseSkill(
 							NullCleaner.assertNotNull(event.asStartElement()),
 							warner));
@@ -180,15 +178,13 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 					}
 					lastSkill = event.asStartElement();
 					spinUntilEnd(NullCleaner.assertNotNull(event.asStartElement()
-																   .getName()), stream);
+																.getName()), stream);
 				} else {
 					throw new UnwantedChildException(NullCleaner.assertNotNull(element.getName()),
 							NullCleaner.assertNotNull(event.asStartElement()));
 				}
 			} else if (event.isEndElement()
-							   &&
-							   element.getName().equals(event.asEndElement().getName()
-							   )) {
+							&& element.getName().equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
@@ -196,13 +192,12 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 			final String skill = retval.iterator().next().getName();
 			if (equalsAny(skill, IJob.SUSPICIOUS_SKILLS) || skill.equals(retval.getName())) {
 				warner.warn(new UnwantedChildException(element.getName(),
-															  new QName(ISPReader
-																				.NAMESPACE,
-																			   skill),
-															  lastSkill.getLocation(),
-															  new DeprecatedPropertyException(lastSkill,
-																									 skill,
-																									 "miscellaneous")));
+															new QName(ISPReader.NAMESPACE,
+																			skill),
+															lastSkill.getLocation(),
+															new DeprecatedPropertyException(lastSkill,
+																								skill,
+																								"miscellaneous")));
 			}
 		}
 		return retval;
@@ -221,8 +216,8 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 		requireTag(element, "skill");
 		final ISkill retval =
 				new Skill(getParameter(element, "name"),
-								 getIntegerParameter(element, "level"),
-								 getIntegerParameter(element, "hours"));
+								getIntegerParameter(element, "level"),
+								getIntegerParameter(element, "hours"));
 		if ("miscellaneous".equals(retval.getName()) && (retval.getLevel() > 0)) {
 			warner.warn(
 					new DeprecatedPropertyException(element, "miscellaneous", "other"));
@@ -240,7 +235,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 */
 	@Override
 	public void write(final Appendable ostream, final Worker obj,
-					  final int indent) throws IOException {
+					final int indent) throws IOException {
 		writeTag(ostream, "worker", indent);
 		ostream.append(" name=\"");
 		ostream.append(obj.getName());
@@ -277,7 +272,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * @throws IOException on I/O error
 	 */
 	private static void writeStats(final Appendable ostream,
-								   @Nullable final WorkerStats stats, final int indent)
+								@Nullable final WorkerStats stats, final int indent)
 			throws IOException {
 		if (stats != null) {
 			indent(ostream, indent);
@@ -343,7 +338,7 @@ public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	 * @throws IOException on I/O error
 	 */
 	public static void writeSkill(final Appendable ostream, final ISkill obj,
-								  final int indent) throws IOException {
+								final int indent) throws IOException {
 		indent(ostream, indent);
 		ostream.append("<skill name=\"");
 		ostream.append(obj.getName());

@@ -94,7 +94,7 @@ public enum FieldStatus {
 	 * @return a random status
 	 */
 	public static FieldStatus random(final int seed) {
-		return NullCleaner.assertNotNull(values()[new Random(seed)
-				                                          .nextInt(values().length)]);
+		return NullCleaner.assertNotNull(
+				values()[new Random(seed).nextInt(values().length)]);
 	}
 }

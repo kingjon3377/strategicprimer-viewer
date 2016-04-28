@@ -55,8 +55,7 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 	 * @return whether the location is suitable for whatever fixture is being added
 	 */
 	@SuppressWarnings("IfStatementWithIdenticalBranches")
-	private static boolean isSuitable(final IMapNG map,
-	                                  final Point location) {
+	private static boolean isSuitable(final IMapNG map, final Point location) {
 		final TileType terrain = map.getBaseTerrain(location);
 		// Hares won't appear in mountains, forests, or ocean.
 		if (map.isMountainous(location)) {
@@ -88,7 +87,7 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 	 * @param idf      an ID factory to generate the necessary ID #.
 	 */
 	private static void create(final Point location, final IMutableMapNG map,
-	                           final IDFactory idf) {
+							final IDFactory idf) {
 		changedCount++;
 		map.addFixture(location,
 				new Animal("hare", false, false, "wild", idf.createID()));
@@ -99,9 +98,10 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-l", "--populate", ParamCount.One,
-					               "Add missing fixtures to a map",
-					               "Add specified kinds of fixtures to suitable points throughout a map",
-					               MapPopulatorDriver.class);
+								"Add missing fixtures to a map",
+								"Add specified kinds of fixtures to suitable points " +
+										"throughout a map",
+								MapPopulatorDriver.class);
 
 	/**
 	 * Run the driver. This form is, at the moment, primarily for use in test code, but
@@ -124,8 +124,8 @@ public final class MapPopulatorDriver implements SimpleCLIDriver {
 	private static void populate(final IMutableMapNG map) {
 		final IDFactory idf = IDFactoryFiller.createFactory(map);
 		for (final Point location : map.locations()) {
-			if (isSuitable(map, location)
-					    && (SingletonRandom.RANDOM.nextDouble() < chance())) {
+			if (isSuitable(map, location) &&
+						(SingletonRandom.RANDOM.nextDouble() < chance())) {
 				create(location, map, idf);
 			}
 		}

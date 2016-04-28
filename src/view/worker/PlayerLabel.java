@@ -4,13 +4,10 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.swing.JLabel;
-
-import org.eclipse.jdt.annotation.Nullable;
-
+import javax.swing.*;
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A label to show the current player.
@@ -66,8 +63,8 @@ public final class PlayerLabel extends JLabel implements PlayerChangeListener {
 	 */
 	@SuppressWarnings("StringConcatenationMissingWhitespace")
 	public PlayerLabel(final String prefix,
-	                   @SuppressWarnings("TypeMayBeWeakened") final Player player,
-	                   final String postfix) {
+					@SuppressWarnings("TypeMayBeWeakened") final Player player,
+					final String postfix) {
 		super(htmlize(prefix + ' ' + player.getName() + postfix));
 		before = prefix;
 		after = postfix;

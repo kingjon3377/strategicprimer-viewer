@@ -9,9 +9,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.IMapNG;
 import model.map.MapDimensions;
 import model.map.PlayerCollection;
@@ -23,6 +20,7 @@ import model.map.TileType;
 import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.terrain.Forest;
+import org.eclipse.jdt.annotation.NonNull;
 import util.EnumCounter;
 import util.NullCleaner;
 
@@ -63,7 +61,7 @@ public final class ResolutionDecreaseConverter {
 		old.players().forEach(players::add);
 		final SPMapNG retval =
 				new SPMapNG(new MapDimensions(newRows, newCols, 2), players,
-								   old.getCurrentTurn());
+								old.getCurrentTurn());
 		for (int row = 0; row < newRows; row++) {
 			for (int col = 0; col < newCols; col++) {
 				final Point point = PointFactory.point(row, col);
@@ -130,10 +128,8 @@ public final class ResolutionDecreaseConverter {
 	private static void checkRequirements(final IMapNG map) {
 		if (((map.dimensions().rows % 2) != 0)
 					|| ((map.dimensions().cols % 2) != 0)) {
-			throw new IllegalArgumentException(
-													  "Can only convert maps with even " +
-															  "numbers of rows and " +
-															  "columns.");
+			throw new IllegalArgumentException("Can only convert maps with even numbers " +
+													"of rows and columns.");
 		}
 	}
 
@@ -166,7 +162,7 @@ public final class ResolutionDecreaseConverter {
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	@SafeVarargs
 	private static void addRivers(final RiverFixture fix,
-								  final Iterable<River>... rivers) {
+								final Iterable<River>... rivers) {
 		Stream.of(rivers).flatMap(iter -> StreamSupport.stream(iter.spliterator(),
 				false))
 				.forEach(fix::addRiver);
@@ -178,7 +174,7 @@ public final class ResolutionDecreaseConverter {
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void removeRivers(final Collection<River> set,
-	                                 final River... rivers) {
+									final River... rivers) {
 		set.removeAll(Arrays.asList(rivers));
 	}
 
@@ -190,10 +186,10 @@ public final class ResolutionDecreaseConverter {
 	 * @return the most common tile of them, or if there are two or four with equal
 	 * representation one selected from among them at random.
 	 */
-	private static TileType consensus(final TileType firstType, final TileType
-																		secondType,
-									  final TileType thirdtype,
-									  final TileType fourthType) {
+	private static TileType consensus(final TileType firstType,
+									final TileType secondType,
+									final TileType thirdtype,
+									final TileType fourthType) {
 		final EnumCounter<TileType> counter = new EnumCounter<>(TileType.class);
 		counter.countMany(firstType, secondType, thirdtype, fourthType);
 		final Set<TileType> twos = EnumSet.noneOf(TileType.class);

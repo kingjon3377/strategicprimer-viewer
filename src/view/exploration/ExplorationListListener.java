@@ -6,7 +6,7 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javax.swing.ListModel;
+import javax.swing.*;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 import model.exploration.HuntingModel;
@@ -64,7 +64,7 @@ public final class ExplorationListListener implements ListDataListener {
 	 * @param emodel   the exploration model
 	 */
 	public ExplorationListListener(final IExplorationModel emodel,
-	                               final FixtureList mainList) {
+								final FixtureList mainList) {
 		model = emodel;
 		list = mainList;
 		hmodel = new HuntingModel(model.getMap());

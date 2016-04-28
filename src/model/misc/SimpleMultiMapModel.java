@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import util.Pair;
@@ -52,7 +51,7 @@ public class SimpleMultiMapModel extends SimpleDriverModel
 		super.setMap(model.getMap(), model.getMapFile());
 		if (model instanceof IMultiMapModel) {
 			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model)
-					                                            .getSubordinateMaps()) {
+																.getSubordinateMaps()) {
 				addSubordinateMap(pair.first(), pair.second());
 			}
 		}

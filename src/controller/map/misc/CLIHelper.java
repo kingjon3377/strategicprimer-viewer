@@ -63,8 +63,8 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@SuppressWarnings("null") // System.in cannot be null
 	public CLIHelper() {
-		this(new InputStreamReader(System.in), new OutputStreamWriter(SystemOut
-				                                                              .SYS_OUT));
+		this(new InputStreamReader(System.in),
+				new OutputStreamWriter(SystemOut.SYS_OUT));
 	}
 
 	/**
@@ -106,8 +106,8 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public <T extends HasName> int chooseFromList(final List<@NonNull ? extends T> items,
-	                                              final String desc, final String none,
-	                                              final String prompt, final boolean auto)
+												final String desc, final String none,
+												final String prompt, final boolean auto)
 			throws IOException {
 		if (items.isEmpty()) {
 			ostream.println(none);
@@ -139,7 +139,7 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	public static <T> List<T> toList(final Iterable<T> iter) {
 		return StreamSupport.stream(iter.spliterator(), false)
-				       .collect(Collectors.toList());
+					.collect(Collectors.toList());
 	}
 
 	/**
@@ -259,8 +259,8 @@ public final class CLIHelper implements ICLIHelper {
 	 */
 	@Override
 	public int chooseStringFromList(final List<String> items, final String desc,
-	                                final String none, final String prompt,
-	                                final boolean auto)
+									final String none, final String prompt,
+									final boolean auto)
 			throws IOException {
 		if (items.isEmpty()) {
 			ostream.println(none);

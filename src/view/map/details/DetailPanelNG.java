@@ -53,7 +53,7 @@ import view.util.SplitWithWeights;
  * @author Jonathan Lovelace
  */
 public final class DetailPanelNG extends JSplitPane implements VersionChangeListener,
-		                                                               SelectionChangeListener {
+																	SelectionChangeListener {
 	/**
 	 * The "weight" to give the divider. We want the 'key' to get very little of any
 	 * extra
@@ -71,10 +71,9 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 	/**
 	 * The 'header' label above the list.
 	 */
-	private final JLabel header = new JLabel(
-			                                        "<html><body><p>Contents of the tile" +
-					                                        " at (-1, -1)" +
-					                                        ":</p></body></html>");
+	private final JLabel header = new JLabel("<html><body><p>Contents of the tile" +
+													" at (-1, -1)" +
+													":</p></body></html>");
 	/**
 	 * Logger.
 	 */
@@ -91,10 +90,10 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 		fixList = new FixtureList(this, model, model.getMap().players());
 		final PortraitPanel portrait = new PortraitPanel(fixList);
 		fixList.addListSelectionListener(portrait);
-		final BorderedPanel listPanel = new BorderedPanel(new JScrollPane(
-				                                                                 fixList),
-				                                                 header, null, null,
-				                                                 null);
+		// TODO: Use BorderedPanel factory method.
+		final BorderedPanel listPanel = new BorderedPanel(new JScrollPane(fixList),
+																header, null, null,
+																null);
 
 		keyPanel = new KeyPanel(version);
 		setLeftComponent(SplitWithWeights.horizontalSplit(0.5, 0.5, listPanel, portrait));
@@ -117,11 +116,10 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 	 * @param newPoint passed to fixture list and shown on the header
 	 */
 	@Override
-	public void selectedPointChanged(@Nullable final Point old,
-	                                 final Point newPoint) {
+	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
 		fixList.selectedPointChanged(old, newPoint);
 		header.setText("<html><body><p>Contents of the tile at "
-				               + newPoint.toString() + ":</p></body></html>");
+							+ newPoint.toString() + ":</p></body></html>");
 	}
 	/**
 	 * Prevent serialization.

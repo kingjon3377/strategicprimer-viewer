@@ -6,14 +6,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Enumeration;
 import java.util.Iterator;
-
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.Point;
+import org.eclipse.jdt.annotation.Nullable;
 import util.EnumerationWrapper;
 import util.NullCleaner;
 
@@ -59,8 +56,8 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	 * The size of the boilerplate text we have even before we add the size of the
 	 * children and the header.
 	 */
-	private static final int MIN_BOILERPLATE = "<h1></h1>\n<p></p>\n<ul>\n</ul>\n"
-			                                           .length();
+	private static final int MIN_BOILERPLATE =
+			"<h1></h1>\n<p></p>\n<ul>\n</ul>\n".length();
 	/**
 	 * The size of the boilerplate text we have to add for each child.
 	 */
@@ -84,7 +81,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	 * @param header the header text
 	 */
 	public SectionListReportNode(final Point pt, final int lvl,
-	                             final String header) {
+								final String header) {
 		super(header);
 		text = header; // required by Eclipse
 		setText(header);
@@ -113,8 +110,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public String produce() {
-		return NullCleaner.assertNotNull(produce(new StringBuilder(size()))
-				                                 .toString());
+		return NullCleaner.assertNotNull(produce(new StringBuilder(size())).toString());
 	}
 
 	/**
@@ -152,8 +148,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
 			if (child instanceof IReportNode) {
-				retval += ((IReportNode) child).size()
-						          + PER_CHILD_BPLATE;
+				retval += ((IReportNode) child).size() + PER_CHILD_BPLATE;
 			}
 		}
 		return retval;
@@ -180,11 +175,11 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof SectionListReportNode) &&
-				                         (((SectionListReportNode) obj).level ==
-						                          level) &&
-				                         text.equals(((IReportNode) obj).getText()) &&
-				                         children()
-						                         .equals(((IReportNode) obj).children()));
+										(((SectionListReportNode) obj).level ==
+												level) &&
+										text.equals(((IReportNode) obj).getText()) &&
+										children()
+												.equals(((IReportNode) obj).children()));
 	}
 
 	/**

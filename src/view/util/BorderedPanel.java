@@ -51,10 +51,10 @@ public class BorderedPanel extends JPanel {
 	 * @param center    the central component. Ignored if null.
 	 */
 	public BorderedPanel(@Nullable final Component center,
-	                     @Nullable final Component pageStart,
-	                     @Nullable final Component pageEnd,
-	                     @Nullable final Component lineEnd,
-	                     @Nullable final Component lineStart) {
+						@Nullable final Component pageStart,
+						@Nullable final Component pageEnd,
+						@Nullable final Component lineEnd,
+						@Nullable final Component lineStart) {
 		this();
 		if (center != null) {
 			setCenter(center);
@@ -145,8 +145,8 @@ public class BorderedPanel extends JPanel {
 	 * @param pageEnd the component to put at page end
 	 */
 	public static BorderedPanel vertical(@Nullable final Component pageStart,
-	                                     @Nullable final Component center,
-	                                     @Nullable final Component pageEnd) {
+										@Nullable final Component center,
+										@Nullable final Component pageEnd) {
 		return new BorderedPanel(center, pageStart, pageEnd, null, null);
 	}
 	/**
@@ -157,8 +157,8 @@ public class BorderedPanel extends JPanel {
 	 * @param lineEnd the component to put at line end
 	 */
 	public static BorderedPanel horizontal(@Nullable final Component lineStart,
-	                                     @Nullable final Component center,
-	                                     @Nullable final Component lineEnd) {
+										@Nullable final Component center,
+										@Nullable final Component lineEnd) {
 		return new BorderedPanel(center, null, null, lineEnd, lineStart);
 	}
 }

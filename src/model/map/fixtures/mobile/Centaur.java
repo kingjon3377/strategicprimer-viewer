@@ -103,8 +103,8 @@ public class Centaur
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Centaur)
-				                         && ((Centaur) obj).kind.equals(kind)
-				                         && (((Centaur) obj).id == id));
+										&& ((Centaur) obj).kind.equals(kind)
+										&& (((Centaur) obj).id == id));
 	}
 
 	/**
@@ -147,7 +147,7 @@ public class Centaur
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-	                        final String context) throws IOException {
+							final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Centaur) {
 				return areObjectsEqual(ostream, kind, ((Centaur) obj).kind, context,

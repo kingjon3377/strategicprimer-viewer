@@ -48,12 +48,10 @@ public final class TODOFixerDriver {
 	 */
 	private final IMutableMapNG map;
 	/**
-	 * Logger.
+	 * Logger. TODO: Use TypesafeLogger
 	 */
-	private static final Logger LOGGER = NullCleaner
-			                                     .assertNotNull(Logger.getLogger(
-					                                     TODOFixerDriver.class
-							                                     .getName()));
+	private static final Logger LOGGER =
+			NullCleaner.assertNotNull(Logger.getLogger(TODOFixerDriver.class.getName()));
 
 	/**
 	 * @param operand the map we operate on
@@ -109,7 +107,7 @@ public final class TODOFixerDriver {
 	 * @param cli the helper to get input from the user
 	 */
 	private void fixUnit(final Unit unit, final SimpleTerrain terrain,
-	                     final ICLIHelper cli) {
+						final ICLIHelper cli) {
 		final Random random = new Random(unit.getID());
 		count++;
 		final Collection<String> jobList;
@@ -144,7 +142,7 @@ public final class TODOFixerDriver {
 		try {
 			final String kind =
 					cli.inputString("What's the next possible kind for "
-							                   + desc + "? ");
+											+ desc + "? ");
 			unit.setKind(kind);
 			jobList.add(kind);
 		} catch (final IOException e) {

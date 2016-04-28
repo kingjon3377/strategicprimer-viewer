@@ -7,9 +7,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -20,6 +17,7 @@ import model.report.IReportNode;
 import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
+import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
@@ -67,19 +65,17 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	 */
 	@Override
 	public String produce(
-								 final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-										 fixtures,
-								 final IMapNG map, final Player currentPlayer) {
+								final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+										fixtures,
+								final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
-		final Collection<String> own = new HtmlList(
-														   "<h4>Villages pledged to your" +
-																   " service:</h4>");
+		final Collection<String> own =
+				new HtmlList("<h4>Villages pledged to your service:</h4>");
 		final Collection<String> independents =
 				new HtmlList("<h4>Villages you think are independent:</h4>");
 		final Map<Player, Collection<String>> others = new HashMap<>();
-		values.stream().filter(pair -> pair.second() instanceof Village).forEach(pair
-																						 -> {
+		values.stream().filter(pair -> pair.second() instanceof Village).forEach(pair -> {
 			final Village village = (Village) pair.second();
 			final String product =
 					produce(fixtures, map, currentPlayer, village,
@@ -92,7 +88,9 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 				NullCleaner.assertNotNull(others.get(village.getOwner())).add(product);
 			} else {
 				final Collection<String> coll = new HtmlList("<h5>Villages sworn to " +
-								             village.getOwner().getName() + "</h5>");
+																	village.getOwner()
+																			.getName() +
+																	"</h5>");
 				coll.add(product);
 				others.put(village.getOwner(), coll);
 			}
@@ -101,9 +99,9 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 		final String independentsString = independents.toString();
 		final StringBuilder retval =
 				new StringBuilder(40 + ownString.length() + independentsString.length() +
-						                  (others.values().stream()
-								                   .mapToInt(Collection::size).sum() *
-								                   512));
+										(others.values().stream()
+												.mapToInt(Collection::size).sum() *
+												512));
 		// HtmlLists will return the empty string if they are empty.
 		retval.append(ownString);
 		retval.append(independentsString);
@@ -126,7 +124,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	@Override
 	public IReportNode produceRIR(
 												final DelayedRemovalMap<Integer,
-																			   Pair<Point, IFixture>> fixtures,
+																			Pair<Point, IFixture>> fixtures,
 												final IMapNG map,
 												final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
@@ -143,8 +141,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 				new SectionListReportNode(5, "Other villages you know about:");
 		@SuppressWarnings("TooBroadScope") final Map<Player, IReportNode> othersMap =
 				new HashMap<>();
-		values.stream().filter(pair -> pair.second() instanceof Village).forEach(pair
-																						 -> {
+		values.stream().filter(pair -> pair.second() instanceof Village).forEach(pair -> {
 			final Village village = (Village) pair.second();
 			final Player owner = village.getOwner();
 			final IReportNode product =
@@ -195,10 +192,10 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	 */
 	@Override
 	public String produce(
-								 final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-										 fixtures,
-								 final IMapNG map, final Player currentPlayer,
-								 final Village item, final Point loc) {
+								final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+										fixtures,
+								final IMapNG map, final Player currentPlayer,
+								final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		if (item.getOwner().isIndependent()) {
 			return concat(atPoint(loc), item.getName(), ", a(n) ", // NOPMD
@@ -226,24 +223,24 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	 */
 	@Override
 	public SimpleReportNode produceRIR(
-											  final DelayedRemovalMap<Integer,
-																			 Pair<Point,
-																						 IFixture>> fixtures,
-											  final IMapNG map,
-											  final Player currentPlayer,
-											  final Village item, final Point loc) {
+											final DelayedRemovalMap<Integer,
+																		Pair<Point,
+																					IFixture>> fixtures,
+											final IMapNG map,
+											final Player currentPlayer,
+											final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		if (item.getOwner().isIndependent()) {
 			return new SimpleReportNode(loc, atPoint(loc), item.getName(), // NOPMD
-											   ", a(n) ", item.getRace(), " village",
-											   ", independent ",
-											   distCalculator.distanceString(loc));
+											", a(n) ", item.getRace(), " village",
+											", independent ",
+											distCalculator.distanceString(loc));
 		} else {
 			return new SimpleReportNode(loc, atPoint(loc), item.getName(),
-											   ", a(n) ", item.getRace(), " village",
-											   ", sworn to "
-													   + playerNameOrYou(item.getOwner()),
-											   " ", distCalculator.distanceString(loc));
+											", a(n) ", item.getRace(), " village",
+											", sworn to ",
+											playerNameOrYou(item.getOwner()), " ",
+											distCalculator.distanceString(loc));
 		}
 	}
 

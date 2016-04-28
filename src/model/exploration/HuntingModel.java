@@ -1,7 +1,5 @@
 package model.exploration;
 
-import static model.map.TileType.Ocean;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -10,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
 import model.map.HasKind;
 import model.map.IMapNG;
 import model.map.MapDimensions;
@@ -21,6 +18,8 @@ import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
 import model.map.fixtures.resources.Shrub;
 import util.NullCleaner;
+
+import static model.map.TileType.Ocean;
 
 /**
  * A class to facilitate a better hunting/fishing driver.
@@ -90,9 +89,8 @@ public final class HuntingModel {
 					} else {
 						addToMap(animals, point, ((Animal) fix).getKind());
 					}
-				} else if ((fix instanceof Grove) || (fix instanceof Meadow)
-								   ||
-								   (fix instanceof Shrub)) {
+				} else if ((fix instanceof Grove) || (fix instanceof Meadow) ||
+								(fix instanceof Shrub)) {
 					addToMap(plants, point,
 							NullCleaner.assertNotNull(fix.toString()));
 				}
@@ -133,8 +131,8 @@ public final class HuntingModel {
 	 * @param value a string to put in the map at that point.
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	private static void addToMap(final Map<Point, List<String>> map,
-	                             final Point point, final String value) {
+	private static void addToMap(final Map<Point, List<String>> map, final Point point,
+								final String value) {
 		final List<String> list; // NOPMD
 		if (map.containsKey(point)) {
 			list = NullCleaner.assertNotNull(map.get(point));
@@ -195,14 +193,14 @@ public final class HuntingModel {
 	 * @return a list of results, about one eighth of which will be "nothing."
 	 */
 	private List<String> chooseFromMap(final Point point, final int items,
-									   final Map<Point, List<String>> chosenMap) {
+									final Map<Point, List<String>> chosenMap) {
 		final List<String> choices = StreamSupport
-				                             .stream(new SurroundingPointIterable(point,
-						                                                                 dims)
-						                                     .spliterator(), false)
-				                             .filter(chosenMap::containsKey).flatMap(
+											.stream(new SurroundingPointIterable(point,
+																						dims)
+															.spliterator(), false)
+											.filter(chosenMap::containsKey).flatMap(
 						local -> NullCleaner.assertNotNull(chosenMap.get(local)).stream())
-				                             .collect(Collectors.toList());
+											.collect(Collectors.toList());
 		final int nothings = choices.size();
 		for (int i = 0; i < nothings; i++) {
 			choices.add(NOTHING);

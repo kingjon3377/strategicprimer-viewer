@@ -51,7 +51,7 @@ public final class VisibleDimensions {
 	 * @param maximumCol the maximum column
 	 */
 	public VisibleDimensions(final int minimumRow, final int maximumRow,
-	                         final int minimumCol, final int maximumCol) {
+							final int minimumCol, final int maximumCol) {
 		minRow = minimumRow;
 		maxRow = maximumRow;
 		minCol = minimumCol;
@@ -101,8 +101,8 @@ public final class VisibleDimensions {
 	 * @return whether it's the same size as this one.
 	 */
 	public boolean isSameSize(final VisibleDimensions other) {
-		return ((maxCol - minCol) == (other.maxCol - other.minCol))
-				       && ((maxRow - minRow) == (other.maxRow - other.minRow));
+		return ((maxCol - minCol) == (other.maxCol - other.minCol)) &&
+					((maxRow - minRow) == (other.maxRow - other.minRow));
 	}
 
 	/**

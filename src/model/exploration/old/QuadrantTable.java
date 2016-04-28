@@ -55,12 +55,11 @@ public final class QuadrantTable implements EncounterTable {
 	 * @param items the items to allocate by quadrant
 	 */
 	public QuadrantTable(final int mapRows, final int mapCols, final int rows,
-	                     final List<String> items) {
+						final List<String> items) {
 		if ((items.size() % rows) != 0) {
-			throw new IllegalArgumentException(Integer.toString(items.size())
-					                                   +
-					                                   " items won't divide evenly into "
-					                                   + Integer.toString(rows));
+			throw new IllegalArgumentException(Integer.toString(items.size()) +
+													" items won't divide evenly into " +
+													Integer.toString(rows));
 		}
 		final int cols = items.size() / rows;
 		final int rowstep = mapRows / rows;
@@ -94,8 +93,8 @@ public final class QuadrantTable implements EncounterTable {
 	public String getQuadrantValue(final int row, final int col) {
 		Point bestKey = PointFactory.point(-1, -1);
 		for (final Point iter : quadrants.keySet()) {
-			if ((iter.row <= row) && (iter.row > bestKey.row)
-					    && (iter.col <= col) && (iter.col > bestKey.col)) {
+			if ((iter.row <= row) && (iter.row > bestKey.row) && (iter.col <= col) &&
+						(iter.col > bestKey.col)) {
 				bestKey = iter;
 			}
 		}
@@ -110,7 +109,7 @@ public final class QuadrantTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-	                            final Iterable<TileFixture> fixtures) {
+								final Iterable<TileFixture> fixtures) {
 		return getQuadrantValue(point.row, point.col);
 	}
 	/**
@@ -121,7 +120,7 @@ public final class QuadrantTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-	                            final Stream<TileFixture> fixtures) {
+								final Stream<TileFixture> fixtures) {
 		return getQuadrantValue(point.row, point.col);
 	}
 

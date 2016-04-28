@@ -58,10 +58,10 @@ public final class CompactResourcePileReader
 	 */
 	@Override
 	public ResourcePile read(final StartElement element,
-							 final IteratorWrapper<XMLEvent> stream,
-							 final IMutablePlayerCollection players, final Warning
-																			 warner,
-							 final IDFactory idFactory) throws SPFormatException {
+							final IteratorWrapper<XMLEvent> stream,
+							final IMutablePlayerCollection players,
+							final Warning warner,
+							final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "resource");
 		final ResourcePile retval =
 				new ResourcePile(getOrGenerateID(element, warner, idFactory),
@@ -96,7 +96,7 @@ public final class CompactResourcePileReader
 	 */
 	@Override
 	public void write(final Appendable ostream, final ResourcePile obj,
-					  final int indent) throws IOException {
+					final int indent) throws IOException {
 		writeTag(ostream, "resource", indent);
 		ostream.append(" id=\"");
 		ostream.append(Integer.toString(obj.getID()));

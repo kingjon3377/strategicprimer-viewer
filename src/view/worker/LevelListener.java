@@ -33,9 +33,8 @@ import static view.util.SystemOut.SYS_OUT;
  *
  * @author Jonathan Lovelace
  */
-public final class LevelListener implements LevelGainListener,
-		                                            UnitMemberListener,
-		                                            SkillSelectionListener {
+public final class LevelListener
+		implements LevelGainListener, UnitMemberListener, SkillSelectionListener {
 	/**
 	 * The current worker.
 	 */
@@ -76,7 +75,7 @@ public final class LevelListener implements LevelGainListener,
 	 */
 	@Override
 	public void memberSelected(@Nullable final UnitMember old,
-	                           @Nullable final UnitMember selected) {
+							@Nullable final UnitMember selected) {
 		worker = selected;
 	}
 

@@ -1,24 +1,17 @@
 package view.map.main;
 
-import java.awt.Component;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
-import javax.swing.ListSelectionModel;
-
-import org.eclipse.jdt.annotation.Nullable;
-
+import javax.swing.*;
 import model.map.TileFixture;
 import model.viewer.FixtureFilterListModel;
 import model.viewer.ZOrderFilter;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**
@@ -104,15 +97,14 @@ public final class FixtureFilterList extends JList<Class<? extends TileFixture>>
 	 * @return the rendered widget
 	 */
 	@Override
-	public Component getListCellRendererComponent(
-														 @Nullable
-														 final JList<? extends Class<? extends TileFixture>> list,
-														 final Class<? extends
-																			 TileFixture> value,
-
-														 final int index,
-														 final boolean isSelected,
-														 final boolean cellHasFocus) {
+	public Component getListCellRendererComponent(@Nullable
+												final JList<? extends Class<? extends
+															TileFixture>> list,
+												final Class<? extends TileFixture>
+														value,
+												final int index,
+												final boolean isSelected,
+												final boolean cellHasFocus) {
 		if (list == null) {
 			throw new IllegalArgumentException("Asked to render null list");
 		}

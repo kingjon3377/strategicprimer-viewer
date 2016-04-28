@@ -1,15 +1,12 @@
 package view.worker;
 
+import com.bric.window.WindowMenu;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.swing.JFrame;
-
-import com.bric.window.WindowMenu;
-
+import javax.swing.*;
 import model.misc.IDriverModel;
 import view.util.SPMenu;
 
@@ -45,7 +42,7 @@ public final class WorkerMenu extends SPMenu {
 	 * @param model   the current driver model
 	 */
 	public WorkerMenu(final ActionListener handler, final JFrame parent,
-	                  final IDriverModel model) {
+					final IDriverModel model) {
 		add(createFileMenu(handler, model));
 		addDisabled(createMapMenu(handler, model));
 		add(createViewMenu(handler));

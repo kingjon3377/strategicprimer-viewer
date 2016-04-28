@@ -130,8 +130,7 @@ public class SimpleDriverModel implements IDriverModel {
 	 * @param list the listener to remove
 	 */
 	@Override
-	public final void removeVersionChangeListener(
-			                                             final VersionChangeListener list) {
+	public final void removeVersionChangeListener(final VersionChangeListener list) {
 		vcListeners.remove(list);
 	}
 	/**

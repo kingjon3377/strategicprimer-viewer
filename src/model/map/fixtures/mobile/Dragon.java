@@ -110,8 +110,8 @@ public class Dragon
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Dragon)
-				                         && kind.equals(((Dragon) obj).kind) &&
-				                         (id == ((Dragon) obj).id));
+										&& kind.equals(((Dragon) obj).kind) &&
+										(id == ((Dragon) obj).id));
 	}
 
 	/**
@@ -154,7 +154,7 @@ public class Dragon
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-	                        final String context) throws IOException {
+							final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Dragon) {
 				return areObjectsEqual(ostream, kind, ((Dragon) obj).kind, context,

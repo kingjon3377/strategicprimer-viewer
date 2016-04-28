@@ -1,7 +1,6 @@
 package view.worker;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -13,9 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import model.listeners.LevelGainListener;
 import model.listeners.LevelGainSource;
 import model.listeners.SkillSelectionListener;
@@ -140,11 +137,10 @@ public final class SkillAdvancementPanel extends BoxPanel
 	}
 
 	/**
-	 * Parser for hours field.
+	 * Parser for hours field. TODO: Statically import assertNotNull
 	 */
-	private static final NumberFormat NUM_PARSER = NullCleaner
-			                                               .assertNotNull(NumberFormat
-					                                                              .getIntegerInstance());
+	private static final NumberFormat NUM_PARSER =
+			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
 
 	/**
 	 * @param list the listener to add

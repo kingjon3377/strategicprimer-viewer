@@ -4,12 +4,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.swing.DefaultListModel;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
+import javax.swing.*;
 import model.listeners.SelectionChangeListener;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -22,6 +17,8 @@ import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.terrain.Forest;
 import model.misc.IDriverModel;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A model for a FixtureList.
@@ -71,7 +68,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 */
 	@Override
 	public void selectedPointChanged(@Nullable final Point old,
-									 final Point newPoint) {
+									final Point newPoint) {
 		clear();
 		final IMapNG map = dmodel.getMap();
 		final TileType base = map.getBaseTerrain(newPoint);
@@ -141,18 +138,10 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 				if (fix instanceof TileTypeFixture) {
 					map.setBaseTerrain(point, TileType.NotVisible);
 					removeElement(fix);
-				} else if ((fix instanceof Ground)
-								   &&
-								   fix.equals(
-										   map.getGround(
-												   point))) {
+				} else if ((fix instanceof Ground) && fix.equals(map.getGround(point))) {
 					map.setGround(point, null);
 					removeElement(fix);
-				} else if ((fix instanceof Forest)
-								   &&
-								   fix.equals(
-										   map.getForest(
-												   point))) {
+				} else if ((fix instanceof Forest) && fix.equals(map.getForest(point))) {
 					map.setForest(point, null);
 					removeElement(fix);
 				} else if (fix instanceof RiverFixture) {
@@ -178,10 +167,10 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof FixtureListModel)
-										 && ((FixtureListModel) obj).dmodel.equals
-																					(dmodel)
-										 && ((FixtureListModel) obj).point.equals(point));
+		return (this == obj) || ((obj instanceof FixtureListModel) &&
+										((FixtureListModel) obj).dmodel.equals
+																				(dmodel) &&
+										((FixtureListModel) obj).point.equals(point));
 	}
 
 	/**

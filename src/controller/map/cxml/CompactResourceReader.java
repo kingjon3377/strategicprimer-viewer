@@ -105,12 +105,11 @@ public final class CompactResourceReader extends
 	 * @throws SPFormatException on SP format problems
 	 */
 	@Override
-	public HarvestableFixture read(// $codepro.audit.disable cyclomaticComplexity
-								   final StartElement element,
-								   final IteratorWrapper<XMLEvent> stream,
-								   final IMutablePlayerCollection players,
-								   final Warning warner,
-								   final IDFactory idFactory) throws SPFormatException {
+	public HarvestableFixture read(final StartElement element,
+								final IteratorWrapper<XMLEvent> stream,
+								final IMutablePlayerCollection players,
+								final Warning warner,
+								final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "cache", "grove", "orchard",
 				"field", "meadow", "mine", "mineral", "shrub", "stone");
 		final int idNum = getOrGenerateID(element, warner, idFactory);
@@ -118,7 +117,7 @@ public final class CompactResourceReader extends
 		switch (element.getName().getLocalPart().toLowerCase()) {
 		case "cache":
 			retval = new CacheFixture(getParameter(element, KIND_PAR),
-											 getParameter(element, "contents"), idNum);
+											getParameter(element, "contents"), idNum);
 			break;
 		case "field":
 			retval = createMeadow(element, true, idNum, warner);
@@ -132,9 +131,9 @@ public final class CompactResourceReader extends
 		case "mine":
 			retval = new Mine(getParamWithDeprecatedForm(element, KIND_PAR,
 					"product", warner),
-									 TownStatus.parseTownStatus(
-											 getParameter(element, STATUS_PAR)),
-									 idNum);
+									TownStatus.parseTownStatus(
+											getParameter(element, STATUS_PAR)),
+									idNum);
 			break;
 		case "mineral":
 			retval = new MineralVein(getParamWithDeprecatedForm(element, KIND_PAR,
@@ -149,11 +148,9 @@ public final class CompactResourceReader extends
 					"shrub", warner), idNum);
 			break;
 		case "stone":
-			retval = new StoneDeposit(
-											 StoneKind.parseStoneKind(
-													 getParamWithDeprecatedForm(element,
-															 KIND_PAR, "stone", warner)),
-											 getDC(element), idNum);
+			retval = new StoneDeposit(StoneKind.parseStoneKind(
+					getParamWithDeprecatedForm(element,
+							KIND_PAR, "stone", warner)), getDC(element), idNum);
 			break;
 		default:
 			throw new IllegalArgumentException("Unhandled harvestable tag");
@@ -184,17 +181,17 @@ public final class CompactResourceReader extends
 	 * @throws SPFormatException on SP format problems
 	 */
 	private static HarvestableFixture createMeadow(final StartElement element,
-												   final boolean field, final int idNum,
-												   final Warning warner)
+												final boolean field, final int idNum,
+												final Warning warner)
 			throws SPFormatException {
 		if (!hasParameter(element, STATUS_PAR)) {
 			warner.warn(new MissingPropertyException(element, STATUS_PAR));
 		}
 		return new Meadow(getParameter(element, KIND_PAR), field,
-								 parseBoolean(getParameter(element, CULTIVATED_PARAM)),
-								 idNum,
-								 FieldStatus.parse(getParameter(element, STATUS_PAR,
-										 FieldStatus.random(idNum).toString())));
+								parseBoolean(getParameter(element, CULTIVATED_PARAM)),
+								idNum,
+								FieldStatus.parse(getParameter(element, STATUS_PAR,
+										FieldStatus.random(idNum).toString())));
 	}
 
 	/**
@@ -208,9 +205,8 @@ public final class CompactResourceReader extends
 	 * @throws SPFormatException on SP format problems
 	 */
 	private static HarvestableFixture createGrove(final StartElement element,
-												  final boolean orchard, final int
-																				 idNum,
-												  final Warning warner)
+												final boolean orchard, final int idNum,
+												final Warning warner)
 			throws SPFormatException {
 		return new Grove(orchard, isCultivated(element, warner),
 								getParamWithDeprecatedForm(element, KIND_PAR, "tree",
@@ -232,7 +228,7 @@ public final class CompactResourceReader extends
 		} else {
 			if (hasParameter(element, "wild")) {
 				warner.warn(new DeprecatedPropertyException(element, "wild",
-						                                           CULTIVATED_PARAM));
+																CULTIVATED_PARAM));
 				return !parseBoolean(getParameter(element, "wild"));
 			} else {
 				throw new MissingPropertyException(element, CULTIVATED_PARAM);
@@ -250,7 +246,7 @@ public final class CompactResourceReader extends
 	 */
 	@Override
 	public void write(final Appendable ostream, final HarvestableFixture obj,
-					  final int indent) throws IOException {
+					final int indent) throws IOException {
 		if (obj instanceof CacheFixture) {
 			writeTag(ostream, "cache", indent);
 			ostream.append(" kind=\"");

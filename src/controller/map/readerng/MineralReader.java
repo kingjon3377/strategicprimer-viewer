@@ -53,17 +53,17 @@ public final class MineralReader implements INodeHandler<@NonNull MineralVein> {
 	 */
 	@Override
 	public MineralVein parse(final StartElement element,
-	                         final Iterable<XMLEvent> stream,
-	                         final IMutablePlayerCollection players,
-	                         final Warning warner, final IDFactory idFactory)
+							final Iterable<XMLEvent> stream,
+							final IMutablePlayerCollection players,
+							final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final MineralVein fix =
 				new MineralVein(getAttributeWithDeprecatedForm(element, "kind",
 						"mineral",
 						warner), Boolean.parseBoolean(getAttribute(element, "exposed")),
-						               getIntegerAttribute(element, "dc"),
-						               getOrGenerateID(element, warner, idFactory));
+									getIntegerAttribute(element, "dc"),
+									getOrGenerateID(element, warner, idFactory));
 		addImage(element, fix);
 		return fix;
 	}
@@ -92,20 +92,18 @@ public final class MineralReader implements INodeHandler<@NonNull MineralVein> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final MineralVein obj) {
+		// TODO: Statically import assertNotNull
 		final SPIntermediateRepresentation retval =
-				new SPIntermediateRepresentation("mineral", Pair.of("kind",
-						obj.getKind()), Pair.of("exposed", NullCleaner
-																   .assertNotNull(
-																		   Boolean
-																				   .toString(
-																				   obj
-																						   .isExposed()))),
-
+				new SPIntermediateRepresentation("mineral",
+														Pair.of("kind", obj.getKind()),
+														Pair.of("exposed", NullCleaner
+																				.assertNotNull(
+																						Boolean.toString(
+																								obj.isExposed()))),
 														Pair.of("dc", NullCleaner
-																			  .assertNotNull(
-																					  Integer
-																							  .toString(
-																									  obj.getDC()))));
+																			.assertNotNull(
+																					Integer.toString(
+																							obj.getDC()))));
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

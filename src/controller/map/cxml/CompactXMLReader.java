@@ -59,10 +59,9 @@ public final class CompactXMLReader implements IMapReader, ISPReader {
 	 */
 	@Override
 	public <@NonNull T> T readXML(final File file, final Reader istream,
-	                              final Class<T> type, final Warning warner)
+								final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
-		final TypesafeXMLEventReader reader = new TypesafeXMLEventReader(
-				                                                                istream);
+		final TypesafeXMLEventReader reader = new TypesafeXMLEventReader(istream);
 		final IteratorWrapper<XMLEvent> eventReader =
 				new IteratorWrapper<>(new IncludingIterator(file, reader));
 		final IMutablePlayerCollection players = new PlayerCollection();
@@ -80,8 +79,7 @@ public final class CompactXMLReader implements IMapReader, ISPReader {
 				}
 			}
 		}
-		throw new XMLStreamException(
-				                            "XML stream didn't contain a start element");
+		throw new XMLStreamException("XML stream didn't contain a start element");
 	}
 
 	/**
@@ -110,7 +108,7 @@ public final class CompactXMLReader implements IMapReader, ISPReader {
 	 */
 	@Override
 	public IMutableMapNG readMap(final File file, final Reader istream,
-	                             final Warning warner)
+								final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		return readXML(file, istream, SPMapNG.class, warner);
 	}

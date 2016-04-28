@@ -117,10 +117,10 @@ public final class ReportGenerator {
 	 * @param generators report-generators to run
 	 */
 	private static void createSubReports(final StringBuilder builder,
-										 final DelayedRemovalMap<Integer, Pair<Point,
-																					  IFixture>> fixtures,
-										 final IMapNG map, final Player player,
-										 final IReportGenerator<?>... generators) {
+										final DelayedRemovalMap<Integer, Pair<Point,
+																					IFixture>> fixtures,
+										final IMapNG map, final Player player,
+										final IReportGenerator<?>... generators) {
 		for (final IReportGenerator<?> generator : generators) {
 			builder.append(generator.produce(fixtures, map, player));
 			fixtures.coalesce();
@@ -133,8 +133,7 @@ public final class ReportGenerator {
 	public static String createReport(final IMapNG map) {
 		// The full report for the world map, as of turn 11, is 8 megs. So we
 		// make a 10 meg buffer.
-		final StringBuilder builder = new StringBuilder(10485760)
-											  .append("<html>\n");
+		final StringBuilder builder = new StringBuilder(10485760).append("<html>\n");
 		builder.append("<head><title>Strategic Primer map ").append(
 				"summary report</title></head>\n");
 		builder.append("<body>");
@@ -176,11 +175,11 @@ public final class ReportGenerator {
 	 * @return the report, in HTML, as a string.
 	 */
 	public static String createAbbreviatedReport(final IMapNG map,
-												 final Player player) {
+												final Player player) {
 		// The full report for the world map, as of turn 11, is 8 megs. So we
 		// make a 10 meg buffer.
-		final StringBuilder builder = new StringBuilder(10485760)
-											  .append("<html>\n<head>");
+		final StringBuilder builder =
+				new StringBuilder(10485760).append("<html>\n<head>");
 		builder.append("<title>Strategic Primer map summary ").append(
 				"abridged report</title></head>\n");
 		builder.append("<body>");
@@ -191,12 +190,13 @@ public final class ReportGenerator {
 											SIMPLE_COMPARATOR);
 
 		fixtures.values().stream().filter(pair -> ((pair.second() instanceof Unit) ||
-														   (pair.second() instanceof
-																	Fortress))
-														  && player.equals(
-				((HasOwner) pair.second()).getOwner()))
-				.forEach(pair -> fixtures.remove(Integer.valueOf(pair.second().getID()
-				)));
+														(pair.second() instanceof
+																	Fortress)) &&
+														player.equals(
+																((HasOwner) pair
+																					.second())
+																		.getOwner()))
+				.forEach(pair -> fixtures.remove(Integer.valueOf(pair.second().getID())));
 		fixtures.coalesce();
 		createSubReports(builder, fixtures, map, player,
 				new FortressReportGenerator(comparator),
@@ -222,10 +222,10 @@ public final class ReportGenerator {
 	 * @param generators report-generators to run
 	 */
 	private static void createSubReportsIR(final IReportNode root,
-										   final DelayedRemovalMap<Integer, Pair<Point,
-																						IFixture>> fixtures,
-										   final IMapNG map, final Player player,
-										   final IReportGenerator<?>... generators) {
+										final DelayedRemovalMap<Integer, Pair<Point,
+																					IFixture>> fixtures,
+										final IMapNG map, final Player player,
+										final IReportGenerator<?>... generators) {
 		for (final IReportGenerator<?> generator : generators) {
 			root.add(generator.produceRIR(fixtures, map, player));
 			fixtures.coalesce();
@@ -267,7 +267,7 @@ public final class ReportGenerator {
 	 * @return the report, in HTML, as a string.
 	 */
 	public static IReportNode createAbbreviatedReportIR(final IMapNG map,
-															   final Player player) {
+															final Player player) {
 		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
 		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator =
@@ -275,12 +275,13 @@ public final class ReportGenerator {
 											SIMPLE_COMPARATOR);
 
 		fixtures.values().stream().filter(pair -> ((pair.second() instanceof Unit) ||
-														   (pair.second() instanceof
-																	Fortress))
-														  && player.equals(
-				((HasOwner) pair.second()).getOwner()))
-				.forEach(pair -> fixtures.remove(Integer.valueOf(pair.second().getID()
-				)));
+														(pair.second() instanceof
+																	Fortress)) &&
+														player.equals(
+																((HasOwner) pair
+																					.second())
+																		.getOwner()))
+				.forEach(pair -> fixtures.remove(Integer.valueOf(pair.second().getID())));
 		fixtures.coalesce();
 		final IReportNode retval =
 				new RootReportNode("Strategic Primer map summary abbreviated report");
@@ -329,8 +330,8 @@ public final class ReportGenerator {
 	 * @param stream a source of tile-fixtures
 	 * @return all the tile-fixtures in it, recursively.
 	 */
-	private static Stream<IFixture> getFixtures(
-														   final Stream<? extends IFixture> stream) {
+	private static Stream<IFixture> getFixtures(final Stream<? extends IFixture>
+														stream) {
 		return assertNotNull(stream.flatMap(fix -> {
 			if (fix instanceof FixtureIterable) {
 				return Stream.concat(Stream.of(fix), getFixtures(assertNotNull(

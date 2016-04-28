@@ -8,12 +8,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.ProxyFor;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**
@@ -69,8 +67,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	 *                in different maps (if true) or workers in the same unit (if false)
 	 * @param workers being proxied
 	 */
-	public ProxyJob(final String nomen, final boolean parall,
-	                final IWorker... workers) {
+	public ProxyJob(final String nomen, final boolean parall, final IWorker... workers) {
 		parallel = parall;
 		name = nomen;
 		skillNames = new HashSet<>();
@@ -102,10 +99,8 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 				}
 			}
 		}
-		final IJob @NonNull [] jobsArray =
-				NullCleaner.assertNotNull(proxiedJobs
-						                          .toArray(new IJob[proxiedJobs.size()
-								                                   ]));
+		final IJob @NonNull [] jobsArray = NullCleaner.assertNotNull(
+				proxiedJobs.toArray(new IJob[proxiedJobs.size()]));
 		proxied.addAll(skillNames.stream()
 				.map(skill -> new ProxySkill(skill, parallel,
 						NullCleaner.assertNotNull(jobsArray)))
@@ -160,11 +155,8 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 				return false;
 			}
 		}
-		proxied.add(new ProxySkill(skill.getName(), parallel,
-				                          NullCleaner.assertNotNull(
-						                          proxiedJobs.toArray(new
-								                                              IJob[proxiedJobs
-								                                                       .size()]))));
+		proxied.add(new ProxySkill(skill.getName(), parallel, NullCleaner.assertNotNull(
+				proxiedJobs.toArray(new IJob[proxiedJobs.size()]))));
 		return true;
 	}
 
@@ -194,7 +186,7 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	 */
 	@Override
 	public boolean isSubset(final IJob obj, final Appendable ostream,
-	                        final String context) throws IOException {
+							final String context) throws IOException {
 		ostream.append(context);
 		ostream.append("\tisSubset called on ProxyJob\n");
 		return false;
@@ -216,10 +208,8 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 			//noinspection unchecked
 			((ProxyFor<IJob>) skill).addProxied(item);
 		}
-		final IJob[] jobsArray =
-				NullCleaner.assertNotNull(proxiedJobs
-						                          .toArray(new IJob[proxiedJobs.size()
-								                                   ]));
+		final IJob[] jobsArray = NullCleaner.assertNotNull(
+				proxiedJobs.toArray(new IJob[proxiedJobs.size()]));
 		for (final ISkill skill : item) {
 			if (!skillNames.contains(skill.getName())) {
 				//noinspection ObjectAllocationInLoop

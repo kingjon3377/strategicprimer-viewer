@@ -6,14 +6,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Enumeration;
 import java.util.Iterator;
-
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.Point;
+import org.eclipse.jdt.annotation.Nullable;
 import util.EnumerationWrapper;
 import util.NullCleaner;
 
@@ -70,8 +67,7 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public String produce() {
-		return NullCleaner.assertNotNull(produce(new StringBuilder(size()))
-				                                 .toString());
+		return NullCleaner.assertNotNull(produce(new StringBuilder(size())).toString());
 	}
 
 	/**
@@ -114,9 +110,9 @@ public final class RootReportNode extends DefaultMutableTreeNode
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof RootReportNode) &&
-				                         text.equals(((IReportNode) obj).getText()) &&
-				                         children()
-						                         .equals(((IReportNode) obj).children()));
+										text.equals(((IReportNode) obj).getText()) &&
+										children()
+												.equals(((IReportNode) obj).children()));
 	}
 
 	/**

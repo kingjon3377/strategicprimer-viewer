@@ -57,7 +57,7 @@ public class Job implements IJob { // NOPMD
 	 * @param skills  the worker's level in the various skills associated with the job.
 	 */
 	public Job(final String jobName, final int levels,
-	           final @NonNull ISkill @NonNull ... skills) {
+				final @NonNull ISkill @NonNull ... skills) {
 		name = jobName;
 		level = levels;
 		skillSet.addAll(Arrays.asList(skills));
@@ -122,10 +122,9 @@ public class Job implements IJob { // NOPMD
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof Job)
-				                         && name.equals(((Job) obj).name) &&
-				                         (level == ((Job) obj).level)
-				                         && skillSet.equals(((Job) obj).skillSet));
+		return (this == obj) || ((obj instanceof Job) && name.equals(((Job) obj).name) &&
+										(level == ((Job) obj).level) &&
+										skillSet.equals(((Job) obj).skillSet));
 	}
 
 	/**
@@ -142,11 +141,11 @@ public class Job implements IJob { // NOPMD
 	 */
 	@Override
 	public boolean isSubset(final IJob obj, final Appendable ostream,
-	                        final String context) throws IOException {
+							final String context) throws IOException {
 		if (!areObjectsEqual(ostream, name, obj.getName(), context,
 				"\tPassed Jobs with different names\n") ||
-				    !isConditionTrue(ostream, level >= obj.getLevel(), context,
-						    "\tSubmap has higher level for Job ", name, "\n")) {
+					!isConditionTrue(ostream, level >= obj.getLevel(), context,
+							"\tSubmap has higher level for Job ", name, "\n")) {
 			return false;
 		} else {
 			boolean retval = true;
@@ -161,14 +160,11 @@ public class Job implements IJob { // NOPMD
 					ostream.append('\n');
 					retval = false;
 				} else {
-					ours.put(skill.getName(), Pair.of(NullCleaner
-							                                  .assertNotNull(
-									                                  Integer.valueOf(
-											                                  skill
-													                                  .getLevel())),
-							NullCleaner.assertNotNull(Integer.valueOf(skill
-									                                          .getHours
-											                                           ()))));
+					// TODO: Statically import assertNotNull
+					ours.put(skill.getName(), Pair.of(NullCleaner.assertNotNull(
+							Integer.valueOf(skill.getLevel())), NullCleaner
+																															.assertNotNull(
+							Integer.valueOf(skill.getHours()))));
 				}
 			}
 			for (final ISkill skill : obj) {

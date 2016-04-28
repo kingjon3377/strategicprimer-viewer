@@ -1,7 +1,6 @@
 package view.map.main;
 
-import java.awt.Dimension;
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -11,16 +10,11 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-
-import org.eclipse.jdt.annotation.Nullable;
-
+import javax.swing.*;
 import model.map.MapDimensions;
 import model.map.PointFactory;
 import model.viewer.IViewerModel;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import view.util.BoxPanel;
 import view.util.ListenedButton;
@@ -59,10 +53,8 @@ public final class SelectTileDialog extends JDialog {
 	/**
 	 * A label to display error messages.
 	 */
-	private final JLabel errorLabel = new JLabel(
-			                                            "This text should vanish from " +
-					                                            "this label before it " +
-					                                            "appears.");
+	private final JLabel errorLabel =
+			new JLabel("This text should vanish from this label before it appears.");
 	/**
 	 * The map model to change the selection in.
 	 */
@@ -146,11 +138,10 @@ public final class SelectTileDialog extends JDialog {
 	}
 
 	/**
-	 * The parser to use for checking nnumbers.
+	 * The parser to use for checking nnumbers. TODO: Statically import assertNotNull
 	 */
-	private static final NumberFormat NUM_PARSER = NullCleaner
-			                                               .assertNotNull(NumberFormat
-					                                                              .getIntegerInstance());
+	private static final NumberFormat NUM_PARSER =
+			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
 
 	/**
 	 * @param text  a String to test, representing a number
@@ -198,12 +189,10 @@ public final class SelectTileDialog extends JDialog {
 	}
 
 	/**
-	 * Logger.
+	 * Logger. TODO: Use TypesafeLogger
 	 */
-	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger
-			                                                               .getLogger(
-					                                                               SelectTileDialog.class
-							                                                               .getName()));
+	private static final Logger LOGGER =
+			NullCleaner.assertNotNull(Logger.getLogger(SelectTileDialog.class.getName()));
 
 	/**
 	 * Handle the OK button.
@@ -217,15 +206,15 @@ public final class SelectTileDialog extends JDialog {
 		final MapDimensions dim = map.getMapDimensions();
 		final State colState = checkNumber(colText, dim.cols - 1);
 		if (colState != State.Valid) {
-			errorLabel.setText(errorLabel.getText() + "Column "
-					                   + getErrorMessage(colState, dim.cols));
+			errorLabel.setText(errorLabel.getText() + "Column " +
+									getErrorMessage(colState, dim.cols));
 			column.setText("-1");
 			column.selectAll();
 		}
 		final State rowState = checkNumber(rowText, dim.rows - 1);
 		if (rowState != State.Valid) {
-			errorLabel.setText(errorLabel.getText() + "Row "
-					                   + getErrorMessage(rowState, dim.rows));
+			errorLabel.setText(
+					errorLabel.getText() + "Row " + getErrorMessage(rowState, dim.rows));
 			row.setText("-1");
 			row.selectAll();
 		}

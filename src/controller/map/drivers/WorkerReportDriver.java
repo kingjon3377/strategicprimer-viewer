@@ -40,9 +40,9 @@ public final class WorkerReportDriver implements ISPDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-w", "--worker", ParamCount.One,
-					               "Worker Report Generator",
-					               "Produce HTML report of units, workers, etc., in a map.",
-					               WorkerReportDriver.class);
+								"Worker Report Generator",
+								"Produce HTML report of units, workers, etc., in a map.",
+								WorkerReportDriver.class);
 
 	/**
 	 * Run the driver.
@@ -56,8 +56,8 @@ public final class WorkerReportDriver implements ISPDriver {
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
 		throw new DriverFailedException(new IllegalStateException("The report driver has" +
-				                                                          " to interact " +
-				                                                          "with files"));
+																		" to interact " +
+																		"with files"));
 	}
 
 	/**
@@ -79,37 +79,28 @@ public final class WorkerReportDriver implements ISPDriver {
 				// When we developed createReportIR, it was unacceptably slower, so we
 				// left this using the original.
 				//noinspection ObjectAllocationInLoop
-				report =
-						ReportGenerator.createReport(reader.readMap(new File(
-								                                                    filename),
-
-								Warning.Ignore));
+				report = ReportGenerator.createReport(
+						reader.readMap(new File(filename), Warning.Ignore));
 			} catch (final MapVersionException except) {
-				throw new DriverFailedException(filename
-						                                +
-						                                " contained a map format version" +
-						                                " we can't handle",
-						                               except);
+				throw new DriverFailedException(filename +
+														" contained a map format version" +
+														" we can't handle",
+													except);
 			} catch (final IOException except) {
-				throw new DriverFailedException(
-						                               "I/O error reading " + filename,
-						                               except);
+				throw new DriverFailedException("I/O error reading " + filename, except);
 			} catch (final XMLStreamException except) {
-				throw new DriverFailedException("Error parsing XML in "
-						                                + filename, except);
+				throw new DriverFailedException("Error parsing XML in " + filename,
+													except);
 			} catch (final SPFormatException except) {
-				throw new DriverFailedException(filename
-						                                +
-						                                " didn't contain a valid SP map",
-						                               except);
+				throw new DriverFailedException(filename +
+														" didn't contain a valid SP map",
+													except);
 			}
 			//noinspection ObjectAllocationInLoop
-			try (final FileWriter writer = new FileWriter(filename // NOPMD
-					                                              + ".report.html")) {
+			try (final FileWriter writer = new FileWriter(filename + ".report.html")) {
 				writer.write(report);
 			} catch (final IOException except) {
-				throw new DriverFailedException("I/O error writing report",
-						                               except);
+				throw new DriverFailedException("I/O error writing report", except);
 			}
 		}
 	}

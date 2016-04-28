@@ -56,8 +56,7 @@ public final class SelectionChangeSupport implements SelectionChangeSource {
 	 * @param oldPoint the previously selected location
 	 * @param newPoint the newly selected location.
 	 */
-	public void fireChanges(@Nullable final Point oldPoint,
-	                        final Point newPoint) {
+	public void fireChanges(@Nullable final Point oldPoint, final Point newPoint) {
 		for (final SelectionChangeListener list : listeners) {
 			list.selectedPointChanged(oldPoint, newPoint);
 		}

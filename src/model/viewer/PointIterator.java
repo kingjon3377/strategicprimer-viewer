@@ -129,7 +129,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	 *                       (if false)
 	 */
 	public PointIterator(final MapDimensions dims, @Nullable final Point sel,
-	                     final boolean searchForwards, final boolean searchHoriz) {
+						final boolean searchForwards, final boolean searchHoriz) {
 		horiz = searchHoriz;
 		forwards = searchForwards;
 		maxRow = dims.getRows() - 1;
@@ -260,7 +260,6 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	 */
 	@Override
 	public void remove() {
-		throw new UnsupportedOperationException(
-				                                       "Can't remove a Point from a map.");
+		throw new UnsupportedOperationException("Can't remove a Point from a map.");
 	}
 }

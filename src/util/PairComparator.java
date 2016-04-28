@@ -38,7 +38,7 @@ public final class PairComparator<@NonNull T, @NonNull U>
 	 * @param secondItem the second comparator
 	 */
 	public PairComparator(final Comparator<T> firstItem, final Comparator<U>
-			                                                     secondItem) {
+																secondItem) {
 		super(firstItem, secondItem);
 	}
 
@@ -50,8 +50,7 @@ public final class PairComparator<@NonNull T, @NonNull U>
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
-	public int compare(final Pair<T, U> firstPair,
-	                   final Pair<T, U> secondPair) {
+	public int compare(final Pair<T, U> firstPair, final Pair<T, U> secondPair) {
 		final int firstResult = first().compare(firstPair.first(), secondPair.first());
 		if (firstResult == 0) {
 			return second().compare(firstPair.second(), secondPair.second());

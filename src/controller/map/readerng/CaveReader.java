@@ -53,13 +53,13 @@ public final class CaveReader implements INodeHandler<@NonNull Cave> {
 	 */
 	@Override
 	public Cave parse(final StartElement element,
-	                  final Iterable<XMLEvent> stream,
-	                  final IMutablePlayerCollection players,
-	                  final Warning warner, final IDFactory idFactory)
+					final Iterable<XMLEvent> stream,
+					final IMutablePlayerCollection players,
+					final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Cave fix = new Cave(getIntegerAttribute(element, "dc"),
-				                         getOrGenerateID(element, warner, idFactory));
+										getOrGenerateID(element, warner, idFactory));
 		addImage(element, fix);
 		return fix;
 	}
@@ -89,12 +89,8 @@ public final class CaveReader implements INodeHandler<@NonNull Cave> {
 	@Override
 	public SPIntermediateRepresentation write(final Cave obj) {
 		final SPIntermediateRepresentation retval =
-				new SPIntermediateRepresentation("cave",
-						                                Pair.of("dc", NullCleaner
-								                                              .assertNotNull(
-										                                              Integer
-												                                              .toString(
-														                                              obj.getDC()))));
+				new SPIntermediateRepresentation("cave", Pair.of("dc",
+						NullCleaner.assertNotNull(Integer.toString(obj.getDC()))));
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

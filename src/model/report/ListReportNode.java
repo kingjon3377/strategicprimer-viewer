@@ -6,14 +6,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Enumeration;
 import java.util.Iterator;
-
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.Point;
+import org.eclipse.jdt.annotation.Nullable;
 import util.EnumerationWrapper;
 import util.NullCleaner;
 
@@ -95,9 +92,9 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	public String produce() {
 		// Assume each child is half a K.
 		final StringBuilder builder = new StringBuilder(text.length() + BOILERPLATE_LEN +
-				                                                (getChildCount() *
-						                                                 CHILD_BUF_SIZE))
-				                              .append(text);
+																(getChildCount() *
+																		CHILD_BUF_SIZE))
+											.append(text);
 		builder.append("\n<ul>\n");
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
@@ -140,8 +137,7 @@ public final class ListReportNode extends DefaultMutableTreeNode
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
 			if (child instanceof IReportNode) {
-				retval += ((IReportNode) child).size()
-								  + PER_CHILD_BOILERPLATE;
+				retval += ((IReportNode) child).size() + PER_CHILD_BOILERPLATE;
 			}
 		}
 		return retval;
@@ -154,9 +150,9 @@ public final class ListReportNode extends DefaultMutableTreeNode
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof ListReportNode) &&
-				                         text.equals(((IReportNode) obj).getText()) &&
-				                         children()
-						                         .equals(((IReportNode) obj).children()));
+										text.equals(((IReportNode) obj).getText()) &&
+										children()
+												.equals(((IReportNode) obj).children()));
 	}
 
 	/**

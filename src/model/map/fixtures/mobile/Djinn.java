@@ -88,7 +88,7 @@ public class Djinn implements MobileFixture, HasMutableImage, UnitMember {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Djinn)
-				                         && (((TileFixture) obj).getID() == id));
+										&& (((TileFixture) obj).getID() == id));
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class Djinn implements MobileFixture, HasMutableImage, UnitMember {
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-	                        final String context) throws IOException {
+							final String context) throws IOException {
 		if (obj.getID() == id) {
 			return isConditionTrue(ostream, obj instanceof Djinn, context, "\tFor ID #",
 					Integer.toString(id), ", different kinds of members\n");

@@ -13,14 +13,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
-
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasKind;
 import model.map.HasMutableName;
 import model.map.Player;
@@ -28,6 +24,7 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.ProxyFor;
 import model.map.fixtures.mobile.ProxyUnit;
+import org.eclipse.jdt.annotation.Nullable;
 import util.EnumerationWrapper;
 import util.NullCleaner;
 
@@ -85,7 +82,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 */
 	@Override
 	public void moveMember(final UnitMember member, final IUnit old,
-						   final IUnit newOwner) {
+							final IUnit newOwner) {
 		final PlayerNode pnode = NullCleaner.assertNotNull((PlayerNode) root);
 		final UnitNode oldNode =
 				NullCleaner.assertNotNull((UnitNode) getNode(pnode, old));
@@ -100,12 +97,13 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 					&& (newOwner instanceof ProxyUnit)) {
 			//noinspection unchecked
 			if ((((Collection<IUnit>) ((ProxyUnit) old).getProxied()).size() ==
-						 ((Collection<IUnit>) ((ProxyUnit) newOwner).getProxied())
-								 .size()) &&
+						((Collection<IUnit>) ((ProxyUnit) newOwner).getProxied())
+								.size()) &&
 						(((Collection<IUnit>) ((ProxyUnit) old).getProxied()).size() ==
-								 ((Collection<? extends UnitMember>) ((ProxyFor<? extends UnitMember>) member)
-																			 .getProxied())
-										 .size())) {
+								((Collection<? extends UnitMember>) ((ProxyFor<?
+																					extends UnitMember>) member)
+																			.getProxied())
+										.size())) {
 				final Queue<UnitMember> members = new LinkedList<>();
 				final Queue<IUnit> newList = new LinkedList<>();
 				final Iterator<IUnit> oldIter = ((ProxyUnit) old).getProxied()
@@ -114,7 +112,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 						((ProxyUnit) newOwner).getProxied().iterator();
 				//noinspection unchecked
 				for (final UnitMember item : ((ProxyFor<? extends UnitMember>) member)
-													 .getProxied()) {
+													.getProxied()) {
 					assert oldIter.hasNext() && newIter.hasNext();
 					final IUnit innerOld = oldIter.next();
 					final IUnit innerNew = newIter.next();
@@ -169,8 +167,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		 * @param userObj         the user object the node wraps
 		 * @param permitsChildren whether to allow children
 		 */
-		protected WorkerTreeNode(final T userObj,
-								 final boolean permitsChildren) {
+		protected WorkerTreeNode(final T userObj, final boolean permitsChildren) {
 			super(userObj, permitsChildren);
 		}
 
@@ -258,7 +255,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 				super.setUserObject(userObj);
 			} else {
 				throw new IllegalArgumentException("PlayerNode can only contain a " +
-														   "Player");
+														"Player");
 			}
 		}
 		/**
@@ -325,8 +322,9 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			if (userObj instanceof String) {
 				super.setUserObject(userObj);
 			} else {
+				// FIXME: Make sure these error messages match the node type.
 				throw new IllegalArgumentException("PlayerNode can only contain a " +
-														   "Player");
+														"Player");
 			}
 		}
 		/**
@@ -393,7 +391,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 				super.setUserObject(userObj);
 			} else {
 				throw new IllegalArgumentException("PlayerNode can only contain a " +
-														   "Player");
+														"Player");
 			}
 		}
 		/**
@@ -454,7 +452,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 				super.setUserObject(userObj);
 			} else {
 				throw new IllegalArgumentException("PlayerNode can only contain a " +
-														   "Player");
+														"Player");
 			}
 		}
 		/**
@@ -521,8 +519,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 */
 	@Override
 	public void mapChanged() {
-		setRoot(new PlayerNode(model.getMap().getCurrentPlayer(),
-									  model));
+		setRoot(new PlayerNode(model.getMap().getCurrentPlayer(), model));
 	}
 
 	/**
@@ -531,7 +528,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 */
 	@Override
 	public void playerChanged(@Nullable final Player old,
-							  final Player newPlayer) {
+							final Player newPlayer) {
 		setRoot(new PlayerNode(newPlayer, model));
 	}
 
@@ -542,8 +539,9 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	@Override
 	public Object getModelObject(final Object obj) {
 		if (obj instanceof DefaultMutableTreeNode) {
-			return NullCleaner.assertNotNull(((DefaultMutableTreeNode) obj) // NOPMD
-													 .getUserObject());
+			// TODO: Statically import assertNotNull
+			return NullCleaner
+						.assertNotNull(((DefaultMutableTreeNode) obj).getUserObject());
 		} else {
 			return obj;
 		}
@@ -583,7 +581,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	@Override
 	public String toString() {
 		return "WorkerTreeModelAlt representing units of player " +
-				       Objects.toString(getModelObject(root));
+					Objects.toString(getModelObject(root));
 	}
 
 	/**
@@ -631,7 +629,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 */
 	private static boolean areTreeObjectsEqual(final TreeNode node, final Object obj) {
 		return (node instanceof DefaultMutableTreeNode) &&
-					   Objects.equals(obj, ((DefaultMutableTreeNode) node).getUserObject());
+					Objects.equals(obj, ((DefaultMutableTreeNode) node).getUserObject());
 	}
 
 	/**
@@ -645,9 +643,8 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 		}
 		final TreeNode[] path = getPathToRoot(node);
 		final int index = getIndexOfChild(path[path.length - 2], node);
-		fireTreeNodesChanged(this, Arrays.copyOfRange(path, 0, path.length - 1), new
-																						 int[]{
-				index}, new Object[]{node});
+		fireTreeNodesChanged(this, Arrays.copyOfRange(path, 0, path.length - 1),
+				new int[]{index}, new Object[]{node});
 	}
 
 	/**

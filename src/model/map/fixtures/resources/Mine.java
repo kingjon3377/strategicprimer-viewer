@@ -114,9 +114,9 @@ public class Mine implements HarvestableFixture, HasMutableKind {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Mine)
-				                         && kind.equals(((Mine) obj).kind)
-				                         && (status == ((Mine) obj).status) &&
-				                         (id == ((Mine) obj).id));
+										&& kind.equals(((Mine) obj).kind)
+										&& (status == ((Mine) obj).status) &&
+										(id == ((Mine) obj).id));
 	}
 
 	/**
@@ -147,7 +147,7 @@ public class Mine implements HarvestableFixture, HasMutableKind {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof Mine) && kind.equals(((Mine) fix).kind)
-				       && (status == ((Mine) fix).status);
+					&& (status == ((Mine) fix).status);
 	}
 
 	/**

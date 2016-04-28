@@ -37,9 +37,8 @@ import static view.util.ErrorShower.showErrorDialog;
  *
  * @author Jonathan Lovelace
  */
-public final class WorkerCreationListener implements ActionListener,
-		                                                     UnitSelectionListener,
-		                                                     NewWorkerListener {
+public final class WorkerCreationListener
+		implements ActionListener, UnitSelectionListener, NewWorkerListener {
 	/**
 	 * What to say to the user when a worker is created but no unit is selected.
 	 */
@@ -52,9 +51,8 @@ public final class WorkerCreationListener implements ActionListener,
 	/**
 	 * The logger to use for logging.
 	 */
-	private static final Logger LOGGER = TypesafeLogger
-			                                     .getLogger(WorkerCreationListener
-					                                                .class);
+	private static final Logger LOGGER =
+			TypesafeLogger.getLogger(WorkerCreationListener.class);
 	/**
 	 * The current unit. May be null, if nothing is selected.
 	 */
@@ -72,7 +70,7 @@ public final class WorkerCreationListener implements ActionListener,
 	 * @param idFac     the ID factory to pass to the worker-creation window.
 	 */
 	public WorkerCreationListener(final IWorkerTreeModel treeModel,
-	                              final IDFactory idFac) {
+								final IDFactory idFac) {
 		tmodel = treeModel;
 		idf = idFac;
 	}
@@ -94,9 +92,8 @@ public final class WorkerCreationListener implements ActionListener,
 	@Override
 	public void actionPerformed(@Nullable final ActionEvent evt) {
 		if ((evt != null) &&
-				    evt.getActionCommand().toLowerCase().startsWith("add worker")) {
-			final WorkerConstructionFrame frame = new WorkerConstructionFrame(
-					                                                                 idf);
+					evt.getActionCommand().toLowerCase().startsWith("add worker")) {
+			final WorkerConstructionFrame frame = new WorkerConstructionFrame(idf);
 			frame.addNewWorkerListener(this);
 			frame.setVisible(true);
 		}

@@ -9,15 +9,13 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasName;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.ProxyFor;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**
@@ -90,11 +88,10 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 			}
 		}
 		final IWorker @NonNull [] workerArray =
-				NullCleaner.assertNotNull(workers.toArray(new IWorker[workers
-						                                                      .size()]));
+				NullCleaner.assertNotNull(workers.toArray(new IWorker[workers.size()]));
 		proxyJobs.addAll(jobNames.stream()
-				                 .map(job -> new ProxyJob(job, false, workerArray))
-				                 .collect(Collectors.toList()));
+								.map(job -> new ProxyJob(job, false, workerArray))
+								.collect(Collectors.toList()));
 	}
 
 	/**
@@ -125,10 +122,8 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 				jobNames.add(job.getName());
 			}
 		}
-		proxyJobs
-				.addAll(jobNames.stream().map(job -> new ProxyJob(job, true,
-						                                                 proxied))
-						        .collect(Collectors.toList()));
+		proxyJobs.addAll(jobNames.stream().map(job -> new ProxyJob(job, true, proxied))
+								.collect(Collectors.toList()));
 	}
 
 	/**
@@ -145,8 +140,8 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return (fix instanceof ProxyWorker)
-				       && proxyJobs.equals(((ProxyWorker) fix).proxyJobs);
+		return (fix instanceof ProxyWorker) &&
+					proxyJobs.equals(((ProxyWorker) fix).proxyJobs);
 	}
 
 	/**
@@ -167,12 +162,11 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 		if (jobNames.contains(job.getName())) {
 			return false;
 		} else {
-			final IJob proxy =
-					new ProxyJob(job.getName(), parallel,
-							            NullCleaner.assertNotNull(workers
-									                                      .toArray(
-											                                      new
-													                                      IWorker[workers.size()])));
+			// TODO: Statically import assertNotNull
+			final IJob proxy = new ProxyJob(job.getName(), parallel, NullCleaner
+																			.assertNotNull(
+																					workers.toArray(
+																							new IWorker[workers.size()])));
 			jobNames.add(proxy.getName());
 			proxyJobs.add(proxy);
 			return true;
@@ -189,7 +183,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-	                        final String context) throws IOException {
+							final String context) throws IOException {
 		ostream.append(context);
 		ostream.append("\tisSubset called on ProxyWorker\n");
 		return false;
@@ -208,8 +202,7 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 		}
 		workers.add(item);
 		final IWorker[] workerArray =
-				NullCleaner.assertNotNull(workers.toArray(new IWorker[workers
-						                                                      .size()]));
+				NullCleaner.assertNotNull(workers.toArray(new IWorker[workers.size()]));
 		final Collection<IJob> proxyJobsTemp = new ArrayList<>(proxyJobs);
 		for (final IJob job : item) {
 			final String name = job.getName();

@@ -50,9 +50,9 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-d", "--add-resource", ParamCount.AtLeastOne,
-								   "Add resources to maps",
-								   "Add resources for players to maps",
-								   ResourceAddingCLIDriver.class);
+								"Add resources to maps",
+								"Add resources for players to maps",
+								ResourceAddingCLIDriver.class);
 
 	/**
 	 * Start the driver.
@@ -104,7 +104,7 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 	 * @throws IOException on I/O error interacting with the user
 	 */
 	private void enterResource(final IDFactory idf, final ResourceManagementDriver model,
-							   final ICLIHelper cli, final Player player)
+							final ICLIHelper cli, final Player player)
 			throws IOException {
 		final String kind = getResourceKind(cli);
 		String contents = getResourceContents(kind, cli);
@@ -126,8 +126,8 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 	 * @param player the current player
 	 * @throws IOException on I/O error interacting with the user
 	 */
-	private static void enterImplement(final IDFactory idf, final ResourceManagementDriver
-															 model,
+	private static void enterImplement(final IDFactory idf,
+								final ResourceManagementDriver model,
 								final ICLIHelper cli, final Player player)
 			throws IOException {
 		model.addResource(

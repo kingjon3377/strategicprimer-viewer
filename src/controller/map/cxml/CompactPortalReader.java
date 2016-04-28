@@ -52,9 +52,9 @@ public final class CompactPortalReader extends AbstractCompactReader<Portal> {
 	 */
 	@Override
 	public Portal read(final StartElement element,
-					   final IteratorWrapper<XMLEvent> stream,
-					   final IMutablePlayerCollection players, final Warning warner,
-					   final IDFactory idFactory) throws SPFormatException {
+						final IteratorWrapper<XMLEvent> stream,
+						final IMutablePlayerCollection players, final Warning warner,
+						final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "portal");
 		final Portal retval = new Portal(getParameter(element, "world"),
 												PointFactory.point(getIntegerParameter(
@@ -78,7 +78,7 @@ public final class CompactPortalReader extends AbstractCompactReader<Portal> {
 	 */
 	@Override
 	public void write(final Appendable ostream, final Portal obj,
-					  final int indent) throws IOException {
+					final int indent) throws IOException {
 		writeTag(ostream, "portal", indent);
 		ostream.append(" world=\"");
 		ostream.append(obj.getDestinationWorld());

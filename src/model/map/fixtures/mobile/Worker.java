@@ -6,15 +6,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasPortrait;
 import model.map.IFixture;
 import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
 import util.NullCleaner;
 
@@ -78,7 +76,7 @@ public class Worker implements IWorker, HasPortrait {
 	 * @param jobs       the Jobs the worker is trained in
 	 */
 	public Worker(final String wName, final String workerRace, final int idNum,
-	              final @NonNull Job @NonNull ... jobs) {
+				final @NonNull Job @NonNull ... jobs) {
 		name = wName;
 		id = idNum;
 		race = workerRace;
@@ -140,7 +138,7 @@ public class Worker implements IWorker, HasPortrait {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Worker) && (((Worker) obj).id == id)
-				                         && equalsIgIDImpl((Worker) obj));
+										&& equalsIgIDImpl((Worker) obj));
 	}
 
 	/**
@@ -166,8 +164,8 @@ public class Worker implements IWorker, HasPortrait {
 	@SuppressWarnings("ObjectEquality")
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return (this == fix) || ((fix instanceof Worker)
-				                         && equalsIgIDImpl((Worker) fix));
+		return (this == fix) || ((fix instanceof Worker) && equalsIgIDImpl((Worker)
+																				fix));
 	}
 
 	/**
@@ -177,11 +175,11 @@ public class Worker implements IWorker, HasPortrait {
 	private boolean equalsIgIDImpl(final Worker fix) {
 		final WorkerStats locStats = stats;
 		if (locStats == null) {
-			return fix.name.equals(name) && areJobSetsEqual(jobSet, fix.jobSet) // NOPMD
-					       && fix.race.equals(race) && (fix.stats == null);
+			return fix.name.equals(name) && areJobSetsEqual(jobSet, fix.jobSet) &&
+						fix.race.equals(race) && (fix.stats == null);
 		} else {
-			return fix.name.equals(name) && areJobSetsEqual(jobSet, fix.jobSet)
-					       && fix.race.equals(race) && locStats.equals(fix.stats);
+			return fix.name.equals(name) && areJobSetsEqual(jobSet, fix.jobSet) &&
+						fix.race.equals(race) && locStats.equals(fix.stats);
 		}
 	}
 
@@ -217,7 +215,7 @@ public class Worker implements IWorker, HasPortrait {
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-	                        final String context) throws IOException {
+							final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Worker) {
 				final String ctxt =
@@ -225,10 +223,10 @@ public class Worker implements IWorker, HasPortrait {
 								+ " (ID #" + Integer.toString(id) + "):";
 				if (areObjectsEqual(ostream, name, ((Worker) obj).name, ctxt,
 						"\tNames differ\n") &&
-						    areObjectsEqual(ostream, race, ((Worker) obj).race, ctxt,
-								    ":\tRaces differ\n") &&
-						    areObjectsEqual(ostream, stats, ((Worker) obj).stats, ctxt,
-								    ":\tStats differ\n")) {
+						areObjectsEqual(ostream, race, ((Worker) obj).race, ctxt,
+								":\tRaces differ\n") &&
+						areObjectsEqual(ostream, stats, ((Worker) obj).stats, ctxt,
+								":\tStats differ\n")) {
 					final Map<String, IJob> ours = new HashMap<>();
 					for (final IJob job : jobSet) {
 						ours.put(job.getName(), job);

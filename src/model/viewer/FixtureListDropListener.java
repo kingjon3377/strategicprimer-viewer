@@ -1,6 +1,6 @@
 package model.viewer;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -12,7 +12,7 @@ import java.awt.dnd.DropTargetEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComponent;
+import javax.swing.*;
 import model.map.TileFixture;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
@@ -50,9 +50,8 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger
-												 .getLogger(
-														 FixtureListDropListener.class);
+	private static final Logger LOGGER =
+			TypesafeLogger.getLogger(FixtureListDropListener.class);
 	/**
 	 * The List's model.
 	 */
@@ -65,7 +64,7 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	 * @param parent    a parent of the list.
 	 */
 	public FixtureListDropListener(final JComponent parent,
-								   final FixtureListModel listModel) {
+								final FixtureListModel listModel) {
 		model = listModel;
 		parentComponent = parent;
 	}
@@ -78,14 +77,12 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	@Override
 	public void dragEnter(@Nullable final DropTargetDragEvent dtde) {
 		if (dtde != null) {
-			if (((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0)
-						&& (dtde.getCurrentDataFlavorsAsList().contains(
-					FixtureTransferable.FLAVOR)
-									|| dtde.getCurrentDataFlavorsAsList()
-											   .contains(
-													   CurriedFixtureTransferable
-															   .FLAVOR))
-						&& !isIntraComponentXfr(dtde)) {
+			if (((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0) &&
+						(dtde.getCurrentDataFlavorsAsList()
+								.contains(FixtureTransferable.FLAVOR) ||
+								dtde.getCurrentDataFlavorsAsList()
+										.contains(CurriedFixtureTransferable.FLAVOR)) &&
+						!isIntraComponentXfr(dtde)) {
 				dtde.acceptDrag(dtde.getDropAction());
 			} else {
 				dtde.rejectDrag();
@@ -102,8 +99,8 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	 * etc. problems return true.
 	 */
 	private boolean isIntraComponentXfr(final DropTargetEvent dtde) {
-		return (dtde.getSource() instanceof Component)
-					   && parentComponent.isAncestorOf((Component) dtde.getSource());
+		return (dtde.getSource() instanceof Component) &&
+					parentComponent.isAncestorOf((Component) dtde.getSource());
 	}
 
 	/**
@@ -114,14 +111,12 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	@Override
 	public void dragOver(@Nullable final DropTargetDragEvent dtde) {
 		if (dtde != null) {
-			if (((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0)
-						&& (dtde.getCurrentDataFlavorsAsList().contains(
-					FixtureTransferable.FLAVOR)
-									|| dtde.getCurrentDataFlavorsAsList()
-											   .contains(
-													   CurriedFixtureTransferable
-															   .FLAVOR))
-						&& !isIntraComponentXfr(dtde)) {
+			if (((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0) &&
+						(dtde.getCurrentDataFlavorsAsList()
+								.contains(FixtureTransferable.FLAVOR) ||
+								dtde.getCurrentDataFlavorsAsList()
+										.contains(CurriedFixtureTransferable.FLAVOR)) &&
+						!isIntraComponentXfr(dtde)) {
 				dtde.acceptDrag(dtde.getDropAction());
 			} else {
 				dtde.rejectDrag();
@@ -137,14 +132,12 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	@Override
 	public void dropActionChanged(@Nullable final DropTargetDragEvent dtde) {
 		if (dtde != null) {
-			if (((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0)
-						&& (dtde.getCurrentDataFlavorsAsList().contains(
-					FixtureTransferable.FLAVOR)
-									|| dtde.getCurrentDataFlavorsAsList()
-											   .contains(
-													   CurriedFixtureTransferable
-															   .FLAVOR))
-						&& !isIntraComponentXfr(dtde)) {
+			if (((dtde.getDropAction() & DnDConstants.ACTION_COPY) != 0) &&
+						(dtde.getCurrentDataFlavorsAsList()
+								.contains(FixtureTransferable.FLAVOR) ||
+								dtde.getCurrentDataFlavorsAsList()
+										.contains(CurriedFixtureTransferable.FLAVOR)) &&
+						!isIntraComponentXfr(dtde)) {
 				dtde.acceptDrag(dtde.getDropAction());
 			} else {
 				dtde.rejectDrag();
@@ -166,9 +159,8 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 			return; // NOPMD
 		} else {
 			for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
-				if ((flavor != null)
-						    && EqualsAny.equalsAny(flavor, FixtureTransferable.FLAVOR,
-						CurriedFixtureTransferable.FLAVOR)) {
+				if ((flavor != null) && EqualsAny.equalsAny(flavor,
+						FixtureTransferable.FLAVOR, CurriedFixtureTransferable.FLAVOR)) {
 					try {
 						dtde.acceptDrop(dtde.getDropAction());
 						final Transferable trans = dtde.getTransferable();
@@ -203,9 +195,8 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 			throws UnsupportedFlavorException, IOException {
 		final DataFlavor[] dflav = trans.getTransferDataFlavors();
 		if (dflav == null) {
-			throw new UnsupportedFlavorException(new DataFlavor(
-																	   DataFlavor.class,
-																	   "null"));
+			throw new UnsupportedFlavorException(new DataFlavor(DataFlavor.class,
+																	"null"));
 		} else {
 			for (final DataFlavor flavor : dflav) {
 				if (flavor == null) {

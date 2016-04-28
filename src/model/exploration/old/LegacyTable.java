@@ -100,7 +100,7 @@ public final class LegacyTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-	                            final Iterable<TileFixture> fixtures) {
+								final Iterable<TileFixture> fixtures) {
 		for (final TileFixture fix : fixtures) {
 			if (fix instanceof IEvent) {
 				return ((IEvent) fix).getText(); // NOPMD
@@ -116,10 +116,10 @@ public final class LegacyTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-	                            final Stream<TileFixture> fixtures) {
+								final Stream<TileFixture> fixtures) {
 		return fixtures.filter(IEvent.class::isInstance).map(IEvent.class::cast)
-				       .map(IEvent::getText).findFirst()
-				       .orElse("Nothing interesting here ...");
+					.map(IEvent::getText).findFirst()
+					.orElse("Nothing interesting here ...");
 	}
 
 	/**

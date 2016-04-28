@@ -36,8 +36,8 @@ public final class FixtureTransferable implements Transferable {
 	/**
 	 * a DataFlavor representing its class.
 	 */
-	public static final DataFlavor FLAVOR = new DataFlavor(TileFixture.class,
-			                                                      "TileFixture");
+	public static final DataFlavor FLAVOR =
+			new DataFlavor(TileFixture.class, "TileFixture");
 
 	/**
 	 * Constructor.
@@ -98,9 +98,8 @@ public final class FixtureTransferable implements Transferable {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof FixtureTransferable)
-				                         &&
-				                         data.equals(((FixtureTransferable) obj).data));
+		return (this == obj) || ((obj instanceof FixtureTransferable) &&
+										data.equals(((FixtureTransferable) obj).data));
 	}
 
 	/**

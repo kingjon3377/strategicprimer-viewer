@@ -73,8 +73,8 @@ public final class TestFixtureSerialization extends
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testAnimalSerialization() throws XMLStreamException,
-			                                             SPFormatException, IOException {
+	public void testAnimalSerialization()
+			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization("First test of Animal serialization",
 				new Animal("animalOne", false, false, "wild", 0));
 		assertSerialization("Second test of Animal serialization",
@@ -106,8 +106,8 @@ public final class TestFixtureSerialization extends
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testCacheSerialization() throws XMLStreamException,
-			                                            SPFormatException, IOException {
+	public void testCacheSerialization()
+			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization("First test of Cache serialization",
 				new CacheFixture("kindOne", "contentsOne", 1));
 		assertSerialization("Second test of Cache serialization",
@@ -133,9 +133,8 @@ public final class TestFixtureSerialization extends
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testCentaurSerialization() throws XMLStreamException,
-			                                              SPFormatException,
-			                                                  IOException {
+	public void testCentaurSerialization()
+			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization("First test of Centaur serialization",
 				new Centaur("firstCentaur", 0));
 		assertSerialization("Second test of Centaur serialization",
@@ -158,8 +157,8 @@ public final class TestFixtureSerialization extends
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testDragonSerialization() throws XMLStreamException,
-			                                             SPFormatException, IOException {
+	public void testDragonSerialization()
+			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization("First test of Dragon serialization", new Dragon("", 1));
 		assertSerialization("Second test of Dragon serialization",
 				new Dragon("secondDragon", 2));
@@ -180,8 +179,8 @@ public final class TestFixtureSerialization extends
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testFairySerialization() throws XMLStreamException,
-			                                            SPFormatException, IOException {
+	public void testFairySerialization()
+			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization("First test of Fairy serialization",
 				new Fairy("oneFairy", 1));
 		assertSerialization("Second test of Fairy serialization",
@@ -203,8 +202,8 @@ public final class TestFixtureSerialization extends
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testForestSerialization() throws XMLStreamException,
-			                                             SPFormatException, IOException {
+	public void testForestSerialization()
+			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization("First test of Forest serialization",
 				new Forest("firstForest", false));
 		assertSerialization("Second test of Forest serialization",
@@ -224,9 +223,8 @@ public final class TestFixtureSerialization extends
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testFortressSerialization() throws XMLStreamException,
-			                                               SPFormatException,
-			                                               IOException {
+	public void testFortressSerialization()
+			throws XMLStreamException, SPFormatException, IOException {
 		// Can't give player names because our test environment doesn't let us
 		// pass a set of players in
 		final Player firstPlayer = new Player(1, "");
@@ -260,8 +258,8 @@ public final class TestFixtureSerialization extends
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testGiantSerialization() throws XMLStreamException,
-			                                            SPFormatException, IOException {
+	public void testGiantSerialization()
+			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization("First test of Giant serialization", new Giant("one", 1));
 		assertSerialization("Second test of Giant serialization", new Giant("two", 2));
 		assertUnwantedChild("<giant kind=\"hill\"><hill /></giant>",
@@ -281,8 +279,8 @@ public final class TestFixtureSerialization extends
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testGroundSerialization() throws XMLStreamException,
-			                                             SPFormatException, IOException {
+	public void testGroundSerialization()
+			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization("First test of Ground serialization",
 				new Ground("one", true));
 		assertSerialization("Second test of Ground serialization",
@@ -291,8 +289,7 @@ public final class TestFixtureSerialization extends
 				new Ground("three", false));
 		final Point point = PointFactory.point(0, 0);
 		final IMutableMapNG map =
-				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
-						           -1);
+				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(), -1);
 		map.setBaseTerrain(point, TileType.Plains);
 		map.setGround(point, new Ground("four", true));
 		assertSerialization("Test that reader handles ground as a fixture", map);
@@ -316,8 +313,8 @@ public final class TestFixtureSerialization extends
 	 * @throws XMLStreamException on XML reader error
 	 */
 	@Test
-	public void testSimpleSerializationNoChildren() throws XMLStreamException,
-			                                                       SPFormatException {
+	public void testSimpleSerializationNoChildren()
+			throws XMLStreamException, SPFormatException {
 		assertUnwantedChild("<djinn><troll /></djinn>", Djinn.class, false);
 		assertUnwantedChild("<griffin><djinn /></griffin>", Griffin.class,
 				false);
@@ -347,14 +344,12 @@ public final class TestFixtureSerialization extends
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testSimpleImageSerialization() throws XMLStreamException,
-			                                                  SPFormatException,
-			                                                  IOException {
+	public void testSimpleImageSerialization()
+			throws XMLStreamException, SPFormatException, IOException {
 		assertImageSerialization("Djinn image property is preserved", new Djinn(3));
 		assertImageSerialization("Griffin image property is preserved", new Griffin(3));
 		assertImageSerialization("Hill image property is preserved", new Hill(3));
-		assertImageSerialization("Minotaur image property is preserved", new Minotaur
-				                                                                 (3));
+		assertImageSerialization("Minotaur image property is preserved", new Minotaur(3));
 		assertImageSerialization("Mountain image property is preserved", new Mountain());
 		assertImageSerialization("Oasis image property is preserved", new Oasis(3));
 		assertImageSerialization("Ogre image property is preserved", new Ogre(3));
@@ -373,8 +368,8 @@ public final class TestFixtureSerialization extends
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testSimpleSerialization() throws XMLStreamException, // NOPMD
-			                                             SPFormatException, IOException {
+	public void testSimpleSerialization()
+			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization("Djinn serialization", new Djinn(1));
 		assertSerialization("Djinn serialization", new Djinn(2));
 		assertMissingProperty("<djinn />", Djinn.class, "id", true);

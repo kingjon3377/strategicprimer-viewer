@@ -51,14 +51,13 @@ public final class ImplementReader implements INodeHandler<@NonNull Implement> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public Implement parse(final StartElement element,
-	                       final Iterable<XMLEvent> stream,
-	                       final IMutablePlayerCollection players, final Warning warner,
-	                       final IDFactory idFactory) throws SPFormatException {
+	public Implement parse(final StartElement element, final Iterable<XMLEvent> stream,
+						final IMutablePlayerCollection players, final Warning warner,
+						final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Implement retval =
 				new Implement(getOrGenerateID(element, warner, idFactory),
-						             getAttribute(element, "kind"));
+									getAttribute(element, "kind"));
 		addImage(element, retval);
 		return retval;
 	}

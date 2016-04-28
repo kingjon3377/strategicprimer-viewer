@@ -67,13 +67,13 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @param tags    the tags we accept here
 	 */
 	protected static void requireTag(final StartElement element,
-									 final String... tags) {
+									final String... tags) {
 		if (!EqualsAny.equalsAny(
 				NullCleaner.assertNotNull(element.getName().getNamespaceURI()),
 				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
 			throw new IllegalArgumentException("requireTag given a tag that is in " +
-					                                   "neither our namespace nor the " +
-					                                   "default namespace");
+														"neither our namespace nor the " +
+														"default namespace");
 		}
 		final String localName = element.getName().getLocalPart();
 		final int line = element.getLocation().getLineNumber();
@@ -81,15 +81,15 @@ public abstract class AbstractCompactReader<@NonNull T>
 			throw new IllegalArgumentException(Stream.concat(
 					Stream.of(
 							format("Null tag on line %d, expected one of the " +
-										   "following: ",
+											"following: ",
 									Integer.valueOf(line))), Stream.of(tags))
-													   .collect(
-															   Collectors.joining(", ")));
+														.collect(
+															Collectors.joining(", ")));
 		} else if (!EqualsAny.equalsAny(localName, tags)) {
 			throw new IllegalArgumentException(Stream.concat(Stream.of(format(
 					"Unexpected tag %s on line %d, expected one of the following: ",
 					localName, Integer.valueOf(line))), Stream.of(tags))
-													   .collect(Collectors.joining(", "))
+													.collect(Collectors.joining(", "))
 			);
 		}
 	}
@@ -103,7 +103,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @throws SPFormatException if the tag doesn't have that parameter.
 	 */
 	protected static String getParameter(final StartElement element,
-										 final String param) throws SPFormatException {
+										final String param) throws SPFormatException {
 		final Attribute attr = getAttributeByName(element, param);
 		if (attr == null) {
 			throw new MissingPropertyException(element, param);
@@ -126,7 +126,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @return the value for that parameter
 	 */
 	protected static String getParameter(final StartElement element,
-										 final String param, final String defaultValue) {
+										final String param, final String defaultValue) {
 		final Attribute attr = getAttributeByName(element, param);
 		if (attr == null) {
 			return defaultValue; // NOPMD
@@ -145,13 +145,13 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @throws SPFormatException if mandatory and missing
 	 */
 	protected static void requireNonEmptyParameter(final StartElement element,
-												   final String param,
-												   final boolean mandatory,
-												   final Warning warner)
+													final String param,
+													final boolean mandatory,
+													final Warning warner)
 			throws SPFormatException {
 		if (getParameter(element, param, "").isEmpty()) {
 			final SPFormatException except = new MissingPropertyException(element,
-					                                                             param);
+																				param);
 			if (mandatory) {
 				throw except;
 			} else {
@@ -169,7 +169,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @throws SPFormatException on unwanted child
 	 */
 	protected static void spinUntilEnd(final QName tag,
-									   final Iterable<XMLEvent> reader)
+										final Iterable<XMLEvent> reader)
 			throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement() && EqualsAny.equalsAny(
@@ -179,7 +179,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 				throw new UnwantedChildException(tag,
 						NullCleaner.assertNotNull(event.asStartElement()));
 			} else if (event.isEndElement()
-							   && tag.equals(event.asEndElement().getName())) {
+								&& tag.equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
@@ -197,13 +197,13 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @throws SPFormatException on SP format problems reading the attribute
 	 */
 	protected static int getOrGenerateID(final StartElement element,
-	                                     final Warning warner, final IDFactory idFactory)
+										final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		if (hasParameter(element, "id")) {
 			try {
 				return idFactory.register(NumberFormat.getIntegerInstance()
-												  .parse(getParameter(element, "id"))
-												  .intValue());
+												.parse(getParameter(element, "id"))
+												.intValue());
 			} catch (final NumberFormatException | ParseException except) {
 				throw new MissingPropertyException(element, "id", except);
 			}
@@ -220,7 +220,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 */
 	@Nullable
 	protected static Attribute getAttributeByName(final StartElement element,
-	                                              final String param) {
+													final String param) {
 		final Attribute retval =
 				element.getAttributeByName(new QName(ISPReader.NAMESPACE, param));
 		if (retval == null) {
@@ -235,7 +235,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @return whether the tag has that parameter
 	 */
 	protected static boolean hasParameter(final StartElement element,
-										  final String param) {
+											final String param) {
 		return getAttributeByName(element, param) != null;
 	}
 
@@ -249,9 +249,9 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
 	protected static String getParamWithDeprecatedForm(final StartElement element,
-													   final String preferred,
-													   final String deprecated,
-													   final Warning warner)
+														final String preferred,
+														final String deprecated,
+														final Warning warner)
 			throws SPFormatException {
 		final Attribute prefProp = getAttributeByName(element, preferred);
 		final Attribute deprProp = getAttributeByName(element, deprecated);
@@ -329,8 +329,8 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * A parser for numeric data.
 	 */
 	private static final NumberFormat NUM_PARSER = NullCleaner
-														   .assertNotNull(NumberFormat
-																				  .getIntegerInstance());
+														.assertNotNull(NumberFormat
+																				.getIntegerInstance());
 
 
 	/**
@@ -360,7 +360,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 *                           nonnumeric or otherwise malformed
 	 */
 	protected static int getIntegerParameter(final StartElement tag,
-											 final String parameter)
+												final String parameter)
 			throws SPFormatException {
 		return parseInt(getParameter(tag, parameter),
 				NullCleaner.assertNotNull(tag.getLocation()));
@@ -377,8 +377,8 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 *                           malformed
 	 */
 	protected static int getIntegerParameter(final StartElement tag,
-											 final String parameter,
-											 final int defaultValue)
+											final String parameter,
+											final int defaultValue)
 			throws SPFormatException {
 		final Attribute attr = getAttributeByName(tag, parameter);
 		if (attr == null) {
@@ -401,7 +401,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	protected static void writeTag(final Appendable ostream, final String tag,
-	                               final int indent) throws IOException {
+								final int indent) throws IOException {
 		indent(ostream, indent);
 		ostream.append('<');
 		ostream.append(tag);

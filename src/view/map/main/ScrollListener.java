@@ -1,11 +1,8 @@
 package view.map.main;
 
-import java.awt.Adjustable;
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.AdjustmentListener;
-import javax.swing.InputVerifier;
-import javax.swing.JComponent;
-import javax.swing.JScrollBar;
+import javax.swing.*;
 import model.listeners.GraphicalParamsListener;
 import model.listeners.MapChangeListener;
 import model.listeners.SelectionChangeListener;
@@ -43,9 +40,8 @@ import org.eclipse.jdt.annotation.Nullable;
  *
  * @author Jonathan Lovelace
  */
-public final class ScrollListener implements MapChangeListener,
-													 SelectionChangeListener,
-													 GraphicalParamsListener {
+public final class ScrollListener
+		implements MapChangeListener, SelectionChangeListener, GraphicalParamsListener {
 	/**
 	 * The map model we're working with.
 	 */
@@ -75,7 +71,7 @@ public final class ScrollListener implements MapChangeListener,
 	 * @param vertBar  the vertical scroll bar to work with
 	 */
 	public ScrollListener(final IViewerModel map, final JScrollBar horizBar,
-						  final JScrollBar vertBar) {
+						final JScrollBar vertBar) {
 		model = map;
 		dimensions = map.getDimensions();
 		final MapDimensions mapDim = map.getMapDimensions();
@@ -89,17 +85,11 @@ public final class ScrollListener implements MapChangeListener,
 		vbar.getModel().setRangeProperties(Math.max(selPoint.row, 0), 1, 0,
 				mapDim.rows - map.getDimensions().getHeight(), false);
 		vbar.setInputVerifier(new LocalInputVerifier(mapDim, map, false));
-		final AdjustmentListener adjList =
-				evt -> model.setDimensions(new VisibleDimensions(vbar.getValue(), vbar
-																						  .getValue() +
-																						  dimensions
-																								  .getHeight(),
-
-																		hbar.getValue(),
-																		hbar
-																				.getValue() +
-																				dimensions
-																						.getWidth()));
+		final AdjustmentListener adjList = evt -> model.setDimensions(
+				new VisibleDimensions(vbar.getValue(),
+											vbar.getValue() + dimensions.getHeight(),
+											hbar.getValue(),
+											hbar.getValue() + dimensions.getWidth()));
 		hbar.addAdjustmentListener(adjList);
 		vbar.addAdjustmentListener(adjList);
 	}
@@ -113,8 +103,8 @@ public final class ScrollListener implements MapChangeListener,
 	 * @param component the component to attach the scrollbars to.
 	 */
 	public ScrollListener(final IViewerModel map, final JComponent component) {
-		this(map, new JScrollBar(Adjustable.HORIZONTAL), new JScrollBar(
-																			   Adjustable.VERTICAL));
+		this(map, new JScrollBar(Adjustable.HORIZONTAL),
+				new JScrollBar(Adjustable.VERTICAL));
 		component.add(hbar, BorderLayout.PAGE_END);
 		component.add(vbar, BorderLayout.LINE_END);
 	}
@@ -125,7 +115,7 @@ public final class ScrollListener implements MapChangeListener,
 	 */
 	@Override
 	public void dimensionsChanged(final VisibleDimensions oldDim,
-								  final VisibleDimensions newDim) {
+								final VisibleDimensions newDim) {
 		dimensions = newDim;
 		hbar.getModel().setRangeProperties(
 				Math.max(model.getSelectedPoint().col, 0), 1, 0,
@@ -153,8 +143,7 @@ public final class ScrollListener implements MapChangeListener,
 	 * @param newPoint the newly selected point
 	 */
 	@Override
-	public void selectedPointChanged(@Nullable final Point old,
-									 final Point newPoint) {
+	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
 		final VisibleDimensions vdim = model.getDimensions();
 		if (!isInRange(vdim.getMinimumCol(), newPoint.col, vdim.getMaximumCol())) {
 			hbar.getModel().setValue(Math.max(newPoint.col, 0));
@@ -183,8 +172,7 @@ public final class ScrollListener implements MapChangeListener,
 	 * @param max   the end of te range
 	 * @return whether the value is in the range
 	 */
-	protected static boolean isInRange(final int min, final int value,
-									   final int max) {
+	protected static boolean isInRange(final int min, final int value, final int max) {
 		return (value >= min) && (value <= max);
 	}
 
@@ -222,8 +210,8 @@ public final class ScrollListener implements MapChangeListener,
 		 *                         than the vertical.
 		 */
 		protected LocalInputVerifier(final MapDimensions mapDim,
-									 final IViewerModel mapModel,
-									 final boolean horizontal) {
+									final IViewerModel mapModel,
+									final boolean horizontal) {
 			dimensions = mapDim;
 			map = mapModel;
 			horiz = horizontal;
@@ -262,7 +250,7 @@ public final class ScrollListener implements MapChangeListener,
 		@Override
 		public boolean verify(@Nullable final JComponent input) {
 			return (input instanceof JScrollBar)
-						   && isInRange(0, ((JScrollBar) input).getValue(),
+						&& isInRange(0, ((JScrollBar) input).getValue(),
 					dimension() - visibleDimension() - 1);
 		}
 		/**

@@ -7,12 +7,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -87,8 +82,8 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	public OrdersPanel(final IWorkerModel wmodel) {
 		// Can't use the multi-arg constructor, because of the references to
 		// 'this' below.
-		final boolean onMac = System.getProperty("os.name").toLowerCase()
-									  .startsWith("mac os x");
+		final boolean onMac =
+				System.getProperty("os.name").toLowerCase().startsWith("mac os x");
 		final String prefix;
 		final int keyMask;
 		if (onMac) {
@@ -99,15 +94,14 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 			keyMask = InputEvent.CTRL_DOWN_MASK;
 		}
 		setPageStart(
-				new JLabel(
-								  "Orders for current selection, if a unit: ("
-										  + prefix
-										  + "D)")).setCenter(new JScrollPane(area))
-				.setPageEnd(new BorderedPanel()
-									.setLineStart(new ListenedButton("Apply",
-																			evt -> apply()))
-									.setLineEnd(
-											new ListenedButton("Revert", evt -> revert())));
+				new JLabel("Orders for current selection, if a unit: (" + prefix + "D)"))
+				.setCenter(new JScrollPane(area)).setPageEnd(new BorderedPanel()
+																	.setLineStart(
+																			new
+																					ListenedButton("Apply", evt -> apply()))
+																	.setLineEnd(
+																			new ListenedButton("Revert",
+																									evt -> revert())));
 		area.addKeyListener(new KeyAdapter() {
 			private boolean isModifierPressed(final KeyEvent evt) {
 				if (onMac) {

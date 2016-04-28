@@ -60,8 +60,7 @@ public final class RaceFactory {
 	 * @return a race selected using that instance.
 	 */
 	public static String getRace(final Random random) {
-		return NullCleaner
-				       .assertNotNull(RACES.get(random.nextInt(RACES.size())));
+		return NullCleaner.assertNotNull(RACES.get(random.nextInt(RACES.size())));
 	}
 
 	/**

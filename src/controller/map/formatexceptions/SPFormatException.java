@@ -48,9 +48,9 @@ public class SPFormatException extends Exception {
 	 * @param cause     the "initial cause" of this
 	 */
 	protected SPFormatException(final String message, final Location errorLoc,
-	                            final Throwable cause) {
+								final Throwable cause) {
 		super("Incorrect SP XML at line " + errorLoc.getLineNumber() + ", column " +
-				      errorLoc.getColumnNumber() + ": " + message, cause);
+					errorLoc.getColumnNumber() + ": " + message, cause);
 		location = errorLoc;
 	}
 	/**
@@ -61,7 +61,7 @@ public class SPFormatException extends Exception {
 	 */
 	protected SPFormatException(final String message, final Location errorLoc) {
 		super("Incorrect SP XML at line " + errorLoc.getLineNumber() + ", column " +
-				      errorLoc.getColumnNumber() + ": " + message);
+					errorLoc.getColumnNumber() + ": " + message);
 		location = errorLoc;
 	}
 }

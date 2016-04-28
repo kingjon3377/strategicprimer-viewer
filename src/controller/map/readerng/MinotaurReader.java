@@ -51,9 +51,9 @@ public final class MinotaurReader implements INodeHandler<Minotaur> {
 	 */
 	@Override
 	public Minotaur parse(final StartElement element,
-	                      final Iterable<XMLEvent> stream,
-	                      final IMutablePlayerCollection players,
-	                      final Warning warner, final IDFactory idFactory)
+						final Iterable<XMLEvent> stream,
+						final IMutablePlayerCollection players,
+						final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Minotaur fix = new Minotaur(getOrGenerateID(element, warner,

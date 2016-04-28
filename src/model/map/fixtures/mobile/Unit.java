@@ -45,7 +45,7 @@ import util.TypesafeLogger;
  * @author Jonathan Lovelace
  */
 public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableImage,
-		                             HasMutableOwner, HasPortrait {
+									HasMutableOwner, HasPortrait {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -181,12 +181,12 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof IUnit)
-										 && (((IUnit) obj).getOwner().getPlayerId() ==
-													 owner.getPlayerId())
-										 && ((IUnit) obj).getKind().equals(kind)
-										 && ((IUnit) obj).getName().equals(name)
-										 && areMembersEqual((IUnit) obj)
-										 && (((IUnit) obj).getID() == id));
+										&& (((IUnit) obj).getOwner().getPlayerId() ==
+													owner.getPlayerId())
+										&& ((IUnit) obj).getKind().equals(kind)
+										&& ((IUnit) obj).getName().equals(name)
+										&& areMembersEqual((IUnit) obj)
+										&& (((IUnit) obj).getID() == id));
 	}
 
 	/**
@@ -218,8 +218,8 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 		if (owner.isIndependent()) {
 			return "Independent unit of type " + kind + ", named " + name; // NOPMD
 		} else {
-			return "Unit of type " + kind + ", belonging to " + owner
-						   + ", named " + name;
+			return "Unit of type " + kind + ", belonging to " + owner + ", named " +
+						name;
 		}
 	}
 
@@ -288,10 +288,10 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (this == fix) || ((fix instanceof IUnit)
-										 && (((IUnit) fix).getOwner().getPlayerId() ==
-													 owner.getPlayerId())
-										 && ((IUnit) fix).getKind().equals(kind)
-										 && ((IUnit) fix).getName().equals(name));
+										&& (((IUnit) fix).getOwner().getPlayerId() ==
+													owner.getPlayerId())
+										&& ((IUnit) fix).getKind().equals(kind)
+										&& ((IUnit) fix).getName().equals(name));
 	}
 
 	/**
@@ -394,12 +394,12 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 		} else if (areIntItemsEqual(ostream, owner.getPlayerId(),
 				((IUnit) obj).getOwner().getPlayerId(), context, " Unit of ID #",
 				Integer.toString(id), ":\tOwners differ.\n") &&
-				           areObjectsEqual(ostream, name, ((IUnit) obj).getName(), context,
-						           " Unit of ID #", Integer.toString(id),
-						           ":\tNames differ\n") &&
-				           areObjectsEqual(ostream, kind, ((IUnit) obj).getKind(), context,
-						           " Unit of ID #", Integer.toString(id),
-						           ":\tKinds differ\n")) {
+						areObjectsEqual(ostream, name, ((IUnit) obj).getName(), context,
+								" Unit of ID #", Integer.toString(id),
+								":\tNames differ\n") &&
+						areObjectsEqual(ostream, kind, ((IUnit) obj).getKind(), context,
+								" Unit of ID #", Integer.toString(id),
+								":\tKinds differ\n")) {
 			final Iterable<UnitMember> other = (IUnit) obj;
 			final Map<Integer, UnitMember> ours = new HashMap<>();
 			for (final UnitMember member : this) {
@@ -428,7 +428,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 			}
 			if (retval) {
 				if (("unassigned".equals(name) || "unassigned".equals(kind)) &&
-						    !members.isEmpty() && !other.iterator().hasNext()) {
+						!members.isEmpty() && !other.iterator().hasNext()) {
 					ostream.append(ctxt);
 					ostream.append(" Nonempty 'unassigned' when submap has it empty\n");
 				}

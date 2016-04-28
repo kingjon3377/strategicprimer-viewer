@@ -1,25 +1,19 @@
 package view.util;
 
-import static view.util.MenuItemCreator.createHotkey;
-import static view.util.MenuItemCreator.createMenuItem;
-import static view.util.MenuItemCreator.createShiftHotkey;
-
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.swing.InputMap;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.KeyStroke;
-
+import javax.swing.*;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
+
+import static view.util.MenuItemCreator.createHotkey;
+import static view.util.MenuItemCreator.createMenuItem;
+import static view.util.MenuItemCreator.createShiftHotkey;
 
 /**
  * A common superclass for application-specific menu bars.
@@ -53,7 +47,7 @@ public class SPMenu extends JMenuBar {
 	 * @return the file menu
 	 */
 	protected static JMenu createFileMenu(final ActionListener handler,
-	                                      final IDriverModel model) {
+										final IDriverModel model) {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		final JMenuItem newItem = createMenuItem("New", KeyEvent.VK_N,
@@ -139,7 +133,7 @@ public class SPMenu extends JMenuBar {
 	 * @return the menu created
 	 */
 	protected static JMenu createMapMenu(final ActionListener handler,
-	                                     final IDriverModel model) {
+										final IDriverModel model) {
 		final JMenu retval = new JMenu("Map");
 		retval.setMnemonic(KeyEvent.VK_M);
 		final int findKey = KeyEvent.VK_F;

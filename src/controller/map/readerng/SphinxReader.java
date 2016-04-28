@@ -51,9 +51,9 @@ public final class SphinxReader implements INodeHandler<Sphinx> {
 	 */
 	@Override
 	public Sphinx parse(final StartElement element,
-	                    final Iterable<XMLEvent> stream,
-	                    final IMutablePlayerCollection players,
-	                    final Warning warner, final IDFactory idFactory)
+						final Iterable<XMLEvent> stream,
+						final IMutablePlayerCollection players,
+						final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Sphinx fix = new Sphinx(getOrGenerateID(element, warner,
@@ -88,8 +88,8 @@ public final class SphinxReader implements INodeHandler<Sphinx> {
 	 */
 	@Override
 	public <S extends Sphinx> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "sphinx");
+		final SPIntermediateRepresentation retval =
+				new SPIntermediateRepresentation("sphinx");
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

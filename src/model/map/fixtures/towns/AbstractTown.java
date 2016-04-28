@@ -62,7 +62,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	 * @param player  the owner of the town, fortress, or city
 	 */
 	protected AbstractTown(final TownStatus tStatus, final TownSize tSize,
-	                       final String tName, final Player player) {
+							final String tName, final Player player) {
 		status = tStatus;
 		size = tSize;
 		name = tName;
@@ -99,7 +99,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	@Override
 	public String getText() {
 		final StringBuilder builder = new StringBuilder(56)
-				                              .append("There is a ");
+											.append("There is a ");
 		if (TownSize.Medium == size) {
 			builder.append("medium-size");
 		} else {
@@ -129,8 +129,8 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof AbstractTown)
-				                         && (getID() == ((TileFixture) obj).getID())
-				                         && equalsContents((AbstractTown) obj));
+										&& (getID() == ((TileFixture) obj).getID())
+										&& equalsContents((AbstractTown) obj));
 	}
 
 	/**
@@ -141,9 +141,8 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (this == fix)
-				       ||
-				       ((fix instanceof AbstractTown) &&
-						        equalsContents((AbstractTown) fix));
+					|| ((fix instanceof AbstractTown) &&
+								equalsContents((AbstractTown) fix));
 	}
 
 	/**
@@ -155,7 +154,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	 */
 	protected final boolean equalsContents(final AbstractTown fix) {
 		return (fix.size() == size) && fix.name.equals(name)
-				       && (fix.status() == status) && fix.owner.equals(owner);
+					&& (fix.status() == status) && fix.owner.equals(owner);
 	}
 
 	/**
@@ -171,10 +170,8 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder(80 + name.length()
-				                                                +
-				                                                owner.getName().length
-						                                                                ());
+		final StringBuilder builder = new StringBuilder(80 + name.length() +
+																owner.getName().length());
 		if (owner.isIndependent()) {
 			builder.append("An independent ");
 		} else {
@@ -266,10 +263,8 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	 */
 	@Override
 	public String shortDesc() {
-		final StringBuilder builder = new StringBuilder(78 + name.length()
-				                                                +
-				                                                owner.getName().length
-						                                                                ());
+		final StringBuilder builder = new StringBuilder(78 + name.length() +
+																owner.getName().length());
 		if (owner.isIndependent()) {
 			builder.append("An independent ");
 		} else {

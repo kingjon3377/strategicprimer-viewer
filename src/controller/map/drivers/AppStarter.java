@@ -57,8 +57,8 @@ public final class AppStarter implements ISPDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-p", "--app-starter", ParamCount.AnyNumber, "App Chooser",
-					               "Let the user choose an app to start, or handle options.",
-					               AppStarter.class);
+								"Let the user choose an app to start, or handle options.",
+								AppStarter.class);
 
 	/**
 	 * A map from options to the drivers they represent.
@@ -91,8 +91,7 @@ public final class AppStarter implements ISPDriver {
 		if (cliUsage.isGraphical() || !guiUsage.isGraphical()) {
 			LOGGER.warning("Two-arg addChoice expects non-GUI / GUI pair");
 		} else if (!cliUsage.getShortOption().equals(guiUsage.getShortOption())
-				           ||
-				           !cliUsage.getLongOption().equals(guiUsage.getLongOption())) {
+						|| !cliUsage.getLongOption().equals(guiUsage.getLongOption())) {
 			LOGGER.warning("In two-arg addChoice, args' options should match");
 		}
 		final Pair<ISPDriver, ISPDriver> pair = Pair.of(cliDriver, guiDriver);
@@ -136,7 +135,7 @@ public final class AppStarter implements ISPDriver {
 		if (GraphicsEnvironment.isHeadless()) {
 			final List<ISPDriver> drivers =
 					new ArrayList<>(CACHE.values().stream().map(Pair::first)
-							                .collect(Collectors.toSet()));
+											.collect(Collectors.toSet()));
 			try (final ICLIHelper cli = new CLIHelper()) {
 				startChosenDriver(NullCleaner.assertNotNull(drivers.get(
 						cli.chooseFromList(drivers, "CLI apps available:",
@@ -148,8 +147,8 @@ public final class AppStarter implements ISPDriver {
 				return;
 			}
 		} else {
-			SwingUtilities.invokeLater(() -> new AppChooserFrame(model).setVisible
-					                                                            (true));
+			SwingUtilities.invokeLater(() -> new AppChooserFrame(model).setVisible(
+					true));
 		}
 	}
 
@@ -224,7 +223,7 @@ public final class AppStarter implements ISPDriver {
 	 * @throws DriverFailedException if the chosen driver fails
 	 */
 	private static void startChooser(final boolean gui,
-	                                 final List<String> others)
+									final List<String> others)
 			throws DriverFailedException {
 		if (gui) {
 			SwingUtilities
@@ -232,7 +231,7 @@ public final class AppStarter implements ISPDriver {
 		} else {
 			final List<ISPDriver> drivers =
 					new ArrayList<>(CACHE.values().stream().map(Pair::first)
-							                .collect(Collectors.toSet()));
+											.collect(Collectors.toSet()));
 			try (final ICLIHelper cli = new CLIHelper()) {
 				startChosenDriver(NullCleaner.assertNotNull(drivers.get(
 						cli.chooseFromList(drivers, "CLI apps available:",
@@ -252,13 +251,11 @@ public final class AppStarter implements ISPDriver {
 	 * @param params non-option parameters
 	 * @throws DriverFailedException on fatal error
 	 */
-	private static void startChosenDriver(final ISPDriver driver, // NOPMD
-	                                      final List<String> params)
+	private static void startChosenDriver(final ISPDriver driver,
+										final List<String> params)
 			throws DriverFailedException {
-		driver.startDriver(NullCleaner.assertNotNull(params
-				                                             .toArray(
-						                                             new String[params
-								                                                        .size()])));
+		driver.startDriver(NullCleaner.assertNotNull(params.toArray(
+				new String[params.size()])));
 	}
 
 	/**
@@ -269,7 +266,7 @@ public final class AppStarter implements ISPDriver {
 	 * @throws DriverFailedException on fatal error
 	 */
 	private static void startChosenDriver(final ISPDriver driver,
-	                                      final IDriverModel model)
+										final IDriverModel model)
 			throws DriverFailedException {
 		driver.startDriver(model);
 	}
@@ -278,7 +275,7 @@ public final class AppStarter implements ISPDriver {
 	 * Logger.
 	 */
 	private static final Logger LOGGER = TypesafeLogger
-			                                     .getLogger(AppStarter.class);
+												.getLogger(AppStarter.class);
 
 	/**
 	 * Entry point: start the driver.
@@ -293,7 +290,7 @@ public final class AppStarter implements ISPDriver {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (final ClassNotFoundException | InstantiationException
-				               | IllegalAccessException | UnsupportedLookAndFeelException except) {
+										| IllegalAccessException | UnsupportedLookAndFeelException except) {
 			LOGGER.log(Level.SEVERE,
 					"Failed to switch to system look-and-feel", except);
 		}

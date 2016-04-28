@@ -1,9 +1,6 @@
 package view.map.details;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,13 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
+import javax.swing.*;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
 import model.map.HasImage;
@@ -55,8 +46,8 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger
-			                                     .getLogger(FixtureCellRenderer.class);
+	private static final Logger LOGGER =
+			TypesafeLogger.getLogger(FixtureCellRenderer.class);
 	/**
 	 * the default fixture icon.
 	 */
@@ -77,26 +68,24 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 	 * @return a component representing the cell
 	 */
 	@Override
-	public Component getListCellRendererComponent(@Nullable final JList<? extends TileFixture>
-			                                                  list,
-	                                              final TileFixture value,
-	                                              final int index,
-	                                              final boolean isSelected,
-	                                              final boolean cellHasFocus) {
+	public Component getListCellRendererComponent(@Nullable
+												final JList<? extends TileFixture> list,
+												final TileFixture value,
+												final int index,
+												final boolean isSelected,
+												final boolean cellHasFocus) {
 		assert list != null;
 		final Component component = LIST_DEFAULT.getListCellRendererComponent(
 				list, value, index, isSelected, cellHasFocus);
-		((JLabel) component).setText("<html><p>" + value.toString()
-				                             + "</p></html>");
+		((JLabel) component).setText("<html><p>" + value.toString() + "</p></html>");
 		if (value instanceof HasImage) {
 			((JLabel) component).setIcon(getIcon((HasImage) value));
 		} else {
 			((JLabel) component).setIcon(defaultFixtIcon);
 		}
-		component.setMaximumSize(new Dimension(
-				                                      component.getMaximumSize().width,
-				                                      component.getMaximumSize().height *
-						                                      2));
+		component.setMaximumSize(new Dimension(component.getMaximumSize().width,
+													component.getMaximumSize().height *
+															2));
 		setComponentPreferredSize((JComponent) component, list.getWidth());
 		return component;
 	}
@@ -123,8 +112,7 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 		try {
 			retval = ImageLoader.getLoader().loadIcon(image);
 		} catch (final FileNotFoundException e) {
-			LOGGER.log(Level.SEVERE, "image file images/" + image
-					                         + " not found");
+			LOGGER.log(Level.SEVERE, "image file images/" + image + " not found");
 			LOGGER.log(Level.FINEST, "With stack trace", e);
 			MISSING.add(image);
 			retval = defaultFixtIcon;
@@ -143,8 +131,8 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 		 * The margin we allow around the chit itself in the default image.
 		 */
 		final int imageSize = 24; // NOPMD
-		final BufferedImage temp = new BufferedImage(imageSize, imageSize,
-				                                            BufferedImage.TYPE_INT_ARGB);
+		final BufferedImage temp =
+				new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D pen = temp.createGraphics();
 		final Color saveColor = pen.getColor();
 		pen.setColor(Color.RED);
@@ -175,9 +163,8 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 	 * @param width     the width we're working within
 	 */
 	private static void setComponentPreferredSize(final JComponent component,
-	                                              final int width) {
-		final View view = (View) component
-				                         .getClientProperty(BasicHTML.propertyKey);
+												final int width) {
+		final View view = (View) component.getClientProperty(BasicHTML.propertyKey);
 		view.setSize(width, 0);
 		final int wid = (int) Math.ceil(view.getPreferredSpan(View.X_AXIS));
 		final int height = (int) Math.ceil(view.getPreferredSpan(View.Y_AXIS));

@@ -36,12 +36,11 @@ public final class AdvancementStart implements SimpleDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-a", "--adv", ParamCount.AtLeastOne,
-								   "View a player's workers and manage their " +
-										   "advancement",
-								   "View a player's units, the workers in those units, " +
-										   "each worker's Jobs, and his or her level in " +
-										   "each Skill in each Job.",
-								   AdvancementStart.class);
+								"View a player's workers and manage their advancement",
+								"View a player's units, the workers in those units, each "
+										+ "worker's Jobs, and his or her level in each "
+										+ "Skill in each Job.",
+								AdvancementStart.class);
 
 	/**
 	 * Run the driver

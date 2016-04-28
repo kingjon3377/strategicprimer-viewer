@@ -66,7 +66,7 @@ public final class EqualsAny {
 			return false; // NOPMD
 		} else {
 			return StreamSupport.stream(values.spliterator(), false)
-					       .anyMatch(val -> Objects.equals(against, val));
+						.anyMatch(val -> Objects.equals(against, val));
 		}
 	}
 }

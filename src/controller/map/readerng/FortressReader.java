@@ -1,17 +1,15 @@
 package controller.map.readerng;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.logging.Logger;
-
-import javax.xml.XMLConstants;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Logger;
+import javax.xml.XMLConstants;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.Implement;
@@ -67,18 +65,16 @@ public final class FortressReader implements INodeHandler<Fortress> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public Fortress parse(final StartElement element,
-	                      final Iterable<XMLEvent> stream,
-	                      final IMutablePlayerCollection players,
-	                      final Warning warner, final IDFactory idFactory)
-			throws SPFormatException {
+	public Fortress parse(final StartElement element, final Iterable<XMLEvent> stream,
+						final IMutablePlayerCollection players, final Warning warner,
+						final IDFactory idFactory) throws SPFormatException {
 		requireNonEmptyParameter(element, "owner", false, warner);
 		requireNonEmptyParameter(element, "name", false, warner);
 		final Fortress fort =
 				new Fortress(players.getPlayer(getIntegerAttribute(element, "owner",
 						-1)),
-						            getAttribute(element, "name", ""),
-						            getOrGenerateID(element, warner, idFactory));
+									getAttribute(element, "name", ""),
+									getOrGenerateID(element, warner, idFactory));
 		addImage(element, fort);
 		addPortrait(element, fort);
 		for (final XMLEvent event : stream) {
@@ -86,8 +82,8 @@ public final class FortressReader implements INodeHandler<Fortress> {
 					NullCleaner.assertNotNull(
 							event.asStartElement().getName().getNamespaceURI()),
 					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
-				final String memberTag = event.asStartElement().getName()
-												 .getLocalPart().toLowerCase();
+				final String memberTag =
+						event.asStartElement().getName().getLocalPart().toLowerCase();
 				switch (memberTag) {
 				case "unit":
 					fort.addMember(UNIT_READER.parse(
@@ -109,10 +105,8 @@ public final class FortressReader implements INodeHandler<Fortress> {
 							NullCleaner.assertNotNull(element.getName()),
 							NullCleaner.assertNotNull(event.asStartElement()));
 				}
-			} else if (event.isEndElement()
-							   &&
-							   element.getName().equals(event.asEndElement().getName()
-							   )) {
+			} else if (event.isEndElement() &&
+							element.getName().equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
@@ -160,8 +154,8 @@ public final class FortressReader implements INodeHandler<Fortress> {
 			} else if (member instanceof ResourcePile) {
 				retval.addChild(RES_READER.write((ResourcePile) member));
 			} else {
-				LOGGER.severe("Unhandled FortressMember class: "
-									  + member.getClass().getName());
+				LOGGER.severe(
+						"Unhandled FortressMember class: " + member.getClass().getName());
 			}
 		}
 		retval.addImageAttribute(obj);

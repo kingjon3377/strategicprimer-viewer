@@ -49,9 +49,8 @@ public final class EmptyIterator<T> implements Iterator<T> {
 	 */
 	@Override
 	public void remove() {
-		throw new UnsupportedOperationException(
-				                                       "Nothing to remove in an empty " +
-						                                       "iterator");
+		throw new UnsupportedOperationException("Nothing to remove in an empty " +
+														"iterator");
 	}
 
 	/**

@@ -2,7 +2,7 @@ package view.map.main;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.JComponent;
+import javax.swing.*;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -60,8 +60,7 @@ public final class MapWindowSizeListener extends WindowAdapter {
 			addend = -1;
 		}
 		add ^= true;
-		component.setSize(component.getWidth() + addend, component.getHeight()
-				                                                 + addend);
+		component.setSize(component.getWidth() + addend, component.getHeight() + addend);
 	}
 
 	/**
@@ -79,8 +78,7 @@ public final class MapWindowSizeListener extends WindowAdapter {
 			addend = -1;
 		}
 		add ^= true;
-		component.setSize(component.getWidth() + addend, component.getHeight()
-				                                                 + addend);
+		component.setSize(component.getWidth() + addend, component.getHeight() + addend);
 	}
 
 	/**

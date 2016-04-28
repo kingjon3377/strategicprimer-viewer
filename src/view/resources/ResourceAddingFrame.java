@@ -143,8 +143,8 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		model = dmodel;
 		final IDFactory idf = IDFactoryFiller.createFactory(model);
 		current = StreamSupport.stream(dmodel.getPlayers().spliterator(), false)
-						  .filter(player -> player.isCurrent())
-						  .findAny().orElse(new Player(-1, ""));
+						.filter(player -> player.isCurrent())
+						.findAny().orElse(new Player(-1, ""));
 		resourceLabel =
 				new JLabel(String.format("Add resource for %s:", current.getName()));
 		implementLabel =
@@ -194,11 +194,9 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 				resUnitsBox.requestFocusInWindow();
 				return;
 			}
-			final ResourcePile pile = new ResourcePile(idf.createID(), kind,
-															  resource,
-															  resQtyModel.getNumber()
-																	  .intValue(),
-															  units);
+			final ResourcePile pile = new ResourcePile(idf.createID(), kind, resource,
+															resQtyModel.getNumber()
+																	.intValue(), units);
 			pile.setCreated(resCreatedModel.getNumber().intValue());
 			model.addResource(pile, current);
 			logAddition(pile.toString());
@@ -216,7 +214,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 				((JTextField) inner).addActionListener(list);
 			} else {
 				System.out.println("Editor wasn't a text field, but a " +
-										   inner.getClass().getCanonicalName());
+										inner.getClass().getCanonicalName());
 			}
 		};
 		// Unfortunately, this would fire every time the "selected item" changed!
@@ -281,8 +279,9 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	 * @param secondComponent the second component
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	private static void addPair(final Container container, final Component firstComponent,
-	                            final Component secondComponent) {
+	private static void addPair(final Container container,
+								final Component firstComponent,
+								final Component secondComponent) {
 		final JPanel panel = new BoxPanel(false);
 		panel.add(Box.createVerticalGlue());
 		panel.add(firstComponent);

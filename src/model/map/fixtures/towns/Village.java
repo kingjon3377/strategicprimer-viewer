@@ -1,13 +1,11 @@
 package model.map.fixtures.towns;
 
 import java.io.IOException;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableImage;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.SubsettableFixture;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**
@@ -67,7 +65,7 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	 * @param vRace   the dominant race of the village
 	 */
 	public Village(final TownStatus vstatus, final String vName,
-	               final int idNum, final Player player, final String vRace) {
+					final int idNum, final Player player, final String vRace) {
 		status = vstatus;
 		name = vName;
 		id = idNum;
@@ -92,10 +90,8 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder builder = new StringBuilder(52 + name.length()
-				                                                +
-				                                                owner.getName().length
-						                                                                ());
+		final StringBuilder builder =
+				new StringBuilder(52 + name.length() + owner.getName().length());
 		if (owner.isIndependent()) {
 			builder.append("Independent ");
 		}
@@ -137,12 +133,12 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof Village)
-				                         && (status == ((Village) obj).status)
-				                         && name.equals(((Village) obj).name)
-				                         && (id == ((Village) obj).id)
-				                         && owner.equals(((Village) obj).owner)
-				                         && race.equals(((Village) obj).race));
+		return (this == obj) ||
+					((obj instanceof Village) && (status == ((Village) obj).status) &&
+								name.equals(((Village) obj).name) &&
+								(id == ((Village) obj).id) &&
+								owner.equals(((Village) obj).owner) &&
+								race.equals(((Village) obj).race));
 	}
 
 	/**
@@ -172,10 +168,10 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return (fix instanceof Village) && (status == ((Village) fix).status)
-				       && name.equals(((Village) fix).name)
-				       && owner.equals(((Village) fix).owner)
-				       && race.equals(((Village) fix).race);
+		return (fix instanceof Village) && (status == ((Village) fix).status) &&
+					name.equals(((Village) fix).name) &&
+					owner.equals(((Village) fix).owner) &&
+					race.equals(((Village) fix).race);
 	}
 
 	/**
@@ -289,27 +285,28 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-	                        final String context) throws IOException {
+							final String context) throws IOException {
 		if (obj instanceof Village) {
 			final Village village = (Village) obj;
 			return !(!areIntItemsEqual(ostream, id, village.id, context,
 					"\tIDs differ\n") ||
-					         !areObjectsEqual(ostream, status, village.status, context,
-							         " In village (ID #", Integer.toString(id),
-							         "):\tVillage status differs\n") ||
-					         !areObjectsEqual(ostream, name, village.name, context,
-							         " In village (ID #", Integer.toString(id),
-							         "):\tVillage name differs\n") ||
-					         !areObjectsEqual(ostream, race, village.race, context,
-							         " In village ", name, " (ID #", Integer.toString
-									                                                 (id),
-							         "):\tDominant race differs\n") ||
-					         !isConditionTrue(ostream,
-							         (owner.getPlayerId() ==
-									          village.owner.getPlayerId()) ||
-									         village.owner.isIndependent(), context,
-							         " In village ", name, " (ID #", Integer.toString(id),
-							         "):\tOwners differ\n"));
+							!areObjectsEqual(ostream, status, village.status, context,
+									" In village (ID #", Integer.toString(id),
+									"):\tVillage status differs\n") ||
+							!areObjectsEqual(ostream, name, village.name, context,
+									" In village (ID #", Integer.toString(id),
+									"):\tVillage name differs\n") ||
+							!areObjectsEqual(ostream, race, village.race, context,
+									" In village ", name, " (ID #", Integer.toString
+																					(id),
+									"):\tDominant race differs\n") ||
+							!isConditionTrue(ostream, (owner.getPlayerId() ==
+																village.owner
+																		.getPlayerId()) ||
+															village.owner
+																	.isIndependent(),
+									context, " In village ", name, " (ID #",
+									Integer.toString(id), "):\tOwners differ\n"));
 		} else {
 			ostream.append("Incompatible types\n");
 			return false;

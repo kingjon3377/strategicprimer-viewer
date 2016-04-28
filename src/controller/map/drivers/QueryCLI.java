@@ -59,15 +59,15 @@ public final class QueryCLI implements SimpleDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-m", "--map", ParamCount.One,
-					               "Answer questions about a map.",
-					               "Look at tiles on a map. Or run hunting, gathering, or fishing.",
-					               QueryCLI.class);
+								"Answer questions about a map.",
+								"Look at tiles on a map. Or run hunting, gathering, " +
+										"or fishing.",
+								QueryCLI.class);
 
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger
-			                                     .getLogger(QueryCLI.class);
+	private static final Logger LOGGER = TypesafeLogger.getLogger(QueryCLI.class);
 
 	/**
 	 * How many hours we assume a working day is for a hunter or such.
@@ -114,16 +114,13 @@ public final class QueryCLI implements SimpleDriver {
 			fortressInfo(model.getMap(), selectPoint(cli), cli);
 			break;
 		case 'h':
-			hunt(hmodel, selectPoint(cli), true, cli, HUNTER_HOURS
-					                                           * HOURLY_ENCOUNTERS);
+			hunt(hmodel, selectPoint(cli), true, cli, HUNTER_HOURS * HOURLY_ENCOUNTERS);
 			break;
 		case 'i':
-			hunt(hmodel, selectPoint(cli), false, cli, HUNTER_HOURS
-					                                            * HOURLY_ENCOUNTERS);
+			hunt(hmodel, selectPoint(cli), false, cli, HUNTER_HOURS * HOURLY_ENCOUNTERS);
 			break;
 		case 'g':
-			gather(hmodel, selectPoint(cli), cli, HUNTER_HOURS
-					                                       * HOURLY_ENCOUNTERS);
+			gather(hmodel, selectPoint(cli), cli, HUNTER_HOURS * HOURLY_ENCOUNTERS);
 			break;
 		case 'e':
 			herd(cli, hmodel);
@@ -152,7 +149,7 @@ public final class QueryCLI implements SimpleDriver {
 	 * @throws IOException on I/O error interacting with user
 	 */
 	private static void count(final IMapNG map, final List<Player> players,
-	                   final ICLIHelper cli) throws IOException {
+							final ICLIHelper cli) throws IOException {
 		final int playerNum = cli.chooseFromList(players,
 				"Players in the map:", "Map contains no players",
 				"Owner of workers to count: ", true);
@@ -163,17 +160,18 @@ public final class QueryCLI implements SimpleDriver {
 		int count = 0;
 		for (final Point loc : map.locations()) {
 			for (final TileFixture fix : map.getOtherFixtures(loc)) {
-				if ((fix instanceof IUnit)
-						    && player.equals(((IUnit) fix).getOwner())) {
+				if ((fix instanceof IUnit) && player.equals(((IUnit) fix).getOwner())) {
 					count += StreamSupport.stream(((IUnit) fix).spliterator(), false)
-							         .filter(IWorker.class::isInstance).count();
+									.filter(IWorker.class::isInstance).count();
 				} else if (fix instanceof Fortress) {
 					count += StreamSupport.stream(((Fortress) fix).spliterator(), false)
-							.filter(IUnit.class::isInstance).map(IUnit.class::cast)
-							.filter(unit -> player.equals(unit.getOwner()))
-							.flatMap(unit -> StreamSupport
-									                 .stream(unit.spliterator(), false))
-							.filter(IWorker.class::isInstance).count();
+									.filter(IUnit.class::isInstance)
+									.map(IUnit.class::cast)
+									.filter(unit -> player.equals(unit.getOwner()))
+									.flatMap(unit -> StreamSupport
+															.stream(unit.spliterator(),
+																	false))
+									.filter(IWorker.class::isInstance).count();
 				}
 			}
 		}
@@ -206,7 +204,7 @@ public final class QueryCLI implements SimpleDriver {
 	 * @return the distance between the two points
 	 */
 	private static double distance(final Point base, final Point dest,
-	                               final MapDimensions dims) {
+								final MapDimensions dims) {
 		final int rawXdiff = base.row - dest.row;
 		final int rawYdiff = base.col - dest.col;
 		final int xdiff;
@@ -317,8 +315,8 @@ public final class QueryCLI implements SimpleDriver {
 	 * @param encounters how many encounters to show
 	 */
 	private static void hunt(final HuntingModel hmodel, final Point point,
-	                         final boolean land, final ICLIHelper cli,
-	                         final int encounters) {
+							final boolean land, final ICLIHelper cli,
+							final int encounters) {
 		if (land) {
 			hmodel.hunt(point, encounters).forEach(cli::println);
 		} else {
@@ -335,7 +333,7 @@ public final class QueryCLI implements SimpleDriver {
 	 * @param encounters how many encounters to show
 	 */
 	private static void gather(final HuntingModel hmodel, final Point point,
-	                           final ICLIHelper cli, final int encounters) {
+							final ICLIHelper cli, final int encounters) {
 		hmodel.gather(point, encounters).forEach(cli::println);
 	}
 
@@ -348,7 +346,7 @@ public final class QueryCLI implements SimpleDriver {
 	 * @param cli the interface to the user
 	 */
 	private static void fortressInfo(final IMapNG map, final Point location,
-	                                 final ICLIHelper cli) {
+									final ICLIHelper cli) {
 		cli.print("Terrain is ");
 		cli.println(NullCleaner.assertNotNull(map.getBaseTerrain(location).toString()));
 		final List<TileFixture> fixtures =

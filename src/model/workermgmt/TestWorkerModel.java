@@ -82,8 +82,7 @@ public final class TestWorkerModel {
 		fixtures.add(new Oasis(8));
 		Collections.shuffle(fixtures);
 		final SPMapNG map =
-				new SPMapNG(new MapDimensions(3, 3, 2), new PlayerCollection(),
-						           -1);
+				new SPMapNG(new MapDimensions(3, 3, 2), new PlayerCollection(), -1);
 		for (final Point point : map.locations()) {
 			map.addFixture(NullCleaner.assertNotNull(point),
 					NullCleaner.assertNotNull(fixtures.remove(0)));
@@ -131,8 +130,7 @@ public final class TestWorkerModel {
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	@SafeVarargs
-	private static <T> void addItem(final T item,
-	                                final List<? super T>... lists) {
+	private static <T> void addItem(final T item, final List<? super T>... lists) {
 		for (final List<? super T> list : lists) {
 			list.add(item);
 		}

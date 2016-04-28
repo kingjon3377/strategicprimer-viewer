@@ -32,8 +32,7 @@ public interface GraphicalParamsListener extends EventListener {
 	 * @param newDim the new dimensions
 	 */
 	@SuppressWarnings("UnusedParameters")
-	void dimensionsChanged(VisibleDimensions oldDim,
-	                       VisibleDimensions newDim);
+	void dimensionsChanged(VisibleDimensions oldDim, VisibleDimensions newDim);
 
 	/**
 	 * @param oldSize the previous tsize/zoom level

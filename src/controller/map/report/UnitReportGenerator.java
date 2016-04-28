@@ -57,7 +57,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public UnitReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull
-																					  IFixture>> comparator) {
+																					IFixture>> comparator) {
 		super(comparator);
 	}
 
@@ -81,14 +81,13 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 */
 	@Override
 	public String produce(
-			                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-										 fixtures,
-			                     final IMapNG map, final Player currentPlayer,
-			                     final Unit item, final Point loc) {
+									final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+										fixtures,
+									final IMapNG map, final Player currentPlayer,
+									final Unit item, final Point loc) {
 		final StringBuilder builder =
-				new StringBuilder(52 + item.getKind().length()
-										  + item.getName().length()
-										  + item.getOwner().getName().length());
+				new StringBuilder(52 + item.getKind().length() + item.getName().length() +
+										item.getOwner().getName().length());
 		builder.append("Unit of type ");
 		builder.append(item.getKind());
 		builder.append(", named ");
@@ -135,12 +134,10 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * @return a sub-report on the unit
 	 */
 	@Override
-	public IReportNode produceRIR(
-			                             final DelayedRemovalMap<Integer,
-																			   Pair<Point, IFixture>> fixtures,
-			                             final IMapNG map,
-			                             final Player currentPlayer,
-			                             final Unit item, final Point loc) {
+	public IReportNode produceRIR(final DelayedRemovalMap<Integer,
+																	Pair<Point, IFixture>> fixtures,
+								final IMapNG map, final Player currentPlayer,
+								final Unit item, final Point loc) {
 		final String simple; // NOPMD
 		if (item.getOwner().isIndependent()) {
 			simple = concat("Unit of type ", item.getKind(), ", named ",
@@ -178,8 +175,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 *                experience---true only if the current player owns the worker.
 	 * @return a sub-report on that worker.
 	 */
-	private static String workerReport(final Worker worker,
-									   final boolean details) {
+	private static String workerReport(final Worker worker, final boolean details) {
 		final StringBuilder builder = new StringBuilder(2048);
 		builder.append(worker.getName());
 		builder.append(", a ");
@@ -256,39 +252,24 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 													final Worker worker,
 													final boolean details) {
 		final IReportNode retval = new ComplexReportNode(loc,
-																	   worker.getName() +
-																			   ", a " +
-																			   worker
-																					   .getRace() +
-																			   ". ");
+																worker.getName() +
+																		", a " +
+																		worker.getRace() +
+																		". ");
 		final WorkerStats stats = worker.getStats();
 		if ((stats != null) && details) {
-			retval.add(new SimpleReportNode(loc,
-												   "He or she has the following stats: ",
-												   Integer
-														   .toString(
-																   stats.getHitPoints()),
-												   " / ", Integer
-																  .toString(
-																		  stats
-																				  .getMaxHitPoints()),
-												   " Hit Points, Strength ",
-												   getModifierString(stats
-																			 .getStrength()),
-												   ", Dexterity ",
-												   getModifierString(
-														   stats.getDexterity()),
-												   ", Constitution ",
-												   getModifierString(
-														   stats.getConstitution()),
-												   ", Intelligence ",
-												   getModifierString(stats
-																			 .getIntelligence()),
-												   ", Wisdom ",
-												   getModifierString(stats.getWisdom()),
-												   ", Charisma ",
-												   getModifierString(
-														   stats.getCharisma())));
+			retval.add(new SimpleReportNode(loc, "He or she has the following stats: ",
+												Integer.toString(stats.getHitPoints()),
+												" / ", Integer.toString(
+					stats.getMaxHitPoints()), " Hit Points, Strength ",
+												getModifierString(stats.getStrength()),
+												", Dexterity ", getModifierString(
+					stats.getDexterity()), ", Constitution ", getModifierString(
+					stats.getConstitution()), ", Intelligence ", getModifierString(
+					stats.getIntelligence()), ", Wisdom ",
+												getModifierString(stats.getWisdom()),
+												", Charisma ", getModifierString(
+					stats.getCharisma())));
 		}
 		if (worker.iterator().hasNext() && details) {
 			final IReportNode jobs = new ListReportNode(loc, HAS_TRAINING);
@@ -309,7 +290,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 */
 	private static MutableTreeNode produceJobRIR(final Job job, final Point loc) {
 		return new SimpleReportNode(loc, Integer.toString(job.getLevel()),
-										   " levels in ", job.getName(), getSkills(job));
+										" levels in ", job.getName(), getSkills(job));
 	}
 
 	/**
@@ -322,12 +303,12 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 */
 	@Override
 	public String produce(
-								 final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-										 fixtures,
-								 final IMapNG map, final Player currentPlayer) {
+								final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+										fixtures,
+								final IMapNG map, final Player currentPlayer) {
 		// This can get big; we'll say 8K.
-		final StringBuilder builder = new StringBuilder(8192)
-											  .append("<h4>Units in the map</h4>\n");
+		final StringBuilder builder =
+				new StringBuilder(8192).append("<h4>Units in the map</h4>\n");
 		builder.append("<p>(Any units listed above are not described again.)</p>\n");
 		final StringBuilder ours =
 				new StringBuilder(8192).append("<h5>Your units</h5>\n");

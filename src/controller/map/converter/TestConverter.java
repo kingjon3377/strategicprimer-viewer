@@ -92,23 +92,20 @@ public final class TestConverter {
 	@Test
 	public void testConversion() {
 		final IMutableMapNG start =
-				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
-								   0);
+				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), 0);
 		final Point pointOne = PointFactory.point(0, 0);
-		final Animal fixture = new Animal("animal", false, true,
-												 "domesticated", 1);
+		final Animal fixture = new Animal("animal", false, true, "domesticated", 1);
 		start.addFixture(pointOne, fixture);
 		final Point pointTwo = PointFactory.point(0, 1);
 		final CacheFixture fixtureTwo = new CacheFixture("gemstones", "small",
 																2);
 		start.addFixture(pointTwo, fixtureTwo);
 		final Point pointThree = PointFactory.point(1, 0);
-		final IUnit fixtureThree = new Unit(new Player(0, "A. Player"),
-												   "legion", "eagles", 3);
+		final IUnit fixtureThree =
+				new Unit(new Player(0, "A. Player"), "legion", "eagles", 3);
 		start.addFixture(pointThree, fixtureThree);
 		final Point pointFour = PointFactory.point(1, 1);
-		final Fortress fixtureFour = new Fortress(new Player(1, "B. Player"),
-														 "HQ", 4);
+		final Fortress fixtureFour = new Fortress(new Player(1, "B. Player"), "HQ", 4);
 		start.addFixture(pointFour, fixtureFour);
 		final IMapNG converted = ResolutionDecreaseConverter.convert(start);
 		final Point zeroPoint = PointFactory.point(0, 0);
@@ -152,8 +149,8 @@ public final class TestConverter {
 		converted.setBaseTerrain(PointFactory.point(0, 1), TileType.Steppe);
 		converted.setGround(PointFactory.point(0, 1), new Ground(ROCK_TYPE, false));
 		converted.setForest(PointFactory.point(0, 1), new Forest(BOREAL_TREE, false));
-		converted.addFixture(PointFactory.point(0, 1), new Meadow(FIELD_TYPE, true, true, 12,
-				                                                         FieldStatus.Growing));
+		converted.addFixture(PointFactory.point(0, 1),
+				new Meadow(FIELD_TYPE, true, true, 12, FieldStatus.Growing));
 		converted.setBaseTerrain(PointFactory.point(0, 2), TileType.Steppe);
 		converted.setGround(PointFactory.point(0, 2), new Ground(ROCK_TYPE, false));
 		converted.setForest(PointFactory.point(0, 2), new Forest(BOREAL_TREE, false));
@@ -191,8 +188,8 @@ public final class TestConverter {
 		converted.addFixture(PointFactory.point(1, 2),
 				new Village(TownStatus.Active, "", 0, noPlayer, "dwarf"));
 
-		final String maxIterWarn = "FIXME: A fixture here was force-added after " +
-				                           "MAX_ITER";
+		final String maxIterWarn =
+				"FIXME: A fixture here was force-added after " + "MAX_ITER";
 
 		converted.addFixture(PointFactory.point(1, 2), new TextFixture(maxIterWarn, 10));
 		converted.addFixture(PointFactory.point(1, 2), new Forest(TEMP_TREE, false));
@@ -370,7 +367,7 @@ public final class TestConverter {
 
 
 		try (StringWriter outOne = new StringWriter();
-		     StringWriter outTwo = new StringWriter()) {
+				StringWriter outTwo = new StringWriter()) {
 			assertEquals("Products of two runs are both or neither subsets of expected",
 					converted.isSubset(
 							new OneToTwoConverter().convert(original, true), outOne, ""),
@@ -392,7 +389,7 @@ public final class TestConverter {
 	 * @return whether the stream contains the item
 	 */
 	private static <T, U extends T> boolean doesStreamContain(final Stream<T> stream,
-	                                                          final U item) {
+															final U item) {
 		return stream.anyMatch(each -> Objects.equals(each, item));
 	}
 
@@ -417,16 +414,15 @@ public final class TestConverter {
 						"type='temperate_forest' event='219'></tile></row></map>";
 		final StringWriter out = new StringWriter();
 		//noinspection unchecked
-		ZeroToOneConverter.convert(
-				new IteratorWrapper<>(XMLInputFactory.newInstance()
-						                      .createXMLEventReader(
-								                      new StringReader(orig))),
+		ZeroToOneConverter.convert(new IteratorWrapper<>(XMLInputFactory.newInstance()
+																.createXMLEventReader(
+																		new StringReader(orig))),
 				out);
 		final StringWriter actualXML = new StringWriter();
 		CompactXMLWriter.writeSPObject(actualXML, new MapReaderAdapter()
-				                                                  .readMapFromStream(
-						                                                  new StringReader(out.toString()),
-						                                                  Warning.Ignore));
+														.readMapFromStream(
+																new StringReader(out.toString()),
+																Warning.Ignore));
 		final IMutableMapNG expected =
 				new SPMapNG(new MapDimensions(2, 2, 1), new PlayerCollection(), 0);
 		expected.addPlayer(new Player(0, "Test Player"));
@@ -436,7 +432,7 @@ public final class TestConverter {
 		expected.setBaseTerrain(PointFactory.point(1, 1), TileType.TemperateForest);
 		expected.addFixture(PointFactory.point(1, 0),
 				new Town(TownStatus.Burned, TownSize.Small, 0, "", 0,
-						        new Player(-1, "Independent")));
+								new Player(-1, "Independent")));
 		expected.addFixture(PointFactory.point(1, 1), new MineralVein("coal", true, 0, 1));
 
 		final StringWriter expectedXML = new StringWriter();
@@ -444,8 +440,7 @@ public final class TestConverter {
 		assertEquals("Converted map's serialized form was as expected",
 				expectedXML.toString(), actualXML.toString());
 		assertEquals("Converted map was as expected", expected,
-				new MapReaderAdapter().readMapFromStream(new StringReader(out.toString
-						                                                              ()),
+				new MapReaderAdapter().readMapFromStream(new StringReader(out.toString()),
 						Warning.Ignore));
 	}
 	/**

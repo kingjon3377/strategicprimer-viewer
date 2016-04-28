@@ -1,16 +1,11 @@
 package view.map.main;
 
+import controller.map.misc.IDFactoryFiller;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import controller.map.misc.IDFactoryFiller;
+import javax.swing.*;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
 import model.listeners.SelectionChangeSupport;
@@ -20,6 +15,7 @@ import model.map.PointFactory;
 import model.map.TileType;
 import model.misc.IDriverModel;
 import model.viewer.IViewerModel;
+import org.eclipse.jdt.annotation.Nullable;
 import view.worker.NewUnitDialog;
 
 /**
@@ -76,9 +72,9 @@ public final class TerrainChangingMenu extends JPopupMenu
 	 */
 	public TerrainChangingMenu(final int version, final IViewerModel dmodel) {
 		model = dmodel;
-		nuDialog = new NewUnitDialog(dmodel.getMap().getCurrentPlayer(),
-				                            IDFactoryFiller
-						                            .createFactory(dmodel.getMap()));
+		nuDialog = new NewUnitDialog(dmodel.getMap().getCurrentPlayer(), IDFactoryFiller
+																				.createFactory(
+																						dmodel.getMap()));
 		nuDialog.addNewUnitListener(unit -> {
 			dmodel.getMap().addFixture(point, unit);
 			dmodel.setSelection(point);
@@ -121,8 +117,7 @@ public final class TerrainChangingMenu extends JPopupMenu
 	 * @param list a listener to add
 	 */
 	@Override
-	public void addSelectionChangeListener(
-			                                      final SelectionChangeListener list) {
+	public void addSelectionChangeListener(final SelectionChangeListener list) {
 		scs.addSelectionChangeListener(list);
 	}
 
@@ -130,9 +125,7 @@ public final class TerrainChangingMenu extends JPopupMenu
 	 * @param list a listener to remove
 	 */
 	@Override
-	public void removeSelectionChangeListener(
-			                                         final SelectionChangeListener
-					                                         list) {
+	public void removeSelectionChangeListener(final SelectionChangeListener list) {
 		scs.removeSelectionChangeListener(list);
 	}
 
@@ -141,8 +134,7 @@ public final class TerrainChangingMenu extends JPopupMenu
 	 * @param newPoint ignored
 	 */
 	@Override
-	public void selectedPointChanged(@Nullable final Point old,
-	                                 final Point newPoint) {
+	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
 		point = newPoint;
 		if (TileType.NotVisible == model.getMap().getBaseTerrain(newPoint)) {
 			newUnitItem.setEnabled(false);

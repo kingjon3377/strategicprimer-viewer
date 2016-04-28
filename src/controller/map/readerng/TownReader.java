@@ -54,19 +54,19 @@ public final class TownReader implements INodeHandler<@NonNull Town> {
 	 */
 	@Override
 	public Town parse(final StartElement element,
-	                  final Iterable<XMLEvent> stream,
-	                  final IMutablePlayerCollection players,
-	                  final Warning warner, final IDFactory idFactory)
+					final Iterable<XMLEvent> stream,
+					final IMutablePlayerCollection players,
+					final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "name", false, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Town fix =
 				new Town(TownStatus.parseTownStatus(getAttribute(element, "status")),
-						        TownSize.parseTownSize(getAttribute(element, "size")),
-						        getIntegerAttribute(element, "dc"),
-						        getAttribute(element, "name", ""),
-						        getOrGenerateID(element, warner, idFactory),
-						        getPlayerOrIndependent(element, warner, players));
+								TownSize.parseTownSize(getAttribute(element, "size")),
+								getIntegerAttribute(element, "dc"),
+								getAttribute(element, "name", ""),
+								getOrGenerateID(element, warner, idFactory),
+								getPlayerOrIndependent(element, warner, players));
 		addImage(element, fix);
 		addPortrait(element, fix);
 		return fix;
@@ -88,8 +88,8 @@ public final class TownReader implements INodeHandler<@NonNull Town> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final Town obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "town");
+		final SPIntermediateRepresentation retval =
+				new SPIntermediateRepresentation("town");
 		retval.addAttribute("status", obj.status().toString());
 		retval.addAttribute("size", obj.size().toString());
 		retval.addIntegerAttribute("dc", obj.getDC());

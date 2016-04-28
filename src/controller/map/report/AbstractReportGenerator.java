@@ -59,11 +59,11 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	protected AbstractReportGenerator(final Comparator<Pair<Point, IFixture>> comparator) {
 		pairComparator = comparator;
 		if ((comparator instanceof PairComparator) &&
-				    (((PairComparator<Point, IFixture>) comparator)
-						     .first() instanceof DistanceComparator)) {
+					(((PairComparator<Point, IFixture>) comparator)
+							.first() instanceof DistanceComparator)) {
 			distCalculator =
 					(DistanceComparator) ((PairComparator<Point, IFixture>) comparator)
-							                     .first();
+												.first();
 		} else {
 			distCalculator = new DistanceComparator(PointFactory.point(-1, -1));
 		}
@@ -144,7 +144,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 				final StringBuilder builder =
 						new StringBuilder(header.length() + 15 + stream().collect(
 								Collectors.summingInt(value -> value.length() + 15))
-								                                         .intValue());
+																		.intValue());
 				builder
 						.append(header).append('\n').append(OPEN_LIST);
 				for (final String item : this) {

@@ -1,5 +1,6 @@
 package controller.map.drivers;
 
+import controller.map.drivers.DriverUsage.ParamCount;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,10 +12,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import controller.map.drivers.DriverUsage.ParamCount;
 import model.exploration.SurroundingPointIterable;
 import model.map.HasOwner;
 import model.map.IFixture;
@@ -34,6 +31,7 @@ import model.map.fixtures.towns.ITownFixture;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.misc.SimpleMultiMapModel;
+import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
 import util.NullCleaner;
 import util.Pair;
@@ -67,9 +65,9 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-n", "--expand", ParamCount.AtLeastTwo,
-								   "Expand a player's map.",
-								   "Ensure a player's map covers all terrain allied villages can see.",
-								   ExpansionDriver.class);
+								"Expand a player's map.",
+								"Ensure a player's map covers all terrain allied villages can see.",
+								ExpansionDriver.class);
 	/**
 	 * Logger.
 	 */
@@ -121,13 +119,14 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 		final Player currentPlayer = map.getCurrentPlayer();
 		final IllegalStateException ise =
 				new IllegalStateException(
-												 "Unsupported method called on mock " +
-														 "object");
+												"Unsupported method called on mock " +
+														"object");
 		final Collection<Point> villagePoints = map.locationStream()
-				                                        .filter(point ->
-						                                                containsSwornVillage(
-						                                        master, point, currentPlayer))
-				                                        .collect(Collectors.toSet());
+														.filter(point ->
+																		containsSwornVillage(
+																master, point,
+																currentPlayer))
+														.collect(Collectors.toSet());
 		final IUnit mock = new IUnit() {
 			@Override
 			public int getZValue() {
@@ -241,16 +240,14 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 			addSurroundingTerrain(point, master, map, terrainAdditions);
 			addSurroundingFixtures(point, master, fixAdditions, mock);
 		}
-		for (final Map.Entry<Point, TileType> entry : terrainAdditions
-															  .entrySet()) {
+		for (final Map.Entry<Point, TileType> entry : terrainAdditions.entrySet()) {
 			if (entry == null) {
 				continue;
 			}
 			map.setBaseTerrain(NullCleaner.assertNotNull(entry.getKey()),
 					NullCleaner.assertNotNull(entry.getValue()));
 		}
-		for (final Map.Entry<Point, Set<TileFixture>> entry : fixAdditions
-																	  .entrySet()) {
+		for (final Map.Entry<Point, Set<TileFixture>> entry : fixAdditions.entrySet()) {
 			if (entry == null) {
 				continue;
 			}
@@ -275,10 +272,9 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addSurroundingFixtures(final Point point,
-	                                           final IMapNG master,
-	                                           final Map<Point, Set<TileFixture>>
-													   additions,
-	                                           final IUnit owned) {
+											final IMapNG master,
+											final Map<Point, Set<TileFixture>> additions,
+											final IUnit owned) {
 		final List<TileFixture> possibilities = new ArrayList<>();
 		for (final Point neighbor : new SurroundingPointIterable(point,
 																		master
@@ -300,7 +296,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 				} else if (SimpleMovement.shouldAlwaysNotice(owned, fix)) {
 					neighborFixtures.add(fix);
 				} else if (SimpleMovement.shouldSometimesNotice(owned, fix)
-								   && !(fix instanceof CacheFixture)) {
+								&& !(fix instanceof CacheFixture)) {
 					possibilities.add(fix);
 				}
 			}
@@ -319,8 +315,7 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 * @return the value at the key, or a new ArraySet (which is added) if there is no
 	 * value there yet.
 	 */
-	private static <K, V> Set<V> getSetFromMap(final Map<K, Set<V>> map,
-											   final K key) {
+	private static <K, V> Set<V> getSetFromMap(final Map<K, Set<V>> map, final K key) {
 		if (map.containsKey(key)) {
 			return NullCleaner.assertNotNull(map.get(key));
 		} else {
@@ -338,8 +333,8 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addSurroundingTerrain(final Point point, final IMapNG master,
-	                                          final IMutableMapNG map,
-	                                          final Map<Point, TileType> additions) {
+											final IMutableMapNG map,
+											final Map<Point, TileType> additions) {
 		for (final Point neighbor : new SurroundingPointIterable(point,
 																		map.dimensions())) {
 			if (!additions.containsKey(neighbor)
@@ -363,6 +358,6 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 												final Player player) {
 		return map.streamOtherFixtures(point).anyMatch(
 				fix -> (fix instanceof ITownFixture) &&
-						       ((HasOwner) fix).getOwner().equals(player));
+							((HasOwner) fix).getOwner().equals(player));
 	}
 }

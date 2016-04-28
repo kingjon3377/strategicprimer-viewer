@@ -10,9 +10,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.HasKind;
 import model.map.IFixture;
 import model.map.IMapNG;
@@ -36,6 +33,7 @@ import model.report.IReportNode;
 import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
+import org.eclipse.jdt.annotation.NonNull;
 import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
@@ -68,8 +66,8 @@ public final class ImmortalsReportGenerator
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public ImmortalsReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
-																		  @NonNull
-																				  IFixture>> comparator) {
+																		@NonNull
+																				IFixture>> comparator) {
 		super(comparator);
 	}
 
@@ -83,11 +81,9 @@ public final class ImmortalsReportGenerator
 	 * @return the part of the report listing "immortals"
 	 */
 	@Override
-	public String produce(// $codepro.audit.disable cyclomaticComplexity
-						  final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-								  fixtures,
-						  final IMapNG map, final Player currentPlayer) {
-
+	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+									fixtures,
+						final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final List<Point> griffins = new ArrayList<>();
@@ -175,7 +171,7 @@ public final class ImmortalsReportGenerator
 	 */
 	private static int collSize(final Collection<?>... collections) {
 		return Stream.of(collections).collect(Collectors.summingInt(Collection::size))
-					   .intValue();
+					.intValue();
 	}
 
 	/**
@@ -188,9 +184,8 @@ public final class ImmortalsReportGenerator
 	 */
 	@Override
 	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point,
-			                                                                       IFixture>> fixtures,
-
-	                              final IMapNG map, final Player currentPlayer) {
+																				IFixture>> fixtures,
+								final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final IReportNode griffins = new ListReportNode("Griffins");
@@ -250,8 +245,7 @@ public final class ImmortalsReportGenerator
 						(MobileFixture) immortal, point));
 			}
 		}
-		final IReportNode retval = new SectionListReportNode(4,
-																		   "Immortals");
+		final IReportNode retval = new SectionListReportNode(4, "Immortals");
 		optionallyAdd(retval, coalesce("Dragons", dragons),
 				coalesce("Fairies", fairies), trolls, djinni, sphinxes,
 				coalesce("Giants", giants), minotaurs, ogres,
@@ -269,8 +263,7 @@ public final class ImmortalsReportGenerator
 	 * @return a node with all of the nodes as children
 	 */
 	private static IReportNode coalesce(final String header,
-											   final Map<String, IReportNode>
-													   mapping) {
+										final Map<String, IReportNode> mapping) {
 		final IReportNode retval = new ListReportNode(header);
 		mapping.values().forEach(retval::add);
 		return retval;
@@ -281,7 +274,7 @@ public final class ImmortalsReportGenerator
 	 * @param children possible children to add, if they have children of their own
 	 */
 	private static void optionallyAdd(final IReportNode parent,
-									  final IReportNode... children) {
+									final IReportNode... children) {
 		Stream.of(children).filter(child -> child.getChildCount() > 0)
 				.forEach(parent::add);
 	}
@@ -296,11 +289,10 @@ public final class ImmortalsReportGenerator
 	 * we handle here.
 	 */
 	@Override
-	public String produce(// $codepro.audit.disable cyclomaticComplexity
-						  final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-								  fixtures,
-						  final IMapNG map, final Player currentPlayer,
-						  final MobileFixture item, final Point loc) {
+	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+									fixtures,
+						final IMapNG map, final Player currentPlayer,
+						final MobileFixture item, final Point loc) {
 		if (isImmortal(item)) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat(atPoint(loc), "A(n) ", item.toString(), " ",
@@ -320,17 +312,14 @@ public final class ImmortalsReportGenerator
 	 * here.
 	 */
 	@Override
-	public IReportNode produceRIR(
-												final DelayedRemovalMap<Integer,
-																			   Pair<Point, IFixture>> fixtures,
-												final IMapNG map,
-												final Player currentPlayer,
-												final MobileFixture item,
-												final Point loc) {
+	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point,
+																				IFixture>> fixtures,
+								final IMapNG map, final Player currentPlayer,
+								final MobileFixture item, final Point loc) {
 		if (isImmortal(item)) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, atPoint(loc), "A(n) ", item.toString(), " ",
-											   distCalculator.distanceString(loc));
+											distCalculator.distanceString(loc));
 		} else {
 			return EmptyReportNode.NULL_NODE;
 		}
@@ -361,8 +350,8 @@ public final class ImmortalsReportGenerator
 	 * @param builder the builder to print to
 	 */
 	private static void optionallyPrintMap(final Map<String, List<Point>> mapping,
-										   final String infix,
-										   final StringBuilder builder) {
+										final String infix,
+										final StringBuilder builder) {
 		for (final Entry<String, List<Point>> entry : mapping.entrySet()) {
 			builder.append(OPEN_LIST_ITEM).append(entry.getKey()).append(infix);
 			pointCSL(builder, entry.getValue());
@@ -397,7 +386,7 @@ public final class ImmortalsReportGenerator
 	 * @param point   its location in the map
 	 */
 	private static void separateByKind(final Map<String, List<Point>> mapping,
-									   final HasKind item, final Point point) {
+									final HasKind item, final Point point) {
 		final List<Point> points; // NOPMD
 		// For the three classes we deal with here, we don't want just the kind,
 		// we want the full toString, so we use that instead of getKind.
@@ -418,9 +407,8 @@ public final class ImmortalsReportGenerator
 	 * @param item    the item under consideration
 	 * @return the entry in the map for the item's kind
 	 */
-	private static IReportNode separateByKindRIR(
-															   final Map<String, IReportNode> mapping,
-															   final HasKind item) {
+	private static IReportNode separateByKindRIR(final Map<String, IReportNode> mapping,
+												final HasKind item) {
 		// For the three classes we deal with here, we don't want just the kind,
 		// we want the full toString, so we use that instead of getKind.
 		if (mapping.containsKey(item.toString())) {

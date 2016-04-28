@@ -50,7 +50,7 @@ public final class RandomTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-	                            final Iterable<TileFixture> fixtures) {
+								final Iterable<TileFixture> fixtures) {
 		final int roll = SingletonRandom.RANDOM.nextInt(100);
 		return getLowestMatch(roll);
 	}
@@ -62,7 +62,7 @@ public final class RandomTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-	                            final Stream<TileFixture> fixtures) {
+								final Stream<TileFixture> fixtures) {
 		return getLowestMatch(SingletonRandom.RANDOM.nextInt(100));
 	}
 

@@ -79,9 +79,9 @@ public class DriverUsage { // $codepro.audit.disable
 	 * @param driver    the Class object referring to the type of driver this describes
 	 */
 	public DriverUsage(final boolean graph, final String shortOpt,
-	                   final String longOpt, final ParamCount params,
-	                   final String shortDesc, final String longDesc,
-	                   final Class<? extends ISPDriver> driver) {
+					final String longOpt, final ParamCount params,
+					final String shortDesc, final String longDesc,
+					final Class<? extends ISPDriver> driver) {
 		graphical = graph;
 		shortOption = shortOpt;
 		longOption = longOpt;

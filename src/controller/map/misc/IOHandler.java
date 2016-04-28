@@ -1,7 +1,7 @@
 package controller.map.misc;
 
-import java.awt.Component;
-import java.awt.Frame;
+import controller.map.formatexceptions.SPFormatException;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -14,16 +14,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import controller.map.formatexceptions.SPFormatException;
 import model.listeners.PlayerChangeListener;
 import model.listeners.PlayerChangeSource;
 import model.map.IMapNG;
@@ -35,6 +27,7 @@ import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
 import model.viewer.ViewerModel;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import util.Pair;
 import util.TypesafeLogger;
@@ -88,8 +81,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger
-												 .getLogger(IOHandler.class);
+	private static final Logger LOGGER = TypesafeLogger.getLogger(IOHandler.class);
 	/**
 	 * File chooser.
 	 */
@@ -194,7 +186,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 				final ViewerModel nmodel = new ViewerModel(model);
 				SwingUtilities.invokeLater(
 						() -> new ViewerFrame(nmodel, new IOHandler(nmodel, chooser))
-								      .setVisible(true));
+									.setVisible(true));
 				break;
 			case "open secondary map in map viewer":
 				if (model instanceof IMultiMapModel) {
@@ -205,13 +197,14 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 							new ViewerModel(mapPair.first(), mapPair.second());
 					SwingUtilities.invokeLater(
 							() -> new ViewerFrame(submodel, new IOHandler(submodel, chooser))
-									      .setVisible(true));
+										.setVisible(true));
 				}
 				break;
 			case "go to tile":
 				if (model instanceof IViewerModel) {
-					SwingUtilities.invokeLater(() -> new SelectTileDialog(parent, (IViewerModel) model)
-							                                 .setVisible(true));
+					SwingUtilities.invokeLater(
+							() -> new SelectTileDialog(parent, (IViewerModel) model)
+										.setVisible(true));
 				}
 				break;
 			case "close":
@@ -244,10 +237,8 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			case "change current player":
 				final Player retval = (Player) JOptionPane.showInputDialog(parent,
 						"Player to view:", "Choose New Player",
-						JOptionPane.PLAIN_MESSAGE, null, playersAsArray(model
-								                                                .getMap()
-								                                                .players()),
-
+						JOptionPane.PLAIN_MESSAGE, null,
+						playersAsArray(model.getMap().players()),
 						currentPlayer);
 				if (retval != null) {
 					for (final PlayerChangeListener list : playerChangeListeners) {
@@ -307,11 +298,11 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 */
 	private void startNewViewerWindow() {
 		final ViewerModel nmodel = new ViewerModel(new SPMapNG(model.getMapDimensions(),
-				                                                      new PlayerCollection(),
-				                                                      model.getMap()
-						                                                      .getCurrentTurn()),
-
-				                                          new File(""));
+																	new
+																			PlayerCollection(),
+																	model.getMap()
+																			.getCurrentTurn()),
+														new File(""));
 		SwingUtilities.invokeLater(
 				() -> new ViewerFrame(nmodel, new IOHandler(nmodel)).setVisible(true));
 	}
@@ -350,9 +341,8 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 * @param source   the component to use as the parent of the error dialog. May be
 	 *                 null.
 	 */
-	private static void handleError(final Exception except,
-	                                final String filename,
-	                                @Nullable final Component source) {
+	private static void handleError(final Exception except, final String filename,
+									@Nullable final Component source) {
 		final String msg;
 		if (except instanceof XMLStreamException) {
 			msg = XML_ERROR_STRING + ' ' + filename;
@@ -452,9 +442,8 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 * @param source the component to attach the dialog box to. May be null.
 	 */
 	private void handleSecondaryLoadMenu(@Nullable final Component source) {
-		if ((model instanceof IMultiMapModel) && (chooser
-														  .showOpenDialog(source) ==
-														  JFileChooser.APPROVE_OPTION)) {
+		if ((model instanceof IMultiMapModel) &&
+					(chooser.showOpenDialog(source) == JFileChooser.APPROVE_OPTION)) {
 			final File file = chooser.getSelectedFile();
 			if (file == null) {
 				return;
@@ -522,9 +511,8 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			return ((PlayerCollection) players).asArray(); // NOPMD
 		} else {
 			final List<Player> list = StreamSupport.stream(players.spliterator(), false)
-					                          .collect(Collectors.toList());
-			return NullCleaner
-					       .assertNotNull(list.toArray(new Player[list.size()]));
+											.collect(Collectors.toList());
+			return NullCleaner.assertNotNull(list.toArray(new Player[list.size()]));
 		}
 	}
 	/**

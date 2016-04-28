@@ -1,15 +1,13 @@
 package view.util;
 
-import java.awt.Component;
+import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.swing.JComboBox;
-
+import javax.swing.*;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -56,8 +54,8 @@ public class ImprovedComboBox<T> extends JComboBox<T> {
 		if (evt == null) {
 			return;
 		}
-		if ((evt.getID() != KeyEvent.KEY_PRESSED)
-				    || (evt.getKeyCode() != KeyEvent.VK_TAB)) {
+		if ((evt.getID() != KeyEvent.KEY_PRESSED) ||
+					(evt.getKeyCode() != KeyEvent.VK_TAB)) {
 			super.processKeyEvent(evt);
 			return;
 		}
@@ -66,9 +64,9 @@ public class ImprovedComboBox<T> extends JComboBox<T> {
 			assert evt.getSource() instanceof Component;
 			final KeyEvent fakeEnterKeyEvent =
 					new KeyEvent((Component) evt.getSource(), evt.getID(), evt.getWhen(),
-							            0, // No modifiers.
-							            KeyEvent.VK_ENTER, // Enter key.
-							            KeyEvent.CHAR_UNDEFINED);
+										0, // No modifiers.
+										KeyEvent.VK_ENTER, // Enter key.
+										KeyEvent.CHAR_UNDEFINED);
 			super.processKeyEvent(fakeEnterKeyEvent);
 		}
 		if (evt.getModifiers() == 0) {

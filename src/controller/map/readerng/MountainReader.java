@@ -51,9 +51,9 @@ public final class MountainReader implements INodeHandler<Mountain> {
 	 */
 	@Override
 	public Mountain parse(final StartElement element,
-	                      final Iterable<XMLEvent> stream,
-	                      final IMutablePlayerCollection players,
-	                      final Warning warner, final IDFactory idFactory)
+						final Iterable<XMLEvent> stream,
+						final IMutablePlayerCollection players,
+						final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Mountain fix = new Mountain();

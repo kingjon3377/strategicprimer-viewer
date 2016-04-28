@@ -1,9 +1,5 @@
 package view.map.main;
 
-import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
-import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
-import static javax.swing.KeyStroke.getKeyStroke;
-
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -11,11 +7,12 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-
+import javax.swing.*;
 import util.ActionWrapper;
+
+import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
+import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
+import static javax.swing.KeyStroke.getKeyStroke;
 
 /**
  * A class to handle setting up listeners for the arrow keys.
@@ -53,10 +50,9 @@ public final class ArrowKeyListener {
 	 * @param inputMap    An input map to set up the keybindings.
 	 * @param actionMap   The action map we'll be putting the glue listeners into.
 	 */
-	public static void setUpListeners(
-			                                 final DirectionSelectionChanger selListener,
-			                                 final InputMap inputMap,
-			                                 final ActionMap actionMap) {
+	public static void setUpListeners(final DirectionSelectionChanger selListener,
+									final InputMap inputMap,
+									final ActionMap actionMap) {
 		inputMap.put(getKeyStroke(KeyEvent.VK_UP, 0), "up");
 		inputMap.put(getKeyStroke(KeyEvent.VK_DOWN, 0), "down");
 		inputMap.put(getKeyStroke(KeyEvent.VK_RIGHT, 0), "right");

@@ -50,10 +50,9 @@ public final class HillReader implements INodeHandler<Hill> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public Hill parse(final StartElement element,
-	                  final Iterable<XMLEvent> stream,
-	                  final IMutablePlayerCollection players,
-	                  final Warning warner, final IDFactory idFactory)
+	public Hill parse(final StartElement element, final Iterable<XMLEvent> stream,
+					final IMutablePlayerCollection players, final Warning warner,
+					final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Hill fix = new Hill(getOrGenerateID(element, warner, idFactory));
@@ -87,8 +86,8 @@ public final class HillReader implements INodeHandler<Hill> {
 	 */
 	@Override
 	public <S extends Hill> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "hill");
+		final SPIntermediateRepresentation retval =
+				new SPIntermediateRepresentation("hill");
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

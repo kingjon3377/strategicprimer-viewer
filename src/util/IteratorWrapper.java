@@ -61,7 +61,7 @@ public final class IteratorWrapper<@NonNull T> implements Iterable<@NonNull T> {
 	 * @param comparator the comparator to use for sorting elements.
 	 */
 	public IteratorWrapper(final Iterator<T> iterator,
-	                       final Comparator<T> comparator) {
+							final Comparator<T> comparator) {
 		final PriorityQueue<T> queue = new PriorityQueue<>(1, comparator);
 		while (iterator.hasNext()) {
 			queue.add(iterator.next());

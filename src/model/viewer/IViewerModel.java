@@ -28,8 +28,8 @@ import model.misc.IDriverModel;
  *
  * @author Jonathan Lovelace
  */
-public interface IViewerModel extends IDriverModel, SelectionChangeSource,
-		                                      GraphicalParamsSource {
+public interface IViewerModel
+		extends IDriverModel, SelectionChangeSource, GraphicalParamsSource {
 	/**
 	 * @return the location of the currently selected tile.
 	 */

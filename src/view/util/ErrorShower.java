@@ -43,7 +43,7 @@ public final class ErrorShower {
 	 * @param message the error message.
 	 */
 	public static void showErrorDialog(@Nullable final Component parent,
-	                                   final String message) {
+									final String message) {
 		JOptionPane.showMessageDialog(parent, message,
 				"Strategic Primer Map Viewer error", JOptionPane.ERROR_MESSAGE);
 	}

@@ -53,7 +53,7 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	 * @param idNum    the ID number.
 	 */
 	public CacheFixture(final String category, final String cont,
-	                    final int idNum) {
+						final int idNum) {
 		kind = category;
 		contents = cont;
 		id = idNum;
@@ -119,7 +119,7 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof CacheFixture)
-				                         && equalsImpl((CacheFixture) obj));
+										&& equalsImpl((CacheFixture) obj));
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	 */
 	private boolean equalsImpl(final CacheFixture obj) {
 		return kind.equals(obj.kind) && contents.equals(obj.contents)
-				       && (id == obj.id);
+					&& (id == obj.id);
 	}
 
 	/**
@@ -159,8 +159,8 @@ public class CacheFixture implements HarvestableFixture, HasMutableKind {
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof CacheFixture)
-				       && kind.equals(((CacheFixture) fix).kind)
-				       && contents.equals(((CacheFixture) fix).contents);
+					&& kind.equals(((CacheFixture) fix).kind)
+					&& contents.equals(((CacheFixture) fix).contents);
 	}
 
 	/**

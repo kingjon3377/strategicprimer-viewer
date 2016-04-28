@@ -52,7 +52,7 @@ public final class DistanceComparator implements Comparator<@NonNull Point> {
 	 */
 	public int distance(final Point point) {
 		return ((point.col - base.col) * (point.col - base.col)) +
-				       ((point.row - base.row) * (point.row - base.row));
+					((point.row - base.row) * (point.row - base.row));
 	}
 
 	/**

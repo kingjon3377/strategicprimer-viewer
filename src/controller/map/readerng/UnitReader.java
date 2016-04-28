@@ -1,15 +1,13 @@
 package controller.map.readerng;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.misc.IDFactory;
+import java.util.Collections;
+import java.util.List;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Unit;
@@ -61,17 +59,17 @@ public final class UnitReader implements INodeHandler<Unit> {
 	 */
 	@Override
 	public Unit parse(final StartElement element,
-	                  final Iterable<XMLEvent> stream,
-	                  final IMutablePlayerCollection players,
-	                  final Warning warner, final IDFactory idFactory)
+					final Iterable<XMLEvent> stream,
+					final IMutablePlayerCollection players,
+					final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireNonEmptyParameter(element, "owner", false, warner);
 		requireNonEmptyParameter(element, "name", false, warner);
 		final Unit fix =
 				new Unit(players.getPlayer(getIntegerAttribute(element, "owner", -1)),
-						        parseKind(element, warner),
-						        getAttribute(element, "name", ""),
-						        getOrGenerateID(element, warner, idFactory));
+								parseKind(element, warner),
+								getAttribute(element, "name", ""),
+								getOrGenerateID(element, warner, idFactory));
 		addImage(element, fix);
 		addPortrait(element, fix);
 		final StringBuilder orders = new StringBuilder(512);
@@ -90,10 +88,8 @@ public final class UnitReader implements INodeHandler<Unit> {
 				}
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());
-			} else if (event.isEndElement()
-							   &&
-							   element.getName().equals(event.asEndElement().getName()
-							   )) {
+			} else if (event.isEndElement() &&
+							element.getName().equals(event.asEndElement().getName())) {
 				break;
 			}
 		}

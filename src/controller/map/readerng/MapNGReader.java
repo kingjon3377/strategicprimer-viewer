@@ -115,10 +115,10 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	 */
 	@Override
 	public IMutableMapNG parse(final StartElement element,
-							   final Iterable<XMLEvent> stream,
-							   final IMutablePlayerCollection players,
-							   final Warning warner,
-							   final IDFactory idFactory) throws SPFormatException {
+							final Iterable<XMLEvent> stream,
+							final IMutablePlayerCollection players,
+							final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		final int currentTurn;
 		final StartElement mapTag;
 		final String outerTag = assertNotNull(element.getName().getLocalPart());
@@ -136,8 +136,8 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 		}
 		final MapDimensions dimensions =
 				new MapDimensions(getIntegerAttribute(mapTag, "rows"),
-						                 getIntegerAttribute(mapTag, "columns"),
-						                 getIntegerAttribute(mapTag, "version"));
+										getIntegerAttribute(mapTag, "columns"),
+										getIntegerAttribute(mapTag, "version"));
 		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		final Point nullPoint = PointFactory.point(-1, -1);
 		Point point = nullPoint;
@@ -159,9 +159,9 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 				} else if ("tile".equalsIgnoreCase(type)) {
 					if (!nullPoint.equals(point)) {
 						throw new UnwantedChildException(new QName(current.getName()
-								                                           .getNamespaceURI(),
-								                                          "tile"),
-								                                current);
+																		.getNamespaceURI(),
+																		"tile"),
+																current);
 					}
 					point = PointFactory.point(getIntegerAttribute(current, "row"),
 							getIntegerAttribute(current, "column"));
@@ -185,8 +185,8 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 					throw new UnwantedChildException(
 							assertNotNull(mapTag.getName()),
 							current);
-				} else if ("lake".equalsIgnoreCase(type)
-								   || "river".equalsIgnoreCase(type)) {
+				} else if ("lake".equalsIgnoreCase(type) ||
+								"river".equalsIgnoreCase(type)) {
 					retval.addRivers(point, RIVER_READER.parse(current, stream,
 							players, warner, idFactory));
 				} else if ("ground".equalsIgnoreCase(type)) {
@@ -226,8 +226,8 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 			} else if (event.isEndElement()) {
 				if (element.getName().equals(event.asEndElement().getName())) {
 					break;
-				} else if ("tile".equalsIgnoreCase(event.asEndElement()
-														   .getName().getLocalPart())) {
+				} else if ("tile".equalsIgnoreCase(
+						event.asEndElement().getName().getLocalPart())) {
 					point = PointFactory.point(-1, -1);
 				}
 			} else if (event.isCharacters()) {
@@ -258,7 +258,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addFixture(final IMutableMapNG map, final Point point,
-	                               final TileFixture fix) {
+								final TileFixture fix) {
 		if (fix instanceof Ground) {
 			final Ground ground = (Ground) fix;
 			final Ground oldGround = map.getGround(point);
@@ -306,10 +306,8 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	 * @return the first start-element in the stream
 	 * @throws SPFormatException if no start element in stream
 	 */
-	private static StartElement getFirstStartElement(
-			                                                final Iterable<XMLEvent>
-					                                                stream,
-			                                                final StartElement parent)
+	private static StartElement getFirstStartElement(final Iterable<XMLEvent> stream,
+													final StartElement parent)
 			throws SPFormatException {
 		final StartElement retval = StreamSupport
 				.stream(stream.spliterator(), false)
@@ -335,9 +333,8 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	public SPIntermediateRepresentation write(final IMapNG obj) {
 		final SPIntermediateRepresentation retval =
 				new SPIntermediateRepresentation("view", Pair.of(
-						"current_player", assertNotNull(Integer.toString(obj
-																				 .getCurrentPlayer()
-																				 .getPlayerId()))),
+						"current_player", assertNotNull(
+								Integer.toString(obj.getCurrentPlayer().getPlayerId()))),
 														Pair.of(
 																"current_turn",
 																assertNotNull(
@@ -385,7 +382,7 @@ public final class MapNGReader implements INodeHandler<@NonNull IMapNG> {
 	 * @return an intermediate representation
 	 */
 	private static SPIntermediateRepresentation writeTile(final IMapNG map,
-														  final Point point) {
+														final Point point) {
 		// We can safely assume that an empty retval is not called for.
 		final SPIntermediateRepresentation retval =
 				new SPIntermediateRepresentation("tile");

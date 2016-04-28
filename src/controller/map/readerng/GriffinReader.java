@@ -50,11 +50,9 @@ public final class GriffinReader implements INodeHandler<Griffin> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public Griffin parse(final StartElement element,
-	                     final Iterable<XMLEvent> stream,
-	                     final IMutablePlayerCollection players,
-	                     final Warning warner, final IDFactory idFactory)
-			throws SPFormatException {
+	public Griffin parse(final StartElement element, final Iterable<XMLEvent> stream,
+						final IMutablePlayerCollection players, final Warning warner,
+						final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Griffin fix = new Griffin(getOrGenerateID(element, warner,
 				idFactory));

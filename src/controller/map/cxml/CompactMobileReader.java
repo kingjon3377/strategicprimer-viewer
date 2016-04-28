@@ -123,10 +123,10 @@ public final class CompactMobileReader extends
 	 */
 	@Override
 	public MobileFixture read(final StartElement element,
-							  final IteratorWrapper<XMLEvent> stream,
-							  final IMutablePlayerCollection players,
-							  final Warning warner,
-							  final IDFactory idFactory) throws SPFormatException {
+							final IteratorWrapper<XMLEvent> stream,
+							final IMutablePlayerCollection players,
+							final Warning warner,
+							final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "animal", "centaur", "djinn", "dragon", "fairy",
 				"giant", "griffin", "minotaur", "ogre", "phoenix", "simurgh",
 				"sphinx", "troll", "unit");
@@ -188,13 +188,13 @@ public final class CompactMobileReader extends
 	 * @throws SPFormatException on SP format error
 	 */
 	private static MobileFixture createAnimal(final StartElement element,
-											  final int idNum) throws SPFormatException {
+											final int idNum) throws SPFormatException {
 		return new Animal(
-								 getKind(element),
-								 hasParameter(element, "traces"),
-								 Boolean.parseBoolean(
-										 getParameter(element, "talking", "false")),
-								 getParameter(element, "status", "wild"), idNum);
+								getKind(element),
+								hasParameter(element, "traces"),
+								Boolean.parseBoolean(
+										getParameter(element, "talking", "false")),
+								getParameter(element, "status", "wild"), idNum);
 	}
 
 	/**
@@ -207,7 +207,7 @@ public final class CompactMobileReader extends
 	 */
 	@Override
 	public void write(final Appendable ostream, final MobileFixture obj,
-					  final int indent) throws IOException {
+						final int indent) throws IOException {
 		if (obj instanceof Unit) {
 			CompactUnitReader.READER.write(ostream, (Unit) obj, indent);
 		} else if (obj instanceof Animal) {

@@ -53,9 +53,9 @@ public final class RiverReader implements INodeHandler<@NonNull River> {
 	 */
 	@Override
 	public River parse(final StartElement element,
-	                   final Iterable<XMLEvent> stream,
-	                   final IMutablePlayerCollection players,
-	                   final Warning warner, final IDFactory idFactory)
+					final Iterable<XMLEvent> stream,
+					final IMutablePlayerCollection players,
+					final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		if ("lake".equalsIgnoreCase(element.getName().getLocalPart())) {

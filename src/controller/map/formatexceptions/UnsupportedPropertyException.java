@@ -2,7 +2,6 @@ package controller.map.formatexceptions;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
-
 import util.NullCleaner;
 
 /**
@@ -42,8 +41,7 @@ public final class UnsupportedPropertyException extends SPFormatException {
 	 * @param tag       the current tag
 	 * @param parameter the unsupported parameter
 	 */
-	public UnsupportedPropertyException(final StartElement tag,
-	                                    final String parameter) {
+	public UnsupportedPropertyException(final StartElement tag, final String parameter) {
 		super("Unsupported property " + parameter + " in tag "
 				+ tag.getName().getLocalPart(),
 				NullCleaner.assertNotNull(tag.getLocation()));

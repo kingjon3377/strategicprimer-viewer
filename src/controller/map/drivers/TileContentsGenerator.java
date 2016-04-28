@@ -1,7 +1,9 @@
 package controller.map.drivers;
 
-import static view.util.SystemOut.SYS_OUT;
-
+import controller.exploration.TableLoader;
+import controller.map.formatexceptions.MapVersionException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.MapReaderAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.text.NumberFormat;
@@ -12,13 +14,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-
 import javax.xml.stream.XMLStreamException;
-
-import controller.exploration.TableLoader;
-import controller.map.formatexceptions.MapVersionException;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.MapReaderAdapter;
 import model.exploration.old.ExplorationRunner;
 import model.exploration.old.MissingTableException;
 import model.map.IMapNG;
@@ -29,6 +25,8 @@ import util.NullCleaner;
 import util.SingletonRandom;
 import util.TypesafeLogger;
 import util.Warning;
+
+import static view.util.SystemOut.SYS_OUT;
 
 /**
  * A class to non-interactively generate a tile's contents.
@@ -135,19 +133,15 @@ public final class TileContentsGenerator {
 	 * @param args the map to work from, the row, and the column
 	 */
 	public static void main(final String... args) {
-		final Logger logger = TypesafeLogger
-				                      .getLogger(TileContentsGenerator.class);
+		final Logger logger = TypesafeLogger.getLogger(TileContentsGenerator.class);
 		if (args.length < 3) {
 			logger.severe("Usage: GenerateTileContents mapname.xml row col");
 		} else {
 			final NumberFormat numParser = NumberFormat.getIntegerInstance();
 			try {
-				getInstance(NullCleaner.assertNotNull(args[0]))
-						.generateTileContents(
-								PointFactory.point(numParser.parse(args[1])
-										                   .intValue(),
-										numParser.parse(args[2])
-												.intValue()));
+				getInstance(NullCleaner.assertNotNull(args[0])).generateTileContents(
+						PointFactory.point(numParser.parse(args[1]).intValue(),
+								numParser.parse(args[2]).intValue()));
 			} catch (final NumberFormatException | ParseException e) {
 				logger.log(Level.SEVERE, "Non-numeric row or column", e);
 				System.exit(1);

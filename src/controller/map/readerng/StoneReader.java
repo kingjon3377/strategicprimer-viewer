@@ -54,17 +54,17 @@ public final class StoneReader implements INodeHandler<@NonNull StoneDeposit> {
 	 */
 	@Override
 	public StoneDeposit parse(final StartElement element,
-	                          final Iterable<XMLEvent> stream,
-	                          final IMutablePlayerCollection players,
-	                          final Warning warner, final IDFactory idFactory)
+							final Iterable<XMLEvent> stream,
+							final IMutablePlayerCollection players,
+							final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final StoneDeposit fix = new StoneDeposit(StoneKind.parseStoneKind(
 				getAttributeWithDeprecatedForm(element, "kind", "stone", warner)),
-				                                         getIntegerAttribute(element,
-						                                         "dc"),
-				                                         getOrGenerateID(element, warner,
-						                                         idFactory));
+														getIntegerAttribute(element,
+																"dc"),
+														getOrGenerateID(element, warner,
+																idFactory));
 		addImage(element, fix);
 		return fix;
 	}
@@ -94,13 +94,9 @@ public final class StoneReader implements INodeHandler<@NonNull StoneDeposit> {
 	@Override
 	public SPIntermediateRepresentation write(final StoneDeposit obj) {
 		final SPIntermediateRepresentation retval =
-				new SPIntermediateRepresentation("stone", Pair.of("kind", obj
-																				  .stone()
-																				  .toString()),
-														Pair.of("dc", NullCleaner
-																			  .assertNotNull(
-																					  Integer.toString(
-																							  obj.getDC()))));
+				new SPIntermediateRepresentation("stone", Pair.of("kind",
+						obj.stone().toString()), Pair.of("dc",
+						NullCleaner.assertNotNull(Integer.toString(obj.getDC()))));
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

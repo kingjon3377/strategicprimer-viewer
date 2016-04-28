@@ -1,5 +1,6 @@
 package controller.map.converter;
 
+import controller.map.iointerfaces.ISPReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -13,7 +14,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
@@ -22,10 +22,7 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-
 import org.eclipse.jdt.annotation.Nullable;
-
-import controller.map.iointerfaces.ISPReader;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.TypesafeLogger;
@@ -61,8 +58,8 @@ public final class ZeroToOneConverter {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger
-												 .getLogger(ZeroToOneConverter.class);
+	private static final Logger LOGGER =
+			TypesafeLogger.getLogger(ZeroToOneConverter.class);
 
 	/**
 	 * A mapping from numeric events to XML representations of their version-1
@@ -76,7 +73,7 @@ public final class ZeroToOneConverter {
 	 */
 	private static boolean isSpecifiedTag(final QName tag, final String desired) {
 		return tag.equals(new QName(ISPReader.NAMESPACE, desired)) ||
-				       tag.equals(new QName(desired));
+					tag.equals(new QName(desired));
 	}
 	/**
 	 * @param stream a stream representing a SP map, format version 0
@@ -107,8 +104,8 @@ public final class ZeroToOneConverter {
 			} else if (event.isCharacters()) {
 				ostream.append(event.asCharacters().getData().trim());
 			} else if (event.isEndElement()) {
-				ostream.append(printEndElement(NullCleaner.assertNotNull(event
-																				 .asEndElement())));
+				ostream.append(
+						printEndElement(NullCleaner.assertNotNull(event.asEndElement())));
 			} else if (event.isStartDocument()) {
 				ostream.append("<?xml version=\"1.0\"?>\n");
 			} else if (event.isEndDocument()) {
@@ -129,7 +126,7 @@ public final class ZeroToOneConverter {
 	 * @throws IOException on I/O error writing to ostream
 	 */
 	private static void convertMap(final Appendable ostream, final StartElement element,
-									 final Iterable<Attribute> attrs) throws IOException {
+									final Iterable<Attribute> attrs) throws IOException {
 		ostream.append('<');
 		if (!XMLConstants.DEFAULT_NS_PREFIX.equals(element.getName().getNamespaceURI())) {
 			ostream.append(element.getName().getPrefix());
@@ -157,7 +154,7 @@ public final class ZeroToOneConverter {
 	 * @throws IOException on I/O error writing to ostream
 	 */
 	private static void convertTile(final Appendable ostream, final StartElement element,
-									  final Iterable<Attribute> attrs)
+									final Iterable<Attribute> attrs)
 			throws IOException {
 		ostream.append('<');
 		if (!XMLConstants.DEFAULT_NS_PREFIX.equals(element.getName().getNamespaceURI())) {
@@ -169,12 +166,9 @@ public final class ZeroToOneConverter {
 		for (final Attribute attr : attrs) {
 			if ("event".equalsIgnoreCase(attr.getName().getLocalPart())) {
 				try {
-					events.push(NullCleaner.assertNotNull(Integer.valueOf(NumberFormat
-																				  .getIntegerInstance()
-																				  .parse
-																						   (attr.getValue())
-
-																				  .intValue())));
+					events.push(NullCleaner.assertNotNull(Integer.valueOf(
+							NumberFormat.getIntegerInstance().parse(attr.getValue())
+									.intValue())));
 				} catch (final ParseException e) {
 					LOGGER.log(Level.SEVERE, "Non-numeric 'event'", e);
 				}
@@ -193,9 +187,8 @@ public final class ZeroToOneConverter {
 	 * @param iter an iterator
 	 * @return a wrapper
 	 */
-	private static Iterable<Attribute> iFactory(
-													   @Nullable
-													   final Iterator<Attribute> iter) {
+	private static Iterable<Attribute> iFactory(@Nullable
+												final Iterator<Attribute> iter) {
 		return new IteratorWrapper<>(iter);
 	}
 
@@ -221,9 +214,8 @@ public final class ZeroToOneConverter {
 	@SuppressWarnings("TypeMayBeWeakened")
 	private static String printEndElement(final EndElement element) {
 		if (XMLConstants.DEFAULT_NS_PREFIX.equals(element.getName().getNamespaceURI())) {
-			return printEndElementImpl(NullCleaner.assertNotNull(element.getName()
-					                                                     .getLocalPart
-							                                                      ()));
+			return printEndElementImpl(
+					NullCleaner.assertNotNull(element.getName().getLocalPart()));
 		} else {
 			return printEndElementImpl(
 					NullCleaner.assertNotNull(element.getName().getPrefix()) + ':' +
@@ -250,7 +242,7 @@ public final class ZeroToOneConverter {
 	 * @throws IOException on I/O error writing to ostream
 	 */
 	private static void printStartElement(final Appendable ostream,
-	                                      final StartElement element) throws IOException {
+										final StartElement element) throws IOException {
 		ostream.append('<');
 		if (!XMLConstants.DEFAULT_NS_PREFIX.equals(element.getName().getNamespaceURI())) {
 			ostream.append(element.getName().getPrefix());
@@ -335,7 +327,7 @@ public final class ZeroToOneConverter {
 			try (final Reader reader = new FileReader(arg)) { // NOPMD
 				//noinspection unchecked,ObjectAllocationInLoop
 				convert(new IteratorWrapper<>(XMLInputFactory.newInstance()
-						                              .createXMLEventReader(reader)),
+													.createXMLEventReader(reader)),
 						SystemOut.SYS_OUT);
 			} catch (final FileNotFoundException except) {
 				LOGGER.log(Level.SEVERE, "File " + arg + " not found", except);

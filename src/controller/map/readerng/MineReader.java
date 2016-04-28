@@ -52,17 +52,15 @@ public final class MineReader implements INodeHandler<Mine> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public Mine parse(final StartElement element,
-	                  final Iterable<XMLEvent> stream,
-	                  final IMutablePlayerCollection players,
-	                  final Warning warner, final IDFactory idFactory)
-			throws SPFormatException {
+	public Mine parse(final StartElement element, final Iterable<XMLEvent> stream,
+					final IMutablePlayerCollection players, final Warning warner,
+					final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		final Mine fix = new Mine(getAttributeWithDeprecatedForm(element,
-				"kind", "product", warner),
-										 TownStatus.parseTownStatus(
-												 getAttribute(element, "status")),
-										 getOrGenerateID(element, warner, idFactory));
+		final Mine fix =
+				new Mine(getAttributeWithDeprecatedForm(element, "kind", "product",
+						warner), TownStatus.parseTownStatus(
+						getAttribute(element, "status")),
+								getOrGenerateID(element, warner, idFactory));
 		addImage(element, fix);
 		return fix;
 	}

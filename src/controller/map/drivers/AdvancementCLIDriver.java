@@ -53,12 +53,11 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-a", "--adv", ParamCount.AtLeastOne,
-								   "View a player's workers and manage their " +
-										   "advancement",
-								   "View a player's units, the workers in those units, " +
-										   "each worker's Jobs, and his or her level in " +
-										   "each Skill in each Job.",
-								   AdvancementCLIDriver.class);
+								"View a player's workers and manage their advancement",
+								"View a player's units, the workers in those units, " +
+										"each worker's Jobs, and his or her level in " +
+										"each Skill in each Job.",
+								AdvancementCLIDriver.class);
 	/**
 	 * @return an object indicating how to use and invoke this driver.
 	 */
@@ -99,18 +98,18 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 			for (int playerNum = cli.chooseFromList(playerList, hdr, none, prpt,
 					false); (playerNum >= 0)
 									&& (playerNum < playerList.size()); playerNum = cli
-																						  .chooseFromList(
-																								  playerList,
-																								  hdr,
-																								  none,
-																								  prpt,
-																								  false)) {
+																						.chooseFromList(
+																								playerList,
+																								hdr,
+																								none,
+																								prpt,
+																								false)) {
 				advanceWorkers(wmodel,
 						NullCleaner.assertNotNull(playerList.remove(playerNum)), cli);
 			}
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error interacting with user",
-												   except);
+												except);
 		}
 	}
 
@@ -135,10 +134,10 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 				if (proxy) {
 					//noinspection ObjectAllocationInLoop
 					advanceSingleWorker(new ProxyWorker(
-															   NullCleaner.assertNotNull(
-																	   units.remove(
-																			   unitNum)
-															   )), cli);
+															NullCleaner.assertNotNull(
+																	units.remove(
+																			unitNum)
+															)), cli);
 				} else {
 					advanceWorkersInUnit(
 							NullCleaner.assertNotNull(units.remove(unitNum)), cli);
@@ -159,9 +158,9 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	private static void advanceWorkersInUnit(final Iterable<UnitMember> unit,
 			final ICLIHelper cli) throws IOException {
 		final List<IWorker> workers = StreamSupport.stream(unit.spliterator(), false)
-											  .filter(IWorker.class::isInstance)
-											  .map(IWorker.class::cast)
-											  .collect(Collectors.toList());
+											.filter(IWorker.class::isInstance)
+											.map(IWorker.class::cast)
+											.collect(Collectors.toList());
 		while (!workers.isEmpty()) {
 			final int workerNum = cli.chooseFromList(workers, "Workers in unit:",
 					"No unadvanced workers remain.", "Chosen worker: ", false);
@@ -189,7 +188,7 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 		final String prpt = "Job to advance: ";
 		for (int jobNum = cli.chooseFromList(jobs, hdr, none, prpt, false); jobNum <=
 																					jobs
-																							  .size();
+																							.size();
 				jobNum = cli.chooseFromList(jobs, hdr, none, prpt, false)) {
 			if ((jobNum < 0) || (jobNum == jobs.size())) {
 				worker.addJob(new Job(cli.inputString("Name of new Job: "), 0));

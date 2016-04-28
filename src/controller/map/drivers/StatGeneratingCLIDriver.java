@@ -91,10 +91,10 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-t", "--stats", ParamCount.AtLeastOne,
-								   "Enter worker stats or generate new workers.",
-								   "Enter stats for existing workers or generate new " +
-										   "workers randomly.",
-								   StatGeneratingCLIDriver.class);
+								"Enter worker stats or generate new workers.",
+								"Enter stats for existing workers or generate new " +
+										"workers randomly.",
+								StatGeneratingCLIDriver.class);
 
 	/**
 	 * @return an object indicating how to use and invoke this driver.
@@ -142,15 +142,9 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Which player owns the worker in question?";
 		final String none = "There are no players shared by all the maps.";
 		final String prpt = "Player selection: ";
-		for (int playerNum = cli.chooseFromList(players, hdr, none, prpt,
-				true); (playerNum >= 0)
-							   && (playerNum < players.size()); playerNum = cli
-																				  .chooseFromList(
-																						  players,
-																						  hdr,
-																						  none,
-																						  prpt,
-																						  true)) {
+		for (int playerNum = cli.chooseFromList(players, hdr, none, prpt, true);
+				(playerNum >= 0) && (playerNum < players.size());
+				playerNum = cli.chooseFromList(players, hdr, none, prpt, true)) {
 			enterStats(model, NullCleaner.assertNotNull(players.get(playerNum)), cli);
 		}
 	}
@@ -188,7 +182,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * false otherwise.
 	 */
 	private static boolean hasUnstattedWorker(final IDriverModel model,
-											  final int idNum) {
+											final int idNum) {
 		final IFixture fix = find(model.getMap(), idNum);
 		return (fix instanceof IUnit) && hasUnstattedWorker((IUnit) fix);
 	}
@@ -198,9 +192,9 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @return whether it contains any workers without stats
 	 */
 	private static boolean hasUnstattedWorker(final Iterable<UnitMember> unit) {
-		return StreamSupport.stream(unit.spliterator(), false)
-					   .anyMatch(member -> (member instanceof Worker) &&
-												   (((Worker) member).getStats() == null));
+		return StreamSupport.stream(unit.spliterator(), false).anyMatch(
+				member -> (member instanceof Worker) &&
+								(((Worker) member).getStats() == null));
 	}
 
 	/**
@@ -210,7 +204,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static List<IUnit> removeStattedUnits(final Collection<IUnit> units) {
 		return units.stream().filter(StatGeneratingCLIDriver::hasUnstattedWorker)
-					   .collect(Collectors.toList());
+					.collect(Collectors.toList());
 	}
 
 	/**
@@ -341,15 +335,9 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Which player owns the new worker(s)?";
 		final String none = "There are no players shared by all the maps.";
 		final String prpt = "Player selection: ";
-		for (int playerNum = cli.chooseFromList(players, hdr, none, prpt,
-				false); (playerNum >= 0)
-								&& (playerNum < players.size()); playerNum = cli
-																				   .chooseFromList(
-																						   players,
-																						   hdr,
-																						   none,
-																						   prpt,
-																						   false)) {
+		for (int playerNum = cli.chooseFromList(players, hdr, none, prpt, false);
+				(playerNum >= 0) && (playerNum < players.size());
+				playerNum = cli.chooseFromList(players, hdr, none, prpt, false)) {
 			createWorkersForPlayer(model, idf,
 					NullCleaner.assertNotNull(players.get(playerNum)), cli);
 		}
@@ -389,11 +377,9 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 						cli.inputNumber("Row to put new unit: "),
 						cli.inputNumber("Column to put new unit: "));
 				//noinspection ObjectAllocationInLoop
-				final TileFixture unit = new Unit(player, // NOPMD
-														 cli.inputString(
-																 "Kind of unit: "),
-														 cli.inputString("Unit name: "),
-														 idf.createID());
+				final TileFixture unit =
+						new Unit(player, cli.inputString("Kind of unit: "),
+										cli.inputString("Unit name: "), idf.createID());
 				for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
 					pair.first().addFixture(point, unit);
 				}
@@ -513,7 +499,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			//noinspection ObjectAllocationInLoop
 			retval.addJob(
 					new Job(cli.inputString("Which Job does worker have a level in? "),
-								   1));
+								1));
 		}
 		return retval;
 	}
@@ -526,7 +512,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 * @return the stats
 	 */
 	private static WorkerStats createWorkerStats(final String race, final int levels,
-	                                             final ICLIHelper cli)
+												final ICLIHelper cli)
 			throws IOException {
 		final int racialStrBonus;
 		final int racialDexBonus;
@@ -638,10 +624,10 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final int conBonus = (constitution - STAT_BASIS) / 2;
 		final int hitp = 8 + conBonus + rollDeeEight(levels, conBonus);
 		return new WorkerStats(hitp, hitp, threeDeeSix() + racialStrBonus,
-				                      threeDeeSix() + racialDexBonus, constitution,
-				                      threeDeeSix() + racialIntBonus,
-				                      threeDeeSix() + racialWisBonus,
-				                      threeDeeSix() + racialChaBonus);
+									threeDeeSix() + racialDexBonus, constitution,
+									threeDeeSix() + racialIntBonus,
+									threeDeeSix() + racialWisBonus,
+									threeDeeSix() + racialChaBonus);
 	}
 	/**
 	 * Create a randomly-generated worker using a name from file, asking the user for
@@ -683,10 +669,9 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		}
 		for (int i = 0; i < levels; i++) {
 			//noinspection ObjectAllocationInLoop
-			retval.addJob(new Job(// NOPMD
-										 cli.inputString(
-												 "Which Job does worker have a level in? "),
-										 1));
+			retval.addJob(
+					new Job(cli.inputString("Which Job does worker have a level in? "),
+								1));
 		}
 		return retval;
 	}

@@ -91,8 +91,7 @@ public final class ExplorationCLI {
 	 * @param emodel  the exploration model to use
 	 * @param mhelper the helper to handle user I/O
 	 */
-	public ExplorationCLI(final IExplorationModel emodel,
-	                      final ICLIHelper mhelper) {
+	public ExplorationCLI(final IExplorationModel emodel, final ICLIHelper mhelper) {
 		model = emodel;
 		helper = mhelper;
 		hmodel = new HuntingModel(model.getMap());
@@ -169,8 +168,8 @@ public final class ExplorationCLI {
 		}
 		mainMap.streamOtherFixtures(point)
 				.filter(fix -> (fix instanceof Ground) || (fix instanceof
-																   StoneDeposit) ||
-									   (fix instanceof MineralVein))
+																StoneDeposit) ||
+									(fix instanceof MineralVein))
 				.forEach(diggables::add);
 		if (diggables.isEmpty()) {
 			return;
@@ -300,12 +299,11 @@ public final class ExplorationCLI {
 			allFixtures
 					.add(new Animal(possibleTracks, true, false, "wild", idf.createID()));
 		}
-		if ((Direction.Nowhere == direction)
-				    && helper.inputBoolean(FEALTY_PROMPT)) {
+		if ((Direction.Nowhere == direction) && helper.inputBoolean(FEALTY_PROMPT)) {
 			swearVillages(dPoint);
 			cost += 5;
 		} else if ((Direction.Nowhere == direction) &&
-						   helper.inputBoolean("Dig to expose some ground here?")) {
+						helper.inputBoolean("Dig to expose some ground here?")) {
 			dig(dPoint);
 			cost += 4;
 		}
@@ -314,7 +312,7 @@ public final class ExplorationCLI {
 		if (allFixtures.isEmpty()) {
 			helper.println("The following fixtures were automatically noticed:");
 		} else if ((allFixtures.size() > 1) &&
-						   (SingletonRandom.RANDOM.nextDouble() < 0.1)) {
+						(SingletonRandom.RANDOM.nextDouble() < 0.1)) {
 			helper.print("The following fixtures wer noticed, all but the last ");
 			helper.println("two automatically:");
 			Collections.shuffle(allFixtures);
@@ -340,14 +338,13 @@ public final class ExplorationCLI {
 	 * @param mover  the current unit (needed for its owner)
 	 */
 	private void printAndTransferFixture(final Point dPoint,
-	                                     @Nullable final TileFixture fix,
-	                                     final HasOwner mover) {
+										@Nullable final TileFixture fix,
+										final HasOwner mover) {
 		if (fix != null) {
 			helper.println(assertNotNull(fix.toString()));
-			final boolean zero = (fix instanceof HasOwner) && !((HasOwner) fix)
-					                                                   .getOwner()
-					                                                   .equals(mover
-							                                                           .getOwner());
+			final boolean zero = (fix instanceof HasOwner) &&
+										!((HasOwner) fix).getOwner()
+												.equals(mover.getOwner());
 			for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 				final IMutableMapNG map = pair.first();
 				if ((fix instanceof Ground) && (map.getGround(dPoint) == null)) {

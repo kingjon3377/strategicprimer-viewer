@@ -51,9 +51,9 @@ public final class OgreReader implements INodeHandler<Ogre> {
 	 */
 	@Override
 	public Ogre parse(final StartElement element,
-	                  final Iterable<XMLEvent> stream,
-	                  final IMutablePlayerCollection players,
-	                  final Warning warner, final IDFactory idFactory)
+					final Iterable<XMLEvent> stream,
+					final IMutablePlayerCollection players,
+					final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Ogre fix = new Ogre(getOrGenerateID(element, warner, idFactory));
@@ -87,8 +87,8 @@ public final class OgreReader implements INodeHandler<Ogre> {
 	 */
 	@Override
 	public <S extends Ogre> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "ogre");
+		final SPIntermediateRepresentation retval =
+				new SPIntermediateRepresentation("ogre");
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

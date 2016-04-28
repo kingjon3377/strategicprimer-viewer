@@ -1,10 +1,9 @@
 package model.map.fixtures.explorable;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.IFixture;
 import model.map.Point;
 import model.map.PointFactory;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A fixture representing a portal to another world.
@@ -129,7 +128,7 @@ public class Portal implements ExplorableFixture {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Portal) && (id == ((Portal) obj).id)
-				                         && equalsIgnoringID((Portal) obj));
+										&& equalsIgnoringID((Portal) obj));
 	}
 
 	/**
@@ -186,10 +185,10 @@ public class Portal implements ExplorableFixture {
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return (fix instanceof Portal)
-				       && destinationWorld.equals(((Portal) fix).destinationWorld)
-				       && destinationCoordinates
-						          .equals(((Portal) fix).destinationCoordinates);
+		return (fix instanceof Portal) &&
+					destinationWorld.equals(((Portal) fix).destinationWorld) &&
+					destinationCoordinates
+							.equals(((Portal) fix).destinationCoordinates);
 	}
 
 	/**

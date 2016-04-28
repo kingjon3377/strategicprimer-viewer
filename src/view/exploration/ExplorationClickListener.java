@@ -14,11 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
-import javax.swing.AbstractAction;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.ListModel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
 import model.listeners.MovementCostListener;
@@ -112,7 +108,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 * @param mainList the list of fixtures on this tile in the main map.
 	 */
 	public ExplorationClickListener(final IExplorationModel emodel,
-	                                final Direction direct, final FixtureList mainList) {
+									final Direction direct, final FixtureList mainList) {
 		model = emodel;
 		direction = direct;
 		list = mainList;
@@ -173,39 +169,29 @@ public final class ExplorationClickListener extends AbstractAction implements
 			final Collection<CacheFixture> caches = new HashSet<>();
 			for (final Pair<IMutableMapNG, File> pair : model.getSubordinateMaps()) {
 				final IMutableMapNG map = pair.first();
-				map.setBaseTerrain(dPoint, model.getMap()
-						                           .getBaseTerrain(dPoint));
+				map.setBaseTerrain(dPoint, model.getMap().getBaseTerrain(dPoint));
 				for (final TileFixture fix : fixtures) {
 					if (fix instanceof TileTypeFixture) {
 						// skip it! It'll corrupt the output XML!
 						continue;
 					} else if ((fix instanceof Ground) &&
-							           (map.getGround(dPoint) == null)) {
+									(map.getGround(dPoint) == null)) {
 						map.setGround(dPoint, ((Ground) fix).copy(false));
-					} else if ((fix instanceof Ground)
-							           &&
-							           fix.equals(
-									           map.getGround(
-											           dPoint))) {
+					} else if ((fix instanceof Ground) &&
+									fix.equals(map.getGround(dPoint))) {
 						continue;
-					} else if ((fix instanceof Forest)
-							           &&
-							           (map.getForest(
-									           dPoint) ==
-									            null)) {
+					} else if ((fix instanceof Forest) &&
+									(map.getForest(dPoint) == null)) {
 						map.setForest(dPoint, ((Forest) fix).copy(false));
-					} else if ((fix instanceof Forest)
-							           &&
-							           fix.equals(
-									           map.getForest(
-											           dPoint))) {
+					} else if ((fix instanceof Forest) &&
+									fix.equals(map.getForest(dPoint))) {
 						continue;
 					} else if (fix instanceof Mountain) {
 						map.setMountainous(dPoint, true);
 					} else if (!hasFixture(map, dPoint, fix)) {
 						final boolean zero = (fix instanceof HasOwner) &&
-								                     !((HasOwner) fix).getOwner()
-										                      .equals(player);
+													!((HasOwner) fix).getOwner()
+															.equals(player);
 						map.addFixture(dPoint, fix.copy(zero));
 						if (fix instanceof CacheFixture) {
 							caches.add((CacheFixture) fix);
@@ -236,7 +222,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 * @return whether the map has that fixture there
 	 */
 	private static boolean hasFixture(final IMapNG map, final Point dPoint,
-	                                  final TileFixture fix) {
+									final TileFixture fix) {
 		return map.streamOtherFixtures(dPoint).anyMatch(fix::equals);
 	}
 
@@ -273,8 +259,8 @@ public final class ExplorationClickListener extends AbstractAction implements
 		}
 		mainMap.streamOtherFixtures(point)
 				.filter(fix -> (fix instanceof Ground) || (fix instanceof
-																   StoneDeposit) ||
-									   (fix instanceof MineralVein))
+																StoneDeposit) ||
+									(fix instanceof MineralVein))
 				.forEach(diggables::add);
 		if (diggables.isEmpty()) {
 			return;
@@ -353,9 +339,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
-	public void addSelectionChangeListener(
-			                                      final SelectionChangeListener
-					                                      listener) {
+	public void addSelectionChangeListener(final SelectionChangeListener listener) {
 		scListeners.add(listener);
 	}
 
@@ -364,9 +348,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
-	public void removeSelectionChangeListener(
-			                                         final SelectionChangeListener
-					                                         listener) {
+	public void removeSelectionChangeListener(final SelectionChangeListener listener) {
 		scListeners.remove(listener);
 	}
 

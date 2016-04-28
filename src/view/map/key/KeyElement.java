@@ -1,14 +1,11 @@
 package view.map.key;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
+import javax.swing.*;
 import model.map.TileType;
 import model.viewer.TileViewSize;
 import org.eclipse.jdt.annotation.Nullable;
@@ -70,9 +67,8 @@ public final class KeyElement extends BoxPanel {
 		final BoxPanel panel = new BoxPanel(false);
 		panel.addRigidArea(4);
 		final int tsize = TileViewSize.scaleZoom(DEF_ZOOM_LEVEL, version);
-		panel.add(new KeyElementComponent(T_UI_H.get(version, type), MIN_SIZE,
-				                                 PREF_SIZE, new Dimension(tsize,
-						                                                         tsize)));
+		panel.add(new KeyElementComponent(T_UI_H.get(version, type), MIN_SIZE, PREF_SIZE,
+												new Dimension(tsize, tsize)));
 		panel.addRigidArea(4);
 		final JLabel label = new JLabel(T_UI_H.getDescription(type));
 		panel.add(label);
@@ -81,9 +77,9 @@ public final class KeyElement extends BoxPanel {
 		addRigidArea(HORIZ_BUF);
 		addGlue();
 		final Dimension lsize = label.getMinimumSize();
-		setMinimumSize(new Dimension(Math.max(MIN_SIZE.width, lsize.width)
-				                             + (HORIZ_BUF * 2),
-				                            MIN_SIZE.height + lsize.height + 12));
+		setMinimumSize(
+				new Dimension(Math.max(MIN_SIZE.width, lsize.width) + (HORIZ_BUF * 2),
+									MIN_SIZE.height + lsize.height + 12));
 	}
 
 	/**
@@ -106,7 +102,7 @@ public final class KeyElement extends BoxPanel {
 		 * @param max  the component's maximum size
 		 */
 		protected KeyElementComponent(final Color col, final Dimension min,
-		                              final Dimension pref, final Dimension max) {
+									final Dimension pref, final Dimension max) {
 			color = col;
 			setMinimumSize(min);
 			setPreferredSize(pref);

@@ -1,10 +1,9 @@
 package model.map.fixtures.resources;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableKind;
 import model.map.IEvent;
 import model.map.IFixture;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**
@@ -29,8 +28,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public final class MineralVein implements IEvent, HarvestableFixture,
-		                                          HasMutableKind {
+public final class MineralVein implements IEvent, HarvestableFixture, HasMutableKind {
 	/**
 	 * Whether the vein is exposed.
 	 */
@@ -55,7 +53,7 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	 * @param idNum   the ID number.
 	 */
 	public MineralVein(final String minkind, final boolean exp,
-	                   final int discdc, final int idNum) {
+						final int discdc, final int idNum) {
 		mineral = minkind;
 		exposed = exp;
 		dc = discdc;
@@ -110,8 +108,8 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	 */
 	@Override
 	public String getText() {
-		final StringBuilder build = new StringBuilder(48 + mineral.length())
-				                            .append("There is a");
+		final StringBuilder build =
+				new StringBuilder(48 + mineral.length()).append("There is a");
 		if (exposed) {
 			build.append("n exposed");
 		}
@@ -133,9 +131,9 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof MineralVein)
-				                         && mineral.equals(((MineralVein) obj).mineral)
-				                         && (exposed == ((MineralVein) obj).exposed)
-				                         && (id == ((MineralVein) obj).id));
+										&& mineral.equals(((MineralVein) obj).mineral)
+										&& (exposed == ((MineralVein) obj).exposed)
+										&& (id == ((MineralVein) obj).id));
 	}
 
 	/**
@@ -204,7 +202,7 @@ public final class MineralVein implements IEvent, HarvestableFixture,
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (this == fix) || ((fix instanceof MineralVein)
-				                         && equalsContents((MineralVein) fix));
+										&& equalsContents((MineralVein) fix));
 	}
 
 	/**

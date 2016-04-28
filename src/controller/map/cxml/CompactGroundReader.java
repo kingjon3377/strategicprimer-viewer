@@ -56,18 +56,18 @@ public final class CompactGroundReader extends AbstractCompactReader<Ground> {
 	 */
 	@Override
 	public Ground read(final StartElement element,
-	                   final IteratorWrapper<XMLEvent> stream,
-	                   final IMutablePlayerCollection players, final Warning warner,
-	                   final IDFactory idFactory) throws SPFormatException {
+						final IteratorWrapper<XMLEvent> stream,
+						final IMutablePlayerCollection players, final Warning warner,
+						final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "ground");
 		final String kind = getParamWithDeprecatedForm(element, "kind",
 				"ground", warner);
 		requireNonEmptyParameter(element, "exposed", true, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Ground retval = new Ground(kind,
-				                                Boolean.parseBoolean(getParameter
-						                                                     (element,
-						                                "exposed")));
+												Boolean.parseBoolean(
+														getParameter(element,
+																"exposed")));
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;
 	}

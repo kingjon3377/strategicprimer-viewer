@@ -54,10 +54,10 @@ public final class CompactAdventureReader extends
 	 */
 	@Override
 	public AdventureFixture read(final StartElement element,
-								 final IteratorWrapper<XMLEvent> stream,
-								 final IMutablePlayerCollection players,
-								 final Warning warner,
-								 final IDFactory idFactory) throws SPFormatException {
+								final IteratorWrapper<XMLEvent> stream,
+								final IMutablePlayerCollection players,
+								final Warning warner,
+								final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "adventure");
 		Player player = players.getIndependent();
 		if (hasParameter(element, "owner")) {
@@ -85,7 +85,7 @@ public final class CompactAdventureReader extends
 	 */
 	@Override
 	public void write(final Appendable ostream, final AdventureFixture obj,
-					  final int indent) throws IOException {
+					final int indent) throws IOException {
 		writeTag(ostream, "adventure", indent);
 		ostream.append(" id=\"");
 		ostream.append(Integer.toString(obj.getID()));

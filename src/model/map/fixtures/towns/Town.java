@@ -36,9 +36,8 @@ public final class Town extends AbstractTown {
 	 * @param idNum   the ID number.
 	 * @param player  the owner of the town
 	 */
-	public Town(final TownStatus tStatus, final TownSize tSize,
-	            final int discdc, final String tName, final int idNum,
-	            final Player player) {
+	public Town(final TownStatus tStatus, final TownSize tSize, final int discdc,
+				final String tName, final int idNum, final Player player) {
 		super(tStatus, tSize, tName, player);
 		dc = discdc;
 		id = idNum;

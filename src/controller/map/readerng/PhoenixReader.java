@@ -51,9 +51,9 @@ public final class PhoenixReader implements INodeHandler<Phoenix> {
 	 */
 	@Override
 	public Phoenix parse(final StartElement element,
-	                     final Iterable<XMLEvent> stream,
-	                     final IMutablePlayerCollection players,
-	                     final Warning warner, final IDFactory idFactory)
+						final Iterable<XMLEvent> stream,
+						final IMutablePlayerCollection players,
+						final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Phoenix fix = new Phoenix(getOrGenerateID(element, warner,

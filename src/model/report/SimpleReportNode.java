@@ -8,13 +8,10 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.Point;
+import org.eclipse.jdt.annotation.Nullable;
 import util.EnumerationWrapper;
 import util.NullCleaner;
 
@@ -125,7 +122,7 @@ public final class SimpleReportNode extends DefaultMutableTreeNode
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof SimpleReportNode) &&
-				                         text.equals(((IReportNode) obj).getText()));
+										text.equals(((IReportNode) obj).getText()));
 	}
 
 	/**

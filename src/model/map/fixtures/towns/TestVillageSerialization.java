@@ -88,9 +88,8 @@ public class TestVillageSerialization extends BaseTestFixtureSerialization {
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testVillageSerialization() throws XMLStreamException,
-														  SPFormatException,
-														  IOException {
+	public void testVillageSerialization()
+			throws XMLStreamException, SPFormatException, IOException {
 		assert status != null;
 		assert race != null;
 		final Player owner = new Player(-1, "");

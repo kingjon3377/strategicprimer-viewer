@@ -1,8 +1,7 @@
 package view.worker;
 
 import controller.map.misc.IDFactory;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -15,12 +14,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import model.listeners.NewWorkerListener;
 import model.listeners.NewWorkerSource;
 import model.map.fixtures.mobile.Worker;
@@ -147,20 +141,19 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 			final String nameText = name.getText().trim();
 			final String raceText = race.getText().trim();
 			if (nameText.isEmpty() || raceText.isEmpty() ||
-					    areAnyNonNumeric(hpBox.getText().trim(), maxHP.getText().trim(),
-							    strength.getText().trim(), dex.getText().trim(),
-							    con.getText().trim(), intel.getText().trim(),
-							    wis.getText().trim(), cha.getText().trim())) {
+						areAnyNonNumeric(hpBox.getText().trim(), maxHP.getText().trim(),
+								strength.getText().trim(), dex.getText().trim(),
+								con.getText().trim(), intel.getText().trim(),
+								wis.getText().trim(), cha.getText().trim())) {
 				ErrorShower.showErrorDialog(this, getErrorExpl());
 			} else {
-				final Worker retval = new Worker(nameText, raceText,
-						                                idf.createID());
+				final Worker retval = new Worker(nameText, raceText, idf.createID());
 				try {
 					retval.setStats(new WorkerStats(parseInt(hpBox), parseInt(maxHP),
-							                               parseInt(strength),
-							                               parseInt(dex), parseInt(con),
-							                               parseInt(intel), parseInt(wis),
-							                               parseInt(cha)));
+														parseInt(strength),
+														parseInt(dex), parseInt(con),
+														parseInt(intel), parseInt(wis),
+														parseInt(cha)));
 				} catch (final ParseException e) {
 					LOGGER.log(Level.FINE, "Non-numeric input", e);
 					ErrorShower.showErrorDialog(this, "All stats must be numbers");
@@ -235,11 +228,10 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	}
 
 	/**
-	 * Number parser.
+	 * Number parser. TODO: Statically import assertNotNull
 	 */
-	private static final NumberFormat NUM_PARSER = NullCleaner
-														   .assertNotNull(NumberFormat
-																				  .getIntegerInstance());
+	private static final NumberFormat NUM_PARSER =
+			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
 
 	/**
 	 * @param box a text field
@@ -257,7 +249,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	@SuppressWarnings("QuestionableName")
 	private static boolean areAnyNonNumeric(final String... strings) {
 		return Stream.of(strings)
-					   .anyMatch(string -> (string == null) || !isNumeric(string));
+					.anyMatch(string -> (string == null) || !isNumeric(string));
 	}
 
 	/**
@@ -269,7 +261,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addLabeledField(final JPanel panel, final String text,
-	                                    final JComponent field) {
+										final JComponent field) {
 		panel.add(new JLabel(text));
 		panel.add(field);
 	}

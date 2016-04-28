@@ -89,9 +89,9 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	 */
 	@Override
 	public Unit read(final StartElement element,
-					 final IteratorWrapper<XMLEvent> stream,
-					 final IMutablePlayerCollection players, final Warning warner,
-					 final IDFactory idFactory) throws SPFormatException {
+					final IteratorWrapper<XMLEvent> stream,
+					final IMutablePlayerCollection players, final Warning warner,
+					final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, UNIT_TAG);
 		requireNonEmptyParameter(element, "name", false, warner);
 		requireNonEmptyParameter(element, "owner", false, warner);
@@ -118,7 +118,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 			} else if (event.isCharacters()) {
 				orders.append(event.asCharacters().getData());
 			} else if (event.isEndElement() &&
-					           element.getName().equals(event.asEndElement().getName())) {
+							element.getName().equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
@@ -138,10 +138,10 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	 * @throws SPFormatException on SP format problem
 	 */
 	private UnitMember parseChild(final StartElement element,
-								  final IteratorWrapper<XMLEvent> stream,
-								  final IMutablePlayerCollection players,
-								  final IDFactory idFactory,
-								  final Warning warner) throws SPFormatException {
+								final IteratorWrapper<XMLEvent> stream,
+								final IMutablePlayerCollection players,
+								final IDFactory idFactory,
+								final Warning warner) throws SPFormatException {
 		final String name = NullCleaner.assertNotNull(element.getName().getLocalPart());
 		for (final CompactReader<? extends IFixture> item : readers) {
 			if (item.isSupportedTag(name)) {
@@ -151,13 +151,13 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 					return (UnitMember) retval;
 				} else {
 					throw new UnwantedChildException(new QName(element.getName()
-							                                           .getNamespaceURI(),
-							                                          UNIT_TAG), element);
+																	.getNamespaceURI(),
+																	UNIT_TAG), element);
 				}
 			}
 		}
 		throw new UnwantedChildException(new QName(element.getName().getNamespaceURI(),
-				                                          UNIT_TAG), element);
+														UNIT_TAG), element);
 	}
 
 	/**

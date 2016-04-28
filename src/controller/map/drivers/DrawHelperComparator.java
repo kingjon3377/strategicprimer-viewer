@@ -1,7 +1,7 @@
 package controller.map.drivers;
 
 import controller.map.drivers.DriverUsage.ParamCount;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Random;
@@ -71,12 +71,12 @@ public final class DrawHelperComparator implements SimpleDriver { // NOPMD
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(true, "-t", "--test", ParamCount.AtLeastOne,
-								   "Test drawing performance",
-								   "Test the performance of the TileDrawHelper " +
-										   "classes---which do the heavy lifting of " +
-										   "rendering the map\nin the viewer---using a " +
-										   "variety of automated tests.",
-								   DrawHelperComparator.class);
+								"Test drawing performance",
+								"Test the performance of the TileDrawHelper " +
+										"classes---which do the heavy lifting of " +
+										"rendering the map\nin the viewer---using a " +
+										"variety of automated tests.",
+								DrawHelperComparator.class);
 
 	/**
 	 * Label to put before every direct-helper test result.
@@ -102,9 +102,9 @@ public final class DrawHelperComparator implements SimpleDriver { // NOPMD
 	 * @return how long the test took, in ns.
 	 */
 	private static long first(final TileDrawHelper helper, final IMapNG spmap,
-							  final int reps, final int tsize) {
+							final int reps, final int tsize) {
 		final BufferedImage image = new BufferedImage(tsize, tsize,
-															 BufferedImage.TYPE_INT_RGB);
+															BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		firstBody(helper, image, spmap, reps, tsize);
 		final long end = System.nanoTime();
@@ -122,9 +122,9 @@ public final class DrawHelperComparator implements SimpleDriver { // NOPMD
 	 * @param tsize  the size to draw each tile
 	 */
 	private static void firstBody(final TileDrawHelper helper,
-								  final BufferedImage image, final IMapNG spmap,
-								  final int reps,
-								  final int tsize) {
+								final BufferedImage image, final IMapNG spmap,
+								final int reps,
+								final int tsize) {
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
 			for (final Point point : spmap.locations()) {
@@ -146,12 +146,11 @@ public final class DrawHelperComparator implements SimpleDriver { // NOPMD
 	 * @return how long the test took, in ns.
 	 */
 	private static long second(final TileDrawHelper helper, final IMapNG map,
-							   final int reps, final int tsize) {
+							final int reps, final int tsize) {
 		final MapDimensions dim = map.dimensions();
-		final BufferedImage image = new BufferedImage(tsize * dim.cols, tsize
-																				*
-																				dim.rows,
-															 BufferedImage.TYPE_INT_RGB);
+		final BufferedImage image = new BufferedImage(tsize * dim.cols,
+															tsize * dim.rows,
+															BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		secondBody(helper, image, map, reps, tsize);
 		final long end = System.nanoTime();
@@ -169,9 +168,9 @@ public final class DrawHelperComparator implements SimpleDriver { // NOPMD
 	 * @param tsize  the size to draw each tile
 	 */
 	private static void secondBody(final TileDrawHelper helper,
-								   final BufferedImage image, final IMapNG map,
-								   final int reps,
-								   final int tsize) {
+								final BufferedImage image, final IMapNG map,
+								final int reps,
+								final int tsize) {
 		final Coordinate dimensions = PointFactory.coordinate(tsize, tsize);
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
@@ -179,8 +178,8 @@ public final class DrawHelperComparator implements SimpleDriver { // NOPMD
 				helper.drawTile(
 						NullCleaner.assertNotNull(image.createGraphics()),
 						map, point,
-						PointFactory.coordinate(point.row * tsize, point.col
-																		   * tsize),
+						PointFactory.coordinate(point.row * tsize,
+								point.col * tsize),
 						dimensions);
 			}
 		}
@@ -197,9 +196,9 @@ public final class DrawHelperComparator implements SimpleDriver { // NOPMD
 	 * @return how long the test took, in ns.
 	 */
 	private static long third(final TileDrawHelper helper, final IMapNG spmap,
-							  final int reps, final int tsize) {
-		final BufferedImage image = new BufferedImage(tsize, tsize, // NOPMD
-															 BufferedImage.TYPE_INT_RGB);
+							final int reps, final int tsize) {
+		final BufferedImage image =
+				new BufferedImage(tsize, tsize, BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
@@ -220,8 +219,8 @@ public final class DrawHelperComparator implements SimpleDriver { // NOPMD
 	 * @param tsize  the size to draw each tile
 	 */
 	private static void thirdBody(final TileDrawHelper helper,
-								  final Graphics pen, final IMapNG spmap,
-								  final int tsize) {
+								final Graphics pen, final IMapNG spmap,
+								final int tsize) {
 		for (final Point point : spmap.locations()) {
 			helper.drawTileTranslated(pen, spmap, point, tsize, tsize);
 		}
@@ -238,11 +237,10 @@ public final class DrawHelperComparator implements SimpleDriver { // NOPMD
 	 * @return how long the test took, in ns.
 	 */
 	private static long fourth(final TileDrawHelper helper, final IMapNG spmap,
-							   final int reps, final int tsize) {
+							final int reps, final int tsize) {
 		final MapDimensions dim = spmap.dimensions();
-		final BufferedImage image = new BufferedImage(tsize * dim.cols, // NOPMD
-															 tsize * dim.rows,
-															 BufferedImage.TYPE_INT_RGB);
+		final BufferedImage image = new BufferedImage(tsize * dim.cols, tsize * dim.rows,
+															BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
@@ -263,8 +261,8 @@ public final class DrawHelperComparator implements SimpleDriver { // NOPMD
 	 * @param tsize  the size to draw each tile
 	 */
 	private static void fourthBody(final TileDrawHelper helper,
-								   final Graphics pen, final IMapNG spmap,
-								   final int tsize) {
+								final Graphics pen, final IMapNG spmap,
+								final int tsize) {
 		final Coordinate dimensions = PointFactory.coordinate(tsize, tsize);
 		for (final Point point : spmap.locations()) {
 			helper.drawTile(pen, spmap, point,
@@ -284,11 +282,10 @@ public final class DrawHelperComparator implements SimpleDriver { // NOPMD
 	 * @return how long the test took, in ns.
 	 */
 	private static long fifthOne(final TileDrawHelper helper, final IMapNG spmap,
-								 final int reps, final int tsize) {
+								final int reps, final int tsize) {
 		final MapDimensions dim = spmap.dimensions();
-		final BufferedImage image = new BufferedImage(tsize * dim.cols, // NOPMD
-															 tsize * dim.rows,
-															 BufferedImage.TYPE_INT_RGB);
+		final BufferedImage image = new BufferedImage(tsize * dim.cols, tsize * dim.rows,
+															BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
@@ -308,8 +305,8 @@ public final class DrawHelperComparator implements SimpleDriver { // NOPMD
 	 * @param tsize  the size to draw each tile
 	 */
 	private static void fifthOneBody(final IMapNG spmap,
-									 final TileDrawHelper helper, final Graphics pen,
-									 final int tsize) {
+									final TileDrawHelper helper, final Graphics pen,
+									final int tsize) {
 		final Coordinate dimensions = PointFactory.coordinate(tsize, tsize);
 		for (int row = TEST_MIN_ROW; row < TEST_MAX_ROW; row++) {
 			for (int col = TEST_MIN_COL; col < TEST_MAX_COL; col++) {
@@ -332,11 +329,10 @@ public final class DrawHelperComparator implements SimpleDriver { // NOPMD
 	 * @return how long the test took, in ns.
 	 */
 	private static long fifthTwo(final TileDrawHelper helper, final IMapNG spmap,
-								 final int reps, final int tsize) {
+								final int reps, final int tsize) {
 		final MapDimensions dim = spmap.dimensions();
-		final BufferedImage image = new BufferedImage(tsize * dim.cols, // NOPMD
-															 tsize * dim.rows,
-															 BufferedImage.TYPE_INT_RGB);
+		final BufferedImage image = new BufferedImage(tsize * dim.cols, tsize * dim.rows,
+															BufferedImage.TYPE_INT_RGB);
 		final long start = System.nanoTime();
 		for (int rep = 0; rep < reps; rep++) {
 			image.flush();
@@ -357,8 +353,8 @@ public final class DrawHelperComparator implements SimpleDriver { // NOPMD
 	 * @param tsize  the size to draw each tile
 	 */
 	private static void fifthTwoBody(final TileDrawHelper helper,
-									 final Graphics pen, final IMapNG spmap,
-									 final int tsize) {
+									final Graphics pen, final IMapNG spmap,
+									final int tsize) {
 		final Coordinate dimensions = PointFactory.coordinate(tsize, tsize);
 		for (final Point point : spmap.locations()) {
 			if ((point.row >= TEST_MIN_ROW) && (point.row < TEST_MAX_ROW)
@@ -366,8 +362,7 @@ public final class DrawHelperComparator implements SimpleDriver { // NOPMD
 				helper.drawTile(
 						pen,
 						spmap, point,
-						PointFactory.coordinate(point.row * tsize, point.col
-																		   * tsize),
+						PointFactory.coordinate(point.row * tsize, point.col * tsize),
 						dimensions);
 			}
 		}
@@ -384,12 +379,10 @@ public final class DrawHelperComparator implements SimpleDriver { // NOPMD
 	private static void runAllTests(final IMapNG map, final int repetitions) {
 		final int tsize = TileViewSize.scaleZoom(ViewerModel.DEF_ZOOM_LEVEL,
 				map.dimensions().version);
-		final TileDrawHelper hThree = new Ver2TileDrawHelper(
-																	(img, infoflags,
-																	 xCoord, yCoord,
-																	 width, height) ->
-																			false,
-																	fix -> true);
+		final TileDrawHelper hThree =
+				new Ver2TileDrawHelper((img, infoflags, xCoord, yCoord, width, height)
+											-> false,
+											fix -> true);
 		SYS_OUT.println("1. All in one place:");
 		final TileDrawHelper hOne = new CachingTileDrawHelper();
 		long oneTotal =
@@ -460,7 +453,7 @@ public final class DrawHelperComparator implements SimpleDriver { // NOPMD
 	 * @return that total
 	 */
 	private static long printStats(final String prefix, final long total,
-								   final int reps) {
+								final int reps) {
 		SYS_OUT.print(prefix);
 		SYS_OUT.print('\t');
 		SYS_OUT.print(total);

@@ -67,18 +67,19 @@ public final class ReaderAdapter implements INodeHandler<Object> {
 	 */
 	@Override
 	public Object parse(final StartElement element,
-	                    final Iterable<XMLEvent> stream,
-	                    final IMutablePlayerCollection players,
-	                    final Warning warner, final IDFactory idFactory)
+						final Iterable<XMLEvent> stream,
+						final IMutablePlayerCollection players,
+						final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		final String iLocal = NullCleaner.assertNotNull(element.getName().getLocalPart
-				                                                                  ());
+		// TODO: Statically import assertNotNull
+		final String iLocal = NullCleaner.assertNotNull(element.getName()
+																.getLocalPart());
 		if (EqualsAny.equalsAny(
 				NullCleaner.assertNotNull(element.getName().getNamespaceURI()),
 				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)
 				&& READ_CACHE.containsKey(iLocal)) {
 			return NullCleaner.assertNotNull(READ_CACHE.get(iLocal))
-						   .parse(element, stream, players, warner, idFactory);
+						.parse(element, stream, players, warner, idFactory);
 		} else {
 			throw new UnwantedChildException(new QName("unknown"), element);
 		}
@@ -120,9 +121,9 @@ public final class ReaderAdapter implements INodeHandler<Object> {
 	 * @param fourthReader the fourth reader
 	 */
 	private static void factoryFour(final INodeHandler<@NonNull ?> firstReader,
-	                                final INodeHandler<@NonNull ?> secondReader,
-	                                final INodeHandler<@NonNull ?> thirdReader,
-	                                final INodeHandler<@NonNull ?> fourthReader) {
+									final INodeHandler<@NonNull ?> secondReader,
+									final INodeHandler<@NonNull ?> thirdReader,
+									final INodeHandler<@NonNull ?> fourthReader) {
 		factory(firstReader);
 		factory(secondReader);
 		factory(thirdReader);
@@ -163,9 +164,8 @@ public final class ReaderAdapter implements INodeHandler<Object> {
 	 */
 	@Override
 	public List<String> understands() {
-		throw new IllegalStateException(
-				                               "ReaderAdapter#understands() should never" +
-						                               " be called");
+		throw new IllegalStateException("ReaderAdapter#understands() should never be " +
+												"called");
 	}
 
 	/**
@@ -182,9 +182,8 @@ public final class ReaderAdapter implements INodeHandler<Object> {
 		if (type.isAssignableFrom(obj.getClass())) {
 			return (T) obj;
 		} else {
-			throw new IllegalStateException("Wanted " + type.getSimpleName()
-					                                + ", was " +
-					                                obj.getClass().getSimpleName());
+			throw new IllegalStateException("Wanted " + type.getSimpleName() + ", was " +
+													obj.getClass().getSimpleName());
 		}
 	}
 
@@ -199,20 +198,19 @@ public final class ReaderAdapter implements INodeHandler<Object> {
 	public <@NonNull S> SPIntermediateRepresentation write(final S obj) {
 		if (WRITERS.containsKey(obj.getClass())) {
 			//noinspection unchecked
-			return ((INodeHandler<S>) NullCleaner.assertNotNull(WRITERS.get(obj.getClass())))
-					       .write(obj);
+			return ((INodeHandler<S>) NullCleaner
+											.assertNotNull(WRITERS.get(obj.getClass())))
+						.write(obj);
 		} else {
 			for (final Map.Entry<Class<?>, INodeHandler<@NonNull ?>> entry : WRITERS
-					                                                                 .entrySet()) {
+																					.entrySet()) {
 				if (entry.getKey().isAssignableFrom(obj.getClass())) {
 					//noinspection unchecked
 					return ((INodeHandler<S>) entry.getValue()).write(obj);
 				}
 			}
-			throw new IllegalArgumentException(
-					                                  "Writable type this adapter can't handle: "
-							                                  + obj.getClass()
-									                                    .getSimpleName());
+			throw new IllegalArgumentException("Type this adapter can't write: " +
+													obj.getClass().getSimpleName());
 		}
 	}
 

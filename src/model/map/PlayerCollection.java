@@ -41,11 +41,10 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 */
 	private final Map<Integer, Player> players = new HashMap<>();
 	/**
-	 * Logger.
+	 * Logger. TODO: Use TypesafeLogger
 	 */
 	private static final Logger LOGGER =
-			NullCleaner.assertNotNull(Logger.getLogger(PlayerCollection.class.getName
-																					  ()));
+			NullCleaner.assertNotNull(Logger.getLogger(PlayerCollection.class.getName()));
 
 	/**
 	 * @param player a player-id
@@ -77,12 +76,12 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		try {
-			return (this == obj) || ((obj instanceof IPlayerCollection)
-											 &&
-											 isSubset((IPlayerCollection) obj, DEV_NULL,
-													 "")
-											 && ((IPlayerCollection) obj)
-														.isSubset(this, DEV_NULL, ""));
+			return (this == obj) || ((obj instanceof IPlayerCollection) &&
+											isSubset((IPlayerCollection) obj, DEV_NULL,
+													"") && ((IPlayerCollection) obj)
+																	.isSubset(this,
+																			DEV_NULL,
+																			""));
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error from NullStream", e);
 			return false;
@@ -107,8 +106,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	@Override
 	public Player getCurrentPlayer() {
 		return StreamSupport.stream(spliterator(), false).filter(Player::isCurrent)
-					   .findFirst()
-					   .orElse(new Player(-1, ""));
+					.findFirst().orElse(new Player(-1, ""));
 	}
 
 	/**

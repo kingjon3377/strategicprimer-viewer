@@ -1,11 +1,10 @@
 package model.map.fixtures.terrain;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableImage;
 import model.map.IFixture;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A sandbar on the map.
@@ -73,8 +72,8 @@ public class Sandbar implements TerrainFixture, HasMutableImage {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof Sandbar)
-				                         && (id == ((TileFixture) obj).getID()));
+		return (this == obj) ||
+					((obj instanceof Sandbar) && (id == ((TileFixture) obj).getID()));
 	}
 
 	/**

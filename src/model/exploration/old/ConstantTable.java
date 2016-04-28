@@ -59,7 +59,7 @@ public final class ConstantTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-	                            final Iterable<TileFixture> fixtures) {
+								final Iterable<TileFixture> fixtures) {
 		return value;
 	}
 	/**
@@ -70,7 +70,7 @@ public final class ConstantTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-	                            final Stream<TileFixture> fixtures) {
+								final Stream<TileFixture> fixtures) {
 		return value;
 	}
 

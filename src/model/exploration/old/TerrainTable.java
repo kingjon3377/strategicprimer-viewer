@@ -58,13 +58,12 @@ public final class TerrainTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-	                            final Iterable<TileFixture> fixtures) {
+								final Iterable<TileFixture> fixtures) {
 		if (mapping.containsKey(terrain)) {
 			return NullCleaner.assertNotNull(mapping.get(terrain));
 		} else {
-			throw new IllegalArgumentException(
-					                                  "Table does not account for that " +
-							                                  "terrain type");
+			throw new IllegalArgumentException("Table does not account for that terrain " +
+													"type");
 		}
 	}
 	/**
@@ -75,12 +74,12 @@ public final class TerrainTable implements EncounterTable {
 	 */
 	@Override
 	public String generateEvent(final Point point, final TileType terrain,
-	                            final Stream<TileFixture> fixtures) {
+								final Stream<TileFixture> fixtures) {
 		if (mapping.containsKey(terrain)) {
 			return NullCleaner.assertNotNull(mapping.get(terrain));
 		} else {
 			throw new IllegalArgumentException("Table does not account for that terrain " +
-					                                   "type");
+													"type");
 		}
 	}
 

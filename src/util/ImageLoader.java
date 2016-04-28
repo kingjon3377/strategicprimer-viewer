@@ -1,14 +1,12 @@
 package util;
 
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 import model.map.TileType;
 import view.map.main.TileUIHelper;
 
@@ -66,9 +64,8 @@ public final class ImageLoader {
 		for (final TileType type : TileType.values()) {
 			assert type != null;
 			//noinspection ObjectAllocationInLoop
-			final BufferedImage buf = new BufferedImage(ICON_SIZE, ICON_SIZE, //NOPMD
-					                                           BufferedImage
-							                                           .TYPE_INT_ARGB);
+			final BufferedImage buf =
+					new BufferedImage(ICON_SIZE, ICON_SIZE, BufferedImage.TYPE_INT_ARGB);
 			final Graphics pen = buf.createGraphics();
 			if (colors.supportsType(2, type)) {
 				pen.setColor(colors.get(2, type));
@@ -97,9 +94,8 @@ public final class ImageLoader {
 	 */
 	public Image loadImage(final String file) throws IOException {
 		if (!cache.containsKey(file)) {
-			try (final ResourceInputStream res = new ResourceInputStream(
-					                                                            "images/" +
-							                                                            file)) {
+			try (final ResourceInputStream res = new ResourceInputStream("images/" +
+																				file)) {
 				final BufferedImage image = ImageIO.read(res);
 				if (image == null) {
 					throw new IOException("No reader could read the file");
@@ -122,8 +118,8 @@ public final class ImageLoader {
 	public Icon loadIcon(final String file) throws IOException {
 		if (!iconCache.containsKey(file)) {
 			iconCache.put(file, new ImageIcon(loadImage(file)
-					                                  .getScaledInstance(ICON_SIZE, -1,
-							                                  Image.SCALE_DEFAULT)));
+													.getScaledInstance(ICON_SIZE, -1,
+															Image.SCALE_DEFAULT)));
 		}
 		return NullCleaner.assertNotNull(iconCache.get(file));
 	}

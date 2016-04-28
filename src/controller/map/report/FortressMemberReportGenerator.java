@@ -50,8 +50,8 @@ public final class FortressMemberReportGenerator
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public FortressMemberReportGenerator(final Comparator<@NonNull Pair<@NonNull Point,
-			                                                                   @NonNull
-					                                                                   IFixture>> comparator) {
+																			@NonNull
+																					IFixture>> comparator) {
 		super(comparator);
 	}
 	/**
@@ -67,8 +67,8 @@ public final class FortressMemberReportGenerator
 	 */
 	@Override
 	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-			                          fixtures,
-	                      final IMapNG map, final Player currentPlayer) {
+									fixtures,
+						final IMapNG map, final Player currentPlayer) {
 		// At only two (albeit who-knows-how-long) list items, I doubt this will ever be
 		// over one K, but we'll give it two just in case.
 		final StringBuilder builder =
@@ -130,9 +130,8 @@ public final class FortressMemberReportGenerator
 	 */
 	@Override
 	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point,
-			                                                                       IFixture>> fixtures,
-
-	                              final IMapNG map, final Player currentPlayer) {
+																				IFixture>> fixtures,
+								final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final IReportNode rsr = new ListReportNode("Resources:");
@@ -172,12 +171,12 @@ public final class FortressMemberReportGenerator
 	 */
 	@Override
 	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-			                      fixtures,
-	                      final IMapNG map, final Player currentPlayer,
-	                      final FortressMember item, final Point loc) {
+									fixtures,
+						final IMapNG map, final Player currentPlayer,
+						final FortressMember item, final Point loc) {
 		if (item instanceof Unit) {
 			return new UnitReportGenerator(pairComparator)
-					       .produce(fixtures, map, currentPlayer, (Unit) item, loc);
+						.produce(fixtures, map, currentPlayer, (Unit) item, loc);
 		} else if (item instanceof ResourcePile) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			final ResourcePile rsr = (ResourcePile) item;
@@ -217,10 +216,9 @@ public final class FortressMemberReportGenerator
 	 */
 	@Override
 	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point,
-			                                                                        IFixture>> fixtures,
-
-	                                   final IMapNG map, final Player currentPlayer,
-	                                   final FortressMember item, final Point loc) {
+																				IFixture>> fixtures,
+								final IMapNG map, final Player currentPlayer,
+								final FortressMember item, final Point loc) {
 		if (item instanceof Unit) {
 			return new UnitReportGenerator(pairComparator).produceRIR(fixtures, map, currentPlayer,
 					(Unit) item, loc);
@@ -235,15 +233,15 @@ public final class FortressMemberReportGenerator
 			}
 			if (rsr.getUnits().isEmpty()) {
 				return new SimpleReportNode("A pile of ",
-						                           Integer.toString(rsr.getQuantity()),
-						                           rsr.getContents(), " (", rsr.getKind(),
-						                           ")", age);
+												Integer.toString(rsr.getQuantity()),
+												rsr.getContents(), " (", rsr.getKind(),
+												")", age);
 			} else {
 				return new SimpleReportNode("A pile of ",
-						                           Integer.toString(rsr.getQuantity()),
-						                           " ", rsr.getUnits(), " of ",
-						                           rsr.getContents(), " (", rsr.getKind(),
-						                           ")", age);
+												Integer.toString(rsr.getQuantity()),
+												" ", rsr.getUnits(), " of ",
+												rsr.getContents(), " (", rsr.getKind(),
+												")", age);
 			}
 		} else if (item instanceof Implement) {
 			fixtures.remove(Integer.valueOf(item.getID()));

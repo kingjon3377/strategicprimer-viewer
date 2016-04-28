@@ -52,8 +52,7 @@ public final class TableLoader { // NOPMD
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger
-												 .getLogger(TableLoader.class);
+	private static final Logger LOGGER = TypesafeLogger.getLogger(TableLoader.class);
 	/**
 	 * An error-message string. Pulled out because it's so long.
 	 */
@@ -82,17 +81,14 @@ public final class TableLoader { // NOPMD
 	 */
 	public static EncounterTable loadTable(final String filename)
 			throws IOException {
-		try (final BufferedReader reader = new BufferedReader(
-																	 new
-																			 InputStreamReader(new ResourceInputStream(filename)))) {
+		try (final BufferedReader reader = new BufferedReader(new InputStreamReader(new
+																							ResourceInputStream(filename)))) {
 			return loadTableFromStream(reader);
 		} catch (final IllegalArgumentException except) {
 			if ("unknown table type".equals(except.getMessage())) {
-				throw new IllegalArgumentException("File " + filename
-														   +
-														   " specifies an unknown table " +
-														   "type",
-														  except);
+				throw new IllegalArgumentException("File " + filename +
+														" specifies an unknown table type",
+														except);
 			} else {
 				throw except;
 			}
@@ -108,9 +104,7 @@ public final class TableLoader { // NOPMD
 			throws IOException {
 		final String line = reader.readLine();
 		if (line == null) {
-			throw new IOException(
-										 "File doesn't start by specifying which kind of" +
-												 " table.");
+			throw new IOException("File doesn't start by specifying which kind of table.");
 		} else {
 			final char cmd = Character.toLowerCase(line.charAt(0));
 			switch (cmd) { // NOPMD
@@ -141,18 +135,15 @@ public final class TableLoader { // NOPMD
 			throws IOException {
 		final String firstLine = reader.readLine();
 		if (firstLine == null) {
-			throw new IOException(
-										 "File doesn't start with the number of rows of " +
-												 "quadrants");
+			throw new IOException("File doesn't start with the number of rows of " +
+										"quadrants");
 		}
 		final int rows;
 		try {
 			rows = NumberFormat.getIntegerInstance().parse(firstLine).intValue();
 		} catch (final NumberFormatException | ParseException except) {
-			throw new IOException(
-										 "File doesn't start with number of rows of " +
-												 "quadrants",
-										 except);
+			throw new IOException("File doesn't start with number of rows of quadrants",
+										except);
 		}
 		final List<String> items = new LinkedList<>();
 		try {
@@ -213,10 +204,10 @@ public final class TableLoader { // NOPMD
 			if (array.length < SPLIT_ONCE) {
 				LOGGER.severe("Line with no blanks, continuing ...");
 			} else {
-				list.add(Pair.of(TileType.getTileType(NullCleaner
-															  .assertNotNull(array[0])),
-						NullCleaner
-								.assertNotNull(array[1])));
+				list.add(
+						Pair.of(TileType.getTileType(NullCleaner.assertNotNull
+																		(array[0])),
+								NullCleaner.assertNotNull(array[1])));
 			}
 			line = reader.readLine();
 		}
@@ -263,8 +254,7 @@ public final class TableLoader { // NOPMD
 	 * @param path   the directory to look in
 	 * @param runner the runner to add them to
 	 */
-	public static void loadAllTables(final String path,
-									 final ExplorationRunner runner) {
+	public static void loadAllTables(final String path, final ExplorationRunner runner) {
 		final File dir = new File(path);
 		final String[] children = dir.list();
 		if (children != null) {

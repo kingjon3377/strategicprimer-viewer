@@ -54,11 +54,10 @@ public final class TypesafeXMLEventReader implements Iterator<@NonNull XMLEvent>
 	 */
 	public TypesafeXMLEventReader(final Reader reader)
 			throws XMLStreamException {
-		final XMLEventReader temp = XMLInputFactory.newInstance()
-				                            .createXMLEventReader(reader);
+		final XMLEventReader temp =
+				XMLInputFactory.newInstance().createXMLEventReader(reader);
 		if (temp == null) {
-			throw new XMLStreamException(
-					                            "Factory created a null XMLEventReader");
+			throw new XMLStreamException("Factory created a null XMLEventReader");
 		} else {
 			wrapped = temp;
 		}
@@ -85,8 +84,8 @@ public final class TypesafeXMLEventReader implements Iterator<@NonNull XMLEvent>
 				return retval;
 			}
 		} catch (final XMLStreamException except) {
-			final NoSuchElementException nse = new NoSuchElementException(
-					                                                             "Malformed XML");
+			final NoSuchElementException nse =
+					new NoSuchElementException("Malformed XML");
 			nse.initCause(except);
 			throw nse;
 		}

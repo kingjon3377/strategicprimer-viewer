@@ -74,7 +74,7 @@ public interface INodeHandler<@NonNull T> {
 	 * @throws SPFormatException on map format problems
 	 */
 	T parse(StartElement element, Iterable<XMLEvent> stream,
-	        IMutablePlayerCollection players, Warning warner, IDFactory idFactory)
+			IMutablePlayerCollection players, Warning warner, IDFactory idFactory)
 			throws SPFormatException;
 
 	/**
@@ -93,7 +93,7 @@ public interface INodeHandler<@NonNull T> {
 	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
 	default String getAttribute(final StartElement startElement,
-	                                  final String attribute) throws SPFormatException {
+								final String attribute) throws SPFormatException {
 		final Attribute namespacedAttr = startElement.getAttributeByName(
 				new QName(ISPReader.NAMESPACE, attribute));
 		if ((namespacedAttr == null) || (namespacedAttr.getValue() == null)) {
@@ -118,7 +118,7 @@ public interface INodeHandler<@NonNull T> {
 	 * @return the value of attribute if it exists, or the default
 	 */
 	default String getAttribute(final StartElement elem,
-	                                  final String attr, final String defaultValue) {
+								final String attr, final String defaultValue) {
 		final Attribute namespacedValue =
 				elem.getAttributeByName(new QName(ISPReader.NAMESPACE, attr));
 		if (namespacedValue == null) {
@@ -143,12 +143,10 @@ public interface INodeHandler<@NonNull T> {
 	 * and from the deprecated form if the preferred form isn't there but it is.
 	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
-	default String getAttributeWithDeprecatedForm(
-			                                                   final StartElement
-					                                                   element,
-			                                                   final String preferred,
-			                                                   final String deprecated,
-			                                                   final Warning warner)
+	default String getAttributeWithDeprecatedForm(final StartElement element,
+												final String preferred,
+												final String deprecated,
+												final Warning warner)
 			throws SPFormatException {
 		final Attribute nsPrefAttr =
 				element.getAttributeByName(new QName(ISPReader.NAMESPACE, preferred));
@@ -181,10 +179,9 @@ public interface INodeHandler<@NonNull T> {
 	 * @param attr the attribute we want
 	 * @return whether the element has that attribute
 	 */
-	default boolean hasAttribute(final StartElement elem,
-	                                   final String attr) {
+	default boolean hasAttribute(final StartElement elem, final String attr) {
 		return (elem.getAttributeByName(new QName(ISPReader.NAMESPACE, attr)) != null) ||
-				       (elem.getAttributeByName(new QName(attr)) != null);
+					(elem.getAttributeByName(new QName(attr)) != null);
 	}
 
 	/**
@@ -195,15 +192,14 @@ public interface INodeHandler<@NonNull T> {
 	 * @param reader the XML stream we're reading from
 	 * @throws SPFormatException on unwanted child
 	 */
-	default void spinUntilEnd(final QName tag,
-	                                final Iterable<XMLEvent> reader)
+	default void spinUntilEnd(final QName tag, final Iterable<XMLEvent> reader)
 			throws SPFormatException {
 		for (final XMLEvent event : reader) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException(tag,
 						NullCleaner.assertNotNull(event.asStartElement()));
-			} else if (event.isEndElement()
-					           && tag.equals(event.asEndElement().getName())) {
+			} else if (event.isEndElement() &&
+							tag.equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
@@ -219,10 +215,9 @@ public interface INodeHandler<@NonNull T> {
 	 * @throws SPFormatException if the parameter is mandatory and missing
 	 */
 	default void requireNonEmptyParameter(final StartElement element,
-	                                            final String parameter,
-	                                            final boolean mandatory,
-	                                            final Warning warner)
-			throws SPFormatException {
+										final String parameter,
+										final boolean mandatory,
+										final Warning warner) throws SPFormatException {
 		if (getAttribute(element, parameter, "").isEmpty()) {
 			final SPFormatException except =
 					new MissingPropertyException(element, parameter);
@@ -246,8 +241,8 @@ public interface INodeHandler<@NonNull T> {
 	 * @throws SPFormatException on SP format problems reading the attribute.
 	 */
 	default Player getPlayerOrIndependent(final StartElement element,
-	                                            final Warning warner,
-	                                            final IPlayerCollection players)
+										final Warning warner,
+										final IPlayerCollection players)
 			throws SPFormatException {
 		final Player retval; // NOPMD
 		if (hasAttribute(element, "owner")) {
@@ -270,9 +265,8 @@ public interface INodeHandler<@NonNull T> {
 	 * @return the ID the tag has if it has one, or otherwise a generated one.
 	 * @throws SPFormatException on SP format problems reading the attribute
 	 */
-	default int getOrGenerateID(final StartElement element,
-	                            final Warning warner, final IDFactory idFactory)
-			throws SPFormatException {
+	default int getOrGenerateID(final StartElement element, final Warning warner,
+								final IDFactory idFactory) throws SPFormatException {
 		final int retval; // NOPMD
 		if (hasAttribute(element, "id")) {
 			retval = idFactory.register(getIntegerAttribute(element, "id"));
@@ -290,10 +284,10 @@ public interface INodeHandler<@NonNull T> {
 	 * @throws SPFormatException if the element doesn't have that attribute
 	 */
 	default int getIntegerAttribute(final StartElement startElement,
-	                                      final String attribute) throws SPFormatException {
+									final String attribute) throws SPFormatException {
 		try {
 			return NullCleaner.assertNotNull(NumberFormat.getIntegerInstance())
-					       .parse(getAttribute(startElement, attribute)).intValue();
+						.parse(getAttribute(startElement, attribute)).intValue();
 		} catch (final ParseException e) {
 			throw new SPMalformedInputException(
 					NullCleaner.assertNotNull(startElement.getLocation()), e);
@@ -311,7 +305,7 @@ public interface INodeHandler<@NonNull T> {
 	 * @throws SPFormatException on malformed XML (not an integer)
 	 */
 	default int getIntegerAttribute(final StartElement elem, final String attr,
-	                                      final int defaultValue)
+									final int defaultValue)
 			throws SPFormatException {
 		final String value = getAttribute(elem, attr, "");
 		if (value.isEmpty()) {
@@ -319,7 +313,7 @@ public interface INodeHandler<@NonNull T> {
 		} else {
 			try {
 				return NullCleaner.assertNotNull(NumberFormat.getIntegerInstance())
-						       .parse(value).intValue();
+							.parse(value).intValue();
 			} catch (final ParseException e) {
 				throw new SPMalformedInputException(
 						NullCleaner.assertNotNull(elem.getLocation()), e);

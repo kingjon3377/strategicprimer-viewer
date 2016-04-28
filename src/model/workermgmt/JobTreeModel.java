@@ -45,8 +45,8 @@ import util.TypesafeLogger;
  *
  * @author Jonathan Lovelace
  */
-public final class JobTreeModel implements TreeModel, UnitMemberListener,
-												   AddRemoveListener {
+public final class JobTreeModel
+		implements TreeModel, UnitMemberListener, AddRemoveListener {
 	/**
 	 * The listeners registered to listen for model changes.
 	 */
@@ -66,8 +66,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger
-												 .getLogger(WorkerTreeModel.class);
+	private static final Logger LOGGER = TypesafeLogger.getLogger(WorkerTreeModel.class);
 
 	/**
 	 * Set the selection model for the tree we're the model for.
@@ -150,14 +149,11 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 			//noinspection ConstantConditions
 			assert parent != null;
 			return (int) StreamSupport.stream(((Iterable<?>) parent).spliterator(),
-					false)
-								 .count();
+					false).count();
 		} else if (parent instanceof ISkill) {
 			return 0; // NOPMD
 		} else {
-			throw new IllegalArgumentException(
-													  "Not a possible member of the " +
-															  "tree");
+			throw new IllegalArgumentException("Not a possible member of the tree");
 		}
 	}
 
@@ -187,7 +183,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 */
 	@Override
 	public int getIndexOfChild(@Nullable final Object parent,
-							   @Nullable final Object child) {
+							@Nullable final Object child) {
 		if ((parent instanceof IWorker) || (parent instanceof IJob)) {
 			//noinspection ConstantConditions
 			assert parent != null;
@@ -235,8 +231,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 			final IJob job = new Job(addendum, 0);
 			final int childCount = getChildCount(currRoot);
 			currRoot.addJob(job);
-			fireTreeNodesInserted(new TreeModelEvent(this, new TreePath(
-																			   currRoot),
+			fireTreeNodesInserted(new TreeModelEvent(this, new TreePath(currRoot),
 															arrayOfInt(childCount),
 															arrayOfObj(job)));
 		} else if ("skill".equals(category)) {
@@ -247,14 +242,10 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 				final ISkill skill = new Skill(addendum, 0, 0);
 				final int childCount = getChildCount(job);
 				job.addSkill(skill);
-				fireTreeNodesInserted(new TreeModelEvent(this, new TreePath(
-																				   new
-																						   Object[]{
-																						   root,
-																						   job}),
-
-																arrayOfInt(childCount),
-																arrayOfObj(skill)));
+				fireTreeNodesInserted(
+						new TreeModelEvent(this, new TreePath(new Object[]{root, job}),
+												arrayOfInt(childCount),
+												arrayOfObj(skill)));
 			}
 		}
 	}
@@ -265,7 +256,7 @@ public final class JobTreeModel implements TreeModel, UnitMemberListener,
 	 */
 	@Override
 	public void memberSelected(@Nullable final UnitMember old,
-							   @Nullable final UnitMember selected) {
+								@Nullable final UnitMember selected) {
 		if (selected instanceof IWorker) {
 			root = (IWorker) selected;
 			fireTreeStructureChanged(new TreeModelEvent(this, new TreePath(root)));

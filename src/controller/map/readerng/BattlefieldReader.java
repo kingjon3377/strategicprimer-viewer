@@ -53,14 +53,14 @@ public final class BattlefieldReader implements INodeHandler<@NonNull Battlefiel
 	 */
 	@Override
 	public Battlefield parse(final StartElement element,
-	                         final Iterable<XMLEvent> stream,
-	                         final IMutablePlayerCollection players,
-	                         final Warning warner, final IDFactory idFactory)
+							final Iterable<XMLEvent> stream,
+							final IMutablePlayerCollection players,
+							final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Battlefield fix = new Battlefield(getIntegerAttribute(element, "dc"),
-				                                       getOrGenerateID(element, warner,
-						                                       idFactory));
+													getOrGenerateID(element, warner,
+															idFactory));
 		addImage(element, fix);
 		return fix;
 	}
@@ -91,11 +91,11 @@ public final class BattlefieldReader implements INodeHandler<@NonNull Battlefiel
 	public SPIntermediateRepresentation write(final Battlefield obj) {
 		final SPIntermediateRepresentation retval =
 				new SPIntermediateRepresentation("battlefield",
-						                                Pair.of("dc", NullCleaner
-								                                              .assertNotNull(
-										                                              Integer
-												                                              .toString(
-														                                              obj.getDC()))));
+														Pair.of("dc", NullCleaner
+																			.assertNotNull(
+																					Integer
+																							.toString(
+																									obj.getDC()))));
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

@@ -60,16 +60,15 @@ public final class TestTableLoader {
 	@Test
 	public void testLoadQuadrantTable() throws IOException {
 		try (final BufferedReader reader = new BufferedReader(new StringReader
-				                   ("quadrant\n2\none\ntwo\nthree\nfour\nfive\nsix"))) {
+																	("quadrant\n2\none\ntwo\nthree\nfour\nfive\nsix"))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(0, 0);
 			assertEquals("loading quadrant table", ONE_STRING,
 					result.generateEvent(point, TileType.Tundra, EMPTY));
 			// TODO: somehow check that it got properly loaded, beyond this
 		}
-		try (final BufferedReader readerTwo = new BufferedReader(
-				                                                        new StringReader
-						                                                        ("quadrant"))) {
+		try (final BufferedReader readerTwo = new BufferedReader(new StringReader
+																		("quadrant"))) {
 			TableLoader.loadTableFromStream(readerTwo);
 			fail("Didn't object to quadrant table without number of rows");
 		} catch (final IOException except) {
@@ -88,9 +87,9 @@ public final class TestTableLoader {
 	@Test
 	public void testLoadRandomTable() throws IOException {
 		try (final BufferedReader reader = new BufferedReader(new StringReader
-				                                                      ("random\n0 " +
-						                                                       "one\n99 " +
-						                                                       "two"))) {
+																	("random\n0 " +
+																			"one\n99 " +
+																			"two"))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(30, 30);
 			assertEquals("loading random table", ONE_STRING,
@@ -107,7 +106,8 @@ public final class TestTableLoader {
 	@Test
 	public void testLoadTerrainTable() throws IOException {
 		try (final BufferedReader reader = new BufferedReader(new StringReader
-				          ("terrain\ntundra one\nplains two\nocean three"))) {
+																	("terrain\ntundra " +
+																			"one\nplains two\nocean three"))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point firstPoint = PointFactory.point(30, 30);
 			assertEquals("loading terrain table: tundra", ONE_STRING,
@@ -128,8 +128,8 @@ public final class TestTableLoader {
 	@SuppressWarnings(ST_MET)
 	@Test
 	public void testLoadConstantTable() throws IOException {
-		try (BufferedReader reader = new BufferedReader(new StringReader(
-				                                                                "constant\none"))) {
+		try (BufferedReader reader = new BufferedReader(new StringReader
+																("constant\none"))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(10, 5);
 			assertEquals("loading constant table: first test", ONE_STRING,
@@ -154,7 +154,7 @@ public final class TestTableLoader {
 					except.getMessage());
 		}
 		try (BufferedReader reader = new BufferedReader(new StringReader
-				                                                ("2\ninvaliddata\ninvaliddata"))) {
+																("2\ninvaliddata\ninvaliddata"))) {
 			TableLoader.loadTableFromStream(reader);
 			fail("Accepted table without header");
 		} catch (final IllegalArgumentException except) {

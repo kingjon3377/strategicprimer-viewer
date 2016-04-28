@@ -47,10 +47,10 @@ public final class DuplicateFixtureRemover implements SimpleCLIDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-u", "--dupl", ParamCount.One,
-								   "Remove duplicate fixtures",
-								   "Remove duplicate fixtures---identical except ID# and" +
-										   " on the same tile---from a map.",
-								   DuplicateFixtureRemover.class);
+								"Remove duplicate fixtures",
+								"Remove duplicate fixtures---identical except ID# and" +
+										" on the same tile---from a map.",
+								DuplicateFixtureRemover.class);
 
 	/**
 	 * "Remove" (at first we just report) duplicate fixtures (i.e. hills, forests of the
@@ -79,18 +79,18 @@ public final class DuplicateFixtureRemover implements SimpleCLIDriver {
 	 * @throws IOException on I/O error writing to stream
 	 */
 	private static void filter(final IMutableMapNG map, final Point location,
-							   final Appendable ostream) throws IOException {
+							final Appendable ostream) throws IOException {
 		final Collection<TileFixture> fixtures = new ArrayList<>();
 		final Collection<TileFixture> toRemove = new ArrayList<>();
 		// We ignore ground and forests because they don't have IDs.
 		// TODO: Try to use Streams API instead of complicated loop
 		for (final TileFixture fix : map.getOtherFixtures(location)) {
 			if (((fix instanceof IUnit) && ((IUnit) fix).getKind().contains("TODO")) ||
-					    (fix instanceof CacheFixture)) {
+						(fix instanceof CacheFixture)) {
 				continue;
 			}
 			if (fixtures.stream()
-					    .anyMatch(keptFixture -> keptFixture.equalsIgnoringID(fix))) {
+						.anyMatch(keptFixture -> keptFixture.equalsIgnoringID(fix))) {
 				ostream.append(fix.getClass().getName());
 				ostream.append(' ');
 				ostream.append(Integer.toString(fix.getID()));

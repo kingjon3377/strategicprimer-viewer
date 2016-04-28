@@ -1,13 +1,11 @@
 package model.map.fixtures.mobile;
 
 import java.io.IOException;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableImage;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A griffin. TODO: should probably be a unit, or something.
@@ -87,8 +85,8 @@ public class Griffin implements MobileFixture, HasMutableImage, UnitMember {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof Griffin)
-				                         && (id == ((TileFixture) obj).getID()));
+		return (this == obj) ||
+					((obj instanceof Griffin) && (id == ((TileFixture) obj).getID()));
 	}
 
 	/**
@@ -131,7 +129,7 @@ public class Griffin implements MobileFixture, HasMutableImage, UnitMember {
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-	                        final String context) throws IOException {
+							final String context) throws IOException {
 		if (obj.getID() == id) {
 			return isConditionTrue(ostream, obj instanceof Griffin, context,
 					"\tFor ID #", Integer.toString(id), ", different kinds of members");

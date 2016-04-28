@@ -57,7 +57,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 * @param comparator a comparator for pairs of Points and fixtures.
 	 */
 	public TownReportGenerator(final Comparator<@NonNull Pair<@NonNull Point, @NonNull
-			                                                                          IFixture>> comparator) {
+																					IFixture>> comparator) {
 		super(comparator);
 	}
 
@@ -76,10 +76,9 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 * helpful.
 	 */
 	@Override
-	public String produce(
-			                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-					                     fixtures,
-			                     final IMapNG map, final Player currentPlayer) {
+	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+									fixtures,
+						final IMapNG map, final Player currentPlayer) {
 		final Map<TownStatus, Collection<String>> separated = new EnumMap<>(TownStatus.class);
 		separated.put(TownStatus.Abandoned,
 				new HtmlList("<h5>Abandoned Communities</h5>"));
@@ -94,7 +93,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 										(ITownFixture) pair.second(), pair.first())));
 		final StringBuilder builder =
 				new StringBuilder((separated.values().stream().mapToInt(Collection::size)
-						                   .sum() * 512) + 80);
+										.sum() * 512) + 80);
 		builder.append("<h4>Cities, towns, and/or fortifications you know about:</h4>\n");
 		builder.append(OPEN_LIST);
 		Arrays.asList(TownStatus.Active, TownStatus.Abandoned, TownStatus.Ruined,
@@ -126,10 +125,9 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 * helpful.
 	 */
 	@Override
-	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point,
-			                                                                       IFixture>> fixtures,
-
-	                              final IMapNG map, final Player currentPlayer) {
+	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+											fixtures, final IMapNG map,
+								final Player currentPlayer) {
 		final Map<TownStatus, IReportNode> separated = new EnumMap<>(TownStatus.class);
 		separated.put(TownStatus.Abandoned,
 				new SectionListReportNode(5, "Abandoned Communities"));
@@ -168,19 +166,16 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 * @return the sub-report dealing with the town.
 	 */
 	@Override
-	public String produce(
-			                     final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-					                     fixtures,
-			                     final IMapNG map, final Player currentPlayer,
-			                     final ITownFixture item, final Point loc) {
+	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+									fixtures, final IMapNG map,
+						final Player currentPlayer, final ITownFixture item,
+						final Point loc) {
 		if (item instanceof Village) {
-			return new VillageReportGenerator(pairComparator)
-					       .produce(fixtures, map, // NOPMD
-							       currentPlayer, (Village) item, loc);
+			return new VillageReportGenerator(pairComparator).produce(fixtures, map,
+					currentPlayer, (Village) item, loc);
 		} else if (item instanceof Fortress) {
-			return new FortressReportGenerator(pairComparator)
-					       .produce(fixtures, map, // NOPMD
-							       currentPlayer, (Fortress) item, loc);
+			return new FortressReportGenerator(pairComparator).produce(fixtures, map,
+					currentPlayer, (Fortress) item, loc);
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			if (item.getOwner().isIndependent()) {
@@ -211,38 +206,34 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 * @return the sub-report dealing with the town.
 	 */
 	@Override
-	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point,
-			                                                                       IFixture>> fixtures,
-
-	                              final IMapNG map, final Player currentPlayer,
-	                              final ITownFixture item, final Point loc) {
+	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+											fixtures, final IMapNG map,
+								final Player currentPlayer, final ITownFixture item,
+								final Point loc) {
 		if (item instanceof Village) {
-			return new VillageReportGenerator(pairComparator)
-					       .produceRIR(fixtures, // NOPMD
-							       map, currentPlayer, (Village) item, loc);
+			return new VillageReportGenerator(pairComparator).produceRIR(fixtures,
+					map, currentPlayer, (Village) item, loc);
 		} else if (item instanceof Fortress) {
-			return new FortressReportGenerator(pairComparator)
-					       .produceRIR(fixtures, // NOPMD
-							       map, currentPlayer, (Fortress) item, loc);
+			return new FortressReportGenerator(pairComparator).produceRIR(fixtures,
+					map, currentPlayer, (Fortress) item, loc);
 		} else if (item instanceof AbstractTown) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			if (item.getOwner().isIndependent()) {
 				return new SimpleReportNode(loc, atPoint(loc), item.getName(),
-						                           ", an independent ",
-						                           item.size().toString(), " ",
-						                           item.status().toString(), " ",
-						                           item.kind(), " ",
-						                           distCalculator.distanceString(loc));
+												", an independent ",
+												item.size().toString(), " ",
+												item.status().toString(), " ",
+												item.kind(), " ",
+												distCalculator.distanceString(loc));
 			} else {
 				return new SimpleReportNode(loc, atPoint(loc), item.getName(), ", a ",
-						                           item.size().toString(), " ",
-						                           item.status().toString(), " ",
-						                           item.kind(), " allied with " +
-								                                        playerNameOrYou(
-										                                        item.getOwner()),
-
-						                           " ",
-						                           distCalculator.distanceString(loc));
+												item.size().toString(), " ",
+												item.status().toString(), " ",
+												item.kind(), " allied with " +
+																		playerNameOrYou(
+																				item.getOwner()),
+												" ",
+												distCalculator.distanceString(loc));
 			}
 		} else {
 			throw new IllegalStateException("Unhandled ITownFixture subclass");

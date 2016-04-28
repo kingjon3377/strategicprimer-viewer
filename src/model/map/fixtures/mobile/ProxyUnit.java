@@ -42,9 +42,9 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public final class ProxyUnit implements IUnit, ProxyFor<IUnit>, HasMutableKind,
-		                                        HasMutableImage, HasMutableName,
-		                                        HasMutableOwner {
+public final class ProxyUnit
+		implements IUnit, ProxyFor<IUnit>, HasMutableKind, HasMutableImage,
+						HasMutableName, HasMutableOwner {
 	/**
 	 * Logger.
 	 */
@@ -152,8 +152,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit>, HasMutableKind,
 		} else if (getOwner().isIndependent()) {
 			return "an independent " + getKind() + " unit";
 		} else {
-			return "a(n) " + getKind() + " unit belonging to "
-					       + getOwner().getName();
+			return "a(n) " + getKind() + " unit belonging to " + getOwner().getName();
 		}
 	}
 
@@ -296,10 +295,11 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit>, HasMutableKind,
 					final Integer memberID =
 							NullCleaner.assertNotNull(Integer.valueOf(member.getID()));
 					if (map.containsKey(memberID)) {
+						// TODO: Statically import assertNotNull
 						//noinspection unchecked
 						proxy = (ProxyFor<? extends UnitMember>) NullCleaner
-																		 .assertNotNull(
-																				 map.get(memberID));
+																		.assertNotNull(
+																				map.get(memberID));
 						if (proxy instanceof ProxyWorker) {
 							if (member instanceof IWorker) {
 								((ProxyWorker) proxy).addProxied((IWorker) member);
@@ -410,7 +410,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit>, HasMutableKind,
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-	                        final String context)
+							final String context)
 			throws IOException {
 		ostream.append(context);
 		ostream.append("Called isSubset() in ProxyUnit");
@@ -572,9 +572,8 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit>, HasMutableKind,
 		 */
 		@Override
 		public boolean equalsIgnoringID(final IFixture fix) {
-			return (fix instanceof ProxyMember)
-					       && ((ProxyMember) fix).proxiedMembers
-							          .equals(proxiedMembers);
+			return (fix instanceof ProxyMember) &&
+						((ProxyMember) fix).proxiedMembers.equals(proxiedMembers);
 		}
 
 		/**
@@ -586,7 +585,7 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit>, HasMutableKind,
 		 */
 		@Override
 		public boolean isSubset(final IFixture obj, final Appendable ostream,
-		                        final String context) throws IOException {
+								final String context) throws IOException {
 			ostream.append(context);
 			ostream.append("isSubset called on ProxyMember");
 			return false;
@@ -655,10 +654,10 @@ public final class ProxyUnit implements IUnit, ProxyFor<IUnit>, HasMutableKind,
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof ProxyUnit) &&
-				                         (parallel == ((ProxyUnit) obj).parallel) &&
-				                         (id == ((ProxyUnit) obj).id) &&
-				                         kind.equals(((ProxyUnit) obj).kind) &&
-				                         proxied.equals(((ProxyUnit) obj).getProxied()));
+										(parallel == ((ProxyUnit) obj).parallel) &&
+										(id == ((ProxyUnit) obj).id) &&
+										kind.equals(((ProxyUnit) obj).kind) &&
+										proxied.equals(((ProxyUnit) obj).getProxied()));
 	}
 
 	/**

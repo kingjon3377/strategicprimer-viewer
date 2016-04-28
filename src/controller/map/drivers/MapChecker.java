@@ -44,15 +44,14 @@ public final class MapChecker implements UtilityDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-k", "--check", ParamCount.AtLeastOne,
-					               "Check map for errors",
-					               "Check a map file for errors, deprecated syntax, etc.",
-					               MapChecker.class);
+								"Check map for errors",
+								"Check a map file for errors, deprecated syntax, etc.",
+								MapChecker.class);
 
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger
-			                                     .getLogger(MapChecker.class);
+	private static final Logger LOGGER = TypesafeLogger.getLogger(MapChecker.class);
 	/**
 	 * The map reader we'll use.
 	 */
@@ -86,8 +85,8 @@ public final class MapChecker implements UtilityDriver {
 		try {
 			reader.readMap(file, Warning.DEFAULT);
 		} catch (final MapVersionException e) {
-			LOGGER.log(Level.SEVERE, "Map version in " + file.getPath()
-					                         + " not acceptable to reader", e);
+			LOGGER.log(Level.SEVERE,
+					"Map version in " + file.getPath() + " not acceptable to reader", e);
 			retval = false;
 		} catch (final FileNotFoundException e) {
 			LOGGER.log(Level.SEVERE, file.getPath() + " not found", e);

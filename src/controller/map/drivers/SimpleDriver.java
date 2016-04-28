@@ -39,7 +39,8 @@ public interface SimpleDriver extends ISPDriver {
 	 */
 	default void startDriver() throws DriverFailedException {
 		throw new DriverFailedException("Driver does not support no-arg operation",
-				                               new IllegalStateException("Driver does not support no-arg operation"));
+											new IllegalStateException("Driver does not " +
+															"support no-arg operation"));
 	}
 	/**
 	 * Run the driver. If the driver is a GUIDriver, this should use
@@ -66,12 +67,12 @@ public interface SimpleDriver extends ISPDriver {
 		} else if ((args.length == 1) && EqualsAny.equalsAny(usage().getParamsWanted(),
 				ParamCount.Two, ParamCount.AtLeastTwo)) {
 			startDriver(new MapReaderAdapter()
-					            .readMultiMapModel(Warning.DEFAULT, new File(args[0]),
-							            askUserForFile()));
+								.readMultiMapModel(Warning.DEFAULT, new File(args[0]),
+										askUserForFile()));
 		} else {
 			startDriver(new MapReaderAdapter()
-					            .readMultiMapModel(Warning.DEFAULT, new File(args[0]),
-							            MapReaderAdapter.namesToFiles(true, args)));
+								.readMultiMapModel(Warning.DEFAULT, new File(args[0]),
+										MapReaderAdapter.namesToFiles(true, args)));
 		}
 	}
 	/**
@@ -84,7 +85,7 @@ public interface SimpleDriver extends ISPDriver {
 			return new FileChooser(new File("")).getFile();
 		} catch (final ChoiceInterruptedException except) {
 			throw new DriverFailedException("Choice interrupted or user didn't choose",
-					                               except);
+												except);
 		}
 	}
 }

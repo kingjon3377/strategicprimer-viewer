@@ -164,7 +164,7 @@ public final class ArraySet<U> implements Set<U> {
 		final boolean retval = impl.retainAll(coll);
 		if (retval) {
 			hash = impl.stream().collect(Collectors.summingInt(Object::hashCode))
-					       .intValue();
+						.intValue();
 		}
 		return retval;
 	}
@@ -179,7 +179,7 @@ public final class ArraySet<U> implements Set<U> {
 		final boolean retval = impl.removeAll(coll);
 		if (retval) {
 			hash = impl.stream().collect(Collectors.summingInt(Object::hashCode))
-					       .intValue();
+						.intValue();
 		}
 		return retval;
 	}
@@ -218,7 +218,7 @@ public final class ArraySet<U> implements Set<U> {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Set)
-				                         && areSetsEqual(this, (Set<?>) obj));
+										&& areSetsEqual(this, (Set<?>) obj));
 	}
 
 	/**

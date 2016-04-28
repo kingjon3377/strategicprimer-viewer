@@ -1,6 +1,6 @@
 package view.exploration;
 
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -16,19 +16,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.swing.InputMap;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
 import model.listeners.CompletionListener;
@@ -39,6 +29,7 @@ import model.listeners.SelectionChangeSupport;
 import model.map.IMutableMapNG;
 import model.map.Player;
 import model.map.Point;
+import org.eclipse.jdt.annotation.Nullable;
 import util.IsNumeric;
 import util.NullCleaner;
 import util.Pair;
@@ -74,15 +65,11 @@ public final class ExplorationPanel extends BorderedPanel
 	/**
 	 * The label showing the current location of the explorer.
 	 */
-	private final JLabel locLabel = new JLabel(
-			                                          "<html><body>Currently exploring " +
-					                                          "(-1, -1); click a tile to" +
-					                                          " explore it. "
-					                                          +
-					                                          "Selected fixtures in its " +
-					                                          "left-hand list will be " +
-					                                          "'discovered'."
-					                                          + "</body></html>");
+	private final JLabel locLabel = new JLabel("<html><body>Currently exploring (-1, " +
+													"-1); click a tile to explore it." +
+													" Selected fixtures in its left-hand" +
+													" list will be 'discovered'." +
+													"</body></html>");
 	/**
 	 * The list of completion listeners listening to us.
 	 */
@@ -105,8 +92,8 @@ public final class ExplorationPanel extends BorderedPanel
 	/**
 	 * The collection of dual-tile-buttons.
 	 */
-	private final Map<Direction, DualTileButton> buttons = new EnumMap<>(Direction
-			                                                                     .class);
+	private final Map<Direction, DualTileButton> buttons =
+			new EnumMap<>(Direction.class);
 
 	/**
 	 * @param direction a direction
@@ -182,9 +169,9 @@ public final class ExplorationPanel extends BorderedPanel
 		headerPanel.add(new JLabel("Remaining Movement Points: "));
 		mpDocument = mpDoc;
 		headerPanel.add(new JTextField(mpDocument, null, 5));
+		// TODO: Use factory method instead of constant here
 		setCenter(new JSplitPane(JSplitPane.VERTICAL_SPLIT, headerPanel,
-				                        setupTilesGUI(new JPanel(new GridLayout(3, 12, 2,
-						                                                               2)))));
+										setupTilesGUI(new JPanel(new GridLayout(3, 12, 2, 2)))));
 	}
 
 	/**
@@ -207,8 +194,7 @@ public final class ExplorationPanel extends BorderedPanel
 	 * @param directions the directions to create GUIs for
 	 * @return the panel
 	 */
-	private JPanel setupTilesGUIImpl(final JPanel panel,
-	                                 final Direction... directions) {
+	private JPanel setupTilesGUIImpl(final JPanel panel, final Direction... directions) {
 		for (final Direction direction : directions) {
 			if (direction != null) {
 				addTileGUI(panel, direction);
@@ -229,19 +215,18 @@ public final class ExplorationPanel extends BorderedPanel
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private void addTileGUI(final JPanel panel, final Direction direction) {
 		final SelectionChangeSupport mainPCS = new SelectionChangeSupport();
-		final FixtureList mainList = new FixtureList(panel, model, model.getMap()
-				                                                           .players());
+		final FixtureList mainList =
+				new FixtureList(panel, model, model.getMap().players());
 		mainPCS.addSelectionChangeListener(mainList);
 		panel.add(new JScrollPane(mainList));
 		final DualTileButton dtb =
-				new DualTileButton(model.getMap(), model.getSubordinateMaps()
-						                                   .iterator().next().first());
+				new DualTileButton(model.getMap(),
+										model.getSubordinateMaps().iterator().next()
+												.first());
 		// At some point we tried wrapping the button in a JScrollPane.
 		panel.add(dtb);
-		final ExplorationClickListener ecl = new ExplorationClickListener(
-				                                                                 model,
-				                                                                 direction,
-				                                                                 mainList);
+		final ExplorationClickListener ecl =
+				new ExplorationClickListener(model, direction, mainList);
 		dtb.addActionListener(ecl);
 		final InputMap dtbIMap = dtb.getInputMap(WHEN_IN_FOCUSED_WINDOW);
 		final KeyStroke arrowKey = getArrowKey(direction);
@@ -277,16 +262,13 @@ public final class ExplorationPanel extends BorderedPanel
 	/**
 	 * A parser for numeric input.
 	 */
-	private static final NumberFormat NUM_PARSER = NullCleaner
-			                                               .assertNotNull(NumberFormat
-					                                                              .getIntegerInstance());
+	private static final NumberFormat NUM_PARSER =
+			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger
-			                                                               .getLogger(
-					                                                               ExplorationPanel.class
-							                                                               .getName()));
+	private static final Logger LOGGER =
+			NullCleaner.assertNotNull(Logger.getLogger(ExplorationPanel.class.getName()));
 
 	/**
 	 * Account for a movement cost.
@@ -327,8 +309,7 @@ public final class ExplorationPanel extends BorderedPanel
 	 * @param newPoint the newly selected location
 	 */
 	@Override
-	public void selectedPointChanged(@Nullable final Point old,
-	                                 final Point newPoint) {
+	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
 		final Point selPoint = model.getSelectedUnitLocation();
 		for (final Direction dir : Direction.values()) {
 			assert dir != null;
@@ -338,11 +319,10 @@ public final class ExplorationPanel extends BorderedPanel
 			NullCleaner.assertNotNull(buttons.get(dir)).setPoint(point);
 			NullCleaner.assertNotNull(buttons.get(dir)).repaint();
 		}
-		locLabel.setText("<html><body>Currently exploring "
-				                 + model.getSelectedUnitLocation()
-				                 + "; click a tile to explore it. "
-				                 + "Selected fixtures in its left-hand list "
-				                 + "will be 'discovered'.</body></html>");
+		locLabel.setText(
+				"<html><body>Currently exploring " + model.getSelectedUnitLocation() +
+						"; click a tile to explore it. Selected fixtures in its " +
+						"left-hand list will be 'discovered'.</body></html>");
 	}
 
 	/**
@@ -387,7 +367,7 @@ public final class ExplorationPanel extends BorderedPanel
 	public String toString() {
 		try {
 			return "ExplorationPanel with remaining MP: " +
-					       mpDocument.getText(0, mpDocument.getLength());
+						mpDocument.getText(0, mpDocument.getLength());
 		} catch (final BadLocationException ignored) {
 			return "ExplorationPanel";
 		}

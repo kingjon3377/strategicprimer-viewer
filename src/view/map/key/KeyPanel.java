@@ -1,13 +1,12 @@
 package view.map.key;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.stream.StreamSupport;
-import javax.swing.JPanel;
+import javax.swing.*;
 import model.listeners.VersionChangeListener;
 import model.map.TileType;
 
@@ -42,10 +41,9 @@ public final class KeyPanel extends JPanel implements VersionChangeListener {
 	public KeyPanel(final int version) {
 		super(new GridLayout(0, 4));
 		updateForVersion(version);
-		setMinimumSize(new Dimension(new KeyElement(version,
-				                                           TileType.NotVisible)
-				                             .getMinimumSize().width * 4,
-				                            getMinimumSize().height));
+		setMinimumSize(new Dimension(new KeyElement(version, TileType.NotVisible)
+											.getMinimumSize().width * 4,
+											getMinimumSize().height));
 		setPreferredSize(getMinimumSize());
 	}
 

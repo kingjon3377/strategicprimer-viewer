@@ -60,7 +60,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	 * @param idNum  an ID number for the fixture
 	 */
 	public AdventureFixture(final Player player, final String brief,
-	                        final String full, final int idNum) {
+							final String full, final int idNum) {
 		owner = player;
 		briefDesc = brief;
 		fullDesc = full;
@@ -133,8 +133,8 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof AdventureFixture)
-				                         && (id == ((AdventureFixture) obj).id)
-				                         && equalsImpl((AdventureFixture) obj));
+										&& (id == ((AdventureFixture) obj).id)
+										&& equalsImpl((AdventureFixture) obj));
 	}
 
 	/**
@@ -143,7 +143,7 @@ public class AdventureFixture implements ExplorableFixture, HasMutableOwner {
 	 */
 	private boolean equalsImpl(final AdventureFixture obj) {
 		return isOwnerEqual(obj.owner) && briefDesc.equals(obj.briefDesc)
-				       && fullDesc.equals(obj.fullDesc);
+					&& fullDesc.equals(obj.fullDesc);
 	}
 
 	/**

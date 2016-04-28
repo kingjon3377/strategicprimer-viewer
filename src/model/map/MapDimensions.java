@@ -80,8 +80,8 @@ public final class MapDimensions {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (obj == this) || ((obj instanceof MapDimensions)
-				                         && equalsImpl((MapDimensions) obj));
+		return (obj == this) || ((obj instanceof MapDimensions) &&
+										equalsImpl((MapDimensions) obj));
 	}
 
 	/**

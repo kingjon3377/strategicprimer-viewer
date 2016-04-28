@@ -56,15 +56,15 @@ public final class CompactPlayerReader extends AbstractCompactReader<Player> {
 	 */
 	@Override
 	public Player read(final StartElement element,
-	                   final IteratorWrapper<XMLEvent> stream,
-	                   final IMutablePlayerCollection players, final Warning warner,
-	                   final IDFactory idFactory) throws SPFormatException {
+						final IteratorWrapper<XMLEvent> stream,
+						final IMutablePlayerCollection players, final Warning warner,
+						final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "player");
 		requireNonEmptyParameter(element, "number", true, warner);
 		requireNonEmptyParameter(element, "code_name", true, warner);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		return new Player(getIntegerParameter(element, "number"),
-				                 getParameter(element, "code_name"));
+								getParameter(element, "code_name"));
 	}
 
 	/**

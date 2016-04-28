@@ -1,6 +1,6 @@
 package view.map.main;
 
-import java.awt.Graphics;
+import java.awt.*;
 import model.map.IMapNG;
 import model.map.Point;
 import view.util.Coordinate;
@@ -40,8 +40,8 @@ public interface TileDrawHelper {
 	 * @param width    the width of the drawing area
 	 * @param height   the height of the drawing area
 	 */
-	void drawTileTranslated(Graphics pen, IMapNG map, Point location,
-	                        int width, int height);
+	void drawTileTranslated(Graphics pen, IMapNG map, Point location, int width,
+							int height);
 
 	/**
 	 * Draw a tile, at the given coordinates.
@@ -53,5 +53,5 @@ public interface TileDrawHelper {
 	 * @param dimensions  the width (X) and height (Y) of the tile
 	 */
 	void drawTile(Graphics pen, IMapNG map, Point location, Coordinate coordinates,
-	              Coordinate dimensions);
+				Coordinate dimensions);
 }

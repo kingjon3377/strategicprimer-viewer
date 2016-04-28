@@ -51,14 +51,12 @@ public final class FairyReader implements INodeHandler<Fairy> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public Fairy parse(final StartElement element,
-	                   final Iterable<XMLEvent> stream,
-	                   final IMutablePlayerCollection players,
-	                   final Warning warner, final IDFactory idFactory)
-			throws SPFormatException {
+	public Fairy parse(final StartElement element, final Iterable<XMLEvent> stream,
+					final IMutablePlayerCollection players, final Warning warner,
+					final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Fairy fix = new Fairy(getAttribute(element, "kind"),
-				                           getOrGenerateID(element, warner, idFactory));
+										getOrGenerateID(element, warner, idFactory));
 		addImage(element, fix);
 		return fix;
 	}

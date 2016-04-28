@@ -54,8 +54,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testCaveSerialization() throws XMLStreamException,
-			                                           SPFormatException, IOException {
+	public void testCaveSerialization()
+			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization("First CaveEvent serialization test, reflection",
 				new Cave(10, 0));
 		assertSerialization("Second CaveEvent serialization test, reflection",
@@ -75,9 +75,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testMineralSerialization() throws XMLStreamException,
-			                                              SPFormatException,
-			                                                  IOException {
+	public void testMineralSerialization()
+			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization("First MineralEvent serialization test",
 				new MineralVein("one", true, 10, 1));
 		final HasMutableImage secondVein = new MineralVein("two", false, 35, 2);
@@ -118,9 +117,8 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testBattlefieldSerialization() throws XMLStreamException,
-			                                                  SPFormatException,
-			                                                  IOException {
+	public void testBattlefieldSerialization()
+			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization("First BattlefieldEvent serialization test",
 				new Battlefield(10, 0));
 		assertSerialization("Second BattlefieldEvent serialization test",

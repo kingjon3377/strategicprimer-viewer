@@ -124,7 +124,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	public List<IUnit> getUnits(final Player player) {
 		return getMap().locationStream().flatMap(
 				point -> getUnits(getMap().streamOtherFixtures(point), player))
-				       .collect(Collectors.toList());
+					.collect(Collectors.toList());
 	}
 
 	/**
@@ -133,7 +133,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @return a list of the members of the sequence that are units owned by the player
 	 */
 	private static Stream<IUnit> getUnits(final Stream<@NonNull ? super Unit> stream,
-											  final Player player) {
+											final Player player) {
 		return NullCleaner.assertNotNull(stream.flatMap(obj -> {
 			if (obj instanceof Fortress) {
 				return StreamSupport.stream(((Fortress) obj).spliterator(), false);
@@ -141,7 +141,8 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 				return Stream.of(obj);
 			}
 		}).filter(IUnit.class::isInstance).map(IUnit.class::cast)
-				       .filter(unit -> unit.getOwner().equals(player)));
+												.filter(unit -> unit.getOwner()
+																		.equals(player)));
 	}
 
 	/**
@@ -161,9 +162,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 			throws TraversalImpossibleException {
 		final IUnit unit = selUnit;
 		if (unit == null) {
-			throw new IllegalStateException(
-												   "move() called when no unit " +
-														   "selected");
+			throw new IllegalStateException("move() called when no unit selected");
 		}
 		final IMutableMapNG map = getMap();
 		final Point point = selUnitLoc;
@@ -178,7 +177,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 								map.getBaseTerrain(dest),
 								map.getForest(dest) != null,
 								map.isMountainous(dest), map.getRivers(dest)
-																 .iterator().hasNext(),
+																.iterator().hasNext(),
 								() -> map.streamOtherFixtures(dest));
 			}
 			removeImpl(map, point, unit);
@@ -219,7 +218,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void checkAllNearbyWatchers(final IMapNG map, final HasOwner unit,
-	                                           final Point dest) {
+											final Point dest) {
 		final MapDimensions dims = map.dimensions();
 		final Collection<Point> done = new HashSet<>(25);
 		for (final Point point : new SurroundingPointIterable(dest, dims)) {
@@ -244,16 +243,17 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	@SuppressWarnings({"NonBooleanMethodNameMayNotStartWithQuestion", "resource"})
 	private static void checkNearbyWatcher(final Stream<TileFixture> fixtures,
-	                                       final Point point, final HasOwner unit,
-	                                       final Point dest) {
+										final Point point, final HasOwner unit,
+										final Point dest) {
 		fixtures.filter(HasOwner.class::isInstance).map(HasOwner.class::cast)
 				.filter(fix -> !fix.getOwner().isIndependent() &&
-						               !fix.getOwner().equals(unit.getOwner())).forEach(
+									!fix.getOwner().equals(unit.getOwner())).forEach(
 				fix -> SystemOut.SYS_OUT
-						       .printf("Unit's motion to %s could be observed by %s at " +
-								               "%s%n",
-								       dest.toString(), ((TileFixture) fix).shortDesc(),
-								       point.toString()));
+							// TODO: Shorten this string
+							.printf("Unit's motion to %s could be observed by %s at " +
+											"%s%n",
+									dest.toString(), ((TileFixture) fix).shortDesc(),
+									point.toString()));
 	}
 
 	/**
@@ -263,7 +263,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void removeImpl(final IMutableMapNG map, final Point point,
-	                               final IUnit unit) {
+								final IUnit unit) {
 		boolean outside = false;
 		for (final TileFixture fix : map.getOtherFixtures(point)) {
 			if (unit.equals(fix)) {
@@ -315,7 +315,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @param terrain the terrain type it should be
 	 */
 	private static void ensureTerrain(final IMutableMapNG map,
-									  final Point point, final TileType terrain) {
+									final Point point, final TileType terrain) {
 		if (TileType.NotVisible == map.getBaseTerrain(point)) {
 			map.setBaseTerrain(point, terrain);
 		}
@@ -328,7 +328,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @return whether the map contains that fixture at that location
 	 */
 	private static boolean doesLocationHaveFixture(final IMapNG map, final Point point,
-												   final TileFixture fix) {
+												final TileFixture fix) {
 		if (((fix instanceof Forest) && fix.equals(map.getForest(point)))
 					|| ((fix instanceof Ground) && fix.equals(map.getGround(point)))
 					|| ((fix instanceof Mountain) && map.isMountainous(point))) {
@@ -429,22 +429,18 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	public Point find(final TileFixture fix) {
 		final IMapNG source = getMap();
 		for (final Point point : source.locations()) {
-			if (((fix instanceof Mountain) && source.isMountainous(point))
-					    || ((fix instanceof Forest) && fix.equals(source
-							                                              .getForest(
-									                                              point)))
-
-					    || ((fix instanceof Ground) && fix.equals(source
-							                                              .getGround(
-									                                              point))
-			)) {
+			if (((fix instanceof Mountain) && source.isMountainous(point)) ||
+						((fix instanceof Forest) &&
+								fix.equals(source.getForest(point))) ||
+						((fix instanceof Ground) &&
+								fix.equals(source.getGround(point)))) {
 				return point;
 			}
 			if (source.streamOtherFixtures(point).flatMap(item -> {
 				if (item instanceof FixtureIterable) {
 					return NullCleaner.assertNotNull(Stream.concat(Stream.of(item), StreamSupport
-							       .stream(((FixtureIterable<@NonNull ?>) item)
-									               .spliterator(), false)));
+							.stream(((FixtureIterable<@NonNull ?>) item)
+											.spliterator(), false)));
 				} else {
 					return Stream.of(item);
 				}
@@ -491,8 +487,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @param list a listener to add
 	 */
 	@Override
-	public void addSelectionChangeListener(
-												  final SelectionChangeListener list) {
+	public void addSelectionChangeListener(final SelectionChangeListener list) {
 		scListeners.add(list);
 	}
 
@@ -500,8 +495,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 * @param list a listener to remove
 	 */
 	@Override
-	public void removeSelectionChangeListener(
-													 final SelectionChangeListener list) {
+	public void removeSelectionChangeListener(final SelectionChangeListener list) {
 		scListeners.remove(list);
 	}
 
@@ -519,8 +513,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
-	public void removeMovementCostListener(
-												  final MovementCostListener listener) {
+	public void removeMovementCostListener(final MovementCostListener listener) {
 		mcListeners.remove(listener);
 	}
 

@@ -60,8 +60,7 @@ public final class MapSizeListener extends ComponentAdapter {
 				final int tsize = TileViewSize.scaleZoom(model.getZoomLevel(),
 						model.getMapDimensions().getVersion());
 				final int visibleCols = event.getComponent().getWidth() / tsize;
-				final int visibleRows = event.getComponent().getHeight()
-						                        / tsize;
+				final int visibleRows = event.getComponent().getHeight() / tsize;
 				int minCol = model.getDimensions().getMinimumCol();
 				int maxCol = model.getDimensions().getMaximumCol();
 				int minRow = model.getDimensions().getMinimumRow();
@@ -69,8 +68,8 @@ public final class MapSizeListener extends ComponentAdapter {
 				final MapDimensions mapDim = model.getMapDimensions();
 				final int totalRows = mapDim.rows;
 				final int totalCols = mapDim.cols;
-				if ((visibleCols != (maxCol - minCol))
-						    || (visibleRows != (maxRow - minRow))) {
+				if ((visibleCols != (maxCol - minCol)) ||
+							(visibleRows != (maxRow - minRow))) {
 					if (visibleCols >= totalCols) {
 						minCol = 0;
 						maxCol = totalCols - 1;
@@ -89,8 +88,8 @@ public final class MapSizeListener extends ComponentAdapter {
 					} else {
 						maxRow = (minRow + visibleRows) - 1;
 					}
-					model.setDimensions(new VisibleDimensions(minRow, maxRow,
-							                                         minCol, maxCol));
+					model.setDimensions(
+							new VisibleDimensions(minRow, maxRow, minCol, maxCol));
 				}
 			}
 		}

@@ -1,18 +1,13 @@
 package view.exploration;
 
-import java.awt.Component;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.ListCellRenderer;
+import javax.swing.*;
 import javax.swing.text.Document;
 import model.exploration.ExplorationModel;
 import model.exploration.ExplorationUnitListModel;
@@ -121,8 +116,8 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 				}
 			}
 		});
-		final ExplorationUnitListModel unitListModel = new ExplorationUnitListModel(
-																						   emodel);
+		final ExplorationUnitListModel unitListModel =
+				new ExplorationUnitListModel(emodel);
 		addPlayerChangeListener(unitListModel);
 		unitList = new JList<>(unitListModel);
 		unitList.setCellRenderer((final JList<? extends @NonNull IUnit> list,
@@ -174,13 +169,11 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 		for (final String para : paras) {
 			len += para.length() + HTML_PAR_LEN;
 		}
-		final StringBuilder builder = new StringBuilder(len)
-											  .append("<html><body>");
+		final StringBuilder builder = new StringBuilder(len).append("<html><body>");
 		for (final String para : paras) {
 			builder.append("<p>").append(para).append("</p>");
 		}
-		return NullCleaner.assertNotNull(builder.append("</body></html>")
-												 .toString());
+		return NullCleaner.assertNotNull(builder.append("</body></html>").toString());
 	}
 
 	/**
@@ -247,6 +240,6 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	@Override
 	public String toString() {
 		return "ExplorerSelectingPanel including " + unitList.getModel().getSize() +
-				       " units";
+					" units";
 	}
 }

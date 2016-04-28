@@ -1,9 +1,7 @@
 package view.exploration;
 
-import java.awt.CardLayout;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
+import controller.map.misc.IOHandler;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -11,11 +9,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.stream.Stream;
-
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
-
-import controller.map.misc.IOHandler;
+import javax.swing.*;
 import model.exploration.ExplorationModel;
 import model.listeners.CompletionListener;
 import util.NullCleaner;
@@ -76,8 +70,8 @@ public final class ExplorationFrame extends JFrame implements ISPWindow {
 		 * @param components things to tell to validate their layout before swapping
 		 */
 		protected SwapCompletionListener(final CardLayout clayout,
-										 final Container parentComp,
-										 final Component... components) {
+										final Container parentComp,
+										final Component... components) {
 			layout = clayout;
 			parent = parentComp;
 			Stream.of(components).forEach(compList::add);
@@ -125,16 +119,15 @@ public final class ExplorationFrame extends JFrame implements ISPWindow {
 		final CardLayout layout = new CardLayout();
 		setLayout(layout);
 		final ExplorerSelectingPanel esp = new ExplorerSelectingPanel(emodel);
-		final ExplorationPanel explorationPanel = new ExplorationPanel(emodel,
-																			  esp
-																					  .getMPDocument());
+		final ExplorationPanel explorationPanel =
+				new ExplorationPanel(emodel, esp.getMPDocument());
 		emodel.addMovementCostListener(explorationPanel);
 		emodel.addSelectionChangeListener(explorationPanel);
 		final CompletionListener swapper =
 				new SwapCompletionListener(layout,
-												  NullCleaner.assertNotNull(
-														  getContentPane()),
-												  explorationPanel, esp);
+												NullCleaner.assertNotNull(
+														getContentPane()),
+												explorationPanel, esp);
 		esp.addCompletionListener(swapper);
 		explorationPanel.addCompletionListener(swapper);
 		add(esp);

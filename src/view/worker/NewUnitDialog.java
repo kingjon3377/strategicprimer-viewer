@@ -1,7 +1,7 @@
 package view.worker;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import controller.map.misc.IDFactory;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -13,22 +13,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.WindowConstants;
-
-import org.eclipse.jdt.annotation.Nullable;
-
-import controller.map.misc.IDFactory;
+import javax.swing.*;
 import model.listeners.NewUnitListener;
 import model.listeners.NewUnitSource;
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
+import org.eclipse.jdt.annotation.Nullable;
 import util.IsNumeric;
 import util.NullCleaner;
 import view.util.ListenedButton;
@@ -57,8 +49,8 @@ import view.util.ListenedButton;
  *
  * @author Jonathan Lovelace
  */
-public final class NewUnitDialog extends JFrame implements NewUnitSource,
-		                                                           PlayerChangeListener {
+public final class NewUnitDialog extends JFrame
+		implements NewUnitSource, PlayerChangeListener {
 	/**
 	 * The list of new-unit listeners listening to us.
 	 */
@@ -90,11 +82,10 @@ public final class NewUnitDialog extends JFrame implements NewUnitSource,
 	 */
 	private static final int PREF_HEIGHT = 90;
 	/**
-	 * Logger.
+	 * Logger. TODO: Use TypesafeLogger; statically import assertNotNull
 	 */
-	private static final Logger LOGGER = NullCleaner
-			                                     .assertNotNull(Logger.getLogger(
-					                                     NewUnitDialog.class.getName()));
+	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(
+			NewUnitDialog.class.getName()));
 
 	/**
 	 * Constructor.
@@ -122,7 +113,7 @@ public final class NewUnitDialog extends JFrame implements NewUnitSource,
 				if (IsNumeric.isNumeric(reqId)) {
 					try {
 						idNum = NumberFormat.getIntegerInstance().parse(reqId)
-								        .intValue();
+										.intValue();
 						idf.register(idNum);
 					} catch (final ParseException e) {
 						LOGGER.log(Level.INFO,
@@ -132,8 +123,7 @@ public final class NewUnitDialog extends JFrame implements NewUnitSource,
 				} else {
 					idNum = idf.createID();
 				}
-				final IUnit unit = new Unit(owner, kind,
-						                           name, idNum);
+				final IUnit unit = new Unit(owner, kind, name, idNum);
 				for (final NewUnitListener list : nuListeners) {
 					list.addNewUnit(unit);
 				}
@@ -188,8 +178,7 @@ public final class NewUnitDialog extends JFrame implements NewUnitSource,
 	 * @param newPlayer the new current player
 	 */
 	@Override
-	public void playerChanged(@Nullable final Player old,
-	                          final Player newPlayer) {
+	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
 		owner = newPlayer;
 	}
 

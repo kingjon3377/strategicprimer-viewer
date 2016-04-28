@@ -81,7 +81,7 @@ public class Animal
 	 * @param idNum   the ID number.
 	 */
 	public Animal(final String animal, final boolean tracks,
-	              final boolean talks, final String dStatus, final int idNum) {
+				final boolean talks, final String dStatus, final int idNum) {
 		kind = animal;
 		traces = tracks;
 		talking = talks;
@@ -166,11 +166,11 @@ public class Animal
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Animal)
-				                         && kind.equals(((Animal) obj).kind)
-				                         && (((Animal) obj).traces == traces)
-				                         && (((Animal) obj).talking == talking)
-				                         && status.equals(((Animal) obj).status)
-				                         && (((Animal) obj).id == id));
+										&& kind.equals(((Animal) obj).kind)
+										&& (((Animal) obj).traces == traces)
+										&& (((Animal) obj).talking == talking)
+										&& status.equals(((Animal) obj).status)
+										&& (((Animal) obj).id == id));
 	}
 
 	/**
@@ -183,7 +183,7 @@ public class Animal
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-	                        final String context) throws IOException {
+							final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Animal) {
 				return areObjectsEqual(ostream, kind, ((Animal) obj).kind, context,
@@ -192,13 +192,13 @@ public class Animal
 						talking || !((Animal) obj).talking, context, "\tIn animal ID #",
 						Integer.toString(id),
 						":\tSubmap's is talking and master's isn't\n") &&
-						       isConditionTrue(ostream, !traces || ((Animal) obj).traces,
-								       context, "\tIn animal ID #", Integer.toString(id),
-								       ":\tSubmap has animal and master only tracks\n") &&
-						       areObjectsEqual(ostream, status, ((Animal) obj).status,
-								       context,
-								       "\tDomestication status of animal differs at ID #",
-								       Integer.toString(id), "\n");
+							isConditionTrue(ostream, !traces || ((Animal) obj).traces,
+									context, "\tIn animal ID #", Integer.toString(id),
+									":\tSubmap has animal and master only tracks\n") &&
+							areObjectsEqual(ostream, status, ((Animal) obj).status,
+									context,
+									"\tDomestication status of animal differs at ID #",
+									Integer.toString(id), "\n");
 			} else {
 				ostream.append(context);
 				ostream.append("\tFor ID #");
@@ -231,9 +231,9 @@ public class Animal
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
 		return (fix instanceof Animal) && ((Animal) fix).kind.equals(kind)
-				       && (((Animal) fix).traces == traces)
-				       && ((Animal) fix).status.equals(status)
-				       && (((Animal) fix).talking == talking);
+					&& (((Animal) fix).traces == traces)
+					&& ((Animal) fix).status.equals(status)
+					&& (((Animal) fix).talking == talking);
 	}
 
 	/**

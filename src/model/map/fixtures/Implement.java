@@ -1,12 +1,10 @@
 package model.map.fixtures;
 
 import java.io.IOException;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.IFixture;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A piece of equipment.
@@ -32,8 +30,8 @@ import model.map.IFixture;
  *
  *         TODO: more members
  */
-public class Implement implements UnitMember, FortressMember, HasMutableKind,
-		                                  HasMutableImage {
+public class Implement
+		implements UnitMember, FortressMember, HasMutableKind, HasMutableImage {
 	/**
 	 * The ID # of the implement.
 	 */
@@ -82,7 +80,7 @@ public class Implement implements UnitMember, FortressMember, HasMutableKind,
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-	                        final String context) throws IOException {
+							final String context) throws IOException {
 		if (obj.getID() != id) {
 			ostream.append(context);
 			ostream.append("\tIDs differ");
@@ -154,8 +152,8 @@ public class Implement implements UnitMember, FortressMember, HasMutableKind,
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) ||
-				       ((obj instanceof Implement) && (((Implement) obj).id == id)
-						        && ((Implement) obj).kind.equals(kind));
+					((obj instanceof Implement) && (((Implement) obj).id == id) &&
+								((Implement) obj).kind.equals(kind));
 	}
 
 	/**

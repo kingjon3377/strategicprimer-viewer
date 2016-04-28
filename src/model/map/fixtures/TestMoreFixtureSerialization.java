@@ -138,8 +138,8 @@ public final class TestMoreFixtureSerialization extends
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testMeadowSerialization() throws XMLStreamException,
-														 SPFormatException, IOException {
+	public void testMeadowSerialization()
+			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization("First test of Meadow serialization, reflection",
 				new Meadow("firstMeadow", true, true, 1, FieldStatus.Fallow));
 		assertSerialization(
@@ -173,8 +173,8 @@ public final class TestMoreFixtureSerialization extends
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testMineSerialization() throws XMLStreamException,
-													   SPFormatException, IOException {
+	public void testMineSerialization()
+			throws XMLStreamException, SPFormatException, IOException {
 		assertSerialization("First test of Mine serialization",
 				new Mine("one", TownStatus.Active, 1));
 		assertSerialization("Second test of Mine serialization",
@@ -247,8 +247,8 @@ public final class TestMoreFixtureSerialization extends
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testTextSerialization() throws XMLStreamException,
-													   SPFormatException, IOException {
+	public void testTextSerialization()
+			throws XMLStreamException, SPFormatException, IOException {
 		final TextFixture firstText = new TextFixture("one", -1);
 		assertSerialization("First test of TextFixture serialization, reflection",
 				firstText);
@@ -271,8 +271,8 @@ public final class TestMoreFixtureSerialization extends
 	 * @throws XMLStreamException never
 	 */
 	@Test
-	public void testUnitHasRequiredProperties() throws XMLStreamException,
-															   SPFormatException {
+	public void testUnitHasRequiredProperties()
+			throws XMLStreamException, SPFormatException {
 		assertMissingProperty("<unit name=\"name\" />", Unit.class,
 				OWNER_PROPERTY, true);
 		assertMissingProperty("<unit owner=\"\" name=\"name\" />", Unit.class,
@@ -292,9 +292,8 @@ public final class TestMoreFixtureSerialization extends
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testUnitWarnings() throws XMLStreamException,
-												  SPFormatException,
-												  IOException { // NOPMD
+	public void testUnitWarnings()
+			throws XMLStreamException, SPFormatException, IOException { // NOPMD
 		assertUnwantedChild("<unit><unit /></unit>", Unit.class, false);
 		final Unit firstUnit = new Unit(new Player(1, ""), "unitType", "unitName", 1);
 		final String oldKindProperty = "type"; // NOPMD
@@ -342,45 +341,37 @@ public final class TestMoreFixtureSerialization extends
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testUnitMemberSerialization() throws XMLStreamException,
-															 SPFormatException,
-															 IOException {
+	public void testUnitMemberSerialization()
+			throws XMLStreamException, SPFormatException, IOException {
 		final IUnit firstUnit = new Unit(new Player(1, ""), "unitType", "unitName", 1);
 		firstUnit.addMember(new Animal("animal", false, true, "wild", 2));
 		assertSerialization("Unit can have an animal as a member", firstUnit);
 		firstUnit.addMember(new Worker("worker", DEFAULT_RACE, 3));
 		assertSerialization("Unit can have a worker as a member", firstUnit);
 		firstUnit.addMember(new Worker("second", "elf", 4, new Job("job", 0,
-																		  new Skill
-																				  ("skill",
-																						   1,
-																						   2))));
+																		new Skill("skill",
+																						1,
+																						2))));
 		assertSerialization("Worker can have jobs", firstUnit);
-		assertForwardDeserialization(
-				"Explicit specification of default race works", new Worker(
-																				  "third",
-																				  DEFAULT_RACE,
-																				  5),
+		assertForwardDeserialization("Explicit specification of default race works",
+				new Worker("third", DEFAULT_RACE, 5),
 				"<worker name=\"third\" race=\"human\" id=\"5\" />");
 		assertDeprecatedDeserialization(
 				"'miscellaneous' skill with level should be warned about",
-				new Worker("4th", DEFAULT_RACE, 6, new Job("5th", 0,
-																  new Skill
-																		  ("miscellaneous",
-																				   1,
-																				   0))),
+				new Worker("4th", DEFAULT_RACE, 6,
+								new Job("5th", 0, new Skill("miscellaneous", 1, 0))),
 				"<worker name=\"4th\" id=\"6\"><job name=\"5th\" level=\"0\">"
 						+ "<skill name=\"miscellaneous\" level=\"1\" hours=\"0\"/>"
 						+ "</job></worker>", "miscellaneous");
 		assertSerialization("but 'miscellaneous' skill without levels causes no warnings",
 				new Worker("sixth", DEFAULT_RACE, 7, new Job("seventh", 0,
-						                                            new Skill("miscellaneous",
-								                                                     0,
-								                                                     20))),
+																	new Skill("miscellaneous",
+																					0,
+																					20))),
 				Warning.Die);
 		assertSerialization("and levels in another skill cause no warnings",
 				new Worker("fourth", DEFAULT_RACE, 8,
-						          new Job("fifth", 0, new Skill("odd-skill", 1, 0))),
+								new Job("fifth", 0, new Skill("odd-skill", 1, 0))),
 				Warning.Die);
 		final Worker secondWorker = new Worker("sixth", "dwarf", 9);
 		secondWorker.setStats(new WorkerStats(0, 0, 1, 2, 3, 4, 5, 6));
@@ -398,8 +389,8 @@ public final class TestMoreFixtureSerialization extends
 	 * @throws IOException        on I/O error creating serialized form
 	 */
 	@Test
-	public void testOrdersSerialization() throws XMLStreamException,
-														 SPFormatException, IOException {
+	public void testOrdersSerialization()
+			throws XMLStreamException, SPFormatException, IOException {
 		final Player player = new Player(0, "");
 		final Unit firstUnit = new Unit(player, "kind of unit", "name of unit", 2);
 		final IUnit secondUnit = new Unit(player, "kind of unit", "name of unit", 2);
@@ -435,8 +426,7 @@ public final class TestMoreFixtureSerialization extends
 		assertFalse("Two different hooks are not equal",
 				firstAdventure.equals(secondAdventure));
 		final IMutableMapNG wrapper =
-				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(),
-								   -1);
+				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(), -1);
 		wrapper.addPlayer(independent);
 		wrapper.setBaseTerrain(PointFactory.point(0, 0), TileType.Plains);
 		wrapper.addFixture(PointFactory.point(0, 0), firstAdventure);

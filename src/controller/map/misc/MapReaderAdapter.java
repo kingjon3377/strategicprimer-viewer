@@ -107,13 +107,13 @@ public final class MapReaderAdapter {
 			return new ViewerModel(readMap(file, warner), file);
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error reading " + file.getPath(),
-					                               except);
+												except);
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("Malformed XML in " + file.getPath(),
-					                               except);
+												except);
 		} catch (final SPFormatException except) {
 			throw new DriverFailedException("SP map format error in " + file.getPath(),
-					                               except);
+												except);
 		}
 	}
 
@@ -130,7 +130,7 @@ public final class MapReaderAdapter {
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	public IMultiMapModel readMultiMapModel(final Warning warner, final File master,
-	                                        final File... files)
+											final File... files)
 			throws DriverFailedException {
 		String current = master.getPath();
 		try {
@@ -143,7 +143,7 @@ public final class MapReaderAdapter {
 			return retval;
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error reading from file " + current,
-					                               except);
+												except);
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("Malformed XML in " + current, except);
 		} catch (final SPFormatException except) {
@@ -176,16 +176,16 @@ public final class MapReaderAdapter {
 			spWriter.write(model.getMapFile(), model.getMap());
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error writing to " + model.getMapFile(),
-					                               except);
+												except);
 		}
 		if (model instanceof IMultiMapModel) {
 			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model)
-					                                            .getSubordinateMaps()) {
+																.getSubordinateMaps()) {
 				try {
 					spWriter.write(pair.second(), pair.first());
 				} catch (final IOException except) {
 					throw new DriverFailedException("I/O error writing to " +
-							                                pair.second(), except);
+															pair.second(), except);
 				}
 			}
 		}

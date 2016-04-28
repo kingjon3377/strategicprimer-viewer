@@ -58,30 +58,25 @@ public final class MeadowReader implements INodeHandler<Meadow> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public Meadow parse(final StartElement element,
-	                    final Iterable<XMLEvent> stream,
-	                    final IMutablePlayerCollection players,
-	                    final Warning warner, final IDFactory idFactory)
+	public Meadow parse(final StartElement element, final Iterable<XMLEvent> stream,
+						final IMutablePlayerCollection players, final Warning warner,
+						final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final int id = getOrGenerateID(element, warner, idFactory); // NOPMD
 		if (!hasAttribute(element, STATUS_ATTR)) {
 			warner.warn(new MissingPropertyException(element, STATUS_ATTR));
 		}
-		final Meadow fix =
-				new Meadow(
-								  getAttribute(element, "kind"),
-								  "field".equalsIgnoreCase(NullCleaner
-																   .assertNotNull(
-																		   element
-																				   .getName()
-																				   .getLocalPart())),
-								  Boolean.parseBoolean(
-										  getAttribute(element, "cultivated")),
-								  id, FieldStatus
-											  .parse(getAttribute(element, STATUS_ATTR,
-													  FieldStatus.random(id)
-															  .toString())));
+		// TODO: Statically import NullCleaner.assertNotNull, and maybe Boolean.parseBoolean
+		final Meadow fix = new Meadow(getAttribute(element, "kind"),
+											"field".equalsIgnoreCase(NullCleaner
+																			.assertNotNull(
+																					element.getName()
+																							.getLocalPart())),
+											Boolean.parseBoolean(
+													getAttribute(element, "cultivated")),
+											id, FieldStatus.parse(getAttribute(element,
+				STATUS_ATTR, FieldStatus.random(id).toString())));
 		addImage(element, fix);
 		return fix;
 	}

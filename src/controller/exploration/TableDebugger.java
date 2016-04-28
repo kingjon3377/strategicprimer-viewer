@@ -38,8 +38,7 @@ public final class TableDebugger {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger
-			                                     .getLogger(TableDebugger.class);
+	private static final Logger LOGGER = TypesafeLogger.getLogger(TableDebugger.class);
 	/**
 	 * The exploration runner.
 	 */
@@ -84,11 +83,10 @@ public final class TableDebugger {
 	 */
 	@SuppressWarnings("StringConcatenationMissingWhitespace")
 	private void debugSingleTable(final String before, final String after,
-	                              final EncounterTable table,
-	                              @SuppressWarnings("TypeMayBeWeakened")
-	                              final String tableName,
-	                              final Appendable ostream, final Set<EncounterTable>
-			                                                        set)
+								final EncounterTable table,
+								@SuppressWarnings("TypeMayBeWeakened")
+								final String tableName, final Appendable ostream,
+								final Set<EncounterTable> set)
 			throws MissingTableException, IOException {
 		if (set.contains(table)) {
 			ostream.append("table ");

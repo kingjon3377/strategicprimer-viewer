@@ -49,20 +49,17 @@ public final class TestProxyWorker {
 		final Worker firstWorker = new Worker("one", "human", 1, new Job("jobOne", 1,
 																				new
 																						Skill("skillOne",
-																								 0,
-																								 5),
-
+																								0,
+																								5),
 																				new
 																						Skill("skillTwo",
-																								 2,
-																								 6)));
+																								2,
+																								6)));
 		final Worker secondWorker = new Worker("two", "elf", 2, new Job("jobTwo", 1,
-																			   new Skill
-																					   ("skillThree",
+																			new Skill("skillThree",
 																								1,
 																								19),
-																			   new Skill
-																					   ("skillFour",
+																			new Skill("skillFour",
 																								0,
 																								99)));
 		final Worker thirdWorker = new Worker("three", "dwarf", 5);
@@ -74,48 +71,48 @@ public final class TestProxyWorker {
 			}
 		}
 		final Worker oneCopy = new Worker("one", "human", 1,
-												 new Job("jobOne", 1,
+												new Job("jobOne", 1,
 																new Skill("skillOne", 0,
-																				 15),
+																				15),
 																new Skill("skillTwo", 2,
-																				 16)),
-												 new Job("jobTwo", 0,
+																				16)),
+												new Job("jobTwo", 0,
 																new Skill
 																		("skillThree", 0,
-																				 10),
+																				10),
 																new Skill("skillFour", 0,
-																				 10)));
+																				10)));
 		assertEquals("First worker should have appropriate experience", oneCopy,
 				firstWorker);
 		final Worker twoCopy = new Worker("two", "elf", 2,
-												 new Job("jobOne", 0,
+												new Job("jobOne", 0,
 																new Skill("skillOne", 0,
-																				 10),
+																				10),
 																new Skill("skillTwo", 0,
-																				 10)),
-												 new Job("jobTwo", 1,
+																				10)),
+												new Job("jobTwo", 1,
 																new Skill
 																		("skillThree", 1,
-																				 29),
+																				29),
 																new Skill("skillFour", 1,
-																				 0)));
+																				0)));
 		assertEquals("Second worker should have appropriate experience", twoCopy,
 				secondWorker);
 		final Worker threeCopy = new Worker("three", "dwarf", 5,
-												   new Job("jobOne", 0,
-																  new Skill
-																		  ("skillOne", 0,
-																				   10),
-																  new Skill
-																		  ("skillTwo", 0,
-																				   10)),
-												   new Job("jobTwo", 0,
-																  new Skill("skillThree",
-																				   0,
-																				   10),
-																  new Skill("skillFour",
-																				   0,
-																				   10)));
+												new Job("jobOne", 0,
+															new Skill
+																	("skillOne", 0,
+																			10),
+															new Skill
+																	("skillTwo", 0,
+																			10)),
+												new Job("jobTwo", 0,
+															new Skill("skillThree",
+																			0,
+																			10),
+															new Skill("skillFour",
+																			0,
+																			10)));
 		assertEquals(
 				"Initially-empty worker should have appropriate experience",
 				threeCopy, thirdWorker);
@@ -132,19 +129,17 @@ public final class TestProxyWorker {
 		final Worker firstWorker = new Worker("one", "human", 1, new Job("jobOne", 1,
 																				new
 																						Skill("skillOne",
-																								 0,
-																								 5),
-																				new
-																						Skill("skillTwo",
-																								 2,
-																								 6)));
+																								0,
+																								5),
+																				new Skill("skillTwo",
+																								2,
+																								6)));
 		final Worker secondWorker = new Worker("two", "elf", 2, new Job("jobTwo", 1,
-																			   new Skill
-																					   ("skillThree",
+																			new Skill
+																					("skillThree",
 																								1,
 																								19),
-																			   new Skill
-																					   ("skillFour",
+																			new Skill("skillFour",
 																								0,
 																								99)));
 		final Worker oneCopy = firstWorker.copy(false);
@@ -196,17 +191,19 @@ public final class TestProxyWorker {
 	@Test
 	public void testProxyUnitProxy() throws IOException {
 		final Worker firstWorker = new Worker("one", "human", 1, new Job("jobOne", 1,
-																				new Skill("skillOne",
-																								 0,
-																								 5),
+																				new
+																						Skill("skillOne",
+																								0,
+																								5),
 																				new Skill("skillTwo",
-																								 2,
-																								 6)));
+																								2,
+																								6)));
 		final Worker secondWorker = new Worker("two", "elf", 2, new Job("jobTwo", 1,
-																			   new Skill("skillThree",
+																			new Skill
+																					("skillThree",
 																								1,
 																								19),
-																			   new Skill("skillFour",
+																			new Skill("skillFour",
 																								0,
 																								99)));
 		final Worker oneCopy = firstWorker.copy(false);
@@ -280,12 +277,13 @@ public final class TestProxyWorker {
 	@Test
 	public void testWorkerCopy() {
 		final IFixture worker = new Worker("one", "human", 1, new Job("jobOne", 1,
-																			 new Skill("skillOne",
-																							  0,
-																							  5),
-																			 new Skill("skillTwo",
-																							  2,
-																							  6)));
+																			new Skill
+																					("skillOne",
+																							0,
+																							5),
+																			new Skill("skillTwo",
+																							2,
+																							6)));
 		assertEquals("Worker copy should still be equal", worker, worker.copy(false));
 	}
 

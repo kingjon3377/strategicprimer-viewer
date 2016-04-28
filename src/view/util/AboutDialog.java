@@ -119,7 +119,7 @@ public final class AboutDialog extends JDialog {
 	 * @param text    the text of the link
 	 */
 	private static void link(final StringBuilder builder, final String href,
-	                         final String text) {
+							final String text) {
 		builder.append("<a href=\"");
 		builder.append(href);
 		builder.append("\">");

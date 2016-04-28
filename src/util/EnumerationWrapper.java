@@ -66,8 +66,7 @@ public final class EnumerationWrapper<@NonNull T> implements Iterator<@NonNull T
 	 */
 	@Override
 	public void remove() {
-		throw new UnsupportedOperationException(
-				                                       "Not supported by Enumeration");
+		throw new UnsupportedOperationException("Not supported by Enumeration");
 	}
 
 	/**

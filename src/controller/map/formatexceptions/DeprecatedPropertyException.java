@@ -70,7 +70,7 @@ public final class DeprecatedPropertyException extends SPFormatException {
 	 * @param newForm    the preferred form
 	 */
 	public DeprecatedPropertyException(final StartElement tag,
-	                                   final String deprecated, final String newForm) {
+									final String deprecated, final String newForm) {
 		super("Use of the property '" + deprecated + "' in tag '"
 				+ tag.getName().getLocalPart() + "' is deprecated; use '"
 				+ newForm + "' instead",

@@ -24,9 +24,8 @@ import org.eclipse.jdt.annotation.NonNull;
  *
  * @author Jonathan Lovelace
  */
-public interface IPlayerCollection extends Iterable<@NonNull Player>,
-		                                           Subsettable<@NonNull
-				                                                       IPlayerCollection> {
+public interface IPlayerCollection
+		extends Iterable<@NonNull Player>, Subsettable<@NonNull IPlayerCollection> {
 
 	/**
 	 * @param player a player-id

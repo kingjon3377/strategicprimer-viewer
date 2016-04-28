@@ -1,12 +1,10 @@
 package model.map.fixtures;
 
 import java.io.IOException;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.IFixture;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**
@@ -148,11 +146,10 @@ public class ResourcePile
 	 */
 	@Override
 	public boolean equalsIgnoringID(final IFixture fix) {
-		return (fix instanceof ResourcePile)
-					   && kind.equals(((ResourcePile) fix).kind)
-					   && contents.equals(((ResourcePile) fix).contents)
-					   && (quantity == ((ResourcePile) fix).quantity)
-					   && unit.equals(((ResourcePile) fix).unit);
+		return (fix instanceof ResourcePile) && kind.equals(((ResourcePile) fix).kind) &&
+					contents.equals(((ResourcePile) fix).contents) &&
+					(quantity == ((ResourcePile) fix).quantity) &&
+					unit.equals(((ResourcePile) fix).unit);
 	}
 
 	/**
@@ -254,11 +251,9 @@ public class ResourcePile
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		return (prime * ((prime
-								  * ((prime * ((prime * (prime + contents.hashCode())) +
-													   id))
-											 + kind.hashCode()))
-								 + quantity)) + unit.hashCode();
+		return (prime * ((prime * ((prime * ((prime * (prime + contents.hashCode())) +
+													id)) + kind.hashCode())) +
+								quantity)) + unit.hashCode();
 	}
 
 	/**
@@ -267,14 +262,14 @@ public class ResourcePile
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj)
-					   ||
-					   ((obj instanceof ResourcePile) && (id == ((ResourcePile) obj).id)
-								&& (quantity == ((ResourcePile) obj).quantity)
-								&& contents.equals(((ResourcePile) obj).contents)
-								&& kind.equals(((ResourcePile) obj).kind)
-								&& unit.equals(((ResourcePile) obj).unit) &&
-								(created == ((ResourcePile) obj).created));
+		return (this == obj) || ((obj instanceof ResourcePile) &&
+										(id == ((ResourcePile) obj).id) &&
+										(quantity == ((ResourcePile) obj).quantity) &&
+										contents.equals(((ResourcePile) obj)
+																.contents) &&
+										kind.equals(((ResourcePile) obj).kind) &&
+										unit.equals(((ResourcePile) obj).unit) &&
+										(created == ((ResourcePile) obj).created));
 	}
 
 	/**
@@ -289,14 +284,14 @@ public class ResourcePile
 			age = " from turn " + created;
 		}
 		if (unit.isEmpty()) {
-			return NullCleaner
-						   .assertNotNull(String.format("A pile of %d %s (%s)%s",
-								   Integer.valueOf(quantity), contents, kind, age));
+			// TODO: Statically import assertNotNull
+			return NullCleaner.assertNotNull(
+					String.format("A pile of %d %s (%s)%s", Integer.valueOf(quantity),
+							contents, kind, age));
 		} else {
-			return NullCleaner
-						   .assertNotNull(String.format("A pile of %d %s of %s (%s)%s",
-								   Integer.valueOf(quantity), unit, contents, kind,
-								   age));
+			return NullCleaner.assertNotNull(
+					String.format("A pile of %d %s of %s (%s)%s",
+							Integer.valueOf(quantity), unit, contents, kind, age));
 		}
 	}
 

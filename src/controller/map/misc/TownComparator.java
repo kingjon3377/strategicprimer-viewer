@@ -133,8 +133,7 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	 */
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
-	public int compare(final AbstractTown townOne,
-	                   final AbstractTown townTwo) {
+	public int compare(final AbstractTown townOne, final AbstractTown townTwo) {
 		if (townOne.status() == townTwo.status()) {
 			if (townOne.size() == townTwo.size()) {
 				if (townOne.getClass().equals(townTwo.getClass())) {

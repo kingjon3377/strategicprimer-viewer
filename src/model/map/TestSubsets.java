@@ -94,14 +94,13 @@ public final class TestSubsets {
 	@Test
 	public void testRiverSubset() throws IOException {
 		final RiverFixture zero = new RiverFixture();
-		final RiverFixture thirdCollection = new RiverFixture(River.Lake, River.South,
-				                                                     River.East,
-				                                                     River.North,
-				                                                     River.West);
+		final RiverFixture thirdCollection =
+				new RiverFixture(River.Lake, River.South, River.East, River.North,
+										River.West);
 		assertTrue("None is a subset of all",
 				thirdCollection.isSubset(zero, DEV_NULL, ""));
-		final RiverFixture firstRivers = new RiverFixture(River.Lake, River.South,
-				                                                 River.East);
+		final RiverFixture firstRivers =
+				new RiverFixture(River.Lake, River.South, River.East);
 		assertTrue("Three are a subset of all",
 				thirdCollection.isSubset(firstRivers, DEV_NULL, ""));
 		final RiverFixture secondRivers = new RiverFixture(River.West, River.North);
@@ -159,7 +158,7 @@ public final class TestSubsets {
 		assertTrue("Subset doesn't require identiy or ID equality",
 				fourthFort.isSubset(firstFort, DEV_NULL, ""));
 		fourthFort.addMember(new Unit(new Player(2, "two"), "unit_type", "unit_name",
-				                             4));
+											4));
 		assertTrue("Fortress without is a subset of fortress with unit",
 				fourthFort.isSubset(firstFort, DEV_NULL, ""));
 		assertFalse("Fortress with is not a subset of fortress without unit",
@@ -175,19 +174,16 @@ public final class TestSubsets {
 	@Test
 	public void testMapSubset() throws IOException {
 		final IMutableMapNG firstMap =
-				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
-						           -1);
+				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), -1);
 		final Point pointOne = PointFactory.point(0, 0);
 		firstMap.setBaseTerrain(pointOne, TileType.Jungle);
 		final IMutableMapNG secondMap =
-				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
-						           -1);
+				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), -1);
 		secondMap.setBaseTerrain(pointOne, TileType.Jungle);
 		final Point pointTwo = PointFactory.point(1, 1);
 		secondMap.setBaseTerrain(pointTwo, TileType.Ocean);
 		final IMapNG zero =
-				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
-						           -1);
+				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), -1);
 		assertTrue("None is a subset of itself",
 				zero.isSubset(zero, DEV_NULL, ""));
 		assertTrue("None is a subset of one", firstMap.isSubset(zero, DEV_NULL, ""));
@@ -290,18 +286,15 @@ public final class TestSubsets {
 	@Test
 	public void testSubsetsAndCopy() throws IOException {
 		final IMutableMapNG firstMap =
-				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
-						           -1);
+				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), -1);
 		final Point pointOne = PointFactory.point(0, 0);
 		firstMap.setBaseTerrain(pointOne, TileType.Jungle);
 		final IMapNG zero =
-				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
-						           -1);
+				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), -1);
 		assertTrue("zero is a subset of one before copy",
 				firstMap.isSubset(zero, DEV_NULL, ""));
 		final IMutableMapNG secondMap =
-				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(),
-						           -1);
+				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), -1);
 		secondMap.setBaseTerrain(pointOne, TileType.Jungle);
 		final Point pointTwo = PointFactory.point(1, 1);
 		secondMap.setBaseTerrain(pointTwo, TileType.Ocean);
@@ -312,7 +305,7 @@ public final class TestSubsets {
 		firstMap.addFixture(pointTwo, new Animal("animal", true, false, "status", 5));
 		firstMap.addFixture(pointOne,
 				new Fortification(TownStatus.Burned, TownSize.Large, 15, "fortification",
-						                 6, new Player(0, "")));
+										6, new Player(0, "")));
 		assertEquals("Cloned map equals original", firstMap, firstMap.copy(false));
 		final IMapNG clone = firstMap.copy(true);
 		assertTrue("unfilled map is still a subset of zeroed clone",

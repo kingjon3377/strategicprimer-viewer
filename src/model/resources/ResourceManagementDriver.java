@@ -3,9 +3,6 @@ package model.resources;
 import java.io.File;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.Player;
@@ -13,6 +10,7 @@ import model.map.fixtures.FortressMember;
 import model.map.fixtures.towns.Fortress;
 import model.misc.IDriverModel;
 import model.misc.SimpleMultiMapModel;
+import org.eclipse.jdt.annotation.NonNull;
 import util.Pair;
 
 /**
@@ -57,11 +55,10 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	 * @return the players to choose from
 	 */
 	public Iterable<Player> getPlayers() {
-		return StreamSupport.stream(getAllMaps().spliterator(), false)
-					   .flatMap(pair -> StreamSupport.stream(pair.first().players()
-																	 .spliterator(),
-							   false)).collect(
-						Collectors.toSet());
+		return StreamSupport.stream(getAllMaps().spliterator(), false).flatMap(
+				pair -> StreamSupport.stream(pair.first().players().spliterator(),
+						false))
+					.collect(Collectors.toSet());
 	}
 
 	/**
@@ -92,12 +89,12 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void addResourceToMap(final FortressMember resource, final IMapNG map,
-	                             final Player player) {
+								final Player player) {
 		map.locationStream().flatMap(map::streamOtherFixtures)
 				.filter(Fortress.class::isInstance).map(Fortress.class::cast)
 				.filter(fort -> "HQ".equals(fort.getName()) && (player.getPlayerId() ==
-						                                                fort.getOwner()
-								                                                .getPlayerId()))
+																		fort.getOwner()
+																				.getPlayerId()))
 				.forEach(fort -> fort.addMember(resource));
 	}
 }

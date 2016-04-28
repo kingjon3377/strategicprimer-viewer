@@ -1,16 +1,14 @@
 package controller.map.readerng;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.xml.XMLConstants;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
+import java.util.Collections;
+import java.util.List;
+import javax.xml.XMLConstants;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.TextFixture;
 import util.EqualsAny;
@@ -57,9 +55,9 @@ public final class TextReader implements INodeHandler<TextFixture> {
 	 */
 	@Override
 	public TextFixture parse(final StartElement element,
-	                         final Iterable<XMLEvent> stream,
-	                         final IMutablePlayerCollection players,
-	                         final Warning warner, final IDFactory idFactory)
+							final Iterable<XMLEvent> stream,
+							final IMutablePlayerCollection players,
+							final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		// Of all our uses of StringBuilder, here we can't know how much size
 		// we're going to need beforehand. But cases where we'll need more than
@@ -73,16 +71,14 @@ public final class TextReader implements INodeHandler<TextFixture> {
 						NullCleaner.assertNotNull(event.asStartElement()));
 			} else if (event.isCharacters()) {
 				sbuild.append(event.asCharacters().getData());
-			} else if (event.isEndElement()
-							   &&
-							   element.getName().equals(event.asEndElement().getName()
-							   )) {
+			} else if (event.isEndElement() &&
+							element.getName().equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
 		final TextFixture fix =
 				new TextFixture(NullCleaner.assertNotNull(sbuild.toString().trim()),
-						               getIntegerAttribute(element, "turn", -1));
+									getIntegerAttribute(element, "turn", -1));
 		addImage(element, fix);
 		return fix;
 	}
@@ -112,8 +108,7 @@ public final class TextReader implements INodeHandler<TextFixture> {
 	 * @return an intermediate representation
 	 */
 	@Override
-	public <S extends TextFixture> SPIntermediateRepresentation write(
-																			 final S obj) {
+	public <S extends TextFixture> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
 																							"text");
 		if (obj.getTurn() != -1) {

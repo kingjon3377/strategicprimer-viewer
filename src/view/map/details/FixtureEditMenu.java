@@ -12,9 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-import javax.swing.JLabel;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
+import javax.swing.*;
 import model.map.HasKind;
 import model.map.HasMutableKind;
 import model.map.HasMutableName;
@@ -70,10 +68,8 @@ public final class FixtureEditMenu extends JPopupMenu {
 	 * @param changeListeners any tree-model objects that want to know when something's
 	 *                        name or kind has changed.
 	 */
-	public FixtureEditMenu(final IFixture fixture,
-	                       final Iterable<Player> players,
-	                       final @NonNull IWorkerTreeModel @NonNull ...
-			                       changeListeners) {
+	public FixtureEditMenu(final IFixture fixture, final Iterable<Player> players,
+						final @NonNull IWorkerTreeModel @NonNull ... changeListeners) {
 		Collections.addAll(listeners, changeListeners);
 		boolean immutable = true;
 		final FixtureEditMenu outer = this;
@@ -153,7 +149,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 			return ((PlayerCollection) players).asArray(); // NOPMD
 		} else {
 			final List<Player> list = StreamSupport.stream(players.spliterator(), false)
-					                          .collect(Collectors.toList());
+											.collect(Collectors.toList());
 			return NullCleaner.assertNotNull(list.toArray(new Player[list.size()]));
 		}
 	}

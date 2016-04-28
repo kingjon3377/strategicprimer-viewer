@@ -1,7 +1,9 @@
 package view.map.misc;
 
-import java.awt.Color;
-import java.awt.Dimension;
+import controller.map.formatexceptions.MapVersionException;
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.misc.MapReaderAdapter;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,14 +13,8 @@ import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import javax.xml.stream.XMLStreamException;
-
-import controller.map.formatexceptions.MapVersionException;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.MapReaderAdapter;
 import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
@@ -56,8 +52,7 @@ public final class MapCheckerFrame extends JFrame implements ISPWindow {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger
-			                                     .getLogger(MapCheckerFrame.class);
+	private static final Logger LOGGER = TypesafeLogger.getLogger(MapCheckerFrame.class);
 	/**
 	 * The map reader we'll use.
 	 */
@@ -139,8 +134,8 @@ public final class MapCheckerFrame extends JFrame implements ISPWindow {
 	 */
 	private void printError(final Exception except, final String filename) {
 		if (except instanceof MapVersionException) {
-			LOGGER.log(Level.SEVERE, "Map version in " + filename
-					                         + " not acceptable to reader", except);
+			LOGGER.log(Level.SEVERE,
+					"Map version in " + filename + " not acceptable to reader", except);
 			printParagraph("ERROR: Map version not acceptable to reader",
 					ERROR_COLOR);
 		} else if (except instanceof FileNotFoundException) {
@@ -150,8 +145,8 @@ public final class MapCheckerFrame extends JFrame implements ISPWindow {
 			printParagraph("ERROR: I/O error reading file", ERROR_COLOR);
 			LOGGER.log(Level.SEVERE, "I/O error reading " + filename, except);
 		} else if (except instanceof XMLStreamException) {
-			printParagraph("ERROR: Malformed XML in the file"
-					               + "; see following error message for details",
+			printParagraph("ERROR: Malformed XML in the file" +
+								"; see following error message for details",
 					ERROR_COLOR);
 			final String message = NullCleaner.valueOrDefault(
 					except.getLocalizedMessage(), "(message was null)");
@@ -159,9 +154,9 @@ public final class MapCheckerFrame extends JFrame implements ISPWindow {
 			LOGGER.log(Level.SEVERE, "Malformed XML in file " + filename,
 					except);
 		} else if (except instanceof SPFormatException) {
-			printParagraph("ERROR: SP map format error at line "
-					               + ((SPFormatException) except).getLine()
-					               + "; see following error message for details",
+			printParagraph("ERROR: SP map format error at line " +
+								((SPFormatException) except).getLine() +
+								"; see following error message for details",
 					ERROR_COLOR);
 			final String message = NullCleaner.valueOrDefault(
 					except.getLocalizedMessage(), "(message was null)");

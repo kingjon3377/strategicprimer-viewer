@@ -1,6 +1,6 @@
 package view.map.main;
 
-import java.awt.Frame;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
@@ -12,12 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import javax.swing.JCheckBox;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.map.FixtureIterable;
 import model.map.HasKind;
 import model.map.HasName;
@@ -89,9 +84,8 @@ public final class FindDialog extends JDialog {
 	/**
 	 * The checkbox for searching vertically.
 	 */
-	private final JCheckBox vertically = new JCheckBox(
-															  "Search vertically then " +
-																	  "horizontally");
+	private final JCheckBox vertically =
+			new JCheckBox("Search vertically then horizontally");
 	/**
 	 * The checkbox for making case-sensitive search.
 	 */
@@ -145,14 +139,13 @@ public final class FindDialog extends JDialog {
 		contentPane.add(buttonPanel);
 		ffl = new FixtureFilterList();
 		SwingUtilities.invokeLater(new FilterPopulator(ffl, model));
+		// TODO: Statically import horizontalSplit?
 		setContentPane(SplitWithWeights
-				               .horizontalSplit(FILTER_PROPORTION, FILTER_PROPORTION,
-						               contentPane, vertical(new JLabel("Find only ..."),
-								               new JScrollPane(ffl,
-										                              VERTICAL_SCROLLBAR_AS_NEEDED,
-										                              HORIZONTAL_SCROLLBAR_NEVER),
-
-								               null)));
+							.horizontalSplit(FILTER_PROPORTION, FILTER_PROPORTION,
+									contentPane, vertical(new JLabel("Find only ..."),
+											new JScrollPane(ffl, VERTICAL_SCROLLBAR_AS_NEEDED,
+																HORIZONTAL_SCROLLBAR_NEVER),
+											null)));
 		map = model;
 		pack();
 	}
@@ -160,16 +153,13 @@ public final class FindDialog extends JDialog {
 	/**
 	 * A parser to convert from strings to integers.
 	 */
-	private static final NumberFormat NUM_PARSER = NullCleaner
-														   .assertNotNull(NumberFormat
-																				  .getIntegerInstance());
+	private static final NumberFormat NUM_PARSER =
+			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger
-																		   .getLogger(
-																				   FindDialog.class
-																						   .getName()));
+	private static final Logger LOGGER =
+			NullCleaner.assertNotNull(Logger.getLogger(FindDialog.class.getName()));
 
 	/**
 	 * Search for the current pattern. If the pattern is found (as the ID of a
@@ -198,9 +188,9 @@ public final class FindDialog extends JDialog {
 		}
 		final Iterable<Point> iter =
 				new IteratorWrapper<>(new PointIterator(map.getMapDimensions(),
-															   map.getSelectedPoint(),
-															   !backwards.isSelected(),
-															   !vertically.isSelected()));
+															map.getSelectedPoint(),
+															!backwards.isSelected(),
+															!vertically.isSelected()));
 		for (final Point point : iter) {
 			final TileFixture ground = map.getMap().getGround(point);
 			final TileFixture forest = map.getMap().getForest(point);
@@ -253,15 +243,12 @@ public final class FindDialog extends JDialog {
 	 * simple ways; if this fails the caller will go on to the recursive test.
 	 */
 	private boolean matchesSimple(final String pattern, final int idNum,
-								  final IFixture fix, final boolean csen) {
-		return !pattern.isEmpty()
-					   && (!(fix instanceof TileFixture) || ffl
-																	.shouldDisplay(
-																			(TileFixture) fix))
-					   && ((fix.getID() == idNum) || matchesName(pattern, fix, csen)
-								   || matchesKind(pattern, fix, csen) ||
-								   matchesOwner(pattern,
-										   idNum, fix, csen));
+								final IFixture fix, final boolean csen) {
+		return !pattern.isEmpty() && (!(fix instanceof TileFixture) ||
+											ffl.shouldDisplay((TileFixture) fix)) &&
+					((fix.getID() == idNum) || matchesName(pattern, fix, csen) ||
+								matchesKind(pattern, fix, csen) ||
+								matchesOwner(pattern, idNum, fix, csen));
 	}
 
 	/**
@@ -281,8 +268,8 @@ public final class FindDialog extends JDialog {
 			} else {
 				ownerName = owner.getName().toLowerCase();
 			}
-			return (owner.getPlayerId() == idNum) || ownerName.contains(pattern)
-						   || matchesOwnerSpecials(pattern, owner);
+			return (owner.getPlayerId() == idNum) || ownerName.contains(pattern) ||
+						matchesOwnerSpecials(pattern, owner);
 		} else {
 			return false;
 		}
@@ -297,10 +284,9 @@ public final class FindDialog extends JDialog {
 	 */
 	private static boolean matchesOwnerSpecials(final String pattern,
 												final Player player) {
-		return ("me".equalsIgnoreCase(pattern.trim())
-						&& player.isCurrent())
-					   || ("none".equalsIgnoreCase(pattern.trim())
-								   && player.isIndependent());
+		return ("me".equalsIgnoreCase(pattern.trim()) && player.isCurrent()) ||
+					("none".equalsIgnoreCase(pattern.trim()) &&
+								player.isIndependent());
 	}
 
 	/**
@@ -309,16 +295,16 @@ public final class FindDialog extends JDialog {
 	 * @param csen    whether to search case-sensitively
 	 * @return whether the fixture has a 'kind' that matches the pattern
 	 */
-	private static boolean matchesKind(@SuppressWarnings("TypeMayBeWeakened") final
-									   String pattern,
-									   final IFixture fix, final boolean csen) {
+	private static boolean matchesKind(@SuppressWarnings("TypeMayBeWeakened")
+									final String pattern, final IFixture fix,
+									final boolean csen) {
 		if (csen) {
-			return (fix instanceof HasKind) && ((HasKind) fix).getKind()
-													   .contains(pattern);
+			return (fix instanceof HasKind) &&
+						((HasKind) fix).getKind().contains(pattern);
 		} else {
 			return (fix instanceof HasKind)
-						   && ((HasKind) fix).getKind().toLowerCase()
-									  .contains(pattern);
+						&& ((HasKind) fix).getKind().toLowerCase()
+									.contains(pattern);
 		}
 	}
 
@@ -329,15 +315,15 @@ public final class FindDialog extends JDialog {
 	 * @return whether the fixture has a name that matches the pattern
 	 */
 	private static boolean matchesName(@SuppressWarnings("TypeMayBeWeakened") final
-									   String pattern,
-									   final IFixture fix, final boolean csen) {
+									String pattern,
+									final IFixture fix, final boolean csen) {
 		if (csen) {
-			return (fix instanceof HasName)
-						   && ((HasName) fix).getName().contains(pattern);
+			return (fix instanceof HasName) &&
+						((HasName) fix).getName().contains(pattern);
 		} else {
 			return (fix instanceof HasName)
-						   && ((HasName) fix).getName().toLowerCase()
-									  .contains(pattern);
+						&& ((HasName) fix).getName().toLowerCase()
+									.contains(pattern);
 		}
 	}
 

@@ -61,8 +61,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger
-												 .getLogger(WorkerTreeModel.class);
+	private static final Logger LOGGER = TypesafeLogger.getLogger(WorkerTreeModel.class);
 
 	/**
 	 * Constructor.
@@ -93,22 +92,12 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	public Object getChild(@Nullable final Object parent, final int index) {
 		if (index < 0) {
 			throw new ArrayIndexOutOfBoundsException(index);
-		} else if ((parent instanceof Player) && parent.equals(root)
-						   && (index < model.getUnitKinds(root)
-											   .size())) {
+		} else if ((parent instanceof Player) && parent.equals(root) &&
+						(index < model.getUnitKinds(root).size())) {
 			return NullCleaner.assertNotNull(model.getUnitKinds(root).get(index));
-		} else if ((parent instanceof String)
-						   &&
-						   model.getUnitKinds(
-								   root)
-								   .contains(
-										   parent)
-						   &&
-						   (index <
-									model.getUnits(
-											root,
-											(String) parent)
-											.size())) {
+		} else if ((parent instanceof String) &&
+						model.getUnitKinds(root).contains(parent) &&
+						(index < model.getUnits(root, (String) parent).size())) {
 			// A String here is a unit's kind.
 			return NullCleaner.assertNotNull(model.getUnits(root, // NOPMD
 					(String) parent).get(index));
@@ -141,11 +130,9 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			return model.getUnits((Player) parent).size(); // NOPMD
 		} else if (parent instanceof IUnit) {
 			return (int) StreamSupport.stream(((IUnit) parent).spliterator(), false)
-								 .count();
+								.count();
 		} else {
-			throw new IllegalArgumentException(
-													  "Not a possible member of the " +
-															  "tree");
+			throw new IllegalArgumentException("Not a possible member of the tree");
 		}
 	}
 
@@ -155,8 +142,8 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 */
 	@Override
 	public boolean isLeaf(@Nullable final Object node) {
-		return !(node instanceof Player) && !(node instanceof IUnit)
-					   && !(node instanceof String);
+		return !(node instanceof Player) && !(node instanceof IUnit) &&
+					!(node instanceof String);
 	}
 
 	/**
@@ -176,7 +163,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 */
 	@Override
 	public int getIndexOfChild(@Nullable final Object parent,
-							   @Nullable final Object child) {
+							@Nullable final Object child) {
 		if ((parent instanceof Player) && parent.equals(root) && (child instanceof IUnit)) {
 			return model.getUnits(root).indexOf(child);
 		} else if (parent instanceof IUnit) {
@@ -222,12 +209,12 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 */
 	@Override
 	public void moveMember(final UnitMember member, final IUnit old,
-						   final IUnit newOwner) {
+						final IUnit newOwner) {
 		final int oldIndex = getIndexOfChild(old, member);
 		old.removeMember(member);
 		final TreeModelEvent removedEvent =
 				new TreeModelEvent(this, new TreePath(asArray(root, old)),
-						                  singletonInt(oldIndex), singletonObj(member));
+										singletonInt(oldIndex), singletonObj(member));
 		final TreeModelEvent removedChEvent =
 				new TreeModelEvent(this, new TreePath(asArray(root, old)));
 		for (final TreeModelListener listener : listeners) {
@@ -237,8 +224,8 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 		newOwner.addMember(member);
 		final TreeModelEvent insertedEvent =
 				new TreeModelEvent(this, new TreePath(asArray(root, newOwner)),
-						                  singletonInt(getIndexOfChild(newOwner, member)),
-						                  singletonObj(member));
+										singletonInt(getIndexOfChild(newOwner, member)),
+										singletonObj(member));
 		final TreeModelEvent insertedChEvent =
 				new TreeModelEvent(this, new TreePath(asArray(root, newOwner)));
 		for (final TreeModelListener listener : listeners) {
@@ -460,8 +447,8 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 					unit.removeMember(member);
 					final TreeModelEvent evt =
 							new TreeModelEvent(this, new TreePath(asArray(root, unit)),
-									                  singletonInt(index),
-									                  singletonObj(member));
+													singletonInt(index),
+													singletonObj(member));
 					for (final TreeModelListener listener : listeners) {
 						listener.treeNodesRemoved(evt);
 					}

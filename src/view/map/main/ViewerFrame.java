@@ -1,16 +1,13 @@
 package view.map.main;
 
-import java.awt.Dimension;
+import controller.map.misc.IOHandler;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
-
-import controller.map.misc.IOHandler;
+import javax.swing.*;
 import model.viewer.IViewerModel;
 import util.NullCleaner;
 import view.map.details.DetailPanelNG;
@@ -88,11 +85,8 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 		map.addGraphicalParamsListener(mapPanel);
 		map.addMapChangeListener(mapPanel);
 		map.addSelectionChangeListener(mapPanel);
-		final DetailPanelNG detailPanel = new DetailPanelNG(
-																   map.getMapDimensions
-																			   ()
-																		   .version,
-																   map);
+		final DetailPanelNG detailPanel =
+				new DetailPanelNG(map.getMapDimensions().version, map);
 		map.addVersionChangeListener(detailPanel);
 		map.addSelectionChangeListener(detailPanel);
 		setContentPane(SplitWithWeights.verticalSplit(MAP_PROPORTION, MAP_PROPORTION,

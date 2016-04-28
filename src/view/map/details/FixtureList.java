@@ -13,11 +13,7 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.JList;
-import javax.swing.KeyStroke;
-import javax.swing.ListSelectionModel;
+import javax.swing.*;
 import model.listeners.SelectionChangeListener;
 import model.map.Player;
 import model.map.Point;
@@ -69,22 +65,21 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 	 * @param players the players in the map
 	 */
 	public FixtureList(final JComponent parent, final IDriverModel dmodel,
-	                   final Iterable<Player> players) {
+					final Iterable<Player> players) {
 		flm = new FixtureListModel(dmodel);
 		setModel(flm);
 		setCellRenderer(new FixtureCellRenderer());
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
 				this, DnDConstants.ACTION_COPY, this::dragGestureRecognized);
-		setDropTarget(new DropTarget(this, new FixtureListDropListener(parent,
-				                                                              flm)));
+		setDropTarget(new DropTarget(this, new FixtureListDropListener(parent, flm)));
 		final InputMap inputMap = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "delete");
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0),
 				"delete");
 		getActionMap().put("delete",
 				new ActionWrapper(event -> ((FixtureListModel) getModel())
-						                           .removeAll(getSelectedValuesList())));
+												.removeAll(getSelectedValuesList())));
 		addMouseListener(new FixtureMouseListener(players, this));
 	}
 
@@ -100,8 +95,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 			if (selection.isEmpty()) {
 				return;
 			}
-			final TileFixture firstElement = NullCleaner
-					                                 .assertNotNull(selection.get(0));
+			final TileFixture firstElement = NullCleaner.assertNotNull(selection.get(0));
 			if (selection.size() == 1) {
 				dge.startDrag(null, new FixtureTransferable(firstElement));
 			} else {
@@ -120,8 +114,8 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 	@SuppressWarnings("rawtypes")
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof JList)
-				                         && getModel().equals(((JList) obj).getModel()));
+		return (this == obj) || ((obj instanceof JList) &&
+										getModel().equals(((JList) obj).getModel()));
 	}
 
 	/**
@@ -192,8 +186,8 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		 *              the null-event case once.
 		 */
 		private void handleMouseEvent(@Nullable final MouseEvent event) {
-			if ((event != null) && event.isPopupTrigger()
-					    && (event.getClickCount() == 1)) {
+			if ((event != null) && event.isPopupTrigger() &&
+						(event.getClickCount() == 1)) {
 				final int index = list.locationToIndex(event.getPoint());
 				if ((index >= 0) && (index < list.getModel().getSize())) {
 					new FixtureEditMenu(list.getModel().getElementAt(
@@ -219,8 +213,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 	 * @param newPoint passed to the list model
 	 */
 	@Override
-	public void selectedPointChanged(@Nullable final Point old,
-	                                 final Point newPoint) {
+	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
 		flm.selectedPointChanged(old, newPoint);
 	}
 	/**

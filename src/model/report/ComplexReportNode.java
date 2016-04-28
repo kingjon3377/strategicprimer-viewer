@@ -91,7 +91,7 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	@Override
 	public String produce() {
 		return NullCleaner.assertNotNull(produce(new StringBuilder(size()))
-				                                 .toString());
+												.toString());
 	}
 
 	/**
@@ -132,9 +132,8 @@ public final class ComplexReportNode extends DefaultMutableTreeNode
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof ComplexReportNode) &&
-				                         text.equals(((IReportNode) obj).getText()) &&
-				                         children()
-						                         .equals(((IReportNode) obj).children()));
+									text.equals(((IReportNode) obj).getText()) &&
+									children().equals(((IReportNode) obj).children()));
 	}
 
 	/**

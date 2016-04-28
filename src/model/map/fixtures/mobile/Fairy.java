@@ -1,13 +1,11 @@
 package model.map.fixtures.mobile;
 
 import java.io.IOException;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.IFixture;
 import model.map.fixtures.UnitMember;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A fairy. TODO: should probably be a unit, or something.
@@ -103,9 +101,9 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof Fairy)
-				                         && kind.equals(((Fairy) obj).kind) &&
-				                         (id == ((Fairy) obj).id));
+		return (this == obj) ||
+					((obj instanceof Fairy) && kind.equals(((Fairy) obj).kind) &&
+								(id == ((Fairy) obj).id));
 	}
 
 	/**
@@ -148,7 +146,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-	                        final String context) throws IOException {
+							final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Fairy) {
 				return areObjectsEqual(ostream, kind, ((Fairy) obj).kind, context,

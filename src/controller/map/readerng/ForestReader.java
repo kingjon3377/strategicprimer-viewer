@@ -50,14 +50,12 @@ public final class ForestReader implements INodeHandler<Forest> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public Forest parse(final StartElement element,
-	                    final Iterable<XMLEvent> stream,
-	                    final IMutablePlayerCollection players,
-	                    final Warning warner, final IDFactory idFactory)
-			throws SPFormatException {
+	public Forest parse(final StartElement element, final Iterable<XMLEvent> stream,
+						final IMutablePlayerCollection players, final Warning warner,
+						final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		final Forest fix = new Forest(getAttribute(element, "kind"),
-				                             hasAttribute(element, "rows"));
+		final Forest fix =
+				new Forest(getAttribute(element, "kind"), hasAttribute(element, "rows"));
 		addImage(element, fix);
 		return fix;
 	}
@@ -88,8 +86,8 @@ public final class ForestReader implements INodeHandler<Forest> {
 	 */
 	@Override
 	public <S extends Forest> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "forest");
+		final SPIntermediateRepresentation retval =
+				new SPIntermediateRepresentation("forest");
 		retval.addAttribute("kind", obj.getKind());
 		if (obj.isRows()) {
 			retval.addAttribute("rows", "true");

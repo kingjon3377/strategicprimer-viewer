@@ -51,9 +51,9 @@ public final class TrollReader implements INodeHandler<Troll> {
 	 */
 	@Override
 	public Troll parse(final StartElement element,
-	                   final Iterable<XMLEvent> stream,
-	                   final IMutablePlayerCollection players,
-	                   final Warning warner, final IDFactory idFactory)
+					final Iterable<XMLEvent> stream,
+					final IMutablePlayerCollection players,
+					final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Troll fix = new Troll(getOrGenerateID(element, warner, idFactory));
@@ -79,8 +79,8 @@ public final class TrollReader implements INodeHandler<Troll> {
 	 */
 	@Override
 	public <S extends Troll> SPIntermediateRepresentation write(final S obj) {
-		final SPIntermediateRepresentation retval = new SPIntermediateRepresentation(
-				                                                                            "troll");
+		final SPIntermediateRepresentation retval =
+				new SPIntermediateRepresentation("troll");
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

@@ -88,14 +88,13 @@ public final class SimpleMovement {
 	 * @return the movement cost to traverse the location.
 	 */
 	public static int getMovementCost(final TileType terrain,
-	                                  final boolean forest, final boolean mountain,
-	                                  final boolean river,
-	                                  final Supplier<Stream<TileFixture>> fixtures) {
-		if ((TileType.Ocean == terrain)
-				    || (TileType.NotVisible == terrain)) {
+									final boolean forest, final boolean mountain,
+									final boolean river,
+									final Supplier<Stream<TileFixture>> fixtures) {
+		if ((TileType.Ocean == terrain) || (TileType.NotVisible == terrain)) {
 			return Integer.MAX_VALUE; // NOPMD
 		} else if (forest || mountain || isForest(fixtures.get()) ||
-				           isHill(fixtures.get()) || (TileType.Desert == terrain)) {
+						isHill(fixtures.get()) || (TileType.Desert == terrain)) {
 			if (river) {
 				return 2; // NOPMD
 			} else {
@@ -125,7 +124,7 @@ public final class SimpleMovement {
 	 */
 	private static boolean isForest(final Stream<TileFixture> fixtures) {
 		return StreamSupport.stream(fixtures.spliterator(), false)
-				       .anyMatch(fix -> fix instanceof Forest);
+					.anyMatch(fix -> fix instanceof Forest);
 	}
 
 	/**
@@ -133,9 +132,8 @@ public final class SimpleMovement {
 	 * @return whether any of them is a mountain or a hill
 	 */
 	private static boolean isHill(final Stream<TileFixture> fixtures) {
-		return StreamSupport.stream(fixtures.spliterator(), false)
-				       .anyMatch(fix -> (fix instanceof Mountain) ||
-						                        (fix instanceof Hill));
+		return StreamSupport.stream(fixtures.spliterator(), false).anyMatch(
+				fix -> (fix instanceof Mountain) || (fix instanceof Hill));
 	}
 
 	/**
@@ -149,7 +147,7 @@ public final class SimpleMovement {
 	 * not notice unexposed ground, and do not notice null fixtures.
 	 */
 	public static boolean shouldSometimesNotice(final IUnit unit,
-	                                            @Nullable final TileFixture fix) {
+												@Nullable final TileFixture fix) {
 		if (fix instanceof Ground) {
 			if (((Ground) fix).isExposed()) {
 				return true;
@@ -217,11 +215,10 @@ public final class SimpleMovement {
 	 * @return whether the unit should always notice it. A null fixture is never noticed
 	 */
 	public static boolean shouldAlwaysNotice(final HasOwner unit,
-	                                         @Nullable final TileFixture fix) {
-		return (fix instanceof Mountain) || (fix instanceof RiverFixture)
-				       || (fix instanceof Hill) || (fix instanceof Forest)
-				       || ((fix instanceof Fortress)
-						           &&
-						           ((Fortress) fix).getOwner().equals(unit.getOwner()));
+											@Nullable final TileFixture fix) {
+		return (fix instanceof Mountain) || (fix instanceof RiverFixture) ||
+					(fix instanceof Hill) || (fix instanceof Forest) ||
+					((fix instanceof Fortress) &&
+								((Fortress) fix).getOwner().equals(unit.getOwner()));
 	}
 }

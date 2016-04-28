@@ -36,11 +36,9 @@ public interface ISPReader {
 	 * Tags we expect to use in the future; they are skipped for now and we'll warn if
 	 * they're used.
 	 */
-	Iterable<String> FUTURE =
-			NullCleaner.assertNotNull(Collections.unmodifiableList(Arrays.asList
-					                                                              ("future",
-					"explorer", "building", "resource", "changeset", "change", "move",
-					"work", "discover", "submap", "futureTag")));
+	Iterable<String> FUTURE = NullCleaner.assertNotNull(Collections.unmodifiableList(
+			Arrays.asList("future", "explorer", "building", "resource", "changeset",
+					"change", "move", "work", "discover", "submap", "futureTag")));
 	/**
 	 * The namespace that SP XML will use.
 	 */
@@ -55,6 +53,6 @@ public interface ISPReader {
 	 * @throws XMLStreamException if XML isn't well-formed.
 	 * @throws SPFormatException  if the data is invalid.
 	 */
-	<T> T readXML(File file, Reader istream, Class<T> type,
-	              Warning warner) throws XMLStreamException, SPFormatException;
+	<T> T readXML(File file, Reader istream, Class<T> type, Warning warner)
+			throws XMLStreamException, SPFormatException;
 }

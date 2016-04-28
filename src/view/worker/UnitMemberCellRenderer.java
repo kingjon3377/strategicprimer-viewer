@@ -1,17 +1,12 @@
 package view.worker;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JTree;
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
@@ -99,11 +94,11 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	 */
 	@Override
 	public Component getTreeCellRendererComponent(@Nullable final JTree tree,
-	                                              @Nullable final Object value,
-	                                              final boolean selected,
-	                                              final boolean expanded,
-	                                              final boolean leaf, final int row,
-	                                              final boolean hasFocus) {
+												@Nullable final Object value,
+												final boolean selected,
+												final boolean expanded,
+												final boolean leaf, final int row,
+												final boolean hasFocus) {
 		assert (tree != null) && (value != null) :
 				"UnitMemberCellRenderer passed a null tree or value";
 		final Component component = assertNotNull(
@@ -120,8 +115,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 		if (internal instanceof IWorker) {
 			final IWorker worker = (IWorker) internal;
 			// Assume at least a K in size.
-			final StringBuilder builder = new StringBuilder(1024)
-					                              .append("<html><p>");
+			final StringBuilder builder = new StringBuilder(1024).append("<html><p>");
 			builder.append(worker.getName());
 			if (!"human".equals(worker.getRace())) {
 				builder.append(", a ").append(worker.getRace());
@@ -138,8 +132,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 						.setBackgroundSelectionColor(Color.PINK);
 				((DefaultTreeCellRenderer) component)
 						.setBackgroundNonSelectionColor(Color.PINK);
-			} else if (warn && orders.contains("todo")
-					           && unit.iterator().hasNext()) {
+			} else if (warn && orders.contains("todo") && unit.iterator().hasNext()) {
 				((DefaultTreeCellRenderer) component)
 						.setBackgroundSelectionColor(Color.YELLOW);
 				((DefaultTreeCellRenderer) component)
@@ -155,8 +148,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 					if (orders.contains("fixme") && unit.iterator().hasNext()) {
 						shouldErr = true;
 						break;
-					} else if (orders.contains("todo")
-							           && unit.iterator().hasNext()) {
+					} else if (orders.contains("todo") && unit.iterator().hasNext()) {
 						shouldWarn = true;
 					}
 				}
@@ -264,8 +256,8 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 		 * The margin we allow around the chit itself in the default image.
 		 */
 		final int imageSize = 24; // NOPMD
-		final BufferedImage temp = new BufferedImage(imageSize, imageSize,
-				                                            BufferedImage.TYPE_INT_ARGB);
+		final BufferedImage temp =
+				new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D pen = temp.createGraphics();
 		final Color saveColor = pen.getColor();
 		pen.setColor(Color.RED);

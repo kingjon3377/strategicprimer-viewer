@@ -51,11 +51,9 @@ public final class GroundReader implements INodeHandler<Ground> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public Ground parse(final StartElement element,
-	                    final Iterable<XMLEvent> stream,
-	                    final IMutablePlayerCollection players,
-	                    final Warning warner, final IDFactory idFactory)
-			throws SPFormatException {
+	public Ground parse(final StartElement element, final Iterable<XMLEvent> stream,
+						final IMutablePlayerCollection players, final Warning warner,
+						final IDFactory idFactory) throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		final Ground fix = new Ground(getAttributeWithDeprecatedForm(element,
 				"kind", "ground", warner), Boolean.parseBoolean(getAttribute(
@@ -91,13 +89,11 @@ public final class GroundReader implements INodeHandler<Ground> {
 	@Override
 	public <S extends Ground> SPIntermediateRepresentation write(final S obj) {
 		final SPIntermediateRepresentation retval =
-				new SPIntermediateRepresentation("ground", Pair.of("kind",
-						obj.getKind()), Pair.of("exposed", NullCleaner
-								                                   .assertNotNull(
-										                                   Boolean
-												                                   .toString(
-												                                   obj
-														                                   .isExposed()))));
+				new SPIntermediateRepresentation("ground", Pair.of("kind", obj.getKind()),
+														Pair.of("exposed", NullCleaner
+																				.assertNotNull(
+																						Boolean.toString(
+																								obj.isExposed()))));
 		retval.addImageAttribute(obj);
 		return retval;
 	}

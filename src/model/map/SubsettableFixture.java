@@ -23,7 +23,6 @@ package model.map;
  *
  * @author Jonathan Lovelace
  */
-public interface SubsettableFixture extends IFixture,
-		                                            Subsettable<IFixture> {
+public interface SubsettableFixture extends IFixture, Subsettable<IFixture> {
 	// Marker interface
 }

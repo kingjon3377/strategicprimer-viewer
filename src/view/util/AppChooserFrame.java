@@ -67,14 +67,14 @@ public final class AppChooserFrame extends JFrame implements ISPWindow {
 	 * @return the button
 	 */
 	private JButton button(final String desc, final List<String> params,
-						   final Class<? extends ISPDriver> target) {
+							final Class<? extends ISPDriver> target) {
 		return new ListenedButton(desc, evt -> {
 			try {
 				target.getConstructor().newInstance()
 						.startDriver(params.toArray(new String[params.size()]));
 			} catch (final InstantiationException | IllegalAccessException
-					               | NoSuchMethodException | InvocationTargetException
-					               | DriverFailedException except) {
+								| NoSuchMethodException | InvocationTargetException
+								| DriverFailedException except) {
 				final String msg = except.getMessage();
 				final String message = NullCleaner.valueOrDefault(msg,
 						"Exception with null message");
@@ -98,13 +98,13 @@ public final class AppChooserFrame extends JFrame implements ISPWindow {
 	 * @return the button
 	 */
 	private JButton button(final String desc, final IDriverModel model,
-						   final Class<? extends ISPDriver> target) {
+						final Class<? extends ISPDriver> target) {
 		return new ListenedButton(desc, evt -> {
 			try {
 				target.getConstructor().newInstance().startDriver(model);
 			} catch (final InstantiationException | IllegalAccessException
-					               | NoSuchMethodException | InvocationTargetException
-					               | DriverFailedException except) {
+								| NoSuchMethodException | InvocationTargetException
+								| DriverFailedException except) {
 				final String msg = except.getMessage();
 				final String message = NullCleaner.valueOrDefault(msg,
 						"Exception with null message");
@@ -138,8 +138,7 @@ public final class AppChooserFrame extends JFrame implements ISPWindow {
 		buttonPanel.add(button("Exploration", model, ExplorationGUI.class));
 		setContentPane(new BorderedPanel(new JScrollPane(buttonPanel),
 												new JLabel("Please choose one of the " +
-																   "applications " +
-																   "below:"),
+																"applications below:"),
 												null, null, null));
 		pack();
 	}
@@ -164,8 +163,7 @@ public final class AppChooserFrame extends JFrame implements ISPWindow {
 		buttonPanel.add(button("Exploration", parameters, ExplorationGUI.class));
 		setContentPane(new BorderedPanel(new JScrollPane(buttonPanel),
 												new JLabel("Please choose one of the " +
-																   "applications " +
-																   "below:"),
+																"applications below:"),
 												null, null, null));
 		pack();
 	}

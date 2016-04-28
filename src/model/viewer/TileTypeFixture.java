@@ -2,13 +2,11 @@ package model.viewer;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasImage;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.TileType;
+import org.eclipse.jdt.annotation.Nullable;
 import util.TypesafeLogger;
 
 /**
@@ -132,8 +130,8 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof TileTypeFixture)
-				                         && (((TileTypeFixture) obj).ttype == ttype));
+		return (this == obj) || ((obj instanceof TileTypeFixture) &&
+										(((TileTypeFixture) obj).ttype == ttype));
 	}
 
 	/**

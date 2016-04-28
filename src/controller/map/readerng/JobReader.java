@@ -84,28 +84,25 @@ public final class JobReader implements INodeHandler<@NonNull Job> {
 	 * @throws SPFormatException on SP format error
 	 */
 	@Override
-	public Job parse(final StartElement element,
-	                 final Iterable<XMLEvent> stream,
-	                 final IMutablePlayerCollection players,
-	                 final Warning warner, final IDFactory idFactory)
-			throws SPFormatException {
+	public Job parse(final StartElement element, final Iterable<XMLEvent> stream,
+					final IMutablePlayerCollection players, final Warning warner,
+					final IDFactory idFactory) throws SPFormatException {
 		if (hasAttribute(element, "hours")) {
 			warner.warn(new UnsupportedPropertyException(element, "hours"));
 		}
 		final Job retval = new Job(getAttribute(element, "name"),
-				                          getIntegerAttribute(element, "level"));
+										getIntegerAttribute(element, "level"));
 		StartElement lastSkill = element;
 		boolean anySkills = false;
 		boolean onlyOneSkill = true;
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final Object result =
-						ReaderAdapter.ADAPTER.parse(NullCleaner
-															.assertNotNull(
-																	event.asStartElement
-																				  ()),
-								stream,
-								players, warner, idFactory);
+				// TODO: Statically import NullCleaner.assertNotNull
+				final Object result = ReaderAdapter.ADAPTER.parse(NullCleaner
+																		.assertNotNull(
+																				event
+																						.asStartElement()),
+						stream, players, warner, idFactory);
 				if (result instanceof Skill) {
 					if (anySkills) {
 						onlyOneSkill = false;
@@ -118,9 +115,8 @@ public final class JobReader implements INodeHandler<@NonNull Job> {
 					throw new UnwantedChildException(NullCleaner.assertNotNull(element.getName()),
 							NullCleaner.assertNotNull(event.asStartElement()));
 				}
-			} else if (event.isEndElement()
-							   &&
-							   element.getName().equals(event.asEndElement().getName())) {
+			} else if (event.isEndElement() &&
+							element.getName().equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
@@ -128,13 +124,12 @@ public final class JobReader implements INodeHandler<@NonNull Job> {
 			final String skill = retval.iterator().next().getName();
 			if (equalsAny(skill, IJob.SUSPICIOUS_SKILLS) || skill.equals(retval.getName())) {
 				warner.warn(new UnwantedChildException(element.getName(),
-															  new QName(ISPReader
-																				.NAMESPACE,
-																			   skill),
-															  lastSkill.getLocation(),
-															  new DeprecatedPropertyException(lastSkill,
-																									 skill,
-																									 "miscellaneous")));
+															new QName(ISPReader.NAMESPACE,
+																			skill),
+															lastSkill.getLocation(),
+															new DeprecatedPropertyException(lastSkill,
+																								skill,
+																								"miscellaneous")));
 			}
 		}
 		return retval;

@@ -56,7 +56,7 @@ public final class TileDrawHelperFactory {
 	 * @return a draw helper for the specified map version
 	 */
 	public TileDrawHelper factory(final int version, final ImageObserver iobs,
-	                              final ZOrderFilter zof) {
+								final ZOrderFilter zof) {
 		switch (version) {
 		case 1:
 			return verOneHelper; // NOPMD

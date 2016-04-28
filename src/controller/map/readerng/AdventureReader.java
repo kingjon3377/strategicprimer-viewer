@@ -53,9 +53,9 @@ public final class AdventureReader implements INodeHandler<@NonNull AdventureFix
 	 */
 	@Override
 	public AdventureFixture parse(final StartElement element,
-	                              final Iterable<XMLEvent> stream,
-	                              final IMutablePlayerCollection players,
-	                              final Warning warner, final IDFactory idFactory)
+								final Iterable<XMLEvent> stream,
+								final IMutablePlayerCollection players,
+								final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		Player player = players.getIndependent();
@@ -64,8 +64,8 @@ public final class AdventureReader implements INodeHandler<@NonNull AdventureFix
 		}
 		final AdventureFixture retval =
 				new AdventureFixture(player, getAttribute(element, "brief", ""),
-						                    getAttribute(element, "full", ""),
-						                    getOrGenerateID(element, warner, idFactory));
+											getAttribute(element, "full", ""),
+											getOrGenerateID(element, warner, idFactory));
 		addImage(element, retval);
 		return retval;
 	}

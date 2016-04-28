@@ -106,10 +106,10 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 */
 	@Override
 	public IMutableMapNG read(final StartElement element,
-							  final IteratorWrapper<XMLEvent> stream,
-							  final IMutablePlayerCollection players,
-							  final Warning warner,
-							  final IDFactory idFactory) throws SPFormatException {
+							final IteratorWrapper<XMLEvent> stream,
+							final IMutablePlayerCollection players,
+							final Warning warner,
+							final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "map", "view");
 		final int currentTurn;
 		final StartElement mapTag;
@@ -129,8 +129,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 		}
 		final MapDimensions dimensions =
 				new MapDimensions(getIntegerParameter(mapTag, "rows"),
-										 getIntegerParameter(mapTag, "columns"),
-										 getIntegerParameter(mapTag, "version"));
+										getIntegerParameter(mapTag, "columns"),
+										getIntegerParameter(mapTag, "version"));
 		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
 		final Point nullPoint = PointFactory.point(-1, -1);
 		Point point = nullPoint;
@@ -152,9 +152,9 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				} else if ("tile".equalsIgnoreCase(type)) {
 					if (!nullPoint.equals(point)) {
 						throw new UnwantedChildException(new QName(current.getName()
-								                                           .getNamespaceURI(),
-								                                          "tile"),
-								                                current);
+																		.getNamespaceURI(),
+																		"tile"),
+																current);
 					}
 					point = PointFactory.point(
 							getIntegerParameter(current, "row"),
@@ -164,12 +164,10 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 					if (hasParameter(current, "kind")
 								|| hasParameter(current, "type")) {
 						retval.setBaseTerrain(point, TileType
-															 .getTileType(
-																	 getParamWithDeprecatedForm(
-																			 current,
-																			 "kind",
-																			 "type",
-																			 warner)));
+															.getTileType(
+																	getParamWithDeprecatedForm(
+																			current, "kind",
+																			"type", warner)));
 					} else {
 						//noinspection ObjectAllocationInLoop
 						warner.warn(new MissingPropertyException(current, "kind"));
@@ -183,7 +181,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 							assertNotNull(mapTag.getName()),
 							current);
 				} else if ("lake".equalsIgnoreCase(type)
-								   || "river".equalsIgnoreCase(type)) {
+								|| "river".equalsIgnoreCase(type)) {
 					retval.addRivers(point,
 							parseRiver(current, warner));
 					spinUntilEnd(assertNotNull(current.getName()),
@@ -223,7 +221,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				if (element.getName().equals(event.asEndElement().getName())) {
 					break;
 				} else if ("tile".equalsIgnoreCase(event.asEndElement()
-														   .getName().getLocalPart())) {
+														.getName().getLocalPart())) {
 					point = PointFactory.point(-1, -1);
 				}
 			} else if (event.isCharacters()) {
@@ -256,7 +254,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addFixture(final IMutableMapNG map, final Point point,
-	                               final TileFixture fix) {
+								final TileFixture fix) {
 		if (fix instanceof Ground) {
 			final Ground ground = (Ground) fix;
 			final Ground oldGround = map.getGround(point);
@@ -310,10 +308,10 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * @throws SPFormatException on SP format problem
 	 */
 	private TileFixture parseFixture(final StartElement element,
-									 final IteratorWrapper<XMLEvent> stream,
-									 final IMutablePlayerCollection players,
-									 final IDFactory idFactory,
-									 final Warning warner) throws SPFormatException {
+									final IteratorWrapper<XMLEvent> stream,
+									final IMutablePlayerCollection players,
+									final IDFactory idFactory,
+									final Warning warner) throws SPFormatException {
 		final String name = assertNotNull(element.getName().getLocalPart());
 		for (final CompactReader<? extends TileFixture> item : readers) {
 			if (item.isSupportedTag(name)) {
@@ -321,7 +319,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			}
 		}
 		throw new UnwantedChildException(new QName(element.getName().getNamespaceURI(),
-				                                          "tile"), element);
+														"tile"), element);
 	}
 
 	/**
@@ -330,10 +328,8 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * @return the first start-element in the stream
 	 * @throws SPFormatException if no start element in stream
 	 */
-	private static StartElement getFirstStartElement(
-			                                                final Iterable<XMLEvent>
-					                                                stream,
-			                                                final StartElement parent)
+	private static StartElement getFirstStartElement(final Iterable<XMLEvent> stream,
+													final StartElement parent)
 			throws SPFormatException {
 		final StartElement retval = StreamSupport
 				.stream(stream.spliterator(), false)
@@ -480,7 +476,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * @throws SPFormatException on SP format problem
 	 */
 	public static River parseRiver(final StartElement element,
-								   final Warning warner) throws SPFormatException {
+								final Warning warner) throws SPFormatException {
 		requireTag(element, "river", "lake");
 		if ("lake".equalsIgnoreCase(element.getName().getLocalPart())) {
 			return River.Lake; // NOPMD
@@ -499,7 +495,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * @throws IOException on I/O error
 	 */
 	public static void writeRiver(final Appendable ostream, final River obj,
-								  final int indent) throws IOException {
+								final int indent) throws IOException {
 		if (River.Lake == obj) {
 			writeTag(ostream, "lake", indent);
 		} else {
@@ -520,7 +516,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	 * @throws IOException on I/O error
 	 */
 	public static void writeAllRivers(final Appendable ostream,
-									  final Iterable<River> iter, final int indent)
+									final Iterable<River> iter, final int indent)
 			throws IOException {
 		for (final River river : iter) {
 			writeRiver(ostream, river, indent);

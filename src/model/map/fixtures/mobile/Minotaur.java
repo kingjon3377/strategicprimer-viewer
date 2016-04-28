@@ -1,13 +1,11 @@
 package model.map.fixtures.mobile;
 
 import java.io.IOException;
-
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableImage;
 import model.map.IFixture;
 import model.map.TileFixture;
 import model.map.fixtures.UnitMember;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A minotaur. TODO: Should probably be a unit, or something.
@@ -90,7 +88,7 @@ public class Minotaur implements MobileFixture, HasMutableImage, UnitMember {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof Minotaur)
-				                         && (id == ((TileFixture) obj).getID()));
+										&& (id == ((TileFixture) obj).getID()));
 	}
 
 	/**
@@ -165,7 +163,7 @@ public class Minotaur implements MobileFixture, HasMutableImage, UnitMember {
 	 */
 	@Override
 	public boolean isSubset(final IFixture obj, final Appendable ostream,
-	                        final String context) throws IOException {
+							final String context) throws IOException {
 		if (obj.getID() == id) {
 			return isConditionTrue(ostream, obj instanceof Minotaur, context,
 					"\tFor ID #", Integer.toString(id), ", different kinds of members\n");

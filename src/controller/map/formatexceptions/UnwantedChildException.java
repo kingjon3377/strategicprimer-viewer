@@ -47,9 +47,9 @@ public final class UnwantedChildException extends SPFormatException {
 	 * @param cause		why this occurred
 	 */
 	public UnwantedChildException(final QName parent, final QName child,
-								  final Location location, final Throwable cause) {
+								final Location location, final Throwable cause) {
 		super("Unexpected child " + child.getLocalPart() + " in tag " +
-					  parent.getLocalPart(), location, cause);
+					parent.getLocalPart(), location, cause);
 		tag = parent;
 		chld = child;
 	}
@@ -71,7 +71,7 @@ public final class UnwantedChildException extends SPFormatException {
 	 * @param cause     another exception that caused this one
 	 */
 	public UnwantedChildException(final QName parent, final StartElement child,
-	                              final Throwable cause) {
+								final Throwable cause) {
 		super("Unexpected child " + child.getName().getLocalPart() + " in tag "
 				+ parent.getLocalPart(),
 				NullCleaner.assertNotNull(child.getLocation()), cause);
@@ -85,9 +85,8 @@ public final class UnwantedChildException extends SPFormatException {
 	 * @param except the exception to copy
 	 */
 	public UnwantedChildException(final QName parent, final UnwantedChildException except) {
-
 		super("Unexpected child " + except.chld.getLocalPart() + " in tag " +
-				      parent.getLocalPart(), except.getLocation());
+					parent.getLocalPart(), except.getLocation());
 		tag = parent;
 		chld = except.chld;
 		if (except.getCause() != null) {

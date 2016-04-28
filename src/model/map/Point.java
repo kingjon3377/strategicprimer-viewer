@@ -66,8 +66,8 @@ public final class Point implements Comparable<@NonNull Point> {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof Point) && (((Point) obj).row == row)
-				                         && (((Point) obj).col == col));
+		return (this == obj) || ((obj instanceof Point) && (((Point) obj).row == row) &&
+										(((Point) obj).col == col));
 	}
 
 	/**

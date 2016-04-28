@@ -5,14 +5,12 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.IFixture;
 import model.map.River;
 import model.map.SubsettableFixture;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 
 /**
@@ -37,8 +35,8 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
-public final class RiverFixture implements TileFixture, Iterable<@NonNull River>,
-												   SubsettableFixture {
+public final class RiverFixture
+		implements TileFixture, Iterable<@NonNull River>, SubsettableFixture {
 	/**
 	 * The maximum size of a river's equivalent string, plus a space.
 	 */
@@ -115,7 +113,7 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof RiverFixture)
-										 && ((RiverFixture) obj).rivers.equals(rivers));
+										&& ((RiverFixture) obj).rivers.equals(rivers));
 	}
 
 	/**
@@ -143,10 +141,9 @@ public final class RiverFixture implements TileFixture, Iterable<@NonNull River>
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder sbuild = new StringBuilder(BASE_STRING.length()
-															   + (MAX_RIVER_SIZE *
-																		  rivers.size()))
-											 .append(BASE_STRING);
+		final StringBuilder sbuild =
+				new StringBuilder(BASE_STRING.length() + (MAX_RIVER_SIZE * rivers.size()))
+						.append(BASE_STRING);
 		for (final River river : rivers) {
 			sbuild.append(river.toString());
 			sbuild.append(' ');

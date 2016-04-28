@@ -49,9 +49,9 @@ public final class TrapModelDriver implements SimpleDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-r", "--trap", ParamCount.One,
-					               "Run a player's trapping",
-					               "Determine the results a player's trapper finds.",
-					               TrapModelDriver.class);
+								"Run a player's trapping",
+								"Determine the results a player's trapper finds.",
+								TrapModelDriver.class);
 	/**
 	 * A somewhat lengthy prompt.
 	 */
@@ -60,8 +60,7 @@ public final class TrapModelDriver implements SimpleDriver {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger
-			                                     .getLogger(TrapModelDriver.class);
+	private static final Logger LOGGER = TypesafeLogger.getLogger(TrapModelDriver.class);
 
 	/**
 	 * The number of minutes in an hour.
@@ -80,10 +79,8 @@ public final class TrapModelDriver implements SimpleDriver {
 	/**
 	 * List of commands.
 	 */
-	private static final List<TrapperCommand> COMMANDS =
-			NullCleaner.assertNotNull(Collections
-					                          .unmodifiableList(Arrays.asList(
-							                          TrapperCommand.values())));
+	private static final List<TrapperCommand> COMMANDS = NullCleaner.assertNotNull(
+			Collections.unmodifiableList(Arrays.asList(TrapperCommand.values())));
 
 	/**
 	 * The possible commands.
@@ -146,11 +143,11 @@ public final class TrapModelDriver implements SimpleDriver {
 			} else {
 				name = "trapper";
 			}
-			int minutes = cli.inputNumber("How many hours will the " + name
-					                                 + " work? ")
-					              * MINS_PER_HOUR;
+			int minutes = cli.inputNumber("How many hours will the " + name + " work? " +
+												"") *
+								MINS_PER_HOUR;
 			final int row = cli.inputNumber("Row of the tile where the "
-					                                   + name + " is working: ");
+													+ name + " is working: ");
 			final int col = cli.inputNumber("Column of that tile: ");
 			final Point point = point(row, col);
 			final List<String> fixtures; // NOPMD
@@ -174,7 +171,7 @@ public final class TrapModelDriver implements SimpleDriver {
 					}
 				}
 				input = cli.chooseFromList(COMMANDS, "What should the "
-						                                        + name + " do next?",
+															+ name + " do next?",
 						"Oops! No commands",
 						"Next action: ", false);
 			}
@@ -192,9 +189,8 @@ public final class TrapModelDriver implements SimpleDriver {
 		if (minutes < MINS_PER_HOUR) {
 			return Integer.toString(minutes) + " minutes"; // NOPMD
 		} else {
-			return Integer.toString(minutes / MINS_PER_HOUR) + " hours, "
-					       + Integer.toString(minutes % MINS_PER_HOUR)
-					       + " minutes";
+			return Integer.toString(minutes / MINS_PER_HOUR) + " hours, " +
+						Integer.toString(minutes % MINS_PER_HOUR) + " minutes";
 		}
 	}
 

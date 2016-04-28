@@ -65,9 +65,9 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	 */
 	@Override
 	public String produce(
-								 final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-										 fixtures,
-								 final IMapNG map, final Player currentPlayer) {
+								final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+										fixtures,
+								final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final Map<String, List<Point>> items = new HashMap<>();
@@ -108,7 +108,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 				builder.append(CLOSE_LIST_ITEM);
 			}
 			return NullCleaner.assertNotNull(builder.append(CLOSE_LIST)
-													 .toString()); // NOPMD
+													.toString()); // NOPMD
 		}
 	}
 
@@ -123,8 +123,8 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	@Override
 	public IReportNode produceRIR(final DelayedRemovalMap<Integer,
 																			Pair<Point, IFixture>> fixtures,
-	                              final IMapNG map,
-	                              final Player currentPlayer) {
+								final IMapNG map,
+								final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final Map<String, IReportNode> items = new HashMap<>();
@@ -167,10 +167,10 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	 */
 	@Override
 	public String produce(
-								 final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-										 fixtures,
-								 final IMapNG map, final Player currentPlayer,
-								 final Animal item, final Point loc) {
+								final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
+										fixtures,
+								final IMapNG map, final Player currentPlayer,
+								final Animal item, final Point loc) {
 		final String tracesOrTalking; // NOPMD
 		if (item.isTraces()) {
 			tracesOrTalking = "tracks or traces of ";
@@ -193,12 +193,12 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	 */
 	@Override
 	public SimpleReportNode produceRIR(
-											  final DelayedRemovalMap<Integer,
-																			 Pair<Point,
-																						 IFixture>> fixtures,
-											  final IMapNG map,
-											  final Player currentPlayer,
-											  final Animal item, final Point loc) {
+											final DelayedRemovalMap<Integer,
+																			Pair<Point,
+																						IFixture>> fixtures,
+											final IMapNG map,
+											final Player currentPlayer,
+											final Animal item, final Point loc) {
 		final String tracesOrTalking; // NOPMD
 		if (item.isTraces()) {
 			tracesOrTalking = "tracks or traces of ";
@@ -208,8 +208,8 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 			tracesOrTalking = "";
 		}
 		return new SimpleReportNode(loc, atPoint(loc), tracesOrTalking,
-										   item.getKind(), " ",
-										   distCalculator.distanceString(loc));
+										item.getKind(), " ",
+										distCalculator.distanceString(loc));
 	}
 
 	/**

@@ -1,11 +1,10 @@
 package model.map.fixtures.terrain;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 import model.map.HasMutableImage;
 import model.map.IFixture;
 import model.map.TerrainFixture;
 import model.map.TileFixture;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A hill on the map. Should increase unit's effective vision by a small fraction when the
@@ -85,8 +84,8 @@ public class Hill implements TerrainFixture, HasMutableImage {
 	 */
 	@Override
 	public boolean equals(@Nullable final Object obj) {
-		return (this == obj) || ((obj instanceof Hill)
-				                         && (id == ((TileFixture) obj).getID()));
+		return (this == obj) ||
+					((obj instanceof Hill) && (id == ((TileFixture) obj).getID()));
 	}
 
 	/**

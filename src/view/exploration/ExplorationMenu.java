@@ -1,15 +1,12 @@
 package view.exploration;
 
+import com.bric.window.WindowMenu;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.swing.JFrame;
-
-import com.bric.window.WindowMenu;
-
+import javax.swing.*;
 import model.misc.IDriverModel;
 import view.util.SPMenu;
 
@@ -43,8 +40,8 @@ public final class ExplorationMenu extends SPMenu {
 	 * @param model  the exploration model
 	 * @param parent the window this is to be attached to, which should close on "Close".
 	 */
-	public ExplorationMenu(final ActionListener ioh,
-	                       final IDriverModel model, final JFrame parent) {
+	public ExplorationMenu(final ActionListener ioh, final IDriverModel model,
+						final JFrame parent) {
 		add(createFileMenu(ioh, model));
 		addDisabled(createMapMenu(ioh, model));
 		addDisabled(createViewMenu(ioh));

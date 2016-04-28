@@ -40,9 +40,9 @@ public final class EchoDriver implements UtilityDriver {
 	 */
 	private static final DriverUsage USAGE =
 			new DriverUsage(false, "-e", "--echo", ParamCount.Two,
-					               "Read, then write a map.",
-					               "Read and write a map, correcting deprecated syntax.",
-					               EchoDriver.class);
+								"Read, then write a map.",
+								"Read and write a map, correcting deprecated syntax.",
+								EchoDriver.class);
 
 	/**
 	 * Run the driver.
@@ -64,9 +64,8 @@ public final class EchoDriver implements UtilityDriver {
 		} catch (final MapVersionException except) {
 			throw new DriverFailedException("Unsupported map version", except);
 		} catch (final IOException except) {
-			throw new DriverFailedException(
-					                               "I/O error reading file " +
-							                               infile.getPath(), except);
+			throw new DriverFailedException("I/O error reading file " + infile.getPath(),
+												except);
 		} catch (final XMLStreamException except) {
 			throw new DriverFailedException("Malformed XML", except);
 		} catch (final SPFormatException except) {
@@ -76,8 +75,7 @@ public final class EchoDriver implements UtilityDriver {
 		try {
 			new MapReaderAdapter().write(outfile, map);
 		} catch (final IOException except) {
-			throw new DriverFailedException("I/O error writing " + outfile,
-					                               except);
+			throw new DriverFailedException("I/O error writing " + outfile, except);
 		}
 	}
 

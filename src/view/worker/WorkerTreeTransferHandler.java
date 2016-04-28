@@ -10,9 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComponent;
-import javax.swing.JTree;
-import javax.swing.TransferHandler;
+import javax.swing.*;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import model.map.fixtures.UnitMember;
@@ -63,10 +61,8 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER = TypesafeLogger
-			                                     .getLogger(
-					                                     WorkerTreeTransferHandler
-							                                     .class);
+	private static final Logger LOGGER =
+			TypesafeLogger.getLogger(WorkerTreeTransferHandler.class);
 
 	/**
 	 * Constructor.
@@ -75,7 +71,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	 * @param tmodel   the tree's data model
 	 */
 	protected WorkerTreeTransferHandler(final TreeSelectionModel selmodel,
-	                                    final IWorkerTreeModel tmodel) {
+										final IWorkerTreeModel tmodel) {
 		smodel = selmodel;
 		model = tmodel;
 	}
@@ -98,10 +94,8 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	@SuppressWarnings("ParameterNameDiffersFromOverriddenParameter")
 	@Override
 	@Nullable
-	protected UnitMemberTransferable createTransferable(
-			                                                   @Nullable
-			                                                   final JComponent
-					                                                   component) {
+	protected UnitMemberTransferable createTransferable(@Nullable
+														final JComponent component) {
 		final TreePath[] paths = smodel.getSelectionPaths();
 		final List<Pair<UnitMember, IUnit>> toTransfer = new ArrayList<>();
 		for (final TreePath path : paths) {
@@ -137,8 +131,8 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	 */
 	@Override
 	public boolean canImport(@Nullable final TransferSupport support) {
-		if ((support != null)
-				    && support.isDataFlavorSupported(UnitMemberTransferable.FLAVOR)) {
+		if ((support != null) &&
+					support.isDataFlavorSupported(UnitMemberTransferable.FLAVOR)) {
 			final DropLocation dloc = support.getDropLocation();
 			if (!(dloc instanceof JTree.DropLocation)) {
 				return false; // NOPMD
@@ -191,10 +185,8 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 				try {
 					final Transferable trans = support.getTransferable();
 					final Iterable<Pair<UnitMember, IUnit>> list =
-							(UnitMemberPairList) trans
-									                 .getTransferData(
-											                 UnitMemberTransferable
-													                 .FLAVOR);
+							(UnitMemberPairList) trans.getTransferData(
+									UnitMemberTransferable.FLAVOR);
 					for (final Pair<UnitMember, IUnit> pair : list) {
 						model.moveMember(pair.first(), pair.second(), (IUnit) tempTarget);
 					}
