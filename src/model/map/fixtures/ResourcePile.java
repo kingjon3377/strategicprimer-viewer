@@ -5,7 +5,8 @@ import model.map.HasMutableImage;
 import model.map.HasMutableKind;
 import model.map.IFixture;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
+
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A quantity of some kind of resource.
@@ -284,14 +285,12 @@ public class ResourcePile
 			age = " from turn " + created;
 		}
 		if (unit.isEmpty()) {
-			// TODO: Statically import assertNotNull
-			return NullCleaner.assertNotNull(
+			return assertNotNull(
 					String.format("A pile of %d %s (%s)%s", Integer.valueOf(quantity),
 							contents, kind, age));
 		} else {
-			return NullCleaner.assertNotNull(
-					String.format("A pile of %d %s of %s (%s)%s",
-							Integer.valueOf(quantity), unit, contents, kind, age));
+			return assertNotNull(String.format("A pile of %d %s of %s (%s)%s",
+					Integer.valueOf(quantity), unit, contents, kind, age));
 		}
 	}
 

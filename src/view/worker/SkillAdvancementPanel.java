@@ -21,12 +21,13 @@ import model.listeners.LevelGainSource;
 import model.listeners.SkillSelectionListener;
 import model.map.fixtures.mobile.worker.ISkill;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
 import util.SingletonRandom;
 import util.TypesafeLogger;
 import view.util.BoxPanel;
 import view.util.ErrorShower;
 import view.util.ListenedButton;
+
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A panel to let a user add hours to a skill.
@@ -140,10 +141,10 @@ public final class SkillAdvancementPanel extends BoxPanel
 	}
 
 	/**
-	 * Parser for hours field. TODO: Statically import assertNotNull
+	 * Parser for hours field.
 	 */
 	private static final NumberFormat NUM_PARSER =
-			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
+			assertNotNull(NumberFormat.getIntegerInstance());
 
 	/**
 	 * @param list the listener to add

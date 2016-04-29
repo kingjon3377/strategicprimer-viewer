@@ -249,9 +249,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 				.filter(fix -> !fix.getOwner().isIndependent() &&
 									!fix.getOwner().equals(unit.getOwner())).forEach(
 				fix -> SystemOut.SYS_OUT
-							// TODO: Shorten this string
-							.printf("Unit's motion to %s could be observed by %s at " +
-											"%s%n",
+							.printf("Motion to %s could be observed by %s at %s%n",
 									dest.toString(), ((TileFixture) fix).shortDesc(),
 									point.toString()));
 	}

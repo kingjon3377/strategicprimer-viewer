@@ -10,9 +10,11 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.resources.FieldStatus;
 import model.map.fixtures.resources.Meadow;
-import util.NullCleaner;
 import util.Pair;
 import util.Warning;
+
+import static java.lang.Boolean.parseBoolean;
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A reader for Meadows.
@@ -62,20 +64,18 @@ public final class MeadowReader implements INodeHandler<Meadow> {
 						final IMutablePlayerCollection players, final Warning warner,
 						final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+		spinUntilEnd(assertNotNull(element.getName()), stream);
 		final int id = getOrGenerateID(element, warner, idFactory); // NOPMD
 		if (!hasAttribute(element, STATUS_ATTR)) {
 			warner.warn(new MissingPropertyException(element, STATUS_ATTR));
 		}
-		// TODO: Statically import NullCleaner.assertNotNull, and maybe Boolean.parseBoolean
 		final Meadow fix = new Meadow(getAttribute(element, "kind"),
-											"field".equalsIgnoreCase(NullCleaner
-																			.assertNotNull(
-																					element.getName()
-																							.getLocalPart())),
-											Boolean.parseBoolean(
-													getAttribute(element, "cultivated")),
-											id, FieldStatus.parse(getAttribute(element,
+											 "field".equalsIgnoreCase(assertNotNull(
+													element.getName().getLocalPart())),
+											 parseBoolean(
+													 getAttribute(element,
+															"cultivated")),
+											 id, FieldStatus.parse(getAttribute(element,
 				STATUS_ATTR, FieldStatus.random(id).toString())));
 		addImage(element, fix);
 		return fix;
@@ -86,7 +86,7 @@ public final class MeadowReader implements INodeHandler<Meadow> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Arrays.asList("meadow", "field"));
+		return assertNotNull(Arrays.asList("meadow", "field"));
 	}
 
 	/**
@@ -108,7 +108,7 @@ public final class MeadowReader implements INodeHandler<Meadow> {
 	@Override
 	public <S extends Meadow> SPIntermediateRepresentation write(final S obj) {
 		final String cult =
-				NullCleaner.assertNotNull(Boolean.toString(obj.isCultivated()));
+				assertNotNull(Boolean.toString(obj.isCultivated()));
 		final String tag; // NOPMD
 		if (obj.isField()) {
 			tag = "field";

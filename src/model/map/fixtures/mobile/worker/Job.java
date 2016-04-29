@@ -10,8 +10,9 @@ import java.util.stream.StreamSupport;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ArraySet;
-import util.NullCleaner;
 import util.Pair;
+
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A Job a worker can work at.
@@ -113,7 +114,7 @@ public class Job implements IJob { // NOPMD
 	 */
 	@Override
 	public final Iterator<ISkill> iterator() {
-		return NullCleaner.assertNotNull(skillSet.iterator());
+		return assertNotNull(skillSet.iterator());
 	}
 
 	/**
@@ -160,18 +161,16 @@ public class Job implements IJob { // NOPMD
 					ostream.append('\n');
 					retval = false;
 				} else {
-					// TODO: Statically import assertNotNull
-					ours.put(skill.getName(), Pair.of(NullCleaner.assertNotNull(
-							Integer.valueOf(skill.getLevel())), NullCleaner
-																															.assertNotNull(
-							Integer.valueOf(skill.getHours()))));
+					ours.put(skill.getName(),
+							Pair.of(assertNotNull(Integer.valueOf(skill.getLevel())),
+									assertNotNull(Integer.valueOf(skill.getHours()))));
 				}
 			}
 			for (final ISkill skill : obj) {
 				if (ours.containsKey(skill.getName())) {
 					// TODO: Move this logic into Skill?
 					final Pair<Integer, Integer> pair =
-							NullCleaner.assertNotNull(ours.get(skill.getName()));
+							assertNotNull(ours.get(skill.getName()));
 					final int lvl = pair.first().intValue();
 					final int hours = pair.second().intValue();
 					if (skill.getLevel() > lvl) {

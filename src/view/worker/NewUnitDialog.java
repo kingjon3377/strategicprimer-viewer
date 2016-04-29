@@ -27,8 +27,10 @@ import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.Unit;
 import org.eclipse.jdt.annotation.Nullable;
 import util.IsNumeric;
-import util.NullCleaner;
+import util.TypesafeLogger;
 import view.util.ListenedButton;
+
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A panel to let the user add a new unit. We fire the "add" property with the value of
@@ -87,10 +89,10 @@ public final class NewUnitDialog extends JFrame
 	 */
 	private static final int PREF_HEIGHT = 90;
 	/**
-	 * Logger. TODO: Use TypesafeLogger; statically import assertNotNull
+	 * Logger.
 	 */
-	private static final Logger LOGGER = NullCleaner.assertNotNull(Logger.getLogger(
-			NewUnitDialog.class.getName()));
+	private static final Logger LOGGER = TypesafeLogger.getLogger(
+			NewUnitDialog.class);
 
 	/**
 	 * Constructor.
@@ -113,7 +115,7 @@ public final class NewUnitDialog extends JFrame
 			} else if (kind.isEmpty()) {
 				kindField.requestFocusInWindow();
 			} else {
-				final String reqId = NullCleaner.assertNotNull(idField.getText().trim());
+				final String reqId = assertNotNull(idField.getText().trim());
 				int idNum;
 				if (IsNumeric.isNumeric(reqId)) {
 					try {

@@ -9,9 +9,10 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.Player;
 import org.eclipse.jdt.annotation.NonNull;
-import util.NullCleaner;
 import util.Pair;
 import util.Warning;
+
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A reader to produce Players.
@@ -57,7 +58,7 @@ public final class PlayerReader implements INodeHandler<@NonNull Player> {
 						final IMutablePlayerCollection players,
 						final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return new Player(getIntegerAttribute(element, "number"),
 								getAttribute(element, "code_name"));
 	}
@@ -67,7 +68,7 @@ public final class PlayerReader implements INodeHandler<@NonNull Player> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("player"));
+		return assertNotNull(Collections.singletonList("player"));
 	}
 
 	/**
@@ -86,11 +87,9 @@ public final class PlayerReader implements INodeHandler<@NonNull Player> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final Player obj) {
-		// TODO: Statically import assertNotNull
 		return new SPIntermediateRepresentation("player", Pair.of("number",
-				NullCleaner.assertNotNull(Integer.toString(obj.getPlayerId()))),
-													Pair.of("code_name",
-															obj.getName()));
+				assertNotNull(Integer.toString(obj.getPlayerId()))), Pair.of("code_name",
+				obj.getName()));
 	}
 
 	/**

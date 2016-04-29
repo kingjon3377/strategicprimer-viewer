@@ -20,7 +20,6 @@ import javax.swing.InputMap;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.text.BadLocationException;
@@ -43,6 +42,7 @@ import view.map.details.FixtureList;
 import view.util.BorderedPanel;
 import view.util.BoxPanel;
 import view.util.ListenedButton;
+import view.util.SplitWithWeights;
 
 /**
  * A panel to let the user explore using a unit.
@@ -175,9 +175,8 @@ public final class ExplorationPanel extends BorderedPanel
 		headerPanel.add(new JLabel("Remaining Movement Points: "));
 		mpDocument = mpDoc;
 		headerPanel.add(new JTextField(mpDocument, null, 5));
-		// TODO: Use factory method instead of constant here
-		setCenter(new JSplitPane(JSplitPane.VERTICAL_SPLIT, headerPanel,
-										setupTilesGUI(new JPanel(new GridLayout(3, 12, 2, 2)))));
+		setCenter(SplitWithWeights.verticalSplit(0.5, 0.5, headerPanel,
+				setupTilesGUI(new JPanel(new GridLayout(3, 12, 2, 2)))));
 	}
 
 	/**

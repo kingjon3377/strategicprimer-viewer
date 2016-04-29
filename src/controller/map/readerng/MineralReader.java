@@ -9,9 +9,10 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.resources.MineralVein;
 import org.eclipse.jdt.annotation.NonNull;
-import util.NullCleaner;
 import util.Pair;
 import util.Warning;
+
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A reader for Minerals.
@@ -57,7 +58,7 @@ public final class MineralReader implements INodeHandler<@NonNull MineralVein> {
 							final IMutablePlayerCollection players,
 							final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+		spinUntilEnd(assertNotNull(element.getName()), stream);
 		final MineralVein fix =
 				new MineralVein(getAttributeWithDeprecatedForm(element, "kind",
 						"mineral",
@@ -73,7 +74,7 @@ public final class MineralReader implements INodeHandler<@NonNull MineralVein> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("mineral"));
+		return assertNotNull(Collections.singletonList("mineral"));
 	}
 
 	/**
@@ -92,18 +93,15 @@ public final class MineralReader implements INodeHandler<@NonNull MineralVein> {
 	 */
 	@Override
 	public SPIntermediateRepresentation write(final MineralVein obj) {
-		// TODO: Statically import assertNotNull
 		final SPIntermediateRepresentation retval =
 				new SPIntermediateRepresentation("mineral",
 														Pair.of("kind", obj.getKind()),
-														Pair.of("exposed", NullCleaner
-																				.assertNotNull(
-																						Boolean.toString(
-																								obj.isExposed()))),
-														Pair.of("dc", NullCleaner
-																			.assertNotNull(
-																					Integer.toString(
-																							obj.getDC()))));
+														Pair.of("exposed", assertNotNull(
+																Boolean.toString(
+																		obj.isExposed()))),
+														Pair.of("dc", assertNotNull(
+																Integer.toString(
+																		obj.getDC()))));
 		retval.addIdAttribute(obj.getID());
 		retval.addImageAttribute(obj);
 		return retval;

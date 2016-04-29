@@ -13,8 +13,9 @@ import model.map.fixtures.mobile.worker.IJob;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import org.eclipse.jdt.annotation.NonNull;
-import util.NullCleaner;
 import util.Warning;
+
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A reader for Workers.
@@ -54,7 +55,7 @@ public final class WorkerReader implements INodeHandler<@NonNull Worker> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("worker"));
+		return assertNotNull(Collections.singletonList("worker"));
 	}
 
 	/**
@@ -82,21 +83,16 @@ public final class WorkerReader implements INodeHandler<@NonNull Worker> {
 		addPortrait(element, retval);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				// TODO: Statically import assertNotNull
-				final Object result =
-						ReaderAdapter.ADAPTER.parse(NullCleaner
-															.assertNotNull(
-																event.asStartElement()),
-								stream,
-								players, warner, idFactory);
+				final Object result = ReaderAdapter.ADAPTER.parse(assertNotNull(
+						event.asStartElement()), stream, players, warner, idFactory);
 				if (result instanceof Job) {
 					retval.addJob((Job) result);
 				} else if (result instanceof WorkerStats) {
 					retval.setStats((WorkerStats) result);
 				} else {
-					throw new UnwantedChildException(
-							NullCleaner.assertNotNull(element.getName()),
-							NullCleaner.assertNotNull(event.asStartElement()));
+					throw new UnwantedChildException(assertNotNull(element.getName()),
+															assertNotNull(
+																	event.asStartElement()));
 				}
 			} else if (event.isEndElement() &&
 							element.getName().equals(event.asEndElement().getName())) {

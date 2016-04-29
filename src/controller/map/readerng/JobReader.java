@@ -17,10 +17,10 @@ import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import org.eclipse.jdt.annotation.NonNull;
-import util.NullCleaner;
 import util.Warning;
 
 import static util.EqualsAny.equalsAny;
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A reader for Jobs.
@@ -69,7 +69,7 @@ public final class JobReader implements INodeHandler<@NonNull Job> {
 	 */
 	@Override
 	public List<String> understands() {
-		return NullCleaner.assertNotNull(Collections.singletonList("job"));
+		return assertNotNull(Collections.singletonList("job"));
 	}
 
 	/**
@@ -97,12 +97,8 @@ public final class JobReader implements INodeHandler<@NonNull Job> {
 		boolean onlyOneSkill = true;
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				// TODO: Statically import NullCleaner.assertNotNull
-				final Object result = ReaderAdapter.ADAPTER.parse(NullCleaner
-																		.assertNotNull(
-																				event
-																						.asStartElement()),
-						stream, players, warner, idFactory);
+				final Object result = ReaderAdapter.ADAPTER.parse(assertNotNull(
+						event.asStartElement()), stream, players, warner, idFactory);
 				if (result instanceof Skill) {
 					if (anySkills) {
 						onlyOneSkill = false;
@@ -112,8 +108,8 @@ public final class JobReader implements INodeHandler<@NonNull Job> {
 					retval.addSkill((Skill) result);
 					lastSkill = event.asStartElement();
 				} else {
-					throw new UnwantedChildException(NullCleaner.assertNotNull(element.getName()),
-							NullCleaner.assertNotNull(event.asStartElement()));
+					throw new UnwantedChildException(assertNotNull(element.getName()),
+							assertNotNull(event.asStartElement()));
 				}
 			} else if (event.isEndElement() &&
 							element.getName().equals(event.asEndElement().getName())) {

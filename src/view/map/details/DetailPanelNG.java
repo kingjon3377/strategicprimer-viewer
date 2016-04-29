@@ -90,10 +90,7 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 		fixList = new FixtureList(this, model, model.getMap().players());
 		final PortraitPanel portrait = new PortraitPanel(fixList);
 		fixList.addListSelectionListener(portrait);
-		// TODO: Use BorderedPanel factory method.
-		final BorderedPanel listPanel = new BorderedPanel(new JScrollPane(fixList),
-																header, null, null,
-																null);
+		final BorderedPanel listPanel = BorderedPanel.vertical(header, new JScrollPane(fixList), null);
 
 		keyPanel = new KeyPanel(version);
 		setLeftComponent(SplitWithWeights.horizontalSplit(0.5, 0.5, listPanel, portrait));

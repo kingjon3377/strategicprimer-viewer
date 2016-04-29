@@ -26,7 +26,8 @@ import model.map.fixtures.mobile.ProxyFor;
 import model.map.fixtures.mobile.ProxyUnit;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EnumerationWrapper;
-import util.NullCleaner;
+
+import static util.NullCleaner.assertNotNull;
 
 /**
  * An alternative implementation of the worker tree model.
@@ -83,14 +84,11 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	@Override
 	public void moveMember(final UnitMember member, final IUnit old,
 							final IUnit newOwner) {
-		final PlayerNode pnode = NullCleaner.assertNotNull((PlayerNode) root);
-		final UnitNode oldNode =
-				NullCleaner.assertNotNull((UnitNode) getNode(pnode, old));
-		final UnitNode newNode =
-				NullCleaner.assertNotNull((UnitNode) getNode(pnode, newOwner));
+		final PlayerNode pnode = assertNotNull((PlayerNode) root);
+		final UnitNode oldNode = assertNotNull((UnitNode) getNode(pnode, old));
+		final UnitNode newNode = assertNotNull((UnitNode) getNode(pnode, newOwner));
 		final MutableTreeNode node = getNode(pnode, member);
-		fireTreeNodesRemoved(this, new Object[]{pnode,
-						getNode(old.getKind()), oldNode},
+		fireTreeNodesRemoved(this, new Object[]{pnode, getNode(old.getKind()), oldNode},
 				new int[]{oldNode.getIndex(node)}, new Object[]{node});
 		oldNode.remove(node);
 		if ((member instanceof ProxyFor) && (old instanceof ProxyUnit)
@@ -322,9 +320,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			if (userObj instanceof String) {
 				super.setUserObject(userObj);
 			} else {
-				// FIXME: Make sure these error messages match the node type.
-				throw new IllegalArgumentException("PlayerNode can only contain a " +
-														"Player");
+				throw new IllegalArgumentException("KindNode can only contain a String");
 			}
 		}
 		/**
@@ -390,8 +386,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			if (userObj instanceof IUnit) {
 				super.setUserObject(userObj);
 			} else {
-				throw new IllegalArgumentException("PlayerNode can only contain a " +
-														"Player");
+				throw new IllegalArgumentException("UnitNode can only contain an IUnit");
 			}
 		}
 		/**
@@ -451,8 +446,8 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			if (userObj instanceof UnitMember) {
 				super.setUserObject(userObj);
 			} else {
-				throw new IllegalArgumentException("PlayerNode can only contain a " +
-														"Player");
+				throw new IllegalArgumentException("UnitMemberNode can only contain a " +
+														   "UnitMember");
 			}
 		}
 		/**
@@ -539,9 +534,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	@Override
 	public Object getModelObject(final Object obj) {
 		if (obj instanceof DefaultMutableTreeNode) {
-			// TODO: Statically import assertNotNull
-			return NullCleaner
-						.assertNotNull(((DefaultMutableTreeNode) obj).getUserObject());
+			return assertNotNull(((DefaultMutableTreeNode) obj).getUserObject());
 		} else {
 			return obj;
 		}

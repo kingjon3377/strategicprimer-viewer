@@ -15,7 +15,8 @@ import model.map.fixtures.FortressMember;
 import model.map.fixtures.mobile.IUnit;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
+
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A fortress on the map. A player can only have one fortress per tile, but multiple
@@ -101,7 +102,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	 */
 	@Override
 	public final Iterator<FortressMember> iterator() {
-		return NullCleaner.assertNotNull(units.iterator());
+		return assertNotNull(units.iterator());
 	}
 
 	/**
@@ -195,7 +196,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 				sbuild.append(';');
 			}
 		}
-		return NullCleaner.assertNotNull(sbuild.toString());
+		return assertNotNull(sbuild.toString());
 	}
 
 	/**
@@ -237,26 +238,19 @@ public class Fortress implements HasMutableImage, ITownFixture,
 					&& (fort.owner.getPlayerId() == owner.getPlayerId())) {
 			final Map<Integer, FortressMember> ours = new HashMap<>();
 			for (final FortressMember member : this) {
-				ours.put(NullCleaner.assertNotNull(Integer.valueOf(member.getID())),
+				ours.put(assertNotNull(Integer.valueOf(member.getID())),
 						member);
 			}
 			final String ctxt =
 					context + " In fortress " + name + " (ID #" + id + "):";
 			boolean retval = true;
 			for (final FortressMember unit : fort) {
-				// TODO: Statically import NullCleaner.assertNotNull
 				if (!isConditionTrue(ostream,
 						ours.containsKey(Integer.valueOf(unit.getID())), ctxt,
 						"Extra unit:\t", unit.toString(), ", ID #",
-						Integer.toString(unit.getID()), "\n") || !NullCleaner
-																		.assertNotNull(
-																				ours
-																						.get(
-																						Integer.valueOf(
-																								unit.getID())))
-																		.isSubset(unit,
-																				ostream,
-																				ctxt)) {
+						Integer.toString(unit.getID()), "\n") ||
+							!assertNotNull(ours.get(Integer.valueOf(unit.getID())))
+									 .isSubset(unit, ostream, ctxt)) {
 					retval = false;
 				}
 			}

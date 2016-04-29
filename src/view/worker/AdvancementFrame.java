@@ -1,19 +1,17 @@
 package view.worker;
 
+import controller.map.misc.IDFactoryFiller;
+import controller.map.misc.IOHandler;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
-
-import controller.map.misc.IDFactoryFiller;
-import controller.map.misc.IOHandler;
 import model.map.IMapNG;
 import model.map.Player;
 import model.workermgmt.IWorkerModel;
@@ -24,7 +22,9 @@ import view.util.BorderedPanel;
 import view.util.ISPWindow;
 import view.util.ItemAdditionPanel;
 import view.util.ListenedButton;
-import view.util.SplitWithWeights;
+
+import static view.util.SplitWithWeights.horizontalSplit;
+import static view.util.SplitWithWeights.verticalSplit;
 
 /**
  * A GUI to let a user manage workers.
@@ -100,27 +100,14 @@ public final class AdvancementFrame extends JFrame implements ISPWindow {
 		sapanel.addLevelGainListener(llist);
 		final JLabel newJobText = htmlize("Add a job to the Worker:");
 		final JLabel newSkillText = htmlize("Add a Skill to the selected Job:");
-		// TODO: Use BorderedPanel factory methods to reduce "null" verbosity
-		setContentPane(SplitWithWeights.horizontalSplit(HALF_WAY, HALF_WAY,
-				new BorderedPanel(new JScrollPane(tree), plabel,
-										new ListenedButton("Add worker to selected unit" +
-																" ...", nwl), null, null),
-				SplitWithWeights.verticalSplit(HALF_WAY, RES_WEIGHT,
-						new BorderedPanel(new JScrollPane(jobsTree),
-												htmlize("Worker's Jobs and Skills:"),
-												null, null, null),
-						new BorderedPanel(new BorderedPanel(null, new BorderedPanel(null,
-																						newJobText,
-																						jarp,
-																						null,
-																						null),
-																new BorderedPanel(null,
-																						newSkillText,
-																						sarp,
-																						null,
-																						null),
-																null, null), null,
-												sapanel, null, null))));
+		setContentPane(horizontalSplit(HALF_WAY, HALF_WAY, BorderedPanel.vertical(plabel,
+				new JScrollPane(tree),
+				new ListenedButton("Add worker to selected unit ...", nwl)),
+				verticalSplit(HALF_WAY, RES_WEIGHT, BorderedPanel.vertical(
+						htmlize("Worker's Jobs and Skills:"), new JScrollPane(jobsTree),
+						null), BorderedPanel.vertical(null, BorderedPanel.vertical(
+						BorderedPanel.vertical(newJobText, null, jarp), null,
+						BorderedPanel.vertical(newSkillText, null, sarp)), sapanel))));
 
 		ioHandler.notifyListeners();
 

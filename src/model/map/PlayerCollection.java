@@ -8,8 +8,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.StreamSupport;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
+import util.TypesafeLogger;
 
+import static util.NullCleaner.assertNotNull;
 import static util.NullStream.DEV_NULL;
 
 /**
@@ -41,10 +42,9 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 */
 	private final Map<Integer, Player> players = new HashMap<>();
 	/**
-	 * Logger. TODO: Use TypesafeLogger
+	 * Logger.
 	 */
-	private static final Logger LOGGER =
-			NullCleaner.assertNotNull(Logger.getLogger(PlayerCollection.class.getName()));
+	private static final Logger LOGGER = TypesafeLogger.getLogger(PlayerCollection.class);
 
 	/**
 	 * @param player a player-id
@@ -55,7 +55,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	public Player getPlayer(final int player) {
 		final Integer pValue = Integer.valueOf(player);
 		if (players.containsKey(pValue)) {
-			return NullCleaner.assertNotNull(players.get(pValue)); // NOPMD
+			return assertNotNull(players.get(pValue)); // NOPMD
 		} else {
 			return new Player(player, "");
 		}
@@ -66,7 +66,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 */
 	@Override
 	public Iterator<Player> iterator() {
-		return NullCleaner.assertNotNull(players.values().iterator());
+		return assertNotNull(players.values().iterator());
 	}
 
 	/**
@@ -160,9 +160,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 			independent = player;
 		}
 		final boolean retval = !players.containsValue(player);
-		players.put(NullCleaner
-							.assertNotNull(Integer.valueOf(player.getPlayerId())),
-				player);
+		players.put(assertNotNull(Integer.valueOf(player.getPlayerId())), player);
 		return retval;
 	}
 
@@ -204,8 +202,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	 * @return an array of the players
 	 */
 	public Player[] asArray() {
-		return NullCleaner.assertNotNull(players.values().toArray(
-				new Player[players.size()]));
+		return assertNotNull(players.values().toArray(new Player[players.size()]));
 	}
 
 	/**

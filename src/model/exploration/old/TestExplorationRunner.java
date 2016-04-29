@@ -8,12 +8,12 @@ import model.map.TileFixture;
 import model.map.TileType;
 import org.junit.Before;
 import org.junit.Test;
-import util.NullCleaner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A test case for TestExplorationRunner.
@@ -41,8 +41,7 @@ public final class TestExplorationRunner {
 	/**
 	 * The empty list.
 	 */
-	private static final Stream<TileFixture> EMPTY =
-			NullCleaner.assertNotNull(Stream.empty());
+	private static final Stream<TileFixture> EMPTY = assertNotNull(Stream.empty());
 	/**
 	 * Extracted constant, to fix a warning because it occurred three or more times.
 	 */
@@ -217,9 +216,7 @@ public final class TestExplorationRunner {
 				runner.recursiveCheck("existent_table"));
 		runner.loadTable("referent_one", new ConstantTable("#existent_table#"));
 		runner.loadTable("referent_two", new ConstantTable("( #existent_table# )"));
-		// TODO: Statically import assertNotNull
-		runner.loadTable("referent_three", new QuadrantTable(1, NullCleaner
-																		.assertNotNull(
+		runner.loadTable("referent_three", new QuadrantTable(1, assertNotNull(
 				Arrays.asList("#referent_one#", "#referent_two#"))));
 		assertFalse("recursive case to exercise cache-hits",
 				runner.recursiveCheck("referent_three"));

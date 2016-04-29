@@ -18,9 +18,11 @@ import model.map.MapDimensions;
 import model.map.PointFactory;
 import model.viewer.IViewerModel;
 import org.eclipse.jdt.annotation.Nullable;
-import util.NullCleaner;
+import util.TypesafeLogger;
 import view.util.BoxPanel;
 import view.util.ListenedButton;
+
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A dialog to let the user select a tile by coordinates.
@@ -77,8 +79,8 @@ public final class SelectTileDialog extends JDialog {
 		mainLabel.setAlignmentY(TOP_ALIGNMENT);
 
 		final ActionListener okListener =
-				evt -> handleOK(NullCleaner.assertNotNull(row.getText()),
-						NullCleaner.assertNotNull(column.getText()));
+				evt -> handleOK(assertNotNull(row.getText()),
+						assertNotNull(column.getText()));
 
 
 		final BoxPanel contentPane = new BoxPanel(false);
@@ -114,7 +116,7 @@ public final class SelectTileDialog extends JDialog {
 		buttonPanel.addGlue();
 		contentPane.add(buttonPanel);
 		setContentPane(contentPane);
-		map = NullCleaner.assertNotNull(model);
+		map = assertNotNull(model);
 		pack();
 	}
 
@@ -141,10 +143,10 @@ public final class SelectTileDialog extends JDialog {
 	}
 
 	/**
-	 * The parser to use for checking nnumbers. TODO: Statically import assertNotNull
+	 * The parser to use for checking nnumbers.
 	 */
 	private static final NumberFormat NUM_PARSER =
-			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
+			assertNotNull(NumberFormat.getIntegerInstance());
 
 	/**
 	 * @param text  a String to test, representing a number
@@ -192,10 +194,10 @@ public final class SelectTileDialog extends JDialog {
 	}
 
 	/**
-	 * Logger. TODO: Use TypesafeLogger
+	 * Logger.
 	 */
 	private static final Logger LOGGER =
-			NullCleaner.assertNotNull(Logger.getLogger(SelectTileDialog.class.getName()));
+			TypesafeLogger.getLogger(SelectTileDialog.class);
 
 	/**
 	 * Handle the OK button.

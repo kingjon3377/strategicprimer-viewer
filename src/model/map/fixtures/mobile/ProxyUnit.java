@@ -18,7 +18,9 @@ import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.worker.ProxyWorker;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EmptyIterator;
-import util.NullCleaner;
+import util.TypesafeLogger;
+
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A proxy for units in multiple maps.
@@ -48,8 +50,7 @@ public final class ProxyUnit
 	/**
 	 * Logger.
 	 */
-	private static final Logger LOGGER =
-			NullCleaner.assertNotNull(Logger.getLogger(ProxyUnit.class.getName()));
+	private static final Logger LOGGER = TypesafeLogger.getLogger(ProxyUnit.class);
 	/**
 	 * Whether we are proxying parallel units in different maps.
 	 */
@@ -293,13 +294,11 @@ public final class ProxyUnit
 					@SuppressWarnings("unchecked")
 					final ProxyFor<? extends UnitMember> proxy;
 					final Integer memberID =
-							NullCleaner.assertNotNull(Integer.valueOf(member.getID()));
+							assertNotNull(Integer.valueOf(member.getID()));
 					if (map.containsKey(memberID)) {
-						// TODO: Statically import assertNotNull
 						//noinspection unchecked
-						proxy = (ProxyFor<? extends UnitMember>) NullCleaner
-																		.assertNotNull(
-																				map.get(memberID));
+						proxy = (ProxyFor<? extends UnitMember>) assertNotNull(
+								map.get(memberID));
 						if (proxy instanceof ProxyWorker) {
 							if (member instanceof IWorker) {
 								((ProxyWorker) proxy).addProxied((IWorker) member);
@@ -324,7 +323,7 @@ public final class ProxyUnit
 					}
 				}
 			}
-			return NullCleaner.assertNotNull(map.values().iterator());
+			return assertNotNull(map.values().iterator());
 		} else {
 			return new EmptyIterator<>();
 		}
@@ -616,7 +615,7 @@ public final class ProxyUnit
 		public String toString() {
 			final Iterator<UnitMember> iter = proxiedMembers.iterator();
 			if (iter.hasNext()) {
-				return NullCleaner.assertNotNull(iter.next().toString());
+				return assertNotNull(iter.next().toString());
 			} else {
 				return "a proxy for no unit members";
 			}
@@ -640,7 +639,7 @@ public final class ProxyUnit
 	@Override
 	public String toString() {
 		if (parallel) {
-			return NullCleaner.assertNotNull(
+			return assertNotNull(
 					String.format("ProxyUnit for ID #%d", Integer.valueOf(id)));
 		} else {
 			return "ProxyUnit for units of kind " + kind;

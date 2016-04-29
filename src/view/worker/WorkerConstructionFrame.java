@@ -26,7 +26,6 @@ import model.listeners.NewWorkerSource;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.WorkerStats;
 import model.workermgmt.RaceFactory;
-import util.NullCleaner;
 import util.Pair;
 import util.SingletonRandom;
 import util.TypesafeLogger;
@@ -35,6 +34,7 @@ import view.util.ErrorShower;
 import view.util.ListenedButton;
 
 import static util.IsNumeric.isNumeric;
+import static util.NullCleaner.assertNotNull;
 
 /**
  * A window to let the user add a new worker. As this is a dialog, we do *not* extend
@@ -189,7 +189,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	 */
 	private static String getBoxText(final JTextField box) {
 		final String text = box.getText();
-		return NullCleaner.assertNotNull(text);
+		return assertNotNull(text);
 	}
 
 	/**
@@ -211,7 +211,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 				Pair.of(getBoxText(intel), "Intelligence"),
 				Pair.of(getBoxText(wis), "Wisdom"),
 				Pair.of(getBoxText(cha), "Charisma")));
-		return NullCleaner.assertNotNull(builder.toString());
+		return assertNotNull(builder.toString());
 	}
 
 	/**
@@ -224,20 +224,20 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	private static String numericExpl(final Pair<String, String>... numbers) {
 		final StringBuilder builder = new StringBuilder(40);
 		for (final Pair<String, String> number : numbers) {
-			final String num = NullCleaner.assertNotNull(number.first().trim());
+			final String num = assertNotNull(number.first().trim());
 			if (!isNumeric(num)) {
 				builder.append(number.second());
 				builder.append(" must be a number.\n");
 			}
 		}
-		return NullCleaner.assertNotNull(builder.toString());
+		return assertNotNull(builder.toString());
 	}
 
 	/**
-	 * Number parser. TODO: Statically import assertNotNull
+	 * Number parser.
 	 */
 	private static final NumberFormat NUM_PARSER =
-			NullCleaner.assertNotNull(NumberFormat.getIntegerInstance());
+			assertNotNull(NumberFormat.getIntegerInstance());
 
 	/**
 	 * @param box a text field

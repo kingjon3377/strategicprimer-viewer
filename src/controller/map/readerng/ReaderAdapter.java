@@ -3,21 +3,22 @@ package controller.map.readerng;
 
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnwantedChildException;
-import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import org.eclipse.jdt.annotation.NonNull;
-import util.EqualsAny;
-import util.NullCleaner;
 import util.Warning;
+
+import static controller.map.iointerfaces.ISPReader.NAMESPACE;
+import static javax.xml.XMLConstants.NULL_NS_URI;
+import static util.EqualsAny.equalsAny;
+import static util.NullCleaner.assertNotNull;
 
 /**
  * An alternative approach, to hopefully replace the ReaderFactory---instead of asking for
@@ -71,14 +72,10 @@ public final class ReaderAdapter implements INodeHandler<Object> {
 						final IMutablePlayerCollection players,
 						final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
-		// TODO: Statically import assertNotNull
-		final String iLocal = NullCleaner.assertNotNull(element.getName()
-																.getLocalPart());
-		if (EqualsAny.equalsAny(
-				NullCleaner.assertNotNull(element.getName().getNamespaceURI()),
-				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)
-				&& READ_CACHE.containsKey(iLocal)) {
-			return NullCleaner.assertNotNull(READ_CACHE.get(iLocal))
+		final String iLocal = assertNotNull(element.getName().getLocalPart());
+		if (equalsAny(assertNotNull(element.getName().getNamespaceURI()), NAMESPACE,
+				NULL_NS_URI) && READ_CACHE.containsKey(iLocal)) {
+			return assertNotNull(READ_CACHE.get(iLocal))
 						.parse(element, stream, players, warner, idFactory);
 		} else {
 			throw new UnwantedChildException(new QName("unknown"), element);
@@ -198,9 +195,8 @@ public final class ReaderAdapter implements INodeHandler<Object> {
 	public <@NonNull S> SPIntermediateRepresentation write(final S obj) {
 		if (WRITERS.containsKey(obj.getClass())) {
 			//noinspection unchecked
-			return ((INodeHandler<S>) NullCleaner
-											.assertNotNull(WRITERS.get(obj.getClass())))
-						.write(obj);
+			return ((INodeHandler<S>) assertNotNull(WRITERS.get(obj.getClass())))
+						   .write(obj);
 		} else {
 			for (final Map.Entry<Class<?>, INodeHandler<@NonNull ?>> entry : WRITERS
 																					.entrySet()) {

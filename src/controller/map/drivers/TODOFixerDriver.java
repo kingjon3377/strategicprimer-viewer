@@ -16,6 +16,7 @@ import model.map.IMutableMapNG;
 import model.map.Point;
 import model.map.fixtures.mobile.Unit;
 import util.NullCleaner;
+import util.TypesafeLogger;
 import util.Warning;
 
 /**
@@ -48,10 +49,9 @@ public final class TODOFixerDriver {
 	 */
 	private final IMutableMapNG map;
 	/**
-	 * Logger. TODO: Use TypesafeLogger
+	 * Logger.
 	 */
-	private static final Logger LOGGER =
-			NullCleaner.assertNotNull(Logger.getLogger(TODOFixerDriver.class.getName()));
+	private static final Logger LOGGER = TypesafeLogger.getLogger(TODOFixerDriver.class);
 
 	/**
 	 * @param operand the map we operate on
