@@ -18,9 +18,9 @@ import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
-import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
+import util.PatientMap;
 
 /**
  * A report generator for equipment and resources.
@@ -66,9 +66,8 @@ public final class FortressMemberReportGenerator
 	 * @return the part of the report listing non-unit fortress members.
 	 */
 	@Override
-	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-									fixtures,
-						final IMapNG map, final Player currentPlayer) {
+	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						  final IMapNG map, final Player currentPlayer) {
 		// At only two (albeit who-knows-how-long) list items, I doubt this will ever be
 		// over one K, but we'll give it two just in case.
 		final StringBuilder builder =
@@ -129,9 +128,9 @@ public final class FortressMemberReportGenerator
 	 * @return the part of the report listing equipment and resources.
 	 */
 	@Override
-	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point,
-																				IFixture>> fixtures,
-								final IMapNG map, final Player currentPlayer) {
+	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+											  fixtures,
+								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final IReportNode rsr = new ListReportNode("Resources:");
@@ -170,10 +169,9 @@ public final class FortressMemberReportGenerator
 	 * @return a sub-report on the item; calls UnitReportGenerator for units.
 	 */
 	@Override
-	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-									fixtures,
-						final IMapNG map, final Player currentPlayer,
-						final FortressMember item, final Point loc) {
+	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						  final IMapNG map, final Player currentPlayer,
+						  final FortressMember item, final Point loc) {
 		if (item instanceof Unit) {
 			return new UnitReportGenerator(pairComparator)
 						.produce(fixtures, map, currentPlayer, (Unit) item, loc);
@@ -215,10 +213,10 @@ public final class FortressMemberReportGenerator
 	 * @return a sub-report on the item; calls UnitReportGenerator for units.
 	 */
 	@Override
-	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point,
-																				IFixture>> fixtures,
-								final IMapNG map, final Player currentPlayer,
-								final FortressMember item, final Point loc) {
+	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+											  fixtures,
+								  final IMapNG map, final Player currentPlayer,
+								  final FortressMember item, final Point loc) {
 		if (item instanceof Unit) {
 			return new UnitReportGenerator(pairComparator).produceRIR(fixtures, map, currentPlayer,
 					(Unit) item, loc);

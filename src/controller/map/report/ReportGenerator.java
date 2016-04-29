@@ -23,10 +23,10 @@ import model.map.fixtures.towns.Fortress;
 import model.report.IReportNode;
 import model.report.RootReportNode;
 import org.eclipse.jdt.annotation.NonNull;
-import util.DelayedRemovalMap;
 import util.IntMap;
 import util.Pair;
 import util.PairComparator;
+import util.PatientMap;
 import view.util.SystemOut;
 
 import static util.NullCleaner.assertNotNull;
@@ -117,10 +117,10 @@ public final class ReportGenerator {
 	 * @param generators report-generators to run
 	 */
 	private static void createSubReports(final StringBuilder builder,
-										final DelayedRemovalMap<Integer, Pair<Point,
-																					IFixture>> fixtures,
-										final IMapNG map, final Player player,
-										final IReportGenerator<?>... generators) {
+										 final PatientMap<Integer, Pair<Point,
+																			   IFixture>> fixtures,
+										 final IMapNG map, final Player player,
+										 final IReportGenerator<?>... generators) {
 		for (final IReportGenerator<?> generator : generators) {
 			builder.append(generator.produce(fixtures, map, player));
 			fixtures.coalesce();
@@ -137,7 +137,7 @@ public final class ReportGenerator {
 		builder.append("<head><title>Strategic Primer map ").append(
 				"summary report</title></head>\n");
 		builder.append("<body>");
-		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
+		final PatientMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
 		final Player player = map.getCurrentPlayer();
 		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator =
@@ -183,7 +183,7 @@ public final class ReportGenerator {
 		builder.append("<title>Strategic Primer map summary ").append(
 				"abridged report</title></head>\n");
 		builder.append("<body>");
-		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
+		final PatientMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
 		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator =
 				new PairComparator<>(new DistanceComparator(findHQ(map, player)),
@@ -222,10 +222,10 @@ public final class ReportGenerator {
 	 * @param generators report-generators to run
 	 */
 	private static void createSubReportsIR(final IReportNode root,
-										final DelayedRemovalMap<Integer, Pair<Point,
-																					IFixture>> fixtures,
-										final IMapNG map, final Player player,
-										final IReportGenerator<?>... generators) {
+										   final PatientMap<Integer, Pair<Point,
+																				 IFixture>> fixtures,
+										   final IMapNG map, final Player player,
+										   final IReportGenerator<?>... generators) {
 		for (final IReportGenerator<?> generator : generators) {
 			root.add(generator.produceRIR(fixtures, map, player));
 			fixtures.coalesce();
@@ -240,7 +240,7 @@ public final class ReportGenerator {
 																	"Strategic Primer " +
 																			"map summary" +
 																			" report");
-		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
+		final PatientMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
 		final Player player = map.getCurrentPlayer();
 		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator =
@@ -268,7 +268,7 @@ public final class ReportGenerator {
 	 */
 	public static IReportNode createAbbreviatedReportIR(final IMapNG map,
 															final Player player) {
-		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures =
+		final PatientMap<Integer, Pair<Point, IFixture>> fixtures =
 				getFixtures(map);
 		final Comparator<@NonNull Pair<@NonNull Point, @NonNull IFixture>> comparator =
 				new PairComparator<>(new DistanceComparator(findHQ(map, player)),
@@ -303,10 +303,9 @@ public final class ReportGenerator {
 	 * @return the fixtures in it, a mapping from their ID to a Pair of the fixture's
 	 * location and the fixture itself.
 	 */
-	private static DelayedRemovalMap<Integer, Pair<Point, IFixture>> getFixtures(
-																						final IMapNG map) {
-		final DelayedRemovalMap<Integer, Pair<Point, IFixture>> retval =
-				new IntMap<>();
+	private static PatientMap<Integer, Pair<Point, IFixture>> getFixtures(final IMapNG
+																				  map) {
+		final PatientMap<Integer, Pair<Point, IFixture>> retval = new IntMap<>();
 		final IDFactory idf = IDFactoryFiller.createFactory(map);
 		for (final Point point : map.locations()) {
 			// Because neither Forests, Mountains, nor Ground have positive IDs,

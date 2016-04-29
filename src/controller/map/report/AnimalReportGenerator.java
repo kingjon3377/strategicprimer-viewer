@@ -7,9 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -20,9 +17,10 @@ import model.report.IReportNode;
 import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
-import util.DelayedRemovalMap;
+import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
 import util.Pair;
+import util.PatientMap;
 
 /**
  * A report generator for sightings of animals.
@@ -64,10 +62,8 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	 * @return the report
 	 */
 	@Override
-	public String produce(
-								final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-										fixtures,
-								final IMapNG map, final Player currentPlayer) {
+	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final Map<String, List<Point>> items = new HashMap<>();
@@ -121,10 +117,9 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	 * @return the report
 	 */
 	@Override
-	public IReportNode produceRIR(final DelayedRemovalMap<Integer,
-																			Pair<Point, IFixture>> fixtures,
-								final IMapNG map,
-								final Player currentPlayer) {
+	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+											fixtures,
+								final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final Map<String, IReportNode> items = new HashMap<>();
@@ -166,11 +161,9 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	 * @return a sub-report on the animal
 	 */
 	@Override
-	public String produce(
-								final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-										fixtures,
-								final IMapNG map, final Player currentPlayer,
-								final Animal item, final Point loc) {
+	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						final IMapNG map, final Player currentPlayer,
+						final Animal item, final Point loc) {
 		final String tracesOrTalking; // NOPMD
 		if (item.isTraces()) {
 			tracesOrTalking = "tracks or traces of ";
@@ -192,13 +185,10 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	 * @return a sub-report on the animal
 	 */
 	@Override
-	public SimpleReportNode produceRIR(
-											final DelayedRemovalMap<Integer,
-																			Pair<Point,
-																						IFixture>> fixtures,
-											final IMapNG map,
-											final Player currentPlayer,
-											final Animal item, final Point loc) {
+	public SimpleReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+												fixtures,
+									final IMapNG map, final Player currentPlayer,
+									final Animal item, final Point loc) {
 		final String tracesOrTalking; // NOPMD
 		if (item.isTraces()) {
 			tracesOrTalking = "tracks or traces of ";

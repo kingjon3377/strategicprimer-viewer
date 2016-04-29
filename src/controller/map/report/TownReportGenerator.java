@@ -20,9 +20,9 @@ import model.report.IReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
-import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
+import util.PatientMap;
 
 /**
  * A report generator for towns.
@@ -76,9 +76,8 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 * helpful.
 	 */
 	@Override
-	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-									fixtures,
-						final IMapNG map, final Player currentPlayer) {
+	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						  final IMapNG map, final Player currentPlayer) {
 		final Map<TownStatus, Collection<String>> separated = new EnumMap<>(TownStatus.class);
 		separated.put(TownStatus.Abandoned,
 				new HtmlList("<h5>Abandoned Communities</h5>"));
@@ -125,9 +124,9 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 * helpful.
 	 */
 	@Override
-	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-											fixtures, final IMapNG map,
-								final Player currentPlayer) {
+	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+											  fixtures,
+								  final IMapNG map, final Player currentPlayer) {
 		final Map<TownStatus, IReportNode> separated = new EnumMap<>(TownStatus.class);
 		separated.put(TownStatus.Abandoned,
 				new SectionListReportNode(5, "Abandoned Communities"));
@@ -166,10 +165,9 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 * @return the sub-report dealing with the town.
 	 */
 	@Override
-	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-									fixtures, final IMapNG map,
-						final Player currentPlayer, final ITownFixture item,
-						final Point loc) {
+	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						  final IMapNG map, final Player currentPlayer,
+						  final ITownFixture item, final Point loc) {
 		if (item instanceof Village) {
 			return new VillageReportGenerator(pairComparator).produce(fixtures, map,
 					currentPlayer, (Village) item, loc);
@@ -206,10 +204,10 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 	 * @return the sub-report dealing with the town.
 	 */
 	@Override
-	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-											fixtures, final IMapNG map,
-								final Player currentPlayer, final ITownFixture item,
-								final Point loc) {
+	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+											  fixtures,
+								  final IMapNG map, final Player currentPlayer,
+								  final ITownFixture item, final Point loc) {
 		if (item instanceof Village) {
 			return new VillageReportGenerator(pairComparator).produceRIR(fixtures,
 					map, currentPlayer, (Village) item, loc);

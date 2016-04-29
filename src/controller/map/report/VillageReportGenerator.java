@@ -18,9 +18,9 @@ import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
-import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
+import util.PatientMap;
 
 /**
  * A report generator for Villages.
@@ -64,10 +64,8 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	 * @return the part of the report dealing with villages.
 	 */
 	@Override
-	public String produce(
-								final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-										fixtures,
-								final IMapNG map, final Player currentPlayer) {
+	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final Collection<String> own =
@@ -122,11 +120,9 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	 * @return the part of the report dealing with villages.
 	 */
 	@Override
-	public IReportNode produceRIR(
-												final DelayedRemovalMap<Integer,
-																			Pair<Point, IFixture>> fixtures,
-												final IMapNG map,
-												final Player currentPlayer) {
+	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+											  fixtures,
+								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final IReportNode own = new SectionListReportNode(5,
@@ -191,11 +187,9 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	 * @return the report on the village (its location and name, nothing more)
 	 */
 	@Override
-	public String produce(
-								final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-										fixtures,
-								final IMapNG map, final Player currentPlayer,
-								final Village item, final Point loc) {
+	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						  final IMapNG map, final Player currentPlayer,
+						  final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		if (item.getOwner().isIndependent()) {
 			return concat(atPoint(loc), item.getName(), ", a(n) ", // NOPMD
@@ -222,13 +216,10 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 	 * @return the report on the village (its location and name, nothing more)
 	 */
 	@Override
-	public SimpleReportNode produceRIR(
-											final DelayedRemovalMap<Integer,
-																		Pair<Point,
-																					IFixture>> fixtures,
-											final IMapNG map,
-											final Player currentPlayer,
-											final Village item, final Point loc) {
+	public SimpleReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+												   fixtures,
+									   final IMapNG map, final Player currentPlayer,
+									   final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		if (item.getOwner().isIndependent()) {
 			return new SimpleReportNode(loc, atPoint(loc), item.getName(), // NOPMD

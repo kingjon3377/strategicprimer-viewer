@@ -34,7 +34,7 @@ import org.eclipse.jdt.annotation.Nullable;
  * @param <V> the kind of thing stored in the map.
  * @author Jonathan Lovelace
  */
-public final class IntMap<V> implements DelayedRemovalMap<@NonNull Integer, V> { // NOPMD
+public final class IntMap<V> implements PatientMap<@NonNull Integer, V> { // NOPMD
 	/**
 	 * The map that we use as a backing store.
 	 */

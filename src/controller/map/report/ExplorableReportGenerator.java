@@ -6,9 +6,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.Player;
@@ -24,9 +21,10 @@ import model.report.IReportNode;
 import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
-import util.DelayedRemovalMap;
+import org.eclipse.jdt.annotation.NonNull;
 import util.NullCleaner;
 import util.Pair;
+import util.PatientMap;
 
 /**
  * A report generator for caves and battlefields.
@@ -78,10 +76,8 @@ public final class ExplorableReportGenerator
 	 * @return the part of the report listing things that can be explored.
 	 */
 	@Override
-	public String produce(
-								final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-										fixtures,
-								final IMapNG map, final Player currentPlayer) {
+	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						  final IMapNG map, final Player currentPlayer) {
 		// At only three (albeit potentially rather long) list items, I doubt this
 		// will ever be over one K ... but we'll give it two just in case.
 		final StringBuilder builder = new StringBuilder(2048).append(
@@ -171,9 +167,9 @@ public final class ExplorableReportGenerator
 	 * @return the part of the report listing things that can be explored.
 	 */
 	@Override
-	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-											fixtures, final IMapNG map,
-								final Player currentPlayer) {
+	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+											  fixtures,
+								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final IReportNode portals = new ListReportNode("Portals");
@@ -236,11 +232,9 @@ public final class ExplorableReportGenerator
 	 * and battlefields) on the item
 	 */
 	@Override
-	public String produce(
-								final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-										fixtures,
-								final IMapNG map, final Player currentPlayer,
-								final ExplorableFixture item, final Point loc) {
+	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						  final IMapNG map, final Player currentPlayer,
+						  final ExplorableFixture item, final Point loc) {
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat("Caves beneath ", loc.toString(), " ",
@@ -289,14 +283,10 @@ public final class ExplorableReportGenerator
 	 * item
 	 */
 	@Override
-	public SimpleReportNode produceRIR(
-											final DelayedRemovalMap<Integer,
-																			Pair<Point,
-																						IFixture>> fixtures,
-											final IMapNG map,
-											final Player currentPlayer,
-											final ExplorableFixture item,
-											final Point loc) {
+	public SimpleReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+												   fixtures,
+									   final IMapNG map, final Player currentPlayer,
+									   final ExplorableFixture item, final Point loc) {
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, "Caves beneath ", loc.toString(), " ",

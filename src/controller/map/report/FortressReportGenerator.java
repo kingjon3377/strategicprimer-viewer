@@ -29,9 +29,9 @@ import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
-import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
+import util.PatientMap;
 
 /**
  * A report generator for fortresses.
@@ -84,9 +84,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 * @return the part of the report dealing with fortresses
 	 */
 	@Override
-	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-									fixtures,
-						final IMapNG map, final Player currentPlayer) {
+	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						  final IMapNG map, final Player currentPlayer) {
 		// This can get long. We'll give it 16K.
 		final StringBuilder ours = new StringBuilder(16384)
 										.append("<h4>Your fortresses in the " +
@@ -133,9 +132,9 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 * @return the part of the report dealing with fortresses
 	 */
 	@Override
-	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point,
-																				IFixture>> fixtures,
-								final IMapNG map, final Player currentPlayer) {
+	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+											  fixtures,
+								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final IReportNode foreign =
@@ -174,8 +173,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 * @return a String describing the terrain on it
 	 */
 	private static String getTerrain(final IMapNG map, final Point point,
-									final DelayedRemovalMap<Integer, Pair<Point,
-																				IFixture>> fixtures) {
+									 final PatientMap<Integer, Pair<Point, IFixture>> fixtures) {
 		final StringBuilder builder = new StringBuilder(130).append(
 				"Surrounding terrain: ").append(
 				map.getBaseTerrain(point).toXML().replace('_', ' '));
@@ -264,10 +262,9 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 * @return the part of the report dealing with fortresses
 	 */
 	@Override
-	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-									fixtures,
-						final IMapNG map, final Player currentPlayer,
-						final Fortress item, final Point loc) {
+	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						  final IMapNG map, final Player currentPlayer,
+						  final Fortress item, final Point loc) {
 		// This can get long. we'll give it 16K.
 		final StringBuilder builder = new StringBuilder(16384).append("<h5>Fortress ")
 											.append(item.getName())
@@ -329,8 +326,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	 * @return the part of the report dealing with the fortress
 	 */
 	@Override
-	public SectionListReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point,
-																							IFixture>> fixtures,
+	public SectionListReportNode produceRIR(final PatientMap<Integer, Pair<Point,
+																					  IFixture>> fixtures,
 											final IMapNG map, final Player currentPlayer,
 											final Fortress item, final Point loc) {
 		final SectionListReportNode retval = new SectionListReportNode(loc, 5, concat("Fortress ",

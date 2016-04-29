@@ -27,8 +27,7 @@ import java.util.Map;
  * @param <V> the second type parameter
  * @author Jonathan Lovelace
  */
-// TODO: Rename to PatientMap or something else shorter than current name
-public interface DelayedRemovalMap<K, V> extends Map<K, V> {
+public interface PatientMap<K, V> extends Map<K, V> {
 
 	/**
 	 * Apply all scheduled removals.

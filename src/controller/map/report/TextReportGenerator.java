@@ -15,9 +15,9 @@ import model.report.IReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
-import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
+import util.PatientMap;
 
 /**
  * A report generator for arbitrary-text notes.
@@ -57,10 +57,8 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	 * @return the sub-report dealing with arbitrary-text notes
 	 */
 	@Override
-	public String produce(
-								final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-										fixtures,
-								final IMapNG map, final Player currentPlayer) {
+	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, TextFixture>> items = new ArrayList<>();
 		for (final Map.Entry<Integer, Pair<Point, IFixture>> entry :
 				fixtures.entrySet()) {
@@ -96,11 +94,9 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	 * @return the sub-report dealing with that note
 	 */
 	@Override
-	public String produce(
-								final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-										fixtures,
-								final IMapNG map, final Player currentPlayer,
-								final TextFixture item, final Point loc) {
+	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						  final IMapNG map, final Player currentPlayer,
+						  final TextFixture item, final Point loc) {
 		final StringBuilder builder =
 				new StringBuilder(item.getText().length() + 32);
 		builder.append("At ");
@@ -123,11 +119,9 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	 * @return the sub-report dealing with arbitrary-text notes
 	 */
 	@Override
-	public IReportNode produceRIR(
-											final DelayedRemovalMap<Integer,
-																		Pair<Point, IFixture>> fixtures,
-												final IMapNG map,
-												final Player currentPlayer) {
+	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+											  fixtures,
+								  final IMapNG map, final Player currentPlayer) {
 		final IReportNode retval =
 				new SectionListReportNode(4, "Miscellaneous Notes");
 		for (final Map.Entry<Integer, Pair<Point, IFixture>> entry :
@@ -159,12 +153,10 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 	 * @return the sub-report dealing with that note
 	 */
 	@Override
-	public IReportNode produceRIR(
-												final DelayedRemovalMap<Integer,
-																			Pair<Point, IFixture>> fixtures,
-												final IMapNG map,
-												final Player currentPlayer,
-												final TextFixture item, final Point loc) {
+	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+											  fixtures,
+								  final IMapNG map, final Player currentPlayer,
+								  final TextFixture item, final Point loc) {
 		if (item.getTurn() >= 0) {
 			return new SimpleReportNode(loc, "At ", loc.toString(), " ",
 											distCalculator.distanceString(loc), ": ",

@@ -24,9 +24,9 @@ import model.report.SectionListReportNode;
 import model.report.SectionReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
-import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
+import util.PatientMap;
 
 import static model.map.fixtures.mobile.worker.WorkerStats.getModifierString;
 
@@ -80,11 +80,9 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * @return a sub-report on the unit
 	 */
 	@Override
-	public String produce(
-									final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-										fixtures,
-									final IMapNG map, final Player currentPlayer,
-									final Unit item, final Point loc) {
+	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						  final IMapNG map, final Player currentPlayer, final Unit item,
+						  final Point loc) {
 		final StringBuilder builder =
 				new StringBuilder(52 + item.getKind().length() + item.getName().length() +
 										item.getOwner().getName().length());
@@ -134,10 +132,10 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * @return a sub-report on the unit
 	 */
 	@Override
-	public IReportNode produceRIR(final DelayedRemovalMap<Integer,
-																	Pair<Point, IFixture>> fixtures,
-								final IMapNG map, final Player currentPlayer,
-								final Unit item, final Point loc) {
+	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+											  fixtures,
+								  final IMapNG map, final Player currentPlayer,
+								  final Unit item, final Point loc) {
 		final String simple; // NOPMD
 		if (item.getOwner().isIndependent()) {
 			simple = concat("Unit of type ", item.getKind(), ", named ",
@@ -302,10 +300,8 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * @return the part of the report dealing with units
 	 */
 	@Override
-	public String produce(
-								final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-										fixtures,
-								final IMapNG map, final Player currentPlayer) {
+	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						  final IMapNG map, final Player currentPlayer) {
 		// This can get big; we'll say 8K.
 		final StringBuilder builder =
 				new StringBuilder(8192).append("<h4>Units in the map</h4>\n");
@@ -368,10 +364,9 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 	 * @return the part of the report dealing with units
 	 */
 	@Override
-	public IReportNode produceRIR(
-												final DelayedRemovalMap<Integer, Pair<Point, IFixture>> fixtures,
-												final IMapNG map,
-												final Player currentPlayer) {
+	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+											  fixtures,
+								  final IMapNG map, final Player currentPlayer) {
 		final IReportNode retval =
 				new SectionReportNode(4, "Units in the map");
 		retval.add(

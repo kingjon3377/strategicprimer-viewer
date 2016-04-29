@@ -34,9 +34,9 @@ import model.report.ListReportNode;
 import model.report.SectionListReportNode;
 import model.report.SimpleReportNode;
 import org.eclipse.jdt.annotation.NonNull;
-import util.DelayedRemovalMap;
 import util.NullCleaner;
 import util.Pair;
+import util.PatientMap;
 
 /**
  * A report generator for "immortals"---dragons, fairies, centaurs, and such.
@@ -81,9 +81,8 @@ public final class ImmortalsReportGenerator
 	 * @return the part of the report listing "immortals"
 	 */
 	@Override
-	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-									fixtures,
-						final IMapNG map, final Player currentPlayer) {
+	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final List<Point> griffins = new ArrayList<>();
@@ -183,9 +182,9 @@ public final class ImmortalsReportGenerator
 	 * @return the part of the report listing "immortals"
 	 */
 	@Override
-	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point,
-																				IFixture>> fixtures,
-								final IMapNG map, final Player currentPlayer) {
+	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+											  fixtures,
+								  final IMapNG map, final Player currentPlayer) {
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
 		final IReportNode griffins = new ListReportNode("Griffins");
@@ -289,10 +288,9 @@ public final class ImmortalsReportGenerator
 	 * we handle here.
 	 */
 	@Override
-	public String produce(final DelayedRemovalMap<Integer, Pair<Point, IFixture>>
-									fixtures,
-						final IMapNG map, final Player currentPlayer,
-						final MobileFixture item, final Point loc) {
+	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+						  final IMapNG map, final Player currentPlayer,
+						  final MobileFixture item, final Point loc) {
 		if (isImmortal(item)) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat(atPoint(loc), "A(n) ", item.toString(), " ",
@@ -312,10 +310,10 @@ public final class ImmortalsReportGenerator
 	 * here.
 	 */
 	@Override
-	public IReportNode produceRIR(final DelayedRemovalMap<Integer, Pair<Point,
-																				IFixture>> fixtures,
-								final IMapNG map, final Player currentPlayer,
-								final MobileFixture item, final Point loc) {
+	public IReportNode produceRIR(final PatientMap<Integer, Pair<Point, IFixture>>
+											  fixtures,
+								  final IMapNG map, final Player currentPlayer,
+								  final MobileFixture item, final Point loc) {
 		if (isImmortal(item)) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, atPoint(loc), "A(n) ", item.toString(), " ",
