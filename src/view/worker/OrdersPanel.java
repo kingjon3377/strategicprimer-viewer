@@ -7,12 +7,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -25,6 +20,7 @@ import model.workermgmt.IWorkerModel;
 import org.eclipse.jdt.annotation.Nullable;
 import util.ActionWrapper;
 import util.NullCleaner;
+import util.OnMac;
 import view.util.Applyable;
 import view.util.BorderedPanel;
 import view.util.ListenedButton;
@@ -87,8 +83,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	public OrdersPanel(final IWorkerModel wmodel) {
 		// Can't use the multi-arg constructor, because of the references to
 		// 'this' below.
-		final boolean onMac =
-				System.getProperty("os.name").toLowerCase().startsWith("mac os x");
+		final boolean onMac = OnMac.SYSTEM_IS_MAC;
 		final String prefix;
 		final int keyMask;
 		if (onMac) {

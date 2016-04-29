@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.ActionMap;
-import javax.swing.InputMap;
+import javax.swing.*;
 import util.ActionWrapper;
+import util.OnMac;
 
 import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
 import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
@@ -38,12 +38,6 @@ import static javax.swing.KeyStroke.getKeyStroke;
  * @author Jonathan Lovelace
  */
 public final class ArrowKeyListener {
-	/**
-	 * Whether this is running on a Mac.
-	 */
-	private static final boolean ON_MAC =
-			System.getProperty("os.name").toLowerCase().startsWith("mac os x");
-
 	/**
 	 * Set up listeners.
 	 *
@@ -91,7 +85,7 @@ public final class ArrowKeyListener {
 			selListener.left();
 		}));
 		final int fiveMask;
-		if (ON_MAC) {
+		if (OnMac.SYSTEM_IS_MAC) {
 			fiveMask = InputEvent.ALT_DOWN_MASK;
 		} else {
 			fiveMask = CTRL_DOWN_MASK;
@@ -141,7 +135,7 @@ public final class ArrowKeyListener {
 			selListener.down();
 			selListener.left();
 		}, 5));
-		if (ON_MAC) {
+		if (OnMac.SYSTEM_IS_MAC) {
 			inputMap.put(getKeyStroke(KeyEvent.VK_HOME, InputEvent.META_DOWN_MASK),
 					"ctrl-home");
 			inputMap.put(getKeyStroke(KeyEvent.VK_END, InputEvent.META_DOWN_MASK),

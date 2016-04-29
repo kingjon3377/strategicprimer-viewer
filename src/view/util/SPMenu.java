@@ -14,6 +14,7 @@ import javax.swing.KeyStroke;
 import model.misc.IDriverModel;
 import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
+import util.OnMac;
 
 import static view.util.MenuItemCreator.createHotkey;
 import static view.util.MenuItemCreator.createMenuItem;
@@ -119,7 +120,7 @@ public class SPMenu extends JMenuBar {
 		fileMenu.add(createMenuItem("About", KeyEvent.VK_B,
 				createHotkey(KeyEvent.VK_B), "Show development credits", handler));
 		fileMenu.addSeparator();
-		if (!System.getProperty("os.name").toLowerCase().startsWith("mac os x")) {
+		if (!OnMac.SYSTEM_IS_MAC) {
 			fileMenu.add(
 					createMenuItem("Quit", KeyEvent.VK_Q, createHotkey(KeyEvent.VK_Q),
 							"Quit the application", handler));
