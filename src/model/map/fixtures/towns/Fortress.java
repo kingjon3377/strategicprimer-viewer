@@ -22,7 +22,7 @@ import static util.NullCleaner.assertNotNull;
  * A fortress on the map. A player can only have one fortress per tile, but multiple
  * players may have fortresses on the same tile.
  *
- * FIXME: We need something about resources and buildings yet
+ * FIXME: We need something about buildings yet
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
