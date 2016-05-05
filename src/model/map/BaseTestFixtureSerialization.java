@@ -1,6 +1,7 @@
 package model.map;
 
 import controller.map.cxml.CompactXMLWriter;
+import controller.map.fluidxml.SPFluidWriter;
 import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.MissingPropertyException;
@@ -10,7 +11,6 @@ import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.iointerfaces.TestReaderFactory;
-import controller.map.readerng.ReaderAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -555,9 +555,8 @@ public abstract class BaseTestFixtureSerialization { // NOPMD
 												final boolean deprecated)
 			throws IOException {
 		final StringWriter writer = new StringWriter();
-		if (deprecated) {
-			ReaderAdapter.ADAPTER.write(obj).write(
-					writer, 0);
+		if (!deprecated) {
+			new SPFluidWriter().writeSPObject(writer, obj, 0);
 		} else {
 			CompactXMLWriter.writeSPObject(writer, obj);
 		}

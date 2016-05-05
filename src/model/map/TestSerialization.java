@@ -290,7 +290,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertEquals("Shouldn't print empty not-visible tiles",
 				"<view xmlns=\"" + ISPReader.NAMESPACE +
 						"\" current_player=\"-1\" current_turn=\"-1\">\n\t<map " +
-						"version=\"2\" rows=\"1\" columns=\"1\" />\n</view>\n",
+						"version=\"2\" rows=\"1\" columns=\"1\">\n\t</map>\n</view>\n",
 				createSerializedForm(
 						createSimpleMap(point(1, 1), Pair.of(point(0, 0), NotVisible)),
 						true));

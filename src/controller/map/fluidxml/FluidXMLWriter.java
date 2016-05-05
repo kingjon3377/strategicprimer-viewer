@@ -1,16 +1,15 @@
-package controller.map.iointerfaces;
+package controller.map.fluidxml;
 
-import controller.map.cxml.CompactXMLReader;
-import controller.map.fluidxml.SPFluidReader;
+import java.io.IOException;
 
 /**
- * A factory to produce instances of the current and old map readers, to test against. (So
- * we don't have to ignore *all* deprecation warnings in the test class.)
+ * An interface for writers-to-XML. It's expected that most "implementations" will in
+ * fact be method references.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
  *
- * Copyright (C) 2013-2013 Jonathan Lovelace
+ * Copyright (C) 2016 Jonathan Lovelace
  *
  * This program is free software: you can redistribute it and/or modify it under the terms
  * of version 3 of the GNU General Public License as published by the Free Software
@@ -26,26 +25,15 @@ import controller.map.fluidxml.SPFluidReader;
  *
  * @author Jonathan Lovelace
  */
-@SuppressWarnings({"deprecation", "UtilityClassCanBeEnum"})
-public final class TestReaderFactory {
+@FunctionalInterface
+public interface FluidXMLWriter {
 	/**
-	 * Do not instantiate.
+	 * @param ostream the stream to write to
+	 * @param obj the object to write
+	 * @param indent the indentation level
+	 * @throws IOException on I/O problems
+	 * @throws IllegalArgumentException if obj is not an object we know how to write
 	 */
-	private TestReaderFactory() {
-		// Do nothing.
-	}
-
-	/**
-	 * @return an instance of the old reader
-	 */
-	public static ISPReader createOldReader() {
-		return new CompactXMLReader();
-	}
-
-	/**
-	 * @return an instance of the new reader
-	 */
-	public static ISPReader createNewReader() {
-		return new SPFluidReader();
-	}
+	void writeSPObject(Appendable ostream, Object obj, int indent)
+			throws IOException, IllegalArgumentException;
 }
