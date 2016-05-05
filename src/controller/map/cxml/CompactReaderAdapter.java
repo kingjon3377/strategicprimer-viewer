@@ -1,27 +1,26 @@
 package controller.map.cxml;
 
+import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.iointerfaces.ISPReader;
+import controller.map.misc.IDFactory;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
-
 import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-
-import org.eclipse.jdt.annotation.NonNull;
-
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.iointerfaces.ISPReader;
-import controller.map.misc.IDFactory;
 import model.map.IMutablePlayerCollection;
 import model.map.River;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.mobile.ProxyFor;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
+import org.eclipse.jdt.annotation.NonNull;
 import util.EqualsAny;
 import util.IteratorWrapper;
 import util.NullCleaner;
@@ -91,9 +90,7 @@ public final class CompactReaderAdapter {
 		if (!EqualsAny.equalsAny(
 				NullCleaner.assertNotNull(element.getName().getNamespaceURI()),
 				ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
-			throw new IllegalArgumentException("CompactReaderAdapter can only parse " +
-													"objects in either our namespace " +
-													"or the default namespace");
+			throw new UnwantedChildException(new QName("unknown"), element);
 		}
 		final String tag = NullCleaner.assertNotNull(element.getName().getLocalPart());
 		// Handle rivers specially.
