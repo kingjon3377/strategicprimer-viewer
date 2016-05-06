@@ -1,14 +1,11 @@
 package controller.map.fluidxml;
 
 import controller.map.cxml.AbstractCompactReader;
-import controller.map.cxml.CompactAdventureReader;
-import controller.map.cxml.CompactExplorableReader;
 import controller.map.cxml.CompactGroundReader;
 import controller.map.cxml.CompactImplementReader;
 import controller.map.cxml.CompactMapNGReader;
 import controller.map.cxml.CompactMobileReader;
 import controller.map.cxml.CompactPlayerReader;
-import controller.map.cxml.CompactPortalReader;
 import controller.map.cxml.CompactReader;
 import controller.map.cxml.CompactResourcePileReader;
 import controller.map.cxml.CompactResourceReader;
@@ -30,6 +27,10 @@ import java.util.Map;
 import model.map.IMapNG;
 import model.map.River;
 import model.map.fixtures.RiverFixture;
+import model.map.fixtures.explorable.AdventureFixture;
+import model.map.fixtures.explorable.Battlefield;
+import model.map.fixtures.explorable.Cave;
+import model.map.fixtures.explorable.Portal;
 
 /**
  * The main writer-to-XML class in the 'fluid XML' implementation.
@@ -56,10 +57,10 @@ import model.map.fixtures.RiverFixture;
 public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	final Map<Class<?>, FluidXMLWriter> writers = new HashMap<>();
 	public SPFluidWriter() {
-		for (CompactReader writer : Arrays.asList(CompactAdventureReader.READER,
-				CompactExplorableReader.READER, CompactGroundReader.READER,
+		for (CompactReader writer : Arrays.asList(
+				CompactGroundReader.READER,
 				CompactImplementReader.READER, CompactMapNGReader.READER,
-				CompactMobileReader.READER, CompactPlayerReader.READER, CompactPortalReader.READER,
+				CompactMobileReader.READER, CompactPlayerReader.READER,
 				CompactResourcePileReader.READER, CompactResourceReader.READER,
 				CompactTerrainReader.READER, CompactTextReader.READER, CompactTownReader.READER,
 				CompactUnitReader.READER, CompactWorkerReader.READER)) {
@@ -82,6 +83,10 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 																				  ostream,
 																				  (RiverFixture) obj,
 																				  indent));
+		writers.put(AdventureFixture.class, FluidExplorableHandler::writeAdventure);
+		writers.put(Portal.class, FluidExplorableHandler::writePortal);
+		writers.put(Battlefield.class, FluidExplorableHandler::writeBattlefield);
+		writers.put(Cave.class, FluidExplorableHandler::writeCave);
 	}
 	@Override
 	public void writeSPObject(final Appendable ostream, final Object obj,
