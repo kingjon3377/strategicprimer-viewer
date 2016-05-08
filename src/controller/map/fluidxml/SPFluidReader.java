@@ -14,14 +14,11 @@ import controller.map.readerng.CityReader;
 import controller.map.readerng.DjinnReader;
 import controller.map.readerng.DragonReader;
 import controller.map.readerng.FairyReader;
-import controller.map.readerng.ForestReader;
 import controller.map.readerng.FortificationReader;
 import controller.map.readerng.FortressReader;
 import controller.map.readerng.GiantReader;
 import controller.map.readerng.GriffinReader;
-import controller.map.readerng.GroundReader;
 import controller.map.readerng.GroveReader;
-import controller.map.readerng.HillReader;
 import controller.map.readerng.INodeHandler;
 import controller.map.readerng.ImplementReader;
 import controller.map.readerng.JobReader;
@@ -30,14 +27,11 @@ import controller.map.readerng.MeadowReader;
 import controller.map.readerng.MineReader;
 import controller.map.readerng.MineralReader;
 import controller.map.readerng.MinotaurReader;
-import controller.map.readerng.MountainReader;
-import controller.map.readerng.OasisReader;
 import controller.map.readerng.OgreReader;
 import controller.map.readerng.PhoenixReader;
 import controller.map.readerng.PlayerReader;
 import controller.map.readerng.ResourceReader;
 import controller.map.readerng.RiverReader;
-import controller.map.readerng.SandbarReader;
 import controller.map.readerng.ShrubReader;
 import controller.map.readerng.SimurghReader;
 import controller.map.readerng.SkillReader;
@@ -100,14 +94,14 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		for (INodeHandler<?> reader : Arrays.asList(new AnimalReader(), new CacheReader(),
 				new CentaurReader(), new CityReader(),
 				new DjinnReader(), new DragonReader(), new FairyReader(),
-				new ForestReader(), new FortificationReader(), new FortressReader(),
-				new GiantReader(), new GriffinReader(), new GroundReader(),
-				new GroveReader(), new HillReader(), new ImplementReader(),
+				new FortificationReader(), new FortressReader(),
+				new GiantReader(), new GriffinReader(),
+				new GroveReader(), new ImplementReader(),
 				new JobReader(), new MapNGReader(), new MeadowReader(), new MineralReader(),
-				new MineReader(), new MinotaurReader(), new MountainReader(),
-				new OasisReader(), new OgreReader(), new PhoenixReader(),
+				new MineReader(), new MinotaurReader(),
+				new OgreReader(), new PhoenixReader(),
 				new PlayerReader(), new ResourceReader(),
-				new SandbarReader(), new RiverReader(), new ShrubReader(),
+				new RiverReader(), new ShrubReader(),
 				new SimurghReader(), new SkillReader(), new SphinxReader(),
 				new StatsReader(), new StoneReader(), new TextReader(), new TownReader(),
 				new TrollReader(), new UnitReader(), new VillageReader(),
@@ -120,6 +114,12 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		readers.put("portal", FluidExplorableHandler::readPortal);
 		readers.put("cave", FluidExplorableHandler::readCave);
 		readers.put("battlefield", FluidExplorableHandler::readBattlefield);
+		readers.put("ground", FluidTerrainHandler::readGround);
+		readers.put("forest", FluidTerrainHandler::readForest);
+		readers.put("hill", FluidTerrainHandler::readHill);
+		readers.put("mountain", FluidTerrainHandler::readMountain);
+		readers.put("oasis", FluidTerrainHandler::readOasis);
+		readers.put("sandbar", FluidTerrainHandler::readSandbar);
 	}
 	/**
 	 * @param <T>     A supertype of the object the XML represents

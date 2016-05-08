@@ -294,6 +294,7 @@ public final class XMLHelper {
 	}
 
 	/**
+	 * TODO: Match other methods here and take ostream instead of returning String.
 	 * @param obj an object being written out that might have a custom image
 	 * @return the XML for the image if it does, or the empty string if not
 	 */
@@ -450,5 +451,19 @@ public final class XMLHelper {
 			ostream.append(value);
 			ostream.append('"');
 		}
+	}
+	/**
+	 * Write an attribute whose value is a boolean value. And the space before it.
+	 * @param ostream the stream to write to
+	 * @param name the name of the attribute to write
+	 * @param value the value of the attribute
+	 * @throws IOException on I/O error
+	 */
+	public static final void writeBooleanAttribute(final Appendable ostream, final String name, final boolean value) throws IOException {
+		ostream.append(' ');
+		ostream.append(name);
+		ostream.append("=\"");
+		ostream.append(Boolean.toString(value));
+		ostream.append('"');
 	}
 }
