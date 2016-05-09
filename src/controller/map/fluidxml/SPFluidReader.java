@@ -7,17 +7,10 @@ import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
 import controller.map.misc.TypesafeXMLEventReader;
-import controller.map.readerng.AnimalReader;
 import controller.map.readerng.CacheReader;
-import controller.map.readerng.CentaurReader;
 import controller.map.readerng.CityReader;
-import controller.map.readerng.DjinnReader;
-import controller.map.readerng.DragonReader;
-import controller.map.readerng.FairyReader;
 import controller.map.readerng.FortificationReader;
 import controller.map.readerng.FortressReader;
-import controller.map.readerng.GiantReader;
-import controller.map.readerng.GriffinReader;
 import controller.map.readerng.GroveReader;
 import controller.map.readerng.INodeHandler;
 import controller.map.readerng.ImplementReader;
@@ -26,21 +19,15 @@ import controller.map.readerng.MapNGReader;
 import controller.map.readerng.MeadowReader;
 import controller.map.readerng.MineReader;
 import controller.map.readerng.MineralReader;
-import controller.map.readerng.MinotaurReader;
-import controller.map.readerng.OgreReader;
-import controller.map.readerng.PhoenixReader;
 import controller.map.readerng.PlayerReader;
 import controller.map.readerng.ResourceReader;
 import controller.map.readerng.RiverReader;
 import controller.map.readerng.ShrubReader;
-import controller.map.readerng.SimurghReader;
 import controller.map.readerng.SkillReader;
-import controller.map.readerng.SphinxReader;
 import controller.map.readerng.StatsReader;
 import controller.map.readerng.StoneReader;
 import controller.map.readerng.TextReader;
 import controller.map.readerng.TownReader;
-import controller.map.readerng.TrollReader;
 import controller.map.readerng.UnitReader;
 import controller.map.readerng.VillageReader;
 import controller.map.readerng.WorkerReader;
@@ -51,17 +38,35 @@ import java.io.Reader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.IntFunction;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import model.map.HasMutableImage;
 import model.map.IMutableMapNG;
 import model.map.IMutablePlayerCollection;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
+import model.map.fixtures.mobile.Djinn;
+import model.map.fixtures.mobile.Griffin;
+import model.map.fixtures.mobile.Minotaur;
+import model.map.fixtures.mobile.Ogre;
+import model.map.fixtures.mobile.Phoenix;
+import model.map.fixtures.mobile.Simurgh;
+import model.map.fixtures.mobile.Sphinx;
+import model.map.fixtures.mobile.Troll;
+import model.map.fixtures.terrain.Hill;
+import model.map.fixtures.terrain.Oasis;
+import model.map.fixtures.terrain.Sandbar;
 import org.eclipse.jdt.annotation.NonNull;
 import util.IteratorWrapper;
-import util.NullCleaner;
 import util.Warning;
+
+import static controller.map.fluidxml.XMLHelper.getAttribute;
+import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
+import static controller.map.fluidxml.XMLHelper.requireTag;
+import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
+import static util.NullCleaner.assertNotNull;
 
 /**
  * The main reader-from-XML class in the 'fluid XML' implementation.
@@ -91,20 +96,17 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 */
 	private final Map<String, FluidXMLReader> readers = new HashMap<>();
 	public SPFluidReader() {
-		for (INodeHandler<?> reader : Arrays.asList(new AnimalReader(), new CacheReader(),
-				new CentaurReader(), new CityReader(),
-				new DjinnReader(), new DragonReader(), new FairyReader(),
+		for (INodeHandler<?> reader : Arrays.asList(new CacheReader(),
+				new CityReader(),
 				new FortificationReader(), new FortressReader(),
-				new GiantReader(), new GriffinReader(),
 				new GroveReader(), new ImplementReader(),
 				new JobReader(), new MapNGReader(), new MeadowReader(), new MineralReader(),
-				new MineReader(), new MinotaurReader(),
-				new OgreReader(), new PhoenixReader(),
+				new MineReader(),
 				new PlayerReader(), new ResourceReader(),
 				new RiverReader(), new ShrubReader(),
-				new SimurghReader(), new SkillReader(), new SphinxReader(),
+				new SkillReader(),
 				new StatsReader(), new StoneReader(), new TextReader(), new TownReader(),
-				new TrollReader(), new UnitReader(), new VillageReader(),
+				new UnitReader(), new VillageReader(),
 				new WorkerReader())) {
 			for (final String tag : reader.understands()) {
 				readers.put(tag, reader::parse);
@@ -116,10 +118,23 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		readers.put("battlefield", FluidExplorableHandler::readBattlefield);
 		readers.put("ground", FluidTerrainHandler::readGround);
 		readers.put("forest", FluidTerrainHandler::readForest);
-		readers.put("hill", FluidTerrainHandler::readHill);
+		addSimpleFixtureReader("hill", Hill::new);
 		readers.put("mountain", FluidTerrainHandler::readMountain);
-		readers.put("oasis", FluidTerrainHandler::readOasis);
-		readers.put("sandbar", FluidTerrainHandler::readSandbar);
+		addSimpleFixtureReader("oasis", Oasis::new);
+		addSimpleFixtureReader("sandbar", Sandbar::new);
+		addSimpleFixtureReader("djinn", Djinn::new);
+		addSimpleFixtureReader("griffin", Griffin::new);
+		addSimpleFixtureReader("minotaur", Minotaur::new);
+		addSimpleFixtureReader("ogre", Ogre::new);
+		addSimpleFixtureReader("phoenix", Phoenix::new);
+		addSimpleFixtureReader("simurgh", Simurgh::new);
+		addSimpleFixtureReader("sphinx", Sphinx::new);
+		addSimpleFixtureReader("troll", Troll::new);
+		readers.put("animal", FluidMobileHandler::readAnimal);
+		readers.put("centaur", FluidMobileHandler::readCentaur);
+		readers.put("dragon", FluidMobileHandler::readDragon);
+		readers.put("fairy", FluidMobileHandler::readFairy);
+		readers.put("giant", FluidMobileHandler::readGiant);
 	}
 	/**
 	 * @param <T>     A supertype of the object the XML represents
@@ -143,7 +158,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		for (final XMLEvent event : eventReader) {
 			if (event.isStartElement()) {
 				final Object retval = readSPObject(
-						NullCleaner.assertNotNull(event.asStartElement()),
+						assertNotNull(event.asStartElement()),
 						eventReader, players, warner, idFactory);
 				if (type.isAssignableFrom(retval.getClass())) {
 					//noinspection unchecked
@@ -215,5 +230,24 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		} else {
 			throw new UnsupportedTagException(element);
 		}
+	}
+
+	/**
+	 * Create a reader for a simple object having only an ID number and maybe an image,
+	 * and add this reader to our collection.
+	 * @param tag the tag this class should be instantiated from
+	 * @param constr the constructor to create an object of the class. Must take the ID
+	 *                  number in its constructor, and nothing else.
+	 */
+	private void addSimpleFixtureReader(final String tag, final IntFunction<?> constr) {
+		readers.put(tag, (element, stream, players, warner, idFactory) -> {
+			requireTag(element, tag);
+			spinUntilEnd(assertNotNull(element.getName()), stream);
+			final Object retval = constr.apply(getOrGenerateID(element, warner, idFactory));
+			if (retval instanceof HasMutableImage) {
+				((HasMutableImage) retval).setImage(getAttribute(element, "image", ""));
+			}
+			return retval;
+		});
 	}
 }

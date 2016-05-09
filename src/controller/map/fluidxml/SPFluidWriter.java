@@ -3,7 +3,6 @@ package controller.map.fluidxml;
 import controller.map.cxml.AbstractCompactReader;
 import controller.map.cxml.CompactImplementReader;
 import controller.map.cxml.CompactMapNGReader;
-import controller.map.cxml.CompactMobileReader;
 import controller.map.cxml.CompactPlayerReader;
 import controller.map.cxml.CompactReader;
 import controller.map.cxml.CompactResourcePileReader;
@@ -22,6 +21,9 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import model.map.HasImage;
+import model.map.HasKind;
+import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.River;
 import model.map.fixtures.Ground;
@@ -30,11 +32,29 @@ import model.map.fixtures.explorable.AdventureFixture;
 import model.map.fixtures.explorable.Battlefield;
 import model.map.fixtures.explorable.Cave;
 import model.map.fixtures.explorable.Portal;
+import model.map.fixtures.mobile.Animal;
+import model.map.fixtures.mobile.Centaur;
+import model.map.fixtures.mobile.Djinn;
+import model.map.fixtures.mobile.Dragon;
+import model.map.fixtures.mobile.Fairy;
+import model.map.fixtures.mobile.Giant;
+import model.map.fixtures.mobile.Griffin;
+import model.map.fixtures.mobile.Minotaur;
+import model.map.fixtures.mobile.Ogre;
+import model.map.fixtures.mobile.Phoenix;
+import model.map.fixtures.mobile.Simurgh;
+import model.map.fixtures.mobile.Sphinx;
+import model.map.fixtures.mobile.Troll;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
+
+import static controller.map.fluidxml.XMLHelper.imageXML;
+import static controller.map.fluidxml.XMLHelper.writeAttribute;
+import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
+import static controller.map.fluidxml.XMLHelper.writeTag;
 
 /**
  * The main writer-to-XML class in the 'fluid XML' implementation.
@@ -63,7 +83,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	public SPFluidWriter() {
 		for (CompactReader writer : Arrays.asList(
 				CompactImplementReader.READER, CompactMapNGReader.READER,
-				CompactMobileReader.READER, CompactPlayerReader.READER,
+				CompactPlayerReader.READER,
 				CompactResourcePileReader.READER, CompactResourceReader.READER,
 				CompactTextReader.READER, CompactTownReader.READER,
 				CompactUnitReader.READER, CompactWorkerReader.READER)) {
@@ -92,10 +112,23 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		writers.put(Cave.class, FluidExplorableHandler::writeCave);
 		writers.put(Ground.class, FluidTerrainHandler::writeGround);
 		writers.put(Forest.class, FluidTerrainHandler::writeForest);
-		writers.put(Hill.class, FluidTerrainHandler::writeHill);
-		writers.put(Oasis.class, FluidTerrainHandler::writeOasis);
-		writers.put(Sandbar.class, FluidTerrainHandler::writeSandbar);
+		addSimpleFixtureWriter(Hill.class, "hill");
+		addSimpleFixtureWriter(Oasis.class, "oasis");
+		addSimpleFixtureWriter(Sandbar.class, "sandbar");
 		writers.put(Mountain.class, FluidTerrainHandler::writeMountain);
+		writers.put(Animal.class, FluidMobileHandler::writeAnimal);
+		addSimpleFixtureWriter(Centaur.class, "centaur");
+		addSimpleFixtureWriter(Djinn.class, "djinn");
+		addSimpleFixtureWriter(Dragon.class, "dragon");
+		addSimpleFixtureWriter(Fairy.class, "fairy");
+		addSimpleFixtureWriter(Giant.class, "giant");
+		addSimpleFixtureWriter(Griffin.class, "griffin");
+		addSimpleFixtureWriter(Minotaur.class, "minotaur");
+		addSimpleFixtureWriter(Ogre.class, "ogre");
+		addSimpleFixtureWriter(Phoenix.class, "phoenix");
+		addSimpleFixtureWriter(Simurgh.class, "simurgh");
+		addSimpleFixtureWriter(Sphinx.class, "sphinx");
+		addSimpleFixtureWriter(Troll.class, "troll");
 	}
 	@Override
 	public void writeSPObject(final Appendable ostream, final Object obj,
@@ -121,5 +154,30 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	@Override
 	public void write(final Appendable ostream, final IMapNG map) throws IOException {
 		writeSPObject(ostream, map, 0);
+	}
+	/**
+	 * Create a writer for the simplest cases (only an ID number and maybe an image, or
+	 * an ID number and a kind), and add this writer to our collection.
+	 * @param cls the class of objects to use this writer for
+	 * @param tag the tag to be used for this class
+	 */
+	private void addSimpleFixtureWriter(final Class<?> cls, final String tag) {
+		writers.put(cls, (ostream, obj, indent) -> {
+			if (!(cls.isInstance(obj))) {
+				throw new IllegalArgumentException("Can only write " +
+														   cls.getSimpleName());
+			} else if (!(obj instanceof IFixture)) {
+				throw new IllegalStateException("Can only 'simply' write fixtures");
+			}
+			writeTag(ostream, tag, indent);
+			if (obj instanceof HasKind) {
+				writeAttribute(ostream, "kind", ((HasKind) obj).getKind());
+			}
+			writeIntegerAttribute(ostream, "id", ((IFixture) obj).getID());
+			if (obj instanceof HasImage) {
+				ostream.append(imageXML((HasImage) obj));
+			}
+			ostream.append(" />\n");
+		});
 	}
 }
