@@ -1,17 +1,22 @@
 package controller.map.fluidxml;
 
 import controller.map.formatexceptions.SPFormatException;
+import controller.map.formatexceptions.UnwantedChildException;
+import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import java.io.IOException;
+import javax.xml.XMLConstants;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.Player;
 import model.map.PointFactory;
+import model.map.fixtures.TextFixture;
 import model.map.fixtures.explorable.AdventureFixture;
 import model.map.fixtures.explorable.Battlefield;
 import model.map.fixtures.explorable.Cave;
 import model.map.fixtures.explorable.Portal;
+import util.EqualsAny;
 import util.Warning;
 
 import static controller.map.fluidxml.XMLHelper.getAttribute;
@@ -157,6 +162,48 @@ public class FluidExplorableHandler {
 		return retval;
 	}
 	/**
+	 * Parse a TextFixture.
+	 *
+	 * @param element   the element to parse
+	 * @param stream    the stream to get more elements (in this case, the text) from
+	 * @param players   ignored
+	 * @param warner    the Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new
+	 *                     ones as
+	 *                  needed
+	 * @return the TextFixture
+	 * @throws SPFormatException on SP format error
+	 */
+	public static final TextFixture readTextFixture(final StartElement element,
+							 final Iterable<XMLEvent> stream,
+							 final IMutablePlayerCollection players,
+							 final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
+		requireTag(element, "text");
+		// Of all our uses of StringBuilder, here we can't know how much size
+		// we're going to need beforehand. But cases where we'll need more than
+		// 2K will be vanishingly rare in practice.
+		final StringBuilder sbuild = new StringBuilder(2048); // NOPMD
+		for (final XMLEvent event : stream) {
+			if (event.isStartElement() && EqualsAny.equalsAny(
+					assertNotNull(event.asStartElement().getName().getNamespaceURI()),
+					ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI)) {
+				throw new UnwantedChildException(assertNotNull(element.getName()),
+														assertNotNull(event.asStartElement()));
+			} else if (event.isCharacters()) {
+				sbuild.append(event.asCharacters().getData());
+			} else if (event.isEndElement() &&
+							   element.getName().equals(event.asEndElement().getName())) {
+				break;
+			}
+		}
+		final TextFixture fix =
+				new TextFixture(assertNotNull(sbuild.toString().trim()),
+									   getIntegerAttribute(element, "turn", -1));
+		fix.setImage(getAttribute(element, "image", ""));
+		return fix;
+	}
+	/**
 	 * Write an adventure hook to XML.
 	 * @param ostream the stream to write to
 	 * @param obj the object to write to the stream. Must be an AdventureFixture.
@@ -245,6 +292,28 @@ public class FluidExplorableHandler {
 		writeIntegerAttribute(ostream, "id", field.getID());
 		ostream.append(imageXML(field));
 		ostream.append(" />\n");
+	}
+	/**
+	 * Write an arbitrary-text note to XML.
+	 * @param ostream the stream to write to
+	 * @param obj the object to write to the stream. Must be a TextFixture.
+	 * @param indent the current indentation level
+	 * @throws IOException on I/O error
+	 * @throws IllegalArgumentException if obj is not the type we expect
+	 */
+	public static void writeTextFixture(final Appendable ostream, final Object obj, final int indent) throws IOException {
+		if (!(obj instanceof TextFixture)) {
+			throw new IllegalArgumentException("Can only write TextFixture");
+		}
+		final TextFixture fix = (TextFixture) obj;
+		writeTag(ostream, "text", indent);
+		if (fix.getTurn() != -1) {
+			writeIntegerAttribute(ostream, "turn", fix.getTurn());
+		}
+		ostream.append(imageXML(fix));
+		ostream.append('>');
+		ostream.append(fix.getText().trim());
+		ostream.append("</text>\n");
 	}
 }
 

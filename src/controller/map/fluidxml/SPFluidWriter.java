@@ -28,6 +28,7 @@ import model.map.IMapNG;
 import model.map.River;
 import model.map.fixtures.Ground;
 import model.map.fixtures.RiverFixture;
+import model.map.fixtures.TextFixture;
 import model.map.fixtures.explorable.AdventureFixture;
 import model.map.fixtures.explorable.Battlefield;
 import model.map.fixtures.explorable.Cave;
@@ -85,7 +86,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 				CompactImplementReader.READER, CompactMapNGReader.READER,
 				CompactPlayerReader.READER,
 				CompactResourcePileReader.READER, CompactResourceReader.READER,
-				CompactTextReader.READER, CompactTownReader.READER,
+				CompactTownReader.READER,
 				CompactUnitReader.READER, CompactWorkerReader.READER)) {
 			Type type = writer.getClass().getGenericSuperclass();
 			while (!(type instanceof ParameterizedType) || ((ParameterizedType) type).getRawType() != AbstractCompactReader.class) {
@@ -129,6 +130,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		addSimpleFixtureWriter(Simurgh.class, "simurgh");
 		addSimpleFixtureWriter(Sphinx.class, "sphinx");
 		addSimpleFixtureWriter(Troll.class, "troll");
+		writers.put(TextFixture.class, FluidExplorableHandler::writeTextFixture);
 	}
 	@Override
 	public void writeSPObject(final Appendable ostream, final Object obj,

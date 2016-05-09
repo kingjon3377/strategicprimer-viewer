@@ -26,7 +26,6 @@ import controller.map.readerng.ShrubReader;
 import controller.map.readerng.SkillReader;
 import controller.map.readerng.StatsReader;
 import controller.map.readerng.StoneReader;
-import controller.map.readerng.TextReader;
 import controller.map.readerng.TownReader;
 import controller.map.readerng.UnitReader;
 import controller.map.readerng.VillageReader;
@@ -105,7 +104,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 				new PlayerReader(), new ResourceReader(),
 				new RiverReader(), new ShrubReader(),
 				new SkillReader(),
-				new StatsReader(), new StoneReader(), new TextReader(), new TownReader(),
+				new StatsReader(), new StoneReader(), new TownReader(),
 				new UnitReader(), new VillageReader(),
 				new WorkerReader())) {
 			for (final String tag : reader.understands()) {
@@ -135,6 +134,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		readers.put("dragon", FluidMobileHandler::readDragon);
 		readers.put("fairy", FluidMobileHandler::readFairy);
 		readers.put("giant", FluidMobileHandler::readGiant);
+		readers.put("text", FluidExplorableHandler::readTextFixture);
 	}
 	/**
 	 * @param <T>     A supertype of the object the XML represents
