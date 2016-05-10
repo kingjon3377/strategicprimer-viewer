@@ -6,7 +6,6 @@ import controller.map.cxml.CompactPlayerReader;
 import controller.map.cxml.CompactReader;
 import controller.map.cxml.CompactTownReader;
 import controller.map.cxml.CompactUnitReader;
-import controller.map.cxml.CompactWorkerReader;
 import controller.map.iointerfaces.SPWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -38,12 +37,16 @@ import model.map.fixtures.mobile.Dragon;
 import model.map.fixtures.mobile.Fairy;
 import model.map.fixtures.mobile.Giant;
 import model.map.fixtures.mobile.Griffin;
+import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.Minotaur;
 import model.map.fixtures.mobile.Ogre;
 import model.map.fixtures.mobile.Phoenix;
 import model.map.fixtures.mobile.Simurgh;
 import model.map.fixtures.mobile.Sphinx;
 import model.map.fixtures.mobile.Troll;
+import model.map.fixtures.mobile.worker.IJob;
+import model.map.fixtures.mobile.worker.ISkill;
+import model.map.fixtures.mobile.worker.WorkerStats;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.resources.Grove;
 import model.map.fixtures.resources.Meadow;
@@ -91,7 +94,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 				CompactMapNGReader.READER,
 				CompactPlayerReader.READER,
 				CompactTownReader.READER,
-				CompactUnitReader.READER, CompactWorkerReader.READER)) {
+				CompactUnitReader.READER)) {
 			Type type = writer.getClass().getGenericSuperclass();
 			while (!(type instanceof ParameterizedType) || ((ParameterizedType) type).getRawType() != AbstractCompactReader.class) {
 				if (type instanceof ParameterizedType) {
@@ -144,6 +147,10 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		writers.put(MineralVein.class, FluidResourceHandler::writeMineral);
 		addSimpleFixtureWriter(Shrub.class, "shrub");
 		writers.put(StoneDeposit.class, FluidResourceHandler::writeStone);
+		writers.put(IWorker.class, FluidWorkerHandler::writeWorker);
+		writers.put(IJob.class, FluidWorkerHandler::writeJob);
+		writers.put(ISkill.class, FluidWorkerHandler::writeSkill);
+		writers.put(WorkerStats.class, FluidWorkerHandler::writeStats);
 	}
 	@Override
 	public void writeSPObject(final Appendable ostream, final Object obj,

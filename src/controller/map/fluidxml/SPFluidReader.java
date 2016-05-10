@@ -11,16 +11,12 @@ import controller.map.readerng.CityReader;
 import controller.map.readerng.FortificationReader;
 import controller.map.readerng.FortressReader;
 import controller.map.readerng.INodeHandler;
-import controller.map.readerng.JobReader;
 import controller.map.readerng.MapNGReader;
 import controller.map.readerng.PlayerReader;
 import controller.map.readerng.RiverReader;
-import controller.map.readerng.SkillReader;
-import controller.map.readerng.StatsReader;
 import controller.map.readerng.TownReader;
 import controller.map.readerng.UnitReader;
 import controller.map.readerng.VillageReader;
-import controller.map.readerng.WorkerReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -88,13 +84,11 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	public SPFluidReader() {
 		for (INodeHandler<?> reader : Arrays.asList(new CityReader(),
 				new FortificationReader(), new FortressReader(),
-				new JobReader(), new MapNGReader(),
+				new MapNGReader(),
 				new PlayerReader(),
 				new RiverReader(),
-				new SkillReader(),
-				new StatsReader(), new TownReader(),
-				new UnitReader(), new VillageReader(),
-				new WorkerReader())) {
+				new TownReader(),
+				new UnitReader(), new VillageReader())) {
 			for (final String tag : reader.understands()) {
 				readers.put(tag, reader::parse);
 			}
@@ -134,6 +128,10 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		readers.put("mineral", FluidResourceHandler::readMineral);
 		readers.put("shrub", FluidResourceHandler::readShrub);
 		readers.put("stone", FluidResourceHandler::readStone);
+		readers.put("worker", FluidWorkerHandler::readWorker);
+		readers.put("job", FluidWorkerHandler::readJob);
+		readers.put("skill", FluidWorkerHandler::readSkill);
+		readers.put("stats", FluidWorkerHandler::readStats);
 	}
 	/**
 	 * @param <T>     A supertype of the object the XML represents
