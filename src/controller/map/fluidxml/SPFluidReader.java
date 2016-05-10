@@ -11,7 +11,6 @@ import controller.map.misc.IncludingIterator;
 import controller.map.misc.TypesafeXMLEventReader;
 import controller.map.readerng.CityReader;
 import controller.map.readerng.FortificationReader;
-import controller.map.readerng.FortressReader;
 import controller.map.readerng.INodeHandler;
 import controller.map.readerng.MapNGReader;
 import controller.map.readerng.PlayerReader;
@@ -56,9 +55,8 @@ import util.Warning;
 
 import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
-import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
-import static controller.map.fluidxml.XMLHelper.hasAttribute;
+import static controller.map.fluidxml.XMLHelper.getPlayerOrIndependent;
 import static controller.map.fluidxml.XMLHelper.requireNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.requireTag;
 import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
@@ -288,7 +286,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 			warner.warn(new MissingPropertyException(element, "kind"));
 		}
 		final Unit retval =
-				new Unit(players.getPlayer(getIntegerAttribute(element, "owner", -1)),
+				new Unit(getPlayerOrIndependent(element, warner, players),
 								kind, getAttribute(element, "name", ""),
 								getOrGenerateID(element, warner, idFactory));
 		retval.setImage(getAttribute(element, "image", ""));
@@ -334,15 +332,10 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		requireNonEmptyAttribute(element, "owner", false, warner);
 		requireNonEmptyAttribute(element, "name", false, warner);
 		final Player owner;
-		if (hasAttribute(element, "owner")) {
-			owner = players.getPlayer(getIntegerAttribute(element, "owner"));
-		} else {
-			warner.warn(new MissingPropertyException(element, "owner"));
-			owner = players.getIndependent();
-		}
-		final Fortress retval = new Fortress(owner, getAttribute(element, "name", ""),
-													getOrGenerateID(element, warner,
-															idFactory));
+		final Fortress retval =
+				new Fortress(getPlayerOrIndependent(element, warner, players),
+									getAttribute(element, "name", ""),
+									getOrGenerateID(element, warner, idFactory));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final Object child =

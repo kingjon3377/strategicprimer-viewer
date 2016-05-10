@@ -20,6 +20,8 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.HasImage;
 import model.map.HasPortrait;
+import model.map.IPlayerCollection;
+import model.map.Player;
 import org.eclipse.jdt.annotation.Nullable;
 import util.EqualsAny;
 import util.NullCleaner;
@@ -465,5 +467,29 @@ public final class XMLHelper {
 		ostream.append("=\"");
 		ostream.append(Boolean.toString(value));
 		ostream.append('"');
+	}
+	/**
+	 * If the specified tag has an "owner" property, return the player it indicates;
+	 * otherwise warn about its absence and return the "independent" player from the
+	 * player collection.
+	 *
+	 * @param element the tag we're working with
+	 * @param warner  the Warning instance to send the warning on
+	 * @param players the collection of players to refer to
+	 * @return a suitable player
+	 * @throws SPFormatException on SP format problems reading the attribute.
+	 */
+	public static final Player getPlayerOrIndependent(final StartElement element,
+										  final Warning warner,
+										  final IPlayerCollection players)
+			throws SPFormatException {
+		final Player retval; // NOPMD
+		if (hasAttribute(element, "owner") && !getAttribute(element, "owner").isEmpty()) {
+			retval = players.getPlayer(getIntegerAttribute(element, "owner"));
+		} else {
+			warner.warn(new MissingPropertyException(element, "owner"));
+			retval = players.getIndependent();
+		}
+		return retval;
 	}
 }
