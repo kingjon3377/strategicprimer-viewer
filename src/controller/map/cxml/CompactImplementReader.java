@@ -35,7 +35,9 @@ import util.Warning;
  *
  *         TODO: Should this also handle (under a different class name) other fortress
  *         members?
+ * @deprecated CompactXML is deprecated in favor of FluidXML
  */
+@Deprecated
 public final class CompactImplementReader extends AbstractCompactReader<Implement> {
 	/**
 	 * Singleton object.

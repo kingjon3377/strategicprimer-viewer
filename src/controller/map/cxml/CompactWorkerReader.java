@@ -46,7 +46,9 @@ import static util.EqualsAny.equalsAny;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
+ * @deprecated CompactXML is deprecated in favor of FluidXML
  */
+@Deprecated
 public final class CompactWorkerReader extends AbstractCompactReader<Worker> {
 	/**
 	 * Singleton object.

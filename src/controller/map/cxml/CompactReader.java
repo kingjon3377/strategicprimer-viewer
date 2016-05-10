@@ -32,7 +32,9 @@ import util.Warning;
  *
  * @param <T> the common supertype of all types this can return
  * @author Jonathan Lovelace
+ * @deprecated CompactXML is deprecated in favor of FluidXML
  */
+@Deprecated
 public interface CompactReader<@NonNull T> {
 	/**
 	 * @param element   the element being parsed

@@ -50,7 +50,9 @@ import static java.lang.String.format;
  *
  * @param <T> a type parameter, since we now "implement" the interface
  * @author Jonathan Lovelace
+ * @deprecated CompactXML is deprecated in favor of FluidXML
  */
+@Deprecated
 public abstract class AbstractCompactReader<@NonNull T>
 		implements CompactReader<@NonNull T> {
 	/**

@@ -46,7 +46,9 @@ import static java.util.Collections.unmodifiableList;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
+ * @deprecated CompactXML is deprecated in favor of FluidXML
  */
+@Deprecated
 public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	/**
 	 * The tag used for a unit.

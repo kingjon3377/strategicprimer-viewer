@@ -45,7 +45,9 @@ import util.Warning;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
+ * @deprecated CompactXML is deprecated in favor of FluidXML
  */
+@Deprecated
 public final class CompactXMLReader implements IMapReader, ISPReader {
 	/**
 	 * @param <T>     A supertype of the object the XML represents

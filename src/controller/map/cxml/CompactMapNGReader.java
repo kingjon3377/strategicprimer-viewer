@@ -61,7 +61,9 @@ import static util.NullCleaner.assertNotNull;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
+ * @deprecated CompactXML is deprecated in favor of FluidXML
  */
+@Deprecated
 public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	/**
 	 * Singleton instance.

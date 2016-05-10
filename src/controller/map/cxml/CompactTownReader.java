@@ -57,7 +57,9 @@ import util.Warning;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
+ * @deprecated CompactXML is deprecated in favor of FluidXML
  */
+@Deprecated
 public final class CompactTownReader extends AbstractCompactReader<ITownFixture> {
 	/**
 	 * Logger.

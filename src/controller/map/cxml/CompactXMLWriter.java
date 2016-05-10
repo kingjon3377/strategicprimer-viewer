@@ -28,7 +28,9 @@ import model.map.IMapNG;
  * <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.
  *
  * @author Jonathan Lovelace
+ * @deprecated CompactXML is deprecated in favor of FluidXML
  */
+@Deprecated
 public final class CompactXMLWriter implements SPWriter {
 	/**
 	 * Write a map to file.
