@@ -4,7 +4,6 @@ import controller.map.cxml.AbstractCompactReader;
 import controller.map.cxml.CompactMapNGReader;
 import controller.map.cxml.CompactPlayerReader;
 import controller.map.cxml.CompactReader;
-import controller.map.cxml.CompactTownReader;
 import controller.map.iointerfaces.SPWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -62,7 +61,9 @@ import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
+import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.Fortress;
+import model.map.fixtures.towns.Village;
 
 import static controller.map.fluidxml.XMLHelper.imageXML;
 import static controller.map.fluidxml.XMLHelper.indent;
@@ -98,8 +99,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	public SPFluidWriter() {
 		for (CompactReader writer : Arrays.asList(
 				CompactMapNGReader.READER,
-				CompactPlayerReader.READER,
-				CompactTownReader.READER)) {
+				CompactPlayerReader.READER)) {
 			Type type = writer.getClass().getGenericSuperclass();
 			while (!(type instanceof ParameterizedType) || ((ParameterizedType) type).getRawType() != AbstractCompactReader.class) {
 				if (type instanceof ParameterizedType) {
@@ -158,6 +158,8 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		writers.put(WorkerStats.class, FluidWorkerHandler::writeStats);
 		writers.put(IUnit.class, this::writeUnit);
 		writers.put(Fortress.class, this::writeFortress);
+		writers.put(Village.class, FluidTownHandler::writeVillage);
+		writers.put(AbstractTown.class, FluidTownHandler::writeTown);
 	}
 	@Override
 	public void writeSPObject(final Appendable ostream, final Object obj,

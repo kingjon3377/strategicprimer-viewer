@@ -9,14 +9,10 @@ import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
 import controller.map.misc.TypesafeXMLEventReader;
-import controller.map.readerng.CityReader;
-import controller.map.readerng.FortificationReader;
 import controller.map.readerng.INodeHandler;
 import controller.map.readerng.MapNGReader;
 import controller.map.readerng.PlayerReader;
 import controller.map.readerng.RiverReader;
-import controller.map.readerng.TownReader;
-import controller.map.readerng.VillageReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -90,13 +86,9 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 */
 	private final Map<String, FluidXMLReader> readers = new HashMap<>();
 	public SPFluidReader() {
-		for (INodeHandler<?> reader : Arrays.asList(new CityReader(),
-				new FortificationReader(),
-				new MapNGReader(),
+		for (INodeHandler<?> reader : Arrays.asList(new MapNGReader(),
 				new PlayerReader(),
-				new RiverReader(),
-				new TownReader(),
-				new VillageReader())) {
+				new RiverReader())) {
 			for (final String tag : reader.understands()) {
 				readers.put(tag, reader::parse);
 			}
@@ -142,6 +134,10 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		readers.put("stats", FluidWorkerHandler::readStats);
 		readers.put("unit", this::readUnit);
 		readers.put("fortress", this::readFortress);
+		readers.put("town", FluidTownHandler::readTown);
+		readers.put("city", FluidTownHandler::readCity);
+		readers.put("fortification", FluidTownHandler::readFortification);
+		readers.put("village", FluidTownHandler::readVillage);
 	}
 	/**
 	 * @param <T>     A supertype of the object the XML represents
