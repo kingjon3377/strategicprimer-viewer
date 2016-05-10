@@ -7,25 +7,16 @@ import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
 import controller.map.misc.TypesafeXMLEventReader;
-import controller.map.readerng.CacheReader;
 import controller.map.readerng.CityReader;
 import controller.map.readerng.FortificationReader;
 import controller.map.readerng.FortressReader;
-import controller.map.readerng.GroveReader;
 import controller.map.readerng.INodeHandler;
-import controller.map.readerng.ImplementReader;
 import controller.map.readerng.JobReader;
 import controller.map.readerng.MapNGReader;
-import controller.map.readerng.MeadowReader;
-import controller.map.readerng.MineReader;
-import controller.map.readerng.MineralReader;
 import controller.map.readerng.PlayerReader;
-import controller.map.readerng.ResourceReader;
 import controller.map.readerng.RiverReader;
-import controller.map.readerng.ShrubReader;
 import controller.map.readerng.SkillReader;
 import controller.map.readerng.StatsReader;
-import controller.map.readerng.StoneReader;
 import controller.map.readerng.TownReader;
 import controller.map.readerng.UnitReader;
 import controller.map.readerng.VillageReader;
@@ -95,16 +86,13 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 */
 	private final Map<String, FluidXMLReader> readers = new HashMap<>();
 	public SPFluidReader() {
-		for (INodeHandler<?> reader : Arrays.asList(new CacheReader(),
-				new CityReader(),
+		for (INodeHandler<?> reader : Arrays.asList(new CityReader(),
 				new FortificationReader(), new FortressReader(),
-				new GroveReader(), new ImplementReader(),
-				new JobReader(), new MapNGReader(), new MeadowReader(), new MineralReader(),
-				new MineReader(),
-				new PlayerReader(), new ResourceReader(),
-				new RiverReader(), new ShrubReader(),
+				new JobReader(), new MapNGReader(),
+				new PlayerReader(),
+				new RiverReader(),
 				new SkillReader(),
-				new StatsReader(), new StoneReader(), new TownReader(),
+				new StatsReader(), new TownReader(),
 				new UnitReader(), new VillageReader(),
 				new WorkerReader())) {
 			for (final String tag : reader.understands()) {
@@ -135,6 +123,17 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		readers.put("fairy", FluidMobileHandler::readFairy);
 		readers.put("giant", FluidMobileHandler::readGiant);
 		readers.put("text", FluidExplorableHandler::readTextFixture);
+		readers.put("implement", FluidResourceHandler::readImplement);
+		readers.put("resource", FluidResourceHandler::readResource);
+		readers.put("cache", FluidResourceHandler::readCache);
+		readers.put("grove", FluidResourceHandler::readGrove);
+		readers.put("orchard", FluidResourceHandler::readOrchard);
+		readers.put("meadow", FluidResourceHandler::readMeadow);
+		readers.put("field", FluidResourceHandler::readField);
+		readers.put("mine", FluidResourceHandler::readMine);
+		readers.put("mineral", FluidResourceHandler::readMineral);
+		readers.put("shrub", FluidResourceHandler::readShrub);
+		readers.put("stone", FluidResourceHandler::readStone);
 	}
 	/**
 	 * @param <T>     A supertype of the object the XML represents

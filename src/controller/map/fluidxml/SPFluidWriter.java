@@ -1,13 +1,9 @@
 package controller.map.fluidxml;
 
 import controller.map.cxml.AbstractCompactReader;
-import controller.map.cxml.CompactImplementReader;
 import controller.map.cxml.CompactMapNGReader;
 import controller.map.cxml.CompactPlayerReader;
 import controller.map.cxml.CompactReader;
-import controller.map.cxml.CompactResourcePileReader;
-import controller.map.cxml.CompactResourceReader;
-import controller.map.cxml.CompactTextReader;
 import controller.map.cxml.CompactTownReader;
 import controller.map.cxml.CompactUnitReader;
 import controller.map.cxml.CompactWorkerReader;
@@ -27,6 +23,8 @@ import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.River;
 import model.map.fixtures.Ground;
+import model.map.fixtures.Implement;
+import model.map.fixtures.ResourcePile;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.explorable.AdventureFixture;
@@ -46,6 +44,13 @@ import model.map.fixtures.mobile.Phoenix;
 import model.map.fixtures.mobile.Simurgh;
 import model.map.fixtures.mobile.Sphinx;
 import model.map.fixtures.mobile.Troll;
+import model.map.fixtures.resources.CacheFixture;
+import model.map.fixtures.resources.Grove;
+import model.map.fixtures.resources.Meadow;
+import model.map.fixtures.resources.Mine;
+import model.map.fixtures.resources.MineralVein;
+import model.map.fixtures.resources.Shrub;
+import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
@@ -83,9 +88,8 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	final Map<Class<?>, FluidXMLWriter> writers = new HashMap<>();
 	public SPFluidWriter() {
 		for (CompactReader writer : Arrays.asList(
-				CompactImplementReader.READER, CompactMapNGReader.READER,
+				CompactMapNGReader.READER,
 				CompactPlayerReader.READER,
-				CompactResourcePileReader.READER, CompactResourceReader.READER,
 				CompactTownReader.READER,
 				CompactUnitReader.READER, CompactWorkerReader.READER)) {
 			Type type = writer.getClass().getGenericSuperclass();
@@ -131,6 +135,15 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		addSimpleFixtureWriter(Sphinx.class, "sphinx");
 		addSimpleFixtureWriter(Troll.class, "troll");
 		writers.put(TextFixture.class, FluidExplorableHandler::writeTextFixture);
+		addSimpleFixtureWriter(Implement.class, "implement");
+		writers.put(ResourcePile.class, FluidResourceHandler::writeResource);
+		writers.put(CacheFixture.class, FluidResourceHandler::writeCache);
+		writers.put(Meadow.class, FluidResourceHandler::writeMeadow);
+		writers.put(Grove.class, FluidResourceHandler::writeGrove);
+		writers.put(Mine.class, FluidResourceHandler::writeMine);
+		writers.put(MineralVein.class, FluidResourceHandler::writeMineral);
+		addSimpleFixtureWriter(Shrub.class, "shrub");
+		writers.put(StoneDeposit.class, FluidResourceHandler::writeStone);
 	}
 	@Override
 	public void writeSPObject(final Appendable ostream, final Object obj,
