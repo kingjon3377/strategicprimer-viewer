@@ -32,8 +32,10 @@ import javax.xml.stream.events.XMLEvent;
 import model.map.HasMutableImage;
 import model.map.IMutableMapNG;
 import model.map.IMutablePlayerCollection;
+import model.map.Player;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
+import model.map.fixtures.FortressMember;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Djinn;
 import model.map.fixtures.mobile.Griffin;
@@ -47,6 +49,7 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
+import model.map.fixtures.towns.Fortress;
 import org.eclipse.jdt.annotation.NonNull;
 import util.IteratorWrapper;
 import util.Warning;
@@ -55,6 +58,7 @@ import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
+import static controller.map.fluidxml.XMLHelper.hasAttribute;
 import static controller.map.fluidxml.XMLHelper.requireNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.requireTag;
 import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
@@ -89,7 +93,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	private final Map<String, FluidXMLReader> readers = new HashMap<>();
 	public SPFluidReader() {
 		for (INodeHandler<?> reader : Arrays.asList(new CityReader(),
-				new FortificationReader(), new FortressReader(),
+				new FortificationReader(),
 				new MapNGReader(),
 				new PlayerReader(),
 				new RiverReader(),
@@ -139,6 +143,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		readers.put("skill", FluidWorkerHandler::readSkill);
 		readers.put("stats", FluidWorkerHandler::readStats);
 		readers.put("unit", this::readUnit);
+		readers.put("fortress", this::readFortress);
 	}
 	/**
 	 * @param <T>     A supertype of the object the XML represents
@@ -307,6 +312,56 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 			}
 		}
 		retval.setOrders(assertNotNull(orders.toString().trim()));
+		return retval;
+	}
+	/**
+	 * Parse a fortress.
+	 *
+	 * @param element   the XML element to parse
+	 * @param stream    the stream to read more elements from
+	 * @param players   the collection of players
+	 * @param warner    the Warning instance to use for warnings
+	 * @param idFactory the ID factory to use to generate IDs
+	 * @return the parsed fortress
+	 * @throws SPFormatException on SP format problems
+	 */
+	private Fortress readFortress(final StartElement element,
+											  final IteratorWrapper<XMLEvent> stream,
+											  final IMutablePlayerCollection players,
+											  final Warning warner,
+											  final IDFactory idFactory)
+			throws SPFormatException {
+		requireNonEmptyAttribute(element, "owner", false, warner);
+		requireNonEmptyAttribute(element, "name", false, warner);
+		final Player owner;
+		if (hasAttribute(element, "owner")) {
+			owner = players.getPlayer(getIntegerAttribute(element, "owner"));
+		} else {
+			warner.warn(new MissingPropertyException(element, "owner"));
+			owner = players.getIndependent();
+		}
+		final Fortress retval = new Fortress(owner, getAttribute(element, "name", ""),
+													getOrGenerateID(element, warner,
+															idFactory));
+		for (final XMLEvent event : stream) {
+			if (event.isStartElement()) {
+				final Object child =
+						readSPObject(event.asStartElement(), stream, players, warner,
+								idFactory);
+				if (child instanceof FortressMember) {
+					retval.addMember((FortressMember) child);
+				} else {
+					throw new UnwantedChildException(assertNotNull(element.getName()),
+															assertNotNull(
+																	event.asStartElement()));
+				}
+			} else if (event.isEndElement()
+							   && element.getName().equals(event.asEndElement().getName())) {
+				break;
+			}
+		}
+		retval.setImage(getAttribute(element, "image", ""));
+		retval.setPortrait(getAttribute(element, "portrait", ""));
 		return retval;
 	}
 }

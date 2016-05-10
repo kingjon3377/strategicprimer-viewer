@@ -21,6 +21,7 @@ import model.map.HasPortrait;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.River;
+import model.map.fixtures.FortressMember;
 import model.map.fixtures.Ground;
 import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
@@ -61,6 +62,7 @@ import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
+import model.map.fixtures.towns.Fortress;
 
 import static controller.map.fluidxml.XMLHelper.imageXML;
 import static controller.map.fluidxml.XMLHelper.indent;
@@ -155,6 +157,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		writers.put(ISkill.class, FluidWorkerHandler::writeSkill);
 		writers.put(WorkerStats.class, FluidWorkerHandler::writeStats);
 		writers.put(IUnit.class, this::writeUnit);
+		writers.put(Fortress.class, this::writeFortress);
 	}
 	@Override
 	public void writeSPObject(final Appendable ostream, final Object obj,
@@ -241,5 +244,35 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		} else {
 			ostream.append(" />\n");
 		}
+	}
+	/**
+	 * Write a fortress to a stream.
+	 *
+	 * @param ostream The stream to write to.
+	 * @param obj     The object to write. Must be a Fortress
+	 * @param indent  The current indentation level.
+	 * @throws IOException on I/O error
+	 */
+	private void writeFortress(final Appendable ostream, final Object obj, final int indent)
+			throws IOException {
+		if (!(obj instanceof Fortress)) {
+			throw new IllegalArgumentException("Can only write Fortress");
+		}
+		final Fortress fort = (Fortress) obj;
+		writeTag(ostream, "fortress", indent);
+		writeIntegerAttribute(ostream, "owner", fort.getOwner().getPlayerId());
+		writeNonEmptyAttribute(ostream, "name", fort.getName());
+		writeIntegerAttribute(ostream, "id", fort.getID());
+		ostream.append(imageXML(fort));
+		writeNonEmptyAttribute(ostream, "portrait", fort.getPortrait());
+		ostream.append('>');
+		if (fort.iterator().hasNext()) {
+			ostream.append('\n');
+			for (final FortressMember unit : (Fortress) obj) {
+				writeSPObject(ostream, unit, indent + 1);
+			}
+			indent(ostream, indent);
+		}
+		ostream.append("</fortress>\n");
 	}
 }
