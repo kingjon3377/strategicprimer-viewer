@@ -5,7 +5,6 @@ import controller.map.cxml.CompactMapNGReader;
 import controller.map.cxml.CompactPlayerReader;
 import controller.map.cxml.CompactReader;
 import controller.map.cxml.CompactTownReader;
-import controller.map.cxml.CompactUnitReader;
 import controller.map.iointerfaces.SPWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -18,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import model.map.HasImage;
 import model.map.HasKind;
+import model.map.HasPortrait;
 import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.River;
@@ -26,6 +26,7 @@ import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
+import model.map.fixtures.UnitMember;
 import model.map.fixtures.explorable.AdventureFixture;
 import model.map.fixtures.explorable.Battlefield;
 import model.map.fixtures.explorable.Cave;
@@ -37,6 +38,7 @@ import model.map.fixtures.mobile.Dragon;
 import model.map.fixtures.mobile.Fairy;
 import model.map.fixtures.mobile.Giant;
 import model.map.fixtures.mobile.Griffin;
+import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.Minotaur;
 import model.map.fixtures.mobile.Ogre;
@@ -61,8 +63,10 @@ import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
 
 import static controller.map.fluidxml.XMLHelper.imageXML;
+import static controller.map.fluidxml.XMLHelper.indent;
 import static controller.map.fluidxml.XMLHelper.writeAttribute;
 import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
+import static controller.map.fluidxml.XMLHelper.writeNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.writeTag;
 
 /**
@@ -93,8 +97,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		for (CompactReader writer : Arrays.asList(
 				CompactMapNGReader.READER,
 				CompactPlayerReader.READER,
-				CompactTownReader.READER,
-				CompactUnitReader.READER)) {
+				CompactTownReader.READER)) {
 			Type type = writer.getClass().getGenericSuperclass();
 			while (!(type instanceof ParameterizedType) || ((ParameterizedType) type).getRawType() != AbstractCompactReader.class) {
 				if (type instanceof ParameterizedType) {
@@ -151,6 +154,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		writers.put(IJob.class, FluidWorkerHandler::writeJob);
 		writers.put(ISkill.class, FluidWorkerHandler::writeSkill);
 		writers.put(WorkerStats.class, FluidWorkerHandler::writeStats);
+		writers.put(IUnit.class, this::writeUnit);
 	}
 	@Override
 	public void writeSPObject(final Appendable ostream, final Object obj,
@@ -201,5 +205,41 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 			}
 			ostream.append(" />\n");
 		});
+	}
+	/**
+	 * Write a unit to a stream.
+	 *
+	 * @param ostream The stream to write to.
+	 * @param obj     The object to write. Must be an IUnit
+	 * @param indent  The current indentation level.
+	 * @throws IOException on I/O error
+	 */
+	private void writeUnit(final Appendable ostream, final Object obj, final int indent)
+			throws IOException {
+		if (!(obj instanceof IUnit)) {
+			throw new IllegalArgumentException("Can only write IUnit");
+		}
+		final IUnit unit = (IUnit) obj;
+		writeTag(ostream, "unit", indent);
+		writeIntegerAttribute(ostream, "owner", unit.getOwner().getPlayerId());
+		writeNonEmptyAttribute(ostream, "kind", unit.getKind());
+		writeNonEmptyAttribute(ostream, "name", unit.getName());
+		writeIntegerAttribute(ostream, "id", unit.getID());
+		ostream.append(imageXML(unit));
+		if (unit instanceof HasPortrait) {
+			writeNonEmptyAttribute(ostream, "portrait",
+					((HasPortrait) unit).getPortrait());
+		}
+		final String orders = unit.getOrders().trim();
+		if (unit.iterator().hasNext() || !orders.isEmpty()) {
+			ostream.append('>').append(orders).append('\n');
+			for (final UnitMember member : unit) {
+				writeSPObject(ostream, member, indent + 1);
+			}
+			indent(ostream, indent);
+			ostream.append("</unit>\n");
+		} else {
+			ostream.append(" />\n");
+		}
 	}
 }

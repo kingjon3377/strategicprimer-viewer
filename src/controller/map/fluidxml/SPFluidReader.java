@@ -1,7 +1,9 @@
 package controller.map.fluidxml;
 
+import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.UnsupportedTagException;
+import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.IMapReader;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
@@ -15,7 +17,6 @@ import controller.map.readerng.MapNGReader;
 import controller.map.readerng.PlayerReader;
 import controller.map.readerng.RiverReader;
 import controller.map.readerng.TownReader;
-import controller.map.readerng.UnitReader;
 import controller.map.readerng.VillageReader;
 import java.io.File;
 import java.io.FileReader;
@@ -33,6 +34,7 @@ import model.map.IMutableMapNG;
 import model.map.IMutablePlayerCollection;
 import model.map.PlayerCollection;
 import model.map.SPMapNG;
+import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.Djinn;
 import model.map.fixtures.mobile.Griffin;
 import model.map.fixtures.mobile.Minotaur;
@@ -41,6 +43,7 @@ import model.map.fixtures.mobile.Phoenix;
 import model.map.fixtures.mobile.Simurgh;
 import model.map.fixtures.mobile.Sphinx;
 import model.map.fixtures.mobile.Troll;
+import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
@@ -48,8 +51,11 @@ import org.eclipse.jdt.annotation.NonNull;
 import util.IteratorWrapper;
 import util.Warning;
 
+import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
+import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
+import static controller.map.fluidxml.XMLHelper.requireNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.requireTag;
 import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
 import static util.NullCleaner.assertNotNull;
@@ -88,7 +94,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 				new PlayerReader(),
 				new RiverReader(),
 				new TownReader(),
-				new UnitReader(), new VillageReader())) {
+				new VillageReader())) {
 			for (final String tag : reader.understands()) {
 				readers.put(tag, reader::parse);
 			}
@@ -132,6 +138,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		readers.put("job", FluidWorkerHandler::readJob);
 		readers.put("skill", FluidWorkerHandler::readSkill);
 		readers.put("stats", FluidWorkerHandler::readStats);
+		readers.put("unit", this::readUnit);
 	}
 	/**
 	 * @param <T>     A supertype of the object the XML represents
@@ -246,5 +253,60 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 			}
 			return retval;
 		});
+	}
+	/**
+	 * Read a Unit from XML. This is here to avoid a circular dependency between whatever
+	 * class it would be in and this class.
+	 * @param element   the XML element to parse
+	 * @param stream    the stream to read more elements from
+	 * @param players   the collection of players
+	 * @param warner    the Warning instance to use for warnings
+	 * @param idFactory the ID factory to use to generate IDs
+	 * @return the parsed unit
+	 * @throws SPFormatException on SP format problem
+	 */
+	private Unit readUnit(final StartElement element,
+					 final IteratorWrapper<XMLEvent> stream,
+					 final IMutablePlayerCollection players, final Warning warner,
+					 final IDFactory idFactory) throws SPFormatException {
+		requireTag(element, "unit");
+		requireNonEmptyAttribute(element, "name", false, warner);
+		requireNonEmptyAttribute(element, "owner", false, warner);
+		String kind;
+		try {
+			kind = getAttrWithDeprecatedForm(element, "kind", "type", warner);
+		} catch (final MissingPropertyException except) {
+			warner.warn(except);
+			kind = "";
+		}
+		if (kind.isEmpty()) {
+			warner.warn(new MissingPropertyException(element, "kind"));
+		}
+		final Unit retval =
+				new Unit(players.getPlayer(getIntegerAttribute(element, "owner", -1)),
+								kind, getAttribute(element, "name", ""),
+								getOrGenerateID(element, warner, idFactory));
+		retval.setImage(getAttribute(element, "image", ""));
+		retval.setPortrait(getAttribute(element, "portrait", ""));
+		final StringBuilder orders = new StringBuilder(512);
+		for (final XMLEvent event : stream) {
+			if (event.isStartElement()) {
+				final Object child =
+						readSPObject(event.asStartElement(), stream, players, warner,
+								idFactory);
+				if (child instanceof UnitMember) {
+					retval.addMember((UnitMember) child);
+				} else {
+					throw new UnwantedChildException(element.getName(), event.asStartElement());
+				}
+			} else if (event.isCharacters()) {
+				orders.append(event.asCharacters().getData());
+			} else if (event.isEndElement() &&
+							   element.getName().equals(event.asEndElement().getName())) {
+				break;
+			}
+		}
+		retval.setOrders(assertNotNull(orders.toString().trim()));
+		return retval;
 	}
 }
