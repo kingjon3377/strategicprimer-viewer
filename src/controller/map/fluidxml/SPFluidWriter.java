@@ -1,17 +1,10 @@
 package controller.map.fluidxml;
 
-import controller.map.cxml.AbstractCompactReader;
-import controller.map.cxml.CompactMapNGReader;
-import controller.map.cxml.CompactPlayerReader;
-import controller.map.cxml.CompactReader;
 import controller.map.iointerfaces.SPWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import model.map.HasImage;
@@ -19,7 +12,13 @@ import model.map.HasKind;
 import model.map.HasPortrait;
 import model.map.IFixture;
 import model.map.IMapNG;
+import model.map.MapDimensions;
+import model.map.Player;
+import model.map.Point;
+import model.map.PointFactory;
 import model.map.River;
+import model.map.TileFixture;
+import model.map.TileType;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.Ground;
 import model.map.fixtures.Implement;
@@ -97,28 +96,8 @@ import static controller.map.fluidxml.XMLHelper.writeTag;
 public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	final Map<Class<?>, FluidXMLWriter> writers = new HashMap<>();
 	public SPFluidWriter() {
-		for (CompactReader writer : Arrays.asList(
-				CompactMapNGReader.READER,
-				CompactPlayerReader.READER)) {
-			Type type = writer.getClass().getGenericSuperclass();
-			while (!(type instanceof ParameterizedType) || ((ParameterizedType) type).getRawType() != AbstractCompactReader.class) {
-				if (type instanceof ParameterizedType) {
-					type = ((Class<?>) ((ParameterizedType) type).getRawType()).getGenericSuperclass();
-				} else {
-					type = ((Class<?>) type).getGenericSuperclass();
-				}
-			}
-			writers.put((Class<?>) ((ParameterizedType) type).getActualTypeArguments()[0], writer::write);
-		}
-		writers.put(River.class, (ostream, obj, indent) -> CompactMapNGReader
-																   .writeRiver(ostream,
-																		   (River) obj,
-																		   indent));
-		writers.put(RiverFixture.class, (ostream, obj, indent) -> CompactMapNGReader
-																		  .writeAllRivers(
-																				  ostream,
-																				  (RiverFixture) obj,
-																				  indent));
+		writers.put(River.class, FluidTerrainHandler::writeRivers);
+		writers.put(RiverFixture.class, FluidTerrainHandler::writeRivers);
 		writers.put(AdventureFixture.class, FluidExplorableHandler::writeAdventure);
 		writers.put(Portal.class, FluidExplorableHandler::writePortal);
 		writers.put(Battlefield.class, FluidExplorableHandler::writeBattlefield);
@@ -160,6 +139,8 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		writers.put(Fortress.class, this::writeFortress);
 		writers.put(Village.class, FluidTownHandler::writeVillage);
 		writers.put(AbstractTown.class, FluidTownHandler::writeTown);
+		writers.put(IMapNG.class, this::writeMap);
+		writers.put(Player.class, SPFluidWriter::writePlayer);
 	}
 	@Override
 	public void writeSPObject(final Appendable ostream, final Object obj,
@@ -276,5 +257,133 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 			indent(ostream, indent);
 		}
 		ostream.append("</fortress>\n");
+	}
+	/**
+	 * Write a map to XML.
+	 * @param ostream the stream to write to
+	 * @param obj the map to write. Must be an IMapNG.
+	 * @param indent the current indentation level
+	 * @throws IOException on I/O error
+	 */
+	private void writeMap(final Appendable ostream, final Object obj, final int indent)
+			throws IOException {
+		if (!(obj instanceof IMapNG)) {
+			throw new IllegalArgumentException("Can only write IMapNG");
+		}
+		final IMapNG map = (IMapNG) obj;
+		writeTag(ostream, "view", indent);
+		writeIntegerAttribute(ostream, "current_player",
+				map.getCurrentPlayer().getPlayerId());
+		writeIntegerAttribute(ostream, "current_turn", map.getCurrentTurn());
+		ostream.append(">\n");
+		writeTag(ostream, "map", indent + 1);
+		final MapDimensions dim = map.dimensions();
+		writeIntegerAttribute(ostream, "version", dim.version);
+		writeIntegerAttribute(ostream, "rows", dim.rows);
+		writeIntegerAttribute(ostream, "columns", dim.cols);
+		ostream.append(">\n");
+		for (final Player player : map.players()) {
+			writeSPObject(ostream, player, indent + 2);
+		}
+		for (int i = 0; i < dim.rows; i++) {
+			boolean rowEmpty = true;
+			for (int j = 0; j < dim.cols; j++) {
+				final Point point = PointFactory.point(i, j);
+				final TileType terrain = map.getBaseTerrain(point);
+				if ((TileType.NotVisible != terrain)
+							|| map.isMountainous(point)
+							|| (map.getGround(point) != null)
+							|| (map.getForest(point) != null)
+							|| map.streamOtherFixtures(point).anyMatch(x->true)) {
+					if (rowEmpty) {
+						rowEmpty = false;
+						writeTag(ostream, "row", indent + 2);
+						writeIntegerAttribute(ostream, "index", i);
+						ostream.append(">\n");
+					}
+					writeTag(ostream, "tile", indent + 3);
+					writeIntegerAttribute(ostream, "row", i);
+					writeIntegerAttribute(ostream, "column", j);
+					if (TileType.NotVisible != terrain) {
+						writeAttribute(ostream, "kind", terrain.toXML());
+					}
+					ostream.append(">");
+					boolean needeol = true;
+					if (map.isMountainous(point)) {
+						eolIfNeeded(true, ostream);
+						needeol = false;
+						writeTag(ostream, "mountain", indent + 4);
+						ostream.append(" />\n");
+					}
+					for (final River river : map.getRivers(point)) {
+						eolIfNeeded(needeol, ostream);
+						needeol = false;
+						writeSPObject(ostream, river, indent + 4);
+					}
+					final Ground ground = map.getGround(point);
+					if (ground != null) {
+						eolIfNeeded(needeol, ostream);
+						needeol = false;
+						writeSPObject(ostream, ground, indent + 4);
+					}
+					final Forest forest = map.getForest(point);
+					if (forest != null) {
+						eolIfNeeded(needeol, ostream);
+						needeol = false;
+						writeSPObject(ostream, forest, indent + 4);
+					}
+					for (final TileFixture fixture : map.getOtherFixtures(point)) {
+						eolIfNeeded(needeol, ostream);
+						needeol = false;
+						writeSPObject(ostream, fixture, indent + 4);
+					}
+					if (!needeol) {
+						indent(ostream, indent + 3);
+					}
+					ostream.append("</tile>\n");
+				}
+			}
+			if (!rowEmpty) {
+				indent(ostream, indent + 2);
+				ostream.append("</row>\n");
+			}
+		}
+		indent(ostream, indent + 1);
+		ostream.append("</map>\n");
+		indent(ostream, indent);
+		ostream.append("</view>\n");
+	}
+	/**
+	 * Write a newline if needed.
+	 *
+	 * @param writer  the writer to write to
+	 * @param needeol whether we need a newline.
+	 * @throws IOException on I/O error
+	 */
+	private static void eolIfNeeded(final boolean needeol,
+									final Appendable writer) throws IOException {
+		if (needeol) {
+			writer.append('\n');
+		}
+	}
+	/**
+	 * Write a player to a stream. This is here because it's not a good fit for any of
+	 * the other classes that collect methods.
+	 *
+	 * @param ostream The stream to write to.
+	 * @param obj     The object to write. Must be a Player.
+	 * @param indent  The current indentation level.
+	 * @throws IOException on I/O error
+	 */
+	private static final void writePlayer(final Appendable ostream, final Object obj, final int indent)
+			throws IOException {
+		if (!(obj instanceof Player)) {
+			throw new IllegalArgumentException("Can only write Player");
+		}
+		final Player player = (Player) obj;
+		writeTag(ostream, "player", indent);
+		writeIntegerAttribute(ostream, "number", player.getPlayerId());
+		writeAttribute(ostream, "code_name", player.getName());
+		ostream.append(" />\n");
 	}
 }

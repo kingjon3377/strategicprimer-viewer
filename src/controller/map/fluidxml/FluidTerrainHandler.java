@@ -6,7 +6,9 @@ import java.io.IOException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
+import model.map.River;
 import model.map.fixtures.Ground;
+import model.map.fixtures.RiverFixture;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import util.Warning;
@@ -169,6 +171,75 @@ public class FluidTerrainHandler {
 			writeBooleanAttribute(ostream, "rows", true);
 		}
 		ostream.append(imageXML(forest));
+		ostream.append(" />\n");
+	}
+	/**
+	 * Parse a river.
+	 *
+	 * @param element   the element to read from
+	 * @param stream    the stream to read more elements from
+	 * @param players   the collection of players
+	 * @param warner    the Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new
+	 *                     ones as
+	 *                  needed
+	 * @return the river represented by the element
+	 * @throws SPFormatException on SP format error
+	 */
+	public static final River readLake(final StartElement element,
+										final Iterable<XMLEvent> stream,
+										final IMutablePlayerCollection players,
+										final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
+		requireTag(element, "lake");
+		spinUntilEnd(assertNotNull(element.getName()), stream);
+		return River.Lake;
+	}
+	/**
+	 * Parse a river.
+	 *
+	 * @param element   the element to read from
+	 * @param stream    the stream to read more elements from
+	 * @param players   the collection of players
+	 * @param warner    the Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new
+	 *                     ones as
+	 *                  needed
+	 * @return the river represented by the element
+	 * @throws SPFormatException on SP format error
+	 */
+	public static final River readRiver(final StartElement element,
+					   final Iterable<XMLEvent> stream,
+					   final IMutablePlayerCollection players,
+					   final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
+		requireTag(element, "river");
+		spinUntilEnd(assertNotNull(element.getName()), stream);
+		return River.getRiver(getAttribute(element, "direction"));
+	}
+	/**
+	 * Write a river, or a collection of rivers.
+	 *
+	 * @param ostream the stream we're writing to
+	 * @param obj     the river to write. Must be a River or a RiverFixture.
+	 * @param indent  the indentation level
+	 * @throws IOException on I/O error
+	 */
+	public static void writeRivers(final Appendable ostream, final Object obj,
+								   final int indent) throws IOException {
+		if (River.Lake == obj) {
+			writeTag(ostream, "lake", indent);
+		} else if (obj instanceof River) {
+			writeTag(ostream, "river", indent);
+			writeAttribute(ostream, "direction", ((River) obj).getDescription());
+		} else if (obj instanceof RiverFixture) {
+			for (final River river : (RiverFixture) obj) {
+				writeRivers(ostream, river, indent);
+			}
+			return;
+		} else {
+			throw new IllegalArgumentException("Can only write River or RiverFixture");
+		}
 		ostream.append(" />\n");
 	}
 
