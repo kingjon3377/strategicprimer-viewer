@@ -278,6 +278,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	 * Log the addition of something.
 	 * @param addend what was added
 	 */
+	@SuppressWarnings("resource")
 	private void logAddition(final String addend) {
 		try (final PrintWriter writer = logLabel.getWriter()) {
 			writer.printf("<p style=\"color: white; margin-bottom: 0.5em; margin-top: 0.5em;\">Added %s for %s</p>%n", addend,
