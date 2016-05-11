@@ -143,8 +143,7 @@ public final class TrapModelDriver implements SimpleDriver {
 			} else {
 				name = "trapper";
 			}
-			int minutes = cli.inputNumber("How many hours will the " + name + " work? " +
-												"") *
+			int minutes = cli.inputNumber("How many hours will the " + name + " work? ") *
 								MINS_PER_HOUR;
 			final int row = cli.inputNumber("Row of the tile where the "
 													+ name + " is working: ");
