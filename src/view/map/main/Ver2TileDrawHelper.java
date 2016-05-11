@@ -15,6 +15,8 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -290,9 +292,6 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	}
 
 	/**
-	 * FIXME: This at present ignores the case of a forest *and* a mountain on a tile; we
-	 * can't show both as icons.
-	 *
 	 * @param map      a map
 	 * @param location a location
 	 * @return whether we needs a different color to show a non-top fixture there (like a
@@ -300,7 +299,12 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private boolean needsFixtureColor(final IMapNG map, final Point location) {
 		if (hasTerrainFixture(map, location)) {
-			return !(getTopFixture(map, location) instanceof TerrainFixture); //NOPMD
+			final TileFixture topFixture = getTopFixture(map, location);
+			// getLast() equivalent from http://stackoverflow.com/a/21441634
+			final Optional<TileFixture> bottomTerrain = getDrawableFixtures(map,
+					location).filter(TerrainFixture.class::isInstance).reduce(
+					(first, second) -> second);
+			return bottomTerrain.isPresent() && !topFixture.equals(bottomTerrain.get());
 		} else {
 			return false;
 		}
@@ -322,10 +326,12 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @return a color to represent the not-on-top terrain feature there.
 	 */
 	private Color getFixtureColor(final IMapNG map, final Point location) {
-		return getDrawableFixtures(map, location).filter(TerrainFixture
-																.class::isInstance)
-					.map(fix -> getHelper().getFeatureColor(fix)).findFirst()
-					.orElse(getTileColor(2, map.getBaseTerrain(location)));
+		final TileFixture topFixture = getTopFixture(map, location);
+		return getDrawableFixtures(map, location).filter(
+				fix -> !Objects.equals(topFixture, fix))
+					   .filter(TerrainFixture.class::isInstance)
+					   .map(fix -> getHelper().getFeatureColor(fix)).findFirst()
+					   .orElse(getTileColor(2, map.getBaseTerrain(location)));
 	}
 
 	/**
