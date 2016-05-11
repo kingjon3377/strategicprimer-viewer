@@ -62,13 +62,13 @@ public final class SplitWithWeights extends JSplitPane {
 	 * @param orient    the orientation of the panel.
 	 * @param divLoc    the divider location
 	 * @param resWeight the resize weight
-	 * @param left      the left or top component
-	 * @param right     the right or bottom component
+	 * @param topOrLeft      the left or top component
+	 * @param bottomOrRight     the right or bottom component
 	 */
 	private SplitWithWeights(final int orient, final double divLoc,
-							final double resWeight, final Component left,
-							final Component right) {
-		super(orient, true, left, right);
+							final double resWeight, final Component topOrLeft,
+							final Component bottomOrRight) {
+		super(orient, true, topOrLeft, bottomOrRight);
 		setDividerLocation(divLoc);
 		setResizeWeight(resWeight);
 	}
