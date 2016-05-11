@@ -36,6 +36,7 @@ import util.Warning;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 @RunWith(Parameterized.class)
 public final class TestTownSerialization extends BaseTestFixtureSerialization {
 	/**

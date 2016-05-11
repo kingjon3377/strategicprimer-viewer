@@ -38,6 +38,7 @@ import util.NullCleaner;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 @RunWith(Parameterized.class)
 public class TestStoneSerialization extends BaseTestFixtureSerialization {
 	/**

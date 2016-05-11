@@ -37,6 +37,7 @@ import org.junit.runners.Parameterized.Parameters;
  *
  * @author Jonathan Lovelace
  */
+@SuppressWarnings("ClassHasNoToStringMethod")
 @RunWith(Parameterized.class)
 public class TestVillageSerialization extends BaseTestFixtureSerialization {
 	/**
