@@ -48,4 +48,11 @@ public class ClassIterable implements Iterable<Class<?>> {
 			addInterfaces(list, interf);
 		}
 	}
+	/**
+	 * @return a String representation of the object.
+	 */
+	@Override
+	public String toString() {
+		return "ClassIterable: " + classes;
+	}
 }

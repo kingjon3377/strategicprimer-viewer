@@ -80,6 +80,14 @@ public final class UnitMemberTransferable implements Transferable {
 		public int size() {
 			return wrapped.size();
 		}
+
+		/**
+		 * @return a String representation of the object
+		 */
+		@Override
+		public String toString() {
+			return "UnitMemberPairList with " + size() + " members";
+		}
 	}
 
 	/**
