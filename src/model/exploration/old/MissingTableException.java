@@ -1,5 +1,10 @@
 package model.exploration.old;
 
+import java.io.IOException;
+import java.io.NotSerializableException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 /**
  * An exception to throw when a table is missing.
  *
@@ -44,5 +49,25 @@ public final class MissingTableException extends Exception {
 	@SuppressWarnings("TypeMayBeWeakened")
 	public String getTable() {
 		return missingTable;
+	}
+	/**
+	 * Prevent serialization.
+	 * @param out ignored
+	 * @throws IOException always
+	 */
+	@SuppressWarnings({ "unused", "static-method" })
+	private void writeObject(final ObjectOutputStream out) throws IOException {
+		throw new NotSerializableException("Serialization is not allowed");
+	}
+	/**
+	 * Prevent serialization
+	 * @param in ignored
+	 * @throws IOException always
+	 * @throws ClassNotFoundException never
+	 */
+	@SuppressWarnings({ "unused", "static-method" })
+	private void readObject(final ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		throw new NotSerializableException("Serialization is not allowed");
 	}
 }
