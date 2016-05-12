@@ -65,7 +65,6 @@ public final class TODOFixerDriver {
 	 * @param cli the interface to the user
 	 */
 	public void fixAllUnits(final ICLIHelper cli) {
-		// TODO: How to make this use Stream API instead of loop?
 		for (final Point point : map.locations()) {
 			final SimpleTerrain terrain = getTerrain(point);
 			map.streamOtherFixtures(point).filter(Unit.class::isInstance)
