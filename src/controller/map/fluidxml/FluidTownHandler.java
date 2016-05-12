@@ -17,6 +17,7 @@ import model.workermgmt.RaceFactory;
 import util.NullCleaner;
 import util.Warning;
 
+import static controller.map.fluidxml.XMLHelper.addImage;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
@@ -80,9 +81,8 @@ public class FluidTownHandler {
 								getAttribute(element, "name", ""),
 								getOrGenerateID(element, warner, idFactory),
 								getPlayerOrIndependent(element, warner, players));
-		fix.setImage(getAttribute(element, "image", ""));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
-		return fix;
+		return addImage(fix, element, warner);
 	}
 	/**
 	 * Parse a fortification.
@@ -110,9 +110,8 @@ public class FluidTownHandler {
 								getAttribute(element, "name", ""),
 								getOrGenerateID(element, warner, idFactory),
 								getPlayerOrIndependent(element, warner, players));
-		fix.setImage(getAttribute(element, "image", ""));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
-		return fix;
+		return addImage(fix, element, warner);
 	}
 	/**
 	 * Parse a city.
@@ -140,9 +139,8 @@ public class FluidTownHandler {
 								getAttribute(element, "name", ""),
 								getOrGenerateID(element, warner, idFactory),
 								getPlayerOrIndependent(element, warner, players));
-		fix.setImage(getAttribute(element, "image", ""));
 		fix.setPortrait(getAttribute(element, "portrait", ""));
-		return fix;
+		return addImage(fix, element, warner);
 	}
 	/**
 	 * Parse a village.
@@ -171,9 +169,8 @@ public class FluidTownHandler {
 								   getPlayerOrIndependent(element, warner, players),
 								   getAttribute(element, "race",
 										   RaceFactory.getRace(new Random(idNum))));
-		retval.setImage(getAttribute(element, "image", ""));
 		retval.setPortrait(getAttribute(element, "portrait", ""));
-		return retval;
+		return addImage(retval, element, warner);
 	}
 	/**
 	 * Write a Village to XML.

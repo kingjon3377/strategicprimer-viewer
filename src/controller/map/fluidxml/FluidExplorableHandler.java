@@ -19,6 +19,7 @@ import model.map.fixtures.explorable.Portal;
 import util.EqualsAny;
 import util.Warning;
 
+import static controller.map.fluidxml.XMLHelper.addImage;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
@@ -79,10 +80,9 @@ public class FluidExplorableHandler {
 			player = players.getIndependent();
 		}
 		final AdventureFixture retval =
-				new AdventureFixture(player, getAttribute(element, "brief", ""),
+				addImage(new AdventureFixture(player, getAttribute(element, "brief", ""),
 											getAttribute(element, "full", ""),
-											getOrGenerateID(element, warner, idFactory));
-		retval.setImage(getAttribute(element, "image", ""));
+											getOrGenerateID(element, warner, idFactory)), element, warner);
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return retval;
 	}
@@ -103,14 +103,13 @@ public class FluidExplorableHandler {
 										  final Warning warner,
 										  final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "portal");
-		final Portal retval = new Portal(getAttribute(element, "world"),
+		final Portal retval = addImage(new Portal(getAttribute(element, "world"),
 												PointFactory.point(getIntegerAttribute(
 														element, "row"),
 														getIntegerAttribute(element,
 																"column")),
 												getOrGenerateID(element, warner,
-														idFactory));
-		retval.setImage(getAttribute(element, "image", ""));
+														idFactory)), element, warner);
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return retval;
 	}
@@ -133,8 +132,7 @@ public class FluidExplorableHandler {
 		final int idNum = getOrGenerateID(element, warner, idFactory);
 		final Cave retval = new Cave(getIntegerAttribute(element, "dc"), idNum);
 		spinUntilEnd(element.getName(), stream);
-		retval.setImage(getAttribute(element, "image", ""));
-		return retval;
+		return addImage(retval, element, warner);
 	}
 
 	/**
@@ -158,8 +156,7 @@ public class FluidExplorableHandler {
 		final Battlefield retval =
 				new Battlefield(getIntegerAttribute(element, "dc"), idNum);
 		spinUntilEnd(element.getName(), stream);
-		retval.setImage(getAttribute(element, "image", ""));
-		return retval;
+		return addImage(retval, element, warner);
 	}
 	/**
 	 * Parse a TextFixture.
@@ -197,11 +194,8 @@ public class FluidExplorableHandler {
 				break;
 			}
 		}
-		final TextFixture fix =
-				new TextFixture(assertNotNull(sbuild.toString().trim()),
-									   getIntegerAttribute(element, "turn", -1));
-		fix.setImage(getAttribute(element, "image", ""));
-		return fix;
+		return addImage(new TextFixture(assertNotNull(sbuild.toString().trim()),
+							   getIntegerAttribute(element, "turn", -1)), element, warner);
 	}
 	/**
 	 * Write an adventure hook to XML.

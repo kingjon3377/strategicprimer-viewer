@@ -24,7 +24,6 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import model.map.HasMutableImage;
 import model.map.IMutableMapNG;
 import model.map.IMutablePlayerCollection;
 import model.map.MapDimensions;
@@ -60,6 +59,7 @@ import util.EqualsAny;
 import util.IteratorWrapper;
 import util.Warning;
 
+import static controller.map.fluidxml.XMLHelper.addImage;
 import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
@@ -260,11 +260,8 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		readers.put(tag, (element, stream, players, warner, idFactory) -> {
 			requireTag(element, tag);
 			spinUntilEnd(assertNotNull(element.getName()), stream);
-			final Object retval = constr.apply(getOrGenerateID(element, warner, idFactory));
-			if (retval instanceof HasMutableImage) {
-				((HasMutableImage) retval).setImage(getAttribute(element, "image", ""));
-			}
-			return retval;
+			return addImage(constr.apply(getOrGenerateID(element, warner, idFactory)),
+					element, warner);
 		});
 	}
 	/**
@@ -296,10 +293,10 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 			warner.warn(new MissingPropertyException(element, "kind"));
 		}
 		final Unit retval =
-				new Unit(getPlayerOrIndependent(element, warner, players),
+				addImage(new Unit(getPlayerOrIndependent(element, warner, players),
 								kind, getAttribute(element, "name", ""),
-								getOrGenerateID(element, warner, idFactory));
-		retval.setImage(getAttribute(element, "image", ""));
+										 getOrGenerateID(element, warner, idFactory)),
+						element, warner);
 		retval.setPortrait(getAttribute(element, "portrait", ""));
 		final StringBuilder orders = new StringBuilder(512);
 		for (final XMLEvent event : stream) {
@@ -363,9 +360,8 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 				break;
 			}
 		}
-		retval.setImage(getAttribute(element, "image", ""));
 		retval.setPortrait(getAttribute(element, "portrait", ""));
-		return retval;
+		return addImage(retval, element, warner);
 	}
 
 	/**

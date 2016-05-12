@@ -21,6 +21,7 @@ import model.map.fixtures.resources.StoneDeposit;
 import util.NullCleaner;
 import util.Warning;
 
+import static controller.map.fluidxml.XMLHelper.addImage;
 import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
@@ -80,11 +81,8 @@ public class FluidResourceHandler {
 						   final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "implement");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
-		final Implement retval =
-				new Implement(getOrGenerateID(element, warner, idFactory),
-									 getAttribute(element, "kind"));
-		retval.setImage(getAttribute(element, "image", ""));
-		return retval;
+		return addImage(new Implement(getOrGenerateID(element, warner, idFactory),
+							 getAttribute(element, "kind")), element, warner);
 	}
 	/**
 	 * Parse a resource pile.
@@ -115,8 +113,7 @@ public class FluidResourceHandler {
 		if (hasAttribute(element, "created")) {
 			retval.setCreated(getIntegerAttribute(element, "created"));
 		}
-		retval.setImage(getAttribute(element, "image", ""));
-		return retval;
+		return addImage(retval, element, warner);
 	}
 	/**
 	 * Parse a cache.
@@ -138,14 +135,10 @@ public class FluidResourceHandler {
 			throws SPFormatException {
 		requireTag(element, "cache");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
-		final CacheFixture fix = new CacheFixture(
-														 getAttribute(element, "kind"),
-														 getAttribute(element,
-																 "contents"),
-														 getOrGenerateID(element,
-																 warner, idFactory));
-		fix.setImage(getAttribute(element, "image", ""));
-		return fix;
+		return addImage(new CacheFixture(getAttribute(element, "kind"),
+												getAttribute(element, "contents"),
+												getOrGenerateID(element, warner,
+														idFactory)), element, warner);
 	}
 	/**
 	 * Parse a grove.
@@ -174,12 +167,11 @@ public class FluidResourceHandler {
 		} else {
 			throw new MissingPropertyException(element, "cultivated");
 		}
-		final Grove fix = new Grove(false, cultivated,
-										   getAttrWithDeprecatedForm(element, "kind",
-												   "tree", warner),
-										   getOrGenerateID(element, warner, idFactory));
-		fix.setImage(getAttribute(element, "image", ""));
-		return fix;
+		return addImage(new Grove(false, cultivated,
+										 getAttrWithDeprecatedForm(element, "kind",
+												 "tree", warner),
+										 getOrGenerateID(element, warner, idFactory)),
+				element, warner);
 	}
 	/**
 	 * Parse an orchard.
@@ -208,12 +200,11 @@ public class FluidResourceHandler {
 		} else {
 			throw new MissingPropertyException(element, "cultivated");
 		}
-		final Grove fix = new Grove(true, cultivated,
-										   getAttrWithDeprecatedForm(element, "kind",
-												   "tree", warner),
-										   getOrGenerateID(element, warner, idFactory));
-		fix.setImage(getAttribute(element, "image", ""));
-		return fix;
+		return addImage(new Grove(true, cultivated,
+										 getAttrWithDeprecatedForm(element, "kind",
+												 "tree", warner),
+										 getOrGenerateID(element, warner, idFactory)),
+				element, warner);
 	}
 	/**
 	 * Parse a meadow.
@@ -238,11 +229,9 @@ public class FluidResourceHandler {
 		if (!hasAttribute(element, "status")) {
 			warner.warn(new MissingPropertyException(element, "status"));
 		}
-		final Meadow fix = new Meadow(getAttribute(element, "kind"), false, parseBoolean(
+		return addImage(new Meadow(getAttribute(element, "kind"), false, parseBoolean(
 				getAttribute(element, "cultivated")), id, FieldStatus.parse(getAttribute(
-				element, "status", FieldStatus.random(id).toString())));
-		fix.setImage(getAttribute(element, "image", ""));
-		return fix;
+				element, "status", FieldStatus.random(id).toString()))), element, warner);
 	}
 	/**
 	 * Parse a field.
@@ -267,11 +256,9 @@ public class FluidResourceHandler {
 		if (!hasAttribute(element, "status")) {
 			warner.warn(new MissingPropertyException(element, "status"));
 		}
-		final Meadow fix = new Meadow(getAttribute(element, "kind"), true, parseBoolean(
+		return addImage(new Meadow(getAttribute(element, "kind"), true, parseBoolean(
 				getAttribute(element, "cultivated")), id, FieldStatus.parse(getAttribute(
-				element, "status", FieldStatus.random(id).toString())));
-		fix.setImage(getAttribute(element, "image", ""));
-		return fix;
+				element, "status", FieldStatus.random(id).toString()))), element, warner);
 	}
 	/**
 	 * Parse a mine.
@@ -291,12 +278,11 @@ public class FluidResourceHandler {
 					  final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "mine");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
-		final Mine fix =
+		return addImage(
 				new Mine(getAttrWithDeprecatedForm(element, "kind", "product", warner),
 								parseTownStatus(getAttribute(element, "status")),
-								getOrGenerateID(element, warner, idFactory));
-		fix.setImage(getAttribute(element, "image", ""));
-		return fix;
+								getOrGenerateID(element, warner, idFactory)), element,
+				warner);
 	}
 	/**
 	 * Parse a Mineral.
@@ -318,13 +304,12 @@ public class FluidResourceHandler {
 			throws SPFormatException {
 		requireTag(element, "mineral");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
-		final MineralVein fix =
+		return addImage(
 				new MineralVein(getAttrWithDeprecatedForm(element, "kind", "mineral",
 						warner), parseBoolean(getAttribute(element, "exposed")),
 									   getIntegerAttribute(element, "dc"),
-									   getOrGenerateID(element, warner, idFactory));
-		fix.setImage(getAttribute(element, "image", ""));
-		return fix;
+									   getOrGenerateID(element, warner, idFactory)),
+				element, warner);
 	}
 	/**
 	 * Parse a shrub.
@@ -346,11 +331,9 @@ public class FluidResourceHandler {
 			throws SPFormatException {
 		requireTag(element, "shrub");
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		final Shrub fix = new Shrub(getAttrWithDeprecatedForm(element,
+		return addImage(new Shrub(getAttrWithDeprecatedForm(element,
 				"kind", "shrub", warner), getOrGenerateID(element, warner,
-				idFactory));
-		fix.setImage(getAttribute(element, "image", ""));
-		return fix;
+				idFactory)), element, warner);
 	}
 	/**
 	 * Parse a Stone.
@@ -372,14 +355,12 @@ public class FluidResourceHandler {
 			throws SPFormatException {
 		requireTag(element, "stone");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
-		final StoneDeposit fix = new StoneDeposit(parseStoneKind(
+		return addImage(new StoneDeposit(parseStoneKind(
 				getAttrWithDeprecatedForm(element, "kind", "stone", warner)),
 														 getIntegerAttribute(element,
 																 "dc"),
 														 getOrGenerateID(element, warner,
-																 idFactory));
-		fix.setImage(getAttribute(element, "image", ""));
-		return fix;
+																 idFactory)), element, warner);
 	}
 
 	/**

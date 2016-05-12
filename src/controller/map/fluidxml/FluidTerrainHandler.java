@@ -13,6 +13,7 @@ import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import util.Warning;
 
+import static controller.map.fluidxml.XMLHelper.addImage;
 import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
@@ -68,10 +69,8 @@ public class FluidTerrainHandler {
 				"ground", warner);
 		requireNonEmptyAttribute(element, "exposed", true, warner);
 		spinUntilEnd(assertNotNull(element.getName()), stream);
-		final Ground retval =
-				new Ground(kind, parseBoolean(getAttribute(element, "exposed")));
-		retval.setImage(getAttribute(element, "image", ""));
-		return retval;
+		return addImage(new Ground(kind, parseBoolean(getAttribute(element, "exposed"))),
+				element, warner);
 	}
 	/**
 	 * Read a Forest from XML.
@@ -91,8 +90,7 @@ public class FluidTerrainHandler {
 		final Forest retval =
 				new Forest(getAttribute(element, "kind"), hasAttribute(element, "rows"));
 		spinUntilEnd(assertNotNull(element.getName()), stream);
-		retval.setImage(getAttribute(element, "image", ""));
-		return retval;
+		return addImage(retval, element, warner);
 	}
 
 	/**
@@ -112,8 +110,7 @@ public class FluidTerrainHandler {
 		requireTag(element, "mountain");
 		final Mountain retval = new Mountain();
 		spinUntilEnd(assertNotNull(element.getName()), stream);
-		retval.setImage(getAttribute(element, "image", ""));
-		return retval;
+		return addImage(retval, element, warner);
 	}
 
 	/**

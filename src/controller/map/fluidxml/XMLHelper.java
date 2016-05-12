@@ -4,6 +4,7 @@ import controller.map.formatexceptions.DeprecatedPropertyException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
 import controller.map.formatexceptions.SPMalformedInputException;
+import controller.map.formatexceptions.UnsupportedPropertyException;
 import controller.map.formatexceptions.UnwantedChildException;
 import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
@@ -19,6 +20,7 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.HasImage;
+import model.map.HasMutableImage;
 import model.map.HasPortrait;
 import model.map.IPlayerCollection;
 import model.map.Player;
@@ -491,5 +493,21 @@ public final class XMLHelper {
 			retval = players.getIndependent();
 		}
 		return retval;
+	}
+	/**
+	 * Set an object's image property if an image filename is specified in the XML.
+	 * @param obj the object in question
+	 * @param element the current XML element
+	 * @param warner to use to warn if the object can't have an image but the XML specifies one
+	 * @return the object
+	 * @param <T> the type of the object
+	 */
+	public static final <T> T addImage(final T obj, final StartElement element, final Warning warner) {
+		if (obj instanceof HasMutableImage) {
+			((HasMutableImage) obj).setImage(getAttribute(element, "image", ""));
+		} else if (hasAttribute(element, "image")) {
+			warner.warn(new UnsupportedPropertyException(element, "image"));
+		}
+		return obj;
 	}
 }

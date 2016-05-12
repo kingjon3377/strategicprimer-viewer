@@ -14,6 +14,7 @@ import model.map.fixtures.mobile.Giant;
 import util.NullCleaner;
 import util.Warning;
 
+import static controller.map.fluidxml.XMLHelper.addImage;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
@@ -68,15 +69,12 @@ public class FluidMobileHandler {
 			throws SPFormatException {
 		requireTag(element, "animal");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
-		final Animal fix =
-				new Animal(getAttribute(element, "kind"), hasAttribute(element,
-						"traces"),
-								  parseBoolean(getAttribute(element, "talking",
-										  "false")),
-								  getAttribute(element, "status", "wild"),
-								  getOrGenerateID(element, warner, idFactory));
-		fix.setImage(getAttribute(element, "image", ""));
-		return fix;
+		return addImage(new Animal(getAttribute(element, "kind"), hasAttribute(element,
+				"traces"),
+						  parseBoolean(getAttribute(element, "talking",
+								  "false")),
+						  getAttribute(element, "status", "wild"),
+						  getOrGenerateID(element, warner, idFactory)), element, warner);
 	}
 	/**
 	 * Parse a centaur.
@@ -101,9 +99,7 @@ public class FluidMobileHandler {
 		final Centaur fix = new Centaur(getAttribute(element, "kind"),
 											   getOrGenerateID(element, warner,
 													   idFactory));
-		// TODO: Add addImage() method to XMLHelper.
-		fix.setImage(getAttribute(element, "image", ""));
-		return fix;
+		return addImage(fix, element, warner);
 	}
 	/**
 	 * Parse a dragon.
@@ -128,11 +124,9 @@ public class FluidMobileHandler {
 			throws SPFormatException {
 		requireTag(element, "dragon");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
-		final Dragon fix = new Dragon(getAttribute(element, "kind"),
+		return addImage(new Dragon(getAttribute(element, "kind"),
 											 getOrGenerateID(element, warner,
-													 idFactory));
-		fix.setImage(getAttribute(element, "image", ""));
-		return fix;
+													 idFactory)), element, warner);
 	}
 	/**
 	 * Parse a fairy.
@@ -152,10 +146,9 @@ public class FluidMobileHandler {
 					   final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "fairy");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
-		final Fairy fix = new Fairy(getAttribute(element, "kind"),
-										   getOrGenerateID(element, warner, idFactory));
-		fix.setImage(getAttribute(element, "image", ""));
-		return fix;
+		return addImage(new Fairy(getAttribute(element, "kind"),
+										 getOrGenerateID(element, warner, idFactory)),
+				element, warner);
 	}
 	/**
 	 * Parse a giant.
@@ -175,10 +168,9 @@ public class FluidMobileHandler {
 					   final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "giant");
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		final Giant fix = new Giant(getAttribute(element, "kind"),
-										   getOrGenerateID(element, warner, idFactory));
-		fix.setImage(getAttribute(element, "image", ""));
-		return fix;
+		return addImage(new Giant(getAttribute(element, "kind"),
+										 getOrGenerateID(element, warner, idFactory)),
+				element, warner);
 	}
 	/**
 	 * Write an Animal to a stream.
