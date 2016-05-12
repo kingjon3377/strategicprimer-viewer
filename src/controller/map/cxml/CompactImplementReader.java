@@ -33,8 +33,6 @@ import util.Warning;
  *
  * @author Jonathan Lovelace
  *
- *         TODO: Should this also handle (under a different class name) other fortress
- *         members?
  * @deprecated CompactXML is deprecated in favor of FluidXML
  */
 @Deprecated

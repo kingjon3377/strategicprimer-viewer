@@ -69,8 +69,6 @@ public final class CompactMobileReader extends
 	private static final Set<String> SUPP_TAGS;
 	/**
 	 * Map from types to tags.
-	 *
-	 * FIXME: This is brittle and doesn't work well with extensible classes.
 	 */
 	private static final Map<Class<? extends MobileFixture>, String> TAG_MAP;
 	/**

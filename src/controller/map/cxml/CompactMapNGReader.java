@@ -266,8 +266,6 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 				map.setGround(point, ground);
 				map.addFixture(point, oldGround);
 			} else if (!oldGround.equals(ground)) {
-				// TODO: Should we do some ordering of Ground other than
-				// the order they are in the XML?
 				map.addFixture(point, ground);
 			}
 		} else if (fix instanceof Forest) {
@@ -276,8 +274,6 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 			if (oldForest == null) {
 				map.setForest(point, forest);
 			} else if (!oldForest.equals(forest)) {
-				// TODO: Should we do some ordering of Forests other
-				// than the order they are in the XML?
 				map.addFixture(point, forest);
 			}
 		} else if (fix instanceof Mountain) {

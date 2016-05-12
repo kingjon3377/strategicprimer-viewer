@@ -239,7 +239,7 @@ public final class CompactResourceReader extends
 	}
 
 	/**
-	 * Write an object to a stream. TODO: Some way of simplifying this?
+	 * Write an object to a stream.
 	 *
 	 * @param ostream The stream to write to.
 	 * @param obj     The object to write.
