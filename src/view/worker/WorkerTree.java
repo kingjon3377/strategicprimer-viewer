@@ -8,8 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import javax.swing.JTree;
-import javax.swing.ToolTipManager;
+import javax.swing.*;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.event.TreeSelectionEvent;
@@ -72,8 +71,9 @@ public final class WorkerTree extends JTree
 	/**
 	 * @param wtModel    the tree model
 	 * @param players    the players in the map
-	 * @param orderCheck whether we should visually warn if orders contain "todo" or
-	 *                   "fixme" or if a unit named "unassigned" is nonempty
+	 * @param orderCheck whether we should visually warn if orders contain substrings
+	 *                      indicating remaining work or if a unit named "unassigned" is
+	 *                      nonempty
 	 */
 	public WorkerTree(final IWorkerTreeModel wtModel, final Iterable<Player> players,
 					final boolean orderCheck) {
