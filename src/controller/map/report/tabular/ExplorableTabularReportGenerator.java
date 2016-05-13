@@ -168,6 +168,7 @@ public class ExplorableTabularReportGenerator implements ITableGenerator<Explora
 	 * @param fixtures the set of fixtures
 	 * @throws IOException on I/O error writing to the stream
 	 */
+	@Override
 	@SuppressWarnings("QuestionableName")
 	public void produce(final Appendable ostream, final Class<ExplorableFixture> type,
 						final PatientMap<Integer, Pair<Point, IFixture>> fixtures)

@@ -39,6 +39,7 @@ public class ClassIterable implements Iterable<Class<?>> {
 			addInterfaces(classes, cls);
 		}
 	}
+	@Override
 	public Iterator<Class<?>> iterator() {
 		return classes.iterator();
 	}
