@@ -226,7 +226,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 			if (inner instanceof JTextField) {
 				((JTextField) inner).addActionListener(list);
 			} else {
-				System.out.println("Editor wasn't a text field, but a " +
+				logLabel.getWriter().println("Editor wasn't a text field, but a " +
 										inner.getClass().getCanonicalName());
 			}
 		};
