@@ -22,7 +22,7 @@ import model.map.fixtures.mobile.worker.WorkerStats;
 import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.fluidxml.XMLHelper.addImage;
+import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
@@ -79,7 +79,7 @@ public class FluidWorkerHandler {
 						final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "worker");
-		final Worker retval = addImage(new Worker(getAttribute(element, "name"),
+		final Worker retval = setImage(new Worker(getAttribute(element, "name"),
 												getAttribute(element, "race", "human"),
 												getOrGenerateID(element, warner,
 														idFactory)), element, warner);

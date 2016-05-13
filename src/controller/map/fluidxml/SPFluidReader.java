@@ -1,38 +1,5 @@
 package controller.map.fluidxml;
 
-import static controller.map.fluidxml.XMLHelper.addImage;
-import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
-import static controller.map.fluidxml.XMLHelper.getAttribute;
-import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
-import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
-import static controller.map.fluidxml.XMLHelper.getPlayerOrIndependent;
-import static controller.map.fluidxml.XMLHelper.hasAttribute;
-import static controller.map.fluidxml.XMLHelper.requireNonEmptyAttribute;
-import static controller.map.fluidxml.XMLHelper.requireTag;
-import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
-import static javax.xml.XMLConstants.NULL_NS_URI;
-import static model.map.TileType.getTileType;
-import static util.EqualsAny.equalsAny;
-import static util.NullCleaner.assertNotNull;
-
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.IntFunction;
-import java.util.regex.Pattern;
-import java.util.stream.StreamSupport;
-
-import javax.xml.XMLConstants;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -43,6 +10,20 @@ import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
 import controller.map.misc.TypesafeXMLEventReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.IntFunction;
+import java.util.regex.Pattern;
+import java.util.stream.StreamSupport;
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
 import model.map.IMutableMapNG;
 import model.map.IMutablePlayerCollection;
 import model.map.MapDimensions;
@@ -73,10 +54,26 @@ import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.Fortress;
+import org.eclipse.jdt.annotation.NonNull;
 import util.EqualsAny;
 import util.IteratorWrapper;
 import util.NullCleaner;
 import util.Warning;
+
+import static controller.map.fluidxml.XMLHelper.setImage;
+import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
+import static controller.map.fluidxml.XMLHelper.getAttribute;
+import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
+import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
+import static controller.map.fluidxml.XMLHelper.getPlayerOrIndependent;
+import static controller.map.fluidxml.XMLHelper.hasAttribute;
+import static controller.map.fluidxml.XMLHelper.requireNonEmptyAttribute;
+import static controller.map.fluidxml.XMLHelper.requireTag;
+import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
+import static javax.xml.XMLConstants.NULL_NS_URI;
+import static model.map.TileType.getTileType;
+import static util.EqualsAny.equalsAny;
+import static util.NullCleaner.assertNotNull;
 
 /**
  * The main reader-from-XML class in the 'fluid XML' implementation.
@@ -112,18 +109,18 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		readers.put("battlefield", FluidExplorableHandler::readBattlefield);
 		readers.put("ground", FluidTerrainHandler::readGround);
 		readers.put("forest", FluidTerrainHandler::readForest);
-		addSimpleFixtureReader("hill", Hill::new);
+		createSimpleFixtureReader("hill", Hill::new);
 		readers.put("mountain", FluidTerrainHandler::readMountain);
-		addSimpleFixtureReader("oasis", Oasis::new);
-		addSimpleFixtureReader("sandbar", Sandbar::new);
-		addSimpleFixtureReader("djinn", Djinn::new);
-		addSimpleFixtureReader("griffin", Griffin::new);
-		addSimpleFixtureReader("minotaur", Minotaur::new);
-		addSimpleFixtureReader("ogre", Ogre::new);
-		addSimpleFixtureReader("phoenix", Phoenix::new);
-		addSimpleFixtureReader("simurgh", Simurgh::new);
-		addSimpleFixtureReader("sphinx", Sphinx::new);
-		addSimpleFixtureReader("troll", Troll::new);
+		createSimpleFixtureReader("oasis", Oasis::new);
+		createSimpleFixtureReader("sandbar", Sandbar::new);
+		createSimpleFixtureReader("djinn", Djinn::new);
+		createSimpleFixtureReader("griffin", Griffin::new);
+		createSimpleFixtureReader("minotaur", Minotaur::new);
+		createSimpleFixtureReader("ogre", Ogre::new);
+		createSimpleFixtureReader("phoenix", Phoenix::new);
+		createSimpleFixtureReader("simurgh", Simurgh::new);
+		createSimpleFixtureReader("sphinx", Sphinx::new);
+		createSimpleFixtureReader("troll", Troll::new);
 		readers.put("animal", FluidMobileHandler::readAnimal);
 		readers.put("centaur", FluidMobileHandler::readCentaur);
 		readers.put("dragon", FluidMobileHandler::readDragon);
@@ -260,11 +257,11 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * @param constr the constructor to create an object of the class. Must take the ID
 	 *                  number in its constructor, and nothing else.
 	 */
-	private void addSimpleFixtureReader(final String tag, final IntFunction<?> constr) {
+	private void createSimpleFixtureReader(final String tag, final IntFunction<?> constr) {
 		readers.put(tag, (element, stream, players, warner, idFactory) -> {
 			requireTag(element, tag);
 			spinUntilEnd(assertNotNull(element.getName()), stream);
-			return addImage(constr.apply(getOrGenerateID(element, warner, idFactory)),
+			return setImage(constr.apply(getOrGenerateID(element, warner, idFactory)),
 					element, warner);
 		});
 	}
@@ -297,7 +294,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 			warner.warn(new MissingPropertyException(element, "kind"));
 		}
 		final Unit retval =
-				addImage(new Unit(getPlayerOrIndependent(element, warner, players),
+				setImage(new Unit(getPlayerOrIndependent(element, warner, players),
 								kind, getAttribute(element, "name", ""),
 										 getOrGenerateID(element, warner, idFactory)),
 						element, warner);
@@ -365,7 +362,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 			}
 		}
 		retval.setPortrait(getAttribute(element, "portrait", ""));
-		return addImage(retval, element, warner);
+		return setImage(retval, element, warner);
 	}
 
 	/**

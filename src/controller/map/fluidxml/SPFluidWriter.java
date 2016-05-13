@@ -106,32 +106,32 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		writers.put(Cave.class, FluidExplorableHandler::writeCave);
 		writers.put(Ground.class, FluidTerrainHandler::writeGround);
 		writers.put(Forest.class, FluidTerrainHandler::writeForest);
-		addSimpleFixtureWriter(Hill.class, "hill");
-		addSimpleFixtureWriter(Oasis.class, "oasis");
-		addSimpleFixtureWriter(Sandbar.class, "sandbar");
+		createSimpleFixtureWriter(Hill.class, "hill");
+		createSimpleFixtureWriter(Oasis.class, "oasis");
+		createSimpleFixtureWriter(Sandbar.class, "sandbar");
 		writers.put(Mountain.class, FluidTerrainHandler::writeMountain);
 		writers.put(Animal.class, FluidMobileHandler::writeAnimal);
-		addSimpleFixtureWriter(Centaur.class, "centaur");
-		addSimpleFixtureWriter(Djinn.class, "djinn");
-		addSimpleFixtureWriter(Dragon.class, "dragon");
-		addSimpleFixtureWriter(Fairy.class, "fairy");
-		addSimpleFixtureWriter(Giant.class, "giant");
-		addSimpleFixtureWriter(Griffin.class, "griffin");
-		addSimpleFixtureWriter(Minotaur.class, "minotaur");
-		addSimpleFixtureWriter(Ogre.class, "ogre");
-		addSimpleFixtureWriter(Phoenix.class, "phoenix");
-		addSimpleFixtureWriter(Simurgh.class, "simurgh");
-		addSimpleFixtureWriter(Sphinx.class, "sphinx");
-		addSimpleFixtureWriter(Troll.class, "troll");
+		createSimpleFixtureWriter(Centaur.class, "centaur");
+		createSimpleFixtureWriter(Djinn.class, "djinn");
+		createSimpleFixtureWriter(Dragon.class, "dragon");
+		createSimpleFixtureWriter(Fairy.class, "fairy");
+		createSimpleFixtureWriter(Giant.class, "giant");
+		createSimpleFixtureWriter(Griffin.class, "griffin");
+		createSimpleFixtureWriter(Minotaur.class, "minotaur");
+		createSimpleFixtureWriter(Ogre.class, "ogre");
+		createSimpleFixtureWriter(Phoenix.class, "phoenix");
+		createSimpleFixtureWriter(Simurgh.class, "simurgh");
+		createSimpleFixtureWriter(Sphinx.class, "sphinx");
+		createSimpleFixtureWriter(Troll.class, "troll");
 		writers.put(TextFixture.class, FluidExplorableHandler::writeTextFixture);
-		addSimpleFixtureWriter(Implement.class, "implement");
+		createSimpleFixtureWriter(Implement.class, "implement");
 		writers.put(ResourcePile.class, FluidResourceHandler::writeResource);
 		writers.put(CacheFixture.class, FluidResourceHandler::writeCache);
 		writers.put(Meadow.class, FluidResourceHandler::writeMeadow);
 		writers.put(Grove.class, FluidResourceHandler::writeGrove);
 		writers.put(Mine.class, FluidResourceHandler::writeMine);
 		writers.put(MineralVein.class, FluidResourceHandler::writeMineral);
-		addSimpleFixtureWriter(Shrub.class, "shrub");
+		createSimpleFixtureWriter(Shrub.class, "shrub");
 		writers.put(StoneDeposit.class, FluidResourceHandler::writeStone);
 		writers.put(IWorker.class, FluidWorkerHandler::writeWorker);
 		writers.put(IJob.class, FluidWorkerHandler::writeJob);
@@ -175,7 +175,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	 * @param cls the class of objects to use this writer for
 	 * @param tag the tag to be used for this class
 	 */
-	private void addSimpleFixtureWriter(final Class<?> cls, final String tag) {
+	private void createSimpleFixtureWriter(final Class<?> cls, final String tag) {
 		writers.put(cls, (ostream, obj, indent) -> {
 			if (!(cls.isInstance(obj))) {
 				throw new IllegalArgumentException("Can only write " +

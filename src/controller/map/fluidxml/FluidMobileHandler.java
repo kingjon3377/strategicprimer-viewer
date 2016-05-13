@@ -14,7 +14,7 @@ import model.map.fixtures.mobile.Giant;
 import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.fluidxml.XMLHelper.addImage;
+import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
@@ -69,7 +69,7 @@ public class FluidMobileHandler {
 			throws SPFormatException {
 		requireTag(element, "animal");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
-		return addImage(new Animal(getAttribute(element, "kind"), hasAttribute(element,
+		return setImage(new Animal(getAttribute(element, "kind"), hasAttribute(element,
 				"traces"),
 						  parseBoolean(getAttribute(element, "talking",
 								  "false")),
@@ -99,7 +99,7 @@ public class FluidMobileHandler {
 		final Centaur fix = new Centaur(getAttribute(element, "kind"),
 											   getOrGenerateID(element, warner,
 													   idFactory));
-		return addImage(fix, element, warner);
+		return setImage(fix, element, warner);
 	}
 	/**
 	 * Parse a dragon.
@@ -124,7 +124,7 @@ public class FluidMobileHandler {
 			throws SPFormatException {
 		requireTag(element, "dragon");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
-		return addImage(new Dragon(getAttribute(element, "kind"),
+		return setImage(new Dragon(getAttribute(element, "kind"),
 											 getOrGenerateID(element, warner,
 													 idFactory)), element, warner);
 	}
@@ -146,7 +146,7 @@ public class FluidMobileHandler {
 					   final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "fairy");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
-		return addImage(new Fairy(getAttribute(element, "kind"),
+		return setImage(new Fairy(getAttribute(element, "kind"),
 										 getOrGenerateID(element, warner, idFactory)),
 				element, warner);
 	}
@@ -168,7 +168,7 @@ public class FluidMobileHandler {
 					   final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "giant");
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
-		return addImage(new Giant(getAttribute(element, "kind"),
+		return setImage(new Giant(getAttribute(element, "kind"),
 										 getOrGenerateID(element, warner, idFactory)),
 				element, warner);
 	}

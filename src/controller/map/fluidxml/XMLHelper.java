@@ -502,7 +502,7 @@ public final class XMLHelper {
 	 * @return the object
 	 * @param <T> the type of the object
 	 */
-	public static final <T> T addImage(final T obj, final StartElement element, final Warning warner) {
+	public static final <T> T setImage(final T obj, final StartElement element, final Warning warner) {
 		if (obj instanceof HasMutableImage) {
 			((HasMutableImage) obj).setImage(getAttribute(element, "image", ""));
 		} else if (hasAttribute(element, "image")) {
