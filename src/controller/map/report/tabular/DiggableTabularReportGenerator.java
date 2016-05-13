@@ -162,4 +162,9 @@ public class DiggableTabularReportGenerator implements ITableGenerator<TileFixtu
 			return prodCmp;
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "DiggableTabularReportGenerator";
+	}
 }

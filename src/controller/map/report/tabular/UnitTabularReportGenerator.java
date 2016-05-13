@@ -118,4 +118,9 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 			return cmp;
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "UnitTabularReportGenerator";
+	}
 }

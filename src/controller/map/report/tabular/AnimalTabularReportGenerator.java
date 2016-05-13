@@ -107,4 +107,9 @@ public class AnimalTabularReportGenerator implements ITableGenerator<Animal> {
 			return cmp;
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "AnimalTabularReportGenerator";
+	}
 }

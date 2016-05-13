@@ -388,4 +388,9 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		writeAttribute(ostream, "code_name", player.getName());
 		ostream.append(" />\n");
 	}
+
+	@Override
+	public String toString() {
+		return "SPFluidWriter";
+	}
 }

@@ -117,4 +117,9 @@ public class FortressTabularReportGenerator implements ITableGenerator<Fortress>
 			return cmp;
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "FortressTabularReportGenerator";
+	}
 }

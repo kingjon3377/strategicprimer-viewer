@@ -125,4 +125,9 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 			return cmp;
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "WorkerTabularReportGenerator";
+	}
 }

@@ -103,4 +103,9 @@ public class VillageTabularReportGenerator implements ITableGenerator<Village> {
 			return playerCmp;
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "VillageTabularReportGenerator";
+	}
 }

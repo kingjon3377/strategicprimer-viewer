@@ -115,4 +115,9 @@ public class ImmortalsTabularReportGenerator implements ITableGenerator<MobileFi
 			return cmp;
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "ImmortalsTabularReportGenerator";
+	}
 }

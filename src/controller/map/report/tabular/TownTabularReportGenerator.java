@@ -123,4 +123,9 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 			return kindCmp;
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "TownTabularReportGenerator";
+	}
 }

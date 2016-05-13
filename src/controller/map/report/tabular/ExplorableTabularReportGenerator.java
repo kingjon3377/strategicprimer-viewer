@@ -235,4 +235,9 @@ public class ExplorableTabularReportGenerator implements ITableGenerator<Explora
 		ostream.append(getRowDelimiter());
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "ExplorableTabularReportGenerator";
+	}
 }

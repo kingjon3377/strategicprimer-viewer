@@ -183,4 +183,9 @@ public class CropTabularReportGenerator implements ITableGenerator<TileFixture> 
 			return cropCmp;
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "CropTabularReportGenerator";
+	}
 }
