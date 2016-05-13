@@ -57,7 +57,7 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 		} else {
 			return 1;
 		}
-	};
+	}
 
 	/**
 	 * A comparator for town-statuses, to put active towns before abandoned ones before
@@ -83,7 +83,7 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 		} else {
 			return 1;
 		}
-	};
+	}
 
 	/**
 	 * A comparator for towns, sorting them *only* on the basis of kind, putting
@@ -131,7 +131,7 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 			// They should be both villages ...
 			return 0;
 		}
-	};
+	}
 
 	/**
 	 * This is hackishly implemented; fortunately, in each case I can rely on there being

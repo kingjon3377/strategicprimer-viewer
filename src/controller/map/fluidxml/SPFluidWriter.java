@@ -176,7 +176,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	 */
 	private void createSimpleFixtureWriter(final Class<?> cls, final String tag) {
 		writers.put(cls, (ostream, obj, indent) -> {
-			if (!(cls.isInstance(obj))) {
+			if (!cls.isInstance(obj)) {
 				throw new IllegalArgumentException("Can only write " +
 														   cls.getSimpleName());
 			} else if (!(obj instanceof IFixture)) {

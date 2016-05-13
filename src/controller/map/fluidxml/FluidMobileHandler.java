@@ -167,7 +167,7 @@ public class FluidMobileHandler {
 					   final IMutablePlayerCollection players, final Warning warner,
 					   final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "giant");
-		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return setImage(new Giant(getAttribute(element, "kind"),
 										 getOrGenerateID(element, warner, idFactory)),
 				element, warner);

@@ -330,7 +330,7 @@ public class FluidResourceHandler {
 					   final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "shrub");
-		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return setImage(new Shrub(getAttrWithDeprecatedForm(element,
 				"kind", "shrub", warner), getOrGenerateID(element, warner,
 				idFactory)), element, warner);

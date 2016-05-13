@@ -55,12 +55,9 @@ import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.Fortress;
 import org.eclipse.jdt.annotation.NonNull;
-import util.EqualsAny;
 import util.IteratorWrapper;
-import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
@@ -69,6 +66,7 @@ import static controller.map.fluidxml.XMLHelper.getPlayerOrIndependent;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
 import static controller.map.fluidxml.XMLHelper.requireNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.requireTag;
+import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
 import static javax.xml.XMLConstants.NULL_NS_URI;
 import static model.map.TileType.getTileType;
@@ -240,7 +238,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		final String tag = element.getName().getLocalPart().toLowerCase();
 		if (namespace.isEmpty() || NAMESPACE.equals(namespace)) {
 			if (readers.containsKey(tag)) {
-				return NullCleaner.assertNotNull(readers.get(tag))
+				return assertNotNull(readers.get(tag))
 							   .readSPObject(element, stream, players, warner, idFactory);
 			} else {
 				throw new UnsupportedTagException(element);
@@ -401,8 +399,6 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 										 getIntegerAttribute(mapTag, "columns"),
 										 getIntegerAttribute(mapTag, "version"));
 		final IMutableMapNG retval = new SPMapNG(dimensions, players, currentTurn);
-		final Point nullPoint = PointFactory.point(-1, -1);
-		Point point = nullPoint;
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && equalsAny(
 					assertNotNull(
@@ -582,10 +578,10 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		final StartElement retval = StreamSupport
 											.stream(stream.spliterator(), false)
 											.filter(XMLEvent::isStartElement).map(XMLEvent::asStartElement)
-											.filter(elem -> EqualsAny.equalsAny(
+											.filter(elem -> equalsAny(
 													assertNotNull(
 															elem.getName().getNamespaceURI()),
-													ISPReader.NAMESPACE, XMLConstants.NULL_NS_URI))
+													ISPReader.NAMESPACE, NULL_NS_URI))
 											.findFirst()
 											.orElseThrow(() -> new MissingChildException(parent));
 		assert retval != null;

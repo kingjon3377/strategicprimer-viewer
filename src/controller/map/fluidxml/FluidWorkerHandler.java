@@ -219,7 +219,7 @@ public class FluidWorkerHandler {
 									   getIntegerAttribute(element, "int"),
 									   getIntegerAttribute(element, "wis"),
 									   getIntegerAttribute(element, "cha"));
-		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
+		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return retval;
 	}
 	/**
