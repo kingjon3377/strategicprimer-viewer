@@ -1,20 +1,12 @@
 package controller.map.fluidxml;
 
-import static controller.map.fluidxml.XMLHelper.imageXML;
-import static controller.map.fluidxml.XMLHelper.indent;
-import static controller.map.fluidxml.XMLHelper.writeAttribute;
-import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
-import static controller.map.fluidxml.XMLHelper.writeNonEmptyAttribute;
-import static controller.map.fluidxml.XMLHelper.writeTag;
-
+import controller.map.iointerfaces.SPWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
-
-import controller.map.iointerfaces.SPWriter;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.HasPortrait;
@@ -72,6 +64,13 @@ import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.Village;
 import util.NullCleaner;
+
+import static controller.map.fluidxml.XMLHelper.imageXML;
+import static controller.map.fluidxml.XMLHelper.indent;
+import static controller.map.fluidxml.XMLHelper.writeAttribute;
+import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
+import static controller.map.fluidxml.XMLHelper.writeNonEmptyAttribute;
+import static controller.map.fluidxml.XMLHelper.writeTag;
 
 /**
  * The main writer-to-XML class in the 'fluid XML' implementation.
@@ -148,7 +147,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	public void writeSPObject(final Appendable ostream, final Object obj,
 							  final int indent)
 			throws IOException, IllegalArgumentException {
-		ClassIterable types = new ClassIterable(obj);
+		final ClassIterable types = new ClassIterable(obj);
 		for (final Class<?> cls : types) {
 			if (writers.containsKey(cls)) {
 				NullCleaner.assertNotNull(writers.get(cls)).writeSPObject(ostream, obj, indent);

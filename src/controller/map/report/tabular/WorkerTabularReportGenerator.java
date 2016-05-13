@@ -87,7 +87,7 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 			writeField(ostream, Integer.toString(stats.getHitPoints()));
 			writeFieldDelimiter(ostream);
 			writeField(ostream, Integer.toString(stats.getMaxHitPoints()));
-			for (ToIntFunction<WorkerStats> field :
+			for (final ToIntFunction<WorkerStats> field :
 					Arrays.<ToIntFunction<WorkerStats>>asList(WorkerStats::getStrength,
 							WorkerStats::getDexterity, WorkerStats::getConstitution,
 							WorkerStats::getIntelligence, WorkerStats::getWisdom,

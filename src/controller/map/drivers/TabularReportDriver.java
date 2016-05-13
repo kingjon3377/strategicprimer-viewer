@@ -53,7 +53,7 @@ public class TabularReportDriver implements SimpleDriver {
 						try {
 							return new FileOutputStream(pair.second().getPath() + '.' + s +
 																".csv");
-						} catch (FileNotFoundException e) {
+						} catch (final FileNotFoundException e) {
 							throw new IOError(e);
 						}
 					});
@@ -67,7 +67,7 @@ public class TabularReportDriver implements SimpleDriver {
 					try {
 						return new FileOutputStream(model.getMapFile().getPath() + '.' + s +
 															".csv");
-					} catch (FileNotFoundException e) {
+					} catch (final FileNotFoundException e) {
 						throw new IOError(e);
 					}
 				});
