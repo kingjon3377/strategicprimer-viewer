@@ -3,7 +3,6 @@ package controller.map.report.tabular;
 import controller.map.misc.TownComparator;
 import java.io.IOException;
 import model.map.DistanceComparator;
-import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.Player;
 import model.map.Point;
@@ -99,12 +98,7 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 		final AbstractTown second = two.second();
 		final int kindCmp = TownComparator.compareTownKind(first, second);
 		if (kindCmp == 0) {
-			final int ownerCmp;
-			if (first instanceof HasOwner && second instanceof HasOwner) {
-				ownerCmp = ((HasOwner) first).getOwner().compareTo(((HasOwner) second).getOwner());
-			} else {
-				ownerCmp = 0;
-			}
+			final int ownerCmp = first.getOwner().compareTo(second.getOwner());
 			if (ownerCmp == 0) {
 				final int cmp = comparator.compare(one.first(), two.first());
 				if (cmp == 0) {

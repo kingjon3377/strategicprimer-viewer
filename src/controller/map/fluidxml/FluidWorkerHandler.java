@@ -261,7 +261,7 @@ public class FluidWorkerHandler {
 			}
 			for (final IJob job : work) {
 				if (job instanceof Job) {
-					writeJob(ostream, (Job) job, indent + 1);
+					writeJob(ostream, job, indent + 1);
 				}
 			}
 			indent(ostream, indent);
