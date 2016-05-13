@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.eclipse.jdt.annotation.NonNull;
+
 import model.map.IFixture;
 import model.map.Player;
 import model.map.Point;
@@ -35,7 +38,7 @@ import util.PatientMap;
  * @param <T> the type of thing an implementer can report on
  * @author Jonathan Lovelace
  */
-public interface ITableGenerator<T> {
+public interface ITableGenerator<@NonNull T> {
 	/**
 	 * Produce a tabular report on a particular category of fixtures in the map. All
 	 * fixtures covered in this table should be removed from the set before returning.
