@@ -5,9 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
 import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
@@ -165,7 +163,6 @@ public final class IntMap<V> implements PatientMap<@NonNull Integer, V> { // NOP
 	 * @return the set of entries in the map
 	 */
 	@Override
-	@NonNullByDefault({}) // FIXME: Remove when we get external annotations for JDK
 	public Set<Map.Entry<@NonNull Integer, V>> entrySet() {
 		return backing.entrySet();
 	}
