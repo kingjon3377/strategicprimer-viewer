@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.function.IntFunction;
 import java.util.regex.Pattern;
 import java.util.stream.StreamSupport;
-import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
@@ -337,7 +336,6 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 			throws SPFormatException {
 		requireNonEmptyAttribute(element, "owner", false, warner);
 		requireNonEmptyAttribute(element, "name", false, warner);
-		final Player owner;
 		final Fortress retval =
 				new Fortress(getPlayerOrIndependent(element, warner, players),
 									getAttribute(element, "name", ""),
