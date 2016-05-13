@@ -1,12 +1,20 @@
 package controller.map.fluidxml;
 
-import controller.map.iointerfaces.SPWriter;
+import static controller.map.fluidxml.XMLHelper.imageXML;
+import static controller.map.fluidxml.XMLHelper.indent;
+import static controller.map.fluidxml.XMLHelper.writeAttribute;
+import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
+import static controller.map.fluidxml.XMLHelper.writeNonEmptyAttribute;
+import static controller.map.fluidxml.XMLHelper.writeTag;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
+
+import controller.map.iointerfaces.SPWriter;
 import model.map.HasImage;
 import model.map.HasKind;
 import model.map.HasPortrait;
@@ -63,13 +71,7 @@ import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.AbstractTown;
 import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.Village;
-
-import static controller.map.fluidxml.XMLHelper.imageXML;
-import static controller.map.fluidxml.XMLHelper.indent;
-import static controller.map.fluidxml.XMLHelper.writeAttribute;
-import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
-import static controller.map.fluidxml.XMLHelper.writeNonEmptyAttribute;
-import static controller.map.fluidxml.XMLHelper.writeTag;
+import util.NullCleaner;
 
 /**
  * The main writer-to-XML class in the 'fluid XML' implementation.
@@ -149,7 +151,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		ClassIterable types = new ClassIterable(obj);
 		for (final Class<?> cls : types) {
 			if (writers.containsKey(cls)) {
-				writers.get(cls).writeSPObject(ostream, obj, indent);
+				NullCleaner.assertNotNull(writers.get(cls)).writeSPObject(ostream, obj, indent);
 				return;
 			}
 		}

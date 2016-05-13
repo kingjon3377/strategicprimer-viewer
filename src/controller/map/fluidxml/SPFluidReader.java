@@ -1,5 +1,38 @@
 package controller.map.fluidxml;
 
+import static controller.map.fluidxml.XMLHelper.addImage;
+import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
+import static controller.map.fluidxml.XMLHelper.getAttribute;
+import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
+import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
+import static controller.map.fluidxml.XMLHelper.getPlayerOrIndependent;
+import static controller.map.fluidxml.XMLHelper.hasAttribute;
+import static controller.map.fluidxml.XMLHelper.requireNonEmptyAttribute;
+import static controller.map.fluidxml.XMLHelper.requireTag;
+import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
+import static javax.xml.XMLConstants.NULL_NS_URI;
+import static model.map.TileType.getTileType;
+import static util.EqualsAny.equalsAny;
+import static util.NullCleaner.assertNotNull;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.IntFunction;
+import java.util.regex.Pattern;
+import java.util.stream.StreamSupport;
+
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+
+import org.eclipse.jdt.annotation.NonNull;
+
 import controller.map.formatexceptions.MissingChildException;
 import controller.map.formatexceptions.MissingPropertyException;
 import controller.map.formatexceptions.SPFormatException;
@@ -10,20 +43,6 @@ import controller.map.iointerfaces.ISPReader;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IncludingIterator;
 import controller.map.misc.TypesafeXMLEventReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.IntFunction;
-import java.util.regex.Pattern;
-import java.util.stream.StreamSupport;
-import javax.xml.XMLConstants;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
 import model.map.IMutableMapNG;
 import model.map.IMutablePlayerCollection;
 import model.map.MapDimensions;
@@ -54,25 +73,10 @@ import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.terrain.Oasis;
 import model.map.fixtures.terrain.Sandbar;
 import model.map.fixtures.towns.Fortress;
-import org.eclipse.jdt.annotation.NonNull;
 import util.EqualsAny;
 import util.IteratorWrapper;
+import util.NullCleaner;
 import util.Warning;
-
-import static controller.map.fluidxml.XMLHelper.addImage;
-import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
-import static controller.map.fluidxml.XMLHelper.getAttribute;
-import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
-import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
-import static controller.map.fluidxml.XMLHelper.getPlayerOrIndependent;
-import static controller.map.fluidxml.XMLHelper.hasAttribute;
-import static controller.map.fluidxml.XMLHelper.requireNonEmptyAttribute;
-import static controller.map.fluidxml.XMLHelper.requireTag;
-import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
-import static javax.xml.XMLConstants.NULL_NS_URI;
-import static model.map.TileType.getTileType;
-import static util.EqualsAny.equalsAny;
-import static util.NullCleaner.assertNotNull;
 
 /**
  * The main reader-from-XML class in the 'fluid XML' implementation.
@@ -239,7 +243,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		final String tag = element.getName().getLocalPart().toLowerCase();
 		if (namespace.isEmpty() || NAMESPACE.equals(namespace)) {
 			if (readers.containsKey(tag)) {
-				return readers.get(tag)
+				return NullCleaner.assertNotNull(readers.get(tag))
 							   .readSPObject(element, stream, players, warner, idFactory);
 			} else {
 				throw new UnsupportedTagException(element);

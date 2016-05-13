@@ -7,11 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 import model.map.IFixture;
 import model.map.Point;
 import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
 import model.map.fixtures.resources.CacheFixture;
+import util.NullCleaner;
 import util.Pair;
 import util.PatientMap;
 
@@ -185,7 +187,7 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 			if (fix instanceof Implement) {
 				final String kind = ((Implement) fix).getKind();
 				if (impls.containsKey(kind)) {
-					impls.put(kind, Integer.valueOf(impls.get(kind).intValue() + 1));
+					impls.put(kind, Integer.valueOf(NullCleaner.assertNotNull(impls.get(kind)).intValue() + 1));
 				} else {
 					impls.put(kind, Integer.valueOf(1));
 				}
