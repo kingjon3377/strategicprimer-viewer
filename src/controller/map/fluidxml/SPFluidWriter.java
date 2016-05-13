@@ -147,7 +147,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	public void writeSPObject(final Appendable ostream, final Object obj,
 							  final int indent)
 			throws IOException, IllegalArgumentException {
-		final ClassIterable types = new ClassIterable(obj);
+		final Iterable<Class<?>> types = new ClassIterable(obj);
 		for (final Class<?> cls : types) {
 			if (writers.containsKey(cls)) {
 				NullCleaner.assertNotNull(writers.get(cls)).writeSPObject(ostream, obj, indent);

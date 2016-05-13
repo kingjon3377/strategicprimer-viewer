@@ -171,7 +171,7 @@ public final class SimpleMovement {
 	 * @param unit a unit
 	 * @return the highest Perception score of any member, or 0 if no members
 	 */
-	private static int getHighestPerception(final IUnit unit) {
+	private static int getHighestPerception(final Iterable<UnitMember> unit) {
 		int retval = 0;
 		for (final UnitMember member : unit) {
 			if (member instanceof IWorker) {
@@ -187,7 +187,7 @@ public final class SimpleMovement {
 	 * @param worker a worker
 	 * @return the worker's Perception score
 	 */
-	private static int getPerception(final IWorker worker) {
+	private static int getPerception(final Iterable<IJob> worker) {
 		final int ability;
 		if (worker instanceof Worker) {
 			final WorkerStats stats = ((Worker) worker).getStats();

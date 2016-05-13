@@ -1,6 +1,7 @@
 package controller.map.report.tabular;
 
 import java.io.IOException;
+import java.util.Comparator;
 import model.map.DistanceComparator;
 import model.map.IFixture;
 import model.map.Player;
@@ -95,7 +96,7 @@ public class FortressTabularReportGenerator implements ITableGenerator<Fortress>
 	@Override
 	public int comparePairs(final Pair<Point, Fortress> one,
 							final Pair<Point, Fortress> two) {
-		final DistanceComparator comparator = new DistanceComparator(base);
+		final Comparator<Point> comparator = new DistanceComparator(base);
 		final Fortress first = one.second();
 		final Fortress second = two.second();
 		final int cmp = comparator.compare(one.first(), two.first());

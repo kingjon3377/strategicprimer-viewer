@@ -2,6 +2,7 @@ package controller.map.report.tabular;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.function.ToIntFunction;
 import model.map.DistanceComparator;
 import model.map.IFixture;
@@ -116,7 +117,7 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 	@Override
 	public int comparePairs(final Pair<Point, IWorker> one,
 							final Pair<Point, IWorker> two) {
-		final DistanceComparator comparator = new DistanceComparator(base);
+		final Comparator<Point> comparator = new DistanceComparator(base);
 		final IWorker first = one.second();
 		final IWorker second = two.second();
 		final int cmp = comparator.compare(one.first(), two.first());

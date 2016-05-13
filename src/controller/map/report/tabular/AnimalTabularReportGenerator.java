@@ -1,6 +1,7 @@
 package controller.map.report.tabular;
 
 import java.io.IOException;
+import java.util.Comparator;
 import model.map.DistanceComparator;
 import model.map.IFixture;
 import model.map.Point;
@@ -88,7 +89,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<Animal> {
 	@Override
 	public int comparePairs(final Pair<Point, Animal> one,
 							final Pair<Point, Animal> two) {
-		final DistanceComparator comparator = new DistanceComparator(base);
+		final Comparator<Point> comparator = new DistanceComparator(base);
 		final int cmp = comparator.compare(one.first(), two.first());
 		if (cmp == 0) {
 			final Animal first = one.second();

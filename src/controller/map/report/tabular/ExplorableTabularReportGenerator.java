@@ -3,6 +3,7 @@ package controller.map.report.tabular;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import model.map.DistanceComparator;
@@ -140,7 +141,7 @@ public class ExplorableTabularReportGenerator implements ITableGenerator<Explora
 	@Override
 	public int comparePairs(final Pair<Point, ExplorableFixture> one,
 							final Pair<Point, ExplorableFixture> two) {
-		final DistanceComparator comparator = new DistanceComparator(base);
+		final Comparator<Point> comparator = new DistanceComparator(base);
 		final ExplorableFixture first = one.second();
 		final ExplorableFixture second = two.second();
 		final int cmp = comparator.compare(one.first(), two.first());
@@ -186,7 +187,7 @@ public class ExplorableTabularReportGenerator implements ITableGenerator<Explora
 				.sort(values, (one, two) -> {
 					final Pair<Point, IFixture> first = one.second();
 					final Pair<Point, IFixture> second = two.second();
-					final DistanceComparator comparator = new DistanceComparator(base);
+					final Comparator<Point> comparator = new DistanceComparator(base);
 					final int cmp = comparator.compare(first.first(), second.first());
 					if (cmp == 0) {
 						return first.second().toString().compareTo(second.second().toString());

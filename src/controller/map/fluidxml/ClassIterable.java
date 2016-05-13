@@ -3,7 +3,6 @@ package controller.map.fluidxml;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * A utility class to make iterating over the types of an object (its class, its
@@ -29,7 +28,7 @@ import java.util.List;
  * @author Jonathan Lovelace
  */
 public class ClassIterable implements Iterable<Class<?>> {
-	private final List<Class<?>> classes = new ArrayList<>();
+	private final Collection<Class<?>> classes = new ArrayList<>();
 	public ClassIterable(final Object obj) {
 		final Class<?> base = obj.getClass();
 		classes.add(base);

@@ -2,6 +2,7 @@ package controller.map.report.tabular;
 
 import controller.map.misc.TownComparator;
 import java.io.IOException;
+import java.util.Comparator;
 import model.map.DistanceComparator;
 import model.map.IFixture;
 import model.map.Player;
@@ -94,7 +95,7 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 	@Override
 	public int comparePairs(final Pair<Point, AbstractTown> one,
 							final Pair<Point, AbstractTown> two) {
-		final DistanceComparator comparator = new DistanceComparator(base);
+		final Comparator<Point> comparator = new DistanceComparator(base);
 		final AbstractTown first = one.second();
 		final AbstractTown second = two.second();
 		final int kindCmp = TownComparator.compareTownKind(first, second);

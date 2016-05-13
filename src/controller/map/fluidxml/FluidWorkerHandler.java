@@ -19,10 +19,8 @@ import model.map.fixtures.mobile.worker.ISkill;
 import model.map.fixtures.mobile.worker.Job;
 import model.map.fixtures.mobile.worker.Skill;
 import model.map.fixtures.mobile.worker.WorkerStats;
-import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
@@ -31,6 +29,7 @@ import static controller.map.fluidxml.XMLHelper.imageXML;
 import static controller.map.fluidxml.XMLHelper.indent;
 import static controller.map.fluidxml.XMLHelper.requireNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.requireTag;
+import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
 import static controller.map.fluidxml.XMLHelper.writeAttribute;
 import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
@@ -117,7 +116,7 @@ public class FluidWorkerHandler {
 	 * @return the parsed job
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final Job readJob(final StartElement element, final Iterable<XMLEvent> stream,
+	public static final IJob readJob(final StartElement element, final Iterable<XMLEvent> stream,
 					 final IMutablePlayerCollection players, final Warning warner,
 					 final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "job");
@@ -174,7 +173,7 @@ public class FluidWorkerHandler {
 	 * @return the parsed job
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final Skill readSkill(final StartElement element,
+	public static final ISkill readSkill(final StartElement element,
 					   final Iterable<XMLEvent> stream,
 					   final IMutablePlayerCollection players,
 					   final Warning warner, final IDFactory idFactory)

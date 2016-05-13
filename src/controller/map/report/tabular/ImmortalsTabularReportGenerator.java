@@ -1,6 +1,7 @@
 package controller.map.report.tabular;
 
 import java.io.IOException;
+import java.util.Comparator;
 import model.map.DistanceComparator;
 import model.map.IFixture;
 import model.map.Point;
@@ -100,7 +101,7 @@ public class ImmortalsTabularReportGenerator implements ITableGenerator<MobileFi
 	@Override
 	public int comparePairs(final Pair<Point, MobileFixture> one,
 							final Pair<Point, MobileFixture> two) {
-		final DistanceComparator comparator = new DistanceComparator(base);
+		final Comparator<Point> comparator = new DistanceComparator(base);
 		final MobileFixture first = one.second();
 		final MobileFixture second = two.second();
 		final int cmp = comparator.compare(one.first(), two.first());

@@ -9,6 +9,7 @@ import javax.xml.XMLConstants;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
+import model.map.IPlayerCollection;
 import model.map.Player;
 import model.map.PointFactory;
 import model.map.fixtures.TextFixture;
@@ -68,7 +69,7 @@ public class FluidExplorableHandler {
 	 */
 	public static final AdventureFixture readAdventure(final StartElement element,
 												final Iterable<XMLEvent> stream,
-												final IMutablePlayerCollection players,
+												final IPlayerCollection players,
 												final Warning warner,
 												final IDFactory idFactory)
 			throws SPFormatException {
