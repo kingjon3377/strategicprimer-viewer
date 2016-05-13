@@ -120,6 +120,8 @@ public final class AppStarter implements ISPDriver {
 		// TODO: Add a GUI equivalent of the MapPopulatorDriver
 		addChoice(new MapPopulatorDriver());
 		addChoice(new ResourceAddingCLIDriver(), new ResourceAddingGUIDriver());
+		// TODO: Add a GUI equivalent of TabularReportDriver
+		addChoice(new TabularReportDriver());
 	}
 
 	/**

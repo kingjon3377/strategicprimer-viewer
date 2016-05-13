@@ -40,16 +40,18 @@ import org.eclipse.jdt.annotation.NonNull;
  */
 public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	/**
-	 * A comparator for town-sizes.
+	 * @param one One town-size
+	 * @param two Another
+	 * @return the result of a comparison between them
 	 */
-	private static final Comparator<TownSize> SIZE_CMP = (sizeOne, sizeTwo) -> {
-		if (sizeOne == sizeTwo) {
+	public static final int compareTownSize(final TownSize one, final TownSize two) {
+		if (one == two) {
 			return 0; // NOPMD
-		} else if (TownSize.Large == sizeOne) {
+		} else if (TownSize.Large == one) {
 			return -1; // NOPMD
-		} else if (TownSize.Large == sizeTwo) {
+		} else if (TownSize.Large == two) {
 			return 1; // NOPMD
-		} else if (TownSize.Medium == sizeOne) {
+		} else if (TownSize.Medium == one) {
 			return -1; // NOPMD
 		} else {
 			return 1;
@@ -59,19 +61,22 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	/**
 	 * A comparator for town-statuses, to put active towns before abandoned ones before
 	 * ruined ones before burned-out ones.
+	 * @param one one town-status
+	 * @param two another
+	 * @return the result of the comparison
 	 */
-	private static final Comparator<TownStatus> ST_CMP = (statusOne, statusTwo) -> {
-		if (statusOne == statusTwo) {
+	public static final int compareTownStatus(final TownStatus one, final TownStatus two) {
+		if (one == two) {
 			return 0; // NOPMD
-		} else if (TownStatus.Active == statusOne) {
+		} else if (TownStatus.Active == one) {
 			return -1; // NOPMD
-		} else if (TownStatus.Active == statusTwo) {
+		} else if (TownStatus.Active == two) {
 			return 1; // NOPMD
-		} else if (TownStatus.Abandoned == statusOne) {
+		} else if (TownStatus.Abandoned == one) {
 			return -1; // NOPMD
-		} else if (TownStatus.Abandoned == statusTwo) {
+		} else if (TownStatus.Abandoned == two) {
 			return 1; // NOPMD
-		} else if (TownStatus.Ruined == statusOne) {
+		} else if (TownStatus.Ruined == one) {
 			return -1; // NOPMD
 		} else {
 			return 1;
@@ -81,39 +86,43 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	/**
 	 * A comparator for towns, sorting them *only* on the basis of kind, putting
 	 * fortresses before cities before towns before fortifications before villages.
+	 * @param one a town
+	 * @param two another
+	 * @return the result of a comparison between them only on the basis of town-kind.
 	 */
-	private static final Comparator<ITownFixture> KIND_CMP = (townOne, townTwo) -> {
-		if (townOne instanceof Fortress) {
-			if (townTwo instanceof Fortress) {
+	public static final int compareTownKind(final ITownFixture one,
+											final ITownFixture two) {
+		if (one instanceof Fortress) {
+			if (two instanceof Fortress) {
 				return 0; // NOPMD
 			} else {
 				return -1; // NOPMD
 			}
-		} else if (townTwo instanceof Fortress) {
+		} else if (two instanceof Fortress) {
 			return 1; // NOPMD
-		} else if (townOne instanceof City) {
-			if (townTwo instanceof City) {
+		} else if (one instanceof City) {
+			if (two instanceof City) {
 				return 0; // NOPMD
 			} else {
 				return -1; // NOPMD
 			}
-		} else if (townTwo instanceof City) {
+		} else if (two instanceof City) {
 			return 1; // NOPMD
-		} else if (townOne instanceof Town) {
-			if (townTwo instanceof Town) {
+		} else if (one instanceof Town) {
+			if (two instanceof Town) {
 				return 0; // NOPMD
 			} else {
 				return -1; // NOPMD
 			}
-		} else if (townTwo instanceof Town) {
+		} else if (two instanceof Town) {
 			return 1; // NOPMD
-		} else if (townOne instanceof Fortification) {
-			if (townTwo instanceof Fortification) {
+		} else if (one instanceof Fortification) {
+			if (two instanceof Fortification) {
 				return 0; // NOPMD
 			} else {
 				return -1; // NOPMD
 			}
-		} else if (townTwo instanceof Fortification) {
+		} else if (two instanceof Fortification) {
 			return 1; // NOPMD
 		} else {
 			// They should be both villages ...
@@ -139,13 +148,13 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 				if (townOne.getClass().equals(townTwo.getClass())) {
 					return townOne.getName().compareTo(townTwo.getName()); // NOPMD
 				} else {
-					return KIND_CMP.compare(townOne, townTwo); // NOPMD
+					return compareTownKind(townOne, townTwo); // NOPMD
 				}
 			} else {
-				return SIZE_CMP.compare(townOne.size(), townTwo.size()); // NOPMD
+				return compareTownSize(townOne.size(), townTwo.size());
 			}
 		} else {
-			return ST_CMP.compare(townOne.status(), townTwo.status());
+			return compareTownStatus(townOne.status(), townTwo.status());
 		}
 	}
 
