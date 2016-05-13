@@ -206,21 +206,21 @@ public final class ExplorationCLI {
 			} else if (newFix instanceof MineralVein) {
 				((MineralVein) newFix).setExposed(true);
 			}
-			boolean notFirst = false;
+			boolean subsequent = false;
 			for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
 				final IMutableMapNG map = pair.first();
 				final Ground locGround = map.getGround(point);
 				if ((locGround == null) || locGround.equals(oldFix)) {
-					map.setGround(point, (Ground) newFix.copy(notFirst));
+					map.setGround(point, (Ground) newFix.copy(subsequent));
 				} else if (StreamSupport.stream(map.getOtherFixtures(point).spliterator(),
 						false).anyMatch(fix -> fix.equals(oldFix))) {
 					// FIXME: StoneDeposits and MineralVeins won't equals()-match---DCs.
 					map.removeFixture(point, oldFix);
-					map.addFixture(point, newFix.copy(notFirst));
+					map.addFixture(point, newFix.copy(subsequent));
 				} else {
-					map.addFixture(point, newFix.copy(notFirst));
+					map.addFixture(point, newFix.copy(subsequent));
 				}
-				notFirst = true;
+				subsequent = true;
 			}
 		}
 	}

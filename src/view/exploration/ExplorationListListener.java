@@ -177,15 +177,15 @@ public final class ExplorationListListener implements ListDataListener {
 	/**
 	 * Mutex.
 	 */
-	private boolean notRandomizing = true;
+	private boolean outsideCritical = true;
 	/**
 	 * Select a suitable but randomized selection of fixtures. Do nothing if there is no
 	 * selected unit.
 	 */
 	private void randomizeSelection() {
 		final IUnit selUnit = model.getSelectedUnit();
-		if (notRandomizing && (selUnit != null)) {
-			notRandomizing = false;
+		if (outsideCritical && (selUnit != null)) {
+			outsideCritical = false;
 			list.clearSelection();
 			final List<IntPair<TileFixture>> constants = new ArrayList<>();
 			final List<IntPair<TileFixture>> possibles = new ArrayList<>();
@@ -223,7 +223,7 @@ public final class ExplorationListListener implements ListDataListener {
 				indices[index] = constants.get(index).first();
 			}
 			list.setSelectedIndices(indices);
-			notRandomizing = true;
+			outsideCritical = true;
 		}
 	}
 
