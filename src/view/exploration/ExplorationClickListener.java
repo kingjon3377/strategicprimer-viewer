@@ -277,6 +277,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 			i++;
 		}
 		if (ground == diggables.get(0)) {
+			assert ground != null;
 			final Ground newGround = ground.copy(false);
 			newGround.setExposed(true);
 			for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
