@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.eclipse.jdt.annotation.NonNull;
@@ -39,6 +40,11 @@ import util.PatientMap;
  * @author Jonathan Lovelace
  */
 public interface ITableGenerator<@NonNull T> {
+	/**
+	 * A pattern to match quotes in input.
+	 */
+	static final Pattern QUOTE_PATTERN = Pattern.compile("\"");
+
 	/**
 	 * Produce a tabular report on a particular category of fixtures in the map. All
 	 * fixtures covered in this table should be removed from the set before returning.
@@ -161,7 +167,7 @@ public interface ITableGenerator<@NonNull T> {
 	 * @throws IOException on I/O error while writing
 	 */
 	default void writeField(final Appendable ostream, final String field) throws IOException {
-		final String quotesQuoted = field.replaceAll("\"", "\"\"");
+		final String quotesQuoted = QUOTE_PATTERN.matcher(field).replaceAll("\"\"");
 		if (quotesQuoted.contains(Character.toString('"')) ||
 					quotesQuoted.contains(Character.toString(getFieldDelimiter())) ||
 					quotesQuoted.contains(Character.toString(getRowDelimiter())) ||
