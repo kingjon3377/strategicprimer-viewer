@@ -31,7 +31,7 @@ public final class SystemOut extends FilterOutputStream {
 	/**
 	 * The singleton object.
 	 */
-	@SuppressWarnings("resource")
+	@SuppressWarnings({"resource", "IOResourceOpenedButNotSafelyClosed"})
 	public static final PrintStream SYS_OUT = new PrintStream(new SystemOut());
 
 	/**

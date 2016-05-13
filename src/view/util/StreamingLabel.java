@@ -163,7 +163,7 @@ public final class StreamingLabel extends JEditorPane {
 		 * @param args arguments to place in that string as per the spec
 		 * @return this
 		 */
-		@SuppressWarnings({"ReturnOfThis", "OverloadedVarargsMethod"})
+		@SuppressWarnings({"ReturnOfThis", "OverloadedVarargsMethod", "resource"})
 		@Override
 		public PrintWriter printf(final String format, final Object @Nullable ... args) {
 			super.printf(format, args);
