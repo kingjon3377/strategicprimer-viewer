@@ -132,7 +132,7 @@ public class FluidWorkerHandler {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				final StartElement selem = event.asStartElement();
-				if (selem.getName().getLocalPart().equals("skill")) {
+				if ("skill".equals(selem.getName().getLocalPart())) {
 					if (anySkills) {
 						onlyOneSkill = false;
 					} else {
