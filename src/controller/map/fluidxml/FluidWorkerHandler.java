@@ -274,7 +274,7 @@ public class FluidWorkerHandler {
 	 * Write the worker's stats.
 	 *
 	 * @param ostream the writer to write to
-	 * @param stats   the object to write. Must be a WorkerStats
+	 * @param obj   the object to write. Must be a WorkerStats
 	 * @param indent  the current indentation level
 	 * @throws IOException on I/O error
 	 */
