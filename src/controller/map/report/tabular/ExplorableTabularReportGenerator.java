@@ -136,6 +136,7 @@ public class ExplorableTabularReportGenerator implements ITableGenerator<Explora
 		return "Distance,Location,\"Brief Description\",\"Claimed By\",\"Long Description\"";
 	}
 
+	@SuppressWarnings("QuestionableName")
 	@Override
 	public int comparePairs(final Pair<Point, ExplorableFixture> one,
 							final Pair<Point, ExplorableFixture> two) {
@@ -167,8 +168,9 @@ public class ExplorableTabularReportGenerator implements ITableGenerator<Explora
 	 * @param fixtures the set of fixtures
 	 * @throws IOException on I/O error writing to the stream
 	 */
+	@SuppressWarnings("QuestionableName")
 	public void produce(final Appendable ostream, final Class<ExplorableFixture> type,
-						 final PatientMap<Integer, Pair<Point, IFixture>> fixtures)
+						final PatientMap<Integer, Pair<Point, IFixture>> fixtures)
 			throws IOException {
 		final List<Pair<Integer, Pair<Point, IFixture>>> values =
 				new ArrayList<>(fixtures.entrySet().stream()

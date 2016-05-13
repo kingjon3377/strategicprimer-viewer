@@ -96,6 +96,7 @@ public class UnitTabularReportGenerator implements ITableGenerator<IUnit> {
 		return "Distance,Location,Owner,Kind/Category,Name,Orders";
 	}
 
+	@SuppressWarnings("QuestionableName")
 	@Override
 	public int comparePairs(final Pair<Point, IUnit> one, final Pair<Point, IUnit> two) {
 		final DistanceComparator comparator = new DistanceComparator(base);

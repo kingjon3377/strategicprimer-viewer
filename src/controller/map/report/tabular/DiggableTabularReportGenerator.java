@@ -136,6 +136,7 @@ public class DiggableTabularReportGenerator implements ITableGenerator<TileFixtu
 	public String headerRow() {
 		return "Distance,Location,Kind,Product,Status";
 	}
+	@SuppressWarnings("QuestionableName")
 	@Override
 	public int comparePairs(final Pair<Point, TileFixture> one,
 							final Pair<Point, TileFixture> two) {

@@ -112,6 +112,7 @@ public class WorkerTabularReportGenerator implements ITableGenerator<IWorker> {
 	 * @param two a Pair of another animal and its location (in the other order)
 	 * @return the result of a comparison between the pairs.
 	 */
+	@SuppressWarnings("QuestionableName")
 	@Override
 	public int comparePairs(final Pair<Point, IWorker> one,
 							final Pair<Point, IWorker> two) {

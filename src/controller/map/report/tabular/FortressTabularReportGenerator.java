@@ -91,6 +91,7 @@ public class FortressTabularReportGenerator implements ITableGenerator<Fortress>
 	 * @param two a Pair of another fortress and its location (in the other order)
 	 * @return the result of a comparison between the pairs.
 	 */
+	@SuppressWarnings("QuestionableName")
 	@Override
 	public int comparePairs(final Pair<Point, Fortress> one,
 							final Pair<Point, Fortress> two) {

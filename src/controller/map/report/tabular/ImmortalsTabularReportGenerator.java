@@ -96,6 +96,7 @@ public class ImmortalsTabularReportGenerator implements ITableGenerator<MobileFi
 		return "Distance,Location,Immortal";
 	}
 
+	@SuppressWarnings("QuestionableName")
 	@Override
 	public int comparePairs(final Pair<Point, MobileFixture> one,
 							final Pair<Point, MobileFixture> two) {

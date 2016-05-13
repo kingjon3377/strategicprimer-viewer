@@ -157,6 +157,7 @@ public class CropTabularReportGenerator implements ITableGenerator<TileFixture> 
 		return "Distance,Location,Kind,Cultivation,Status,Crop";
 	}
 
+	@SuppressWarnings("QuestionableName")
 	@Override
 	public int comparePairs(final Pair<Point, TileFixture> one,
 							final Pair<Point, TileFixture> two) {

@@ -90,6 +90,7 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 	 * @param two a Pair of another town and its location (in the other order)
 	 * @return the result of a comparison between the pairs.
 	 */
+	@SuppressWarnings("QuestionableName")
 	@Override
 	public int comparePairs(final Pair<Point, AbstractTown> one,
 							final Pair<Point, AbstractTown> two) {

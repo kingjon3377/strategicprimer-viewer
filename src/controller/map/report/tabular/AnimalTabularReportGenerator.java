@@ -84,6 +84,7 @@ public class AnimalTabularReportGenerator implements ITableGenerator<Animal> {
 	 * @param two a Pair of another animal and its location (in the other order)
 	 * @return the result of a comparison between the pairs.
 	 */
+	@SuppressWarnings("QuestionableName")
 	@Override
 	public int comparePairs(final Pair<Point, Animal> one,
 							final Pair<Point, Animal> two) {

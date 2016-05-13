@@ -95,6 +95,7 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 	public String headerRow() {
 		return "Kind,Quantity,Specifics";
 	}
+	@SuppressWarnings("QuestionableName")
 	@Override
 	public int comparePairs(final Pair<Point, IFixture> one,
 							final Pair<Point, IFixture> two) {
@@ -163,6 +164,7 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 	 * @param fixtures the set of fixtures
 	 * @throws IOException on I/O error writing to the stream
 	 */
+	@SuppressWarnings("QuestionableName")
 	@Override
 	public void produce(final Appendable ostream, final Class<IFixture> type,
 						 final PatientMap<Integer, Pair<Point, IFixture>> fixtures)

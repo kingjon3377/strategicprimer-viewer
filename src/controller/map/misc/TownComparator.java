@@ -44,6 +44,7 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	 * @param two Another
 	 * @return the result of a comparison between them
 	 */
+	@SuppressWarnings("QuestionableName")
 	public static final int compareTownSize(final TownSize one, final TownSize two) {
 		if (one == two) {
 			return 0; // NOPMD
@@ -65,6 +66,7 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	 * @param two another
 	 * @return the result of the comparison
 	 */
+	@SuppressWarnings("QuestionableName")
 	public static final int compareTownStatus(final TownStatus one, final TownStatus two) {
 		if (one == two) {
 			return 0; // NOPMD
@@ -90,6 +92,7 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	 * @param two another
 	 * @return the result of a comparison between them only on the basis of town-kind.
 	 */
+	@SuppressWarnings("QuestionableName")
 	public static final int compareTownKind(final ITownFixture one,
 											final ITownFixture two) {
 		if (one instanceof Fortress) {

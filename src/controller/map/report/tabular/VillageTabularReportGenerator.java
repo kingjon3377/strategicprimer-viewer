@@ -83,6 +83,7 @@ public class VillageTabularReportGenerator implements ITableGenerator<Village> {
 	 * @param two a Pair of another village and its location (in the other order)
 	 * @return the result of a comparison between the pairs.
 	 */
+	@SuppressWarnings("QuestionableName")
 	@Override
 	public int comparePairs(final Pair<Point, Village> one,
 							final Pair<Point, Village> two) {

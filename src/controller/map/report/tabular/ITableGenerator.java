@@ -53,6 +53,7 @@ public interface ITableGenerator<@NonNull T> {
 	 * @param fixtures the set of fixtures
 	 * @throws IOException on I/O error writing to the stream
 	 */
+	@SuppressWarnings("QuestionableName")
 	default void produce(final Appendable ostream, final Class<T> type,
 						 final PatientMap<Integer, Pair<Point, IFixture>> fixtures)
 			throws IOException {
@@ -125,6 +126,7 @@ public interface ITableGenerator<@NonNull T> {
 	 * @param two a Pair of another fixture and its location (in the other order)
 	 * @return the result of a comparison between the pairs
 	 */
+	@SuppressWarnings("QuestionableName")
 	int comparePairs(Pair<Point, T> one, Pair<Point, T> two);
 	/**
 	 * @param currentPlayer the player for whom the report is being produced
