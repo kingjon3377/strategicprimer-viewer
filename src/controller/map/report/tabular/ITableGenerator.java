@@ -90,6 +90,7 @@ public interface ITableGenerator<@NonNull T> {
 	 * @return whether to remove this item from the Map
 	 * @throws IOException on I/O error writing to the stream
 	 */
+	@SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
 	boolean produce(Appendable ostream, PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 				 T item, Point loc) throws IOException;
 	/**

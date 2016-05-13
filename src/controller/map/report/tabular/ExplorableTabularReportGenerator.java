@@ -215,9 +215,10 @@ public class ExplorableTabularReportGenerator implements ITableGenerator<Explora
 	 * @param loc its location
 	 * @throws IOException on I/O error writing to the stream
 	 */
+	@SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
 	public boolean produceFromText(final Appendable ostream,
-						   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
-						   final TextFixture item, final Point loc) throws IOException {
+								   final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
+								   final TextFixture item, final Point loc) throws IOException {
 		writeField(ostream, distanceString(loc, base));
 		writeFieldDelimiter(ostream);
 		writeField(ostream, loc.toString());
