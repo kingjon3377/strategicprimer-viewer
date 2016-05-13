@@ -217,7 +217,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	/**
 	 * @param element the current tag
 	 * @param param the parameter we want
-	 * @return it if it's presnt in either the default namespace or our namespace, or
+	 * @return it if it's present in either the default namespace or our namespace, or
 	 * null if not present
 	 */
 	@Nullable
@@ -291,7 +291,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 
 	/**
 	 * @param ostream the stream to write the tabs to
-	 * @param tabs a nonnegative integer: how many tabs to add to the stream
+	 * @param tabs a non-negative integer: how many tabs to add to the stream
 	 * @throws IOException on I/O error writing to ostream
 	 */
 	protected static void indent(final Appendable ostream, final int tabs)
@@ -341,7 +341,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @param str  the text to parse
 	 * @param location the current location in the document
 	 * @return the result of parsing the text
-	 * @throws SPFormatException if the string is nonnumeric or otherwise malformed
+	 * @throws SPFormatException if the string is non-numeric or otherwise malformed
 	 */
 	private static int parseInt(final String str, final Location location)
 			throws SPFormatException {
@@ -358,8 +358,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @param parameter the name of the parameter
 	 * @return the result of parsing the text
 	 * @throws SPFormatException if the tag doesn't have that parameter or if its
-	 * value is
-	 *                           nonnumeric or otherwise malformed
+	 * value is non-numeric or otherwise malformed
 	 */
 	protected static int getIntegerParameter(final StartElement tag,
 												final String parameter)
@@ -375,7 +374,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	 * @param parameter    the name of the parameter
 	 * @param defaultValue the default value to return if the parameter is missing
 	 * @return the result of parsing the text
-	 * @throws SPFormatException if the parameter's value is nonnumeric or otherwise
+	 * @throws SPFormatException if the parameter's value is non-numeric or otherwise
 	 *                           malformed
 	 */
 	protected static int getIntegerParameter(final StartElement tag,
