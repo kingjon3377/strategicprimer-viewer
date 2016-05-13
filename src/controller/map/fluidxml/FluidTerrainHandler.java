@@ -5,6 +5,7 @@ import controller.map.misc.IDFactory;
 import java.io.IOException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import model.map.HasImage;
 import model.map.IMutablePlayerCollection;
 import model.map.River;
 import model.map.fixtures.Ground;
@@ -146,7 +147,7 @@ public class FluidTerrainHandler {
 			throw new IllegalArgumentException("Can only write Mountain");
 		}
 		writeTag(ostream, "mountain", indent);
-		ostream.append(imageXML((Mountain) obj));
+		ostream.append(imageXML((HasImage) obj));
 		ostream.append(" />\n");
 	}
 	/**

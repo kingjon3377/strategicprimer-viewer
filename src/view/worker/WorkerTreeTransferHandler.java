@@ -10,16 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComponent;
-import javax.swing.JTree;
-import javax.swing.TransferHandler;
+import javax.swing.*;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import model.map.fixtures.UnitMember;
 import model.map.fixtures.mobile.IUnit;
 import model.workermgmt.IWorkerTreeModel;
 import model.workermgmt.UnitMemberTransferable;
-import model.workermgmt.UnitMemberTransferable.UnitMemberPairList;
 import org.eclipse.jdt.annotation.Nullable;
 import util.Pair;
 import util.TypesafeLogger;
@@ -187,7 +184,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 				try {
 					final Transferable trans = support.getTransferable();
 					final Iterable<Pair<UnitMember, IUnit>> list =
-							(UnitMemberPairList) trans.getTransferData(
+							(Iterable<Pair<UnitMember, IUnit>>) trans.getTransferData(
 									UnitMemberTransferable.FLAVOR);
 					for (final Pair<UnitMember, IUnit> pair : list) {
 						model.moveMember(pair.first(), pair.second(), (IUnit) tempTarget);

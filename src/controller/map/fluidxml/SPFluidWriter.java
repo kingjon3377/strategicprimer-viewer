@@ -252,7 +252,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		ostream.append('>');
 		if (fort.iterator().hasNext()) {
 			ostream.append('\n');
-			for (final FortressMember unit : (Fortress) obj) {
+			for (final FortressMember unit : (Iterable<FortressMember>) obj) {
 				writeSPObject(ostream, unit, indent + 1);
 			}
 			indent(ostream, indent);
