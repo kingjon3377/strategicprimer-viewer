@@ -66,6 +66,7 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 	/**
 	 * @return a list of values to use for tests
 	 */
+	@SuppressWarnings("ObjectAllocationInLoop")
 	@Parameters
 	public static Collection<Object[]> generateData() {
 		final Collection<Object[]> retval =

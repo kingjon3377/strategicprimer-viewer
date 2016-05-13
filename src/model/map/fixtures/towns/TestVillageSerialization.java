@@ -69,6 +69,7 @@ public class TestVillageSerialization extends BaseTestFixtureSerialization {
 	 * The race to use for the village in the test.
 	 */
 	private final String race;
+	@SuppressWarnings("ObjectAllocationInLoop")
 	@Parameters
 	public static Collection<Object[]> generateData() {
 		final TownStatus[] statuses = TownStatus.values();

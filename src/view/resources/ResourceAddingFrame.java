@@ -150,6 +150,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	 * @param dmodel the driver model
 	 * @param ioh the I/O handler for menu items
 	 */
+	@SuppressWarnings("ObjectAllocationInLoop")
 	public ResourceAddingFrame(final ResourceManagementDriver dmodel, final IOHandler ioh) {
 		super("Resource Entry");
 		model = dmodel;
