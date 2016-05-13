@@ -71,6 +71,7 @@ public interface SimpleCLIDriver extends SimpleDriver {
 			if (args.length != 2) {
 				throw new IncorrectUsageException(usage());
 			}
+			break;
 		case AtLeastTwo:
 			if (args.length < 2) {
 				throw new IncorrectUsageException(usage());
