@@ -152,7 +152,7 @@ public final class StreamingLabel extends JEditorPane {
 		 */
 		@SuppressWarnings("ReturnOfThis")
 		@Override
-		public StreamingLabelWriter append(final CharSequence csq) {
+		public StreamingLabelWriter append(@Nullable final CharSequence csq) {
 			super.append(csq);
 			updateText();
 			return this;
@@ -165,7 +165,7 @@ public final class StreamingLabel extends JEditorPane {
 		 */
 		@SuppressWarnings({"ReturnOfThis", "OverloadedVarargsMethod"})
 		@Override
-		public PrintWriter printf(final String format, final Object... args) {
+		public PrintWriter printf(final String format, final Object @Nullable ... args) {
 			super.printf(format, args);
 			updateText();
 			return this;
