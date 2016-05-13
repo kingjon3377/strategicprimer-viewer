@@ -136,6 +136,7 @@ public final class SubsetDriver implements SimpleDriver {
 	 * @param file    the file the subordinate map came from
 	 * @return the result of doing the subset test with those maps
 	 */
+	@SuppressWarnings("UseOfSystemOutOrSystemErr")
 	private static Returns doSubsetTest(final Subsettable<IMapNG> mainMap,
 										final IMapNG map, final File file) {
 		try {
