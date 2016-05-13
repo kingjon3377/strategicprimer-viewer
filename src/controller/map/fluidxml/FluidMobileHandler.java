@@ -11,15 +11,14 @@ import model.map.fixtures.mobile.Centaur;
 import model.map.fixtures.mobile.Dragon;
 import model.map.fixtures.mobile.Fairy;
 import model.map.fixtures.mobile.Giant;
-import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
 import static controller.map.fluidxml.XMLHelper.imageXML;
 import static controller.map.fluidxml.XMLHelper.requireTag;
+import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
 import static controller.map.fluidxml.XMLHelper.writeAttribute;
 import static controller.map.fluidxml.XMLHelper.writeBooleanAttribute;
@@ -141,9 +140,11 @@ public class FluidMobileHandler {
 	 * @return the fairy represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final Fairy readFairy(final StartElement element, final Iterable<XMLEvent> stream,
-					   final IMutablePlayerCollection players, final Warning warner,
-					   final IDFactory idFactory) throws SPFormatException {
+	public static final Fairy readFairy(final StartElement element,
+										final Iterable<XMLEvent> stream,
+										final IMutablePlayerCollection players,
+										final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		requireTag(element, "fairy");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return setImage(new Fairy(getAttribute(element, "kind"),
@@ -163,9 +164,11 @@ public class FluidMobileHandler {
 	 * @return the giant represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final Giant readGiant(final StartElement element, final Iterable<XMLEvent> stream,
-					   final IMutablePlayerCollection players, final Warning warner,
-					   final IDFactory idFactory) throws SPFormatException {
+	public static final Giant readGiant(final StartElement element,
+										final Iterable<XMLEvent> stream,
+										final IMutablePlayerCollection players,
+										final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		requireTag(element, "giant");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return setImage(new Giant(getAttribute(element, "kind"),

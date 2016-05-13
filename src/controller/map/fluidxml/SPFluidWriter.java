@@ -376,8 +376,8 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	 * @param indent  The current indentation level.
 	 * @throws IOException on I/O error
 	 */
-	private static final void writePlayer(final Appendable ostream, final Object obj, final int indent)
-			throws IOException {
+	private static final void writePlayer(final Appendable ostream, final Object obj,
+										  final int indent) throws IOException {
 		if (!(obj instanceof Player)) {
 			throw new IllegalArgumentException("Can only write Player");
 		}

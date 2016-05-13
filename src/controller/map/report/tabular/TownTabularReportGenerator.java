@@ -106,7 +106,9 @@ public class TownTabularReportGenerator implements ITableGenerator<AbstractTown>
 				if (cmp == 0) {
 					final int sizeCmp = TownComparator.compareTownSize(first.size(), second.size());
 					if (sizeCmp == 0) {
-						final int statusCmp = TownComparator.compareTownStatus(first.status(), second.status());
+						final int statusCmp = TownComparator
+													  .compareTownStatus(first.status(),
+															  second.status());
 						if (statusCmp == 0) {
 							return first.getName().compareTo(second.getName());
 						} else {

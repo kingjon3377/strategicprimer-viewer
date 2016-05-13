@@ -432,7 +432,9 @@ public final class XMLHelper {
 	 * @param value the value of the attribute
 	 * @throws IOException on I/O error
 	 */
-	public static final void writeIntegerAttribute(final Appendable ostream, final String name, final int value) throws IOException {
+	public static final void writeIntegerAttribute(final Appendable ostream,
+												   final String name, final int value)
+			throws IOException {
 		ostream.append(' ');
 		ostream.append(name);
 		ostream.append("=\"");
@@ -463,7 +465,10 @@ public final class XMLHelper {
 	 * @param value the value of the attribute
 	 * @throws IOException on I/O error
 	 */
-	public static final void writeBooleanAttribute(final Appendable ostream, final String name, final boolean value) throws IOException {
+	public static final void writeBooleanAttribute(final Appendable ostream,
+												   final String name, final boolean
+																			  value)
+			throws IOException {
 		ostream.append(' ');
 		ostream.append(name);
 		ostream.append("=\"");
@@ -498,11 +503,13 @@ public final class XMLHelper {
 	 * Set an object's image property if an image filename is specified in the XML.
 	 * @param obj the object in question
 	 * @param element the current XML element
-	 * @param warner to use to warn if the object can't have an image but the XML specifies one
+	 * @param warner to use to warn if the object can't have an image but the XML
+	 *                  specifies one
 	 * @return the object
 	 * @param <T> the type of the object
 	 */
-	public static final <T> T setImage(final T obj, final StartElement element, final Warning warner) {
+	public static final <T> T setImage(final T obj, final StartElement element,
+									   final Warning warner) {
 		if (obj instanceof HasMutableImage) {
 			((HasMutableImage) obj).setImage(getAttribute(element, "image", ""));
 		} else if (hasAttribute(element, "image")) {

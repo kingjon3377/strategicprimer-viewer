@@ -20,12 +20,12 @@ import model.map.fixtures.explorable.Portal;
 import util.EqualsAny;
 import util.Warning;
 
-import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
 import static controller.map.fluidxml.XMLHelper.imageXML;
 import static controller.map.fluidxml.XMLHelper.requireTag;
+import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
 import static controller.map.fluidxml.XMLHelper.writeAttribute;
 import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
@@ -296,7 +296,8 @@ public class FluidExplorableHandler {
 	 * @throws IOException on I/O error
 	 * @throws IllegalArgumentException if obj is not the type we expect
 	 */
-	public static void writeTextFixture(final Appendable ostream, final Object obj, final int indent) throws IOException {
+	public static void writeTextFixture(final Appendable ostream, final Object obj,
+										final int indent) throws IOException {
 		if (!(obj instanceof TextFixture)) {
 			throw new IllegalArgumentException("Can only write TextFixture");
 		}

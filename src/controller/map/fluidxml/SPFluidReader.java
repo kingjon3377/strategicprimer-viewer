@@ -418,7 +418,9 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 					continue;
 				}
 				final Object child =
-						readSPObject(current, (IteratorWrapper<XMLEvent>) stream, players, warner, idFactory);
+						readSPObject(current, (IteratorWrapper<XMLEvent>) stream,
+								players,
+								warner, idFactory);
 				if (child instanceof Player) {
 					retval.addPlayer((Player) child);
 				} else {
@@ -486,8 +488,9 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 			warner.warn(new MissingPropertyException(element, "kind"));
 		}
 		for (final XMLEvent event : stream) {
-			if (event.isStartElement() && equalsAny(event.asStartElement().getName().getNamespaceURI(), ISPReader.NAMESPACE,
-					NULL_NS_URI)) {
+			if (event.isStartElement() &&
+						equalsAny(event.asStartElement().getName().getNamespaceURI(),
+								ISPReader.NAMESPACE, NULL_NS_URI)) {
 				final StartElement current = event.asStartElement();
 				final String type = current.getName().getLocalPart();
 				if (equalsAny(type, ISPReader.FUTURE)) {

@@ -6,12 +6,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import org.eclipse.jdt.annotation.NonNull;
-
 import model.map.IFixture;
 import model.map.Player;
 import model.map.Point;
+import org.eclipse.jdt.annotation.NonNull;
 import util.Pair;
 import util.PatientMap;
 
@@ -169,7 +167,8 @@ public interface ITableGenerator<@NonNull T> {
 	 * @param field the field-value to write
 	 * @throws IOException on I/O error while writing
 	 */
-	default void writeField(final Appendable ostream, final String field) throws IOException {
+	default void writeField(final Appendable ostream, final String field)
+			throws IOException {
 		final String quotesQuoted = QUOTE_PATTERN.matcher(field).replaceAll("\"\"");
 		if (quotesQuoted.contains(Character.toString('"')) ||
 					quotesQuoted.contains(Character.toString(getFieldDelimiter())) ||

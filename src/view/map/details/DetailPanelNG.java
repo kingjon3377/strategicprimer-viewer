@@ -1,7 +1,6 @@
 package view.map.details;
 
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -9,11 +8,7 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import model.listeners.SelectionChangeListener;
@@ -90,7 +85,8 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 		fixList = new FixtureList(this, model, model.getMap().players());
 		final PortraitPanel portrait = new PortraitPanel(fixList);
 		fixList.addListSelectionListener(portrait);
-		final BorderedPanel listPanel = BorderedPanel.vertical(header, new JScrollPane(fixList), null);
+		final BorderedPanel listPanel =
+				BorderedPanel.vertical(header, new JScrollPane(fixList), null);
 
 		keyPanel = new KeyPanel(version);
 		setLeftComponent(SplitWithWeights.horizontalSplit(0.5, 0.5, listPanel, portrait));

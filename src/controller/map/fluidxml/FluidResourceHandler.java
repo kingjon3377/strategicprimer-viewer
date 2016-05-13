@@ -18,10 +18,8 @@ import model.map.fixtures.resources.Mine;
 import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.resources.StoneDeposit;
-import util.NullCleaner;
 import util.Warning;
 
-import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
@@ -29,6 +27,7 @@ import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
 import static controller.map.fluidxml.XMLHelper.imageXML;
 import static controller.map.fluidxml.XMLHelper.requireTag;
+import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
 import static controller.map.fluidxml.XMLHelper.writeAttribute;
 import static controller.map.fluidxml.XMLHelper.writeBooleanAttribute;
@@ -76,9 +75,12 @@ public class FluidResourceHandler {
 	 * @return the implement represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final Implement readImplement(final StartElement element, final Iterable<XMLEvent> stream,
-						   final IMutablePlayerCollection players, final Warning warner,
-						   final IDFactory idFactory) throws SPFormatException {
+	public static final Implement readImplement(final StartElement element,
+												final Iterable<XMLEvent> stream,
+												final IMutablePlayerCollection players,
+												final Warning warner,
+												final IDFactory idFactory)
+			throws SPFormatException {
 		requireTag(element, "implement");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return setImage(new Implement(getOrGenerateID(element, warner, idFactory),
@@ -153,9 +155,11 @@ public class FluidResourceHandler {
 	 * @return the grove represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final Grove readGrove(final StartElement element, final Iterable<XMLEvent> stream,
-					   final IMutablePlayerCollection players, final Warning warner,
-					   final IDFactory idFactory) throws SPFormatException {
+	public static final Grove readGrove(final StartElement element,
+										final Iterable<XMLEvent> stream,
+										final IMutablePlayerCollection players,
+										final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		requireTag(element, "grove");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		final boolean cultivated;
@@ -186,9 +190,11 @@ public class FluidResourceHandler {
 	 * @return the grove represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final Grove readOrchard(final StartElement element, final Iterable<XMLEvent> stream,
-										final IMutablePlayerCollection players, final Warning warner,
-										final IDFactory idFactory) throws SPFormatException {
+	public static final Grove readOrchard(final StartElement element,
+										  final Iterable<XMLEvent> stream,
+										  final IMutablePlayerCollection players,
+										  final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		requireTag(element, "orchard");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		final boolean cultivated;
@@ -219,9 +225,10 @@ public class FluidResourceHandler {
 	 * @return the meadow represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final Meadow readMeadow(final StartElement element, final Iterable<XMLEvent> stream,
-						final IMutablePlayerCollection players, final Warning warner,
-						final IDFactory idFactory)
+	public static final Meadow readMeadow(final StartElement element,
+										  final Iterable<XMLEvent> stream,
+										  final IMutablePlayerCollection players,
+										  final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "meadow");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -246,9 +253,10 @@ public class FluidResourceHandler {
 	 * @return the meadow represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final Meadow readField(final StartElement element, final Iterable<XMLEvent> stream,
-										  final IMutablePlayerCollection players, final Warning warner,
-										  final IDFactory idFactory)
+	public static final Meadow readField(final StartElement element,
+										 final Iterable<XMLEvent> stream,
+										 final IMutablePlayerCollection players,
+										 final Warning warner, final IDFactory idFactory)
 			throws SPFormatException {
 		requireTag(element, "field");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
@@ -273,9 +281,11 @@ public class FluidResourceHandler {
 	 * @return the mine represented by the element
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final Mine readMine(final StartElement element, final Iterable<XMLEvent> stream,
-					  final IMutablePlayerCollection players, final Warning warner,
-					  final IDFactory idFactory) throws SPFormatException {
+	public static final Mine readMine(final StartElement element,
+									  final Iterable<XMLEvent> stream,
+									  final IMutablePlayerCollection players,
+									  final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		requireTag(element, "mine");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
 		return setImage(

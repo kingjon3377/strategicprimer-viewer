@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import model.map.IFixture;
 import model.map.Point;
 import model.map.fixtures.Implement;
@@ -89,7 +88,7 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 			return true;
 		} else {
 			return false;
-		} // For the sake of other cases, we need to override the default loop, to combine duplicate implements etc.
+		}
 	}
 	@Override
 	public String headerRow() {
@@ -189,7 +188,8 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 			if (fix instanceof Implement) {
 				final String kind = ((Implement) fix).getKind();
 				if (impls.containsKey(kind)) {
-					impls.put(kind, Integer.valueOf(NullCleaner.assertNotNull(impls.get(kind)).intValue() + 1));
+					impls.put(kind, Integer.valueOf(
+							NullCleaner.assertNotNull(impls.get(kind)).intValue() + 1));
 				} else {
 					impls.put(kind, Integer.valueOf(1));
 				}

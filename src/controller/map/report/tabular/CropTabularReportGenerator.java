@@ -14,7 +14,8 @@ import util.Pair;
 import util.PatientMap;
 
 /**
- * A tabular report generator for crops---forests, groves, orchards, fields, meadows, and shrubs.
+ * A tabular report generator for crops---forests, groves, orchards, fields, meadows,
+ * and shrubs.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.

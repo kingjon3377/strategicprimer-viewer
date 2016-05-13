@@ -42,7 +42,8 @@ import util.PatientMap;
  *
  * @author Jonathan Lovelace
  */
-public class ExplorableTabularReportGenerator implements ITableGenerator<ExplorableFixture> {
+public class ExplorableTabularReportGenerator
+		implements ITableGenerator<ExplorableFixture> {
 	/**
 	 * The player for whom the report is being created.
 	 */

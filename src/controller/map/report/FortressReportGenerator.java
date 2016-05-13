@@ -330,8 +330,9 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 																					  IFixture>> fixtures,
 											final IMapNG map, final Player currentPlayer,
 											final Fortress item, final Point loc) {
-		final SectionListReportNode retval = new SectionListReportNode(loc, 5, concat("Fortress ",
-				item.getName(), " belonging to ", playerNameOrYou(item.getOwner())));
+		final SectionListReportNode retval = new SectionListReportNode(loc, 5, concat(
+				"Fortress ", item.getName(), " belonging to ",
+				playerNameOrYou(item.getOwner())));
 		retval.add(new SimpleReportNode(loc, "Located at ", loc.toString(), " ",
 											distCalculator.distanceString(loc)));
 		retval.add(new SimpleReportNode(loc, getTerrain(map, loc, fixtures)));

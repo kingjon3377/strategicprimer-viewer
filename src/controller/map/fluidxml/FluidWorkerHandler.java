@@ -116,9 +116,11 @@ public class FluidWorkerHandler {
 	 * @return the parsed job
 	 * @throws SPFormatException on SP format error
 	 */
-	public static final IJob readJob(final StartElement element, final Iterable<XMLEvent> stream,
-					 final IMutablePlayerCollection players, final Warning warner,
-					 final IDFactory idFactory) throws SPFormatException {
+	public static final IJob readJob(final StartElement element,
+									 final Iterable<XMLEvent> stream,
+									 final IMutablePlayerCollection players,
+									 final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
 		requireTag(element, "job");
 		if (hasAttribute(element, "hours")) {
 			warner.warn(new UnsupportedPropertyException(element, "hours"));

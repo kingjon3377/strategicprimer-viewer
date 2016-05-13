@@ -14,13 +14,13 @@ import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import util.Warning;
 
-import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
 import static controller.map.fluidxml.XMLHelper.imageXML;
 import static controller.map.fluidxml.XMLHelper.requireNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.requireTag;
+import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
 import static controller.map.fluidxml.XMLHelper.writeAttribute;
 import static controller.map.fluidxml.XMLHelper.writeBooleanAttribute;
@@ -122,8 +122,8 @@ public class FluidTerrainHandler {
 	 * @param indent  The current indentation level.
 	 * @throws IOException on I/O error
 	 */
-	public static final void writeGround(final Appendable ostream, final Object obj, final int indent)
-			throws IOException {
+	public static final void writeGround(final Appendable ostream, final Object obj,
+										 final int indent) throws IOException {
 		if (!(obj instanceof Ground)) {
 			throw new IllegalArgumentException("Can only write Ground");
 		}
@@ -142,7 +142,8 @@ public class FluidTerrainHandler {
 	 * @param indent  The current indentation level.
 	 * @throws IOException on I/O error
 	 */
-	public static final void writeMountain(final Appendable ostream, final Object obj, final int indent) throws IOException {
+	public static final void writeMountain(final Appendable ostream, final Object obj,
+										   final int indent) throws IOException {
 		if (!(obj instanceof Mountain)) {
 			throw new IllegalArgumentException("Can only write Mountain");
 		}
@@ -158,7 +159,8 @@ public class FluidTerrainHandler {
 	 * @param indent  The current indentation level.
 	 * @throws IOException on I/O error
 	 */
-	public static final void writeForest(final Appendable ostream, final Object obj, final int indent) throws IOException {
+	public static final void writeForest(final Appendable ostream, final Object obj,
+										 final int indent) throws IOException {
 		if (!(obj instanceof Forest)) {
 			throw new IllegalArgumentException("Can only write Forest");
 		}
