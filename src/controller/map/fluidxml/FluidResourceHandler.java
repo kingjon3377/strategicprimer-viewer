@@ -8,7 +8,6 @@ import java.io.IOException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
-import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.resources.FieldStatus;
@@ -25,12 +24,12 @@ import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
-import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.requireTag;
 import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
 import static controller.map.fluidxml.XMLHelper.writeAttribute;
 import static controller.map.fluidxml.XMLHelper.writeBooleanAttribute;
+import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.writeTag;
 import static java.lang.Boolean.parseBoolean;
@@ -62,31 +61,6 @@ import static util.NullCleaner.assertNotNull;
  * @author Jonathan Lovelace
  */
 public class FluidResourceHandler {
-	/**
-	 * Parse an implement.
-	 *
-	 * @param element   the element to read from
-	 * @param stream    the stream to read more elements from
-	 * @param players   the collection of players
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new
-	 *                     ones as
-	 *                  needed
-	 * @return the implement represented by the element
-	 * @throws SPFormatException on SP format error
-	 */
-	public static final Implement readImplement(final StartElement element,
-												final Iterable<XMLEvent> stream,
-												final IMutablePlayerCollection players,
-												final Warning warner,
-												final IDFactory idFactory)
-			throws SPFormatException {
-		requireTag(element, "implement");
-		spinUntilEnd(assertNotNull(element.getName()), stream);
-		return setImage(new Implement(getAttribute(element, "kind"),
-											 getOrGenerateID(element, warner, idFactory)
-		), element, warner);
-	}
 	/**
 	 * Parse a resource pile.
 	 *

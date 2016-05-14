@@ -7,21 +7,17 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
 import model.map.fixtures.mobile.Animal;
-import model.map.fixtures.mobile.Centaur;
-import model.map.fixtures.mobile.Dragon;
-import model.map.fixtures.mobile.Fairy;
-import model.map.fixtures.mobile.Giant;
 import util.Warning;
 
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
-import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.requireTag;
 import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
 import static controller.map.fluidxml.XMLHelper.writeAttribute;
 import static controller.map.fluidxml.XMLHelper.writeBooleanAttribute;
+import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.writeTag;
 import static java.lang.Boolean.parseBoolean;
@@ -75,106 +71,7 @@ public class FluidMobileHandler {
 						  getAttribute(element, "status", "wild"),
 						  getOrGenerateID(element, warner, idFactory)), element, warner);
 	}
-	/**
-	 * Parse a centaur.
-	 *
-	 * @param element   the element to read from
-	 * @param stream    the stream to read more elements from
-	 * @param players   the collection of players
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new
-	 *                     ones as
-	 *                  needed
-	 * @return the centaur represented by the element
-	 * @throws SPFormatException on SP format error
-	 */
-	public static final Centaur readCentaur(final StartElement element,
-						 final Iterable<XMLEvent> stream,
-						 final IMutablePlayerCollection players,
-						 final Warning warner, final IDFactory idFactory)
-			throws SPFormatException {
-		requireTag(element, "centaur");
-		spinUntilEnd(assertNotNull(element.getName()), stream);
-		final Centaur fix = new Centaur(getAttribute(element, "kind"),
-											   getOrGenerateID(element, warner,
-													   idFactory));
-		return setImage(fix, element, warner);
-	}
-	/**
-	 * Parse a dragon.
-	 *
-	 * TODO: Investigate whether all fixtures that have only an ID and a kind use the
-	 * same constructor convention and so can be handled like ID-only fixtures.
-	 *
-	 * @param element   the element to read from
-	 * @param stream    the stream to read more elements from
-	 * @param players   the collection of players
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new
-	 *                     ones as
-	 *                  needed
-	 * @return the dragon represented by the element
-	 * @throws SPFormatException on SP format error
-	 */
-	public static final Dragon readDragon(final StartElement element,
-						final Iterable<XMLEvent> stream,
-						final IMutablePlayerCollection players,
-						final Warning warner, final IDFactory idFactory)
-			throws SPFormatException {
-		requireTag(element, "dragon");
-		spinUntilEnd(assertNotNull(element.getName()), stream);
-		return setImage(new Dragon(getAttribute(element, "kind"),
-											 getOrGenerateID(element, warner,
-													 idFactory)), element, warner);
-	}
-	/**
-	 * Parse a fairy.
-	 *
-	 * @param element   the element to read from
-	 * @param stream    the stream to read more elements from
-	 * @param players   the collection of players
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new
-	 *                     ones as
-	 *                  needed
-	 * @return the fairy represented by the element
-	 * @throws SPFormatException on SP format error
-	 */
-	public static final Fairy readFairy(final StartElement element,
-										final Iterable<XMLEvent> stream,
-										final IMutablePlayerCollection players,
-										final Warning warner, final IDFactory idFactory)
-			throws SPFormatException {
-		requireTag(element, "fairy");
-		spinUntilEnd(assertNotNull(element.getName()), stream);
-		return setImage(new Fairy(getAttribute(element, "kind"),
-										 getOrGenerateID(element, warner, idFactory)),
-				element, warner);
-	}
-	/**
-	 * Parse a giant.
-	 *
-	 * @param element   the element to read from
-	 * @param stream    the stream to read more elements from
-	 * @param players   the collection of players
-	 * @param warner    the Warning instance to use for warnings
-	 * @param idFactory the factory to use to register ID numbers and generate new
-	 *                     ones as
-	 *                  needed
-	 * @return the giant represented by the element
-	 * @throws SPFormatException on SP format error
-	 */
-	public static final Giant readGiant(final StartElement element,
-										final Iterable<XMLEvent> stream,
-										final IMutablePlayerCollection players,
-										final Warning warner, final IDFactory idFactory)
-			throws SPFormatException {
-		requireTag(element, "giant");
-		spinUntilEnd(assertNotNull(element.getName()), stream);
-		return setImage(new Giant(getAttribute(element, "kind"),
-										 getOrGenerateID(element, warner, idFactory)),
-				element, warner);
-	}
+
 	/**
 	 * Write an Animal to a stream.
 	 *

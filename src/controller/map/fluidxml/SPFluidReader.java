@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.IntFunction;
 import java.util.regex.Pattern;
 import java.util.stream.StreamSupport;
@@ -35,10 +36,15 @@ import model.map.SPMapNG;
 import model.map.TileFixture;
 import model.map.fixtures.FortressMember;
 import model.map.fixtures.Ground;
+import model.map.fixtures.Implement;
 import model.map.fixtures.RiverFixture;
 import model.map.fixtures.TextFixture;
 import model.map.fixtures.UnitMember;
+import model.map.fixtures.mobile.Centaur;
 import model.map.fixtures.mobile.Djinn;
+import model.map.fixtures.mobile.Dragon;
+import model.map.fixtures.mobile.Fairy;
+import model.map.fixtures.mobile.Giant;
 import model.map.fixtures.mobile.Griffin;
 import model.map.fixtures.mobile.Minotaur;
 import model.map.fixtures.mobile.Ogre;
@@ -47,6 +53,7 @@ import model.map.fixtures.mobile.Simurgh;
 import model.map.fixtures.mobile.Sphinx;
 import model.map.fixtures.mobile.Troll;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.resources.Shrub;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Hill;
 import model.map.fixtures.terrain.Mountain;
@@ -119,12 +126,12 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 		createSimpleFixtureReader("sphinx", Sphinx::new);
 		createSimpleFixtureReader("troll", Troll::new);
 		readers.put("animal", FluidMobileHandler::readAnimal);
-		readers.put("centaur", FluidMobileHandler::readCentaur);
-		readers.put("dragon", FluidMobileHandler::readDragon);
-		readers.put("fairy", FluidMobileHandler::readFairy);
-		readers.put("giant", FluidMobileHandler::readGiant);
+		createSimpleHasKindReader("centaur", Centaur::new);
+		createSimpleHasKindReader("dragon", Dragon::new);
+		createSimpleHasKindReader("fairy", Fairy::new);
+		createSimpleHasKindReader("giant", Giant::new);
 		readers.put("text", FluidExplorableHandler::readTextFixture);
-		readers.put("implement", FluidResourceHandler::readImplement);
+		createSimpleHasKindReader("implement", Implement::new);
 		readers.put("resource", FluidResourceHandler::readResource);
 		readers.put("cache", FluidResourceHandler::readCache);
 		readers.put("grove", FluidResourceHandler::readGrove);
@@ -260,6 +267,22 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 			spinUntilEnd(assertNotNull(element.getName()), stream);
 			return setImage(constr.apply(getOrGenerateID(element, warner, idFactory)),
 					element, warner);
+		});
+	}
+	/**
+	 * Create a reader for a simple object having a kind, an ID number, and maybe an image,
+	 * and add this reader to our collection.
+	 * @param tag the tag this class should be instantiated from
+	 * @param constr the constructor to create an object of the class. Must take the
+	 *                  "kind" parameter and the ID number in its constructor, in that
+	 *                  order, and nothing else.
+	 */
+	private void createSimpleHasKindReader(final String tag, final BiFunction<String, Integer, ?> constr) {
+		readers.put(tag, (element, stream, players, warner, idFactory) -> {
+			requireTag(element, tag);
+			spinUntilEnd(assertNotNull(element.getName()), stream);
+			return setImage(constr.apply(getAttribute(element, "kind"),
+					getOrGenerateID(element, warner, idFactory)), element, warner);
 		});
 	}
 	/**
