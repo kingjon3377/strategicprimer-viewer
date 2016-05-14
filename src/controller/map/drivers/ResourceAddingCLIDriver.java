@@ -131,7 +131,7 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 								final ICLIHelper cli, final Player player)
 			throws IOException {
 		model.addResource(
-				new Implement(idf.createID(), cli.inputString("Kind of equipment: ")),
+				new Implement(cli.inputString("Kind of equipment: "), idf.createID()),
 				player);
 	}
 

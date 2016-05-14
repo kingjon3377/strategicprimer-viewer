@@ -46,10 +46,10 @@ public class Implement
 	private String image = "";
 
 	/**
-	 * @param idNum    an ID # for the implement
 	 * @param implKind the "kind" of implement
+	 * @param idNum    an ID # for the implement
 	 */
-	public Implement(final int idNum, final String implKind) {
+	public Implement(final String implKind, final int idNum) {
 		id = idNum;
 		kind = implKind;
 	}
@@ -102,7 +102,7 @@ public class Implement
 	 */
 	@Override
 	public Implement copy(final boolean zero) {
-		return new Implement(id, kind);
+		return new Implement(kind, id);
 	}
 
 	/**

@@ -248,7 +248,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 			}
 			final int qty = implQtyModel.getNumber().intValue();
 			for (int i = 0; i < qty; i++) {
-				model.addResource(new Implement(idf.createID(), kind), current);
+				model.addResource(new Implement(kind, idf.createID()), current);
 			}
 			logAddition(Integer.toString(qty) + " x " + kind);
 			implQtyModel.setValue(1);

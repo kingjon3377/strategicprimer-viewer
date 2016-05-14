@@ -64,8 +64,9 @@ public final class CompactImplementReader extends AbstractCompactReader<Implemen
 						final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "implement");
 		final Implement retval =
-				new Implement(getOrGenerateID(element, warner, idFactory),
-									getParameter(element, "kind"));
+				new Implement(getParameter(element, "kind"),
+									 getOrGenerateID(element, warner, idFactory)
+				);
 		spinUntilEnd(NullCleaner.assertNotNull(element.getName()), stream);
 		retval.setImage(getParameter(element, "image", ""));
 		return retval;

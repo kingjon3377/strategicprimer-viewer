@@ -83,8 +83,9 @@ public class FluidResourceHandler {
 			throws SPFormatException {
 		requireTag(element, "implement");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
-		return setImage(new Implement(getOrGenerateID(element, warner, idFactory),
-							 getAttribute(element, "kind")), element, warner);
+		return setImage(new Implement(getAttribute(element, "kind"),
+											 getOrGenerateID(element, warner, idFactory)
+		), element, warner);
 	}
 	/**
 	 * Parse a resource pile.

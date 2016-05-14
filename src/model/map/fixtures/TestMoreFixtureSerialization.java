@@ -463,7 +463,7 @@ public final class TestMoreFixtureSerialization extends
 	public void testFortressMemberSerialization()
 			throws XMLStreamException, SPFormatException, IOException {
 		final Fortress firstFort = new Fortress(new Player(1, ""), "fortName", 1);
-		firstFort.addMember(new Implement(2, "implKind"));
+		firstFort.addMember(new Implement("implKind", 2));
 		assertSerialization("Fortress can have an Implement as a member", firstFort);
 		firstFort.addMember(
 				new ResourcePile(3, "generalKind", "specificKind", 10, "each"));
