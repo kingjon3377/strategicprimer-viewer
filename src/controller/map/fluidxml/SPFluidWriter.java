@@ -65,7 +65,7 @@ import model.map.fixtures.towns.Fortress;
 import model.map.fixtures.towns.Village;
 import util.NullCleaner;
 
-import static controller.map.fluidxml.XMLHelper.imageXML;
+import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.indent;
 import static controller.map.fluidxml.XMLHelper.writeAttribute;
 import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
@@ -188,7 +188,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 			}
 			writeIntegerAttribute(ostream, "id", ((IFixture) obj).getID());
 			if (obj instanceof HasImage) {
-				ostream.append(imageXML((HasImage) obj));
+				writeImage(ostream, (HasImage) obj);
 			}
 			ostream.append(" />\n");
 		});
@@ -212,7 +212,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		writeNonEmptyAttribute(ostream, "kind", unit.getKind());
 		writeNonEmptyAttribute(ostream, "name", unit.getName());
 		writeIntegerAttribute(ostream, "id", unit.getID());
-		ostream.append(imageXML(unit));
+		writeImage(ostream, unit);
 		if (unit instanceof HasPortrait) {
 			writeNonEmptyAttribute(ostream, "portrait",
 					((HasPortrait) unit).getPortrait());
@@ -247,7 +247,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		writeIntegerAttribute(ostream, "owner", fort.getOwner().getPlayerId());
 		writeNonEmptyAttribute(ostream, "name", fort.getName());
 		writeIntegerAttribute(ostream, "id", fort.getID());
-		ostream.append(imageXML(fort));
+		writeImage(ostream, fort);
 		writeNonEmptyAttribute(ostream, "portrait", fort.getPortrait());
 		ostream.append('>');
 		if (fort.iterator().hasNext()) {

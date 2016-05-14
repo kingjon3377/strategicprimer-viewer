@@ -25,7 +25,7 @@ import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
-import static controller.map.fluidxml.XMLHelper.imageXML;
+import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.requireTag;
 import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
@@ -396,7 +396,7 @@ public class FluidResourceHandler {
 		if (pile.getCreated() >= 0) {
 			writeIntegerAttribute(ostream, "created", pile.getCreated());
 		}
-		ostream.append(imageXML(pile));
+		writeImage(ostream, pile);
 		ostream.append(" />\n");
 	}
 	/**
@@ -417,7 +417,7 @@ public class FluidResourceHandler {
 		writeAttribute(ostream, "kind", fix.getKind());
 		writeAttribute(ostream, "contents", fix.getContents());
 		writeIntegerAttribute(ostream, "id", fix.getID());
-		ostream.append(imageXML(fix));
+		writeImage(ostream, fix);
 		ostream.append(" />\n");
 	}
 	/**
@@ -443,7 +443,7 @@ public class FluidResourceHandler {
 		writeBooleanAttribute(ostream, "cultivated", fix.isCultivated());
 		writeAttribute(ostream, "status", fix.getStatus().toString());
 		writeIntegerAttribute(ostream, "id", fix.getID());
-		ostream.append(imageXML(fix));
+		writeImage(ostream, fix);
 		ostream.append(" />\n");
 	}
 	/**
@@ -468,7 +468,7 @@ public class FluidResourceHandler {
 		writeBooleanAttribute(ostream, "cultivated", fix.isCultivated());
 		writeAttribute(ostream, "kind", fix.getKind());
 		writeIntegerAttribute(ostream, "id", fix.getID());
-		ostream.append(imageXML(fix));
+		writeImage(ostream, fix);
 		ostream.append(" />\n");
 	}
 	/**
@@ -489,7 +489,7 @@ public class FluidResourceHandler {
 		writeAttribute(ostream, "kind", fix.getKind());
 		writeAttribute(ostream, "status", fix.getStatus().toString());
 		writeIntegerAttribute(ostream, "id", fix.getID());
-		ostream.append(imageXML(fix));
+		writeImage(ostream, fix);
 		ostream.append(" />\n");
 	}
 	/**
@@ -511,7 +511,7 @@ public class FluidResourceHandler {
 		writeBooleanAttribute(ostream, "exposed", fix.isExposed());
 		writeIntegerAttribute(ostream, "dc", fix.getDC());
 		writeIntegerAttribute(ostream, "id", fix.getID());
-		ostream.append(imageXML(fix));
+		writeImage(ostream, fix);
 		ostream.append(" />\n");
 	}
 	/**
@@ -532,7 +532,7 @@ public class FluidResourceHandler {
 		writeAttribute(ostream, "kind", fix.stone().toString());
 		writeIntegerAttribute(ostream, "dc", fix.getDC());
 		writeIntegerAttribute(ostream, "id", fix.getID());
-		ostream.append(imageXML(fix));
+		writeImage(ostream, fix);
 		ostream.append(" />\n");
 	}
 

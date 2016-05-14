@@ -25,7 +25,7 @@ import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
-import static controller.map.fluidxml.XMLHelper.imageXML;
+import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.indent;
 import static controller.map.fluidxml.XMLHelper.requireNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.requireTag;
@@ -243,7 +243,7 @@ public class FluidWorkerHandler {
 			writeAttribute(ostream, "race", work.getRace());
 		}
 		writeIntegerAttribute(ostream, "id", work.getID());
-		ostream.append(imageXML(work));
+		writeImage(ostream, work);
 		// TODO: Add portraitXML() to XMLHelper
 		if (work instanceof HasPortrait) {
 			writeNonEmptyAttribute(ostream, "portrait",

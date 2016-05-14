@@ -22,7 +22,7 @@ import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
 import static controller.map.fluidxml.XMLHelper.getPlayerOrIndependent;
-import static controller.map.fluidxml.XMLHelper.imageXML;
+import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.requireNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.requireTag;
 import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
@@ -191,7 +191,7 @@ public class FluidTownHandler {
 		writeIntegerAttribute(ostream, "id", fix.getID());
 		writeIntegerAttribute(ostream, "owner", fix.getOwner().getPlayerId());
 		writeAttribute(ostream, "race", fix.getRace());
-		ostream.append(imageXML(fix));
+		writeImage(ostream, fix);
 		writeNonEmptyAttribute(ostream, "portrait", fix.getPortrait());
 		ostream.append(" />\n");
 	}
@@ -223,7 +223,7 @@ public class FluidTownHandler {
 		writeNonEmptyAttribute(ostream, "name", fix.getName());
 		writeIntegerAttribute(ostream, "id", fix.getID());
 		writeIntegerAttribute(ostream, "owner", fix.getOwner().getPlayerId());
-		ostream.append(imageXML(fix));
+		writeImage(ostream, fix);
 		writeNonEmptyAttribute(ostream, "portrait", fix.getPortrait());
 		ostream.append(" />\n");
 	}

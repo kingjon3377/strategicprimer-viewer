@@ -16,7 +16,7 @@ import util.Warning;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
-import static controller.map.fluidxml.XMLHelper.imageXML;
+import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.requireTag;
 import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
@@ -201,7 +201,7 @@ public class FluidMobileHandler {
 			writeAttribute(ostream, "status", fix.getStatus());
 		}
 		writeIntegerAttribute(ostream, "id", fix.getID());
-		ostream.append(imageXML(fix));
+		writeImage(ostream, fix);
 		ostream.append(" />\n");
 	}
 }

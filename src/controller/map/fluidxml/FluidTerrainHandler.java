@@ -17,7 +17,7 @@ import util.Warning;
 import static controller.map.fluidxml.XMLHelper.getAttrWithDeprecatedForm;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
-import static controller.map.fluidxml.XMLHelper.imageXML;
+import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.requireNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.requireTag;
 import static controller.map.fluidxml.XMLHelper.setImage;
@@ -131,7 +131,7 @@ public class FluidTerrainHandler {
 		writeTag(ostream, "ground", indent);
 		writeAttribute(ostream, "kind", grd.getKind());
 		writeBooleanAttribute(ostream, "exposed", grd.isExposed());
-		ostream.append(imageXML(grd));
+		writeImage(ostream, grd);
 		ostream.append(" />\n");
 	}
 	/**
@@ -148,7 +148,7 @@ public class FluidTerrainHandler {
 			throw new IllegalArgumentException("Can only write Mountain");
 		}
 		writeTag(ostream, "mountain", indent);
-		ostream.append(imageXML((HasImage) obj));
+		writeImage(ostream, (HasImage) obj);
 		ostream.append(" />\n");
 	}
 	/**
@@ -170,7 +170,7 @@ public class FluidTerrainHandler {
 		if (forest.isRows()) {
 			writeBooleanAttribute(ostream, "rows", true);
 		}
-		ostream.append(imageXML(forest));
+		writeImage(ostream, forest);
 		ostream.append(" />\n");
 	}
 	/**

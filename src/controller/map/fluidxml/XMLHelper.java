@@ -298,17 +298,16 @@ public final class XMLHelper {
 	}
 
 	/**
-	 * TODO: Match other methods here and take ostream instead of returning String.
+	 * If the object has a custom (non-default) image, write it to XML.
+	 * @param ostream the stream to write to
 	 * @param obj an object being written out that might have a custom image
 	 * @return the XML for the image if it does, or the empty string if not
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
-	public static String imageXML(final HasImage obj) {
+	public static void writeImage(final Appendable ostream, final HasImage obj) throws IOException {
 		final String image = obj.getImage();
-		if (image.isEmpty() || image.equals(obj.getDefaultImage())) {
-			return "";
-		} else {
-			return " image=\"" + image + '"';
+		if (!image.equals(obj.getDefaultImage())) {
+			writeNonEmptyAttribute(ostream, "image", image);
 		}
 	}
 	/**

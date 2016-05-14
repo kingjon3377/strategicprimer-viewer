@@ -23,7 +23,7 @@ import util.Warning;
 import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
-import static controller.map.fluidxml.XMLHelper.imageXML;
+import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.requireTag;
 import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
@@ -220,7 +220,7 @@ public class FluidExplorableHandler {
 		}
 		writeNonEmptyAttribute(ostream, "brief", adv.getBriefDescription());
 		writeNonEmptyAttribute(ostream, "full", adv.getFullDescription());
-		ostream.append(imageXML(adv));
+		writeImage(ostream, adv);
 		ostream.append(" />\n");
 	}
 	/**
@@ -243,7 +243,7 @@ public class FluidExplorableHandler {
 		writeIntegerAttribute(ostream, "row", portal.getDestinationCoordinates().row);
 		writeIntegerAttribute(ostream, "column", portal.getDestinationCoordinates().col);
 		writeIntegerAttribute(ostream, "id", portal.getID());
-		ostream.append(imageXML(portal));
+		writeImage(ostream, portal);
 		ostream.append(" />\n");
 	}
 	/**
@@ -264,7 +264,7 @@ public class FluidExplorableHandler {
 		writeTag(ostream, "cave", indent);
 		writeIntegerAttribute(ostream, "dc", cave.getDC());
 		writeIntegerAttribute(ostream, "id", cave.getID());
-		ostream.append(imageXML(cave));
+		writeImage(ostream, cave);
 		ostream.append(" />\n");
 	}
 	/**
@@ -285,7 +285,7 @@ public class FluidExplorableHandler {
 		writeTag(ostream, "battlefield", indent);
 		writeIntegerAttribute(ostream, "dc", field.getDC());
 		writeIntegerAttribute(ostream, "id", field.getID());
-		ostream.append(imageXML(field));
+		writeImage(ostream, field);
 		ostream.append(" />\n");
 	}
 	/**
@@ -306,7 +306,7 @@ public class FluidExplorableHandler {
 		if (fix.getTurn() != -1) {
 			writeIntegerAttribute(ostream, "turn", fix.getTurn());
 		}
-		ostream.append(imageXML(fix));
+		writeImage(ostream, fix);
 		ostream.append('>');
 		ostream.append(fix.getText().trim());
 		ostream.append("</text>\n");
