@@ -8,12 +8,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.StreamSupport;
 import javax.swing.AbstractAction;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -34,8 +32,6 @@ import model.map.TileFixture;
 import model.map.fixtures.Ground;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.resources.CacheFixture;
-import model.map.fixtures.resources.MineralVein;
-import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.viewer.TileTypeFixture;
@@ -150,10 +146,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 				case JOptionPane.CANCEL_OPTION:
 					return;
 				case JOptionPane.YES_OPTION:
-					dig();
-					for (final MovementCostListener listener : mcListeners) {
-						listener.deduct(4);
-					}
+					model.dig();
 					break;
 				default: // NO_OPTION
 					break;
@@ -224,78 +217,6 @@ public final class ExplorationClickListener extends AbstractAction implements
 		return map.streamOtherFixtures(dPoint).anyMatch(fix::equals);
 	}
 
-	/**
-	 * Change one Ground, StoneDeposit, or MineralVein from unexposed to exposed (and
-	 * discover it).
-	 *
-	 * TODO: This should go into the exploration model. (With the MP deduction.)
-	 */
-	private void dig() {
-		final List<TileFixture> diggables = new ArrayList<>();
-		final IMutableMapNG mainMap = model.getMap();
-		final Point point = model.getSelectedUnitLocation();
-		final Ground ground = mainMap.getGround(point);
-		if (ground != null) {
-			diggables.add(ground);
-		}
-		mainMap.streamOtherFixtures(point)
-				.filter(fix -> (fix instanceof Ground) || (fix instanceof
-																StoneDeposit) ||
-									(fix instanceof MineralVein))
-				.forEach(diggables::add);
-		if (diggables.isEmpty()) {
-			return;
-		}
-		int i = 0;
-		boolean first = true;
-		while (first || ((i < 4) && !(diggables.get(0) instanceof Ground))) {
-			Collections.shuffle(diggables);
-			first = false;
-			i++;
-		}
-		if (ground == diggables.get(0)) {
-			assert ground != null;
-			final Ground newGround = ground.copy(false);
-			newGround.setExposed(true);
-			for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
-				final IMutableMapNG map = pair.first();
-				final Ground locGround = map.getGround(point);
-				if ((locGround == null) || locGround.equals(ground)) {
-					map.setGround(point, newGround.copy(false));
-				} else if (StreamSupport.stream(map.getOtherFixtures(point).spliterator(),
-						false).anyMatch(fix -> fix.equals(ground))) {
-					map.removeFixture(point, ground);
-					map.addFixture(point, newGround.copy(false));
-				} else {
-					map.addFixture(point, newGround.copy(false));
-				}
-			}
-		} else {
-			final TileFixture oldFix = diggables.get(0);
-			final TileFixture newFix = oldFix.copy(false);
-			if (newFix instanceof Ground) {
-				((Ground) newFix).setExposed(true);
-			} else if (newFix instanceof MineralVein) {
-				((MineralVein) newFix).setExposed(true);
-			}
-			boolean subsequent = false;
-			for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
-				final IMutableMapNG map = pair.first();
-				final Ground locGround = map.getGround(point);
-				if ((locGround == null) || locGround.equals(oldFix)) {
-					map.setGround(point, (Ground) newFix.copy(subsequent));
-				} else if (StreamSupport.stream(map.getOtherFixtures(point).spliterator(),
-						false).anyMatch(fix -> fix.equals(oldFix))) {
-					// FIXME: StoneDeposits and MineralVeins won't equals()-match---DCs.
-					map.removeFixture(point, oldFix);
-					map.addFixture(point, newFix.copy(subsequent));
-				} else {
-					map.addFixture(point, newFix.copy(subsequent));
-				}
-				subsequent = true;
-			}
-		}
-	}
 	/**
 	 * A reimplementation of {@link JList#getSelectedValuesList()} that's guaranteed not
 	 * to throw an ArrayIndexOutOfBoundsException.

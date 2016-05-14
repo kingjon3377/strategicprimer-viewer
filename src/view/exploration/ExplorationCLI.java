@@ -138,77 +138,6 @@ public final class ExplorationCLI {
 	}
 
 	/**
-	 * Change one Ground, StoneDeposit, or MineralVein from unexposed to exposed (and
-	 * discover it).
-	 *
-	 * TODO: This should go into the exploration model. (With the MP deduction.)
-	 */
-	private void dig(final Point point) {
-		final List<TileFixture> diggables = new ArrayList<>();
-		final IMutableMapNG mainMap = model.getMap();
-		final Ground ground = mainMap.getGround(point);
-		if (ground != null) {
-			diggables.add(ground);
-		}
-		mainMap.streamOtherFixtures(point)
-				.filter(fix -> (fix instanceof Ground) || (fix instanceof
-																StoneDeposit) ||
-									(fix instanceof MineralVein))
-				.forEach(diggables::add);
-		if (diggables.isEmpty()) {
-			return;
-		}
-		int i = 0;
-		boolean first = true;
-		while (first || ((i < 4) && !(diggables.get(0) instanceof Ground))) {
-			Collections.shuffle(diggables);
-			first = false;
-			i++;
-		}
-		if (ground == diggables.get(0)) {
-			assert ground != null;
-			final Ground newGround = ground.copy(false);
-			newGround.setExposed(true);
-			for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
-				final IMutableMapNG map = pair.first();
-				final Ground locGround = map.getGround(point);
-				if ((locGround == null) || locGround.equals(ground)) {
-					map.setGround(point, newGround.copy(false));
-				} else if (StreamSupport.stream(map.getOtherFixtures(point).spliterator(),
-						false).anyMatch(fix -> fix.equals(ground))) {
-					map.removeFixture(point, ground);
-					map.addFixture(point, newGround.copy(false));
-				} else {
-					map.addFixture(point, newGround.copy(false));
-				}
-			}
-		} else {
-			final TileFixture oldFix = diggables.get(0);
-			final TileFixture newFix = oldFix.copy(false);
-			if (newFix instanceof Ground) {
-				((Ground) newFix).setExposed(true);
-			} else if (newFix instanceof MineralVein) {
-				((MineralVein) newFix).setExposed(true);
-			}
-			boolean subsequent = false;
-			for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
-				final IMutableMapNG map = pair.first();
-				final Ground locGround = map.getGround(point);
-				if ((locGround == null) || locGround.equals(oldFix)) {
-					map.setGround(point, (Ground) newFix.copy(subsequent));
-				} else if (StreamSupport.stream(map.getOtherFixtures(point).spliterator(),
-						false).anyMatch(fix -> fix.equals(oldFix))) {
-					// FIXME: StoneDeposits and MineralVeins won't equals()-match---DCs.
-					map.removeFixture(point, oldFix);
-					map.addFixture(point, newFix.copy(subsequent));
-				} else {
-					map.addFixture(point, newFix.copy(subsequent));
-				}
-				subsequent = true;
-			}
-		}
-	}
-	/**
 	 * A "hunting model," to get the animals to have traces of.
 	 */
 	private final HuntingModel hmodel;
@@ -291,7 +220,7 @@ public final class ExplorationCLI {
 			cost += 5;
 		} else if ((Direction.Nowhere == direction) &&
 						helper.inputBoolean("Dig to expose some ground here?")) {
-			dig(dPoint);
+			model.dig();
 			cost += 4;
 		}
 		helper.printf("The explorer comes to %s, a tile with terrain %s%n",
@@ -300,7 +229,7 @@ public final class ExplorationCLI {
 			helper.println("The following fixtures were automatically noticed:");
 		} else if ((allFixtures.size() > 1) &&
 						(SingletonRandom.RANDOM.nextDouble() < 0.1)) {
-			helper.print("The following fixtures wer noticed, all but the last ");
+			helper.print("The following fixtures were noticed, all but the last ");
 			helper.println("two automatically:");
 			Collections.shuffle(allFixtures);
 			constants.add(allFixtures.get(0));

@@ -3,6 +3,7 @@ package model.exploration;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +29,8 @@ import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.mobile.Unit;
+import model.map.fixtures.resources.MineralVein;
+import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Fortress;
@@ -543,6 +546,82 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 						HasMutableOwner.class::cast).forEach(fix -> fix.setOwner(owner));
 			}
 			fireMovementCost(5);
+		}
+	}
+	/**
+	 * If there is a currently selected unit, change one Ground, StoneDeposit, or
+	 * MineralVein at the location of that unit from unexposed to exposed (and discover
+	 * it). This costs MP.
+	 */
+	@Override
+	public void dig() {
+		final Point currPoint = getSelectedUnitLocation();
+		final IUnit mover = selUnit;
+		if (mover != null) {
+			final List<TileFixture> diggables = new ArrayList<>();
+			final IMutableMapNG mainMap = getMap();
+			final Ground ground = mainMap.getGround(currPoint);
+			if (ground != null) {
+				diggables.add(ground);
+			}
+			mainMap.streamOtherFixtures(currPoint)
+					.filter(fix -> (fix instanceof Ground) || (fix instanceof
+																	   StoneDeposit) ||
+										   (fix instanceof MineralVein))
+					.forEach(diggables::add);
+			if (diggables.isEmpty()) {
+				return;
+			}
+			int i = 0;
+			boolean first = true;
+			while (first || ((i < 4) && !(diggables.get(0) instanceof Ground))) {
+				Collections.shuffle(diggables);
+				first = false;
+				i++;
+			}
+			if (ground == diggables.get(0)) {
+				assert ground != null;
+				final Ground newGround = ground.copy(false);
+				newGround.setExposed(true);
+				for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
+					final IMutableMapNG map = pair.first();
+					final Ground locGround = map.getGround(currPoint);
+					if ((locGround == null) || locGround.equals(ground)) {
+						map.setGround(currPoint, newGround.copy(false));
+					} else if (StreamSupport.stream(map.getOtherFixtures(currPoint).spliterator(),
+							false).anyMatch(fix -> fix.equals(ground))) {
+						map.removeFixture(currPoint, ground);
+						map.addFixture(currPoint, newGround.copy(false));
+					} else {
+						map.addFixture(currPoint, newGround.copy(false));
+					}
+				}
+			} else {
+				final TileFixture oldFix = diggables.get(0);
+				final TileFixture newFix = oldFix.copy(false);
+				if (newFix instanceof Ground) {
+					((Ground) newFix).setExposed(true);
+				} else if (newFix instanceof MineralVein) {
+					((MineralVein) newFix).setExposed(true);
+				}
+				boolean subsequent = false;
+				for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
+					final IMutableMapNG map = pair.first();
+					final Ground locGround = map.getGround(currPoint);
+					if ((locGround == null) || locGround.equals(oldFix)) {
+						map.setGround(currPoint, (Ground) newFix.copy(subsequent));
+					} else if (StreamSupport.stream(map.getOtherFixtures(currPoint).spliterator(),
+							false).anyMatch(fix -> fix.equals(oldFix))) {
+						// FIXME: DCs break equals() on StoneDeposits and MineralVeins
+						map.removeFixture(currPoint, oldFix);
+						map.addFixture(currPoint, newFix.copy(subsequent));
+					} else {
+						map.addFixture(currPoint, newFix.copy(subsequent));
+					}
+					subsequent = true;
+				}
+			}
+			fireMovementCost(4);
 		}
 	}
 }

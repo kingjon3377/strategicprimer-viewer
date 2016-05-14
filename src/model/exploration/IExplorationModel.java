@@ -133,4 +133,10 @@ public interface IExplorationModel
 	 * MP.
 	 */
 	void swearVillages();
+	/**
+	 * If there is a currently selected unit, change one Ground, StoneDeposit, or
+	 * MineralVein at the location of that unit from unexposed to exposed (and discover
+	 * it). This costs MP.
+	 */
+	void dig();
 }
