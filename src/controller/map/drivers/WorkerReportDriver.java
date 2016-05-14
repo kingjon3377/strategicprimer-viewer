@@ -1,16 +1,14 @@
 package controller.map.drivers;
 
 import controller.map.drivers.DriverUsage.ParamCount;
-import controller.map.formatexceptions.MapVersionException;
-import controller.map.formatexceptions.SPFormatException;
-import controller.map.misc.MapReaderAdapter;
 import controller.map.report.ReportGenerator;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import javax.xml.stream.XMLStreamException;
+import model.map.IMutableMapNG;
 import model.misc.IDriverModel;
-import util.Warning;
+import model.misc.IMultiMapModel;
+import util.Pair;
 
 /**
  * A driver to produce a report of the units in a map.
@@ -34,7 +32,7 @@ import util.Warning;
  *
  * @author Jonathan Lovelace
  */
-public final class WorkerReportDriver implements ISPDriver {
+public final class WorkerReportDriver implements SimpleDriver {
 	/**
 	 * An object indicating how to use and invoke this driver.
 	 */
@@ -47,64 +45,31 @@ public final class WorkerReportDriver implements ISPDriver {
 	/**
 	 * Run the driver.
 	 *
-	 * TODO: Implement properly? It doesn't have to interact with *map* files, and I can
-	 * imagine a caller wanting to write to a custom filename ...
+	 * TODO: Allow user to specify output filename
 	 *
 	 * @param model ignored
 	 * @throws DriverFailedException always: this driver has to write to the filesystem
 	 */
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
-		throw new DriverFailedException(new IllegalStateException("The report driver has" +
-																		" to interact " +
-																		"with files"));
-	}
-
-	/**
-	 * Start the driver.
-	 *
-	 * @param args command-line arguments
-	 * @throws DriverFailedException on fatal error
-	 */
-	@SuppressWarnings("OverloadedVarargsMethod")
-	@Override
-	public void startDriver(final String... args) throws DriverFailedException {
-		final MapReaderAdapter reader = new MapReaderAdapter();
-		for (final String filename : args) {
-			if (filename == null) {
-				continue;
+		if (model instanceof IMultiMapModel) {
+			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getAllMaps()) {
+				final String report = ReportGenerator.createReport(pair.first());
+				try (final FileWriter writer = new FileWriter(pair.second().getPath() + ".report.html")) {
+					writer.write(report);
+				} catch (final IOException except) {
+					throw new DriverFailedException("I/O error writing report", except);
+				}
 			}
-			final String report;
-			try {
-				// When we developed createReportIR, it was unacceptably slower, so we
-				// left this using the original.
-				//noinspection ObjectAllocationInLoop
-				report = ReportGenerator.createReport(
-						reader.readMap(new File(filename), Warning.Ignore));
-			} catch (final MapVersionException except) {
-				throw new DriverFailedException(filename +
-														" contained a map format version" +
-														" we can't handle",
-													except);
-			} catch (final IOException except) {
-				throw new DriverFailedException("I/O error reading " + filename, except);
-			} catch (final XMLStreamException except) {
-				throw new DriverFailedException("Error parsing XML in " + filename,
-													except);
-			} catch (final SPFormatException except) {
-				throw new DriverFailedException(filename +
-														" didn't contain a valid SP map",
-													except);
-			}
-			//noinspection ObjectAllocationInLoop
-			try (final FileWriter writer = new FileWriter(filename + ".report.html")) {
+		} else {
+			final String report = ReportGenerator.createReport(model.getMap());
+			try (final FileWriter writer = new FileWriter(model.getMapFile().getPath() + ".report.html")) {
 				writer.write(report);
 			} catch (final IOException except) {
 				throw new DriverFailedException("I/O error writing report", except);
 			}
 		}
 	}
-
 	/**
 	 * @return an object indicating how to use and invoke this driver
 	 */
