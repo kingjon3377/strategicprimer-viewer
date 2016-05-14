@@ -184,7 +184,6 @@ public final class TestTownSerialization extends BaseTestFixtureSerialization {
 				NAME_PROPERTY, true);
 		assertMissingProperty("<town status=\"" + status + "\" size=\"" + size + "\"/>",
 				Town.class, "dc", false);
-		// TODO: Adapt these assertions into the other two tests
 		assertMissingProperty("<town dc=\"0\" status=\"" + status + "\" />",
 				Town.class, "size", false);
 		assertMissingProperty("<town dc=\"0\" size=\"" + size + "\" />", Town.class,
