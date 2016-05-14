@@ -14,7 +14,6 @@ import model.listeners.SelectionChangeListener;
 import model.map.FixtureIterable;
 import model.map.HasMutableOwner;
 import model.map.HasOwner;
-import model.map.IFixture;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
 import model.map.MapDimensions;
@@ -337,19 +336,15 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 					|| ((fix instanceof Mountain) && map.isMountainous(point))) {
 			return true;
 		}
-		// TODO: Convert to Streams equivalent.
-		for (final TileFixture fixture : map.getOtherFixtures(point)) {
-			if (fixture.equals(fix)) {
-				return true;
-			} else if (fixture instanceof FixtureIterable) {
-				for (final IFixture inner : (FixtureIterable<@NonNull ?>) fixture) {
-					if (fix.equals(inner)) {
-						return true;
-					}
-				}
+		return map.streamOtherFixtures(point).flatMap(fixture -> {
+			if (fixture instanceof FixtureIterable) {
+				return Stream.concat(Stream.of(fixture),
+						StreamSupport.stream(((FixtureIterable<@NonNull ?>) fixture)
+													 .spliterator(), false));
+			} else {
+				return Stream.of(fixture);
 			}
-		}
-		return false;
+		}).anyMatch(fix::equals);
 	}
 
 	/**
