@@ -115,7 +115,7 @@ public final class CompactResourceReader extends
 		requireTag(element, "cache", "grove", "orchard",
 				"field", "meadow", "mine", "mineral", "shrub", "stone");
 		final int idNum = getOrGenerateID(element, warner, idFactory);
-		final HarvestableFixture retval; // NOPMD
+		final HarvestableFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {
 		case "cache":
 			retval = new CacheFixture(getParameter(element, KIND_PAR),
@@ -226,7 +226,7 @@ public final class CompactResourceReader extends
 	private static boolean isCultivated(final StartElement element,
 										final Warning warner) throws SPFormatException {
 		if (hasParameter(element, CULTIVATED_PARAM)) {
-			return parseBoolean(getParameter(element, CULTIVATED_PARAM)); // NOPMD
+			return parseBoolean(getParameter(element, CULTIVATED_PARAM));
 		} else {
 			if (hasParameter(element, "wild")) {
 				warner.warn(new DeprecatedPropertyException(element, "wild",
@@ -310,7 +310,7 @@ public final class CompactResourceReader extends
 	@SuppressWarnings("TypeMayBeWeakened")
 	private static String getMeadowTag(final Meadow meadow) {
 		if (meadow.isField()) {
-			return "field"; // NOPMD
+			return "field";
 		} else {
 			return "meadow";
 		}
@@ -323,7 +323,7 @@ public final class CompactResourceReader extends
 	@SuppressWarnings("TypeMayBeWeakened")
 	private static String getGroveTag(final Grove grove) {
 		if (grove.isOrchard()) {
-			return "orchard"; // NOPMD
+			return "orchard";
 		} else {
 			return "grove";
 		}

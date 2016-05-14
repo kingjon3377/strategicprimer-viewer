@@ -74,7 +74,7 @@ public class Ground implements TileFixture, HasMutableImage, HasMutableKind {
 	}
 
 	/**
-	 * @return a description of the grond
+	 * @return a description of the ground
 	 */
 	@Override
 	public String getKind() {
@@ -87,7 +87,7 @@ public class Ground implements TileFixture, HasMutableImage, HasMutableKind {
 	@Override
 	public String getDefaultImage() {
 		if (exposed) {
-			return "expground.png"; // NOPMD
+			return "expground.png";
 		} else {
 			return "blank.png";
 		}
@@ -120,7 +120,7 @@ public class Ground implements TileFixture, HasMutableImage, HasMutableKind {
 	@Override
 	public int hashCode() {
 		if (exposed) {
-			return kind.hashCode() << 1; // NOPMD
+			return kind.hashCode() << 1;
 		} else {
 			return kind.hashCode();
 		}
@@ -132,7 +132,7 @@ public class Ground implements TileFixture, HasMutableImage, HasMutableKind {
 	@Override
 	public String toString() {
 		if (exposed) {
-			return "Exposed ground of kind " + kind; // NOPMD
+			return "Exposed ground of kind " + kind;
 		} else {
 			return "Unexposed ground of kind " + kind;
 		}

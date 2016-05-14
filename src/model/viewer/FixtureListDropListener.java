@@ -153,10 +153,10 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	@Override
 	public void drop(@Nullable final DropTargetDropEvent dtde) {
 		if (dtde == null) {
-			return; // NOPMD
+			return;
 		} else if (isIntraComponentXfr(dtde)) {
 			dtde.rejectDrop();
-			return; // NOPMD
+			return;
 		} else {
 			for (final DataFlavor flavor : dtde.getCurrentDataFlavorsAsList()) {
 				if ((flavor != null) && EqualsAny.equalsAny(flavor,
@@ -177,7 +177,7 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 								except);
 						continue;
 					}
-					return; // NOPMD
+					return;
 				}
 			}
 			dtde.rejectDrop();

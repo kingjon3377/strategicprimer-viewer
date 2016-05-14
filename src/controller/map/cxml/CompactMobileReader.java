@@ -130,11 +130,11 @@ public final class CompactMobileReader extends
 		requireTag(element, "animal", "centaur", "djinn", "dragon", "fairy",
 				"giant", "griffin", "minotaur", "ogre", "phoenix", "simurgh",
 				"sphinx", "troll", "unit");
-		final MobileFixture retval; // NOPMD
+		final MobileFixture retval;
 		final String type = element.getName().getLocalPart().toLowerCase();
 		switch (type) {
 		case "unit":
-			return CompactUnitReader.READER.read(element, stream, players, // NOPMD
+			return CompactUnitReader.READER.read(element, stream, players,
 					warner, idFactory);
 		case "animal":
 			retval = createAnimal(element,

@@ -290,7 +290,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	@Nullable
 	private static Component eventSource(@Nullable final Object obj) {
 		if (obj instanceof Component) {
-			return (Component) obj; // NOPMD
+			return (Component) obj;
 		} else {
 			return null;
 		}
@@ -512,7 +512,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 */
 	private static Player[] playersAsArray(final Iterable<Player> players) {
 		if (players instanceof PlayerCollection) {
-			return ((PlayerCollection) players).asArray(); // NOPMD
+			return ((PlayerCollection) players).asArray();
 		} else {
 			final List<Player> list = StreamSupport.stream(players.spliterator(), false)
 											.collect(Collectors.toList());

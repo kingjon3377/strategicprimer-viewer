@@ -92,7 +92,7 @@ public final class PointFactory {
 			if (!assertNotNull(POINT_CACHE.get(boxedRow)).containsKey(boxedCol)) {
 				assertNotNull(POINT_CACHE.get(boxedRow)).put(boxedCol, new Point(row, col));
 			}
-			return assertNotNull(assertNotNull(POINT_CACHE.get(boxedRow)).get(boxedCol)); // NOPMD
+			return assertNotNull(assertNotNull(POINT_CACHE.get(boxedRow)).get(boxedCol));
 		} else {
 			return new Point(row, col);
 		}
@@ -115,7 +115,7 @@ public final class PointFactory {
 				assertNotNull(C_CACHE.get(boxedX)).put(boxedY,
 						new Coordinate(xCoord, yCoord));
 			}
-			return assertNotNull(assertNotNull(C_CACHE.get(boxedX)).get(boxedY)); // NOPMD
+			return assertNotNull(assertNotNull(C_CACHE.get(boxedX)).get(boxedY));
 		} else {
 			return new Coordinate(xCoord, yCoord);
 		}

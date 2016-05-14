@@ -105,7 +105,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 		if (separated.values().stream().allMatch(Collection::isEmpty)) {
 			return "";
 		} else {
-			return NullCleaner.assertNotNull(builder.toString()); // NOPMD
+			return NullCleaner.assertNotNull(builder.toString());
 		}
 	}
 
@@ -146,7 +146,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 				TownStatus.Burned).stream().map(separated::get)
 				.filter(node -> (node != null) && (node.getChildCount() != 0)).forEach(retval::add);
 		if (retval.getChildCount() == 0) {
-			return EmptyReportNode.NULL_NODE; // NOPMD
+			return EmptyReportNode.NULL_NODE;
 		} else {
 			return retval;
 		}

@@ -92,19 +92,19 @@ public final class SimpleMovement {
 									final boolean river,
 									final Supplier<Stream<TileFixture>> fixtures) {
 		if ((TileType.Ocean == terrain) || (TileType.NotVisible == terrain)) {
-			return Integer.MAX_VALUE; // NOPMD
+			return Integer.MAX_VALUE;
 		} else if (forest || mountain || isForest(fixtures.get()) ||
 						isHill(fixtures.get()) || (TileType.Desert == terrain)) {
 			if (river) {
-				return 2; // NOPMD
+				return 2;
 			} else {
-				return 3; // NOPMD
+				return 3;
 			}
 		} else if (TileType.Jungle == terrain) {
 			if (river) {
 				return 4;
 			} else {
-				return 6; // NOPMD
+				return 6;
 			}
 		} else if (EqualsAny.equalsAny(terrain, TileType.Steppe,
 				TileType.Plains, TileType.Tundra)) {

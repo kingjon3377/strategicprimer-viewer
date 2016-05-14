@@ -131,7 +131,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 										final String param, final String defaultValue) {
 		final Attribute attr = getAttributeByName(element, param);
 		if (attr == null) {
-			return defaultValue; // NOPMD
+			return defaultValue;
 		} else {
 			return NullCleaner.valueOrDefault(attr.getValue(), defaultValue);
 		}
@@ -269,7 +269,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 			if (value == null) {
 				throw exception;
 			}
-			return value; // NOPMD
+			return value;
 		} else {
 			final String prefValue = prefProp.getValue();
 			if (prefValue == null) {
@@ -280,7 +280,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 					if (deprValue == null) {
 						throw exception;
 					} else {
-						return deprValue; // NOPMD
+						return deprValue;
 					}
 				}
 			} else {
@@ -309,7 +309,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 	protected static String imageXML(final HasImage obj) {
 		final String image = obj.getImage();
 		if (image.isEmpty() || image.equals(obj.getDefaultImage())) {
-			return ""; // NOPMD
+			return "";
 		} else {
 			return " image=\"" + image + '"';
 		}
@@ -383,7 +383,7 @@ public abstract class AbstractCompactReader<@NonNull T>
 			throws SPFormatException {
 		final Attribute attr = getAttributeByName(tag, parameter);
 		if (attr == null) {
-			return defaultValue; // NOPMD
+			return defaultValue;
 		}
 		final String val = attr.getValue();
 		if ((val == null) || val.isEmpty()) {

@@ -98,7 +98,7 @@ public final class MemberDetailPanel extends JPanel implements UnitMemberListene
 	 */
 	private final Collection<StatLabel> statLabels = new ArrayList<>(6);
 	/**
-	 * The subpanel to show a worker's Job experience or training.
+	 * The sub-panel to show a worker's Job experience or training.
 	 */
 	private final JPanel jobsPanel = new JPanel(new GridLayout(0, 1));
 

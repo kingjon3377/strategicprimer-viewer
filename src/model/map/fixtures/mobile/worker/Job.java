@@ -36,7 +36,7 @@ import static util.NullCleaner.assertNotNull;
  *
  * @author Jonathan Lovelace
  */
-public class Job implements IJob { // NOPMD
+public class Job implements IJob {
 	/**
 	 * The name of the job.
 	 */

@@ -206,11 +206,11 @@ public final class ResolutionDecreaseConverter {
 				twos.add(type);
 				break;
 			default:
-				return type; // NOPMD
+				return type;
 			}
 		}
 		if (twos.size() == 1) {
-			return NullCleaner.assertNotNull(twos.iterator().next()); // NOPMD
+			return NullCleaner.assertNotNull(twos.iterator().next());
 		} else {
 			final List<TileType> list =
 					Arrays.asList(firstType, secondType, thirdtype, fourthType);

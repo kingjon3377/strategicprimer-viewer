@@ -63,7 +63,7 @@ public final class LegacyTable implements EncounterTable {
 	}
 
 	/**
-	 * // $codepro.audit.disable sourceLength Constructor.
+	 * Constructor.
 	 */
 	public LegacyTable() {
 		addData(new Battlefield(0, -1));
@@ -74,16 +74,16 @@ public final class LegacyTable implements EncounterTable {
 			for (final TownSize size : TownSize.values()) {
 				assert size != null;
 				//noinspection ObjectAllocationInLoop
-				addData(new City(status, size, 0, "", 0, player)); // NOPMD
+				addData(new City(status, size, 0, "", 0, player));
 				//noinspection ObjectAllocationInLoop
-				addData(new Fortification(status, size, 0, "", 0, player)); // NOPMD
+				addData(new Fortification(status, size, 0, "", 0, player));
 				//noinspection ObjectAllocationInLoop
-				addData(new Town(status, size, 0, "", 0, player)); // NOPMD
+				addData(new Town(status, size, 0, "", 0, player));
 			}
 		}
 		for (final MineralKind mineral : MineralKind.values()) {
 			//noinspection ObjectAllocationInLoop
-			addData(new MineralVein(mineral.toString(), true, 0, 0)); // NOPMD
+			addData(new MineralVein(mineral.toString(), true, 0, 0));
 			//noinspection ObjectAllocationInLoop
 			addData(new MineralVein(mineral.toString(), false, 0, 0));
 		}
@@ -103,7 +103,7 @@ public final class LegacyTable implements EncounterTable {
 								final Iterable<TileFixture> fixtures) {
 		for (final TileFixture fix : fixtures) {
 			if (fix instanceof IEvent) {
-				return ((IEvent) fix).getText(); // NOPMD
+				return ((IEvent) fix).getText();
 			}
 		}
 		return "Nothing interesting here ...";

@@ -76,7 +76,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	@Override
 	public String toString() {
 		if (kind.isEmpty()) {
-			return "giant"; // NOPMD
+			return "giant";
 		} else {
 			return kind + " giant";
 		}
@@ -121,7 +121,7 @@ public class Giant implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	/**
 	 * ID number.
 	 */
-	private final int id; // NOPMD
+	private final int id;
 
 	/**
 	 * @return a UID for the fixture.

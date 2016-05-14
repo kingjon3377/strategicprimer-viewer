@@ -77,7 +77,7 @@ public class Dragon
 	@Override
 	public String toString() {
 		if (kind.isEmpty()) {
-			return "dragon"; // NOPMD
+			return "dragon";
 		} else {
 			return kind + " dragon";
 		}
@@ -125,7 +125,7 @@ public class Dragon
 	/**
 	 * ID number.
 	 */
-	private final int id; // NOPMD
+	private final int id;
 
 	/**
 	 * @return a UID for the fixture.

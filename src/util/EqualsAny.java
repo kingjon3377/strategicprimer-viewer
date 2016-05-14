@@ -63,7 +63,7 @@ public final class EqualsAny {
 	public static <T> boolean equalsAny(final T against,
 										@Nullable final Iterable<T> values) {
 		if (values == null) {
-			return false; // NOPMD
+			return false;
 		} else {
 			return StreamSupport.stream(values.spliterator(), false)
 						.anyMatch(val -> Objects.equals(against, val));

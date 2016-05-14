@@ -64,7 +64,7 @@ public final class Cave implements IEvent, ExplorableFixture {
 	/**
 	 * The DC to discover the caves.
 	 */
-	private final int dc; // NOPMD
+	private final int dc;
 
 	/**
 	 * @return the DC to discover the event.
@@ -121,7 +121,7 @@ public final class Cave implements IEvent, ExplorableFixture {
 	/**
 	 * The event's ID number.
 	 */
-	private final int id; // NOPMD
+	private final int id;
 
 	/**
 	 * @return the event's ID number.

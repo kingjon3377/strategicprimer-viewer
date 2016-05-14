@@ -35,7 +35,7 @@ import util.Pair;
  */
 public final class UnitMemberTransferable implements Transferable {
 	/**
-	 * The object we're transfering.
+	 * The object we're transferring.
 	 */
 	private final UnitMemberPairList data;
 	/**
@@ -129,7 +129,7 @@ public final class UnitMemberTransferable implements Transferable {
 	public UnitMemberPairList getTransferData(@Nullable final DataFlavor flavor)
 			throws UnsupportedFlavorException {
 		if (FLAVOR.equals(flavor)) {
-			return data; // NOPMD
+			return data;
 		} else {
 			throw new UnsupportedFlavorException(flavor);
 		}

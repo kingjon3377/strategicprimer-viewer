@@ -76,7 +76,7 @@ public interface IMapNG
 
 	/**
 	 * Implementations should aim to have only the "main" forest here, and any "extra"
-	 * forest Fixtures in the "et cetera" collection.
+	 * forest Fixtures in the "other fixtures" collection.
 	 *
 	 * @param location a location
 	 * @return the forest (if any) at that location; null if there is none
@@ -85,7 +85,7 @@ public interface IMapNG
 
 	/**
 	 * Implementations should aim to have only the "main" Ground here, and any exposed or
-	 * otherwise "extra" Fixtures in the "et cetera" collection.
+	 * otherwise "extra" Fixtures in the "other fixtures" collection.
 	 *
 	 * @param location a location
 	 * @return the Ground at that location; null if there is none

@@ -74,7 +74,7 @@ public final class WorkerReportDriver implements ISPDriver {
 			if (filename == null) {
 				continue;
 			}
-			final String report; // NOPMD
+			final String report;
 			try {
 				// When we developed createReportIR, it was unacceptably slower, so we
 				// left this using the original.

@@ -15,7 +15,7 @@ import model.map.fixtures.terrain.Sandbar;
 import util.NullCleaner;
 
 /**
- * A class enapsulating the mapping from tile-types to colors.
+ * A class encapsulating the mapping from tile-types to colors.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -145,7 +145,7 @@ public final class TileUIHelper {
 	 * @param type a terrain type
 	 * @return a String representation of that terrain type
 	 */
-	public String getDescription(final TileType type) { // NOPMD
+	public String getDescription(final TileType type) {
 		if (descriptions.containsKey(type)) {
 			return NullCleaner.assertNotNull(descriptions.get(type));
 		} else {

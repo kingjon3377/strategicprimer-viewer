@@ -134,11 +134,11 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 					support.isDataFlavorSupported(UnitMemberTransferable.FLAVOR)) {
 			final DropLocation dloc = support.getDropLocation();
 			if (!(dloc instanceof JTree.DropLocation)) {
-				return false; // NOPMD
+				return false;
 			}
 			final TreePath path = ((JTree.DropLocation) dloc).getPath();
 			if (path == null) {
-				return false; // NOPMD
+				return false;
 			} else {
 				final Object pathLast = path.getLastPathComponent();
 				if (pathLast != null) {
@@ -164,12 +164,12 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 		if ((support != null) && canImport(support)) {
 			final DropLocation dloc = support.getDropLocation();
 			if (!(dloc instanceof JTree.DropLocation)) {
-				return false; // NOPMD
+				return false;
 			}
 			final TreePath path = ((JTree.DropLocation) dloc).getPath();
 			final Object pathLast = path.getLastPathComponent();
 			if (pathLast == null) {
-				return false; // NOPMD
+				return false;
 			}
 			final Object local = model.getModelObject(pathLast);
 			final Object tempTarget;
@@ -189,20 +189,20 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 					for (final Pair<UnitMember, IUnit> pair : list) {
 						model.moveMember(pair.first(), pair.second(), (IUnit) tempTarget);
 					}
-					return true; // NOPMD
+					return true;
 				} catch (final UnsupportedFlavorException except) {
 					LOGGER.log(Level.SEVERE,
 							"Impossible unsupported data flavor", except);
-					return false; // NOPMD
+					return false;
 				} catch (final IOException except) {
 					LOGGER.log(
 							Level.SEVERE,
 							"I/O error in transfer after we checked",
 							except);
-					return false; // NOPMD
+					return false;
 				}
 			} else {
-				return false; // NOPMD
+				return false;
 			}
 		} else {
 			return false;

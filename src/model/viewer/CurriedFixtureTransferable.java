@@ -87,7 +87,7 @@ public final class CurriedFixtureTransferable implements Transferable {
 	public Iterable<Transferable> getTransferData(@Nullable final DataFlavor flavor)
 			throws UnsupportedFlavorException {
 		if (isDataFlavorSupported(flavor)) {
-			return new ArrayList<>(payload); // NOPMD
+			return new ArrayList<>(payload);
 		} else {
 			throw new UnsupportedFlavorException(flavor);
 		}

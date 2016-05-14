@@ -39,11 +39,11 @@ public final class Coordinate {
 	/**
 	 * The X coordinate or width.
 	 */
-	public final int x; // NOPMD
+	public final int x;
 	/**
 	 * The Y coordinate or height.
 	 */
-	public final int y; // NOPMD
+	public final int y;
 
 	/**
 	 * @return a String representation of the object

@@ -1,4 +1,4 @@
-package model.map.fixtures; // NOPMD
+package model.map.fixtures;
 
 import controller.map.formatexceptions.SPFormatException;
 import java.io.IOException;
@@ -59,7 +59,7 @@ import org.junit.Test;
  * @author Jonathan Lovelace
  */
 public final class TestFixtureSerialization extends
-		BaseTestFixtureSerialization { // NOPMD
+		BaseTestFixtureSerialization {
 	/**
 	 * Extracted constant.
 	 */

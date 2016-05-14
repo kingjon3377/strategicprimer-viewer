@@ -216,7 +216,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	@Override
 	public String toString() {
 		if (owner.isIndependent()) {
-			return "Independent unit of type " + kind + ", named " + name; // NOPMD
+			return "Independent unit of type " + kind + ", named " + name;
 		} else {
 			return "Unit of type " + kind + ", belonging to " + owner + ", named " +
 						name;
@@ -268,7 +268,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	/**
 	 * ID number.
 	 */
-	private final int id; // NOPMD
+	private final int id;
 
 	/**
 	 * @return a UID for the fixture.
@@ -364,7 +364,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	@Override
 	public String shortDesc() {
 		if (owner.isCurrent()) {
-			return "a(n) " + kind + " unit belonging to you"; // NOPMD
+			return "a(n) " + kind + " unit belonging to you";
 		} else {
 			return "a(n) " + kind + " unit belonging to " + owner.getName();
 		}
@@ -384,7 +384,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 		if (obj.getID() != id) {
 			ostream.append(context);
 			ostream.append("\tFixtures have different IDs\n");
-			return false; // NOPMD
+			return false;
 		} else if (!(obj instanceof IUnit)) {
 			ostream.append(context);
 			ostream.append("Different kinds of fixtures for ID #");
@@ -438,7 +438,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 			}
 			//			return retval;
 		} else {
-			return false; // NOPMD
+			return false;
 		}
 	}
 

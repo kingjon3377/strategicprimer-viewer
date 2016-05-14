@@ -115,9 +115,9 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			if (anyforts) {
 				ours.append(builder.toString());
 			}
-			return NullCleaner.assertNotNull(ours.toString()); // NOPMD
+			return NullCleaner.assertNotNull(ours.toString());
 		} else if (anyforts) {
-			return NullCleaner.assertNotNull(builder.toString()); // NOPMD
+			return NullCleaner.assertNotNull(builder.toString());
 		} else {
 			return "";
 		}
@@ -159,7 +159,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 			retval.add(foreign);
 		}
 		if (retval.getChildCount() == 0) {
-			return EmptyReportNode.NULL_NODE; // NOPMD
+			return EmptyReportNode.NULL_NODE;
 		} else {
 			return retval;
 		}
@@ -220,7 +220,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 		}
 		if (!rivers.isEmpty()) {
 			builder.append(OPEN_LIST_ITEM);
-			builder.append("There is a river on the tile, "); // NOPMD
+			builder.append("There is a river on the tile, ");
 			builder.append("flowing through the following borders: ");
 			builder.append(rivers.stream().map(River::getDescription)
 								.collect(Collectors.joining(", ")));

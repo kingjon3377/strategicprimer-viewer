@@ -52,7 +52,7 @@ public final class ComparablePair<K extends Comparable<K>, V extends Comparable<
 	public int compareTo(final ComparablePair<K, V> other) {
 		final int cmp = first().compareTo(other.first());
 		if (cmp == 0) {
-			return second().compareTo(other.second()); // NOPMD
+			return second().compareTo(other.second());
 		} else {
 			return cmp;
 		}

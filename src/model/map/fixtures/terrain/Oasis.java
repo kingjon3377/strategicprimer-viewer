@@ -99,7 +99,7 @@ public class Oasis implements TerrainFixture, HasMutableImage {
 	/**
 	 * ID number.
 	 */
-	private final int id; // NOPMD
+	private final int id;
 
 	/**
 	 * @return a UID for the fixture.

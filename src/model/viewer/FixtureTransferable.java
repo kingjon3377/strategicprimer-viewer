@@ -30,7 +30,7 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 public final class FixtureTransferable implements Transferable {
 	/**
-	 * The object we're transfering.
+	 * The object we're transferring.
 	 */
 	private final TileFixture data;
 	/**
@@ -78,7 +78,7 @@ public final class FixtureTransferable implements Transferable {
 	public TileFixture getTransferData(@Nullable final DataFlavor flavor)
 			throws UnsupportedFlavorException {
 		if (FLAVOR.equals(flavor)) {
-			return data; // NOPMD
+			return data;
 		} else {
 			throw new UnsupportedFlavorException(flavor);
 		}

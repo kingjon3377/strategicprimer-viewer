@@ -36,7 +36,7 @@ public interface Changeset {
 	/**
 	 * @return The number of the "after" turn.
 	 */
-	int to(); // NOPMD
+	int to();
 
 	/**
 	 * @return the inverse of this set of operations

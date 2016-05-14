@@ -60,7 +60,7 @@ public interface ICLIHelper extends Closeable {
 							boolean auto) throws IOException;
 
 	/**
-	 * Read input from stdin repeatedly until a nonnegative integer is entered, and
+	 * Read input from stdin repeatedly until a non-negative integer is entered, and
 	 * return
 	 * it.
 	 *

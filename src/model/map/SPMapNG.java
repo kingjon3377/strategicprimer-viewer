@@ -260,11 +260,11 @@ public class SPMapNG implements IMutableMapNG {
 					}
 				}
 			}
-			return retval; // NOPMD
+			return retval;
 		} else {
 			ostream.append(context);
 			ostream.append("\tDimension mismatch\n");
-			return false; // NOPMD
+			return false;
 		}
 	}
 
@@ -276,7 +276,7 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public int compareTo(final IMapNG other) {
 		if (equals(other)) {
-			return 0; // NOPMD
+			return 0;
 		} else {
 			final int ours = hashCode();
 			final int theirs = Objects.hashCode(other);
@@ -345,7 +345,7 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public TileType getBaseTerrain(final Point location) {
 		if (terrain.containsKey(location)) {
-			return assertNotNull(terrain.get(location)); // NOPMD
+			return assertNotNull(terrain.get(location));
 		} else {
 			return TileType.NotVisible;
 		}
@@ -367,7 +367,7 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public Iterable<River> getRivers(final Point location) {
 		if (rivers.containsKey(location)) {
-			return assertNotNull(rivers.get(location)); // NOPMD
+			return assertNotNull(rivers.get(location));
 		} else {
 			return assertNotNull(EnumSet.noneOf(River.class));
 		}
@@ -400,7 +400,7 @@ public class SPMapNG implements IMutableMapNG {
 	@Override
 	public Iterable<TileFixture> getOtherFixtures(final Point location) {
 		if (fixtures.containsKey(location)) {
-			return assertNotNull(fixtures.get(location)); // NOPMD
+			return assertNotNull(fixtures.get(location));
 		} else {
 			return new IteratorWrapper<>(new EmptyIterator<>());
 		}
@@ -463,7 +463,7 @@ public class SPMapNG implements IMutableMapNG {
 									areStreamsEqual(streamOtherFixtures(point),
 											obj.streamOtherFixtures(point)));
 		} else {
-			return false; // NOPMD
+			return false;
 		}
 	}
 
@@ -720,7 +720,7 @@ public class SPMapNG implements IMutableMapNG {
 
 	/**
 	 * @param location a location
-	 * @param fix      a fixture to remove from that locaation
+	 * @param fix      a fixture to remove from that location
 	 */
 	@Override
 	public void removeFixture(final Point location, final TileFixture fix) {

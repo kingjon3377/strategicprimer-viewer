@@ -232,7 +232,7 @@ public class FluidResourceHandler {
 			throws SPFormatException {
 		requireTag(element, "meadow");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
-		final int id = getOrGenerateID(element, warner, idFactory); // NOPMD
+		final int id = getOrGenerateID(element, warner, idFactory);
 		if (!hasAttribute(element, "status")) {
 			warner.warn(new MissingPropertyException(element, "status"));
 		}
@@ -260,7 +260,7 @@ public class FluidResourceHandler {
 			throws SPFormatException {
 		requireTag(element, "field");
 		spinUntilEnd(assertNotNull(element.getName()), stream);
-		final int id = getOrGenerateID(element, warner, idFactory); // NOPMD
+		final int id = getOrGenerateID(element, warner, idFactory);
 		if (!hasAttribute(element, "status")) {
 			warner.warn(new MissingPropertyException(element, "status"));
 		}

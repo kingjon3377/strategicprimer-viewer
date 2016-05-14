@@ -59,7 +59,7 @@ public final class TileDrawHelperFactory {
 								final ZOrderFilter zof) {
 		switch (version) {
 		case 1:
-			return verOneHelper; // NOPMD
+			return verOneHelper;
 		case 2:
 			if (!verTwoHelpers.containsKey(iobs)) {
 				verTwoHelpers.put(iobs, new Ver2TileDrawHelper(iobs, zof));

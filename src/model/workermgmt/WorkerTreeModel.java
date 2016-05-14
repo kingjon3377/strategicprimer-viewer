@@ -99,7 +99,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 						model.getUnitKinds(root).contains(parent) &&
 						(index < model.getUnits(root, (String) parent).size())) {
 			// A String here is a unit's kind.
-			return NullCleaner.assertNotNull(model.getUnits(root, // NOPMD
+			return NullCleaner.assertNotNull(model.getUnits(root,
 					(String) parent).get(index));
 		} else if (parent instanceof IUnit) {
 			final Iterator<UnitMember> iter = ((IUnit) parent).iterator();
@@ -111,7 +111,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 				}
 			}
 			if (iter.hasNext()) {
-				return NullCleaner.assertNotNull(iter.next()); // NOPMD
+				return NullCleaner.assertNotNull(iter.next());
 			} else {
 				throw new ArrayIndexOutOfBoundsException(index);
 			}
@@ -127,7 +127,7 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	@Override
 	public int getChildCount(@Nullable final Object parent) {
 		if (parent instanceof Player) {
-			return model.getUnits((Player) parent).size(); // NOPMD
+			return model.getUnits((Player) parent).size();
 		} else if (parent instanceof IUnit) {
 			return (int) StreamSupport.stream(((IUnit) parent).spliterator(), false)
 								.count();
@@ -170,11 +170,11 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 			int index = 0;
 			for (final UnitMember member : (IUnit) parent) {
 				if (member.equals(child)) {
-					return index; // NOPMD
+					return index;
 				}
 				index++;
 			}
-			return -1; // NOPMD
+			return -1;
 		} else {
 			return -1;
 		}

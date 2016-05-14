@@ -37,7 +37,7 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	/**
 	 * A (U)ID.
 	 */
-	private final int id; // NOPMD
+	private final int id;
 
 	/**
 	 * Constructor.
@@ -69,7 +69,7 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	/**
 	 * The DC to discover the battlefield.
 	 */
-	private final int dc; // NOPMD
+	private final int dc;
 
 	/**
 	 * @return the DC to discover the event.

@@ -169,7 +169,7 @@ public class SPMenu extends JMenuBar {
 		retval.add(nextItem);
 		retval.addSeparator();
 		// VK_PLUS only works on non-US keyboards, but we leave it as the
-		// primary hotkey because it's the best to *show* in the menu.
+		// primary hot-key because it's the best to *show* in the menu.
 		final KeyStroke plusKey =
 				createHotkey(KeyEvent.VK_PLUS);
 		final JMenuItem zoomInItem =

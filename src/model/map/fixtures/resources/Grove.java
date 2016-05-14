@@ -101,7 +101,7 @@ public class Grove implements HarvestableFixture, HasMutableKind {
 	@Override
 	public String getDefaultImage() {
 		if (orchard) {
-			return "orchard.png"; // NOPMD
+			return "orchard.png";
 		} else {
 			return "tree.png";
 		}
@@ -160,7 +160,7 @@ public class Grove implements HarvestableFixture, HasMutableKind {
 	/**
 	 * ID number.
 	 */
-	private final int id; // NOPMD
+	private final int id;
 
 	/**
 	 * @return a UID for the fixture.

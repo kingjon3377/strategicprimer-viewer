@@ -143,7 +143,7 @@ public final class SelectTileDialog extends JDialog {
 	}
 
 	/**
-	 * The parser to use for checking nnumbers.
+	 * The parser to use for checking numbers.
 	 */
 	private static final NumberFormat NUM_PARSER =
 			assertNotNull(NumberFormat.getIntegerInstance());
@@ -181,11 +181,11 @@ public final class SelectTileDialog extends JDialog {
 	private static String getErrorMessage(final State state, final int bound) {
 		switch (state) {
 		case Negative:
-			return " must be positive. "; // NOPMD
+			return " must be positive. ";
 		case Nonnumeric:
-			return " must be a whole number. "; // NOPMD
+			return " must be a whole number. ";
 		case Overflow:
-			return " must be less than " + Integer.toString(bound); // NOPMD
+			return " must be less than " + Integer.toString(bound);
 		case Valid:
 			return "";
 		default:

@@ -80,9 +80,9 @@ public final class FixtureFilterList extends JList<Class<? extends TileFixture>>
 	public boolean shouldDisplay(final TileFixture fix) {
 		final Class<? extends TileFixture> cls = fix.getClass();
 		if (cls == null) {
-			return false; // NOPMD
+			return false;
 		} else if (plurals.containsKey(cls)) {
-			return lsm.isSelectedIndex(model.indexOf(cls)); // NOPMD
+			return lsm.isSelectedIndex(model.indexOf(cls));
 		} else {
 			model.add(cls);
 			plurals.put(cls, fix.plural());

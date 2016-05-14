@@ -31,7 +31,7 @@ import model.map.fixtures.UnitMember;
  *
  * @author Jonathan Lovelace
  */
-public class Ogre implements MobileFixture, HasMutableImage, UnitMember { // NOPMD
+public class Ogre implements MobileFixture, HasMutableImage, UnitMember {
 	/**
 	 * The name of an image to use for this particular fixture.
 	 */
@@ -104,7 +104,7 @@ public class Ogre implements MobileFixture, HasMutableImage, UnitMember { // NOP
 	/**
 	 * ID number.
 	 */
-	private final int id; // NOPMD
+	private final int id;
 
 	/**
 	 * @return a UID for the fixture.

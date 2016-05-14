@@ -70,7 +70,7 @@ public enum Warning {
 	public void warn(final Exception warning) {
 		switch (this) {
 		case Die:
-			throw new FatalWarningException(warning); // NOPMD
+			throw new FatalWarningException(warning);
 		case Warn:
 			final Class<?> warnClass;
 			if (warning.getStackTrace().length > 0) {

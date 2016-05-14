@@ -118,7 +118,7 @@ public class Meadow implements HarvestableFixture, HasMutableKind {
 	@Override
 	public String getDefaultImage() {
 		if (field) {
-			return "field.png"; // NOPMD
+			return "field.png";
 		} else {
 			return "meadow.png";
 		}
@@ -183,7 +183,7 @@ public class Meadow implements HarvestableFixture, HasMutableKind {
 	/**
 	 * ID number.
 	 */
-	private final int id; // NOPMD
+	private final int id;
 
 	/**
 	 * @return a UID for the fixture.

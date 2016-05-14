@@ -99,7 +99,7 @@ public final class HuntingModel {
 			final List<String> plantList =
 					NullCleaner.assertNotNull(plants.get(point));
 			final int len = plantList.size() - 1;
-			final int nothings; // NOPMD: TODO: extract method?
+			final int nothings; // TODO: extract method?
 			switch (map.getBaseTerrain(point)) {
 			case Desert:
 			case Tundra:
@@ -133,7 +133,7 @@ public final class HuntingModel {
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addToMap(final Map<Point, List<String>> map, final Point point,
 								final String value) {
-		final List<String> list; // NOPMD
+		final List<String> list;
 		if (map.containsKey(point)) {
 			list = NullCleaner.assertNotNull(map.get(point));
 		} else {

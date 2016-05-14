@@ -148,7 +148,7 @@ public final class FixtureEditMenu extends JPopupMenu {
 	 */
 	private static Player[] playersAsArray(final Iterable<Player> players) {
 		if (players instanceof PlayerCollection) {
-			return ((PlayerCollection) players).asArray(); // NOPMD
+			return ((PlayerCollection) players).asArray();
 		} else {
 			final List<Player> list = StreamSupport.stream(players.spliterator(), false)
 											.collect(Collectors.toList());

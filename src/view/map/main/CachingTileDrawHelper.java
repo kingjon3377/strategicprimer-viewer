@@ -1,4 +1,4 @@
-package view.map.main; // NOPMD
+package view.map.main;
 
 import java.awt.Color;
 import java.awt.Graphics;

@@ -3,7 +3,7 @@ package model.viewer;
 
 /**
  * A class to encapsulate how big the GUI representation of a tile should be. Now
- * suppoting zooming in and out (changing the size to view more tiles or see the tiles
+ * supporting zooming in and out (changing the size to view more tiles or see the tiles
  * more clearly, not changing what's on them yet).
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
@@ -39,7 +39,7 @@ public final class TileViewSize {
 	 */
 	public static int scaleZoom(final int zoom, final int ver) {
 		if (ver == 1) {
-			return zoom * 2; // NOPMD
+			return zoom * 2;
 		} else if (ver == 2) {
 			return zoom * 3;
 		} else {

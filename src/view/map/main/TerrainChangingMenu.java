@@ -94,7 +94,7 @@ public final class TerrainChangingMenu extends JPopupMenu
 		removeAll();
 		for (final TileType type : TileType.valuesForVersion(version)) {
 			//noinspection ObjectAllocationInLoop
-			final JMenuItem item = new JMenuItem(type.toString()); // NOPMD
+			final JMenuItem item = new JMenuItem(type.toString());
 			add(item);
 			item.addActionListener(evt -> {
 				model.getMap().setBaseTerrain(point, type);

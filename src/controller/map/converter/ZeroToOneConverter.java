@@ -144,7 +144,7 @@ public final class ZeroToOneConverter {
 	}
 
 	/**
-	 * Used to throw ParseException if a tile has a nonnumeric 'event'; now merely logs
+	 * Used to throw ParseException if a tile has a non-numeric 'event'; now merely logs
 	 * that, I think.
 	 *
 	 * @param element the current element
@@ -199,7 +199,7 @@ public final class ZeroToOneConverter {
 	@SuppressWarnings("TypeMayBeWeakened")
 	private static String getEventXML(final Integer num) {
 		if (EQUIVS.containsKey(num)) {
-			return NullCleaner.assertNotNull(EQUIVS.get(num)); // NOPMD
+			return NullCleaner.assertNotNull(EQUIVS.get(num));
 		} else {
 			return "";
 		}
@@ -324,7 +324,7 @@ public final class ZeroToOneConverter {
 	public static void main(final String... args) {
 		for (final String arg : args) {
 			//noinspection ObjectAllocationInLoop
-			try (final Reader reader = new FileReader(arg)) { // NOPMD
+			try (final Reader reader = new FileReader(arg)) {
 				//noinspection unchecked,ObjectAllocationInLoop
 				convert(new IteratorWrapper<>(XMLInputFactory.newInstance()
 													.createXMLEventReader(reader)),

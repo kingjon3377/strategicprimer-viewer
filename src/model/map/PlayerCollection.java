@@ -55,7 +55,7 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 	public Player getPlayer(final int player) {
 		final Integer pValue = Integer.valueOf(player);
 		if (players.containsKey(pValue)) {
-			return assertNotNull(players.get(pValue)); // NOPMD
+			return assertNotNull(players.get(pValue));
 		} else {
 			return new Player(player, "");
 		}
@@ -175,11 +175,11 @@ public final class PlayerCollection implements IMutablePlayerCollection {
 		if (obj instanceof Integer) {
 			final boolean retval = players.containsKey(obj);
 			players.remove(obj);
-			return retval; // NOPMD
+			return retval;
 		} else if (obj instanceof Player) {
 			final boolean retval = players.containsValue(obj);
 			players.remove(Integer.valueOf(((Player) obj).getPlayerId()));
-			return retval; // NOPMD
+			return retval;
 		} else {
 			return false;
 		}

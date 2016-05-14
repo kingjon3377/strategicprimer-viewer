@@ -38,8 +38,8 @@ public final class MenuItemCreator {
 	 * @param item     the text of the item
 	 * @param mnemonic the mnemonic key
 	 * @param accel    the keyboard accelerator. Null if none is wanted.
-	 * @param desc     the accessibile description.
-	 * @param list     the listener to hande when the item is selected.
+	 * @param desc     the accessible description.
+	 * @param list     the listener to handle when the item is selected.
 	 * @return the configured menu item.
 	 */
 	public static JMenuItem createMenuItem(final String item, final int mnemonic,
@@ -56,10 +56,10 @@ public final class MenuItemCreator {
 	}
 
 	/**
-	 * Create a hotkey.
+	 * Create a hot-key.
 	 *
 	 * @param key the base key
-	 * @return the hotkey
+	 * @return the hot-key
 	 */
 	public static KeyStroke createHotkey(final int key) {
 		return NullCleaner.assertNotNull(KeyStroke.getKeyStroke(key,
@@ -67,10 +67,10 @@ public final class MenuItemCreator {
 	}
 
 	/**
-	 * Create a hotkey with the additional Shift modifier.
+	 * Create a hot-key with the additional Shift modifier.
 	 *
 	 * @param key the base key
-	 * @return the hotkey
+	 * @return the hot-key
 	 */
 	public static KeyStroke createShiftHotkey(final int key) {
 		return NullCleaner.assertNotNull(KeyStroke.getKeyStroke(key,

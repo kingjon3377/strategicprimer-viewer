@@ -137,7 +137,7 @@ public final class TrapModelDriver implements SimpleDriver {
 		try {
 			final HuntingModel hmodel = new HuntingModel(map);
 			final boolean fishing = cli.inputBoolean(FISH_OR_TRAP);
-			final String name; // NOPMD
+			final String name;
 			if (fishing) {
 				name = "fisherman";
 			} else {
@@ -149,7 +149,7 @@ public final class TrapModelDriver implements SimpleDriver {
 													+ name + " is working: ");
 			final int col = cli.inputNumber("Column of that tile: ");
 			final Point point = point(row, col);
-			final List<String> fixtures; // NOPMD
+			final List<String> fixtures;
 			if (fishing) {
 				fixtures = hmodel.fish(point, minutes);
 			} else {
@@ -186,7 +186,7 @@ public final class TrapModelDriver implements SimpleDriver {
 	@SuppressWarnings("TypeMayBeWeakened")
 	private static String inHours(final int minutes) {
 		if (minutes < MINS_PER_HOUR) {
-			return Integer.toString(minutes) + " minutes"; // NOPMD
+			return Integer.toString(minutes) + " minutes";
 		} else {
 			return Integer.toString(minutes / MINS_PER_HOUR) + " hours, " +
 						Integer.toString(minutes % MINS_PER_HOUR) + " minutes";
@@ -213,9 +213,9 @@ public final class TrapModelDriver implements SimpleDriver {
 			if (HuntingModel.NOTHING.equals(top)) {
 				cli.println("Nothing in the trap");
 				if (fishing) {
-					return FRUITLESS_FISH_TRAP; // NOPMD
+					return FRUITLESS_FISH_TRAP;
 				} else {
-					return FRUITLESS_TRAP; // NOPMD
+					return FRUITLESS_TRAP;
 				}
 			} else {
 				cli.print("Found either ");
@@ -225,17 +225,17 @@ public final class TrapModelDriver implements SimpleDriver {
 			}
 		case EasyReset:
 			if (fishing) {
-				return 20; // NOPMD
+				return 20;
 			} else {
-				return 5; // NOPMD
+				return 5;
 			}
 		case Move:
-			return 2; // NOPMD
+			return 2;
 		case Quit:
-			return 0; // NOPMD
+			return 0;
 		case Set:
 			if (fishing) {
-				return 30; // NOPMD
+				return 30;
 			} else {
 				return 45;
 			}

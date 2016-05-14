@@ -81,7 +81,7 @@ public final class TestEventSerialization extends BaseTestFixtureSerialization {
 				new MineralVein("one", true, 10, 1));
 		final HasMutableImage secondVein = new MineralVein("two", false, 35, 2);
 		assertSerialization("Second MineralEvent serialization test", secondVein);
-		final String oldKindProperty = "mineral"; // NOPMD
+		final String oldKindProperty = "mineral";
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated Mineral idiom", secondVein,
 				NullCleaner.assertNotNull(

@@ -46,13 +46,13 @@ import static view.util.SystemOut.SYS_OUT;
  *
  * @author Jonathan Lovelace
  */
-public final class DrawHelperComparator implements SimpleDriver { // NOPMD
+public final class DrawHelperComparator implements SimpleDriver {
 	/**
 	 * The minimum row for the iteration-vs-filtering test.
 	 */
 	private static final int TEST_MIN_ROW = 20;
 	/**
-	 * The maximum row for the interation-vs-filtering test.
+	 * The maximum row for the iteration-vs-filtering test.
 	 */
 	private static final int TEST_MAX_ROW = 40;
 	/**
@@ -480,7 +480,7 @@ public final class DrawHelperComparator implements SimpleDriver { // NOPMD
 	@Override
 	public void startDriver(final IDriverModel model) {
 		final Random random = new Random();
-		final int reps = 50; // NOPMD
+		final int reps = 50;
 		if (model instanceof IMultiMapModel) {
 			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model)
 																.getAllMaps()) {

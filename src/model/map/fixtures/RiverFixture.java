@@ -167,7 +167,7 @@ public final class RiverFixture
 			final Set<River> temp = EnumSet.copyOf(((RiverFixture) obj).rivers);
 			temp.removeAll(rivers);
 			if (temp.isEmpty()) {
-				return true; // NOPMD
+				return true;
 			} else {
 				ostream.append(context);
 				ostream.append(" Extra rivers:\t");
@@ -175,7 +175,7 @@ public final class RiverFixture
 					ostream.append(river.toString().toLowerCase());
 				}
 				ostream.append('\n');
-				return false; // NOPMD
+				return false;
 			}
 		} else {
 			ostream.append(context);

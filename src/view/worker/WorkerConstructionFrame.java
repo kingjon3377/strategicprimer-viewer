@@ -216,7 +216,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 
 	/**
 	 * @param numbers a sequence of Pairs of supposedly-numeric Strings and what they
-	 *                represent. If any is nonnumeric, the return String includes
+	 *                represent. If any is non-numeric, the return String includes
 	 *                "such-and-such must be a number."
 	 * @return such an explanation
 	 */
@@ -250,7 +250,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 
 	/**
 	 * @param strings a collection of strings
-	 * @return true if any of them is nonnumeric
+	 * @return true if any of them is non-numeric
 	 */
 	@SuppressWarnings("QuestionableName")
 	private static boolean areAnyNonNumeric(final String... strings) {

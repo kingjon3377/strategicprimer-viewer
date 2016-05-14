@@ -181,7 +181,7 @@ public class FluidExplorableHandler {
 		// Of all our uses of StringBuilder, here we can't know how much size
 		// we're going to need beforehand. But cases where we'll need more than
 		// 2K will be vanishingly rare in practice.
-		final StringBuilder sbuild = new StringBuilder(2048); // NOPMD
+		final StringBuilder sbuild = new StringBuilder(2048);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && EqualsAny.equalsAny(
 					assertNotNull(event.asStartElement().getName().getNamespaceURI()),

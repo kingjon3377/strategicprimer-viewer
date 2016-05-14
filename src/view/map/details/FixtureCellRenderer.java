@@ -1,9 +1,6 @@
 package view.map.details;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -12,13 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.ListCellRenderer;
+import javax.swing.*;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
 import model.map.HasImage;
@@ -139,19 +130,26 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 		/*
 		 * The margin we allow around the chit itself in the default image.
 		 */
-		final int imageSize = 24; // NOPMD
+		final int imageSize = 24;
 		final BufferedImage temp =
 				new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D pen = temp.createGraphics();
 		final Color saveColor = pen.getColor();
 		pen.setColor(Color.RED);
-		final double margin = 0.15; // NOPMD
-		pen.fillRoundRect((int) Math.round(imageSize * margin) + 1,
-				(int) Math.round(imageSize * margin) + 1,
-				(int) Math.round(imageSize * (1.0 - (margin * 2.0))),
-				(int) Math.round(imageSize * (1.0 - (margin * 2.0))),
-				(int) Math.round(imageSize * (margin / 2.0)),
-				(int) Math.round(imageSize * (margin / 2.0)));
+		// The margin as a fraction of the whole.
+		final double margin = 0.15;
+		// The margin, in pixels
+		final double pixelMargin = Math.round(imageSize * margin);
+		// The part of the image size not covered by margins.
+		final double afterMargin = Math.round(imageSize * (1.0 - (margin * 2.0)));
+		// The rounding on the corners: half as much as the normal margin.
+		final double cornerRounding = Math.round(imageSize * margin / 2.0);
+		pen.fillRoundRect((int) pixelMargin + 1,
+				(int) pixelMargin + 1,
+				(int) afterMargin,
+				(int) afterMargin,
+				(int) cornerRounding,
+				(int) cornerRounding);
 		pen.setColor(saveColor);
 		pen.fillRoundRect(
 				(int) Math.round((imageSize / 2.0) - (imageSize * margin)) + 1,

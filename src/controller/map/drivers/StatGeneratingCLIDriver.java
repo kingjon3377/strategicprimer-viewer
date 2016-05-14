@@ -45,7 +45,7 @@ import util.Pair;
 import static util.SingletonRandom.RANDOM;
 
 /**
- * A driver to let the user enter pregenerated stats for existing workers or generate new
+ * A driver to let the user enter pre-generated stats for existing workers or generate new
  * workers.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
@@ -75,11 +75,11 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	private static final String LOAD_NAMES =
 			"Load names from file and use randomly generated stats? ";
 	/**
-	 * The prompt to use to ask the user if he or she wants to enter pregenerated stats
+	 * The prompt to use to ask the user if he or she wants to enter pre-generated stats
 	 * for workers that already exist.
 	 */
 	private static final String PREGEN_PROMPT =
-			"Enter pregenerated stats for existing workers? ";
+			"Enter pre-generated stats for existing workers? ";
 	/**
 	 * The basis on which stat modifiers are calculated. Every two points above this
 	 * gives
@@ -225,7 +225,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 				.filter(wkr -> wkr.getStats() == null)
 				.collect(Collectors.toList()));
 		final String hdr = "Which worker do you want to enter stats for?";
-		final String none = "There are no owkers without stats in that unit.";
+		final String none = "There are no workers without stats in that unit.";
 		final String prpt = "Worker to modify: ";
 		for (int workerNum = cli.chooseFromList(workers, hdr, none, prpt,
 				false); (workerNum >= 0) && (workerNum < workers.size())
@@ -292,7 +292,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 					final IFixture result =
 							find((FixtureIterable<@NonNull ?>) fixture, idNum);
 					if (result != null) {
-						return result; // NOPMD
+						return result;
 					}
 				}
 			}
@@ -310,11 +310,11 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	int idNum) {
 		for (final IFixture fix : iter) {
 			if (fix.getID() == idNum) {
-				return fix; // NOPMD
+				return fix;
 			} else if (fix instanceof FixtureIterable) {
 				final IFixture result = find((FixtureIterable<@NonNull ?>) fix, idNum);
 				if (result != null) {
-					return result; // NOPMD
+					return result;
 				}
 			}
 		}
@@ -484,7 +484,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			cli.println("Worker has 1 job level");
 		}
 		final boolean pregenStats = cli
-											.inputBoolean("Enter pregenerated stats? ");
+											.inputBoolean("Enter pre-generated stats? ");
 		if (pregenStats) {
 			retval.setStats(enterStats(cli));
 		} else {

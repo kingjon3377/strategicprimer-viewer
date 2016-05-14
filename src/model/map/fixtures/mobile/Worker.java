@@ -105,7 +105,7 @@ public class Worker implements IWorker, HasPortrait {
 	/**
 	 * The ID number of the worker.
 	 */
-	private final int id; // NOPMD
+	private final int id;
 
 	/**
 	 * @return the ID number of the worker.

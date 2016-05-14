@@ -111,7 +111,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	 */
 	private static int wrap(final int val, final int wrap) {
 		if (val < 0) {
-			return wrap; // NOPMD
+			return wrap;
 		} else {
 			return val;
 		}
@@ -156,9 +156,9 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	@Override
 	public boolean hasNext() {
 		if (started) {
-			return (row != startRow) || (col != startCol); // NOPMD
+			return (row != startRow) || (col != startCol);
 		} else {
-			return true; // NOPMD
+			return true;
 		}
 	}
 
@@ -171,13 +171,13 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 			started = true;
 			if (horiz) {
 				if (forwards) {
-					return horizNext(); // NOPMD
+					return horizNext();
 				} else {
-					return horizPrev(); // NOPMD
+					return horizPrev();
 				}
 			} else {
 				if (forwards) {
-					return vertNext(); // NOPMD
+					return vertNext();
 				} else {
 					return vertPrev();
 				}

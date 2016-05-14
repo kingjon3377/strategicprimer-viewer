@@ -163,7 +163,7 @@ public final class MapCheckerFrame extends JFrame implements ISPWindow {
 			final String message = NullCleaner.valueOrDefault(
 					except.getLocalizedMessage(), "(message was null)");
 			printParagraph(message, ERROR_COLOR);
-			LOGGER.log(Level.SEVERE, "SP map format eror reading " + filename,
+			LOGGER.log(Level.SEVERE, "SP map format error reading " + filename,
 					except);
 		} else {
 			throw new IllegalStateException("Unhandled exception class");

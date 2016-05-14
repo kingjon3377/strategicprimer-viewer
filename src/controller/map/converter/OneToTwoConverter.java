@@ -1,4 +1,4 @@
-package controller.map.converter; // NOPMD
+package controller.map.converter;
 
 import controller.exploration.TableLoader;
 import controller.map.formatexceptions.MapVersionException;
@@ -73,7 +73,7 @@ import static util.NullCleaner.assertNotNull;
  *
  * @author Jonathan Lovelace
  */
-public final class OneToTwoConverter { // NOPMD
+public final class OneToTwoConverter {
 	/**
 	 * Sixty percent. Our probability for a couple of perturbations.
 	 */
@@ -88,7 +88,7 @@ public final class OneToTwoConverter { // NOPMD
 	private static final Logger LOGGER =
 			TypesafeLogger.getLogger(OneToTwoConverter.class);
 	/**
-	 * The number of subtiles per tile on each axis.
+	 * The number of sub-tiles per tile on each axis.
 	 */
 	private static final int RES_JUMP = 4;
 	/**
@@ -167,7 +167,7 @@ public final class OneToTwoConverter { // NOPMD
 	}
 
 	/**
-	 * Create the initial list of subtiles for a tile.
+	 * Create the initial list of sub-tiles for a tile.
 	 *
 	 * @param point  the location in the old map
 	 * @param oldMap the old map
@@ -269,7 +269,7 @@ public final class OneToTwoConverter { // NOPMD
 	 * Deal with rivers separately.
 	 *
 	 * @param point   the location being handled
-	 * @param initial the initial set of subpoints
+	 * @param initial the initial set of sub-points
 	 * @param oldMap  the old map
 	 * @param newMap  the new map
 	 */
@@ -328,7 +328,7 @@ public final class OneToTwoConverter { // NOPMD
 	}
 
 	/**
-	 * Determine whether a subtile is suitable for more fixtures. It's suitable if its
+	 * Determine whether a sub-tile is suitable for more fixtures. It's suitable if its
 	 * only fixtures are Forests, Mountains, Ground or other similar "background".
 	 *
 	 * @param point the location in the map
@@ -341,7 +341,7 @@ public final class OneToTwoConverter { // NOPMD
 
 	/**
 	 * @param fix a fixture
-	 * @return true if it's "background", not making a subtile unsuitable for more
+	 * @return true if it's "background", not making a sub-tile unsuitable for more
 	 * fixtures, false otherwise.
 	 */
 	private static boolean isBackground(final TileFixture fix) {
@@ -352,7 +352,7 @@ public final class OneToTwoConverter { // NOPMD
 	}
 
 	/**
-	 * Prepare a subtile for a specified new fixture. At present, the only change this
+	 * Prepare a sub-tile for a specified new fixture. At present, the only change this
 	 * involves is removing any forests if there's a village or TownEvent.
 	 *
 	 * @param map   the map to prepare
@@ -428,7 +428,7 @@ public final class OneToTwoConverter { // NOPMD
 								final IMutableMapNG map, final boolean main,
 								final IDFactory idFactory) {
 		try {
-			final int id = idFactory.createID(); // NOPMD
+			final int id = idFactory.createID();
 			if (field) {
 				addFixture(
 						map,
@@ -551,7 +551,7 @@ public final class OneToTwoConverter { // NOPMD
 	}
 
 	/**
-	 * @return How many subtiles per tile the addRiver() algorithm is optimized for.
+	 * @return How many sub-tiles per tile the addRiver() algorithm is optimized for.
 	 */
 	@SuppressWarnings({"MethodReturnAlwaysConstant", "SameReturnValue"})
 	private static int optSubtilesPerTile() {
@@ -560,14 +560,14 @@ public final class OneToTwoConverter { // NOPMD
 
 	/**
 	 * @param river  a river
-	 * @param points the subpoints to apply it to
+	 * @param points the sub-points to apply it to
 	 * @param map    the map to work in
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addRiver(final River river,
 								final List<Point> points, final IMutableMapNG map) {
 		if (RES_JUMP != optSubtilesPerTile()) {
-			throw new IllegalStateException("This function is tuned for 4 subtiles per " +
+			throw new IllegalStateException("This function is tuned for 4 sub-tiles per " +
 													"tile per axis");
 		}
 		switch (river) {

@@ -155,8 +155,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	 * suitable for using as tile images, but are suitable for use in fixture lists. They
 	 * are all public domain, found on either OpenClipArt or Pixabay and then adjusted to
 	 * a square aspect ratio. (Except for 'mountain', which has been in the repository
-	 * for
-	 * a long time because it's used by the Mountain tile fixture.
+	 * for a long time because it's used by the Mountain tile fixture.
 	 *
 	 * @return a "filename" for an image to represent the object.
 	 */

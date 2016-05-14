@@ -56,7 +56,7 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 	private static final String UNIT_TAG = "unit";
 
 	/**
-	 * List of readers we'll try subtags on.
+	 * List of readers we'll try sub-tags on.
 	 */
 	private final List<CompactReader<? extends IFixture>> readers;
 
@@ -179,10 +179,10 @@ public final class CompactUnitReader extends AbstractCompactReader<Unit> {
 			if (retval.isEmpty()) {
 				warner.warn(new MissingPropertyException(element, "kind"));
 			}
-			return retval; // NOPMD
+			return retval;
 		} catch (final MissingPropertyException except) {
 			warner.warn(except);
-			return ""; // NOPMD
+			return "";
 		}
 	}
 

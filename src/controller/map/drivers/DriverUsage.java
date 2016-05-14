@@ -6,7 +6,7 @@ package controller.map.drivers;
  *
  * @author Jonathan Lovelace
  */
-public class DriverUsage { // $codepro.audit.disable
+public class DriverUsage {
 	/**
 	 * Whether the driver is graphical or not.
 	 */

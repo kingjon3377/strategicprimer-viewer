@@ -78,7 +78,7 @@ public final class CompactReaderAdapter {
 	 * Parse an object from XML.
 	 * @param element   the element we're immediately dealing with
 	 * @param stream    the stream from which to read more elements
-	 * @param players   the PlayerCollecton to use when needed
+	 * @param players   the PlayerCollection to use when needed
 	 * @param warner    the Warning instance if warnings need to be issued
 	 * @param idFactory the ID factory to get IDs from
 	 * @return the object encoded by the XML

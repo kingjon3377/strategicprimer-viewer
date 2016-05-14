@@ -75,7 +75,7 @@ public final class ImageLoader {
 			pen.fillRect(0, 0, buf.getWidth(), buf.getHeight());
 			pen.dispose();
 			//noinspection ObjectAllocationInLoop
-			iconCache.put(type.toXML() + ".png", new ImageIcon(buf)); // NOPMD
+			iconCache.put(type.toXML() + ".png", new ImageIcon(buf));
 		}
 	}
 

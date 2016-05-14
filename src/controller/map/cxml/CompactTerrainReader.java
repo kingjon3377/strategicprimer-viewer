@@ -93,7 +93,7 @@ public final class CompactTerrainReader extends
 							final Warning warner,
 							final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "forest", "hill", "mountain", "oasis", "sandbar");
-		final TerrainFixture retval; // NOPMD
+		final TerrainFixture retval;
 		switch (element.getName().getLocalPart().toLowerCase()) {
 		case "forest":
 			retval = new Forest(getParameter(element, "kind"), hasParameter(
@@ -134,7 +134,7 @@ public final class CompactTerrainReader extends
 		if (obj instanceof Mountain) {
 			writeTag(ostream, "mountain", indent);
 			ostream.append(imageXML((Mountain) obj)).append(" />\n");
-			return; // NOPMD Mountains don't yet have IDs.
+			return; // Mountains don't yet have IDs.
 		} else if (obj instanceof Forest) {
 			writeTag(ostream, "forest", indent);
 			ostream.append(" kind=\"");
@@ -143,7 +143,7 @@ public final class CompactTerrainReader extends
 				ostream.append("\" rows=\"true");
 			}
 			ostream.append('"').append(imageXML((Forest) obj)).append(" />\n");
-			return; // NOPMD Neither do Forests.
+			return; // Neither do Forests.
 		} else {
 			if (obj instanceof Hill) {
 				writeTag(ostream, "hill", indent);

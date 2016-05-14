@@ -65,7 +65,7 @@ public final class City extends AbstractTown {
 	/**
 	 * The DC to discover the city. TODO: Should perhaps be mutable.
 	 */
-	private final int dc; // NOPMD
+	private final int dc;
 
 	/**
 	 * @return the DC to discover the event.
@@ -78,7 +78,7 @@ public final class City extends AbstractTown {
 	/**
 	 * ID number.
 	 */
-	private final int id; // NOPMD
+	private final int id;
 
 	/**
 	 * @return a UID for the fixture.

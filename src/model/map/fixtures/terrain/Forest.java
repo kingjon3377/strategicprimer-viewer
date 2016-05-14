@@ -81,7 +81,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	@Override
 	public String toString() {
 		if (rows) {
-			return "Rows of " + trees + " trees."; // NOPMD
+			return "Rows of " + trees + " trees.";
 		} else {
 			return "A " + trees + " forest.";
 		}
@@ -136,7 +136,7 @@ public class Forest implements TerrainFixture, HasMutableImage, HasMutableKind {
 	@Override
 	public int hashCode() {
 		if (rows) {
-			return trees.hashCode() << 1; // NOPMD
+			return trees.hashCode() << 1;
 		} else {
 			return trees.hashCode();
 		}

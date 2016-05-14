@@ -127,7 +127,7 @@ public final class XMLHelper {
 										 final String param, final String defaultValue) {
 		final Attribute attr = getAttributeByName(element, param);
 		if (attr == null) {
-			return defaultValue; // NOPMD
+			return defaultValue;
 		} else {
 			return NullCleaner.valueOrDefault(attr.getValue(), defaultValue);
 		}
@@ -213,7 +213,7 @@ public final class XMLHelper {
 	/**
 	 * @param element the current tag
 	 * @param param the parameter we want
-	 * @return it if it's presnt in either the default namespace or our namespace, or
+	 * @return it if it's present in either the default namespace or our namespace, or
 	 * null if not present
 	 */
 	@Nullable
@@ -265,7 +265,7 @@ public final class XMLHelper {
 			if (value == null) {
 				throw exception;
 			}
-			return value; // NOPMD
+			return value;
 		} else {
 			final String prefValue = prefProp.getValue();
 			if (prefValue == null) {
@@ -276,7 +276,7 @@ public final class XMLHelper {
 					if (deprValue == null) {
 						throw exception;
 					} else {
-						return deprValue; // NOPMD
+						return deprValue;
 					}
 				}
 			} else {
@@ -287,7 +287,7 @@ public final class XMLHelper {
 
 	/**
 	 * @param ostream the stream to write the tabs to
-	 * @param tabs a nonnegative integer: how many tabs to add to the stream
+	 * @param tabs a non-negative integer: how many tabs to add to the stream
 	 * @throws IOException on I/O error writing to ostream
 	 */
 	public static void indent(final Appendable ostream, final int tabs)
@@ -306,7 +306,7 @@ public final class XMLHelper {
 	public static String imageXML(final HasImage obj) {
 		final String image = obj.getImage();
 		if (image.isEmpty() || image.equals(obj.getDefaultImage())) {
-			return ""; // NOPMD
+			return "";
 		} else {
 			return " image=\"" + image + '"';
 		}
@@ -338,7 +338,7 @@ public final class XMLHelper {
 	 * @param str  the text to parse
 	 * @param location the current location in the document
 	 * @return the result of parsing the text
-	 * @throws SPFormatException if the string is nonnumeric or otherwise malformed
+	 * @throws SPFormatException if the string is non-numeric or otherwise malformed
 	 */
 	private static int parseInt(final String str, final Location location)
 			throws SPFormatException {
@@ -355,8 +355,7 @@ public final class XMLHelper {
 	 * @param parameter the name of the parameter
 	 * @return the result of parsing the text
 	 * @throws SPFormatException if the tag doesn't have that parameter or if its
-	 * value is
-	 *                           nonnumeric or otherwise malformed
+	 * value is non-numeric or otherwise malformed
 	 */
 	public static int getIntegerAttribute(final StartElement tag,
 											 final String parameter)
@@ -372,7 +371,7 @@ public final class XMLHelper {
 	 * @param parameter    the name of the parameter
 	 * @param defaultValue the default value to return if the parameter is missing
 	 * @return the result of parsing the text
-	 * @throws SPFormatException if the parameter's value is nonnumeric or otherwise
+	 * @throws SPFormatException if the parameter's value is non-numeric or otherwise
 	 *                           malformed
 	 */
 	public static int getIntegerAttribute(final StartElement tag,
@@ -381,7 +380,7 @@ public final class XMLHelper {
 			throws SPFormatException {
 		final Attribute attr = getAttributeByName(tag, parameter);
 		if (attr == null) {
-			return defaultValue; // NOPMD
+			return defaultValue;
 		}
 		final String val = attr.getValue();
 		if ((val == null) || val.isEmpty()) {
@@ -490,7 +489,7 @@ public final class XMLHelper {
 										  final Warning warner,
 										  final IPlayerCollection players)
 			throws SPFormatException {
-		final Player retval; // NOPMD
+		final Player retval;
 		if (hasAttribute(element, "owner") && !getAttribute(element, "owner").isEmpty()) {
 			retval = players.getPlayer(getIntegerAttribute(element, "owner"));
 		} else {

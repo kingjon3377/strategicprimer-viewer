@@ -120,7 +120,7 @@ public final class MapComponent extends JComponent
 	@Nullable
 	public String getToolTipText(@Nullable final MouseEvent event) {
 		if (event == null) {
-			return null; // NOPMD
+			return null;
 		} else {
 			return cml.getToolTipText(event);
 		}
@@ -177,8 +177,8 @@ public final class MapComponent extends JComponent
 								final int minY, final int maxX, final int maxY) {
 		final int minRow = model.getDimensions().getMinimumRow();
 		final int maxRow = model.getDimensions().getMaximumRow();
-		final int minCol = model.getDimensions().getMinimumCol(); // NOPMD
-		final int maxCol = model.getDimensions().getMaximumCol(); // NOPMD
+		final int minCol = model.getDimensions().getMinimumCol();
+		final int maxCol = model.getDimensions().getMaximumCol();
 		for (int i = minY; (i < maxY) && ((i + minRow) < (maxRow + 1)); i++) {
 			for (int j = minX; (j < maxX) && ((j + minCol) < (maxCol + 1)); j++) {
 				final Point location = PointFactory.point(i + minRow, j + minCol);

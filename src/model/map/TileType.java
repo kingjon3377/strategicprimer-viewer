@@ -154,7 +154,7 @@ public enum TileType {
 	 * The mapping from descriptive strings to tile types. Used to make
 	 * multiple-return-points warnings go away.
 	 */
-	private static final Map<String, TileType> CACHE = new HashMap<>(); // NOPMD
+	private static final Map<String, TileType> CACHE = new HashMap<>();
 
 	static {
 		for (final TileType type : values()) {

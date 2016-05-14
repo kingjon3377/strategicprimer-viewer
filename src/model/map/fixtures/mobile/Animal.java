@@ -37,7 +37,7 @@ public class Animal
 	/**
 	 * ID number.
 	 */
-	private final int id; // NOPMD
+	private final int id;
 
 	/**
 	 * The name of an image to use for this particular fixture.

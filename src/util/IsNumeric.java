@@ -56,7 +56,7 @@ public final class IsNumeric {
 	public static boolean isNumeric(final String input) {
 		try {
 			PARSER.parse(input);
-			return true; // NOPMD
+			return true;
 		} catch (final NumberFormatException except) {
 			LOGGER.log(Level.FINE, "Non-numeric input", except);
 			return false;

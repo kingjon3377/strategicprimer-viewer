@@ -43,7 +43,7 @@ public final class ArrowKeyListener {
 	 * Set up listeners.
 	 *
 	 * @param selListener The actual listener whose methods have to be attached.
-	 * @param inputMap    An input map to set up the keybindings.
+	 * @param inputMap    An input map to set up the key bindings.
 	 * @param actionMap   The action map we'll be putting the glue listeners into.
 	 */
 	public static void setUpListeners(final DirectionSelectionChanger selListener,

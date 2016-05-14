@@ -136,7 +136,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 											  fixtures,
 								  final IMapNG map, final Player currentPlayer,
 								  final Unit item, final Point loc) {
-		final String simple; // NOPMD
+		final String simple;
 		if (item.getOwner().isIndependent()) {
 			simple = concat("Unit of type ", item.getKind(), ", named ",
 					item.getName(), ", independent");
@@ -161,7 +161,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 				}
 				fixtures.remove(Integer.valueOf(member.getID()));
 			}
-			return retval; // NOPMD
+			return retval;
 		} else {
 			return new SimpleReportNode(loc, simple);
 		}
@@ -349,7 +349,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			builder.append(foreign.toString());
 		}
 		if (anyOurs || anyForeign) {
-			return NullCleaner.assertNotNull(builder.toString()); // NOPMD
+			return NullCleaner.assertNotNull(builder.toString());
 		} else {
 			return "";
 		}
@@ -394,7 +394,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 			retval.add(theirs);
 		}
 		if (retval.getChildCount() == 1) { // 1, not 0, because of "any units ..."
-			return EmptyReportNode.NULL_NODE; // NOPMD
+			return EmptyReportNode.NULL_NODE;
 		} else {
 			return retval;
 		}

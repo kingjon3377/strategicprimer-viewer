@@ -264,7 +264,7 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 	 *
 	 * @param arg the file from which to load the possible subset.
 	 */
-	public void test(final File arg) { // NOPMD: this isn't a JUnit test ...
+	public void test(final File arg) {
 		printParagraph("Testing " + arg + " ...");
 		final IMapNG map;
 		try {
@@ -275,15 +275,15 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 					except);
 			printParagraph("ERROR: Map version not acceptable to reader",
 					ERROR_COLOR);
-			return; // NOPMD
+			return;
 		} catch (final FileNotFoundException except) {
 			printParagraph("FAIL: File not found", ERROR_COLOR);
 			LOGGER.log(Level.SEVERE, arg.getPath() + " not found", except);
-			return; // NOPMD
+			return;
 		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error reading " + arg.getPath(), except);
 			printParagraph("FAIL: I/O error reading file", ERROR_COLOR);
-			return; // NOPMD
+			return;
 		} catch (final XMLStreamException except) {
 			LOGGER.log(Level.SEVERE, "Malformed XML in file " + arg.getPath(),
 					except);
@@ -293,10 +293,10 @@ public final class SubsetFrame extends JFrame implements ISPWindow {
 			printParagraph(
 					NullCleaner.assertNotNull(except.getLocalizedMessage()),
 					ERROR_COLOR);
-			return; // NOPMD
+			return;
 		} catch (final SPFormatException except) {
 			LOGGER.log(Level.SEVERE,
-					"SP map format eror reading " + arg.getPath(), except);
+					"SP map format error reading " + arg.getPath(), except);
 			printParagraph(
 					"FAIL: SP map format error at line " + except.getLine()
 							+ "; see following error message for details",

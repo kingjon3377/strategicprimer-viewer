@@ -114,7 +114,7 @@ public class Implement
 	}
 
 	/**
-	 * @param nKind the new "kind" for the impelement
+	 * @param nKind the new "kind" for the implement
 	 */
 	@Override
 	public void setKind(final String nKind) {

@@ -146,7 +146,7 @@ public final class FileChooser {
 			if (cause == null) {
 				throw new ChoiceInterruptedException(except);
 			} else {
-				throw new ChoiceInterruptedException(cause); // NOPMD
+				throw new ChoiceInterruptedException(cause);
 			}
 		} catch (final InterruptedException except) {
 			throw new ChoiceInterruptedException(except);

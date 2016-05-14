@@ -113,7 +113,7 @@ public final class ComponentMouseListener extends MouseAdapter implements
 
 	/**
 	 * @param point a point
-	 * @return a HTML-ized String (including final newline entity) representing the
+	 * @return a HTML-wrapped String (including final newline entity) representing the
 	 * TerrainFixtures at that point, and the fixture the user can see as its top
 	 * fixture.
 	 */

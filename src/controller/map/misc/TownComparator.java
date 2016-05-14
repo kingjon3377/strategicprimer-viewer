@@ -47,13 +47,13 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	@SuppressWarnings("QuestionableName")
 	public static final int compareTownSize(final TownSize one, final TownSize two) {
 		if (one == two) {
-			return 0; // NOPMD
+			return 0;
 		} else if (TownSize.Large == one) {
-			return -1; // NOPMD
+			return -1;
 		} else if (TownSize.Large == two) {
-			return 1; // NOPMD
+			return 1;
 		} else if (TownSize.Medium == one) {
-			return -1; // NOPMD
+			return -1;
 		} else {
 			return 1;
 		}
@@ -69,17 +69,17 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	@SuppressWarnings("QuestionableName")
 	public static final int compareTownStatus(final TownStatus one, final TownStatus two) {
 		if (one == two) {
-			return 0; // NOPMD
+			return 0;
 		} else if (TownStatus.Active == one) {
-			return -1; // NOPMD
+			return -1;
 		} else if (TownStatus.Active == two) {
-			return 1; // NOPMD
+			return 1;
 		} else if (TownStatus.Abandoned == one) {
-			return -1; // NOPMD
+			return -1;
 		} else if (TownStatus.Abandoned == two) {
-			return 1; // NOPMD
+			return 1;
 		} else if (TownStatus.Ruined == one) {
-			return -1; // NOPMD
+			return -1;
 		} else {
 			return 1;
 		}
@@ -97,36 +97,36 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 											final ITownFixture two) {
 		if (one instanceof Fortress) {
 			if (two instanceof Fortress) {
-				return 0; // NOPMD
+				return 0;
 			} else {
-				return -1; // NOPMD
+				return -1;
 			}
 		} else if (two instanceof Fortress) {
-			return 1; // NOPMD
+			return 1;
 		} else if (one instanceof City) {
 			if (two instanceof City) {
-				return 0; // NOPMD
+				return 0;
 			} else {
-				return -1; // NOPMD
+				return -1;
 			}
 		} else if (two instanceof City) {
-			return 1; // NOPMD
+			return 1;
 		} else if (one instanceof Town) {
 			if (two instanceof Town) {
-				return 0; // NOPMD
+				return 0;
 			} else {
-				return -1; // NOPMD
+				return -1;
 			}
 		} else if (two instanceof Town) {
-			return 1; // NOPMD
+			return 1;
 		} else if (one instanceof Fortification) {
 			if (two instanceof Fortification) {
-				return 0; // NOPMD
+				return 0;
 			} else {
-				return -1; // NOPMD
+				return -1;
 			}
 		} else if (two instanceof Fortification) {
-			return 1; // NOPMD
+			return 1;
 		} else {
 			// They should be both villages ...
 			return 0;
@@ -149,9 +149,9 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 		if (townOne.status() == townTwo.status()) {
 			if (townOne.size() == townTwo.size()) {
 				if (townOne.getClass().equals(townTwo.getClass())) {
-					return townOne.getName().compareTo(townTwo.getName()); // NOPMD
+					return townOne.getName().compareTo(townTwo.getName());
 				} else {
-					return compareTownKind(townOne, townTwo); // NOPMD
+					return compareTownKind(townOne, townTwo);
 				}
 			} else {
 				return compareTownSize(townOne.size(), townTwo.size());

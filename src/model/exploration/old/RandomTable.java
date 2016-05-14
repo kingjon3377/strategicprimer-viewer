@@ -73,7 +73,7 @@ public final class RandomTable implements EncounterTable {
 	private String getLowestMatch(final int value) {
 		for (final Pair<Integer, String> item : table) {
 			if (value >= item.first().intValue()) {
-				return item.second(); // NOPMD
+				return item.second();
 			}
 		}
 		return table.get(table.size() - 1).second();

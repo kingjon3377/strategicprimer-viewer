@@ -182,7 +182,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	@Nullable
 	private static Object getNodeValue(final Object value) {
 		if (value instanceof DefaultMutableTreeNode) {
-			return ((DefaultMutableTreeNode) value).getUserObject(); // NOPMD
+			return ((DefaultMutableTreeNode) value).getUserObject();
 		} else {
 			return value;
 		}
@@ -207,7 +207,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 				builder.append(job.getName()).append(' ').append(job.getLevel());
 			}
 			builder.append(')');
-			return assertNotNull(builder.toString()); // NOPMD
+			return assertNotNull(builder.toString());
 		} else {
 			return "";
 		}
@@ -260,13 +260,13 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 		/*
 		 * The margin we allow around the chit itself in the default image.
 		 */
-		final int imageSize = 24; // NOPMD
+		final int imageSize = 24;
 		final BufferedImage temp =
 				new BufferedImage(imageSize, imageSize, BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D pen = temp.createGraphics();
 		final Color saveColor = pen.getColor();
 		pen.setColor(Color.RED);
-		final double margin = 0.15; // NOPMD
+		final double margin = 0.15;
 		pen.fillRoundRect((int) Math.round(imageSize * margin) + 1,
 				(int) Math.round(imageSize * margin) + 1,
 				(int) Math.round(imageSize * (1.0 - (margin * 2.0))),

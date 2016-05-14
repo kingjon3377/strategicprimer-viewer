@@ -139,7 +139,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 		@Override
 		public String toString() {
 			if (isEmpty()) {
-				return ""; // NOPMD
+				return "";
 			} else {
 				final StringBuilder builder =
 						new StringBuilder(header.length() + 15 + stream().collect(
@@ -222,7 +222,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 */
 	protected static String playerNameOrYou(final Player player) {
 		if (player.isCurrent()) {
-			return "you"; // NOPMD
+			return "you";
 		} else {
 			return player.toString();
 		}

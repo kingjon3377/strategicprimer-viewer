@@ -117,7 +117,7 @@ public class Fairy implements MobileFixture, HasMutableImage, HasMutableKind, Un
 	/**
 	 * ID number.
 	 */
-	private final int id; // NOPMD
+	private final int id;
 
 	/**
 	 * @return a UID for the fixture.

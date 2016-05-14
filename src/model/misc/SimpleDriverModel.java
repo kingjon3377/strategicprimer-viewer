@@ -125,7 +125,7 @@ public class SimpleDriverModel implements IDriverModel {
 	}
 
 	/**
-	 * Removve a version-change listener.
+	 * Remove a version-change listener.
 	 *
 	 * @param list the listener to remove
 	 */

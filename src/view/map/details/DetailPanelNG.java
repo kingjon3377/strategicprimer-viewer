@@ -25,7 +25,7 @@ import view.util.BorderedPanel;
 import view.util.SplitWithWeights;
 
 /**
- * A panel to show the details of a tile, using a tree rather than subpanels with chits
+ * A panel to show the details of a tile, using a tree rather than sub-panels with chits
  * for its fixtures.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan

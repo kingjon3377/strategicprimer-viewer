@@ -404,12 +404,12 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 					// users *want* empty units printed.
 					continue;
 				}
-				final List<IUnit> list; // NOPMD
+				final List<IUnit> list;
 				if (unitsByKind.containsKey(unit.getKind())) {
 					list = NullCleaner.assertNotNull(unitsByKind.get(unit.getKind()));
 				} else {
 					//noinspection ObjectAllocationInLoop
-					list = new ArrayList<>(); // NOPMD
+					list = new ArrayList<>();
 					unitsByKind.put(unit.getKind(), list);
 				}
 				list.add(unit);
@@ -523,7 +523,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 					builder.append(memberString(member));
 				}
 				builder.append(']');
-				return NullCleaner.assertNotNull(builder.toString()); // NOPMD
+				return NullCleaner.assertNotNull(builder.toString());
 			} else {
 				return "";
 			}
@@ -573,7 +573,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 					}
 					builder.append(')');
 				}
-				return NullCleaner.assertNotNull(builder.toString()); // NOPMD
+				return NullCleaner.assertNotNull(builder.toString());
 			} else {
 				return NullCleaner.assertNotNull(member.toString());
 			}

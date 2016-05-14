@@ -153,9 +153,9 @@ public final class TestSubsets {
 		assertFalse("Subset requires same name, second test",
 				thirdFort.isSubset(firstFort, DEV_NULL, ""));
 		final Fortress fourthFort = new Fortress(new Player(1, ONE_STR), "fOne", 3);
-		assertTrue("Subset doesn't require identiy or ID equality",
+		assertTrue("Subset doesn't require identity or ID equality",
 				firstFort.isSubset(fourthFort, DEV_NULL, ""));
-		assertTrue("Subset doesn't require identiy or ID equality",
+		assertTrue("Subset doesn't require identity or ID equality",
 				fourthFort.isSubset(firstFort, DEV_NULL, ""));
 		fourthFort.addMember(new Unit(new Player(2, "two"), "unit_type", "unit_name",
 											4));

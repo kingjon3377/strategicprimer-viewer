@@ -238,7 +238,7 @@ public final class WorkerTree extends JTree
 	@Nullable
 	public String getToolTipText(@Nullable final MouseEvent event) {
 		if ((event == null) || (getRowForLocation(event.getX(), event.getY()) == -1)) {
-			return null; // NOPMD
+			return null;
 		}
 		final TreePath path = getPathForLocation(event.getX(), event.getY());
 		if (path == null) {
@@ -246,7 +246,7 @@ public final class WorkerTree extends JTree
 		}
 		final Object pathLast = path.getLastPathComponent();
 		if (pathLast == null) {
-			return null; // NOPMD
+			return null;
 		}
 		return getStatsToolTip(pathLast);
 	}
@@ -261,9 +261,9 @@ public final class WorkerTree extends JTree
 		if (localNode instanceof Worker) {
 			final WorkerStats stats = ((Worker) localNode).getStats();
 			if (stats == null) {
-				return null; // NOPMD
+				return null;
 			} else {
-				return format(STATS_FMT_STR, // NOPMD
+				return format(STATS_FMT_STR,
 						getModifierString(stats.getStrength()),
 						getModifierString(stats.getDexterity()),
 						getModifierString(stats.getConstitution()),

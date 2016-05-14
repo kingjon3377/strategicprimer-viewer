@@ -217,7 +217,7 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 	}
 
 	/**
-	 * @return whther any of the proxied Skills is "empty"
+	 * @return whether any of the proxied Skills is "empty"
 	 */
 	@SuppressWarnings("ObjectEquality")
 	@Override

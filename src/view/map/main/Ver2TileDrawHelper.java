@@ -93,7 +93,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	private final Comparator<@NonNull TileFixture> fixComp = new FixtureComparator();
 
 	/**
-	 * @return a hash value forthe object
+	 * @return a hash value for the object
 	 */
 	@Override
 	public int hashCode() {
@@ -176,7 +176,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 			}
 		} else {
 			LOGGER.log(Level.SEVERE,
-					"I/O eror while loading image " + filename, except);
+					"I/O error while loading image " + filename, except);
 		}
 	}
 
@@ -342,9 +342,9 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 		if (fix instanceof HasImage) {
 			final String image = ((HasImage) fix).getImage();
 			if (image.isEmpty() || missingFiles.contains(image)) {
-				return getImage(((HasImage) fix).getDefaultImage()); // NOPMD
+				return getImage(((HasImage) fix).getDefaultImage());
 			} else {
-				return getImage(image); // NOPMD
+				return getImage(image);
 			}
 		} else if (fix instanceof RiverFixture) {
 			return getImage(
@@ -363,14 +363,14 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 */
 	private Image getImage(final String filename) {
 		try {
-			return loader.loadImage(filename); // NOPMD
+			return loader.loadImage(filename);
 		} catch (final FileNotFoundException e) {
 			if (!missingFiles.contains(filename)) {
 				LOGGER.log(Level.SEVERE, "images/" + filename + " not found");
 				LOGGER.log(Level.FINEST, "with stack trace", e);
 				missingFiles.add(filename);
 			}
-			return fallbackImage; // NOPMD
+			return fallbackImage;
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error reading image images/" + filename, e);
 			return fallbackImage;

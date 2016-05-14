@@ -113,7 +113,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 							final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "village", "fortress", "town", "city",
 				"fortification");
-		final ITownFixture retval; // NOPMD
+		final ITownFixture retval;
 		if ("village".equals(element.getName().getLocalPart())) {
 			retval = parseVillage(element, stream, players, warner, idFactory);
 		} else if ("fortress".equals(element.getName().getLocalPart())) {
@@ -177,10 +177,10 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 				element, "status"));
 		final TownSize size = TownSize.parseTownSize(getParameter(element,
 				"size"));
-		final int dc = getIntegerParameter(element, "dc"); // NOPMD
-		final int id = getOrGenerateID(element, warner, idFactory); // NOPMD
-		final Player owner = getOwnerOrIndependent(element, warner, players); //NOPMD
-		final AbstractTown retval; // NOPMD
+		final int dc = getIntegerParameter(element, "dc");
+		final int id = getOrGenerateID(element, warner, idFactory);
+		final Player owner = getOwnerOrIndependent(element, warner, players);
+		final AbstractTown retval;
 		if ("town".equals(element.getName().getLocalPart())) {
 			retval = new Town(status, size, dc, name, id, owner);
 		} else if ("city".equals(element.getName().getLocalPart())) {
@@ -208,7 +208,7 @@ public final class CompactTownReader extends AbstractCompactReader<ITownFixture>
 												final Warning warner,
 												final IPlayerCollection players)
 			throws SPFormatException {
-		final Player retval; // NOPMD
+		final Player retval;
 		if (hasParameter(element, OWNER_PARAM)) {
 			retval = players.getPlayer(getIntegerParameter(element, OWNER_PARAM));
 		} else {

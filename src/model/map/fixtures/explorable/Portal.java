@@ -94,7 +94,7 @@ public class Portal implements ExplorableFixture {
 	}
 
 	/**
-	 * @return a String represntation of the fixture
+	 * @return a String representation of the fixture
 	 */
 	@SuppressWarnings("MethodReturnAlwaysConstant")
 	@Override

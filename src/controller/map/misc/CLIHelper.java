@@ -73,7 +73,7 @@ public final class CLIHelper implements ICLIHelper {
 	 * @param in the stream to read from.
 	 * @param out the writer to write to
 	 */
-	public CLIHelper(final Reader in, final Writer out) { // NOPMD
+	public CLIHelper(final Reader in, final Writer out) {
 		istream = new BufferedReader(in);
 		ostream = new PrintWriter(out);
 	}
@@ -112,14 +112,14 @@ public final class CLIHelper implements ICLIHelper {
 		if (items.isEmpty()) {
 			ostream.println(none);
 			ostream.flush();
-			return -1; // NOPMD
+			return -1;
 		}
 		ostream.println(desc);
 		if (auto && (items.size() == 1)) {
 			ostream.print("Automatically choosing only item, ");
 			ostream.println(items.get(0));
 			ostream.flush();
-			return 0; // NOPMD
+			return 0;
 		} else {
 			printList(items);
 			return inputNumber(prompt);
@@ -143,9 +143,8 @@ public final class CLIHelper implements ICLIHelper {
 	}
 
 	/**
-	 * Read input from stdin repeatedly until a nonnegative integer is entered, and
-	 * return
-	 * it.
+	 * Read input from stdin repeatedly until a non-negative integer is entered, and
+	 * return it.
 	 *
 	 * @param prompt The prompt to prompt the user with
 	 * @return the number entered
@@ -188,7 +187,7 @@ public final class CLIHelper implements ICLIHelper {
 		ostream.flush();
 		final String line = istream.readLine();
 		if (line == null) {
-			return ""; // NOPMD
+			return "";
 		} else {
 			return NullCleaner.assertNotNull(line.trim());
 		}
@@ -213,7 +212,7 @@ public final class CLIHelper implements ICLIHelper {
 		for (String input = lower(inputString(prompt)); ;
 				input = lower(inputString(prompt))) {
 			if (EqualsAny.equalsAny(input, "yes", "true", "y", "t")) {
-				return true; // NOPMD
+				return true;
 			} else if (EqualsAny.equalsAny(input, "no", "false", "n", "f")) {
 				return false;
 			} else {
@@ -265,14 +264,14 @@ public final class CLIHelper implements ICLIHelper {
 		if (items.isEmpty()) {
 			ostream.println(none);
 			ostream.flush();
-			return -1; // NOPMD
+			return -1;
 		}
 		ostream.println(desc);
 		if (auto && (items.size() == 1)) {
 			ostream.print("Automatically choosing only item, ");
 			ostream.println(items.get(0));
 			ostream.flush();
-			return 0; // NOPMD
+			return 0;
 		} else {
 			printStringList(items);
 			return inputNumber(prompt);

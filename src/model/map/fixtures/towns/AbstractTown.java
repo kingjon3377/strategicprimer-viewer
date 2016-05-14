@@ -214,7 +214,7 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	 */
 	@SuppressWarnings("MagicNumber")
 	@Override
-	public int getZValue() { // NOPMD: Claims this is "empty" and should be abstract
+	public int getZValue() {
 		return 50;
 	}
 

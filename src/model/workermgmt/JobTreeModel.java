@@ -56,8 +56,7 @@ public final class JobTreeModel
 	 * The worker who the Jobs and Skills describe.
 	 */
 	@Nullable
-	private IWorker root = null; // NOPMD: Claims only initialized in constructor, which
-	// is Not True.
+	private IWorker root = null;
 	/**
 	 * The tree's selection model.
 	 */
@@ -97,9 +96,9 @@ public final class JobTreeModel
 		final IWorker currRoot = root;
 		if ((index >= 0) && (currRoot != null) && (parent instanceof IWorker)
 					&& parent.equals(currRoot)) {
-			return getFromIter(currRoot, index); // NOPMD
+			return getFromIter(currRoot, index);
 		} else if ((index >= 0) && (parent instanceof IJob)) {
-			return getFromIter((IJob) parent, index); // NOPMD
+			return getFromIter((IJob) parent, index);
 		} else {
 			throw new ArrayIndexOutOfBoundsException(
 															"Parent does not have that " +
@@ -131,7 +130,7 @@ public final class JobTreeModel
 			if (retval == null) {
 				throw new IllegalStateException("Iterable contained null");
 			}
-			return retval; // NOPMD
+			return retval;
 		} else {
 			throw new ArrayIndexOutOfBoundsException(
 															"Parent does not have that " +
@@ -151,7 +150,7 @@ public final class JobTreeModel
 			return (int) StreamSupport.stream(((Iterable<?>) parent).spliterator(),
 					false).count();
 		} else if (parent instanceof ISkill) {
-			return 0; // NOPMD
+			return 0;
 		} else {
 			throw new IllegalArgumentException("Not a possible member of the tree");
 		}
@@ -190,11 +189,11 @@ public final class JobTreeModel
 			int index = 0;
 			for (final Object item : (Iterable<?>) parent) {
 				if (item.equals(child)) {
-					return index; // NOPMD
+					return index;
 				}
 				index++;
 			}
-			return -1; // NOPMD
+			return -1;
 		} else {
 			return -1;
 		}

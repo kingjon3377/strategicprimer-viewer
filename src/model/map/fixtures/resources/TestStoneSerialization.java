@@ -80,9 +80,9 @@ public class TestStoneSerialization extends BaseTestFixtureSerialization {
 														SPFormatException, IOException {
 		assert kind != null;
 		assertSerialization("First StoneDeposit test, kind: " + kind,
-				new StoneDeposit(kind, 8, 1)); // NOPMD
+				new StoneDeposit(kind, 8, 1));
 		assertSerialization("Second StoneDeposit test, kind: " + kind,
-				new StoneDeposit(kind, 15, 2)); // NOPMD
+				new StoneDeposit(kind, 15, 2));
 		assertImageSerialization("Stone image property is preserved",
 				new StoneDeposit(kind, 10, 3));
 	}
@@ -98,7 +98,7 @@ public class TestStoneSerialization extends BaseTestFixtureSerialization {
 	public void testOldIdiomDeprecated()
 			throws XMLStreamException, SPFormatException, IOException {
 		final HasMutableImage thirdDeposit = new StoneDeposit(kind, 10, 3);
-		final String oldKindProperty = "stone"; // NOPMD
+		final String oldKindProperty = "stone";
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated stone idiom", thirdDeposit,
 				NullCleaner.assertNotNull(

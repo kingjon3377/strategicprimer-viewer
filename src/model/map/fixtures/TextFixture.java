@@ -72,7 +72,7 @@ public class TextFixture implements TileFixture, HasMutableImage {
 	@Override
 	public String toString() {
 		if (turn == -1) {
-			return text; // NOPMD
+			return text;
 		} else {
 			return text + "(turn " + turn + ')';
 		}

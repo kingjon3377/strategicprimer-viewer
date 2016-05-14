@@ -111,12 +111,12 @@ public final class HarvestableReportGenerator
 						(MineralVein) item, point));
 			} else if (item instanceof Shrub) {
 				// TODO: Use a Guava Multimap
-				final List<Point> shrubPoints; // NOPMD
+				final List<Point> shrubPoints;
 				if (shrubs.containsKey(((Shrub) item).getKind())) {
 					shrubPoints = NullCleaner.assertNotNull(shrubs.get(((Shrub) item).getKind()));
 				} else {
 					//noinspection ObjectAllocationInLoop
-					shrubPoints = new ArrayList<>(); // NOPMD
+					shrubPoints = new ArrayList<>();
 					shrubs.put(((Shrub) item).getKind(), shrubPoints);
 				}
 				shrubPoints.add(point);
@@ -139,7 +139,7 @@ public final class HarvestableReportGenerator
 		if (caches.isEmpty() && groves.isEmpty() && meadows.isEmpty()
 					&& mines.isEmpty() && minerals.isEmpty() && stone.isEmpty()
 					&& shrubs.isEmpty()) {
-			return ""; // NOPMD
+			return "";
 		} else {
 			return concat("<h4>Resource Sources</h4>\n", caches.toString(),
 					groves.toString(), meadows.toString(), mines.toString(),
@@ -202,7 +202,7 @@ public final class HarvestableReportGenerator
 					minerals.add(produceRIR(fixtures, map, currentPlayer, item,
 							loc));
 				} else if (item instanceof Shrub) {
-					final IReportNode collection; // NOPMD
+					final IReportNode collection;
 					if (shrubs.containsKey(((Shrub) item).getKind())) {
 						collection = NullCleaner.assertNotNull(shrubs.get(((Shrub) item).getKind()));
 					} else {
@@ -226,7 +226,7 @@ public final class HarvestableReportGenerator
 		final SectionReportNode retval = new SectionReportNode(4, "Resource Sources");
 		if (addAllNonEmpty(retval, caches, groves, meadows, mines, minerals, stone,
 				shrubsNode)) {
-			return retval; // NOPMD
+			return retval;
 		} else {
 			return EmptyReportNode.NULL_NODE;
 		}
@@ -243,7 +243,7 @@ public final class HarvestableReportGenerator
 		for (final MutableTreeNode child : children) {
 			if (child.getChildCount() != 0) {
 				parent.add(child);
-				retval = true; // NOPMD
+				retval = true;
 			}
 		}
 		return retval;
@@ -266,12 +266,12 @@ public final class HarvestableReportGenerator
 		if (item instanceof CacheFixture) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat(atPoint(loc), " ", distCalculator.distanceString(loc),
-					"A cache of ", // NOPMD
+					"A cache of ",
 					((CacheFixture) item).getKind(), ", containing ",
 					((CacheFixture) item).getContents());
 		} else if (item instanceof Grove) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat(//NOPMD
+			return concat(
 					atPoint(loc),
 					"A ",
 					ternary(((Grove) item).isCultivated(), "cultivated ",
@@ -280,7 +280,7 @@ public final class HarvestableReportGenerator
 					distCalculator.distanceString(loc));
 		} else if (item instanceof Meadow) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat(// NOPMD
+			return concat(
 					atPoint(loc),
 					"A ",
 					((Meadow) item).getStatus().toString(),
@@ -291,10 +291,10 @@ public final class HarvestableReportGenerator
 		} else if (item instanceof Mine) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat(atPoint(loc), item.toString(), " ",
-					distCalculator.distanceString(loc)); // NOPMD
+					distCalculator.distanceString(loc));
 		} else if (item instanceof MineralVein) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat(// NOPMD
+			return concat(
 					atPoint(loc),
 					"An ",
 					ternary(((MineralVein) item).isExposed(), "exposed ",
@@ -304,10 +304,10 @@ public final class HarvestableReportGenerator
 		} else if (item instanceof Shrub) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat(atPoint(loc), ((Shrub) item).getKind(), " ",
-					distCalculator.distanceString(loc)); // NOPMD
+					distCalculator.distanceString(loc));
 		} else if (item instanceof StoneDeposit) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return concat(atPoint(loc), "An exposed ", // NOPMD
+			return concat(atPoint(loc), "An exposed ",
 					((StoneDeposit) item).getKind(), " deposit",
 					distCalculator.distanceString(loc));
 		} else {
@@ -362,10 +362,10 @@ public final class HarvestableReportGenerator
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return new SimpleReportNode(loc, atPoint(loc), item.toString(), " ",
 											distCalculator
-													.distanceString(loc)); //NOPMD
+													.distanceString(loc));
 		} else if (item instanceof MineralVein) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(loc, atPoint(loc), "An ", // NOPMD
+			return new SimpleReportNode(loc, atPoint(loc), "An ",
 											ternary(((MineralVein) item).isExposed(),
 													"exposed ",
 													"unexposed "), "vein of ",
@@ -376,10 +376,10 @@ public final class HarvestableReportGenerator
 			final String kind = ((Shrub) item).getKind();
 			return new SimpleReportNode(loc, atPoint(loc), kind, " ",
 											distCalculator
-													.distanceString(loc)); // NOPMD
+													.distanceString(loc));
 		} else if (item instanceof StoneDeposit) {
 			fixtures.remove(Integer.valueOf(item.getID()));
-			return new SimpleReportNode(loc, atPoint(loc), "An exposed ", // NOPMD
+			return new SimpleReportNode(loc, atPoint(loc), "An exposed ",
 											((StoneDeposit) item).getKind(),
 											" deposit", " ",
 											distCalculator.distanceString(loc));
@@ -399,7 +399,7 @@ public final class HarvestableReportGenerator
 	private static String ternary(final boolean condition, final String first,
 								final String second) {
 		if (condition) {
-			return first; // NOPMD
+			return first;
 		} else {
 			return second;
 		}

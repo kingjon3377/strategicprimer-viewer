@@ -76,7 +76,7 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 		requireTag(element, "text");
 		// Of all the uses of a StringBuilder, this one can't know what size we
 		// need. But cases above 2K will be vanishingly rare in practice.
-		final StringBuilder sbuild = new StringBuilder(2048); // NOPMD
+		final StringBuilder sbuild = new StringBuilder(2048);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException(

@@ -70,7 +70,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Animal) {
 				final Animal animal = (Animal) pair.second();
-				final String desc; // NOPMD
+				final String desc;
 				if (animal.isTraces()) {
 					desc = "tracks or traces of " + animal.getKind();
 				} else if (animal.isTalking()) {
@@ -78,12 +78,12 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 				} else {
 					desc = animal.getKind();
 				}
-				final List<Point> points; // NOPMD
+				final List<Point> points;
 				if (items.containsKey(desc)) {
 					points = NullCleaner.assertNotNull(items.get(desc));
 				} else {
 					//noinspection ObjectAllocationInLoop
-					points = new ArrayList<>(); // NOPMD
+					points = new ArrayList<>();
 					items.put(desc, points);
 				}
 				points.add(pair.first());
@@ -91,7 +91,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 			}
 		}
 		if (items.isEmpty()) {
-			return ""; // NOPMD
+			return "";
 		} else {
 			// We doubt this list will ever be over 16K.
 			final StringBuilder builder = new StringBuilder(16384).append(
@@ -104,7 +104,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 				builder.append(CLOSE_LIST_ITEM);
 			}
 			return NullCleaner.assertNotNull(builder.append(CLOSE_LIST)
-													.toString()); // NOPMD
+													.toString());
 		}
 	}
 
@@ -132,7 +132,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 					collection = NullCleaner.assertNotNull(items.get(animalKind));
 				} else {
 					//noinspection ObjectAllocationInLoop
-					collection = new ListReportNode(animalKind); // NOPMD
+					collection = new ListReportNode(animalKind);
 					items.put(animalKind, collection);
 				}
 				collection.add(produceRIR(fixtures, map, currentPlayer, animal,
@@ -141,14 +141,14 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 			}
 		}
 		if (items.isEmpty()) {
-			return EmptyReportNode.NULL_NODE; // NOPMD
+			return EmptyReportNode.NULL_NODE;
 		} else {
 			final IReportNode retval =
 					new SectionListReportNode(4, "Animal sightings or encounters");
 			for (final Entry<String, IReportNode> entry : items.entrySet()) {
 				retval.add(entry.getValue());
 			}
-			return retval; // NOPMD
+			return retval;
 		}
 	}
 
@@ -164,7 +164,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 	public String produce(final PatientMap<Integer, Pair<Point, IFixture>> fixtures,
 						final IMapNG map, final Player currentPlayer,
 						final Animal item, final Point loc) {
-		final String tracesOrTalking; // NOPMD
+		final String tracesOrTalking;
 		if (item.isTraces()) {
 			tracesOrTalking = "tracks or traces of ";
 		} else if (item.isTalking()) {
@@ -189,7 +189,7 @@ public final class AnimalReportGenerator extends AbstractReportGenerator<Animal>
 												fixtures,
 									final IMapNG map, final Player currentPlayer,
 									final Animal item, final Point loc) {
-		final String tracesOrTalking; // NOPMD
+		final String tracesOrTalking;
 		if (item.isTraces()) {
 			tracesOrTalking = "tracks or traces of ";
 		} else if (item.isTalking()) {

@@ -255,15 +255,15 @@ public final class QueryCLI implements SimpleDriver {
 		final int count = cli.inputNumber("How many animals?\t");
 		if (count == 0) {
 			cli.println("With no animals, no cost and no gain.");
-			return; // NOPMD
+			return;
 		} else if (count < 0) {
 			cli.println("Can't have a negative number of animals.");
-			return; // NOPMD
+			return;
 		} else {
 			final int herders = cli.inputNumber("How many herders?\t");
 			if (herders <= 0) {
 				cli.println("Can't herd with no herders.");
-				return; // NOPMD
+				return;
 			}
 			final int animalsPerHerder = ((count + herders) - 1) / herders;
 			final DoubleToIntFunction round = dbl -> (int) (Math.ceil(dbl) + 0.1);
@@ -382,7 +382,7 @@ public final class QueryCLI implements SimpleDriver {
 
 	/**
 	 * @param cli the interface to the user
-	 * @return the poin the user specifies.
+	 * @return the point the user specifies.
 	 * @throws IOException on I/O error.
 	 */
 	private static Point selectPoint(final ICLIHelper cli) throws IOException {

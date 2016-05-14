@@ -154,7 +154,7 @@ public final class TestTableLoader {
 					except.getMessage());
 		}
 		try (BufferedReader reader = new BufferedReader(new StringReader
-																("2\ninvaliddata\ninvaliddata"))) {
+																("2\ninvalidData\ninvalidData"))) {
 			TableLoader.loadTableFromStream(reader);
 			fail("Accepted table without header");
 		} catch (final IllegalArgumentException except) {

@@ -168,7 +168,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 			retval.add(others);
 		}
 		if (retval.getChildCount() == 0) {
-			return EmptyReportNode.NULL_NODE; // NOPMD
+			return EmptyReportNode.NULL_NODE;
 		} else {
 			return retval;
 		}
@@ -192,7 +192,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 						  final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		if (item.getOwner().isIndependent()) {
-			return concat(atPoint(loc), item.getName(), ", a(n) ", // NOPMD
+			return concat(atPoint(loc), item.getName(), ", a(n) ",
 					item.getRace(), " village", ", independent ",
 					distCalculator.distanceString(loc));
 		} else {
@@ -222,7 +222,7 @@ public final class VillageReportGenerator extends AbstractReportGenerator<Villag
 									   final Village item, final Point loc) {
 		fixtures.remove(Integer.valueOf(item.getID()));
 		if (item.getOwner().isIndependent()) {
-			return new SimpleReportNode(loc, atPoint(loc), item.getName(), // NOPMD
+			return new SimpleReportNode(loc, atPoint(loc), item.getName(),
 											", a(n) ", item.getRace(), " village",
 											", independent ",
 											distCalculator.distanceString(loc));

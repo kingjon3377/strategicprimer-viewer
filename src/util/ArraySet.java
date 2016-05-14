@@ -104,7 +104,7 @@ public final class ArraySet<U> implements Set<U> {
 	@Override
 	public boolean add(final U elem) {
 		if (contains(elem)) {
-			return false; // NOPMD
+			return false;
 		} else {
 			impl.add(elem);
 			hash += Objects.hashCode(elem);

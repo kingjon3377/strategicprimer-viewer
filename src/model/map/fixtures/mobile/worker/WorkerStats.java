@@ -36,7 +36,7 @@ public class WorkerStats {
 	/**
 	 * The worker's health.
 	 */
-	private int hp; // NOPMD
+	private int hp;
 	/**
 	 * The worker's max health.
 	 */
@@ -247,7 +247,7 @@ public class WorkerStats {
 		final int modifier = getModifier(stat);
 		final String modStr = NullCleaner.assertNotNull(Integer.toString(modifier));
 		if (modifier >= 0) {
-			return '+' + modStr; // NOPMD
+			return '+' + modStr;
 		} else {
 			return modStr;
 		}

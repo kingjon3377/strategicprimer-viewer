@@ -7,7 +7,7 @@ package controller.map.drivers;
  *
  * @author Jonathan Lovelace
  */
-public class DriverFailedException extends Exception { // $codepro.audit.disable
+public class DriverFailedException extends Exception {
 	/**
 	 * Constructor.
 	 *

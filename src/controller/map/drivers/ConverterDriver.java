@@ -89,7 +89,7 @@ public final class ConverterDriver implements UtilityDriver {
 				final IMapNG map = ResolutionDecreaseConverter.convert(old);
 				SYS_OUT.print("About to write ");
 				SYS_OUT.println(newFilename);
-				READER.write(newFile, map); //NOPMD
+				READER.write(newFile, map);
 			} catch (final MapVersionException e) {
 				LOGGER.log(Level.SEVERE, "Map version in " + filename
 												+ " not acceptable to reader", e);

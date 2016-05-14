@@ -72,8 +72,7 @@ public final class ImmortalsReportGenerator
 	}
 
 	/**
-	 * // $codepro.audit.disable sourceLength Produce the sub-report dealing with
-	 * "immortals".
+	 * Produce the sub-report dealing with "immortals".
 	 *
 	 * @param fixtures      the set of fixtures
 	 * @param map           ignored
@@ -158,7 +157,7 @@ public final class ImmortalsReportGenerator
 		optionallyPrintList(griffins, "Griffin(s) at ", builder);
 		builder.append(CLOSE_LIST);
 		if (totalSize == 0) {
-			return ""; // NOPMD
+			return "";
 		} else {
 			return NullCleaner.assertNotNull(builder.toString());
 		}
@@ -250,7 +249,7 @@ public final class ImmortalsReportGenerator
 				coalesce("Giants", giants), minotaurs, ogres,
 				coalesce("Centaurs", centaurs), phoenixes, simurghs, griffins);
 		if (retval.getChildCount() == 0) {
-			return EmptyReportNode.NULL_NODE; // NOPMD
+			return EmptyReportNode.NULL_NODE;
 		} else {
 			return retval;
 		}
@@ -385,7 +384,7 @@ public final class ImmortalsReportGenerator
 	 */
 	private static void separateByKind(final Map<String, List<Point>> mapping,
 									final HasKind item, final Point point) {
-		final List<Point> points; // NOPMD
+		final List<Point> points;
 		// For the three classes we deal with here, we don't want just the kind,
 		// we want the full toString, so we use that instead of getKind.
 		if (mapping.containsKey(item.toString())) {

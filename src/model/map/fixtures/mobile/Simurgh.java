@@ -102,7 +102,7 @@ public class Simurgh implements MobileFixture, HasMutableImage, UnitMember {
 	/**
 	 * ID number.
 	 */
-	private final int id; // NOPMD
+	private final int id;
 
 	/**
 	 * @return a UID for the fixture.
@@ -163,7 +163,7 @@ public class Simurgh implements MobileFixture, HasMutableImage, UnitMember {
 	}
 
 	/**
-	 * @return a string decribing all simurghs as a class
+	 * @return a string describing all simurghs as a class
 	 */
 	@Override
 	public String plural() {

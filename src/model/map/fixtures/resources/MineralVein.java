@@ -93,7 +93,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasMutable
 	/**
 	 * The DC to discover the vein. TODO: Should perhaps be mutable.
 	 */
-	private final int dc; // NOPMD
+	private final int dc;
 
 	/**
 	 * @return the DC to discover the event.
@@ -150,7 +150,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasMutable
 	@Override
 	public String toString() {
 		if (exposed) {
-			return "A " + mineral + " deposit, exposed, DC " + dc; // NOPMD
+			return "A " + mineral + " deposit, exposed, DC " + dc;
 		} else {
 			return "A " + mineral + " deposit, not exposed, DC " + dc;
 		}
@@ -184,7 +184,7 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasMutable
 	/**
 	 * ID number.
 	 */
-	private final int id; // NOPMD
+	private final int id;
 
 	/**
 	 * @return a UID for the fixture.

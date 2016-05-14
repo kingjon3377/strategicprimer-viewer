@@ -146,7 +146,7 @@ public final class TestExplorationRunner {
 
 	/**
 	 * Test the recursiveConsultTable method: the one method under test whose correctness
-	 * is nonobvious.
+	 * is non-obvious.
 	 *
 	 * TODO: Use a mock object rather than a real object for the Tables.
 	 *
@@ -211,7 +211,7 @@ public final class TestExplorationRunner {
 	public void testRecursiveCheck() {
 		runner.loadTable("existent_table", new ConstantTable("exists"));
 		assertTrue("base case of non-existent table",
-				runner.recursiveCheck("nonexistenttable"));
+				runner.recursiveCheck("non-existent-table"));
 		assertFalse("base case of existent table",
 				runner.recursiveCheck("existent_table"));
 		runner.loadTable("referent_one", new ConstantTable("#existent_table#"));

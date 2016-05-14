@@ -168,7 +168,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		final Point point = selUnitLoc;
 		final Point dest = getDestination(point, direction);
 		if (SimpleMovement.isLandMovementPossible(map.getBaseTerrain(dest))) {
-			final int retval; // NOPMD
+			final int retval;
 			if (dest.equals(point)) {
 				retval = 1;
 			} else {
@@ -332,13 +332,14 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 					|| ((fix instanceof Mountain) && map.isMountainous(point))) {
 			return true;
 		}
+		// TODO: Convert to Streams equivalent.
 		for (final TileFixture fixture : map.getOtherFixtures(point)) {
 			if (fixture.equals(fix)) {
-				return true; // NOPMD
+				return true;
 			} else if (fixture instanceof FixtureIterable) {
 				for (final IFixture inner : (FixtureIterable<@NonNull ?>) fixture) {
 					if (fix.equals(inner)) {
-						return true; // NOPMD
+						return true;
 					}
 				}
 			}
@@ -356,31 +357,31 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 		final MapDimensions dims = getMapDimensions();
 		switch (direction) {
 		case East:
-			return PointFactory.point(point.row, // NOPMD
+			return PointFactory.point(point.row,
 					increment(point.col, dims.cols - 1));
 		case North:
-			return PointFactory.point(decrement(point.row, dims.rows - 1), // NOPMD
+			return PointFactory.point(decrement(point.row, dims.rows - 1),
 					point.col);
 		case Northeast:
-			return PointFactory.point(decrement(point.row, dims.rows - 1), // NOPMD
+			return PointFactory.point(decrement(point.row, dims.rows - 1),
 					increment(point.col, dims.cols - 1));
 		case Northwest:
-			return PointFactory.point(decrement(point.row, dims.rows - 1), // NOPMD
+			return PointFactory.point(decrement(point.row, dims.rows - 1),
 					decrement(point.col, dims.cols - 1));
 		case South:
-			return PointFactory.point(increment(point.row, dims.rows - 1), // NOPMD
+			return PointFactory.point(increment(point.row, dims.rows - 1),
 					point.col);
 		case Southeast:
-			return PointFactory.point(increment(point.row, dims.rows - 1), // NOPMD
+			return PointFactory.point(increment(point.row, dims.rows - 1),
 					increment(point.col, dims.cols - 1));
 		case Southwest:
-			return PointFactory.point(increment(point.row, dims.rows - 1), // NOPMD
+			return PointFactory.point(increment(point.row, dims.rows - 1),
 					decrement(point.col, dims.cols - 1));
 		case West:
-			return PointFactory.point(point.row, // NOPMD
+			return PointFactory.point(point.row,
 					decrement(point.col, dims.cols - 1));
 		case Nowhere:
-			return point; // NOPMD
+			return point;
 		default:
 			throw new IllegalStateException("Unhandled case");
 		}
@@ -395,7 +396,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	private static int increment(final int num, final int max) {
 		if (num >= max) {
-			return 0; // NOPMD
+			return 0;
 		} else {
 			return num + 1;
 		}
@@ -410,7 +411,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	private static int decrement(final int num, final int max) {
 		if (num == 0) {
-			return max; // NOPMD
+			return max;
 		} else {
 			return num - 1;
 		}

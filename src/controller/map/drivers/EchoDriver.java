@@ -56,7 +56,7 @@ public final class EchoDriver implements UtilityDriver {
 		if (args.length != 2) {
 			throw new IncorrectUsageException(usage());
 		}
-		final IMapNG map; // NOPMD
+		final IMapNG map;
 		final File infile = new File(args[0]);
 		try {
 			map =

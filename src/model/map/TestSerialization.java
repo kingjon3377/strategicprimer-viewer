@@ -231,7 +231,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		assertSerialization("More complex tile", thirdMap);
 		final IMutableMapNG fourthMap =
 				createSimpleMap(point(5, 5), Pair.of(point(4, 4), Plains));
-		final String oldKindProperty = "type"; // NOPMD
+		final String oldKindProperty = "type";
 		assertDeprecatedDeserialization(
 				"Deserialization of deprecated tile-type idiom",
 				fourthMap,
@@ -313,7 +313,7 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 	 * @throws XMLStreamException on XML reading error
 	 */
 	@Test
-	public void testSkppableSerialization() throws XMLStreamException,
+	public void testSkippableSerialization() throws XMLStreamException,
 															SPFormatException {
 		assertEquivalentForms("Two maps, one with row tags, one without",
 				"<map rows=\"1\" columns=\"1\" version=\"2\" />",

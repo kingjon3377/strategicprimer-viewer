@@ -6,7 +6,7 @@ import javax.xml.stream.events.StartElement;
 import util.NullCleaner;
 
 /**
- * A custom exception for when a tag (or a Node) requuires a child and it isn't there.
+ * A custom exception for when a tag (or a Node) requires a child and it isn't there.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.

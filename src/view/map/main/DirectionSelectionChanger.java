@@ -47,7 +47,7 @@ public final class DirectionSelectionChanger implements MouseWheelListener {
 	/**
 	 * Move the cursor up.
 	 */
-	public void up() { // NOPMD
+	public void up() {
 		if (model.getSelectedPoint().row > 0) {
 			model.setSelection(PointFactory.point(
 					model.getSelectedPoint().row - 1,

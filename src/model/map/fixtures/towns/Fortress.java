@@ -263,7 +263,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	/**
 	 * ID number.
 	 */
-	private final int id; // NOPMD
+	private final int id;
 
 	/**
 	 * @return a UID for the fixture.
@@ -362,7 +362,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	@Override
 	public String shortDesc() {
 		if (owner.isCurrent()) {
-			return "a fortress, " + name + ", owned by you"; // NOPMD
+			return "a fortress, " + name + ", owned by you";
 		} else {
 			return "a fortress, " + name + ", owned by " + owner.getName();
 		}

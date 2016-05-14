@@ -296,7 +296,7 @@ public final class ExplorationPanel extends BorderedPanel
 				mpoints = NUM_PARSER.parse(mpText).intValue();
 			} catch (final ParseException e) {
 				LOGGER.log(Level.SEVERE,
-						"Non-numeic data in movement-points field", e);
+						"Non-numeric data in movement-points field", e);
 				return;
 			}
 			mpoints -= cost;

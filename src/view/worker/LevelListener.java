@@ -86,7 +86,7 @@ public final class LevelListener
 	@SuppressWarnings("TypeMayBeWeakened")
 	private static String getName(final Object named) {
 		if (named instanceof HasName) {
-			return ((HasName) named).getName(); // NOPMD
+			return ((HasName) named).getName();
 		} else {
 			return NullCleaner.valueOrDefault(named.toString(), "");
 		}

@@ -53,7 +53,7 @@ import static org.junit.Assert.fail;
  * @author Jonathan Lovelace
  */
 @SuppressWarnings({"ElementOnlyUsedFromTestCode", "ClassHasNoToStringMethod"})
-public abstract class BaseTestFixtureSerialization { // NOPMD
+public abstract class BaseTestFixtureSerialization {
 	/**
 	 * The "filename" to pass to the readers.
 	 */

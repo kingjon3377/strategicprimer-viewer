@@ -178,7 +178,7 @@ public final class FindDialog extends JDialog {
 			pattern = search.getText().toLowerCase();
 		}
 		if (pattern.isEmpty()) {
-			return; // NOPMD
+			return;
 		}
 		int idNum = Integer.MIN_VALUE;
 		if (IsNumeric.isNumeric(pattern)) {
@@ -224,7 +224,7 @@ public final class FindDialog extends JDialog {
 	private boolean matches(final String pattern, final int idNum,
 							final IFixture fix, final boolean csen) {
 		if (matchesSimple(pattern, idNum, fix, csen)) {
-			return true; // NOPMD
+			return true;
 		} else if (fix instanceof FixtureIterable) {
 			return StreamSupport
 					.stream(((FixtureIterable<@NonNull ?>) fix).spliterator(),

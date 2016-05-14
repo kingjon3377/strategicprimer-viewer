@@ -111,7 +111,7 @@ public final class Player implements Comparable<Player>, HasMutableName {
 	@Override
 	public String toString() {
 		if (playerName.isEmpty()) {
-			return "player #" + playerID; // NOPMD
+			return "player #" + playerID;
 		} else {
 			return playerName;
 		}

@@ -37,7 +37,7 @@ import util.TypesafeLogger;
  *
  * @author Jonathan Lovelace
  */
-public final class ExplorationRunner { // NOPMD
+public final class ExplorationRunner {
 	/**
 	 * Logger.
 	 */
@@ -79,7 +79,7 @@ public final class ExplorationRunner { // NOPMD
 	 * @param name  The name to add the table under
 	 * @param table the table.
 	 */
-	public void loadTable(final String name, final EncounterTable table) { // NOPMD
+	public void loadTable(final String name, final EncounterTable table) {
 		tables.put(name, table);
 	}
 
@@ -110,7 +110,7 @@ public final class ExplorationRunner { // NOPMD
 			throws MissingTableException {
 		if (TileType.BorealForest == terrain) {
 			return getTable("boreal_major_tree").generateEvent(point,
-					TileType.BorealForest, fixtures); // NOPMD
+					TileType.BorealForest, fixtures);
 		} else if (TileType.TemperateForest == terrain) {
 			return getTable("temperate_major_tree").generateEvent(point,
 					TileType.TemperateForest, fixtures);
@@ -184,7 +184,7 @@ public final class ExplorationRunner { // NOPMD
 			if (split.length > 2) {
 				builder.append(split[2]);
 			}
-			return NullCleaner.assertNotNull(builder.toString()); // NOPMD
+			return NullCleaner.assertNotNull(builder.toString());
 		}
 		return result;
 	}
@@ -212,7 +212,7 @@ public final class ExplorationRunner { // NOPMD
 	@SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
 	private boolean recursiveCheck(final String table, final Set<String> state) {
 		if (state.contains(table)) {
-			return false; // NOPMD
+			return false;
 		} // else
 		state.add(table);
 		if (tables.keySet().contains(table)) {
@@ -222,15 +222,15 @@ public final class ExplorationRunner { // NOPMD
 						final String splitVal =
 								NullCleaner.assertNotNull(value.split("#", 3)[1]);
 						if (recursiveCheck(splitVal, state)) {
-							return true; // NOPMD
+							return true;
 						}
 					}
 				}
 			} catch (final MissingTableException e) {
 				LOGGER.log(Level.INFO, "Missing table " + table, e);
-				return true; // NOPMD
+				return true;
 			}
-			return false; // NOPMD
+			return false;
 		} else {
 			return true;
 		}
@@ -243,10 +243,10 @@ public final class ExplorationRunner { // NOPMD
 	 */
 	@SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
 	public boolean recursiveCheck() {
-		final Set<String> state = new HashSet<>(); // NOPMD
+		final Set<String> state = new HashSet<>();
 		for (final String table : tables.keySet()) {
 			if (recursiveCheck(table, state)) {
-				return true; // NOPMD
+				return true;
 			}
 		}
 		return false;
@@ -259,7 +259,7 @@ public final class ExplorationRunner { // NOPMD
 	 * @throws IOException on I/O error writing to stream
 	 */
 	public void verboseRecursiveCheck(final Appendable ostream) throws IOException {
-		final Set<String> state = new HashSet<>(); // NOPMD
+		final Set<String> state = new HashSet<>();
 		for (final String table : tables.keySet()) {
 			verboseRecursiveCheck(table, ostream, state);
 		}

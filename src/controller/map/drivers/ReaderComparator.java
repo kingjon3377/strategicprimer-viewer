@@ -113,7 +113,7 @@ public final class ReaderComparator implements UtilityDriver {
 			contents = readIntoBuffer(arg);
 		} catch (final FileNotFoundException except) {
 			LOGGER.log(Level.SEVERE, "File " + arg + " not found", except);
-			return; // NOPMD
+			return;
 		} catch (final IOException except) {
 			LOGGER.log(Level.SEVERE, "I/O error reading file " + arg, except);
 			return;

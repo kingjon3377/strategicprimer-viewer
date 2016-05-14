@@ -106,7 +106,7 @@ public class Troll implements MobileFixture, HasMutableImage, UnitMember {
 	/**
 	 * ID number.
 	 */
-	private final int id; // NOPMD
+	private final int id;
 
 	/**
 	 * @return a UID for the fixture.

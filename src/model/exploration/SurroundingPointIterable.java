@@ -90,7 +90,7 @@ public final class SurroundingPointIterable implements Iterable<@NonNull Point> 
 	 */
 	private static int roundCol(final int col, final MapDimensions dims) {
 		if (col < 0) {
-			return dims.cols + col; // NOPMD
+			return dims.cols + col;
 		} else {
 			return col % dims.cols;
 		}
@@ -105,7 +105,7 @@ public final class SurroundingPointIterable implements Iterable<@NonNull Point> 
 	 */
 	private static int roundRow(final int row, final MapDimensions dims) {
 		if (row < 0) {
-			return dims.rows + row; // NOPMD
+			return dims.rows + row;
 		} else {
 			return row % dims.rows;
 		}

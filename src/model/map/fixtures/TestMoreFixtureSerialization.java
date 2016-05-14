@@ -183,7 +183,7 @@ public final class TestMoreFixtureSerialization extends
 				new Mine("three", TownStatus.Burned, 3));
 		final HasMutableImage fourthMine = new Mine("four", TownStatus.Ruined, 4);
 		assertSerialization("Fourth test of Mine serialization", fourthMine);
-		final String oldKindProperty = "product"; // NOPMD
+		final String oldKindProperty = "product";
 		assertDeprecatedDeserialization("Deprecated Mine idiom", fourthMine,
 				NullCleaner.assertNotNull(
 						KIND_PATTERN.matcher(createSerializedForm(fourthMine, true))
@@ -220,7 +220,7 @@ public final class TestMoreFixtureSerialization extends
 		assertSerialization("First test of Shrub serialization", new Shrub("one", 1));
 		final HasMutableImage secondShrub = new Shrub("two", 2);
 		assertSerialization("Second test of Shrub serialization", secondShrub);
-		final String oldKindProperty = "shrub"; // NOPMD
+		final String oldKindProperty = "shrub";
 		assertDeprecatedDeserialization("Deserialization of mangled shrub",
 				secondShrub, NullCleaner.assertNotNull(
 						KIND_PATTERN.matcher(createSerializedForm(secondShrub, true))
@@ -265,7 +265,7 @@ public final class TestMoreFixtureSerialization extends
 
 
 	/**
-	 * Test that a Unit should have an ownerr and kind.
+	 * Test that a Unit should have an owner and kind.
 	 *
 	 * @throws SPFormatException  always
 	 * @throws XMLStreamException never
@@ -293,10 +293,10 @@ public final class TestMoreFixtureSerialization extends
 	 */
 	@Test
 	public void testUnitWarnings()
-			throws XMLStreamException, SPFormatException, IOException { // NOPMD
+			throws XMLStreamException, SPFormatException, IOException {
 		assertUnwantedChild("<unit><unit /></unit>", Unit.class, false);
 		final Unit firstUnit = new Unit(new Player(1, ""), "unitType", "unitName", 1);
-		final String oldKindProperty = "type"; // NOPMD
+		final String oldKindProperty = "type";
 		assertDeprecatedDeserialization(
 				"Deserialize properly with deprecated use of 'type' for unit kind",
 				firstUnit, NullCleaner.assertNotNull(

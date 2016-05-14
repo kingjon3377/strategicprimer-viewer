@@ -245,13 +245,13 @@ public final class ExplorationCLI {
 	public int move(final IUnit mover) throws IOException {
 		final int directionNum = helper.inputNumber("Direction to move: ");
 		if (directionNum > 8) {
-			return Integer.MAX_VALUE; // NOPMD
+			return Integer.MAX_VALUE;
 		}
 		final Direction direction =
 				assertNotNull(Direction.values()[directionNum]);
 		final Point point = model.getSelectedUnitLocation();
 		final Point dPoint = model.getDestination(point, direction);
-		int cost; // NOPMD
+		int cost;
 		try {
 			cost = model.move(direction);
 		} catch (final TraversalImpossibleException except) {
@@ -259,7 +259,7 @@ public final class ExplorationCLI {
 					except);
 			helper.print("That direction is impassable; we've made sure ");
 			helper.println("all maps show that at a cost of 1 MP");
-			return 1; // NOPMD
+			return 1;
 		}
 		final Collection<TileFixture> constants = new ArrayList<>();
 		final IMutableMapNG map = model.getMap();

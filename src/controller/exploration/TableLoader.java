@@ -48,7 +48,7 @@ import util.TypesafeLogger;
  *
  * @author Jonathan Lovelace
  */
-public final class TableLoader { // NOPMD
+public final class TableLoader {
 	/**
 	 * Logger.
 	 */
@@ -100,22 +100,22 @@ public final class TableLoader { // NOPMD
 	 * @return the table constructed from the file
 	 * @throws IOException on I/O error or badly formed table.
 	 */
-	static EncounterTable loadTableFromStream(final BufferedReader reader) // NOPMD
+	static EncounterTable loadTableFromStream(final BufferedReader reader)
 			throws IOException {
 		final String line = reader.readLine();
 		if (line == null) {
 			throw new IOException("File doesn't start by specifying which kind of table.");
 		} else {
 			final char cmd = Character.toLowerCase(line.charAt(0));
-			switch (cmd) { // NOPMD
+			switch (cmd) {
 			case 'q':
-				return loadQuadrantTable(reader); // NOPMD
+				return loadQuadrantTable(reader);
 			case 'r':
-				return loadRandomTable(reader); // NOPMD
+				return loadRandomTable(reader);
 			case 'c':
-				return loadConstantTable(reader); // NOPMD
+				return loadConstantTable(reader);
 			case 'l':
-				return loadLegacyTable(); // NOPMD
+				return loadLegacyTable();
 			case 't':
 				return loadTerrainTable(reader);
 			default:

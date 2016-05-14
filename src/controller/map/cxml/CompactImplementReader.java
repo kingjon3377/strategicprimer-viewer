@@ -81,7 +81,7 @@ public final class CompactImplementReader extends AbstractCompactReader<Implemen
 	}
 
 	/**
-	 * Write an implementto a stream.
+	 * Write an implement to a stream.
 	 *
 	 * @param ostream the stream to write to
 	 * @param obj     the implement to write

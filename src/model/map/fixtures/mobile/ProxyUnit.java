@@ -149,7 +149,7 @@ public final class ProxyUnit
 	@Override
 	public String shortDesc() {
 		if (getOwner().isCurrent()) {
-			return "a(n) " + getKind() + " unit belonging to you"; // NOPMD
+			return "a(n) " + getKind() + " unit belonging to you";
 		} else if (getOwner().isIndependent()) {
 			return "an independent " + getKind() + " unit";
 		} else {
@@ -675,7 +675,7 @@ public final class ProxyUnit
 	/**
 	 * @return Whether this should be considered (if true) a proxy for multiple
 	 * representations of the same Unit, e.g. in different maps, or (if false) a proxy for
-	 * different related Unitss.
+	 * different related Units.
 	 */
 	@Override
 	public boolean isParallel() {

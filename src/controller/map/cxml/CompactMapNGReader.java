@@ -76,7 +76,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 	private static final Pattern EXCEPT_PATTERN =
 			assertNotNull(Pattern.compile("^Wanted [^ ]*, was [^ ]*$"));
 	/**
-	 * List of readers we'll try subtags on.
+	 * List of readers we'll try sub-tags on.
 	 */
 	private final List<AbstractCompactReader<? extends TileFixture>> readers;
 
@@ -477,7 +477,7 @@ public final class CompactMapNGReader extends AbstractCompactReader<IMapNG> {
 								final Warning warner) throws SPFormatException {
 		requireTag(element, "river", "lake");
 		if ("lake".equalsIgnoreCase(element.getName().getLocalPart())) {
-			return River.Lake; // NOPMD
+			return River.Lake;
 		} else {
 			requireNonEmptyParameter(element, "direction", true, warner);
 			return River.getRiver(getParameter(element, "direction"));

@@ -147,7 +147,7 @@ public final class ExplorableReportGenerator
 			if (anyAdventures) {
 				builder.append(adventureBuilder.toString());
 			}
-			return NullCleaner.assertNotNull(builder.toString()); // NOPMD
+			return NullCleaner.assertNotNull(builder.toString());
 		} else {
 			if (anyAdventures) {
 				return NullCleaner.assertNotNull(adventureBuilder.toString());
@@ -210,7 +210,7 @@ public final class ExplorableReportGenerator
 				real.add(adventures);
 				return real;
 			} else {
-				return retval; // NOPMD
+				return retval;
 			}
 		} else if (adventures.getChildCount() > 0) {
 			return adventures;
@@ -238,11 +238,11 @@ public final class ExplorableReportGenerator
 		if (item instanceof Cave) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat("Caves beneath ", loc.toString(), " ",
-					distCalculator.distanceString(loc)); // NOPMD
+					distCalculator.distanceString(loc));
 		} else if (item instanceof Battlefield) {
 			fixtures.remove(Integer.valueOf(item.getID()));
 			return concat("Signs of a long-ago battle on ", loc.toString(), " ",
-					distCalculator.distanceString(loc)); // NOPMD
+					distCalculator.distanceString(loc));
 		} else if (item instanceof AdventureFixture) {
 			if (((AdventureFixture) item).getOwner().isIndependent()) {
 				return concat(((AdventureFixture) item).getBriefDescription(),
