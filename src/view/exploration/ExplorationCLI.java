@@ -30,7 +30,6 @@ import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
-import model.map.fixtures.towns.Village;
 import org.eclipse.jdt.annotation.Nullable;
 import util.Pair;
 import util.SingletonRandom;
@@ -139,21 +138,6 @@ public final class ExplorationCLI {
 	}
 
 	/**
-	 * Change the owner of all the villages on the specified tile in all the maps to the
-	 * owner of the currently selected unit.
-	 *
-	 * @param point the location of the tile in question
-	 */
-	private void swearVillages(final Point point) {
-		final IUnit visitor = model.getSelectedUnit();
-		if (visitor != null) {
-			StreamSupport.stream(model.getAllMaps().spliterator(), false)
-					.map(Pair::first).flatMap(map -> map.streamOtherFixtures(point))
-					.filter(Village.class::isInstance).map(Village.class::cast)
-					.forEach(village -> village.setOwner(visitor.getOwner()));
-		}
-	}
-	/**
 	 * Change one Ground, StoneDeposit, or MineralVein from unexposed to exposed (and
 	 * discover it).
 	 *
@@ -236,6 +220,8 @@ public final class ExplorationCLI {
 	 * Have the player move the selected unit. Throws an exception if no unit is
 	 * selected.
 	 *
+	 * TODO: Use ExplorationModel's MP-tracking mechanisms; implement MovementCostListener
+	 *
 	 * @param mover the selected unit
 	 * @return the cost of the specified movement, 1 if not possible (in which case we
 	 * update subordinate maps with that tile's tile type but no fixtures), or MAX_INT if
@@ -301,7 +287,7 @@ public final class ExplorationCLI {
 					.add(new Animal(possibleTracks, true, false, "wild", idf.createID()));
 		}
 		if ((Direction.Nowhere == direction) && helper.inputBoolean(FEALTY_PROMPT)) {
-			swearVillages(dPoint);
+			model.swearVillages();
 			cost += 5;
 		} else if ((Direction.Nowhere == direction) &&
 						helper.inputBoolean("Dig to expose some ground here?")) {

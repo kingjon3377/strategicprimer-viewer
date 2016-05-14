@@ -127,4 +127,10 @@ public interface IExplorationModel
 	 * @return its location. This will *not* be null.
 	 */
 	Point getSelectedUnitLocation();
+	/**
+	 * If there is a currently selected unit, make any independent villages at its
+	 * location change to be owned by the owner of the currently selected unit. This costs
+	 * MP.
+	 */
+	void swearVillages();
 }

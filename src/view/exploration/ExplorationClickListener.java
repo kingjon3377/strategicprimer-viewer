@@ -25,7 +25,6 @@ import model.listeners.MovementCostListener;
 import model.listeners.MovementCostSource;
 import model.listeners.SelectionChangeListener;
 import model.listeners.SelectionChangeSource;
-import model.map.HasMutableOwner;
 import model.map.HasOwner;
 import model.map.IMapNG;
 import model.map.IMutableMapNG;
@@ -33,14 +32,12 @@ import model.map.Player;
 import model.map.Point;
 import model.map.TileFixture;
 import model.map.fixtures.Ground;
-import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.resources.CacheFixture;
 import model.map.fixtures.resources.MineralVein;
 import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
-import model.map.fixtures.towns.Village;
 import model.viewer.TileTypeFixture;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
@@ -142,10 +139,7 @@ public final class ExplorationClickListener extends AbstractAction implements
 				case JOptionPane.CANCEL_OPTION:
 					return;
 				case JOptionPane.YES_OPTION:
-					swearVillages();
-					for (final MovementCostListener listener : mcListeners) {
-						listener.deduct(5);
-					}
+					model.swearVillages();
 					break;
 				default: // NO_OPTION
 					break;
@@ -230,23 +224,6 @@ public final class ExplorationClickListener extends AbstractAction implements
 		return map.streamOtherFixtures(dPoint).anyMatch(fix::equals);
 	}
 
-	/**
-	 * Change the allegiance of any villages on the current tile to the moving unit's
-	 * owner.
-	 *
-	 * TODO: This should go into the exploration model. (With the MP deduction.)
-	 */
-	private void swearVillages() {
-		for (final Pair<IMutableMapNG, File> pair : model.getAllMaps()) {
-			final IMutableMapNG map = pair.first();
-			final IUnit mover = model.getSelectedUnit();
-			if (mover != null) {
-				map.streamOtherFixtures(model.getSelectedUnitLocation())
-						.filter(Village.class::isInstance).map(HasMutableOwner.class::cast)
-						.forEach(fix -> fix.setOwner(mover.getOwner()));
-			}
-		}
-	}
 	/**
 	 * Change one Ground, StoneDeposit, or MineralVein from unexposed to exposed (and
 	 * discover it).

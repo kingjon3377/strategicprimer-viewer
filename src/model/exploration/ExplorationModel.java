@@ -11,6 +11,7 @@ import java.util.stream.StreamSupport;
 import model.listeners.MovementCostListener;
 import model.listeners.SelectionChangeListener;
 import model.map.FixtureIterable;
+import model.map.HasMutableOwner;
 import model.map.HasOwner;
 import model.map.IFixture;
 import model.map.IMapNG;
@@ -30,6 +31,7 @@ import model.map.fixtures.mobile.Unit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import model.map.fixtures.towns.Fortress;
+import model.map.fixtures.towns.Village;
 import model.misc.IDriverModel;
 import model.misc.SimpleMultiMapModel;
 import org.eclipse.jdt.annotation.NonNull;
@@ -523,5 +525,24 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	@Override
 	public String toString() {
 		return "ExplorationModel";
+	}
+	/**
+	 * If there is a currently selected unit, make any independent villages at its
+	 * location change to be owned by the owner of the currently selected unit. This costs
+	 * MP.
+	 */
+	@Override
+	public void swearVillages() {
+		// TODO: Possible data race here (one of *many* in this suite ...)
+		final Point currPoint = getSelectedUnitLocation();
+		final IUnit mover = selUnit;
+		if (mover != null) {
+			final Player owner = mover.getOwner();
+			for (final Pair<IMutableMapNG, File> pair : getAllMaps()) {
+				pair.first().streamOtherFixtures(currPoint).filter(Village.class::isInstance).map(
+						HasMutableOwner.class::cast).forEach(fix -> fix.setOwner(owner));
+			}
+			fireMovementCost(5);
+		}
 	}
 }
