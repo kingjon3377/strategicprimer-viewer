@@ -5,7 +5,6 @@ import controller.map.misc.IDFactory;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.IMutablePlayerCollection;
-import util.IteratorWrapper;
 import util.Warning;
 
 /**
@@ -35,8 +34,7 @@ import util.Warning;
 public interface FluidXMLReader {
 	/**
 	 * @param element the XML tag being parsed
-	 * @param stream the stream of XML elements we're reading from TODO: Use Iterable
-	 *                  once we no longer use CXML methods
+	 * @param stream the stream of XML elements we're reading from
 	 * @param players the collection of players in the current map
 	 * @param warner the Warning instance to use to handle nwarning conditions
 	 * @param idFactory the factory to record and generate ID numbers
@@ -44,7 +42,7 @@ public interface FluidXMLReader {
 	 * @throws SPFormatException on SP format errors
 	 * @throws IllegalArgumentException if the tag is not one we know how to read
 	 */
-	Object readSPObject(StartElement element, IteratorWrapper<XMLEvent> stream,
+	Object readSPObject(StartElement element, Iterable<XMLEvent> stream,
 						IMutablePlayerCollection players, Warning warner,
 						IDFactory idFactory)
 			throws SPFormatException, IllegalArgumentException;

@@ -228,7 +228,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 
 	@Override
 	public Object readSPObject(final StartElement element,
-							   final IteratorWrapper<XMLEvent> stream,
+							   final Iterable<XMLEvent> stream,
 							   final IMutablePlayerCollection players,
 							   final Warning warner,
 							   final IDFactory idFactory)
@@ -274,7 +274,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * @throws SPFormatException on SP format problem
 	 */
 	private Unit readUnit(final StartElement element,
-					 final IteratorWrapper<XMLEvent> stream,
+					 final Iterable<XMLEvent> stream,
 					 final IMutablePlayerCollection players, final Warning warner,
 					 final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "unit");
@@ -329,7 +329,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * @throws SPFormatException on SP format problems
 	 */
 	private Fortress readFortress(final StartElement element,
-											  final IteratorWrapper<XMLEvent> stream,
+											  final Iterable<XMLEvent> stream,
 											  final IMutablePlayerCollection players,
 											  final Warning warner,
 											  final IDFactory idFactory)
