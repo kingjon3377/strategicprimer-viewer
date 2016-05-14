@@ -109,7 +109,7 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		createSimpleFixtureWriter(Oasis.class, "oasis");
 		createSimpleFixtureWriter(Sandbar.class, "sandbar");
 		writers.put(Mountain.class, FluidTerrainHandler::writeMountain);
-		writers.put(Animal.class, FluidMobileHandler::writeAnimal);
+		writers.put(Animal.class, FluidUnitMemberHandler::writeAnimal);
 		createSimpleFixtureWriter(Centaur.class, "centaur");
 		createSimpleFixtureWriter(Djinn.class, "djinn");
 		createSimpleFixtureWriter(Dragon.class, "dragon");
@@ -132,10 +132,10 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 		writers.put(MineralVein.class, FluidResourceHandler::writeMineral);
 		createSimpleFixtureWriter(Shrub.class, "shrub");
 		writers.put(StoneDeposit.class, FluidResourceHandler::writeStone);
-		writers.put(IWorker.class, FluidWorkerHandler::writeWorker);
-		writers.put(IJob.class, FluidWorkerHandler::writeJob);
-		writers.put(ISkill.class, FluidWorkerHandler::writeSkill);
-		writers.put(WorkerStats.class, FluidWorkerHandler::writeStats);
+		writers.put(IWorker.class, FluidUnitMemberHandler::writeWorker);
+		writers.put(IJob.class, FluidUnitMemberHandler::writeJob);
+		writers.put(ISkill.class, FluidUnitMemberHandler::writeSkill);
+		writers.put(WorkerStats.class, FluidUnitMemberHandler::writeStats);
 		writers.put(IUnit.class, this::writeUnit);
 		writers.put(Fortress.class, this::writeFortress);
 		writers.put(Village.class, FluidTownHandler::writeVillage);

@@ -12,6 +12,7 @@ import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import model.map.HasPortrait;
 import model.map.IMutablePlayerCollection;
+import model.map.fixtures.mobile.Animal;
 import model.map.fixtures.mobile.IWorker;
 import model.map.fixtures.mobile.Worker;
 import model.map.fixtures.mobile.worker.IJob;
@@ -25,21 +26,24 @@ import static controller.map.fluidxml.XMLHelper.getAttribute;
 import static controller.map.fluidxml.XMLHelper.getIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.getOrGenerateID;
 import static controller.map.fluidxml.XMLHelper.hasAttribute;
-import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.indent;
 import static controller.map.fluidxml.XMLHelper.requireNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.requireTag;
 import static controller.map.fluidxml.XMLHelper.setImage;
 import static controller.map.fluidxml.XMLHelper.spinUntilEnd;
 import static controller.map.fluidxml.XMLHelper.writeAttribute;
+import static controller.map.fluidxml.XMLHelper.writeBooleanAttribute;
+import static controller.map.fluidxml.XMLHelper.writeImage;
 import static controller.map.fluidxml.XMLHelper.writeIntegerAttribute;
 import static controller.map.fluidxml.XMLHelper.writeNonEmptyAttribute;
 import static controller.map.fluidxml.XMLHelper.writeTag;
+import static java.lang.Boolean.parseBoolean;
 import static util.EqualsAny.equalsAny;
 import static util.NullCleaner.assertNotNull;
 
 /**
- * A class to hold XML I/O for workers.
+ * A class to hold XML I/O for workers and animals, the only not-trivially-simple unit
+ * members.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -60,7 +64,7 @@ import static util.NullCleaner.assertNotNull;
  *
  * @author Jonathan Lovelace
  */
-public class FluidWorkerHandler {
+public class FluidUnitMemberHandler {
 	/**
 	 * Parse a worker from XML.
 	 *
@@ -348,6 +352,62 @@ public class FluidWorkerHandler {
 		writeAttribute(ostream, "name", skl.getName());
 		writeIntegerAttribute(ostream, "level", skl.getLevel());
 		writeIntegerAttribute(ostream, "hours", skl.getHours());
+		ostream.append(" />\n");
+	}
+
+	/**
+	 * @param element   the element containing an animal
+	 * @param stream    the stream to read more elements from
+	 * @param players   the collection of players
+	 * @param warner    the Warning instance to use for warnings
+	 * @param idFactory the factory to use to register ID numbers and generate new
+	 *                     ones as
+	 *                  needed
+	 * @return the animal
+	 * @throws SPFormatException if the data is invalid
+	 */
+	public static final Animal readAnimal(final StartElement element,
+										  final Iterable<XMLEvent> stream,
+										  final IMutablePlayerCollection players,
+										  final Warning warner, final IDFactory idFactory)
+			throws SPFormatException {
+		requireTag(element, "animal");
+		spinUntilEnd(assertNotNull(element.getName()), stream);
+		return setImage(new Animal(getAttribute(element, "kind"), hasAttribute(element,
+				"traces"),
+						  parseBoolean(getAttribute(element, "talking",
+								  "false")),
+						  getAttribute(element, "status", "wild"),
+						  getOrGenerateID(element, warner, idFactory)), element, warner);
+	}
+
+	/**
+	 * Write an Animal to a stream.
+	 *
+	 * @param ostream the stream to write to
+	 * @param obj the object to write. Must be an instance of Animal.
+	 * @param indent the current indentation level.
+	 * @throws IOException on I/O error
+	 */
+	public static final void writeAnimal(final Appendable ostream, final Object obj,
+										 final int indent) throws IOException {
+		if (!(obj instanceof Animal)) {
+			throw new IllegalArgumentException("Can only write Animal");
+		}
+		final Animal fix = (Animal) obj;
+		writeTag(ostream, "animal", indent);
+		writeAttribute(ostream, "kind", fix.getKind());
+		if (fix.isTraces()) {
+			writeAttribute(ostream, "traces", "");
+		}
+		if (fix.isTalking()) {
+			writeBooleanAttribute(ostream, "talking", true);
+		}
+		if (!"wild".equals(fix.getStatus())) {
+			writeAttribute(ostream, "status", fix.getStatus());
+		}
+		writeIntegerAttribute(ostream, "id", fix.getID());
+		writeImage(ostream, fix);
 		ostream.append(" />\n");
 	}
 }
