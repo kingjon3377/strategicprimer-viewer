@@ -440,9 +440,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 					continue;
 				}
 				final Object child =
-						readSPObject(current, (IteratorWrapper<XMLEvent>) stream,
-								players,
-								warner, idFactory);
+						readSPObject(current, stream, players, warner, idFactory);
 				if (child instanceof Player) {
 					retval.addPlayer((Player) child);
 				} else {
@@ -524,9 +522,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 				}
 				final Object child;
 				try {
-					child = readSPObject(current,
-							(IteratorWrapper<XMLEvent>) stream, players, warner,
-							idFactory);
+					child = readSPObject(current, stream, players, warner, idFactory);
 				} catch (final UnwantedChildException except) {
 					if ("unknown".equals(except.getTag().getLocalPart())) {
 						throw new UnwantedChildException(element.getName(), except);
