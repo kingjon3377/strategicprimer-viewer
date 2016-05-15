@@ -234,7 +234,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 				() -> cli.chooseFromList(workers, hdr, none, prompt, false);
 		for (int workerNum = choice.choose();
 				(workerNum >= 0) && (workerNum < workers.size()) && !workers.isEmpty();
-				choice.choose()) {
+				workerNum = choice.choose()) {
 			enterStats(model, workers.get(workerNum).getID(), cli);
 			workers.remove(workerNum);
 		}
