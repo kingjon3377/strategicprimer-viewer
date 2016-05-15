@@ -551,8 +551,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	@Override
 	public void dig() {
 		final Point currPoint = getSelectedUnitLocation();
-		final IUnit mover = selUnit;
-		if (mover != null) {
+		if (currPoint.getRow() >= 0) {
 			final List<TileFixture> diggables = new ArrayList<>();
 			final IMutableMapNG mainMap = getMap();
 			final Ground ground = mainMap.getGround(currPoint);
