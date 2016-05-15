@@ -104,4 +104,15 @@ public interface ICLIHelper extends Closeable {
 	 * @param text the string to print
 	 */
 	void print(String text);
+
+	/**
+	 * Interface for getting-an-int-from-the-user operations.
+	 */
+	@FunctionalInterface
+	interface ChoiceOperation {
+		/**
+		 * The operation.
+		 */
+		int choose() throws IOException;
+	}
 }

@@ -1,5 +1,11 @@
 package controller.map.drivers;
 
+import controller.map.drivers.DriverUsage.ParamCount;
+import controller.map.misc.CLIHelper;
+import controller.map.misc.ICLIHelper;
+import controller.map.misc.ICLIHelper.ChoiceOperation;
+import controller.map.misc.IDFactory;
+import controller.map.misc.IDFactoryFiller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,12 +15,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import controller.map.drivers.DriverUsage.ParamCount;
-import controller.map.misc.CLIHelper;
-import controller.map.misc.ICLIHelper;
-import controller.map.misc.IDFactory;
-import controller.map.misc.IDFactoryFiller;
 import model.map.Player;
 import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
@@ -75,13 +75,11 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 			final String desc = "Players in the maps:";
 			final String none = "No players found.";
 			final String prompt = "Player to add resources for: ";
-			// TODO: Use a lambda to simplify this loop
-			for (int playerNum =
-					cli.chooseFromList(NullCleaner.assertNotNull(players), desc,
-							none, prompt, false); (playerNum >= 0)
-									&& (playerNum < players.size()); playerNum =
-											cli.chooseFromList(players, desc,
-													none, prompt, false)) {
+			final ChoiceOperation choice =
+					() -> cli.chooseFromList(players, desc, none, prompt, false);
+			for (int playerNum = choice.choose();
+					(playerNum >= 0) && (playerNum < players.size());
+					playerNum = choice.choose()) {
 				final Player player = players.get(playerNum);
 				while (cli.inputBoolean("Keep going? ")) {
 					if (cli.inputBoolean("Enter a (quantified) resource? ")) {

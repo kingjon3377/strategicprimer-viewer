@@ -3,6 +3,7 @@ package controller.map.drivers;
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.CLIHelper;
 import controller.map.misc.ICLIHelper;
+import controller.map.misc.ICLIHelper.ChoiceOperation;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
 import java.io.File;
@@ -142,10 +143,11 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Which player owns the worker in question?";
 		final String none = "There are no players shared by all the maps.";
 		final String prompt = "Player selection: ";
-		// TODO: Use lambda to simplify this loop
-		for (int playerNum = cli.chooseFromList(players, hdr, none, prompt, true);
+		final ChoiceOperation choice =
+				() -> cli.chooseFromList(players, hdr, none, prompt, true);
+		for (int playerNum = choice.choose();
 				(playerNum >= 0) && (playerNum < players.size());
-				playerNum = cli.chooseFromList(players, hdr, none, prompt, true)) {
+				playerNum = choice.choose()) {
 			enterStats(model, NullCleaner.assertNotNull(players.get(playerNum)), cli);
 		}
 	}
@@ -165,10 +167,9 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Which unit contains the worker in question?";
 		final String none = "All that player's units already have stats.";
 		final String prompt = "Unit selection: ";
-		// TODO: Use lambda to simplify this loop
-		for (int unitNum = cli.chooseFromList(units, hdr, none, prompt, false);
-				(unitNum >= 0) && (unitNum < units.size());
-				unitNum = cli.chooseFromList(units, hdr, none, prompt, false)) {
+		final ChoiceOperation choice = () -> cli.chooseFromList(units, hdr, none, prompt, false);
+		for (int unitNum = choice.choose(); (unitNum >= 0) && (unitNum < units.size());
+				unitNum = choice.choose()) {
 			final IUnit unit = units.get(unitNum);
 			enterStats(model, unit, cli);
 			if (!hasUnstattedWorker(model, unit.getID())) {
@@ -229,12 +230,11 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Which worker do you want to enter stats for?";
 		final String none = "There are no workers without stats in that unit.";
 		final String prompt = "Worker to modify: ";
-		// TODO: Use lambda to simplify this loop
-		for (int workerNum = cli.chooseFromList(workers, hdr, none, prompt,
-				false); (workerNum >= 0) && (workerNum < workers.size())
-								&& !workers.isEmpty();
-				workerNum = cli.chooseFromList(workers,
-						hdr, none, prompt, false)) {
+		final ChoiceOperation choice =
+				() -> cli.chooseFromList(workers, hdr, none, prompt, false);
+		for (int workerNum = choice.choose();
+				(workerNum >= 0) && (workerNum < workers.size()) && !workers.isEmpty();
+				choice.choose()) {
 			enterStats(model, workers.get(workerNum).getID(), cli);
 			workers.remove(workerNum);
 		}
@@ -338,10 +338,11 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Which player owns the new worker(s)?";
 		final String none = "There are no players shared by all the maps.";
 		final String prompt = "Player selection: ";
-		// TODO: Use lambda to simplify this loop
-		for (int playerNum = cli.chooseFromList(players, hdr, none, prompt, false);
+		final ChoiceOperation choice =
+				() -> cli.chooseFromList(players, hdr, none, prompt, false);
+		for (int playerNum = choice.choose();
 				(playerNum >= 0) && (playerNum < players.size());
-				playerNum = cli.chooseFromList(players, hdr, none, prompt, false)) {
+				playerNum = choice.choose()) {
 			createWorkersForPlayer(model, idf,
 					NullCleaner.assertNotNull(players.get(playerNum)), cli);
 		}
