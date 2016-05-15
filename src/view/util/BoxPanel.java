@@ -1,11 +1,13 @@
 package view.util;
 
-import java.awt.*;
+import java.awt.Dimension;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.*;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
 
 /**
  * A JPanel laid out by a BoxLayout, with helper methods.

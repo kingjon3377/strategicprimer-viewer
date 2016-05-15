@@ -1,6 +1,7 @@
 package view.map.details;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
@@ -8,7 +9,11 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import model.listeners.SelectionChangeListener;
