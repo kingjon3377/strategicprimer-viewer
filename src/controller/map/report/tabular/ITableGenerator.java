@@ -112,7 +112,7 @@ public interface ITableGenerator<@NonNull T> {
 	 * @return the distance between them, formatted for print
 	 */
 	default String distanceString(final Point first, final Point second) {
-		return String.format("%.0f", Math.sqrt(distance(first, second)));
+		return String.format("%.0f", Double.valueOf(Math.sqrt(distance(first, second))));
 	}
 	/**
 	 * This should not include the newline.

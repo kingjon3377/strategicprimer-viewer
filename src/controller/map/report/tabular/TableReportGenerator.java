@@ -222,10 +222,10 @@ public final class TableReportGenerator {
 			final Ground ground = map.getGround(point);
 			final Forest forest = map.getForest(point);
 			if (ground != null) {
-				retval.put(idf.createID(), Pair.of(point, ground));
+				retval.put(Integer.valueOf(idf.createID()), Pair.of(point, ground));
 			}
 			if (forest != null) {
-				retval.put(idf.createID(), Pair.of(point, forest));
+				retval.put(Integer.valueOf(idf.createID()), Pair.of(point, forest));
 			}
 		}
 		return retval;

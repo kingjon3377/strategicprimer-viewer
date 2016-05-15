@@ -685,7 +685,7 @@ public final class OneToTwoConverter {
 			System.err.printf("I/O error reading %s%n", filename);
 		} else if (except instanceof SPFormatException) {
 			System.err.printf("Bad SP XML in %s on line %d, as explained below:%n",
-					filename, ((SPFormatException) except).getLine());
+					filename, Integer.valueOf(((SPFormatException) except).getLine()));
 			System.err.println(except.getLocalizedMessage());
 		} else {
 			System.err.printf("Unexpected error while reading %s:%n", filename);

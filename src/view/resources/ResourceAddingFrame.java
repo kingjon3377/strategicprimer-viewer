@@ -214,9 +214,9 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 			model.addResource(pile, current);
 			logAddition(pile.toString());
 			resKindBox.checkAndClear();
-			resCreatedModel.setValue(-1);
+			resCreatedModel.setValue(Integer.valueOf(-1));
 			resourceBox.checkAndClear();
-			resQtyModel.setValue(0);
+			resQtyModel.setValue(Integer.valueOf(0));
 			resUnitsBox.checkAndClear();
 			resKindBox.requestFocusInWindow();
 		};
@@ -251,7 +251,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 				model.addResource(new Implement(kind, idf.createID()), current);
 			}
 			logAddition(Integer.toString(qty) + " x " + kind);
-			implQtyModel.setValue(1);
+			implQtyModel.setValue(Integer.valueOf(1));
 			implKindBox.checkAndClear();
 			implQtyField.requestFocusInWindow();
 		};
@@ -271,9 +271,9 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 		pack();
 		// If we set these at model creation, the fields would (try to) be unnecessarily
 		// large. Not that this helps.
-		resCreatedModel.setMaximum(Integer.MAX_VALUE);
-		resQtyModel.setMaximum(Integer.MAX_VALUE);
-		implQtyModel.setMaximum(Integer.MAX_VALUE);
+		resCreatedModel.setMaximum(Integer.valueOf(Integer.MAX_VALUE));
+		resQtyModel.setMaximum(Integer.valueOf(Integer.MAX_VALUE));
+		implQtyModel.setMaximum(Integer.valueOf(Integer.MAX_VALUE));
 	}
 	/**
 	 * Log the addition of something.

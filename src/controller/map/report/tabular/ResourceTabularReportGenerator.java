@@ -64,7 +64,7 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 			writeField(ostream, ((ResourcePile) item).getKind());
 			writeFieldDelimiter(ostream);
 			writeField(ostream,
-					String.format("%d %s", ((ResourcePile) item).getQuantity(),
+					String.format("%d %s", Integer.valueOf(((ResourcePile) item).getQuantity()),
 							((ResourcePile) item).getUnits()));
 			writeFieldDelimiter(ostream);
 			writeField(ostream, ((ResourcePile) item).getContents());
@@ -201,7 +201,7 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 		for (final Map.Entry<String, Integer> entry : implementCounts.entrySet()) {
 			writeField(ostream, "equipment");
 			writeFieldDelimiter(ostream);
-			writeField(ostream, Integer.toString(entry.getValue()));
+			writeField(ostream, Integer.toString(entry.getValue().intValue()));
 			writeFieldDelimiter(ostream);
 			writeField(ostream, entry.getKey());
 			ostream.append(getRowDelimiter());
