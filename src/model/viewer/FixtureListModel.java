@@ -56,10 +56,10 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	private Point point = PointFactory.point(-1, -1);
 
 	/**
-	 * @param model the driver model to use
+	 * @param driverModel the driver model to use
 	 */
-	public FixtureListModel(final IDriverModel model) {
-		this.model = model;
+	public FixtureListModel(final IDriverModel driverModel) {
+		model = driverModel;
 	}
 
 	/**

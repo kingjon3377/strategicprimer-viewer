@@ -66,12 +66,12 @@ public final class WorkerCreationListener
 	/**
 	 * Constructor.
 	 *
-	 * @param treeModel the tree model
+	 * @param model the tree model
 	 * @param idFac     the ID factory to pass to the worker-creation window.
 	 */
-	public WorkerCreationListener(final IWorkerTreeModel treeModel,
+	public WorkerCreationListener(final IWorkerTreeModel model,
 								final IDFactory idFac) {
-		this.treeModel = treeModel;
+		this.treeModel = model;
 		idf = idFac;
 	}
 

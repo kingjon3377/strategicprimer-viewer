@@ -44,16 +44,16 @@ public class MagicReader extends Reader {
 	 * angle-bracket to begin the first XML tag, it is not treated as a filename;
 	 * instead, we read from the contents of the string after that prefix.
 	 *
-	 * @param filename a filename
+	 * @param possibleFilename a filename
 	 * @throws FileNotFoundException if file not found.
 	 */
-	public MagicReader(final String filename) throws FileNotFoundException {
-		if (filename.contains("string:<")) {
-			delegate = new StringReader(filename.substring(7));
+	public MagicReader(final String possibleFilename) throws FileNotFoundException {
+		if (possibleFilename.contains("string:<")) {
+			delegate = new StringReader(possibleFilename.substring(7));
 			this.filename = "a string";
 		} else {
-			delegate = new FileReader(filename);
-			this.filename = filename;
+			delegate = new FileReader(possibleFilename);
+			this.filename = possibleFilename;
 		}
 	}
 

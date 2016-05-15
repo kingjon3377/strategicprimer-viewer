@@ -158,13 +158,13 @@ public final class WorkerTree extends JTree
 		 * Constructor.
 		 *
 		 * @param playerColl the collection of players in the map
-		 * @param treeModel     the tree model backing the tree
+		 * @param workerTreeModel     the tree model backing the tree
 		 * @param listenedTree      the tree we're watching
 		 */
 		protected TreeMouseListener(final Iterable<Player> playerColl,
-									final IWorkerTreeModel treeModel, final JTree listenedTree) {
+									final IWorkerTreeModel workerTreeModel, final JTree listenedTree) {
 			players = playerColl;
-			model = treeModel;
+			model = workerTreeModel;
 			tree = listenedTree;
 		}
 
@@ -321,10 +321,10 @@ public final class WorkerTree extends JTree
 		/**
 		 * Constructor.
 		 *
-		 * @param treeModel the tree model to refer to
+		 * @param workerTreeModel the tree model to refer to
 		 */
-		protected WorkerTreeSelectionListener(final IWorkerTreeModel treeModel) {
-			model = treeModel;
+		protected WorkerTreeSelectionListener(final IWorkerTreeModel workerTreeModel) {
+			model = workerTreeModel;
 		}
 
 		/**

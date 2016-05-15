@@ -43,25 +43,25 @@ public final class ResourceInputStream extends InputStream {
 	/**
 	 * Constructor.
 	 *
-	 * @param filename the name of the file to read
+	 * @param readFilename the name of the file to read
 	 * @throws FileNotFoundException if it's not found on disk or in the classpath
 	 */
 	@SuppressWarnings("resource")
 	// The resource is *not* leaked; it's closed when this is.
-	public ResourceInputStream(final String filename)
+	public ResourceInputStream(final String readFilename)
 			throws FileNotFoundException {
 		InputStream temp;
 		try {
-			temp = new BufferedInputStream(new FileInputStream(filename));
+			temp = new BufferedInputStream(new FileInputStream(readFilename));
 		} catch (final FileNotFoundException except) {
 			temp = ResourceInputStream.class.getClassLoader()
-						.getResourceAsStream(filename);
+						.getResourceAsStream(readFilename);
 			if (temp == null) {
 				throw except;
 			}
 		}
 		wrapped = temp;
-		this.filename = filename;
+		this.filename = readFilename;
 	}
 
 	/**
