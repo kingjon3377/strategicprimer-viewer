@@ -301,7 +301,6 @@ public final class XMLHelper {
 	 * If the object has a custom (non-default) image, write it to XML.
 	 * @param ostream the stream to write to
 	 * @param obj an object being written out that might have a custom image
-	 * @return the XML for the image if it does, or the empty string if not
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeImage(final Appendable ostream, final HasImage obj) throws IOException {
