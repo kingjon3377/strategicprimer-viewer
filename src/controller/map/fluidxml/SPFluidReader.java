@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiFunction;
 import java.util.function.IntFunction;
 import java.util.regex.Pattern;
 import java.util.stream.StreamSupport;
@@ -24,6 +23,7 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import model.map.HasKind;
 import model.map.IMutableMapNG;
 import model.map.IMutablePlayerCollection;
 import model.map.MapDimensions;
@@ -268,6 +268,21 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 					element, warner);
 		});
 	}
+
+	/**
+	 * An interface for constructors and factory methods to create simple HasKind
+	 * instances.
+	 */
+	@FunctionalInterface
+	private static interface HasKindFactory {
+		/**
+		 * The constructor or factory method.
+		 * @param kind the "kind" property of the object
+		 * @param idNum the object's ID #
+		 * @return the object
+		 */
+		HasKind create(String kind, int idNum);
+	}
 	/**
 	 * Create a reader for a simple object having a kind, an ID number, and maybe an image,
 	 * and add this reader to our collection.
@@ -276,11 +291,11 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 *                  "kind" parameter and the ID number in its constructor, in that
 	 *                  order, and nothing else.
 	 */
-	private void createSimpleHasKindReader(final String tag, final BiFunction<String, Integer, ?> factory) {
+	private void createSimpleHasKindReader(final String tag, final HasKindFactory factory) {
 		readers.put(tag, (element, stream, players, warner, idFactory) -> {
 			requireTag(element, tag);
 			spinUntilEnd(assertNotNull(element.getName()), stream);
-			return setImage(factory.apply(getAttribute(element, "kind"),
+			return setImage(factory.create(getAttribute(element, "kind"),
 					getOrGenerateID(element, warner, idFactory)), element, warner);
 		});
 	}
