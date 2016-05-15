@@ -257,14 +257,14 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * Create a reader for a simple object having only an ID number and maybe an image,
 	 * and add this reader to our collection.
 	 * @param tag the tag this class should be instantiated from
-	 * @param constr the constructor to create an object of the class. Must take the ID
+	 * @param factory the constructor to create an object of the class. Must take the ID
 	 *                  number in its constructor, and nothing else.
 	 */
-	private void createSimpleFixtureReader(final String tag, final IntFunction<?> constr) {
+	private void createSimpleFixtureReader(final String tag, final IntFunction<?> factory) {
 		readers.put(tag, (element, stream, players, warner, idFactory) -> {
 			requireTag(element, tag);
 			spinUntilEnd(assertNotNull(element.getName()), stream);
-			return setImage(constr.apply(getOrGenerateID(element, warner, idFactory)),
+			return setImage(factory.apply(getOrGenerateID(element, warner, idFactory)),
 					element, warner);
 		});
 	}
@@ -272,15 +272,15 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * Create a reader for a simple object having a kind, an ID number, and maybe an image,
 	 * and add this reader to our collection.
 	 * @param tag the tag this class should be instantiated from
-	 * @param constr the constructor to create an object of the class. Must take the
+	 * @param factory the constructor to create an object of the class. Must take the
 	 *                  "kind" parameter and the ID number in its constructor, in that
 	 *                  order, and nothing else.
 	 */
-	private void createSimpleHasKindReader(final String tag, final BiFunction<String, Integer, ?> constr) {
+	private void createSimpleHasKindReader(final String tag, final BiFunction<String, Integer, ?> factory) {
 		readers.put(tag, (element, stream, players, warner, idFactory) -> {
 			requireTag(element, tag);
 			spinUntilEnd(assertNotNull(element.getName()), stream);
-			return setImage(constr.apply(getAttribute(element, "kind"),
+			return setImage(factory.apply(getAttribute(element, "kind"),
 					getOrGenerateID(element, warner, idFactory)), element, warner);
 		});
 	}

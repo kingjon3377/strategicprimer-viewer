@@ -221,11 +221,11 @@ public class Job implements IJob {
 	}
 
 	/**
-	 * @param nomen the job's new name
+	 * @param newName the job's new name
 	 */
 	@Override
-	public final void setName(final String nomen) {
-		name = nomen;
+	public final void setName(final String newName) {
+		name = newName;
 	}
 
 	/**

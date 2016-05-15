@@ -67,11 +67,11 @@ public final class WorkerTreeModel implements IWorkerTreeModel {
 	 * Constructor.
 	 *
 	 * @param player the player whose units and workers will be shown in the tree
-	 * @param wmodel the driver model
+	 * @param workerModel the driver model
 	 */
-	public WorkerTreeModel(final Player player, final IWorkerModel wmodel) {
+	public WorkerTreeModel(final Player player, final IWorkerModel workerModel) {
 		root = player;
-		model = wmodel;
+		model = workerModel;
 	}
 
 	/**

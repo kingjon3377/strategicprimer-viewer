@@ -60,41 +60,41 @@ public final class ScrollListener
 	/**
 	 * The horizontal scroll-bar we deal with.
 	 */
-	private final JScrollBar hbar;
+	private final JScrollBar horizontalBar;
 	/**
 	 * The vertical scroll-bar we deal with.
 	 */
-	private final JScrollBar vbar;
+	private final JScrollBar verticalBar;
 
 	/**
 	 * Constructor.
 	 *
 	 * @param map      the map model to work with
-	 * @param horizBar the horizontal scroll bar to work with
-	 * @param vertBar  the vertical scroll bar to work with
+	 * @param horizontal the horizontal scroll bar to work with
+	 * @param vertical  the vertical scroll bar to work with
 	 */
-	public ScrollListener(final IViewerModel map, final JScrollBar horizBar,
-						final JScrollBar vertBar) {
+	public ScrollListener(final IViewerModel map, final JScrollBar horizontal,
+						final JScrollBar vertical) {
 		model = map;
 		dimensions = map.getDimensions();
 		final MapDimensions mapDim = map.getMapDimensions();
 		mapDimensions = mapDim;
-		hbar = horizBar;
+		horizontalBar = horizontal;
 		final Point selPoint = map.getSelectedPoint();
-		hbar.getModel().setRangeProperties(Math.max(selPoint.col, 0), 1, 0,
+		horizontalBar.getModel().setRangeProperties(Math.max(selPoint.col, 0), 1, 0,
 				mapDim.cols - map.getDimensions().getWidth(), false);
-		hbar.setInputVerifier(new LocalInputVerifier(mapDim, map, true));
-		vbar = vertBar;
-		vbar.getModel().setRangeProperties(Math.max(selPoint.row, 0), 1, 0,
+		horizontalBar.setInputVerifier(new LocalInputVerifier(mapDim, map, true));
+		verticalBar = vertical;
+		verticalBar.getModel().setRangeProperties(Math.max(selPoint.row, 0), 1, 0,
 				mapDim.rows - map.getDimensions().getHeight(), false);
-		vbar.setInputVerifier(new LocalInputVerifier(mapDim, map, false));
+		verticalBar.setInputVerifier(new LocalInputVerifier(mapDim, map, false));
 		final AdjustmentListener adjList = evt -> model.setDimensions(
-				new VisibleDimensions(vbar.getValue(),
-											vbar.getValue() + dimensions.getHeight(),
-											hbar.getValue(),
-											hbar.getValue() + dimensions.getWidth()));
-		hbar.addAdjustmentListener(adjList);
-		vbar.addAdjustmentListener(adjList);
+				new VisibleDimensions(verticalBar.getValue(),
+											verticalBar.getValue() + dimensions.getHeight(),
+											horizontalBar.getValue(),
+											horizontalBar.getValue() + dimensions.getWidth()));
+		horizontalBar.addAdjustmentListener(adjList);
+		verticalBar.addAdjustmentListener(adjList);
 	}
 
 	/**
@@ -108,8 +108,8 @@ public final class ScrollListener
 	public ScrollListener(final IViewerModel map, final JComponent component) {
 		this(map, new JScrollBar(Adjustable.HORIZONTAL),
 				new JScrollBar(Adjustable.VERTICAL));
-		component.add(hbar, BorderLayout.PAGE_END);
-		component.add(vbar, BorderLayout.LINE_END);
+		component.add(horizontalBar, BorderLayout.PAGE_END);
+		component.add(verticalBar, BorderLayout.LINE_END);
 	}
 
 	/**
@@ -120,10 +120,10 @@ public final class ScrollListener
 	public void dimensionsChanged(final VisibleDimensions oldDim,
 								final VisibleDimensions newDim) {
 		dimensions = newDim;
-		hbar.getModel().setRangeProperties(
+		horizontalBar.getModel().setRangeProperties(
 				Math.max(model.getSelectedPoint().col, 0), 1, 0,
 				mapDimensions.cols - newDim.getWidth(), false);
-		vbar.getModel().setRangeProperties(
+		verticalBar.getModel().setRangeProperties(
 				Math.max(model.getSelectedPoint().row, 0), 1, 0,
 				mapDimensions.rows - newDim.getHeight(), false);
 	}
@@ -133,7 +133,7 @@ public final class ScrollListener
 	 * @param newSize the new zoom level
 	 */
 	@Override
-	public void tsizeChanged(final int oldSize, final int newSize) {
+	public void tileSizeChanged(final int oldSize, final int newSize) {
 		// We don't do anything with this.
 	}
 
@@ -147,12 +147,12 @@ public final class ScrollListener
 	 */
 	@Override
 	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
-		final VisibleDimensions vdim = model.getDimensions();
-		if (!isInRange(vdim.getMinimumCol(), newPoint.col, vdim.getMaximumCol())) {
-			hbar.getModel().setValue(Math.max(newPoint.col, 0));
+		final VisibleDimensions visibleDims = model.getDimensions();
+		if (!isInRange(visibleDims.getMinimumCol(), newPoint.col, visibleDims.getMaximumCol())) {
+			horizontalBar.getModel().setValue(Math.max(newPoint.col, 0));
 		}
-		if (!isInRange(vdim.getMinimumRow(), newPoint.row, vdim.getMaximumRow())) {
-			vbar.getModel().setValue(Math.max(newPoint.row, 0));
+		if (!isInRange(visibleDims.getMinimumRow(), newPoint.row, visibleDims.getMaximumRow())) {
+			verticalBar.getModel().setValue(Math.max(newPoint.row, 0));
 		}
 	}
 
@@ -162,9 +162,9 @@ public final class ScrollListener
 	@Override
 	public void mapChanged() {
 		mapDimensions = model.getMapDimensions();
-		hbar.getModel().setRangeProperties(0, 1, 0,
+		horizontalBar.getModel().setRangeProperties(0, 1, 0,
 				mapDimensions.cols - model.getDimensions().getWidth(), false);
-		vbar.getModel().setRangeProperties(0, 1, 0,
+		verticalBar.getModel().setRangeProperties(0, 1, 0,
 				mapDimensions.rows - model.getDimensions().getHeight(), false);
 		dimensions = model.getDimensions();
 	}
@@ -203,7 +203,7 @@ public final class ScrollListener
 		/**
 		 * Whether we're verifying the horizontal scrollbar. (If false, the vertical.)
 		 */
-		private final boolean horiz;
+		private final boolean horizontalAxis;
 
 		/**
 		 * Constructor.
@@ -217,14 +217,14 @@ public final class ScrollListener
 									final boolean horizontal) {
 			dimensions = mapDim;
 			map = mapModel;
-			horiz = horizontal;
+			horizontalAxis = horizontal;
 		}
 
 		/**
 		 * @return the map's size in the dimension we're concerned with
 		 */
 		private int dimension() {
-			if (horiz) {
+			if (horizontalAxis) {
 				return dimensions.cols;
 			} else {
 				return dimensions.rows;
@@ -235,7 +235,7 @@ public final class ScrollListener
 		 * @return the map's visible size in the dimension we're concerned with
 		 */
 		private int visibleDimension() {
-			if (horiz) {
+			if (horizontalAxis) {
 				return map.getDimensions().getWidth();
 			} else {
 				return map.getDimensions().getHeight();
@@ -261,7 +261,7 @@ public final class ScrollListener
 		 */
 		@Override
 		public String toString() {
-			if (horiz) {
+			if (horizontalAxis) {
 				return "LocalInputVerifier for horizontal scrollbar";
 			} else {
 				return "LocalInputVerifier for vertical scrollbar";

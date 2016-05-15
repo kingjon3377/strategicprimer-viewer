@@ -61,32 +61,33 @@ public class ResourceAddingCLIDriver implements SimpleCLIDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
-		final ResourceManagementDriver dmodel;
+		final ResourceManagementDriver driverModel;
 		if (model instanceof ResourceManagementDriver) {
-			dmodel = (ResourceManagementDriver) model;
+			driverModel = (ResourceManagementDriver) model;
 		} else {
-			dmodel = new ResourceManagementDriver(model);
+			driverModel = new ResourceManagementDriver(model);
 		}
 		final List<Player> players =
-				StreamSupport.stream(dmodel.getPlayers().spliterator(), false).collect(
+				StreamSupport.stream(driverModel.getPlayers().spliterator(), false).collect(
 						Collectors.toList());
-		final IDFactory idf = IDFactoryFiller.createFactory(dmodel);
+		final IDFactory idf = IDFactoryFiller.createFactory(driverModel);
 		try (ICLIHelper cli = new CLIHelper()) {
 			final String desc = "Players in the maps:";
 			final String none = "No players found.";
-			final String prpt = "Player to add resources for: ";
+			final String prompt = "Player to add resources for: ";
+			// TODO: Use a lambda to simplify this loop
 			for (int playerNum =
 					cli.chooseFromList(NullCleaner.assertNotNull(players), desc,
-							none, prpt, false); (playerNum >= 0)
+							none, prompt, false); (playerNum >= 0)
 									&& (playerNum < players.size()); playerNum =
 											cli.chooseFromList(players, desc,
-													none, prpt, false)) {
+													none, prompt, false)) {
 				final Player player = players.get(playerNum);
 				while (cli.inputBoolean("Keep going? ")) {
 					if (cli.inputBoolean("Enter a (quantified) resource? ")) {
-						enterResource(idf, dmodel, cli, player);
+						enterResource(idf, driverModel, cli, player);
 					} else if (cli.inputBoolean("Enter equipment etc.? ")) {
-						enterImplement(idf, dmodel, cli, player);
+						enterImplement(idf, driverModel, cli, player);
 					}
 				}
 			}

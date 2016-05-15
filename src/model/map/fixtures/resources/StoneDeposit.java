@@ -32,13 +32,13 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasMutabl
 	/**
 	 * Constructor.
 	 *
-	 * @param skind  the kind of stone
-	 * @param discdc the dc to discover the stone.
+	 * @param kind  the kind of stone
+	 * @param discoverDC the dc to discover the stone.
 	 * @param idNum  the ID number.
 	 */
-	public StoneDeposit(final StoneKind skind, final int discdc, final int idNum) {
-		stone = skind;
-		dc = discdc;
+	public StoneDeposit(final StoneKind kind, final int discoverDC, final int idNum) {
+		stone = kind;
+		dc = discoverDC;
 		id = idNum;
 	}
 

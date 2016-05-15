@@ -185,10 +185,10 @@ public final class OneToTwoConverter {
 				for (int j = 0; j < RES_JUMP; j++) {
 					final int row = (point.row * RES_JUMP) + i;
 					final int col = (point.col * RES_JUMP) + j;
-					final Point subpoint = PointFactory.point(row, col);
-					newMap.setBaseTerrain(subpoint, oldMap.getBaseTerrain(point));
-					initial.add(subpoint);
-					convertSubtile(subpoint, newMap, main);
+					final Point subPoint = PointFactory.point(row, col);
+					newMap.setBaseTerrain(subPoint, oldMap.getBaseTerrain(point));
+					initial.add(subPoint);
+					convertSubTile(subPoint, newMap, main);
 				}
 			}
 		}
@@ -238,7 +238,7 @@ public final class OneToTwoConverter {
 			int iterations;
 			for (iterations = 0; (iterations < MAX_ITERATIONS)
 										&& !fixtures.isEmpty(); iterations++) {
-				if (isSubtileSuitable(newMap, assertNotNull(initial.get(0)))) {
+				if (isSubTileSuitable(newMap, assertNotNull(initial.get(0)))) {
 					final TileFixture fix = assertNotNull(fixtures.remove(0));
 					changeFor(newMap, assertNotNull(initial.get(0)), fix);
 					addFixture(newMap, assertNotNull(initial.get(0)), fix, main);
@@ -250,11 +250,11 @@ public final class OneToTwoConverter {
 						"Maximum number of iterations reached on tile (" + point.row +
 								", " + point.col + "); forcing ...");
 				while (!fixtures.isEmpty()) {
-					final Point subtile = assertNotNull(initial.get(0));
-					newMap.addFixture(subtile,
+					final Point subTile = assertNotNull(initial.get(0));
+					newMap.addFixture(subTile,
 							assertNotNull(fixtures.remove(0)));
 					//noinspection ObjectAllocationInLoop
-					newMap.addFixture(subtile,
+					newMap.addFixture(subTile,
 							new TextFixture("FIXME: A fixture here was force-added after" +
 													" MAX_ITER",
 												NEXT_TURN));
@@ -291,7 +291,7 @@ public final class OneToTwoConverter {
 	 * @param main  whether this is the main map or a player's map
 	 */
 	@SuppressWarnings("deprecation")
-	private void convertSubtile(final Point point, final IMutableMapNG map,
+	private void convertSubTile(final Point point, final IMutableMapNG map,
 								final boolean main) {
 		try {
 			if (TileType.Mountain == map.getBaseTerrain(point)) {
@@ -335,7 +335,7 @@ public final class OneToTwoConverter {
 	 * @param map   the map
 	 * @return whether that location is suitable
 	 */
-	private static boolean isSubtileSuitable(final IMapNG map, final Point point) {
+	private static boolean isSubTileSuitable(final IMapNG map, final Point point) {
 		return map.streamOtherFixtures(point).anyMatch(OneToTwoConverter::isBackground);
 	}
 
@@ -536,8 +536,8 @@ public final class OneToTwoConverter {
 	 */
 	private static boolean hasAdjacentWater(final Point point, final IMapNG map) {
 		return getNeighbors(point).anyMatch(
-				npoint -> map.getRivers(npoint).iterator().hasNext() ||
-								(TileType.Ocean == map.getBaseTerrain(npoint)));
+				neighbor -> map.getRivers(neighbor).iterator().hasNext() ||
+								(TileType.Ocean == map.getBaseTerrain(neighbor)));
 	}
 
 	/**
@@ -554,7 +554,7 @@ public final class OneToTwoConverter {
 	 * @return How many sub-tiles per tile the addRiver() algorithm is optimized for.
 	 */
 	@SuppressWarnings({"MethodReturnAlwaysConstant", "SameReturnValue"})
-	private static int optSubtilesPerTile() {
+	private static int optSubTilesPerTile() {
 		return 4;
 	}
 
@@ -566,7 +566,7 @@ public final class OneToTwoConverter {
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addRiver(final River river,
 								final List<Point> points, final IMutableMapNG map) {
-		if (RES_JUMP != optSubtilesPerTile()) {
+		if (RES_JUMP != optSubTilesPerTile()) {
 			throw new IllegalStateException("This function is tuned for 4 sub-tiles per " +
 													"tile per axis");
 		}
@@ -625,7 +625,7 @@ public final class OneToTwoConverter {
 	 */
 	public static void main(final String... args) {
 		if (args.length == 0) {
-			System.err.printf("Usage: %s mainmap.xml [playermap.xml ...]%n",
+			System.err.printf("Usage: %s mainMap.xml [playerMap.xml ...]%n",
 					OneToTwoConverter.class.getSimpleName());
 			System.exit(1);
 		} else {

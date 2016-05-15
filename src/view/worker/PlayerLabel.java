@@ -47,7 +47,7 @@ public final class PlayerLabel extends JLabel implements PlayerChangeListener {
 	 * @param text the string to wrap
 	 * @return the wrapped string
 	 */
-	private static String htmlize(final String text) {
+	private static String htmlWrapped(final String text) {
 		return "<html><body>" + text + "</body></html>";
 	}
 
@@ -65,7 +65,7 @@ public final class PlayerLabel extends JLabel implements PlayerChangeListener {
 	public PlayerLabel(final String prefix,
 					@SuppressWarnings("TypeMayBeWeakened") final Player player,
 					final String postfix) {
-		super(htmlize(prefix + ' ' + player.getName() + postfix));
+		super(htmlWrapped(prefix + ' ' + player.getName() + postfix));
 		before = prefix;
 		after = postfix;
 	}
@@ -77,7 +77,7 @@ public final class PlayerLabel extends JLabel implements PlayerChangeListener {
 	@SuppressWarnings("StringConcatenationMissingWhitespace")
 	@Override
 	public void playerChanged(@Nullable final Player old, final Player newPlayer) {
-		setText(htmlize(before + ' ' + newPlayer.getName() + after));
+		setText(htmlWrapped(before + ' ' + newPlayer.getName() + after));
 	}
 	/**
 	 * Prevent serialization.

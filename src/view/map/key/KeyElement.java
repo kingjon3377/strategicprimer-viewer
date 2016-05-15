@@ -69,9 +69,9 @@ public final class KeyElement extends BoxPanel {
 		addRigidArea(HORIZ_BUF);
 		final BoxPanel panel = new BoxPanel(false);
 		panel.addRigidArea(4);
-		final int tsize = TileViewSize.scaleZoom(DEF_ZOOM_LEVEL, version);
+		final int tileSize = TileViewSize.scaleZoom(DEF_ZOOM_LEVEL, version);
 		panel.add(new KeyElementComponent(T_UI_H.get(version, type), MIN_SIZE, PREF_SIZE,
-												new Dimension(tsize, tsize)));
+												new Dimension(tileSize, tileSize)));
 		panel.addRigidArea(4);
 		final JLabel label = new JLabel(T_UI_H.getDescription(type));
 		panel.add(label);
@@ -79,10 +79,10 @@ public final class KeyElement extends BoxPanel {
 		add(panel);
 		addRigidArea(HORIZ_BUF);
 		addGlue();
-		final Dimension lsize = label.getMinimumSize();
+		final Dimension captionSize = label.getMinimumSize();
 		setMinimumSize(
-				new Dimension(Math.max(MIN_SIZE.width, lsize.width) + (HORIZ_BUF * 2),
-									MIN_SIZE.height + lsize.height + 12));
+				new Dimension(Math.max(MIN_SIZE.width, captionSize.width) + (HORIZ_BUF * 2),
+									MIN_SIZE.height + captionSize.height + 12));
 	}
 
 	/**

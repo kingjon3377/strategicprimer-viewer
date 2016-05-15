@@ -186,7 +186,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 		if (zoomLevel < MAX_ZOOM_LEVEL) {
 			zoomLevel++;
 			for (final GraphicalParamsListener list : gpListeners) {
-				list.tsizeChanged(zoomLevel - 1, zoomLevel);
+				list.tileSizeChanged(zoomLevel - 1, zoomLevel);
 			}
 		}
 	}
@@ -199,7 +199,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 		if (zoomLevel > 1) {
 			zoomLevel--;
 			for (final GraphicalParamsListener list : gpListeners) {
-				list.tsizeChanged(zoomLevel + 1, zoomLevel);
+				list.tileSizeChanged(zoomLevel + 1, zoomLevel);
 			}
 		}
 	}
@@ -212,7 +212,7 @@ public final class ViewerModel extends SimpleDriverModel implements
 		final int old = zoomLevel;
 		zoomLevel = DEF_ZOOM_LEVEL;
 		for (final GraphicalParamsListener list : gpListeners) {
-			list.tsizeChanged(old, zoomLevel);
+			list.tileSizeChanged(old, zoomLevel);
 		}
 	}
 

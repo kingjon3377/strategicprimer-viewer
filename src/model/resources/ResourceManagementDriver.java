@@ -45,10 +45,10 @@ public class ResourceManagementDriver extends SimpleMultiMapModel {
 	}
 
 	/**
-	 * @param dmodel a driver model to take our state from
+	 * @param driverModel a driver model to take our state from
 	 */
-	public ResourceManagementDriver(final IDriverModel dmodel) {
-		super(dmodel);
+	public ResourceManagementDriver(final IDriverModel driverModel) {
+		super(driverModel);
 	}
 
 	/**

@@ -164,10 +164,10 @@ public final class CLIHelper implements ICLIHelper {
 					retval = NUM_PARSER.parse(input).intValue();
 				} catch (final ParseException e) {
 					//noinspection ObjectAllocationInLoop
-					final NumberFormatException nexcept =
+					final NumberFormatException numFormatExcept =
 							new NumberFormatException("Failed to parse number from input");
-					nexcept.initCause(e);
-					throw nexcept;
+					numFormatExcept.initCause(e);
+					throw numFormatExcept;
 				}
 			}
 		}

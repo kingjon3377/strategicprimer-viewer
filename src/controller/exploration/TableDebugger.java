@@ -47,10 +47,10 @@ public final class TableDebugger {
 	/**
 	 * Constructor.
 	 *
-	 * @param explRunner an exploration runner loaded with all the tables we want.
+	 * @param explorationRunner an exploration runner loaded with all the tables we want.
 	 */
-	protected TableDebugger(final ExplorationRunner explRunner) {
-		runner = explRunner;
+	protected TableDebugger(final ExplorationRunner explorationRunner) {
+		runner = explorationRunner;
 	}
 
 	/**

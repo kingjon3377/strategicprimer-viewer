@@ -129,9 +129,9 @@ public final class SelectTileDialog extends JDialog {
 		 */
 		Valid,
 		/**
-		 * Nonnumeric.
+		 * Non-numeric.
 		 */
-		Nonnumeric,
+		NonNumeric,
 		/**
 		 * Negative.
 		 */
@@ -166,7 +166,7 @@ public final class SelectTileDialog extends JDialog {
 			}
 		} catch (final ParseException e) {
 			LOGGER.log(Level.FINE, "Non-numeric input", e);
-			return State.Nonnumeric;
+			return State.NonNumeric;
 		}
 	}
 
@@ -182,7 +182,7 @@ public final class SelectTileDialog extends JDialog {
 		switch (state) {
 		case Negative:
 			return " must be positive. ";
-		case Nonnumeric:
+		case NonNumeric:
 			return " must be a whole number. ";
 		case Overflow:
 			return " must be less than " + Integer.toString(bound);

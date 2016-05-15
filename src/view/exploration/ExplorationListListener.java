@@ -61,13 +61,13 @@ public final class ExplorationListListener implements ListDataListener {
 	 * Constructor.
 	 *
 	 * @param mainList the list this is attached to
-	 * @param emodel   the exploration model
+	 * @param explorationModel   the exploration model
 	 */
-	public ExplorationListListener(final IExplorationModel emodel,
+	public ExplorationListListener(final IExplorationModel explorationModel,
 								final FixtureList mainList) {
-		model = emodel;
+		model = explorationModel;
 		list = mainList;
-		hmodel = new HuntingModel(model.getMap());
+		huntingModel = new HuntingModel(model.getMap());
 		idf = IDFactoryFiller.createFactory(model);
 	}
 
@@ -169,7 +169,7 @@ public final class ExplorationListListener implements ListDataListener {
 	/**
 	 * A "hunting model," to get the animals to have traces of.
 	 */
-	private final HuntingModel hmodel;
+	private final HuntingModel huntingModel;
 	/**
 	 * An ID number factory for the animal tracks.
 	 */
@@ -201,9 +201,9 @@ public final class ExplorationListListener implements ListDataListener {
 			}
 			final String possibleTracks;
 			if (Ocean == model.getMap().getBaseTerrain(model.getSelectedUnitLocation())) {
-				possibleTracks = hmodel.fish(model.getSelectedUnitLocation(), 1).get(0);
+				possibleTracks = huntingModel.fish(model.getSelectedUnitLocation(), 1).get(0);
 			} else {
-				possibleTracks = hmodel.hunt(model.getSelectedUnitLocation(), 1).get(0);
+				possibleTracks = huntingModel.hunt(model.getSelectedUnitLocation(), 1).get(0);
 			}
 			if (!HuntingModel.NOTHING.equals(possibleTracks)) {
 				final TileFixture animal =
@@ -245,10 +245,10 @@ public final class ExplorationListListener implements ListDataListener {
 		 */
 		private final ListModel<E> wrapped;
 		/**
-		 * @param lmodel the wrapped object
+		 * @param listModel the wrapped object
 		 */
-		protected ListModelWrapper(final ListModel<E> lmodel) {
-			wrapped = lmodel;
+		protected ListModelWrapper(final ListModel<E> listModel) {
+			wrapped = listModel;
 		}
 
 		/**

@@ -37,11 +37,11 @@ public final class Cave implements IEvent, ExplorableFixture {
 	/**
 	 * Constructor.
 	 *
-	 * @param discdc the DC to discover the caves
+	 * @param discoverDC the DC to discover the caves
 	 * @param idNum  the ID number for the event.
 	 */
-	public Cave(final int discdc, final int idNum) {
-		dc = discdc;
+	public Cave(final int discoverDC, final int idNum) {
+		dc = discoverDC;
 		id = idNum;
 	}
 

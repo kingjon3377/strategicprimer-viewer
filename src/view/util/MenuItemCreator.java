@@ -37,22 +37,22 @@ public final class MenuItemCreator {
 	 *
 	 * @param item     the text of the item
 	 * @param mnemonic the mnemonic key
-	 * @param accel    the keyboard accelerator. Null if none is wanted.
+	 * @param accelerator    the keyboard accelerator. Null if none is wanted.
 	 * @param desc     the accessible description.
 	 * @param list     the listener to handle when the item is selected.
 	 * @return the configured menu item.
 	 */
 	public static JMenuItem createMenuItem(final String item, final int mnemonic,
-											@Nullable final KeyStroke accel,
+											@Nullable final KeyStroke accelerator,
 											final String desc,
 											final ActionListener list) {
-		final JMenuItem mitem = new JMenuItem(item, mnemonic);
-		mitem.setAccelerator(accel);
-		mitem.getAccessibleContext().setAccessibleDescription(desc);
-		mitem.addActionListener(list);
-		mitem.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(accel,
-				mitem.getAction());
-		return mitem;
+		final JMenuItem menuItem = new JMenuItem(item, mnemonic);
+		menuItem.setAccelerator(accelerator);
+		menuItem.getAccessibleContext().setAccessibleDescription(desc);
+		menuItem.addActionListener(list);
+		menuItem.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(accelerator,
+				menuItem.getAction());
+		return menuItem;
 	}
 
 	/**
@@ -61,7 +61,7 @@ public final class MenuItemCreator {
 	 * @param key the base key
 	 * @return the hot-key
 	 */
-	public static KeyStroke createHotkey(final int key) {
+	public static KeyStroke createHotKey(final int key) {
 		return NullCleaner.assertNotNull(KeyStroke.getKeyStroke(key,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
 	}
@@ -72,7 +72,7 @@ public final class MenuItemCreator {
 	 * @param key the base key
 	 * @return the hot-key
 	 */
-	public static KeyStroke createShiftHotkey(final int key) {
+	public static KeyStroke createShiftHotKey(final int key) {
 		return NullCleaner.assertNotNull(KeyStroke.getKeyStroke(key,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMask() |
 						InputEvent.SHIFT_DOWN_MASK));

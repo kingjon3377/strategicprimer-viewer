@@ -38,7 +38,7 @@ public final class ResourceInputStream extends InputStream {
 	/**
 	 * The filename we're reading.
 	 */
-	private final String fname;
+	private final String filename;
 
 	/**
 	 * Constructor.
@@ -61,7 +61,7 @@ public final class ResourceInputStream extends InputStream {
 			}
 		}
 		wrapped = temp;
-		fname = filename;
+		this.filename = filename;
 	}
 
 	/**
@@ -132,6 +132,6 @@ public final class ResourceInputStream extends InputStream {
 	 */
 	@Override
 	public String toString() {
-		return "ResourceInputStream reading " + fname;
+		return "ResourceInputStream reading " + filename;
 	}
 }

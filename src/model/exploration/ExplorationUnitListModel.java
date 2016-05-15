@@ -47,10 +47,10 @@ public final class ExplorationUnitListModel extends DefaultListModel<@NonNull IU
 	/**
 	 * Constructor.
 	 *
-	 * @param emodel the exploration model, so we can select the unit the user selects
+	 * @param explorationModel the exploration model, so we can select the unit the user selects
 	 */
-	public ExplorationUnitListModel(final IExplorationModel emodel) {
-		model = emodel;
+	public ExplorationUnitListModel(final IExplorationModel explorationModel) {
+		model = explorationModel;
 	}
 
 	/**

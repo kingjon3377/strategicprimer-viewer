@@ -193,12 +193,12 @@ public final class FixtureListDropListener extends DropTargetAdapter {
 	 */
 	private void handleDrop(final Transferable trans)
 			throws UnsupportedFlavorException, IOException {
-		final DataFlavor[] dflav = trans.getTransferDataFlavors();
-		if (dflav == null) {
+		final DataFlavor[] flavors = trans.getTransferDataFlavors();
+		if (flavors == null) {
 			throw new UnsupportedFlavorException(new DataFlavor(DataFlavor.class,
 																	"null"));
 		} else {
-			for (final DataFlavor flavor : dflav) {
+			for (final DataFlavor flavor : flavors) {
 				if (flavor == null) {
 					continue;
 				} else if (flavor.equals(FixtureTransferable.FLAVOR)) {

@@ -181,17 +181,17 @@ public final class ResolutionDecreaseConverter {
 	/**
 	 * @param firstType  one tile-type
 	 * @param secondType a second tile-type
-	 * @param thirdtype  a third tile-type
+	 * @param thirdType  a third tile-type
 	 * @param fourthType a fourth tile-type
 	 * @return the most common tile of them, or if there are two or four with equal
 	 * representation one selected from among them at random.
 	 */
 	private static TileType consensus(final TileType firstType,
 									final TileType secondType,
-									final TileType thirdtype,
+									final TileType thirdType,
 									final TileType fourthType) {
 		final EnumCounter<TileType> counter = new EnumCounter<>(TileType.class);
-		counter.countMany(firstType, secondType, thirdtype, fourthType);
+		counter.countMany(firstType, secondType, thirdType, fourthType);
 		final Set<TileType> twos = EnumSet.noneOf(TileType.class);
 		for (final TileType type : TileType.values()) {
 			assert type != null;
@@ -213,7 +213,7 @@ public final class ResolutionDecreaseConverter {
 			return NullCleaner.assertNotNull(twos.iterator().next());
 		} else {
 			final List<TileType> list =
-					Arrays.asList(firstType, secondType, thirdtype, fourthType);
+					Arrays.asList(firstType, secondType, thirdType, fourthType);
 			Collections.shuffle(list);
 			return NullCleaner.assertNotNull(list.get(0));
 		}

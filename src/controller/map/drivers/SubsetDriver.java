@@ -80,17 +80,17 @@ public final class SubsetDriver implements SimpleDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel model) {
-		final IMultiMapModel mmodel;
+		final IMultiMapModel mapModel;
 		if (model instanceof IMultiMapModel) {
-			mmodel = (IMultiMapModel) model;
+			mapModel = (IMultiMapModel) model;
 		} else {
-			mmodel = new SimpleMultiMapModel(model);
+			mapModel = new SimpleMultiMapModel(model);
 			LOGGER.warning("Subset checking does nothing with no subordinate maps");
 		}
-		for (final Pair<IMutableMapNG, File> pair : mmodel.getSubordinateMaps()) {
+		for (final Pair<IMutableMapNG, File> pair : mapModel.getSubordinateMaps()) {
 			SYS_OUT.print(pair.second().getName());
 			SYS_OUT.print("\t...\t\t");
-			printReturn(doSubsetTest(mmodel.getMap(), pair.first(), pair.second()));
+			printReturn(doSubsetTest(mapModel.getMap(), pair.first(), pair.second()));
 		}
 	}
 

@@ -151,7 +151,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 								strength.getText().trim(), dex.getText().trim(),
 								con.getText().trim(), intel.getText().trim(),
 								wis.getText().trim(), cha.getText().trim())) {
-				ErrorShower.showErrorDialog(this, getErrorExpl());
+				ErrorShower.showErrorDialog(this, getErrorExplanation());
 			} else {
 				final Worker retval = new Worker(nameText, raceText, idf.createID());
 				try {
@@ -195,7 +195,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	/**
 	 * @return an explanation of what's wrong with the user's input.
 	 */
-	private String getErrorExpl() {
+	private String getErrorExplanation() {
 		final StringBuilder builder = new StringBuilder(50);
 		if (name.getText().trim().isEmpty()) {
 			builder.append("Worker needs a name.\n");
@@ -203,7 +203,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 		if (race.getText().trim().isEmpty()) {
 			builder.append("Worker needs a race.\n");
 		}
-		builder.append(numericExpl(Pair.of(getBoxText(hpBox), "HP"),
+		builder.append(numericExplanation(Pair.of(getBoxText(hpBox), "HP"),
 				Pair.of(getBoxText(maxHP), "Max HP"),
 				Pair.of(getBoxText(strength), "Strength"),
 				Pair.of(getBoxText(dex), "Dexterity"),
@@ -221,7 +221,7 @@ public final class WorkerConstructionFrame extends JFrame implements NewWorkerSo
 	 * @return such an explanation
 	 */
 	@SafeVarargs
-	private static String numericExpl(final Pair<String, String>... numbers) {
+	private static String numericExplanation(final Pair<String, String>... numbers) {
 		final StringBuilder builder = new StringBuilder(40);
 		for (final Pair<String, String> number : numbers) {
 			final String num = assertNotNull(number.first().trim());

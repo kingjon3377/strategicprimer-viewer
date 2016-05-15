@@ -35,9 +35,9 @@ public interface GraphicalParamsListener extends EventListener {
 	void dimensionsChanged(VisibleDimensions oldDim, VisibleDimensions newDim);
 
 	/**
-	 * @param oldSize the previous tsize/zoom level
-	 * @param newSize the new tsize/zoom level
+	 * @param oldSize the previous tile-size/zoom level
+	 * @param newSize the new tile-size/zoom level
 	 */
 	@SuppressWarnings("UnusedParameters")
-	void tsizeChanged(int oldSize, int newSize);
+	void tileSizeChanged(int oldSize, int newSize);
 }

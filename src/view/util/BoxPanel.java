@@ -1,14 +1,11 @@
 package view.util;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 /**
  * A JPanel laid out by a BoxLayout, with helper methods.
@@ -41,13 +38,12 @@ public class BoxPanel extends JPanel {
 	/**
 	 * Constructor.
 	 *
-	 * @param horiz If true, the panel is laid out on the line axis; if false, on the
-	 *                 page
-	 *              axis.
+	 * @param lineAxis If true, the panel is laid out on the line axis (horizontally);
+	 *                    if false, on the page axis.
 	 */
 	@SuppressWarnings("UnnecessarySuperQualifier")
-	public BoxPanel(final boolean horiz) {
-		horizontal = horiz;
+	public BoxPanel(final boolean lineAxis) {
+		horizontal = lineAxis;
 		if (horizontal) {
 			super.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 		} else {

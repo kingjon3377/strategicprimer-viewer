@@ -164,39 +164,39 @@ public class Fortress implements HasMutableImage, ITownFixture,
 		final String ownerStr = owner.toString();
 		// Assume each unit is at least half a K.
 		final int len = 40 + name.length() + ownerStr.length() + (units.size() * 512);
-		final StringBuilder sbuild = new StringBuilder(len).append("Fortress ");
-		sbuild.append(name);
-		sbuild.append(", owned by player ");
-		sbuild.append(ownerStr);
-		sbuild.append(". Members:");
+		final StringBuilder builder = new StringBuilder(len).append("Fortress ");
+		builder.append(name);
+		builder.append(", owned by player ");
+		builder.append(ownerStr);
+		builder.append(". Members:");
 		int count = 0;
 		for (final FortressMember member : units) {
-			sbuild.append("\n\t\t\t");
+			builder.append("\n\t\t\t");
 			if (member instanceof IUnit) {
 				final IUnit unit = (IUnit) member;
-				sbuild.append(unit.getName());
+				builder.append(unit.getName());
 				if (unit.getOwner().equals(owner)) {
-					sbuild.append(" (");
-					sbuild.append(unit.getKind());
-					sbuild.append(')');
+					builder.append(" (");
+					builder.append(unit.getKind());
+					builder.append(')');
 				} else if (unit.getOwner().isIndependent()) {
-					sbuild.append(", an independent ");
-					sbuild.append(unit.getKind());
+					builder.append(", an independent ");
+					builder.append(unit.getKind());
 				} else {
-					sbuild.append(" (");
-					sbuild.append(unit.getKind());
-					sbuild.append("), belonging to ");
-					sbuild.append(unit.getOwner());
+					builder.append(" (");
+					builder.append(unit.getKind());
+					builder.append("), belonging to ");
+					builder.append(unit.getOwner());
 				}
 			} else {
-				sbuild.append(member.toString());
+				builder.append(member.toString());
 			}
 			count++;
 			if (count < (units.size() - 1)) {
-				sbuild.append(';');
+				builder.append(';');
 			}
 		}
-		return assertNotNull(sbuild.toString());
+		return assertNotNull(builder.toString());
 	}
 
 	/**
@@ -241,16 +241,16 @@ public class Fortress implements HasMutableImage, ITownFixture,
 				ours.put(assertNotNull(Integer.valueOf(member.getID())),
 						member);
 			}
-			final String ctxt =
+			final String localContext =
 					context + " In fortress " + name + " (ID #" + id + "):";
 			boolean retval = true;
 			for (final FortressMember unit : fort) {
 				if (!isConditionTrue(ostream,
-						ours.containsKey(Integer.valueOf(unit.getID())), ctxt,
+						ours.containsKey(Integer.valueOf(unit.getID())), localContext,
 						"Extra unit:\t", unit.toString(), ", ID #",
 						Integer.toString(unit.getID()), "\n") ||
 							!assertNotNull(ours.get(Integer.valueOf(unit.getID())))
-									 .isSubset(unit, ostream, ctxt)) {
+									 .isSubset(unit, ostream, localContext)) {
 					retval = false;
 				}
 			}
@@ -325,11 +325,11 @@ public class Fortress implements HasMutableImage, ITownFixture,
 	}
 
 	/**
-	 * @param nomen the fort's new name
+	 * @param newName the fort's new name
 	 */
 	@Override
-	public final void setName(final String nomen) {
-		name = nomen;
+	public final void setName(final String newName) {
+		name = newName;
 	}
 
 	/**

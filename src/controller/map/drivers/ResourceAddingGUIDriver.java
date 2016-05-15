@@ -56,14 +56,14 @@ public class ResourceAddingGUIDriver implements SimpleDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
-		final ResourceManagementDriver rmmodel;
+		final ResourceManagementDriver driverModel;
 		if (model instanceof ResourceManagementDriver) {
-			rmmodel = (ResourceManagementDriver) model;
+			driverModel = (ResourceManagementDriver) model;
 		} else {
-			rmmodel = new ResourceManagementDriver(model);
+			driverModel = new ResourceManagementDriver(model);
 		}
 		SwingUtilities.invokeLater(
-				() -> new ResourceAddingFrame(rmmodel, new IOHandler(rmmodel))
+				() -> new ResourceAddingFrame(driverModel, new IOHandler(driverModel))
 							.setVisible(true));
 	}
 

@@ -49,7 +49,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	/**
 	 * The driver model, which we use to get the population at a location.
 	 */
-	private final IDriverModel dmodel;
+	private final IDriverModel model;
 	/**
 	 * The current point.
 	 */
@@ -59,7 +59,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 * @param model the driver model to use
 	 */
 	public FixtureListModel(final IDriverModel model) {
-		dmodel = model;
+		this.model = model;
 	}
 
 	/**
@@ -70,7 +70,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	public void selectedPointChanged(@Nullable final Point old,
 									final Point newPoint) {
 		clear();
-		final IMapNG map = dmodel.getMap();
+		final IMapNG map = model.getMap();
 		final TileType base = map.getBaseTerrain(newPoint);
 		if (TileType.NotVisible != base) {
 			addElement(new TileTypeFixture(base));
@@ -80,9 +80,9 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 			if (rivers instanceof TileFixture) {
 				addElement((TileFixture) rivers);
 			} else {
-				final RiverFixture rfixt = new RiverFixture();
-				rivers.forEach(rfixt::addRiver);
-				addElement(rfixt);
+				final RiverFixture newRivers = new RiverFixture();
+				rivers.forEach(newRivers::addRiver);
+				addElement(newRivers);
 			}
 		}
 		final Ground ground = map.getGround(newPoint);
@@ -104,7 +104,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void addFixture(final TileFixture fix) {
-		final IMutableMapNG map = dmodel.getMap();
+		final IMutableMapNG map = model.getMap();
 		if ((fix instanceof Ground) && (map.getGround(point) == null)) {
 			map.setGround(point, (Ground) fix);
 			selectedPointChanged(null, point);
@@ -133,7 +133,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	public void removeAll(@Nullable final Iterable<TileFixture> list) {
 		if (list != null) {
-			final IMutableMapNG map = dmodel.getMap();
+			final IMutableMapNG map = model.getMap();
 			for (final TileFixture fix : list) {
 				if (fix instanceof TileTypeFixture) {
 					map.setBaseTerrain(point, TileType.NotVisible);
@@ -168,8 +168,8 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof FixtureListModel) &&
-										((FixtureListModel) obj).dmodel.equals
-																				(dmodel) &&
+										((FixtureListModel) obj).model.equals
+																				(model) &&
 										((FixtureListModel) obj).point.equals(point));
 	}
 
@@ -178,7 +178,7 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 */
 	@Override
 	public int hashCode() {
-		return dmodel.hashCode() | point.hashCode();
+		return model.hashCode() | point.hashCode();
 	}
 	/**
 	 * Prevent serialization.

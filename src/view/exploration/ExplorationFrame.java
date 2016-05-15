@@ -69,15 +69,15 @@ public final class ExplorationFrame extends JFrame implements ISPWindow {
 		/**
 		 * Constructor.
 		 *
-		 * @param clayout    the layout to tell to swap panels
-		 * @param parentComp the component it's laying out
+		 * @param cardLayout    the layout to tell to swap panels
+		 * @param parentComponent the component it's laying out
 		 * @param components things to tell to validate their layout before swapping
 		 */
-		protected SwapCompletionListener(final CardLayout clayout,
-										final Container parentComp,
+		protected SwapCompletionListener(final CardLayout cardLayout,
+										final Container parentComponent,
 										final Component... components) {
-			layout = clayout;
-			parent = parentComp;
+			layout = cardLayout;
+			parent = parentComponent;
 			Stream.of(components).forEach(compList::add);
 		}
 
@@ -107,26 +107,26 @@ public final class ExplorationFrame extends JFrame implements ISPWindow {
 	}
 
 	/**
-	 * @param emodel    the exploration model
+	 * @param explorationModel    the exploration model
 	 * @param ioHandler Passed to menu constructor
 	 */
-	public ExplorationFrame(final ExplorationModel emodel,
+	public ExplorationFrame(final ExplorationModel explorationModel,
 							final IOHandler ioHandler) {
 		super("Exploration");
-		if (emodel.getMapFile().exists()) {
-			setTitle(emodel.getMapFile().getName() + " | Exploration");
+		if (explorationModel.getMapFile().exists()) {
+			setTitle(explorationModel.getMapFile().getName() + " | Exploration");
 			getRootPane().putClientProperty("Window.documentFile",
-					emodel.getMapFile());
+					explorationModel.getMapFile());
 		}
 		setMinimumSize(new Dimension(768, 480));
 		setPreferredSize(new Dimension(1024, 640));
 		final CardLayout layout = new CardLayout();
 		setLayout(layout);
-		final ExplorerSelectingPanel esp = new ExplorerSelectingPanel(emodel);
+		final ExplorerSelectingPanel esp = new ExplorerSelectingPanel(explorationModel);
 		final ExplorationPanel explorationPanel =
-				new ExplorationPanel(emodel, esp.getMPDocument());
-		emodel.addMovementCostListener(explorationPanel);
-		emodel.addSelectionChangeListener(explorationPanel);
+				new ExplorationPanel(explorationModel, esp.getMPDocument());
+		explorationModel.addMovementCostListener(explorationPanel);
+		explorationModel.addSelectionChangeListener(explorationPanel);
 		final CompletionListener swapper =
 				new SwapCompletionListener(layout,
 												NullCleaner.assertNotNull(
@@ -138,7 +138,7 @@ public final class ExplorationFrame extends JFrame implements ISPWindow {
 		add(explorationPanel);
 
 		setJMenuBar(new ExplorationMenu(NullCleaner.assertNotNull(ioHandler),
-				emodel, this));
+				explorationModel, this));
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
 	}

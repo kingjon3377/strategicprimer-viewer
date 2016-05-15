@@ -49,19 +49,19 @@ public final class ViewerStart implements SimpleDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel model) {
-		final IViewerModel vmodel;
+		final IViewerModel viewerModel;
 		if (model instanceof IViewerModel) {
-			vmodel = (IViewerModel) model;
+			viewerModel = (IViewerModel) model;
 		} else if (model instanceof IMultiMapModel) {
 			StreamSupport
 					.stream(((IMultiMapModel) model).getAllMaps().spliterator(), false)
 					.map(ViewerModel::new).forEach(this::startDriver);
 			return;
 		} else {
-			vmodel = new ViewerModel(model);
+			viewerModel = new ViewerModel(model);
 		}
 		SwingUtilities.invokeLater(
-				() -> new ViewerFrame(vmodel, new IOHandler(vmodel)).setVisible(true));
+				() -> new ViewerFrame(viewerModel, new IOHandler(viewerModel)).setVisible(true));
 	}
 
 	/**

@@ -98,16 +98,16 @@ public final class ExpansionDriver implements SimpleCLIDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel model) {
-		final IMultiMapModel mmodel;
+		final IMultiMapModel mapModel;
 		if (model instanceof IMultiMapModel) {
-			mmodel = (IMultiMapModel) model;
+			mapModel = (IMultiMapModel) model;
 		} else {
 			LOGGER.warning(
 					"Expansion on a master map with no subordinate maps does nothing");
-			mmodel = new SimpleMultiMapModel(model);
+			mapModel = new SimpleMultiMapModel(model);
 		}
-		for (final Pair<IMutableMapNG, File> pair : mmodel.getSubordinateMaps()) {
-			expand(mmodel.getMap(), pair.first());
+		for (final Pair<IMutableMapNG, File> pair : mapModel.getSubordinateMaps()) {
+			expand(mapModel.getMap(), pair.first());
 		}
 	}
 

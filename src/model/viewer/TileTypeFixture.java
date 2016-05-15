@@ -40,7 +40,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	/**
 	 * The TileType this wraps.
 	 */
-	private final TileType ttype;
+	private final TileType tileType;
 
 	/**
 	 * Constructor.
@@ -48,7 +48,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	 * @param terrain The TileType this wraps.
 	 */
 	public TileTypeFixture(final TileType terrain) {
-		ttype = terrain;
+		tileType = terrain;
 	}
 
 	/**
@@ -63,7 +63,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	@Override
 	public TileTypeFixture copy(final boolean zero) {
 		LOGGER.log(Level.WARNING, "TileTypeFixture#copy() called", new Exception("dummy"));
-		return new TileTypeFixture(ttype);
+		return new TileTypeFixture(tileType);
 	}
 
 	/**
@@ -121,7 +121,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	 * @return the TileType this wraps.
 	 */
 	public TileType getTileType() {
-		return ttype;
+		return tileType;
 	}
 
 	/**
@@ -131,7 +131,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	@Override
 	public boolean equals(@Nullable final Object obj) {
 		return (this == obj) || ((obj instanceof TileTypeFixture) &&
-										(((TileTypeFixture) obj).ttype == ttype));
+										(((TileTypeFixture) obj).tileType == tileType));
 	}
 
 	/**
@@ -139,7 +139,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	 */
 	@Override
 	public int hashCode() {
-		return ttype.hashCode();
+		return tileType.hashCode();
 	}
 
 	/**
@@ -147,7 +147,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toString() {
-		return "Terrain: " + ttype.toString();
+		return "Terrain: " + tileType.toString();
 	}
 
 	/**
@@ -161,7 +161,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	 */
 	@Override
 	public String getDefaultImage() {
-		return ttype.toXML() + ".png";
+		return tileType.toXML() + ".png";
 	}
 
 	/**

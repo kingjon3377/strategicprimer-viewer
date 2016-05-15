@@ -75,39 +75,39 @@ public final class AdvancementFrame extends JFrame implements ISPWindow {
 		setMinimumSize(new Dimension(640, 480));
 		final IMapNG map = source.getMap();
 		final Player player = map.getCurrentPlayer();
-		final PlayerLabel plabel = new PlayerLabel("", player, "'s Units:");
-		ioHandler.addPlayerChangeListener(plabel);
-		final IWorkerTreeModel wtmodel = new WorkerTreeModelAlt(player, source);
+		final PlayerLabel playerLabel = new PlayerLabel("", player, "'s Units:");
+		ioHandler.addPlayerChangeListener(playerLabel);
+		final IWorkerTreeModel treeModel = new WorkerTreeModelAlt(player, source);
 		final WorkerTree tree =
-				new WorkerTree(wtmodel, map.players(), false);
-		ioHandler.addPlayerChangeListener(wtmodel);
-		final WorkerCreationListener nwl = new WorkerCreationListener(wtmodel,
+				new WorkerTree(treeModel, map.players(), false);
+		ioHandler.addPlayerChangeListener(treeModel);
+		final WorkerCreationListener nwl = new WorkerCreationListener(treeModel,
 																			IDFactoryFiller
 																					.createFactory(
 																							source.getMap()));
 		tree.addUnitSelectionListener(nwl);
-		final JobTreeModel jtmodel = new JobTreeModel();
-		final JobsTree jobsTree = new JobsTree(jtmodel);
-		tree.addUnitMemberListener(jtmodel);
-		final ItemAdditionPanel jarp = new ItemAdditionPanel("job");
-		jarp.addAddRemoveListener(jtmodel);
-		final ItemAdditionPanel sarp = new ItemAdditionPanel("skill");
-		sarp.addAddRemoveListener(jtmodel);
-		final LevelListener llist = new LevelListener();
-		jobsTree.addSkillSelectionListener(llist);
-		final SkillAdvancementPanel sapanel = new SkillAdvancementPanel();
-		jobsTree.addSkillSelectionListener(sapanel);
-		sapanel.addLevelGainListener(llist);
-		final JLabel newJobText = htmlize("Add a job to the Worker:");
-		final JLabel newSkillText = htmlize("Add a Skill to the selected Job:");
-		setContentPane(horizontalSplit(HALF_WAY, HALF_WAY, BorderedPanel.vertical(plabel,
+		final JobTreeModel jobsTreeModel = new JobTreeModel();
+		final JobsTree jobsTree = new JobsTree(jobsTreeModel);
+		tree.addUnitMemberListener(jobsTreeModel);
+		final ItemAdditionPanel jobAdditionPanel = new ItemAdditionPanel("job");
+		jobAdditionPanel.addAddRemoveListener(jobsTreeModel);
+		final ItemAdditionPanel skillAdditionPanel = new ItemAdditionPanel("skill");
+		skillAdditionPanel.addAddRemoveListener(jobsTreeModel);
+		final LevelListener levelListener = new LevelListener();
+		jobsTree.addSkillSelectionListener(levelListener);
+		final SkillAdvancementPanel skillAdvancementPanel = new SkillAdvancementPanel();
+		jobsTree.addSkillSelectionListener(skillAdvancementPanel);
+		skillAdvancementPanel.addLevelGainListener(levelListener);
+		final JLabel newJobText = htmlWrapped("Add a job to the Worker:");
+		final JLabel newSkillText = htmlWrapped("Add a Skill to the selected Job:");
+		setContentPane(horizontalSplit(HALF_WAY, HALF_WAY, BorderedPanel.vertical(playerLabel,
 				new JScrollPane(tree),
 				new ListenedButton("Add worker to selected unit ...", nwl)),
 				verticalSplit(HALF_WAY, RES_WEIGHT, BorderedPanel.vertical(
-						htmlize("Worker's Jobs and Skills:"), new JScrollPane(jobsTree),
+						htmlWrapped("Worker's Jobs and Skills:"), new JScrollPane(jobsTree),
 						null), BorderedPanel.vertical(null, BorderedPanel.vertical(
-						BorderedPanel.vertical(newJobText, null, jarp), null,
-						BorderedPanel.vertical(newSkillText, null, sarp)), sapanel))));
+						BorderedPanel.vertical(newJobText, null, jobAdditionPanel), null,
+						BorderedPanel.vertical(newSkillText, null, skillAdditionPanel)), skillAdvancementPanel))));
 
 		ioHandler.notifyListeners();
 
@@ -128,7 +128,7 @@ public final class AdvancementFrame extends JFrame implements ISPWindow {
 	 * make it
 	 * left-aligned.
 	 */
-	private static JLabel htmlize(final String paragraph) {
+	private static JLabel htmlWrapped(final String paragraph) {
 		return new JLabel("<html><p align=\"left\">" + paragraph + "</p></html>");
 	}
 	/**

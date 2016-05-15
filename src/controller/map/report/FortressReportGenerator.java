@@ -72,7 +72,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 	/**
 	 * Instance we use.
 	 */
-	private final IReportGenerator<FortressMember> fmrg =
+	private final IReportGenerator<FortressMember> memberReportGenerator =
 			new FortressMemberReportGenerator(pairComparator);
 
 	/**
@@ -95,28 +95,28 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 						.append("<h4>Foreign fortresses in the map:</h4>\n");
 		final List<Pair<Point, IFixture>> values = new ArrayList<>(fixtures.values());
 		Collections.sort(values, pairComparator);
-		boolean anyforts = false;
-		boolean anyours = false;
+		boolean anyForts = false;
+		boolean anyOurs = false;
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Fortress) {
 				final Fortress fort = (Fortress) pair.second();
 				if (currentPlayer.equals(fort.getOwner())) {
-					anyours = true;
+					anyOurs = true;
 					ours.append(produce(fixtures, map, currentPlayer, fort,
 							pair.first()));
 				} else {
-					anyforts = true;
+					anyForts = true;
 					builder.append(produce(fixtures, map, currentPlayer,
 							fort, pair.first()));
 				}
 			}
 		}
-		if (anyours) {
-			if (anyforts) {
+		if (anyOurs) {
+			if (anyForts) {
 				ours.append(builder.toString());
 			}
 			return NullCleaner.assertNotNull(ours.toString());
-		} else if (anyforts) {
+		} else if (anyForts) {
 			return NullCleaner.assertNotNull(builder.toString());
 		} else {
 			return "";
@@ -304,7 +304,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 				// TODO: Group resources and implements separately
 				for (final FortressMember member : contents) {
 					builder.append(OPEN_LIST_ITEM)
-							.append(fmrg.produce(fixtures, map, currentPlayer, member,
+							.append(memberReportGenerator
+											.produce(fixtures, map, currentPlayer, member,
 									loc)).append(CLOSE_LIST_ITEM);
 				}
 				builder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
@@ -353,7 +354,8 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 							(Unit) unit, loc));
 				} else {
 					contents.add(
-							fmrg.produceRIR(fixtures, map, currentPlayer, unit, loc));
+							memberReportGenerator
+									.produceRIR(fixtures, map, currentPlayer, unit, loc));
 				}
 			}
 			if (units.getChildCount() != 0) {

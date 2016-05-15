@@ -58,15 +58,15 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	/**
 	 * Constructor.
 	 *
-	 * @param vstatus the status of the village.
+	 * @param villageStatus the status of the village.
 	 * @param vName   the name of the village
 	 * @param idNum   the ID number.
 	 * @param player  the owner of the village
 	 * @param vRace   the dominant race of the village
 	 */
-	public Village(final TownStatus vstatus, final String vName,
+	public Village(final TownStatus villageStatus, final String vName,
 					final int idNum, final Player player, final String vRace) {
-		status = vstatus;
+		status = villageStatus;
 		name = vName;
 		id = idNum;
 		owner = player;
@@ -217,11 +217,11 @@ public class Village implements ITownFixture, HasMutableImage, SubsettableFixtur
 	}
 
 	/**
-	 * @param nomen the town's new name
+	 * @param newName the town's new name
 	 */
 	@Override
-	public final void setName(final String nomen) {
-		name = nomen;
+	public final void setName(final String newName) {
+		name = newName;
 	}
 
 	/**

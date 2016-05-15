@@ -171,8 +171,8 @@ public final class FindDialog extends JDialog {
 	 */
 	public void search() {
 		final String pattern;
-		final boolean csen = caseSensitive.isSelected();
-		if (csen) {
+		final boolean caseSensitivity = caseSensitive.isSelected();
+		if (caseSensitivity) {
 			pattern = search.getText();
 		} else {
 			pattern = search.getText().toLowerCase();
@@ -196,15 +196,15 @@ public final class FindDialog extends JDialog {
 		for (final Point point : iter) {
 			final TileFixture ground = map.getMap().getGround(point);
 			final TileFixture forest = map.getMap().getForest(point);
-			if (((ground != null) && matches(pattern, idNum, ground, csen))
-						|| ((forest != null) && matches(pattern, idNum, forest, csen))) {
+			if (((ground != null) && matches(pattern, idNum, ground, caseSensitivity))
+						|| ((forest != null) && matches(pattern, idNum, forest, caseSensitivity))) {
 				SYS_OUT.print("Found in point");
 				SYS_OUT.println(point);
 				map.setSelection(point);
 				return;
 			}
 			for (final TileFixture fix : map.getMap().getOtherFixtures(point)) {
-				if (matches(pattern, idNum, fix, csen)) {
+				if (matches(pattern, idNum, fix, caseSensitivity)) {
 					SYS_OUT.print("Found in point");
 					SYS_OUT.println(point);
 					map.setSelection(point);
@@ -218,19 +218,19 @@ public final class FindDialog extends JDialog {
 	 * @param pattern a pattern
 	 * @param idNum   either MIN_INT, or (if pattern is numeric) its numeric equivalent
 	 * @param fix     a fixture. May be null, in which case we return false.
-	 * @param csen    whether to search case-sensitively
+	 * @param caseSensitivity    whether to search case-sensitively
 	 * @return whether the fixture matches the pattern or has id as its ID.
 	 */
 	private boolean matches(final String pattern, final int idNum,
-							final IFixture fix, final boolean csen) {
-		if (matchesSimple(pattern, idNum, fix, csen)) {
+							final IFixture fix, final boolean caseSensitivity) {
+		if (matchesSimple(pattern, idNum, fix, caseSensitivity)) {
 			return true;
 		} else if (fix instanceof FixtureIterable) {
 			return StreamSupport
 					.stream(((FixtureIterable<@NonNull ?>) fix).spliterator(),
 							false)
 					.anyMatch((final IFixture member) -> matches(pattern, idNum,
-							NullCleaner.assertNotNull(member), csen));
+							NullCleaner.assertNotNull(member), caseSensitivity));
 		} else {
 			return false;
 		}
@@ -240,32 +240,32 @@ public final class FindDialog extends JDialog {
 	 * @param pattern a pattern
 	 * @param idNum   either MIN_INT, or (if pattern is numeric) its numeric equivalent
 	 * @param fix     a fixture.
-	 * @param csen    whether to search case-sensitively
+	 * @param caseSensitivity    whether to search case-sensitively
 	 * @return whether the fixture has id as its ID or matches the pattern in any of the
 	 * simple ways; if this fails the caller will go on to the recursive test.
 	 */
 	private boolean matchesSimple(final String pattern, final int idNum,
-								final IFixture fix, final boolean csen) {
+								final IFixture fix, final boolean caseSensitivity) {
 		return !pattern.isEmpty() && (!(fix instanceof TileFixture) ||
 											ffl.shouldDisplay((TileFixture) fix)) &&
-					((fix.getID() == idNum) || matchesName(pattern, fix, csen) ||
-								matchesKind(pattern, fix, csen) ||
-								matchesOwner(pattern, idNum, fix, csen));
+					((fix.getID() == idNum) || matchesName(pattern, fix, caseSensitivity) ||
+								matchesKind(pattern, fix, caseSensitivity) ||
+								matchesOwner(pattern, idNum, fix, caseSensitivity));
 	}
 
 	/**
 	 * @param pattern a pattern
 	 * @param idNum   the ID number that is the pattern if the pattern is numeric
 	 * @param fix     a fixture
-	 * @param csen    whether to search case-sensitively
+	 * @param caseSensitivity    whether to search case-sensitively
 	 * @return whether the fixture has an owner that matches the pattern.
 	 */
 	private static boolean matchesOwner(final String pattern, final int idNum,
-										final IFixture fix, final boolean csen) {
+										final IFixture fix, final boolean caseSensitivity) {
 		if (fix instanceof HasOwner) {
 			final Player owner = ((HasOwner) fix).getOwner();
 			final String ownerName;
-			if (csen) {
+			if (caseSensitivity) {
 				ownerName = owner.getName();
 			} else {
 				ownerName = owner.getName().toLowerCase();
@@ -294,13 +294,13 @@ public final class FindDialog extends JDialog {
 	/**
 	 * @param pattern a pattern
 	 * @param fix     a fixture
-	 * @param csen    whether to search case-sensitively
+	 * @param caseSensitivity    whether to search case-sensitively
 	 * @return whether the fixture has a 'kind' that matches the pattern
 	 */
 	private static boolean matchesKind(@SuppressWarnings("TypeMayBeWeakened")
 									final String pattern, final IFixture fix,
-									final boolean csen) {
-		if (csen) {
+									final boolean caseSensitivity) {
+		if (caseSensitivity) {
 			return (fix instanceof HasKind) &&
 						((HasKind) fix).getKind().contains(pattern);
 		} else {
@@ -313,13 +313,13 @@ public final class FindDialog extends JDialog {
 	/**
 	 * @param pattern a patter
 	 * @param fix     a fixture
-	 * @param csen    whether to search case-sensitively
+	 * @param caseSensitivity    whether to search case-sensitively
 	 * @return whether the fixture has a name that matches the pattern
 	 */
 	private static boolean matchesName(@SuppressWarnings("TypeMayBeWeakened") final
 									String pattern,
-									final IFixture fix, final boolean csen) {
-		if (csen) {
+									final IFixture fix, final boolean caseSensitivity) {
+		if (caseSensitivity) {
 			return (fix instanceof HasName) &&
 						((HasName) fix).getName().contains(pattern);
 		} else {

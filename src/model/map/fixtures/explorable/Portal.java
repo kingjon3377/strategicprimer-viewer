@@ -52,12 +52,12 @@ public class Portal implements ExplorableFixture {
 	 * Constructor.
 	 *
 	 * @param dest       a string identifying the world the portal connects to
-	 * @param destCoords the coordinates in that world that the portal connects to
+	 * @param destCoordinates the coordinates in that world that the portal connects to
 	 * @param idNum      the ID # for the portal
 	 */
-	public Portal(final String dest, final Point destCoords, final int idNum) {
+	public Portal(final String dest, final Point destCoordinates, final int idNum) {
 		destinationWorld = dest;
-		destinationCoordinates = destCoords;
+		destinationCoordinates = destCoordinates;
 		id = idNum;
 	}
 

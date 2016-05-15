@@ -16,9 +16,9 @@ import model.misc.IMultiMapModel;
 import model.viewer.IViewerModel;
 import util.OnMac;
 
-import static view.util.MenuItemCreator.createHotkey;
+import static view.util.MenuItemCreator.createHotKey;
 import static view.util.MenuItemCreator.createMenuItem;
-import static view.util.MenuItemCreator.createShiftHotkey;
+import static view.util.MenuItemCreator.createShiftHotKey;
 
 /**
  * A common superclass for application-specific menu bars.
@@ -56,7 +56,7 @@ public class SPMenu extends JMenuBar {
 		final JMenu fileMenu = new JMenu("File");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		final JMenuItem newItem = createMenuItem("New", KeyEvent.VK_N,
-				createHotkey(KeyEvent.VK_N),
+				createHotKey(KeyEvent.VK_N),
 				"Create a new, empty map the same size as the current one",
 				handler);
 		fileMenu.add(newItem);
@@ -76,19 +76,19 @@ public class SPMenu extends JMenuBar {
 			saveAsCaption = "Save the map to file";
 		}
 		fileMenu.add(createMenuItem("Load", KeyEvent.VK_L,
-				createHotkey(KeyEvent.VK_O), loadCaption, handler));
+				createHotKey(KeyEvent.VK_O), loadCaption, handler));
 		final JMenuItem loadSecondaryItem = createMenuItem("Load secondary",
-				KeyEvent.VK_E, createShiftHotkey(KeyEvent.VK_O),
+				KeyEvent.VK_E, createShiftHotKey(KeyEvent.VK_O),
 				"Load an additional secondary map from file", handler);
 		fileMenu.add(loadSecondaryItem);
 		fileMenu.add(createMenuItem("Save", KeyEvent.VK_S,
-				createHotkey(KeyEvent.VK_S),
+				createHotKey(KeyEvent.VK_S),
 				saveCaption, handler));
 		fileMenu.add(createMenuItem("Save As", KeyEvent.VK_A,
-				createShiftHotkey(KeyEvent.VK_S), saveAsCaption,
+				createShiftHotKey(KeyEvent.VK_S), saveAsCaption,
 				handler));
 		final JMenuItem saveAllItem = createMenuItem("Save All", KeyEvent.VK_V,
-				createHotkey(KeyEvent.VK_L), "Save all maps to their files",
+				createHotKey(KeyEvent.VK_L), "Save all maps to their files",
 				handler);
 		fileMenu.add(saveAllItem);
 		if (!(model instanceof IMultiMapModel)) {
@@ -97,7 +97,7 @@ public class SPMenu extends JMenuBar {
 		}
 		fileMenu.addSeparator();
 		final JMenuItem openViewerItem = createMenuItem("Open in map viewer",
-				KeyEvent.VK_M, createHotkey(KeyEvent.VK_M),
+				KeyEvent.VK_M, createHotKey(KeyEvent.VK_M),
 				"Open the main map in the map viewer for a broader view",
 				handler);
 		fileMenu.add(openViewerItem);
@@ -106,7 +106,7 @@ public class SPMenu extends JMenuBar {
 		}
 		final JMenuItem openSecondaryViewerItem = createMenuItem(
 				"Open secondary map in map viewer", KeyEvent.VK_E,
-				createHotkey(KeyEvent.VK_E),
+				createHotKey(KeyEvent.VK_E),
 				"Open the first secondary map in the map viewer for a broader view",
 				handler);
 		fileMenu.add(openSecondaryViewerItem);
@@ -114,15 +114,15 @@ public class SPMenu extends JMenuBar {
 			openSecondaryViewerItem.setEnabled(false);
 		}
 		fileMenu.addSeparator();
-		fileMenu.add(createMenuItem("Close", KeyEvent.VK_W, createHotkey(KeyEvent.VK_W),
+		fileMenu.add(createMenuItem("Close", KeyEvent.VK_W, createHotKey(KeyEvent.VK_W),
 				"Close this window", handler));
 		fileMenu.addSeparator();
 		fileMenu.add(createMenuItem("About", KeyEvent.VK_B,
-				createHotkey(KeyEvent.VK_B), "Show development credits", handler));
+				createHotKey(KeyEvent.VK_B), "Show development credits", handler));
 		fileMenu.addSeparator();
 		if (!OnMac.SYSTEM_IS_MAC) {
 			fileMenu.add(
-					createMenuItem("Quit", KeyEvent.VK_Q, createHotkey(KeyEvent.VK_Q),
+					createMenuItem("Quit", KeyEvent.VK_Q, createHotKey(KeyEvent.VK_Q),
 							"Quit the application", handler));
 		}
 		return fileMenu;
@@ -142,10 +142,10 @@ public class SPMenu extends JMenuBar {
 		final JMenu retval = new JMenu("Map");
 		retval.setMnemonic(KeyEvent.VK_M);
 		final int findKey = KeyEvent.VK_F;
-		final KeyStroke findStroke = createHotkey(findKey);
-		final KeyStroke nextStroke = createHotkey(KeyEvent.VK_G);
+		final KeyStroke findStroke = createHotKey(findKey);
+		final KeyStroke nextStroke = createHotKey(KeyEvent.VK_G);
 		final JMenuItem gotoTileItem = createMenuItem("Go to tile",
-				KeyEvent.VK_T, createHotkey(KeyEvent.VK_T),
+				KeyEvent.VK_T, createHotKey(KeyEvent.VK_T),
 				"Go to a tile by coordinates",
 				handler);
 		final JMenuItem findItem = createMenuItem("Find a fixture", findKey,
@@ -171,26 +171,26 @@ public class SPMenu extends JMenuBar {
 		// VK_PLUS only works on non-US keyboards, but we leave it as the
 		// primary hot-key because it's the best to *show* in the menu.
 		final KeyStroke plusKey =
-				createHotkey(KeyEvent.VK_PLUS);
+				createHotKey(KeyEvent.VK_PLUS);
 		final JMenuItem zoomInItem =
 				createMenuItem("Zoom in", KeyEvent.VK_I,
 						plusKey, "Increase the visible size of each tile",
 						handler);
 		final InputMap inputMap =
 				zoomInItem.getInputMap(WHEN_IN_FOCUSED_WINDOW);
-		inputMap.put(createHotkey(KeyEvent.VK_EQUALS),
+		inputMap.put(createHotKey(KeyEvent.VK_EQUALS),
 				inputMap.get(plusKey));
-		inputMap.put(createShiftHotkey(KeyEvent.VK_EQUALS),
+		inputMap.put(createShiftHotKey(KeyEvent.VK_EQUALS),
 				inputMap.get(plusKey));
-		inputMap.put(createHotkey(KeyEvent.VK_ADD),
+		inputMap.put(createHotKey(KeyEvent.VK_ADD),
 				inputMap.get(plusKey));
 		retval.add(zoomInItem);
 		retval.add(createMenuItem("Zoom out", KeyEvent.VK_O,
-				createHotkey(KeyEvent.VK_MINUS),
+				createHotKey(KeyEvent.VK_MINUS),
 				"Decrease the visible size of each tile", handler));
 		retval.addSeparator();
 		retval.add(createMenuItem("Center", KeyEvent.VK_C,
-				createHotkey(KeyEvent.VK_C),
+				createHotKey(KeyEvent.VK_C),
 				"Center the view on the selected tile", handler));
 		retval.addSeparator();
 		retval.add(createMenuItem(
@@ -206,23 +206,23 @@ public class SPMenu extends JMenuBar {
 	 * @param handler the listener to handle item selections
 	 */
 	protected static JMenu createViewMenu(final ActionListener handler) {
-		final JMenu viewtMenu = new JMenu("View");
-		viewtMenu.setMnemonic(KeyEvent.VK_E);
-		viewtMenu.add(createMenuItem(
+		final JMenu viewMenu = new JMenu("View");
+		viewMenu.setMnemonic(KeyEvent.VK_E);
+		viewMenu.add(createMenuItem(
 				"Change current player", KeyEvent.VK_P,
-				createHotkey(KeyEvent.VK_P),
+				createHotKey(KeyEvent.VK_P),
 				"Look at a different player's units and workers", handler));
-		viewtMenu.add(createMenuItem("Reload tree",
-				KeyEvent.VK_R, createHotkey(KeyEvent.VK_R),
+		viewMenu.add(createMenuItem("Reload tree",
+				KeyEvent.VK_R, createHotKey(KeyEvent.VK_R),
 				"Refresh the view of the workers", handler));
-		viewtMenu.add(createMenuItem("Expand All", KeyEvent.VK_X, null,
+		viewMenu.add(createMenuItem("Expand All", KeyEvent.VK_X, null,
 				"Expand all nodes in the unit tree", handler));
-		viewtMenu.add(
+		viewMenu.add(
 				createMenuItem("Expand Unit Kinds", KeyEvent.VK_K, null,
 						"Expand all unit kinds to show the units", handler));
-		viewtMenu.add(createMenuItem("Collapse All", KeyEvent.VK_C, null,
+		viewMenu.add(createMenuItem("Collapse All", KeyEvent.VK_C, null,
 				"Collapse all nodes in the unit tree", handler));
-		return viewtMenu;
+		return viewMenu;
 	}
 
 	/**

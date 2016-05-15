@@ -28,12 +28,12 @@ public final class Coordinate {
 	/**
 	 * Constructor.
 	 *
-	 * @param xCoord the X coordinate or width
-	 * @param yCoord the Y coordinate or height
+	 * @param xCoordinate the X coordinate or width
+	 * @param yCoordinate the Y coordinate or height
 	 */
-	public Coordinate(final int xCoord, final int yCoord) {
-		x = xCoord;
-		y = yCoord;
+	public Coordinate(final int xCoordinate, final int yCoordinate) {
+		x = xCoordinate;
+		y = yCoordinate;
 	}
 
 	/**

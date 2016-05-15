@@ -309,36 +309,36 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 						writeAttribute(ostream, "kind", terrain.toXML());
 					}
 					ostream.append(">");
-					boolean needeol = true;
+					boolean needEOL = true;
 					if (map.isMountainous(point)) {
 						eolIfNeeded(true, ostream);
-						needeol = false;
+						needEOL = false;
 						writeTag(ostream, "mountain", indent + 4);
 						ostream.append(" />\n");
 					}
 					for (final River river : map.getRivers(point)) {
-						eolIfNeeded(needeol, ostream);
-						needeol = false;
+						eolIfNeeded(needEOL, ostream);
+						needEOL = false;
 						writeSPObject(ostream, river, indent + 4);
 					}
 					final Ground ground = map.getGround(point);
 					if (ground != null) {
-						eolIfNeeded(needeol, ostream);
-						needeol = false;
+						eolIfNeeded(needEOL, ostream);
+						needEOL = false;
 						writeSPObject(ostream, ground, indent + 4);
 					}
 					final Forest forest = map.getForest(point);
 					if (forest != null) {
-						eolIfNeeded(needeol, ostream);
-						needeol = false;
+						eolIfNeeded(needEOL, ostream);
+						needEOL = false;
 						writeSPObject(ostream, forest, indent + 4);
 					}
 					for (final TileFixture fixture : map.getOtherFixtures(point)) {
-						eolIfNeeded(needeol, ostream);
-						needeol = false;
+						eolIfNeeded(needEOL, ostream);
+						needEOL = false;
 						writeSPObject(ostream, fixture, indent + 4);
 					}
-					if (!needeol) {
+					if (!needEOL) {
 						indent(ostream, indent + 3);
 					}
 					ostream.append("</tile>\n");
@@ -358,12 +358,12 @@ public class SPFluidWriter implements SPWriter, FluidXMLWriter {
 	 * Write a newline if needed.
 	 *
 	 * @param writer  the writer to write to
-	 * @param needeol whether we need a newline.
+	 * @param needEOL whether we need a newline.
 	 * @throws IOException on I/O error
 	 */
-	private static void eolIfNeeded(final boolean needeol,
+	private static void eolIfNeeded(final boolean needEOL,
 									final Appendable writer) throws IOException {
-		if (needeol) {
+		if (needEOL) {
 			writer.append('\n');
 		}
 	}

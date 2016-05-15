@@ -70,10 +70,10 @@ public final class JobTreeModel
 	/**
 	 * Set the selection model for the tree we're the model for.
 	 *
-	 * @param smodel the selection model
+	 * @param selectionModel the selection model
 	 */
-	public void setSelectionModel(final TreeSelectionModel smodel) {
-		tsm = smodel;
+	public void setSelectionModel(final TreeSelectionModel selectionModel) {
+		tsm = selectionModel;
 	}
 
 	/**

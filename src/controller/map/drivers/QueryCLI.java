@@ -83,11 +83,11 @@ public final class QueryCLI implements SimpleDriver {
 	 * @param cli the interface to the user
 	 */
 	private static void repl(final IDriverModel model, final ICLIHelper cli) {
-		final HuntingModel hmodel = new HuntingModel(model.getMap());
+		final HuntingModel huntModel = new HuntingModel(model.getMap());
 		try {
 			String input = cli.inputString("Command: ");
 			while (!input.isEmpty() && (input.charAt(0) != 'q')) {
-				handleCommand(model, hmodel, cli, input.charAt(0));
+				handleCommand(model, huntModel, cli, input.charAt(0));
 				input = cli.inputString("Command: ");
 			}
 		} catch (final IOException | DriverFailedException except) {
@@ -97,14 +97,14 @@ public final class QueryCLI implements SimpleDriver {
 
 	/**
 	 * @param model   the driver model
-	 * @param hmodel  the hunting model
+	 * @param huntModel  the hunting model
 	 * @param cli the interface to the user
 	 * @param input   the command
 	 * @throws IOException           on I/O error
 	 * @throws DriverFailedException on I/O error in trap-model driver
 	 */
 	public static void handleCommand(final IDriverModel model,
-			final HuntingModel hmodel, final ICLIHelper cli, final char input)
+			final HuntingModel huntModel, final ICLIHelper cli, final char input)
 					throws IOException, DriverFailedException {
 		switch (input) {
 		case '?':
@@ -114,16 +114,16 @@ public final class QueryCLI implements SimpleDriver {
 			fortressInfo(model.getMap(), selectPoint(cli), cli);
 			break;
 		case 'h':
-			hunt(hmodel, selectPoint(cli), true, cli, HUNTER_HOURS * HOURLY_ENCOUNTERS);
+			hunt(huntModel, selectPoint(cli), true, cli, HUNTER_HOURS * HOURLY_ENCOUNTERS);
 			break;
 		case 'i':
-			hunt(hmodel, selectPoint(cli), false, cli, HUNTER_HOURS * HOURLY_ENCOUNTERS);
+			hunt(huntModel, selectPoint(cli), false, cli, HUNTER_HOURS * HOURLY_ENCOUNTERS);
 			break;
 		case 'g':
-			gather(hmodel, selectPoint(cli), cli, HUNTER_HOURS * HOURLY_ENCOUNTERS);
+			gather(huntModel, selectPoint(cli), cli, HUNTER_HOURS * HOURLY_ENCOUNTERS);
 			break;
 		case 'e':
-			herd(cli, hmodel);
+			herd(cli, huntModel);
 			break;
 		case 't':
 			new TrapModelDriver().startDriver(model);
@@ -205,31 +205,31 @@ public final class QueryCLI implements SimpleDriver {
 	 */
 	private static double distance(final Point base, final Point dest,
 								final MapDimensions dims) {
-		final int rawXdiff = base.row - dest.row;
-		final int rawYdiff = base.col - dest.col;
-		final int xdiff;
-		if (rawXdiff < (dims.rows / 2)) {
-			xdiff = rawXdiff;
+		final int rawXDiff = base.row - dest.row;
+		final int rawYDiff = base.col - dest.col;
+		final int xDiff;
+		if (rawXDiff < (dims.rows / 2)) {
+			xDiff = rawXDiff;
 		} else {
-			xdiff = dims.rows - rawXdiff;
+			xDiff = dims.rows - rawXDiff;
 		}
-		final int ydiff;
-		if (rawYdiff < (dims.cols / 2)) {
-			ydiff = rawYdiff;
+		final int yDiff;
+		if (rawYDiff < (dims.cols / 2)) {
+			yDiff = rawYDiff;
 		} else {
-			ydiff = dims.cols - rawYdiff;
+			yDiff = dims.cols - rawYDiff;
 		}
-		return Math.round(Math.sqrt((xdiff * xdiff) + (ydiff * ydiff)));
+		return Math.round(Math.sqrt((xDiff * xDiff) + (yDiff * yDiff)));
 
 	}
 	/**
 	 * Run herding. TODO: Move the logic here into the HuntingModel or a similar class.
 	 *
 	 * @param cli the interface to the user
-	 * @param hmodel the hunting model (used for hours remaining after herding is done)
+	 * @param huntModel the hunting model (used for hours remaining after herding is done)
 	 * @throws IOException on I/O error dealing with user input
 	 */
-	private static void herd(final ICLIHelper cli, final HuntingModel hmodel)
+	private static void herd(final ICLIHelper cli, final HuntingModel huntModel)
 			throws IOException {
 		final double rate; // The amount of milk per animal
 		final int time; // How long it takes to milk one animal, in minutes.
@@ -300,7 +300,7 @@ public final class QueryCLI implements SimpleDriver {
 			}
 			if ((hours < HUNTER_HOURS) &&
 						cli.inputBoolean("Spend remaining time as Food Gatherers? ")) {
-				gather(hmodel, selectPoint(cli), cli, HUNTER_HOURS - hours);
+				gather(huntModel, selectPoint(cli), cli, HUNTER_HOURS - hours);
 			}
 		}
 	}
@@ -308,33 +308,33 @@ public final class QueryCLI implements SimpleDriver {
 	/**
 	 * Run hunting, fishing, or trapping.
 	 *
-	 * @param hmodel     the hunting model
+	 * @param huntModel     the hunting model
 	 * @param point      where to hunt or fish
 	 * @param land       true if this is hunting, false if fishing
 	 * @param cli the interface to the user
 	 * @param encounters how many encounters to show
 	 */
-	private static void hunt(final HuntingModel hmodel, final Point point,
+	private static void hunt(final HuntingModel huntModel, final Point point,
 							final boolean land, final ICLIHelper cli,
 							final int encounters) {
 		if (land) {
-			hmodel.hunt(point, encounters).forEach(cli::println);
+			huntModel.hunt(point, encounters).forEach(cli::println);
 		} else {
-			hmodel.fish(point, encounters).forEach(cli::println);
+			huntModel.fish(point, encounters).forEach(cli::println);
 		}
 	}
 
 	/**
 	 * Run food-gathering.
 	 *
-	 * @param hmodel     the hunting model to get results from
+	 * @param huntModel     the hunting model to get results from
 	 * @param point      around where to gather
 	 * @param cli the interface to the user
 	 * @param encounters how many encounters to show
 	 */
-	private static void gather(final HuntingModel hmodel, final Point point,
+	private static void gather(final HuntingModel huntModel, final Point point,
 							final ICLIHelper cli, final int encounters) {
-		hmodel.gather(point, encounters).forEach(cli::println);
+		huntModel.gather(point, encounters).forEach(cli::println);
 	}
 
 	/**

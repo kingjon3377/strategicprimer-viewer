@@ -141,14 +141,14 @@ public final class RiverFixture
 	 */
 	@Override
 	public String toString() {
-		final StringBuilder sbuild =
+		final StringBuilder builder =
 				new StringBuilder(BASE_STRING.length() + (MAX_RIVER_SIZE * rivers.size()))
 						.append(BASE_STRING);
 		for (final River river : rivers) {
-			sbuild.append(river.toString());
-			sbuild.append(' ');
+			builder.append(river.toString());
+			builder.append(' ');
 		}
-		return NullCleaner.assertNotNull(sbuild.toString());
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**

@@ -47,16 +47,16 @@ public final class MineralVein implements IEvent, HarvestableFixture, HasMutable
 	/**
 	 * Constructor.
 	 *
-	 * @param minkind what kind of mineral this is
+	 * @param minKind what kind of mineral this is
 	 * @param exp     whether the vein is exposed
-	 * @param discdc  the dc to discover the vein
+	 * @param discoverDC  the dc to discover the vein
 	 * @param idNum   the ID number.
 	 */
-	public MineralVein(final String minkind, final boolean exp,
-						final int discdc, final int idNum) {
-		mineral = minkind;
+	public MineralVein(final String minKind, final boolean exp,
+						final int discoverDC, final int idNum) {
+		mineral = minKind;
 		exposed = exp;
-		dc = discdc;
+		dc = discoverDC;
 		id = idNum;
 	}
 

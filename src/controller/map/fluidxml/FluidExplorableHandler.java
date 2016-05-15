@@ -181,7 +181,7 @@ public class FluidExplorableHandler {
 		// Of all our uses of StringBuilder, here we can't know how much size
 		// we're going to need beforehand. But cases where we'll need more than
 		// 2K will be vanishingly rare in practice.
-		final StringBuilder sbuild = new StringBuilder(2048);
+		final StringBuilder builder = new StringBuilder(2048);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement() && EqualsAny.equalsAny(
 					assertNotNull(event.asStartElement().getName().getNamespaceURI()),
@@ -189,13 +189,13 @@ public class FluidExplorableHandler {
 				throw new UnwantedChildException(assertNotNull(element.getName()),
 														assertNotNull(event.asStartElement()));
 			} else if (event.isCharacters()) {
-				sbuild.append(event.asCharacters().getData());
+				builder.append(event.asCharacters().getData());
 			} else if (event.isEndElement() &&
 							   element.getName().equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
-		return setImage(new TextFixture(assertNotNull(sbuild.toString().trim()),
+		return setImage(new TextFixture(assertNotNull(builder.toString().trim()),
 							   getIntegerAttribute(element, "turn", -1)), element, warner);
 	}
 	/**

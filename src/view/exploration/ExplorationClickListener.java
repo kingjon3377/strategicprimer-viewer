@@ -100,13 +100,13 @@ public final class ExplorationClickListener extends AbstractAction implements
 	/**
 	 * Constructor.
 	 *
-	 * @param emodel   the exploration model
+	 * @param explorationModel   the exploration model
 	 * @param direct   what direction this button is from the center.
 	 * @param mainList the list of fixtures on this tile in the main map.
 	 */
-	public ExplorationClickListener(final IExplorationModel emodel,
+	public ExplorationClickListener(final IExplorationModel explorationModel,
 									final Direction direct, final FixtureList mainList) {
-		model = emodel;
+		model = explorationModel;
 		direction = direct;
 		list = mainList;
 	}

@@ -181,24 +181,24 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 				.sort(values, (one, two) -> comparePairs(one.second(), two.second()));
 		ostream.append(headerRow());
 		ostream.append('\n');
-		final Map<String, Integer> impls = new HashMap<>();
+		final Map<String, Integer> implementCounts = new HashMap<>();
 		for (final Pair<Integer, Pair<Point, IFixture>> pair : values) {
 			final Pair<Point, IFixture> inner = pair.second();
 			final IFixture fix = inner.second();
 			if (fix instanceof Implement) {
 				final String kind = ((Implement) fix).getKind();
-				if (impls.containsKey(kind)) {
-					impls.put(kind, Integer.valueOf(
-							NullCleaner.assertNotNull(impls.get(kind)).intValue() + 1));
+				if (implementCounts.containsKey(kind)) {
+					implementCounts.put(kind, Integer.valueOf(
+							NullCleaner.assertNotNull(implementCounts.get(kind)).intValue() + 1));
 				} else {
-					impls.put(kind, Integer.valueOf(1));
+					implementCounts.put(kind, Integer.valueOf(1));
 				}
 				fixtures.remove(pair.first());
 			} else if (produce(ostream, fixtures, fix, inner.first())) {
 				fixtures.remove(pair.first());
 			}
 		}
-		for (final Map.Entry<String, Integer> entry : impls.entrySet()) {
+		for (final Map.Entry<String, Integer> entry : implementCounts.entrySet()) {
 			writeField(ostream, "equipment");
 			writeFieldDelimiter(ostream);
 			writeField(ostream, Integer.toString(entry.getValue()));

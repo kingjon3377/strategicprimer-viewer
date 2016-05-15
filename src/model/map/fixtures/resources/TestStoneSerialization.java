@@ -51,10 +51,10 @@ public class TestStoneSerialization extends BaseTestFixtureSerialization {
 	private static final Pattern KIND_PATTERN =
 			NullCleaner.assertNotNull(Pattern.compile(KIND_PROPERTY, Pattern.LITERAL));
 	/**
-	 * @param skind the stone kind to use for this test
+	 * @param stone the stone kind to use for this test
 	 */
-	public TestStoneSerialization(final StoneKind skind) {
-		kind = skind;
+	public TestStoneSerialization(final StoneKind stone) {
+		kind = stone;
 	}
 	/**
 	 * The stone kind to use for this test.

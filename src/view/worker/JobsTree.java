@@ -51,14 +51,14 @@ public final class JobsTree extends JTree implements SkillSelectionSource {
 	/**
 	 * Constructor.
 	 *
-	 * @param jtmodel the tree model underlying this tree
+	 * @param treeModel the tree model underlying this tree
 	 */
 	@SuppressWarnings("AssignmentToNull")
-	public JobsTree(final JobTreeModel jtmodel) {
-		jtmodel.setSelectionModel(NullCleaner.assertNotNull(getSelectionModel()));
-		setModel(jtmodel);
+	public JobsTree(final JobTreeModel treeModel) {
+		treeModel.setSelectionModel(NullCleaner.assertNotNull(getSelectionModel()));
+		setModel(treeModel);
 		final JTree tree = this;
-		jtmodel.addTreeModelListener(new TreeModelListener() {
+		treeModel.addTreeModelListener(new TreeModelListener() {
 			@Override
 			public void treeStructureChanged(@Nullable final TreeModelEvent e) {
 				if (e == null) {

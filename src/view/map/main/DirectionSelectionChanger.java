@@ -139,16 +139,16 @@ public final class DirectionSelectionChanger implements MouseWheelListener {
 	/**
 	 * Scroll.
 	 *
-	 * @param horiz   whether to scroll horizontally.
+	 * @param horizontal   whether to scroll horizontally.
 	 * @param forward whether to scroll forward (down or right)
 	 * @param count   how many times to scroll
 	 */
-	private void scroll(final boolean horiz, final boolean forward, final int count) {
-		if (horiz && forward) {
+	private void scroll(final boolean horizontal, final boolean forward, final int count) {
+		if (horizontal && forward) {
 			for (int i = 0; i < count; i++) {
 				right();
 			}
-		} else if (horiz) {
+		} else if (horizontal) {
 			for (int i = 0; i < count; i++) {
 				left();
 			}

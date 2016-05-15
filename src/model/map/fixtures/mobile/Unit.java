@@ -303,11 +303,11 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 	}
 
 	/**
-	 * @param nomen the unit's new name
+	 * @param newName the unit's new name
 	 */
 	@Override
-	public final void setName(final String nomen) {
-		name = nomen;
+	public final void setName(final String newName) {
+		name = newName;
 	}
 
 	/**
@@ -406,14 +406,14 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 				ours.put(NullCleaner.assertNotNull(Integer.valueOf(member.getID())),
 						member);
 			}
-			final String ctxt =
+			final String localContext =
 					NullCleaner.assertNotNull(String.format(
 							"%s In unit of kind %s named %s (ID #%d):",
 							context, kind, name, Integer.valueOf(id)));
 			boolean retval = true;
 			for (final UnitMember member : other) {
 				if (!ours.containsKey(Integer.valueOf(member.getID()))) {
-					ostream.append(ctxt);
+					ostream.append(localContext);
 					ostream.append(" Extra member:\t");
 					ostream.append(member.toString());
 					ostream.append(", ID #");
@@ -422,14 +422,14 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 					retval = false;
 				} else if (!NullCleaner.assertNotNull(
 						ours.get(Integer.valueOf(member.getID())))
-									.isSubset(member, ostream, ctxt)) {
+									.isSubset(member, ostream, localContext)) {
 					retval = false;
 				}
 			}
 			if (retval) {
 				if (("unassigned".equals(name) || "unassigned".equals(kind)) &&
 						!members.isEmpty() && !other.iterator().hasNext()) {
-					ostream.append(ctxt);
+					ostream.append(localContext);
 					ostream.append(" Nonempty 'unassigned' when submap has it empty\n");
 				}
 				return true;

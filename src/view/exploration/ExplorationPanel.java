@@ -1,6 +1,6 @@
 package view.exploration;
 
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -16,12 +16,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.InputMap;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.KeyStroke;
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import model.exploration.IExplorationModel;
@@ -160,11 +155,12 @@ public final class ExplorationPanel extends BorderedPanel
 	/**
 	 * Constructor.
 	 *
-	 * @param emodel the exploration model.
+	 * @param explorationModel the exploration model.
 	 * @param mpDoc  the model underlying the remaining-MP text boxes.
 	 */
-	public ExplorationPanel(final IExplorationModel emodel, final Document mpDoc) {
-		model = emodel;
+	public ExplorationPanel(final IExplorationModel explorationModel,
+							final Document mpDoc) {
+		model = explorationModel;
 		final BoxPanel headerPanel = new BoxPanel(true);
 		headerPanel.add(new ListenedButton("Select a different explorer", evt -> {
 			for (final CompletionListener list : cListeners) {
@@ -291,18 +287,18 @@ public final class ExplorationPanel extends BorderedPanel
 			return;
 		}
 		if (IsNumeric.isNumeric(mpText)) {
-			int mpoints;
+			int movePoints;
 			try {
-				mpoints = NUM_PARSER.parse(mpText).intValue();
+				movePoints = NUM_PARSER.parse(mpText).intValue();
 			} catch (final ParseException e) {
 				LOGGER.log(Level.SEVERE,
 						"Non-numeric data in movement-points field", e);
 				return;
 			}
-			mpoints -= cost;
+			movePoints -= cost;
 			try {
 				mpDocument.remove(0, mpDocument.getLength());
-				mpDocument.insertString(0, Integer.toString(mpoints), null);
+				mpDocument.insertString(0, Integer.toString(movePoints), null);
 			} catch (final BadLocationException except) {
 				LOGGER.log(Level.SEVERE, "Exception trying to update MP counter", except);
 			}

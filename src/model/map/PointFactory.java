@@ -99,25 +99,25 @@ public final class PointFactory {
 	}
 
 	/**
-	 * @param xCoord an X coordinate or extent
-	 * @param yCoord a Y coordinate or extent
+	 * @param xCoordinate an X coordinate or extent
+	 * @param yCoordinate a Y coordinate or extent
 	 * @return a Coordinate representing those coordinates.
 	 */
-	public static Coordinate coordinate(final int xCoord, final int yCoord) {
+	public static Coordinate coordinate(final int xCoordinate, final int yCoordinate) {
 		if (useCache) {
-			final Integer boxedX = assertNotNull(Integer.valueOf(xCoord));
-			final Integer boxedY = assertNotNull(Integer.valueOf(yCoord));
+			final Integer boxedX = assertNotNull(Integer.valueOf(xCoordinate));
+			final Integer boxedY = assertNotNull(Integer.valueOf(yCoordinate));
 			if (!C_CACHE.containsKey(boxedX)) {
 				C_CACHE.put(boxedX,
 						new ConcurrentHashMap<>());
 			}
 			if (!assertNotNull(C_CACHE.get(boxedX)).containsKey(boxedY)) {
 				assertNotNull(C_CACHE.get(boxedX)).put(boxedY,
-						new Coordinate(xCoord, yCoord));
+						new Coordinate(xCoordinate, yCoordinate));
 			}
 			return assertNotNull(assertNotNull(C_CACHE.get(boxedX)).get(boxedY));
 		} else {
-			return new Coordinate(xCoord, yCoord);
+			return new Coordinate(xCoordinate, yCoordinate);
 		}
 	}
 }

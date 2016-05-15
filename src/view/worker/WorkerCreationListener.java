@@ -47,7 +47,7 @@ public final class WorkerCreationListener
 	/**
 	 * The tree model.
 	 */
-	private final IWorkerTreeModel tmodel;
+	private final IWorkerTreeModel treeModel;
 	/**
 	 * The logger to use for logging.
 	 */
@@ -71,7 +71,7 @@ public final class WorkerCreationListener
 	 */
 	public WorkerCreationListener(final IWorkerTreeModel treeModel,
 								final IDFactory idFac) {
-		tmodel = treeModel;
+		this.treeModel = treeModel;
 		idf = idFac;
 	}
 
@@ -111,7 +111,7 @@ public final class WorkerCreationListener
 			LOGGER.warning("New worker created when no unit selected");
 			showErrorDialog(null, NO_UNIT_TEXT);
 		} else {
-			tmodel.addUnitMember(local, worker);
+			treeModel.addUnitMember(local, worker);
 		}
 	}
 

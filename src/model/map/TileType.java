@@ -127,15 +127,15 @@ public enum TileType {
 	/**
 	 * Constructor.
 	 *
-	 * @param descr a descriptive string to represent the type.
-	 * @param vers  the map versions that support the tile type.
+	 * @param description a descriptive string to represent the type.
+	 * @param supportingVersions  the map versions that support the tile type.
 	 */
-	TileType(final String descr, final int... vers) {
+	TileType(final String description, final int... supportingVersions) {
 		versions = new ArrayList<>();
-		for (final int ver : vers) {
+		for (final int ver : supportingVersions) {
 			versions.add(NullCleaner.assertNotNull(Integer.valueOf(ver)));
 		}
-		desc = descr;
+		desc = description;
 	}
 
 	/**

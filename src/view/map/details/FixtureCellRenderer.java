@@ -51,7 +51,7 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 	/**
 	 * the default fixture icon.
 	 */
-	private final Icon defaultFixtIcon = createDefaultFixtureIcon();
+	private final Icon defaultFixtureIcon = createDefaultFixtureIcon();
 
 	/**
 	 * Default list renderer, for cases we don't know how to handle.
@@ -81,7 +81,7 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 		if (value instanceof HasImage) {
 			((JLabel) component).setIcon(getIcon((HasImage) value));
 		} else {
-			((JLabel) component).setIcon(defaultFixtIcon);
+			((JLabel) component).setIcon(defaultFixtureIcon);
 		}
 		component.setMaximumSize(new Dimension(component.getMaximumSize().width,
 													component.getMaximumSize().height *
@@ -106,7 +106,7 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 			image = obj.getDefaultImage();
 		}
 		if (MISSING.contains(image)) {
-			return defaultFixtIcon;
+			return defaultFixtureIcon;
 		}
 		Icon retval;
 		try {
@@ -115,10 +115,10 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 			LOGGER.log(Level.SEVERE, "image file images/" + image + " not found");
 			LOGGER.log(Level.FINEST, "With stack trace", e);
 			MISSING.add(image);
-			retval = defaultFixtIcon;
+			retval = defaultFixtureIcon;
 		} catch (final IOException e) {
 			LOGGER.log(Level.SEVERE, "I/O error reading image", e);
-			retval = defaultFixtIcon;
+			retval = defaultFixtureIcon;
 		}
 		return retval;
 	}

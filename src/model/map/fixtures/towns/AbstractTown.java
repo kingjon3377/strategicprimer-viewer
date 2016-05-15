@@ -235,11 +235,11 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 	}
 
 	/**
-	 * @param nomen the town's new name
+	 * @param newName the town's new name
 	 */
 	@Override
-	public final void setName(final String nomen) {
-		name = nomen;
+	public final void setName(final String newName) {
+		name = newName;
 	}
 
 	/**

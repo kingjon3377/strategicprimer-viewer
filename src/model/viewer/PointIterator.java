@@ -41,7 +41,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	/**
 	 * Whether we're searching horizontally (if true) or vertically (if false).
 	 */
-	private final boolean horiz;
+	private final boolean horizontal;
 	/**
 	 * The maximum row in the map.
 	 */
@@ -86,7 +86,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 		builder.append(", ");
 		builder.append(col);
 		builder.append("), searching ");
-		if (horiz) {
+		if (horizontal) {
 			builder.append("horizontally ");
 		} else {
 			builder.append("vertically ");
@@ -124,13 +124,13 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	 * @param sel            the selected point; we start from 0, 0 if null
 	 * @param searchForwards Whether we should search forwards (if true) or backwards (if
 	 *                       false)
-	 * @param searchHoriz    Whether we should search horizontally (if true) or
+	 * @param searchHorizontal    Whether we should search horizontally (if true) or
 	 *                          vertically
 	 *                       (if false)
 	 */
 	public PointIterator(final MapDimensions dims, @Nullable final Point sel,
-						final boolean searchForwards, final boolean searchHoriz) {
-		horiz = searchHoriz;
+						final boolean searchForwards, final boolean searchHorizontal) {
+		horizontal = searchHorizontal;
 		forwards = searchForwards;
 		maxRow = dims.getRows() - 1;
 		maxCol = dims.getColumns() - 1;
@@ -169,17 +169,17 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	public Point next() {
 		if (hasNext()) {
 			started = true;
-			if (horiz) {
+			if (horizontal) {
 				if (forwards) {
-					return horizNext();
+					return horizontalNext();
 				} else {
-					return horizPrev();
+					return horizontalPrev();
 				}
 			} else {
 				if (forwards) {
-					return vertNext();
+					return verticalNext();
 				} else {
-					return vertPrev();
+					return verticalPrev();
 				}
 			}
 		} else {
@@ -190,7 +190,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	/**
 	 * @return the next point, searching horizontally.
 	 */
-	private Point horizNext() {
+	private Point horizontalNext() {
 		if (col == maxCol) {
 			if (row == maxRow) {
 				row = 0;
@@ -207,7 +207,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	/**
 	 * @return the previous point, searching horizontally.
 	 */
-	private Point horizPrev() {
+	private Point horizontalPrev() {
 		if (col == 0) {
 			if (row == 0) {
 				row = maxRow;
@@ -224,7 +224,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	/**
 	 * @return the next point, searching vertically.
 	 */
-	private Point vertNext() {
+	private Point verticalNext() {
 		if (row == maxRow) {
 			if (col == maxCol) {
 				col = 0;
@@ -241,7 +241,7 @@ public final class PointIterator implements Iterator<@NonNull Point> {
 	/**
 	 * @return the previous point, searching vertically.
 	 */
-	private Point vertPrev() {
+	private Point verticalPrev() {
 		if (row == 0) {
 			if (col == 0) {
 				col = maxCol;

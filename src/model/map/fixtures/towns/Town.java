@@ -31,15 +31,15 @@ public final class Town extends AbstractTown {
 	 *
 	 * @param tStatus The status of the town
 	 * @param tSize   The size of the town
-	 * @param discdc  The DC to discover it.
+	 * @param discoverDC  The DC to discover it.
 	 * @param tName   the name of the town, fortress, or city
 	 * @param idNum   the ID number.
 	 * @param player  the owner of the town
 	 */
-	public Town(final TownStatus tStatus, final TownSize tSize, final int discdc,
+	public Town(final TownStatus tStatus, final TownSize tSize, final int discoverDC,
 				final String tName, final int idNum, final Player player) {
 		super(tStatus, tSize, tName, player);
-		dc = discdc;
+		dc = discoverDC;
 		id = idNum;
 	}
 

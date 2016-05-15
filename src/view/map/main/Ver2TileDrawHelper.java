@@ -131,12 +131,12 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	/**
 	 * Constructor. We need to initialize the cache.
 	 *
-	 * @param iobs   the class to notify when images finish drawing.
-	 * @param zofilt the class to query about whether to display a fixture
+	 * @param observer   the class to notify when images finish drawing.
+	 * @param filter the class to query about whether to display a fixture
 	 */
-	public Ver2TileDrawHelper(final ImageObserver iobs, final ZOrderFilter zofilt) {
-		observer = iobs;
-		zof = zofilt;
+	public Ver2TileDrawHelper(final ImageObserver observer, final ZOrderFilter filter) {
+		this.observer = observer;
+		zof = filter;
 		final String[] files = {"trees.png", "mountain.png"};
 		createRiverFiles();
 		for (final String file : files) {

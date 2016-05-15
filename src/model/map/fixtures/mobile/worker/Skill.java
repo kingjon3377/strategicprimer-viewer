@@ -129,11 +129,11 @@ public class Skill implements ISkill {
 	}
 
 	/**
-	 * @param nomen the skill's new name
+	 * @param newName the skill's new name
 	 */
 	@Override
-	public final void setName(final String nomen) {
-		name = nomen;
+	public final void setName(final String newName) {
+		name = newName;
 	}
 
 	/**

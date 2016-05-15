@@ -40,10 +40,10 @@ public final class ZoomListener implements ActionListener {
 	/**
 	 * Constructor.
 	 *
-	 * @param vmodel the viewer model, which now handles the zoom level
+	 * @param viewerModel the viewer model, which now handles the zoom level
 	 */
-	public ZoomListener(final IViewerModel vmodel) {
-		model = vmodel;
+	public ZoomListener(final IViewerModel viewerModel) {
+		model = viewerModel;
 	}
 
 	/**

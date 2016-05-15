@@ -65,7 +65,7 @@ public final class ZeroToOneConverter {
 	 * A mapping from numeric events to XML representations of their version-1
 	 * equivalents.
 	 */
-	private static final Map<Integer, String> EQUIVS = new HashMap<>();
+	private static final Map<Integer, String> EQUIVALENTS = new HashMap<>();
 	/**
 	 * @param tag the name of an XML tag
 	 * @param desired the desired XML tag
@@ -84,21 +84,21 @@ public final class ZeroToOneConverter {
 			throws IOException {
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final StartElement selement =
+				final StartElement startElement =
 						NullCleaner.assertNotNull(event.asStartElement());
 				if (isSpecifiedTag(
-						NullCleaner.assertNotNull(selement.getName()),
+						NullCleaner.assertNotNull(startElement.getName()),
 						"tile")) {
 					//noinspection unchecked
-					convertTile(ostream, selement,
-							iFactory(selement.getAttributes()));
+					convertTile(ostream, startElement,
+							iFactory(startElement.getAttributes()));
 				} else if (isSpecifiedTag(
-						NullCleaner.assertNotNull(selement.getName()), "map")) {
+						NullCleaner.assertNotNull(startElement.getName()), "map")) {
 					//noinspection unchecked
-					convertMap(ostream, selement,
-							iFactory(selement.getAttributes()));
+					convertMap(ostream, startElement,
+							iFactory(startElement.getAttributes()));
 				} else {
-					printStartElement(ostream, selement);
+					printStartElement(ostream, startElement);
 				}
 
 			} else if (event.isCharacters()) {
@@ -198,8 +198,8 @@ public final class ZeroToOneConverter {
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
 	private static String getEventXML(final Integer num) {
-		if (EQUIVS.containsKey(num)) {
-			return NullCleaner.assertNotNull(EQUIVS.get(num));
+		if (EQUIVALENTS.containsKey(num)) {
+			return NullCleaner.assertNotNull(EQUIVALENTS.get(num));
 		} else {
 			return "";
 		}
@@ -271,12 +271,12 @@ public final class ZeroToOneConverter {
 	 * Add XML for the specified numbers.
 	 *
 	 * @param xml  the XML to add
-	 * @param nums the numbers to add it for
+	 * @param numbers the numbers to add it for
 	 */
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
-	private static void addXML(final String xml, final int... nums) {
-		for (final int num : nums) {
-			EQUIVS.put(NullCleaner.assertNotNull(Integer.valueOf(num)), xml);
+	private static void addXML(final String xml, final int... numbers) {
+		for (final int num : numbers) {
+			EQUIVALENTS.put(NullCleaner.assertNotNull(Integer.valueOf(num)), xml);
 		}
 	}
 

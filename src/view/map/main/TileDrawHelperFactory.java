@@ -51,20 +51,20 @@ public final class TileDrawHelperFactory {
 
 	/**
 	 * @param version the version of the map that'll be drawn
-	 * @param iobs    the object to be notified when images finish drawing
+	 * @param observer    the object to be notified when images finish drawing
 	 * @param zof     a filter to tell a ver-two helper which tiles to draw
 	 * @return a draw helper for the specified map version
 	 */
-	public TileDrawHelper factory(final int version, final ImageObserver iobs,
+	public TileDrawHelper factory(final int version, final ImageObserver observer,
 								final ZOrderFilter zof) {
 		switch (version) {
 		case 1:
 			return verOneHelper;
 		case 2:
-			if (!verTwoHelpers.containsKey(iobs)) {
-				verTwoHelpers.put(iobs, new Ver2TileDrawHelper(iobs, zof));
+			if (!verTwoHelpers.containsKey(observer)) {
+				verTwoHelpers.put(observer, new Ver2TileDrawHelper(observer, zof));
 			}
-			return NullCleaner.assertNotNull(verTwoHelpers.get(iobs));
+			return NullCleaner.assertNotNull(verTwoHelpers.get(observer));
 		default:
 			throw new IllegalArgumentException("Unsupported map version");
 		}

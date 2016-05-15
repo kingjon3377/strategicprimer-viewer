@@ -76,12 +76,12 @@ public final class MapComponent extends JComponent
 	 * Constructor.
 	 *
 	 * @param theMap The model containing the map this represents
-	 * @param zofilt the filter telling which fixtures to draw
+	 * @param filter the filter telling which fixtures to draw
 	 */
-	public MapComponent(final IViewerModel theMap, final ZOrderFilter zofilt) {
+	public MapComponent(final IViewerModel theMap, final ZOrderFilter filter) {
 		setDoubleBuffered(true);
 		model = theMap;
-		zof = zofilt;
+		zof = filter;
 		helper = TileDrawHelperFactory.INSTANCE.factory(
 				model.getMapDimensions().version, this::imageUpdate, zof);
 		cml = new ComponentMouseListener(model);
@@ -151,13 +151,13 @@ public final class MapComponent extends JComponent
 			context.fillRect(0, 0, getWidth(), getHeight());
 			final Rectangle bounds = bounds(context.getClipBounds());
 			final MapDimensions mapDim = model.getMapDimensions();
-			final int tsize = TileViewSize.scaleZoom(model.getZoomLevel(),
+			final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(),
 					mapDim.getVersion());
-			drawMapPortion(context, (int) Math.round(bounds.getMinX() / tsize),
-					(int) Math.round(bounds.getMinY() / tsize), Math.min(
-							(int) Math.round((bounds.getMaxX() / tsize) + 1),
+			drawMapPortion(context, (int) Math.round(bounds.getMinX() / tileSize),
+					(int) Math.round(bounds.getMinY() / tileSize), Math.min(
+							(int) Math.round((bounds.getMaxX() / tileSize) + 1),
 							mapDim.cols), Math.min(
-							(int) Math.round((bounds.getMaxY() / tsize) + 1),
+							(int) Math.round((bounds.getMaxY() / tileSize) + 1),
 							mapDim.rows));
 		} finally {
 			context.dispose();
@@ -193,7 +193,7 @@ public final class MapComponent extends JComponent
 	 * @return it, or a rectangle surrounding the whole map if it's null
 	 */
 	private Rectangle bounds(@Nullable final Rectangle rect) {
-		final int tsize = TileViewSize.scaleZoom(model.getZoomLevel(),
+		final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(),
 				model.getMapDimensions().getVersion());
 		final VisibleDimensions dim = model.getDimensions();
 		return NullCleaner.valueOrDefault(rect, new Rectangle(0, 0,
@@ -201,12 +201,12 @@ public final class MapComponent extends JComponent
 																				() -
 																			dim
 																					.getMinimumCol()) *
-																			tsize,
+																			tileSize,
 																	(dim.getMaximumRow
 																				() -
 																			dim
 																					.getMinimumRow()) *
-																			tsize));
+																			tileSize));
 	}
 
 	/**
@@ -220,17 +220,17 @@ public final class MapComponent extends JComponent
 	 */
 	private void paintTile(final Graphics pen, final Point point, final int row,
 							final int col, final boolean selected) {
-		final int tsize = TileViewSize.scaleZoom(model.getZoomLevel(),
+		final int tileSize = TileViewSize.scaleZoom(model.getZoomLevel(),
 				model.getMapDimensions().getVersion());
 		helper.drawTile(pen, model.getMap(), point,
-				PointFactory.coordinate(col * tsize, row * tsize),
-				PointFactory.coordinate(tsize, tsize));
+				PointFactory.coordinate(col * tileSize, row * tileSize),
+				PointFactory.coordinate(tileSize, tileSize));
 		if (selected) {
 			final Graphics context = pen.create();
 			try {
 				context.setColor(Color.black);
-				context.drawRect((col * tsize) + 1, (row * tsize) + 1, tsize - 2,
-						tsize - 2);
+				context.drawRect((col * tileSize) + 1, (row * tileSize) + 1, tileSize - 2,
+						tileSize - 2);
 			} finally {
 				context.dispose();
 			}
@@ -260,7 +260,7 @@ public final class MapComponent extends JComponent
 	 * @param newSize the new zoom level
 	 */
 	@Override
-	public void tsizeChanged(final int oldSize, final int newSize) {
+	public void tileSizeChanged(final int oldSize, final int newSize) {
 		final ComponentEvent evt = new ComponentEvent(this,
 															ComponentEvent
 																	.COMPONENT_RESIZED);

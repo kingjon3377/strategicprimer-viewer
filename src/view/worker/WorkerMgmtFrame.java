@@ -140,12 +140,12 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		final NewUnitDialog newUnitFrame =
 				new NewUnitDialog(model.getMap().getCurrentPlayer(),
 										IDFactoryFiller.createFactory(model.getMap()));
-		final IWorkerTreeModel wtmodel =
+		final IWorkerTreeModel treeModel =
 				new WorkerTreeModelAlt(model.getMap().getCurrentPlayer(), model);
 		final WorkerTree tree =
-				new WorkerTree(wtmodel, model.getMap().players(), true);
-		ioHandler.addPlayerChangeListener(wtmodel);
-		newUnitFrame.addNewUnitListener(wtmodel);
+				new WorkerTree(treeModel, model.getMap().players(), true);
+		ioHandler.addPlayerChangeListener(treeModel);
+		newUnitFrame.addNewUnitListener(treeModel);
 		final boolean onMac = OnMac.SYSTEM_IS_MAC;
 		final int keyMask;
 		final String keyDesc;
@@ -161,10 +161,10 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		assert (inputMap != null) && (actionMap != null);
 		inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_U, keyMask), "openUnits");
 		actionMap.put("openUnits", new FocusRequester(tree));
-		final PlayerLabel plabl =
+		final PlayerLabel playerLabel =
 				new PlayerLabel("Units belonging to ", model.getMap().getCurrentPlayer(),
 									keyDesc);
-		ioHandler.addPlayerChangeListener(plabl);
+		ioHandler.addPlayerChangeListener(playerLabel);
 		ioHandler.addPlayerChangeListener(newUnitFrame);
 		final OrdersPanel ordersPanel = new OrdersPanel(model);
 		ioHandler.addPlayerChangeListener(ordersPanel);
@@ -230,12 +230,12 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		model.addMapChangeListener(reportUpdater);
 		final MemberDetailPanel mdp = new MemberDetailPanel();
 		tree.addUnitMemberListener(mdp);
-		final StrategyExporter strategyExporter = new StrategyExporter(model, wtmodel);
+		final StrategyExporter strategyExporter = new StrategyExporter(model, treeModel);
 		// TODO: Make a JFileChooser subclass or wrapper that takes what to do with the
 		// chosen file as a parameter
 		setContentPane(horizontalSplit(HALF_WAY, HALF_WAY,
 				verticalSplit(TWO_THIRDS, TWO_THIRDS,
-						BorderedPanel.vertical(plabl, new JScrollPane(tree), null),
+						BorderedPanel.vertical(playerLabel, new JScrollPane(tree), null),
 						BorderedPanel.vertical(new ListenedButton("Add New Unit",
 																		evt -> newUnitFrame
 																					.setVisible(
@@ -312,13 +312,13 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		/**
 		 * Constructor.
 		 *
-		 * @param wmodel The driver model to get the map from
-		 * @param tmodel the tree model we update
+		 * @param workerModel The driver model to get the map from
+		 * @param treeModel the tree model we update
 		 */
-		protected ReportUpdater(final IWorkerModel wmodel,
-								final DefaultTreeModel tmodel) {
-			model = wmodel;
-			reportModel = tmodel;
+		protected ReportUpdater(final IWorkerModel workerModel,
+								final DefaultTreeModel treeModel) {
+			model = workerModel;
+			reportModel = treeModel;
 		}
 
 		/**
@@ -365,18 +365,18 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		/**
 		 * Unit members that have been dismissed.
 		 */
-		private final IWorkerTreeModel tmodel;
+		private final IWorkerTreeModel workerTreeModel;
 
 		/**
 		 * Constructor.
 		 *
-		 * @param wmodel    the driver model to draw from
+		 * @param workerModel    the driver model to draw from
 		 * @param treeModel the tree model to get dismissed unit members from
 		 */
-		public StrategyExporter(final IWorkerModel wmodel,
+		public StrategyExporter(final IWorkerModel workerModel,
 								final IWorkerTreeModel treeModel) {
-			model = wmodel;
-			tmodel = treeModel;
+			model = workerModel;
+			workerTreeModel = treeModel;
 		}
 
 		/**
@@ -385,7 +385,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		@SuppressWarnings("TypeMayBeWeakened")
 		public String createStrategy() {
 			final Player currentPlayer;
-			final Object treeRoot = tmodel.getRoot();
+			final Object treeRoot = workerTreeModel.getRoot();
 			if (treeRoot instanceof PlayerNode) {
 				currentPlayer = ((PlayerNode) treeRoot).getUserObject();
 			} else if (treeRoot instanceof Player) {
@@ -426,7 +426,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 					size += unit.getOrders().length();
 				}
 			}
-			final Iterable<UnitMember> dismissed = tmodel.dismissed();
+			final Iterable<UnitMember> dismissed = workerTreeModel.dismissed();
 			for (final UnitMember member : dismissed) {
 				size += 2;
 				if (member instanceof HasName) {
@@ -601,11 +601,11 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		/**
 		 * The tree-model to put the report into.
 		 */
-		protected final DefaultTreeModel tmodel;
+		protected final DefaultTreeModel reportModel;
 		/**
 		 * The worker model to generate the report from.
 		 */
-		private final IWorkerModel wmodel;
+		private final IWorkerModel driverModel;
 		/**
 		 * The player to generate the report for.
 		 */
@@ -621,8 +621,8 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		protected ReportGeneratorThread(final DefaultTreeModel treeModel,
 										final IWorkerModel workerModel,
 										final Player currentPlayer) {
-			tmodel = treeModel;
-			wmodel = workerModel;
+			reportModel = treeModel;
+			driverModel = workerModel;
 			player = currentPlayer;
 		}
 
@@ -633,9 +633,9 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 		public void run() {
 			RGT_LOGGER.info("About to generate report");
 			final IReportNode report =
-					ReportGenerator.createAbbreviatedReportIR(wmodel.getMap(), player);
+					ReportGenerator.createAbbreviatedReportIR(driverModel.getMap(), player);
 			RGT_LOGGER.info("Finished generating report");
-			SwingUtilities.invokeLater(() -> tmodel.setRoot(report));
+			SwingUtilities.invokeLater(() -> reportModel.setRoot(report));
 		}
 		/**
 		 * @return a String representation of the thread

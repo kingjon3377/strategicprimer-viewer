@@ -36,7 +36,7 @@ public interface FluidXMLReader {
 	 * @param element the XML tag being parsed
 	 * @param stream the stream of XML elements we're reading from
 	 * @param players the collection of players in the current map
-	 * @param warner the Warning instance to use to handle nwarning conditions
+	 * @param warner the Warning instance to use to handle warning conditions
 	 * @param idFactory the factory to record and generate ID numbers
 	 * @return the object parsed from XML
 	 * @throws SPFormatException on SP format errors

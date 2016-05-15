@@ -252,16 +252,16 @@ public final class XMLHelper {
 													  final Warning warner)
 			throws SPFormatException {
 		final Attribute prefProp = getAttributeByName(element, preferred);
-		final Attribute deprProp = getAttributeByName(element, deprecated);
+		final Attribute deprecatedProp = getAttributeByName(element, deprecated);
 		final MissingPropertyException exception =
 				new MissingPropertyException(element, preferred);
-		if ((prefProp == null) && (deprProp == null)) {
+		if ((prefProp == null) && (deprecatedProp == null)) {
 			throw exception;
 		} else if (prefProp == null) {
 			//noinspection ConstantConditions
-			assert deprProp != null;
+			assert deprecatedProp != null;
 			warner.warn(new DeprecatedPropertyException(element, deprecated, preferred));
-			final String value = deprProp.getValue();
+			final String value = deprecatedProp.getValue();
 			if (value == null) {
 				throw exception;
 			}
@@ -269,14 +269,14 @@ public final class XMLHelper {
 		} else {
 			final String prefValue = prefProp.getValue();
 			if (prefValue == null) {
-				if (deprProp == null) {
+				if (deprecatedProp == null) {
 					throw exception;
 				} else {
-					final String deprValue = deprProp.getValue();
-					if (deprValue == null) {
+					final String deprecatedValue = deprecatedProp.getValue();
+					if (deprecatedValue == null) {
 						throw exception;
 					} else {
-						return deprValue;
+						return deprecatedValue;
 					}
 				}
 			} else {

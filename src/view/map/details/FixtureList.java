@@ -65,12 +65,12 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 	 * Constructor.
 	 *
 	 * @param parent  a parent of this list
-	 * @param dmodel  the driver model (needed to get at the map for the list model)
+	 * @param driverModel  the driver model (needed to get at the map for the list model)
 	 * @param players the players in the map
 	 */
-	public FixtureList(final JComponent parent, final IDriverModel dmodel,
+	public FixtureList(final JComponent parent, final IDriverModel driverModel,
 					final Iterable<Player> players) {
-		flm = new FixtureListModel(dmodel);
+		flm = new FixtureListModel(driverModel);
 		setModel(flm);
 		setCellRenderer(new FixtureCellRenderer());
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);

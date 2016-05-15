@@ -50,7 +50,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	 * expose it
 	 * in the constructor.
 	 */
-	private final String subheader;
+	private final String subHeader;
 
 	/**
 	 * The size of the boilerplate text we have even before we add the size of the
@@ -87,7 +87,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 		setText(header);
 		point = pt;
 		level = lvl;
-		subheader = "";
+		subHeader = "";
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 		setText(header);
 		point = null;
 		level = lvl;
-		subheader = "";
+		subHeader = "";
 	}
 
 	/**
@@ -121,8 +121,8 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	public StringBuilder produce(final StringBuilder builder) {
 		builder.append("<h").append(level).append('>').append(text)
 				.append("</h").append(level).append(">\n");
-		if (!subheader.isEmpty()) {
-			builder.append("<p>").append(subheader).append("</p>\n");
+		if (!subHeader.isEmpty()) {
+			builder.append("<p>").append(subHeader).append("</p>\n");
 		}
 		if (getChildCount() != 0) {
 			builder.append("<ul>\n");
@@ -144,7 +144,7 @@ public class SectionListReportNode extends DefaultMutableTreeNode
 	 */
 	@Override
 	public int size() {
-		int retval = MIN_BOILERPLATE + text.length() + subheader.length();
+		int retval = MIN_BOILERPLATE + text.length() + subHeader.length();
 		for (int i = 0; i < getChildCount(); i++) {
 			final TreeNode child = getChildAt(i);
 			if (child instanceof IReportNode) {

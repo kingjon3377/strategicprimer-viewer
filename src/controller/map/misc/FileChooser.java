@@ -1,11 +1,10 @@
 package controller.map.misc;
 
-import java.awt.Component;
+import java.awt.*;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.ToIntFunction;
-import javax.swing.JFileChooser;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import org.eclipse.jdt.annotation.Nullable;
 import util.NullCleaner;
 import view.util.FilteredFileChooser;
@@ -15,6 +14,8 @@ import static util.NullCleaner.assertNotNull;
 
 /**
  * A class to hide the details of choosing a file from the caller.
+ *
+ * TODO: Add a form taking what to do with the selected file.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.
@@ -58,21 +59,22 @@ public final class FileChooser {
 	 * Constructor allowing the caller to pass in a file-chooser to have the user choose
 	 * with.
 	 * @param loc the file to return
-	 * @param fchooser the file-chooser to use
+	 * @param fileChooser the file-chooser to use
 	 * @param operation which operation to use. Must be one of the two defined in
 	 *                     JFileChooser (OPEN_DIALOG or SAVE_DIALOG; CUSTOM_DIALOG is
 	 *                     not yet supported)
 	 */
-	public FileChooser(final File loc, final JFileChooser fchooser, final int operation) {
+	public FileChooser(final File loc, final JFileChooser fileChooser,
+					   final int operation) {
 		file = new File("");
 		setFile(loc);
-		chooser = fchooser;
+		chooser = fileChooser;
 		switch (operation) {
 		case JFileChooser.OPEN_DIALOG:
-			chooserFunc = fchooser::showOpenDialog;
+			chooserFunc = fileChooser::showOpenDialog;
 			break;
 		case JFileChooser.SAVE_DIALOG:
-			chooserFunc = fchooser::showSaveDialog;
+			chooserFunc = fileChooser::showSaveDialog;
 			break;
 		default:
 			throw new IllegalArgumentException("Only OPEN_DIALOG and SAVE_DIALOG " +

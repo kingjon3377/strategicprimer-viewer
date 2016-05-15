@@ -69,16 +69,16 @@ public final class TerrainChangingMenu extends JPopupMenu
 	 * Constructor.
 	 *
 	 * @param version the map version
-	 * @param dmodel  the driver model
+	 * @param driverModel  the driver model
 	 */
-	public TerrainChangingMenu(final int version, final IViewerModel dmodel) {
-		model = dmodel;
-		nuDialog = new NewUnitDialog(dmodel.getMap().getCurrentPlayer(), IDFactoryFiller
+	public TerrainChangingMenu(final int version, final IViewerModel driverModel) {
+		model = driverModel;
+		nuDialog = new NewUnitDialog(driverModel.getMap().getCurrentPlayer(), IDFactoryFiller
 																				.createFactory(
-																						dmodel.getMap()));
+																						driverModel.getMap()));
 		nuDialog.addNewUnitListener(unit -> {
-			dmodel.getMap().addFixture(point, unit);
-			dmodel.setSelection(point);
+			driverModel.getMap().addFixture(point, unit);
+			driverModel.setSelection(point);
 			scs.fireChanges(null, point);
 		});
 		newUnitItem.addActionListener(e -> nuDialog.setVisible(true));

@@ -55,17 +55,17 @@ public final class ExplorationRunner {
 	public String defaultResults(final Point point, final TileType terrain,
 								final Stream<TileFixture> fixtures)
 			throws MissingTableException {
-		final StringBuilder sbuild =
+		final StringBuilder builder =
 				new StringBuilder(80).append("The primary rock type here is ");
-		sbuild.append(getPrimaryRock(point, terrain, fixtures));
-		sbuild.append(".\n");
+		builder.append(getPrimaryRock(point, terrain, fixtures));
+		builder.append(".\n");
 		if ((TileType.BorealForest == terrain) || (TileType.TemperateForest ==
 														terrain)) {
-			sbuild.append("The main kind of tree is ");
-			sbuild.append(getPrimaryTree(point, terrain, fixtures));
-			sbuild.append(".\n");
+			builder.append("The main kind of tree is ");
+			builder.append(getPrimaryTree(point, terrain, fixtures));
+			builder.append(".\n");
 		}
-		return NullCleaner.assertNotNull(sbuild.toString());
+		return NullCleaner.assertNotNull(builder.toString());
 	}
 
 	/**
@@ -208,7 +208,6 @@ public final class ExplorationRunner {
 	 * @param state a Set to use to prevent infinite recursion
 	 * @return whether the table, or any it calls, calls a table that doesn't exist.
 	 */
-	// $codepro.audit.disable booleanMethodNamingConvention
 	@SuppressWarnings("BooleanMethodNameMustStartWithQuestion")
 	private boolean recursiveCheck(final String table, final Set<String> state) {
 		if (state.contains(table)) {

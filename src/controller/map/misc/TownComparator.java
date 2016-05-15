@@ -134,9 +134,9 @@ public final class TownComparator implements Comparator<@NonNull AbstractTown> {
 	}
 
 	/**
-	 * This is hackishly implemented; fortunately, in each case I can rely on there being
-	 * only three (or four, for status) possibilities and the two towns' values for them
-	 * not being the same.
+	 * This implementation is rather a hack; fortunately, in each case I can rely on
+	 * there being only three (or four, for status) possibilities and the two towns'
+	 * values for them not being the same.
 	 *
 	 * @param townOne the first town
 	 * @param townTwo the second

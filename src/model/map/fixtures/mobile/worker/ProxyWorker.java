@@ -69,10 +69,10 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	/**
 	 * No-op constructor for use by copy().
 	 *
-	 * @param paral whether this is a "parallel" or "serial" proxy
+	 * @param parallelProxy whether this is a "parallel" or "serial" proxy
 	 */
-	private ProxyWorker(final boolean paral) {
-		parallel = paral;
+	private ProxyWorker(final boolean parallelProxy) {
+		parallel = parallelProxy;
 	}
 
 	/**
@@ -333,12 +333,12 @@ public final class ProxyWorker implements IWorker, ProxyFor<@NonNull IWorker> {
 	}
 
 	/**
-	 * @param nomen the new name for the workers
+	 * @param newName the new name for the workers
 	 */
 	@Override
-	public void setName(final String nomen) {
+	public void setName(final String newName) {
 		for (final IWorker worker : workers) {
-			worker.setName(nomen);
+			worker.setName(newName);
 		}
 	}
 

@@ -148,10 +148,10 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 			implements ListSelectionListener {
 		/**
 		 * Constructor.
-		 * @param flist The list to watch.
+		 * @param fixtureList The list to watch.
 		 */
-		protected PortraitPanel(final JList<TileFixture> flist) {
-			list = flist;
+		protected PortraitPanel(final JList<TileFixture> fixtureList) {
+			list = fixtureList;
 		}
 
 		/**

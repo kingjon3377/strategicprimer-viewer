@@ -350,13 +350,13 @@ public final class ProxyUnit
 	}
 
 	/**
-	 * @param nomen the new name for the units
+	 * @param newName the new name for the units
 	 */
 	@Override
-	public void setName(final String nomen) {
+	public void setName(final String newName) {
 		for (final IUnit unit : proxied) {
 			if (unit instanceof HasMutableName) {
-				((HasMutableName) unit).setName(nomen);
+				((HasMutableName) unit).setName(newName);
 			} else {
 				LOGGER.severe("ProxyUnit.setName skipped unit with immutable name");
 			}

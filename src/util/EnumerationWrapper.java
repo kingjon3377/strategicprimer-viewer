@@ -35,10 +35,10 @@ public final class EnumerationWrapper<@NonNull T> implements Iterator<@NonNull T
 	private final Enumeration<T> wrapped;
 
 	/**
-	 * @param enumer the object we're wrapping.
+	 * @param wrappedEnumeration the object we're wrapping.
 	 */
-	public EnumerationWrapper(final Enumeration<T> enumer) {
-		wrapped = enumer;
+	public EnumerationWrapper(final Enumeration<T> wrappedEnumeration) {
+		wrapped = wrappedEnumeration;
 	}
 
 	/**

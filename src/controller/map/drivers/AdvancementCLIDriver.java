@@ -84,27 +84,28 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
-		final IWorkerModel wmodel;
+		final IWorkerModel workerModel;
 		if (model instanceof IWorkerModel) {
-			wmodel = (IWorkerModel) model;
+			workerModel = (IWorkerModel) model;
 		} else {
-			wmodel = new WorkerModel(model);
+			workerModel = new WorkerModel(model);
 		}
-		final List<Player> playerList = wmodel.getPlayers();
+		final List<Player> playerList = workerModel.getPlayers();
 		try (final ICLIHelper cli = new CLIHelper()) {
 			final String hdr = "Available players:";
 			final String none = "No players found.";
-			final String prpt = "Chosen player: ";
-			for (int playerNum = cli.chooseFromList(playerList, hdr, none, prpt,
+			final String prompt = "Chosen player: ";
+			// TODO: Make a lambda to reduce duplication in loop
+			for (int playerNum = cli.chooseFromList(playerList, hdr, none, prompt,
 					false); (playerNum >= 0)
 									&& (playerNum < playerList.size()); playerNum = cli
 																						.chooseFromList(
 																								playerList,
 																								hdr,
 																								none,
-																								prpt,
+																								prompt,
 																								false)) {
-				advanceWorkers(wmodel,
+				advanceWorkers(workerModel,
 						NullCleaner.assertNotNull(playerList.remove(playerNum)), cli);
 			}
 		} catch (final IOException except) {
@@ -185,11 +186,12 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 		final List<IJob> jobs = CLIHelper.toList(worker);
 		final String hdr = "Jobs in worker:";
 		final String none = "No existing jobs.";
-		final String prpt = "Job to advance: ";
-		for (int jobNum = cli.chooseFromList(jobs, hdr, none, prpt, false); jobNum <=
+		final String prompt = "Job to advance: ";
+		// TODO: Make a lambda to reduce duplication in loop
+		for (int jobNum = cli.chooseFromList(jobs, hdr, none, prompt, false); jobNum <=
 																					jobs
 																							.size();
-				jobNum = cli.chooseFromList(jobs, hdr, none, prpt, false)) {
+				jobNum = cli.chooseFromList(jobs, hdr, none, prompt, false)) {
 			if ((jobNum < 0) || (jobNum == jobs.size())) {
 				worker.addJob(new Job(cli.inputString("Name of new Job: "), 0));
 				jobs.clear();
@@ -217,11 +219,12 @@ public final class AdvancementCLIDriver implements SimpleCLIDriver {
 		final List<ISkill> skills = CLIHelper.toList(job);
 		final String hdr = "Skills in Job:";
 		final String none = "No existing skills.";
-		final String prpt = "Skill to advance: ";
-		for (int skillNum = cli.chooseFromList(skills, hdr, none, prpt, false);
+		final String prompt = "Skill to advance: ";
+		// TODO: Make a lambda to reduce duplication in loop
+		for (int skillNum = cli.chooseFromList(skills, hdr, none, prompt, false);
 				skillNum <= skills
 									.size();
-				skillNum = cli.chooseFromList(skills, hdr, none, prpt, false)) {
+				skillNum = cli.chooseFromList(skills, hdr, none, prompt, false)) {
 			if ((skillNum < 0) || (skillNum == skills.size())) {
 				job.addSkill(new Skill(cli.inputString("Name of new Skill: "), 0, 0));
 				skills.clear();

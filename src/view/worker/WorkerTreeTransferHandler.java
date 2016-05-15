@@ -51,7 +51,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	/**
 	 * The tree's selection model.
 	 */
-	private final TreeSelectionModel smodel;
+	private final TreeSelectionModel selectionModel;
 	/**
 	 * The tree's data model.
 	 */
@@ -66,13 +66,13 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	/**
 	 * Constructor.
 	 *
-	 * @param selmodel the tree's selection model
-	 * @param tmodel   the tree's data model
+	 * @param selModel the tree's selection model
+	 * @param treeModel   the tree's data model
 	 */
-	protected WorkerTreeTransferHandler(final TreeSelectionModel selmodel,
-										final IWorkerTreeModel tmodel) {
-		smodel = selmodel;
-		model = tmodel;
+	protected WorkerTreeTransferHandler(final TreeSelectionModel selModel,
+										final IWorkerTreeModel treeModel) {
+		selectionModel = selModel;
+		model = treeModel;
 	}
 
 	/**
@@ -95,7 +95,7 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	@Nullable
 	protected UnitMemberTransferable createTransferable(@Nullable
 														final JComponent component) {
-		final TreePath[] paths = smodel.getSelectionPaths();
+		final TreePath[] paths = selectionModel.getSelectionPaths();
 		final List<Pair<UnitMember, IUnit>> toTransfer = new ArrayList<>();
 		for (final TreePath path : paths) {
 			final Object last = path.getLastPathComponent();
@@ -132,11 +132,11 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	public boolean canImport(@Nullable final TransferSupport support) {
 		if ((support != null) &&
 					support.isDataFlavorSupported(UnitMemberTransferable.FLAVOR)) {
-			final DropLocation dloc = support.getDropLocation();
-			if (!(dloc instanceof JTree.DropLocation)) {
+			final DropLocation dropLocation = support.getDropLocation();
+			if (!(dropLocation instanceof JTree.DropLocation)) {
 				return false;
 			}
-			final TreePath path = ((JTree.DropLocation) dloc).getPath();
+			final TreePath path = ((JTree.DropLocation) dropLocation).getPath();
 			if (path == null) {
 				return false;
 			} else {
@@ -162,11 +162,11 @@ public final class WorkerTreeTransferHandler extends TransferHandler {
 	@Override
 	public boolean importData(@Nullable final TransferSupport support) {
 		if ((support != null) && canImport(support)) {
-			final DropLocation dloc = support.getDropLocation();
-			if (!(dloc instanceof JTree.DropLocation)) {
+			final DropLocation dropLocation = support.getDropLocation();
+			if (!(dropLocation instanceof JTree.DropLocation)) {
 				return false;
 			}
-			final TreePath path = ((JTree.DropLocation) dloc).getPath();
+			final TreePath path = ((JTree.DropLocation) dropLocation).getPath();
 			final Object pathLast = path.getLastPathComponent();
 			if (pathLast == null) {
 				return false;

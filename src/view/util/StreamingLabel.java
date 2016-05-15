@@ -80,7 +80,7 @@ public final class StreamingLabel extends JEditorPane {
 		/**
 		 * The writer to write to.
 		 */
-		private final StringWriter swriter;
+		private final StringWriter stringWriter;
 		/**
 		 * The label to update when we're written to.
 		 */
@@ -93,7 +93,7 @@ public final class StreamingLabel extends JEditorPane {
 		protected StreamingLabelWriter(final StringWriter wrapped,
 									final JEditorPane label) {
 			super(wrapped);
-			swriter = wrapped;
+			stringWriter = wrapped;
 			control = label;
 		}
 
@@ -133,7 +133,7 @@ public final class StreamingLabel extends JEditorPane {
 		 * Update the label's text.
 		 */
 		private void updateText() {
-			control.setText("<html><body bgcolor=\"#000000\">" + swriter.toString() +
+			control.setText("<html><body bgcolor=\"#000000\">" + stringWriter.toString() +
 									"</body></html>");
 		}
 

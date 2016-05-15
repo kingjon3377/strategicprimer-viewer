@@ -170,26 +170,26 @@ public class ResourcePile
 			return false;
 		} else if (obj instanceof ResourcePile) {
 			boolean retval = true;
-			final String ctxt = String.format("%s\tIn Resource Pile, ID #%d: ",
+			final String localContext = String.format("%s\tIn Resource Pile, ID #%d: ",
 					context, Integer.valueOf(id));
 			if (!kind.equals(((ResourcePile) obj).kind)) {
-				ostream.append(ctxt);
+				ostream.append(localContext);
 				ostream.append("Kinds differ\n");
 				retval = false;
 			}
 			if (!contents.equals(((ResourcePile) obj).contents)) {
-				ostream.append(ctxt);
+				ostream.append(localContext);
 				ostream.append("Contents differ\n");
 				retval = false;
 			}
 			if (!unit.equals(((ResourcePile) obj).unit)) {
-				ostream.append(ctxt);
+				ostream.append(localContext);
 				ostream.append("Units differ\n");
 				retval = false;
 			}
 			if ((quantity != ((ResourcePile) obj).quantity)
 						&& (0 != ((ResourcePile) obj).quantity)) {
-				ostream.append(ctxt);
+				ostream.append(localContext);
 				ostream.append("Quantities differ\n");
 				retval = false;
 			}

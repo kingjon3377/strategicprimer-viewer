@@ -187,9 +187,9 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 				saveAll(source);
 				break;
 			case "open in map viewer":
-				final ViewerModel nmodel = new ViewerModel(model);
+				final ViewerModel viewModel = new ViewerModel(model);
 				SwingUtilities.invokeLater(
-						() -> new ViewerFrame(nmodel, new IOHandler(nmodel, chooser))
+						() -> new ViewerFrame(viewModel, new IOHandler(viewModel, chooser))
 									.setVisible(true));
 				break;
 			case "open secondary map in map viewer":
@@ -197,10 +197,10 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 					final Pair<IMutableMapNG, File> mapPair =
 							((IMultiMapModel) model).getSubordinateMaps().iterator()
 									.next();
-					final ViewerModel submodel =
+					final ViewerModel newModel =
 							new ViewerModel(mapPair.first(), mapPair.second());
 					SwingUtilities.invokeLater(
-							() -> new ViewerFrame(submodel, new IOHandler(submodel, chooser))
+							() -> new ViewerFrame(newModel, new IOHandler(newModel, chooser))
 										.setVisible(true));
 				}
 				break;
@@ -221,9 +221,9 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 				if (model instanceof IViewerModel) {
 					SwingUtilities
 							.invokeLater(() -> {
-								final FindDialog fdialog = getFindDialog(source);
-								if (fdialog != null) {
-									fdialog.setVisible(true);
+								final FindDialog findDialog = getFindDialog(source);
+								if (findDialog != null) {
+									findDialog.setVisible(true);
 								}
 							});
 				}
@@ -231,9 +231,9 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			case "find next":
 				if (model instanceof IViewerModel) {
 					SwingUtilities.invokeLater(() -> {
-						final FindDialog fdialog = getFindDialog(source);
-						if (fdialog != null) {
-							fdialog.search();
+						final FindDialog findDialog = getFindDialog(source);
+						if (findDialog != null) {
+							findDialog.search();
 						}
 					});
 				}
@@ -301,25 +301,25 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 	 * map.
 	 */
 	private void startNewViewerWindow() {
-		final ViewerModel nmodel = new ViewerModel(new SPMapNG(model.getMapDimensions(),
+		final ViewerModel newModel = new ViewerModel(new SPMapNG(model.getMapDimensions(),
 																	new
 																			PlayerCollection(),
 																	model.getMap()
 																			.getCurrentTurn()),
 														new File(""));
 		SwingUtilities.invokeLater(
-				() -> new ViewerFrame(nmodel, new IOHandler(nmodel)).setVisible(true));
+				() -> new ViewerFrame(newModel, new IOHandler(newModel)).setVisible(true));
 	}
 
 	/**
 	 * Constructor.
 	 *
 	 * @param map      the map model
-	 * @param fchooser the file chooser
+	 * @param fileChooser the file chooser
 	 */
-	public IOHandler(final IDriverModel map, final JFileChooser fchooser) {
+	public IOHandler(final IDriverModel map, final JFileChooser fileChooser) {
 		model = NullCleaner.assertNotNull(map);
-		chooser = fchooser;
+		chooser = fileChooser;
 		if (model instanceof IViewerModel) {
 			zoomer = new ZoomListener((IViewerModel) model);
 		} else {

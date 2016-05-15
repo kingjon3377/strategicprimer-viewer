@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.StreamSupport;
 import model.exploration.HuntingModel;
 import model.exploration.IExplorationModel;
 import model.exploration.IExplorationModel.Direction;
@@ -26,8 +25,6 @@ import model.map.fixtures.mobile.IUnit;
 import model.map.fixtures.mobile.SimpleMovement;
 import model.map.fixtures.mobile.SimpleMovement.TraversalImpossibleException;
 import model.map.fixtures.resources.CacheFixture;
-import model.map.fixtures.resources.MineralVein;
-import model.map.fixtures.resources.StoneDeposit;
 import model.map.fixtures.terrain.Forest;
 import model.map.fixtures.terrain.Mountain;
 import org.eclipse.jdt.annotation.Nullable;
@@ -87,13 +84,13 @@ public final class ExplorationCLI {
 	private final ICLIHelper helper;
 
 	/**
-	 * @param emodel  the exploration model to use
-	 * @param mhelper the helper to handle user I/O
+	 * @param explorationModel  the exploration model to use
+	 * @param cli the helper to handle user I/O
 	 */
-	public ExplorationCLI(final IExplorationModel emodel, final ICLIHelper mhelper) {
-		model = emodel;
-		helper = mhelper;
-		hmodel = new HuntingModel(model.getMap());
+	public ExplorationCLI(final IExplorationModel explorationModel, final ICLIHelper cli) {
+		model = explorationModel;
+		helper = cli;
+		huntingModel = new HuntingModel(model.getMap());
 		idf = IDFactoryFiller.createFactory(model);
 	}
 
@@ -140,7 +137,7 @@ public final class ExplorationCLI {
 	/**
 	 * A "hunting model," to get the animals to have traces of.
 	 */
-	private final HuntingModel hmodel;
+	private final HuntingModel huntingModel;
 	/**
 	 * An ID number factory for the animal tracks.
 	 */
@@ -207,9 +204,9 @@ public final class ExplorationCLI {
 		}
 		final String possibleTracks;
 		if (Ocean == model.getMap().getBaseTerrain(model.getSelectedUnitLocation())) {
-			possibleTracks = hmodel.fish(model.getSelectedUnitLocation(), 1).get(0);
+			possibleTracks = huntingModel.fish(model.getSelectedUnitLocation(), 1).get(0);
 		} else {
-			possibleTracks = hmodel.hunt(model.getSelectedUnitLocation(), 1).get(0);
+			possibleTracks = huntingModel.hunt(model.getSelectedUnitLocation(), 1).get(0);
 		}
 		if (!HuntingModel.NOTHING.equals(possibleTracks)) {
 			allFixtures

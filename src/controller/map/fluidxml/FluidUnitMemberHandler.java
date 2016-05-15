@@ -90,17 +90,19 @@ public class FluidUnitMemberHandler {
 		retval.setPortrait(getAttribute(element, "portrait", ""));
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final StartElement selem = event.asStartElement();
-				switch (selem.getName().getLocalPart()) {
+				final StartElement startElement = event.asStartElement();
+				switch (startElement.getName().getLocalPart()) {
 				case "job":
-					retval.addJob(readJob(selem, stream, players, warner, idFactory));
+					retval.addJob(
+							readJob(startElement, stream, players, warner, idFactory));
 					break;
 				case "stats":
-					retval.setStats(readStats(selem, stream, players, warner, idFactory));
+					retval.setStats(
+							readStats(startElement, stream, players, warner, idFactory));
 					break;
 				default:
 					throw new UnwantedChildException(assertNotNull(element.getName()),
-															selem);
+															startElement);
 				}
 			} else if (event.isEndElement() &&
 							   element.getName().equals(event.asEndElement().getName())) {
@@ -136,18 +138,19 @@ public class FluidUnitMemberHandler {
 		boolean onlyOneSkill = true;
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
-				final StartElement selem = event.asStartElement();
-				if ("skill".equals(selem.getName().getLocalPart())) {
+				final StartElement startElement = event.asStartElement();
+				if ("skill".equals(startElement.getName().getLocalPart())) {
 					if (anySkills) {
 						onlyOneSkill = false;
 					} else {
 						anySkills = true;
 					}
-					retval.addSkill(readSkill(selem, stream, players, warner, idFactory));
-					lastSkill = selem;
+					retval.addSkill(
+							readSkill(startElement, stream, players, warner, idFactory));
+					lastSkill = startElement;
 				} else {
 					throw new UnwantedChildException(assertNotNull(element.getName()),
-															selem);
+															startElement);
 				}
 			} else if (event.isEndElement() &&
 							   element.getName().equals(event.asEndElement().getName())) {

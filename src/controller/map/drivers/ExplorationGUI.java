@@ -2,7 +2,7 @@ package controller.map.drivers;
 
 import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.IOHandler;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import model.exploration.ExplorationModel;
 import model.misc.IDriverModel;
 import view.exploration.ExplorationFrame;
@@ -47,14 +47,16 @@ public final class ExplorationGUI implements SimpleDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel model) {
-		final ExplorationModel emodel;
+		final ExplorationModel explorationModel;
 		if (model instanceof ExplorationModel) {
-			emodel = (ExplorationModel) model;
+			explorationModel = (ExplorationModel) model;
 		} else {
-			emodel = new ExplorationModel(model);
+			explorationModel = new ExplorationModel(model);
 		}
-		SwingUtilities.invokeLater(
-				() -> new ExplorationFrame(emodel, new IOHandler(emodel)).setVisible(true));
+		SwingUtilities.invokeLater(() -> new ExplorationFrame(explorationModel,
+																	 new IOHandler
+																			 (explorationModel))
+												 .setVisible(true));
 	}
 
 	/**

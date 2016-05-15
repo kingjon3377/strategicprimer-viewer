@@ -4,7 +4,7 @@ import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 /**
- * A pair of Comparables.
+ * A pair of Comparable objects.
  *
  * This is part of the Strategic Primer assistive programs suite developed by Jonathan
  * Lovelace.

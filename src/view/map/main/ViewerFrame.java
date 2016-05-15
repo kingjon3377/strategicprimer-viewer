@@ -81,8 +81,8 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 					map.getMapFile());
 		}
 		model = map;
-		final FixtureFilterMenu ffmenu = new FixtureFilterMenu();
-		final MapComponent mapPanel = new MapComponent(map, ffmenu);
+		final FixtureFilterMenu filterMenu = new FixtureFilterMenu();
+		final MapComponent mapPanel = new MapComponent(map, filterMenu);
 		map.addGraphicalParamsListener(mapPanel);
 		map.addMapChangeListener(mapPanel);
 		map.addSelectionChangeListener(mapPanel);
@@ -95,13 +95,13 @@ public final class ViewerFrame extends JFrame implements ISPWindow {
 		initializeDimensions(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		pack();
 		mapPanel.requestFocusInWindow();
-		final WindowAdapter mwsl = new MapWindowSizeListener(mapPanel);
-		addWindowListener(mwsl);
-		addWindowStateListener(mwsl);
+		final WindowAdapter windowSizeListener = new MapWindowSizeListener(mapPanel);
+		addWindowListener(windowSizeListener);
+		addWindowStateListener(windowSizeListener);
 
 		setJMenuBar(new ViewerMenu(NullCleaner.assertNotNull(ioHandler), this,
 				map));
-		getJMenuBar().add(ffmenu);
+		getJMenuBar().add(filterMenu);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 

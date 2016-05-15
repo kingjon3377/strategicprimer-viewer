@@ -1,4 +1,3 @@
-// $codepro.audit.disable lineLength
 package util;
 
 import java.util.Objects;

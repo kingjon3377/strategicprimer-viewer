@@ -76,21 +76,21 @@ public final class CompactTextReader extends AbstractCompactReader<TextFixture> 
 		requireTag(element, "text");
 		// Of all the uses of a StringBuilder, this one can't know what size we
 		// need. But cases above 2K will be vanishingly rare in practice.
-		final StringBuilder sbuild = new StringBuilder(2048);
+		final StringBuilder builder = new StringBuilder(2048);
 		for (final XMLEvent event : stream) {
 			if (event.isStartElement()) {
 				throw new UnwantedChildException(
 						NullCleaner.assertNotNull(element.getName()),
 						NullCleaner.assertNotNull(event.asStartElement()));
 			} else if (event.isCharacters()) {
-				sbuild.append(event.asCharacters().getData());
+				builder.append(event.asCharacters().getData());
 			} else if (event.isEndElement()
 							&& element.getName().equals(event.asEndElement().getName())) {
 				break;
 			}
 		}
 		final TextFixture fix = new TextFixture(NullCleaner.assertNotNull(
-				sbuild.toString().trim()), getIntegerParameter(element, "turn", -1));
+				builder.toString().trim()), getIntegerParameter(element, "turn", -1));
 		fix.setImage(getParameter(element, "image", ""));
 		return fix;
 	}

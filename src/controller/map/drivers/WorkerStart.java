@@ -56,14 +56,14 @@ public final class WorkerStart implements SimpleDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel model) {
-		final IWorkerModel wmodel;
+		final IWorkerModel driverModel;
 		if (model instanceof IWorkerModel) {
-			wmodel = (IWorkerModel) model;
+			driverModel = (IWorkerModel) model;
 		} else {
-			wmodel = new WorkerModel(model);
+			driverModel = new WorkerModel(model);
 		}
 		SwingUtilities.invokeLater(
-				() -> new WorkerMgmtFrame(wmodel, new IOHandler(wmodel)).setVisible(true));
+				() -> new WorkerMgmtFrame(driverModel, new IOHandler(driverModel)).setVisible(true));
 	}
 
 	/**

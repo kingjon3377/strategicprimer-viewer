@@ -44,9 +44,9 @@ public class ClassIterable implements Iterable<Class<?>> {
 	}
 	@SuppressWarnings("NonBooleanMethodNameMayNotStartWithQuestion")
 	private static void addInterfaces(final Collection<Class<?>> list, final Class<?> cls) {
-		for (final Class<?> interf : cls.getInterfaces()) {
-			list.add(interf);
-			addInterfaces(list, interf);
+		for (final Class<?> iface : cls.getInterfaces()) {
+			list.add(iface);
+			addInterfaces(list, iface);
 		}
 	}
 	/**

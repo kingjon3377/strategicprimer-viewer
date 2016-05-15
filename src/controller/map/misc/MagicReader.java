@@ -38,7 +38,7 @@ public class MagicReader extends Reader {
 	/**
 	 * The name of the file we're reading, or "a string" if reading from a string.
 	 */
-	private final String fname;
+	private final String filename;
 	/**
 	 * If filename begins "string:", with the colon followed immediately by the
 	 * angle-bracket to begin the first XML tag, it is not treated as a filename;
@@ -50,10 +50,10 @@ public class MagicReader extends Reader {
 	public MagicReader(final String filename) throws FileNotFoundException {
 		if (filename.contains("string:<")) {
 			delegate = new StringReader(filename.substring(7));
-			fname = "a string";
+			this.filename = "a string";
 		} else {
 			delegate = new FileReader(filename);
-			fname = filename;
+			this.filename = filename;
 		}
 	}
 
@@ -123,6 +123,6 @@ public class MagicReader extends Reader {
 	 */
 	@Override
 	public String toString() {
-		return "MagicReader reading " + fname;
+		return "MagicReader reading " + filename;
 	}
 }

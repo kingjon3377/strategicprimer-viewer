@@ -42,11 +42,11 @@ public final class Battlefield implements IEvent, ExplorableFixture {
 	/**
 	 * Constructor.
 	 *
-	 * @param discdc the DC to discover the battlefield.
+	 * @param discoverDC the DC to discover the battlefield.
 	 * @param idNum  the ID number for the event.
 	 */
-	public Battlefield(final int discdc, final int idNum) {
-		dc = discdc;
+	public Battlefield(final int discoverDC, final int idNum) {
+		dc = discoverDC;
 		id = idNum;
 	}
 

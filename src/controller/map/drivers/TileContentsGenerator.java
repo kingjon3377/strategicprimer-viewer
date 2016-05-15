@@ -135,7 +135,7 @@ public final class TileContentsGenerator {
 	public static void main(final String... args) {
 		final Logger logger = TypesafeLogger.getLogger(TileContentsGenerator.class);
 		if (args.length < 3) {
-			logger.severe("Usage: GenerateTileContents mapname.xml row col");
+			logger.severe("Usage: GenerateTileContents map_name.xml row col");
 		} else {
 			final NumberFormat numParser = NumberFormat.getIntegerInstance();
 			try {

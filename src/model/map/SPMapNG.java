@@ -140,11 +140,11 @@ public class SPMapNG implements IMutableMapNG {
 			// with SubsettableFixture
 			final Map<Integer, IUnit> ourUnits = new HashMap<>();
 			for (final Point point : locations()) {
-				final String ctxt =
+				final String localContext =
 						context + " At " + Objects.toString(point) + ':';
 				if ((getBaseTerrain(point) != obj.getBaseTerrain(point))
 							&& (TileType.NotVisible != obj.getBaseTerrain(point))) {
-					ostream.append(ctxt);
+					ostream.append(localContext);
 					if (TileType.NotVisible == getBaseTerrain(point)) {
 						ostream.append("\tHas terrain information we don't\n");
 					} else {
@@ -155,7 +155,7 @@ public class SPMapNG implements IMutableMapNG {
 					// return false;
 				}
 				if (obj.isMountainous(point) && !isMountainous(point)) {
-					ostream.append(ctxt);
+					ostream.append(localContext);
 					ostream.append("\tHas mountains we don't\n");
 					retval = false;
 					// return false;
@@ -171,7 +171,7 @@ public class SPMapNG implements IMutableMapNG {
 					// check.
 					if (!fixtures.containsKey(point) ||
 								!assertNotNull(fixtures.get(point)).contains(forest)) {
-						ostream.append(ctxt);
+						ostream.append(localContext);
 						ostream.append(
 								"\tHas forest we don't, or different primary forest\n");
 						retval = false;
@@ -196,7 +196,7 @@ public class SPMapNG implements IMutableMapNG {
 						// ...
 					} else if ((ourGround == null) || !assertNotNull(fixtures.get(point))
 															.contains(theirGround)) {
-						ostream.append(ctxt);
+						ostream.append(localContext);
 						ostream.append(
 								"\tHas different primary ground, or ground we don't\n");
 						retval = false;
@@ -230,16 +230,16 @@ public class SPMapNG implements IMutableMapNG {
 					} else if ((fix instanceof IUnit) && ourUnits.containsKey(
 							Integer.valueOf(fix.getID()))) {
 						retval &= assertNotNull(ourUnits.get(Integer.valueOf(fix.getID())))
-										.isSubset(fix, ostream, ctxt);
+										.isSubset(fix, ostream, localContext);
 					} else if ((fix instanceof SubsettableFixture) && ourSubsettables
 																			.containsKey(
 																					Integer.valueOf(
 																							fix.getID()))) {
 						retval &= assertNotNull(
 								ourSubsettables.get(Integer.valueOf(fix.getID())))
-										.isSubset(fix, ostream, ctxt);
+										.isSubset(fix, ostream, localContext);
 					} else {
-						ostream.append(ctxt);
+						ostream.append(localContext);
 						ostream.append(" Extra fixture:\t");
 						ostream.append(fix.toString());
 						ostream.append('\n');
@@ -252,7 +252,7 @@ public class SPMapNG implements IMutableMapNG {
 				final Iterable<River> theirRivers = obj.getRivers(point);
 				for (final River river : theirRivers) {
 					if ((ourRivers == null) || !ourRivers.contains(river)) {
-						ostream.append(ctxt);
+						ostream.append(localContext);
 						ostream.append("\tExtra river\n");
 						retval = false;
 						break;
@@ -771,11 +771,11 @@ public class SPMapNG implements IMutableMapNG {
 			} else {
 				retval.setGround(point, grd.copy(false));
 			}
-			final Forest frst = getForest(point);
-			if (frst == null) {
+			final Forest forest = getForest(point);
+			if (forest == null) {
 				retval.setForest(point, null);
 			} else {
-				retval.setForest(point, frst.copy(false));
+				retval.setForest(point, forest.copy(false));
 			}
 			retval.setMountainous(point, isMountainous(point));
 			for (final River river : getRivers(point)) {

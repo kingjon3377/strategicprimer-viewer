@@ -112,17 +112,17 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
-		final IExplorationModel emodel;
+		final IExplorationModel driverModel;
 		if (model instanceof IExplorationModel) {
-			emodel = (IExplorationModel) model;
+			driverModel = (IExplorationModel) model;
 		} else {
-			emodel = new ExplorationModel(model);
+			driverModel = new ExplorationModel(model);
 		}
 		try (final ICLIHelper cli = new CLIHelper()) {
 			if (cli.inputBoolean(PREGEN_PROMPT)) {
-				enterStats(emodel, cli);
+				enterStats(driverModel, cli);
 			} else {
-				createWorkers(emodel, IDFactoryFiller.createFactory(emodel), cli);
+				createWorkers(driverModel, IDFactoryFiller.createFactory(driverModel), cli);
 			}
 		} catch (final IOException except) {
 			throw new DriverFailedException("I/O error interacting with user", except);
@@ -141,10 +141,11 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final List<Player> players = model.getPlayerChoices();
 		final String hdr = "Which player owns the worker in question?";
 		final String none = "There are no players shared by all the maps.";
-		final String prpt = "Player selection: ";
-		for (int playerNum = cli.chooseFromList(players, hdr, none, prpt, true);
+		final String prompt = "Player selection: ";
+		// TODO: Use lambda to simplify this loop
+		for (int playerNum = cli.chooseFromList(players, hdr, none, prompt, true);
 				(playerNum >= 0) && (playerNum < players.size());
-				playerNum = cli.chooseFromList(players, hdr, none, prpt, true)) {
+				playerNum = cli.chooseFromList(players, hdr, none, prompt, true)) {
 			enterStats(model, NullCleaner.assertNotNull(players.get(playerNum)), cli);
 		}
 	}
@@ -162,11 +163,12 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 			final Player player, final ICLIHelper cli) throws IOException {
 		final List<IUnit> units = removeStattedUnits(model.getUnits(player));
 		final String hdr = "Which unit contains the worker in question?";
-		final String none = "All that player's units are already fully statted.";
-		final String prpt = "Unit selection: ";
-		for (int unitNum = cli.chooseFromList(units, hdr, none, prpt, false);
+		final String none = "All that player's units already have stats.";
+		final String prompt = "Unit selection: ";
+		// TODO: Use lambda to simplify this loop
+		for (int unitNum = cli.chooseFromList(units, hdr, none, prompt, false);
 				(unitNum >= 0) && (unitNum < units.size());
-				unitNum = cli.chooseFromList(units, hdr, none, prpt, false)) {
+				unitNum = cli.chooseFromList(units, hdr, none, prompt, false)) {
 			final IUnit unit = units.get(unitNum);
 			enterStats(model, unit, cli);
 			if (!hasUnstattedWorker(model, unit.getID())) {
@@ -178,7 +180,7 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 	/**
 	 * @param model the exploration model
 	 * @param idNum an ID number
-	 * @return true if the number designates a unit containing an unstatted worker, and
+	 * @return true if the number designates a unit containing a worker without stats, and
 	 * false otherwise.
 	 */
 	private static boolean hasUnstattedWorker(final IDriverModel model,
@@ -226,12 +228,13 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 				.collect(Collectors.toList()));
 		final String hdr = "Which worker do you want to enter stats for?";
 		final String none = "There are no workers without stats in that unit.";
-		final String prpt = "Worker to modify: ";
-		for (int workerNum = cli.chooseFromList(workers, hdr, none, prpt,
+		final String prompt = "Worker to modify: ";
+		// TODO: Use lambda to simplify this loop
+		for (int workerNum = cli.chooseFromList(workers, hdr, none, prompt,
 				false); (workerNum >= 0) && (workerNum < workers.size())
 								&& !workers.isEmpty();
 				workerNum = cli.chooseFromList(workers,
-						hdr, none, prpt, false)) {
+						hdr, none, prompt, false)) {
 			enterStats(model, workers.get(workerNum).getID(), cli);
 			workers.remove(workerNum);
 		}
@@ -334,10 +337,11 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final List<Player> players = model.getPlayerChoices();
 		final String hdr = "Which player owns the new worker(s)?";
 		final String none = "There are no players shared by all the maps.";
-		final String prpt = "Player selection: ";
-		for (int playerNum = cli.chooseFromList(players, hdr, none, prpt, false);
+		final String prompt = "Player selection: ";
+		// TODO: Use lambda to simplify this loop
+		for (int playerNum = cli.chooseFromList(players, hdr, none, prompt, false);
 				(playerNum >= 0) && (playerNum < players.size());
-				playerNum = cli.chooseFromList(players, hdr, none, prpt, false)) {
+				playerNum = cli.chooseFromList(players, hdr, none, prompt, false)) {
 			createWorkersForPlayer(model, idf,
 					NullCleaner.assertNotNull(players.get(playerNum)), cli);
 		}
@@ -434,9 +438,9 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final int count = cli.inputNumber("How many workers to generate? ");
 		final String filename = cli.inputString("Filename to load names from: ");
 		final List<String> names = new ArrayList<>();
-		try (final FileSystem fsys = FileSystems.getDefault()) {
+		try (final FileSystem fileSystem = FileSystems.getDefault()) {
 			names.addAll(
-					Files.readAllLines(fsys.getPath(filename), Charset.defaultCharset()));
+					Files.readAllLines(fileSystem.getPath(filename), Charset.defaultCharset()));
 		} catch (final UnsupportedOperationException ignored) {
 			// Can't close a FileSystem, but IDEA screams if we don't use try-with-res ...
 		}
@@ -622,8 +626,8 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		}
 		final int constitution = threeDeeSix() + racialConBonus;
 		final int conBonus = (constitution - STAT_BASIS) / 2;
-		final int hitp = 8 + conBonus + rollDeeEight(levels, conBonus);
-		return new WorkerStats(hitp, hitp, threeDeeSix() + racialStrBonus,
+		final int hitP = 8 + conBonus + rollDeeEight(levels, conBonus);
+		return new WorkerStats(hitP, hitP, threeDeeSix() + racialStrBonus,
 									threeDeeSix() + racialDexBonus, constitution,
 									threeDeeSix() + racialIntBonus,
 									threeDeeSix() + racialWisBonus,

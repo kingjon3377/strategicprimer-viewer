@@ -58,7 +58,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 	/**
 	 * the default fixture icon.
 	 */
-	private final Icon defaultFixtIcon = createDefaultFixtureIcon();
+	private final Icon defaultFixtureIcon = createDefaultFixtureIcon();
 
 	/**
 	 * Default renderer, for cases we don't know how to handle.
@@ -227,7 +227,7 @@ public final class UnitMemberCellRenderer implements TreeCellRenderer {
 		}
 		final Icon icon = getIconForFile(obj.getDefaultImage());
 		if (icon == null) {
-			return defaultFixtIcon;
+			return defaultFixtureIcon;
 		} else {
 			return icon;
 		}

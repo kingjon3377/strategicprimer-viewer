@@ -51,14 +51,14 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 	 */
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
-		final ExplorationModel emodel;
+		final ExplorationModel explorationModel;
 		if (model instanceof ExplorationModel) {
-			emodel = (ExplorationModel) model;
+			explorationModel = (ExplorationModel) model;
 		} else {
-			emodel = new ExplorationModel(model);
+			explorationModel = new ExplorationModel(model);
 		}
-		try (final ICLIHelper clih = new CLIHelper()) {
-			final ExplorationCLI cli = new ExplorationCLI(emodel, clih);
+		try (final ICLIHelper cliHelper = new CLIHelper()) {
+			final ExplorationCLI cli = new ExplorationCLI(explorationModel, cliHelper);
 			final Player player = cli.choosePlayer();
 			if (player == null) {
 				return;
@@ -67,7 +67,7 @@ public final class ExplorationCLIDriver implements SimpleCLIDriver {
 			if (unit == null) {
 				return;
 			} else {
-				emodel.selectUnit(unit);
+				explorationModel.selectUnit(unit);
 				cli.moveUntilDone();
 			}
 		} catch (final IOException except) {

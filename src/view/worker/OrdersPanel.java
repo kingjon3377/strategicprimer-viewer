@@ -82,10 +82,10 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	/**
 	 * Constructor.
 	 *
-	 * @param wmodel the worker model
+	 * @param workerModel the worker model
 	 */
 	@SuppressWarnings("StringConcatenationMissingWhitespace")
-	public OrdersPanel(final IWorkerModel wmodel) {
+	public OrdersPanel(final IWorkerModel workerModel) {
 		// Can't use the multi-arg constructor, because of the references to
 		// 'this' below.
 		final boolean onMac = OnMac.SYSTEM_IS_MAC;
@@ -128,7 +128,7 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 		});
 		area.setLineWrap(true);
 		area.setWrapStyleWord(true);
-		model = wmodel;
+		model = workerModel;
 		final InputMap inputMap = getInputMap(WHEN_IN_FOCUSED_WINDOW);
 		final ActionMap actionMap = getActionMap();
 		assert (inputMap != null) && (actionMap != null);

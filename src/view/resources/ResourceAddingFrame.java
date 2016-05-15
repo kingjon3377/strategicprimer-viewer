@@ -147,15 +147,15 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	}
 	/**
 	 * Constructor.
-	 * @param dmodel the driver model
+	 * @param driverModel the driver model
 	 * @param ioh the I/O handler for menu items
 	 */
 	@SuppressWarnings("ObjectAllocationInLoop")
-	public ResourceAddingFrame(final ResourceManagementDriver dmodel, final IOHandler ioh) {
+	public ResourceAddingFrame(final ResourceManagementDriver driverModel, final IOHandler ioh) {
 		super("Resource Entry");
-		model = dmodel;
+		model = driverModel;
 		final IDFactory idf = IDFactoryFiller.createFactory(model);
-		current = StreamSupport.stream(dmodel.getPlayers().spliterator(), false)
+		current = StreamSupport.stream(driverModel.getPlayers().spliterator(), false)
 						.filter(player -> player.isCurrent())
 						.findAny().orElse(new Player(-1, ""));
 		resourceLabel =

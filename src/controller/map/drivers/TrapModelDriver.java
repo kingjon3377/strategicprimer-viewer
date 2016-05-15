@@ -135,7 +135,7 @@ public final class TrapModelDriver implements SimpleDriver {
 	 */
 	private static void repl(final IMapNG map, final ICLIHelper cli) {
 		try {
-			final HuntingModel hmodel = new HuntingModel(map);
+			final HuntingModel huntModel = new HuntingModel(map);
 			final boolean fishing = cli.inputBoolean(FISH_OR_TRAP);
 			final String name;
 			if (fishing) {
@@ -151,9 +151,9 @@ public final class TrapModelDriver implements SimpleDriver {
 			final Point point = point(row, col);
 			final List<String> fixtures;
 			if (fishing) {
-				fixtures = hmodel.fish(point, minutes);
+				fixtures = huntModel.fish(point, minutes);
 			} else {
-				fixtures = hmodel.hunt(point, minutes);
+				fixtures = huntModel.hunt(point, minutes);
 			}
 			int input = -1;
 			while ((minutes > 0) && (input < TrapperCommand.values().length)) {

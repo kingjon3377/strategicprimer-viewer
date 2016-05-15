@@ -130,41 +130,41 @@ public final class DirectTileDrawHelper extends AbstractTileDrawHelper {
 	 *
 	 * @param pen    the graphics context---again, origin at tile's upper-left corner
 	 * @param river  the river to draw
-	 * @param xCoord the left boundary of the tile
-	 * @param yCoord the upper boundary of the tile
+	 * @param xCoordinate the left boundary of the tile
+	 * @param yCoordinate the upper boundary of the tile
 	 * @param width  the width of the tile's drawing-space
 	 * @param height the height of the tile's drawing-space
 	 */
 	private static void drawRiver(final Graphics pen, final River river,
-								final int xCoord, final int yCoord, final int width,
+								final int xCoordinate, final int yCoordinate, final int width,
 								final int height) {
 		switch (river) {
 		case East:
-			pen.fillRect((int) Math.round(width * RiverLongDimension.constant) + xCoord,
-					(int) Math.round(height * RiverShortStart.constant) + yCoord,
+			pen.fillRect((int) Math.round(width * RiverLongDimension.constant) + xCoordinate,
+					(int) Math.round(height * RiverShortStart.constant) + yCoordinate,
 					(int) Math.round(width * RiverLongDimension.constant),
 					(int) Math.round(height * RiverShortDimension.constant));
 			break;
 		case Lake:
-			pen.fillOval((int) Math.round(width * LakeStart.constant) + xCoord,
-					(int) Math.round(height * LakeStart.constant) + yCoord,
+			pen.fillOval((int) Math.round(width * LakeStart.constant) + xCoordinate,
+					(int) Math.round(height * LakeStart.constant) + yCoordinate,
 					(int) Math.round(width * RiverLongDimension.constant),
 					(int) Math.round(height * RiverLongDimension.constant));
 			break;
 		case North:
-			pen.fillRect((int) Math.round(width * RiverShortStart.constant) + xCoord,
-					yCoord, (int) Math.round(width * RiverShortDimension.constant),
+			pen.fillRect((int) Math.round(width * RiverShortStart.constant) + xCoordinate,
+					yCoordinate, (int) Math.round(width * RiverShortDimension.constant),
 					(int) Math.round(height * RiverLongDimension.constant));
 			break;
 		case South:
-			pen.fillRect((int) Math.round(width * RiverShortStart.constant) + xCoord,
-					(int) Math.round(height * RiverLongDimension.constant) + yCoord,
+			pen.fillRect((int) Math.round(width * RiverShortStart.constant) + xCoordinate,
+					(int) Math.round(height * RiverLongDimension.constant) + yCoordinate,
 					(int) Math.round(width * RiverShortDimension.constant),
 					(int) Math.round(height * RiverLongDimension.constant));
 			break;
 		case West:
-			pen.fillRect(xCoord, (int) Math.round(height * RiverShortStart.constant)
-										+ yCoord, (int) Math.round(width * RiverLongDimension.constant),
+			pen.fillRect(xCoordinate, (int) Math.round(height * RiverShortStart.constant)
+										+ yCoordinate, (int) Math.round(width * RiverLongDimension.constant),
 					(int) Math.round(height * RiverShortDimension.constant));
 			break;
 		default:

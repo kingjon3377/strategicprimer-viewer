@@ -175,9 +175,9 @@ public final class SimpleMovement {
 		int retval = 0;
 		for (final UnitMember member : unit) {
 			if (member instanceof IWorker) {
-				final int percep = getPerception((IWorker) member);
-				if (percep > retval) {
-					retval = percep;
+				final int perception = getPerception((IWorker) member);
+				if (perception > retval) {
+					retval = perception;
 				}
 			}
 		}

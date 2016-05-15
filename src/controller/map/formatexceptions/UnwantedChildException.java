@@ -37,7 +37,7 @@ public final class UnwantedChildException extends SPFormatException {
 	/**
 	 * The unwanted child.
 	 */
-	private final QName chld;
+	private final QName childTag;
 	/**
 	 * For when the unwanted child isn't an unwanted *tag* but an unwanted tag *with
 	 * some property* that we want to describe using a QName.
@@ -51,7 +51,7 @@ public final class UnwantedChildException extends SPFormatException {
 		super("Unexpected child " + child.getLocalPart() + " in tag " +
 					parent.getLocalPart(), location, cause);
 		tag = parent;
-		chld = child;
+		childTag = child;
 	}
 	/**
 	 * @param parent    the current tag
@@ -62,7 +62,7 @@ public final class UnwantedChildException extends SPFormatException {
 				+ parent.getLocalPart(),
 				NullCleaner.assertNotNull(child.getLocation()));
 		tag = parent;
-		chld = NullCleaner.assertNotNull(child.getName());
+		childTag = NullCleaner.assertNotNull(child.getName());
 	}
 
 	/**
@@ -76,7 +76,7 @@ public final class UnwantedChildException extends SPFormatException {
 				+ parent.getLocalPart(),
 				NullCleaner.assertNotNull(child.getLocation()), cause);
 		tag = parent;
-		chld = NullCleaner.assertNotNull(child.getName());
+		childTag = NullCleaner.assertNotNull(child.getName());
 	}
 	/**
 	 * Copy-constructor-with-replacement, for cases where the original thrower didn't
@@ -85,10 +85,10 @@ public final class UnwantedChildException extends SPFormatException {
 	 * @param except the exception to copy
 	 */
 	public UnwantedChildException(final QName parent, final UnwantedChildException except) {
-		super("Unexpected child " + except.chld.getLocalPart() + " in tag " +
+		super("Unexpected child " + except.childTag.getLocalPart() + " in tag " +
 					parent.getLocalPart(), except.getLocation());
 		tag = parent;
-		chld = except.chld;
+		childTag = except.childTag;
 		if (except.getCause() != null) {
 			initCause(except.getCause());
 		}
@@ -104,6 +104,6 @@ public final class UnwantedChildException extends SPFormatException {
 	 * @return the unwanted child.
 	 */
 	public QName getChild() {
-		return chld;
+		return childTag;
 	}
 }

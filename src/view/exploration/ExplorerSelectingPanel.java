@@ -103,13 +103,13 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 	/**
 	 * Constructor.
 	 *
-	 * @param emodel the driver model
+	 * @param explorationModel the driver model
 	 */
-	public ExplorerSelectingPanel(final ExplorationModel emodel) {
-		model = emodel;
-		final PlayerListModel plmodel = new PlayerListModel(emodel);
-		emodel.addMapChangeListener(plmodel);
-		playerList = new JList<>(plmodel);
+	public ExplorerSelectingPanel(final ExplorationModel explorationModel) {
+		model = explorationModel;
+		final PlayerListModel playerListModel = new PlayerListModel(explorationModel);
+		explorationModel.addMapChangeListener(playerListModel);
+		playerList = new JList<>(playerListModel);
 		playerList.addListSelectionListener(evt -> {
 			if (!playerList.isSelectionEmpty()) {
 				final Player newPlayer = playerList.getSelectedValue();
@@ -122,7 +122,7 @@ public final class ExplorerSelectingPanel extends BorderedPanel implements
 			}
 		});
 		final ExplorationUnitListModel unitListModel =
-				new ExplorationUnitListModel(emodel);
+				new ExplorationUnitListModel(explorationModel);
 		addPlayerChangeListener(unitListModel);
 		unitList = new JList<>(unitListModel);
 		unitList.setCellRenderer((final JList<? extends @NonNull IUnit> list,

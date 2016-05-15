@@ -218,14 +218,14 @@ public class Worker implements IWorker, HasPortrait {
 							final String context) throws IOException {
 		if (obj.getID() == id) {
 			if (obj instanceof Worker) {
-				final String ctxt =
+				final String localContext =
 						context + " In worker " + ((Worker) obj).name
 								+ " (ID #" + Integer.toString(id) + "):";
-				if (areObjectsEqual(ostream, name, ((Worker) obj).name, ctxt,
+				if (areObjectsEqual(ostream, name, ((Worker) obj).name, localContext,
 						"\tNames differ\n") &&
-						areObjectsEqual(ostream, race, ((Worker) obj).race, ctxt,
+						areObjectsEqual(ostream, race, ((Worker) obj).race, localContext,
 								":\tRaces differ\n") &&
-						areObjectsEqual(ostream, stats, ((Worker) obj).stats, ctxt,
+						areObjectsEqual(ostream, stats, ((Worker) obj).stats, localContext,
 								":\tStats differ\n")) {
 					final Map<String, IJob> ours = new HashMap<>();
 					for (final IJob job : jobSet) {
@@ -234,13 +234,13 @@ public class Worker implements IWorker, HasPortrait {
 					boolean retval = true;
 					for (final IJob job : ((Worker) obj).jobSet) {
 						if (!ours.containsKey(job.getName())) {
-							ostream.append(ctxt);
+							ostream.append(localContext);
 							ostream.append("\tExtra Job: ");
 							ostream.append(job.getName());
 							ostream.append('\n');
 							retval = false;
 						} else if (!NullCleaner.assertNotNull(ours.get(job.getName())).isSubset(job,
-								ostream, ctxt)) {
+								ostream, localContext)) {
 							retval = false;
 						}
 					}
@@ -273,11 +273,11 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
-	 * @param nomen the worker's new name
+	 * @param newName the worker's new name
 	 */
 	@Override
-	public final void setName(final String nomen) {
-		name = nomen;
+	public final void setName(final String newName) {
+		name = newName;
 	}
 
 	/**
@@ -297,10 +297,10 @@ public class Worker implements IWorker, HasPortrait {
 	}
 
 	/**
-	 * @param wstats the worker's new stats
+	 * @param newStats the worker's new stats
 	 */
-	public void setStats(final WorkerStats wstats) {
-		stats = wstats;
+	public void setStats(final WorkerStats newStats) {
+		stats = newStats;
 	}
 
 	/**

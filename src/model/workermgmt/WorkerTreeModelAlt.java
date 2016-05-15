@@ -67,11 +67,11 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 * Constructor.
 	 *
 	 * @param player the player whose units and workers will be shown in the tree
-	 * @param wmodel the driver model
+	 * @param driverModel the driver model
 	 */
-	public WorkerTreeModelAlt(final Player player, final IWorkerModel wmodel) {
-		super(new PlayerNode(player, wmodel), true);
-		model = wmodel;
+	public WorkerTreeModelAlt(final Player player, final IWorkerModel driverModel) {
+		super(new PlayerNode(player, driverModel), true);
+		model = driverModel;
 	}
 
 	/**
@@ -84,11 +84,11 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	@Override
 	public void moveMember(final UnitMember member, final IUnit old,
 							final IUnit newOwner) {
-		final PlayerNode pnode = assertNotNull((PlayerNode) root);
-		final UnitNode oldNode = assertNotNull((UnitNode) getNode(pnode, old));
-		final UnitNode newNode = assertNotNull((UnitNode) getNode(pnode, newOwner));
-		final MutableTreeNode node = getNode(pnode, member);
-		fireTreeNodesRemoved(this, new Object[]{pnode, getNode(old.getKind()), oldNode},
+		final PlayerNode playerNode = assertNotNull((PlayerNode) root);
+		final UnitNode oldNode = assertNotNull((UnitNode) getNode(playerNode, old));
+		final UnitNode newNode = assertNotNull((UnitNode) getNode(playerNode, newOwner));
+		final MutableTreeNode node = getNode(playerNode, member);
+		fireTreeNodesRemoved(this, new Object[]{playerNode, getNode(old.getKind()), oldNode},
 				new int[]{oldNode.getIndex(node)}, new Object[]{node});
 		oldNode.remove(node);
 		if ((member instanceof ProxyFor) && (old instanceof ProxyUnit)
@@ -120,7 +120,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 				}
 				newNode.add(node);
 				fireTreeNodesInserted(this,
-						new Object[]{pnode, getNode(newOwner.getKind()), newNode},
+						new Object[]{playerNode, getNode(newOwner.getKind()), newNode},
 						new int[]{newNode.getIndex(node)}, new Object[]{node});
 				while (!members.isEmpty() && !newList.isEmpty()) {
 					newList.remove().addMember(members.remove());
@@ -129,7 +129,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 				old.removeMember(member);
 				newNode.add(node);
 				fireTreeNodesInserted(this,
-						new Object[]{pnode, getNode(newOwner.getKind()), newNode},
+						new Object[]{playerNode, getNode(newOwner.getKind()), newNode},
 						new int[]{newNode.getIndex(node)}, new Object[]{node});
 				@SuppressWarnings("unchecked")
 				final Iterator<? extends UnitMember> iter =
@@ -148,7 +148,7 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 			old.removeMember(member);
 			newNode.add(node);
 			fireTreeNodesInserted(this,
-					new Object[]{pnode, getNode(newOwner.getKind()), newNode},
+					new Object[]{playerNode, getNode(newOwner.getKind()), newNode},
 					new int[]{newNode.getIndex(node)}, new Object[]{node});
 			newOwner.addMember(member);
 		}
@@ -548,23 +548,23 @@ public final class WorkerTreeModelAlt extends DefaultTreeModel implements
 	 */
 	@Override
 	public void addUnitMember(final IUnit unit, final UnitMember member) {
-		UnitNode unode = null;
+		UnitNode unitNode = null;
 		//noinspection unchecked
 		for (final TreeNode item : (Iterable<TreeNode>) root) {
 			if ((item instanceof UnitNode)
 						&& ((UnitNode) item).getUserObject().equals(unit)) {
-				unode = (UnitNode) item;
+				unitNode = (UnitNode) item;
 				break;
 			}
 		}
-		if (unode == null) {
+		if (unitNode == null) {
 			return;
 		}
 		unit.addMember(member);
 		final MutableTreeNode newNode = new UnitMemberNode(member);
-		unode.add(newNode);
-		fireTreeNodesInserted(this, new Object[]{root, unode},
-				new int[]{unode.getChildCount() - 1},
+		unitNode.add(newNode);
+		fireTreeNodesInserted(this, new Object[]{root, unitNode},
+				new int[]{unitNode.getChildCount() - 1},
 				new Object[]{newNode});
 	}
 

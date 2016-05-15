@@ -42,10 +42,10 @@ public class ActionWrapper extends AbstractAction {
 	private final ActionListener wrapped;
 	/**
 	 * Constructor.
-	 * @param alist the listener to wrap
+	 * @param wrappedListener the listener to wrap
 	 */
-	public ActionWrapper(final ActionListener alist) {
-		wrapped = alist;
+	public ActionWrapper(final ActionListener wrappedListener) {
+		wrapped = wrappedListener;
 	}
 
 	/**

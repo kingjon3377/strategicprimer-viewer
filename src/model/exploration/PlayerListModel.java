@@ -42,10 +42,10 @@ public final class PlayerListModel extends DefaultListModel<@NonNull Player> imp
 	private final IExplorationModel model;
 
 	/**
-	 * @param emodel the exploration model
+	 * @param explorationModel the exploration model
 	 */
-	public PlayerListModel(final IExplorationModel emodel) {
-		model = emodel;
+	public PlayerListModel(final IExplorationModel explorationModel) {
+		model = explorationModel;
 		model.getPlayerChoices().forEach(this::addElement);
 	}
 

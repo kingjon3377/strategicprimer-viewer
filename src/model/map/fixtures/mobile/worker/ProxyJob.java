@@ -62,19 +62,19 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	private final Set<String> skillNames;
 
 	/**
-	 * @param nomen   the name of the Job
-	 * @param parall  whether the workers containing these jobs are corresponding workers
+	 * @param jobName   the name of the Job
+	 * @param parallelWorkers  whether the workers containing these jobs are corresponding workers
 	 *                in different maps (if true) or workers in the same unit (if false)
 	 * @param workers being proxied
 	 */
-	public ProxyJob(final String nomen, final boolean parall, final IWorker... workers) {
-		parallel = parall;
-		name = nomen;
+	public ProxyJob(final String jobName, final boolean parallelWorkers, final IWorker... workers) {
+		parallel = parallelWorkers;
+		name = jobName;
 		skillNames = new HashSet<>();
 		for (final IWorker worker : workers) {
 			boolean unmodified = true;
 			for (final IJob job : worker) {
-				if (nomen.equals(job.getName())) {
+				if (jobName.equals(job.getName())) {
 					proxiedJobs.add(job);
 					for (final ISkill skill : job) {
 						skillNames.add(skill.getName());
@@ -84,11 +84,11 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 			}
 			if (unmodified) {
 				//noinspection ObjectAllocationInLoop
-				final IJob job = new Job(nomen, 0);
+				final IJob job = new Job(jobName, 0);
 				worker.addJob(job);
 				boolean absent = true;
 				for (final IJob temp : worker) {
-					if (temp.getName().equals(nomen)) {
+					if (temp.getName().equals(jobName)) {
 						proxiedJobs.add(temp);
 						absent = false;
 						break;
@@ -129,11 +129,11 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 	}
 
 	/**
-	 * @param nomen the new name
+	 * @param newName the new name
 	 */
 	@Override
-	public void setName(final String nomen) {
-		name = nomen;
+	public void setName(final String newName) {
+		name = newName;
 	}
 
 	/**
