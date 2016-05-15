@@ -25,8 +25,11 @@ import util.NullCleaner;
 import util.TypesafeLogger;
 import util.Warning;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -140,10 +143,11 @@ public abstract class BaseTestFixtureSerialization {
 						desideratum, Warning.Die);
 			} catch (final FatalWarningException except) {
 				final Throwable cause = except.getCause();
-				assertTrue("Unsupported tag",
-						cause instanceof UnsupportedTagException);
-				assertEquals("The tag we expected", new QName(tag),
-						((UnsupportedTagException) cause).getTag());
+				assertThat("Unsupported tag", cause,
+						instanceOf(UnsupportedTagException.class));
+				assertThat("The tag we expected",
+						((UnsupportedTagException) cause).getTag(),
+						equalTo(new QName(tag)));
 			}
 		} else {
 			try (StringReader stringReader = new StringReader(xml)) {
