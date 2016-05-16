@@ -13,7 +13,8 @@ import model.map.TileType;
 import org.junit.Test;
 import util.NullCleaner;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 /**
@@ -63,8 +64,9 @@ public final class TestTableLoader {
 																	("quadrant\n2\none\ntwo\nthree\nfour\nfive\nsix"))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(0, 0);
-			assertEquals("loading quadrant table", ONE_STRING,
-					result.generateEvent(point, TileType.Tundra, EMPTY));
+			assertThat("loading quadrant table",
+					result.generateEvent(point, TileType.Tundra, EMPTY),
+					equalTo(ONE_STRING));
 			// TODO: somehow check that it got properly loaded, beyond this
 		}
 		try (final BufferedReader readerTwo = new BufferedReader(new StringReader
@@ -72,9 +74,9 @@ public final class TestTableLoader {
 			TableLoader.loadTableFromStream(readerTwo);
 			fail("Didn't object to quadrant table without number of rows");
 		} catch (final IOException except) {
-			assertEquals("Objecting to quadrant table without number of rows",
-					"File doesn't start with the number of rows of quadrants",
-					except.getMessage());
+			assertThat("Objecting to quadrant table without number of rows",
+					except.getMessage(),
+					equalTo("File doesn't start with the number of rows of quadrants"));
 		}
 	}
 
@@ -92,8 +94,9 @@ public final class TestTableLoader {
 																			"two"))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(30, 30);
-			assertEquals("loading random table", ONE_STRING,
-					result.generateEvent(point, TileType.Tundra, EMPTY));
+			assertThat("loading random table",
+					result.generateEvent(point, TileType.Tundra, EMPTY),
+					equalTo(ONE_STRING));
 		}
 	}
 
@@ -110,13 +113,16 @@ public final class TestTableLoader {
 																			"one\nplains two\nocean three"))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point firstPoint = PointFactory.point(30, 30);
-			assertEquals("loading terrain table: tundra", ONE_STRING,
-					result.generateEvent(firstPoint, TileType.Tundra, EMPTY));
+			assertThat("loading terrain table: tundra",
+					result.generateEvent(firstPoint, TileType.Tundra, EMPTY),
+					equalTo(ONE_STRING));
 			final Point secondPoint = PointFactory.point(15, 15);
-			assertEquals("loading terrain table: plains", "two",
-					result.generateEvent(secondPoint, TileType.Plains, EMPTY));
-			assertEquals("loading terrain table: ocean", "three",
-					result.generateEvent(secondPoint, TileType.Ocean, EMPTY));
+			assertThat("loading terrain table: plains",
+					result.generateEvent(secondPoint, TileType.Plains, EMPTY),
+					equalTo("two"));
+			assertThat("loading terrain table: ocean",
+					result.generateEvent(secondPoint, TileType.Ocean, EMPTY),
+					equalTo("three"));
 		}
 	}
 
@@ -132,8 +138,9 @@ public final class TestTableLoader {
 																("constant\none"))) {
 			final EncounterTable result = TableLoader.loadTableFromStream(reader);
 			final Point point = PointFactory.point(10, 5);
-			assertEquals("loading constant table: first test", ONE_STRING,
-					result.generateEvent(point, TileType.Plains, EMPTY));
+			assertThat("loading constant table: first test",
+					result.generateEvent(point, TileType.Plains, EMPTY),
+					equalTo(ONE_STRING));
 		}
 	}
 
@@ -149,17 +156,17 @@ public final class TestTableLoader {
 			TableLoader.loadTableFromStream(reader);
 			fail("Accepted empty input");
 		} catch (final IOException except) {
-			assertEquals("Objects to empty input",
-					"File doesn't start by specifying which kind of table.",
-					except.getMessage());
+			assertThat("Objects to empty input",
+					except.getMessage(),
+					equalTo("File doesn't start by specifying which kind of table."));
 		}
 		try (BufferedReader reader = new BufferedReader(new StringReader
 																("2\ninvalidData\ninvalidData"))) {
 			TableLoader.loadTableFromStream(reader);
 			fail("Accepted table without header");
 		} catch (final IllegalArgumentException except) {
-			assertEquals("Table without header", "unknown table type",
-					except.getMessage());
+			assertThat("Table without header", except.getMessage(),
+					equalTo("unknown table type"));
 		}
 	}
 

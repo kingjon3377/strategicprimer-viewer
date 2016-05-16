@@ -10,7 +10,8 @@ import model.map.PointFactory;
 import org.junit.Test;
 import util.IteratorWrapper;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 /**
  * A test of the PointIterator.
@@ -58,7 +59,7 @@ public final class PointIteratorTest {
 															true, true));
 		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
 												.collect(Collectors.toList());
-		assertEquals(EXPECTATION, expected, actual);
+		assertThat(EXPECTATION, actual, equalTo(expected));
 	}
 
 	/**
@@ -79,7 +80,7 @@ public final class PointIteratorTest {
 						PointFactory.point(1, 1));
 		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
 												.collect(Collectors.toList());
-		assertEquals(EXPECTATION, expected, actual);
+		assertThat(EXPECTATION, actual, equalTo(expected));
 	}
 
 	/**
@@ -101,7 +102,7 @@ public final class PointIteratorTest {
 						PointFactory.point(2, 2));
 		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
 												.collect(Collectors.toList());
-		assertEquals(EXPECTATION, expected, actual);
+		assertThat(EXPECTATION, actual, equalTo(expected));
 	}
 
 	/**
@@ -121,7 +122,7 @@ public final class PointIteratorTest {
 															true, false));
 		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
 												.collect(Collectors.toList());
-		assertEquals(EXPECTATION, expected, actual);
+		assertThat(EXPECTATION, actual, equalTo(expected));
 	}
 
 	/**
@@ -141,7 +142,7 @@ public final class PointIteratorTest {
 															false, true));
 		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
 												.collect(Collectors.toList());
-		assertEquals(EXPECTATION, expected, actual);
+		assertThat(EXPECTATION, actual, equalTo(expected));
 	}
 
 	/**
@@ -161,7 +162,7 @@ public final class PointIteratorTest {
 															false, false));
 		final Collection<Point> actual = StreamSupport.stream(iter.spliterator(), false)
 												.collect(Collectors.toList());
-		assertEquals(EXPECTATION, expected, actual);
+		assertThat(EXPECTATION, actual, equalTo(expected));
 	}
 
 	/**

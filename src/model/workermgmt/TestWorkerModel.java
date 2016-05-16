@@ -26,7 +26,8 @@ import model.map.fixtures.towns.Fortress;
 import org.junit.Test;
 import util.NullCleaner;
 
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * A class to test MapHelper methods (starting with ones that don't involve I/O).
@@ -89,18 +90,20 @@ public final class TestWorkerModel {
 		}
 		final IWorkerModel model = new WorkerModel(map, new File(""));
 		final List<IUnit> listOneA = filterProxies(model.getUnits(playerOne));
-		assertTrue("Got all units for player 1", listOneA.containsAll(listOne));
-		assertTrue("And didn't miss any for player 1",
-				listOne.containsAll(listOneA));
+		assertThat("Got all units for player 1", listOne,
+				hasItems(listOneA.toArray(new IUnit[listOneA.size()])));
+		assertThat("Didn't miss any for player 1", listOneA,
+				hasItems(listOne.toArray(new IUnit[listOne.size()])));
 		final List<IUnit> listTwoA = filterProxies(model.getUnits(playerTwo));
-		assertTrue("Got all units for player 2", listTwoA.containsAll(listTwo));
-		assertTrue("And didn't miss any for player 2",
-				listTwo.containsAll(listTwoA));
+		assertThat("Got all units for player 2", listTwo,
+				hasItems(listTwoA.toArray(new IUnit[listTwoA.size()])));
+		assertThat("Didn't miss any for player 2", listTwoA,
+				hasItems(listTwo.toArray(new IUnit[listTwo.size()])));
 		final List<IUnit> listThreeA = filterProxies(model.getUnits(playerThree));
-		assertTrue("Got all units for player 3",
-				listThreeA.containsAll(listThree));
-		assertTrue("And didn't miss any for player 3",
-				listThree.containsAll(listThreeA));
+		assertThat("Got all units for player 3", listThree,
+				hasItems(listThreeA.toArray(new IUnit[listThreeA.size()])));
+		assertThat("Didn't miss any for player 3", listThreeA,
+				hasItems(listThree.toArray(new IUnit[listThree.size()])));
 	}
 
 	/**

@@ -40,8 +40,9 @@ import util.IteratorWrapper;
 import util.NullStream;
 import util.Warning;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.junit.Assert.assertThat;
 
 /**
  * The test case for map-conversion code paths.
@@ -109,20 +110,14 @@ public final class TestConverter {
 		start.addFixture(pointFour, fixtureFour);
 		final IMapNG converted = ResolutionDecreaseConverter.convert(start);
 		final Point zeroPoint = PointFactory.point(0, 0);
-		assertTrue("Combined tile should contain fixtures from tile one",
-				doesStreamContain(converted.streamOtherFixtures(zeroPoint), fixture));
-		assertTrue(
-				"Combined tile should contain fixtures from tile two",
-				doesStreamContain(converted.streamOtherFixtures(zeroPoint),
-						fixtureTwo));
-		assertTrue(
-				"Combined tile should contain fixtures from tile three",
-				doesStreamContain(converted.streamOtherFixtures(zeroPoint),
-						fixtureThree));
-		assertTrue(
-				"Combined tile should contain fixtures from tile four",
-				doesStreamContain(converted.streamOtherFixtures(zeroPoint),
-						fixtureFour));
+		assertThat("Combined tile should contain fixtures from tile one",
+				converted.getOtherFixtures(zeroPoint), hasItem(fixture));
+		assertThat("Combined tile should contain fixtures from tile two",
+				converted.getOtherFixtures(zeroPoint), hasItem(fixtureTwo));
+		assertThat("Combined tile should contain fixtures from tile three",
+				converted.getOtherFixtures(zeroPoint), hasItem(fixtureThree));
+		assertThat("Combined tile should contain fixtures from tile four",
+				converted.getOtherFixtures(zeroPoint), hasItem(fixtureFour));
 	}
 	/**
 	 * Test version-1 to version-2 conversion.
@@ -368,16 +363,17 @@ public final class TestConverter {
 
 		try (StringWriter outOne = new StringWriter();
 				StringWriter outTwo = new StringWriter()) {
-			assertEquals("Products of two runs are both or neither subsets of expected",
+			assertThat("Products of two runs are both or neither subsets of expected",
 					converted.isSubset(
-							new OneToTwoConverter().convert(original, true), outOne, ""),
-					converted.isSubset(
-							new OneToTwoConverter().convert(original, true), outTwo, ""));
-			assertEquals("Two runs produce identical results", outOne.toString(),
-					outTwo.toString());
+							new OneToTwoConverter().convert(original, true), outTwo, ""),
+					equalTo(converted.isSubset(
+							new OneToTwoConverter().convert(original, true), outOne, "")));
+			assertThat("Two runs produce identical results", outTwo.toString(),
+					equalTo(outOne.toString()));
 		}
-		assertTrue("Actual is at least subset of expected converted", converted.isSubset(
-				new OneToTwoConverter().convert(original, true), NullStream.DEV_NULL, ""));
+		assertThat("Actual is at least subset of expected converted", converted.isSubset(
+				new OneToTwoConverter().convert(original, true), NullStream.DEV_NULL,
+				""), equalTo(true));
 	}
 	/**
 	 * Test whether an item is in a Stream. Note that this is a stream-modifying operation.
@@ -437,11 +433,12 @@ public final class TestConverter {
 
 		final StringWriter expectedXML = new StringWriter();
 		CompactXMLWriter.writeSPObject(expectedXML, expected);
-		assertEquals("Converted map's serialized form was as expected",
-				expectedXML.toString(), actualXML.toString());
-		assertEquals("Converted map was as expected", expected,
-				new MapReaderAdapter().readMapFromStream(new StringReader(out.toString()),
-						Warning.Ignore));
+		assertThat("Converted map's serialized form was as expected",
+				actualXML.toString(), equalTo(expectedXML.toString()));
+		assertThat("Converted map was as expected",
+				new MapReaderAdapter()
+						.readMapFromStream(new StringReader(out.toString()),
+								Warning.Ignore), equalTo(expected));
 	}
 	/**
 	 * @return a String representation of the object

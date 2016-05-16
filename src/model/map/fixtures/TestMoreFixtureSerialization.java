@@ -35,9 +35,10 @@ import org.junit.Test;
 import util.NullCleaner;
 import util.Warning;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertThat;
 
 /**
  * Another class to test serialization of TileFixtures.
@@ -395,13 +396,13 @@ public final class TestMoreFixtureSerialization extends
 		final Unit firstUnit = new Unit(player, "kind of unit", "name of unit", 2);
 		final IUnit secondUnit = new Unit(player, "kind of unit", "name of unit", 2);
 		secondUnit.setOrders("some orders");
-		assertEquals("Orders have no effect on equals", firstUnit, secondUnit);
+		assertThat("Orders have no effect on equals", secondUnit, equalTo(firstUnit));
 		assertSerialization("Orders don't mess up deserialization", secondUnit,
 				Warning.Die);
-		assertTrue("Serialized form contains orders",
-				createSerializedForm(secondUnit, true).contains("some orders"));
-		assertTrue("Serialized form contains orders",
-				createSerializedForm(secondUnit, false).contains("some orders"));
+		assertThat("Serialized form contains orders",
+				createSerializedForm(secondUnit, true), containsString("some orders"));
+		assertThat("Serialized form contains orders",
+				createSerializedForm(secondUnit, false), containsString("some orders"));
 
 	}
 
@@ -423,8 +424,8 @@ public final class TestMoreFixtureSerialization extends
 		final AdventureFixture secondAdventure =
 				new AdventureFixture(new Player(2, "player"),
 											"second hook brief", "second hook full", 2);
-		assertFalse("Two different hooks are not equal",
-				firstAdventure.equals(secondAdventure));
+		assertThat("Two different hooks are not equal", secondAdventure,
+				not(equalTo(firstAdventure)));
 		final IMutableMapNG wrapper =
 				new SPMapNG(new MapDimensions(1, 1, 2), new PlayerCollection(), -1);
 		wrapper.addPlayer(independent);
@@ -436,8 +437,8 @@ public final class TestMoreFixtureSerialization extends
 				new Portal("portal dest", PointFactory.point(1, 2), 3);
 		final Portal fourthPortal =
 				new Portal("portal dest two", PointFactory.point(2, 1), 4);
-		assertFalse("TWo different portals are not equal",
-				thirdPortal.equals(fourthPortal));
+		assertThat("Two different portals are not equal", fourthPortal,
+				not(equalTo(thirdPortal)));
 		wrapper.addFixture(PointFactory.point(0, 0), thirdPortal);
 		assertSerialization("First portal serialization test", wrapper);
 		assertSerialization("Second portal serialization test", fourthPortal);

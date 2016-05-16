@@ -30,7 +30,8 @@ import static model.map.TileType.Jungle;
 import static model.map.TileType.NotVisible;
 import static model.map.TileType.Plains;
 import static model.map.TileType.Steppe;
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static util.NullCleaner.assertNotNull;
 
@@ -150,32 +151,31 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 				encapsulateRivers(point, River.North));
 		final Set<River> setOne = EnumSet.noneOf(River.class);
 		final Set<River> setTwo = EnumSet.noneOf(River.class);
-		assertEquals("Empty sets are equal", setOne, setTwo);
+		assertThat("Empty sets are equal", setTwo, equalTo(setOne));
 		setOne.add(River.North);
 		setOne.add(River.South);
 		setTwo.add(River.South);
 		setTwo.add(River.North);
-		assertEquals("Rivers added in different order to set", setOne, setTwo);
-		assertEquals("Rivers added in different order to fixture",
-				new RiverFixture(River.North, River.South), new RiverFixture(
-																					River.South,
-																					River.North));
+		assertThat("Rivers added in different order to set", setTwo, equalTo(setOne));
+		assertThat("Rivers added in different order to fixture",
+				new RiverFixture(River.South, River.North),
+				equalTo(new RiverFixture(River.North, River.South)));
 		final RiverFixture fixOne = new RiverFixture(River.North);
 		fixOne.addRiver(River.South);
 		final RiverFixture fixTwo = new RiverFixture(River.South);
 		fixTwo.addRiver(River.North);
-		assertEquals("Rivers added separately", fixOne, fixTwo);
+		assertThat("Rivers added separately", fixTwo, equalTo(fixOne));
 		final Collection<TileFixture> hSetOne = new HashSet<>();
 		hSetOne.add(fixOne);
 		final Collection<TileFixture> hSetTwo = new HashSet<>();
 		hSetTwo.add(fixTwo);
-		assertEquals("Check Set.equals()", hSetOne, hSetTwo);
-		assertEquals("Tile equality with rivers",
+		assertThat("Check Set.equals()", hSetTwo, equalTo(hSetOne));
+		assertThat("Tile equality with rivers",
 				encapsulateRivers(point(1, 1), River.North, River.South),
-				encapsulateRivers(point(1, 1), River.North, River.South));
-		assertEquals("Tile equality with different order of rivers",
-				encapsulateRivers(point(1, 2), River.North, River.South),
-				encapsulateRivers(point(1, 2), River.South, River.North));
+				equalTo(encapsulateRivers(point(1, 1), River.North, River.South)));
+		assertThat("Tile equality with different order of rivers",
+				encapsulateRivers(point(1, 2), River.South, River.North),
+				equalTo(encapsulateRivers(point(1, 2), River.North, River.South)));
 		assertSerialization("Two rivers",
 				encapsulateRivers(point, River.North, River.South));
 	}
@@ -271,8 +271,8 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 		five.addFixture(point(2, 3), new Unit(
 													new Player(2, ""), "explorer",
 													"name two", 2));
-		assertEquals("Just checking ...", 2,
-				five.streamOtherFixtures(point(2, 3)).count());
+		assertThat("Just checking ...", five.streamOtherFixtures(point(2, 3)).count(),
+				equalTo(2L));
 		assertSerialization("Multiple units should come through", five);
 		final String xmlTwo = "<view xmlns=\"" + ISPReader.NAMESPACE +
 									"\" current_player=\"-1\" " +
@@ -284,23 +284,23 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 									"/>\n\t\t\t\t<unit owner=\"2\" kind=\"explorer\" " +
 									"name=\"name two\" id=\"2\" " +
 									"/>\n\t\t\t</tile>\n\t\t</row>\n\t</map>\n</view>\n";
-		assertEquals("Multiple units", xmlTwo, createSerializedForm(five, true));
-		assertEquals("Multiple units", xmlTwo,
-				createSerializedForm(five, false));
-		assertEquals("Shouldn't print empty not-visible tiles",
-				"<view xmlns=\"" + ISPReader.NAMESPACE +
-						"\" current_player=\"-1\" current_turn=\"-1\">\n\t<map " +
-						"version=\"2\" rows=\"1\" columns=\"1\">\n\t</map>\n</view>\n",
+		assertThat("Multiple units", createSerializedForm(five, true), equalTo(xmlTwo));
+		assertThat("Multiple units", createSerializedForm(five, false),
+				equalTo(xmlTwo));
+		assertThat("Shouldn't print empty not-visible tiles",
 				createSerializedForm(
 						createSimpleMap(point(1, 1), Pair.of(point(0, 0), NotVisible)),
-						true));
-		assertEquals("Shouldn't print empty not-visible tiles",
-				"<view xmlns=\"" + ISPReader.NAMESPACE +
+						true),
+				equalTo("<view xmlns=\"" + ISPReader.NAMESPACE +
 						"\" current_player=\"-1\" current_turn=\"-1\">\n\t<map " +
-						"version=\"2\" rows=\"1\" columns=\"1\">\n\t</map>\n</view>\n",
+						"version=\"2\" rows=\"1\" columns=\"1\">\n\t</map>\n</view>\n"));
+		assertThat("Shouldn't print empty not-visible tiles",
 				createSerializedForm(
 						createSimpleMap(point(1, 1), Pair.of(point(0, 0), NotVisible)),
-						false));
+						false),
+				equalTo("<view xmlns=\"" + ISPReader.NAMESPACE +
+						"\" current_player=\"-1\" current_turn=\"-1\">\n\t<map " +
+						"version=\"2\" rows=\"1\" columns=\"1\">\n\t</map>\n</view>\n"));
 		assertImageSerialization("Unit image property is preserved",
 				new Unit(new Player(5, ""), "herder", "herderName", 9));
 	}
@@ -470,10 +470,10 @@ public final class TestSerialization extends BaseTestFixtureSerialization {
 							" column=\"0\" kind=\"steppe\" /></row></map>");
 			fail("Map in an unsupported namespace shouldn't be accepted");
 		} catch (final UnwantedChildException except) {
-			assertEquals("'Tag' that had the unwanted child was what we expected",
-					new QName("unknown"), except.getTag());
-			assertEquals("Unwanted child was hte one we expected",
-					new QName("xyzzy", "map"), except.getChild());
+			assertThat("'Tag' that had the unwanted child was what we expected",
+					except.getTag().getLocalPart(), equalTo("unknown"));
+			assertThat("Unwanted child was the one we expected",
+					except.getChild(), equalTo(new QName("xyzzy", "map")));
 		}
 	}
 

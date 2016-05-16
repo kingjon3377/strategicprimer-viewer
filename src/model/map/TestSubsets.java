@@ -17,9 +17,8 @@ import model.map.fixtures.towns.TownSize;
 import model.map.fixtures.towns.TownStatus;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static util.NullStream.DEV_NULL;
 
 /**
@@ -66,23 +65,23 @@ public final class TestSubsets {
 		secondCollection.add(new Player(1, ONE_STR));
 		secondCollection.add(new Player(2, "two"));
 		final PlayerCollection zero = new PlayerCollection();
-		assertTrue("Empty is subset of self", zero.isSubset(zero, DEV_NULL, ""));
-		assertTrue("Empty is subset of one",
-				firstCollection.isSubset(zero, DEV_NULL, ""));
-		assertTrue("Empty is subset of two",
-				secondCollection.isSubset(zero, DEV_NULL, ""));
-		assertFalse("One is not subset of empty",
-				zero.isSubset(firstCollection, DEV_NULL, ""));
-		assertTrue("One is subset of self",
-				firstCollection.isSubset(firstCollection, DEV_NULL, ""));
-		assertTrue("One is subset of two",
-				secondCollection.isSubset(firstCollection, DEV_NULL, ""));
-		assertFalse("Two is not subset of empty",
-				zero.isSubset(secondCollection, DEV_NULL, ""));
-		assertFalse("Two is not subset of one",
-				firstCollection.isSubset(secondCollection, DEV_NULL, ""));
-		assertTrue("Two is subset of self",
-				secondCollection.isSubset(secondCollection, DEV_NULL, ""));
+		assertThat("Empty is subset of self", zero.isSubset(zero, DEV_NULL, ""), equalTo(true));
+		assertThat("Empty is subset of one",
+				firstCollection.isSubset(zero, DEV_NULL, ""), equalTo(true));
+		assertThat("Empty is subset of two",
+				secondCollection.isSubset(zero, DEV_NULL, ""), equalTo(true));
+		assertThat("One is not subset of empty",
+				zero.isSubset(firstCollection, DEV_NULL, ""), equalTo(false));
+		assertThat("One is subset of self",
+				firstCollection.isSubset(firstCollection, DEV_NULL, ""), equalTo(true));
+		assertThat("One is subset of two",
+				secondCollection.isSubset(firstCollection, DEV_NULL, ""), equalTo(true));
+		assertThat("Two is not subset of empty",
+				zero.isSubset(secondCollection, DEV_NULL, ""), equalTo(false));
+		assertThat("Two is not subset of one",
+				firstCollection.isSubset(secondCollection, DEV_NULL, ""), equalTo(false));
+		assertThat("Two is subset of self",
+				secondCollection.isSubset(secondCollection, DEV_NULL, ""), equalTo(true));
 	}
 
 	/**
@@ -97,40 +96,41 @@ public final class TestSubsets {
 		final RiverFixture thirdCollection =
 				new RiverFixture(River.Lake, River.South, River.East, River.North,
 										River.West);
-		assertTrue("None is a subset of all",
-				thirdCollection.isSubset(zero, DEV_NULL, ""));
+		assertThat("None is a subset of all",
+				thirdCollection.isSubset(zero, DEV_NULL, ""), equalTo(true));
 		final RiverFixture firstRivers =
 				new RiverFixture(River.Lake, River.South, River.East);
-		assertTrue("Three are a subset of all",
-				thirdCollection.isSubset(firstRivers, DEV_NULL, ""));
+		assertThat("Three are a subset of all",
+				thirdCollection.isSubset(firstRivers, DEV_NULL, ""), equalTo(true));
 		final RiverFixture secondRivers = new RiverFixture(River.West, River.North);
-		assertTrue("Two are a subset of all",
-				thirdCollection.isSubset(secondRivers, DEV_NULL, ""));
-		assertTrue("All is a subset of all",
-				thirdCollection.isSubset(thirdCollection, DEV_NULL, ""));
-		assertTrue("None is a subset of two", secondRivers.isSubset(zero, DEV_NULL, ""));
-		assertFalse("All is not a subset of two",
-				secondRivers.isSubset(thirdCollection, DEV_NULL, ""));
-		assertFalse("Three are not a subset of two",
-				secondRivers.isSubset(firstRivers, DEV_NULL, ""));
-		assertTrue("Two are a subset of themselves",
-				secondRivers.isSubset(secondRivers, DEV_NULL, ""));
-		assertTrue("None is a subset of three", firstRivers.isSubset(zero, DEV_NULL,
-				""));
-		assertFalse("All is not a subset of three",
-				firstRivers.isSubset(thirdCollection, DEV_NULL, ""));
-		assertFalse("A different two are not a subset of three",
-				firstRivers.isSubset(secondRivers, DEV_NULL, ""));
-		assertTrue("Three are a subset of themselves",
-				firstRivers.isSubset(firstRivers, DEV_NULL, ""));
-		assertTrue("None is a subset of itself",
-				zero.isSubset(zero, DEV_NULL, ""));
-		assertFalse("All are not a subset of none",
-				zero.isSubset(thirdCollection, DEV_NULL, ""));
-		assertFalse("Three are not a subset of none",
-				zero.isSubset(firstRivers, DEV_NULL, ""));
-		assertFalse("Two are not a subset of none",
-				zero.isSubset(secondRivers, DEV_NULL, ""));
+		assertThat("Two are a subset of all",
+				thirdCollection.isSubset(secondRivers, DEV_NULL, ""), equalTo(true));
+		assertThat("All is a subset of all",
+				thirdCollection.isSubset(thirdCollection, DEV_NULL, ""), equalTo(true));
+		assertThat("None is a subset of two", secondRivers.isSubset(zero, DEV_NULL, ""),
+				equalTo(true));
+		assertThat("All is not a subset of two",
+				secondRivers.isSubset(thirdCollection, DEV_NULL, ""), equalTo(false));
+		assertThat("Three are not a subset of two",
+				secondRivers.isSubset(firstRivers, DEV_NULL, ""), equalTo(false));
+		assertThat("Two are a subset of themselves",
+				secondRivers.isSubset(secondRivers, DEV_NULL, ""), equalTo(true));
+		assertThat("None is a subset of three", firstRivers.isSubset(zero, DEV_NULL,
+				""), equalTo(true));
+		assertThat("All is not a subset of three",
+				firstRivers.isSubset(thirdCollection, DEV_NULL, ""), equalTo(false));
+		assertThat("A different two are not a subset of three",
+				firstRivers.isSubset(secondRivers, DEV_NULL, ""), equalTo(false));
+		assertThat("Three are a subset of themselves",
+				firstRivers.isSubset(firstRivers, DEV_NULL, ""), equalTo(true));
+		assertThat("None is a subset of itself",
+				zero.isSubset(zero, DEV_NULL, ""), equalTo(true));
+		assertThat("All are not a subset of none",
+				zero.isSubset(thirdCollection, DEV_NULL, ""), equalTo(false));
+		assertThat("Three are not a subset of none",
+				zero.isSubset(firstRivers, DEV_NULL, ""), equalTo(false));
+		assertThat("Two are not a subset of none",
+				zero.isSubset(secondRivers, DEV_NULL, ""), equalTo(false));
 	}
 
 	/**
@@ -143,26 +143,26 @@ public final class TestSubsets {
 	public void testFortressSubset() throws IOException {
 		final Fortress firstFort = new Fortress(new Player(1, ONE_STR), "fOne", 1);
 		final Fortress secondFort = new Fortress(new Player(2, "two"), "fOne", 1);
-		assertFalse("Subset requires same owner, first test",
-				firstFort.isSubset(secondFort, DEV_NULL, ""));
-		assertFalse("Subset requires same owner, second test",
-				secondFort.isSubset(firstFort, DEV_NULL, ""));
+		assertThat("Subset requires same owner, first test",
+				firstFort.isSubset(secondFort, DEV_NULL, ""), equalTo(false));
+		assertThat("Subset requires same owner, second test",
+				secondFort.isSubset(firstFort, DEV_NULL, ""), equalTo(false));
 		final Fortress thirdFort = new Fortress(new Player(1, ONE_STR), "fTwo", 2);
-		assertFalse("Subset requires same name, first test",
-				firstFort.isSubset(thirdFort, DEV_NULL, ""));
-		assertFalse("Subset requires same name, second test",
-				thirdFort.isSubset(firstFort, DEV_NULL, ""));
+		assertThat("Subset requires same name, first test",
+				firstFort.isSubset(thirdFort, DEV_NULL, ""), equalTo(false));
+		assertThat("Subset requires same name, second test",
+				thirdFort.isSubset(firstFort, DEV_NULL, ""), equalTo(false));
 		final Fortress fourthFort = new Fortress(new Player(1, ONE_STR), "fOne", 3);
-		assertTrue("Subset doesn't require identity or ID equality",
-				firstFort.isSubset(fourthFort, DEV_NULL, ""));
-		assertTrue("Subset doesn't require identity or ID equality",
-				fourthFort.isSubset(firstFort, DEV_NULL, ""));
+		assertThat("Subset doesn't require identity or ID equality",
+				firstFort.isSubset(fourthFort, DEV_NULL, ""), equalTo(true));
+		assertThat("Subset doesn't require identity or ID equality",
+				fourthFort.isSubset(firstFort, DEV_NULL, ""), equalTo(true));
 		fourthFort.addMember(new Unit(new Player(2, "two"), "unit_type", "unit_name",
 											4));
-		assertTrue("Fortress without is a subset of fortress with unit",
-				fourthFort.isSubset(firstFort, DEV_NULL, ""));
-		assertFalse("Fortress with is not a subset of fortress without unit",
-				firstFort.isSubset(fourthFort, DEV_NULL, ""));
+		assertThat("Fortress without is a subset of fortress with unit",
+				fourthFort.isSubset(firstFort, DEV_NULL, ""), equalTo(true));
+		assertThat("Fortress with is not a subset of fortress without unit",
+				firstFort.isSubset(fourthFort, DEV_NULL, ""), equalTo(false));
 	}
 
 	/**
@@ -184,37 +184,40 @@ public final class TestSubsets {
 		secondMap.setBaseTerrain(pointTwo, TileType.Ocean);
 		final IMapNG zero =
 				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), -1);
-		assertTrue("None is a subset of itself",
-				zero.isSubset(zero, DEV_NULL, ""));
-		assertTrue("None is a subset of one", firstMap.isSubset(zero, DEV_NULL, ""));
-		assertTrue("None is a subset of two", secondMap.isSubset(zero, DEV_NULL, ""));
-		assertFalse("One is not a subset of none",
-				zero.isSubset(firstMap, DEV_NULL, ""));
-		assertTrue("One is a subset of itself",
-				firstMap.isSubset(firstMap, DEV_NULL, ""));
-		assertTrue("One is a subset of two", secondMap.isSubset(firstMap, DEV_NULL, ""));
-		assertFalse("TWo is not a subset of none",
-				zero.isSubset(secondMap, DEV_NULL, ""));
-		assertFalse("Two is not a subset of one",
-				firstMap.isSubset(secondMap, DEV_NULL, ""));
-		assertTrue("Two is a subset of itself",
-				secondMap.isSubset(secondMap, DEV_NULL, ""));
+		assertThat("None is a subset of itself",
+				zero.isSubset(zero, DEV_NULL, ""), equalTo(true));
+		assertThat("None is a subset of one", firstMap.isSubset(zero, DEV_NULL, ""),
+				equalTo(true));
+		assertThat("None is a subset of two", secondMap.isSubset(zero, DEV_NULL, ""),
+				equalTo(true));
+		assertThat("One is not a subset of none",
+				zero.isSubset(firstMap, DEV_NULL, ""), equalTo(false));
+		assertThat("One is a subset of itself",
+				firstMap.isSubset(firstMap, DEV_NULL, ""), equalTo(true));
+		assertThat("One is a subset of two", secondMap.isSubset(firstMap, DEV_NULL, ""),
+				equalTo(true));
+		assertThat("TWo is not a subset of none",
+				zero.isSubset(secondMap, DEV_NULL, ""), equalTo(false));
+		assertThat("Two is not a subset of one",
+				firstMap.isSubset(secondMap, DEV_NULL, ""), equalTo(false));
+		assertThat("Two is a subset of itself",
+				secondMap.isSubset(secondMap, DEV_NULL, ""), equalTo(true));
 		firstMap.setBaseTerrain(pointTwo, TileType.Plains);
-		assertFalse("Corresponding but non-matching tile breaks subset",
-				secondMap.isSubset(firstMap, DEV_NULL, ""));
-		assertFalse("Corresponding but non-matching tile breaks subset",
-				firstMap.isSubset(secondMap, DEV_NULL, ""));
+		assertThat("Corresponding but non-matching tile breaks subset",
+				secondMap.isSubset(firstMap, DEV_NULL, ""), equalTo(false));
+		assertThat("Corresponding but non-matching tile breaks subset",
+				firstMap.isSubset(secondMap, DEV_NULL, ""), equalTo(false));
 		secondMap.setBaseTerrain(pointTwo, TileType.Plains);
-		assertTrue("Subset again after resetting terrain",
-				secondMap.isSubset(firstMap, DEV_NULL, ""));
+		assertThat("Subset again after resetting terrain",
+				secondMap.isSubset(firstMap, DEV_NULL, ""), equalTo(true));
 		firstMap.addFixture(pointTwo, new CacheFixture("category", "contents", 3));
-		assertTrue("Subset calculation ignores caches",
-				secondMap.isSubset(firstMap, DEV_NULL, ""));
+		assertThat("Subset calculation ignores caches",
+				secondMap.isSubset(firstMap, DEV_NULL, ""), equalTo(true));
 		firstMap.addFixture(pointTwo, new TextFixture("text", -1));
-		assertTrue("Subset calculation ignores text fixtures",
-				secondMap.isSubset(firstMap, DEV_NULL, ""));
+		assertThat("Subset calculation ignores text fixtures",
+				secondMap.isSubset(firstMap, DEV_NULL, ""), equalTo(true));
 		firstMap.addFixture(pointTwo, new Animal("animal", true, false, "status", 5));
-		assertTrue("Subset calculation ignores animal tracks",
+		assertThat("Subset calculation ignores animal tracks",
 				secondMap.isSubset(firstMap, DEV_NULL, ""));
 	}
 	/**
@@ -241,22 +244,22 @@ public final class TestSubsets {
 		final Consumer<SPMapNG> testTrue =
 				map -> {
 					try {
-						assertTrue("Subset holds when fixture(s) placed correctly",
-								baseMap.isSubset(map, DEV_NULL, ""));
+						assertThat("Subset holds when fixture(s) placed correctly",
+								baseMap.isSubset(map, DEV_NULL, ""), equalTo(true));
 					} catch (final IOException ignored) {
 
 					}
 				};
 		final Consumer<SPMapNG> testFalse = map -> {
 			try {
-				assertFalse("Subset fails when fixture(s) off by one",
-						baseMap.isSubset(map, DEV_NULL, ""));
+				assertThat("Subset fails when fixture(s) off by one",
+						baseMap.isSubset(map, DEV_NULL, ""), equalTo(false));
 			} catch (final IOException ignored) {
 
 			}
 		};
 		for (final Point point : testMap.locations()) {
-			assertTrue("Subset invariant before attempt using " + point,
+			assertThat("Subset invariant before attempt using " + point,
 					baseMap.isSubset(testMap, DEV_NULL, ""));
 			final Consumer<SPMapNG> test;
 			if (PointFactory.point(1, 1).equals(point)) {
@@ -273,8 +276,8 @@ public final class TestSubsets {
 			testMap.addRivers(point, River.East);
 			test.accept(testMap);
 			testMap.removeRivers(point, River.East);
-			assertTrue("Subset invariant after attempt using " + point,
-					baseMap.isSubset(testMap, DEV_NULL, ""));
+			assertThat("Subset invariant after attempt using " + point,
+					baseMap.isSubset(testMap, DEV_NULL, ""), equalTo(true));
 		}
 	}
 	/**
@@ -291,8 +294,8 @@ public final class TestSubsets {
 		firstMap.setBaseTerrain(pointOne, TileType.Jungle);
 		final IMapNG zero =
 				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), -1);
-		assertTrue("zero is a subset of one before copy",
-				firstMap.isSubset(zero, DEV_NULL, ""));
+		assertThat("zero is a subset of one before copy",
+				firstMap.isSubset(zero, DEV_NULL, ""), equalTo(true));
 		final IMutableMapNG secondMap =
 				new SPMapNG(new MapDimensions(2, 2, 2), new PlayerCollection(), -1);
 		secondMap.setBaseTerrain(pointOne, TileType.Jungle);
@@ -306,21 +309,21 @@ public final class TestSubsets {
 		firstMap.addFixture(pointOne,
 				new Fortification(TownStatus.Burned, TownSize.Large, 15, "fortification",
 										6, new Player(0, "")));
-		assertEquals("Cloned map equals original", firstMap, firstMap.copy(false));
+		assertThat("Cloned map equals original", firstMap.copy(false), equalTo(firstMap));
 		final IMapNG clone = firstMap.copy(true);
-		assertTrue("unfilled map is still a subset of zeroed clone",
-				clone.isSubset(zero, DEV_NULL, ""));
+		assertThat("unfilled map is still a subset of zeroed clone",
+				clone.isSubset(zero, DEV_NULL, ""), equalTo(true));
 		// DCs, the only thing zeroed out in *map* copy() at the moment, are ignored in
 		// equals().
 		clone.streamOtherFixtures(pointOne).filter(AbstractTown.class::isInstance)
 				.map(IEvent.class::cast).forEach(
-				fix -> assertEquals("Copied map didn't copy DCs", 0, fix.getDC()));
+				fix -> assertThat("Copied map didn't copy DCs", fix.getDC(), equalTo(0)));
 		final Unit uOne = new Unit(new Player(0, ""), "type", "name", 7);
 		uOne.addMember(new Worker("worker", "dwarf", 8, new Job("job", 1)));
-		assertEquals("clone equals original", uOne, uOne.copy(false));
-		assertFalse("zeroed clone doesn't equal original", uOne.equals(uOne.copy(true)));
-		assertTrue("zeroed clone is subset of original",
-				uOne.isSubset(uOne.copy(true), DEV_NULL, ""));
+		assertThat("clone equals original", uOne.copy(false), equalTo(uOne));
+		assertThat("zeroed clone doesn't equal original", uOne.equals(uOne.copy(true)), equalTo(false));
+		assertThat("zeroed clone is subset of original",
+				uOne.isSubset(uOne.copy(true), DEV_NULL, ""), equalTo(true));
 	}
 
 	/**

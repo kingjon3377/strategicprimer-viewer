@@ -9,9 +9,8 @@ import model.map.TileType;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static util.NullCleaner.assertNotNull;
 
@@ -81,9 +80,9 @@ public final class TestExplorationRunner {
 	@Test
 	public void testGetPrimaryRock() throws MissingTableException {
 		runner.loadTable("major_rock", new ConstantTable("primary_rock_test"));
-		assertEquals("primary rock test", "primary_rock_test",
-				runner.getPrimaryRock(
-						PointFactory.point(0, 0), TileType.Tundra, EMPTY));
+		assertThat("primary rock test", runner.getPrimaryRock(
+				PointFactory.point(0, 0), TileType.Tundra, EMPTY),
+				equalTo("primary_rock_test"));
 	}
 
 	/**
@@ -100,13 +99,13 @@ public final class TestExplorationRunner {
 		runner.loadTable("temperate_major_tree",
 				new ConstantTable("temperate_major_test"));
 		final Point point = PointFactory.point(0, 0);
-		assertEquals("primary tree test for boreal forest",
-				"boreal_major_test",
-				runner.getPrimaryTree(point, TileType.BorealForest, EMPTY));
-		assertEquals(
+		assertThat("primary tree test for boreal forest",
+				runner.getPrimaryTree(point, TileType.BorealForest, EMPTY),
+				equalTo("boreal_major_test"));
+		assertThat(
 				"primary tree test for temperate forest",
-				"temperate_major_test",
-				runner.getPrimaryTree(point, TileType.TemperateForest, EMPTY));
+				runner.getPrimaryTree(point, TileType.TemperateForest, EMPTY),
+				equalTo("temperate_major_test"));
 	}
 
 	/**
@@ -134,14 +133,12 @@ public final class TestExplorationRunner {
 		runner.loadTable(TEST_TABLE_TWO, new ConstantTable("test_two"));
 		runner.loadTable(TEST_TABLE_THREE, new ConstantTable(TEST_THREE));
 		final Point point = PointFactory.point(0, 0);
-		assertEquals("first table", "test_one", runner.consultTable(TEST_TABLE_ONE,
-				point,
-				TileType.Tundra, EMPTY));
-		assertEquals("second table", "test_two",
-				runner.consultTable(TEST_TABLE_TWO, point,
-						TileType.Tundra, EMPTY));
-		assertEquals("third table", TEST_THREE, runner.consultTable(TEST_TABLE_THREE,
-				point, TileType.Tundra, EMPTY));
+		assertThat("first table", runner.consultTable(TEST_TABLE_ONE,
+				point, TileType.Tundra, EMPTY), equalTo("test_one"));
+		assertThat("second table", runner.consultTable(TEST_TABLE_TWO, point,
+				TileType.Tundra, EMPTY), equalTo("test_two"));
+		assertThat("third table", runner.consultTable(TEST_TABLE_THREE,
+				point, TileType.Tundra, EMPTY), equalTo(TEST_THREE));
 	}
 
 	/**
@@ -159,23 +156,23 @@ public final class TestExplorationRunner {
 		runner.loadTable(TEST_TABLE_THREE, new ConstantTable(TEST_THREE));
 		runner.loadTable("test_table_four", new ConstantTable("_ #test_table_one"));
 		final Point point = PointFactory.point(0, 0);
-		assertEquals(
+		assertThat(
 				"two levels of recursion",
-				"( ( test_three ) )", runner.recursiveConsultTable(TEST_TABLE_ONE, point,
-						TileType.Tundra, EMPTY));
-		assertEquals(
+				runner.recursiveConsultTable(TEST_TABLE_ONE, point,
+						TileType.Tundra, EMPTY), equalTo("( ( test_three ) )"));
+		assertThat(
 				"one level of recursion",
-				"( test_three )", runner.recursiveConsultTable(TEST_TABLE_TWO, point,
-						TileType.Tundra, EMPTY));
-		assertEquals(
+				runner.recursiveConsultTable(TEST_TABLE_TWO, point,
+						TileType.Tundra, EMPTY), equalTo("( test_three )"));
+		assertThat(
 				"no recursion",
-				TEST_THREE, runner.recursiveConsultTable(TEST_TABLE_THREE, point,
-						TileType.Tundra, EMPTY));
-		assertEquals(
+				runner.recursiveConsultTable(TEST_TABLE_THREE, point,
+						TileType.Tundra, EMPTY), equalTo(TEST_THREE));
+		assertThat(
 				"one-sided split",
-				"_ ( ( test_three ) )",
 				runner.recursiveConsultTable("test_table_four", point,
-						TileType.Plains, EMPTY));
+						TileType.Plains, EMPTY),
+				equalTo("_ ( ( test_three ) )"));
 	}
 
 	/**
@@ -190,17 +187,17 @@ public final class TestExplorationRunner {
 		runner.loadTable("boreal_major_tree", new ConstantTable("boreal_tree"));
 		runner.loadTable("temperate_major_tree", new ConstantTable("temperate_tree"));
 		final Point point = PointFactory.point(0, 0);
-		assertEquals("defaultResults in non-forest",
-				"The primary rock type here is test_rock.\n",
-				runner.defaultResults(point, TileType.Tundra, EMPTY));
-		assertEquals("defaultResults in boreal forest",
-				"The primary rock type here is test_rock.\n"
-						+ "The main kind of tree is boreal_tree.\n",
-				runner.defaultResults(point, TileType.BorealForest, EMPTY));
-		assertEquals("defaultResults in temperate forest",
-				"The primary rock type here is test_rock.\n"
-						+ "The main kind of tree is temperate_tree.\n",
-				runner.defaultResults(point, TileType.TemperateForest, EMPTY));
+		assertThat("defaultResults in non-forest",
+				runner.defaultResults(point, TileType.Tundra, EMPTY),
+				equalTo("The primary rock type here is test_rock.\n"));
+		assertThat("defaultResults in boreal forest",
+				runner.defaultResults(point, TileType.BorealForest, EMPTY),
+				equalTo("The primary rock type here is test_rock.\n"
+						+ "The main kind of tree is boreal_tree.\n"));
+		assertThat("defaultResults in temperate forest",
+				runner.defaultResults(point, TileType.TemperateForest, EMPTY),
+				equalTo("The primary rock type here is test_rock.\n"
+						+ "The main kind of tree is temperate_tree.\n"));
 	}
 
 	/**
@@ -210,19 +207,19 @@ public final class TestExplorationRunner {
 	@Test
 	public void testRecursiveCheck() {
 		runner.loadTable("existent_table", new ConstantTable("exists"));
-		assertTrue("base case of non-existent table",
-				runner.recursiveCheck("non-existent-table"));
-		assertFalse("base case of existent table",
-				runner.recursiveCheck("existent_table"));
+		assertThat("base case of non-existent table",
+				runner.recursiveCheck("non-existent-table"), equalTo(true));
+		assertThat("base case of existent table",
+				runner.recursiveCheck("existent_table"), equalTo(false));
 		runner.loadTable("referent_one", new ConstantTable("#existent_table#"));
 		runner.loadTable("referent_two", new ConstantTable("( #existent_table# )"));
 		runner.loadTable("referent_three", new QuadrantTable(1, assertNotNull(
 				Arrays.asList("#referent_one#", "#referent_two#"))));
-		assertFalse("recursive case to exercise cache-hits",
-				runner.recursiveCheck("referent_three"));
+		assertThat("recursive case to exercise cache-hits",
+				runner.recursiveCheck("referent_three"), equalTo(false));
 		runner.loadTable("false_referent", new ConstantTable("#nonexistent#"));
-		assertTrue("reference to nonexistent table",
-				runner.recursiveCheck("false_referent"));
+		assertThat("reference to nonexistent table",
+				runner.recursiveCheck("false_referent"), equalTo(true));
 	}
 
 	/**
@@ -230,13 +227,14 @@ public final class TestExplorationRunner {
 	 */
 	@Test
 	public void testGlobalRecursiveCheck() {
-		assertFalse("recursive check with no tables", runner.recursiveCheck());
+		assertThat("recursive check with no tables", runner.recursiveCheck(),
+				equalTo(false));
 		runner.loadTable("existent", new ConstantTable("true_table"));
-		assertFalse("recursive check with only valid tables",
-				runner.recursiveCheck());
+		assertThat("recursive check with only valid tables",
+				runner.recursiveCheck(), equalTo(false));
 		runner.loadTable("false_ref", new ConstantTable("#false#"));
-		assertTrue("recursive check with an invalid table",
-				runner.recursiveCheck());
+		assertThat("recursive check with an invalid table",
+				runner.recursiveCheck(), equalTo(true));
 	}
 
 	/**

@@ -13,9 +13,9 @@ import model.map.fixtures.mobile.Worker;
 import org.junit.Test;
 import util.NullStream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertThat;
 
 /**
  * A class to test that the proxy classes work as expected.
@@ -82,8 +82,8 @@ public final class TestProxyWorker {
 																				10),
 																new Skill("skillFour", 0,
 																				10)));
-		assertEquals("First worker should have appropriate experience", oneCopy,
-				firstWorker);
+		assertThat("First worker should have appropriate experience", firstWorker,
+				equalTo(oneCopy));
 		final Worker twoCopy = new Worker("two", "elf", 2,
 												new Job("jobOne", 0,
 																new Skill("skillOne", 0,
@@ -96,8 +96,8 @@ public final class TestProxyWorker {
 																				29),
 																new Skill("skillFour", 1,
 																				0)));
-		assertEquals("Second worker should have appropriate experience", twoCopy,
-				secondWorker);
+		assertThat("Second worker should have appropriate experience", secondWorker,
+				equalTo(twoCopy));
 		final Worker threeCopy = new Worker("three", "dwarf", 5,
 												new Job("jobOne", 0,
 															new Skill
@@ -113,9 +113,8 @@ public final class TestProxyWorker {
 															new Skill("skillFour",
 																			0,
 																			10)));
-		assertEquals(
-				"Initially-empty worker should have appropriate experience",
-				threeCopy, thirdWorker);
+		assertThat("Initially-empty worker should have appropriate experience",
+				thirdWorker, equalTo(threeCopy));
 	}
 
 	/**
@@ -164,21 +163,18 @@ public final class TestProxyWorker {
 				}
 			}
 		}
-		assertEquals("Two copies of first worker should be equal", firstWorker,
-				oneCopy);
-		assertEquals("Two copies of second worker should be equal", secondWorker,
-				twoCopy);
-		assertFalse("First worker should not still be as it was originally",
-				oneOrig.equals(firstWorker));
-		assertTrue(
-				"But first worker original should be a subset of first worker now",
-				firstWorker.isSubset(oneOrig, NullStream.DEV_NULL, ""));
-		assertFalse(
-				"Two copies of second worker shouldn't still be as it was originally",
-				twoOrig.equals(secondWorker));
-		assertTrue(
-				"But second worker original should be a subset of second worker now",
-				secondWorker.isSubset(twoOrig, NullStream.DEV_NULL, ""));
+		assertThat("Two copies of first worker should be equal", oneCopy,
+				equalTo(firstWorker));
+		assertThat("Two copies of second worker should be equal", twoCopy,
+				equalTo(secondWorker));
+		assertThat("First worker should not still be as it was originally", firstWorker,
+				not(equalTo(oneOrig)));
+		assertThat("But first worker original should be a subset of first worker now",
+				firstWorker.isSubset(oneOrig, NullStream.DEV_NULL, ""), equalTo(true));
+		assertThat("Two copies of second worker shouldn't still be as it was originally",
+				secondWorker, not(equalTo(twoOrig)));
+		assertThat("But second worker original should be a subset of second worker now",
+				secondWorker.isSubset(twoOrig, NullStream.DEV_NULL, ""), equalTo(true));
 	}
 
 	/**
@@ -226,23 +222,20 @@ public final class TestProxyWorker {
 				skill.addHours(10, 100);
 			}
 		}
-		assertEquals("Two copies of first worker should be equal", firstWorker,
-				oneCopy);
-		assertEquals("Two copies of second worker should be equal", secondWorker,
-				twoCopy);
+		assertThat("Two copies of first worker should be equal", oneCopy,
+				equalTo(firstWorker));
+		assertThat("Two copies of second worker should be equal", twoCopy,
+				equalTo(secondWorker));
 		assertWorkerHasJob(firstWorker, "jobTwo");
 		assertWorkerHasJob(secondWorker, "jobOne");
-		assertFalse("First worker should not still be as it was originally",
-				oneOrig.equals(firstWorker));
-		assertTrue(
-				"But first worker original should be a subset of first worker now",
-				firstWorker.isSubset(oneOrig, NullStream.DEV_NULL, ""));
-		assertFalse(
-				"Two copies of second worker shouldn't still be as it was originally",
-				twoOrig.equals(secondWorker));
-		assertTrue(
-				"But second worker original should be a subset of second worker now",
-				secondWorker.isSubset(twoOrig, NullStream.DEV_NULL, ""));
+		assertThat("First worker should not still be as it was originally", firstWorker,
+				not(equalTo(oneOrig)));
+		assertThat("But first worker original should be a subset of first worker now",
+				firstWorker.isSubset(oneOrig, NullStream.DEV_NULL, ""), equalTo(true));
+		assertThat("Two copies of second worker shouldn't still be as it was originally",
+				secondWorker, not(equalTo(twoOrig)));
+		assertThat("But second worker original should be a subset of second worker now",
+				secondWorker.isSubset(twoOrig, NullStream.DEV_NULL, ""), equalTo(true));
 	}
 
 	/**
@@ -284,7 +277,8 @@ public final class TestProxyWorker {
 																			new Skill("skillTwo",
 																							2,
 																							6)));
-		assertEquals("Worker copy should still be equal", worker, worker.copy(false));
+		assertThat("Worker copy should still be equal", worker.copy(false),
+				equalTo(worker));
 	}
 
 	/**
