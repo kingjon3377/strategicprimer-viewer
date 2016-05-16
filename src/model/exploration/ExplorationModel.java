@@ -532,7 +532,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	@Override
 	public void swearVillages() {
 		// TODO: Possible data race here (one of *many* in this suite ...)
-		final Point currPoint = getSelectedUnitLocation();
+		final Point currPoint = selUnitLoc;
 		final IUnit mover = selUnit;
 		if (mover != null) {
 			final Player owner = mover.getOwner();
@@ -550,7 +550,7 @@ public final class ExplorationModel extends SimpleMultiMapModel implements
 	 */
 	@Override
 	public void dig() {
-		final Point currPoint = getSelectedUnitLocation();
+		final Point currPoint = selUnitLoc;
 		if (currPoint.getRow() >= 0) {
 			final List<TileFixture> diggables = new ArrayList<>();
 			final IMutableMapNG mainMap = getMap();
