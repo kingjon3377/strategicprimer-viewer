@@ -218,7 +218,7 @@ public final class TestSubsets {
 				secondMap.isSubset(firstMap, DEV_NULL, ""), equalTo(true));
 		firstMap.addFixture(pointTwo, new Animal("animal", true, false, "status", 5));
 		assertThat("Subset calculation ignores animal tracks",
-				secondMap.isSubset(firstMap, DEV_NULL, ""));
+				secondMap.isSubset(firstMap, DEV_NULL, ""), equalTo(true));
 	}
 	/**
 	 * Test map subsets to ensure off-by-one errors are caught.
@@ -260,7 +260,7 @@ public final class TestSubsets {
 		};
 		for (final Point point : testMap.locations()) {
 			assertThat("Subset invariant before attempt using " + point,
-					baseMap.isSubset(testMap, DEV_NULL, ""));
+					baseMap.isSubset(testMap, DEV_NULL, ""), equalTo(true));
 			final Consumer<SPMapNG> test;
 			if (PointFactory.point(1, 1).equals(point)) {
 				test = testTrue;
