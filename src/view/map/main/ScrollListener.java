@@ -1,11 +1,8 @@
 package view.map.main;
 
-import java.awt.Adjustable;
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.AdjustmentListener;
-import javax.swing.InputVerifier;
-import javax.swing.JComponent;
-import javax.swing.JScrollBar;
+import javax.swing.*;
 import model.listeners.GraphicalParamsListener;
 import model.listeners.MapChangeListener;
 import model.listeners.SelectionChangeListener;
@@ -148,10 +145,12 @@ public final class ScrollListener
 	@Override
 	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
 		final VisibleDimensions visibleDims = model.getDimensions();
-		if (!isInRange(visibleDims.getMinimumCol(), newPoint.col, visibleDims.getMaximumCol())) {
+		if (!isInRange(visibleDims.getMinimumCol(), newPoint.col,
+				visibleDims.getMaximumCol())) {
 			horizontalBar.getModel().setValue(Math.max(newPoint.col, 0));
 		}
-		if (!isInRange(visibleDims.getMinimumRow(), newPoint.row, visibleDims.getMaximumRow())) {
+		if (!isInRange(visibleDims.getMinimumRow(), newPoint.row,
+				visibleDims.getMaximumRow())) {
 			verticalBar.getModel().setValue(Math.max(newPoint.row, 0));
 		}
 	}

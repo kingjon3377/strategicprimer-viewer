@@ -63,11 +63,13 @@ public final class ProxyJob implements IJob, ProxyFor<@NonNull IJob> {
 
 	/**
 	 * @param jobName   the name of the Job
-	 * @param parallelWorkers  whether the workers containing these jobs are corresponding workers
-	 *                in different maps (if true) or workers in the same unit (if false)
+	 * @param parallelWorkers  whether the workers containing these jobs are
+	 *                            corresponding workers in different maps (if true) or
+	 *                            workers in the same unit (if false)
 	 * @param workers being proxied
 	 */
-	public ProxyJob(final String jobName, final boolean parallelWorkers, final IWorker... workers) {
+	public ProxyJob(final String jobName, final boolean parallelWorkers,
+					final IWorker... workers) {
 		parallel = parallelWorkers;
 		name = jobName;
 		skillNames = new HashSet<>();

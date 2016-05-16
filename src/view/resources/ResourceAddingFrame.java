@@ -3,9 +3,7 @@ package view.resources;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -19,17 +17,7 @@ import java.util.HashSet;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.StreamSupport;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTextField;
-import javax.swing.SpinnerNumberModel;
+import javax.swing.*;
 import model.map.Player;
 import model.map.fixtures.Implement;
 import model.map.fixtures.ResourcePile;
@@ -151,7 +139,8 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	 * @param ioh the I/O handler for menu items
 	 */
 	@SuppressWarnings("ObjectAllocationInLoop")
-	public ResourceAddingFrame(final ResourceManagementDriver driverModel, final IOHandler ioh) {
+	public ResourceAddingFrame(final ResourceManagementDriver driverModel,
+							   final IOHandler ioh) {
 		super("Resource Entry");
 		model = driverModel;
 		final IDFactory idf = IDFactoryFiller.createFactory(model);
@@ -282,7 +271,8 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	@SuppressWarnings("resource")
 	private void logAddition(final String addend) {
 		try (final PrintWriter writer = logLabel.getWriter()) {
-			writer.printf("<p style=\"color: white; margin-bottom: 0.5em; margin-top: 0.5em;\">Added %s for %s</p>%n", addend,
+			writer.print("<p style=\"color:white; margin-bottom: 0.5em; ");
+			writer.printf(" margin-top: 0.5em;\">Added %s for %s</p>%n", addend,
 					current.getName());
 		}
 	}

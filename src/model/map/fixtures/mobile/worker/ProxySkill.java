@@ -49,8 +49,9 @@ public final class ProxySkill implements ISkill, ProxyFor<IJob> {
 
 	/**
 	 * @param skillName  the name of the skill
-	 * @param parallelUnits whether the worker containing this represents corresponding units in
-	 *               different maps, rather than workers in a single unit
+	 * @param parallelUnits whether the worker containing this represents corresponding
+	 *                         units in different maps, rather than workers in a single
+	 *                         unit
 	 * @param jobs   the Jobs to add skill hours to when asked
 	 */
 	public ProxySkill(final String skillName, final boolean parallelUnits,

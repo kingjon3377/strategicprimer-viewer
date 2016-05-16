@@ -55,7 +55,8 @@ public final class WorkerReportDriver implements SimpleDriver {
 		if (model instanceof IMultiMapModel) {
 			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getAllMaps()) {
 				final String report = ReportGenerator.createReport(pair.first());
-				try (final FileWriter writer = new FileWriter(pair.second().getPath() + ".report.html")) {
+				try (final FileWriter writer = new FileWriter(pair.second().getPath() +
+																	  ".report.html")) {
 					writer.write(report);
 				} catch (final IOException except) {
 					throw new DriverFailedException("I/O error writing report", except);
@@ -63,7 +64,8 @@ public final class WorkerReportDriver implements SimpleDriver {
 			}
 		} else {
 			final String report = ReportGenerator.createReport(model.getMap());
-			try (final FileWriter writer = new FileWriter(model.getMapFile().getPath() + ".report.html")) {
+			try (final FileWriter writer = new FileWriter(model.getMapFile().getPath() +
+																  ".report.html")) {
 				writer.write(report);
 			} catch (final IOException except) {
 				throw new DriverFailedException("I/O error writing report", except);

@@ -2,16 +2,13 @@ package view.worker;
 
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
-import java.awt.Dimension;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import model.map.IMapNG;
 import model.map.Player;
 import model.workermgmt.IWorkerModel;
@@ -107,7 +104,8 @@ public final class AdvancementFrame extends JFrame implements ISPWindow {
 						htmlWrapped("Worker's Jobs and Skills:"), new JScrollPane(jobsTree),
 						null), BorderedPanel.vertical(null, BorderedPanel.vertical(
 						BorderedPanel.vertical(newJobText, null, jobAdditionPanel), null,
-						BorderedPanel.vertical(newSkillText, null, skillAdditionPanel)), skillAdvancementPanel))));
+						BorderedPanel.vertical(newSkillText, null, skillAdditionPanel)),
+						skillAdvancementPanel))));
 
 		ioHandler.notifyListeners();
 

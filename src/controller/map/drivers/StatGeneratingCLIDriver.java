@@ -167,7 +167,8 @@ public final class StatGeneratingCLIDriver implements SimpleCLIDriver {
 		final String hdr = "Which unit contains the worker in question?";
 		final String none = "All that player's units already have stats.";
 		final String prompt = "Unit selection: ";
-		final ChoiceOperation choice = () -> cli.chooseFromList(units, hdr, none, prompt, false);
+		final ChoiceOperation choice =
+				() -> cli.chooseFromList(units, hdr, none, prompt, false);
 		for (int unitNum = choice.choose(); (unitNum >= 0) && (unitNum < units.size());
 				unitNum = choice.choose()) {
 			final IUnit unit = units.get(unitNum);

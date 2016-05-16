@@ -303,7 +303,8 @@ public final class XMLHelper {
 	 * @param obj an object being written out that might have a custom image
 	 */
 	@SuppressWarnings("TypeMayBeWeakened")
-	public static void writeImage(final Appendable ostream, final HasImage obj) throws IOException {
+	public static void writeImage(final Appendable ostream, final HasImage obj)
+			throws IOException {
 		final String image = obj.getImage();
 		if (!image.equals(obj.getDefaultImage())) {
 			writeNonEmptyAttribute(ostream, "image", image);

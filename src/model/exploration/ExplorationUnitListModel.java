@@ -5,15 +5,12 @@ import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.List;
-
-import javax.swing.DefaultListModel;
-
-import org.eclipse.jdt.annotation.NonNull;
-import org.eclipse.jdt.annotation.Nullable;
-
+import javax.swing.*;
 import model.listeners.PlayerChangeListener;
 import model.map.Player;
 import model.map.fixtures.mobile.IUnit;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * A unit list model for the exploration GUI.
@@ -47,7 +44,8 @@ public final class ExplorationUnitListModel extends DefaultListModel<@NonNull IU
 	/**
 	 * Constructor.
 	 *
-	 * @param explorationModel the exploration model, so we can select the unit the user selects
+	 * @param explorationModel the exploration model, so we can select the unit the user
+	 *                            selects
 	 */
 	public ExplorationUnitListModel(final IExplorationModel explorationModel) {
 		model = explorationModel;

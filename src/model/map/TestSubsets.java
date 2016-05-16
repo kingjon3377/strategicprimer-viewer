@@ -321,7 +321,8 @@ public final class TestSubsets {
 		final Unit uOne = new Unit(new Player(0, ""), "type", "name", 7);
 		uOne.addMember(new Worker("worker", "dwarf", 8, new Job("job", 1)));
 		assertThat("clone equals original", uOne.copy(false), equalTo(uOne));
-		assertThat("zeroed clone doesn't equal original", uOne.equals(uOne.copy(true)), equalTo(false));
+		assertThat("zeroed clone doesn't equal original", uOne.equals(uOne.copy(true)),
+				equalTo(false));
 		assertThat("zeroed clone is subset of original",
 				uOne.isSubset(uOne.copy(true), DEV_NULL, ""), equalTo(true));
 	}
