@@ -10,7 +10,8 @@ mv jarbundler-2.4.0/jarbundler-2.4.0.jar "${HOME}/.ant/lib/"
 wget http://central.maven.org/maven2/org/eclipse/jdt/org.eclipse.jdt.annotation/2.0.0/org.eclipse.jdt.annotation-2.0.0.jar
 wget http://javagraphics.java.net/jars/WindowMenu.jar
 sudo apt-get update -qq
-sudo apt-get install genisoimage
+# TODO: Open request for libhamcrest1.2-java
+sudo apt-get install genisoimage libhamcrest1.2-java
 wget https://github.com/tofi86/universalJavaApplicationStub/archive/v0.9.0.tar.gz -O universalJavaApplicationStub-0.9.0.tar.gz
 tar xzf universalJavaApplicationStub-0.9.0.tar.gz
 if test -n "${TRAVIS_TAG}"; then
