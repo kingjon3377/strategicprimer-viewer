@@ -55,6 +55,7 @@ public final class WorkerReportDriver implements SimpleDriver {
 		if (model instanceof IMultiMapModel) {
 			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getAllMaps()) {
 				final String report = ReportGenerator.createReport(pair.first());
+				//noinspection ObjectAllocationInLoop
 				try (final FileWriter writer = new FileWriter(pair.second().getPath() +
 																	  ".report.html")) {
 					writer.write(report);
