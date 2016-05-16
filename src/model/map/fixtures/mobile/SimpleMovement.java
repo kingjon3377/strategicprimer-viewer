@@ -122,6 +122,7 @@ public final class SimpleMovement {
 	 * @param fixtures a sequence of fixtures
 	 * @return whether any of them is a forest
 	 */
+	@SuppressWarnings("TypeMayBeWeakened")
 	private static boolean isForest(final Stream<TileFixture> fixtures) {
 		return StreamSupport.stream(fixtures.spliterator(), false)
 					.anyMatch(fix -> fix instanceof Forest);
@@ -131,6 +132,7 @@ public final class SimpleMovement {
 	 * @param fixtures a sequence of fixtures
 	 * @return whether any of them is a mountain or a hill
 	 */
+	@SuppressWarnings("TypeMayBeWeakened")
 	private static boolean isHill(final Stream<TileFixture> fixtures) {
 		return StreamSupport.stream(fixtures.spliterator(), false).anyMatch(
 				fix -> (fix instanceof Mountain) || (fix instanceof Hill));

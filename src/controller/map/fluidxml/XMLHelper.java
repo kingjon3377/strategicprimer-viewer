@@ -415,6 +415,7 @@ public final class XMLHelper {
 	 * @param value the value of the attribute
 	 * @throws IOException on I/O error
 	 */
+	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeAttribute(final Appendable ostream, final String name,
 									  final String value) throws IOException {
 		ostream.append(' ');
@@ -430,6 +431,7 @@ public final class XMLHelper {
 	 * @param value the value of the attribute
 	 * @throws IOException on I/O error
 	 */
+	@SuppressWarnings("TypeMayBeWeakened")
 	public static final void writeIntegerAttribute(final Appendable ostream,
 												   final String name, final int value)
 			throws IOException {
@@ -446,8 +448,9 @@ public final class XMLHelper {
 	 * @param value the value of the attribute
 	 * @throws IOException on I/O error
 	 */
+	@SuppressWarnings("TypeMayBeWeakened")
 	public static void writeNonEmptyAttribute(final Appendable ostream, final String name,
-									  final String value) throws IOException {
+											  final String value) throws IOException {
 		if (!value.isEmpty()) {
 			ostream.append(' ');
 			ostream.append(name);
@@ -463,6 +466,7 @@ public final class XMLHelper {
 	 * @param value the value of the attribute
 	 * @throws IOException on I/O error
 	 */
+	@SuppressWarnings("TypeMayBeWeakened")
 	public static final void writeBooleanAttribute(final Appendable ostream,
 												   final String name, final boolean
 																			  value)
