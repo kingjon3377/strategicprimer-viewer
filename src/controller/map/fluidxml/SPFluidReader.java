@@ -564,8 +564,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 						map.setGround(point, ground);
 						map.addFixture(point, oldGround);
 					} else if (!oldGround.equals(ground)) {
-						// TODO: Should we do some ordering of Ground other than
-						// the order they are in the XML?
+						// TODO: Should we do additional ordering of Ground?
 						map.addFixture(point, ground);
 					}
 				} else if (child instanceof Forest) {
@@ -574,8 +573,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 					if (oldForest == null) {
 						map.setForest(point, forest);
 					} else if (!oldForest.equals(forest)) {
-						// TODO: Should we do some ordering of Forests other
-						// than the order they are in the XML?
+						// TODO: Should we do additional ordering of Forests?
 						map.addFixture(point, forest);
 					}
 				} else if (child instanceof RiverFixture) {
