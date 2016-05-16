@@ -18,7 +18,7 @@ import model.map.fixtures.towns.TownStatus;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThat;
 import static util.NullStream.DEV_NULL;
 
 /**

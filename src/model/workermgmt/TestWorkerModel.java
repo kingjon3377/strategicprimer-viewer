@@ -27,7 +27,7 @@ import org.junit.Test;
 import util.NullCleaner;
 
 import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertThat;
 
 /**
  * A class to test MapHelper methods (starting with ones that don't involve I/O).
