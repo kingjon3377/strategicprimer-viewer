@@ -192,7 +192,7 @@ public class FluidUnitMemberHandler {
 		requireNonEmptyAttribute(element, "level", true, warner);
 		requireNonEmptyAttribute(element, "hours", true, warner);
 		spinUntilEnd(assertNotNull(element.getName()), stream);
-		final Skill retval = new Skill(getAttribute(element, "name"),
+		final ISkill retval = new Skill(getAttribute(element, "name"),
 											  getIntegerAttribute(element, "level"),
 											  getIntegerAttribute(element, "hours"));
 		if ("miscellaneous".equals(retval.getName()) && (retval.getLevel() > 0)) {

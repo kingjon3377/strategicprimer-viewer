@@ -393,7 +393,7 @@ public final class TestMoreFixtureSerialization extends
 	public void testOrdersSerialization()
 			throws XMLStreamException, SPFormatException, IOException {
 		final Player player = new Player(0, "");
-		final Unit firstUnit = new Unit(player, "kind of unit", "name of unit", 2);
+		final IUnit firstUnit = new Unit(player, "kind of unit", "name of unit", 2);
 		final IUnit secondUnit = new Unit(player, "kind of unit", "name of unit", 2);
 		secondUnit.setOrders("some orders");
 		assertThat("Orders have no effect on equals", secondUnit, equalTo(firstUnit));

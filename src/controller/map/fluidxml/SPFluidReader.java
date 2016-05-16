@@ -172,7 +172,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 								  final Class<T> type, final Warning warner)
 			throws XMLStreamException, SPFormatException {
 		final TypesafeXMLEventReader reader = new TypesafeXMLEventReader(istream);
-		final IteratorWrapper<XMLEvent> eventReader =
+		final Iterable<XMLEvent> eventReader =
 				new IteratorWrapper<>(new IncludingIterator(file, reader));
 		final IMutablePlayerCollection players = new PlayerCollection();
 		final IDFactory idFactory = new IDFactory();
