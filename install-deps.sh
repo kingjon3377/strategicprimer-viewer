@@ -12,6 +12,7 @@ wget http://javagraphics.java.net/jars/WindowMenu.jar
 sudo apt-get update -qq
 # TODO: Open request for libhamcrest1.2-java
 sudo apt-get install genisoimage libhamcrest1.2-java
+sudo dpkg -r libhamcrest-java
 wget https://github.com/tofi86/universalJavaApplicationStub/archive/v0.9.0.tar.gz -O universalJavaApplicationStub-0.9.0.tar.gz
 tar xzf universalJavaApplicationStub-0.9.0.tar.gz
 if test -n "${TRAVIS_TAG}"; then
