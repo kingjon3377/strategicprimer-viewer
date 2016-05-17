@@ -2,13 +2,16 @@ package view.worker;
 
 import controller.map.misc.IDFactoryFiller;
 import controller.map.misc.IOHandler;
-import java.awt.*;
+import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.WindowConstants;
 import model.map.IMapNG;
 import model.map.Player;
 import model.workermgmt.IWorkerModel;
