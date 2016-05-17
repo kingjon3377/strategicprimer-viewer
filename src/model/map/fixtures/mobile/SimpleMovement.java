@@ -151,19 +151,11 @@ public final class SimpleMovement {
 	public static boolean shouldSometimesNotice(final IUnit unit,
 												@Nullable final TileFixture fix) {
 		if (fix instanceof Ground) {
-			if (((Ground) fix).isExposed()) {
-				return true;
-			} else {
-				return false;
-			}
+			return ((Ground) fix).isExposed();
 		} else if (unit.equals(fix)) {
 			return false;
 		} else if (fix instanceof IEvent) {
-			if ((getHighestPerception(unit) + 15) >= ((IEvent) fix).getDC()) {
-				return true;
-			} else {
-				return false;
-			}
+			return (getHighestPerception(unit) + 15) >= ((IEvent) fix).getDC();
 		} else {
 			return true;
 		}
