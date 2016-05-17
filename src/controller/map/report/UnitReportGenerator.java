@@ -107,7 +107,7 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 				builder.append(workerReport((Worker) member,
 						currentPlayer.equals(item.getOwner())));
 			} else {
-				builder.append(member.toString());
+				builder.append(member);
 			}
 			builder.append(CLOSE_LIST_ITEM);
 			fixtures.remove(Integer.valueOf(member.getID()));
@@ -343,10 +343,10 @@ public final class UnitReportGenerator extends AbstractReportGenerator<Unit> {
 		foreign.append(CLOSE_LIST);
 		ours.append(CLOSE_LIST);
 		if (anyOurs) {
-			builder.append(ours.toString());
+			builder.append(ours);
 		}
 		if (anyForeign) {
-			builder.append(foreign.toString());
+			builder.append(foreign);
 		}
 		if (anyOurs || anyForeign) {
 			return NullCleaner.assertNotNull(builder.toString());

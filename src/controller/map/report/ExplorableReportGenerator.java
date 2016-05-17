@@ -106,11 +106,11 @@ public final class ExplorableReportGenerator
 		for (final Pair<Point, IFixture> pair : values) {
 			if (pair.second() instanceof Cave) {
 				anyCaves = true;
-				caveBuilder.append(", ").append(pair.first().toString());
+				caveBuilder.append(", ").append(pair.first());
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			} else if (pair.second() instanceof Battlefield) {
 				anyBattles = true;
-				battleBuilder.append(", ").append(pair.first().toString());
+				battleBuilder.append(", ").append(pair.first());
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			} else if (pair.second() instanceof AdventureFixture) {
 				anyAdventures = true;
@@ -122,7 +122,7 @@ public final class ExplorableReportGenerator
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			} else if (pair.second() instanceof Portal) {
 				anyPortals = true;
-				portalBuilder.append(", ").append(pair.first().toString());
+				portalBuilder.append(", ").append(pair.first());
 				fixtures.remove(Integer.valueOf(pair.second().getID()));
 			}
 		}
@@ -145,7 +145,7 @@ public final class ExplorableReportGenerator
 		builder.append(CLOSE_LIST);
 		if (anyCaves || anyBattles || anyPortals) {
 			if (anyAdventures) {
-				builder.append(adventureBuilder.toString());
+				builder.append(adventureBuilder);
 			}
 			return NullCleaner.assertNotNull(builder.toString());
 		} else {

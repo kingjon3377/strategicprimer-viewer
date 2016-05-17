@@ -545,7 +545,7 @@ public class SPMapNG implements IMutableMapNG {
 		builder.append(turn);
 		builder.append("\n\nPlayers:\n");
 		for (final Player player : players()) {
-			builder.append(player.toString());
+			builder.append(player);
 			if (player.equals(getCurrentPlayer())) {
 				builder.append(" (current)");
 			}
@@ -554,7 +554,7 @@ public class SPMapNG implements IMutableMapNG {
 		builder.append("\nContents:\n");
 		for (final Point location : locations()) {
 			builder.append("At ");
-			builder.append(location.toString());
+			builder.append(location);
 			builder.append(": ");
 			if (isMountainous(location)) {
 				builder.append("mountains, ");
@@ -566,12 +566,12 @@ public class SPMapNG implements IMutableMapNG {
 			builder.append(", rivers:");
 			for (final River river : getRivers(location)) {
 				builder.append(' ');
-				builder.append(river.toString());
+				builder.append(river);
 			}
 			builder.append(", other: ");
 			for (final TileFixture fixture : getOtherFixtures(location)) {
 				builder.append('\n');
-				builder.append(fixture.toString());
+				builder.append(fixture);
 				// builder.append(" (");
 				// builder.append(fixture.getClass().getSimpleName());
 				// builder.append(")");

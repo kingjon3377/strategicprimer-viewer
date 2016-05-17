@@ -229,6 +229,6 @@ public final class OrdersPanel extends BorderedPanel implements Applyable, Rever
 	 */
 	@Override
 	public String toString() {
-		return "OrdersPanel for player " + player.toString();
+		return "OrdersPanel for player " + player;
 	}
 }

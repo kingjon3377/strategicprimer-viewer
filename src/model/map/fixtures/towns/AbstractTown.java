@@ -103,13 +103,13 @@ public abstract class AbstractTown implements IEvent, HasMutableImage, ITownFixt
 		if (TownSize.Medium == size) {
 			builder.append("medium-size");
 		} else {
-			builder.append(size.toString());
+			builder.append(size);
 		}
 		if (TownStatus.Burned == status) {
 			builder.append(" burned-out");
 		} else if (TownStatus.Active != status) {
 			builder.append(' ');
-			builder.append(status.toString());
+			builder.append(status);
 		}
 		builder.append(' ');
 		builder.append(kind());

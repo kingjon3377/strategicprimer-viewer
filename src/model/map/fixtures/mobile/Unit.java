@@ -235,7 +235,7 @@ public class Unit implements IUnit, HasMutableKind, HasMutableName, HasMutableIm
 		builder.append(", consisting of:");
 		for (final UnitMember member : members) {
 			builder.append('\n');
-			builder.append(member.toString());
+			builder.append(member);
 		}
 		return NullCleaner.assertNotNull(builder.toString());
 	}

@@ -205,6 +205,6 @@ public final class FixtureListModel extends DefaultListModel<@NonNull TileFixtur
 	 */
 	@Override
 	public String toString() {
-		return "FixtureListModel for point " + point.toString();
+		return "FixtureListModel for point " + point;
 	}
 }

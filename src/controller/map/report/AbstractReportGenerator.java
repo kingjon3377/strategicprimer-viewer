@@ -187,7 +187,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	 * @return the string "At " followed by the point's location
 	 */
 	protected static String atPoint(final Point point) {
-		return "At " + point.toString() + ": ";
+		return "At " + point + ": ";
 	}
 
 	/**
@@ -199,11 +199,11 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 	protected static void pointCSL(final StringBuilder ostream, final List<?> points) {
 		if (!points.isEmpty()) {
 			if (points.size() == 1) {
-				ostream.append(points.get(0).toString());
+				ostream.append(points.get(0));
 			} else if (points.size() == 2) {
-				ostream.append(points.get(0).toString());
+				ostream.append(points.get(0));
 				ostream.append(" and ");
-				ostream.append(points.get(1).toString());
+				ostream.append(points.get(1));
 			} else {
 				for (int i = 0; i < points.size(); i++) {
 					if (i == (points.size() - 1)) {
@@ -211,7 +211,7 @@ public abstract class AbstractReportGenerator<T> implements IReportGenerator<T> 
 					} else if (i != 0) {
 						ostream.append(", ");
 					}
-					ostream.append(points.get(i).toString());
+					ostream.append(points.get(i));
 				}
 			}
 		}

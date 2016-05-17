@@ -94,6 +94,6 @@ public class ActionWrapper extends AbstractAction {
 	 */
 	@Override
 	public String toString() {
-		return "ActionWrapper around " + wrapped.toString();
+		return "ActionWrapper around " + wrapped;
 	}
 }

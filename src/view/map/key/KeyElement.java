@@ -154,7 +154,7 @@ public final class KeyElement extends BoxPanel {
 		 */
 		@Override
 		public String toString() {
-			return "KeyElementComponent with color " + color.toString();
+			return "KeyElementComponent with color " + color;
 		}
 	}
 	/**

@@ -113,7 +113,7 @@ public final class FortressReportGenerator extends AbstractReportGenerator<Fortr
 		}
 		if (anyOurs) {
 			if (anyForts) {
-				ours.append(builder.toString());
+				ours.append(builder);
 			}
 			return NullCleaner.assertNotNull(ours.toString());
 		} else if (anyForts) {

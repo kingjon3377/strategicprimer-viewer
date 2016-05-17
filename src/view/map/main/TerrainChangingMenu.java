@@ -168,6 +168,6 @@ public final class TerrainChangingMenu extends JPopupMenu
 	 */
 	@Override
 	public String toString() {
-		return "TerrainChangingMenu for " + point.toString();
+		return "TerrainChangingMenu for " + point;
 	}
 }

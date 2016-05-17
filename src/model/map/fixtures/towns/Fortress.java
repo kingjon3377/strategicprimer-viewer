@@ -189,7 +189,7 @@ public class Fortress implements HasMutableImage, ITownFixture,
 					builder.append(unit.getOwner());
 				}
 			} else {
-				builder.append(member.toString());
+				builder.append(member);
 			}
 			count++;
 			if (count < (units.size() - 1)) {

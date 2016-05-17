@@ -236,6 +236,6 @@ public final class ArraySet<U> implements Set<U> {
 	 */
 	@Override
 	public String toString() {
-		return "ArraySet " + impl.toString();
+		return "ArraySet " + impl;
 	}
 }

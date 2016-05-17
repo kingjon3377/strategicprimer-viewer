@@ -117,7 +117,7 @@ public final class DetailPanelNG extends JSplitPane implements VersionChangeList
 	public void selectedPointChanged(@Nullable final Point old, final Point newPoint) {
 		fixList.selectedPointChanged(old, newPoint);
 		header.setText("<html><body><p>Contents of the tile at "
-							+ newPoint.toString() + ":</p></body></html>");
+							+ newPoint + ":</p></body></html>");
 	}
 	/**
 	 * Prevent serialization.

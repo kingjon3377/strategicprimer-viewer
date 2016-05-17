@@ -450,7 +450,7 @@ public final class WorkerMgmtFrame extends JFrame implements ISPWindow {
 					if (member instanceof HasName) {
 						builder.append(((HasName) member).getName());
 					} else {
-						builder.append(member.toString());
+						builder.append(member);
 					}
 				}
 				builder.append("\n\n");

@@ -86,7 +86,7 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 		assert list != null;
 		final Component component = LIST_DEFAULT.getListCellRendererComponent(
 				list, value, index, isSelected, cellHasFocus);
-		((JLabel) component).setText("<html><p>" + value.toString() + "</p></html>");
+		((JLabel) component).setText("<html><p>" + value + "</p></html>");
 		if (value instanceof HasImage) {
 			((JLabel) component).setIcon(getIcon((HasImage) value));
 		} else {

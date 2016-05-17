@@ -95,7 +95,7 @@ public class Mine implements HarvestableFixture, HasMutableKind {
 	 */
 	@Override
 	public String toString() {
-		return status.toString() + " mine of " + kind;
+		return status + " mine of " + kind;
 	}
 
 	/**

@@ -88,6 +88,6 @@ public final class ExplorationUnitListModel extends DefaultListModel<@NonNull IU
 	 */
 	@Override
 	public String toString() {
-		return "ExplorationUnitListModel wrapping " + model.toString();
+		return "ExplorationUnitListModel wrapping " + model;
 	}
 }

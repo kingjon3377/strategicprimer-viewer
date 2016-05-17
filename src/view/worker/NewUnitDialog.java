@@ -229,6 +229,6 @@ public final class NewUnitDialog extends JFrame
 	 */
 	@Override
 	public String toString() {
-		return "NewUnitDialog for player " + owner.toString();
+		return "NewUnitDialog for player " + owner;
 	}
 }

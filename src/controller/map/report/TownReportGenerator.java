@@ -99,7 +99,7 @@ public final class TownReportGenerator extends AbstractReportGenerator<ITownFixt
 				TownStatus.Burned).stream().map(separated::get).filter(Objects::nonNull)
 				.filter(coll -> !NullCleaner.assertNotNull(coll).isEmpty()).forEach(
 				coll -> builder.append(OPEN_LIST_ITEM)
-								.append(NullCleaner.assertNotNull(coll).toString())
+								.append(NullCleaner.assertNotNull(coll))
 								.append(CLOSE_LIST_ITEM));
 		builder.append(CLOSE_LIST);
 		if (separated.values().stream().allMatch(Collection::isEmpty)) {

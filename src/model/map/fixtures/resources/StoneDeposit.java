@@ -116,7 +116,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasMutabl
 	 */
 	@Override
 	public String toString() {
-		return "A " + stone.toString() + " deposit, of DC " + dc;
+		return "A " + stone + " deposit, of DC " + dc;
 	}
 
 	/**
@@ -212,7 +212,7 @@ public final class StoneDeposit implements IEvent, HarvestableFixture, HasMutabl
 	 */
 	@Override
 	public String shortDesc() {
-		return "an exposed " + stone().toString() + " deposit";
+		return "an exposed " + stone() + " deposit";
 	}
 
 }

@@ -105,10 +105,10 @@ public final class FortressMemberReportGenerator
 		eqBuilder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
 		rsrBuilder.append(CLOSE_LIST).append(CLOSE_LIST_ITEM);
 		if (anyEquipment) {
-			builder.append(eqBuilder.toString());
+			builder.append(eqBuilder);
 		}
 		if (anyResources) {
-			builder.append(rsrBuilder.toString());
+			builder.append(rsrBuilder);
 		}
 		if (anyEquipment || anyResources) {
 			return NullCleaner.assertNotNull(builder.toString());

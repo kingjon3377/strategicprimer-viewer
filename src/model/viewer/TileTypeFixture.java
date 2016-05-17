@@ -147,7 +147,7 @@ public final class TileTypeFixture implements TileFixture, HasImage {
 	 */
 	@Override
 	public String toString() {
-		return "Terrain: " + tileType.toString();
+		return "Terrain: " + tileType;
 	}
 
 	/**

@@ -263,6 +263,6 @@ public final class SelectTileDialog extends JDialog {
 	 */
 	@Override
 	public String toString() {
-		return "SelectTileDialog: current or last message is " + errorLabel.toString();
+		return "SelectTileDialog: current or last message is " + errorLabel;
 	}
 }

@@ -145,7 +145,7 @@ public final class RiverFixture
 				new StringBuilder(BASE_STRING.length() + (MAX_RIVER_SIZE * rivers.size()))
 						.append(BASE_STRING);
 		for (final River river : rivers) {
-			builder.append(river.toString());
+			builder.append(river);
 			builder.append(' ');
 		}
 		return NullCleaner.assertNotNull(builder.toString());

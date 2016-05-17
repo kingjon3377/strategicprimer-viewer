@@ -133,7 +133,7 @@ public final class StreamingLabel extends JEditorPane {
 		 * Update the label's text.
 		 */
 		private void updateText() {
-			control.setText("<html><body bgcolor=\"#000000\">" + stringWriter.toString() +
+			control.setText("<html><body bgcolor=\"#000000\">" + stringWriter +
 									"</body></html>");
 		}
 

@@ -100,7 +100,7 @@ public final class TextReportGenerator extends AbstractReportGenerator<TextFixtu
 		final StringBuilder builder =
 				new StringBuilder(item.getText().length() + 32);
 		builder.append("At ");
-		builder.append(loc.toString());
+		builder.append(loc);
 		builder.append(' ');
 		builder.append(distCalculator.distanceString(loc));
 		if (item.getTurn() >= 0) {

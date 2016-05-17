@@ -384,7 +384,7 @@ public class ResourceAddingFrame extends JFrame implements ISPWindow {
 	 */
 	@Override
 	public String toString() {
-		return "ResourceAddingFrame with current player " + current.toString();
+		return "ResourceAddingFrame with current player " + current;
 	}
 
 	/**

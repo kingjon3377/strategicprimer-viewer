@@ -133,6 +133,6 @@ public final class DualTileButton extends JButton {
 	 */
 	@Override
 	public String toString() {
-		return "DualTileButton for " + point.toString();
+		return "DualTileButton for " + point;
 	}
 }
