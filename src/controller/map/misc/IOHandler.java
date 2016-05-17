@@ -137,7 +137,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 				return;
 			}
 			try {
-				model.setMap(readMap(file, Warning.DEFAULT), file);
+				model.setMap(readMap(file), file);
 			} catch (final IOException | SPFormatException | XMLStreamException e) {
 				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
 						"a null path"), source);
@@ -407,15 +407,14 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 
 	/**
 	 * @param file   a file to load a map from
-	 * @param warner the Warning instance to use for warnings.
 	 * @return the map in that file
 	 * @throws IOException        on other I/O error
 	 * @throws XMLStreamException if the XML isn't well-formed
 	 * @throws SPFormatException  if the file contains invalid data
 	 */
-	private static IMutableMapNG readMap(final File file, final Warning warner)
+	private static IMutableMapNG readMap(final File file)
 			throws IOException, XMLStreamException, SPFormatException {
-		return new MapReaderAdapter().readMap(file, warner);
+		return new MapReaderAdapter().readMap(file, Warning.DEFAULT);
 	}
 
 	/**
@@ -454,7 +453,7 @@ public final class IOHandler implements ActionListener, PlayerChangeSource {
 			}
 			try {
 				((IMultiMapModel) model).addSubordinateMap(
-						readMap(file, Warning.DEFAULT), file);
+						readMap(file), file);
 			} catch (final IOException | SPFormatException | XMLStreamException e) {
 				handleError(e, NullCleaner.valueOrDefault(file.getPath(),
 						"a null path"), source);
