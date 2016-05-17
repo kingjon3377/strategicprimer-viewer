@@ -50,10 +50,10 @@ public class MagicReader extends Reader {
 	public MagicReader(final String possibleFilename) throws FileNotFoundException {
 		if (possibleFilename.contains("string:<")) {
 			delegate = new StringReader(possibleFilename.substring(7));
-			this.filename = "a string";
+			filename = "a string";
 		} else {
 			delegate = new FileReader(possibleFilename);
-			this.filename = possibleFilename;
+			filename = possibleFilename;
 		}
 	}
 

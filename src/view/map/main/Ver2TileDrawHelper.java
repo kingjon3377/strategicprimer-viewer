@@ -135,7 +135,7 @@ public final class Ver2TileDrawHelper extends AbstractTileDrawHelper {
 	 * @param filter the class to query about whether to display a fixture
 	 */
 	public Ver2TileDrawHelper(final ImageObserver imageObserver, final ZOrderFilter filter) {
-		this.observer = imageObserver;
+		observer = imageObserver;
 		zof = filter;
 		final String[] files = {"trees.png", "mountain.png"};
 		createRiverFiles();

@@ -71,7 +71,7 @@ public final class WorkerCreationListener
 	 */
 	public WorkerCreationListener(final IWorkerTreeModel model,
 								final IDFactory idFac) {
-		this.treeModel = model;
+		treeModel = model;
 		idf = idFac;
 	}
 

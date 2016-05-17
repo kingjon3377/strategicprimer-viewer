@@ -61,7 +61,7 @@ public final class ResourceInputStream extends InputStream {
 			}
 		}
 		wrapped = temp;
-		this.filename = readFilename;
+		filename = readFilename;
 	}
 
 	/**
