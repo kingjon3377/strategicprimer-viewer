@@ -47,7 +47,7 @@ public class TabularReportDriver implements SimpleDriver {
 	@Override
 	public void startDriver(final IDriverModel model) throws DriverFailedException {
 		if (model instanceof IMultiMapModel) {
-			for (Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getAllMaps()) {
+			for (final Pair<IMutableMapNG, File> pair : ((IMultiMapModel) model).getAllMaps()) {
 				try {
 					TableReportGenerator.createReports(pair.first(), s -> {
 						try {
