@@ -11,8 +11,9 @@ wget http://central.maven.org/maven2/org/eclipse/jdt/org.eclipse.jdt.annotation/
 wget http://javagraphics.java.net/jars/WindowMenu.jar
 sudo apt-get update -qq
 # TODO: Open request for libhamcrest1.2-java
-sudo apt-get install genisoimage libhamcrest1.2-java
-sudo dpkg -r libhamcrest-java
+sudo apt-get install genisoimage
+wget http://mirrors.kernel.org/ubuntu/pool/main/libh/libhamcrest-java/libhamcrest-java_1.3-4_all.deb
+dpkg -i libhamcrest-java_1.3-4_all.deb
 wget https://github.com/tofi86/universalJavaApplicationStub/archive/v0.9.0.tar.gz -O universalJavaApplicationStub-0.9.0.tar.gz
 tar xzf universalJavaApplicationStub-0.9.0.tar.gz
 if test -n "${TRAVIS_TAG}"; then

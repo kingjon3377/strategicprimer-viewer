@@ -5,5 +5,5 @@ ant \
     -Dnullness.jar.path=./org.eclipse.jdt.annotation-2.0.0.jar \
     -Djunit.jar.path=/usr/share/java/junit4.jar \
     -Dwindowmenu.jar.path=./WindowMenu.jar \
-    -Dhamcrest.jar.path=/usr/share/java/hamcrest-core-1.2.jar \
+    -Dhamcrest.jar.path=/usr/share/java/hamcrest-core-1.3.jar \
     test
