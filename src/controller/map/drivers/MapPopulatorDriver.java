@@ -1,6 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.IDFactory;
 import controller.map.misc.IDFactoryFiller;
 import model.map.IMapNG;

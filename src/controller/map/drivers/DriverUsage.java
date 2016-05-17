@@ -37,36 +37,6 @@ public class DriverUsage {
 	private final Class<? extends ISPDriver> driverClass;
 
 	/**
-	 * Possible numbers of (non-option?) parameters a driver might want.
-	 */
-	public enum ParamCount {
-		/**
-		 * None at all.
-		 */
-		None,
-		/**
-		 * One.
-		 */
-		One,
-		/**
-		 * Exactly two.
-		 */
-		Two,
-		/**
-		 * At least one.
-		 */
-		AtLeastOne,
-		/**
-		 * At least two.
-		 */
-		AtLeastTwo,
-		/**
-		 * Any number, zero oro more.
-		 */
-		AnyNumber
-	}
-
-	/**
 	 * Constructor.
 	 *
 	 * @param graph     whether this driver is graphical or not

@@ -1,7 +1,6 @@
 package controller.map.drivers;
 
 import controller.map.cxml.CompactXMLReader;
-import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.fluidxml.SPFluidReader;
 import controller.map.formatexceptions.MapVersionException;
 import controller.map.formatexceptions.SPFormatException;

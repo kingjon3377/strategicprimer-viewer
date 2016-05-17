@@ -1,6 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.IOHandler;
 import javax.swing.SwingUtilities;
 import model.misc.IDriverModel;

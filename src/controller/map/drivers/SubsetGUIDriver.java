@@ -1,6 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.formatexceptions.SPFormatException;
 import java.io.File;
 import java.io.IOException;

@@ -1,6 +1,5 @@
 package controller.map.drivers;
 
-import controller.map.drivers.DriverUsage.ParamCount;
 import controller.map.misc.IOHandler;
 import java.util.stream.StreamSupport;
 import javax.swing.SwingUtilities;
