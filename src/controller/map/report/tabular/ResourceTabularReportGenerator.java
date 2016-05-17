@@ -46,8 +46,8 @@ public class ResourceTabularReportGenerator implements ITableGenerator<IFixture>
 	 */
 	@Override
 	public boolean applies(final IFixture obj) {
-		return obj instanceof CacheFixture || obj instanceof ResourcePile ||
-					   obj instanceof Implement;
+		return (obj instanceof CacheFixture) || (obj instanceof ResourcePile) ||
+					   (obj instanceof Implement);
 	}
 	/**
 	 * @param ostream  the stream to write the row to

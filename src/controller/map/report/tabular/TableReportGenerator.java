@@ -213,7 +213,8 @@ public final class TableReportGenerator {
 										  .filter(fix -> (fix instanceof TileFixture)
 																 || (fix.getID() > 0))
 										  .collect(Collectors.toMap(fix -> {
-											  if (fix instanceof TileFixture && fix.getID() < 0) {
+											  if ((fix instanceof TileFixture) &&
+														  (fix.getID() < 0)) {
 												  return Integer.valueOf(idf.createID());
 											  } else {
 												  return Integer.valueOf(fix.getID());

@@ -152,7 +152,7 @@ public final class FixtureCellRenderer implements ListCellRenderer<@NonNull Tile
 		// The part of the image size not covered by margins.
 		final double afterMargin = Math.round(imageSize * (1.0 - (margin * 2.0)));
 		// The rounding on the corners: half as much as the normal margin.
-		final double cornerRounding = Math.round(imageSize * margin / 2.0);
+		final double cornerRounding = Math.round((imageSize * margin) / 2.0);
 		pen.fillRoundRect((int) pixelMargin + 1,
 				(int) pixelMargin + 1,
 				(int) afterMargin,

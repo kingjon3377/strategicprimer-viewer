@@ -43,8 +43,9 @@ public class CropTabularReportGenerator implements ITableGenerator<TileFixture> 
 	 */
 	@Override
 	public boolean applies(final IFixture obj) {
-		return obj instanceof Forest || obj instanceof Shrub || obj instanceof Meadow ||
-					   obj instanceof Grove;
+		return (obj instanceof Forest) || (obj instanceof Shrub) ||
+					   (obj instanceof Meadow) ||
+					   (obj instanceof Grove);
 	}
 
 	/**

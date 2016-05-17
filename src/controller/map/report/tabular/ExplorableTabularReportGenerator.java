@@ -158,7 +158,7 @@ public class ExplorableTabularReportGenerator
 	 */
 	@Override
 	public boolean applies(final IFixture obj) {
-		return obj instanceof ExplorableFixture || obj instanceof TextFixture;
+		return (obj instanceof ExplorableFixture) || (obj instanceof TextFixture);
 	}
 	/**
 	 * Produce a tabular report on a particular category of fixtures in the map. All
@@ -205,9 +205,10 @@ public class ExplorableTabularReportGenerator
 			if (((item instanceof ExplorableFixture) && produce(ostream, fixtures,
 					(ExplorableFixture) pair.second().second(), pair.second().first())
 			) ||
-						(item instanceof TextFixture && produceFromText(ostream,
-								fixtures,
-								(TextFixture) pair.second().second(), pair.second().first()))) {
+						((item instanceof TextFixture) &&
+								 produceFromText(ostream, fixtures,
+										 (TextFixture) pair.second().second(),
+										 pair.second().first()))) {
 				fixtures.remove(pair.first());
 			}
 		}

@@ -43,8 +43,9 @@ public class DiggableTabularReportGenerator implements ITableGenerator<TileFixtu
 	 */
 	@Override
 	public boolean applies(final IFixture obj) {
-		return obj instanceof Ground || obj instanceof Mine || obj instanceof MineralVein ||
-					   obj instanceof StoneDeposit;
+		return (obj instanceof Ground) || (obj instanceof Mine) ||
+					   (obj instanceof MineralVein) ||
+					   (obj instanceof StoneDeposit);
 	}
 
 	/**
