@@ -74,6 +74,7 @@ public final class FixtureList extends JList<@NonNull TileFixture> implements
 		setModel(flm);
 		setCellRenderer(new FixtureCellRenderer());
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		//noinspection TrivialMethodReference
 		DragSource.getDefaultDragSource().createDefaultDragGestureRecognizer(
 				this, DnDConstants.ACTION_COPY, this::dragGestureRecognized);
 		setDropTarget(new DropTarget(this, new FixtureListDropListener(parent, flm)));

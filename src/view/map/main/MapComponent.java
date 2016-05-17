@@ -82,9 +82,11 @@ public final class MapComponent extends JComponent
 		setDoubleBuffered(true);
 		model = theMap;
 		zof = filter;
+		//noinspection TrivialMethodReference
 		helper = TileDrawHelperFactory.INSTANCE.factory(
 				model.getMapDimensions().version, this::imageUpdate, zof);
 		cml = new ComponentMouseListener(model);
+		//noinspection TrivialMethodReference
 		cml.addSelectionChangeListener(this::selectedPointChanged);
 		addMouseListener(cml);
 		final DirectionSelectionChanger dsl = new DirectionSelectionChanger(model);
