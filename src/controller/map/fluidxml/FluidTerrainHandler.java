@@ -109,9 +109,8 @@ public class FluidTerrainHandler {
 										   final IMutablePlayerCollection players, final Warning warner,
 										   final IDFactory idFactory) throws SPFormatException {
 		requireTag(element, "mountain");
-		final Mountain retval = new Mountain();
 		spinUntilEnd(assertNotNull(element.getName()), stream);
-		return setImage(retval, element, warner);
+		return setImage(new Mountain(), element, warner);
 	}
 
 	/**
