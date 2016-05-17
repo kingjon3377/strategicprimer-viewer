@@ -41,7 +41,7 @@ public interface ITableGenerator<@NonNull T> {
 	/**
 	 * A pattern to match quotes in input.
 	 */
-	static final Pattern QUOTE_PATTERN = Pattern.compile("\"");
+	Pattern QUOTE_PATTERN = Pattern.compile("\"");
 
 	/**
 	 * Produce a tabular report on a particular category of fixtures in the map. All

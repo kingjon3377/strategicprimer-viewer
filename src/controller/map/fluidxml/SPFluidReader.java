@@ -274,7 +274,7 @@ public final class SPFluidReader implements IMapReader, ISPReader, FluidXMLReade
 	 * instances.
 	 */
 	@FunctionalInterface
-	private static interface HasKindFactory {
+	private interface HasKindFactory {
 		/**
 		 * The constructor or factory method.
 		 * @param kind the "kind" property of the object
